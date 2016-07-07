@@ -1,0 +1,1 @@
+package models.eeda.profile;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class Unit extends Model<Unit> {	public static final Unit dao = new Unit();}

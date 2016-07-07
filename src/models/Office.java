@@ -1,0 +1,1 @@
+package models;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class Office extends Model<Office> {	public static final Office dao = new Office();}

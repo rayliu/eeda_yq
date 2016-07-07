@@ -1,0 +1,1 @@
+package models;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class Location extends Model<Location> {	public static final Location dao = new Location();}

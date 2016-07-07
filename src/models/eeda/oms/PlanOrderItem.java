@@ -1,0 +1,1 @@
+package models.eeda.oms;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class PlanOrderItem extends Model<PlanOrderItem> {	public static final PlanOrderItem dao = new PlanOrderItem();}

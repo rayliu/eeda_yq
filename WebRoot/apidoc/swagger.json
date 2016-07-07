@@ -1,0 +1,271 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "前海德丰电子商务-电商系统 API",
+        "description": "前海德丰电子商务提供给第三方电商的销售订单接口, 基本路径为:/api<br/><span style='color:red;'>认证</span>: 必须通过app_key(放在header)进行认证后才能调用相关接口, 第三方电商的app_key值需向德丰IT人员索取",
+        "version": "1.0.0"
+    },
+    "host": "yd2demo.eeda123.com",
+    "schemes": [
+        "http"
+    ],
+    "basePath": "/api",
+    "securityDefinitions": {
+        "key": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "app_key",
+            "description": "必须通过app_key进行认证后才能调用相关接口, 第三方电商的app_key值需向德丰IT人员索取"
+        }
+    },
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/salesOrder": {
+            "get": {
+                "summary": "获取销售订单",
+                "description": "此接口通过提供订单号码,返回一个订单的数据结构.",
+                "parameters": [
+                    {
+                        "name": "orderNo",
+                        "in": "query",
+                        "description": "订单号码",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "tags": [
+                    "销售订单"
+                ],
+                "security": [
+                    {
+                        "key": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "正确执行后返回一个订单的数据结构",
+                        "schema": {
+                            "$ref": "#/definitions/SalesOrder"
+                        }
+                    },
+                    "default": {
+                        "description": "出错",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "创建销售订单",
+                "description": "此接口创建销售订单,返回一个订单的数据结构.\n",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "in": "body",
+                        "description": "传入一个订单的数据结构",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SalesOrder"
+                        }
+                    }
+                ],
+                "tags": [
+                    "销售订单"
+                ],
+                "security": [
+                    {
+                        "key": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "正确执行后返回一个订单的数据结构,包含新的id,orderNo",
+                        "schema": {
+                            "$ref": "#/definitions/SalesOrder"
+                        }
+                    },
+                    "default": {
+                        "description": "出错",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "SalesOrder": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "系统内产生的唯一ID."
+                },
+                "orderNo": {
+                    "type": "string",
+                    "description": "粤迪系统内产生的唯一订单号码."
+                },
+                "orgCode": {
+                    "type": "string",
+                    "description": "企业组织机构代码（电商商户）"
+                },
+                "refOrderNo": {
+                    "type": "string",
+                    "description": "电商平台的原始订单编号."
+                },
+                "orderTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "订单创建时间(yyyyMMddHHmmss)."
+                },
+                "goodsChargeAmount": {
+                    "type": "number",
+                    "description": "订单商品货款."
+                },
+                "freightAmount": {
+                    "type": "number",
+                    "description": "订单商品运费."
+                },
+                "currency": {
+                    "type": "string",
+                    "description": "币制(标准代码，见参数表, 默认：人民币:142)"
+                },
+                "consigneeId": {
+                    "type": "string",
+                    "description": "收件人身份证号码或其它号码"
+                },
+                "consigneeType": {
+                    "type": "string",
+                    "description": "收货人证件类型 1-身份证，2-其它"
+                },
+                "consignee": {
+                    "type": "string",
+                    "description": "收货人名称(100 max)"
+                },
+                "consigneeAddress": {
+                    "type": "string",
+                    "description": "收货人地址(200 max)"
+                },
+                "consigneeTelephone": {
+                    "type": "string",
+                    "description": "收货人电话(50 max)"
+                },
+                "consigneeCountry": {
+                    "type": "string",
+                    "description": "收货人所在国（标准代码，见参数表, 默认：中国:142）(varchar 3)"
+                },
+                "province": {
+                    "type": "string",
+                    "description": "收货人地址（省）（标准代码，见参数表）(varchar 3)"
+                },
+                "city": {
+                    "type": "string",
+                    "description": "收货人地址（市）（标准代码，见参数表）(varchar 3)"
+                },
+                "district": {
+                    "type": "string",
+                    "description": "收货人地址（区）（标准代码，见参数表）(varchar 3)"
+                },
+                "promotionAmount": {
+                    "type": "number",
+                    "description": "优惠金额 NUMBER(19,5)"
+                },
+                "promotionRemark": {
+                    "type": "string",
+                    "maximum": 1000,
+                    "description": "优惠信息说明"
+                },
+                "note": {
+                    "type": "string",
+                    "maximum": 1000,
+                    "description": "备注"
+                },
+                "payOrgCode": {
+                    "type": "string",
+                    "description": "支付企业代码(需对接双方讨论定义, 非海关代码) VARCHAR(24)"
+                },
+                "payTransactionNo": {
+                    "type": "string",
+                    "description": "原始支付单交易编号 VARCHAR(24)"
+                },
+                "payerName": {
+                    "type": "string",
+                    "maximum": 50,
+                    "description": "支付人名称"
+                },
+                "payerAccountNo": {
+                    "type": "string",
+                    "description": "支付人帐号 VARCHAR(50)"
+                },
+                "goods": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Good"
+                    }
+                }
+            }
+        },
+        "Good": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "系统内产生的唯一ID"
+                },
+                "itemNo": {
+                    "type": "string",
+                    "description": "企业商品货号"
+                },
+                "customItemNo": {
+                    "type": "string",
+                    "description": "海关商品货号, 可与企业商品货号一致"
+                },
+                "customListItemNo": {
+                    "type": "string",
+                    "description": "海关正面清单货号（新规则时必填）"
+                },
+                "unit": {
+                    "type": "string",
+                    "description": "计量单位（标准代码，见参数表）"
+                },
+                "currency": {
+                    "type": "string",
+                    "description": "币制代码（标准代码，见参数表）"
+                },
+                "qty": {
+                    "type": "number",
+                    "description": "成交数量 NUMBER(19,5)"
+                },
+                "price": {
+                    "type": "number",
+                    "description": "单价 NUMBER(19,5)"
+                },
+                "totalChareAmount": {
+                    "type": "number",
+                    "description": "总价 NUMBER(19,5)"
+                },
+                "isGift": {
+                    "type": "number",
+                    "description": "总价 NUMBER(19,5)"
+                }
+            }
+        },
+        "Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
