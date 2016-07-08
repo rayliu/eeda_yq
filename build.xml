@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Eeda-yq" basedir="." default="mysql">
+	<property environment="env" />
+	
+	<!-- 定义一些变量，其值是基于其他的变量值 -->
+	<property name="project.classpath" value="WebRoot/WEB-INF/classes"></property>
+	
+	<!--path id="project.classpath">
+	    <fileset dir="WebRoot/WEB-INF/classes" />
+	</path-->
+	
+   <path id="project.lib.path">
+        <fileset dir="WebRoot/WEB-INF/lib" includes="**/*.jar"/>
+   	    <fileset dir="" includes="servlet-api.jar"/>
+    </path>
+
+	<target name="mysql">
+		<copy tofile="${project.classpath}/job.properties" file="WebRoot/WEB-INF/config/job.properties" overwrite="true"/>
+		<copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-mysql" overwrite="true"/>
+		<copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-mysql" overwrite="true"/>
+        <java classname="com.jfinal.core.JFinal" classpathref="project.lib.path">
+            <arg value="WebRoot"/>
+            <arg value="8080"/>
+            <arg value="/"/>
+            <arg value="5"/>
+            <classpath path="${project.classpath}"></classpath>
+        	<arg value="org.eclipse.jetty.server.Request.maxFormContentSize=-1"/>
+        </java>
+    </target>
+	
+	<target name="prod" depends="clean, compile">
+		<copy tofile="${project.classpath}/job.properties" file="WebRoot/WEB-INF/config/job.properties" overwrite="true"/>
+		<copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-yh-prod" overwrite="true"/>
+		<copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-yh-prod" overwrite="true"/>
+        <!--java classname="com.jfinal.core.JFinal" classpathref="project.lib.path">
+            <arg value="WebRoot"/>
+            <arg value="8000"/>
+            <arg value="/"/>
+            <arg value="0"/>
+            <classpath path="${project.classpath}"></classpath>
+        </java-->
+    </target>
+	
+	<target name="uat" depends="clean, compile">
+		<copy tofile="${project.classpath}/job.properties" file="WebRoot/WEB-INF/config/job.properties" overwrite="true"/>
+        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-uat" overwrite="true"/>
+        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-uat" overwrite="true"/>
+        <!--java classname="com.jfinal.core.JFinal" classpathref="project.lib.path">
+            <arg value="WebRoot"/>
+            <arg value="8000"/>
+            <arg value="/"/>
+            <arg value="0"/>
+            <classpath path="${project.classpath}"></classpath>
+        </java-->	
+    </target>
+	
+	<target name="uat_copy_config" >
+        <copy tofile="${project.classpath}/job.properties" file="WebRoot/WEB-INF/config/job.properties" overwrite="true"/>
+        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-uat" overwrite="true"/>
+        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-uat" overwrite="true"/> 
+    </target>
+	
+   <target name="clean"> 
+       <delete includeEmptyDirs="true" failonerror="false"> 
+           <fileset dir="${project.classpath}" /> 
+       </delete>
+    </target>
+    
+    <target name="compile" >
+        <mkdir dir="${project.classpath}" />
+        <javac srcdir="src"
+                 destdir="${project.classpath}"
+                 fork="true"
+                 classpathref="project.lib.path">
+            <compilerarg line="-encoding UTF-8"/>
+        </javac>
+    	<copy todir="${project.classpath}">
+    	    <fileset dir="src"
+    	             includes="**/*.properties" />
+    	</copy>	
+    </target>
+	
+	<target name="copyToTms" >
+        <copy todir="/var/tms/WebRoot/yh/js">
+            <fileset dir="/root/.jenkins/jobs/TMS-DailyBuild/workspace/WebRoot/yh/js" includes="**/*.js, **/*.css" />
+        </copy>
+		<copy todir="/var/tms/WebRoot/js">
+            <fileset dir="/root/.jenkins/jobs/TMS-DailyBuild/workspace/WebRoot/js" includes="**/*.js, **/*.css" />
+        </copy>
+        <copy todir="/var/tms/WebRoot/WEB-INF/template">
+            <fileset dir="/root/.jenkins/jobs/TMS-DailyBuild/workspace/WebRoot/WEB-INF/template" includes="**/*.html" />
+        </copy>
+        <copy todir="/var/tms/WebRoot/WEB-INF/classes">
+            <fileset dir="/root/.jenkins/jobs/TMS-DailyBuild/workspace/WebRoot/WEB-INF/classes" includes="**/*.class" />
+        </copy>
+    </target>
+
+</project>
