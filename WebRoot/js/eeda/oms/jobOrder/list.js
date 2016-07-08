@@ -1,109 +1,60 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+$(document).ready(function() {
+	document.title = '工作单查询   | '+document.title;
 
-    $(document).ready(function() {
-    	document.title = '计划订单查询 | '+document.title;
-    	$('#menu_order').addClass('active').find('ul').addClass('in');
-
-    	//datatable, 动态处理
-        var dataTable = eeda.dt({
-            id: 'eeda-table',
-            ajax: "/planOrder/list",
-            columns:[
-                { "data": "COMPANY_NAME","width": "15%",
-                    "render": function ( data, type, full, meta ) {
-                        
-                             return "<a href='/serviceProvider/edit?id="+full.ID+"' target='_blank'>" + data+ "</a>";
-                        
-                    }
-                },
-                { "data": "ABBR", "width": "10%",}, 
-                { "data": "SP_TYPE", "width": "15%",
-                    "render": function(data, type, full, meta) {
-                         var str = "";
-                         if(data == null)
-                            return '';
-                        
-                         typeArr = data.split(";");
-                         
-                         $.each(typeArr, function(index, val) {
-                             if(val == "line"){
-                                 str += "干线运输供应商<br>";
-                             }else if(val == "delivery"){
-                                 str += "配送供应商<br>";
-                             }else if(val == "pickup"){
-                                 str += "提货供应商<br>";
-                             }else if(val == "personal"){
-                                 str += "个体供应商<br>";
-                             }
-                         });
-                         
-                         return str;
-                    }
-                }, 
-                { "data": "CONTACT_PERSON"}, 
-                { "data": "PHONE"}, 
-                { "data": "ADDRESS", "width": "15%"},
-                { "data": "RECEIPT"},
-                { "data": "PAYMENT",
-                    "render": function(data, type, full, meta) {
-                         if(data == "monthlyStatement"){
-                             return "月结";
-                         }else if(data == "freightCollect"){
-                             return "到付";
-                         }else{
-                             return "现付";
-                         }}},
-                { "data":null,
-                    "render": function(data, type, full, meta) {
-                         if(full.DNAME == null){
-                             return full.NAME;
-                         }else{
-                             return full.DNAME;
-                         }
-                     }
-                },
-                { 
-                    "data": null, 
-                    //"width": "8%",  
-                    // "visible":(Provider.isUpdate || Provider.isDel),
-                    "render": function(data, type, full, meta) {
-                        var str ="<nobr>";
-                         
-                        str += "<a class='btn  btn-primary btn-sm' href='/serviceProvider/edit?id="+full.ID+"' target='_blank'>"+
-                                "<i class='fa fa-edit fa-fw'></i>"+
-                                "编辑"+"</a> ";
-                         
-                        
-                        if(full.IS_STOP != true){
-                            str += "<a class='btn btn-danger btn-sm' href='/serviceProvider/delete/"+full.ID+"'>"+
-                                 "<i class='fa fa-trash-o fa-fw'></i>"+ 
-                                 "停用"+
-                                 "</a>";
-                        }else{
-                            str +="<a class='btn btn-success btn-sm' href='/serviceProvider/delete/"+full.ID+"'>"+
-                                     "<i class='fa fa-trash-o fa-fw'></i>"+ 
-                                     "启用"+
-                                 "</a>";
-                        }
-                         
-                        return str +="</nobr>";
-                    }
+	  //datatable, 动态处理
+    var dataTable = $('#eeda-table').DataTable({
+        "processing": true,
+        "searching": false,
+        "serverSide": false,
+        "scrollX": true,
+        "scrollY": "300px",
+        "scrollCollapse": true,
+        "autoWidth": false,
+        "language": {
+            "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
+        },
+        "columns": [
+            { "data": "ORDER_NO", 
+                "render": function ( data, type, full, meta ) {
+                    return "<a href='/jobOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
                 }
-            ]
-        });
-        
-
-      //条件筛选
-    	$("#COMPANY_NAME ,#CONTACT_PERSON ,#RECEIPT,#ABBR,#ADDRESS,#LOCATION").on('keyup click', function () {    	 	
-          	var COMPANY_NAME = $("#COMPANY_NAME").val();
-          	var CONTACT_PERSON = $("#CONTACT_PERSON").val();
-        	var RECEIPT = $("#RECEIPT").val();
-          	var ABBR = $("#ABBR").val();    	
-          	var ADDRESS = $("#ADDRESS").val();
-          	var LOCATION = $("#LOCATION").val();
-          	dataTable.fnSettings().sAjaxSource = "/serviceProvider/list?COMPANY_NAME="+COMPANY_NAME+"&CONTACT_PERSON="+CONTACT_PERSON+"&RECEIPT="+RECEIPT+"&ABBR="+ABBR+"&ADDRESS="+ADDRESS+"&LOCATION="+LOCATION;
-          	dataTable.fnDraw();
-        });
-    	
+            },
+            { "data": "TYPE"}, 
+            { "data": "CUSTOMER_NAME"}, 
+            { "data": "CREATOR_NAME"}, 
+            { "data": "CREATE_STAMP"}, 
+            { "data": "STATUS"}
+        ]
     });
+
+    
+    $('#resetBtn').click(function(e){
+        $("#orderForm")[0].reset();
+    });
+
+    $('#searchBtn').click(function(){
+        searchData(); 
+    })
+
+   var searchData=function(){
+        var order_no = $("#order_no").val(); 
+        var start_date = $("#create_stamp_begin_time").val();
+        var end_date = $("#create_stamp_end_time").val();
+        
+        /*  
+            查询规则：参数对应DB字段名
+            *_no like
+            *_id =
+            *_status =
+            时间字段需成双定义  *_begin_time *_end_time   between
+        */
+        var url = "/jobOrder/list?order_no="+order_no
+             +"&create_stamp_begin_time="+start_date
+             +"&create_stamp_end_time="+end_date;
+
+        dataTable.ajax.url(url).load();
+    };
 });
+
+} );

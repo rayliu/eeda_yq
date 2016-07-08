@@ -1,6 +1,7 @@
 package controllers.oms.jobOrder;
 
 import interceptor.SetAttrLoginUserInterceptor;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,21 +9,30 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import models.Party;
 import models.UserLogin;
 import models.eeda.oms.SalesOrderGoods;
 import models.eeda.oms.SalesOrder;
+import models.eeda.oms.jobOrder.JobOrder;
+import models.eeda.oms.jobOrder.JobOrderArap;
+import models.eeda.oms.jobOrder.JobOrderCargo;
+import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.profile.CustomCompany;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
+
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+
 import controllers.oms.custom.dto.DingDanDto;
 import controllers.oms.custom.dto.DingDanGoodsDto;
 import controllers.profile.LoginUserController;
@@ -54,74 +64,91 @@ public class JobOrderController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
-        SalesOrder salesOrder = new SalesOrder();
+        JobOrder jobOrder = new JobOrder();
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
    		
    		if (StringUtils.isNotEmpty(id)) {
    			//update
-   			salesOrder = SalesOrder.dao.findById(id);
-   			DbUtils.setModelValues(dto, salesOrder);
+   			jobOrder = JobOrder.dao.findById(id);
+   			DbUtils.setModelValues(dto, jobOrder);
    			
    			//需后台处理的字段
-   			salesOrder.set("update_by", user.getLong("id"));
-   			salesOrder.set("update_stamp", new Date());
-   			salesOrder.update();
+//   			jobOrder.set("update_by", user.getLong("id"));
+//   			jobOrder.set("update_stamp", new Date());
+   			jobOrder.update();
    		} else {
    			//create 
-   			DbUtils.setModelValues(dto, salesOrder);
+   			DbUtils.setModelValues(dto, jobOrder);
    			
    			//需后台处理的字段
-   			salesOrder.set("order_no", OrderNoGenerator.getNextOrderNo("DD"));
-   			salesOrder.set("create_by", user.getLong("id"));
-   			salesOrder.set("create_stamp", new Date());
-   			salesOrder.save();
+   			jobOrder.set("order_no", OrderNoGenerator.getNextOrderNo("GZ"));
+   			jobOrder.set("creator", user.getLong("id"));
+   			jobOrder.set("create_stamp", new Date());
+   			jobOrder.save();
    			
-   			id = salesOrder.getLong("id").toString();
+   			id = jobOrder.getLong("id").toString();
    		}
    		
-   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("cargo_list");
-		DbUtils.handleList(itemList, id, SalesOrderGoods.class, "order_id");
+   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
+		DbUtils.handleList(itemList, id, JobOrderCargo.class, "order_id");
+		
+		List<Map<String, String>> chargeList = (ArrayList<Map<String, String>>)dto.get("charge_list");
+		DbUtils.handleList(chargeList, id, JobOrderArap.class, "order_id");
+		
+		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
+		DbUtils.handleList(shipment_detail, id, JobOrderShipment.class, "order_id");
 
-   		//return dto
-   		renderJson(salesOrder);
+		long creator = jobOrder.getLong("creator");
+   		String user_name = LoginUserController.getUserNameById(creator);
+		Record r = jobOrder.toRecord();
+   		r.set("creator_name", user_name);
+   		renderJson(r);
    	}
     
     
-    private List<Record> getSalesOrderGoods(String orderId) {
-		String itemSql = "select * from sales_order_goods where order_id=?";
-		List<Record> itemList = Db.find(itemSql, orderId);
+    private List<Record> getItems(String orderId,String type) {
+    	String itemSql = "";
+    	List<Record> itemList = null;
+    	if("cargo".equals(type)){
+    		itemSql = "select * from job_order_cargo where order_id=?";
+    		itemList = Db.find(itemSql, orderId);
+    	}else if("charge".equals(type)){
+    		itemSql = "select * from job_order_arap where order_id=?";
+    		itemList = Db.find(itemSql, orderId);
+    	}
+		
 		return itemList;
 	}
-    
+   
     
     @Before(Tx.class)
     public void edit() {
     	String id = getPara("id");
-    	SalesOrder salesOrder = SalesOrder.dao.findById(id);
-    	setAttr("order", salesOrder);
+    	JobOrder jobOrder = JobOrder.dao.findById(id);
+    	setAttr("order", jobOrder);
     	
     	//获取明细表信息
-    	setAttr("itemList", getSalesOrderGoods(id));
+    	setAttr("itemList", getItems(id,"cargo"));
+    	
+    	//获取明细表信息
+    	setAttr("chargeList", getItems(id,"charge"));
 
+    	//客户回显
+    	Party party = Party.dao.findById(jobOrder.get("customer_id"));
+    	setAttr("party", party);
+    	
+    	
     	//用户信息
-    	long create_by = salesOrder.getLong("create_by");
-    	UserLogin user = UserLogin.dao.findById(create_by);
+    	long creator = jobOrder.getLong("creator");
+    	UserLogin user = UserLogin.dao.findById(creator);
     	setAttr("user", user);
     	
         render("/oms/JobOrder/JobOrderEdit.html");
     }
     
-    
-    @Before(Tx.class)
-    public void getUser() {
-    	String id = getPara("params");
-    	UserLogin user = UserLogin.dao.findById(id);
-    	renderJson(user);
-    }
-    
-    
+     
     public void list() {
     	String sLimit = "";
         String pageIndex = getPara("sEcho");
@@ -129,9 +156,10 @@ public class JobOrderController extends Controller {
             sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
         }
 
-        String sql = "SELECT po.*, ifnull(u.c_name, u.user_name) creator_name "
-    			+ "  from plan_order po "
-    			+ "  left join user_login u on u.id = po.creator"
+        String sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name "
+    			+ "  from job_order jor "
+    			+ "  left join party p on p.id = jor.customer_id"
+    			+ "  left join user_login u on u.id = jor.creator"
     			+ "   where 1 =1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
@@ -140,7 +168,7 @@ public class JobOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> BillingOrders = Db.find(sql+ condition + " order by create_time desc " +sLimit);
+        List<Record> BillingOrders = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
         Map BillingOrderListMap = new HashMap();
         BillingOrderListMap.put("sEcho", pageIndex);
         BillingOrderListMap.put("iTotalRecords", rec.getLong("total"));
@@ -150,6 +178,29 @@ public class JobOrderController extends Controller {
 
         renderJson(BillingOrderListMap); 
     }
+    
+    //异步刷新字表
+    public void tableList(){
+    	String order_id = getPara("order_id");
+    	String type = getPara("type");
+    	
+    	List<Record> list = null;
+    	if("cargo".equals(type)){
+    		list = getItems(order_id,type);
+    	}else if("charge".equals(type)){
+    		list = getItems(order_id,type);
+    	}
+    	
+    	Map BillingOrderListMap = new HashMap();
+        BillingOrderListMap.put("sEcho", 1);
+        BillingOrderListMap.put("iTotalRecords", list.size());
+        BillingOrderListMap.put("iTotalDisplayRecords", list.size());
+
+        BillingOrderListMap.put("aaData", list);
+
+        renderJson(BillingOrderListMap); 
+    }
+   
    
 
 }

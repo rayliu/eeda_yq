@@ -24,22 +24,7 @@
                                                                     label: '工作单号', 
                                                                     value: ''
                                                                 }){}%>
-                                        </div>                                    </div>
-
-                                    <div class="row"><!--  第2行  -->
-                                        <div class="col-lg-4"> 
-                                            <%include("/eeda/component/form/selectField.html", 
-                                                    {   id:'status', 
-                                                        label:'状态', 
-                                                        value: '',
-                                                        value_list:[
-                                                            {code:'', value:''},
-                                                            {code:'未上报', value:'未上报'}, 
-                                                            {code:'已上报', value:'已上报'}
-                                                        ]
-                                                    }
-                                                 ){} %>
-                                        </div><!-- /.col-lg-4 -->
+                                        </div>                          
                                         <div class="col-lg-4">        
                                             <%include("/eeda/component/form/inputDateQueryField.html", {id:'create_time', label:'创建时间', value:''}){} %>
                                         </div><!-- /.col-lg-4 -->
@@ -56,7 +41,7 @@
                             <%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'eeda-table', 
-                                    headers:['工作单号',
+                                    headers:['单号',
                                         '类型',
                                         '客户名称',
                                         '创建人',

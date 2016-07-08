@@ -21,6 +21,8 @@ import java.sql.SQLException;
 
 
 
+
+
 import models.Account;
 import models.ArapAccountAuditLog;
 import models.Category;
@@ -41,7 +43,9 @@ import models.eeda.oms.SalesOrderGoods;
 import models.eeda.oms.LogisticsOrder;
 import models.eeda.oms.SalesOrder;
 import models.eeda.oms.jobOrder.JobOrder;
+import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.oms.jobOrder.JobOrderCargo;
+import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.profile.CustomCompany;
 import models.eeda.profile.LogisticsCustomCompany;
 import models.eeda.profile.Unit;
@@ -246,6 +250,8 @@ public class EedaConfig extends JFinalConfig {
         
         arp.addMapping("job_order", JobOrder.class);
         arp.addMapping("job_order_cargo", JobOrderCargo.class);
+        arp.addMapping("job_order_arap", JobOrderArap.class);
+        arp.addMapping("job_order_shipment", JobOrderShipment.class);
     }
 
     private void initDBconnector() {
