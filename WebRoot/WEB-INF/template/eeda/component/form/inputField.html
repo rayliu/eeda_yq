@@ -16,9 +16,9 @@
 		>
     <% var d=disabled!'';
         if(d!='disabled'){%>    
-    <a id="${id}_remove" href="#" class="remove">
+    <!-- <a id="${id}_remove" href="#" class="remove">
         <span id="${id}_remove_icon" class="glyphicon glyphicon-remove form-control-feedback" style="top: 0px; opacity: .5;" aria-hidden="true"></span>
-    </a>
+    </a> -->
     <%}%>
 </div>
 <% if(d!='disabled'){%>    
@@ -28,11 +28,11 @@
     	});
         $("#${id}").mouseleave(function(e){
             $("#${id}_remove_icon").css("display","none");
-        }); */
+        }); 
         
         $('#${id}_remove').on('click', function(e){
         	e.preventDefault();
             $(this).parent().find('input').val('');
-        });
+        });*/
     </script>
 <%}%>
