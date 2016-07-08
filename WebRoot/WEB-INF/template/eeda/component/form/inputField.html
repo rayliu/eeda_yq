@@ -1,0 +1,38 @@
+<div class="form-group">
+    <label class="search-label">${label}
+    <%if(required!'' =='required'){%>
+        <span style='color:red; display:initial;'>*</span>
+    <%}%>
+    </label>
+    <input type="${type!'text'}" 
+    	id="${id}" 
+    	name="${id}_name" 
+		class="form-control search-control" 
+		placeholder="${placeholder!''}" 
+		value="${value !''}" 
+		autocomplete="${autocomplete!'off'}" 
+		${required!''} 
+		${disabled!''}
+		>
+    <% var d=disabled!'';
+        if(d!='disabled'){%>    
+    <a id="${id}_remove" href="#" class="remove">
+        <span id="${id}_remove_icon" class="glyphicon glyphicon-remove form-control-feedback" style="top: 0px; opacity: .5;" aria-hidden="true"></span>
+    </a>
+    <%}%>
+</div>
+<% if(d!='disabled'){%>    
+    <script type="text/javascript">
+        /* $("#${id}").mouseenter(function(e){
+    	    $("#${id}_remove_icon").css("display","block");
+    	});
+        $("#${id}").mouseleave(function(e){
+            $("#${id}_remove_icon").css("display","none");
+        }); */
+        
+        $('#${id}_remove').on('click', function(e){
+        	e.preventDefault();
+            $(this).parent().find('input').val('');
+        });
+    </script>
+<%}%>

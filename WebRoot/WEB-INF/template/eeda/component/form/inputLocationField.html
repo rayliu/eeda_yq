@@ -1,0 +1,145 @@
+
+
+	<div class="form-group">
+	    <input id="${id}_province" type="text" name="${id}_province" field_type='list' value="" style="display:none;"/>
+		<input id="${id}" type="text" name="${id}" field_type='list' value="${value}" style="display:none;"/>
+		<label 
+			<%  var v=vertical!false;
+				if(!v){%>
+				class="search-label"
+			<%}%>
+			>${label}</label>
+		<input type="text" class="form-control 
+		<% if(!v){%>
+			search-control
+		<%}%>
+		" 
+		id="${id}_INPUT" name="${id}_INPUT" 
+		placeholder="请选择城市"  value="${display_value}">
+		<div id="${id}_list" class="area-list pull-right dropdown-menu default dropdown-scroll" tabindex="-1"  
+		style="top: 35%; left: 2%; display: none;">
+			<div class="area-list-title">
+				<input data-id="0" data-level="0" type="button" value="省份" class="this">
+				<input data-id="0" data-level="1" type="button" value="城市">
+				<input data-id="0" data-level="2" type="button" value="县区">
+				<span class='tips'>如不需选县区，请点击外面空白区域</span>
+			</div>
+			<div class="area-list-content" style="clear:both;">
+				
+			</div>
+		</div>
+			
+		<ul id='${id}}_list——1' class="pull-right dropdown-menu default dropdown-scroll" tabindex="-1" style="top: 35%; left: 2%;">
+		</ul>
+	</div>
+
+
+<script>
+
+	$(document).ready(function() {
+		
+		var spList =$("#${id}_list");
+		var area_list_title = $("#${id}_list .area-list-title input");
+		var spListContent =$("#${id}_list .area-list-content");
+		var inputField = $('#${id}_INPUT');
+		var hiddenField = $('#${id}');
+		var hiddenProvinceField = $('#${id}_province');//这里是方便用户选错时，回选上级
+		
+		area_list_title.click(function(){
+			var selectedLevel=$(this).attr('data-level');
+			var currentLevel=$(this).parent().find('.this').attr('data-level');
+			if(selectedLevel>=currentLevel)
+			    return;
+			
+			if(selectedLevel<currentLevel && selectedLevel==0){
+				inputField.val('');
+	            hiddenField.val('');
+	            hiddenProvinceField.val('');
+				searchLocation();
+			}else{
+				inputField.val(inputField.val().split('-')[0]);
+				searchLocation(1, hiddenProvinceField.val());
+			}
+			    
+		});
+		
+		var searchLocation = function(level, code){
+			var locLevel = "province";
+			level = level | 0;
+			if(level == 1){
+				locLevel = "city";
+			}
+			if(level == 2){
+				locLevel = "area";
+			}
+
+			$.get('/serviceProvider/'+locLevel, {id:code}, function(data){
+				spListContent.empty();
+				for(var i = 0; i < data.length; i++){
+					var loc = data[i];
+					spListContent.append('<a next-level="'+(level+1)+'" p_code="'+loc.PCODE+'" href="javascript:void(0)" code="'+loc.CODE+'" name="'+loc.NAME+'">'+loc.NAME+'</a>');
+				}
+				spList.find('input').removeClass('this');
+	    		spList.find('input[data-level='+level+']').addClass('this');
+				spList.show();
+				
+			},'json');
+		};
+	    
+	    inputField.on('input click', function(){
+	    	var me = this;
+			var inputStr = inputField.val();
+			
+			searchLocation();
+			spList.css({ 
+	        	left:$(me).position().left+"px", 
+	        	top:$(me).position().top+30+"px" 
+	        }); 
+	    });
+
+	    spListContent.on('click', 'a', function(){
+	    	var dataLevel = $(this).attr('next-level');
+	    	var code = $(this).attr('code');
+	    	var name = $(this).attr('name');
+	    	var oldValue = inputField.val();
+	    	if(dataLevel == 1){
+	    		hiddenProvinceField.val(code);
+	    	}
+	    	
+	    	if(dataLevel>1){
+	    		name = oldValue+'-'+name;
+	    	}
+	    	inputField.val(name);
+	    	hiddenField.val(code);
+
+	    	if(dataLevel == 3){
+	    		spList.hide();
+	    		return;
+	    	}
+	    	searchLocation(dataLevel, code);
+
+	    	spList.find('input').removeClass('this');
+	    	spList.find('input[data-level='+dataLevel+']').addClass('this');
+	    });
+	    
+	    // 没选中，焦点离开，隐藏列表
+		inputField.on('blur', function(){
+			if (inputField.val().trim().length ==0 || inputField.val().split('-').length==1) {
+				inputField.val('');
+				hiddenField.val('');
+			};
+			spList.hide();
+	 	});
+
+		//当用户只点击了滚动条，没选，再点击页面别的地方时，隐藏列表
+		spList.on('blur', function(){
+			spList.hide();
+	 	});
+
+		spList.on('mousedown', function(){
+			return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+		});
+
+	
+	});
+</script>

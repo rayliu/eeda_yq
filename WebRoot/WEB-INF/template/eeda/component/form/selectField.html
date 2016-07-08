@@ -1,0 +1,16 @@
+<div class="form-group">
+    <label class="search-label">${label}</label>
+    <select id="${id}" class="form-control search-control">
+    	<%for(item in value_list){%>
+        	<option value="${item.code}">${item.value}</option>
+        <%}%>
+    </select>
+</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var value= '${value!''}';
+		if(value){
+			$('#${id}').val(value);
+		}
+	});
+</script>
