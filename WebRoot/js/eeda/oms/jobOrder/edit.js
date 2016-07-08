@@ -5,7 +5,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
         var dataTable = eeda.dt({
           id: 'cargo_table',
-          ajax: "/planOrder/items",
+          ajax: "/jobOrder/cargoItems",
           columns:[
               { "data": "COMPANY_NAME","width": "15%",
                   "render": function ( data, type, full, meta ) {
@@ -57,7 +57,114 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           ]
       });
 
-        
+      var chargeTable = eeda.dt({
+          id: 'charge_table',
+          ajax: "/jobOrder/chargeItems",
+          columns:[
+              { "data": "COMPANY_NAME","width": "15%",
+                  "render": function ( data, type, full, meta ) {
+                      return "<a href='/serviceProvider/edit?id="+full.ID+"' target='_blank'>" + data+ "</a>";
+                  }
+              },
+              { "data": "ABBR", "width": "10%"}, 
+              { "data": "SP_TYPE", "width": "15%" }, 
+              { "data": "CONTACT_PERSON"}, 
+              { "data": "PHONE"}, 
+              { "data": "ADDRESS", "width": "15%"},
+              { "data": "RECEIPT"},
+              { "data": "PAYMENT"},
+              { "data":null,
+                  "render": function(data, type, full, meta) {
+                       if(full.DNAME == null){
+                           return full.NAME;
+                       }else{
+                           return full.DNAME;
+                       }
+                   }
+              },
+              { 
+                  "data": null, 
+                  //"width": "8%",
+                  "render": function(data, type, full, meta) {
+                       var str ="<nobr>";
+                       
+                        str += "<a class='btn  btn-primary btn-sm' href='/serviceProvider/edit?id="+full.ID+"' target='_blank'>"+
+                              "<i class='fa fa-edit fa-fw'></i>"+
+                              "编辑"+"</a> ";
+                       
+                      
+                          if(full.IS_STOP != true){
+                              str += "<a class='btn btn-danger btn-sm' href='/serviceProvider/delete/"+full.ID+"'>"+
+                                   "<i class='fa fa-trash-o fa-fw'></i>"+ 
+                                   "停用"+
+                                   "</a>";
+                           }else{
+                              str +="<a class='btn btn-success btn-sm' href='/serviceProvider/delete/"+full.ID+"'>"+
+                                       "<i class='fa fa-trash-o fa-fw'></i>"+ 
+                                       "启用"+
+                                   "</a>";
+                           }
+                       
+                       return str +="</nobr>";
+                  }
+              }
+          ]
+      });
+
+      var departTable = eeda.dt({
+          id: 'depart_table',
+          ajax: "/jobOrder/chargeItems",
+          columns:[
+              { "data": "COMPANY_NAME","width": "15%",
+                  "render": function ( data, type, full, meta ) {
+                      return "<a href='/serviceProvider/edit?id="+full.ID+"' target='_blank'>" + data+ "</a>";
+                  }
+              },
+              { "data": "ABBR", "width": "10%"}, 
+              { "data": "SP_TYPE", "width": "15%" }, 
+              { "data": "CONTACT_PERSON"}, 
+              { "data": "PHONE"}, 
+              { "data": "ADDRESS", "width": "15%"},
+              { "data": "RECEIPT"},
+              { "data": "PAYMENT"},
+              { "data":null,
+                  "render": function(data, type, full, meta) {
+                       if(full.DNAME == null){
+                           return full.NAME;
+                       }else{
+                           return full.DNAME;
+                       }
+                   }
+              },
+              { 
+                  "data": null, 
+                  //"width": "8%",
+                  "render": function(data, type, full, meta) {
+                       var str ="<nobr>";
+                       
+                        str += "<a class='btn  btn-primary btn-sm' href='/serviceProvider/edit?id="+full.ID+"' target='_blank'>"+
+                              "<i class='fa fa-edit fa-fw'></i>"+
+                              "编辑"+"</a> ";
+                       
+                      
+                          if(full.IS_STOP != true){
+                              str += "<a class='btn btn-danger btn-sm' href='/serviceProvider/delete/"+full.ID+"'>"+
+                                   "<i class='fa fa-trash-o fa-fw'></i>"+ 
+                                   "停用"+
+                                   "</a>";
+                           }else{
+                              str +="<a class='btn btn-success btn-sm' href='/serviceProvider/delete/"+full.ID+"'>"+
+                                       "<i class='fa fa-trash-o fa-fw'></i>"+ 
+                                       "启用"+
+                                   "</a>";
+                           }
+                       
+                       return str +="</nobr>";
+                  }
+              }
+          ]
+      });
+
       $('#customerForm').validate({
           rules: {
             company_name: {//form 中company_name为必填, 注意input 中定义的id, name都要为company_name
