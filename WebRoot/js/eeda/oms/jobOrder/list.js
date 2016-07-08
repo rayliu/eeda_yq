@@ -6,21 +6,35 @@ $(document).ready(function() {
     var dataTable = $('#eeda-table').DataTable({
         "processing": true,
         "searching": false,
-        "serverSide": false,
+        //"serverSide": false,
         "scrollX": true,
-        "scrollY": "300px",
+        //"scrollY": "300px",
         "scrollCollapse": true,
         "autoWidth": false,
         "language": {
             "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
         },
+        "ajax": "/jobOrder/list",
         "columns": [
             { "data": "ORDER_NO", 
                 "render": function ( data, type, full, meta ) {
                     return "<a href='/jobOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
                 }
             },
-            { "data": "TYPE"}, 
+            { "data": "TYPE",
+                "render": function ( data, type, full, meta ) {
+                  var str = '';
+                  if(data == 'export')
+                    str = '出口'; 
+                  if(data == 'import')
+                    str = '进口';
+                  if(data == 'both')
+                    str = '进出口';
+                  if(data == 'oneDayTrip')
+                    str = '一日游';
+                  return str;
+                }
+            }, 
             { "data": "CUSTOMER_NAME"}, 
             { "data": "CREATOR_NAME"}, 
             { "data": "CREATE_STAMP"}, 
