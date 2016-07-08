@@ -1,0 +1,212 @@
+<%layout("/eeda/layout.html"){%>
+	<!-- <link href="/yh/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/yh/css/ui/jquery-ui.css">
+    <link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet"> 
+    <link href="/yh/js/plugins/datatables-1.10.9/css/jquery.dataTables.min.css" rel="stylesheet"> -->
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-header" style="font-size:32px">工作单</div>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+            <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
+
+            <div class="row">  <!--  form row  -->
+                <form id="orderForm">
+                    <div class="row"><!--  第1行  -->
+                        <div class="col-lg-4"><!--  三列排版  -->
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'order_no', 
+                                    label:'工作单号', 
+                                    value:order.ORDER_NO!'',
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4"><!--  三列排版  -->
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'order_no', 
+                                    label:'计划订单号', 
+                                    value:order.ORDER_NO!'',
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputCustomerField.html", 
+                                {
+                                    id:'custom_id', 
+                                    label:'客户', 
+                                    required:'required',
+                                    value:order.CUSTOM_ID!''
+                                }){} %>
+                       </div>
+                       
+                    </div>
+                    <div class="row"><!--  第4行  -->
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/selectField.html", 
+                                {   id:'type', 
+                                    label:'类型', 
+                                    required:'required',
+                                    value:order.type!'',
+                                    value_list:[
+                                        {code:'export', value:'出口'},
+                                        {code:'import', value:'进口'}, 
+                                        {code:'both', value:'进出口'},
+                                        {code:'oneDayTrip', value:'一日游'} 
+                                    ],
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div><!-- /.col-lg-4 -->
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'creator_name', 
+                                    label:'创建人', 
+                                    value:user.c_name!'', 
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'create_stamp', 
+                                    label:'创建时间', 
+                                    value:order.create_stamp!'', 
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div>    
+                        
+                    </div>
+                    <div class="row"><!--  第4行  -->
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'status', 
+                                    label:'状态', 
+                                    value:order.status!'', 
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div><!-- /.col-lg-4 -->
+                    </div>
+                </form>
+            </div><!-- /.row -->
+            
+            <div class="row">
+            	<div class="form-group">
+                 <label>备注</label>
+                 <textarea id='note' class="form-control" rows="3" name="note">${order.note!''}</textarea>
+            	</div>
+            </div>
+
+			<div class="row" style="margin-top:15px">
+				<ul id="orderTabs" class="nav nav-tabs">
+					<li class="active">
+						<a href="#itemDetail" data-toggle="tab">货品明细</a>
+					</li>
+                    <li>
+                        <a href="#shipmentDetail" data-toggle="tab">海运信息</a>
+                    </li>
+                    <li>
+                        <a href="#shipmentDetail" data-toggle="tab">空运信息</a>
+                    </li>
+                    <li>
+                        <a href="#truckDetail" data-toggle="tab">派车信息</a>
+                    </li>
+                    <li>
+                        <a href="#chargeDetail" data-toggle="tab">费用明细</a>
+                    </li>
+				</ul>
+				<div class="tab-content">
+		            <div class="tab-pane fade active in" id="itemDetail">
+			            <div class="form-group">
+			                <div class="col-lg-12">
+			                    <button class="btn btn-success btn-xs" id="add_cargo">添加货品</button>
+                                <br>
+			                    <%include("/eeda/component/form/detailTable.html", 
+			                        {
+			                            id:'cargo_table',
+			                            headers:['', '类别', '运输方式', '负载方式', '箱型', '箱量', '货物名称', '件数', 
+                                                 '净重(KG)', '体积(CBM)'],
+			                            field_list:['', 'item_no', 'cus_item_no', 'qty', 'unit', 'price', 'total', 'gift_flag', 'currency'],
+			                            value_list: itemList![]
+			                        }){} %>
+			                </div>
+			            </div>
+		            </div>
+                    <div class="tab-pane fade in" id="shipmentDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/oms/JobOrder/JobOrderEdit_shipment.html", {}){} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade in" id="truckDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'depart_table',
+                                        headers:['', '派车单号码', '类别', '运输公司', '车型', '数量', '金额', '出车日期', '备注'],
+                                        field_list:['', 'item_no', 'cus_item_no', 'qty', 'unit', 'price', 'total', 'gift_flag', 'currency'],
+                                        value_list: itemList![]
+                                    }){} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade in" id="chargeDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <button class="btn btn-success btn-xs" id="add_cargo">添加费用</button>
+                                <br>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'charge_table',
+                                        headers:['', '类别', '结算公司', '费用名称', '单价', '数量', '单位', 
+                                                 '币制', '金额', '收据汇率', '金额(人民币)','收据号码', '发票号码', '备注'],
+                                        field_list:['', 'item_no', 'cus_item_no', 'qty', 'unit', 'price', 'total', 'gift_flag', 'currency'],
+                                        value_list: itemList![]
+                                    }){} %>
+                            </div>
+                        </div>
+                    </div>
+	            </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <a id='saveBtn' class="btn  btn-primary" href="#">保存</a>
+                    <button id="printBtn" type="button" class="btn  btn-primary" data-toggle="modal"  data-target=".bs-example-modal-sm">打印</button>
+                    <a class="btn  btn-default" href="/salesOrder">返回</a>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+
+        </div><!--  form row  -->
+        <!-- /#page-wrapper -->
+<%}%>
+
+<!-- <script src="/yh/js/plugins/datatables-1.10.9/js/jquery.dataTables.js"></script>
+<script src="/yh/js/plugins/datatables-1.10.9/js/dataTables.bootstrap.js"></script>
+
+
+<script src="/yh/js/jquery.validate.min.js"></script>
+<script src="/yh/js/jvalidate.messages_cn.js"></script>
+
+<script src="/yh/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/yh/js/bootstrap-datetimepicker.zh-CN.js"></script>
+
+<script src="/yh/js/plugins/sco/js/sco.message.js"></script>
+
+<script src="/yh/js/eeda-common.js"></script> -->
+<script>
+    var order_no = '${order.order_no!'订单编辑'}'; 
+    var salesOrder = {};
+</script>
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/oms/jobOrder/edit']);
+    });
+</script>
+<!-- <script src="/js/oms/SalesOrder/edit_item_table.js"></script>
+<script src="/js/oms/SalesOrder/edit.js"></script> -->
