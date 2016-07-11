@@ -70,6 +70,11 @@ $(document).ready(function() {
             $(row).attr('id', data.ID);
         },
         "columns": [
+            { "width": "10px",
+                "render": function ( data, type, full, meta ) {
+                    return '<input type="checkbox">';
+                }
+            },
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
                 	return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';

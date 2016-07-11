@@ -104,9 +104,6 @@
 					<li class="active">
 						<a href="#itemDetail" data-toggle="tab">货品明细</a>
 					</li>
-					<li>
-                        <a href="#chargeDetail" data-toggle="tab">费用明细</a>
-                    </li>
                     <li>
                         <a href="#shipmentDetail" data-toggle="tab">海运信息</a>
                     </li>
@@ -116,20 +113,23 @@
                     <li>
                         <a href="#truckDetail" data-toggle="tab">派车信息</a>
                     </li>
-                    
+                    <li>
+                        <a href="#chargeDetail" data-toggle="tab">费用明细</a>
+                    </li>
 				</ul>
 				<div class="tab-content">
 		            <div class="tab-pane fade active in" id="itemDetail">
 			            <div class="form-group">
 			                <div class="col-lg-12">
-			                    <button class="btn btn-success btn-xs" id="add_cargo">添加货品</button>
+			                    <button class="btn btn-success btn-xs" id="add_cargo">添加货品</button> 
+                                <button class="btn btn-success btn-xs" id="add_cargo">创建派车单</button>
                                 <br>
 			                    <%include("/eeda/component/form/detailTable.html", 
 			                        {
 			                            id:'cargo_table',
-			                            headers:['', '类别', '运输方式', '负载方式', '箱型', '箱量', '货物名称', '件数', 
+			                            headers:['', '操作', '类别', '运输方式', '负载方式', '箱型', '箱量', '货物名称', '件数', 
                                                  '净重(KG)', '体积(CBM)'],
-			                            field_list:['', 'type', 'trans_type', 'load_type', 'container_type', 'container_amount', 'cargo_name', 'pieces', 'net_weight', 'volume'],
+			                            field_list:['', '', 'type', 'trans_type', 'load_type', 'container_type', 'container_amount', 'cargo_name', 'pieces', 'net_weight', 'volume'],
 			                            value_list: itemList![]
 			                        }){} %>
 			                </div>
