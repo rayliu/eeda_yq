@@ -1,0 +1,1 @@
+package models.eeda.profile;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class ContainerType extends Model<ContainerType> {	public static final ContainerType dao = new ContainerType();}

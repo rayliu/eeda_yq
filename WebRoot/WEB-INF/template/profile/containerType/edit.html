@@ -1,0 +1,48 @@
+<%layout("/eeda/layout.html"){%>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-header" style="font-size:32px">箱型</div>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+            <input id="id" type="hidden" name="id" value="${order.id!''}"/>
+
+            <div class="row">  <!--  form row  -->
+                <form id="orderForm">
+                    <div class="row"><!--  第1行  -->
+                        <div class="col-lg-4"><!--  三列排版  -->
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'name', 
+                                    label:'箱型', 
+                                    value:order.CONTAINER_TYPE!'',
+                                    required:'required'
+                                }){}%>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- /.row -->
+
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <a id='saveBtn' class="btn  btn-primary" href="#">保存</a>
+                    <a class="btn  btn-default" href="/containerType">返回</a>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+
+        </div><!--  form row  -->
+        <!-- /#page-wrapper -->
+<%}%>
+
+<script>
+</script>
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/profile/containerType/edit']);
+    });
+</script>

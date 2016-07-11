@@ -24,6 +24,8 @@ import java.sql.SQLException;
 
 
 
+
+
 import models.Account;
 import models.ArapAccountAuditLog;
 import models.Category;
@@ -47,6 +49,7 @@ import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.oms.jobOrder.JobOrderCargo;
 import models.eeda.oms.jobOrder.JobOrderShipment;
+import models.eeda.profile.ContainerType;
 import models.eeda.profile.CustomCompany;
 import models.eeda.profile.LogisticsCustomCompany;
 import models.eeda.profile.Unit;
@@ -82,6 +85,7 @@ import controllers.oms.planOrder.PlanOrderController;
 import controllers.oms.salesOrder.SalesOrderController;
 import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
+import controllers.profile.ContainerTypeController;
 import controllers.profile.CustomCompanyController;
 import controllers.profile.LogisticsCustomCompanyController;
 import controllers.profile.PrivilegeController;
@@ -165,6 +169,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
         me.add("/loginUser", controllers.profile.LoginUserController.class, contentPath);
         me.add("/unit", UnitController.class, contentPath);
+        me.add("/containerType", ContainerTypeController.class, contentPath);
         //register loginUser
         me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
         me.add("/reset",controllers.profile.ResetPassWordController.class,contentPath);
@@ -222,6 +227,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("user_role", UserRole.class);
         arp.addMapping("role_permission", RolePermission.class);
         arp.addMapping("unit", Unit.class);
+        arp.addMapping("container_type", ContainerType.class);
         arp.addMapping("party", Party.class);
 //        arp.addMapping("contact", Contact.class);       
         arp.addMapping("route", Route.class);
