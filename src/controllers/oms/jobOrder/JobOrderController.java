@@ -99,14 +99,22 @@ public class JobOrderController extends Controller {
 		
 		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
 		DbUtils.handleList(shipment_detail, id, JobOrderShipment.class, "order_id");
+		
+		//获取shipment_id
+		JobOrderShipment jst = getShiment(id) ;
 
 		long creator = jobOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
 		Record r = jobOrder.toRecord();
    		r.set("creator_name", user_name);
+   		r.set("shipment", jst);
    		renderJson(r);
    	}
     
+    private JobOrderShipment getShiment(String id){
+		JobOrderShipment jst = JobOrderShipment.dao.findFirst("select * from job_order_shipment jos where order_id = ?",id);
+		return jst;
+    }
     
     private List<Record> getItems(String orderId,String type) {
     	String itemSql = "";
@@ -134,6 +142,8 @@ public class JobOrderController extends Controller {
     	
     	//获取明细表信息
     	setAttr("chargeList", getItems(id,"charge"));
+    	
+    	setAttr("shipment", getShiment(id));
 
     	//客户回显
     	Party party = Party.dao.findById(jobOrder.get("customer_id"));

@@ -8,6 +8,13 @@ $(document).ready(function() {
     		var name = shipmentForm[i].id;
         	var value =shipmentForm[i].value;
         	if(name){
+        		if(name.indexOf('begin_time')>=0){
+        			name = 'schedule_from';
+        		}else if(name.indexOf('end_time')>=0){
+        			name = 'schedule_to';
+        		}else if(name == 'item_id'){
+        			name = 'id';
+        		}
         		item[name] = value;
         	}
     	}

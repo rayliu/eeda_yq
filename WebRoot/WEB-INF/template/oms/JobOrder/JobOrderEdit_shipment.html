@@ -1,38 +1,39 @@
 
 <form id = "shipmentForm">
             <div class="row">  <!--  form row  -->
+            <input type="hidden" id="item_id" value="${shipment.id!''}">
                     <div class="row">
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'order_no', 
+                                {   id:'shipper', 
                                     label:'发货人Shipper', 
-                                    value:order.ORDER_NO!''
+                                    value:shipment.shipper!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'order_no', 
+                                {   id:'consignee', 
                                     label:'收货人Consignee', 
-                                    value:order.ORDER_NO!''
+                                    value:shipment.consignee!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputCustomerField.html", 
                                 {
-                                    id:'custom_id', 
+                                    id:'notify_party', 
                                     label:'通知人Notify Party', 
                                     required:'required',
-                                    value:order.CUSTOM_ID!''
+                                    value:shipment.notify_party!''
                                 }){} %>
                        </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/selectField.html", 
-                                {   id:'type', 
+                                {   id:'booking_date', 
                                     label:'委托日期', 
                                     required:'required',
-                                    value:order.type!'',
+                                    value:shipment.booking_date!'',
                                     value_list:[
                                         {code:'export', value:'出口'},
                                         {code:'import', value:'进口'}, 
@@ -44,17 +45,17 @@
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'creator_name', 
+                                {   id:'carrier', 
                                     label:'船公司', 
-                                    value:user.c_name!'', 
+                                    value:shipment.carrier!'', 
                                     disabled: 'disabled'
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'create_stamp', 
+                                {   id:'bl_type', 
                                     label:'提单类型', 
-                                    value:order.create_stamp!'', 
+                                    value:shipment.bl_type!'', 
                                     disabled: 'disabled'
                                 }){}%>
                         </div>
@@ -62,141 +63,140 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'hbl_type', 
                                     label:'HBL类型', 
-                                    value:order.status!''
+                                    value:shipment.hbl_type!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'hbl_no', 
                                     label:'HBL号码', 
-                                    value:order.status!''
+                                    value:shipment.hbl_no!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'trans_type', 
                                     label:'运输条款', 
-                                    value:order.status!''
+                                    value:shipment.trans_type!''
                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'mbl_type', 
                                     label:'MBL类型', 
-                                    value:order.status!''
+                                    value:shipment.mbl_type!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'mbl_no', 
                                     label:'MBL号码', 
-                                    value:order.status!''
+                                    value:shipment.mbl_no!''
                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'vessel', 
                                     label:'船名', 
-                                    value:order.status!''
+                                    value:shipment.vessel!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'voyage', 
                                     label:'航线', 
-                                    value:order.status!''
+                                    value:shipment.voyage!''
                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'route', 
                                     label:'航次', 
-                                    value:order.status!''
+                                    value:shipment.route!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                {   id:'schedule', 
                                     label:'船期', 
-                                    value:order.status!''
+                                    value:shipment.schedule!''
                                 }){}%>
                         </div>
-                        
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'por', 
                                     label:'收货港 POR', 
-                                    value:order.status!''
+                                    value:shipment.por!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'pol', 
                                     label:'装货港 POL', 
-                                    value:order.status!''
+                                    value:shipment.pol!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'pod', 
                                     label:'卸货港 POD', 
-                                    value:order.status!''
+                                    value:shipment.pod!''
                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'fnd', 
                                     label:'目的地 FND', 
-                                    value:order.status!''
+                                    value:shipment.fnd!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'etd', 
                                     label:'ETD', 
-                                    value:order.status!''
+                                    value:shipment.etd!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'eta', 
                                     label:'ETA', 
-                                    value:order.status!''
+                                    value:shipment.eta!''
                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'gross_weight', 
                                     label:'毛重(KG)', 
-                                    value:order.status!''
+                                    value:shipment.gross_weight!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'net_weight', 
                                     label:'净重(KG)', 
-                                    value:order.status!''
+                                    value:shipment.net_weight!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
+                                {   id:'volume', 
                                     label:'体积(CBM)', 
-                                    value:order.status!''
+                                    value:shipment.volume!''
                                 }){}%>
                         </div>
                     </div>

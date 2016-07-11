@@ -27,6 +27,7 @@ $(document).ready(function() {
             var order = data;
             if(order.ID>0){
                 $("#order_id").val(order.ID);
+                $("#item_id").val(order.SHIPMENT.ID);
                 $("#order_no").val(order.ORDER_NO);
                 $("#creator_name").val(order.CREATOR_NAME);
                 $("#create_stamp").val(order.CREATE_STAMP);
