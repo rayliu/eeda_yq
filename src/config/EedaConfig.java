@@ -23,6 +23,7 @@ import java.sql.SQLException;
 
 
 
+
 import models.Account;
 import models.ArapAccountAuditLog;
 import models.Category;
@@ -77,9 +78,9 @@ import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.HomeController;
 import controllers.oms.jobOrder.JobOrderController;
-import controllers.oms.logisticsOrder.LogisticsOrderController;
 import controllers.oms.planOrder.PlanOrderController;
 import controllers.oms.salesOrder.SalesOrderController;
+import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
 import controllers.profile.CustomCompanyController;
 import controllers.profile.LogisticsCustomCompanyController;
@@ -179,12 +180,9 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/account", AccountController.class, contentPath);
 		me.add("/privilege", PrivilegeController.class, contentPath);
 		//oms管理系统
-//		me.add("/customCompany", CustomCompanyController.class, contentPath);
-//		me.add("/logisticsCustomCompany", LogisticsCustomCompanyController.class, contentPath);
-//		me.add("/logisticsOrder", LogisticsOrderController.class, contentPath);
-//		me.add("/salesOrder", SalesOrderController.class, contentPath);
 		me.add("/planOrder", PlanOrderController.class, contentPath);
 		me.add("/jobOrder", JobOrderController.class, contentPath);
+		me.add("/truckOrder", TruckOrderController.class, contentPath);
 	}
 
     @Override
