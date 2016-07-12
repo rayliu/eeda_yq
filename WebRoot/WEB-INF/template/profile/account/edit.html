@@ -1,0 +1,111 @@
+<%layout("/eeda/layout.html"){%>
+
+	<div id="page-wrapper">
+	<div class="row">
+        <div class="col-lg-12 panel-body">
+    
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+		<div class="row">
+		
+             <div class="col-lg-12">
+              	
+                 <div class="panel panel-default">
+                   <div class="panel-heading"style="font-size: 32px">
+                 		账户信息
+            		</div>
+            		<div class="panel-body">
+            			<div class="row">
+            			<form lass="form-horizontal" id='accountFrom' name="accountFrom" action="" method="post">
+							<input id="id" name="id" type="hidden" value="${order.id!''}">
+                            <div class="col-lg-4"><!--  三列排版  -->
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'bank_name', 
+                                        label:'账户名称', 
+                                        value:order.bank_name!'',
+                                        required:'required'
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'bank_person', 
+                                        label:'开户人姓名', 
+                                        value:order.BANK_PERSON!'',
+                                        required:'required'
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'account_no', 
+                                        label:'银行账户号码', 
+                                        value:order.ACCOUNT_NO!'',
+                                        required:'required'
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/selectField.html", 
+                                    {   id:'type', 
+                                        label:'账户类型', 
+                                        required:'required',
+                                        value:order.type!'',
+                                        value_list:[
+                                            {code:'REC', value:'收款'},
+                                            {code:'PAY', value:'付款'}, 
+                                            {code:'ALL', value:'收款付款'} 
+                                        ]
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/selectField.html", 
+                                    {   id:'currency', 
+                                        label:'账户类型', 
+                                        required:'required',
+                                        value:order.currency!'',
+                                        value_list:[
+                                            {code:'人民币', value:'人民币'},
+                                            {code:'港币', value:'港币'}, 
+                                            {code:'美元', value:'美元'},
+                                            {code:'日元', value:'日元'} 
+                                        ]
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'amount', 
+                                        label:'账户余额', 
+                                        value:order.amount!'',
+                                        disabled: 'disabled'
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-8">
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'remark', 
+                                        label:'备注', 
+                                        value:order.remark!''
+                                    }){}%>
+                            </div>
+				        </form>
+                        </div>
+		         		<div>
+			            	<a style="display:none" id ="style"><i class='fa fa-check'></i></a>
+			            	<button id="saveBtn" class="btn  btn-primary btn-sm" >保存</button>
+			             	<a class="btn btn-default btn-sm" href="/account">返回</a>
+			            </div>
+            		</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<%}%>
+
+<script type="text/javascript">
+	var type = '${ul.type!''}';
+	$("#type").val(type);
+	var bank_name = '${ul.bank_name!''}';
+</script>
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/profile/account/edit']);
+    });
+</script>

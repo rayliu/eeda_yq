@@ -5,28 +5,6 @@ import handler.UrlHanlder;
 import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import models.Account;
 import models.ArapAccountAuditLog;
 import models.Category;
 import models.Location;
@@ -42,18 +20,13 @@ import models.UserOffice;
 import models.UserRole;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
-import models.eeda.oms.SalesOrderGoods;
-import models.eeda.oms.LogisticsOrder;
-import models.eeda.oms.SalesOrder;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.oms.jobOrder.JobOrderCargo;
 import models.eeda.oms.jobOrder.JobOrderShipment;
+import models.eeda.profile.Account;
 import models.eeda.profile.ContainerType;
-import models.eeda.profile.CustomCompany;
-import models.eeda.profile.LogisticsCustomCompany;
 import models.eeda.profile.Unit;
-import models.yh.profile.Contact;
 import models.yh.profile.CustomizeField;
 import models.yh.profile.OfficeCofig;
 import models.yh.profile.Route;
@@ -82,12 +55,9 @@ import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import controllers.HomeController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.planOrder.PlanOrderController;
-import controllers.oms.salesOrder.SalesOrderController;
 import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
 import controllers.profile.ContainerTypeController;
-import controllers.profile.CustomCompanyController;
-import controllers.profile.LogisticsCustomCompanyController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.UnitController;
 import controllers.yh.arap.AccountAuditLogController;
