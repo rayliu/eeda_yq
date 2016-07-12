@@ -9,9 +9,10 @@
                     <div class="btn-header" style="font-size:32px">派车单</div>
                 </div>
             </div>
-            <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
+            
             <div class="row">
                 <form id="orderForm">
+                <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
@@ -53,46 +54,46 @@
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'type', 
+                                                {   id:'truck_type', 
                                                     label:'车型', 
-                                                    value:order.type!''
+                                                    value:order.truck_type!''
                                                 }){}%>
                         </div>    
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/dateInputField.html", 
-                                                {   id:'create_stamp', 
+                                                {   id:'booking_time', 
                                                     label:'预约出车时间', 
-                                                    value:order.create_stamp!''
+                                                    value:order.booking_time!''
                                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'job_order_no', 
+                                                {   id:'driver', 
                                                     label:'司机', 
-                                                    value: order.job_order_no!''
+                                                    value: order.driver!''
                                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'type', 
+                                                {   id:'driver_phone', 
                                                     label:'司机电话', 
-                                                    value:order.type!''
+                                                    value:order.driver_phone!''
                                                 }){}%>
                         </div>    
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'create_stamp', 
+                                                {   id:'truck_plate', 
                                                     label:'车牌', 
-                                                    value:order.create_stamp!''
+                                                    value:order.truck_plate!''
                                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'creator_name', 
+                                                {   id:'creator', 
                                                     label:'创建人', 
                                                     value:user.c_name!'', 
                                                     disabled: 'disabled'
@@ -123,40 +124,40 @@
                     <div class="row"><!--  第4行  -->
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_name', 
+                                                {   id:'pickup_country', 
                                                     label:'国家', 
-                                                    value:order.create_stamp!''
+                                                    value:order.pickup_country!''
                                                 }){}%>
                         </div>
                         
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_person', 
+                                                {   id:'pickup_person', 
                                                     label:'联系人', 
-                                                    value:order.status!''
+                                                    value:order.pickup_person!''
                                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                            <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_tel', 
+                                                {   id:'pickup_tel', 
                                                     label:'联系电话', 
-                                                    value:order.create_stamp!''
+                                                    value:order.pickup_tel!''
                                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-8">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_address', 
+                                                {   id:'pickup_addr', 
                                                     label:'提柜地址', 
-                                                    value:user.c_name!''
+                                                    value:order.pickup_addr!''
                                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/dateInputField.html", 
-                                                {   id:'create_stamp', 
+                                                {   id:'pickup_booking_time', 
                                                     label:'预约提柜时间', 
-                                                    value:order.create_stamp!''
+                                                    value:order.pickup_booking_time!''
                                                 }){}%>
                         </div>
                     </div>
@@ -168,9 +169,9 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_name', 
+                                                {   id:'factory', 
                                                     label:'厂家名称', 
-                                                    value:order.create_stamp!''
+                                                    value:order.factory!''
                                                 }){}%>
                         </div>
                         
@@ -178,14 +179,14 @@
                             <%include("/eeda/component/form/inputField.html", 
                                                 {   id:'factory_person', 
                                                     label:'联系人', 
-                                                    value:order.status!''
+                                                    value:order.factory_person!''
                                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                            <%include("/eeda/component/form/inputField.html", 
                                                 {   id:'factory_tel', 
                                                     label:'联系电话', 
-                                                    value:order.create_stamp!''
+                                                    value:order.factory_tel!''
                                                 }){}%>
                         </div>
                     </div>
@@ -193,41 +194,41 @@
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputSpField.html", 
                                 {
-                                    id: 'sp_id', 
+                                    id: 'load_sp_id', 
                                     label:' 装货供应商', 
                                     required: 'required',
-                                    value:order.sp_id!'',
+                                    value:order.load_sp_id!'',
                                     display_value: sp_name!''
                                 }){} %>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_person', 
+                                                {   id:'load_person', 
                                                     label:'装货联系人', 
-                                                    value:order.status!''
+                                                    value:order.load_person!''
                                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                            <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_tel', 
+                                                {   id:'load_tel', 
                                                     label:'联系电话', 
-                                                    value:order.create_stamp!''
+                                                    value:order.load_tel!''
                                                 }){}%>
                         </div>
                     </div>
                     <div class="row"><!--  第4行  -->
                         <div class="col-lg-8">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_address', 
+                                                {   id:'load_addr', 
                                                     label:'装货地址', 
-                                                    value:user.c_name!''
+                                                    value:order.load_addr!''
                                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/dateInputField.html", 
-                                                {   id:'create_stamp', 
+                                                {   id:'load_booking_time', 
                                                     label:'预约装柜时间', 
-                                                    value:order.create_stamp!''
+                                                    value:order.load_booking_time!''
                                                 }){}%>
                         </div>
                     </div>
@@ -240,41 +241,41 @@
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputSpField.html", 
                                 {
-                                    id: 'sp_id', 
+                                    id: 'unload_sp_id', 
                                     label:' 卸货供应商', 
                                     required: 'required',
-                                    value:order.sp_id!'',
+                                    value:order.unload_sp_id!'',
                                     display_value: sp_name!''
                                 }){} %>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_person', 
+                                                {   id:'unload_person', 
                                                     label:'联系人', 
-                                                    value:order.status!''
+                                                    value:order.unload_person!''
                                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                            <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_tel', 
+                                                {   id:'unload_tel', 
                                                     label:'联系电话', 
-                                                    value:order.create_stamp!''
+                                                    value:order.unload_tel!''
                                                 }){}%>
                         </div>
                     </div>
                     <div class="row"><!--  第4行  -->
                         <div class="col-lg-8">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_address', 
+                                                {   id:'unload_addr', 
                                                     label:'卸货地址', 
-                                                    value:user.c_name!''
+                                                    value:order.unload_addr!''
                                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/dateInputField.html", 
-                                                {   id:'create_stamp', 
+                                                {   id:'unload_booking_time', 
                                                     label:'预约卸货时间', 
-                                                    value:order.create_stamp!''
+                                                    value:order.unload_booking_time!''
                                                 }){}%>
                         </div>
                     </div>
@@ -286,40 +287,40 @@
                     <div class="row"><!--  第4行  -->
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_name', 
+                                                {   id:'return_country', 
                                                     label:'国家', 
-                                                    value:order.create_stamp!''
+                                                    value:order.return_country!''
                                                 }){}%>
                         </div>
                         
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_person', 
+                                                {   id:'return_person', 
                                                     label:'联系人', 
-                                                    value:order.status!''
+                                                    value:order.return_person!''
                                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                            <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_tel', 
+                                                {   id:'return_tel', 
                                                     label:'联系电话', 
-                                                    value:order.create_stamp!''
+                                                    value:order.return_tel!''
                                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/dateInputField.html", 
-                                                {   id:'create_stamp', 
+                                                {   id:'return_booking_time', 
                                                     label:'预约还柜时间', 
-                                                    value:order.create_stamp!''
+                                                    value:order.return_booking_time!''
                                                 }){}%>
                         </div> 
                         <div class="col-lg-8">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'factory_address', 
+                                                {   id:'return_addr', 
                                                     label:'提柜地址', 
-                                                    value:user.c_name!''
+                                                    value:order.return_addr!''
                                                 }){}%>
                         </div>
                     </div>
@@ -329,14 +330,14 @@
             <div class="row">
             	<div class="form-group">
                  <label>备注</label>
-                 <textarea id='note' class="form-control" rows="3" name="note">${order.note!''}</textarea>
+                 <textarea id="remark" class="form-control" rows="3" name="note">${order.remark!''}</textarea>
             	</div>
             </div>
 
 			<div class="row" style="margin-top:15px">
 				<ul id="orderTabs" class="nav nav-tabs">
 					<li class="active">
-						<a href="#itemDetail" data-toggle="tab">货品明细</a>
+						<a href="#cargoDetail" data-toggle="tab">货品明细</a>
 					</li>
                     <li>
                         <a href="#chargeDetail" data-toggle="tab">费用明细</a>
@@ -344,7 +345,7 @@
 				</ul>
 				
 				<div class="tab-content">
-		            <div class="tab-pane fade active in" id="itemDetail">
+		            <div class="tab-pane fade active in" id="cargoDetail">
 			            <div class="form-group">
 			                <div class="col-lg-12">
 			                    <button class="btn btn-success btn-xs" id="add_cargo">添加货品</button>
@@ -353,14 +354,35 @@
 			                        {
 			                            id:'cargo_table',
 			                            headers:['', '箱型', '箱量', '货物名称', '件数', 
-                                                  '体积(CBM)','净重(KG)', '毛重(KG)'],
-			                            field_list:['', 'container_type', 'container_amount', 'cargo_desc',  'pieces',
-			                            'volume', 'net_weight','gross_weight'],
-			                            value_list: itemList![]
+                                                  '体积(CBM)','净重(KG)', '毛重(KG)', '备注'],
+			                            field_list:['', 'container_type', 'container_amount', 'cargo_name',  'pieces',
+			                            'volume', 'net_weight','gross_weight','remark'],
+			                            value_list: cargoList![]
 			                        }){} %>
 			                </div>
 			            </div>
 		            </div>
+		            
+		            <div class="tab-pane fade in" id="chargeDetail">
+			            <div class="form-group">
+			                <div class="col-lg-12">
+			                    <button class="btn btn-success btn-xs" id="add_charge">添加</button>
+                                <br>
+			                    <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'charge_table',
+                                        style:'width: 1500px; margin-left: 0px;',
+                                        headers:['', '类别', '结算公司', '费用名称', '单价', '数量', '单位', 
+                                                 '币制', '金额', '收据汇率', '金额(人民币)','收据号码', '发票号码', '备注'],
+                                        field_list:['', 'type', 'sp_id', 'charge_id', 'price', 'amount', 'unit_id', 'currency_id', 'total_amount',
+                                         'exchange_rate', 'currency_total_amount', 'receipt_no', 'invoice_no', 'remark'],
+                                        value_list: chargeList![]
+                                    }){} %>
+			                </div>
+			            </div>
+		            </div>
+		            
+		            
 	            </div>
             </div>
             <br>
@@ -374,28 +396,16 @@
         </div>
 <%}%>
 
-<!-- <script src="/yh/js/plugins/datatables-1.10.9/js/jquery.dataTables.js"></script>
-<script src="/yh/js/plugins/datatables-1.10.9/js/dataTables.bootstrap.js"></script>
-
-
-<script src="/yh/js/jquery.validate.min.js"></script>
-<script src="/yh/js/jvalidate.messages_cn.js"></script>
-
-<script src="/yh/js/bootstrap-datetimepicker.min.js"></script>
-<script src="/yh/js/bootstrap-datetimepicker.zh-CN.js"></script>
-
-<script src="/yh/js/plugins/sco/js/sco.message.js"></script> -->
-
-<!-- <script src="/yh/js/eeda-common.js"></script> -->
 <script>
     var order_no = '${order.order_no!'订单编辑'}'; 
-    var salesOrder = {};
+    var itemOrder = {};
 </script>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
-        requirejs(['app/oms/planOrder/edit']);
-        requirejs(['app/oms/planOrder/edit_item_table']);
+        requirejs(['app/oms/truckOrder/edit']);
+        requirejs(['app/oms/truckOrder/edit_cargo_table']);
+        requirejs(['app/oms/truckOrder/edit_charge_table']);
     });
 </script>
-<!-- <script src="/js/oms/SalesOrder/edit_item_table.js"></script>
-<script src="/js/oms/SalesOrder/edit.js"></script> -->
+
+

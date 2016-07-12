@@ -5,6 +5,10 @@ import handler.UrlHanlder;
 import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
 
+
+
+
+
 import models.ArapAccountAuditLog;
 import models.Category;
 import models.Location;
@@ -26,6 +30,9 @@ import models.eeda.oms.jobOrder.JobOrderCargo;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.profile.Account;
 import models.eeda.profile.ContainerType;
+import models.eeda.oms.truckOrder.TruckOrder;
+import models.eeda.oms.truckOrder.TruckOrderArap;
+import models.eeda.oms.truckOrder.TruckOrderCargo;
 import models.eeda.profile.Unit;
 import models.yh.profile.CustomizeField;
 import models.yh.profile.OfficeCofig;
@@ -42,6 +49,7 @@ import com.jfinal.config.Interceptors;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
+import com.jfinal.core.JFinal;
 import com.jfinal.ext.handler.UrlSkipHandler;
 import com.jfinal.ext.plugin.shiro.ShiroInterceptor;
 import com.jfinal.ext.plugin.shiro.ShiroPlugin;
@@ -226,6 +234,11 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("job_order_cargo", JobOrderCargo.class);
         arp.addMapping("job_order_arap", JobOrderArap.class);
         arp.addMapping("job_order_shipment", JobOrderShipment.class);
+        
+        arp.addMapping("truck_order", TruckOrder.class);
+        arp.addMapping("truck_order_arap", TruckOrderArap.class);
+        arp.addMapping("truck_order_cargo", TruckOrderCargo.class);
+        
     }
 
     private void initDBconnector() {
@@ -274,4 +287,5 @@ public class EedaConfig extends JFinalConfig {
         me.add(new UrlHanlder());
         
     }
+    
 }

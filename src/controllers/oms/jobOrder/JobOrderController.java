@@ -5,20 +5,15 @@ import interceptor.SetAttrLoginUserInterceptor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import models.Party;
 import models.UserLogin;
-import models.eeda.oms.SalesOrderGoods;
-import models.eeda.oms.SalesOrder;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.oms.jobOrder.JobOrderCargo;
 import models.eeda.oms.jobOrder.JobOrderShipment;
-import models.eeda.profile.CustomCompany;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -33,12 +28,8 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
-import controllers.oms.custom.dto.DingDanDto;
-import controllers.oms.custom.dto.DingDanGoodsDto;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
-import controllers.util.EedaHttpKit;
-import controllers.util.MD5Util;
 import controllers.util.OrderNoGenerator;
 
 @RequiresAuthentication
@@ -105,8 +96,10 @@ public class JobOrderController extends Controller {
 
 		long creator = jobOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
+   		
 		Record r = jobOrder.toRecord();
    		r.set("creator_name", user_name);
+   		
    		r.set("shipment", jst);
    		renderJson(r);
    	}
@@ -179,14 +172,14 @@ public class JobOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> BillingOrders = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
-        Map BillingOrderListMap = new HashMap();
-        BillingOrderListMap.put("sEcho", pageIndex);
-        BillingOrderListMap.put("iTotalRecords", rec.getLong("total"));
-        BillingOrderListMap.put("iTotalDisplayRecords", rec.getLong("total"));
+        Map map = new HashMap();
+        map.put("sEcho", pageIndex);
+        map.put("iTotalRecords", rec.getLong("total"));
+        map.put("iTotalDisplayRecords", rec.getLong("total"));
 
-        BillingOrderListMap.put("aaData", BillingOrders);
+        map.put("aaData", BillingOrders);
 
-        renderJson(BillingOrderListMap); 
+        renderJson(map); 
     }
     
     //异步刷新字表
@@ -201,14 +194,14 @@ public class JobOrderController extends Controller {
     		list = getItems(order_id,type);
     	}
     	
-    	Map BillingOrderListMap = new HashMap();
-        BillingOrderListMap.put("sEcho", 1);
-        BillingOrderListMap.put("iTotalRecords", list.size());
-        BillingOrderListMap.put("iTotalDisplayRecords", list.size());
+    	Map map = new HashMap();
+        map.put("sEcho", 1);
+        map.put("iTotalRecords", list.size());
+        map.put("iTotalDisplayRecords", list.size());
 
-        BillingOrderListMap.put("aaData", list);
+        map.put("aaData", list);
 
-        renderJson(BillingOrderListMap); 
+        renderJson(map); 
     }
    
    
