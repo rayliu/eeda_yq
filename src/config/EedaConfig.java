@@ -286,7 +286,7 @@ public class EedaConfig extends JFinalConfig {
         cp = new C3p0Plugin("jdbc:h2:mem:eeda;", "sa", "");
         // cp = new C3p0Plugin("jdbc:h2:data/sample;IFEXISTS=TRUE;", "sa", "");
         cp.setDriverClass("org.h2.Driver");
-        DataInitUtil.initH2Tables(cp);
+//        DataInitUtil.initH2Tables(cp);
     }
 
     @Override
@@ -300,11 +300,6 @@ public class EedaConfig extends JFinalConfig {
 
     @Override
 	public void configHandler(Handlers me) {
-        if (H2.equals(getProperty("dbType"))) {
-            DataInitUtil.initData(cp);
-        }
-        //DataInitUtil.initData(cp);
-        
         me.add(new UrlSkipHandler("/apidoc.*", false));
         me.add(new UrlHanlder());
         
