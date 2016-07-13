@@ -21,7 +21,7 @@ $(document).ready(function() {
                     return "<a href='/truckOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
                 }
             },
-            { "data": "TYPE"}, 
+            { "data": "TRUCK_TYPE"}, 
             { "data": "CUSTOMER_NAME"}, 
             { "data": "SP_NAME"}, 
             { "data": "CREATOR_NAME"}, 
