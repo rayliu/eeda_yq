@@ -121,9 +121,12 @@ public class TruckOrderController extends Controller {
             sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
         }
 
-        String sql = "SELECT sor.*, ifnull(u.c_name, u.user_name) creator_name "
-    			+ "  from sales_order sor "
-    			+ "  left join user_login u on u.id = sor.create_by"
+        
+        String sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p2.abbr sp_name"
+    			+ "  from truck_order jor "
+    			+ "  left join party p on p.id = jor.customer_id"
+    			+ "  left join party p2 on p2.id = jor.sp_id"
+    			+ "  left join user_login u on u.id = jor.creator"
     			+ "   where 1 =1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
