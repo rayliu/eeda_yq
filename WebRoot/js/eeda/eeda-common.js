@@ -6,9 +6,9 @@ eeda.dt = function(opt){
     var option = {
         processing: opt.processing || true,
         searching: opt.searching || false,
-        paging: opt.paging || true,
+        paging: opt.paging || false,
         //"serverSide": true,
-        //scrollX: opt.scrollX || true,
+        scrollX: opt.scrollX || true,
         responsive: true,
         //scrollY: opt.scrollY || true, //"300px",
         //scrollCollapse: opt.scrollCollapse || true,
@@ -16,6 +16,9 @@ eeda.dt = function(opt){
         aLengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
         language: {
             "url": "/js/lib/datatables/i18n/Chinese.json"
+        },
+        createdRow: opt.createdRow || function ( row, data, index ) {
+            $(row).attr('id', data.ID);
         },
         ajax: opt.ajax || '',
         columns: opt.columns || []

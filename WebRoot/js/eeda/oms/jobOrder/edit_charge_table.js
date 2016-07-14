@@ -57,20 +57,9 @@ $(document).ready(function() {
     
     
     //------------事件处理
-    var chargeTable = $('#charge_table').DataTable({
-        "processing": true,
-        "searching": false,
-        "paging": false,
-        "info": false,
-        "scrollX":  true,
-        "autoWidth": true,
-        "language": {
-            "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
-        },
-        "createdRow": function ( row, data, index ) {
-            $(row).attr('id', data.ID);
-        },
-        "columns": [
+    var chargeTable = eeda.dt({
+        id: 'charge_table',
+        columns:[
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
                 	return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
@@ -80,91 +69,91 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="type" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="type" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
-            { "data": "SP_ID", 
+            { "data": "SP_ID",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="sp_id" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="sp_id" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
-            { "data": "CHARGE_ID", 
+            { "data": "CHARGE_ID",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="charge_id" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="charge_id" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "PRICE", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='0';
-                    return '<input type="text" name="price" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="price" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
-            { "data": "AMOUNT", 
+            { "data": "AMOUNT",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='1';
-                    return '<input type="number" name="amount" value="'+data+'" class="form-control "/>';
+                    return '<input type="number" name="amount" style="width:80px" value="'+data+'" class="form-control "/>';
                 }
             },
             { "data": "UNIT_ID", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="unit_id" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="unit_id" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "CURRENCY_ID", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='1';
-                    return '<input type="text" name="currency_id" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="currency_id" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "TOTAL_AMOUNT", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='0';
-                    return '<input type="text" name="total_amount" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "EXCHANGE_RATE", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='0';
-                    return '<input type="text" name="exchange_rate" value="'+data+'" class="form-control"/>';
+                    return '<input type="text" name="exchange_rate" style="width:80px" value="'+data+'" class="form-control"/>';
                 }
             },
             { "data": "CURRENCY_TOTAL_AMOUNT", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='0';
-                    return '<input type="text" name="currency_total_amount" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "RECEIPT_NO", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="receipt_no" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="receipt_no" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "INVOICE_NO", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="invoice_no" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="invoice_no" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
-            { "data": "REMARK", 
+            { "data": "REMARK",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="remark" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="remark" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             }
         ]

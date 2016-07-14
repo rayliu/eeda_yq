@@ -75,9 +75,9 @@ $(document).ready(function() {
                     return '<input type="checkbox">';
                 }
             },
-            { "width": "30px",
+            { "width": "3px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
+                	return '<button type="button" class="delete btn btn-default btn-xs"> 删除 </button> ';
                 }
             },
             { "data": "TYPE", 

@@ -4,20 +4,9 @@ $(document).ready(function() {
 	var deletedTableIds=[];
    
     //------------事件处理
-    var cargoTable = $('#depart_table').DataTable({
-        "processing": true,
-        "searching": false,
-        "paging": false,
-        "info": false,
-        "scrollX":  true,
-        "autoWidth": true,
-        "language": {
-            "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
-        },
-        "createdRow": function ( row, data, index ) {
-            $(row).attr('id', data.ID);
-        },
-        "columns": [
+    var cargoTable = eeda.dt({
+        id: 'depart_table',
+        columns:[
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
                 	//return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
