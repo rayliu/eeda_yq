@@ -48,6 +48,8 @@ public class JobOrderController extends Controller {
         render("/oms/JobOrder/JobOrderEdit.html");
     }
     
+    
+    
     @Before(Tx.class)
    	public void save() throws Exception {		
    		String jsonStr=getPara("params");
@@ -65,9 +67,6 @@ public class JobOrderController extends Controller {
    			jobOrder = JobOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, jobOrder);
    			
-   			//需后台处理的字段
-//   			jobOrder.set("update_by", user.getLong("id"));
-//   			jobOrder.set("update_stamp", new Date());
    			jobOrder.update();
    		} else {
    			//create 
@@ -88,6 +87,7 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> chargeList = (ArrayList<Map<String, String>>)dto.get("charge_list");
 		DbUtils.handleList(chargeList, id, JobOrderArap.class, "order_id");
 		
+		
 		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
 		DbUtils.handleList(shipment_detail, id, JobOrderShipment.class, "order_id");
 		
@@ -99,7 +99,6 @@ public class JobOrderController extends Controller {
    		
 		Record r = jobOrder.toRecord();
    		r.set("creator_name", user_name);
-   		
    		r.set("shipment", jst);
    		renderJson(r);
    	}

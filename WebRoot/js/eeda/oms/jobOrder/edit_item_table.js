@@ -31,10 +31,12 @@ $(document).ready(function() {
             var item={}
             item.id = id;
             for(var i = 1; i < row.childNodes.length; i++){
-            	var name = $(row.childNodes[i]).find('input').attr('name');
-            	var value = $(row.childNodes[i]).find('input').val();
-            	if(name){
-            		item[name] = value;
+            	var el = $(row.childNodes[i]).find('input, select');
+            	var name = el.attr('name'); //name='abc'
+            	
+            	if(el && name){
+                	var value = el.val();//元素的值
+                	item[name] = value;
             	}
             }
             item.action = id.length > 0?'UPDATE':'CREATE';
@@ -70,42 +72,46 @@ $(document).ready(function() {
             $(row).attr('id', data.ID);
         },
         "columns": [
-            { "width": "10px",
+            { "data":"ID","width": "10px",
                 "render": function ( data, type, full, meta ) {
-                    return '<input type="checkbox">';
+                	if(data)
+                		return '<input type="checkbox">';
+                	else 
+                		return '<input type="checkbox" disabled>';
                 }
             },
             { "width": "3px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs"> 删除 </button> ';
+                	return '<button type="button" class="delete btn btn-default btn-xs">删除</button>';
                 }
             },
-            { "data": "TYPE", 
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="type" value="'+data+'" class="form-control" />';
-                }
-            },
-            { "data": "TRANS_TYPE", 
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="trans_type" value="'+data+'" class="form-control" />';
-                }
-            },
+           
             { "data": "LOAD_TYPE", 
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="load_type" value="'+data+'" class="form-control" />';
+                   if(!data)
+                	   data='';
+                    
+                   var str= '<select name="load_type" class="form-control search-control">'
+                	   	 	+'<option></option>'
+		                   +'<option value="FCL" '+ (data=='FCL'?'selected':'') +'>FCL</option>'
+		                   +'<option value="LCL" '+ (data=='LCL'?'selected':'') +'>LCL</option>'
+		                   +'<option value="FTL" '+ (data=='FTL'?'selected':'') +'>FTL</option>'
+		                   +'<option value="LTL" '+ (data=='LTL'?'selected':'') +'>LTL</option>'
+		                   +'</select>';
+		           return str;
                 }
             },
             { "data": "CONTAINER_TYPE", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="container_type" value="'+data+'" class="form-control" />';
+                    var str = '<select name="container_type" class="form-control search-control">'
+                    			+'<option></option>'
+			                   +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>20GP</option>'
+			                   +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>40GP</option>'
+			                   +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>45GP</option>'
+			                   +'</select>';
+                    return str;
                 }
             },
             { "data": "CONTAINER_AMOUNT", 
@@ -156,5 +162,24 @@ $(document).ready(function() {
     	var url = "/jobOrder/tableList?order_id="+order_id+"&type=cargo";
     	cargoTable.ajax.url(url).load();
     }
-} );
+    
+    //checkbox选中则button可点击
+	$('#cargo_table input[type="checkbox"]').click(function(){
+		var hava_check = 0;
+		$('#cargo_table input[type="checkbox"]').each(function(){	
+			var checkbox = $(this).prop('checked');
+    		if(checkbox){
+    			hava_check=1;
+    		}	
+		})
+		if(hava_check>0){
+			$('#create_cargo').attr('disabled',false);
+		}else{
+			$('#create_cargo').attr('disabled',true);
+		}
+	});
+	
+	
+
+});
 });

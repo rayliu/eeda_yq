@@ -48,5 +48,23 @@ $(document).ready(function() {
             $('#saveBtn').attr('disabled', false);
           });
     });  
-} );
+    
+    //创建派车单URL跳转传参
+    $('#create_cargo').click(function(){
+    	$(this).attr('disabled', true);
+    	var order_id = $('#order_id').val();
+    	var itemIds=[];
+    	$('#cargo_table input[name="checkBox"]').each(function(){
+    		var checkbox = $(this).prop('checked');
+    		if(checkbox){
+    			var itemId = $(this).parent().parent().attr('id');
+    			itemIds.push(itemId);
+    		}
+    	});
+    	location.href ="/truckOrder/create?order_id="+order_id+"&itemIds="+itemIds;
+    })
+    
+    
+    
+});
 });
