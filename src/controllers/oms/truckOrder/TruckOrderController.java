@@ -3,12 +3,17 @@ package controllers.oms.truckOrder;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import models.UserLogin;
+import models.eeda.oms.jobOrder.JobOrder;
+import models.eeda.oms.jobOrder.JobOrderCargo;
 import models.eeda.oms.truckOrder.TruckOrder;
 import models.eeda.oms.truckOrder.TruckOrderArap;
 import models.eeda.oms.truckOrder.TruckOrderCargo;
@@ -42,9 +47,27 @@ public class TruckOrderController extends Controller {
 		render("/oms/TruckOrder/TruckOrderList.html");
 	} 
 	
-    public void create() {
+	public void create() {
+    	
+    	String order_id=getPara("order_id");
+    	String itemIds=getPara("itemIds");
+    	if(StringUtils.isNotEmpty(order_id)){
+    		//查询job_order 里的工作单号
+    		JobOrder jobOrder = JobOrder.dao.findById(order_id);
+        	setAttr("jobOrder", jobOrder);
+    	}
+    	
+    	
+    	if(StringUtils.isNotEmpty(itemIds)){
+    		//查询job_order_cargo
+			String sql="select * from job_order_cargo where id in("+itemIds+")";
+	    	List<Record> jobOrderCargo= Db.find(sql);
+	    	setAttr("cargoList", jobOrderCargo);
+    	}
+    	
         render("/oms/TruckOrder/TruckOrderEdit.html");
     } 
+    
     
     @Before(Tx.class)
    	public void save() throws Exception {	
