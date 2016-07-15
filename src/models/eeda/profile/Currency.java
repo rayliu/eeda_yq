@@ -1,0 +1,1 @@
+package models.eeda.profile;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class Currency extends Model<Currency> {	public static final Currency dao = new Currency();}

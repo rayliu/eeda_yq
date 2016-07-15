@@ -29,6 +29,7 @@ import models.eeda.oms.truckOrder.TruckOrderArap;
 import models.eeda.oms.truckOrder.TruckOrderCargo;
 import models.eeda.profile.Account;
 import models.eeda.profile.ContainerType;
+import models.eeda.profile.Currency;
 import models.eeda.profile.Unit;
 import models.eeda.profile.Warehouse;
 import models.yh.profile.CustomizeField;
@@ -61,6 +62,7 @@ import controllers.oms.planOrder.PlanOrderController;
 import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
 import controllers.profile.ContainerTypeController;
+import controllers.profile.CurrencyController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.UnitController;
 import controllers.yh.arap.AccountAuditLogController;
@@ -161,6 +163,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/planOrder", PlanOrderController.class, contentPath);
 		me.add("/jobOrder", JobOrderController.class, contentPath);
 		me.add("/truckOrder", TruckOrderController.class, contentPath);
+		me.add("/currency", CurrencyController.class, contentPath);
 	}
 
     @Override
@@ -233,6 +236,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("truck_order", TruckOrder.class);
         arp.addMapping("truck_order_arap", TruckOrderArap.class);
         arp.addMapping("truck_order_cargo", TruckOrderCargo.class);
+        arp.addMapping("currency", Currency.class);
         
     }
 
