@@ -29,7 +29,7 @@
                                     label:'客户', 
                                     required:'required',
                                     value:order.customer_id!'',
-                                    display_value: customer_name!''
+                                    display_value: customer.abbr!''
                                 }){} %>
                         </div>
                         <div class="col-lg-4">
@@ -39,7 +39,7 @@
                                     label:' 供应商', 
                                     required: 'required',
                                     value:order.sp_id!'',
-                                    display_value: sp_name!''
+                                    display_value: sp.abbr!''
                                 }){} %>
                         </div>
                     </div>
@@ -198,7 +198,7 @@
                                     label:' 装货供应商', 
                                     required: 'required',
                                     value:order.load_sp_id!'',
-                                    display_value: sp_name!''
+                                    display_value: load_sp.abbr!''
                                 }){} %>
                         </div>
                         <div class="col-lg-4">
@@ -245,7 +245,7 @@
                                     label:' 卸货供应商', 
                                     required: 'required',
                                     value:order.unload_sp_id!'',
-                                    display_value: sp_name!''
+                                    display_value: unload_sp.abbr!''
                                 }){} %>
                         </div>
                         <div class="col-lg-4">

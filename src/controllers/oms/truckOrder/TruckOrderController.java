@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import models.Party;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderCargo;
@@ -129,6 +130,21 @@ public class TruckOrderController extends Controller {
     	setAttr("cargoList", getItems(id,"cargo"));
     	//获取明细表信息
     	setAttr("chargeList", getItems(id,"charge"));
+    	
+    	//查询customer_id,sp_id,load_sp_id,unload_sp_id
+    	//构造供应商回显
+    	Party sp = Party.dao.findById(truckOrder.getLong("sp_id"));
+    	setAttr("sp",sp);
+    	
+    	Party unload_sp = Party.dao.findById(truckOrder.getLong("unload_sp_id"));
+    	setAttr("unload_sp",unload_sp);
+    	
+    	Party load_sp = Party.dao.findById(truckOrder.getLong("load_sp_id"));
+    	setAttr("load_sp",load_sp);
+    	
+    	Party customer = Party.dao.findById(truckOrder.getLong("customer_id"));
+    	setAttr("customer",customer);
+    	
     	//创建人回显信息
     	long create_by = truckOrder.getLong("creator");
     	UserLogin user = UserLogin.dao.findById(create_by);
