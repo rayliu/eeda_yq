@@ -30,7 +30,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             {"data":"ACCOUNT_NO"},
             {"data":"BANK_PERSON"},
             {"data":"CURRENCY"},
-            {"data":"AMOUNT"},
             {"data":"REMARK"},
             {
                 "data": null,
