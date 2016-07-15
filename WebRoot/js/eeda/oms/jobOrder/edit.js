@@ -54,7 +54,7 @@ $(document).ready(function() {
     	$(this).attr('disabled', true);
     	var order_id = $('#order_id').val();
     	var itemIds=[];
-    	$('#cargo_table input[name="checkBox"]').each(function(){
+    	$('#cargo_table input[type="checkbox"]').each(function(){
     		var checkbox = $(this).prop('checked');
     		if(checkbox){
     			var itemId = $(this).parent().parent().attr('id');

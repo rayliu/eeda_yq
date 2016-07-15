@@ -56,12 +56,14 @@ public class TruckOrderController extends Controller {
     		JobOrder jobOrder = JobOrder.dao.findById(order_id);
         	setAttr("jobOrder", jobOrder);
     	}
-    	
-    	
+
     	if(StringUtils.isNotEmpty(itemIds)){
     		//查询job_order_cargo
 			String sql="select * from job_order_cargo where id in("+itemIds+")";
 	    	List<Record> jobOrderCargo= Db.find(sql);
+	    	for(Record re : jobOrderCargo){
+	    		re.set("id", null);
+	    	}
 	    	setAttr("cargoList", jobOrderCargo);
     	}
     	

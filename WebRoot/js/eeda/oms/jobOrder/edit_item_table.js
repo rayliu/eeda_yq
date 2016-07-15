@@ -75,9 +75,9 @@ $(document).ready(function() {
             { "data":"ID","width": "10px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
-                		return '<input type="checkbox">';
+                		return '<input type="checkbox" class="checkBox">';
                 	else 
-                		return '<input type="checkbox" disabled>';
+                		return '<input type="checkbox" class="checkBox" disabled>';
                 }
             },
             { "width": "3px",
@@ -164,7 +164,7 @@ $(document).ready(function() {
     }
     
     //checkbox选中则button可点击
-	$('#cargo_table input[type="checkbox"]').click(function(){
+	$('#cargo_table').on('click','.checkBox',function(){
 		var hava_check = 0;
 		$('#cargo_table input[type="checkbox"]').each(function(){	
 			var checkbox = $(this).prop('checked');
