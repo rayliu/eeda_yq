@@ -53,6 +53,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     $('#order_no').val(order.ORDER_NO);
                     $('#customer_id').val(order.CUSTOMER_ID);
                     $('#sp_id').val(order.SP_ID);
+                    $('#load_sp_id').val(order.LOAD_SP_ID);
+                    $('#unload_sp_id').val(order.UNLOAD_SP_ID);
                     $('#create_stamp').val(order.CREATE_STAMP);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     $('#saveBtn').attr('disabled', false);
