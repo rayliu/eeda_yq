@@ -12,24 +12,23 @@
             </div>
             <!-- /.row -->
 
-            <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
-
             <div class="row">  <!--  form row  -->
                 <form id="orderForm">
+                    <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
                     <div class="row"><!--  第1行  -->
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'order_no', 
                                     label:'工作单号', 
-                                    value:order.ORDER_NO!'',
+                                    value:order.order_no!'',
                                     disabled: 'disabled'
                                 }){}%>
                         </div>
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'order_no', 
+                                {   id:'plan_order_no', 
                                     label:'计划订单号', 
-                                    value:order.ORDER_NO!'',
+                                    value: order.plan_order_no!planOrder.order_no!,
                                     disabled: 'disabled'
                                 }){}%>
                         </div>
@@ -95,7 +94,7 @@
             <div class="row">
             	<div class="form-group">
                  <label>备注</label>
-                 <textarea id='note' class="form-control" rows="3" name="note">${order.note!''}</textarea>
+                 <textarea id='note' class="form-control" rows="3" name="note">${order.remark!''}</textarea>
             	</div>
             </div>
 
@@ -119,7 +118,7 @@
 			            <div class="form-group">
 			                <div class="col-lg-12">
 			                    <button class="btn btn-success btn-xs" id="add_cargo">添加货品</button> 
-                              		    <button class="btn btn-success btn-xs" disabled id="create_cargo">创建派车单</button>
+                              		    <button class="btn btn-success btn-xs" disabled id="create_truckOrder">创建派车单</button>
                              		    <br>
 			                    <%include("/eeda/component/form/detailTable.html", 
 			                        {
@@ -189,19 +188,6 @@
         <!-- /#page-wrapper -->
 <%}%>
 
-<!-- <script src="/yh/js/plugins/datatables-1.10.9/js/jquery.dataTables.js"></script>
-<script src="/yh/js/plugins/datatables-1.10.9/js/dataTables.bootstrap.js"></script>
-
-
-<script src="/yh/js/jquery.validate.min.js"></script>
-<script src="/yh/js/jvalidate.messages_cn.js"></script>
-
-<script src="/yh/js/bootstrap-datetimepicker.min.js"></script>
-<script src="/yh/js/bootstrap-datetimepicker.zh-CN.js"></script>
-
-<script src="/yh/js/plugins/sco/js/sco.message.js"></script>
-
-<script src="/yh/js/eeda-common.js"></script> -->
 <script>
     var order_no = '${order.order_no!'订单编辑'}'; 
     var itemOrder = {};
@@ -214,5 +200,3 @@
         requirejs(['app/oms/jobOrder/edit_shipment_detail']);
     });
 </script>
-<!-- <script src="/js/oms/SalesOrder/edit_item_table.js"></script>
-<script src="/js/oms/SalesOrder/edit.js"></script> -->

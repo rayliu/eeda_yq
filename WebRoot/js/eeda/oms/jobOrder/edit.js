@@ -17,7 +17,10 @@ $(document).ready(function() {
         var order={}
         order.id = $('#order_id').val();
         order.customer_id = $('#customer_id').val();
+        order.plan_order_no = $('#plan_order_no').val();
         order.type = $('#type').val();
+        order.status = $('#status').val()==''?'新建':$('#status').val();
+        order.remark = $('#note').val();
         order.item_list = items_array; 
         order.charge_list = charge_array;
         order.shipment_detail = shipment_array;
@@ -39,6 +42,7 @@ $(document).ready(function() {
                 itemOrder.refleshTable(order.ID);
                 //异步刷新明细表
                 itemOrder.refleshChargeTable(order.ID);
+                
             }else{
                 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                 $('#saveBtn').attr('disabled', false);
@@ -50,7 +54,7 @@ $(document).ready(function() {
     });  
     
     //创建派车单URL跳转传参
-    $('#create_cargo').click(function(){
+    $('#create_truckOrder').click(function(){
     	$(this).attr('disabled', true);
     	var order_id = $('#order_id').val();
     	var itemIds=[];

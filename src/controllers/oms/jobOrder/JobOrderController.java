@@ -10,6 +10,7 @@ import java.util.Map;
 
 import models.Party;
 import models.UserLogin;
+import models.eeda.oms.PlanOrder;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.oms.jobOrder.JobOrderCargo;
@@ -45,6 +46,25 @@ public class JobOrderController extends Controller {
 	}
 	
     public void create() {
+    	
+    	String order_id=getPara("order_id");
+    	String itemIds=getPara("itemIds");
+    	if(StringUtils.isNotEmpty(order_id)){
+    		//查询plan_order 里的计划单号
+    		PlanOrder planOrder = PlanOrder.dao.findById(order_id);
+        	setAttr("planOrder", planOrder);
+    	}
+
+    	if(StringUtils.isNotEmpty(itemIds)){
+    		//查询plan_order_item
+			String sql="select * from plan_order_item where id in("+itemIds+")";
+	    	List<Record> plan_order_item= Db.find(sql);
+	    	for(Record re : plan_order_item){
+	    		re.set("id", null);
+	    	}
+	    	setAttr("itemList", plan_order_item);
+    	}
+    	
         render("/oms/JobOrder/JobOrderEdit.html");
     }
     

@@ -173,9 +173,9 @@ $(document).ready(function() {
     		}	
 		})
 		if(hava_check>0){
-			$('#create_cargo').attr('disabled',false);
+			$('#create_truckOrder').attr('disabled',false);
 		}else{
-			$('#create_cargo').attr('disabled',true);
+			$('#create_truckOrder').attr('disabled',true);
 		}
 	});
 	

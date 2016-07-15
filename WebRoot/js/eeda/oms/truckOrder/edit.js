@@ -39,13 +39,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             var cargo_array = itemOrder.buildCargoDetail();
             
             var order  = buidOrder();
-            order.remark = $('#remark').val();
+            order.remark = $('#note').val();
             order.charge_list = charge_array;
             order.cargo_list = cargo_array;
 
-            
-            
-            var status = $('#status').val();
             //异步向后台提交数据
             $.post('/truckOrder/save', {params:JSON.stringify(order)}, function(data){
                 var order = data;
@@ -53,6 +50,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	
                     eeda.contactUrl("edit?id",order.ID);
                     $('#creator').val(order.CREATOR_NAME);
+                    $('#order_no').val(order.ORDER_NO);
+                    $('#customer_id').val(order.CUSTOMER_ID);
+                    $('#sp_id').val(order.SP_ID);
                     $('#create_stamp').val(order.CREATE_STAMP);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     $('#saveBtn').attr('disabled', false);

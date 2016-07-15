@@ -47,17 +47,17 @@ function($, metisMenu) {
 
 										var item = {}
 										item.id = id;
-										for (var i = 1; i < row.childNodes.length; i++) {
-											var name = $(row.childNodes[i])
-													.find('input').attr('name');
-											var value = $(row.childNodes[i])
-													.find('input').val();
-											if (name) {
-												item[name] = value;
-											}
-										}
-										item.action = id.length > 0 ? 'UPDATE'
-												: 'CREATE';
+										for(var i = 1; i < row.childNodes.length; i++){
+								            	var el = $(row.childNodes[i]).find('input, select');
+								            	var name = el.attr('name'); //name='abc'
+								            	
+								            	if(el && name){
+								                	var value = el.val();//元素的值
+								                	item[name] = value;
+								            	}
+								            }
+										
+										item.action = id.length > 0 ? 'UPDATE':'CREATE';
 										cargo_items_array.push(item);
 									}
 
@@ -103,20 +103,19 @@ function($, metisMenu) {
 																	return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
 																}
 															},
-															{
-																"data" : "CONTAINER_TYPE",
-																"render" : function(
-																		data,
-																		type,
-																		full,
-																		meta) {
-																	if (!data)
-																		data = '';
-																	return '<input type="text" name="container_type" value="'
-																			+ data
-																			+ '" class="form-control" />';
-																}
-															},
+												            { "data": "CONTAINER_TYPE", 
+												                "render": function ( data, type, full, meta ) {
+												                    if(!data)
+												                        data='';
+												                    var str = '<select name="container_type" class="form-control search-control">'
+												                    			+'<option></option>'
+															                   +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>20GP</option>'
+															                   +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>40GP</option>'
+															                   +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>45GP</option>'
+															                   +'</select>';
+												                    return str;
+												                }
+												            },
 															{
 																"data" : "CONTAINER_AMOUNT",
 																"render" : function(
