@@ -1,0 +1,227 @@
+<%layout("/yh/layout.html"){%>
+ <div id="page-wrapper">    
+    <div class="row">
+        <div class="col-lg-12 panel-body">
+            <% if(saveOK!''==true){%>
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                保存成功。
+            </div>
+            <%}%>
+            <div class="btn-header"style="font-size: 32px">创建新仓库</div>
+           
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+    <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                           	 仓库基本信息
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <form id="warehouseForm" role="form" action="/warehouse/save" method="post" enctype="multipart/form-data">
+                                    <input id="warehouseId" name="warehouse_id" type="hidden" value="${warehouse.id!''}">
+                                    <input id="sp_id" type="hidden" name="sp_id"  value="${sp.id!''}"/>
+                                    <input id="notifyPartyId" type="hidden" name="notifyPartyId"  value="${warehouse.notify_party_id!''}"/>
+                                    <!-- /.col-lg-6 (odd) 奇数列 -->
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+
+                                                <label>仓库名称(必填)</label>
+                                                <input class="form-control" id="warehouse_name" name="warehouse_name" type="text" value="${warehouse.warehouse_name!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+									<div class="col-lg-6">
+                                        <fieldset>
+                                         <label>仓库所在地</label>
+                                                <input id="location" type="hidden" name="location" value="${warehouse.location!''}">
+		                                            <div class="form-group">
+		                                                <label>省</label>
+		                                                <input id="hideProvince" type="hidden" value="${location.province!''}"/>
+		                                                <select id="mbProvince" style="width:150px" name="mbProvince" value=""></select>
+		                                                <label>市</label>
+		                                                <input id="hideCity" type="hidden" value="${location.city!''}"/>
+		                                                <select  id="cmbCity" style="width:150px" name="cmbCity" value=""></select>
+		                                                <label>区(县)</label>
+		                                                <input id="hideDistrict" type="hidden" value="${location.district!''}"/>
+		                                                <select  id="cmbArea" style="width:150px" name="cmbArea" value=""></select>
+		                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <!-- /.col-lg-6 (even) 偶数列-->                                    
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>详细地址(必填)</label>
+                                                <input class="form-control" id="warehouse_address" type="text" name="warehouse_address" value="${warehouse.warehouse_address!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+
+                                    <!-- /.col-lg-6 (odd) 奇数列 -->
+                                     <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>仓库描述</label>
+                                                <input class="form-control" id="warehouse_desc" type="text" name="warehouse_desc" value="${warehouse.warehouse_desc!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>     
+                                                                  
+                                    <!-- <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+
+                                                <label>公司名称(必填)</label>
+                                                <input class="form-control" id="company_name" name="company_name" type="text" value="${contact.company_name!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div> -->
+
+                                    <!-- /.col-lg-6 (even) 偶数列-->                                    
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>联系人(必填)</label>
+                                                <input class="form-control" type="text" name="notify_name" value="${warehouse.notify_name!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+
+                                    <!-- /.col-lg-6 (odd) 奇数列 -->
+                                     <!-- <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>联系地址</label>
+                                                <input class="form-control" id="address" type="text" name="address" value="${contact.address!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>    -->                                 
+                                    
+                                    <!-- /.col-lg-6 (even) 偶数列 -->
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>联系人电话</label>
+                                                <input class="form-control" id="disabledInput" type="text" name="notify_mobile" value="${warehouse.notify_mobile!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    
+                                    <!-- /.col-lg-6 (odd) 奇数列 -->
+                                    <!-- <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>email</label>
+                                                <input class="form-control" id="email" type="text" name="email" value="${contact.email!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div> -->
+
+                                    <!-- /.col-lg-6 (even) 偶数列 -->
+                                    <!-- <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>邮政编码</label>
+                                                <input class="form-control" id="postal_code" type="text" name="postal_code" value="${contact.postal_code!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div> -->
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>仓库面积(必填)</label>
+                                                <input class="form-control" id="warehouse_area" type="text" name="warehouse_area" value="${warehouse.warehouse_area!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                        	<div id="arrivalModes" class="form-group">
+                                                <label>仓库状态</label>
+                                                <input type="hidden" id="warehouseStatusHide" value="${warehouse.status!''}"/>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="warehouseStatus" id="warehouseStatus1" value="active" checked="">在用
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="warehouseStatus" id="warehouseStatus2" value="inactive">停用
+                                                </label>  
+                                            </div>
+                                            <div id="arrivalModes" class="form-group">
+                                                <label>仓库类型</label>
+                                                <input type="hidden" id="warehouseTypeHide" value="${warehouse.warehouse_type!''}"/>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="warehouseType" id="warehouseType1" value="ownWarehouse" checked="">自营仓库
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="warehouseType" id="warehouseType2" value="deliverySpWarehouse">配送供应商仓库
+                                                </label>  
+                                            </div> 
+                                            <div id="officeDiv" style="display: none;">
+                                                <input id="hideOfficeId" type="hidden" value="${warehouse.office_id!''}" />   
+                                             	<label class="control-label" for="inputSuccess">请选择网点(必填)</label>
+                                            	<select id="officeSelect" class="form-control" name="officeSelect"></select> 
+                                            </div> 
+                                            <div id="spDiv">
+	                                            <h2>供应商信息</h2>
+	                                            <div class="form-group">
+	                                                <!--label>供应商名称</label-->
+	                                                <input id="spMessage" class="form-control" placeholder="选择供应商" type="text" name="spMessage" value="${sp.company_name!''}"/>
+	                                                <ul id='spList' class="pull-right dropdown-menu default" tabindex="-1" style="top: 35%; left: 2%;">
+	    											</ul>
+	                                            </div>
+	                                            <div class="form-group">     
+	                                            	<h5 id="pageSpName">${sp.contact_person!''} ${sp.phone!''}</h5><h5 id="pageSpAddress">${sp.address!''}</h5>     
+	                                            </div>
+	                                        </div>
+                                        </fieldset>
+                                    </div>
+
+                                    <div class="col-lg-6" style="clear:both;">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>上传图片</label>
+                                                <input id="fileupload" type="file" name="fileupload" >
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6" style="clear:both;">
+                                        <fieldset>
+                                            <div class="form-group">                                                
+                                         		<img id="showImg" src="/upload/${warehouse.path!''}" height="300" width="500" alt="图片展示区域"> 
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <!-- /.col-lg-6 (odd) 奇数列 -->
+                                    <div class="col-lg-6" style="clear:both;">
+                                        <button type="submit" class="btn  btn-primary">保存</button>
+                                        <a class="btn  btn-primary" href="/warehouse">返回</a>
+                                    </div>
+                            	<form role="form">
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->      
+</div>			
+	<!--/span-->
+<!--/row-->
+<!-- content ends -->
+<%}%>
+<!-- 引入校验的js 文件及其 中文 文件-->
+<script src="/yh/js/jquery.validate.min.js"></script>
+<script src="/yh/js/jvalidate.messages_cn.js"></script>
+<script src="/yh/js/profile/warehouse/edit.js"></script> 
+<script>
+	var warehouse_name = '${warehouse.warehouse_name!''}';
+</script>

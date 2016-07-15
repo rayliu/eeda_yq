@@ -21,7 +21,7 @@ $(document).ready(function() {
     	var me = this;
 		var inputStr = inputField.val();
 		
-		$.get('/customerContract/searchSp', {spName:inputStr}, function(data){
+		$.get('/serviceProvider/searchSp', {spName:inputStr}, function(data){
 			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 				return;
 			}

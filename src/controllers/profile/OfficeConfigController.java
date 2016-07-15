@@ -10,7 +10,7 @@ import java.util.List;
 
 import models.Office;
 import models.ParentOfficeModel;
-import models.Warehouse;
+import models.eeda.profile.Warehouse;
 import models.yh.profile.OfficeCofig;
 
 import org.apache.commons.mail.DefaultAuthenticator;

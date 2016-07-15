@@ -4,6 +4,7 @@ import handler.UrlHanlder;
 
 import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
+
 import models.ArapAccountAuditLog;
 import models.Category;
 import models.Location;
@@ -23,16 +24,16 @@ import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.oms.jobOrder.JobOrderCargo;
 import models.eeda.oms.jobOrder.JobOrderShipment;
-import models.eeda.profile.Account;
-import models.eeda.profile.ContainerType;
 import models.eeda.oms.truckOrder.TruckOrder;
 import models.eeda.oms.truckOrder.TruckOrderArap;
 import models.eeda.oms.truckOrder.TruckOrderCargo;
+import models.eeda.profile.Account;
+import models.eeda.profile.ContainerType;
 import models.eeda.profile.Unit;
+import models.eeda.profile.Warehouse;
 import models.yh.profile.CustomizeField;
 import models.yh.profile.OfficeCofig;
 import models.yh.profile.Route;
-import models.yh.profile.Warehouse;
 
 import org.apache.log4j.Logger;
 import org.bee.tl.ext.jfinal.BeetlRenderFactory;
@@ -44,7 +45,6 @@ import com.jfinal.config.Interceptors;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
-import com.jfinal.core.JFinal;
 import com.jfinal.ext.handler.UrlSkipHandler;
 import com.jfinal.ext.plugin.shiro.ShiroInterceptor;
 import com.jfinal.ext.plugin.shiro.ShiroPlugin;
@@ -216,9 +216,9 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("office_config", OfficeCofig.class);
         
         //中转仓
-        arp.addMapping("warehouse",Warehouse.class);
-        arp.addMapping("fin_account",Account.class);
-        arp.addMapping("arap_account_audit_log",ArapAccountAuditLog.class);
+        arp.addMapping("warehouse", Warehouse.class);
+        arp.addMapping("fin_account", Account.class);
+        arp.addMapping("arap_account_audit_log", ArapAccountAuditLog.class);
         
 
         //oms

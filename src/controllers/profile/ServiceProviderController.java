@@ -308,37 +308,38 @@ public class ServiceProviderController extends Controller {
 		    spCon = spCon.substring(4);
 		}
 		Long parentID = pom.getParentOfficeId();
-		List<Record> locationList = Collections.EMPTY_LIST;
-		if (input.trim().length() > 0) {
-			locationList = Db
-					.find(" select p.*,c.*,p.id as pid, p.payment from party p,contact c,office o where o.id = p.office_id and p.contact_id = c.id and"
-					        + " ("+spCon+") and p.party_type = '"
+		List<Record> spList = Collections.EMPTY_LIST;
+		if (input !=null && input.trim().length() > 0) {
+		    spList = Db
+					.find(" select p.*, p.id as pid, p.payment from party p, office o where o.id = p.office_id and"
+					        + " ("+spCon+") and p.type = '"
 							+ Party.PARTY_TYPE_SERVICE_PROVIDER
-							+ "' and (c.company_name like '%"
+							+ "' and (p.company_name like '%"
 							+ input
-							+ "%' or c.abbr like '%"
+							+ "%' or p.abbr like '%"
 							+ input
-							+ "%' or c.contact_person like '%"
+							+ "%' or p.contact_person like '%"
 							+ input
-							+ "%' or c.email like '%"
+							+ "%' or p.email like '%"
 							+ input
-							+ "%' or c.mobile like '%"
+							+ "%' or p.mobile like '%"
 							+ input
-							+ "%' or c.phone like '%"
+							+ "%' or p.phone like '%"
 							+ input
-							+ "%' or c.address like '%"
+							+ "%' or p.address like '%"
 							+ input
-							+ "%' or c.postal_code like '%"
+							+ "%' or p.postal_code like '%"
 							+ input
 							+ "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) limit 0,10",parentID,parentID);
 		} else {
-			locationList = Db
-					.find("select p.*,c.*,p.id as pid from party p,contact c,office o where o.id = p.office_id and p.contact_id = c.id and"
-					        + " ("+spCon+") and p.party_type = '"
-							+ Party.PARTY_TYPE_SERVICE_PROVIDER + "'  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?)",parentID,parentID);
+		    spList = Db
+					.find("select p.*, p.id as pid from party p, office o where o.id = p.office_id"
+					        +" and p.type = '"
+							+ Party.PARTY_TYPE_SERVICE_PROVIDER + "'  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?)", parentID, parentID);
 		}
-		renderJson(locationList);
+		renderJson(spList);
 	}
+    
     public void searchInsurance() {
 		String input = getPara("input");
 		Long parentID = pom.getParentOfficeId();
