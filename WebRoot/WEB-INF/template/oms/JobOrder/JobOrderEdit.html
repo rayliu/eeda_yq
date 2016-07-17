@@ -61,6 +61,30 @@
                                 }){}%>
                         </div><!-- /.col-lg-4 -->
                         <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="search-label">运输方式</label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value='ocean'>海运
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value='air'>空运
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value='domestic'>陆运
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><!--  第4行  -->
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'status', 
+                                    label:'状态', 
+                                    value:order.status!'', 
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'creator_name', 
                                     label:'创建人', 
@@ -75,18 +99,7 @@
                                     value:order.create_stamp!'', 
                                     disabled: 'disabled'
                                 }){}%>
-                        </div>    
-                        
-                    </div>
-                    <div class="row"><!--  第4行  -->
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'status', 
-                                    label:'状态', 
-                                    value:order.status!'', 
-                                    disabled: 'disabled'
-                                }){}%>
-                        </div><!-- /.col-lg-4 -->
+                        </div>
                     </div>
                 </form>
             </div><!-- /.row -->
@@ -104,10 +117,22 @@
 						<a href="#itemDetail" data-toggle="tab">货品明细</a>
 					</li>
                     <li>
-                        <a href="#shipmentDetail" data-toggle="tab">海运信息</a>
+                        <a href="#oceanDetail" data-toggle="tab">海运信息</a>
                     </li>
                     <li>
-                        <a href="#truckDetail" data-toggle="tab">派车信息</a>
+                        <a href="#airDetail" data-toggle="tab">空运信息</a>
+                    </li>
+                    <li>
+                        <a href="#domesticDetail" data-toggle="tab">陆运(干线)信息</a>
+                    </li>
+                    <li>
+                        <a href="#pickupDetail" data-toggle="tab">派车(提卸货)信息</a>
+                    </li>
+                    <li>
+                        <a href="#customDetail" data-toggle="tab">报关信息</a>
+                    </li>
+                    <li>
+                        <a href="#insurDetail" data-toggle="tab">保险信息</a>
                     </li>
                     <li>
                         <a href="#chargeDetail" data-toggle="tab">费用明细</a>
@@ -131,7 +156,42 @@
 			                </div>
 			            </div>
 		            </div>
-		            <div class="tab-pane fade in" id="chargeDetail">
+                    <div class="tab-pane fade in" id="oceanDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/oms/JobOrder/JobOrderEdit_ocean.html", {}){} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade in" id="airDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/oms/JobOrder/JobOrderEdit_air.html", {}){} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade in" id="domesticDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/oms/JobOrder/JobOrderEdit_domestic.html", {}){} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade in" id="pickupDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'truck_table',
+                                        style:'width:1200px;',
+                                        headers:['', '派车单号码', '类别', '运输公司', '车型', '数量', '金额', '出车日期', '备注'],
+                                        field_list:['', 'order_no', 'truck_type', 'qty', 'unit', 'price', 'total', 'gift_flag', 'currency'],
+                                        value_list: truckList![]
+                                    }){} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade in" id="chargeDetail">
                         <div class="form-group">
                             <div class="col-lg-12">
                                 <button class="btn btn-success btn-xs" id="add_charge">添加费用</button>
@@ -149,28 +209,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade in" id="shipmentDetail">
-                        <div class="form-group">
-                            <div class="col-lg-12">
-                                <%include("/oms/JobOrder/JobOrderEdit_shipment.html", {}){} %>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade in" id="truckDetail">
-                        <div class="form-group">
-                            <div class="col-lg-12">
-                                <%include("/eeda/component/form/detailTable.html", 
-                                    {
-                                        id:'truck_table',
-                                        style:'width:1200px;',
-                                        headers:['', '派车单号码', '类别', '运输公司', '车型', '数量', '金额', '出车日期', '备注'],
-                                        field_list:['', 'order_no', 'truck_type', 'qty', 'unit', 'price', 'total', 'gift_flag', 'currency'],
-                                        value_list: truckList![]
-                                    }){} %>
-                            </div>
-                        </div>
-                    </div>
-                    
 	            </div>
             </div>
             <br>

@@ -4,21 +4,21 @@
             <input type="hidden" id="item_id" value="${shipment.id!''}">
                     <div class="row">
                         <div class="col-lg-4"><!--  三列排版  -->
-                            <%include("/eeda/component/form/inputField.html", 
+                            <%include("/eeda/component/form/inputArea.html", 
                                 {   id:'shipper', 
                                     label:'发货人Shipper', 
                                     value:shipment.shipper!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4"><!--  三列排版  -->
-                            <%include("/eeda/component/form/inputField.html", 
+                            <%include("/eeda/component/form/inputArea.html", 
                                 {   id:'consignee', 
                                     label:'收货人Consignee', 
                                     value:shipment.consignee!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputCustomerField.html", 
+                            <%include("/eeda/component/form/inputArea.html", 
                                 {
                                     id:'notify_party', 
                                     label:'通知人Notify Party', 
