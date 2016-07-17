@@ -22,18 +22,15 @@ public class OrderNoGenerator {
 	//TODO：如果需要按每张单的前缀来生成序列号，可以多加一个Map来记录
 	
 	public synchronized static String getNextOrderNo(String orderPrefix) {
-		//if("00000".equals(count)){
+		if("00000".equals(count)){
 			initCountFromDB();
-		//}
-//		long No = 0;
+		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		String nowdate = sdf.format(new Date());
-//		No = Long.parseLong(nowdate);
-//		if (!(String.valueOf(No)).equals(dateValue)) {
-//			count = "00000";
-//			dateValue = String.valueOf(No);
-//		}
-		
+		if(!nowdate.equals(dateValue)){
+		    dateValue=nowdate;
+		    count = "00001";
+		}
 		String orderNo = orderPrefix +nowdate+ getNo(count);
 		
 		CustomizeField cf = CustomizeField.dao.findFirst("select * from customize_field where order_type='latestOrderNo'");
@@ -56,11 +53,6 @@ public class OrderNoGenerator {
 			if(ymd.equals(nowdate)){//如果年月日 =今天， 获取流水号
 				count = StringUtils.right(previousNo, 5); // 获取流水号
 			}
-		}else{
-			cf = new CustomizeField();
-			cf.set("order_type", "latestOrderNo");
-			cf.set("field_code", "2011010100001");
-			cf.save();
 		}
         
 	}
