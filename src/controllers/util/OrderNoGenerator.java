@@ -27,9 +27,10 @@ public class OrderNoGenerator {
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		String nowdate = sdf.format(new Date());
+		//日期不同, 则从新计数
 		if(!nowdate.equals(dateValue)){
 		    dateValue=nowdate;
-		    count = "00001";
+		    count = "00000";
 		}
 		String orderNo = orderPrefix +nowdate+ getNo(count);
 		
@@ -50,6 +51,7 @@ public class OrderNoGenerator {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 			String nowdate = sdf.format(new Date());
+			dateValue = nowdate;
 			if(ymd.equals(nowdate)){//如果年月日 =今天， 获取流水号
 				count = StringUtils.right(previousNo, 5); // 获取流水号
 			}
@@ -73,6 +75,19 @@ public class OrderNoGenerator {
 		return rs;
 	}
 
+	public static void test() {
+	    //模拟多线程访问
+        for (int i = 0; i < 10; i++) {
+            Thread t = new Thread(){
+                @Override
+                public void run() {
+                    System.out.println(Thread.currentThread().getName() + " => " + getNextOrderNo("YS"));
+                }
+            };
+            t.start();
+        }
+    }
+	
 	public static void main(String[] args) {
 		for (int i = 0; i < 10; i++) {
 			System.out.println(getNextOrderNo("YS"));
