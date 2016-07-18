@@ -10,7 +10,10 @@ $(document).ready(function() {
         //提交前，校验数
         
         $(this).attr('disabled', true);
-
+        var transport_type = [];
+        $('#transport_type input[type="checkbox"]:checked').each(function(){
+        	transport_type.push($(this).val()); 
+        });
         var items_array = itemOrder.buildItemDetail();
         var charge_array = itemOrder.buildChargeDetail();
         var shipment_array = itemOrder.buildShipmentDetail();
@@ -21,6 +24,7 @@ $(document).ready(function() {
         order.type = $('#type').val();
         order.status = $('#status').val()==''?'新建':$('#status').val();
         order.remark = $('#note').val();
+        order.transport_type = transport_type.toString();
         order.item_list = items_array; 
         order.charge_list = charge_array;
         order.shipment_detail = shipment_array;
@@ -37,7 +41,6 @@ $(document).ready(function() {
                 eeda.contactUrl("edit?id",order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $('#saveBtn').attr('disabled', false);
-                
                 //异步刷新明细表
                 itemOrder.refleshTable(order.ID);
                 //异步刷新明细表
@@ -68,7 +71,16 @@ $(document).ready(function() {
     	location.href ="/truckOrder/create?order_id="+order_id+"&itemIds="+itemIds;
     })
     
-    
+    //运输方式checkbox回显
+    var checkArray =$('#hiddenTransports').val().split(",");
+    for(var i=0;i<checkArray.length;i++){
+	    $('#transport_type input[type="checkbox"]').each(function(){
+	        var checkValue=$(this).val();
+	        if(checkArray[i]==checkValue){
+	        	$(this).attr("checked",true);
+	        }
+	    })
+    }
     
 });
 });

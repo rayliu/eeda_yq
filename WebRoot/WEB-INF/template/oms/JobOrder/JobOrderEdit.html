@@ -61,7 +61,8 @@
                                 }){}%>
                         </div><!-- /.col-lg-4 -->
                         <div class="col-lg-4">
-                            <div class="form-group">
+                        	<input type="hidden" id="hiddenTransports" value ="${order.transport_type!''}">
+                            <div class="form-group" id="transport_type">
                                 <label class="search-label">运输方式</label>
                                 <label class="checkbox-inline">
                                     <input type="checkbox" value='ocean'>海运

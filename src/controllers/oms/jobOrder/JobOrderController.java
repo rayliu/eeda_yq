@@ -70,7 +70,8 @@ public class JobOrderController extends Controller {
     
     
     
-    @Before(Tx.class)
+    @SuppressWarnings("unchecked")
+	@Before(Tx.class)
    	public void save() throws Exception {		
    		String jsonStr=getPara("params");
        	
