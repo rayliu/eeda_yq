@@ -69,8 +69,56 @@ $(document).ready(function() {
     		}
     	});
     	location.href ="/truckOrder/create?order_id="+order_id+"&itemIds="+itemIds;
-    })
+    });
     
+    var showServiceTab=function(service){
+        switch (service){
+          case 'ocean':
+            $('#oceanDetailTab').show();
+            break;
+          case 'air':
+            $('#airDetailTab').show();
+            break;
+          case 'domestic':
+            $('#domesticDetailTab').show();
+            break;
+          case 'custom':
+            $('#customDetailTab').show();
+            break;
+          case 'insur':
+            $('#insurDetailTab').show();
+            break;
+        }
+    };
+
+    var hideServiceTab=function(service){
+        switch (service){
+          case 'ocean':
+            $('#oceanDetailTab').hide();
+            break;
+          case 'air':
+            $('#airDetailTab').hide();
+            break;
+          case 'domestic':
+            $('#domesticDetailTab').hide();
+            break;
+          case 'custom':
+            $('#customDetailTab').hide();
+            break;
+          case 'insur':
+            $('#insurDetailTab').hide();
+            break;
+        }
+    };
+
+    $('#transport_type input[type="checkbox"]').change(function(){
+        var checkValue=$(this).val();
+        if($(this).prop('checked')){
+            showServiceTab(checkValue);
+        }else{
+            hideServiceTab(checkValue);
+        }
+    });
     //运输方式checkbox回显
     var checkArray =$('#hiddenTransports').val().split(",");
     for(var i=0;i<checkArray.length;i++){
@@ -78,6 +126,8 @@ $(document).ready(function() {
 	        var checkValue=$(this).val();
 	        if(checkArray[i]==checkValue){
 	        	$(this).attr("checked",true);
+
+                showServiceTab(checkValue);
 	        }
 	    })
     }

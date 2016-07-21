@@ -42,7 +42,6 @@
                                     display_value:party.abbr!''
                                 }){} %>
                        </div>
-                       
                     </div>
                     <div class="row"><!--  第4行  -->
                         <div class="col-lg-4">
@@ -60,10 +59,10 @@
                                     disabled: 'disabled'
                                 }){}%>
                         </div><!-- /.col-lg-4 -->
-                        <div class="col-lg-4">
+                        <div class="col-lg-8">
                         	<input type="hidden" id="hiddenTransports" value ="${order.transport_type!''}">
                             <div class="form-group" id="transport_type">
-                                <label class="search-label">运输方式</label>
+                                <label class="search-label">服务项目</label>
                                 <label class="checkbox-inline">
                                     <input type="checkbox" value='ocean'>海运
                                 </label>
@@ -72,6 +71,12 @@
                                 </label>
                                 <label class="checkbox-inline">
                                     <input type="checkbox" value='domestic'>陆运
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value='custom'>报关
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value='insur'>保险
                                 </label>
                             </div>
                         </div>
@@ -102,6 +107,55 @@
                                 }){}%>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h3>货品信息</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'gross_weight', 
+                                    label:'毛重(KG)', 
+                                    value:shipment.gross_weight!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'net_weight', 
+                                    label:'净重(KG)', 
+                                    value:shipment.net_weight!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'volume', 
+                                    label:'体积(CBM)', 
+                                    value:shipment.volume!''
+                                }){}%>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'net_weight', 
+                                    label:'件数', 
+                                    value:shipment.net_weight!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-8">
+                            <input type="hidden" id="hiddenTransports" value ="${order.transport_type!''}">
+                            <div class="form-group" id="transport_type">
+                                <label class="search-label">计费方式</label>
+                                <label class="checkbox-inline">
+                                    <input type="radio" name='charge_type' value='perWeight' checked>重货(按重量)
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="radio" name='charge_type' value='perVolume'>泡货(按体积)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div><!-- /.row -->
             
@@ -114,33 +168,30 @@
 
 			<div class="row" style="margin-top:15px">
 				<ul id="orderTabs" class="nav nav-tabs">
-					<li class="active">
-						<a href="#itemDetail" data-toggle="tab">货品明细</a>
-					</li>
                     <li>
-                        <a href="#oceanDetail" data-toggle="tab">海运信息</a>
+                        <a id='oceanDetailTab' href="#oceanDetail" data-toggle="tab" style="display: none;">海运信息</a>
                     </li>
                     <li>
-                        <a href="#airDetail" data-toggle="tab">空运信息</a>
+                        <a id='airDetailTab' href="#airDetail" data-toggle="tab" style="display: none;">空运信息</a>
                     </li>
                     <li>
-                        <a href="#domesticDetail" data-toggle="tab">陆运(干线)信息</a>
+                        <a id='domesticDetailTab' href="#domesticDetail" data-toggle="tab" style="display: none;">陆运信息</a>
                     </li>
                     <li>
-                        <a href="#pickupDetail" data-toggle="tab">派车(提卸货)信息</a>
+                        <a id='customDetailTab' href="#customDetail" data-toggle="tab" style="display: none;">报关信息</a>
                     </li>
                     <li>
-                        <a href="#customDetail" data-toggle="tab">报关信息</a>
-                    </li>
-                    <li>
-                        <a href="#insurDetail" data-toggle="tab">保险信息</a>
+                        <a id='insurDetailTab' href="#insurDetail" data-toggle="tab" style="display: none;">保险信息</a>
                     </li>
                     <li>
                         <a href="#chargeDetail" data-toggle="tab">费用明细</a>
                     </li>
+                    <li class="active">
+                        <a href="#docDetail" data-toggle="tab">相关文档</a>
+                    </li>
 				</ul>
 				<div class="tab-content">
-		            <div class="tab-pane fade active in" id="itemDetail">
+		            <div class="tab-pane fade  in" id="itemDetail">
 			            <div class="form-group">
 			                <div class="col-lg-12">
 			                    <button class="btn btn-success btn-xs" id="add_cargo">添加货品</button> 
@@ -178,22 +229,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade in" id="pickupDetail">
+                    <div class="tab-pane fade in" id="customDetail">
                         <div class="form-group">
                             <div class="col-lg-12">
-                                <%include("/eeda/component/form/detailTable.html", 
-                                    {
-                                        id:'truck_table',
-                                        style:'width:1200px;',
-                                        headers:['', '派车单号码', '类别', '运输公司', '车型', '数量', '金额', '出车日期', '备注'],
-                                        field_list:['', 'order_no', 'truck_type', 'qty', 'unit', 'price', 'total', 'gift_flag', 'currency'],
-                                        value_list: truckList![]
-                                    }){} %>
+                                <%include("/oms/JobOrder/JobOrderEdit_custom.html", {}){} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade in" id="insurDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/oms/JobOrder/JobOrderEdit_insur.html", {}){} %>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade in" id="chargeDetail">
                         <div class="form-group">
+                            应收
                             <div class="col-lg-12">
                                 <button class="btn btn-success btn-xs" id="add_charge">添加费用</button>
                                 <br>
@@ -201,8 +253,39 @@
                                     {
                                         id:'charge_table',
                                         style:'width:1500px;',
-                                        headers:['', '类别', '结算公司', '费用名称', '单价', '数量', '单位', 
-                                                 '币制', '金额', '收据汇率', '金额(人民币)','收据号码', '发票号码', '备注'],
+                                        headers:['', '类别', '结算公司', '费用名称', '单价', '数量', '单位', '币制', '金额', '收据汇率', '金额(人民币)', '备注'],
+                                        field_list:['', 'type', 'sp_id', 'charge_id', 'price', 'amount', 'unit_id', 'currency_id', 'total_amount',
+                                         'exchange_rate', 'currency_total_amount', 'receipt_no', 'invoice_no', 'remark'],
+                                        value_list: chargeList![]
+                                    }){} %>
+                            </div>
+                            
+                            应付
+                            <div class="col-lg-12">
+                                <button class="btn btn-success btn-xs" id="add_charge">添加费用</button>
+                                <br>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'charge_table',
+                                        style:'width:1500px;',
+                                        headers:['', '类别', '', '结算公司', '费用名称', '单价', '数量', '单位', '币制', '金额', '收据汇率', '金额(人民币)', '备注'],
+                                        field_list:['', 'type', 'sp_id', 'charge_id', 'price', 'amount', 'unit_id', 'currency_id', 'total_amount',
+                                         'exchange_rate', 'currency_total_amount', 'receipt_no', 'invoice_no', 'remark'],
+                                        value_list: chargeList![]
+                                    }){} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade active in" id="docDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <button class="btn btn-success btn-xs" id="add_charge">添加文档</button>
+                                <br>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'charge_table',
+                                        style:'width:1500px;',
+                                        headers:['', '文档名称', '上传人', '上传时间', '备注'],
                                         field_list:['', 'type', 'sp_id', 'charge_id', 'price', 'amount', 'unit_id', 'currency_id', 'total_amount',
                                          'exchange_rate', 'currency_total_amount', 'receipt_no', 'invoice_no', 'remark'],
                                         value_list: chargeList![]
