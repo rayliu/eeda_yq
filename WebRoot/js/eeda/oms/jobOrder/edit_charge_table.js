@@ -11,6 +11,11 @@ $(document).ready(function() {
         
         chargeTable.row(tr).remove().draw();
     }); 
+    //添加一行
+    $('#add_charge').on('click', function(){
+        var item={};
+        chargeTable.row.add(item).draw(true);
+    });
 
     itemOrder.buildChargeDetail=function(){
         var cargo_table_rows = $("#charge_table tr");
@@ -31,11 +36,14 @@ $(document).ready(function() {
             
             var item={}
             item.id = id;
+            item.order_type = "应收";
             for(var i = 1; i < row.childNodes.length; i++){
-            	var name = $(row.childNodes[i]).find('input').attr('name');
-            	var value = $(row.childNodes[i]).find('input').val();
-            	if(name){
-            		item[name] = value;
+            	var el = $(row.childNodes[i]).find('input');
+            	var name = el.attr('name'); 
+            	
+            	if(el && name){
+                	var value = el.val();//元素的值
+                	item[name] = value;
             	}
             }
             item.action = id.length > 0?'UPDATE':'CREATE';
@@ -140,20 +148,6 @@ $(document).ready(function() {
                     return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
-            { "data": "RECEIPT_NO", 
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="receipt_no" style="width:80px" value="'+data+'" class="form-control" />';
-                }
-            },
-            { "data": "INVOICE_NO", 
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="invoice_no" style="width:80px" value="'+data+'" class="form-control" />';
-                }
-            },
             { "data": "REMARK",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
@@ -164,11 +158,6 @@ $(document).ready(function() {
         ]
     });
 
-    $('#add_charge').on('click', function(){
-        var item={};
-        chargeTable.row.add(item).draw(true);
-    });
-    
     //刷新明细表
     itemOrder.refleshChargeTable = function(order_id){
     	var url = "/jobOrder/tableList?order_id="+order_id+"&type=charge";
