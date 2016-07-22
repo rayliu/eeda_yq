@@ -57,6 +57,7 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.HomeController;
+import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.planOrder.PlanOrderController;
 import controllers.oms.truckOrder.TruckOrderController;
@@ -162,6 +163,7 @@ public class EedaConfig extends JFinalConfig {
 		//oms管理系统
 		me.add("/planOrder", PlanOrderController.class, contentPath);
 		me.add("/jobOrder", JobOrderController.class, contentPath);
+		me.add("/customOrder", CustomOrderController.class, contentPath);
 		me.add("/truckOrder", TruckOrderController.class, contentPath);
 		me.add("/currency", CurrencyController.class, contentPath);
 	}

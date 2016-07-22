@@ -1,0 +1,173 @@
+<%layout("/eeda/layout.html"){%>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-header" style="font-size:32px">报关通知单</div>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+            <div class="row">  <!--  form row  -->
+            <input type="hidden" id="item_id" value="${shipment.id!''}">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'hbl_no', 
+                                    label:'工作单号码', 
+                                    value:shipment.hbl_no!'',
+                                    disabled:'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'hbl_no', 
+                                    label:'报关单号码', 
+                                    value:shipment.hbl_no!'',
+                                    disabled:'disabled'
+                                }){}%>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'carrier', 
+                                    label:'报关行', 
+                                    value:shipment.carrier!'',
+                                    disabled:'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'carrier', 
+                                    label:'联系人', 
+                                    value:shipment.carrier!'',
+                                    disabled:'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'bl_type', 
+                                    label:'电话', 
+                                    value:shipment.bl_type!'',
+                                    disabled:'disabled'
+                                }){}%>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/selectField.html", 
+                                {   id:'type', 
+                                    label:'贸易方式(监管方式)', 
+                                    required:'required',
+                                    value:order.type!'',
+                                    value_list:[
+                                        {code:'export', value:'一般贸易'},
+                                        {code:'import', value:'进料对口'}, 
+                                        {code:'both', value:'其它进出口免费'}
+                                    ]
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/selectField.html", 
+                                {   id:'type', 
+                                    label:'贸易条款', 
+                                    required:'required',
+                                    value:order.type!'',
+                                    value_list:[
+                                        {code:'export', value:'CIF'},
+                                        {code:'import', value:'EXW'}, 
+                                        {code:'both', value:'FOB'},
+                                        {code:'both', value:'DDP'},
+                                        {code:'both', value:'DDU'}
+                                    ],
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'vessel', 
+                                    label:'目的国', 
+                                    value:shipment.vessel!'',
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div>
+                    </div>
+                   
+                    <div class="row">
+
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <div class="form-group" >
+                                <label class="search-label">状态</label>
+                                <div class="checkbox">
+                                    <label >
+                                        <input type="checkbox" value='ocean' style="margin-top: 0px;">
+                                        1.申报成功
+                                    </label>
+                                     (更新人: 周星星, 更新时间:2016-07-21 15:23:12)
+                                </div>
+                                <div class="checkbox">
+                                    <label >
+                                        <input type="checkbox" value='air' style="margin-top: 0px;">
+                                        2.发往海关数据库
+                                    </label>
+                                     (更新人: 周星星, 更新时间:2016-07-21 15:23:12)
+                                </div>
+                                <div class="checkbox">
+                                    <label >
+                                        <input type="checkbox" value='domestic' style="margin-top: 0px;">
+                                        3.入库成功
+                                    </label>
+                                     (更新人: 周星星, 更新时间:2016-07-21 15:23:12)
+                                </div>
+                                <div class="checkbox">
+                                    <label >
+                                        <input type="checkbox" value='domestic' style="margin-top: 0px;">4.报关单查验(报关人: 周星星, 时间:2016-07-21 15:23:12)
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label >
+                                        <input type="checkbox" value='domestic' style="margin-top: 0px;">
+                                        6.放行(报关人: 周星星, 时间:2016-07-21 15:23:12)
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label >
+                                        <input type="checkbox" value='domestic' style="margin-top: 0px;">
+                                        7.审结(报关人: 周星星, 时间:2016-07-21 15:23:12)
+                                    </label>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+            </div><!-- /.row -->
+
+
+
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <a id='saveBtn' class="btn  btn-primary" href="#">保存</a>
+                    <button id="printBtn" type="button" class="btn  btn-primary" data-toggle="modal"  data-target=".bs-example-modal-sm">打印</button>
+                    <a class="btn  btn-default" href="/customOrder">返回</a>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+
+        </div><!--  form row  -->
+        <!-- /#page-wrapper -->
+<%}%>
+
+<script>
+    var order_no = '${order.order_no!'订单编辑'}'; 
+    var itemOrder = {};
+</script>
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/oms/jobOrder/edit']);
+    });
+</script>
