@@ -5,18 +5,13 @@ import interceptor.SetAttrLoginUserInterceptor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
-import models.eeda.oms.SalesOrderGoods;
-import models.eeda.oms.SalesOrder;
-import models.eeda.profile.CustomCompany;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -31,12 +26,8 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
-import controllers.oms.custom.dto.DingDanDto;
-import controllers.oms.custom.dto.DingDanGoodsDto;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
-import controllers.util.EedaHttpKit;
-import controllers.util.MD5Util;
 import controllers.util.OrderNoGenerator;
 
 @RequiresAuthentication

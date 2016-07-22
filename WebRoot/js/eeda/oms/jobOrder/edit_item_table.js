@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	var deletedTableIds=[];
@@ -56,7 +56,7 @@ $(document).ready(function() {
         return cargo_items_array;
     };
     
-    
+    debugger;
     //------------事件处理
     var cargoTable = $('#cargo_table').DataTable({
         "processing": true,

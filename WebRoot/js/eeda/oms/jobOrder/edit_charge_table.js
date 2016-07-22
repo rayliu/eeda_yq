@@ -67,9 +67,14 @@ $(document).ready(function() {
             },
             { "data": "TYPE", 
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="type" style="width:80px" value="'+data+'" class="form-control" />';
+                    var str = '<select name="container_type" class="form-control search-control">'
+                               +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>海运</option>'
+                               +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>空运</option>'
+                               +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>陆运</option>'
+                               +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>报关</option>'
+                               +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>保险</option>'
+                               +'</select>';
+                    return str;
                 }
             },
             { "data": "SP_ID",

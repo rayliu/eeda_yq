@@ -2,202 +2,21 @@
 <form id = "domesticForm">
             <div class="row">  <!--  form row  -->
             <input type="hidden" id="item_id" value="${shipment.id!''}">
+                    
+                    
                     <div class="row">
-                        <div class="col-lg-4"><!--  三列排版  -->
-                            <%include("/eeda/component/form/inputArea.html", 
-                                {   id:'shipper', 
-                                    label:'发货人Shipper', 
-                                    value:shipment.shipper!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4"><!--  三列排版  -->
-                            <%include("/eeda/component/form/inputArea.html", 
-                                {   id:'consignee', 
-                                    label:'收货人Consignee', 
-                                    value:shipment.consignee!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputArea.html", 
-                                {
-                                    id:'notify_party', 
-                                    label:'通知人Notify Party', 
-                                    required:'required',
-                                    value:shipment.notify_party!''
-                                }){} %>
-                       </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/selectField.html", 
-                                {   id:'booking_date', 
-                                    label:'委托日期', 
-                                    required:'required',
-                                    value:shipment.booking_date!'',
-                                    value_list:[
-                                        {code:'export', value:'出口'},
-                                        {code:'import', value:'进口'}, 
-                                        {code:'both', value:'进出口'},
-                                        {code:'oneDayTrip', value:'一日游'} 
-                                    ],
-                                    disabled: 'disabled'
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'carrier', 
-                                    label:'船公司', 
-                                    value:shipment.carrier!'', 
-                                    disabled: 'disabled'
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'bl_type', 
-                                    label:'提单类型', 
-                                    value:shipment.bl_type!'', 
-                                    disabled: 'disabled'
-                                }){}%>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'hbl_type', 
-                                    label:'HBL类型', 
-                                    value:shipment.hbl_type!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'hbl_no', 
-                                    label:'HBL号码', 
-                                    value:shipment.hbl_no!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'trans_type', 
-                                    label:'运输条款', 
-                                    value:shipment.trans_type!''
-                                }){}%>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'mbl_type', 
-                                    label:'MBL类型', 
-                                    value:shipment.mbl_type!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'mbl_no', 
-                                    label:'MBL号码', 
-                                    value:shipment.mbl_no!''
-                                }){}%>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'vessel', 
-                                    label:'船名', 
-                                    value:shipment.vessel!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'voyage', 
-                                    label:'航线', 
-                                    value:shipment.voyage!''
-                                }){}%>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'route', 
-                                    label:'航次', 
-                                    value:shipment.route!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputDateQueryField.html", 
-                                {   id:'schedule', 
-                                    label:'船期', 
-                                    value:shipment.schedule!''
-                                }){}%>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'por', 
-                                    label:'收货港 POR', 
-                                    value:shipment.por!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'pol', 
-                                    label:'装货港 POL', 
-                                    value:shipment.pol!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'pod', 
-                                    label:'卸货港 POD', 
-                                    value:shipment.pod!''
-                                }){}%>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'fnd', 
-                                    label:'目的地 FND', 
-                                    value:shipment.fnd!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/dateInputField.html", 
-                                {   id:'etd', 
-                                    label:'ETD', 
-                                    value:shipment.etd!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/dateInputField.html", 
-                                {   id:'eta', 
-                                    label:'ETA', 
-                                    value:shipment.eta!''
-                                }){}%>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'gross_weight', 
-                                    label:'毛重(KG)', 
-                                    value:shipment.gross_weight!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'net_weight', 
-                                    label:'净重(KG)', 
-                                    value:shipment.net_weight!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'volume', 
-                                    label:'体积(CBM)', 
-                                    value:shipment.volume!''
-                                }){}%>
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <button class="btn btn-success btn-xs" id="add_cargo">添加地点</button> 
+                                        <br>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'truck_table',
+                                        headers:['', '收卸货类型', '运输公司', '司机', '司机电话', '车型','车牌','货品联系人','电话', '地点', '预约到达时间', '货品信息','签收文件描述', '签收状态'],
+                                        field_list:['', 'load_type', 'container_type', 'container_amount'],
+                                        value_list: itemList![]
+                                    }){} %>
+                            </div>
                         </div>
                     </div>
             </div><!-- /.row -->

@@ -1,0 +1,73 @@
+
+<form id = "shipmentForm">
+            <div class="row">  <!--  form row  -->
+            <input type="hidden" id="item_id" value="${shipment.id!''}">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'carrier', 
+                                    label:'保险公司', 
+                                    value:shipment.carrier!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'carrier', 
+                                    label:'投保人', 
+                                    value:shipment.carrier!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'bl_type', 
+                                    label:'被保险人', 
+                                    value:shipment.bl_type!''
+                                }){}%>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'hbl_no', 
+                                    label:'保险金额', 
+                                    value:shipment.hbl_no!''
+                                }){}%>
+                        </div>
+                        
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/selectField.html", 
+                                {   id:'type', 
+                                    label:'保险类型', 
+                                    required:'required',
+                                    value:order.type!'',
+                                    value_list:[
+                                        {code:'export', value:'国内陆运'},
+                                        {code:'import', value:'进出口国际运输'}
+                                    ],
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'vessel', 
+                                    label:'投保单号', 
+                                    value:shipment.vessel!''
+                                }){}%>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'vessel', 
+                                    label:'保险单号', 
+                                    value:shipment.vessel!''
+                                }){}%>
+                        </div>
+                    </div>
+                   
+                   
+            </div><!-- /.row -->
+</form>
+
+
