@@ -58,19 +58,19 @@ $(document).ready(function() {
     });  
     
     //创建派车单URL跳转传参
-    $('#create_truckOrder').click(function(){
-    	$(this).attr('disabled', true);
-    	var order_id = $('#order_id').val();
-    	var itemIds=[];
-    	$('#cargo_table input[type="checkbox"]').each(function(){
-    		var checkbox = $(this).prop('checked');
-    		if(checkbox){
-    			var itemId = $(this).parent().parent().attr('id');
-    			itemIds.push(itemId);
-    		}
-    	});
-    	location.href ="/truckOrder/create?order_id="+order_id+"&itemIds="+itemIds;
-    });
+//    $('#create_truckOrder').click(function(){
+//    	$(this).attr('disabled', true);
+//    	var order_id = $('#order_id').val();
+//    	var itemIds=[];
+//    	$('#cargo_table input[type="checkbox"]').each(function(){
+//    		var checkbox = $(this).prop('checked');
+//    		if(checkbox){
+//    			var itemId = $(this).parent().parent().attr('id');
+//    			itemIds.push(itemId);
+//    		}
+//    	});
+//    	location.href ="/truckOrder/create?order_id="+order_id+"&itemIds="+itemIds;
+//    });
     
     var showServiceTab=function(service){
         switch (service){

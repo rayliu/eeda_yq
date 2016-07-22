@@ -56,7 +56,6 @@ $(document).ready(function() {
         return cargo_items_array;
     };
     
-    debugger;
     //------------事件处理
     var cargoTable = $('#cargo_table').DataTable({
         "processing": true,
