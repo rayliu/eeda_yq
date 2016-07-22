@@ -4,6 +4,10 @@ $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
 	
+	//构造海运信息json
+	var oseanJson = function(){
+	}
+	
     //------------save
     $('#saveBtn').click(function(e){
         //阻止a 的默认响应行为，不需要跳转
@@ -15,9 +19,10 @@ $(document).ready(function() {
         $('#transport_type input[type="checkbox"]:checked').each(function(){
         	transport_type.push($(this).val()); 
         });
-        var items_array = itemOrder.buildItemDetail();
-        var charge_array = itemOrder.buildChargeDetail();
-        var shipment_array = itemOrder.buildShipmentDetail();
+        //var items_array = itemOrder.buildItemDetail();
+        //var charge_array = itemOrder.buildChargeDetail();
+        var shipment_detail = itemOrder.buildShipmentDetail();
+        var shipment_item = itemOrder.buildOseanItemDetail();
         var order={}
         order.id = $('#order_id').val();
         order.customer_id = $('#customer_id').val();
@@ -26,9 +31,10 @@ $(document).ready(function() {
         order.status = $('#status').val()==''?'新建':$('#status').val();
         order.remark = $('#note').val();
         order.transport_type = transport_type.toString();
-        order.item_list = items_array; 
-        order.charge_list = charge_array;
-        order.shipment_detail = shipment_array;
+        //order.item_list = items_array; 
+        //order.charge_list = charge_array;
+        order.shipment_detail = shipment_detail;
+        order.shipment_list = shipment_item;
         
         //异步向后台提交数据
         $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){

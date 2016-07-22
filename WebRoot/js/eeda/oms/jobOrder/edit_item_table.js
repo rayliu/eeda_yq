@@ -3,7 +3,7 @@ $(document).ready(function() {
 
 	var deletedTableIds=[];
     //删除一行
-    $("#cargo_table").on('click', '.delete', function(e){
+    $("#ocean_cargo_table").on('click', '.delete', function(e){
         e.preventDefault();
         var tr = $(this).parent().parent();
         deletedTableIds.push(tr.attr('id'))
@@ -11,8 +11,8 @@ $(document).ready(function() {
         cargoTable.row(tr).remove().draw();
     }); 
 
-    itemOrder.buildItemDetail=function(){
-        var cargo_table_rows = $("#cargo_table tr");
+    itemOrder.buildOseanItemDetail=function(){
+        var cargo_table_rows = $("#ocean_cargo_table tr");
         var cargo_items_array=[];
         for(var index=0; index<cargo_table_rows.length; index++){
             if(index==0)
@@ -57,7 +57,7 @@ $(document).ready(function() {
     };
     
     //------------事件处理
-    var cargoTable = $('#cargo_table').DataTable({
+    var cargoTable = $('#ocean_cargo_table').DataTable({
         "processing": true,
         "searching": false,
         "paging": false,
@@ -79,7 +79,7 @@ $(document).ready(function() {
                 		return '<input type="checkbox" class="checkBox" disabled>';
                 }
             },
-            { "width": "3px",
+            { "width": "30px",
                 "render": function ( data, type, full, meta ) {
                 	return '<button type="button" class="delete btn btn-default btn-xs">删除</button>';
                 }
@@ -113,18 +113,18 @@ $(document).ready(function() {
                     return str;
                 }
             },
-            { "data": "CONTAINER_AMOUNT", 
+            { "data": "CONTAINER_NO", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='1';
-                    return '<input type="number" name="container_amount" value="'+data+'" class="form-control easyui-numberbox" data-options="max:0"/>';
+                    return '<input type="text" name="container_no" value="'+data+'" class="form-control easyui-numberbox" data-options="max:0"/>';
                 }
             },
-            { "data": "CARGO_NAME", 
+            { "data": "SEAL_NO", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="cargo_name" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="seal_no" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "PIECES", 
@@ -144,14 +144,21 @@ $(document).ready(function() {
             { "data": "VOLUME", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
+                        data='1';
+                    return '<input type="text" name="volume" value="'+data+'" class="form-control" />';
+                }
+            },
+            { "data": "VGM", 
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
                         data='0';
-                    return '<input type="text" name="volume" value="'+data+'" class="form-control"/>';
+                    return '<input type="text" name="vgm" value="'+data+'" class="form-control"/>';
                 }
             }
         ]
     });
 
-    $('#add_cargo').on('click', function(){
+    $('#add_ocean_cargo').on('click', function(){
         var item={};
         cargoTable.row.add(item).draw(true);
     });
@@ -163,7 +170,7 @@ $(document).ready(function() {
     }
     
     //checkbox选中则button可点击
-	$('#cargo_table').on('click','.checkBox',function(){
+/*	$('#cargo_table').on('click','.checkBox',function(){
 		var hava_check = 0;
 		$('#cargo_table input[type="checkbox"]').each(function(){	
 			var checkbox = $(this).prop('checked');
@@ -176,9 +183,7 @@ $(document).ready(function() {
 		}else{
 			$('#create_truckOrder').attr('disabled',true);
 		}
-	});
-	
-	
+	});*/
 
 });
 });

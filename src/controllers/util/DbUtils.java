@@ -100,6 +100,44 @@ public class DbUtils {
 		}
 	}
 	
+	public static void handleLists(List<Map<String, ?>> itemList,
+	        String master_order_id, Class<?> clazz,Class<?> itemClazz,
+	        String master_col_name) 
+			throws InstantiationException, IllegalAccessException {
+    	for (Map<String, ?> rowMap : itemList) {//获取每一行
+    		Model<?> model = (Model<?>) clazz.newInstance();
+    		Object model_id = null;
+    		Object rowId = rowMap.get("id");
+    		Object action = rowMap.get("action");
+    		if(StringUtils.isEmpty(rowId.toString())){
+				setModelValues(rowMap, model);
+    			model.set(master_col_name, master_order_id);
+    			model.save();	
+    			model_id = model.get("id");
+    		}else{
+    			if("DELETE".equals(action)){//delete
+    				Model<?> deleteModel = model.findById(rowId);
+        			deleteModel.delete();
+        		}else{//UPDATE
+        			Model<?> updateModel = model.findById(rowId);
+        			setModelValues(rowMap, updateModel);
+        			updateModel.update();
+        			model_id = updateModel.get("id");
+        		}
+    		}
+    		
+    		
+    		for (Entry<String, ?> entry : rowMap.entrySet()) { 
+    			String key = entry.getKey();
+    			if(key.endsWith("_list")){
+    				List<Map<String, ?>> list = (ArrayList<Map<String, ?>>)rowMap.get(key);
+    				handleLists(list, model_id.toString(), itemClazz,itemClazz, "order_id");
+    			}
+    		}
+    			
+		}
+	}
+	
 	public static void deleteHandle(List<Map<String, String>> itemList,
             Class<?> clazz, Map<String, String> master_ref_col){
 	    List<String> idList = new ArrayList<String>();

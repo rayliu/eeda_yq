@@ -102,15 +102,20 @@ public class JobOrderController extends Controller {
    			id = jobOrder.getLong("id").toString();
    		}
    		
-   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-		DbUtils.handleList(itemList, id, JobOrderCargo.class, "order_id");
-		
-		List<Map<String, String>> chargeList = (ArrayList<Map<String, String>>)dto.get("charge_list");
-		DbUtils.handleList(chargeList, id, JobOrderArap.class, "order_id");
+//   	List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
+//		DbUtils.handleList(itemList, id, JobOrderCargo.class, "order_id");
+//		
+//		List<Map<String, String>> chargeList = (ArrayList<Map<String, String>>)dto.get("charge_list");
+//		DbUtils.handleList(chargeList, id, JobOrderArap.class, "order_id");
 		
 		
 		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
 		DbUtils.handleList(shipment_detail, id, JobOrderShipment.class, "order_id");
+		
+		List<Map<String, String>> shipment_item_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
+		DbUtils.handleList(shipment_item_detail, id, JobOrderCargo.class, "order_id");
+
+		
 		
 		//获取shipment_id
 		JobOrderShipment jst = getShiment(id) ;
@@ -132,14 +137,13 @@ public class JobOrderController extends Controller {
     private List<Record> getItems(String orderId,String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
-    	if("cargo".equals(type)){
+    	if("shipment".equals(type)){
     		itemSql = "select * from job_order_cargo where order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
     		itemSql = "select * from job_order_arap where order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}
-		
 		return itemList;
 	}
    
@@ -150,13 +154,11 @@ public class JobOrderController extends Controller {
     	JobOrder jobOrder = JobOrder.dao.findById(id);
     	setAttr("order", jobOrder);
     	
-    	//获取明细表信息
-    	setAttr("itemList", getItems(id,"cargo"));
+    	//获取海运明细表信息
+    	setAttr("shipmentList", getItems(id,"shipment"));
     	
     	//获取明细表信息
     	setAttr("chargeList", getItems(id,"charge"));
-    	
-    	setAttr("shipment", getShiment(id));
 
     	//客户回显
     	Party party = Party.dao.findById(jobOrder.get("customer_id"));
