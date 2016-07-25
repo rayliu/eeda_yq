@@ -44,7 +44,7 @@ $(document).ready(function() {
             { "data": "CONTAINER_AMOUNT", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='1';
+                        data='';
                     return '<input type="number" name="container_amount" value="'+data+'" class="form-control easyui-numberbox" data-options="max:0"/>';
                 }
             },
@@ -58,14 +58,14 @@ $(document).ready(function() {
             { "data": "PIECES", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='1';
+                        data='';
                     return '<input type="text" name="pieces" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "NET_WEIGHT", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='0';
+                        data='';
                     return '<input type="text" name="net_weight" value="'+data+'" class="form-control" />';
                 }
             }

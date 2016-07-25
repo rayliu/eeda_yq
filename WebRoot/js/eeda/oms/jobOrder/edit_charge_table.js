@@ -102,14 +102,14 @@ $(document).ready(function() {
             { "data": "PRICE", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='0';
+                        data='';
                     return '<input type="text" name="price" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "AMOUNT",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='1';
+                        data='';
                     return '<input type="number" name="amount" style="width:80px" value="'+data+'" class="form-control "/>';
                 }
             },
@@ -123,28 +123,28 @@ $(document).ready(function() {
             { "data": "CURRENCY_ID", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='1';
+                        data='';
                     return '<input type="text" name="currency_id" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "TOTAL_AMOUNT", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='0';
+                        data='';
                     return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "EXCHANGE_RATE", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='0';
+                        data='';
                     return '<input type="text" name="exchange_rate" style="width:80px" value="'+data+'" class="form-control"/>';
                 }
             },
             { "data": "CURRENCY_TOTAL_AMOUNT", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='0';
+                        data='';
                     return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },

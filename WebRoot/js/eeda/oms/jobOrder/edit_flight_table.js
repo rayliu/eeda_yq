@@ -79,7 +79,7 @@ $(document).ready(function() {
             { "data": "AIR_COMPANY", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='1';
+                        data='';
                     return '<input type="number" name="air_company" value="'+data+'" class="form-control easyui-numberbox" data-options="max:0"/>';
                 }
             },
@@ -93,35 +93,35 @@ $(document).ready(function() {
             { "data": "VOYAGE_NO", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='1';
+                        data='';
                     return '<input type="text" name="voyage_no" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "START_FROM", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='0';
+                        data='';
                     return '<input type="text" name="start_from" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "ETD", 
             	"render": function ( data, type, full, meta ) {
             		if(!data)
-            			data='0';
+            			data='';
             		return '<input type="text" name="etd" value="'+data+'" class="form-control" />';
             	}
             },
             { "data": "DESTINATION", 
             	"render": function ( data, type, full, meta ) {
             		if(!data)
-            			data='0';
+            			data='';
             		return '<input type="text" name="destination" value="'+data+'" class="form-control" />';
             	}
             },
             { "data": "ETA", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='0';
+                        data='';
                     return '<input type="text" name="eta" value="'+data+'" class="form-control"/>';
                 }
             }

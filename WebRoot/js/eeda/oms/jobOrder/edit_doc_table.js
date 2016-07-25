@@ -76,28 +76,28 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="doc_name" style="width:80px" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="doc_name" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "UPLOADER",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="uploader" style="width:80px" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="uploader" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "DOC_NAME", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="doc_name" style="width:80px" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="doc_name" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "UPLOAD_TIME",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="upload_time" style="width:80px" value="'+data+'" class="form-control "/>';
+                    return '<input type="number" name="upload_time" value="'+data+'" class="form-control "/>';
                 }
             }
         ]
