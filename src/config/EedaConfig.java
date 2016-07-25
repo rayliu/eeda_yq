@@ -21,9 +21,13 @@ import models.UserRole;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.jobOrder.JobOrder;
+import models.eeda.oms.jobOrder.JobOrderAir;
+import models.eeda.oms.jobOrder.JobOrderAirItem;
 import models.eeda.oms.jobOrder.JobOrderArap;
-import models.eeda.oms.jobOrder.JobOrderCargo;
+import models.eeda.oms.jobOrder.JobOrderDoc;
+import models.eeda.oms.jobOrder.JobOrderLandItem;
 import models.eeda.oms.jobOrder.JobOrderShipment;
+import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 import models.eeda.oms.truckOrder.TruckOrder;
 import models.eeda.oms.truckOrder.TruckOrderArap;
 import models.eeda.oms.truckOrder.TruckOrderCargo;
@@ -231,9 +235,13 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("plan_order_item", PlanOrderItem.class);
         
         arp.addMapping("job_order", JobOrder.class);
-        arp.addMapping("job_order_cargo", JobOrderCargo.class);
+        arp.addMapping("job_order_shipment_item", JobOrderShipmentItem.class);
         arp.addMapping("job_order_arap", JobOrderArap.class);
         arp.addMapping("job_order_shipment", JobOrderShipment.class);
+        arp.addMapping("job_order_doc", JobOrderDoc.class);
+        arp.addMapping("job_order_air", JobOrderAir.class);
+        arp.addMapping("job_order_air_item", JobOrderAirItem.class);
+        arp.addMapping("job_order_land_item", JobOrderLandItem.class);
         
         arp.addMapping("truck_order", TruckOrder.class);
         arp.addMapping("truck_order_arap", TruckOrderArap.class);

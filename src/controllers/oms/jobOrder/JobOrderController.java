@@ -12,8 +12,11 @@ import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.jobOrder.JobOrder;
+import models.eeda.oms.jobOrder.JobOrderAir;
+import models.eeda.oms.jobOrder.JobOrderAirItem;
 import models.eeda.oms.jobOrder.JobOrderArap;
-import models.eeda.oms.jobOrder.JobOrderCargo;
+import models.eeda.oms.jobOrder.JobOrderLandItem;
+import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 
 import org.apache.commons.lang.StringUtils;
@@ -108,12 +111,23 @@ public class JobOrderController extends Controller {
 //		List<Map<String, String>> chargeList = (ArrayList<Map<String, String>>)dto.get("charge_list");
 //		DbUtils.handleList(chargeList, id, JobOrderArap.class, "order_id");
 		
-		
+		//海运
 		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
 		DbUtils.handleList(shipment_detail, id, JobOrderShipment.class, "order_id");
 		
-		List<Map<String, String>> shipment_item_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
-		DbUtils.handleList(shipment_item_detail, id, JobOrderCargo.class, "order_id");
+		List<Map<String, String>> shipment_item = (ArrayList<Map<String, String>>)dto.get("shipment_list");
+		DbUtils.handleList(shipment_item, id, JobOrderShipmentItem.class, "order_id");
+		//空运
+		List<Map<String, String>> air_detail = (ArrayList<Map<String, String>>)dto.get("air_detail");
+		DbUtils.handleList(air_detail, id, JobOrderAir.class, "order_id");
+		
+		List<Map<String, String>> air_item = (ArrayList<Map<String, String>>)dto.get("air_list");
+		DbUtils.handleList(air_item, id, JobOrderAirItem.class, "order_id");
+		
+		//陆运
+		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
+		DbUtils.handleList(land_item, id, JobOrderLandItem.class, "order_id");
+		
 
 		
 		
@@ -138,7 +152,13 @@ public class JobOrderController extends Controller {
     	String itemSql = "";
     	List<Record> itemList = null;
     	if("shipment".equals(type)){
-    		itemSql = "select * from job_order_cargo where order_id=?";
+    		itemSql = "select * from job_order_shipment_item where order_id=?";
+    		itemList = Db.find(itemSql, orderId);
+    	}else if("air".equals(type)){
+    		itemSql = "select * from job_order_air_item where order_id=?";
+    		itemList = Db.find(itemSql, orderId);
+    	}else if("land".equals(type)){
+    		itemSql = "select * from job_order_land_item where order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
     		itemSql = "select * from job_order_arap where order_id=?";
@@ -146,6 +166,19 @@ public class JobOrderController extends Controller {
     	}
 		return itemList;
 	}
+    
+    private Record getDetail(String orderId,String type){
+    	String itemSql = ""; 
+    	Record detail = null;
+    	if("shipment".equals(type)){
+    		itemSql = "select * from job_order_shipment where order_id=?";
+    		detail = Db.findFirst(itemSql, orderId);
+    	}else if("air".equals(type)){
+    		itemSql = "select * from job_order_air where order_id=?";
+    		detail = Db.findFirst(itemSql, orderId);
+    	}
+		return detail;
+    }
    
     
     @Before(Tx.class)
@@ -153,9 +186,17 @@ public class JobOrderController extends Controller {
     	String id = getPara("id");
     	JobOrder jobOrder = JobOrder.dao.findById(id);
     	setAttr("order", jobOrder);
-    	
+
     	//获取海运明细表信息
     	setAttr("shipmentList", getItems(id,"shipment"));
+    	setAttr("shipment", getDetail(id,"shipment"));
+    	
+    	//获取海运明细表信息
+    	setAttr("airList", getItems(id,"air"));
+    	setAttr("air", getDetail(id,"air"));
+    	
+    	//获取路运明细表信息
+    	setAttr("landList", getItems(id,"land"));
     	
     	//获取明细表信息
     	setAttr("chargeList", getItems(id,"charge"));
@@ -210,11 +251,7 @@ public class JobOrderController extends Controller {
     	String type = getPara("type");
     	
     	List<Record> list = null;
-    	if("cargo".equals(type)){
-    		list = getItems(order_id,type);
-    	}else if("charge".equals(type)){
-    		list = getItems(order_id,type);
-    	}
+    	list = getItems(order_id,type);
     	
     	Map map = new HashMap();
         map.put("sEcho", 1);

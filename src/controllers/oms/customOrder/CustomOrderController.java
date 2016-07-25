@@ -13,7 +13,7 @@ import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderArap;
-import models.eeda.oms.jobOrder.JobOrderCargo;
+import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 
 import org.apache.commons.lang.StringUtils;
@@ -103,7 +103,7 @@ public class CustomOrderController extends Controller {
    		}
    		
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-		DbUtils.handleList(itemList, id, JobOrderCargo.class, "order_id");
+		DbUtils.handleList(itemList, id, JobOrderShipmentItem.class, "order_id");
 		
 		List<Map<String, String>> chargeList = (ArrayList<Map<String, String>>)dto.get("charge_list");
 		DbUtils.handleList(chargeList, id, JobOrderArap.class, "order_id");

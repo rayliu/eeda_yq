@@ -1,28 +1,28 @@
 
-<form id = "shipmentForm">
+<form id = "customForm">
             <div class="row">  <!--  form row  -->
-            <input type="hidden" id="item_id" value="${shipment.id!''}">
+            <input type="hidden" id="item_id" value="${custom.id!''}">
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'carrier', 
+                                {   id:'customs_broker', 
                                     label:'报关行', 
-                                    value:shipment.carrier!'',
+                                    value:custom.customs_broker!'',
                                     placeholder:'基础数据??'
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'carrier', 
+                                {   id:'contact', 
                                     label:'联系人', 
-                                    value:shipment.carrier!''
+                                    value:custom.contact!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'bl_type', 
+                                {   id:'phone', 
                                     label:'电话', 
-                                    value:shipment.bl_type!''
+                                    value:custom.phone!''
                                 }){}%>
                         </div>
                     </div>
@@ -30,18 +30,18 @@
                         
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'hbl_no', 
+                                {   id:'custom_order_no', 
                                     label:'报关单号码', 
-                                    value:shipment.hbl_no!''
+                                    value:custom.custom_order_no!''
                                 }){}%>
                         </div>
                         
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/selectField.html", 
-                                {   id:'type', 
+                                {   id:'trade_mode', 
                                     label:'贸易方式(监管方式)', 
                                     required:'required',
-                                    value:order.type!'',
+                                    value:order.trade_mode!'',
                                     value_list:[
                                         {code:'export', value:'一般贸易'},
                                         {code:'import', value:'进料对口'}, 
@@ -52,10 +52,10 @@
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/selectField.html", 
-                                {   id:'type', 
+                                {   id:'trade_clause', 
                                     label:'贸易条款', 
                                     required:'required',
-                                    value:order.type!'',
+                                    value:order.trade_clause!'',
                                     value_list:[
                                         {code:'export', value:'CIF'},
                                         {code:'import', value:'EXW'}, 
@@ -70,9 +70,9 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'vessel', 
+                                {   id:'destination_country', 
                                     label:'目的国', 
-                                    value:shipment.vessel!''
+                                    value:custom.destination_country!''
                                 }){}%>
                         </div>
                     </div>
@@ -85,39 +85,40 @@
                                 <label class="search-label">状态</label>
                                 <div class="checkbox">
                                     <label >
-                                        <input type="checkbox" value='ocean' style="margin-top: 0px;">
+                                        <input type="checkbox" value='declareSuccess' style="margin-top: 0px;">
                                         1.申报成功
                                     </label>
                                      (更新人:AAA, 更新时间:2016-07-21 15:23:12)
                                 </div>
                                 <div class="checkbox">
                                     <label >
-                                        <input type="checkbox" value='air' style="margin-top: 0px;">
+                                        <input type="checkbox" value='onDataBaseRoad' style="margin-top: 0px;">
                                         2.发往海关数据库
                                     </label>
                                      (更新人:AAA, 更新时间:2016-07-21 15:23:12)
                                 </div>
                                 <div class="checkbox">
                                     <label >
-                                        <input type="checkbox" value='domestic' style="margin-top: 0px;">
+                                        <input type="checkbox" value='gateInSuccess' style="margin-top: 0px;">
                                         3.入库成功
                                     </label>
                                      (更新人:AAA, 更新时间:2016-07-21 15:23:12)
                                 </div>
                                 <div class="checkbox">
                                     <label >
-                                        <input type="checkbox" value='domestic' style="margin-top: 0px;">4.报关单查验(报关人:AAA, 时间:2016-07-21 15:23:12)
+                                        <input type="checkbox" value='customOrderCheck' style="margin-top: 0px;">
+                                        4.报关单查验(报关人:AAA, 时间:2016-07-21 15:23:12)
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label >
-                                        <input type="checkbox" value='domestic' style="margin-top: 0px;">
+                                        <input type="checkbox" value='release' style="margin-top: 0px;">
                                         6.放行(报关人:AAA, 时间:2016-07-21 15:23:12)
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label >
-                                        <input type="checkbox" value='domestic' style="margin-top: 0px;">
+                                        <input type="checkbox" value='conclusion' style="margin-top: 0px;">
                                         7.审结(报关人:AAA, 时间:2016-07-21 15:23:12)
                                     </label>
                                 </div>

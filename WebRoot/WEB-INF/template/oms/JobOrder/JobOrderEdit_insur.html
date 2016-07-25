@@ -1,27 +1,27 @@
 
-<form id = "shipmentForm">
+<form id = "insuranceForm">
             <div class="row">  <!--  form row  -->
-            <input type="hidden" id="item_id" value="${shipment.id!''}">
+            <input type="hidden" id="item_id" value="${insurance.id!''}">
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'carrier', 
+                                {   id:'insurance_company', 
                                     label:'保险公司', 
-                                    value:shipment.carrier!''
+                                    value:insurance.insurance_company!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'carrier', 
+                                {   id:'policy_holder', 
                                     label:'投保人', 
-                                    value:shipment.carrier!''
+                                    value:insurance.policy_holder!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'bl_type', 
+                                {   id:'insurant', 
                                     label:'被保险人', 
-                                    value:shipment.bl_type!''
+                                    value:insurance.insurant!''
                                 }){}%>
                         </div>
                     </div>
@@ -29,18 +29,18 @@
                         
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'hbl_no', 
+                                {   id:'insurance_amount', 
                                     label:'保险金额', 
-                                    value:shipment.hbl_no!''
+                                    value:insurance.insurance_amount!''
                                 }){}%>
                         </div>
                         
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/selectField.html", 
-                                {   id:'type', 
+                                {   id:'insurance_type', 
                                     label:'保险类型', 
                                     required:'required',
-                                    value:order.type!'',
+                                    value:insurance.insurance_type!'',
                                     value_list:[
                                         {code:'export', value:'国内陆运'},
                                         {code:'import', value:'进出口国际运输'}
@@ -50,18 +50,18 @@
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'vessel', 
+                                {   id:'insure_no', 
                                     label:'投保单号', 
-                                    value:shipment.vessel!''
+                                    value:insurance.insure_no!''
                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'vessel', 
+                                {   id:'insurance_no', 
                                     label:'保险单号', 
-                                    value:shipment.vessel!''
+                                    value:insurance.insurance_no!''
                                 }){}%>
                         </div>
                     </div>

@@ -14,7 +14,7 @@ import java.util.Map;
 import models.Party;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrder;
-import models.eeda.oms.jobOrder.JobOrderCargo;
+import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 import models.eeda.oms.truckOrder.TruckOrder;
 import models.eeda.oms.truckOrder.TruckOrderArap;
 import models.eeda.oms.truckOrder.TruckOrderCargo;

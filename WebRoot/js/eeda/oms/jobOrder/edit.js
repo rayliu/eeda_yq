@@ -1,5 +1,5 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',
-    './edit_item_table', './edit_charge_table', './edit_shipment_detail'], function ($, metisMenu) {
+    './edit_shipment_table','./edit_land_table', './edit_charge_table','./edit_air_table', './edit_shipment_detail','./edit_air_detail'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
@@ -21,8 +21,16 @@ $(document).ready(function() {
         });
         //var items_array = itemOrder.buildItemDetail();
         //var charge_array = itemOrder.buildChargeDetail();
+        
+        //海运
         var shipment_detail = itemOrder.buildShipmentDetail();
-        var shipment_item = itemOrder.buildOseanItemDetail();
+        var shipment_item = itemOrder.buildOseanItem();
+        //空运
+        var air_detail = itemOrder.buildAirDetail();
+        var air_item = itemOrder.buildAirItem();
+        //陆运
+        var air_item = itemOrder.buildLoadItem();
+        
         var order={}
         order.id = $('#order_id').val();
         order.customer_id = $('#customer_id').val();
@@ -33,8 +41,14 @@ $(document).ready(function() {
         order.transport_type = transport_type.toString();
         //order.item_list = items_array; 
         //order.charge_list = charge_array;
+        //海运
         order.shipment_detail = shipment_detail;
         order.shipment_list = shipment_item;
+        //空运
+        order.air_detail = air_detail;
+        order.air_list = air_item;
+        //陆运
+        order.land_list = air_item;
         
         //异步向后台提交数据
         $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
@@ -48,10 +62,14 @@ $(document).ready(function() {
                 eeda.contactUrl("edit?id",order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $('#saveBtn').attr('disabled', false);
+                //异步刷新海运明细表
+                itemOrder.refleshOseanTable(order.ID);
+                //异步刷新空运明细表
+                itemOrder.refleshAirItemTable(order.ID);
+                //异步刷新路运明细表
+                itemOrder.refleshLandItemTable(order.ID);
                 //异步刷新明细表
-                itemOrder.refleshTable(order.ID);
-                //异步刷新明细表
-                itemOrder.refleshChargeTable(order.ID);
+                //itemOrder.refleshChargeTable(order.ID);
                 
             }else{
                 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
