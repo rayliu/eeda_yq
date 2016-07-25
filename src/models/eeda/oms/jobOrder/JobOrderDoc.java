@@ -1,0 +1,1 @@
+package models.eeda.oms.jobOrder;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class JobOrderDoc extends Model<JobOrderDoc> {	public static final JobOrderDoc dao = new JobOrderDoc();}
