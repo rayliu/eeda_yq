@@ -11,7 +11,7 @@ $(document).ready(function() {
         cargoTable.row(tr).remove().draw();
     }); 
 
-    itemOrder.buildOseanItem=function(){
+    itemOrder.buildOceanItem=function(){
         var cargo_table_rows = $("#ocean_cargo_table tr");
         var cargo_items_array=[];
         for(var index=0; index<cargo_table_rows.length; index++){
@@ -116,7 +116,7 @@ $(document).ready(function() {
             { "data": "CONTAINER_NO", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='1';
+                        data='';
                     return '<input type="text" name="container_no" value="'+data+'" class="form-control easyui-numberbox" data-options="max:0"/>';
                 }
             },
@@ -130,28 +130,28 @@ $(document).ready(function() {
             { "data": "PIECES", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='1';
+                        data='';
                     return '<input type="text" name="pieces" value="'+data+'" class="form-control" />';
                 }
             },
-            { "data": "NET_WEIGHT", 
+            { "data": "GROSS_WEIGHT", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='0';
-                    return '<input type="text" name="net_weight" value="'+data+'" class="form-control" />';
+                        data='';
+                    return '<input type="text" name="gross_weight" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "VOLUME", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='1';
+                        data='';
                     return '<input type="text" name="volume" value="'+data+'" class="form-control" />';
                 }
             },
             { "data": "VGM", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='0';
+                        data='';
                     return '<input type="text" name="vgm" value="'+data+'" class="form-control"/>';
                 }
             }
@@ -164,7 +164,7 @@ $(document).ready(function() {
     });
     
     //刷新明细表
-    itemOrder.refleshOseanTable = function(order_id){
+    itemOrder.refleshOceanTable = function(order_id){
     	var url = "/jobOrder/tableList?order_id="+order_id+"&type=shipment";
     	cargoTable.ajax.url(url).load();
     }

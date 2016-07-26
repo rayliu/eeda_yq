@@ -168,13 +168,13 @@
 
 			<div class="row" style="margin-top:15px">
 				<ul id="orderTabs" class="nav nav-tabs">
-                    <li>
+                    <li class="active">
                         <a id='oceanDetailTab' href="#oceanDetail" data-toggle="tab" style="display: none;">海运信息</a>
                     </li>
                     <li >
                         <a id='airDetailTab' href="#airDetail" data-toggle="tab" style="display: none;">空运信息</a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a id='domesticDetailTab' href="#domesticDetail" data-toggle="tab" style="display: none;">陆运信息</a>
                     </li>
                     <li>
@@ -191,7 +191,7 @@
                     </li>
 				</ul>
 				<div class="tab-content">
-                    <div class="tab-pane fade in" id="oceanDetail">
+                    <div class="tab-pane fade active in" id="oceanDetail">
                         <div class="form-group">
                             <div class="col-lg-12">
                                 <%include("/oms/JobOrder/JobOrderEdit_ocean.html", {}){} %>
@@ -205,7 +205,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade active in" id="domesticDetail">
+                    <div class="tab-pane fade in" id="domesticDetail">
                         <div class="form-group">
                             <div class="col-lg-12">
                                 <%include("/oms/JobOrder/JobOrderEdit_land.html", {}){} %>
@@ -258,7 +258,7 @@
                                     headers:['', '类别','结算公司', '费用名称', '单价', '数量', '单位', '币制', '金额', '收据汇率', '金额(人民币)', '备注'],
                                     field_list:['', 'type', 'sp_id', 'charge_id', 'price', 'amount', 'unit_id', 'currency_id', 'total_amount',
                                      'exchange_rate', 'currency_total_amount', 'remark'],
-                                    value_list: chargeList![]
+                                    value_list: costList![]
                                 }){} %>
                         </div>
                         
@@ -273,7 +273,7 @@
                                         id:'doc_table',
                                         headers:['', '文档名称', '上传人', '上传时间', '备注'],
                                         field_list:['', 'doc_name', 'uploader', 'upload_stamp', 'remark'],
-                                        value_list: chargeList![]
+                                        value_list: docList![]
                                     }){} %>
                             </div>
                         </div>

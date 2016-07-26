@@ -36,7 +36,7 @@ $(document).ready(function() {
             
             var item={}
             item.id = id;
-            item.order_type = "应收";
+            item.order_type = "charge";//应收
             for(var i = 1; i < row.childNodes.length; i++){
             	var el = $(row.childNodes[i]).find('input');
             	var name = el.attr('name'); 

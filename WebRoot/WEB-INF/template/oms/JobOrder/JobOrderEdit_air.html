@@ -1,20 +1,22 @@
 
+<input type="hidden" id="air_id" value="${air.id!''}">
 <form id = "airForm">
             <div class="row">  <!--  form row  -->
-            <input type="hidden" id="id" value="${air.id!''}">
                     <div class="row">
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputSelectArea.html", 
                                 {   id:'shipper', 
                                     label:'发货人Shipper', 
-                                    value:air.shipper!''
+                                    display_value:air.shipper!'',
+                                    value:air.shipper_remark!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputSelectArea.html", 
                                 {   id:'consignee', 
                                     label:'收货人Consignee', 
-                                    value:air.consignee!''
+                                    display_value:air.consignee!'',
+                                    value:air.consignee_remark!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
@@ -23,7 +25,8 @@
                                     id:'notify_party', 
                                     label:'通知人Notify Party', 
                                     required:'required',
-                                    value:air.notify_party!''
+                                    display_value:air.notify_party!'',
+                                    value:air.notify_party_remark!''
                                 }){} %>
                        </div>
                     </div>
@@ -39,7 +42,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'air_company', 
                                     label:'航空公司', 
-                                    value:air.carrier!''
+                                    value:air.air_company!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
@@ -47,7 +50,7 @@
                                 {   id:'trans_clause', 
                                     label:'运输条款', 
                                     required:'required',
-                                    value:order.trans_clause!'',
+                                    value:air.trans_clause!'',
                                     value_list:[
                                         {code:'export', value:'CY-CY'},
                                         {code:'import', value:'CY-CFS'}, 

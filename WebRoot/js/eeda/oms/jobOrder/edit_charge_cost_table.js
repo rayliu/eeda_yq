@@ -9,12 +9,12 @@ $(document).ready(function() {
     	var tr = $(this).parent().parent();
     	deletedTableIds.push(tr.attr('id'))
     	
-    	chargeCostTable.row(tr).remove().draw();
+    	costTable.row(tr).remove().draw();
     }); 
     //添加一行
     $('#add_charge_cost').on('click', function(){
     	var item={};
-    	chargeCostTable.row.add(item).draw(true);
+    	costTable.row.add(item).draw(true);
     });
 
     itemOrder.buildChargeCostDetail=function(){
@@ -36,7 +36,7 @@ $(document).ready(function() {
             
             var item={}
             item.id = id;
-            item.order_type = "应付";
+            item.order_type = "cost";
             for(var i = 1; i < row.childNodes.length; i++){
             	var el = $(row.childNodes[i]).find('input');
             	var name = el.attr('name'); 
@@ -65,7 +65,7 @@ $(document).ready(function() {
     
     
     //------------事件处理
-    var chargeCostTable = eeda.dt({
+    var costTable = eeda.dt({
         id: 'cost_table',
         columns:[
             { "width": "30px",
@@ -159,9 +159,9 @@ $(document).ready(function() {
     });
 
     //刷新明细表
-    itemOrder.refleshChargeTable = function(order_id){
-    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=charge";
-    	chargeCostTable.ajax.url(url).load();
+    itemOrder.refleshCostTable = function(order_id){
+    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=cost";
+    	costTable.ajax.url(url).load();
     }
 });
 });

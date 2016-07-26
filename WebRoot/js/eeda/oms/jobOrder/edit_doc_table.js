@@ -86,18 +86,18 @@ $(document).ready(function() {
                     return '<input type="text" name="uploader" value="'+data+'" class="form-control" />';
                 }
             },
-            { "data": "DOC_NAME", 
+            { "data": "UPLOAD_TIME", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="doc_name" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="upload_time" value="'+data+'" class="form-control" />';
                 }
             },
-            { "data": "UPLOAD_TIME",
+            { "data": "REMARK",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="upload_time" value="'+data+'" class="form-control "/>';
+                    return '<input type="number" name="remark" value="'+data+'" class="form-control "/>';
                 }
             }
         ]
@@ -105,7 +105,7 @@ $(document).ready(function() {
 
     //刷新明细表
     itemOrder.refleshDocTable = function(order_id){
-    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=charge";
+    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=doc";
     	docTable.ajax.url(url).load();
     }
 } );

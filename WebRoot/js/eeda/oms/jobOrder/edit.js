@@ -1,12 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',
-    './edit_shipment_table','./edit_land_table', './edit_charge_table','./edit_air_table', './edit_shipment_detail','./edit_air_detail'], function ($, metisMenu) {
+    './edit_shipment_table','./edit_land_table', './edit_charge_table','./edit_charge_cost_table','./edit_air_table', './edit_shipment_detail','./edit_air_detail','./edit_custom_detail','./edit_insurance_detail'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
-	
-	//构造海运信息json
-	var oseanJson = function(){
-	}
 	
     //------------save
     $('#saveBtn').click(function(e){
@@ -15,21 +11,30 @@ $(document).ready(function() {
         //提交前，校验数
         
         $(this).attr('disabled', true);
+        
+        //运输方式checkbox遍历取值
         var transport_type = [];
         $('#transport_type input[type="checkbox"]:checked').each(function(){
         	transport_type.push($(this).val()); 
         });
-        //var items_array = itemOrder.buildItemDetail();
-        //var charge_array = itemOrder.buildChargeDetail();
         
         //海运
         var shipment_detail = itemOrder.buildShipmentDetail();
-        var shipment_item = itemOrder.buildOseanItem();
+        var shipment_item = itemOrder.buildOceanItem();
         //空运
         var air_detail = itemOrder.buildAirDetail();
         var air_item = itemOrder.buildAirItem();
         //陆运
-        var air_item = itemOrder.buildLoadItem();
+        var load_detail = itemOrder.buildLoadItem();
+        //报关
+        var custom_detail=itemOrder.buildCustomDetail();
+        //保险
+        var insurance_detail=itemOrder.buildInsuranceDetail();
+        //费用明细，应收，应付
+        var charge_list = itemOrder.buildChargeDetail();
+        var chargeCost_list = itemOrder.buildChargeCostDetail();
+        //相关文档
+        var doc_list = itemOrder.buildDocDetail();
         
         var order={}
         order.id = $('#order_id').val();
@@ -39,8 +44,6 @@ $(document).ready(function() {
         order.status = $('#status').val()==''?'新建':$('#status').val();
         order.remark = $('#note').val();
         order.transport_type = transport_type.toString();
-        //order.item_list = items_array; 
-        //order.charge_list = charge_array;
         //海运
         order.shipment_detail = shipment_detail;
         order.shipment_list = shipment_item;
@@ -48,14 +51,25 @@ $(document).ready(function() {
         order.air_detail = air_detail;
         order.air_list = air_item;
         //陆运
-        order.land_list = air_item;
-        
+        order.land_list = load_detail;
+        //报关
+        order.custom_detail = custom_detail;
+        //保险
+        order.insurance_detail=insurance_detail;
+       //费用明细，应收，应付
+        order.charge_list = charge_list;
+        order.chargeCost_list = chargeCost_list;
+        //相关文档
+        order.doc_list = doc_list;
         //异步向后台提交数据
         $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
             if(order.ID>0){
                 $("#order_id").val(order.ID);
-                $("#item_id").val(order.SHIPMENT.ID);
+                $("#shipment_id").val(order.SHIPMENT.ID);
+                $("#custom_id").val(order.CUSTOM.ID);
+                $("#insurance_id").val(order.INSURANCE.ID);
+                $("#air_id").val(order.AIR.ID);
                 $("#order_no").val(order.ORDER_NO);
                 $("#creator_name").val(order.CREATOR_NAME);
                 $("#create_stamp").val(order.CREATE_STAMP);
@@ -63,13 +77,15 @@ $(document).ready(function() {
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $('#saveBtn').attr('disabled', false);
                 //异步刷新海运明细表
-                itemOrder.refleshOseanTable(order.ID);
+                itemOrder.refleshOceanTable(order.ID);
                 //异步刷新空运明细表
                 itemOrder.refleshAirItemTable(order.ID);
                 //异步刷新路运明细表
                 itemOrder.refleshLandItemTable(order.ID);
-                //异步刷新明细表
-                //itemOrder.refleshChargeTable(order.ID);
+                //异步刷新费用明细应收
+                itemOrder.refleshChargeTable(order.ID);
+                //异步刷新费用明细应付
+                itemOrder.refleshCostTable(order.ID);
                 
             }else{
                 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
