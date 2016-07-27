@@ -202,6 +202,7 @@ public class CustomerController extends Controller {
             party = Party.dao.findById(id);
             party.set("company_name", getPara("company_name"));
             party.set("contact_person", getPara("contact_person"));
+            party.set("contact_person_eng", getPara("contact_person_eng"));
             party.set("email", getPara("email"));
             party.set("abbr", getPara("abbr"));
             party.set("location", getPara("location"));
@@ -209,6 +210,7 @@ public class CustomerController extends Controller {
             party.set("mobile", getPara("mobile"));
             party.set("phone", getPara("phone"));
             party.set("address", getPara("address"));
+            party.set("address_eng", getPara("address_eng"));
             party.set("city", getPara("city"));
             party.set("postal_code", getPara("postal_code"));
             party.set("last_modified_by", userId);
@@ -235,6 +237,7 @@ public class CustomerController extends Controller {
             party.set("type", Party.PARTY_TYPE_CUSTOMER);
             party.set("company_name", getPara("company_name"));
             party.set("contact_person", getPara("contact_person"));
+            party.set("contact_person_eng", getPara("contact_person"));
             party.set("email", getPara("email"));
             party.set("abbr", getPara("abbr"));
             party.set("location", getPara("location"));
@@ -242,6 +245,7 @@ public class CustomerController extends Controller {
             party.set("mobile", getPara("mobile"));
             party.set("phone", getPara("phone"));
             party.set("address", getPara("address"));
+            party.set("address_eng", getPara("address_eng"));
             party.set("city", getPara("city"));
             party.set("postal_code", getPara("postal_code"));
             party.set("creator", userId);
@@ -462,5 +466,26 @@ public class CustomerController extends Controller {
         locationList = Db.find(sql);
 
         renderJson(locationList);
+    }
+    
+    // 列出所有party名称
+    public void search_party() {
+        String customerName = getPara("customerName");
+       
+        if(StringUtils.isEmpty(customerName)){
+            customerName = "";
+        }
+        
+        List<Record> partyList = Collections.EMPTY_LIST;
+        String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+                + " ifnull(p.address_eng, p.address) address, p.phone from party p where  "
+                + " p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
+                    
+        if (customerName.trim().length() > 0) {
+            sql +=" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" + customerName.toUpperCase() + "%') ";
+        }
+        partyList = Db.find(sql);
+
+        renderJson(partyList);
     }
 }

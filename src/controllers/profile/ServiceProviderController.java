@@ -181,14 +181,12 @@ public class ServiceProviderController extends Controller {
             party.set("remark", getPara("remark"));
             party.set("receipt", getPara("receipt"));
             party.set("payment", getPara("payment"));
+            
+            party.set("receiver", getPara("receiver"));
+            party.set("bank_no", getPara("bank_no"));
+            party.set("bank_name", getPara("bank_name"));
+            setContact(party);
             party.update();
-
-            contact = Party.dao.findFirst("select p.* from party p where p.id=" + id);
-            contact.set("receiver", getPara("receiver"));
-            contact.set("bank_no", getPara("bank_no"));
-            contact.set("bank_name", getPara("bank_name"));
-            setContact(contact);
-            contact.update();
         } else {
             //判断供应商简称
             contact1 = Party.dao.findFirst("select * from party where abbr=?",getPara("abbr"));
@@ -227,17 +225,22 @@ public class ServiceProviderController extends Controller {
     private void setContact(Party contact) {
         contact.set("company_name", getPara("company_name"));
         contact.set("contact_person", getPara("contact_person"));
+        contact.set("contact_person_eng", getPara("contact_person_eng"));
         contact.set("location", getPara("location"));
         contact.set("email", getPara("email"));
         contact.set("abbr", getPara("abbr"));
         String sp_type = (getPara("sp_type_line")==null?"":getPara("sp_type_line") +";")
                 + (getPara("sp_type_delivery")==null?"":getPara("sp_type_delivery") +";")
                 + (getPara("sp_type_pickup")==null?"":getPara("sp_type_pickup") +";")
-                + (getPara("sp_type_personal")==null?"":getPara("sp_type_personal"));
+                + (getPara("sp_type_personal")==null?"":getPara("sp_type_personal") +";")
+                + (getPara("sp_type_carrier")==null?"":getPara("sp_type_carrier") +";")
+                + (getPara("sp_type_air")==null?"":getPara("sp_type_air") +";")
+                + (getPara("sp_type_broker")==null?"":getPara("sp_type_broker"));
         contact.set("sp_type", sp_type);
         contact.set("mobile", getPara("mobile"));
         contact.set("phone", getPara("phone"));
         contact.set("address", getPara("address"));
+        contact.set("address_eng", getPara("address_eng"));
         contact.set("introduction", getPara("introduction"));
         contact.set("city", getPara("city"));
         contact.set("postal_code", getPara("postal_code"));

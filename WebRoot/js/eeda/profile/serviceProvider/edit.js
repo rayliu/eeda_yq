@@ -59,16 +59,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $('#sp_type_pickup').attr('checked', 'checked');
             }else if(checkSpType == 'personal'){
                 $('#sp_type_personal').attr('checked', 'checked');
+            }else if(checkSpType == 'carrier'){
+                $('#sp_type_carrier').attr('checked', 'checked');
+            }else if(checkSpType == 'air'){
+                $('#sp_type_air').attr('checked', 'checked');
+            }else if(checkSpType == 'broker'){
+                $('#sp_type_broker').attr('checked', 'checked');
             }
         };
 
     	if(payment == "monthlyStatement"){
     		$("#payment").find("option[value='monthlyStatement']").attr("selected",true);
-		}else if(payment == "freightCollect"){
-			$("#payment").find("option[value='freightCollect']").attr("selected",true);
-		}else{
-			$("#payment").find("option[value='cashPayment']").attr("selected",true);
-		}
+  		}else if(payment == "freightCollect"){
+  			$("#payment").find("option[value='freightCollect']").attr("selected",true);
+  		}else{
+  			$("#payment").find("option[value='cashPayment']").attr("selected",true);
+  		}
 
         $('#menu_profile').addClass('active').find('ul').addClass('in');
         $('#customerForm').validate({

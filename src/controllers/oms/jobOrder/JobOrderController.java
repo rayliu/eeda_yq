@@ -17,7 +17,7 @@ import models.eeda.oms.jobOrder.JobOrderAirItem;
 import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.oms.jobOrder.JobOrderCustom;
 import models.eeda.oms.jobOrder.JobOrderDoc;
-import models.eeda.oms.jobOrder.JobOrderInsurance;
+//import models.eeda.oms.jobOrder.JobOrderInsurance;
 import models.eeda.oms.jobOrder.JobOrderLandItem;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 import models.eeda.oms.jobOrder.JobOrderShipment;
@@ -131,7 +131,7 @@ public class JobOrderController extends Controller {
 		
 		//保险
 		List<Map<String, String>> insurance_detail = (ArrayList<Map<String, String>>)dto.get("insurance_detail");
-		DbUtils.handleList(insurance_detail, id, JobOrderInsurance.class, "order_id");
+//		DbUtils.handleList(insurance_detail, id, JobOrderInsurance.class, "order_id");
 		
 		//费用明细，应收应付，chargeCost_detail
 		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");
