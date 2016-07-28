@@ -7,16 +7,18 @@
                 <%include("/eeda/component/form/inputSelectArea.html", 
                     {   id:'ocean_shipper', 
                         label:'发货人Shipper', 
-                        display_value:shipment.shipper!'',
-                        value:shipment.shipper_remark!''
+                        display_value:shipment.shipperAbbr!'',
+                        value:shipment.shipper!'',
+                        textarea_value:shipment.shipper_info!''
                     }){}%>
             </div>
             <div class="col-lg-4"><!--  三列排版  -->
                 <%include("/eeda/component/form/inputSelectArea.html", 
                     {   id:'ocean_consignee', 
                         label:'收货人Consignee', 
-                        display_value:shipment.consignee!'',
-                        value:shipment.consignee_remark!''
+                        display_value:shipment.consigneeAbbr!'',
+                        value:shipment.consignee!'',
+                        textarea_value:shipment.consignee_info!''
                     }){}%>
             </div>
             <div class="col-lg-4">
@@ -25,8 +27,9 @@
                         id:'ocean_notify_party', 
                         label:'通知人Notify Party', 
                         required:'required',
-                        display_value:shipment.notify_party!'',
-                        value:shipment.notify_party_remark!''
+                        display_value:shipment.notify_partyAbbr!'',
+                        value:shipment.notify_party!'',
+                        textarea_value:shipment.notify_party_info!''
                     }){} %>
            </div>
         </div>
@@ -218,7 +221,7 @@
             <%include("/eeda/component/form/detailTable.html", 
                 {
                     id:'ocean_cargo_table',
-                    style:'width:2000px;',
+                    style:'width:3000px;',
                     headers:   ['', '', '负载方式', '箱型', '箱号', '封条号', '件数', '毛重(KG)', '体积(CBM)', '总重量VGM'],
                     field_list:['id', '', 'load_type', 'container_type', 'container_no', 'seal_no', 'pieces', 'gross_weight', 'volume', 'vgm'],
                     value_list: shipmentList![]

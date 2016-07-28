@@ -2,6 +2,7 @@ package controllers.oms.jobOrder;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,16 +12,18 @@ import java.util.Map;
 import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
+import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderAir;
 import models.eeda.oms.jobOrder.JobOrderAirItem;
 import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.oms.jobOrder.JobOrderCustom;
 import models.eeda.oms.jobOrder.JobOrderDoc;
+import models.eeda.oms.jobOrder.JobOrderInsurance;
 //import models.eeda.oms.jobOrder.JobOrderInsurance;
 import models.eeda.oms.jobOrder.JobOrderLandItem;
-import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 import models.eeda.oms.jobOrder.JobOrderShipment;
+import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -34,6 +37,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.upload.UploadFile;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -53,23 +57,22 @@ public class JobOrderController extends Controller {
 	
     public void create() {
     	
-//    	String order_id=getPara("order_id");
-//    	String itemIds=getPara("itemIds");
-//    	if(StringUtils.isNotEmpty(order_id)){
-//    		//查询plan_order 里的计划单号
-//    		PlanOrder planOrder = PlanOrder.dao.findById(order_id);
-//        	setAttr("planOrder", planOrder);
-//    	}
-//
-//    	if(StringUtils.isNotEmpty(itemIds)){
-//    		//查询plan_order_item
-//			String sql="select * from plan_order_item where id in("+itemIds+")";
-//	    	List<Record> plan_order_item= Db.find(sql);
-//	    	for(Record re : plan_order_item){
-//	    		re.set("id", null);
-//	    	}
-//	    	setAttr("itemList", plan_order_item);
-//    	}
+    	String order_id=getPara("order_id");
+    	String itemIds=getPara("itemIds");
+    	if(StringUtils.isNotEmpty(order_id)){
+    		//查询plan_order 里的计划单号
+    		PlanOrder planOrder = PlanOrder.dao.findById(order_id);
+        	setAttr("plan", planOrder);
+    	}
+
+    	if(StringUtils.isNotEmpty(itemIds)){
+    		
+    		String strAry[] = itemIds.split(",");
+    		String id = strAry[0];
+    		//查询plan_order_item
+	    	PlanOrderItem plan_order_item = PlanOrderItem.dao.findById(id);
+	    	setAttr("planOrder", plan_order_item);
+    	}
     	
         render("/oms/JobOrder/JobOrderEdit.html");
     }
@@ -131,7 +134,7 @@ public class JobOrderController extends Controller {
 		
 		//保险
 		List<Map<String, String>> insurance_detail = (ArrayList<Map<String, String>>)dto.get("insurance_detail");
-//		DbUtils.handleList(insurance_detail, id, JobOrderInsurance.class, "order_id");
+		DbUtils.handleList(insurance_detail, id, JobOrderInsurance.class, "order_id");
 		
 		//费用明细，应收应付，chargeCost_detail
 		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");
@@ -150,26 +153,70 @@ public class JobOrderController extends Controller {
    		r.set("creator_name", user_name);
    		
    		r.set("shipment", getItemDetail(id,"shipment"));
-    	r.set("shipmentList",getItems(id,"shipment"));
     	r.set("air", getItemDetail(id,"air"));
-    	r.set("airList", getItems(id,"air"));
-    	r.set("landList", getItems(id,"land"));
    		r.set("custom", getItemDetail(id,"custom"));
    		r.set("insurance", getItemDetail(id,"insure"));
-   		r.set("docList", getItems(id,"doc"));
+   		
+//   	r.set("airList", getItems(id,"air"));
+//    	r.set("landList", getItems(id,"land"));
+//    	r.set("shipmentList",getItems(id,"shipment"));
+//   	r.set("docList", getItems(id,"doc"));
    		renderJson(r);
    	}
+    
+    public void saveDocFile(){
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	String order_id = getPara("order_id");
+    	
+    	List<UploadFile> returnImg = getFiles("doc");
+    	Map<String,Object> resultMap = new HashMap<String,Object>();
+    	boolean result = true;
+    	
+		for (int i = 0; i < returnImg.size(); i++) {
+    		File file = returnImg.get(i).getFile();
+    		String fileName = file.getName();
+    		String suffix = fileName.substring(fileName.lastIndexOf(".")+1).toLowerCase();
+    		if("doc".equals(suffix)||"docx".equals(suffix)){
+    			JobOrderDoc jobOrderDoc = new JobOrderDoc();
+    			jobOrderDoc.set("order_id", order_id);
+    			jobOrderDoc.set("uploader", user.getLong("id"));
+    			jobOrderDoc.set("doc_name", fileName);
+    			jobOrderDoc.set("upload_time", new Date());
+    			jobOrderDoc.save();
+    		}else{
+    			result = false;
+    			break;
+    		}
+		}
+		
+		if(result){
+			resultMap.put("result", "true");
+			
+		}else{
+			resultMap.put("result", "false");
+	    	resultMap.put("cause", "上传失败，请选择正确的文档文件");
+		}
+    	renderJson(resultMap);
+    }
     
     private Record getItemDetail(String id,String type){
     	Record re = null;
     	if("shipment".equals(type))
-    		re = Db.findFirst("select * from job_order_shipment jos where order_id = ?",id);
+    		re = Db.findFirst("select jos.*, p1.abbr shipperAbbr , p2.abbr consigneeAbbr, p3.abbr notify_partyAbbr from job_order_shipment jos "
+    				+ " left join party p1 on p1.id=jos.shipper"
+    				+ " left join party p2 on p2.id=jos.consignee"
+    				+ " left join party p3 on p3.id=jos.notify_party"
+    				+ " where order_id = ?",id);
     	else if("custom".equals(type)){
-    		re = Db.findFirst("select * from job_order_custom jos where order_id = ?",id);
+    		re = Db.findFirst("select * from job_order_custom joc where order_id = ?",id);
     	}else if("insure".equals(type)){
-    		re = Db.findFirst("select * from job_order_insurance jos where order_id = ?",id);
+    		re = Db.findFirst("select * from job_order_insurance joi where order_id = ?",id);
     	}else if("air".equals(type)){
-    		re = Db.findFirst("select * from job_order_air where order_id=?", id);
+    		re = Db.findFirst("select joa.* ,p1.abbr shipperAbbr,p2.abbr consigneeAbbr,p3.abbr notify_partyAbbr from job_order_air joa"
+    				+ " left join party p1 on p1.id=joa.shipper"
+    				+ " left join party p2 on p2.id=joa.consignee"
+    				+ " left join party p3 on p3.id=joa.notify_party"
+    				+ " where order_id=?", id);
     	}
 		return re;
     }
@@ -178,22 +225,22 @@ public class JobOrderController extends Controller {
     	String itemSql = "";
     	List<Record> itemList = null;
     	if("shipment".equals(type)){
-    		itemSql = "select * from job_order_shipment_item where order_id=?";
+    		itemSql = "select * from job_order_shipment_item jos where order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("air".equals(type)){
-    		itemSql = "select * from job_order_air_item where order_id=?";
+    		itemSql = "select * from job_order_air_item joa where order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("land".equals(type)){
-    		itemSql = "select * from job_order_land_item where order_id=?";
+    		itemSql = "select * from job_order_land_item jol where order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
-    		itemSql = "select * from job_order_arap where order_id=? and order_type=?";
+    		itemSql = "select * from job_order_arap  jor where order_id=? and order_type=?";
     		itemList = Db.find(itemSql, orderId,"charge");
     	}else if("cost".equals(type)){
-	    	itemSql = "select * from job_order_arap where order_id=? and order_type=?";
+	    	itemSql = "select * from job_order_arap  jor where order_id=? and order_type=?";
 	    	itemList = Db.find(itemSql, orderId,"cost");
     	}else if("doc".equals(type)){
-	    	itemSql = "select * from job_order_doc where order_id=?";
+	    	itemSql = "select * from job_order_doc jod where order_id=?";
 	    	itemList = Db.find(itemSql, orderId);
 	    }
 		return itemList;

@@ -7,16 +7,18 @@
                             <%include("/eeda/component/form/inputSelectArea.html", 
                                 {   id:'shipper', 
                                     label:'发货人Shipper', 
-                                    display_value:air.shipper!'',
-                                    value:air.shipper_remark!''
+                                    display_value:air.shipperAbbr!'',
+                                    value:air.shipper!'',
+                                    textarea_value:air.shipper_info!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputSelectArea.html", 
                                 {   id:'consignee', 
                                     label:'收货人Consignee', 
-                                    display_value:air.consignee!'',
-                                    value:air.consignee_remark!''
+                                    display_value:air.consigneeAbbr!'',
+                                    value:air.consignee!'',
+                                    textarea_value:air.consignee_info!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
@@ -25,8 +27,9 @@
                                     id:'notify_party', 
                                     label:'通知人Notify Party', 
                                     required:'required',
-                                    display_value:air.notify_party!'',
-                                    value:air.notify_party_remark!''
+                                    display_value:air.notify_partyAbbr!'',
+                                    value:air.notify_party!'',
+                                    textarea_value:air.notify_party_info!''
                                 }){} %>
                        </div>
                     </div>

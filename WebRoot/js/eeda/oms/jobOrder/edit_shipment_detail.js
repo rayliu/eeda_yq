@@ -6,7 +6,7 @@ $(document).ready(function() {
     	var item = {};
     	item['id'] = $('#shipment_id').val();
     	item['release_type'] = $('#shipmentForm input[type="radio"]:checked').val();
-    	var shipmentForm = $('#shipmentForm input[type!="hidden"],#shipmentForm select,#shipmentForm textarea');
+    	var shipmentForm = $('#shipmentForm input,#shipmentForm select,#shipmentForm textarea');
     	for(var i = 0; i < shipmentForm.length; i++){
     		var name = shipmentForm[i].id;
         	var value =shipmentForm[i].value;
@@ -19,12 +19,12 @@ $(document).ready(function() {
         			name = 'consignee';
         		if(name=='ocean_notify_party')
         			name = 'notify_party';
-        		if(name=='ocean_shipper_remark')
-        			name = 'shipper_remark';
-        		if(name=='ocean_consignee_remark')
-        			name = 'consignee_remark';
-        		if(name=='ocean_notify_party_remark')
-        			name = 'notify_party_remark';
+        		if(name=='ocean_shipper_info')
+        			name = 'shipper_info';
+        		if(name=='ocean_consignee_info')
+        			name = 'consignee_info';
+        		if(name=='ocean_notify_party_info')
+        			name = 'notify_party_info';
         		item[name] = value;
         	}
     	}

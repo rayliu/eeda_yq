@@ -68,7 +68,7 @@ $(document).ready(function() {
     var chargeTable = eeda.dt({
         id: 'charge_table',
         columns:[
-            { "width": "30px",
+            { 
                 "render": function ( data, type, full, meta ) {
                 	return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
                 }
@@ -110,7 +110,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="amount" style="width:80px" value="'+data+'" class="form-control "/>';
+                    return '<input type="number" name="amount" style="width:80px" value="'+data+'" class="form-control"/>';
                 }
             },
             { "data": "UNIT_ID", 
@@ -131,7 +131,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" disabled/>';
                 }
             },
             { "data": "EXCHANGE_RATE", 
@@ -163,5 +163,22 @@ $(document).ready(function() {
     	var url = "/jobOrder/tableList?order_id="+order_id+"&type=charge";
     	chargeTable.ajax.url(url).load();
     }
+    
+    //输入 数量*单价的时候，计算金额
+    $('#charge_table').on('keyup','[name=price],[name=amount]',function(){
+    	var row = $(this).parent().parent();
+    	var price = $(row.find('[name=price]')).val()
+    	var amount = $(row.find('[name=amount]')).val()
+    	if(price!=''&&amount!=''){
+	    	if(!isNaN(price)&&!isNaN(amount)){
+	    		$(row.find('[name=total_amount]')).val(parseFloat(price)*parseFloat(amount));
+	    	}else{
+	    		$(row.find('[name=total_amount]')).val('');
+	    	}
+    	}
+    })
+  
+    
+    
 } );
 });

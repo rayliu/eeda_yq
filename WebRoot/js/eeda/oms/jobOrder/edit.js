@@ -44,6 +44,11 @@ $(document).ready(function() {
         order.status = $('#status').val()==''?'新建':$('#status').val();
         order.remark = $('#note').val();
         order.transport_type = transport_type.toString();
+        order.gross_weight = $("#gross_weight").val();
+        order.net_weight = $("#net_weight").val();
+        order.volume = $("#volume").val();
+        order.pieces = $("#pieces").val();
+        order.billing_method = $('#billing_method input[type="radio"]:checked').val();
         //海运
         order.shipment_detail = shipment_detail;
         order.shipment_list = shipment_item;
@@ -73,6 +78,7 @@ $(document).ready(function() {
                 $("#order_no").val(order.ORDER_NO);
                 $("#creator_name").val(order.CREATOR_NAME);
                 $("#create_stamp").val(order.CREATE_STAMP);
+                
                 eeda.contactUrl("edit?id",order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $('#saveBtn').attr('disabled', false);
@@ -173,5 +179,13 @@ $(document).ready(function() {
 	    })
     }
     
+  //放货方式radio回显
+    var radioVal = $('#hidden_billing_method').val();
+    $('#billing_method input[type="radio"]').each(function(){
+    	var checkValue = $(this).val();
+    	if(radioVal==checkValue){
+    		$(this).attr("checked",true);
+    	}
+    });
 });
 });

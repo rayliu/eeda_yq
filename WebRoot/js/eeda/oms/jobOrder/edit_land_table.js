@@ -37,7 +37,7 @@ $(document).ready(function() {
             var item={}
             item.id = id;
             for(var i = 1; i < row.childNodes.length; i++){
-            	var el = $(row.childNodes[i]).find('input');
+            	var el = $(row.childNodes[i]).find('input,select');
             	var name = el.attr('name'); //name='abc'
             	
             	if(el && name){
@@ -77,16 +77,22 @@ $(document).ready(function() {
             $(row).attr('id', data.ID);
         },
         "columns": [
-            { "width": "3px",
+            { 
                 "render": function ( data, type, full, meta ) {
                 	return '<button type="button" class="delete btn btn-default btn-xs">删除</button>';
                 }
             },
-            { "data": "UNLOAD_TYPE", 
+            { "data": "UNLOAD_TYPE", "width": "100px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="unload_type" value="'+data+'" class="form-control easyui-numberbox" data-options="max:0"/>';
+                    var str= '<select name="unload_type" class="form-control search-control">'
+            	   	 		   +'<option></option>'
+			                   +'<option value="卸货" '+ (data=='卸货'?'selected':'') +'>卸货</option>'
+			                   +'<option value="收货" '+ (data=='收货'?'selected':'') +'>收货</option>'
+			                   +'<option value="收卸货" '+ (data=='收卸货'?'selected':'') +'>收卸货</option>'
+			                   +'</select>';
+                    return str;
                 }
             },
             { "data": "TRANSPORT_COMPANY", 
