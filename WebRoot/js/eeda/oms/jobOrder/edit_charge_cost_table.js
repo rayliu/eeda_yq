@@ -76,11 +76,11 @@ $(document).ready(function() {
             { "data": "TYPE",
                 "render": function ( data, type, full, meta ) {
                     var str = '<select name="container_type" class="form-control search-control">'
-                               +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>海运</option>'
-                               +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>空运</option>'
-                               +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>陆运</option>'
-                               +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>报关</option>'
-                               +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>保险</option>'
+                               +'<option value="ocean" '+(data=='ocean' ? 'selected':'')+'>海运</option>'
+                               +'<option value="air" '+(data=='air' ? 'selected':'')+'>空运</option>'
+                               +'<option value="land" '+(data=='land' ? 'selected':'')+'>陆运</option>'
+                               +'<option value="custom" '+(data=='custom' ? 'selected':'')+'>报关</option>'
+                               +'<option value="insurance" '+(data=='insurance' ? 'selected':'')+'>保险</option>'
                                +'</select>';
                     return str;
                 }

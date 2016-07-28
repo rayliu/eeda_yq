@@ -1,5 +1,7 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',
-    './edit_shipment_table','./edit_land_table', './edit_charge_table','./edit_charge_cost_table','./edit_air_table', './edit_shipment_detail','./edit_air_detail','./edit_custom_detail','./edit_insurance_detail'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'file_upload',
+    './edit_shipment_table','./edit_land_table', './edit_charge_table','./edit_charge_cost_table',
+    './edit_air_table', './edit_shipment_detail','./edit_air_detail','./edit_custom_detail',
+    './edit_insurance_detail', './edit_doc_table', './edit_file_upload'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;

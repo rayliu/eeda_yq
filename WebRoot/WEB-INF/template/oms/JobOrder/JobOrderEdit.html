@@ -25,7 +25,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'plan_order_no', 
                                     label:'计划订单号', 
-                                    value: order.plan_order_no!plan.order_no!,
+                                    value: order.plan_order_no!plan.order_no!'',
                                     disabled: 'disabled'
                                 }){}%>
                         </div>
@@ -57,7 +57,7 @@
                                 }){}%>
                         </div><!-- /.col-lg-4 -->
                         <div class="col-lg-8">
-                        	<input type="hidden" id="hiddenTransports" value ="${order.transport_type!''}">
+                        	<input type="hidden" id="hiddenTransports" value ="${order.transport_type!planOrder.transport_type!''}">
                             <div class="form-group" id="transport_type">
                                 <label class="search-label">服务项目</label>
                                 <label class="checkbox-inline">
@@ -67,13 +67,13 @@
                                     <input type="checkbox" value='air'>空运
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" value='domestic'>陆运
+                                    <input type="checkbox" value='land'>陆运
                                 </label>
                                 <label class="checkbox-inline">
                                     <input type="checkbox" value='custom'>报关
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" value='insur'>保险
+                                    <input type="checkbox" value='insurance'>保险
                                 </label>
                             </div>
                         </div>
@@ -313,18 +313,5 @@
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/oms/jobOrder/edit']);
-        //requirejs(['app/oms/jobOrder/edit_domestic_table']);
-        //requirejs(['app/oms/jobOrder/edit_charge_cost_table']);
-        requirejs(['app/oms/jobOrder/edit_doc_table']);
-        //requirejs(['app/oms/jobOrder/edit_cargo_table']);
-        //requirejs(['app/oms/jobOrder/edit_flight_table']);
-        // requirejs(['app/oms/jobOrder/edit_item_table']);
-        // requirejs(['app/oms/jobOrder/edit_charge_table']);
-        // requirejs(['app/oms/jobOrder/edit_shipment_detail']);
-        requirejs(['app/oms/jobOrder/edit_file_upload']);
-        
-        //requirejs(['app/yh/js/plugins/jQuery-File-Upload-9.5.7/jquery.ui.widget']);
-        //requirejs(['app/yh/js/plugins/jQuery-File-Upload-9.5.7/jquery.iframe-transport']);
-        //requirejs(['app/yh/js/plugins/jQuery-File-Upload-9.5.7/jquery.fileupload']);
     });
 </script>
