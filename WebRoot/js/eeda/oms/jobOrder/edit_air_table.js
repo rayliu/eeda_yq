@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'dataTablesBootstrap'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	var deletedTableIds=[];
