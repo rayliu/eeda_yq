@@ -10,7 +10,7 @@ $(document).ready(function() {
         var id = tr.attr('id');
         deletedTableIds.push(id);
         docTable.row(tr).remove().draw();
-         $.post('/jobOrder/deleteDoc', {id:JSON.stringify(id)}, function(data){
+         $.post('/jobOrder/deleteDoc', {docId:id}, function(data){
         	 $.scojs_message('删除成功', $.scojs_message.TYPE_ERROR);
         	 
         	//异步刷新显示上传的文档信息
