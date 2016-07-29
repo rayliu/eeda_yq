@@ -92,7 +92,11 @@ public class PlanOrderController extends Controller {
     
     
     private List<Record> getPlanOrderItems(String orderId) {
-		String itemSql = "select * from plan_order_item where order_id=?";
+		String itemSql = "select pi.*, l_por.name por_name, l_pol.name pol_name, l_pod.name pod_name from plan_order_item pi "
+           +" left join location l_por on pi.por=l_por.id"
+           +" left join location l_pol on pi.pol=l_pol.id"
+           +" left join location l_pod on pi.pod=l_pod.id"
+         +" where order_id=?";
 		List<Record> itemList = Db.find(itemSql, orderId);
 		return itemList;
 	}

@@ -1,6 +1,6 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) { 
 	$(document).ready(function() {
-
+		
 	    var deletedTableIds=[];
 
 	    //删除一行
@@ -33,10 +33,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            item.id = id;
 	            for(var i = 1; i < row.childNodes.length; i++){
 	            	var el = $(row.childNodes[i]).find('input, select');
+	            	if(el.length>1){
+	            		el = $(el[0]);
+	            	}
 	            	var name = el.attr('name'); //name='abc'
 	            	
 	            	if(el && name){
-	                	var value = el.val();//元素的值
+	                	var value = $(el).val();//元素的值
 	                	item[name] = value;
 	            	}
 	            }
@@ -60,6 +63,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    //------------事件处理
 	    var cargoTable = eeda.dt({
             id: 'cargo_table',
+            "drawCallback": function( settings ) {
+		        $('table .date').datetimepicker({  
+		    	    format: 'yyyy-MM-dd',  
+		    	    language: 'zh-CN'
+		    	}).on('changeDate', function(el){
+		    	    $(".bootstrap-datetimepicker-widget").hide();   
+		    	    $(el).trigger('keyup');
+		    	});
+
+		    	eeda.bindTablePortField();
+		    },
             columns:[
 				{ "data":"ID","width": "10px",
 				    "render": function ( data, type, full, meta ) {
@@ -69,7 +83,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				    		return '<input type="checkbox" class="checkBox" disabled>';
 				    }
 				},
-                         
 	            { "width": "30px",
 	                "render": function ( data, type, full, meta ) {
 	                	return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
@@ -119,135 +132,182 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="CONTAINER_AMOUNT" value="'+data+'" class="form-control" style="width:80px"/>';
+	                   return '<input type="text" name="CONTAINER_AMOUNT" value="'+data+'" class="form-control search-control" style="width:80px"/>';
 	                }
 	            },
 	            { "data": "CARGO_NAME",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="CARGO_NAME" value="'+data+'" class="form-control" style="width:80px"/>';
+	                   return '<input type="text" name="CARGO_NAME" value="'+data+'" class="form-control search-control" style="width:80px"/>';
 	                }
 	            },
 	            { "data": "PIECES" ,
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="PIECES" value="'+data+'" class="form-control" style="width:80px"/>';
+	                   return '<input type="text" name="PIECES" value="'+data+'" class="form-control search-control" style="width:80px"/>';
 	                }
 	            },
 	            { "data": "VOLUME",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="VOLUME" value="'+data+'" class="form-control" style="width:80px"/>';
+	                   return '<input type="text" name="VOLUME" value="'+data+'" class="form-control search-control" style="width:80px"/>';
 	                }
 	            },
 	            { "data": "NET_WEIGHT",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="NET_WEIGHT" value="'+data+'" class="form-control" style="width:80px"/>';
+	                   return '<input type="text" name="NET_WEIGHT" value="'+data+'" class="form-control search-control" style="width:80px"/>';
 	                }
 	            },
 	            { "data": "GROSS_WEIGHT",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="GROSS_WEIGHT" value="'+data+'" class="form-control" style="width:80px"/>';
+	                   return '<input type="text" name="GROSS_WEIGHT" value="'+data+'" class="form-control search-control" style="width:80px"/>';
 	                }
 	            },
 	            { "data": "FACTORY_LOADING_TIME" ,
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="FACTORY_LOADING_TIME" value="'+data+'" class="form-control" style="width:80px"/>';
+	                    var field_html = template('table_date_field_template',
+		                    {
+		                        id: 'FACTORY_LOADING_TIME',
+		                        value: data.substr(0,19)
+		                    }
+		                );
+	                    return field_html;
 	                }
 	            },
 	            { "data": "TRUCK_TYPE",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="TRUCK_TYPE" value="'+data+'" class="form-control" style="width:80px"/>';
+	                   return '<input type="text" name="TRUCK_TYPE" value="'+data+'" class="form-control search-control" style="width:80px"/>';
 	                }
 	            },
 	            { "data": "PICKUP_ADDR",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="PICKUP_ADDR" value="'+data+'" class="form-control" style="width:80px"/>';
+	                   return '<input type="text" name="PICKUP_ADDR" value="'+data+'" class="form-control search-control" style="width:80px"/>';
 	                }
 	            },
 	            { "data": "DILVERY_ADDR",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="DILVERY_ADDR" value="'+data+'" class="form-control" style="width:80px"/>';
+	                   return '<input type="text" name="DILVERY_ADDR" value="'+data+'" class="form-control search-control" style="width:80px"/>';
 	                }
 	            },
 	            { "data": "POR" ,
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="POR" value="'+data+'" class="form-control" style="width:80px"/>';
+	                    var field_html = template('table_port_field_template',
+		                    {
+		                        id: 'POR',
+		                        value: data,
+		                        display_value: full.POR_NAME
+		                    }
+		                );
+	                    return field_html;
 	                }
 	            },
 	            { "data": "POL" ,
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="POL" value="'+data+'" class="form-control" style="width:80px"/>';
+	                    var field_html = template('table_port_field_template',
+		                    {
+		                        id: 'POL',
+		                        value: data,
+		                        display_value: full.POL_NAME
+		                    }
+		                );
+	                    return field_html;
 	                }
 	            },
 	            { "data": "POD",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="POD" value="'+data+'" class="form-control" style="width:80px"/>';
+	                    var field_html = template('table_port_field_template',
+		                    {
+		                        id: 'POD',
+		                        value: data,
+		                        display_value: full.POD_NAME
+		                    }
+		                );
+	                    return field_html;
 	                }
 	            },
 	            { "data": "CARRIER",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="CARRIER" value="'+data+'" class="form-control" style="width:80px"/>';
+	                   return '<input type="text" name="CARRIER" value="'+data+'" class="form-control search-control" style="width:80px"/>';
 	                }
 	            },
 	            { "data": "VESSEL",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="VESSEL" value="'+data+'" class="form-control" style="width:80px"/>';
+	                   return '<input type="text" name="VESSEL" value="'+data+'" class="form-control search-control" style="width:80px"/>';
 	                }
 	            },
 	            { "data": "VOYAGE" ,
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="VOYAGE" value="'+data+'" class="form-control" style="width:80px"/>';
+	                   return '<input type="text" name="VOYAGE" value="'+data+'" class="form-control search-control" style="width:80px"/>';
 	                }
 	            },
 	            { "data": "CLS",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="CLS" value="'+data+'" class="form-control" style="width:180px"/>';
+	                    var field_html = template('table_date_field_template',
+		                    {
+		                        id: 'CLS',
+		                        value: data.substr(0,19)
+		                    }
+		                );
+	                    return field_html;
 	                }
 	            },
 	            { "data": "ETD",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="ETD" value="'+data+'" class="form-control" style="width:180px"/>';
+	                    var field_html = template('table_date_field_template',
+		                    {
+		                        id: 'ETD',
+		                        value: data.substr(0,19)
+		                    }
+		                );
+	                    return field_html;
 	                }
 	            },
 	            { "data": "ETA",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="ETA" value="'+data+'" class="form-control" style="width:180px"/>';
+	                    var field_html = template('table_date_field_template',
+		                    {
+		                        id: 'ETA',
+		                        value: data.substr(0,19)
+		                    }
+		                );
+	                    return field_html;
 	                }
-	            }
+	            }, { "data": "POR_NAME", "visible": false}
+	            , { "data": "POL_NAME", "visible": false}
+	            , { "data": "POD_NAME", "visible": false}
 	        ]
 	    });
 
