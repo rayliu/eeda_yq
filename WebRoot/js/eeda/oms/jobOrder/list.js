@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
 	document.title = '工作单查询   | '+document.title;
-
+    $('#menu_order').addClass('active').find('ul').addClass('in');
 	  //datatable, 动态处理
     var dataTable = $('#eeda-table').DataTable({
         "processing": true,

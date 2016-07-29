@@ -3,7 +3,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     $(document).ready(function() {
     	
     	document.title = order_no + ' | ' + document.title;
-
+        $('#menu_order').addClass('active').find('ul').addClass('in');
         //------------save
         $('#saveBtn').click(function(e){
             //阻止a 的默认响应行为，不需要跳转
