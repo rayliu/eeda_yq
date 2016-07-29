@@ -20,6 +20,7 @@ eeda.dt = function(opt){
         createdRow: opt.createdRow || function ( row, data, index ) {
             $(row).attr('id', data.ID);
         },
+        drawCallback: opt.drawCallback || function ( settings ) {},
         ajax: opt.ajax || '',
         columns: opt.columns || []
     };
@@ -198,5 +199,58 @@ eeda.refreshUrl = refreshUrl;
   	//暂时不处理 
    };
    
-   return eeda;
+  eeda.bindTablePortField = function() {
+      var companyList = $('#table_port_field_list');
+      $('table input[name=port_input]').on('keyup click', function(event){
+          var me = this;
+          var inputField = $(this);
+          var hiddenField = $(this).parent().find('input[field_type=port_id]');
+
+          var inputStr = inputField.val();
+
+           $.get("/location/searchPort", {portName:inputStr}, function(data){
+             if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+               return;
+             }
+              companyList.empty();
+              for(var i = 0; i < data.length; i++)
+                  companyList.append("<li><a tabindex='-1' class='fromLocationItem' portId='"+data[i].ID
+                    +"' code='"+data[i].CODE
+                    +"', name='"+data[i].NAME+"', >"+data[i].NAME+"</a></li>");
+              companyList.css({ 
+                  left:$(me).offset().left+"px", 
+                  top:$(me).offset().top+28+"px" 
+              });
+              companyList.show();
+              companyList.inputField = inputField;
+              companyList.hiddenField = hiddenField;
+          },'json');
+      });
+      
+      companyList.on('click', '.fromLocationItem', function(e){
+          var hiddenField = companyList.hiddenField;
+          var inputField = companyList.inputField;
+          inputField.val($(this).text());//名字
+          companyList.hide();
+          var portId = $(this).attr('portId');
+          hiddenField.val(portId);//id
+      });
+
+      // 1 没选中客户，焦点离开，隐藏列表
+      $('table input[name=port_input]').on('blur', function(){
+        var hiddenField = companyList.hiddenField;
+        
+        if ($(this).val().trim().length ==0) {
+            hiddenField.val('');
+        };
+        companyList.hide();
+      });
+      
+      // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
+      companyList.on('mousedown', function(){
+          return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+      });
+    
+  };
+
 });

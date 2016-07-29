@@ -13,7 +13,7 @@
     		<tr id='${map["id"]}'>
     			<% 
     				for(col_name in field_list![]){
-                        if(col_name != null){
+                        if(col_name != null && col_name !=''){
     					    print('<td>'+map[col_name]+'</td>');
                         }else{
                             print('<td></td>');
