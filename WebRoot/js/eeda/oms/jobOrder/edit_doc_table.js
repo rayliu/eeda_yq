@@ -7,15 +7,18 @@ $(document).ready(function() {
     $("#doc_table").on('click', '.delete', function(e){
         e.preventDefault();
         var tr = $(this).parent().parent();
-        deletedTableIds.push(tr.attr('id'))
-        
+        var id = tr.attr('id');
+        deletedTableIds.push(id);
         docTable.row(tr).remove().draw();
+         $.post('/jobOrder/deleteDoc', {id:JSON.stringify(id)}, function(data){
+        	 $.scojs_message('删除成功', $.scojs_message.TYPE_ERROR);
+        	 
+        	//异步刷新显示上传的文档信息
+	    	itemOrder.refleshDocTable(order_id);
+         },'json').fail(function() {
+             $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+           });
     }); 
-    //添加一行
-    $('#add_doc').on('click', function(){
-        var item={};
-        docTable.row.add(item).draw(true);
-    });
 
     itemOrder.buildDocDetail=function(){
         var cargo_table_rows = $("#doc_table tr");
@@ -76,21 +79,28 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="doc_name" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="doc_name" value="'+data+'" class="form-control" disabled/>';
                 }
             },
-            { "data": "UPLOADER",
+            { "data": "C_NAME",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="uploader" value="'+data+'" class="form-control" />';
+                    return '<input type="text" value="'+data+'" class="form-control" disabled/>';
                 }
+            },
+            { "data": "UPLOADER",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="uploader" value="'+data+'" class="form-control" disabled/>';
+            	}
             },
             { "data": "UPLOAD_TIME", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="upload_time" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="upload_time" value="'+data+'" class="form-control" disabled/>';
                 }
             },
             { "data": "REMARK",
@@ -108,5 +118,6 @@ $(document).ready(function() {
     	var url = "/jobOrder/tableList?order_id="+order_id+"&type=doc";
     	docTable.ajax.url(url).load();
     }
-} );
+    
+});
 });

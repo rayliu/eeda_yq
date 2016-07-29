@@ -163,40 +163,42 @@ public class JobOrderController extends Controller {
    		renderJson(r);
    	}
     
+    //上传文件
     public void saveDocFile(){
     	UserLogin user = LoginUserController.getLoginUser(this);
-    	String order_id = getPara("order_id");
+    	int order_id = getParaToInt("order_id");
     	
     	List<UploadFile> returnImg = getFiles("doc");
-    	Map<String,Object> resultMap = new HashMap<String,Object>();
-    	boolean result = true;
     	
 		for (int i = 0; i < returnImg.size(); i++) {
     		File file = returnImg.get(i).getFile();
     		String fileName = file.getName();
-    		String suffix = fileName.substring(fileName.lastIndexOf(".")+1).toLowerCase();
-    		if("doc".equals(suffix)||"docx".equals(suffix)){
-    			JobOrderDoc jobOrderDoc = new JobOrderDoc();
-    			jobOrderDoc.set("order_id", order_id);
-    			jobOrderDoc.set("uploader", user.getLong("id"));
-    			jobOrderDoc.set("doc_name", fileName);
-    			jobOrderDoc.set("upload_time", new Date());
-    			jobOrderDoc.save();
-    		}else{
-    			result = false;
-    			break;
-    		}
+    		
+			JobOrderDoc jobOrderDoc = new JobOrderDoc();
+			jobOrderDoc.set("order_id", order_id);
+			jobOrderDoc.set("uploader", user.getLong("id"));
+			jobOrderDoc.set("doc_name", fileName);
+			jobOrderDoc.set("upload_time", new Date());
+			jobOrderDoc.save();
 		}
-		
-		if(result){
-			resultMap.put("result", "true");
-			
-		}else{
-			resultMap.put("result", "false");
-	    	resultMap.put("cause", "上传失败，请选择正确的文档文件");
-		}
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("result", true);
     	renderJson(resultMap);
     }
+    
+    //删除文件
+//    public void deleteDoc(){
+//    	String id = getPara("id");
+//    	String fileName = JobOrderDoc.dao.findById(id).getStr("doc_name");
+//    	
+//    	List<UploadFile> returnImg = getFiles("doc");
+//		for (int i = 0; i < returnImg.size(); i++) {
+//    		File file = returnImg.get(i).getFile();
+//    		if(file.getName()==fileName){
+//    			file.delete();
+//    		}
+//		}
+//    }
     
     private Record getItemDetail(String id,String type){
     	Record re = null;
@@ -239,7 +241,8 @@ public class JobOrderController extends Controller {
 	    	itemSql = "select * from job_order_arap  jor where order_id=? and order_type=?";
 	    	itemList = Db.find(itemSql, orderId,"cost");
     	}else if("doc".equals(type)){
-	    	itemSql = "select * from job_order_doc jod where order_id=?";
+	    	itemSql = "select jod.*,u.c_name from job_order_doc jod left join user_login u on jod.uploader=u.id "
+	    			+ " where order_id=? ";
 	    	itemList = Db.find(itemSql, orderId);
 	    }
 		return itemList;
