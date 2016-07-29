@@ -1,5 +1,10 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) { 
 $(document).ready(function() {
+	
+	//未保存不能上传文件
+	if($('#order_id').val()==''){
+		$("#fileupload").attr('disabled', true);
+	}
 
 	var deletedTableIds=[];
 	
@@ -8,15 +13,19 @@ $(document).ready(function() {
         e.preventDefault();
         var tr = $(this).parent().parent();
         var id = tr.attr('id');
+        var order_id = $('#order_id').val();
         deletedTableIds.push(id);
-        docTable.row(tr).remove().draw();
          $.post('/jobOrder/deleteDoc', {docId:id}, function(data){
-        	 $.scojs_message('删除成功', $.scojs_message.TYPE_ERROR);
-        	 
-        	//异步刷新显示上传的文档信息
-	    	itemOrder.refleshDocTable(order_id);
+        	 if(data.result){
+        		 docTable.row(tr).remove().draw();
+	        	 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+	        	//异步刷新显示上传的文档信息
+		    	itemOrder.refleshDocTable(order_id);
+        	 }else{
+        		 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+        	 }
          },'json').fail(function() {
-             $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+             $.scojs_message('删除失败!', $.scojs_message.TYPE_ERROR);
            });
     }); 
 
@@ -84,17 +93,12 @@ $(document).ready(function() {
             },
             { "data": "C_NAME",
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
+                	if(!data)
                         data='';
-                    return '<input type="text" value="'+data+'" class="form-control" disabled/>';
+                	var str = '<input type="text" value="'+data+'" class="form-control" disabled/>'
+                			+ '<input type="hidden" name="uploader" value="'+full.UPLOADER+'" class="form-control"/>';
+                	return str;
                 }
-            },
-            { "data": "UPLOADER",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="uploader" value="'+data+'" class="form-control" disabled/>';
-            	}
             },
             { "data": "UPLOAD_TIME", 
                 "render": function ( data, type, full, meta ) {
@@ -107,9 +111,10 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="remark" value="'+data+'" class="form-control "/>';
+                    return '<input type="text" name="remark" value="'+data+'" class="form-control "/>';
                 }
-            }
+            },
+            { "data": "UPLOADER", "visible": false}
         ]
     });
 

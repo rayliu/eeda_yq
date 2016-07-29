@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
@@ -62,6 +61,9 @@ public class JobOrderController extends Controller {
     		//查询plan_order 里的计划单号
     		PlanOrder planOrder = PlanOrder.dao.findById(order_id);
         	setAttr("plan", planOrder);
+        	//客户回显
+        	Party party = Party.dao.findById(planOrder.get("customer_id"));
+        	setAttr("party", party);
     	}
 
     	if(StringUtils.isNotEmpty(itemIds)){
@@ -166,7 +168,7 @@ public class JobOrderController extends Controller {
     //上传文件
     public void saveDocFile(){
     	UserLogin user = LoginUserController.getLoginUser(this);
-    	int order_id = getParaToInt("order_id");
+    	String order_id = getPara("order_id");
     	
     	List<UploadFile> returnImg = getFiles("doc");
     	
@@ -187,19 +189,27 @@ public class JobOrderController extends Controller {
     }
     
     //删除文件
-//    public void deleteDoc(){
-//    	String id = getPara("id");
-//    	String fileName = JobOrderDoc.dao.findById(id).getStr("doc_name");
-//    	
-//    	List<UploadFile> returnImg = getFiles("doc");
-//		for (int i = 0; i < returnImg.size(); i++) {
-//    		File file = returnImg.get(i).getFile();
-//    		if(file.getName()==fileName){
-//    			file.delete();
-//    		}
-//		}
-//    }
-    
+    public void deleteDoc(){
+    	String id = getPara("docId");
+    	JobOrderDoc jobOrderDoc = JobOrderDoc.dao.findById(id);
+    	String fileName = jobOrderDoc.getStr("doc_name");
+    	jobOrderDoc.delete();
+    	Map<String,Object> resultMap = new HashMap<String,Object>();
+    	
+    	String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\doc\\"+fileName;
+    	
+        File file = new File(filePath);
+        if (file.exists() && file.isFile()) {
+            boolean result = file.delete();
+            resultMap.put("result", result);
+        }else{
+        	resultMap.put("result", false);
+        }
+        renderJson(resultMap);
+    }
+
+    		
     private Record getItemDetail(String id,String type){
     	Record re = null;
     	if("shipment".equals(type))

@@ -10,7 +10,6 @@ $(document).ready(function() {
     $('#saveBtn').click(function(e){
         //阻止a 的默认响应行为，不需要跳转
         e.preventDefault();
-        //提交前，校验数
         
         $(this).attr('disabled', true);
         
@@ -84,6 +83,7 @@ $(document).ready(function() {
                 eeda.contactUrl("edit?id",order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $('#saveBtn').attr('disabled', false);
+                $("#fileupload").attr('disabled', false);
                 //异步刷新海运明细表
                 itemOrder.refleshOceanTable(order.ID);
                 //异步刷新空运明细表
