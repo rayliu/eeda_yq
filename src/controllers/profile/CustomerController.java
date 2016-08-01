@@ -56,14 +56,14 @@ public class CustomerController extends Controller {
     public void list() {
         String company_name = getPara("COMPANY_NAME");
         String contact_person = getPara("CONTACT_PERSON");
-        String receipt = getPara("RECEIPT");
+//        String receipt = getPara("RECEIPT");
         String abbr = getPara("ABBR");
         String address = getPara("ADDRESS");
         String location = getPara("LOCATION");
         
         Long parentID = pom.getParentOfficeId();
         
-        if (company_name == null && contact_person == null && receipt == null && abbr == null && address == null
+        if (company_name == null && contact_person == null && abbr == null && address == null
                 && location == null) {
             String sLimit = "";
             String pageIndex = getPara("sEcho");
@@ -101,10 +101,6 @@ public class CustomerController extends Controller {
                 sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
             }
 
-            String sqlTotal = "select count(1) total from party p left join office o on o.id = p.office_id where p.type='CUSTOMER' and (o.id = " + parentID + " or o.belong_office = " + parentID + ")";
-            Record rec = Db.findFirst(sqlTotal);
-            logger.debug("total records:" + rec.getLong("total"));
-
             String sql = "select p.*,p.id as pid,l.name,trim(concat(l2.name, ' ', l1.name,' ',l.name)) as dname from party p "
 //                    + "left join contact c on p.contact_id=c.id "
                     + "left join location l on l.code=p.location "
@@ -112,17 +108,19 @@ public class CustomerController extends Controller {
                     + "left join location l2 on l1.pcode = l2.code "
                     + "left join office o on o.id = p.office_id "
                     + "where p.type='CUSTOMER' "
-                    + "and ifnull(c.company_name,'') like '%"
+                    + "and ifnull(p.company_name,'') like '%"
                     + company_name
                     + "%' and ifnull(p.contact_person,'') like '%"
                     + contact_person
-                    + "%' and ifnull(p.receipt,'') like '%"
-                    + receipt
                     + "%' and ifnull(p.address,'') like '%"
                     + address
-                    + "%' and ifnull(p.abbr,'') like '%" + abbr + "%'  and (o.id = " + parentID + " or o.belong_office = " + parentID + ") order by p.create_date desc " + sLimit;
+                    + "%' and ifnull(p.abbr,'') like '%" + abbr + "%'  and (o.id = " + parentID + " or o.belong_office = " + parentID + ") order by p.create_date desc ";
 
-            List<Record> customers = Db.find(sql);
+            String sqlTotal = "select count(1) total from ("+sql+") A";
+            Record rec = Db.findFirst(sqlTotal);
+            logger.debug("total records:" + rec.getLong("total"));
+            
+            List<Record> customers = Db.find(sql + sLimit);
 
             Map customerListMap = new HashMap();
             customerListMap.put("sEcho", pageIndex);
