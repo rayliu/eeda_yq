@@ -50,7 +50,7 @@ public class CustomerController extends Controller {
     // me.add("/eeda", controllers.yh.AppController.class, "/eeda");
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_LIST})
     public void index() {
-            render("/eeda/profile/customer/CustomerList.html");
+            render("/profile/customer/CustomerList.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_LIST})
     public void list() {
@@ -172,7 +172,7 @@ public class CustomerController extends Controller {
 //                + id);
 //        setAttr("contact", contact);
 
-        render("/eeda/profile/customer/CustomerEdit.html");
+        render("/profile/customer/CustomerEdit.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_DELETE})
     public void delete() {
