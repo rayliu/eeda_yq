@@ -63,7 +63,6 @@ import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
-import controllers.HomeController;
 import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.planOrder.PlanOrderController;
@@ -163,7 +162,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/location", controllers.profile.LocationController.class, contentPath);
         me.add("/office", controllers.profile.OfficeController.class, contentPath);
         me.add("/product", controllers.profile.ProductController.class, contentPath);
-		me.add("/home", HomeController.class, contentPath);
+
 		me.add("/accountAuditLog", AccountAuditLogController.class, contentPath);
 		me.add("/account", AccountController.class, contentPath);
 		me.add("/privilege", PrivilegeController.class, contentPath);
