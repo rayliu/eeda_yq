@@ -1,0 +1,46 @@
+<form id = "customForm">
+						            <div class="form-group">  <!--  form row  -->
+						            
+						                    <div class="row">
+						                        <div class="col-lg-4">
+						                            <%include("/eeda/component/form/inputField.html", 
+						                                {   id:'customs_broker', 
+						                                    label:'报关行', 
+						                                    value:custom.customs_broker!''
+						                                }){}%>
+						                        </div>
+						                        <div class="col-lg-4">
+						                            <%include("/eeda/component/form/inputField.html", 
+						                                {   id:'contact', 
+						                                    label:'联系人', 
+						                                    value:custom.contact!''
+						                                }){}%>
+						                        </div>
+						                        <div class="col-lg-4">
+						                            <%include("/eeda/component/form/inputField.html", 
+						                                {   id:'phone', 
+						                                    label:'电话', 
+						                                    value:custom.phone!''
+						                                }){}%>
+						                        </div>
+						                    </div>
+						                    <div class="row">
+						                        
+						                        <div class="col-lg-4">
+						                            <%include("/eeda/component/form/inputField.html", 
+						                                {   id:'custom_order_no', 
+						                                    label:'报关单号码', 
+						                                    value:custom.custom_order_no!''
+						                                }){}%>
+						                        </div>
+						                        <div class="col-lg-4">
+						                            <%include("/eeda/component/form/inputField.html", 
+						                                {   id:'destination_country', 
+						                                    label:'目的国', 
+						                                    value:custom.destination_country!''
+						                                }){}%>
+						                        </div>
+						                    </div>
+						                   
+						            </div><!-- /.row -->
+						</form>
