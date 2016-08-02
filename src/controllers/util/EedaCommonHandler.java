@@ -18,14 +18,14 @@ import org.apache.shiro.util.CollectionUtils;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
-import com.jfinal.log.Logger;
+import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.eeda.ModuleController;
 
 public class EedaCommonHandler {
-    private static Logger logger = Logger.getLogger(EedaCommonHandler.class);
+    private static Log logger = Log.getLog(EedaCommonHandler.class);
     
     /**
      * editOrder页面: save传回来的data结构, 查询order传出去的结构按以下格式构造

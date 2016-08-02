@@ -6,10 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jfinal.handler.Handler;
-import com.jfinal.log.Logger;
+import com.jfinal.log.Log;
 
 public class UrlHanlder extends Handler {
-	private Logger logger = Logger.getLogger(UrlHanlder.class);
+	private Log logger = Log.getLog(UrlHanlder.class);
 
 	@Override
 	public void handle(String target, HttpServletRequest request,

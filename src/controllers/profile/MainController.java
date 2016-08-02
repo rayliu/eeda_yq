@@ -38,7 +38,7 @@ import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.plugin.shiro.ShiroKit;
-import com.jfinal.log.Logger;
+import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
@@ -51,7 +51,7 @@ import controllers.util.ParentOffice;
 import controllers.util.getCurrentPermission;
 
 public class MainController extends Controller {
-	private Logger logger = Logger.getLogger(MainController.class);
+	private Log logger = Log.getLog(MainController.class);
     // in config route已经将路径默认设置为/eeda
     // me.add("/eeda", controllers.yh.AppController.class, "/eeda");
     Subject currentUser = SecurityUtils.getSubject();

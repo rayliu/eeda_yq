@@ -34,14 +34,14 @@ import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpServletRequest;
 
 import com.jfinal.kit.StrKit;
-import com.jfinal.log.Logger;
+import com.jfinal.log.Log;
 
 /**
  * EedaHttpKit
  * 主要是处理文件下载
  */
 public class EedaHttpKit {
-    private static Logger logger = Logger.getLogger(EedaHttpKit.class);
+    private static Log logger = Log.getLog(EedaHttpKit.class);
 	private EedaHttpKit() {}
 	
 	/**

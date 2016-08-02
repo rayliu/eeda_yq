@@ -19,7 +19,7 @@ import org.apache.shiro.subject.Subject;
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.log.Logger;
+import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
@@ -30,7 +30,7 @@ import controllers.util.PermissionConstant;
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
 public class AccountController extends Controller {
-    private Logger logger = Logger.getLogger(LoginUserController.class);
+    private Log logger = Log.getLog(LoginUserController.class);
     Subject currentUser = SecurityUtils.getSubject();
     ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_A_LIST})

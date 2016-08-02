@@ -13,10 +13,10 @@ import org.apache.shiro.subject.Subject;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
-import com.jfinal.log.Logger;
+import com.jfinal.log.Log;
 
 public class SetAttrLoginUserInterceptor implements Interceptor{
-	private Logger logger = Logger.getLogger(SetAttrLoginUserInterceptor.class);
+	private Log logger = Log.getLog(SetAttrLoginUserInterceptor.class);
 	@Override
 	public void intercept(Invocation ai) {
 		Subject currentUser = SecurityUtils.getSubject();

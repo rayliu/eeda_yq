@@ -8,12 +8,12 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.jfinal.log.Logger;
+import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 
 public class DbUtils {
-	private static Logger logger = Logger.getLogger(DbUtils.class);
+	private static Log logger = Log.getLog(DbUtils.class);
 	
 	public static String buildConditions(Map<String, String[]> paraMap) {
 		String condition = "";
