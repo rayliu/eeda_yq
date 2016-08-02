@@ -42,7 +42,7 @@ public class ServiceProviderController extends Controller {
     
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_LIST})
     public void index() {
-        render("/eeda/profile/serviceProvider/serviceProviderList.html");
+        render("/profile/serviceProvider/serviceProviderList.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_LIST})
     public void list() {
@@ -135,7 +135,7 @@ public class ServiceProviderController extends Controller {
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_CREATE})
     public void add() {
         setAttr("saveOK", false);
-            render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
+            render("/profile/serviceProvider/serviceProviderEdit.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_UPDATE})
     public void edit() {
@@ -149,7 +149,7 @@ public class ServiceProviderController extends Controller {
 
         setAttr("party", party);
      
-        render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
+        render("/profile/serviceProvider/serviceProviderEdit.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_DELETE})
     public void delete() {

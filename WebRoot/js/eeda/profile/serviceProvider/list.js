@@ -7,6 +7,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda-table',
+            paging: true,
             ajax: "/serviceProvider/list",
             columns:[
                 { "data": "COMPANY_NAME","width": "15%",
@@ -95,39 +96,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         });
         
 
-      //条件筛选
-    	$("#COMPANY_NAME ,#CONTACT_PERSON ,#RECEIPT,#ABBR,#ADDRESS,#LOCATION").on('keyup click', function () {    	 	
+        //条件筛选
+    	$("#searchBtn").on('click', function () {    	 	
           	var COMPANY_NAME = $("#COMPANY_NAME").val();
           	var CONTACT_PERSON = $("#CONTACT_PERSON").val();
         	var RECEIPT = $("#RECEIPT").val();
           	var ABBR = $("#ABBR").val();    	
           	var ADDRESS = $("#ADDRESS").val();
           	var LOCATION = $("#LOCATION").val();
-          	dataTable.fnSettings().sAjaxSource = "/serviceProvider/list?COMPANY_NAME="+COMPANY_NAME+"&CONTACT_PERSON="+CONTACT_PERSON+"&RECEIPT="+RECEIPT+"&ABBR="+ABBR+"&ADDRESS="+ADDRESS+"&LOCATION="+LOCATION;
-          	dataTable.fnDraw();
+          	var url = "/serviceProvider/list?COMPANY_NAME="+COMPANY_NAME+"&CONTACT_PERSON="+CONTACT_PERSON+"&RECEIPT="+RECEIPT+"&ABBR="+ABBR+"&ADDRESS="+ADDRESS+"&LOCATION="+LOCATION;
+          	dataTable.ajax.url(url).load();
         });
 
-        var spArr= spType.split(';');
-        for (var i = 0; i < spArr.length; i++) {
-            var checkSpType = spArr[i];
-            if(checkSpType == 'line'){
-                $('#sp_type_line').attr('checked', 'checked');
-            }else if(checkSpType == 'delivery'){
-                $('#sp_type_delivery').attr('checked', 'checked');
-            }else if(checkSpType == 'pickup'){
-                $('#sp_type_pickup').attr('checked', 'checked');
-            }else if(checkSpType == 'personal'){
-                $('#sp_type_personal').attr('checked', 'checked');
-            }
-        };
-
-        if(payment == "monthlyStatement"){
-            $("#payment").find("option[value='monthlyStatement']").attr("selected",true);
-        }else if(payment == "freightCollect"){
-            $("#payment").find("option[value='freightCollect']").attr("selected",true);
-        }else{
-            $("#payment").find("option[value='cashPayment']").attr("selected",true);
-        }
-    	
     });
 });
