@@ -29,10 +29,10 @@
                                         <label class="search-label">公司名称</label>
                                         <input type="text" class="form-control search-control orderNo_filter" id="COMPANY_NAME">
                                     </div>
-                                    <!-- <div class="form-group">
-                                        <label class="search-label">开票单位</label>
-                                        <input type="text" class="form-control search-control status_filter" id="RECEIPT">
-                                    </div> -->
+                                    <div class="form-group">
+                                        <label class="search-label">地址</label>
+                                        <input type="text" class="form-control search-control sp_filter" id="ADDRESS">
+                                    </div>
                                 </div>
                                 <!-- end of col-lg-6-->
                                 <div class="col-lg-4">
@@ -41,8 +41,8 @@
                                         <input type="text" class="form-control search-control customer_filter" id="ABBR">
                                     </div>
                                     <div class="form-group">
-                                        <label class="search-label">地址</label>
-                                        <input type="text" class="form-control search-control sp_filter" id="ADDRESS">
+                                        <label class="search-label">所在地城市</label>
+                                        <input type="text" class="form-control search-control warehouse" id="LOCATION">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -50,14 +50,9 @@
                                         <label class="search-label">负责人</label>
                                         <input type="text" class="form-control search-control address_filter" id="CONTACT_PERSON">
                                     </div>
-                                    <div class="form-group">
-                                        <label class="search-label">所在地城市</label>
-                                        <input type="text" class="form-control search-control warehouse" id="LOCATION">
-                                    </div>
                                 </div>
                                 <!-- end of col-lg-6-->
-                                </div>
-                            
+                            </div>
                             <div class="form-group button-bar" >
                                 <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
                                 <% if(shiro.hasPermission("Customer.create")){%>
