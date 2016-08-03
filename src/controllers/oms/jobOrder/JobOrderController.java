@@ -159,12 +159,9 @@ public class JobOrderController extends Controller {
 		Record r = jobOrder.toRecord();
    		r.set("creator_name", user_name);
    		
-   		Record custom = Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad");
-   		Record china = Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china");
-   		Record hk = Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC");
-   		r.set("custom",custom);
-   		r.set("chinaCustom", china);
-   		r.set("hkCustom", hk);
+   		r.set("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
+   		r.set("chinaCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
+   		r.set("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
    		
    		r.set("shipment", getItemDetail(id,"shipment"));
     	r.set("air", getItemDetail(id,"air"));
