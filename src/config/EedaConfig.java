@@ -35,7 +35,10 @@ import models.eeda.oms.truckOrder.TruckOrderArap;
 import models.eeda.oms.truckOrder.TruckOrderCargo;
 import models.eeda.profile.Account;
 import models.eeda.profile.ContainerType;
+import models.eeda.profile.Country;
 import models.eeda.profile.Currency;
+import models.eeda.profile.Custom;
+import models.eeda.profile.FinItem;
 import models.eeda.profile.Unit;
 import models.eeda.profile.Warehouse;
 import models.yh.profile.CustomizeField;
@@ -57,7 +60,6 @@ import com.jfinal.ext.plugin.shiro.ShiroInterceptor;
 import com.jfinal.ext.plugin.shiro.ShiroPlugin;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
-import com.jfinal.plugin.activerecord.SqlReporter;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
@@ -68,7 +70,10 @@ import controllers.oms.planOrder.PlanOrderController;
 import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
 import controllers.profile.ContainerTypeController;
+import controllers.profile.CountryController;
 import controllers.profile.CurrencyController;
+import controllers.profile.CustomController;
+import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.UnitController;
 import controllers.yh.arap.AccountAuditLogController;
@@ -150,6 +155,9 @@ public class EedaConfig extends JFinalConfig {
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
         me.add("/loginUser", controllers.profile.LoginUserController.class, contentPath);
         me.add("/unit", UnitController.class, contentPath);
+        me.add("/country", CountryController.class, contentPath);
+        me.add("/finItem", FinItemController.class, contentPath);
+        me.add("/custom", CustomController.class, contentPath);
         me.add("/containerType", ContainerTypeController.class, contentPath);
         //register loginUser
         me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
@@ -196,7 +204,7 @@ public class EedaConfig extends JFinalConfig {
 
         arp.setDialect(new MysqlDialect());
         // 配置属性名(字段名)大小写不敏感容器工厂
-        arp.setContainerFactory(new CaseInsensitiveContainerFactory());
+        arp.setContainerFactory(new CaseInsensitiveContainerFactory(false));
 
         setTableMapping();
         
@@ -210,6 +218,9 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("user_role", UserRole.class);
         arp.addMapping("role_permission", RolePermission.class);
         arp.addMapping("unit", Unit.class);
+        arp.addMapping("country", Country.class);
+        arp.addMapping("fin_item", FinItem.class);
+        arp.addMapping("custom", Custom.class);
         arp.addMapping("container_type", ContainerType.class);
         arp.addMapping("party", Party.class);
 //        arp.addMapping("contact", Contact.class);       
