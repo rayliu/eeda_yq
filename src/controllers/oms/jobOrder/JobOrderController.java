@@ -133,6 +133,12 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> custom_detail = (ArrayList<Map<String, String>>)dto.get("custom_detail");
 		DbUtils.handleList(custom_detail, id, JobOrderCustom.class, "order_id");
 		
+		List<Map<String, String>> chinaCustom = (ArrayList<Map<String, String>>)dto.get("chinaCustom");
+		DbUtils.handleList(chinaCustom, id, JobOrderCustom.class, "order_id");
+		
+		List<Map<String, String>> hkCustom = (ArrayList<Map<String, String>>)dto.get("hkCustom");
+		DbUtils.handleList(hkCustom, id, JobOrderCustom.class, "order_id");
+		
 		//保险
 		List<Map<String, String>> insurance_detail = (ArrayList<Map<String, String>>)dto.get("insurance_detail");
 		DbUtils.handleList(insurance_detail, id, JobOrderInsurance.class, "order_id");
@@ -153,9 +159,15 @@ public class JobOrderController extends Controller {
 		Record r = jobOrder.toRecord();
    		r.set("creator_name", user_name);
    		
+   		Record custom = Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad");
+   		Record china = Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china");
+   		Record hk = Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC");
+   		r.set("custom",custom);
+   		r.set("chinaCustom", china);
+   		r.set("hkCustom", hk);
+   		
    		r.set("shipment", getItemDetail(id,"shipment"));
     	r.set("air", getItemDetail(id,"air"));
-   		r.set("custom", getItemDetail(id,"custom"));
    		r.set("insurance", getItemDetail(id,"insure"));
    		
 //   	r.set("airList", getItems(id,"air"));
@@ -220,9 +232,7 @@ public class JobOrderController extends Controller {
     				+ " left join party p2 on p2.id=jos.consignee"
     				+ " left join party p3 on p3.id=jos.notify_party"
     				+ " where order_id = ?",id);
-    	else if("custom".equals(type)){
-    		re = Db.findFirst("select * from job_order_custom joc where order_id = ?",id);
-    	}else if("insure".equals(type)){
+    	else if("insure".equals(type)){
     		re = Db.findFirst("select * from job_order_insurance joi where order_id = ?",id);
     	}else if("air".equals(type)){
     		re = Db.findFirst("select joa.* ,p1.abbr shipperAbbr,p2.abbr consigneeAbbr,p3.abbr notify_partyAbbr from job_order_air joa"
@@ -278,7 +288,9 @@ public class JobOrderController extends Controller {
     	setAttr("landList", getItems(id,"land"));
     	
     	//报关
-    	setAttr("custom", getItemDetail(id,"custom"));
+    	setAttr("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
+   		setAttr("chinaCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
+   		setAttr("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
     	
     	//保险
     	setAttr("insurance", getItemDetail(id,"insure"));

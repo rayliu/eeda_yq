@@ -29,6 +29,8 @@ $(document).ready(function() {
         var load_detail = itemOrder.buildLoadItem();
         //报关
         var custom_detail=itemOrder.buildCustomDetail();
+        var chinaCustom=itemOrder.buildChinaCustomDetail();
+        var hkCustom=itemOrder.buildHkCustomDetail();
         //保险
         var insurance_detail=itemOrder.buildInsuranceDetail();
         //费用明细，应收，应付
@@ -60,6 +62,8 @@ $(document).ready(function() {
         order.land_list = load_detail;
         //报关
         order.custom_detail = custom_detail;
+        order.chinaCustom = chinaCustom;
+        order.hkCustom = hkCustom;
         //保险
         order.insurance_detail=insurance_detail;
        //费用明细，应收，应付
@@ -73,7 +77,11 @@ $(document).ready(function() {
             if(order.ID>0){
                 $("#order_id").val(order.ID);
                 $("#shipment_id").val(order.SHIPMENT.ID);
+                
                 $("#custom_id").val(order.CUSTOM.ID);
+                $("#china_custom_id").val(order.CHINACUSTOM.ID);
+                $("#hk_custom_id").val(order.HKCUSTOM.ID);
+                
                 $("#insurance_id").val(order.INSURANCE.ID);
                 $("#air_id").val(order.AIR.ID);
                 $("#order_no").val(order.ORDER_NO);
@@ -100,7 +108,7 @@ $(document).ready(function() {
                 $('#saveBtn').attr('disabled', false);
             }
         },'json').fail(function() {
-            $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+            $.scojs_message('失败', $.scojs_message.TYPE_ERROR);
             $('#saveBtn').attr('disabled', false);
           });
     });  
