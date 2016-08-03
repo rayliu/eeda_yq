@@ -222,14 +222,14 @@ eeda.refreshUrl = refreshUrl;
                   top:$(me).offset().top+28+"px" 
               });
               companyList.show();
-              companyList.inputField = inputField;
-              companyList.hiddenField = hiddenField;
+              eeda._port_inputField = inputField;
+              eeda._port_hiddenField = hiddenField;
           },'json');
       });
       
       companyList.on('click', '.fromLocationItem', function(e){
-          var hiddenField = companyList.hiddenField;
-          var inputField = companyList.inputField;
+          var inputField = eeda._port_inputField;
+          var hiddenField = eeda._port_hiddenField;
           inputField.val($(this).text());//名字
           companyList.hide();
           var portId = $(this).attr('portId');
@@ -238,7 +238,7 @@ eeda.refreshUrl = refreshUrl;
 
       // 1 没选中客户，焦点离开，隐藏列表
       $('table input[name=port_input]').on('blur', function(){
-        var hiddenField = companyList.hiddenField;
+        var hiddenField = eeda._port_hiddenField;
         
         if ($(this).val().trim().length ==0) {
             hiddenField.val('');

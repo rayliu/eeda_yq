@@ -61,19 +61,23 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        return cargo_items_array;
 	    };
 	    
+	    var bindFieldEvent=function(){
+	    	$('table .date').datetimepicker({  
+	    	    format: 'yyyy-MM-dd',  
+	    	    language: 'zh-CN'
+	    	}).on('changeDate', function(el){
+	    	    $(".bootstrap-datetimepicker-widget").hide();   
+	    	    $(el).trigger('keyup');
+	    	});
+
+	    	eeda.bindTablePortField();
+	    };
+
 	    //------------事件处理
 	    var cargoTable = eeda.dt({
             id: 'cargo_table',
             "drawCallback": function( settings ) {
-		        $('table .date').datetimepicker({  
-		    	    format: 'yyyy-MM-dd',  
-		    	    language: 'zh-CN'
-		    	}).on('changeDate', function(el){
-		    	    $(".bootstrap-datetimepicker-widget").hide();   
-		    	    $(el).trigger('keyup');
-		    	});
-
-		    	eeda.bindTablePortField();
+		        bindFieldEvent();
 		    },
             columns:[
 				{ "data":"ID","width": "10px",
@@ -307,15 +311,34 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                );
 	                    return field_html;
 	                }
-	            }, { "data": "POR_NAME", "visible": false}
-	            , { "data": "POL_NAME", "visible": false}
-	            , { "data": "POD_NAME", "visible": false}
+	            }, { "data": "POR_NAME", "visible": false,
+	            	"render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
+	            }
+	            , { "data": "POL_NAME", "visible": false,
+	            	"render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
+	            }
+	            , { "data": "POD_NAME", "visible": false,
+	            	"render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
+	            }
 	        ]
 	    });
 
 	    $('#add_cargo').on('click', function(){
 	        var item={};
 	        cargoTable.row.add(item).draw(true);
+	        bindFieldEvent();
 	    });
 	    
 	    //刷新明细表
