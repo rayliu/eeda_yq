@@ -166,14 +166,15 @@ public class JobOrderController extends Controller {
    	}
     
     //上传文件
+    @Before(Tx.class)
     public void saveDocFile(){
     	UserLogin user = LoginUserController.getLoginUser(this);
     	String order_id = getPara("order_id");
     	
-    	List<UploadFile> returnImg = getFiles("doc");
+    	List<UploadFile> fileList = getFiles("doc");
     	
-		for (int i = 0; i < returnImg.size(); i++) {
-    		File file = returnImg.get(i).getFile();
+		for (int i = 0; i < fileList.size(); i++) {
+    		File file = fileList.get(i).getFile();
     		String fileName = file.getName();
     		
 			JobOrderDoc jobOrderDoc = new JobOrderDoc();
@@ -189,11 +190,11 @@ public class JobOrderController extends Controller {
     }
     
     //删除文件
+    @Before(Tx.class)
     public void deleteDoc(){
     	String id = getPara("docId");
     	JobOrderDoc jobOrderDoc = JobOrderDoc.dao.findById(id);
     	String fileName = jobOrderDoc.getStr("doc_name");
-    	jobOrderDoc.delete();
     	Map<String,Object> resultMap = new HashMap<String,Object>();
     	
     	String path = getRequest().getServletContext().getRealPath("/");
@@ -202,9 +203,10 @@ public class JobOrderController extends Controller {
         File file = new File(filePath);
         if (file.exists() && file.isFile()) {
             boolean result = file.delete();
+            jobOrderDoc.delete();
             resultMap.put("result", result);
         }else{
-        	resultMap.put("result", false);
+        	resultMap.put("result", "文件不存在可能已被删除!");
         }
         renderJson(resultMap);
     }

@@ -1,7 +1,7 @@
 
 <input type="hidden" id="shipment_id" value="${shipment.id!''}">
 <form id = "shipmentForm">
-    <div class="row">  <!--  form row  -->
+    <div class="form-group">  <!--  form row  -->
         <div class="row">
             <div class="col-lg-4"><!--  三列排版  -->
                 <%include("/eeda/component/form/inputSelectArea.html", 
@@ -182,6 +182,27 @@
                            value:shipment.eta!''
                        }){}%>
                </div>
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/inputField.html", 
+                       {   id:'SONO', 
+                           label:'SO NO', 
+                           value:shipment.SONO!''
+                       }){}%>
+               </div>
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/dateInputField.html", 
+                       {   id:'export_date', 
+                           label:'出口日期', 
+                           value:shipment.export_date!''
+                       }){}%>
+               </div>
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/dateInputField.html", 
+                       {   id:'closing_date', 
+                           label:'截关日期', 
+                           value:shipment.closing_date!''
+                       }){}%>
+               </div>
            </div>
            
            <div class="row">
@@ -200,6 +221,7 @@
                            value:shipment.cargo_desc!''
                        }){}%>
                </div>
+              
            </div>
            <div class="row">
                <div class="col-lg-4">
@@ -209,9 +231,17 @@
                            value:shipment.vgm!''
                        }){}%>
                </div>
-          </div>
+           </div>
      </div>
 </form>
+           <div class="form-group">
+             <input type="button" class="btn btn-success" value="生成HBL PDF">
+           	 <input type="button" class="btn btn-success" value="生成电放保函  Word">
+           	 <input type="button" class="btn btn-success" value="生成booking PDF">
+           	 <input type="button" class="btn btn-success" value="生成SI PDF">
+           	 <input type="button" class="btn btn-success" value="生成 头程资料 PDF">
+			 <br><br>
+           </div>
                     
 <div class="row">
     <div class="form-group">

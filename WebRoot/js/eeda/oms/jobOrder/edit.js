@@ -168,7 +168,7 @@ $(document).ready(function() {
             hideServiceTab(checkValue);
         }
     });
-    //运输方式checkbox回显
+    //服务项目checkbox回显
     var checkArray =$('#hiddenTransports').val().split(",");
     for(var i=0;i<checkArray.length;i++){
 	    $('#transport_type input[type="checkbox"]').each(function(){

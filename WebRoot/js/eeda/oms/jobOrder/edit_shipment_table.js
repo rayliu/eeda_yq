@@ -71,7 +71,7 @@ $(document).ready(function() {
             $(row).attr('id', data.ID);
         },
         "columns": [
-            { "data":"ID","width": "10px",
+            { "data":"ID","width": "3px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                 		return '<input type="checkbox" class="checkBox">';
@@ -79,7 +79,7 @@ $(document).ready(function() {
                 		return '<input type="checkbox" class="checkBox" disabled>';
                 }
             },
-            { "width": "30px",
+            { "width": "10px",
                 "render": function ( data, type, full, meta ) {
                 	return '<button type="button" class="delete btn btn-default btn-xs">删除</button>';
                 }

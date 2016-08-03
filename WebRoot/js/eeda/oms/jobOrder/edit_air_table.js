@@ -80,7 +80,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="air_company" value="'+data+'" class="form-control easyui-numberbox" data-options="max:0"/>';
+                    return '<input type="text" name="air_company" value="'+data+'" class="form-control easyui-numberbox" data-options="max:0"/>';
                 }
             },
             { "data": "FLIGHT_NO", 
