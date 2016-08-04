@@ -71,6 +71,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	});
 
 	    	eeda.bindTablePortField();
+	    	eeda.bindTableCarrierField();
 	    };
 
 	    //------------事件处理
@@ -256,7 +257,14 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="CARRIER" value="'+data+'" class="form-control search-control" style="width:80px"/>';
+	                    var field_html = template('table_carrier_field_template',
+		                    {
+		                        id: 'CARRIER',
+		                        value: data,
+		                        display_value: full.CARRIER_NAME
+		                    }
+		                );
+	                    return field_html;
 	                }
 	            },
 	            { "data": "VESSEL",
@@ -317,21 +325,26 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                        data='';
 	                    return data;
 	                }
-	            }
-	            , { "data": "POL_NAME", "visible": false,
+	            }, { "data": "POL_NAME", "visible": false,
+	            	"render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
+	            }, { "data": "POD_NAME", "visible": false,
+	            	"render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
+	            }, { "data": "CARRIER_NAME", "visible": false,
 	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    return data;
 	                }
 	            }
-	            , { "data": "POD_NAME", "visible": false,
-	            	"render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                    return data;
-	                }
-	            }
+
 	        ]
 	    });
 

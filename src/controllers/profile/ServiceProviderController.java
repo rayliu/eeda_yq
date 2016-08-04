@@ -16,6 +16,7 @@ import models.Product;
 import models.yh.profile.Contact;
 import models.yh.profile.ProviderChargeType;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
@@ -475,5 +476,15 @@ public class ServiceProviderController extends Controller {
     	
     }
     
-    
+    public void searchCarrier(){
+        String name = getPara("name");
+        List<Record> recs = Collections.EMPTY_LIST;
+        if(!StringUtils.isBlank(name)){
+            recs = Db.find("select * from party where type = 'SP' and sp_type like '%carrier%' and (abbr like '%?%' or company_name like '%?%')", name, name);
+        }else{
+            recs = Db.find("select * from party where type = 'SP' and sp_type like '%carrier%' ");
+        }
+        renderJson(recs);
+        
+    }
 }
