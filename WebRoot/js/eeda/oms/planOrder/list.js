@@ -7,6 +7,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda-table',
+            paging: true,
             ajax: "/planOrder/list",
             columns:[
                   {"data": "ORDER_NO", 
