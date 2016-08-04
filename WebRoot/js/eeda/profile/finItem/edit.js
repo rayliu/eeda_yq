@@ -16,16 +16,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
            
             var order = {
                 id: $('#id').val(),
-                code: $('#code').val(),                
-                type: $('#type').val(),
+                name: $('#name').val(),                
                 remark: $('#remark').val()
             };
             //异步向后台提交数据
             $.post('/finItem/save', {params:JSON.stringify(order)}, function(data){
                 var order = data;
                 if(order.ID>0){
-                	$("#code").val(order.CODE);
-                	$("#type").val(order.TYPE);
+                	$("#name").val(order.NAME);
                 	$("#remark").val(order.REMARK);
                     
                 	$('#id').val(order.ID);

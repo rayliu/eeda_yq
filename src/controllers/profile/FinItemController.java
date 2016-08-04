@@ -56,7 +56,7 @@ public class FinItemController extends Controller {
             sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
         }
 
-        String sql = "SELECT id,code,name,type,driver_type,remark from fin_item where 1 =1 ";
+        String sql = "SELECT id,name,remark from fin_item where 1 =1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
 
@@ -117,27 +117,20 @@ public class FinItemController extends Controller {
         FinItem r = null;
         
         String id = (String) dto.get("id");
-        String code = (String) dto.get("code");
         String name = (String) dto.get("name");
-        String type = (String) dto.get("type");
-        String drive_type = (String) dto.get("drive_type");
         String remark = (String) dto.get("remark");
         
         if (StringUtils.isBlank(id)) {
         	r = new FinItem();
-            r.set("code", code);
+
             r.set("name", name);
-            r.set("type", type);
-            r.set("drive_type", drive_type);
-            r.set("eremark", remark);            
+            r.set("remark", remark);            
             r.save();
         } else {
         	r = FinItem.dao.findById(id);
-        	r.set("code", code);
+
         	r.set("name", name);
-            r.set("type", type);
-            r.set("edrive_type", drive_type);
-            r.set("eremark", remark);            
+            r.set("remark", remark);            
             r.update();
         }
         renderJson(r);

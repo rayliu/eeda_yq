@@ -20,25 +20,16 @@
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'name', 
-                                    label:'费用类型', 
+                                    label:'费用名称', 
                                     value:order.NAME!'',
                                     required:'required'
                                 }){}%>
                         </div>
-                         <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'type', 
-                                    label:'付款类型', 
-                                    value:order.TYPE!'',
-                                    required:'required'
-                                }){}%>
-                        </div>
-                         <div class="col-lg-4">
+                         <div class="col-lg-8">
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'remark', 
-                                    label:'费用单据', 
-                                    value:order.REMARK!'',
-                                    required:'required'
+                                    label:'备注', 
+                                    value:order.REMARK!''
                                 }){}%>
                         </div>
                     </div>

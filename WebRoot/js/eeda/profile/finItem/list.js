@@ -9,10 +9,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             id: 'eeda-table',
             ajax: "/finItem/list",
             columns:[
-	              { "data": "CODE"},
-	              { "data": "NAME"}, 
-	              { "data": "TYPE"},
-	              { "data": "DRIVER_TYPE"},
+	              { "data": "NAME"},          
 	              { "data": "REMARK"},
                 {"data": null, 
                     "render": function ( data, type, full, meta ) {
@@ -34,7 +31,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       })
 
      var searchData=function(){
-          var chinese_name = $("#code").val();
+          var name = $("#name").val();
           
           /*  
               查询规则：参数对应DB字段名
@@ -43,7 +40,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/finItem/list?code="+code;
+          var url = "/finItem/list?name="+name;
 
           dataTable.ajax.url(url).load();
       };
