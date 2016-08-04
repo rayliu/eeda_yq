@@ -1,0 +1,68 @@
+<%layout("/eeda/layout.html"){%>
+	<!-- <link href="/yh/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/yh/css/ui/jquery-ui.css">
+    <link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet"> 
+    <link href="/yh/js/plugins/datatables-1.10.9/css/jquery.dataTables.min.css" rel="stylesheet"> -->
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-header" style="font-size:32px">新添加费用条目</div>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+            <input id="id" type="hidden" name="id" value="${order.id!''}"/>
+
+            <div class="form-group">  <!--  form row  -->
+                <form id="orderForm">
+                    <div class="row"><!--  第1行  -->
+                        <div class="col-lg-4"><!--  三列排版  -->
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'name', 
+                                    label:'费用类型', 
+                                    value:order.NAME!'',
+                                    required:'required'
+                                }){}%>
+                        </div>
+                         <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'type', 
+                                    label:'付款类型', 
+                                    value:order.TYPE!'',
+                                    required:'required'
+                                }){}%>
+                        </div>
+                         <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'remark', 
+                                    label:'费用单据', 
+                                    value:order.REMARK!'',
+                                    required:'required'
+                                }){}%>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- /.row -->
+
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <a id='saveBtn' class="btn  btn-primary" href="#">保存</a>
+                    <a class="btn  btn-default" href="/finItem">返回</a>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+
+        </div><!--  form row  -->
+        <!-- /#page-wrapper -->
+<%}%>
+
+<script>
+</script>
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/profile/finItem/edit']);
+    });
+</script>
