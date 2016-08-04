@@ -12,13 +12,29 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 	              { "data": "CODE"},
 	              { "data": "ENGLISH_NAME"}, 
 	              { "data": "CHINESE_NAME"}, 
-                {"data": null, 
-                    "render": function ( data, type, full, meta ) {
-                      var str = "<a class='btn  btn-primary btn-sm' href='/country/edit?id="+full.ID+"' target='_blank'>"+
+                  {"data": null,
+	            	  "width": "20%",
+		            	"render": function ( data, type, full, meta ) {            		
+							
+							var str="";
+
+                            str = "<a class='btn  btn-primary btn-sm' href='/country/edit?id="+full.ID+"' target='_blank'>"+
                         "<i class='fa fa-edit fa-fw'></i>"+
-                        "编辑"+"</a> ";
-                      return str;
-                    }
+                        "编辑"+"</a> ";                       
+                          
+                  		if(data.IS_STOP != true){
+		                    str += "<a class='btn btn-danger  btn-sm' href='/country/delete?id="+full.ID+"'>"+
+		                         "<i class='fa fa-trash-o fa-fw'></i>"+ 
+		                         "停用"+
+		                         "</a>";                		
+	               	     }else{
+	               		    str +="<a class='btn btn-success btn-sm' href='/country/delete?id="+full.ID+"'>"+
+			                         "<i class='fa fa-trash-o fa-fw'></i>"+ 
+			                         "启用"+
+			                     "</a>";
+	               	}
+                  		    return str +="</nobr>";
+                   }
                 },
             ]
         });

@@ -26,6 +26,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 if(order.ID>0){
                 	$("#code").val(order.CODE);
                 	$("#name").val(order.NAME);
+                	$("#id").val(order.ID);
                     eeda.contactUrl("edit?id",order.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     $('#saveBtn').attr('disabled', false);

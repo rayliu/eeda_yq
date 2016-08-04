@@ -90,7 +90,7 @@ public class CountryController extends Controller {
     // 删除条目
     @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_DELETE })
     public void delete() {
-        String id = getPara();
+        String id = getPara("id");
         if (id != null) {
         	Country l = Country.dao.findById(id);
             Object obj = l.get("is_stop");
