@@ -202,9 +202,8 @@ public class ServiceProviderController extends Controller {
             }
 
             party = new Party();
-            party.set("party_type", Party.PARTY_TYPE_SERVICE_PROVIDER);
-            party.set("contact_id", contact.getLong("id"));
-            party.set("creator", currentUser.getPrincipal());
+            party.set("type", Party.PARTY_TYPE_SERVICE_PROVIDER);
+            party.set("creator", LoginUserController.getLoginUserId(this));
             party.set("create_date", createDate);
             party.set("receipt", getPara("receipt"));
             party.set("remark", getPara("remark"));
