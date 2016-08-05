@@ -9,7 +9,7 @@ requirejs.config({
         bootstrap:'bootstrap/bootstrap',
         metisMenu:'metisMenu/jquery.metisMenu',
         sb_admin: 'sb-admin/sb-admin',
-        dataTables: 'datatables/jquery.dataTables',//注意这个js被我改过（$），否则dataTables不能用
+        dataTables: 'datatables/js/jquery.dataTables',
         dataTablesBootstrap: 'datatables/js/dataTables.bootstrap',
         dt: 'dt/datatables',
         zTree: 'zTree_v3/js/jquery.ztree.all-3.5.min',
