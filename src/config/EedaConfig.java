@@ -77,7 +77,6 @@ import controllers.profile.CustomController;
 import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.UnitController;
-import controllers.yh.arap.AccountAuditLogController;
 
 public class EedaConfig extends JFinalConfig {
     private Logger logger = Logger.getLogger(EedaConfig.class);
@@ -171,7 +170,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/office", controllers.profile.OfficeController.class, contentPath);
         me.add("/product", controllers.profile.ProductController.class, contentPath);
 
-		me.add("/accountAuditLog", AccountAuditLogController.class, contentPath);
+//		me.add("/accountAuditLog", AccountAuditLogController.class, contentPath);
 		me.add("/account", AccountController.class, contentPath);
 		me.add("/privilege", PrivilegeController.class, contentPath);
 		//oms管理系统
