@@ -127,6 +127,7 @@ $(document).ready(function() {
         if(!$("#emailForm").valid()){
             return;
         }
+        $('#returnBtn').click();
     	var order_id = $('#order_id').val();
         var docs = [];
         $('#doc_table input[type="checkbox"]:checked').each(function(){
@@ -137,8 +138,6 @@ $(document).ready(function() {
     	var title = $('#emailTitle').val();
     	var content = $('#emailContent').val();
     	$.post('/jobOrder/sendMail', {order_id:order_id,mailTitle:title,userEmail:email,mailContent:content,docs:docs.toString()}, function(data){
-    		
-    		$('#returnBtn').click();
     		if(data.result==true){
 	        	 $.scojs_message('发送邮件成功', $.scojs_message.TYPE_OK);
 	        	 itemOrder.refleshEmailTable(order_id);
