@@ -110,14 +110,14 @@
                 <%include("/eeda/component/form/inputField.html", 
                     {   id:'vessel', 
                         label:'船名', 
-                        value:shipment.vessel!''
+                        value:shipment.vessel!planOrderItem.vessel!''
                     }){}%>
             </div>
             <div class="col-lg-4">
                 <%include("/eeda/component/form/inputField.html", 
                     {   id:'voyage', 
                         label:'航线', 
-                        value:shipment.voyage!''
+                        value:shipment.voyage!planOrderItem.voyage!''
                     }){}%>
             </div>
             <div class="col-lg-4">
@@ -133,14 +133,14 @@
                    <%include("/eeda/component/form/inputField.html", 
                        {   id:'por', 
                            label:'收货港 POR', 
-                           value:shipment.por!''
+                           value:shipment.por!planOrderItem.por!''
                        }){}%>
                </div>
                <div class="col-lg-4">
                    <%include("/eeda/component/form/inputField.html", 
                        {   id:'pol', 
                            label:'装货港 POL', 
-                           value:shipment.pol!''
+                           value:shipment.pol!planOrderItem.pol!''
                        }){}%>
                </div>
                <div class="col-lg-4">
@@ -156,7 +156,7 @@
                    <%include("/eeda/component/form/inputField.html", 
                        {   id:'pod', 
                            label:'卸货港 POD', 
-                           value:shipment.pod!''
+                           value:shipment.pod!planOrderItem.pod!''
                        }){}%>
                </div>
                <div class="col-lg-4">
@@ -172,14 +172,14 @@
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'etd', 
                            label:'ETD', 
-                           value:shipment.etd!''
+                           value:shipment.etd!planOrderItem.etd!''
                        }){}%>
                </div>
                <div class="col-lg-4">
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'eta', 
                            label:'ETA', 
-                           value:shipment.eta!''
+                           value:shipment.eta!planOrderItem.eta!''
                        }){}%>
                </div>
                <div class="col-lg-4">
@@ -200,7 +200,7 @@
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'closing_date', 
                            label:'截关日期', 
-                           value:shipment.closing_date!''
+                           value:shipment.closing_date!planOrderItem.cls!''
                        }){}%>
                </div>
            </div>

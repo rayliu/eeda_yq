@@ -1,6 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',
     './edit_shipment_table','./edit_shipment_detail','./edit_land_table', './edit_charge_table','./edit_charge_cost_table',
-    './edit_air_table', './edit_air_detail','./edit_custom_detail',
+    './edit_air_table', './edit_air_cargoDesc_table', './edit_air_detail','./edit_custom_detail',
     './edit_insurance_detail', './edit_doc_table', './edit_file_upload'], function ($, metisMenu) {
 $(document).ready(function() {
 
@@ -25,6 +25,7 @@ $(document).ready(function() {
         //空运
         var air_detail = itemOrder.buildAirDetail();
         var air_item = itemOrder.buildAirItem();
+        var air_cargoDesc = itemOrder.buildCargoDescDetail();
         //陆运
         var load_detail = itemOrder.buildLoadItem();
         //报关
@@ -42,7 +43,6 @@ $(document).ready(function() {
         var order={}
         order.id = $('#order_id').val();
         order.plan_order_id = $('#plan_order_id').val();
-        debugger
         order.customer_id = $('#customer_id').val();
         order.plan_order_no = $('#plan_order_no').val();
         order.type = $('#type').val();
@@ -60,6 +60,7 @@ $(document).ready(function() {
         //空运
         order.air_detail = air_detail;
         order.air_list = air_item;
+        order.air_cargoDesc = air_cargoDesc;
         //陆运
         order.land_list = load_detail;
         //报关
@@ -93,12 +94,14 @@ $(document).ready(function() {
                 eeda.contactUrl("edit?id",order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $('#saveBtn').attr('disabled', false);
+                
                 $("#fileuploadSpan").show();
                 $("#sendEmail").show();
                 //异步刷新海运明细表
                 itemOrder.refleshOceanTable(order.ID);
                 //异步刷新空运明细表
                 itemOrder.refleshAirItemTable(order.ID);
+                itemOrder.refleshCargoDescTable(order.ID);
                 //异步刷新路运明细表
                 itemOrder.refleshLandItemTable(order.ID);
                 //异步刷新费用明细应收

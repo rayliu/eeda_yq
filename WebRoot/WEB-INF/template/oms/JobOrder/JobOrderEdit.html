@@ -12,7 +12,7 @@
             <div class="row">  <!--  form row  -->
                 <form id="orderForm">
                     <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
-                    <input id="plan_order_id" type="hidden" name="plan_order_id" value="${order.plan_order_id!plan.id!''}"/>
+                    <input id="plan_order_id" type="hidden" name="plan_order_id" value="${order.plan_order_id!planOrder.id!''}"/>
                     <div class="row"><!--  第1行  -->
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 
@@ -26,7 +26,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'plan_order_no', 
                                     label:'计划订单号', 
-                                    value: order.plan_order_no!plan.order_no!'',
+                                    value: order.plan_order_no!planOrder.order_no!'',
                                     disabled: 'disabled'
                                 }){}%>
                         </div>
@@ -36,7 +36,7 @@
                                     id:'customer_id', 
                                     label:'客户', 
                                     required:'required',
-                                    value:order.customer_id!plan.customer_id!'',
+                                    value:order.customer_id!planOrder.customer_id!'',
                                     display_value:party.abbr!''
                                 }){} %>
                        </div>
@@ -58,7 +58,7 @@
                                 }){}%>
                         </div><!-- /.col-lg-4 -->
                         <div class="col-lg-8">
-                        	<input type="hidden" id="hiddenTransports" value ="${order.transport_type!planOrder.transport_type!''}">
+                        	<input type="hidden" id="hiddenTransports" value ="${order.transport_type!planOrderItem.transport_type!''}">
                             <div class="form-group" id="transport_type">
                                 <label class="search-label">服务项目</label>
                                 <label class="checkbox-inline">
@@ -115,21 +115,21 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'gross_weight', 
                                     label:'毛重(KG)', 
-                                    value: order.gross_weight!planOrder.gross_weight!''
+                                    value: order.gross_weight!planOrderItem.gross_weight!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'net_weight', 
                                     label:'净重(KG)', 
-                                    value: order.net_weight!planOrder.net_weight!''
+                                    value: order.net_weight!planOrderItem.net_weight!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'volume', 
                                     label:'体积(CBM)', 
-                                    value: order.volume!planOrder.volume!''
+                                    value: order.volume!planOrderItem.volume!''
                                 }){}%>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'pieces', 
                                     label:'件数', 
-                                    value: order.pieces!planOrder.pieces!''
+                                    value: order.pieces!planOrderItem.pieces!''
                                 }){}%>
                         </div>
                         <div class="col-lg-8">

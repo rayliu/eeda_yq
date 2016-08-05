@@ -15,6 +15,7 @@ import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderAir;
+import models.eeda.oms.jobOrder.JobOrderAirCargoDesc;
 import models.eeda.oms.jobOrder.JobOrderAirItem;
 import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.oms.jobOrder.JobOrderCustom;
@@ -66,7 +67,7 @@ public class JobOrderController extends Controller {
     	if(StringUtils.isNotEmpty(order_id)){
     		//查询plan_order 里的计划单号
     		PlanOrder planOrder = PlanOrder.dao.findById(order_id);
-        	setAttr("plan", planOrder);
+        	setAttr("planOrder", planOrder);
         	//客户回显
         	Party party = Party.dao.findById(planOrder.get("customer_id"));
         	setAttr("party", party);
@@ -78,7 +79,7 @@ public class JobOrderController extends Controller {
     		String id = strAry[0];
     		//查询plan_order_item
 	    	PlanOrderItem plan_order_item = PlanOrderItem.dao.findById(id);
-	    	setAttr("planOrder", plan_order_item);
+	    	setAttr("planOrderItem", plan_order_item);
     	}
     	
         render("/oms/JobOrder/JobOrderEdit.html");
@@ -130,6 +131,9 @@ public class JobOrderController extends Controller {
 		//空运
 		List<Map<String, String>> air_detail = (ArrayList<Map<String, String>>)dto.get("air_detail");
 		DbUtils.handleList(air_detail, id, JobOrderAir.class, "order_id");
+		
+		List<Map<String, String>> air_cargoDesc = (ArrayList<Map<String, String>>)dto.get("air_cargoDesc");
+		DbUtils.handleList(air_cargoDesc, id, JobOrderAirCargoDesc.class, "order_id");
 		
 		List<Map<String, String>> air_item = (ArrayList<Map<String, String>>)dto.get("air_list");
 		DbUtils.handleList(air_item, id, JobOrderAirItem.class, "order_id");
@@ -229,7 +233,7 @@ public class JobOrderController extends Controller {
         renderJson(resultMap);
     }
 
-    		
+    //返回对象	
     private Record getItemDetail(String id,String type){
     	Record re = null;
     	if("shipment".equals(type))
@@ -250,6 +254,7 @@ public class JobOrderController extends Controller {
 		return re;
     }
     
+    //返回list
     private List<Record> getItems(String orderId,String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
@@ -258,6 +263,9 @@ public class JobOrderController extends Controller {
     		itemList = Db.find(itemSql, orderId);
     	}else if("air".equals(type)){
     		itemSql = "select * from job_order_air_item joa where order_id=?";
+    		itemList = Db.find(itemSql, orderId);
+    	}else if("cargoDesc".equals(type)){
+    		itemSql = "select * from job_order_air_cargodesc joac where order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("land".equals(type)){
     		itemSql = "select * from job_order_land_item jol where order_id=?";
@@ -289,8 +297,9 @@ public class JobOrderController extends Controller {
     	setAttr("shipmentList", getItems(id,"shipment"));
     	setAttr("shipment", getItemDetail(id,"shipment"));
     	
-    	//获取海运明细表信息
+    	//获取空运运明细表信息
     	setAttr("airList", getItems(id,"air"));
+    	setAttr("cargoDescList", getItems(id,"cargoDesc"));
     	setAttr("air", getItemDetail(id,"air"));
     	
     	//获取陆运明细表信息

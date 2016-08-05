@@ -9,7 +9,7 @@ eeda.dt = function(opt){
         paging: opt.paging || false,
         //"serverSide": true,
         scrollX: opt.scrollX || true,
-        responsive: true,
+        responsive:opt.responsive || true,
         //scrollY: opt.scrollY || true, //"300px",
         //scrollCollapse: opt.scrollCollapse || true,
         autoWidth: opt.autoWidth || false,
