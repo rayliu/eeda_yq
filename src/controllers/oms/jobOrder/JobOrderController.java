@@ -66,9 +66,6 @@ public class JobOrderController extends Controller {
     	if(StringUtils.isNotEmpty(order_id)){
     		//查询plan_order 里的计划单号
     		PlanOrder planOrder = PlanOrder.dao.findById(order_id);
-    		//设置flag
-    		planOrder.set("flag",1);
-    		planOrder.update();
         	setAttr("plan", planOrder);
         	//客户回显
         	Party party = Party.dao.findById(planOrder.get("customer_id"));
@@ -117,8 +114,11 @@ public class JobOrderController extends Controller {
    			jobOrder.set("creator", user.getLong("id"));
    			jobOrder.set("create_stamp", new Date());
    			jobOrder.save();
-   			
    			id = jobOrder.getLong("id").toString();
+   			//设置计划单flag为1，表示创建过工作单
+   			PlanOrder planOrder = PlanOrder.dao.findById(jobOrder.get("plan_order_id"));
+    		planOrder.set("flag",1);
+    		planOrder.update();
    		}
 		
 		//海运

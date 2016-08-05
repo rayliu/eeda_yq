@@ -41,6 +41,8 @@ $(document).ready(function() {
         
         var order={}
         order.id = $('#order_id').val();
+        order.plan_order_id = $('#plan_order_id').val();
+        debugger
         order.customer_id = $('#customer_id').val();
         order.plan_order_no = $('#plan_order_no').val();
         order.type = $('#type').val();

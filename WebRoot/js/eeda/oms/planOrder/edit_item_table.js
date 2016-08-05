@@ -373,13 +373,15 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    
 	    //checkbox选中则button可点击
 		$('#cargo_table').on('click','.checkBox',function(){
-			var hava_check = 0;
-			$('#cargo_table input[type="checkbox"]').each(function(){	
-				var checkbox = $(this).prop('checked');
-	    		if(checkbox){
-	    			hava_check=1;
-	    		}	
-			})
+			if($("#order_flag").val()==''){
+				var hava_check = 0;
+				$('#cargo_table input[type="checkbox"]').each(function(){	
+					var checkbox = $(this).prop('checked');
+		    		if(checkbox){
+		    			hava_check=1;
+		    		}	
+				})
+			}
 			if(hava_check>0){
 				$('#create_jobOrder').attr('disabled',false);
 			}else{
