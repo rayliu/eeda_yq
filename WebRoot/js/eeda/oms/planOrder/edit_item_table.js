@@ -2,6 +2,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	$(document).ready(function() {
 
 	    var deletedTableIds=[];
+	    
+	    if($("#order_flag").val()=='1'){
+	    	$('#create_jobOrder').attr('disabled',true);
+	    	$('#create_jobOrder').html("已创建过工作单");
+	    }
 
 	    //删除一行
 	    $("#cargo_table").on('click', '.delete', function(e){

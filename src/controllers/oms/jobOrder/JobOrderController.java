@@ -8,9 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-
-import javax.servlet.http.HttpServletRequest;
 
 import models.Party;
 import models.UserLogin;
@@ -30,10 +27,8 @@ import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.MultiPartEmail;
-import org.apache.commons.mail.SimpleEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -49,7 +44,6 @@ import com.jfinal.upload.UploadFile;
 
 import config.EedaConfig;
 import controllers.profile.LoginUserController;
-import controllers.profile.ResetPassWordController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
 
@@ -72,6 +66,9 @@ public class JobOrderController extends Controller {
     	if(StringUtils.isNotEmpty(order_id)){
     		//查询plan_order 里的计划单号
     		PlanOrder planOrder = PlanOrder.dao.findById(order_id);
+    		//设置flag
+    		planOrder.set("flag",1);
+    		planOrder.update();
         	setAttr("plan", planOrder);
         	//客户回显
         	Party party = Party.dao.findById(planOrder.get("customer_id"));

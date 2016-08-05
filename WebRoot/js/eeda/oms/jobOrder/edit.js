@@ -76,17 +76,17 @@ $(document).ready(function() {
             var order = data;
             if(order.ID>0){
                 $("#order_id").val(order.ID);
-                $("#shipment_id").val(order.SHIPMENT.ID);
+                $("#order_no").val(order.ORDER_NO);
+                $("#creator_name").val(order.CREATOR_NAME);
+                $("#create_stamp").val(order.CREATE_STAMP);
                 
                 $("#custom_id").val(order.CUSTOM.ID);
                 $("#china_custom_id").val(order.ABROADCUSTOM.ID);
                 $("#hk_custom_id").val(order.HKCUSTOM.ID);
                 
+                $("#shipment_id").val(order.SHIPMENT.ID);
                 $("#insurance_id").val(order.INSURANCE.ID);
                 $("#air_id").val(order.AIR.ID);
-                $("#order_no").val(order.ORDER_NO);
-                $("#creator_name").val(order.CREATOR_NAME);
-                $("#create_stamp").val(order.CREATE_STAMP);
                 
                 eeda.contactUrl("edit?id",order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
