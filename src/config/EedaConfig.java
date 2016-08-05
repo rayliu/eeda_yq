@@ -151,7 +151,7 @@ public class EedaConfig extends JFinalConfig {
 		// yh project controller
         me.add("/", controllers.profile.MainController.class, contentPath);
        // me.add("/apidoc", controllers.eeda.DocController.class);
-        me.add("/debug", controllers.profile.LogController.class, contentPath);
+//        me.add("/debug", controllers.profile.LogController.class, contentPath);
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
         me.add("/loginUser", controllers.profile.LoginUserController.class, contentPath);
         me.add("/unit", UnitController.class, contentPath);
@@ -160,9 +160,9 @@ public class EedaConfig extends JFinalConfig {
         me.add("/custom", CustomController.class, contentPath);
         me.add("/containerType", ContainerTypeController.class, contentPath);
         //register loginUser
-        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
+//        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
         me.add("/reset",controllers.profile.ResetPassWordController.class,contentPath);
-        me.add("/role", controllers.profile.RoleController.class, contentPath);
+//        me.add("/role", controllers.profile.RoleController.class, contentPath);
         me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
         me.add("/customer", controllers.profile.CustomerController.class, contentPath);
         me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);
