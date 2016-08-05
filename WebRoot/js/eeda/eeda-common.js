@@ -7,7 +7,7 @@ eeda.dt = function(opt){
         processing: opt.processing || true,
         searching: opt.searching || false,
         paging: opt.paging || false,
-        //"serverSide": true,
+        serverSide: opt.serverSide || false, 
         scrollX: opt.scrollX || true,
         responsive:opt.responsive || true,
         //scrollY: opt.scrollY || true, //"300px",
