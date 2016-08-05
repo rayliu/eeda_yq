@@ -133,7 +133,7 @@ public class CustomerController extends Controller {
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_CREATE})
     public void add() {
         setAttr("saveOK", false);
-            render("/eeda/profile/customer/CustomerEdit.html");
+            render("/profile/customer/CustomerEdit.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_UPDATE})
     public void edit() {
