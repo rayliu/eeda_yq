@@ -8,6 +8,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
+import javax.servlet.http.HttpServletRequest;
+
 import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
@@ -20,10 +24,16 @@ import models.eeda.oms.jobOrder.JobOrderCustom;
 import models.eeda.oms.jobOrder.JobOrderDoc;
 import models.eeda.oms.jobOrder.JobOrderInsurance;
 import models.eeda.oms.jobOrder.JobOrderLandItem;
+import models.eeda.oms.jobOrder.JobOrderSendMail;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.MultiPartEmail;
+import org.apache.commons.mail.SimpleEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -37,7 +47,9 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
+import config.EedaConfig;
 import controllers.profile.LoginUserController;
+import controllers.profile.ResetPassWordController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
 
@@ -130,11 +142,11 @@ public class JobOrderController extends Controller {
 		DbUtils.handleList(land_item, id, JobOrderLandItem.class, "order_id");
 		
 		//报关
-		List<Map<String, String>> custom_detail = (ArrayList<Map<String, String>>)dto.get("custom_detail");
-		DbUtils.handleList(custom_detail, id, JobOrderCustom.class, "order_id");
-		
 		List<Map<String, String>> chinaCustom = (ArrayList<Map<String, String>>)dto.get("chinaCustom");
 		DbUtils.handleList(chinaCustom, id, JobOrderCustom.class, "order_id");
+		
+		List<Map<String, String>> abroadCustom = (ArrayList<Map<String, String>>)dto.get("abroadCustom");
+		DbUtils.handleList(abroadCustom, id, JobOrderCustom.class, "order_id");
 		
 		List<Map<String, String>> hkCustom = (ArrayList<Map<String, String>>)dto.get("hkCustom");
 		DbUtils.handleList(hkCustom, id, JobOrderCustom.class, "order_id");
@@ -159,8 +171,8 @@ public class JobOrderController extends Controller {
 		Record r = jobOrder.toRecord();
    		r.set("creator_name", user_name);
    		
-   		r.set("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
-   		r.set("chinaCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
+   		r.set("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
+   		r.set("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
    		r.set("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
    		
    		r.set("shipment", getItemDetail(id,"shipment"));
@@ -263,7 +275,10 @@ public class JobOrderController extends Controller {
 	    	itemSql = "select jod.*,u.c_name from job_order_doc jod left join user_login u on jod.uploader=u.id "
 	    			+ " where order_id=? ";
 	    	itemList = Db.find(itemSql, orderId);
-	    }
+	    }else if("mail".equals(type)){
+    	itemSql = "select * from job_order_sendMail where order_id=?";
+    	itemList = Db.find(itemSql, orderId);
+    }
 		return itemList;
 	}
     
@@ -285,8 +300,8 @@ public class JobOrderController extends Controller {
     	setAttr("landList", getItems(id,"land"));
     	
     	//报关
-    	setAttr("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
-   		setAttr("chinaCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
+    	setAttr("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
+   		setAttr("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
    		setAttr("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
     	
     	//保险
@@ -297,6 +312,7 @@ public class JobOrderController extends Controller {
     	setAttr("costList", getItems(id,"cost"));
     	//相关文档
     	setAttr("docList", getItems(id,"doc"));
+    	setAttr("mailList", getItems(id,"mail"));
 
     	//客户回显
     	Party party = Party.dao.findById(jobOrder.get("customer_id"));
@@ -311,6 +327,75 @@ public class JobOrderController extends Controller {
         render("/oms/JobOrder/JobOrderEdit.html");
     }
     
+    //使用common-email, javamail
+    @Before(Tx.class)
+    public void sendMail() throws Exception {
+    	String order_id = getPara("order_id");
+    	String userEmail = getPara("userEmail");
+    	String mailTitle = getPara("mailTitle");
+    	String mailContent = getPara("mailContent");
+    	String docs = getPara("docs");
+    	
+        MultiPartEmail email = new MultiPartEmail();  
+        email.setCharset("GB2312");
+        /*smtp.exmail.qq.com*/
+        email.setHostName("smtp.exmail.qq.com");
+        email.setSmtpPort(465);
+        
+        /*输入公司的邮箱和密码*/
+        /*EedaConfig.mailUser, EedaConfig.mailPwd*/
+        email.setAuthenticator(new DefaultAuthenticator(EedaConfig.mailUser, EedaConfig.mailPwd));        
+        email.setSSLOnConnect(true);
+        
+        /*EedaConfig.mailUser*/
+        email.setFrom(EedaConfig.mailUser);//设置发信人
+        
+        //设置收件人，邮件标题，邮件内容
+        if(StringUtils.isNotEmpty(userEmail)){
+	        email.addTo(userEmail);
+        }
+        if(StringUtils.isNotEmpty(mailTitle)){
+	        email.setSubject(mailTitle);
+        }
+        if(StringUtils.isNotEmpty(mailContent)){
+	        email.setMsg(mailContent);
+        }
+        
+        //添加附件
+        if(StringUtils.isNotEmpty(docs)){
+    		String strAry[] = docs.split(",");
+	        for(int i=0;i<strAry.length;i++){
+	        	
+	        	String filePath = getRequest().getServletContext().getRealPath("/")+"\\upload\\doc\\"+strAry[i];
+	            File file = new File(filePath);
+	            if (file.exists() && file.isFile()) {
+	            	
+	            	String localAttachmentPath = filePath;
+	            	EmailAttachment attachment = new EmailAttachment();
+	            	attachment.setPath(localAttachmentPath);  
+	            	attachment.setDisposition(EmailAttachment.ATTACHMENT); 
+	            	attachment.setName(strAry[i]); 
+	            	email.attach(attachment);
+	            }
+	        }
+        }
+        try{
+        	email.send();
+        	JobOrderSendMail jsm = new JobOrderSendMail();
+        	jsm.set("order_id", order_id);
+        	jsm.set("mail_title", mailTitle);
+        	jsm.set("doc_name", docs);
+        	jsm.set("receive_mail", userEmail);
+        	jsm.set("sender", LoginUserController.getLoginUserName(this));
+        	jsm.set("send_time", new Date());
+        	jsm.save();
+        	renderJson("{\"result\":true}");
+        }catch(Exception e){
+        	e.printStackTrace();
+        	renderJson("{\"result\":false}");
+        }
+       
+    }
      
     public void list() {
     	String sLimit = "";

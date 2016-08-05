@@ -3,7 +3,8 @@ $(document).ready(function() {
 	
 	//未保存不能上传文件
 	if($('#order_id').val()==''){
-		$("#fileupload").attr('disabled', true);
+		$("#fileuploadSpan").hide();
+		$("#sendEmail").hide();
 	}
 
     //删除一行
@@ -17,8 +18,6 @@ $(document).ready(function() {
         	 if(data.result==true){
         		 docTable.row(tr).remove().draw();
 	        	 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
-	        	 //异步刷新显示上传的文档信息
-		    	 itemOrder.refleshDocTable(order_id);
         	 }else if(data.result==false){
         		 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
         	 }else{
@@ -68,6 +67,7 @@ $(document).ready(function() {
     //------------事件处理,文档table
     var docTable = eeda.dt({
         id: 'doc_table',
+        autoWidth: false,
         columns:[
 			{ "data":"ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
@@ -86,7 +86,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" value="'+data+'" class="form-control" disabled/>';
+                    return '<input type="text" value="'+data+'" class="doc_name form-control" disabled/>';
                 }
             },
             { "data": "C_NAME",
@@ -113,26 +113,62 @@ $(document).ready(function() {
         ]
     });
     
+    
+    $('#sendEmail').click(function(){
+    	 var i = 0;
+         $('#doc_table input[type="checkbox"]:checked').each(function(){
+         	i++;
+         });
+    	 $('#attachment').html('您选择了 '+i+'个附件');
+    })
+    
+    $('#confirmSendBtn').click(function(){
+    	//提交前，校验数据
+        if(!$("#emailForm").valid()){
+            return;
+        }
+    	var order_id = $('#order_id').val();
+        var docs = [];
+        $('#doc_table input[type="checkbox"]:checked').each(function(){
+        	var doc_name = $($(this).parent().parent().find('.doc_name')).val();
+        	docs.push(doc_name);
+        });
+        var email =  $('#email').val();
+    	var title = $('#emailTitle').val();
+    	var content = $('#emailContent').val();
+    	$.post('/jobOrder/sendMail', {order_id:order_id,mailTitle:title,userEmail:email,mailContent:content,docs:docs.toString()}, function(data){
+    		
+    		$('#returnBtn').click();
+    		if(data.result==true){
+	        	 $.scojs_message('发送邮件成功', $.scojs_message.TYPE_OK);
+	        	 itemOrder.refleshEmailTable(order_id);
+	       	 }else if(data.result==false){
+	       		 $.scojs_message('发送邮件失败', $.scojs_message.TYPE_ERROR);
+	       	 }
+    	},'json').fail(function() {
+        	 $.scojs_message('发送邮件时出现未知错误!', $.scojs_message.TYPE_ERROR);
+        });
+    })
     //------------事件处理,email_table
     var emailTable = eeda.dt({
         id: 'email_table',
         columns:[
-            { "data": "ORDER_NO", 
-                "render": function ( data, type, full, meta ) {
-                    return "<a href='#'  target='_blank'>"+data+"</a>";
-                }
-            },
-            { "data": "CUSTOMER_NAME"}, 
-            { "data": "CREATOR_NAME"}, 
-            { "data": "CREATE_STAMP"}, 
-            { "data": "STATUS"}
+            { "data": "MAIL_TITLE"},
+            { "data": "DOC_NAME"}, 
+            { "data": "RECEIVE_MAIL"}, 
+            { "data": "SENDER"}, 
+            { "data": "SEND_TIME"}
         ]
     });
-
     //刷新明细表
     itemOrder.refleshDocTable = function(order_id){
     	var url = "/jobOrder/tableList?order_id="+order_id+"&type=doc";
     	docTable.ajax.url(url).load();
+    }
+    
+    itemOrder.refleshEmailTable = function(order_id){
+    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=mail";
+    	emailTable.ajax.url(url).load();
     }
     
 });

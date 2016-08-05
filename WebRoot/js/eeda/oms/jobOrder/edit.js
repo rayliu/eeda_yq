@@ -28,9 +28,9 @@ $(document).ready(function() {
         //陆运
         var load_detail = itemOrder.buildLoadItem();
         //报关
-        var custom_detail=itemOrder.buildCustomDetail();
-        var chinaCustom=itemOrder.buildChinaCustomDetail();
-        var hkCustom=itemOrder.buildHkCustomDetail();
+        var chinaCustom = itemOrder.buildCustomDetail();
+        var hkCustom = itemOrder.buildHkCustomDetail();
+        var abroadCustom = itemOrder.buildAbroadCustomDetail();
         //保险
         var insurance_detail=itemOrder.buildInsuranceDetail();
         //费用明细，应收，应付
@@ -61,9 +61,9 @@ $(document).ready(function() {
         //陆运
         order.land_list = load_detail;
         //报关
-        order.custom_detail = custom_detail;
         order.chinaCustom = chinaCustom;
         order.hkCustom = hkCustom;
+        order.abroadCustom = abroadCustom;
         //保险
         order.insurance_detail=insurance_detail;
        //费用明细，应收，应付
@@ -79,7 +79,7 @@ $(document).ready(function() {
                 $("#shipment_id").val(order.SHIPMENT.ID);
                 
                 $("#custom_id").val(order.CUSTOM.ID);
-                $("#china_custom_id").val(order.CHINACUSTOM.ID);
+                $("#china_custom_id").val(order.ABROADCUSTOM.ID);
                 $("#hk_custom_id").val(order.HKCUSTOM.ID);
                 
                 $("#insurance_id").val(order.INSURANCE.ID);
@@ -91,7 +91,8 @@ $(document).ready(function() {
                 eeda.contactUrl("edit?id",order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $('#saveBtn').attr('disabled', false);
-                $("#fileupload").attr('disabled', false);
+                $("#fileuploadSpan").show();
+                $("#sendEmail").show();
                 //异步刷新海运明细表
                 itemOrder.refleshOceanTable(order.ID);
                 //异步刷新空运明细表

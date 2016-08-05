@@ -28,6 +28,7 @@ import models.eeda.oms.jobOrder.JobOrderCustom;
 import models.eeda.oms.jobOrder.JobOrderDoc;
 import models.eeda.oms.jobOrder.JobOrderInsurance;
 import models.eeda.oms.jobOrder.JobOrderLandItem;
+import models.eeda.oms.jobOrder.JobOrderSendMail;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 import models.eeda.oms.truckOrder.TruckOrder;
@@ -256,6 +257,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("job_order_land_item", JobOrderLandItem.class);
         arp.addMapping("job_order_custom", JobOrderCustom.class);
         arp.addMapping("job_order_insurance", JobOrderInsurance.class);
+        arp.addMapping("job_order_sendMail", JobOrderSendMail.class);
         
         arp.addMapping("truck_order", TruckOrder.class);
         arp.addMapping("truck_order_arap", TruckOrderArap.class);

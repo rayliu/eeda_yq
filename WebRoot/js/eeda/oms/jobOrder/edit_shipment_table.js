@@ -63,7 +63,7 @@ $(document).ready(function() {
         "paging": false,
         "info": false,
         "scrollX":  true,
-        "autoWidth": true,
+        "autoWidth": false,
         "language": {
             "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
         },

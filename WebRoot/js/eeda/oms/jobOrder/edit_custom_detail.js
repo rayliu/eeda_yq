@@ -68,64 +68,10 @@ $(document).ready(function() {
 	    })
     }
 	
-//	itemOrder.buildCustomDetail=function(){
-//			var arrays = [];
-//	    	var item = {};//报关类型,国外
-//	    	var item1 = {};//报关类型，国内
-//	    	var item2 = {};//hk/mac
-//	    	
-//	    	//报关状态checkbox遍历取值
-//	        var statusVal = [];
-//	        $('#customForm input[type="checkbox"]:checked').each(function(){
-//	        	statusVal.push($(this).val()); 
-//	        });
-//	        item.status = statusVal.toString();
-//	        
-//	        item['id'] = $('#custom_id').val();
-//	        item1['id'] = $('#china_custom_id').val();
-//	        item2['id'] = $('#hk_custom_id').val();
-//	    	item['custom_type'] = "abroad";
-//	    	item1['custom_type'] = "china";
-//	    	item2['custom_type'] = "HK/MAC";
-//	    	
-//	    	var customForm = $('#customForm input,#customForm select');
-//	    	for(var i = 0; i < customForm.length; i++){
-//	    		var name = customForm[i].id;
-//	        	var value =customForm[i].value;
-//	        	if(name){
-//	        		item[name] = value;
-//	        	}
-//	    	}
-//	    	var chinaForm = $('#chinaForm input');
-//	    	for(var i = 0; i < chinaForm.length; i++){
-//	    		var name = chinaForm[i].id;
-//	    		var value =chinaForm[i].value;
-//	    		if(name){
-//	    			if(name.indexOf('china_') > -1 ){
-//	    				name = name.replace('china_','');
-//	    			}
-//	    			item1[name] = value;
-//	    		}
-//	    	}
-//	    	var hkForm = $('#hkForm input');
-//	    	for(var i = 0; i < hkForm.length; i++){
-//	    		var name = hkForm[i].id;
-//	    		var value =hkForm[i].value;
-//	    		if(name){
-//	    			if( name.indexOf('hk_')>-1 ){
-//	    				name = name.replace('hk_','');
-//	    			}
-//			    	item2[name] = value;
-//	    		}
-//	    	}
-//		    	arrays.push(item);
-//		    	arrays.push(item1);
-//		    	arrays.push(item2);
-//		    	return arrays;
-//    	}
+    //报关类型,国内
     itemOrder.buildCustomDetail=function(){
 		var arrays = [];
-    	var item = {};//报关类型,国外
+    	var item = {};
     	
     	//报关状态checkbox遍历取值
         var statusVal = [];
@@ -135,7 +81,7 @@ $(document).ready(function() {
         item.status = statusVal.toString();
         
         item['id'] = $('#custom_id').val();
-    	item['custom_type'] = "abroad";
+    	item['custom_type'] = "china";
     	
     	var customForm = $('#customForm input,#customForm select');
     	for(var i = 0; i < customForm.length; i++){
@@ -149,20 +95,22 @@ $(document).ready(function() {
 	    	arrays.push(item);
 	    	return arrays;
 	}
-    itemOrder.buildChinaCustomDetail=function(){
+    
+    //报关类型,国外
+    itemOrder.buildAbroadCustomDetail=function(){
     	var arrays = [];
-    	var item = {};//报关类型,国外
+    	var item = {};
     	
-    	item['id'] = $('#china_custom_id').val();
-    	item['custom_type'] = "china";
+    	item['id'] = $('#abroad_custom_id').val();
+    	item['custom_type'] = "abroad";
     	
-    	var customForm = $('#chinaForm input,#chinaForm select');
+    	var customForm = $('#abroadForm input,#abroadForm select');
     	for(var i = 0; i < customForm.length; i++){
     		var name = customForm[i].id;
     		var value =customForm[i].value;
     		if(name){
-    			if( name.indexOf('china_')>-1 ){
-    				name = name.replace('china_','');
+    			if( name.indexOf('abroad_')>-1 ){
+    				name = name.replace('abroad_','');
     			}
     			item[name] = value;
     		}

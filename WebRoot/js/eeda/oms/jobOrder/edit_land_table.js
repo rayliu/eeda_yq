@@ -69,7 +69,7 @@ $(document).ready(function() {
         "paging": false,
         "info": false,
         "scrollX":  true,
-        "autoWidth": true,
+        "autoWidth": false,
         "language": {
             "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
         },
@@ -85,16 +85,16 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" class="checkBox" disabled>';
 			    }
 			},
-            { "width": "10px",
+            { 
                 "render": function ( data, type, full, meta ) {
                 	return '<button type="button" class="delete btn btn-default btn-xs">删除</button>';
                 }
             },
-            { "data": "UNLOAD_TYPE", "width": "100px",
+            { "data": "UNLOAD_TYPE", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    var str= '<select name="unload_type" class="form-control search-control">'
+                    var str= '<select name="unload_type" class="form-control search-control"  style="width:80px">'
             	   	 		   +'<option></option>'
 			                   +'<option value="卸货" '+ (data=='卸货'?'selected':'') +'>卸货</option>'
 			                   +'<option value="收货" '+ (data=='收货'?'selected':'') +'>收货</option>'
@@ -107,84 +107,84 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="transport_company" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="transport_company" value="'+data+'" class="form-control" style="width:120px"/>';
                 }
             },
             { "data": "DRIVER", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="driver" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="driver" value="'+data+'" class="form-control" style="width:120px" />';
                 }
             },
             { "data": "DRIVER_TEL", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:120px" />';
                 }
             },
             { "data": "CAR_TYPE", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="car_type" value="'+data+'" class="form-control"/>';
+                    return '<input type="text" name="car_type" value="'+data+'" class="form-control" style="width:120px"/>';
                 }
             },
             { "data": "CAR_NO", 
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="car_no" value="'+data+'" class="form-control"/>';
+            		return '<input type="text" name="car_no" value="'+data+'" class="form-control" style="width:120px"/>';
             	}
             },
             { "data": "CARGO_CONTACTS", 
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="cargo_contacts" value="'+data+'" class="form-control"/>';
+            		return '<input type="text" name="cargo_contacts" value="'+data+'" class="form-control" style="width:120px"/>';
             	}
             },
             { "data": "PHONE", 
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="phone" value="'+data+'" class="form-control"/>';
+            		return '<input type="text" name="phone" value="'+data+'" class="form-control" style="width:120px"/>';
             	}
             },
             { "data": "ADDRESS", 
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="address" value="'+data+'" class="form-control"/>';
+            		return '<input type="text" name="address" value="'+data+'" class="form-control" style="width:120px"/>';
             	}
             },
             { "data": "ETA", 
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="eta" value="'+data+'" class="form-control"/>';
+            		return '<input type="text" name="eta" value="'+data+'" class="form-control" style="width:120px"/>';
             	}
             },
             { "data": "CARGO_INFO", 
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="cargo_info" value="'+data+'" class="form-control"/>';
+            		return '<input type="text" name="cargo_info" value="'+data+'" class="form-control" style="width:120px"/>';
             	}
             },
             { "data": "SIGN_DESC", 
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="sign_desc" value="'+data+'" class="form-control"/>';
+            		return '<input type="text" name="sign_desc" value="'+data+'" class="form-control" style="width:120px"/>';
             	}
             },
             { "data": "SIGN_STATUS", 
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="sign_status" value="'+data+'" class="form-control"/>';
+            		return '<input type="text" name="sign_status" value="'+data+'" class="form-control" style="width:120px"/>';
             	}
             }
         ]
