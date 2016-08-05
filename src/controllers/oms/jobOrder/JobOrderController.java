@@ -404,10 +404,10 @@ public class JobOrderController extends Controller {
     }
      
     public void list() {
-    	String sLimit = "";
-        String pageIndex = getPara("sEcho");
-        if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
-            sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
 
         String sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name "
@@ -422,15 +422,15 @@ public class JobOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> BillingOrders = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
-        Map map = new HashMap();
-        map.put("sEcho", pageIndex);
-        map.put("iTotalRecords", rec.getLong("total"));
-        map.put("iTotalDisplayRecords", rec.getLong("total"));
+        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+        Map orderListMap = new HashMap();
+        orderListMap.put("draw", pageIndex);
+        orderListMap.put("recordsTotal", rec.getLong("total"));
+        orderListMap.put("recordsFiltered", rec.getLong("total"));
 
-        map.put("aaData", BillingOrders);
+        orderListMap.put("data", orderList);
 
-        renderJson(map); 
+        renderJson(orderListMap); 
     }
     
     //异步刷新字表
