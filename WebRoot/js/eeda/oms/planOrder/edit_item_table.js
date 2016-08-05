@@ -194,7 +194,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="TRUCK_TYPE" value="'+data+'" class="form-control search-control" style="width:80px"/>';
+	                   var field_html = template('table_truck_type_field_template',
+		                    {
+		                        id: 'TRUCK_TYPE',
+		                        value: data
+		                    }
+		                );
+	                    return field_html;
 	                }
 	            },
 	            { "data": "PICKUP_ADDR",
