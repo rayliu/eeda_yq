@@ -81,7 +81,7 @@ public class JobOrderController extends Controller {
 	    	PlanOrderItem plan_order_item = PlanOrderItem.dao.findById(id);
 	    	setAttr("planOrderItem", plan_order_item);
     	}
-    	
+    	setAttr("loginUser",LoginUserController.getLoginUserName(this));
         render("/oms/JobOrder/JobOrderEdit.html");
     }
     
@@ -324,11 +324,13 @@ public class JobOrderController extends Controller {
     	Party party = Party.dao.findById(jobOrder.get("customer_id"));
     	setAttr("party", party);
     	
-    	
-    	//用户信息
+    	//工作单创建人
     	long creator = jobOrder.getLong("creator");
     	UserLogin user = UserLogin.dao.findById(creator);
     	setAttr("user", user);
+    	
+    	//当前登陆用户
+    	setAttr("loginUser", LoginUserController.getLoginUserName(this));
     	
         render("/oms/JobOrder/JobOrderEdit.html");
     }
