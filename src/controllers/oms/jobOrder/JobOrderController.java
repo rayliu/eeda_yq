@@ -80,6 +80,11 @@ public class JobOrderController extends Controller {
     		//查询plan_order_item
 	    	PlanOrderItem plan_order_item = PlanOrderItem.dao.findById(id);
 	    	setAttr("planOrderItem", plan_order_item);
+	    	
+	    	//返回港口名称
+	    	setAttr("por",Db.findFirst("select name from location l where l.type='port' and l.id=?",plan_order_item.get("por")));
+	    	setAttr("pol",Db.findFirst("select name from location l where l.type='port' and l.id=?",plan_order_item.get("pol")));
+	    	setAttr("pod",Db.findFirst("select name from location l where l.type='port' and l.id=?",plan_order_item.get("pod")));
     	}
     	setAttr("loginUser",LoginUserController.getLoginUserName(this));
         render("/oms/JobOrder/JobOrderEdit.html");
@@ -179,11 +184,7 @@ public class JobOrderController extends Controller {
    		r.set("shipment", getItemDetail(id,"shipment"));
     	r.set("air", getItemDetail(id,"air"));
    		r.set("insurance", getItemDetail(id,"insure"));
-   		
-//   	r.set("airList", getItems(id,"air"));
-//    	r.set("landList", getItems(id,"land"));
-//    	r.set("shipmentList",getItems(id,"shipment"));
-//   	r.set("docList", getItems(id,"doc"));
+    	
    		renderJson(r);
    	}
     
@@ -296,7 +297,7 @@ public class JobOrderController extends Controller {
     	//获取海运明细表信息
     	setAttr("shipmentList", getItems(id,"shipment"));
     	setAttr("shipment", getItemDetail(id,"shipment"));
-    	
+
     	//获取空运运明细表信息
     	setAttr("airList", getItems(id,"air"));
     	setAttr("cargoDescList", getItems(id,"cargoDesc"));

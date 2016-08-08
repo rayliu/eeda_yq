@@ -115,16 +115,16 @@
             </div>
             <div class="col-lg-4">
                 <%include("/eeda/component/form/inputField.html", 
-                    {   id:'voyage', 
+                    {   id:'route', 
                         label:'航线', 
-                        value:shipment.voyage!planOrderItem.voyage!''
+                        value:shipment.route!''
                     }){}%>
             </div>
             <div class="col-lg-4">
                 <%include("/eeda/component/form/inputField.html", 
-                    {   id:'route', 
+                    {   id:'voyage', 
                         label:'航次', 
-                        value:shipment.route!''
+                        value:shipment.voyage!planOrderItem.voyage!''
                     }){}%>
             </div>  
          </div>
@@ -133,14 +133,14 @@
                    <%include("/eeda/component/form/inputField.html", 
                        {   id:'por', 
                            label:'收货港 POR', 
-                           value:shipment.por!planOrderItem.por!''
+                           value:shipment.por!por.name!''
                        }){}%>
                </div>
                <div class="col-lg-4">
                    <%include("/eeda/component/form/inputField.html", 
                        {   id:'pol', 
                            label:'装货港 POL', 
-                           value:shipment.pol!planOrderItem.pol!''
+                           value:shipment.pol!pol.name!''
                        }){}%>
                </div>
                <div class="col-lg-4">
@@ -156,7 +156,7 @@
                    <%include("/eeda/component/form/inputField.html", 
                        {   id:'pod', 
                            label:'卸货港 POD', 
-                           value:shipment.pod!planOrderItem.pod!''
+                           value:shipment.pod!pod.name!''
                        }){}%>
                </div>
                <div class="col-lg-4">
@@ -235,11 +235,11 @@
      </div>
 </form>
            <div class="form-group">
-             <input type="button" class="btn btn-success" value="生成HBL PDF">
-           	 <input type="button" class="btn btn-success" value="生成电放保函  Word">
-           	 <input type="button" class="btn btn-success" value="生成booking PDF">
-           	 <input type="button" class="btn btn-success" value="生成SI PDF">
-           	 <input type="button" class="btn btn-success" value="生成 头程资料 PDF">
+             <input id="printHBL" type="button" class="btn btn-success" value="生成HBL PDF">
+           	 <input id="printWord" type="button" class="btn btn-success" value="生成电放保函  Word">
+           	 <input id="printBooking" type="button" class="btn btn-success" value="生成booking PDF">
+           	 <input id="printSI" type="button" class="btn btn-success" value="生成SI PDF">
+           	 <input id="printHead" type="button" class="btn btn-success" value="生成头程资料 PDF">
 			 <br><br>
            </div>
                     

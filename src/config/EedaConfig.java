@@ -68,6 +68,7 @@ import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
+import controllers.oms.jobOrder.JobOrderReportController;
 import controllers.oms.planOrder.PlanOrderController;
 import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
@@ -177,6 +178,7 @@ public class EedaConfig extends JFinalConfig {
 		//oms管理系统
 		me.add("/planOrder", PlanOrderController.class, contentPath);
 		me.add("/jobOrder", JobOrderController.class, contentPath);
+		me.add("/jobOrderReport", JobOrderReportController.class, contentPath);
 		me.add("/customOrder", CustomOrderController.class, contentPath);
 		me.add("/truckOrder", TruckOrderController.class, contentPath);
 		me.add("/currency", CurrencyController.class, contentPath);
