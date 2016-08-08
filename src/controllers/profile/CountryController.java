@@ -95,7 +95,7 @@ public class CountryController extends Controller {
         	Country l = Country.dao.findById(id);
             Object obj = l.get("is_stop");
             if (obj == null || "".equals(obj) || obj.equals(false)
-                    || obj.equals(0)) {
+                    || obj.equals("0")) {
                 l.set("is_stop", true);
             } else {
                 l.set("is_stop", false);
