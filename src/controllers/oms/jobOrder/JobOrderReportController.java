@@ -22,9 +22,10 @@ public class JobOrderReportController extends Controller {
 
 	
 	public void printOceanHBL() {
+		
 		String order_no = getPara("order_no");
 		String fileName = "/report/oceanHBL.jasper";
-		String outFileName = "/download/joborderHBL";
+		String outFileName = "/download/oceanHBLpdf";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_no", order_no);
         fileName = getContextPath() + fileName;
