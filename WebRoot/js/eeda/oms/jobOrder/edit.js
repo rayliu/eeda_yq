@@ -10,8 +10,16 @@ $(document).ready(function() {
     $('#saveBtn').click(function(e){
         //阻止a 的默认响应行为，不需要跳转
         e.preventDefault();
-        
-        $(this).attr('disabled', true);
+        $(this).attr('disabled',true);
+        //提交前，校验数据
+        var formRequired = 0;
+        $('form').each(function(){
+        	if(!$(this).valid()){
+        		formRequired++;
+            }
+        })
+        if(formRequired>0)
+        return;
         
         //运输方式checkbox遍历取值
         var transport_type = [];
@@ -97,6 +105,8 @@ $(document).ready(function() {
                 
                 $("#fileuploadSpan").show();
                 $("#sendEmail").show();
+                $("#oceanPDF").show();
+                
                 //异步刷新海运明细表
                 itemOrder.refleshOceanTable(order.ID);
                 //异步刷新空运明细表

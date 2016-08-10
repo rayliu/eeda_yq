@@ -1,9 +1,13 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
 	
+	//未保存或数据不足不生成PDF
+	if($('#order_id').val()==''){
+		$("#oceanPDF").hide();
+	}
+	
 	//生成HBL PDF
     $('#printHBL').click(function(e){
-    	debugger
     	e.preventDefault();
     	$(this).attr('disabled',true);
     	var order_no = $("#order_no").val();

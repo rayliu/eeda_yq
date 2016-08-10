@@ -115,6 +115,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'gross_weight', 
                                     label:'毛重(KG)', 
+                                    required:'required',
                                     value: order.gross_weight!planOrderItem.gross_weight!''
                                 }){}%>
                         </div>
@@ -129,6 +130,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'volume', 
                                     label:'体积(CBM)', 
+                                    required:'required',
                                     value: order.volume!planOrderItem.volume!''
                                 }){}%>
                         </div>
@@ -138,6 +140,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'pieces', 
                                     label:'件数', 
+                                    required:'required',
                                     value: order.pieces!planOrderItem.pieces!''
                                 }){}%>
                         </div>

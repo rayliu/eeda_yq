@@ -1,13 +1,17 @@
 <div class="form-group">
-    <label>${label}</label>
+    <label>${label}
+    <%if(required!'' =='required'){%>
+        <span style='color:red; display:initial;'>*</span>
+    <%}%>
+    </label>
     <input type="text" class="form-control search-control" 
-    id="${id}_input" 
+    id="${id}_input" name="${id}_input"
     placeholder="${placeholder!'请选择'}"  value="${display_value!''}">
     <ul id='${id}_list' tabindex="-1" 
         class="pull-right dropdown-menu default dropdown-scroll" 
         style="top: 22%; left: 33%;">
     </ul>
-    <textarea id="${id}_info" class="form-control" rows="${rows!'3'}" style="margin-top: 5px;">${textarea_value !''}</textarea>
+    <textarea id="${id}_info" name="${id}_info" class="form-control" rows="${rows!'3'}" style="margin-top: 5px;">${textarea_value !''}</textarea>
     <input id="${id}" style="display: none;" name="${id}" value="${value!''}"/>
 </div>
 <script>
