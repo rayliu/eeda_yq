@@ -10,7 +10,7 @@ $(document).ready(function() {
     $('#saveBtn').click(function(e){
         //阻止a 的默认响应行为，不需要跳转
         e.preventDefault();
-        $(this).attr('disabled',true);
+        $('#saveBtn').attr('disabled', true);
         //提交前，校验数据
         var formRequired = 0;
         $('form').each(function(){
@@ -18,8 +18,10 @@ $(document).ready(function() {
         		formRequired++;
             }
         })
-        if(formRequired>0)
-        return;
+        if(formRequired>0){
+        	$('#saveBtn').attr('disabled', false);
+        	return;
+        }
         
         //运输方式checkbox遍历取值
         var transport_type = [];
