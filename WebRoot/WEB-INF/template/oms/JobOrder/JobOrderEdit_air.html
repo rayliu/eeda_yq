@@ -7,6 +7,7 @@
                             <%include("/eeda/component/form/inputSelectArea.html", 
                                 {   id:'shipper', 
                                     label:'发货人Shipper', 
+                                    required:'required',
                                     display_value:air.shipperAbbr!'',
                                     value:air.shipper!'',
                                     textarea_value:air.shipper_info!''
@@ -16,6 +17,7 @@
                             <%include("/eeda/component/form/inputSelectArea.html", 
                                 {   id:'consignee', 
                                     label:'收货人Consignee', 
+                                    required:'required',
                                     display_value:air.consigneeAbbr!'',
                                     value:air.consignee!'',
                                     textarea_value:air.consignee_info!''
@@ -26,6 +28,7 @@
                                 {
                                     id:'notify_party', 
                                     label:'通知人Notify Party', 
+                                    required:'required',
                                     required:'required',
                                     display_value:air.notify_partyAbbr!'',
                                     value:air.notify_party!'',
@@ -75,22 +78,25 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'gross_weight', 
+                                {   id:'air_gross_weight', 
                                     label:'毛重(KG)', 
+                                    required:'required',
                                     value:air.gross_weight!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'net_weight', 
+                                {   id:'air_net_weight', 
                                     label:'净重(KG)', 
+                                    required:'required',
                                     value:air.net_weight!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'volume', 
+                                {   id:'air_volume', 
                                     label:'体积(CBM)', 
+                                    required:'required',
                                     value:air.volume!''
                                 }){}%>
                         </div>
@@ -101,6 +107,7 @@
                             <%include("/eeda/component/form/inputArea.html", 
                                 {   id:'shipping_mark', 
                                     label:'唛头', 
+                                    required:'required',
                                     value:air.shipping_mark!''
                                 }){}%>
                         </div>
@@ -108,7 +115,7 @@
                   
             </div><!-- /.row -->
             <div class="form-group">
-           		 <input type="button" class="btn btn-success" value="生成booking PDF"><br><br>
+           		 <input id="printAirBooking" type="button" class="btn btn-success" value="生成booking PDF"><br><br>
             </div>
 </form>
 <div class="row">

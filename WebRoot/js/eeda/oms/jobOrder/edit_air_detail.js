@@ -9,10 +9,12 @@ $(document).ready(function() {
     		var name = airForm[i].id;
         	var value =airForm[i].value;
         	if(name){
-//        		if(name.indexOf("_input")){
-//        			name.replace("_input","");
-//        		}
-        		item[name] = value;
+        		if(name.indexOf("air_")==0){
+        			var rName = name.replace("air_","");
+        			item[rName] = value;
+        		}else{
+        			item[name] = value;
+        		}
         	}
     	}
     	arrays.push(item);

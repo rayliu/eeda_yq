@@ -11,21 +11,13 @@ $(document).ready(function() {
     		var name = shipmentForm[i].id;
         	var value =shipmentForm[i].value;
         	if(name){
-        		if(name=='ocean_trans_clause')
-        			name = 'trans_clause';
-        		if(name=='ocean_shipper')
-        			name = 'shipper';
-        		if(name=='ocean_consignee')
-        			name = 'consignee';
-        		if(name=='ocean_notify_party')
-        			name = 'notify_party';
-        		if(name=='ocean_shipper_info')
-        			name = 'shipper_info';
-        		if(name=='ocean_consignee_info')
-        			name = 'consignee_info';
-        		if(name=='ocean_notify_party_info')
-        			name = 'notify_party_info';
-        		item[name] = value;
+        		
+        		if(name.indexOf("ocean_")==0){
+        			var rName = name.replace("ocean_","");
+        			item[rName] = value;
+        		}else{
+        			item[name] = value;
+        		}
         	}
     	}
     	arrays.push(item);

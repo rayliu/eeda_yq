@@ -1,4 +1,9 @@
 <div class="form-group">
-    <label>${label}</label>
-    <textarea id='${id!''}' name='${id!''}' class="form-control" rows="${rows!'3'}" style="margin-top: 5px;">${value !''}</textarea>
+    <label>${label}
+    <%if(required!'' =='required'){%>
+        <span style='color:red; display:initial;'>*</span>
+    <%}%>
+    </label>
+    <textarea id='${id!''}' name='${id!''}' class="form-control" rows="${rows!'3'}" style="margin-top: 5px;"
+    ${required!''} ${disabled!''}>${value !''}</textarea>
 </div>
