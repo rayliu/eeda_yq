@@ -2,11 +2,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	$(document).ready(function() {
 
 	    var deletedTableIds=[];
-	    
-	    if($("#order_flag").val()=='1'){
-	    	$('#create_jobOrder').attr('disabled',true);
-	    	$('#create_jobOrder').html("已创建过工作单");
-	    }
+
 
 	    //删除一行
 	    $("#cargo_table").on('click', '.delete', function(e){
@@ -86,15 +82,14 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		        bindFieldEvent();
 		    },
             columns:[
-				{ "data":"ID","width": "10px",
+				{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
-				    	if(data)
+				    	if(full.IS_GEN_JOB == 'N')
 				    		return '<input type="checkbox" class="checkBox">';
 				    	else 
 				    		return '<input type="checkbox" class="checkBox" disabled>';
 				    }
 				},
-                         
 	            { "width": "30px",
 	                "render": function ( data, type, full, meta ) {
 	                	return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
@@ -135,7 +130,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    			+'<option></option>'
 				                   +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>20GP</option>'
 				                   +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>40GP</option>'
-				                   +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>45GP</option>'
+				                   +'<option value="40HQ" '+(data=='40HQ' ? 'selected':'')+'>40HQ</option>'
 				                   +'</select>';
 	                    return str;
 	                }
@@ -144,21 +139,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="CONTAINER_AMOUNT" value="'+data+'" class="form-control search-control" style="width:80px"/>';
+	                   return '<input type="text" name="CONTAINER_AMOUNT" value="'+data+'" class="form-control search-control" style="width:50px"/>';
 	                }
 	            },
 	            { "data": "CARGO_NAME",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="CARGO_NAME" value="'+data+'" class="form-control search-control" style="width:80px"/>';
+	                   return '<input type="text" name="CARGO_NAME" value="'+data+'" class="form-control search-control" style="width:180px"/>';
 	                }
 	            },
 	            { "data": "PIECES" ,
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="PIECES" value="'+data+'" class="form-control search-control" style="width:80px"/>';
+	                   return '<input type="text" name="PIECES" value="'+data+'" class="form-control search-control" style="width:60px"/>';
 	                }
 	            },
 	            { "data": "VOLUME",
@@ -212,14 +207,14 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="PICKUP_ADDR" value="'+data+'" class="form-control search-control" style="width:80px"/>';
+	                   return '<input type="text" name="PICKUP_ADDR" value="'+data+'" class="form-control search-control" style="width:180px"/>';
 	                }
 	            },
 	            { "data": "DILVERY_ADDR",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="DILVERY_ADDR" value="'+data+'" class="form-control search-control" style="width:80px"/>';
+	                   return '<input type="text" name="DILVERY_ADDR" value="'+data+'" class="form-control search-control" style="width:180px"/>';
 	                }
 	            },
 	            { "data": "POR" ,
@@ -349,6 +344,12 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return data;
 	                }
 	            }, { "data": "CARRIER_NAME", "visible": false,
+	            	"render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
+	            }, { "data": "IS_GEN_JOB", "visible": false,
 	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
