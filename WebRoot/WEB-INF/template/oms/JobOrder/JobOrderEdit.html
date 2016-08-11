@@ -58,10 +58,19 @@
                                     required:'required',
                                     value:order.type!'',
                                     value_list:[
-                                        {code:'export', value:'出口'},
-                                        {code:'import', value:'进口'}, 
-                                        {code:'both', value:'进出口'},
-                                        {code:'oneDayTrip', value:'一日游'} 
+                                        {code:'出口柜货', value:'出口柜货'},
+                                        {code:'进口柜货', value:'出口散货'}, 
+                                        {code:'进口散货', value:'进口散货'},
+                                        {code:'出口空运', value:'出口空运'},
+                                        {code:'进口空运', value:'进口空运'},
+                                        {code:'香港头程', value:'香港头程'},
+                                        {code:'香港游', value:'香港游'},
+                                        {code:'陆运', value:'陆运'},
+                                        {code:'报关', value:'报关'},
+                                        {code:'快递', value:'快递'},
+                                        {code:'加贸', value:'加贸'},
+                                        {code:'贸易', value:'贸易'},
+                                        {code:'园区游', value:'园区游'}
                                     ],
                                     disabled: 'disabled'
                                 }){}%>

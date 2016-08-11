@@ -17,21 +17,40 @@ $(document).ready(function() {
             { "data": "TYPE",
                 "render": function ( data, type, full, meta ) {
                   var str = '';
-                  if(data == 'export')
-                    str = '出口'; 
-                  if(data == 'import')
-                    str = '进口';
-                  if(data == 'both')
-                    str = '进出口';
-                  if(data == 'oneDayTrip')
-                    str = '一日游';
+                  if(data == '出口柜货')
+                    str = '出口柜货'; 
+                  if(data == '进口柜货')
+                    str = '进口柜货';
+                  if(data == '进口散货')
+                    str = '进口散货';
+                  if(data == '出口空运')
+                	  str = '出口空运';
+                  if(data == '进口空运')
+                	  str = '进口空运';
+                  if(data == '香港头程')
+                	  str = '香港头程';
+                  if(data == '香港游')
+                	  str = '香港游';
+                  if(data == '陆运')
+                	  str = '陆运';
+                  if(data == '报关')
+                	  str = '报关';
+                  if(data == '快递')
+                	  str = '快递';
+                  if(data == '加贸')
+                	  str = '加贸';
+                  if(data == '贸易')
+                	  str = '贸易';
+                  if(data == '园区游')
+                	  str = '园区游';
                   return str;
                 }
             }, 
             { "data": "CUSTOMER_NAME"}, 
             { "data": "CREATOR_NAME"}, 
             { "data": "CREATE_STAMP"}, 
-            { "data": "STATUS"}
+            { "data": "STATUS"},
+            
         ]
     });
 
