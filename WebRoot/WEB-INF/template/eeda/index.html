@@ -1,0 +1,324 @@
+<%layout("/eeda/layout.html"){%>
+    <script>
+        requirejs(['js/common'], function (common) {
+            requirejs(['app/index/main']);
+        });
+    </script>
+        <div id="page-wrapper">
+            <div class="row">
+            	<div class="col-lg-12">
+            	<div class="btn-header"></div>
+            	<div class="panel panel-default">
+                    <div class="panel-heading">
+                    	<div class="form-group">
+                    		<big style="font-size:32px;">管理看板</big>
+	                    </div>
+                    </div>
+                    <div class="panel-body">
+                        <%
+			                var title = SYS_CONFIG.system_title!'易达物流';
+			                var show = 'none';
+			                if(title=='易达物流'){
+			                    show = 'block';
+			                }
+			            %>
+			            <!-- <div class="row" style='display:${show}'>
+			                <div class="col-lg-12">
+			                    <div class="panel panel-default">
+			                        <div class="panel-heading">
+			                            <div class="form-group">
+			                            <i class="fa fa-bar-chart-o fa-fw"></i> 系统单据
+			                            </div>
+			                        </div> -->
+			                        <!-- /.panel-heading -->
+			                        <!-- <div class="panel-body"> -->
+			                            <div class="row">
+						                    <div class="col-lg-3 col-md-6">
+						                        <div class="panel panel-primary">
+						                            <div class="panel-heading">
+						                                <div class="row">
+						                                    <div class="col-xs-3">
+						                                        <i class="fa fa-file-text fa-4x"></i>
+						                                    </div>
+						                                    <div class="col-xs-9 text-right">
+						                                        <div class="huge" id="planOrderTodoCount" style="font-size:26px;">0</div>
+						                                        <div style="font-size:14px;">计划订单待处理</div>
+						                                    </div>
+						                                </div>
+						                            </div>
+						                            <a href="/transferOrder">
+						                                <div class="panel-footer">
+						                                    <span class="pull-left"></span>
+						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+						                                    <div class="clearfix"></div>
+						                                </div>
+						                            </a>
+						                        </div>
+						                    </div>
+						                    <div class="col-lg-3 col-md-6">
+						                        <div class="panel panel-green">
+						                            <div class="panel-heading">
+						                                <div class="row">
+						                                    <div class="col-xs-3">
+						                                        <i class="fa fa-file-text fa-4x"></i>
+						                                    </div>
+						                                    <div class="col-xs-9 text-right">
+						                                        <div class="huge" id="pickupTotal"  style="font-size:26px;">0</div>
+						                                        <div style="font-size:14px;">SO待更新</div>
+						                                    </div>
+						                                </div>
+						                            </div>
+						                            <a href="/pickupOrder">
+						                                <div class="panel-footer">
+						                                    <span class="pull-left"></span>
+						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+						                                    <div class="clearfix"></div>
+						                                </div>
+						                            </a>
+						                        </div>
+						                    </div>
+						                    <div class="col-lg-3 col-md-6">
+						                        <div class="panel panel-yellow">
+						                            <div class="panel-heading">
+						                                <div class="row">
+						                                    <div class="col-xs-3">
+						                                        <i class="fa fa-file-text fa-4x"></i>
+						                                    </div>
+						                                    <div class="col-xs-9 text-right">
+						                                        <div class="huge" id="departTotal"  style="font-size:26px;">0</div>
+						                                        <div style="font-size:14px;">派车单待处理</div>
+						                                    </div>
+						                                </div>
+						                            </div>
+						                            <a href="/departOrder">
+						                                <div class="panel-footer">
+						                                    <span class="pull-left"></span>
+						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+						                                    <div class="clearfix"></div>
+						                                </div>
+						                            </a>
+						                        </div>
+						                    </div>
+						                    <div class="col-lg-3 col-md-6">
+						                        <div class="panel panel-red">
+						                            <div class="panel-heading">
+						                                <div class="row">
+						                                    <div class="col-xs-3">
+						                                        <i class="fa fa-file-text fa-4x"></i>
+						                                    </div>
+						                                    <div class="col-xs-9 text-right">
+						                                        <div class="huge" id="deliveryTotal"  style="font-size:26px;">0</div>
+						                                        <div style="font-size:14px;">SI待更新</div>
+						                                    </div>
+						                                </div>
+						                            </div>
+						                            <a href="/delivery">
+						                                <div class="panel-footer">
+						                                    <span class="pull-left"></span>
+						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+						                                    <div class="clearfix"></div>
+						                                </div>
+						                            </a>
+						                        </div>
+						                    </div>
+                                        </div>
+                                        <div class="row">
+						                    <div class="col-lg-3 col-md-6">
+						                        <div class="panel panel-info">
+						                            <div class="panel-heading">
+						                                <div class="row">
+						                                    <div class="col-xs-3">
+						                                        <i class="fa fa-file-text fa-4x"></i>
+						                                    </div>
+						                                    <div class="col-xs-9 text-right">
+						                                        <div class="huge" id="returnTotal"  style="font-size:26px;">0</div>
+						                                        <div style="font-size:14px;">未确认MBL</div>
+						                                    </div>
+						                                </div>
+						                            </div>
+						                            <a href="/returnOrder">
+						                                <div class="panel-footer">
+						                                    <span class="pull-left"></span>
+						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+						                                    <div class="clearfix"></div>
+						                                </div>
+						                            </a>
+						                        </div>
+						                    </div>
+						                    <div class="col-lg-3 col-md-6">
+						                        <div class="panel panel-danger">
+						                            <div class="panel-heading">
+						                                <div class="row">
+						                                    <div class="col-xs-3">
+						                                        <i class="fa fa-file-text fa-4x"></i>
+						                                    </div>
+						                                    <div class="col-xs-9 text-right">
+						                                        <div class="huge" id="insuranceTotal"  style="font-size:26px;">0</div>
+						                                        <div style="font-size:14px;">待报关</div>
+						                                    </div>
+						                                </div>
+						                            </div>
+						                            <a href="/insuranceOrder">
+						                                <div class="panel-footer">
+						                                    <span class="pull-left"></span>
+						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+						                                    <div class="clearfix"></div>
+						                                </div>
+						                            </a>
+						                        </div>
+						                    </div>
+						                    <div class="col-lg-3 col-md-6">
+                                                <div class="panel panel-danger">
+                                                    <div class="panel-heading">
+                                                        <div class="row">
+                                                            <div class="col-xs-3">
+                                                                <i class="fa fa-file-text fa-4x"></i>
+                                                            </div>
+                                                            <div class="col-xs-9 text-right">
+                                                                <div class="huge" id="insuranceTotal"  style="font-size:26px;">0</div>
+                                                                <div style="font-size:14px;">待买保险</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="/insuranceOrder">
+                                                        <div class="panel-footer">
+                                                            <span class="pull-left"></span>
+                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-6">
+                                                <div class="panel panel-danger">
+                                                    <div class="panel-heading">
+                                                        <div class="row">
+                                                            <div class="col-xs-3">
+                                                                <i class="fa fa-file-text fa-4x"></i>
+                                                            </div>
+                                                            <div class="col-xs-9 text-right">
+                                                                <div class="huge" id="insuranceTotal"  style="font-size:26px;">0</div>
+                                                                <div style="font-size:14px;">待海外申报</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="/insuranceOrder">
+                                                        <div class="panel-footer">
+                                                            <span class="pull-left"></span>
+                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-6">
+                                                <div class="panel panel-danger">
+                                                    <div class="panel-heading">
+                                                        <div class="row">
+                                                            <div class="col-xs-3">
+                                                                <i class="fa fa-file-text fa-4x"></i>
+                                                            </div>
+                                                            <div class="col-xs-9 text-right">
+                                                                <div class="huge" id="insuranceTotal"  style="font-size:26px;">0</div>
+                                                                <div style="font-size:14px;">待电放提单</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="/insuranceOrder">
+                                                        <div class="panel-footer">
+                                                            <span class="pull-left"></span>
+                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+						                </div>
+			                        <!-- </div>
+			                    </div>
+			                </div>
+			            </div>      -->
+			            <!-- /.row -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <i class="fa fa-bar-chart-o fa-fw"></i> 工作周报
+                                    </div>
+                                    <!-- /.panel-heading -->
+                                    <div class="panel-body">
+                                        <div id="line_chart" style="height:400px"></div>
+                                    </div>
+                                    <!-- /.panel-body -->
+                                </div>
+                            </div>
+                        </div>
+			            <div class="row">
+			                <div class="col-lg-12">
+			                    <div class="panel panel-default" style="display: none;">
+			                        <div class="panel-heading">
+			                            <i class="fa fa-bar-chart-o fa-fw"></i> 单据状态
+			                        </div>
+			                        <!-- /.panel-heading -->
+			                        <div class="panel-body">
+			                            <div id="main" style="height:400px"></div>
+			                        </div>
+			                        <!-- /.panel-body -->
+			                    </div>
+			                    <!-- /.panel -->
+			                    <% 
+			                        var isShowProfitChart = permissionMap.Index_showProfitChart;
+			                        if(nvl(isShowProfitChart, '') != ""){
+			                    %>
+				                    <div class="panel panel-default">
+				                        <div class="panel-heading">
+				                            <i class="fa fa-bar-chart-o fa-fw"></i> 营收状态
+				                        </div>
+				                        <!-- /.panel-heading -->
+				                        <div class="panel-body">
+					                        <div class="col-lg-4" style="margin:0px 0px 0px 80px;">
+			                                     <%include("/eeda/component/form/inputCustomerField.html", 
+			                                                {
+			                                                    id:'customer_id', 
+			                                                    label:'客户名称', 
+			                                                    value: ''
+			                                                }){} %>
+			                                </div>
+			                                <div class="col-lg-4">        
+		                                            <%include("/eeda/component/form/yearsInputField.html",
+		                                            		{
+		                                            			id:'years_date', 
+		                                            			label:'时间', 
+		                                            			value:''
+		                                            		}){} %>
+		                                    </div>
+		                                    <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+						                    <div id="profit_chart" style="height:400px"></div>
+						                    
+				                        <!-- /.panel-body -->
+				                    	</div>
+				                    </div>
+			                    <%}%>
+			                    <!-- /.panel -->
+			                </div>
+			                <!-- /.col-lg-12 -->
+			               
+			            </div>
+			            <!-- /.row -->
+			           
+			                    </div>
+			                    <!-- /.panel-body -->
+			                </div>
+			            	</div>
+			            </div>
+
+        </div>
+        <!-- /#page-wrapper -->
+
+<%}%>
+	
+    
+    <!-- <script src="/yh/js/index.js"></script>
+    <script src="/yh/js/index_charts.js"></script> -->
