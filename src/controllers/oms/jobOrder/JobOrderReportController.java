@@ -24,8 +24,9 @@ public class JobOrderReportController extends Controller {
 	public void printOceanHBL() {
 		
 		String order_no = getPara("order_no");
-		String fileName = "report/jobOrder/oceanHBL.jasper";
-		String outFileName = "download/工作单海运HBLPDF";
+		String jasper_name = getPara("order_no");
+		String fileName = "/report/jobOrder/oceanHBL.jasper";
+		String outFileName = "/download/工作单海运HBLPDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_no", order_no);
         fileName = getContextPath() + fileName;
@@ -36,8 +37,8 @@ public class JobOrderReportController extends Controller {
 	public void printOceanBooking() {
 		
 		String order_no = getPara("order_no");
-		String fileName = "report/jobOrder/oceanBooking.jasper";
-		String outFileName = "download/工作单海运bookingPDF";
+		String fileName = "/report/jobOrder/oceanBooking.jasper";
+		String outFileName = "/download/工作单海运bookingPDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_no", order_no);
 		fileName = getContextPath() + fileName;

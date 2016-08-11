@@ -79,6 +79,7 @@ import controllers.profile.CustomController;
 import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.UnitController;
+import controllers.yh.report.ReportController;
 
 public class EedaConfig extends JFinalConfig {
     private Logger logger = Logger.getLogger(EedaConfig.class);
@@ -179,6 +180,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/planOrder", PlanOrderController.class, contentPath);
 		me.add("/jobOrder", JobOrderController.class, contentPath);
 		me.add("/jobOrderReport", JobOrderReportController.class, contentPath);
+		me.add("/report", ReportController.class, contentPath);
 		me.add("/customOrder", CustomOrderController.class, contentPath);
 		me.add("/truckOrder", TruckOrderController.class, contentPath);
 		me.add("/currency", CurrencyController.class, contentPath);
