@@ -7,7 +7,6 @@
                 <%include("/eeda/component/form/inputSelectArea.html", 
                     {   id:'ocean_shipper', 
                         label:'发货人Shipper', 
-                        required:'required',
                         display_value:shipment.shipperAbbr!'',
                         value:shipment.shipper!'',
                         textarea_value:shipment.shipper_info!''
@@ -17,7 +16,6 @@
                 <%include("/eeda/component/form/inputSelectArea.html", 
                     {   id:'ocean_consignee', 
                         label:'收货人Consignee', 
-                        required:'required',
                         display_value:shipment.consigneeAbbr!'',
                         value:shipment.consignee!'',
                         textarea_value:shipment.consignee_info!''
@@ -28,7 +26,6 @@
                     {
                         id:'ocean_notify_party', 
                         label:'通知人NotifyParty', 
-                        required:'required',
                         display_value:shipment.notify_partyAbbr!'',
                         value:shipment.notify_party!'',
                         textarea_value:shipment.notify_party_info!''
@@ -47,7 +44,6 @@
                 <%include("/eeda/component/form/inputField.html", 
                     {   id:'carrier', 
                         label:'船公司', 
-                        required:'required',
                         value:shipment.carrier!''
                     }){}%>
             </div>
@@ -65,7 +61,6 @@
                 <%include("/eeda/component/form/inputField.html", 
                     {   id:'hbl_no', 
                         label:'HBL号码', 
-                        required:'required',
                         value:shipment.hbl_no!''
                     }){}%>
             </div>
@@ -74,7 +69,6 @@
                 <%include("/eeda/component/form/inputField.html", 
                     {   id:'mbl_no', 
                         label:'MBL号码', 
-                        required:'required',
                         value:shipment.mbl_no!''
                     }){}%>
             </div>
@@ -82,7 +76,6 @@
                 <%include("/eeda/component/form/selectField.html", 
                     {   id:'ocean_trans_clause', 
                         label:'运输条款', 
-                        required:'required',
                         value:shipment.trans_clause!'',
                         value_list:[
                             {code:'export', value:'CY-CY'},
@@ -115,7 +108,6 @@
                 <%include("/eeda/component/form/inputField.html", 
                     {   id:'vessel', 
                         label:'船名', 
-                        required:'required',
                         value:shipment.vessel!planOrderItem.vessel!''
                     }){}%>
             </div>
@@ -123,7 +115,6 @@
                 <%include("/eeda/component/form/inputField.html", 
                     {   id:'route', 
                         label:'航线',
-                        required:'required', 
                         value:shipment.route!''
                     }){}%>
             </div>
@@ -131,7 +122,6 @@
                 <%include("/eeda/component/form/inputField.html", 
                     {   id:'voyage', 
                         label:'航次',
-                        required:'required', 
                         value:shipment.voyage!planOrderItem.voyage!''
                     }){}%>
             </div>  
@@ -141,7 +131,6 @@
                    <%include("/eeda/component/form/inputField.html", 
                        {   id:'por', 
                            label:'收货港 POR', 
-                           required:'required',
                            value:shipment.por!por.name!''
                        }){}%>
                </div>
@@ -149,7 +138,6 @@
                    <%include("/eeda/component/form/inputField.html", 
                        {   id:'pol', 
                            label:'装货港 POL', 
-                           required:'required',
                            value:shipment.pol!pol.name!''
                        }){}%>
                </div>
@@ -157,7 +145,6 @@
                    <%include("/eeda/component/form/inputField.html", 
                        {   id:'hub', 
                            label:'转运港 HUB',
-                           required:'required', 
                            value:shipment.hub!''
                        }){}%>
                </div>
@@ -167,7 +154,6 @@
                    <%include("/eeda/component/form/inputField.html", 
                        {   id:'pod', 
                            label:'卸货港 POD', 
-                           required:'required',
                            value:shipment.pod!pod.name!''
                        }){}%>
                </div>
@@ -175,7 +161,6 @@
                    <%include("/eeda/component/form/inputField.html", 
                        {   id:'fnd', 
                            label:'目的地 FND', 
-                           required:'required',
                            value:shipment.fnd!''
                        }){}%>
                </div>
@@ -185,7 +170,6 @@
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'etd', 
                            label:'ETD',
-                           required:'required', 
                            value:shipment.etd!planOrderItem.etd!''
                        }){}%>
                </div>
@@ -193,7 +177,6 @@
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'eta', 
                            label:'ETA', 
-                           required:'required',
                            value:shipment.eta!planOrderItem.eta!''
                        }){}%>
                </div>
@@ -201,7 +184,6 @@
                    <%include("/eeda/component/form/inputField.html", 
                        {   id:'SONO', 
                            label:'SO NO', 
-                           required:'required',
                            value:shipment.SONO!''
                        }){}%>
                </div>
@@ -209,7 +191,6 @@
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'export_date', 
                            label:'出口日期', 
-                           required:'required',
                            value:shipment.export_date!''
                        }){}%>
                </div>
@@ -217,7 +198,6 @@
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'closing_date', 
                            label:'截关日期',
-                           required:'required', 
                            value:shipment.closing_date!planOrderItem.cls!''
                        }){}%>
                </div>
@@ -228,7 +208,6 @@
                    <%include("/eeda/component/form/inputArea.html", 
                        {   id:'shipping_mark', 
                            label:'唛头', 
-                           required:'required',
                            value:shipment.shipping_mark!''
                        }){}%>
                </div>
@@ -237,7 +216,6 @@
                    <%include("/eeda/component/form/inputArea.html", 
                        {   id:'cargo_desc', 
                            label:'货物描述', 
-                           required:'required',
                            value:shipment.cargo_desc!''
                        }){}%>
                </div>
