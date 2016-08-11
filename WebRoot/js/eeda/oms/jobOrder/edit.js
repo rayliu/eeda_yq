@@ -52,7 +52,7 @@ $(document).ready(function() {
         
         var order={}
         order.id = $('#order_id').val();
-        order.plan_order_id = $('#plan_order_id').val();
+        order.plan_order_item_id = $('#plan_order_item_id').val();
         order.customer_id = $('#customer_id').val();
         order.plan_order_no = $('#plan_order_no').val();
         order.type = $('#type').val();

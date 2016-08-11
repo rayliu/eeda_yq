@@ -21,7 +21,7 @@
             <div class="row">  <!--  form row  -->
                 <form id="orderForm">
                     <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
-                    <input id="plan_order_id" type="hidden" name="plan_order_id" value="${order.plan_order_id!planOrder.id!''}"/>
+                    <input id="plan_order_item_id" type="hidden" value="${planOrderItem.id!''}"/>
                     <div class="row"><!--  第1行  -->
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 

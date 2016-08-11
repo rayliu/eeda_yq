@@ -102,6 +102,7 @@ public class JobOrderController extends Controller {
             
         JobOrder jobOrder = new JobOrder();
    		String id = (String) dto.get("id");
+   		String planOrderItemID = (String) dto.get("plan_order_item_id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
    		
@@ -121,6 +122,11 @@ public class JobOrderController extends Controller {
    			jobOrder.set("create_stamp", new Date());
    			jobOrder.save();
    			id = jobOrder.getLong("id").toString();
+   			
+   			//创建过工作单，设置plan_order_item的字段
+   			PlanOrderItem planOrderItem = PlanOrderItem.dao.findById(planOrderItemID);
+   			planOrderItem.set("is_gen_job", "Y");
+   			planOrderItem.update();
    		}
 		
 		//海运
