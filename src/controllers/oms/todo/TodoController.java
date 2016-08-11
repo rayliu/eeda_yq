@@ -9,6 +9,8 @@ import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -18,7 +20,15 @@ public class TodoController extends Controller {
 	Subject currentUser = SecurityUtils.getSubject();
 
 	public void getPlanOrderTodoCount() {
-		renderText("-1");
+		String sql = "SELECT count(1) total"
+				    +" FROM plan_order_item "
+				    + " WHERE is_gen_job='N' AND factory_loading_time is not NULL"
+				    + " AND datediff(factory_loading_time, now())<=5";
+		
+		Record planOrder = Db.findFirst(sql);
+		String total = planOrder.getLong("TOTAL").toString();
+		
+		renderText(total);
 	}
 	
 	public void getSOTodoCount() {
@@ -30,28 +40,54 @@ public class TodoController extends Controller {
 	}
 	
 	public void getSITodoCount() {
-		renderText("-1");
+		String sql = "SELECT count(1) total"
+				    +" FROM job_order_shipment "
+				    +" WHERE TO_DAYS(export_date)=TO_DAYS(now())";
+		
+		Record planOrder = Db.findFirst(sql);
+		String total = planOrder.getLong("TOTAL").toString();
+		renderText(total);
 	}
-	
+
 	public void getMBLTodoCount() {
 		renderText("-1");
 	}
-	
+
 	public void getWaitCustomTodoCount() {
-		renderText("-1");
+		String sql = "SELECT count(1) total"
+	               + " FROM job_order " 
+	               + " WHERE transport_type like '%custom%'";
+
+		Record planOrder = Db.findFirst(sql);
+		String total = planOrder.getLong("TOTAL").toString();
+
+		renderText(total);
 	}
-	
+
 	public void getWaitBuyInsuranceTodoCount() {
-		renderText("-1");
+		String sql = "SELECT count(1) total"
+	               + " FROM job_order " 
+	               + " WHERE transport_type like '%insurance%'";
+
+		Record planOrder = Db.findFirst(sql);
+		String total = planOrder.getLong("TOTAL").toString();
+
+		renderText(total);
 	}
-	
+
 	public void getWaitOverseaCustomTodoCount() {
 		renderText("-1");
 	}
-	
+
 	public void getTlxOrderTodoCount() {
-		renderText("-1");
+		String sql = "SELECT count(1) total"
+	               + " FROM job_order_shipment "
+				   + " WHERE TO_DAYS(etd)= TO_DAYS(now())";
+
+		Record planOrder = Db.findFirst(sql);
+		String total = planOrder.getLong("TOTAL").toString();
+		renderText(total);
+
 	}
-	
 	
 }
