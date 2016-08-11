@@ -144,10 +144,11 @@
                        }){}%>
                </div>
                <div class="col-lg-4">
-                   <%include("/eeda/component/form/inputField.html", 
+                   <%include("/eeda/component/form/inputPortField.html", 
                        {   id:'hub', 
                            label:'转运港 HUB',
-                           value:shipment.hub!''
+                           value:shipment.hub!'',
+                           display_value:port.hub_name!''
                        }){}%>
                </div>
            </div>
@@ -161,10 +162,11 @@
                        }){}%>
                </div>
                <div class="col-lg-4">
-                   <%include("/eeda/component/form/inputField.html", 
+                   <%include("/eeda/component/form/inputPortField.html", 
                        {   id:'fnd', 
                            label:'目的地 FND', 
-                           value:shipment.fnd!''
+                           value:shipment.fnd!'',
+                           display_value:port.fnd_name!''
                        }){}%>
                </div>
            </div>

@@ -346,10 +346,11 @@ public class JobOrderController extends Controller {
     	setAttr("user", user);
     	
     	//返回海运的港口名称
-    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name from job_order_shipment jos"
+    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name from job_order_shipment jos"
 						+" LEFT JOIN location lo on lo.id = jos.por"
 						+" LEFT JOIN location lo1 on lo1.id = jos.pol"
 						+" LEFT JOIN location lo2 on lo2.id = jos.pod"
+						+" LEFT JOIN location lo3 on lo2.id = jos.fnd"
 						+" where order_id = ?";
    		setAttr("port",Db.findFirst(port_sql,id)); 
     	
