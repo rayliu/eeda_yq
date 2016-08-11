@@ -41,19 +41,15 @@
                     }){}%>
             </div>
             <div class="col-lg-4">
-                <%include("/eeda/component/form/inputField.html", 
-                    {   id:'carrier', 
-                        label:'船公司', 
-                        value:shipment.carrier!''
+                <%include("/eeda/component/form/inputPartyField.html", 
+                    {   id:'carrier',
+                        type:  'carrier',
+                        label: '船公司', 
+                        value: shipment.carrier!'',
+                        display_value: shipment.carrier_name!''
                     }){}%>
             </div>
-            <div class="col-lg-4">
-                <%include("/eeda/component/form/inputField.html", 
-                    {   id:'bl_type', 
-                        label:'提单类型', 
-                        value:shipment.bl_type!''
-                    }){}%>
-            </div>
+           
         </div>
         <div class="row">
             

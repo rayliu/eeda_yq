@@ -486,4 +486,26 @@ public class CustomerController extends Controller {
 
         renderJson(partyList);
     }
+    
+ // 列出所有party名称
+    public void searchParty() {
+        String partyName = getPara("partyName");
+        String type = getPara("type");
+        
+        if(StringUtils.isEmpty(partyName)){
+            partyName = "";
+        }
+        
+        List<Record> partyList = Collections.EMPTY_LIST;
+        String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+                + " ifnull(p.address_eng, p.address) address, p.phone from party p where  "
+                + " sp_type like '%"+type+"%'";
+                    
+        if (partyName.trim().length() > 0) {
+            sql +=" and (p.abbr like '%" + partyName + "%' or p.quick_search_code like '%" + partyName.toUpperCase() + "%') ";
+        }
+        partyList = Db.find(sql);
+
+        renderJson(partyList);
+    }
 }
