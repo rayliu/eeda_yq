@@ -61,7 +61,6 @@
             <ul class="nav navbar-top-links navbar-right">
 				<%
 	                var title = SYS_CONFIG.system_title!'易达物流';
-	                
 	            %>
                 <!-- /.dropdown -->
                 ${office_name!''}
@@ -90,12 +89,16 @@
         <nav  id='left_side_bar' class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="side-menu">
+                    <%  
+                        var map = permissionMap;
+                    %>
                     <%if(!shiro.hasRole("outuser")){%>
 	                   <li>
 	                       <a href="/"><i class="fa fa-dashboard fa-fw"></i> 管理看板 </a>
 	                   </li>
                     <%}%>
-                    <li id="menu_todo">
+                    
+                        <li id="menu_todo_list">
                             <a href="#"><i class="fa fa-file-text fa-fw"></i> 待办事项<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -126,11 +129,7 @@
                                     <a href="/truckOrder">待电放提单 <span class="badge">0</span></a>
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
                         </li>
-                    <%  
-                    	var map = permissionMap;
-                    %>
                         <li id="menu_order">
                             <a href="#"><i class="fa fa-file-text fa-fw"></i> 订单管理<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -140,14 +139,20 @@
                                 <li>
                                     <a href="/jobOrder">工作单</a>
                                 </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+
+                        <li id="menu_truck">
+                            <a href="#"><i class="fa fa-file-text fa-fw"></i> 派车管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
                                 <li>
                                     <a href="/truckOrder">派车单</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                   
-                        <li id="menu_rder">
+                        <li id="menu_custom">
                             <a href="#"><i class="fa fa-file-text fa-fw"></i> 报关管理<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -156,7 +161,7 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        <li id="menu_rder">
+                        <li id="menu_insur">
                             <a href="#"><i class="fa fa-file-text fa-fw"></i> 保险管理<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
