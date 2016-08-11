@@ -55,7 +55,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         
         //计划单跳转到工作单
         $('#create_jobOrder').click(function(){
-        	$(this).attr('disabled', true);
         	var order_id = $('#order_id').val();
         	var itemIds=[];
         	$('#cargo_table input[type="checkbox"]').each(function(){

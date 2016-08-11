@@ -81,7 +81,7 @@ public class JobOrderController extends Controller {
 	    	PlanOrderItem plan_order_item = PlanOrderItem.dao.findById(id);
 	    	setAttr("planOrderItem", plan_order_item);
 	    	
-	    	//返回港口名称
+	    	//返回海运的港口名称
 	    	setAttr("por",Db.findFirst("select name from location l where l.type='port' and l.id=?",plan_order_item.get("por")));
 	    	setAttr("pol",Db.findFirst("select name from location l where l.type='port' and l.id=?",plan_order_item.get("pol")));
 	    	setAttr("pod",Db.findFirst("select name from location l where l.type='port' and l.id=?",plan_order_item.get("pod")));
@@ -121,10 +121,6 @@ public class JobOrderController extends Controller {
    			jobOrder.set("create_stamp", new Date());
    			jobOrder.save();
    			id = jobOrder.getLong("id").toString();
-   			//设置计划单flag为1，表示创建过工作单
-   			PlanOrder planOrder = PlanOrder.dao.findById(jobOrder.get("plan_order_id"));
-    		planOrder.set("flag",1);
-    		planOrder.update();
    		}
 		
 		//海运
@@ -184,6 +180,12 @@ public class JobOrderController extends Controller {
    		r.set("shipment", getItemDetail(id,"shipment"));
     	r.set("air", getItemDetail(id,"air"));
    		r.set("insurance", getItemDetail(id,"insure"));
+   		
+   		//返回海运的港口名称
+   		JobOrderShipment jobOrderShipment = JobOrderShipment.dao.findFirst("select por,pol,pod from job_order_shipment where order_id = ?",id);
+    	r.set("por",Db.findFirst("select name from location l where l.type='port' and l.id=?",jobOrderShipment.get("por"))); 
+    	r.set("pol",Db.findFirst("select name from location l where l.type='port' and l.id=?",jobOrderShipment.get("pol")));
+    	r.set("pod",Db.findFirst("select name from location l where l.type='port' and l.id=?",jobOrderShipment.get("pod")));
     	
    		renderJson(r);
    	}
@@ -330,9 +332,15 @@ public class JobOrderController extends Controller {
     	UserLogin user = UserLogin.dao.findById(creator);
     	setAttr("user", user);
     	
+    	//返回海运的港口名称
+    	JobOrderShipment jobOrderShipment = JobOrderShipment.dao.findFirst("select por,pol,pod from job_order_shipment where order_id = ?",id);
+   		setAttr("por",Db.findFirst("select name from location l where l.type='port' and l.id=?",jobOrderShipment.get("por"))); 
+   		setAttr("pol",Db.findFirst("select name from location l where l.type='port' and l.id=?",jobOrderShipment.get("pol")));
+   		setAttr("pod",Db.findFirst("select name from location l where l.type='port' and l.id=?",jobOrderShipment.get("pod")));
+    	
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
-    	
+    	  
         render("/oms/JobOrder/JobOrderEdit.html");
     }
     

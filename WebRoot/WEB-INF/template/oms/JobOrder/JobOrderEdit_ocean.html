@@ -132,17 +132,19 @@
          </div>
            <div class="row">
                <div class="col-lg-4">
-                   <%include("/eeda/component/form/inputField.html", 
+                   <%include("/eeda/component/form/inputPortField.html", 
                        {   id:'por', 
                            label:'收货港 POR', 
-                           value:shipment.por!por.name!''
+                           value:shipment.por!planOrderItem.por!'',
+                           display_value:por.name!''
                        }){}%>
                </div>
                <div class="col-lg-4">
-                   <%include("/eeda/component/form/inputField.html", 
+                   <%include("/eeda/component/form/inputPortField.html", 
                        {   id:'pol', 
                            label:'装货港 POL', 
-                           value:shipment.pol!pol.name!''
+                           value:shipment.pol!planOrderItem.pol!'',
+                           display_value:pol.name!''
                        }){}%>
                </div>
                <div class="col-lg-4">
@@ -155,10 +157,11 @@
            </div>
            <div class="row">
                <div class="col-lg-4">
-                   <%include("/eeda/component/form/inputField.html", 
+                   <%include("/eeda/component/form/inputPortField.html", 
                        {   id:'pod', 
                            label:'卸货港 POD', 
-                           value:shipment.pod!pod.name!''
+                           value:shipment.pod!planOrderItem.pod!'',
+                           display_value:pod.name!''
                        }){}%>
                </div>
                <div class="col-lg-4">

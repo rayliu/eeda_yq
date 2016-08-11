@@ -1,0 +1,10 @@
+<div class="form-group">
+    <label class="search-label">${label!''}
+    <%if(required!'' =='required'){%>
+        <span style='color:red; display:initial;'>*</span>
+    <%}%>
+    </label>
+    <input type="text" class="form-control search-control" 
+    id="${id}_input" name="${id}_input" placeholder="${placeholder!''}" value="${display_value!''}" ${required!''} ${disabled!''}>
+</div>
+<input id="${id}" style="display: none;" name="${id}" value="${value!''}"/>
