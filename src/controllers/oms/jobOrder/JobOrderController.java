@@ -82,9 +82,13 @@ public class JobOrderController extends Controller {
 	    	setAttr("planOrderItem", plan_order_item);
 	    	
 	    	//返回海运的港口名称
-	    	setAttr("por",Db.findFirst("select name from location l where l.type='port' and l.id=?",plan_order_item.get("por")));
-	    	setAttr("pol",Db.findFirst("select name from location l where l.type='port' and l.id=?",plan_order_item.get("pol")));
-	    	setAttr("pod",Db.findFirst("select name from location l where l.type='port' and l.id=?",plan_order_item.get("pod")));
+	    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name from plan_order_item jos"
+				    			+" LEFT JOIN location lo on lo.id = jos.por"
+				    			+" LEFT JOIN location lo1 on lo1.id = jos.pol"
+				    			+" LEFT JOIN location lo2 on lo2.id = jos.pod"
+				    			+" where jos.id = ?";
+	    	setAttr("port",Db.findFirst(port_sql,id));
+	    	
     	}
     	setAttr("loginUser",LoginUserController.getLoginUserName(this));
         render("/oms/JobOrder/JobOrderEdit.html");
@@ -188,11 +192,13 @@ public class JobOrderController extends Controller {
    		r.set("insurance", getItemDetail(id,"insure"));
    		
    		//返回海运的港口名称
-   		JobOrderShipment jobOrderShipment = JobOrderShipment.dao.findFirst("select por,pol,pod from job_order_shipment where order_id = ?",id);
-    	r.set("por",Db.findFirst("select name from location l where l.type='port' and l.id=?",jobOrderShipment.get("por"))); 
-    	r.set("pol",Db.findFirst("select name from location l where l.type='port' and l.id=?",jobOrderShipment.get("pol")));
-    	r.set("pod",Db.findFirst("select name from location l where l.type='port' and l.id=?",jobOrderShipment.get("pod")));
-    	
+    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name from job_order_shipment jos"
+						+" LEFT JOIN location lo on lo.id = jos.por"
+						+" LEFT JOIN location lo1 on lo1.id = jos.pol"
+						+" LEFT JOIN location lo2 on lo2.id = jos.pod"
+						+" where order_id = ?";
+   		r.set("port",Db.findFirst(port_sql,id));
+   		
    		renderJson(r);
    	}
     
@@ -339,10 +345,12 @@ public class JobOrderController extends Controller {
     	setAttr("user", user);
     	
     	//返回海运的港口名称
-    	JobOrderShipment jobOrderShipment = JobOrderShipment.dao.findFirst("select por,pol,pod from job_order_shipment where order_id = ?",id);
-   		setAttr("por",Db.findFirst("select name from location l where l.type='port' and l.id=?",jobOrderShipment.get("por"))); 
-   		setAttr("pol",Db.findFirst("select name from location l where l.type='port' and l.id=?",jobOrderShipment.get("pol")));
-   		setAttr("pod",Db.findFirst("select name from location l where l.type='port' and l.id=?",jobOrderShipment.get("pod")));
+    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name from job_order_shipment jos"
+						+" LEFT JOIN location lo on lo.id = jos.por"
+						+" LEFT JOIN location lo1 on lo1.id = jos.pol"
+						+" LEFT JOIN location lo2 on lo2.id = jos.pod"
+						+" where order_id = ?";
+   		setAttr("port",Db.findFirst(port_sql,id)); 
     	
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
