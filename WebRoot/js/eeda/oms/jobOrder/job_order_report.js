@@ -1,9 +1,5 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
-	
-    //隐藏pdf alert
-    $('#pdfAlert').hide();
-	
 	//未保存或数据不足不生成PDF
 	if($('#order_id').val()==''){
 		$("#oceanPDF").hide();
@@ -81,8 +77,8 @@ $(document).ready(function() {
 			$('#pdfAlert').show();
 			$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
 		}else{
-	    	var order_no = $("#order_no").val();
-	    	$.post('/jobOrderReport/printOceanHBL', {order_no:order_no}, function(data){
+	    	var order_id = $("#order_id").val();
+	    	$.post('/jobOrderReport/printOceanHBL', {order_id:order_id}, function(data){
 	    		if(data){
 	                window.open(data);
 	             }else{
