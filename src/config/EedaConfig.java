@@ -70,6 +70,7 @@ import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.jobOrder.JobOrderReportController;
 import controllers.oms.planOrder.PlanOrderController;
+import controllers.oms.todo.TodoController;
 import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
 import controllers.profile.ContainerTypeController;
@@ -152,7 +153,7 @@ public class EedaConfig extends JFinalConfig {
 
 	private void setScmRoute(Routes me, String contentPath) {
 		// yh project controller
-        me.add("/", controllers.profile.MainController.class, contentPath);
+        me.add("/", controllers.eeda.MainController.class, contentPath);
        // me.add("/apidoc", controllers.eeda.DocController.class);
 //        me.add("/debug", controllers.profile.LogController.class, contentPath);
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
@@ -178,6 +179,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/privilege", PrivilegeController.class, contentPath);
 		//oms管理系统
 		me.add("/planOrder", PlanOrderController.class, contentPath);
+		me.add("/todo", TodoController.class, contentPath);
 		me.add("/jobOrder", JobOrderController.class, contentPath);
 		me.add("/jobOrderReport", JobOrderReportController.class, contentPath);
 		me.add("/report", ReportController.class, contentPath);
