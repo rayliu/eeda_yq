@@ -36,7 +36,14 @@ public class TodoController extends Controller {
 	}
 	
 	public void getTruckOrderTodoCount() {
-		renderText("-1");
+		String sql = "SELECT count(1) total"
+			    +" FROM plan_order_item "
+			    + " WHERE is_gen_job='N' AND factory_loading_time is not NULL"
+			    + " AND datediff(factory_loading_time, now())<=3";
+		Record planOrder = Db.findFirst(sql);
+		String total = planOrder.getLong("TOTAL").toString();
+		
+		renderText(total);
 	}
 	
 	public void getSITodoCount() {

@@ -16,7 +16,15 @@ define(['jquery', 'metisMenu', 'sb_admin', './index_weekly_charts', './index_pro
         
         $.get('/todo/getTruckOrderTodoCount', function(data){
             //设置index中
-            $("#truckOrderTodoCount").empty().text(data);
+//            var total = 
+            	$("#truckOrderTodoCount").empty().text(data);
+//            if（$('#truckOrderPDF').click()）{
+//            	
+//            	total=total-1;
+//            	
+//            }
+            
+//            $("#truckOrderTodoCount").empty().text(total);
         });
         
         $.get('/todo/getSITodoCount', function(data){
