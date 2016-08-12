@@ -63,7 +63,7 @@ $(document).ready(function() {
         "paging": false,
         "info": false,
         "scrollX":  true,
-        "autoWidth": true,
+        "autoWidth": false,
         "language": {
             "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
         },
@@ -73,56 +73,56 @@ $(document).ready(function() {
         "columns": [
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs">删除</button>';
+                	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
                 }
             },
-            { "data": "AIR_COMPANY", 
+            { "data": "AIR_COMPANY", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="air_company" value="'+data+'" class="form-control easyui-numberbox" data-options="max:0"/>';
+                    return '<input type="text" name="air_company" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "FLIGHT_NO", 
+            { "data": "FLIGHT_NO", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="flight_no" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="flight_no" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "VOYAGE_NO", 
+            { "data": "VOYAGE_NO", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="voyage_no" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="voyage_no" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "START_FROM", 
+            { "data": "START_FROM", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="start_from" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="start_from" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "ETD", 
+            { "data": "ETD", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="etd" value="'+data+'" class="form-control" />';
+            		return '<input type="text" name="etd" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "DESTINATION", 
+            { "data": "DESTINATION", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="destination" value="'+data+'" class="form-control" />';
+            		return '<input type="text" name="destination" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "ETA", 
+            { "data": "ETA", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="eta" value="'+data+'" class="form-control"/>';
+                    return '<input type="text" name="eta" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             }
         ]

@@ -72,42 +72,42 @@ $(document).ready(function() {
 			{ "data":"ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
 			    	if(data)
-			    		return '<input type="checkbox" class="checkBox">';
+			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
 			    	else 
-			    		return '<input type="checkbox" class="checkBox" disabled>';
+			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
 			    }
 			},
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
+                	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
                 }
             },
-            { "data": "DOC_NAME",
+            { "data": "DOC_NAME","width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" value="'+data+'" class="doc_name form-control" disabled/>';
+                    return '<input type="text" value="'+data+'" class="doc_name form-control" style="width:200px" disabled/>';
                 }
             },
-            { "data": "C_NAME",
+            { "data": "C_NAME","width": "180px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
-                	return '<input type="text" value="'+data+'" class="form-control" disabled/>';
+                	return '<input type="text" value="'+data+'" class="form-control" style="width:200px" disabled/>';
                 }
             },
-            { "data": "UPLOAD_TIME", 
+            { "data": "UPLOAD_TIME", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" value="'+data+'" class="form-control" disabled/>';
+                    return '<input type="text" value="'+data+'" class="form-control" style="width:200px" disabled/>';
                 }
             },
-            { "data": "REMARK",
+            { "data": "REMARK","width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="remark" value="'+data+'" class="form-control "/>';
+                    return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             }
         ]

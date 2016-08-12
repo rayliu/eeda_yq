@@ -75,7 +75,7 @@ $(document).ready(function() {
             },
             { "data": "TYPE",
                 "render": function ( data, type, full, meta ) {
-                    var str = '<select name="container_type" class="form-control search-control">'
+                    var str = '<select name="container_type" class="form-control search-control" >'
                                +'<option value="ocean" '+(data=='ocean' ? 'selected':'')+'>海运</option>'
                                +'<option value="air" '+(data=='air' ? 'selected':'')+'>空运</option>'
                                +'<option value="land" '+(data=='land' ? 'selected':'')+'>陆运</option>'
@@ -152,7 +152,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="remark" style="width:80px" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" />';
                 }
             }
         ]

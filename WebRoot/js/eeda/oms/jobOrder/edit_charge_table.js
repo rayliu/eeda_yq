@@ -152,7 +152,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="remark" style="width:80px" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" />';
                 }
             }
         ]

@@ -71,26 +71,26 @@ $(document).ready(function() {
             $(row).attr('id', data.ID);
         },
         "columns": [
-            { "data":"ID","width": "3px",
+            { "data":"ID","width": "10px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
-                		return '<input type="checkbox" class="checkBox">';
+                		return '<input type="checkbox" class="checkBox" style="width:30px">';
                 	else 
-                		return '<input type="checkbox" class="checkBox" disabled>';
+                		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
                 }
             },
-            { "width": "10px",
+            { "width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs">删除</button>';
+                	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
                 }
             },
            
-            { "data": "LOAD_TYPE", 
+            { "data": "LOAD_TYPE","width": "80px", 
                 "render": function ( data, type, full, meta ) {
                    if(!data)
                 	   data='';
                     
-                   var str= '<select name="load_type" class="form-control search-control">'
+                   var str= '<select name="load_type" class="form-control search-control" style="width:100px">'
                 	   	 	+'<option></option>'
 		                   +'<option value="FCL" '+ (data=='FCL'?'selected':'') +'>FCL</option>'
 		                   +'<option value="LCL" '+ (data=='LCL'?'selected':'') +'>LCL</option>'
@@ -100,11 +100,11 @@ $(document).ready(function() {
 		           return str;
                 }
             },
-            { "data": "CONTAINER_TYPE", 
+            { "data": "CONTAINER_TYPE","width": "80px", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    var str = '<select name="container_type" class="form-control search-control">'
+                    var str = '<select name="container_type" class="form-control search-control" style="width:100px">'
                     			+'<option></option>'
 			                   +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>20GP</option>'
 			                   +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>40GP</option>'
@@ -113,46 +113,46 @@ $(document).ready(function() {
                     return str;
                 }
             },
-            { "data": "CONTAINER_NO", 
+            { "data": "CONTAINER_NO","width": "180px",  
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="container_no" value="'+data+'" class="form-control easyui-numberbox" data-options="max:0"/>';
+                    return '<input type="text" name="container_no" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "SEAL_NO", 
+            { "data": "SEAL_NO","width": "180px",  
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="seal_no" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="seal_no" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "PIECES", 
+            { "data": "PIECES", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="pieces" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "GROSS_WEIGHT", 
+            { "data": "GROSS_WEIGHT","width": "180px",  
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="gross_weight" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="gross_weight" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "VOLUME", 
+            { "data": "VOLUME", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="volume" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "VGM", 
+            { "data": "VGM", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="vgm" value="'+data+'" class="form-control"/>';
+                    return '<input type="text" name="vgm" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             }
         ]

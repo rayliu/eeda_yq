@@ -77,24 +77,24 @@ $(document).ready(function() {
             $(row).attr('id', data.ID);
         },
         "columns": [
-			{ "data":"ID",
+			{ "data":"ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
 			    	if(data)
-			    		return '<input type="checkbox" class="checkBox">';
+			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
 			    	else 
-			    		return '<input type="checkbox" class="checkBox" disabled>';
+			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
 			    }
 			},
-            { 
+            { "width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs">删除</button>';
+                	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
                 }
             },
-            { "data": "UNLOAD_TYPE", 
+            { "data": "UNLOAD_TYPE", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    var str= '<select name="unload_type" class="form-control search-control"  style="width:80px">'
+                    var str= '<select name="unload_type" class="form-control search-control"  style="width:100px">'
             	   	 		   +'<option></option>'
 			                   +'<option value="卸货" '+ (data=='卸货'?'selected':'') +'>卸货</option>'
 			                   +'<option value="收货" '+ (data=='收货'?'selected':'') +'>收货</option>'
@@ -103,88 +103,88 @@ $(document).ready(function() {
                     return str;
                 }
             },
-            { "data": "TRANSPORT_COMPANY", 
+            { "data": "TRANSPORT_COMPANY", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="transport_company" value="'+data+'" class="form-control" style="width:120px"/>';
+                    return '<input type="text" name="transport_company" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "DRIVER", 
+            { "data": "DRIVER", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="driver" value="'+data+'" class="form-control" style="width:120px" />';
+                    return '<input type="text" name="driver" value="'+data+'" class="form-control" style="width:200px" />';
                 }
             },
-            { "data": "DRIVER_TEL", 
+            { "data": "DRIVER_TEL", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:120px" />';
+                    return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:200px" />';
                 }
             },
-            { "data": "CAR_TYPE", 
+            { "data": "CAR_TYPE", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="car_type" value="'+data+'" class="form-control" style="width:120px"/>';
+                    return '<input type="text" name="car_type" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "CAR_NO", 
+            { "data": "CAR_NO", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="car_no" value="'+data+'" class="form-control" style="width:120px"/>';
+            		return '<input type="text" name="car_no" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "CARGO_CONTACTS", 
+            { "data": "CARGO_CONTACTS", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="cargo_contacts" value="'+data+'" class="form-control" style="width:120px"/>';
+            		return '<input type="text" name="cargo_contacts" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "PHONE", 
+            { "data": "PHONE","width": "180px", 
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="phone" value="'+data+'" class="form-control" style="width:120px"/>';
+            		return '<input type="text" name="phone" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "ADDRESS", 
+            { "data": "ADDRESS", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="address" value="'+data+'" class="form-control" style="width:120px"/>';
+            		return '<input type="text" name="address" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "ETA", 
+            { "data": "ETA", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="eta" value="'+data+'" class="form-control" style="width:120px"/>';
+            		return '<input type="text" name="eta" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "CARGO_INFO", 
+            { "data": "CARGO_INFO", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="cargo_info" value="'+data+'" class="form-control" style="width:120px"/>';
+            		return '<input type="text" name="cargo_info" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "SIGN_DESC", 
+            { "data": "SIGN_DESC", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="sign_desc" value="'+data+'" class="form-control" style="width:120px"/>';
+            		return '<input type="text" name="sign_desc" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "SIGN_STATUS", 
+            { "data": "SIGN_STATUS", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="sign_status" value="'+data+'" class="form-control" style="width:120px"/>';
+            		return '<input type="text" name="sign_status" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             }
         ]

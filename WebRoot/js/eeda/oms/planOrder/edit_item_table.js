@@ -81,27 +81,27 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		        bindFieldEvent();
 		    },
             columns:[
-				{ "width": "10px",
+				{ 
 				    "render": function ( data, type, full, meta ) {
 				    	if(full.IS_GEN_JOB == 'N')
-				    		return '<input type="checkbox" class="checkBox">';
+				    		return '<input type="checkbox" class="checkBox" >';
 				    	else 
 				    		return '<input type="checkbox" class="checkBox" disabled>';
 				    }
 				},
-	            { "width": "30px",
+	            {
 	                "render": function ( data, type, full, meta ) {
 	                	if(full.IS_GEN_JOB == 'N')
-	                		return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
+	                		return '<button type="button" class="delete btn btn-default btn-xs" >删除</button> ';
 	                	else
-	                		return '<button type="button" class="delete btn btn-default btn-xs" disabled>删除</button> ';
+	                		return '<button type="button" class="delete btn btn-default btn-xs"  disabled>删除</button> ';
 	                }
 	            },
 	            { "data": "TRANSPORT_TYPE",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var str = '<select name="transport_type" class="form-control search-control">'
+	                    var str = '<select name="transport_type" class="form-control search-control" >'
                 			+'<option></option>'
 		                   +'<option value="ocean" '+(data=='ocean' ? 'selected':'')+'>海运</option>'
 		                   +'<option value="land" '+(data=='land' ? 'selected':'')+'>陆运</option>'
@@ -110,11 +110,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return str;
 	                }
 	            },
-	            { "data": "LOAD_TYPE", 
+	            { "data": "LOAD_TYPE",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
 	                	   data='';
-	                   var str= '<select name="load_type" class="form-control search-control">'
+	                   var str= '<select name="load_type" class="form-control search-control" >'
 	                	   	 	+'<option></option>'
 			                   +'<option value="FCL" '+ (data=='FCL'?'selected':'') +'>FCL</option>'
 			                   +'<option value="LCL" '+ (data=='LCL'?'selected':'') +'>LCL</option>'
@@ -124,11 +124,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 			           return str;
 	                }
 	            },
-	            { "data": "CONTAINER_TYPE", 
+	            { "data": "CONTAINER_TYPE",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var str = '<select name="container_type" class="form-control search-control">'
+	                    var str = '<select name="container_type" class="form-control search-control" >'
 	                    			+'<option></option>'
 				                   +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>20GP</option>'
 				                   +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>40GP</option>'
@@ -141,42 +141,42 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="CONTAINER_AMOUNT" value="'+data+'" class="form-control search-control" style="width:50px"/>';
+	                   return '<input type="text" name="CONTAINER_AMOUNT" value="'+data+'" class="form-control search-control"/>';
 	                }
 	            },
 	            { "data": "CARGO_NAME",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="CARGO_NAME" value="'+data+'" class="form-control search-control" style="width:180px"/>';
+	                   return '<input type="text" name="CARGO_NAME" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "PIECES" ,
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="PIECES" value="'+data+'" class="form-control search-control" style="width:60px"/>';
+	                   return '<input type="text" name="PIECES" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "VOLUME",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="VOLUME" value="'+data+'" class="form-control search-control" style="width:80px"/>';
+	                   return '<input type="text" name="VOLUME" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "NET_WEIGHT",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="NET_WEIGHT" value="'+data+'" class="form-control search-control" style="width:80px"/>';
+	                   return '<input type="text" name="NET_WEIGHT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "GROSS_WEIGHT",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="GROSS_WEIGHT" value="'+data+'" class="form-control search-control" style="width:80px"/>';
+	                   return '<input type="text" name="GROSS_WEIGHT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "FACTORY_LOADING_TIME" ,
@@ -209,14 +209,14 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="PICKUP_ADDR" value="'+data+'" class="form-control search-control" style="width:180px"/>';
+	                   return '<input type="text" name="PICKUP_ADDR" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "DILVERY_ADDR",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="DILVERY_ADDR" value="'+data+'" class="form-control search-control" style="width:180px"/>';
+	                   return '<input type="text" name="DILVERY_ADDR" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "POR" ,
@@ -279,14 +279,14 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="VESSEL" value="'+data+'" class="form-control search-control" style="width:80px"/>';
+	                   return '<input type="text" name="VESSEL" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "VOYAGE" ,
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="VOYAGE" value="'+data+'" class="form-control search-control" style="width:80px"/>';
+	                   return '<input type="text" name="VOYAGE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "CLS",

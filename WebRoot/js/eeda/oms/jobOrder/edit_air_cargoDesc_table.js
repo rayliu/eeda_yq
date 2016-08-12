@@ -64,7 +64,7 @@ $(document).ready(function() {
         "paging": false,
         "info": false,
         "scrollX":  true,
-        "autoWidth": true,
+        "autoWidth": false,
         "language": {
             "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
         },
@@ -74,42 +74,42 @@ $(document).ready(function() {
         "columns": [
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs">删除</button>';
+                	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
                 }
             },
-            { "data": "LONG", 
+            { "data": "LONG",  "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="long" value="'+data+'" class="form-control"/>';
+                    return '<input type="number" name="long" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "WIDE", 
+            { "data": "WIDE", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="wide" value="'+data+'" class="form-control" />';
+                    return '<input type="number" name="wide" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "HIGH", 
+            { "data": "HIGH", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="high" value="'+data+'" class="form-control" />';
+                    return '<input type="number" name="high" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "AMOUNT", 
+            { "data": "AMOUNT", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="amount" value="'+data+'" class="form-control" />';
+                    return '<input type="number" name="amount" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "VOLUME", 
+            { "data": "VOLUME", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="volume" value="'+data+'" class="form-control"/>';
+                    return '<input type="number" name="volume" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             }
         ]
