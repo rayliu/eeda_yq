@@ -509,6 +509,22 @@ public class JobOrderController extends Controller {
     }
 
     public void editCustomOrder(){
+        String id = getPara("id");
+        JobOrder jobOrder = JobOrder.dao.findById(id);
+        setAttr("order", jobOrder);
+     
+//        setAttr("shipment", getShiment(id));
+
+        //客户回显
+        Party party = Party.dao.findById(jobOrder.get("customer_id"));
+        setAttr("party", party);
         
+        
+        //用户信息
+        long creator = jobOrder.getLong("creator");
+        UserLogin user = UserLogin.dao.findById(creator);
+        setAttr("user", user);
+        
+        render("/oms/CustomOrder/CustomOrderEdit.html");
     }
 }
