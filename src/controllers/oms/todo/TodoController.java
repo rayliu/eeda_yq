@@ -62,8 +62,8 @@ public class TodoController extends Controller {
 
 	public void getWaitCustomTodoCount() {
 		String sql = "SELECT count(1) total"
-	               + " FROM job_order " 
-	               + " WHERE transport_type like '%custom%'";
+	               + " FROM job_order jo LEFT JOIN  job_order_custom joc ON jo.id=joc.order_id" 
+	               + " WHERE transport_type like '%custom%' and joc.customs_broker is null" ;
 
 		Record planOrder = Db.findFirst(sql);
 		String total = planOrder.getLong("TOTAL").toString();
