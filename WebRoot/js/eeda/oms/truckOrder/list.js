@@ -2,6 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 $(document).ready(function() {
 	document.title = '派车单查询   | '+document.title;
     $('#menu_truck').addClass('active').find('ul').addClass('in');
+    $('#menu_todo_list').removeClass('active').find('ul').removeClass('in');
 	  //datatable, 动态处理
     var dataTable = $('#eeda-table').DataTable({
         "processing": true,
