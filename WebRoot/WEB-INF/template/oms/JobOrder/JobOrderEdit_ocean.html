@@ -49,6 +49,15 @@
                         display_value: shipment.carrier_name!''
                     }){}%>
             </div>
+             <div class="col-lg-4">
+                <%include("/eeda/component/form/inputPartyField.html", 
+                    {   id:'head_carrier',
+                        type:  'head_carrier',
+                        label: '头程船公司', 
+                        value: shipment.head_carrier!'',
+                        display_value: shipment.head_carrier_name!''
+                    }){}%>
+            </div>
            
         </div>
         <div class="row">
@@ -101,6 +110,21 @@
                         <input type="radio" name='release_radio' value='obl'>OBL
                     </label>
                 </div>
+            </div>
+           <div class="col-lg-4">
+
+            </div>
+           <div class="col-lg-4">
+                  <%include("/eeda/component/form/selectField.html", 
+                    {   id:'trade_type', 
+                        label:'贸易类型', 
+                        value:shipment.trade_type!'',
+                        value_list:[
+                            {code:'FOB', value:'FOB'},
+                            {code:'other', value:'other'}
+                        ],
+                        disabled: 'disabled'
+                    }){}%>
             </div>
         </div>
         <div class="row">
@@ -206,6 +230,34 @@
                            value:shipment.closing_date!planOrderItem.cls!''
                        }){}%>
                </div>
+               <div class="col-lg-4">
+               <input type="hidden" id="hidden_wait_overseaCustom" value="${shipment.wait_overseaCustom!''}">
+               <label class="checkbox-inline">                 
+                      <input type="checkbox" value="wait_overseaCustom">待海外报关</input>
+               </label>
+               </div>      
+
+           </div>
+           <div class="row">
+               <div class="col-lg-4">                
+                 <%include("/eeda/component/form/inputPartyField.html", 
+                    {   id:'oversea_agent',
+                        type:  'oversea_agent',
+                        label: '海外代理', 
+                        value: shipment.oversea_agent!'',
+                        display_value: shipment.oversea_agent_name!''
+                    }){}%>
+              </div>
+              <div class="col-lg-4">
+
+
+              </div>
+              <div class="col-lg-4">
+              <input type="hidden" id="hidden_prepaid" value="${shipment.prepaid!''}">
+                 <label class="checkbox-inline">                 
+                      <input  type="checkbox" value="prepaid">预付</input>
+                 </label>
+              </div>   
            </div>
            
            <div class="row">
@@ -222,6 +274,14 @@
                        {   id:'cargo_desc', 
                            label:'货物描述', 
                            value:shipment.cargo_desc!''
+                       }){}%>
+               </div>
+               
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/inputArea.html", 
+                       {   id:'booking_mark', 
+                           label:'booking备注', 
+                           value:shipment.booking_mark!''
                        }){}%>
                </div>
               
@@ -243,6 +303,9 @@
            	 <input id="printOceanBooking" type="button" class="btn btn-success" value="生成booking PDF">
            	 <input id="printOceanSI" type="button" class="btn btn-success" value="生成SI PDF">
            	 <input id="printOceanHead" type="button" class="btn btn-success" value="生成头程资料 PDF">
+           	 <input id="printOceanMBL" type="button" class="btn btn-success" value="确认MBL">
+           	 <input id="alreadyAFR/AMS" type="button" class="btn btn-success" value="已AFR/AMS">
+           	 <input id="alreadyInline" type="button" class="btn btn-success" value="已电放">
 			 <br><br>
            </div>
                     
