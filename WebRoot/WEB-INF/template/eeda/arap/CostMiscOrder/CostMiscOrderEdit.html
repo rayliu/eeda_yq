@@ -1,0 +1,354 @@
+<%layout("/yh/layout.html"){%>
+<link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet">
+<link href="/yh/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="btn-header"style="font-size: 32px">手工成本单</div>
+            <input id="order_id" type="hidden" name="order_id"/>
+        </div>
+        <!-- /.col-lg-12 --> </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="basic">
+                            <div class="row">
+                                <form role="form" id="costMiscOrderForm">
+                                    <div class="col-lg-6">
+
+                                        <input id="costMiscOrderId" type="hidden" name="costMiscOrderId" value="${arapMiscCostOrder.id!''}"/>
+                                        <input id="sp_id" type="hidden" name="sp_id" value="${arapMiscCostOrder.sp_id!''}"/>
+                                        <input id="insurance_id" type="hidden" name="insurance_id" value="${arapMiscCostOrder.insurance!''}"/>
+                                        <input id="customer_id" type="hidden" name="customer_id" value="${arapMiscCostOrder.customer_id!''}"/>
+                                        <input type="hidden" id="costCheckOrderIds" name="costCheckOrderIds" value="${costCheckOrderIds!''}${arapMiscCostOrder.cost_order_id!''}"/>
+                                        <input type="hidden" name="order_no" value="${order_no!''}${arapMiscCostOrder.order_no!''}"/>
+                                        <input type="hidden" id="status" name="status" value="${status!''}${arapMiscCostOrder.status!''}"/>
+                                        <input type="hidden" id="audit_status" name="audit_status" value="${audit_status!''}${arapMiscCostOrder.audit_status!''}"/>
+                                        <input type="hidden" name="create_by" value="${create_by!''}${arapMiscCostOrder.create_by!''}"/>
+                                        <h2></h2>
+                                        <div class="form-group">
+                                            <label>手工成本单号</label>
+                                            <span id="arapMiscCostOrderNo">${order_no!''}${arapMiscCostOrder.order_no!''}
+                                            </span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>状态</label>
+                                            <span  id="costMiscOrderStatus">${status!''}${arapMiscCostOrder.status!''}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>创建人</label>
+                                            <%if(userLogin.c_name!''==''){ %>
+                                            ${userLogin.user_name!''}
+                                            <%}else{%>
+                                            ${userLogin.c_name!''}
+                                            <%}%></div>
+                                        <div class="form-group">
+                                            <label>创建时间</label>
+                                            <span id="create_time">${arapMiscCostOrder.create_stamp!''}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>始发城市</label>
+                                            <div class="form-control" style="padding: 0px 0px;box-shadow:none;border:none;height:35px;" >
+                                                <input id="locationForm" type="hidden" name="route_from" value="${locationFrom.code!''}">
+                                                <input id="hideLocationFrom" type="hidden">
+
+                                                <label>省</label>
+                                                <input id="hideProvinceFrom" type="hidden" value="${locationFrom.province!''}"/>
+                                                <select id="mbProvinceFrom" class="valid" name="mbProvinceFrom" value=""></select>
+                                                <label>市</label>
+                                                <input id="hideCityFrom" type="hidden" value="${locationFrom.city!''}"/>
+                                                <select  id="cmbCityFrom" class="valid" name="cmbCityFrom" value=""></select>
+                                                <label>区(县)</label>
+                                                <input id="hideDistrictFrom" type="hidden" value="${locationFrom.district!''}" style="width: 26%"/>
+                                                <select  id="cmbAreaFrom" class="valid" name="cmbAreaFrom" value=""></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" >
+                                            <input id="locationTo" type="hidden" name="route_to" value="${locationTo.code!''}">
+                                            <label>目的地城市</label>
+                                            <div class="form-control" style="padding: 0px 0px;box-shadow:none;border:none;height:35px;">
+                                                <label>省</label>
+                                                <input id="hideProvinceTo" type="hidden" value="${locationTo.province!''}"/>
+                                                <select id="mbProvinceTo" class="valid" name="mbProvinceTo" value=""></select>
+                                                <label>市</label>
+                                                <input id="hideCityTo" type="hidden" value="${locationTo.city!''}"/>
+                                                <select  id="cmbCityTo"  class="valid" name="cmbCityTo" value=""></select>
+                                                <label>区(县)</label>
+                                                <input id="hideDistrictTo" type="hidden" value="${locationTo.district!''}" />
+                                                <select  id="cmbAreaTo" class="valid" name="cmbAreaTo" value=""></select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>备注</label>
+                                            <textarea class="form-control" rows="3" id="remark" name="remark">${arapMiscCostOrder.remark!''}</textarea>
+                                        </div>
+                                    </div>
+                                    <!-- /.col-lg-6 (nested) -->
+                                    <div class="col-lg-6">
+                                        <h2></h2>
+                                        <div class="form-group" id="paymentMethods">
+                                            <label class="label-margin">业务类型</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="biz_type" value="biz"
+                                                    <%
+                                                    var biz_type = arapMiscCostOrder.type!'biz';
+                                                    if( biz_type == 'biz'){%>
+                                                checked
+                                                <%}%>>业务(流转到对账)</label>
+                                            <!label class="radio-inline">
+                                                <input type="radio" name="biz_type" value="non_biz"
+                                                    <%if( biz_type == 'non_biz'){%>
+                                                checked
+                                                <%}%>>非业务(流转到财务)</label>
+                                        </div>
+                                        <div class="form-group" id="paymentMethods">
+                                            <label class="label-margin">付款给</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="cost_to_type"  value="customer" 
+                                                <%
+                                                    var cost_to_type = arapMiscCostOrder.cost_to_type!'customer';
+                                                    if( cost_to_type == 'customer'){%>
+                                                checked
+                                                <%}%>>客户</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="cost_to_type" value="sp"
+                                                <%
+                                                    if( cost_to_type == 'sp'){%>
+                                                checked
+                                                <%}%>>供应商</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="cost_to_type" value="insurance"
+                                                <%
+                                                    if( cost_to_type == 'insurance'){%>
+                                                checked
+                                                <%}%>>保险公司</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="cost_to_type" value="others"
+                                                <%
+                                                    if( cost_to_type == 'others'){%>
+                                                checked
+                                                <%}%>>其他</label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="search-label">客户名称</label>
+                                            <input type="text" class="form-control search-control customer_filter" id="customer_filter" placeholder="请选择客户" value="${customerContact.company_name!''}">
+                                            <ul id='companyList' tabindex="-1" class="pull-right dropdown-menu default dropdown-scroll" style="top: 22%; left: 33%;"></ul>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="search-label">供应商</label>
+                                            <input type="text" class="form-control search-control sp_filter" id="sp_filter" placeholder="请选择供应商" value="${spContact.company_name!''}">
+                                            <ul id='spList' class="pull-right dropdown-menu default dropdown-scroll" tabindex="-1" style="top: 35%; left: 2%;"></ul>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="search-label">保险公司</label>
+                                            <input type="text" class="form-control search-control insurance_filter" id="insurance_filter" placeholder="请选择保险公司" value="${insuranceContact.company_name!''}">
+                                            <ul id='insuranceList' class="pull-right dropdown-menu default dropdown-scroll" tabindex="-1" style="top: 35%; left: 2%;"></ul>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="search-label">收款人</label>
+                                            <input type="text" class="form-control search-control" id="others_name" name="others_name" value="${arapMiscCostOrder.others_name!''}"></div>
+                                        <div class="form-group">
+                                            <label class="search-label">业务单号</label>
+                                            <input type="text" class="form-control search-control others_name" id="ref_no" name="ref_no" value="${arapMiscCostOrder.ref_no!''}"></div>
+                                        <div class="form-group">
+                                            <label>收款金额</label>
+                                            <span id="totalAmountSpan">${arapMiscCostOrder.total_amount!0,'#.00'}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>往来单号</label>
+                                            <span id="ref_order_no">${arapMiscCostOrder.ref_order_no!''}</span>
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                                <!-- </div>
+                                -->
+                                <!-- /.col-lg-6 (nested) --> </div>
+                            <div class="panel-body">
+                                <h2>付款明细</h2>
+
+                                <div class ="form-group">
+                                    <button class="btn  btn-primary btn-sm" id="addFee">添加费用</button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table  id="feeItemList-table" class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>委托单号</th>
+                                                <th>费用描述</th>
+                                                <th>费用条目</th>
+                                                <th>金额</th>
+                                                <th>对账确认金额</th>
+                                                <th>状态</th>
+                                                <th>撤销</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        	<%
+                                        for(item in itemList){ %>
+                                            <tr class="odd" id="${item.ID!''}">
+                                                <td class="">${item.CUSTOMER_ORDER_NO!''}</td>
+                                                <td class="">${item.ITEM_DESC!''}</td>
+                                                <td class="">${item.NAME!''}</td>
+                                                <td class="">${item.AMOUNT!''}</td>
+                                                <td class=""></td>
+                                                <td class="">${item.STATUS!''}</td> 
+                                                <td class=""></td>
+                                            </tr>
+                                        <% }%>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div id="receivableItemList" style="display:none;">
+                                    <%for(receivableItem in receivableItemList){ %>
+                                    <option value='${receivableItem.ID!''}'>${receivableItem.NAME!''}</option>
+                                    <%}%></div>
+
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="milestone">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>状态</th>
+                                                <th>地点</th>
+                                                <th>更新用户</th>
+                                                <th>更新时间</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="transferOrderMilestoneTbody" >
+                                            <tr>
+                                                <td>1</td>
+                                                <td>新建单据</td>
+                                                <td></td>
+                                                <td>Otto</td>
+                                                <td>2014-03-07 13:00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>已发车</td>
+                                                <td></td>
+                                                <td>Jacob</td>
+                                                <td>2014-03-08 23:00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>在途中</td>
+                                                <td>株洲</td>
+                                                <td>Larry</td>
+                                                <td>2014-03-09 9:00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>在途中</td>
+                                                <td>长沙</td>
+                                                <td>Larry</td>
+                                                <td>2014-03-09 15:00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>5</td>
+                                                <td>在途中</td>
+                                                <td>武汉中转仓</td>
+                                                <td>Larry</td>
+                                                <td>2014-03-10 3:00</td>
+                                            </tr>
+                                            <tr>
+                                                <td>7</td>
+                                                <td>收货人签收</td>
+                                                <td></td>
+                                                <td>Larry</td>
+                                                <td>2014-03-10 13:00</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.table-responsive --> </div>
+                            <!-- /.panel-body --> </div>
+                        <div class="tab-pane fade" id="arap"></div>
+                        <div class="tab-pane fade" id="cargos">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover" id="costCheckList-table" style="width: 2000px;">
+                                        <thead>
+                                            <tr>
+                                                <th>对账单号</th>
+                                                <th>状态</th>
+                                                <th>所属月份</th>
+                                                <th>网点</th>
+                                                <th>供应商</th>
+                                                <th>客户名称</th>
+                                                <th>合计运费</th>
+                                                <th>对账金额</th>
+                                                <th>差异金额</th>
+                                                <th>扣款金额</th>
+                                                <th>代收货款</th>
+                                                <th>返款金额</th>
+                                                <th>罚款金额</th>
+                                                <th>奖励金额</th>
+                                                <th>应付金额</th>
+                                                <th>备注</th>
+                                                <th>对账人</th>
+                                                <th>对账时间</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                                <!-- /.table-responsive --> </div>
+                            <!-- /.panel-body --> </div>
+                        <div class=".tooltip-demo">
+                            <hr/>
+                            <a style="display:none" id ="style"> <i class='fa fa-check'></i>
+                            </a>
+                            <button id="saveCostMiscOrderBtn" type="button" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">保存</button>
+                            <button id="printBtn" type="button" class="btn  btn-primary " data-toggle="tooltip" title="" data-original-title="Default tooltip">打印</button>
+                            <a class="btn  btn-primary" href="/costMiscOrder">返回</a>
+                        </div>
+                    </div>
+                    <!-- /.panel-body --> </div>
+                <!-- /.panel --> </div>
+            <!-- /.col-lg-12 --> </div>
+    </div>
+</div>
+<!-- /#page-wrapper -->
+
+<%}%>
+<!-- 引入校验的js 文件及其 中文 文件-->
+<script>var order_no = '${arapMiscCostOrder.order_no!''}';</script>
+<script src="/yh/css/ui/jquery-ui.js"></script>
+<script src="/yh/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="/yh/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="/yh/js/plugins/dataTables/jquery.dataTables.editable.js" type="text/javascript"></script>
+<script src="/yh/js/plugins/sco/js/sco.message.js"></script>
+<script src="/yh/js/jquery.validate.min.js"></script>
+<script src="/yh/js/jvalidate.messages_cn.js"></script>
+<script src="/yh/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/yh/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script>
+    var order_no = '${arapMiscCostOrder.order_no!''}';
+    var order_id = ${arapMiscCostOrder.id!0};
+    var ref_order_id = ${arapMiscCostOrder.ref_order_id!1};
+    var type = '${arapMiscCostOrder.type!''}';
+    var is_origin = true;
+    if(type == 'non_biz')
+        is_origin = order_id<ref_order_id;
+</script>
+<script src="/yh/js/arap/CostMiscOrder/edit.js"></script>
+<script src="/yh/js/eeda-common.js"></script>

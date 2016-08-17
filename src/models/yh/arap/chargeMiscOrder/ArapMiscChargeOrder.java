@@ -1,0 +1,1 @@
+package models.yh.arap.chargeMiscOrder;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class ArapMiscChargeOrder extends Model<ArapMiscChargeOrder> {	public static final ArapMiscChargeOrder dao = new ArapMiscChargeOrder();	}

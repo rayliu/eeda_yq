@@ -1,0 +1,339 @@
+
+
+<%layout("/yh/layout.html"){%>
+<link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet">
+<link href="/yh/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+        <div id="page-wrapper">
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+					<div class="panel panel-default">
+                        <div class="panel-body">
+                            <!-- Nav tabs -->
+                            <ul id="orderTabs" class="nav nav-tabs">
+                                <li class="active"><a href="#create" data-toggle="tab" data-src="create" id ="costCheckOrderbasic" >创建应付开票申请</a>
+                                </li>
+                                <li class=""><a href="#search" data-toggle="tab" id="costCheckOrderItem">查询应付开票申请</a>
+                                </li>
+                               
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="create">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel-body">
+                                                    <div class="row">
+                                                        <form role="form" style="margin: 0 15px;" id='returnOrderSearchForm'>
+                                                            <div class="row search_panel">
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label class="search-label">供应商</label>
+                                                                        <input type="text" class="form-control search-control sp_filter" id="sp_filter2" placeholder="请选择供应商">
+							                                        	<ul id='spList2' class="pull-right dropdown-menu default dropdown-scroll" tabindex="-1" style="top: 35%; left: 2%;">
+																		</ul>
+                                                                    </div>
+                                                                    
+                                                                   
+                                                                    
+                                                                </div>
+                                                                <!-- end of col-lg-6-->
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label class="search-label">客户</label>
+                                                                        <input type="text" class="form-control search-control customer_filter" id="customer_filter"  placeholder="请输入或者选择客户">
+                                                                        <ul id='companyList' tabindex="-1" class="pull-right dropdown-menu default" style="top: 25%; left: 21.5%;"></ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                	<div class="form-group">
+                                                                        <label class="search-label">对账单号</label>
+                                                                        <input type="text" class="form-control search-control orderNo_filter" id="orderNo_filter" value="">
+                                                                    </div>
+                                                                
+                                                                </div>
+                                                                <!-- end of col-lg-6-->
+                                                            </div><!-- end of row-->
+                                                            <div class="row">
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">                                        
+                                                                        <div id="datetimepicker" class="input-append date "> 
+                                                                            <label class="search-label">开始时间</label> 
+                                                                            <input id="beginTime_filter" class="form-control search-control  beginTime_filter" type="text">
+                                                                            <span class="add-on">  
+                                                                                <i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>  
+                                                                            </span>  
+                                                                        </div>
+                                                                    </div>    
+                                                                </div>
+                                                                <!-- end of col-lg-6-->
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">                                                    
+                                                                        <span id="datetimepicker2" class="input-append date search-control "> 
+                                                                            <label class="search-label">结束时间</label> 
+                                                                            <input id="endTime_filter" class="form-control search-control endTime_filter" type="text">
+                                                                            <span class="add-on">  
+                                                                                <i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>  
+                                                                            </span>  
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- end of col-lg-6-->
+                                                            </div><!-- end of row-->
+                                                        </form> 
+                                                    </div>
+                                                    
+													<div class="row">
+								                        <form id="createForm" action="/costPreInvoiceOrder/create" method="post">
+								                            <input id='costCheckedOrderIds' name='ids' type="hidden">
+								                            <div class="col-lg-6">
+								                                <div class="form-group">
+								                                    <div class="controls">
+								                                      <button id="saveBtn" disabled="true" type="button" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip" style="display: none;" ="">创建开票申请单</button>
+								                                    </div>
+								                                </div>
+								                            </div>    
+								                        </form> 
+								                    </div>
+								                    <div class="form-group">
+							                            <ul id="orderTabs" class="nav nav-tabs">
+							                                <li class="active"><a href="#unchecked" data-toggle="tab" data-src="unchecked" id ="uncheckedCostCheckOrder">未选中应付对账单</a>
+							                                </li>
+							                                <li class=""><a href="#checked" data-toggle="tab" id="checkedCostCheckOrder">已选中应付对账单</a>
+							                                </li>                               
+							                            </ul>
+						                            </div>
+                                                    <div class="tab-content">
+                                                        
+                                                            <div class="tab-pane fade active in" id="unchecked">  
+                                                                
+                                                                    <div class="table-responsive">
+                                                                        <table class="table table-striped table-bordered table-hover" id="uncheckedCostCheck-table" style="width: 2500px;">
+                                                                            <thead>
+                                                                                <tr>
+                	                                                                <th></th>
+                	                                                                <th>对账单号</th>
+                                                                                    <th>单据类型</th>
+										                                            <th>状态</th>
+										                                            <th>所属月份</th>
+										                                            <th>网点</th>
+										                                            <th>供应商</th>
+										                                            <th>客户名称</th>
+										                                            <th>合计运费</th>
+										                                            <th>对账金额</th>
+										                                            <th>已付金额</th>
+										                                            <th>未付金额</th>
+										                                            <th>差异金额</th>
+										                                            <th>扣款金额</th>
+										                                            <th>代收货款</th>
+										                                            <th>返款金额</th>
+										                                            <th>罚款金额</th>
+										                                            <th>奖励金额</th>
+										                                            <th>应付金额</th>
+										                                            <th>备注</th>
+										                                            <th>对账人</th>
+										                                            <th>对账时间</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody id="uncheckedCostCheckList">
+                                                                                
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div> 
+                                                                 
+                                                            </div>
+                                                        <div class="tab-pane fade " id="checked" style="display: none">
+    	                                                 	<div class="table-responsive">
+    	                                                        <table class="table table-striped table-bordered table-hover" id="checkedCostCheck-table" style="width: 2500px;">
+    	                                                            <thead>
+    	                                                                <tr>
+    							                                            <th></th>
+    		                                                                <th>对账单号</th>
+                                                                            <th>单据类型</th>
+								                                            <th>状态</th>
+								                                            <th>所属月份</th>
+								                                            <th>网点</th>
+								                                            <th>供应商</th>
+								                                            <th>客户名称</th>
+								                                            <th>合计运费</th>
+								                                            <th>对账金额</th>
+								                                            <th>差异金额</th>
+								                                            <th>扣款金额</th>
+								                                            <th>代收货款</th>
+								                                            <th>返款金额</th>
+								                                            <th>罚款金额</th>
+								                                            <th>奖励金额</th>
+								                                            <th>应付金额</th>
+								                                            <th>备注</th>
+								                                            <th>对账人</th>
+								                                            <th>对账时间</th>
+    							                                        </tr>
+    	                                                            </thead>
+    	                                                            <tbody id="checkedCostCheckList">
+    	                                                                
+    	                                                            </tbody>
+    	                                                        </table>
+    	                                                    </div>
+    	                                                </div>
+                                                    </div>                                                   
+                                            </div>
+                                            <!-- /.panel-body -->   
+                                        </div>
+                                        <!-- /.col-lg-12 -->
+                                    </div>          
+        						</div>
+                          	<div class="tab-pane fade" id="search">
+                            <div class="panel-body">
+                            <form role="form" style="margin: 0 15px;">
+                                <div class="row search_panel">
+	                                <div class="col-lg-4">
+	                                    <div class="form-group">
+	                                        <label class="search-label">供应商</label>
+                                            <input type="text" class="form-control search-control sp_filter" id="sp_filter" placeholder="请选择供应商">
+                                        	<ul id='spList' class="pull-right dropdown-menu default dropdown-scroll" tabindex="-1" style="top: 35%; left: 2%;">
+											</ul>
+	                                    </div>
+	                                   
+	                                   
+	                                    
+	                                </div>
+	                                <!-- end of col-lg-6-->
+	                                <div class="col-lg-4">
+	                                    <div class="form-group">
+	                                        <label class="search-label">客户</label>
+	                                        <input type="text" class="form-control search-control customer_filter" id="customer_filter2"  placeholder="请输入或者选择客户">
+                                            <ul id='companyList2' tabindex="-1" class="pull-right dropdown-menu default" style="top: 25%; left: 21.5%;"></ul>
+	                                    </div>
+	                                </div>
+	                                <div class="col-lg-4">
+	                                	<div class="form-group">
+	                                        <label class="search-label">对账单号</label>
+	                                        <input type="text" class="form-control search-control orderNo_filter" id="select_orderNo_filter" value="">
+	                                    </div>
+	                                </div>
+	                                <!-- end of col-lg-6-->
+	                            </div><!-- end of row-->
+	                            <div class="row search_panel">
+	                            <div class="col-lg-4">
+	                                    <div class="form-group">                                        
+	                                        <div class="form-group">
+	                                        <label class="search-label">申请单号</label>
+	                                        <input type="text" class="form-control search-control orderNo_filter" id="orderNo" value="">
+	                                    </div>
+	                                    </div>    
+	                                </div>
+	                                <div class="col-lg-4">
+	                                    <div class="form-group">                                        
+	                                        <div id="datetimepicker3" class="input-append date "> 
+	                                            <label class="search-label">开始时间</label> 
+	                                            <input id="kaishi_filter" class="form-control search-control  beginTime_filter" type="text">
+	                                            <span class="add-on">  
+	                                                <i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>  
+	                                            </span>  
+	                                        </div>
+	                                    </div>    
+	                                </div>
+	                                <!-- end of col-lg-6-->
+	                                <div class="col-lg-4">
+	                                    <div class="form-group">                                                    
+	                                        <span id="datetimepicker4" class="input-append date search-control "> 
+	                                            <label class="search-label">结束时间</label> 
+	                                            <input id="jieshu_filter" class="form-control search-control endTime_filter" type="text">
+	                                            <span class="add-on">  
+	                                                <i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>  
+	                                            </span>  
+	                                        </span>
+	                                    </div>
+	                                </div>
+	                                <!-- <div class="col-lg-4">
+	                                	<div class="form-group">
+	                                        <label class="search-label">申请单号</label>
+	                                        <input type="text" class="form-control search-control invoiceOrderNo_filter" id="invoiceOrderNo_filter" value="">
+	                                    </div>
+	                                </div> -->
+	                                <div class="col-lg-4">
+		                                <div class="form-group">
+	                                            <label class="search-label">单据状态</label>
+	                                            <select id="status_filter" class="form-control search-control status_filter">
+	                                                <option value=""></option>
+	                                                <option value="新建">新建</option>
+	                                                <option value="已审批">已审批</option>
+	                                                <option value="已审核">已审核</option>                                                
+	                                                <option value="已复核">已复核</option>                                                
+	                                                <option value="已付款确认">已付款确认</option>                                               
+	                                            </select>
+		                                </div> 
+                                 </div>
+                                    <!-- end of col-lg-6-->
+                                </div><!-- end of row-->
+                                
+                                	
+                               
+                            </form>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="costPreInvoiceOrderList-table" style="width: 2500px;">
+                                    <thead>
+                                        <tr>
+                                            <th>申请单号</th>
+                                            <th>状态</th>
+                                            <th>供应商</th>
+                                            <th>支付方式</th>
+                                            <th>收款人</th>
+                                            <th>所属月份</th>
+                                            <th>应付金额</th>
+                                            <th>实付金额</th>
+                                            <th>对账单号</th>
+                                            <th>网点</th>
+                                            <th>客户名称</th>
+                                            <th>合计运费</th>                                            
+                                            <th>对账金额</th>
+                                            <th>差异金额</th>
+                                            <th>扣款金额</th>
+                                            <th>代收货款</th>
+                                            <th>返款金额</th>
+                                            <th>罚款金额</th>
+                                            <th>奖励金额</th>
+                                            <th>备注</th>
+                                            <th>创建人</th>
+                                            <th>创建时间</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                        <!-- /.panel-body -->
+                                
+                        
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>  
+           <!-- /.row -->
+           </div>
+          </div>
+         </div>
+       </div> 
+
+<%}%>
+
+<script src="/yh/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="/yh/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="/yh/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/yh/js/bootstrap-datetimepicker.zh-CN.js"></script>
+
+
+<script src="/yh/js/arap/CostPreInvoiceOrder/list.js"></script>
+<script src="/yh/js/arap/CostPreInvoiceOrder/createList.js"></script>
+<script src="/yh/js/plugins/sco/js/sco.message.js"></script>

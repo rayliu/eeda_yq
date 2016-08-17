@@ -186,6 +186,37 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/customOrder", CustomOrderController.class, contentPath);
 		me.add("/truckOrder", TruckOrderController.class, contentPath);
 		me.add("/currency", CurrencyController.class, contentPath);
+		
+		//ar= account revenue  应收条目处理
+        me.add("/chargeConfirmList", controllers.arap.ar.ChargeItemConfirmController.class, contentPath);
+        me.add("/chargeCheckOrder", controllers.arap.ar.ChargeCheckOrderController.class, contentPath);
+        me.add("/chargePreInvoiceOrder", controllers.arap.ar.ChargePreInvoiceOrderController.class, contentPath);
+        me.add("/chargeInvoiceOrder", controllers.arap.ar.ChargeInvoiceOrderController.class, contentPath);
+        me.add("/chargeAdjustOrder", controllers.arap.ar.ChargeAdjustOrderController.class, contentPath);
+        me.add("/chargeMiscOrder", controllers.arap.ar.chargeMiscOrder.ChargeMiscOrderController.class, contentPath);
+        me.add("/chargeAcceptOrder", controllers.arap.ar.ChargeAcceptOrderController.class, contentPath);
+        me.add("/chargeConfirm", controllers.arap.ar.ChargeConfirmController.class, contentPath);
+        //ap 应付条目处理
+        me.add("/costConfirmList", controllers.arap.ap.CostItemConfirmController.class, contentPath);
+        me.add("/costCheckOrder", controllers.arap.ap.CostCheckOrderController.class, contentPath);
+        me.add("/costPreInvoiceOrder", controllers.arap.ap.CostPreInvoiceOrderController.class, contentPath);
+        me.add("/costAdjustOrder", controllers.arap.ap.CostAdjustOrderController.class, contentPath);
+        me.add("/costAcceptOrder", controllers.arap.ap.CostAcceptOrderController.class, contentPath);
+        me.add("/costConfirm", controllers.arap.ap.CostConfirmController.class, contentPath);
+        //应付报销单
+        //ßme.add("/costReimbursement", controllers.arap.ap.CostReimbursementOrder.class, contentPath);
+        //财务转账单
+        me.add("/transferAccountsOrder", controllers.arap.ap.TransferAccountsController.class, contentPath);
+//        me.add("/reimbursementItem", controllers.yh.ReimbursementItemController.class, contentPath);
+        //手工成本单
+        me.add("/costMiscOrder", controllers.arap.ap.costMiscOrder.CostMiscOrderController.class, contentPath);
+        
+        me.add("/inOutMiscOrder", controllers.arap.financial.inOutOrder.InOutMiscOrderController.class, contentPath);
+        
+        //预付单
+        me.add("/costPrePayOrder", controllers.arap.ap.PrePayOrderController.class, contentPath);
+        //audit log
+        me.add("/accountAuditLog", controllers.arap.AccountAuditLogController.class, contentPath);
 	}
 
     @Override
@@ -270,7 +301,6 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("truck_order_arap", TruckOrderArap.class);
         arp.addMapping("truck_order_cargo", TruckOrderCargo.class);
         arp.addMapping("currency", Currency.class);
-        
     }
 
     private void initDBconnector() {

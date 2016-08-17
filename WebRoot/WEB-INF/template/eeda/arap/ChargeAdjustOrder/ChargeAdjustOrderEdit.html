@@ -1,0 +1,1112 @@
+<%layout("/yh/layout.html"){%>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-header"style="font-size: 32px">应收对账单</div><input id="order_id" type="hidden" name="order_id"/>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <!-- Nav tabs -->
+                            <ul id="orderTabs" class="nav nav-tabs">
+                                <li class="active"><a href="#basic" data-toggle="tab" data-src="basic" >基本信息</a>
+                                </li>
+                                <li class=""><a href="#arap" data-toggle="tab">应收明细</a>
+                                </li>
+                                <li class=""><a href="#milestone" data-toggle="tab" id="transferOrderMilestoneList">里程碑</a>
+                                </li>                                
+                                <li class="" style="display:none;"><a href="#cargos" data-toggle="tab" id="transferOrderItemList">货品明细</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="basic">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <form role="form" id="transferOrderForm">
+                                        	<input id="customer_id" type="hidden" name="customer_id"/>
+                                        	<input id="sp_id" type="hidden" name="sp_id"/>
+                                        	<input type="hidden" name="order_no" value="${order_no!''}"/>
+                                        	<input type="hidden" name="status" value="${status!''}"/>
+                                        	<input type="hidden" name="create_by" value="${create_by!''}"/>
+                                            <h2>客户信息</h2>
+                                            <div class="form-group">
+                                                <label>公司名称</label>
+                                                <label class="radio-inline" id="company">${customer.company_name!''}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>地址</label>
+                                                <label class="radio-inline" id="company">${customer.address!''}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>联系人</label>
+                                                <label class="radio-inline" id="company">${customer.contact_person!''}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>电话</label>
+                                                <label class="radio-inline" id="company">${customer.phone!''}</label>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label>备注</label>
+                                                <textarea class="form-control" rows="7"></textarea>
+                                            </div>                               
+                                    </div>
+                                    <!-- /.col-lg-6 (nested) -->
+                                    <div class="col-lg-6">
+                                    <h2>对账单信息</h2>
+                                    <div class="form-group">
+                                        <label>对账单号</label> <strong>${order_no!''}</strong>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>单据状态</label>   ${status!''}
+                                    </div>
+                                    <div class="form-group">
+                                        <label>创建人</label>   <%if(userLogin.c_name!''==''){ %>${userLogin.user_name!''}<%}else{%>${userLogin.c_name!''}<%}%>
+                                        
+                                    </div>
+                                    
+                                        
+                                    </form>                                        
+                                       
+                                    <h2>时间段</h2>
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control input-inline input-large" id="inputSuccess" value="2014-04-01"> - <input type="text" class="form-control input-large input-inline" id="inputSuccess" value="2014-05-01">
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                                </div>
+                                
+                                <div class="tab-pane fade" id="cargos">
+                                    <div class="panel-body">             
+                                        <div class="table-responsive">
+			                            <button class="btn  btn-primary" data-toggle="modal" data-target="#myModal">
+										  新增货品
+										</button>
+                                        <table class="table table-striped table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>型号</th>
+                                                    <th>数量</th>
+                                                    <th>单位</th>
+                                                    <th>备注</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="transferOrderItemTbody">
+                                            </tbody>
+                                        </table>
+                                            <div id="transferOrderItemDateil" style="display: none">
+	                                            <div class="btn-header">单品列表</div>
+	                                            <button class="btn  btn-primary" data-toggle="modal" data-target="#detailModal">
+												  新增货品明细
+												</button>
+	                                            <table class="table table-striped table-bordered table-hover">
+	                                                <thead>
+	                                                    <tr>	                                                        
+	                                                        <th>序列号</th>
+	                                                        <th>名称</th>
+	                                                        <th>体积</th>
+	                                                        <th>重量</th>
+	                                                        <th>收货人,电话,地址</th>
+	                                                        <th>备注</th>
+	                                                        <th>货损?</th>
+	                                                        <th>货损信息</th>
+	                                                        <th></th>
+	                                                    </tr>
+	                                                </thead>
+	                                                <tbody id="transferOrderItemDetailTbody">
+	                                                    <tr>
+	                                                        
+	                                                        <td>Mark-001</td>
+	                                                        <td>20</td>
+	                                                        <td>台</td>
+	                                                        <td>20</td>
+	                                                        <td>收货人,电话,地址</td>
+	                                                        <td>备注</td>
+	                                                        <td>是</td>
+	                                                        <td>定损金额  1000<br/>
+	                                                        	理赔金额: 1200<br/>
+	                                                        	赔付给客户金额 800<br/>
+	                                                        	差异说明: 是发送范德萨</td>
+	                                                       
+	                                                        <td>
+	                                                            <button type="submit" class="btn  btn-primary">编辑</button>
+	                                                            <button type="submit" class="btn  btn-primary">删除</button>
+	                                                        </td>
+	                                                    </tr>
+	                                                </tbody>
+	                                            </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- <div class="tab-pane fade">
+                                    <div class="panel-body">             
+                                        <div class="table-responsive">
+                                            
+                                        </div>
+                                    </div> -->
+                                    
+                                    <!-- 模态框 -->
+									<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									  <div class="modal-dialog">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									        <h4 class="modal-title" id="myModalLabel">新增货品</h4>
+									      </div>
+									      <div class="modal-body">
+									      	<form id="transferOrderItemForm" action="">
+									      		<input id="transfer_order_id" type="text" name="transfer_order_id" />
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品名称</label> <input
+													id="item_name" class="form-control" type="text"
+													name="item_name">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品数量</label> <input
+													id="amount" class="form-control" type="text"
+													name="amount"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品单位</label> <input
+													id="unit" class="form-control" type="text"
+													name="unit"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品体积(m³)</label> <input
+													id="volume" class="form-control" type="text"
+													name="volume"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品重量(kg)</label> <input
+													id="weight" class="form-control" type="text"
+													name="weight"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品备注</label> <input
+													id="remark" class="form-control" type="text"
+													name="remark"">
+												</div>
+										      </div>
+										      <div class="modal-footer">
+										        <button type="button" class="btn  btn-primary" data-dismiss="modal">取消</button>
+										        <button id="transferOrderItemFormBtn" type="button" class="btn  btn-primary">保存</button>
+										      </div>
+											</form>
+									    </div><!-- /.modal-content -->
+									  </div><!-- /.modal-dialog -->
+									</div><!-- /.modal -->
+                                    
+                                    <!-- 模态框 -->
+									<div class="modal fade" id="updateMyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									  <div class="modal-dialog">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									        <h4 class="modal-title" id="myModalLabel">修改货品</h4>
+									      </div>
+									      <div class="modal-body">
+									      	<form id="transferOrderItemUpdateForm" action="">
+									      		<input id="update_transfer_order_id" type="text" name="transfer_order_id" />
+									      		<input id="transfer_order_item_id" type="text" name="transfer_order_item_id" />
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品名称</label> <input
+													id="update_item_name" class="form-control" type="text"
+													name="update_item_name">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品数量</label> <input
+													id="update_amount" class="form-control" type="text"
+													name="update_amount"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品单位</label> <input
+													id="update_unit" class="form-control" type="text"
+													name="update_unit"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品体积(m³)</label> <input
+													id="update_volume" class="form-control" type="text"
+													name="update_volume"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品重量(kg)</label> <input
+													id="update_weight" class="form-control" type="text"
+													name="update_weight"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">备注</label> <input
+													id="update_remark" class="form-control" type="text"
+													name="update_remark"">
+												</div>
+										      </div>
+										      <div class="modal-footer">
+										        <button type="button" class="btn  btn-primary" data-dismiss="modal">取消</button>
+										        <button id="transferOrderItemUpdateFormBtn" type="button" class="btn  btn-primary">保存</button>
+										      </div>
+											</form>
+									    </div><!-- /.modal-content -->
+									  </div><!-- /.modal-dialog -->
+									</div><!-- /.modal -->
+									
+									<!-- 模态框 -->
+									<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									  <div class="modal-dialog">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									        <h4 class="modal-title" id="myModalLabel">新增货品明细</h4>
+									      </div>
+									      <div class="modal-body">
+									      	<form id="transferOrderItemDetailForm" action="">
+									      		<input id="detail_transfer_order_id" type="text" name="transfer_order_id" />
+									      		<input id="detail_transfer_order_item_id" type="text" name="transfer_order_item_id" />
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">序列号</label> <input
+													id="serial_no" class="form-control" type="text"
+													name="serial_no">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">名称</label> <input
+													id="detail_item_name" class="form-control" type="text"
+													name="detail_item_name"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品体积(m³)</label> <input
+													id="detail_volume" class="form-control" type="text"
+													name="detail_volume"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品重量(kg)</label> <input
+													id="detail_weight" class="form-control" type="text"
+													name="detail_weight"">
+												</div>	
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品备注</label> <input
+													id="detail_remark" class="form-control" type="text"
+													name="detail_remark"">
+												</div>											
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">收货人</label> <input
+													id="detail_contact_person" class="form-control" type="text"
+													name="detail_contact_person"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">电话</label> <input
+													id="detail_phone" class="form-control" type="text"
+													name="detail_phone"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">地址</label> <input
+													id="detail_address" class="form-control" type="text"
+													name="detail_address"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货损?</label> <input
+													id="detail_is_damage" class="form-control" type="text"
+													name="detail_is_damage"">
+												</div>
+												<!-- <label>货损?</label>             
+									            <label class="radio-inline">
+									           		<input name="detail_is_damage" type="radio" value="true">是
+									            </label>
+									            <label class="radio-inline">
+									           		<input name="detail_is_damage" type="radio" value="false">否
+									            </label> -->
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">定损金额</label> <input
+													id="detail_estimate_damage_amount" class="form-control" type="text"
+													name="detail_estimate_damage_amount"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">理赔金额</label> <input
+													id="detail_damage_revenue" class="form-control" type="text"
+													name="detail_damage_revenue"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">赔付给客户金额 </label> <input
+													id="detail_damage_payment" class="form-control" type="text"
+													name="detail_damage_payment"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">差异说明 </label> <input
+													id="detail_damage_remark" class="form-control" type="text"
+													name="detail_damage_remark"">
+												</div>
+										      </div>
+										      <div class="modal-footer">
+										        <button type="button" class="btn  btn-primary" data-dismiss="modal">取消</button>
+										        <button id="transferOrderItemDetailFormBtn" type="button" class="btn  btn-primary">保存</button>
+										      </div>
+											</form>
+									    </div><!-- /.modal-content -->
+									  </div><!-- /.modal-dialog -->
+									</div><!-- /.modal -->
+                                     
+                                   <!-- 模态框 -->
+									<div class="modal fade" id="updateDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									  <div class="modal-dialog">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									        <h4 class="modal-title" id="myModalLabel">新增货品明细</h4>
+									      </div>
+									      <div class="modal-body">
+									      	<form id="transferOrderItemDetailUpdateForm" action="">
+									      		<input id="update_detail_transfer_order_id" type="text" name="transfer_order_id" />
+									      		<input id="update_detail_transfer_order_item_id" type="text" name="transfer_order_item_id" />
+									      		<input id="detail_transfer_order_item_detail_id" type="text" name="transfer_order_item_detail_id" />
+									      		<input id="detail_notify_party_id" type="text" name="notify_party_id" />
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">序列号</label> <input
+													id="update_serial_no" class="form-control" type="text"
+													name="update_serial_no">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">名称</label> <input
+													id="update_detail_item_name" class="form-control" type="text"
+													name="update_detail_item_name"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品体积(m³)</label> <input
+													id="update_detail_volume" class="form-control" type="text"
+													name="update_detail_volume"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品重量(kg)</label> <input
+													id="update_detail_weight" class="form-control" type="text"
+													name="update_detail_weight"">
+												</div>	
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货品备注</label> <input
+													id="update_detail_remark" class="form-control" type="text"
+													name="update_detail_remark"">
+												</div>											
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">收货人</label> <input
+													id="update_detail_contact_person" class="form-control" type="text"
+													name="update_detail_contact_person"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">电话</label> <input
+													id="update_detail_phone" class="form-control" type="text"
+													name="update_detail_phone"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">地址</label> <input
+													id="update_detail_address" class="form-control" type="text"
+													name="update_detail_address"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">货损?</label> <input
+													id="update_detail_is_damage" class="form-control" type="text"
+													name="update_detail_is_damage"">
+												</div>
+												<!-- <label>货损?</label>             
+									            <label class="radio-inline">
+									           		<input name="update_detail_is_damage" type="radio" value="true">是
+									            </label>
+									            <label class="radio-inline">
+									           		<input name="update_detail_is_damage" type="radio" value="false">否
+									            </label> -->
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">定损金额</label> <input
+													id="update_detail_estimate_damage_amount" class="form-control" type="text"
+													name="update_detail_estimate_damage_amount"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">理赔金额</label> <input
+													id="update_detail_damage_revenue" class="form-control" type="text"
+													name="update_detail_damage_revenue"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">赔付给客户金额 </label> <input
+													id="update_detail_damage_payment" class="form-control" type="text"
+													name="update_detail_damage_payment"">
+												</div>
+												<div class="form-group ">
+												<label class="control-label" for="inputSuccess">差异说明 </label> <input
+													id="update_detail_damage_remark" class="form-control" type="text"
+													name="update_detail_damage_remark"">
+												</div>
+										      </div>
+										      <div class="modal-footer">
+										        <button type="button" class="btn  btn-primary" data-dismiss="modal">取消</button>
+										        <button id="transferOrderItemDetailUpdateFormBtn" type="button" class="btn  btn-primary">保存</button>
+										      </div>
+											</form>
+									    </div><!-- /.modal-content -->
+									  </div><!-- /.modal-dialog -->
+									</div><!-- /.modal -->
+                                                
+                                </div>
+                                <div class="tab-pane fade" id="milestone">
+                                    <div class="panel-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>状态</th>
+                                                        <th>地点</th>
+                                                        <th>更新用户</th>
+                                                        <th>更新时间</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="transferOrderMilestoneTbody" >
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>新建单据</td>
+                                                        <td></td>
+                                                        <td>Otto</td>
+                                                        <td>2014-03-07 13:00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>已发车</td>
+                                                        <td></td>
+                                                        <td>Jacob</td>
+                                                        <td>2014-03-08 23:00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td>在途中</td>
+                                                        <td>株洲</td>
+                                                        <td>Larry</td>
+                                                        <td>2014-03-09 9:00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>4</td>
+                                                        <td>在途中</td>
+                                                        <td>长沙</td>
+                                                        <td>Larry</td>
+                                                        <td>2014-03-09 15:00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>5</td>
+                                                        <td>在途中</td>
+                                                        <td>武汉中转仓</td>
+                                                        <td>Larry</td>
+                                                        <td>2014-03-10 3:00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>7</td>
+                                                        <td>收货人签收</td>
+                                                        <td></td>
+                                                        <td>Larry</td>
+                                                        <td>2014-03-10 13:00</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.table-responsive -->
+                                    </div>
+                                    <!-- /.panel-body -->
+                                </div>
+                                <div class="tab-pane fade" id="arap">
+                                    <h2>应收</h2>
+                                    <div class="panel-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>运输单号</th>
+                                                        <th>配送单号</th>
+                                                        <th>费用条目</th>
+                                                        <th>金额</th>
+                                                        <th>备注</th>
+                                                        <th>结算状态</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>运输单201404010001</td>
+                                                        <td>配送单201404130001</td>
+                                                        <td>装车费</td>
+                                                        <td>200</td>
+                                                        <td>是否需要显示对应的ATM信息？？</td>
+                                                        <td>未结</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>运输单201404010001</td>
+                                                        <td>配送单201404130001</td>
+                                                        <td>设备包装</td>
+                                                        <td>50</td>
+                                                        <td></td>
+                                                        <td>未结</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td>运输单201405010002</td>
+                                                        <td>配送单201405130002</td>
+                                                        <td>装车费</td>
+                                                        <td>200</td>
+                                                        <td>是否需要显示对应的ATM信息？？</td>
+                                                        <td>未结</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>4</td>
+                                                        <td>运输单201405010002</td>
+                                                        <td>配送单201405130002</td>
+                                                        <td>设备包装</td>
+                                                        <td>500</td>
+                                                        <td></td>
+                                                        <td>未结</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.table-responsive -->
+                                    </div>
+                                    <!-- /.panel-body -->
+
+                                </div>
+                                
+                                <div class=".tooltip-demo">
+                                    <hr/>
+                                	<a style="display:none" id ="style"><i class='fa fa-check'></i></a>
+                                    <button id="saveTransferOrderBtn" type="button" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">保存</button>                                  
+                                    <button id="departureConfirmationBtn" type="button" disabled="true" class="btn  btn-primary " data-toggle="tooltip" title="" data-original-title="Default tooltip">审核</button>
+                                    
+                                </div>
+                                <p>保存：新建时只能保存（其他按钮都灰掉不能点）, 保存后单据状态变为“新建”</p>
+                                <p>确认：点击后生成单据状态 “已审核”，里程碑中记录审核人，审核时间， 然后生成“结账单”</p>
+                                
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+<%}%>
+<!-- 引入校验的js 文件及其 中文 文件-->
+<script src="/yh/js/jquery.validate.min.js"></script>
+<script src="/yh/js/jvalidate.messages_cn.js"></script>
+<script src="http://cdn.bootcss.com/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#menu_finance').addClass('active').find('ul').addClass('in');
+        //from表单验证
+		var validate = $('#transferOrderForm').validate({
+	        rules: {
+	        	customerMessage: {
+	            required: true
+	          },
+				spMessage: {
+	            required: true
+	          }
+	        },
+	        messages : {	             
+	        	customerMessage : {required:  "请选择一个客户"}, 
+	        	spMessage : {required:  "请选择一个供应商"}, 
+	        }
+	    });
+		
+     // tooltip demo
+     $('.tooltip-demo').tooltip({
+       selector: "[data-toggle=tooltip]",
+       container: "body"
+     });
+		
+	//获取客户的list，选中信息在下方展示其他信息
+	$('#customerMessage').on('keyup', function(){
+		var inputStr = $('#customerMessage').val();
+		if(inputStr == ""){
+			var pageCustomerName = $("#pageCustomerName");
+			pageCustomerName.empty();
+			var pageCustomerAddress = $("#pageCustomerAddress");
+			pageCustomerAddress.empty();
+			$('#customer_id').val($(this).attr(''));
+		}
+		$.get('/transferOrder/searchCustomer', {input:inputStr}, function(data){
+			console.log(data);
+			var customerList =$("#customerList");
+			customerList.empty();
+			for(var i = 0; i < data.length; i++)
+			{
+				customerList.append("<li><a tabindex='-1' class='fromLocationItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' cid='"+data[i].ID+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].COMPANY_NAME+"</a></li>");
+			}
+		},'json');
+        $('#customerList').show();
+	});
+	
+	// 选中客户
+	$('#customerList').on('click', '.fromLocationItem', function(e){
+		$('#customerMessage').val($(this).text());
+		$('#customer_id').val($(this).attr('cid'));
+		var pageCustomerName = $("#pageCustomerName");
+		pageCustomerName.empty();
+		pageCustomerName.append($(this).attr('contact_person')+'&nbsp;');
+		pageCustomerName.append($(this).attr('phone')); 
+		var pageCustomerAddress = $("#pageCustomerAddress");
+		pageCustomerAddress.empty();
+		pageCustomerAddress.append($(this).attr('address'));
+
+        $('#customerList').hide();
+    }); 
+	
+	//获取供应商的list，选中信息在下方展示其他信息
+	$('#spMessage').on('keyup', function(){
+		var inputStr = $('#spMessage').val();
+		if(inputStr == ""){
+			var pageSpName = $("#pageSpName");
+			pageSpName.empty();
+			var pageSpAddress = $("#pageSpAddress");
+			pageSpAddress.empty();
+			$('#sp_id').val($(this).attr(''));
+		}
+		$.get('/transferOrder/searchSp', {input:inputStr}, function(data){
+			console.log(data);
+			var spList =$("#spList");
+			spList.empty();
+			for(var i = 0; i < data.length; i++)
+			{
+				spList.append("<li><a tabindex='-1' class='fromLocationItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' spid='"+data[i].ID+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].COMPANY_NAME+"</a></li>");
+			}
+		},'json');
+
+        $('#spList').show();
+	});
+	
+	// 选中供应商
+	$('#spList').on('click', '.fromLocationItem', function(e){
+		$('#spMessage').val($(this).text());
+		$('#sp_id').val($(this).attr('spid'));
+		var pageSpName = $("#pageSpName");
+		pageSpName.empty();
+		pageSpName.append($(this).attr('contact_person')+'&nbsp;');
+		pageSpName.append($(this).attr('phone')); 
+		var pageSpAddress = $("#pageSpAddress");
+		pageSpAddress.empty();
+		pageSpAddress.append($(this).attr('address'));
+        $('#spList').hide();
+    }); 
+	
+	//点击保存的事件，保存运输单信息
+	//transferOrderForm 不需要提交	
+ 	$("#saveTransferOrderBtn").click(function(e){
+		//阻止a 的默认响应行为，不需要跳转
+		e.preventDefault();
+		//提交前，校验数据
+        if(!$("#transferOrderForm").valid()){
+	       	return;
+        }
+		//异步向后台提交数据
+		$.post('/transferOrder/saveTransferOrder', $("#transferOrderForm").serialize(), function(transferOrder){
+			$("#transfer_order_id").val(transferOrder.ID);
+			$("#update_transfer_order_id").val(transferOrder.ID);
+			$("#order_id").val(transferOrder.ID);
+			if(transferOrder.ID>0){
+				$("#departureConfirmationBtn").attr("disabled", false);
+				$("#arrivalModeVal").val(transferOrder.ARRIVAL_MODE);
+			  	//alert("运输单保存成功!");
+			  	$("#style").show();
+			  	$("#saveTransferOrderBtn").attr("disabled", true);
+			}else{
+				alert('数据保存失败。');
+			}
+		},'json');
+	});
+
+    //货品明细的table 编辑
+    $("table.table tr td").bind("click", dataClick);
+    function dataClick(e) {
+        console.log(e);
+        if (e.currentTarget.innerHTML != "") return;
+        if(e.currentTarget.contentEditable != null){
+            $(e.currentTarget).attr("contentEditable",true);
+        }else{
+            $(e.currentTarget).append("<input type='text' value="+e.currentTarget.innerHTML+">");
+        }    
+    }
+
+    // 单击货品明细时,应列表显示所有的货品
+    $("#transferOrderItemList").click(function(e){
+        e.preventDefault();
+    	// 切换到货品明细时,应先保存运输单
+    	// 应先判断order_id是否为空
+    	//提交前，校验数据
+        if(!$("#transferOrderForm").valid()){
+        	alert("请先保存运输单!");
+	       	return false; 
+        }
+
+    	$.post('/transferOrder/saveTransferOrder', $("#transferOrderForm").serialize(), function(transferOrder){
+			$("#transfer_order_id").val(transferOrder.ID);
+			$("#update_transfer_order_id").val(transferOrder.ID);
+			$("#order_id").val(transferOrder.ID);
+			if(transferOrder.ID>0){
+				$("#departureConfirmationBtn").attr("disabled", false);
+				$("#arrivalModeVal").val(transferOrder.ARRIVAL_MODE);
+			  	//alert("运输单保存成功!");
+			  	$("#saveTransferOrderBtn").attr("disabled", true);
+			  	$("#style").show();
+			}else{
+				alert('数据保存失败。');
+			}
+		},'json');
+    	
+    	$.post('/transferOrderItem/transferOrderItemList',{},function(data){
+			var transferOrderItemTbody = $("#transferOrderItemTbody");
+			transferOrderItemTbody.empty();
+			for(var i = 0; i < data.length; i++)
+			{
+				var item = data[i].ITEM_NO;
+				if(item == null){
+					item = "";
+					transferOrderItemTbody.append("<tr><td><a class='btn' href='#'>查看序列号</a></td><td>"+item+"</td><td>"+data[i].AMOUNT+"</td><td>"+data[i].UNIT+"</td><td>"+data[i].REMARK+"</td><td><button id='detailEdit("+data[i].ID+"|"+data[i].ORDER_ID+"' type='submit' class='btn  btn-primary'>单品编辑</button><button id='itemEdit("+data[i].ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='deleteItem("+data[i].ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+				}else{
+					transferOrderItemTbody.append("<tr><td><a class='btn' href='#'>查看序列号</a></td><td>"+data[i].ITEM_NO+"</td><td>"+data[i].AMOUNT+"</td><td>"+data[i].UNIT+"</td><td>"+data[i].REMARK+"</td><td><button id='detailEdit("+data[i].ID+"|"+data[i].ORDER_ID+"' type='submit' class='btn  btn-primary'>单品编辑</button><button id='itemEdit("+data[i].ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='deleteItem("+data[i].ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+				}
+			}
+		},'json');
+    });
+    
+   	// 保存货品
+    $("#transferOrderItemFormBtn").click(function(){
+    	
+    	$.post('/transferOrderItem/saveTransferOrderItem', $("#transferOrderItemForm").serialize(), function(data){
+			if(data.ID > 0){
+				var transferOrderItemTbody =$("#transferOrderItemTbody");
+				var item_no = "";  
+				var amount = $("#amount").val();  
+				var unit = $("#unit").val();   
+				var remark = $("#remark").val();  
+				transferOrderItemTbody.append("<tr><td><a class='btn' href='#'>查看序列号</a></td><td>"+item_no+"</td><td>"+amount+"</td><td>"+unit+"</td><td>"+remark+"</td><td><button id='detailEdit("+data.ID+"|"+data.ORDER_ID+"' type='submit' class='btn  btn-primary'>单品编辑</button><button id='itemEdit("+data.ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='deleteItem("+data.ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+				// 关闭模态框
+				$('#myModal').modal('hide');
+			}
+		},'json');
+    });
+    
+   	// 更新货品
+    $("#transferOrderItemUpdateFormBtn").click(function(){
+    	
+    	$.post('/transferOrderItem/saveTransferOrderItem', $("#transferOrderItemUpdateForm").serialize(), function(data){
+			if(data.ID > 0){ 
+				// 关闭模态框
+				$('#updateMyModal').modal('hide');
+				$.post('/transferOrderItem/transferOrderItemList',{},function(data){
+					var transferOrderItemTbody = $("#transferOrderItemTbody");
+					transferOrderItemTbody.empty();
+					for(var i = 0; i < data.length; i++)
+					{
+						var item = data[i].ITEM_NO;
+						if(item == null){
+							item = "";
+							transferOrderItemTbody.append("<tr><td><a class='btn' href='#'>查看序列号</a></td><td>"+item+"</td><td>"+data[i].AMOUNT+"</td><td>"+data[i].UNIT+"</td><td>"+data[i].REMARK+"</td><td><button id='detailEdit("+data[i].ID+"|"+data[i].ORDER_ID+"' type='submit' class='btn  btn-primary'>单品编辑</button><button id='itemEdit("+data[i].ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='deleteItem("+data[i].ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+						}else{
+							transferOrderItemTbody.append("<tr><td><a class='btn' href='#'>查看序列号</a></td><td>"+data[i].ITEM_NO+"</td><td>"+data[i].AMOUNT+"</td><td>"+data[i].UNIT+"</td><td>"+data[i].REMARK+"</td><td><button id='detailEdit("+data[i].ID+"|"+data[i].ORDER_ID+"' type='submit' class='btn  btn-primary'>单品编辑</button><button id='itemEdit("+data[i].ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='deleteItem("+data[i].ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+						}
+					}
+				},'json');
+			}
+		},'json');
+    });
+    
+    // 当arrivalMode1为货品直送时则显示收货人的信息
+    $("#arrivalModes").on('click', 'input', function(){
+  	  console.log(this);
+  	  var inputId  = $(this).attr('id');
+	  if(inputId=='arrivalMode1'){
+		 $("#contactInformation").show();
+		 $("#warehousingConfirmBtn").attr("disabled", true);
+	  }else{
+		 $("#contactInformation").hide();
+	  } 
+  	});
+    
+    // 单品编辑
+    $("#transferOrderItemTbody").on('click', 'button', function(){
+    	var inputId  = $(this).attr('id');
+    	var type = inputId.substring(0,inputId.indexOf('('));
+    	if(type == 'detailEdit'){
+	  	    var order_id = inputId.substring(inputId.indexOf('|')+1);
+	  	    var detail = inputId.substring(0,inputId.indexOf('|'));
+	  	    var item_id = detail.substring(inputId.indexOf('(')+1);
+	  	    $("#detail_transfer_order_item_id").val(item_id);
+	  	    $("#detail_transfer_order_id").val(order_id);
+	  	    $("#transferOrderItemDateil").show();
+	  	    // 动态展示单品
+	  	    $.post('/transferOrderItemDetail/getAllTransferOrderItemDetail', 'transfer_order_item_id='+item_id, function(data){
+				var transferOrderItemDetailTbody = $("#transferOrderItemDetailTbody");
+				transferOrderItemDetailTbody.empty();
+				if(data.transferOrderItemDetails.length > 0 && data.contacts.length > 0){
+					for(var i=0,j=0;i<data.transferOrderItemDetails.length,j<data.contacts.length;i++,j++){
+			  	    	transferOrderItemDetailTbody.append("<tr><td>"+data.transferOrderItemDetails[i].SERIAL_NO+"</td><td>"+data.transferOrderItemDetails[i].ITEM_NAME+"</td><td>"+data.transferOrderItemDetails[i].VOLUME+"</td><td>"+data.transferOrderItemDetails[i].WEIGHT+"</td><td>"+data.contacts[j].CONTACT_PERSON+"<br/>"+data.contacts[j].PHONE+"<br/>"+data.contacts[j].ADDRESS+"<br/></td>"
+			                       + "<td>"+data.transferOrderItemDetails[i].REMARK+"</td><td>"+data.transferOrderItemDetails[i].IS_DAMAGE+"</td><td>"+data.transferOrderItemDetails[i].ESTIMATE_DAMAGE_AMOUNT+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_REVENUE+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_PAYMENT+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_REMARK+"</td>"
+			                       + "<td><button id='itemDetailEdit("+data.transferOrderItemDetails[i].ID+"|"+data.transferOrderItemDetails[i].ITEM_ID+"["+data.transferOrderItemDetails[i].ORDER_ID+"-"+data.transferOrderItemDetails[i].NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='itemDetailDelete("+data.transferOrderItemDetails[i].ID+"|"+data.transferOrderItemDetails[i].ITEM_ID+"["+data.transferOrderItemDetails[i].ORDER_ID+"-"+data.transferOrderItemDetails[i].NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+		  	    	}
+				}else{
+					for(var i=0;i<data.transferOrderItemDetails.length;i++){
+			  	    	transferOrderItemDetailTbody.append("<tr><td>"+data.transferOrderItemDetails[i].SERIAL_NO+"</td><td>"+data.transferOrderItemDetails[i].ITEM_NAME+"</td><td>"+data.transferOrderItemDetails[i].VOLUME+"</td><td>"+data.transferOrderItemDetails[i].WEIGHT+"</td><td></td>"
+			                       + "<td>"+data.transferOrderItemDetails[i].REMARK+"</td><td>"+data.transferOrderItemDetails[i].IS_DAMAGE+"</td><td>"+data.transferOrderItemDetails[i].ESTIMATE_DAMAGE_AMOUNT+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_REVENUE+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_PAYMENT+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_REMARK+"</td>"
+			                       + "<td><button id='itemDetailEdit("+data.transferOrderItemDetails[i].ID+"|"+data.transferOrderItemDetails[i].ITEM_ID+"["+data.transferOrderItemDetails[i].ORDER_ID+"-"+data.transferOrderItemDetails[i].NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='itemDetailDelete("+data.transferOrderItemDetails[i].ID+"|"+data.transferOrderItemDetails[i].ITEM_ID+"["+data.transferOrderItemDetails[i].ORDER_ID+"-"+data.transferOrderItemDetails[i].NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+		  	    	}
+				}
+			},'json');
+    	}else if(type == 'itemEdit'){
+	  	    var id = inputId.substring(inputId.indexOf('(')+1);
+	  	    $("#transfer_order_item_id").val(id);
+	  	    $.post('/transferOrderItem/getTransferOrderItem', 'transfer_order_item_id='+id, function(data){
+	  	    	// 编辑时回显数据
+ 	  	    	$("#update_item_name").val(data.ITEM_NAME);
+ 	  	    	$("#update_amount").val(data.AMOUNT);
+ 	  	    	$("#update_unit").val(data.UNIT);
+ 	  	    	$("#update_volume").val(data.VOLUME);
+ 	  	    	$("#update_weight").val(data.WEIGHT);
+ 	  	    	$("#update_remark").val(data.REMARK);
+			},'json');
+	  	    
+	  	  	$.post('/transferOrderItem/transferOrderItemList',{},function(data){
+				var transferOrderItemTbody = $("#transferOrderItemTbody");
+				transferOrderItemTbody.empty();
+				for(var i = 0; i < data.length; i++)
+				{
+					var item = data[i].ITEM_NO;
+					if(item == null){
+						item = "";
+						transferOrderItemTbody.append("<tr><td><a class='btn' href='#'>查看序列号</a></td><td>"+item+"</td><td>"+data[i].AMOUNT+"</td><td>"+data[i].UNIT+"</td><td>"+data[i].REMARK+"</td><td><button id='detailEdit("+data[i].ID+"|"+data[i].ORDER_ID+"' type='submit' class='btn  btn-primary'>单品编辑</button><button id='itemEdit("+data[i].ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='deleteItem("+data[i].ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+					}else{
+						transferOrderItemTbody.append("<tr><td><a class='btn' href='#'>查看序列号</a></td><td>"+data[i].ITEM_NO+"</td><td>"+data[i].AMOUNT+"</td><td>"+data[i].UNIT+"</td><td>"+data[i].REMARK+"</td><td><button id='detailEdit("+data[i].ID+"|"+data[i].ORDER_ID+"' type='submit' class='btn  btn-primary'>单品编辑</button><button id='itemEdit("+data[i].ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='deleteItem("+data[i].ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+					}
+				}
+			},'json');
+	  	    
+	  		// 模态框:修改货品明细
+			$('#updateMyModal').modal('show');	
+		}else{
+			var id = inputId.substring(inputId.indexOf('(')+1);
+			$.post('/transferOrderItem/deleteTransferOrderItem', 'transfer_order_item_id='+id, function(data){
+			},'json');
+			
+			$.post('/transferOrderItem/transferOrderItemList',{},function(data){
+				var transferOrderItemTbody = $("#transferOrderItemTbody");
+				transferOrderItemTbody.empty();
+				for(var i = 0; i < data.length; i++)
+				{
+					var item = data[i].ITEM_NO;
+					if(item == null){
+						item = "";
+						transferOrderItemTbody.append("<tr><td><a class='btn' href='#'>查看序列号</a></td><td>"+item+"</td><td>"+data[i].AMOUNT+"</td><td>"+data[i].UNIT+"</td><td>"+data[i].REMARK+"</td><td><button id='detailEdit("+data[i].ID+"|"+data[i].ORDER_ID+"' type='submit' class='btn  btn-primary'>单品编辑</button><button id='itemEdit("+data[i].ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='deleteItem("+data[i].ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+					}else{
+						transferOrderItemTbody.append("<tr><td><a class='btn' href='#'>查看序列号</a></td><td>"+data[i].ITEM_NO+"</td><td>"+data[i].AMOUNT+"</td><td>"+data[i].UNIT+"</td><td>"+data[i].REMARK+"</td><td><button id='detailEdit("+data[i].ID+"|"+data[i].ORDER_ID+"' type='submit' class='btn  btn-primary'>单品编辑</button><button id='itemEdit("+data[i].ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='deleteItem("+data[i].ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+					}
+				}
+			},'json');
+    	}
+    });
+						
+	// 发车确认
+	$("#departureConfirmationBtn").click(function(){
+		// 浏览器启动时,停到当前位置
+		//debugger;
+		/* $("input[name='arrivalMode']").each(
+			function(){
+				if($(this).val() == 'delivery'){
+					$("#warehousingConfirmBtn").attr("disabled", true);
+					return false;
+				}else{
+					$("#warehousingConfirmBtn").attr("disabled", false);	
+				} 
+			}		
+		) */
+		if($("#arrivalModeVal").val() == 'delivery'){
+			$("#warehousingConfirmBtn").attr("disabled", true);
+		}else{
+			$("#warehousingConfirmBtn").attr("disabled", false);	
+		} 
+		$("#receiptBtn").attr("disabled", false); 
+	});
+	
+	$("input[name='arrivalMode']").each(
+		function(){
+			if($(this).attr('checked') == 'checked'){
+				 $("#contactInformation").show();
+				 return false; 
+			}else{
+				 $("#contactInformation").hide();
+			}
+		}			
+	)
+	
+	// 保存单品信息
+	$("#transferOrderItemDetailFormBtn").click(function(){
+		$.post('/transferOrderItemDetail/saveTransferOrderItemDetail', $("#transferOrderItemDetailForm").serialize(), function(transferOrderItemDetail){
+			if(transferOrderItemDetail.ID > 0){
+				// 动态显示单品信息
+				var transferOrderItemDetailTbody = $("#transferOrderItemDetailTbody");
+				var serial_no = $("#serial_no").val();                              
+				var detail_item_name = $("#detail_item_name").val();                       
+				var detail_volume = $("#detail_volume").val();                             
+				var detail_weight = $("#detail_weight").val();                             
+				var detail_remark = $("#detail_remark").val();                             
+				var detail_is_damage = $("#detail_is_damage").val();                       
+				var detail_estimate_damage_amount = $("#detail_estimate_damage_amount").val();
+				var detail_damage_revenue = $("#detail_damage_revenue").val();             
+				var detail_damage_payment = $("#detail_damage_payment").val();             
+				var detail_damage_remark = $("#detail_damage_remark").val();               
+				var contact_person = $("#detail_contact_person").val();
+				var phone = $("#detail_phone").val();               
+				var address = $("#detail_address").val();   
+				transferOrderItemDetailTbody.append("<tr><td>"+serial_no+"</td><td>"+detail_item_name+"</td><td>"+detail_volume+"</td><td>"+detail_weight+"</td><td>"+contact_person+"<br/>"+phone+"<br/>"+address+"<br/></td>"
+	                       + "<td>"+detail_remark+"</td><td>"+detail_is_damage+"</td><td>"+detail_estimate_damage_amount+"<br/>"+detail_damage_revenue+"<br/>"+detail_damage_payment+"<br/>"+detail_damage_remark+"</td>"
+	                       + "<td><button id='itemDetailEdit("+transferOrderItemDetail.ID+"|"+transferOrderItemDetail.ITEM_ID+"["+transferOrderItemDetail.ORDER_ID+"-"+transferOrderItemDetail.NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='itemDetailDelete("+transferOrderItemDetail.ID+"|"+transferOrderItemDetail.ITEM_ID+"["+transferOrderItemDetail.ORDER_ID+"-"+transferOrderItemDetail.NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+				$("#detailModal").modal('hide');
+			}			
+		});
+	});
+	
+	// 点击单品按钮
+	$("#transferOrderItemDetailTbody").on('click', 'button', function(){
+		var inputId = $(this).attr('id');
+		var notify_party_id = inputId.substring(inputId.indexOf('-')+1);
+		var contactInfo = inputId.substring(0,inputId.indexOf('-'));
+		var order_id = contactInfo.substring(contactInfo.indexOf('[')+1);
+		var detailItem = contactInfo.substring(0,contactInfo.indexOf('['));
+		var item_id = detailItem.substring(detailItem.indexOf('|')+1);
+		var typeDetail = detailItem.substring(0,detailItem.indexOf('|'));
+  	    var detail_id = typeDetail.substring(typeDetail.indexOf('(')+1);
+		var type = inputId.substring(0,inputId.indexOf('('));
+    	if(type == 'itemDetailEdit'){
+			//alert(inputId+", order_id=" + order_id +", item_id="+item_id+", detail_id="+detail_id+", contact_id="+notify_party_id);
+	  	    
+	  	    $("#update_detail_transfer_order_id").val(order_id);
+	  	    $("#update_detail_transfer_order_item_id").val(item_id);
+	  	    $("#detail_transfer_order_item_detail_id").val(detail_id);
+	  	    $("#detail_notify_party_id").val(notify_party_id);
+	  	    $.post('/transferOrderItemDetail/getTransferOrderItemDetail', {detail_id:detail_id,notify_party_id:notify_party_id}, function(data){
+	  	    	// 编辑时回显数据
+	  	    	$("#update_serial_no").val(data.transferOrderItemDetail.SERIAL_NO);
+	  	    	$("#update_detail_item_name").val(data.transferOrderItemDetail.ITEM_NAME);
+	  	    	$("#update_detail_volume").val(data.transferOrderItemDetail.VOLUME);
+	  	    	$("#update_detail_weight").val(data.transferOrderItemDetail.WEIGHT);
+	  	    	$("#update_detail_remark").val(data.transferOrderItemDetail.REMARK);
+	  	    	$("#update_detail_contact_person").val(data.contact.CONTACT_PERSON);
+	  	    	$("#update_detail_phone").val(data.contact.PHONE);
+	  	    	$("#update_detail_address").val(data.contact.ADDRESS);
+	  	    	$("#update_detail_is_damage").val(data.transferOrderItemDetail.IS_DAMAGE);
+	  	    	$("#update_detail_estimate_damage_amount").val(data.transferOrderItemDetail.ESTIMATE_DAMAGE_AMOUNT);
+	  	    	$("#update_detail_damage_revenue").val(data.transferOrderItemDetail.DAMAGE_REVENUE);
+	  	    	$("#update_detail_damage_payment").val(data.transferOrderItemDetail.DAMAGE_PAYMENT);
+	  	    	$("#update_detail_damage_remark").val(data.transferOrderItemDetail.DAMAGE_REMARK);
+			},'json');
+
+	  		// 模态框:修改单品明细
+			$('#updateDetailModal').modal('show');	
+    	}else{
+			//alert(inputId+", order_id=" + order_id +", item_id="+item_id+", detail_id="+detail_id+", contact_id="+notify_party_id);
+    		$.post('/transferOrderItemDetail/deleteTransferOrderItemDetail', {detail_id:detail_id,notify_party_id:notify_party_id}, function(data){},'json');
+    		
+    		// 动态展示单品
+	  	    $.post('/transferOrderItemDetail/getAllTransferOrderItemDetail', 'transfer_order_item_id='+item_id, function(data){
+				var transferOrderItemDetailTbody = $("#transferOrderItemDetailTbody");
+				transferOrderItemDetailTbody.empty();
+				if(data.transferOrderItemDetails.length > 0 && data.contacts.length > 0){
+					for(var i=0,j=0;i<data.transferOrderItemDetails.length,j<data.contacts.length;i++,j++){
+			  	    	transferOrderItemDetailTbody.append("<tr><td>"+data.transferOrderItemDetails[i].SERIAL_NO+"</td><td>"+data.transferOrderItemDetails[i].ITEM_NAME+"</td><td>"+data.transferOrderItemDetails[i].VOLUME+"</td><td>"+data.transferOrderItemDetails[i].WEIGHT+"</td><td>"+data.contacts[j].CONTACT_PERSON+"<br/>"+data.contacts[j].PHONE+"<br/>"+data.contacts[j].ADDRESS+"<br/></td>"
+			                       + "<td>"+data.transferOrderItemDetails[i].REMARK+"</td><td>"+data.transferOrderItemDetails[i].IS_DAMAGE+"</td><td>"+data.transferOrderItemDetails[i].ESTIMATE_DAMAGE_AMOUNT+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_REVENUE+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_PAYMENT+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_REMARK+"</td>"
+			                       + "<td><button id='itemDetailEdit("+data.transferOrderItemDetails[i].ID+"|"+data.transferOrderItemDetails[i].ITEM_ID+"["+data.transferOrderItemDetails[i].ORDER_ID+"-"+data.transferOrderItemDetails[i].NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='itemDetailDelete("+data.transferOrderItemDetails[i].ID+"|"+data.transferOrderItemDetails[i].ITEM_ID+"["+data.transferOrderItemDetails[i].ORDER_ID+"-"+data.transferOrderItemDetails[i].NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+		  	    	}
+				}else{
+					for(var i=0;i<data.transferOrderItemDetails.length;i++){
+			  	    	transferOrderItemDetailTbody.append("<tr><td>"+data.transferOrderItemDetails[i].SERIAL_NO+"</td><td>"+data.transferOrderItemDetails[i].ITEM_NAME+"</td><td>"+data.transferOrderItemDetails[i].VOLUME+"</td><td>"+data.transferOrderItemDetails[i].WEIGHT+"</td><td></td>"
+			                       + "<td>"+data.transferOrderItemDetails[i].REMARK+"</td><td>"+data.transferOrderItemDetails[i].IS_DAMAGE+"</td><td>"+data.transferOrderItemDetails[i].ESTIMATE_DAMAGE_AMOUNT+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_REVENUE+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_PAYMENT+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_REMARK+"</td>"
+			                       + "<td><button id='itemDetailEdit("+data.transferOrderItemDetails[i].ID+"|"+data.transferOrderItemDetails[i].ITEM_ID+"["+data.transferOrderItemDetails[i].ORDER_ID+"-"+data.transferOrderItemDetails[i].NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='itemDetailDelete("+data.transferOrderItemDetails[i].ID+"|"+data.transferOrderItemDetails[i].ITEM_ID+"["+data.transferOrderItemDetails[i].ORDER_ID+"-"+data.transferOrderItemDetails[i].NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+		  	    	}
+				}
+			},'json'); 
+    	}
+	});
+	  	    
+	// 更新单品		  	    	
+	$("#transferOrderItemDetailUpdateFormBtn").click(function(){
+		$.post('/transferOrderItemDetail/saveTransferOrderItemDetail', $("#transferOrderItemDetailUpdateForm").serialize(), function(data){
+			if(data.ID > 0){
+				// 模态框:修改单品明细
+				$('#updateDetailModal').modal('hide');
+				var item_id = $("#update_detail_transfer_order_item_id").val();
+		  	    $.post('/transferOrderItemDetail/getAllTransferOrderItemDetail', 'transfer_order_item_id='+item_id, function(data){
+					var transferOrderItemDetailTbody = $("#transferOrderItemDetailTbody");
+					transferOrderItemDetailTbody.empty();
+					if(data.transferOrderItemDetails.length > 0 && data.contacts.length > 0){
+						for(var i=0,j=0;i<data.transferOrderItemDetails.length,j<data.contacts.length;i++,j++){
+				  	    	transferOrderItemDetailTbody.append("<tr><td>"+data.transferOrderItemDetails[i].SERIAL_NO+"</td><td>"+data.transferOrderItemDetails[i].ITEM_NAME+"</td><td>"+data.transferOrderItemDetails[i].VOLUME+"</td><td>"+data.transferOrderItemDetails[i].WEIGHT+"</td><td>"+data.contacts[j].CONTACT_PERSON+"<br/>"+data.contacts[j].PHONE+"<br/>"+data.contacts[j].ADDRESS+"<br/></td>"
+				                       + "<td>"+data.transferOrderItemDetails[i].REMARK+"</td><td>"+data.transferOrderItemDetails[i].IS_DAMAGE+"</td><td>"+data.transferOrderItemDetails[i].ESTIMATE_DAMAGE_AMOUNT+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_REVENUE+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_PAYMENT+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_REMARK+"</td>"
+				                       + "<td><button id='itemDetailEdit("+data.transferOrderItemDetails[i].ID+"|"+data.transferOrderItemDetails[i].ITEM_ID+"["+data.transferOrderItemDetails[i].ORDER_ID+"-"+data.transferOrderItemDetails[i].NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='itemDetailDelete("+data.transferOrderItemDetails[i].ID+"|"+data.transferOrderItemDetails[i].ITEM_ID+"["+data.transferOrderItemDetails[i].ORDER_ID+"-"+data.transferOrderItemDetails[i].NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+			  	    	}
+					}else{
+						for(var i=0;i<data.transferOrderItemDetails.length;i++){
+				  	    	transferOrderItemDetailTbody.append("<tr><td>"+data.transferOrderItemDetails[i].SERIAL_NO+"</td><td>"+data.transferOrderItemDetails[i].ITEM_NAME+"</td><td>"+data.transferOrderItemDetails[i].VOLUME+"</td><td>"+data.transferOrderItemDetails[i].WEIGHT+"</td><td></td>"
+				                       + "<td>"+data.transferOrderItemDetails[i].REMARK+"</td><td>"+data.transferOrderItemDetails[i].IS_DAMAGE+"</td><td>"+data.transferOrderItemDetails[i].ESTIMATE_DAMAGE_AMOUNT+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_REVENUE+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_PAYMENT+"<br/>"+data.transferOrderItemDetails[i].DAMAGE_REMARK+"</td>"
+				                       + "<td><button id='itemDetailEdit("+data.transferOrderItemDetails[i].ID+"|"+data.transferOrderItemDetails[i].ITEM_ID+"["+data.transferOrderItemDetails[i].ORDER_ID+"-"+data.transferOrderItemDetails[i].NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>编辑</button><button id='itemDetailDelete("+data.transferOrderItemDetails[i].ID+"|"+data.transferOrderItemDetails[i].ITEM_ID+"["+data.transferOrderItemDetails[i].ORDER_ID+"-"+data.transferOrderItemDetails[i].NOTIFY_PARTY_ID+"' type='submit' class='btn  btn-primary'>删除</button></td></tr>");
+			  	    	}
+					}
+				},'json');
+			}
+		},'json');
+	});
+				                       
+	// 运输里程碑
+	$("#transferOrderMilestoneList").click(function(e){
+		e.preventDefault();
+    	// 切换到货品明细时,应先保存运输单
+    	// 应先判断order_id是否为空
+    	//提交前，校验数据
+        if(!$("#transferOrderForm").valid()){
+        	alert("请先保存运输单!");
+	       	return false; 
+        }
+    	// 保存运输单
+        $.post('/transferOrder/saveTransferOrder', $("#transferOrderForm").serialize(), function(transferOrder){
+			$("#transfer_order_id").val(transferOrder.ID);
+			$("#update_transfer_order_id").val(transferOrder.ID);
+			$("#order_id").val(transferOrder.ID);
+			if(transferOrder.ID>0){
+				$("#departureConfirmationBtn").attr("disabled", false);
+				$("#arrivalModeVal").val(transferOrder.ARRIVAL_MODE);
+			  	//alert("运输单保存成功!");
+			  	$("#saveTransferOrderBtn").attr("disabled", true);
+			  	$("#style").show();
+			}else{
+				alert('数据保存失败。');
+			}
+		},'json');
+    	
+		var order_id = $("#order_id").val();
+		$.post('/transferOrderMilestone/transferOrderMilestoneList',{order_id:order_id},function(data){
+			var transferOrderMilestoneTbody = $("#transferOrderMilestoneTbody");
+			transferOrderMilestoneTbody.empty();
+			for(var i = 0; i < data.length; i++)
+			{
+				transferOrderMilestoneTbody.append("<tr><th>"+data[i].ID+"</th><th>"+data[i].STATUS+"</th><th>"+data[i].LOCATION+"</th><th>"+data[i].CREATE_BY+"</th><th>"+data[i].CREATE_STAMP+"</th></tr>");
+			}
+		},'json');
+	});
+});
+</script>

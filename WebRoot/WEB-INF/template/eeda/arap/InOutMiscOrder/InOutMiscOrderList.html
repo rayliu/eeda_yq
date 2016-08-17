@@ -1,0 +1,90 @@
+<%layout("/yh/layout.html"){%>
+<link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet">
+<link href="/yh/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="/yh/js/plugins/datatables-1.10.9/css/jquery.dataTables.min.css" rel="stylesheet">
+<div id="page-wrapper">
+
+    <div class="row">
+        <div class="col-lg-12"></div>
+        <!-- /.col-lg-12 --> </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+
+                        <div class="form-group">
+                            <div class="controls">
+                                <a class="btn  btn-primary" href="/inOutMiscOrder/create">创建往来票据</a>
+                            </div>
+                            <hr/>
+                        </div>
+
+                        <!--  --------------------查询条件----------------                 -->
+                        <form role="form" style="margin: 0 15px;">
+                            <div class="row search_panel">
+                                <div class="col-lg-4">
+                                    <%include("/yh/component/search/inputField.html",{id:'charge_unit_filter', label:'收款单位'}){} %>
+                                    <%include("/yh/component/search/inputField.html",{id:'pay_unit_filter', label:'付款单位'}){} %>
+                                </div>
+                                <!-- end of col-lg-6-->
+                                <div class="col-lg-4">
+                                    <%include("/yh/component/search/inputField.html",{id:'order_no_filter', label:'单号'}){} %>
+                                    <%include("/yh/component/search/dateInputField.html",{div_id:'datetimepicker', input_id:'beginTime_filter', label:'开票开始时间'}){} %>
+                                </div><!-- end of col-lg-4-->
+                                <div class="col-lg-4">
+                                    <%include("/yh/component/search/selectField.html", 
+                                                {   id:'biz_type_filter', 
+                                                    label:'业务类型', 
+                                                    value_list:[{code:'', value:''}, {code:'personal', value:'借支'}, {code:'company', value:'公司'}]
+                                                }
+                                             ){} %>
+                                    
+                                    <%include("/yh/component/search/dateInputField.html",{div_id:'datetimepicker2', input_id:'endTime_filter', label:'结束时间'}){} %>
+                                </div><!-- end of col-lg-4--> 
+                                
+                            </div><!-- end of row--> 
+                            
+                        </form>
+                        <!--  --------------------查询条件----------------                -->
+
+                        <!--  --------------------查询结果------------                 -->
+                        <%  var col_list = [
+                                '往来票据单号',
+                                '业务类型',
+                                '单据类型',
+                                '开票时间',
+                                '票据单号',
+                                '收款单位',
+                                '收款人',
+                                '应付金额',
+                                '付款状态',
+                                '付款单位',
+                                '付款人',
+                                '应收金额',
+                                '收款状态',
+                                '创建时间',
+                                '备注'
+                            ];
+
+                           include("/yh/component/search/searchResultTable.html",{id:'result_table', list:col_list}){} %>
+                        <!--  --------------------查询结果------------                 -->        
+
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.wrapper -->
+<%}%>
+
+<script src="/yh/js/plugins/datatables-1.10.9/js/jquery.dataTables.js"></script>
+<script src="/yh/js/plugins/datatables-1.10.9/js/dataTables.bootstrap.js"></script>
+
+<script src="/yh/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/yh/js/bootstrap-datetimepicker.zh-CN.js"></script>
+
+<script src="/yh/js/plugins/sco/js/sco.message.js"></script>
+
+<script src="/yh/js/arap/InOutMiscOrder/list.js"></script>

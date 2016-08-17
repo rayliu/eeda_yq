@@ -1,0 +1,147 @@
+
+
+<%layout("/yh/layout.html"){%>
+<link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet">
+<link href="/yh/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+        <div id="page-wrapper">
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-header">
+                      <a class="btn  btn-primary" href="/costAdjustOrder/add">新增应付结账调整单</a>
+                    </div>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+           <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-list fa-fw"></i>应付结账调整单列表
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form role="form" style="margin: 0 15px;">
+                                <div class="row search_panel">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="search-label">订单号</label>
+                                            <input type="text" class="form-control search-control orderNo_filter" id="orderNo_filter" value="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="search-label">状态</label>
+                                            <select id="status_filter" class="form-control search-control status_filter">
+                                                <option value=""></option>
+                                                <option value="新建">新建</option>
+                                                <option value="已发车">已发车</option>
+                                                <option value="在途">在途</option>                                                
+                                                <option value="已入货场">已入货场</option>                                                
+                                                <option value="已入库">已入库</option>                                                
+                                                <option value="已签收">已签收</option>                                                
+                                            </select>
+                                            <!-- <input type="text" class="form-control search-control status_filter" id="status_filter"> -->
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                    <!-- end of col-lg-6-->
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="search-label">客户</label>
+                                            <input type="text" class="form-control search-control customer_filter" id="customer_filter" placeholder="请输入或者选择客户">
+                                        	<ul id='companyList' tabindex="-1" class="pull-right dropdown-menu default" style="top: 32%; left: 32%;"></ul>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="search-label">供应商</label>
+                                            <input type="text" class="form-control search-control sp_filter" id="sp_filter" placeholder="请选择或者输入供应商">
+                                        	<ul id='spList' class="pull-right dropdown-menu default dropdown-scroll" tabindex="-1" style="top: 35%; left: 2%;"></ul>
+                                        </div>
+                                       
+                                        
+                                    </div>
+                                    <div class="col-lg-4">
+                                    	<div class="form-group">
+                                            <label class="search-label">提货地点</label>
+                                            <input type="text" class="form-control search-control address_filter" id="address_filter">
+                                        </div>
+                                    	<div class="form-group">
+                                            <label class="search-label">网点</label>
+                                            <input type="text" class="form-control search-control officeName_filter" id="officeName_filter">
+                                        </div>
+                                    </div>
+                                    <!-- end of col-lg-6-->
+                                </div><!-- end of row-->
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">                                        
+                                            <div id="datetimepicker" class="input-append date "> 
+                                                <label class="search-label">开始时间</label> 
+                                                <input id="beginTime_filter" class="form-control search-control  beginTime_filter" type="text">
+                                                <span class="add-on">  
+                                                    <i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>  
+                                                </span>  
+                                            </div>
+                                        </div>    
+                                    </div>
+                                    <!-- end of col-lg-6-->
+                                    <div class="col-lg-4">
+                                        <div class="form-group">                                                    
+                                            <span id="datetimepicker2" class="input-append date search-control "> 
+                                                <label class="search-label">结束时间</label> 
+                                                <input id="endTime_filter" class="form-control search-control endTime_filter" type="text">
+                                                <span class="add-on">  
+                                                    <i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>  
+                                                </span>  
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- end of col-lg-6-->
+                                </div><!-- end of row-->
+                            
+                            </form>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="eeda-table">
+                                    <thead>
+                                        <tr>
+                                            <th>应付对账单ID</th>
+                                            <th>应付对账单号</th>
+                                            <th>供应商名称</th>
+                                            <th>供应商类型</th>
+                                            <th>状态</th>
+                                            <th>对应单号</th>
+                                            <th>创建人</th>
+                                            <th>时间段</th>
+                                            <th>应付金额</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+
+                            </div>
+                             
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    注意：对应单号可以是提货单，发车单，配送单
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+          
+        </div>
+       
+
+<%}%>
+
+<script src="/yh/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="/yh/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="/yh/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/yh/js/bootstrap-datetimepicker.zh-CN.js"></script>
+
+<script src="/yh/js/arap/CostAdjustOrder/list.js"></script>
+<script src="/yh/js/plugins/sco/js/sco.message.js"></script>

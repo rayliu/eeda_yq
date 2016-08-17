@@ -1,0 +1,139 @@
+<%layout("/yh/layout.html"){%>
+<link href="/yh/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="/yh/css/ui/jquery-ui.css">
+     <link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet">  
+        <div id="page-wrapper">
+            <div class="row">
+           
+                <div class="col-lg-12">
+                    <div class="btn-header"style="font-size: 32px">编辑转账单</div>                  
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        
+                        <!-- /.panel-heading -->
+                        <div class="panel-body" id="total">
+                  
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#basic" data-toggle="tab" id = "carmanagebasic">基本信息</a>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="basic">
+                                	<div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel-body">
+			                                <!-- 基本信息 -->
+			                                <div class="row">
+			                                   <form id="expenseAccountForm" method="post" action="">
+			                                   <input id="transferOrderId" type="hidden" name="transferOrderId" value="${transferaccounts.id!''}">
+					                                <div class="col-lg-6">
+				                                        <h2>基本信息</h2>
+		                                    <div class="form-group">
+		                                        <label>转账单号：</label>	<span id ="sorder_no"><strong>${transferaccounts.order_no!''}</strong></span>
+		                                    </div>
+		                                    <div class="form-group">
+		                                        <label>状态：</label>	<span  id="costPreInvoiceOrderStatus">${transferaccounts.status!''}</span>
+		                                    </div>
+		                                    <div class="form-group">
+		                                        <label>创建人：</label><span id ="create_name"><strong>${createName!''}</strong></span>                                    
+		                                    </div>
+		                                    <div class="form-group">
+		                                        <label>创建时间：</label>	<span id="create_stamp">${transferaccounts.create_stamp!''}</span>                                       
+		                                    </div>
+		                                    <div class="form-group">
+		                                        <label>确认人：</label>	<span id="confirm_name">${confirmName!''}</span>                                       
+		                                    </div>
+		                                    <div class="form-group">
+		                                        <label>确认时间：</label>	<span id="confirm_stamp">${confirmStamp!''}</span>                                          
+		                                    </div>                                            
+                                            <div class="form-group">
+                                                <label>备注</label>
+                                                <textarea class="form-control" rows="7" name="remark" id="remark">${transferaccounts.remark!''}</textarea>
+                                            </div> 
+			                                        </div> 
+				                                   <div class="col-lg-6">
+				                                   		<h2>账户信息</h2>                                        
+				                        <div class="form-group" id="noInvoice">    
+                                        <div class="form-group">
+		                                        <label>转账类型</label>
+		                                         <input type="hidden" id="transfer_type" name="transfer_type" value="${transferaccounts.transfer_method!''}">
+		                                        <select id="transfer_filter" name="transfer_filter" class="form-control search-control shouru_filter">
+		                                        <option class="form-control" value=""></option>
+		                                        <option class="form-control" value="in">存款</option>
+		                                        <option class="form-control" value="out">取款</option>
+		                                        <option class="form-control" value="transfer">转账</option>
+		                                        </select>                               
+		                                </div>
+		                                <div class="form-group">
+		                                <input type="hidden" id="in_hidden" name="in_hidden" value="${in_acc.id!''}">
+		                                <label>转入账户</label> 
+		                                        <select id="in_filter" name="in_filter" class="form-control search-control shouru_filter"></select>                                        
+		                                </div> 
+		                                <div class="form-group">
+		                                <input type="hidden" id="out_hidden" name="out_hidden" value="${out_acc.id!''}">
+		                                <label>转出账户</label> 
+		                                <input type="hidden" id="in_hidden" name="in_hidden" value="${in_acc.id!''}">
+		                                        <select id="out_filter" name="out_filter" class="form-control search-control shouru_filter"></select>                                          
+		                                </div>
+		                                <div class="form-group">
+		                                        <label>转账金额</label> <input type="text" class="form-control search-control orderNo_filter" id="amount" name="amount" value="${transferaccounts.amount!''}">                                        
+		                                </div>
+		                                <div id="datetimepicker" class="form-group"> 
+                                                <label>转账时间</label>
+                                                <input id="transfer_time" class="form-control search-control shouru_filter" type="text" name="transfer_time" value="${transferaccounts.transfer_stamp!''}">
+                                                <span class="add-on">  
+                                                    <i class="fa fa-calendar icon-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>  
+                                                </span>  
+                                            </div>  
+                                        </div>
+				                                   </div>
+			                                   </form>
+		                                    </div> 
+                                   		</div>
+                                   	</div>
+                                </div> 
+                            </div>   
+                        </div>
+                        <!-- /.panel-body --> 
+                        <div class=".tooltip-demo">
+                            <hr/>
+                        	<a style="display:none" id ="style"><i class='fa fa-check'></i></a>                            
+		               		<button id="saveBtn" disabled type="button" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">保存</button>
+		               		<button id="confirmBtn" disabled type="button" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">确定</button>
+		               		<a class="btn  btn-primary" href="/transferAccountsOrder">返回</a>
+		               		<button id="returnConfirmBtn" disabled type="button" class="btn  btn-primary">撤回</button>
+                        </div>                       
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+			</div> 
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+<%}%>
+<script src="/yh/css/ui/jquery-ui.js"></script>
+<script src="/yh/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="/yh/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="/yh/js/plugins/dataTables/jquery.dataTables.editable.js" type="text/javascript"></script>
+<script src="/yh/js/plugins/dataTables/jquery.jeditable.js" type="text/javascript"></script>
+<!-- 引入校验的js 文件及其 中文 文件-->
+<script src="/yh/js/jquery.validate.min.js"></script>
+<script src="/yh/js/jvalidate.messages_cn.js"></script>
+<script src="/yh/js/plugins/sco/js/sco.message.js"></script>
+<script src="/yh/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/yh/js/bootstrap-datetimepicker.zh-CN.js"></script>
+
+<script src="/yh/js/eeda-common.js"></script>
+<script>
+	var order_no = '${rei.order_no!''}';
+</script>
+<script src="/yh/js/arap/TransferAccountsOrder/edit.js"></script>

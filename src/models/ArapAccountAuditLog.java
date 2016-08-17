@@ -1,0 +1,1 @@
+package models;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class ArapAccountAuditLog extends Model<ArapAccountAuditLog> {    public static final String TYPE_CHARGE="CHARGE";    public static final String TYPE_COST="COST";    	public static final ArapAccountAuditLog dao = new ArapAccountAuditLog();}

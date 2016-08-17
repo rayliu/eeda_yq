@@ -1,0 +1,1 @@
+package models.yh.arap.prePayOrder;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class ArapPrePayOrderItem extends Model<ArapPrePayOrderItem> {	public static final ArapPrePayOrderItem dao = new ArapPrePayOrderItem();}
