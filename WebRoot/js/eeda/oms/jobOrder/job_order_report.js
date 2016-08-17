@@ -172,6 +172,39 @@ $(document).ready(function() {
     	}
     });
     
+    //生成海运头程资料
+    $('#printOceanHead').click(function(){
+    	var oceanHead = {}
+    	var form = $('#oceanHeadForm input');
+    	for(var i = 0; i < form.length; i++){
+    		var name = form[i].id;
+        	var value =form[i].value;
+        	if(name){
+        		oceanHead[name] = value;
+        	}
+    	}
+    	oceanHead.id = $('#oceanHeadId').val();
+    	oceanHead.order_id = $('#order_id').val();
+    	
+		$.post('/jobOrderReport/printOceanHead', {params:JSON.stringify(oceanHead)}, function(data){
+			
+			if(data.oceanHeadId){
+				$("#oceanHeadId").val(data.oceanHeadId);
+				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+		  
+		
+		    }else{
+		        $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+		        
+		    }
+		},'json').fail(function(){
+		    $.scojs_message('失败', $.scojs_message.TYPE_ERROR);
+		    
+		  });
+		
+    });
+    
+    
     //生成空运booking PDF
     $('#printAirBooking').click(function(){
     	$('#shipper_input').val()==''

@@ -302,12 +302,84 @@
            	 <input id="printOceanWord" type="button" class="btn btn-success" value="生成电放保函  Word">
            	 <input id="printOceanBooking" type="button" class="btn btn-success" value="生成booking PDF">
            	 <input id="printOceanSI" type="button" class="btn btn-success" value="生成SI PDF">
-           	 <input id="printOceanHead" type="button" class="btn btn-success" value="生成头程资料 PDF">
-           	 <input id="printOceanMBL" type="button" class="btn btn-success" value="确认MBL">
-           	 <input id="alreadyAFR/AMS" type="button" class="btn btn-success" value="已AFR/AMS">
-           	 <input id="alreadyInline" type="button" class="btn btn-success" value="已电放">
+           	 
+           	 <button id="printOceanHBL" class="btn btn-success">生成HBL PDF</button>
+           	 <button id="printOceanWord" class="btn btn-success">生成电放保函  Word</button>
+           	 <button id="printOceanBooking" class="btn btn-success">生成booking PDF</button>
+           	 <button id="printOceanSI" class="btn btn-success">生成SI PDF</button>
+           	 <a data-target='#oceanHeadDetail' data-toggle='modal'>
+				<button class="btn btn-success">生成头程资料 PDF</button>
+			 </a>
+           	 <button id="oceanMBL" class="btn btn-success">确认MBL</button>
+           	 <button id="alreadyAFR/AMS" class="btn btn-success">已AFR/AMS</button>
+           	 <button id="alreadyInline" class="btn btn-success">已电放</button>
 			 <br><br>
            </div>
+           
+     <div class="modal fade" id="oceanHeadDetail">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">生成头程资料详情</div>
+	      	<div class="modal-body">
+	      	
+	      	<input type="hidden" value="${oceanHead.id!oceanHeadId!''}" id="oceanHeadId">
+	      	<form id = "oceanHeadForm">
+				<div class="form-group">
+					
+						<div class="row">
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'endPlace', 
+			                           label:'TO'
+			                       }){}%>
+			               </div>
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'startPlace', 
+			                           label:'FROM'
+			                       }){}%>
+			               </div>
+			           </div>
+						<div class="row">
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'attn', 
+			                           label:'ATTN'
+			                       }){}%>
+			               </div>
+			               <div class="col-lg-6">
+				                 <%include("/eeda/component/form/inputField.html", 
+			                       {   id:'tel', 
+			                           label:'TEL'
+			                       }){}%>
+			               </div>
+			           </div>
+						<div class="row">
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'fax', 
+			                           label:'FAX'
+			                       }){}%>
+			               </div>
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/dateInputField.html", 
+			                       {   id:'date',
+			                           label:'DATE',
+			                           value:''
+			                       }){}%>
+			               </div>
+			           </div>
+					
+				</div>   
+				</form>
+	        </div>
+	        <div class="modal-footer">
+	        	<button id="printOceanHead" class="btn btn-primary">确认打印PDF</button>
+	            <button class="btn  btn-default" data-dismiss="modal">返回</button>
+	        </div>
+	    </div>
+	  </div>
+	</div>
                     
 <div class="row">
     <div class="form-group">
