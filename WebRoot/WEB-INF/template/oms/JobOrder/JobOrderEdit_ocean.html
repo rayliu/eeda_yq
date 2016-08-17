@@ -298,11 +298,6 @@
      </div>
 </form>
            <div id="oceanPDF" class="form-group">
-             <input id="printOceanHBL" type="button" class="btn btn-success" value="生成HBL PDF">
-           	 <input id="printOceanWord" type="button" class="btn btn-success" value="生成电放保函  Word">
-           	 <input id="printOceanBooking" type="button" class="btn btn-success" value="生成booking PDF">
-           	 <input id="printOceanSI" type="button" class="btn btn-success" value="生成SI PDF">
-           	 
            	 <button id="printOceanHBL" class="btn btn-success">生成HBL PDF</button>
            	 <button id="printOceanWord" class="btn btn-success">生成电放保函  Word</button>
            	 <button id="printOceanBooking" class="btn btn-success">生成booking PDF</button>
@@ -330,13 +325,15 @@
 			               <div class="col-lg-6">
 			               		<%include("/eeda/component/form/inputField.html", 
 			                       {   id:'endPlace', 
-			                           label:'TO'
+			                           label:'TO',
+			                           value:oceanHead.endPlace!''
 			                       }){}%>
 			               </div>
 			               <div class="col-lg-6">
 			               		<%include("/eeda/component/form/inputField.html", 
 			                       {   id:'startPlace', 
-			                           label:'FROM'
+			                           label:'FROM',
+			                           value:oceanHead.startPlace!''
 			                       }){}%>
 			               </div>
 			           </div>
@@ -344,13 +341,15 @@
 			               <div class="col-lg-6">
 			               		<%include("/eeda/component/form/inputField.html", 
 			                       {   id:'attn', 
-			                           label:'ATTN'
+			                           label:'ATTN',
+			                           value:oceanHead.attn!''
 			                       }){}%>
 			               </div>
 			               <div class="col-lg-6">
 				                 <%include("/eeda/component/form/inputField.html", 
 			                       {   id:'tel', 
-			                           label:'TEL'
+			                           label:'TEL',
+			                           value:oceanHead.tel!''
 			                       }){}%>
 			               </div>
 			           </div>
@@ -358,14 +357,31 @@
 			               <div class="col-lg-6">
 			               		<%include("/eeda/component/form/inputField.html", 
 			                       {   id:'fax', 
-			                           label:'FAX'
+			                           label:'FAX',
+			                           value:oceanHead.fax!''
 			                       }){}%>
 			               </div>
 			               <div class="col-lg-6">
 			               		<%include("/eeda/component/form/dateInputField.html", 
 			                       {   id:'date',
 			                           label:'DATE',
-			                           value:''
+			                           value:oceanHead.date!''
+			                       }){}%>
+			               </div>
+			           </div>
+						<div class="row">
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'title', 
+			                           label:'标题',
+			                           value:oceanHead.title!''
+			                       }){}%>
+			               </div>
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'port',
+			                           label:'港口',
+			                           value:oceanHead.port!''
 			                       }){}%>
 			               </div>
 			           </div>

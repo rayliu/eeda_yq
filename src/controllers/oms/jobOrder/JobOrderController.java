@@ -183,8 +183,8 @@ public class JobOrderController extends Controller {
 		Record r = jobOrder.toRecord();
    		r.set("creator_name", user_name);
    		
-   		//海运头程资料id
-   		r.set("oceanHead", Db.findFirst("select id from job_order_shipment_head where order_id = ?",id));
+   		//海运头程资料
+   		r.set("oceanHead", Db.findFirst("select * from job_order_shipment_head where order_id = ?",id));
    		
    		r.set("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
    		r.set("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
@@ -360,8 +360,8 @@ public class JobOrderController extends Controller {
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
     	
-    	//海运头程资料id
-   		setAttr("oceanHead", Db.findFirst("select id from job_order_shipment_head where order_id = ?",id));
+    	//海运头程资料
+   		setAttr("oceanHead", Db.findFirst("select * from job_order_shipment_head where order_id = ?",id));
     	  
         render("/oms/JobOrder/JobOrderEdit.html");
     }
