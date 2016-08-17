@@ -151,12 +151,13 @@ $(document).ready(function() {
     //------------事件处理,email_table
     var emailTable = eeda.dt({
         id: 'email_table',
+        autoWidth: false,
         columns:[
-            { "data": "MAIL_TITLE"},
-            { "data": "DOC_NAME"}, 
-            { "data": "RECEIVE_MAIL"}, 
-            { "data": "SENDER"}, 
-            { "data": "SEND_TIME"}
+            { "data": "MAIL_TITLE","width": "100px"},
+            { "data": "DOC_NAME","width": "300px"}, 
+            { "data": "RECEIVE_MAIL","width": "100px"}, 
+            { "data": "SENDER","width": "100px"}, 
+            { "data": "SEND_TIME","width": "100px"}
         ]
     });
     //刷新明细表
