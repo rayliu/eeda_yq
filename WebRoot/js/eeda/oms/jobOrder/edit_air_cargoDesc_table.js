@@ -98,6 +98,13 @@ $(document).ready(function() {
                     return '<input type="number" name="high" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
+            { "data": "GROSS_WEIGHT", "width": "180px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="number" name="gross_weight" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
             { "data": "AMOUNT", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
