@@ -7,11 +7,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           id: 'eeda-table',
           paging: true,
           serverSide: true, //不打开会出现排序不对
-          ajax: "/jobOrder/customOrderlist",
+          ajax: "/customOrder/customOrderlist",
           columns: [
               { "data": "ORDER_NO", width: '10%',
                   "render": function ( data, type, full, meta ) {
-                      return "<a href='/jobOrder/editCustomOrder?id="+full.ID+"'target='_blank'>"+data+"</a>";
+                      return "<a href='/customOrder/editCustomOrder?id="+full.ID+"&order_no="+data+" 'target='_blank'>"+data+"</a>";
                   }
               },
               { "data": "CUSTOM_ORDER_NO", width: '10%',}, 
@@ -42,7 +42,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/jobOrder/customOrderlist?order_no="+order_no
+          var url = "/customOrder/customOrderlist?order_no="+order_no
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 

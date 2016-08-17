@@ -478,53 +478,5 @@ public class JobOrderController extends Controller {
         renderJson(map); 
     }
    
-    public void customOrderlist(){
-        String sLimit = "";
-        String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
-
-        String sql = "select jo.*, ifnull(u.c_name, u.user_name) creator_name, p.abbr customer_name, joc.custom_order_no  from job_order jo "
-                + " left join party p on p.id = jo.customer_id"
-                + " left join user_login u on u.id = jo.creator"
-                + " left join job_order_custom joc on order_id = jo.id and joc.custom_type='china' "
-                + " where jo.transport_type like '%custom%' ";
-        
-        String condition = DbUtils.buildConditions(getParaMap());
-
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
-        Record rec = Db.findFirst(sqlTotal);
-        logger.debug("total records:" + rec.getLong("total"));
-        
-        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
-        Map orderListMap = new HashMap();
-        orderListMap.put("draw", pageIndex);
-        orderListMap.put("recordsTotal", rec.getLong("total"));
-        orderListMap.put("recordsFiltered", rec.getLong("total"));
-
-        orderListMap.put("data", orderList);
-
-        renderJson(orderListMap); 
-    }
-
-    public void editCustomOrder(){
-        String id = getPara("id");
-        JobOrder jobOrder = JobOrder.dao.findById(id);
-        setAttr("order", jobOrder);
-     
-//        setAttr("shipment", getShiment(id));
-
-        //客户回显
-        Party party = Party.dao.findById(jobOrder.get("customer_id"));
-        setAttr("party", party);
-        
-        
-        //用户信息
-        long creator = jobOrder.getLong("creator");
-        UserLogin user = UserLogin.dao.findById(creator);
-        setAttr("user", user);
-        
-        render("/oms/CustomOrder/CustomOrderEdit.html");
-    }
+   
 }

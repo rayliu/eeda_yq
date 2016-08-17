@@ -13,6 +13,7 @@ import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderArap;
+import models.eeda.oms.jobOrder.JobOrderCustom;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 
@@ -44,146 +45,19 @@ public class CustomOrderController extends Controller {
 	public void index() {
 		render("/oms/CustomOrder/CustomOrderList.html");
 	}
-	
-    public void create() {
-    	
-    	String order_id=getPara("order_id");
-    	String itemIds=getPara("itemIds");
-    	if(StringUtils.isNotEmpty(order_id)){
-    		//查询plan_order 里的计划单号
-    		PlanOrder planOrder = PlanOrder.dao.findById(order_id);
-        	setAttr("planOrder", planOrder);
-    	}
 
-    	if(StringUtils.isNotEmpty(itemIds)){
-    		//查询plan_order_item
-			String sql="select * from plan_order_item where id in("+itemIds+")";
-	    	List<Record> plan_order_item= Db.find(sql);
-	    	for(Record re : plan_order_item){
-	    		re.set("id", null);
-	    	}
-	    	setAttr("itemList", plan_order_item);
-    	}
-    	
-        render("/oms/CustomOrder/CustomOrderEdit.html");
-    }
-    
-    
-    
-    @SuppressWarnings("unchecked")
-	@Before(Tx.class)
-   	public void save() throws Exception {		
-   		String jsonStr=getPara("params");
-       	
-       	Gson gson = new Gson();  
-        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
-            
-        JobOrder jobOrder = new JobOrder();
-   		String id = (String) dto.get("id");
-   		
-   		UserLogin user = LoginUserController.getLoginUser(this);
-   		
-   		if (StringUtils.isNotEmpty(id)) {
-   			//update
-   			jobOrder = JobOrder.dao.findById(id);
-   			DbUtils.setModelValues(dto, jobOrder);
-   			
-   			jobOrder.update();
-   		} else {
-   			//create 
-   			DbUtils.setModelValues(dto, jobOrder);
-   			
-   			//需后台处理的字段
-   			jobOrder.set("order_no", OrderNoGenerator.getNextOrderNo("GZ"));
-   			jobOrder.set("creator", user.getLong("id"));
-   			jobOrder.set("create_stamp", new Date());
-   			jobOrder.save();
-   			
-   			id = jobOrder.getLong("id").toString();
-   		}
-   		
-   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-		DbUtils.handleList(itemList, id, JobOrderShipmentItem.class, "order_id");
-		
-		List<Map<String, String>> chargeList = (ArrayList<Map<String, String>>)dto.get("charge_list");
-		DbUtils.handleList(chargeList, id, JobOrderArap.class, "order_id");
-		
-		
-		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
-		DbUtils.handleList(shipment_detail, id, JobOrderShipment.class, "order_id");
-		
-		//获取shipment_id
-		JobOrderShipment jst = getShiment(id) ;
-
-		long creator = jobOrder.getLong("creator");
-   		String user_name = LoginUserController.getUserNameById(creator);
-   		
-		Record r = jobOrder.toRecord();
-   		r.set("creator_name", user_name);
-   		r.set("shipment", jst);
-   		renderJson(r);
-   	}
-    
-    private JobOrderShipment getShiment(String id){
-		JobOrderShipment jst = JobOrderShipment.dao.findFirst("select * from job_order_shipment jos where order_id = ?",id);
-		return jst;
-    }
-    
-    private List<Record> getItems(String orderId,String type) {
-    	String itemSql = "";
-    	List<Record> itemList = null;
-    	if("cargo".equals(type)){
-    		itemSql = "select * from job_order_cargo where order_id=?";
-    		itemList = Db.find(itemSql, orderId);
-    	}else if("charge".equals(type)){
-    		itemSql = "select * from job_order_arap where order_id=?";
-    		itemList = Db.find(itemSql, orderId);
-    	}
-		
-		return itemList;
-	}
-   
-    
-    @Before(Tx.class)
-    public void edit() {
-    	String id = getPara("id");
-    	JobOrder jobOrder = JobOrder.dao.findById(id);
-    	setAttr("order", jobOrder);
-    	
-    	//获取明细表信息
-    	setAttr("itemList", getItems(id,"cargo"));
-    	
-    	//获取明细表信息
-    	setAttr("chargeList", getItems(id,"charge"));
-    	
-    	setAttr("shipment", getShiment(id));
-
-    	//客户回显
-    	Party party = Party.dao.findById(jobOrder.get("customer_id"));
-    	setAttr("party", party);
-    	
-    	
-    	//用户信息
-    	long creator = jobOrder.getLong("creator");
-    	UserLogin user = UserLogin.dao.findById(creator);
-    	setAttr("user", user);
-    	
-        render("/oms/CustomOrder/CustomOrderEdit.html");
-    }
-    
-     
-    public void list() {
-    	String sLimit = "";
-        String pageIndex = getPara("sEcho");
-        if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
-            sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
+	public void customOrderlist(){
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
 
-        String sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name "
-    			+ "  from job_order jor "
-    			+ "  left join party p on p.id = jor.customer_id"
-    			+ "  left join user_login u on u.id = jor.creator"
-    			+ "   where 1 =1 ";
+        String sql = "select jo.*, ifnull(u.c_name, u.user_name) creator_name, p.abbr customer_name, joc.custom_order_no  from job_order jo "
+                + " left join party p on p.id = jo.customer_id"
+                + " left join user_login u on u.id = jo.creator"
+                + " left join job_order_custom joc on order_id = jo.id and joc.custom_type='china' "
+                + " where jo.transport_type like '%custom%' ";
         
         String condition = DbUtils.buildConditions(getParaMap());
 
@@ -191,39 +65,45 @@ public class CustomOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> BillingOrders = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
-        Map map = new HashMap();
-        map.put("sEcho", pageIndex);
-        map.put("iTotalRecords", rec.getLong("total"));
-        map.put("iTotalDisplayRecords", rec.getLong("total"));
+        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+        Map orderListMap = new HashMap();
+        orderListMap.put("draw", pageIndex);
+        orderListMap.put("recordsTotal", rec.getLong("total"));
+        orderListMap.put("recordsFiltered", rec.getLong("total"));
 
-        map.put("aaData", BillingOrders);
+        orderListMap.put("data", orderList);
 
-        renderJson(map); 
+        renderJson(orderListMap); 
     }
-    
-    //异步刷新字表
-    public void tableList(){
-    	String order_id = getPara("order_id");
-    	String type = getPara("type");
-    	
-    	List<Record> list = null;
-    	if("cargo".equals(type)){
-    		list = getItems(order_id,type);
-    	}else if("charge".equals(type)){
-    		list = getItems(order_id,type);
-    	}
-    	
-    	Map map = new HashMap();
-        map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
 
-        map.put("aaData", list);
-
-        renderJson(map); 
+	public void editCustomOrder(){
+		
+		setAttr("loginUser",LoginUserController.getLoginUserName(this));
+		
+        String id = getPara("id");
+        String order_no = getPara("order_no");
+        setAttr("order_no", order_no);
+        setAttr("order_id", id);
+        
+        String sql = "select joc.* from job_order_custom joc where order_id = ? and custom_type = 'china' ";
+        setAttr("custom",Db.findFirst(sql,id));
+        
+        render("/oms/CustomOrder/CustomOrderEdit.html");
     }
-   
-   
 
+	@Before(Tx.class)
+   	public void save() throws Exception {		
+   		String jsonStr=getPara("params");
+       	
+       	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+            
+   		String id = (String) dto.get("id");
+   		
+	   	//报关
+		List<Map<String, String>> chinaCustom = (ArrayList<Map<String, String>>)dto.get("chinaCustom");
+		DbUtils.handleList(chinaCustom, id, JobOrderCustom.class, "order_id");
+		renderJson("{\"result\":true}");
+	}
+	
 }

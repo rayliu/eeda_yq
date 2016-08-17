@@ -4,78 +4,81 @@
                 <div class="col-lg-12">
                     <div class="btn-header" style="font-size:32px">报关通知单</div>
                 </div>
-                <!-- /.col-lg-12 -->
             </div>
-            <!-- /.row -->
-
-            <div class="row">  <!--  form row  -->
-            <input type="hidden" id="item_id" value="${shipment.id!''}">
+			
+             
+<input type="hidden" id="order_id" value="${order_id!''}">
+<input type="hidden" id="custom_id" value="${custom.id!''}">
+<form id="customForm">
+            <div class="form-group">  <!--  form row  -->
                     <div class="row">
-                        <div class="col-lg-4">
+                    	<div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'hbl_no', 
-                                    label:'工作单号码', 
-                                    value:shipment.hbl_no!'',
+                                {   id:'order_no', 
+                                    label:'工作单号', 
+                                    value:order_no!'',
                                     disabled:'disabled'
                                 }){}%>
                         </div>
+                    
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'hbl_no', 
-                                    label:'报关单号码', 
-                                    value:shipment.hbl_no!'',
-                                    disabled:'disabled'
-                                }){}%>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'carrier', 
+                                {   id:'customs_broker', 
                                     label:'报关行', 
-                                    value:shipment.carrier!'',
+                                    value:custom.customs_broker!'',
                                     disabled:'disabled'
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'carrier', 
+                                {   id:'contact', 
                                     label:'联系人', 
-                                    value:shipment.carrier!'',
-                                    disabled:'disabled'
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'bl_type', 
-                                    label:'电话', 
-                                    value:shipment.bl_type!'',
+                                    value:custom.contact!'',
                                     disabled:'disabled'
                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
-                        
+                    	 <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'phone', 
+                                    label:'电话', 
+                                    value:custom.phone!'',
+                                    disabled:'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'custom_order_no', 
+                                    label:'报关单号码', 
+                                    value:custom.custom_order_no!'',
+                                    disabled:'disabled'
+                                }){}%>
+                        </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/selectField.html", 
-                                {   id:'type', 
+                                {   id:'trade_mode', 
                                     label:'贸易方式(监管方式)', 
                                     required:'required',
-                                    value:order.type!'',
+                                    value:custom.trade_mode!'',
                                     value_list:[
                                         {code:'export', value:'一般贸易'},
                                         {code:'import', value:'进料对口'}, 
                                         {code:'both', value:'其它进出口免费'}
-                                    ]
+                                    ],
+                                    disabled: 'disabled'
                                 }){}%>
                         </div>
-                        <div class="col-lg-4">
+                    </div>
+                    <div class="row">
+                    	<div class="col-lg-4">
                             <%include("/eeda/component/form/selectField.html", 
-                                {   id:'type', 
+                                {   id:'trade_clause', 
                                     label:'贸易条款', 
                                     required:'required',
-                                    value:order.type!'',
+                                    value:custom.trade_clause!'',
                                     value_list:[
+                                        {code:'', value:''},
                                         {code:'export', value:'CIF'},
                                         {code:'import', value:'EXW'}, 
                                         {code:'both', value:'FOB'},
@@ -87,66 +90,78 @@
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'vessel', 
+                                {   id:'destination_country', 
                                     label:'目的国', 
-                                    value:shipment.vessel!'',
-                                    disabled: 'disabled'
+                                    value:custom.destination_country!'',
+                                    disabled:'disabled'
                                 }){}%>
                         </div>
                     </div>
                    
-                    <div class="row">
+                <div class="row">
 
-                        <div class="form-group">
-                            <div class="col-lg-12">
-                                <div class="form-group" >
-                                <label class="search-label">状态</label>
-                                <div class="checkbox">
-                                    <label >
-                                        <input type="checkbox" value='ocean' style="margin-top: 0px;">
-                                        1.申报成功
-                                    </label>
-                                     (更新人: 周星星, 更新时间:2016-07-21 15:23:12)
-                                </div>
-                                <div class="checkbox">
-                                    <label >
-                                        <input type="checkbox" value='air' style="margin-top: 0px;">
-                                        2.发往海关数据库
-                                    </label>
-                                     (更新人: 周星星, 更新时间:2016-07-21 15:23:12)
-                                </div>
-                                <div class="checkbox">
-                                    <label >
-                                        <input type="checkbox" value='domestic' style="margin-top: 0px;">
-                                        3.入库成功
-                                    </label>
-                                     (更新人: 周星星, 更新时间:2016-07-21 15:23:12)
-                                </div>
-                                <div class="checkbox">
-                                    <label >
-                                        <input type="checkbox" value='domestic' style="margin-top: 0px;">4.报关单查验(报关人: 周星星, 时间:2016-07-21 15:23:12)
-                                    </label>
-                                </div>
-                                <div class="checkbox">
-                                    <label >
-                                        <input type="checkbox" value='domestic' style="margin-top: 0px;">
-                                        6.放行(报关人: 周星星, 时间:2016-07-21 15:23:12)
-                                    </label>
-                                </div>
-                                <div class="checkbox">
-                                    <label >
-                                        <input type="checkbox" value='domestic' style="margin-top: 0px;">
-                                        7.审结(报关人: 周星星, 时间:2016-07-21 15:23:12)
-                                    </label>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-            </div><!-- /.row -->
-
-
-
+                       <div class="form-group">
+                           <div class="col-lg-12">
+                               <div class="form-group" >
+                               <label class="search-label">状态</label>
+                               <input type="hidden" value="${custom.status!''}" id="hidden_status">
+                            <input type="hidden" value="${loginUser!''}" id="updater">
+                             
+                               <div class="checkbox">
+                                <input type="hidden" value="${custom.declareSuccess_updater!''}" id="declareSuccess_updater">
+                                <input type="hidden" value="${custom.declareSuccess_time!''}" id="declareSuccess_time">
+                                   <label>
+                                   	<input type="checkbox" value='declareSuccess' style="margin-top: 0px;">
+                                       1.申报成功(更新人: <span id="declareSuccess_updater_span">${custom.declareSuccess_updater!''}</span> , 更新时间: <span id="declareSuccess_time_span">${custom.declareSuccess_time!''}</span>)
+                                   </label>
+                               </div>
+                               <div class="checkbox">
+                                <input type="hidden" value="${custom.onDataBaseRoad_updater!''}" id="onDataBaseRoad_updater">
+                                <input type="hidden" value="${custom.onDataBaseRoad_time!''}" id="onDataBaseRoad_time">
+                                   <label>
+                                       <input type="checkbox" value='onDataBaseRoad' style="margin-top: 0px;">
+                                       2.发往海关数据库(更新人: <span id="onDataBaseRoad_updater_span">${custom.onDataBaseRoad_updater!''}</span> , 更新时间: <span id="onDataBaseRoad_time_span">${custom.onDataBaseRoad_time!''}</span>)
+                                   </label>
+                               </div>
+                               <div class="checkbox">
+                                <input type="hidden" value="${custom.gateInSuccess_updater!''}" id="gateInSuccess_updater">
+                                <input type="hidden" value="${custom.gateInSuccess_time!''}" id="gateInSuccess_time">
+                                   <label>
+                                       <input type="checkbox" value='gateInSuccess' style="margin-top: 0px;">
+                                       3.入库成功(更新人: <span id="gateInSuccess_updater_span">${custom.gateInSuccess_updater!''}</span> , 更新时间: <span id="gateInSuccess_time_span">${custom.gateInSuccess_time!''}</span>)
+                                   </label>
+                               </div>
+                               <div class="checkbox">
+                               	<input type="hidden" value="${custom.customOrderCheck_updater!''}" id="customOrderCheck_updater">
+                                <input type="hidden" value="${custom.customOrderCheck_time!''}" id="customOrderCheck_time">
+                                   <label>
+                                       <input type="checkbox" value='customOrderCheck' style="margin-top: 0px;">
+                                       4.报关单查验(报关人: <span id="customOrderCheck_updater_span">${custom.customOrderCheck_updater!''}</span> , 时间: <span id="customOrderCheck_time_span">${custom.customOrderCheck_time!''}</span>)
+                                   </label>
+                               </div>
+                               <div class="checkbox">
+                             	    <input type="hidden" value="${custom.release_updater!''}" id="release_updater">
+                                <input type="hidden" value="${custom.release_time!''}" id="release_time">
+                                   <label>
+                                       <input type="checkbox" value='release' style="margin-top: 0px;">
+                                       5.放行(报关人: <span id="release_updater_span">${custom.release_updater!''}</span> , 时间: <span id="release_time_span">${custom.release_time!''}</span>)
+                                   </label>
+                               </div>
+                               <div class="checkbox">
+                               	<input type="hidden" value="${custom.conclusion_updater!''}" id="conclusion_updater">
+                                <input type="hidden" value="${custom.conclusion_time!''}" id="conclusion_time">
+                                   <label>
+                                       <input type="checkbox" value='conclusion' style="margin-top: 0px;">
+                                       6.审结(报关人: <span id="conclusion_updater_span">${custom.conclusion_updater!''}</span> , 时间: <span id="conclusion_time_span">${custom.conclusion_time!''}</span>)
+                                   </label>
+                               </div>
+                           </div>
+                           </div>
+                       </div>
+                </div>
+         </div><!-- /.row -->
+</form>
+            
             <br>
             <div class="row">
                 <div class="col-lg-12">
