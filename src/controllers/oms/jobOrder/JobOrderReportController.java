@@ -1,22 +1,20 @@
 package controllers.oms.jobOrder;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import models.eeda.oms.PlanOrderItem;
-import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderShipmentHead;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.util.DbUtils;
-import controllers.util.OrderNoGenerator;
 import controllers.util.PrintPatterns;
 
 public class JobOrderReportController extends Controller {
@@ -30,26 +28,25 @@ public class JobOrderReportController extends Controller {
 		}
 		return contextPath;
 	}
-
 	
 	public void printOceanHBL() {
 		
-		String order_no = getPara("order_no");
-		String jasper_name = getPara("order_no");
+		String order_id = getPara("order_id");
 		String fileName = "/report/jobOrder/oceanHBL.jasper";
-		String outFileName = "/download/工作单海运HBLPDF";
+		String outFileName = "/download/工作单海运HBL";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
-		hm.put("order_no", order_no);
+		hm.put("order_id", order_id);
         fileName = getContextPath() + fileName;
-        outFileName = getContextPath() + outFileName + order_no;
+        outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
 		renderText(file.substring(file.indexOf("download")-1));
 	}
+	
 	public void printOceanBooking() {
 		
 		String order_no = getPara("order_no");
 		String fileName = "/report/jobOrder/oceanBooking.jasper";
-		String outFileName = "/download/工作单海运bookingPDF";
+		String outFileName = "/download/工作单海运booking";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_no", order_no);
 		fileName = getContextPath() + fileName;
@@ -58,30 +55,71 @@ public class JobOrderReportController extends Controller {
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	
+	public void printOceanSI() {
+		
+		String order_id = getPara("order_id");
+		String fileName = "/report/jobOrder/oceanSI.jasper";
+		String outFileName = "/download/工作单海运SI";
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_id;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
+	
+	@Before(Tx.class)
 	public void printOceanHead() {
 		String jsonStr=getPara("params");
        	
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
-        JobOrderShipmentHead jobOrder = new JobOrderShipmentHead();
    		String id = (String) dto.get("id");
-   		Map<String,Object> resultMap = new HashMap<String,Object>();
+   		String order_id = (String) dto.get("order_id");
+   		
+   		JobOrderShipmentHead jsh = new JobOrderShipmentHead();
    		
    		if (StringUtils.isNotEmpty(id)) {
    			//update
-   			jobOrder = JobOrderShipmentHead.dao.findById(id);
-   			DbUtils.setModelValues(dto, jobOrder);
-   			jobOrder.update();
-   			resultMap.put("oceanHeadId", id);
+   			jsh = JobOrderShipmentHead.dao.findById(id);
+   			DbUtils.setModelValues(dto, jsh);
+   			jsh.update();
    		} else {
    			//create 
-   			DbUtils.setModelValues(dto, jobOrder);
-   			jobOrder.save();
-   			resultMap.put("oceanHeadId", jobOrder.getLong("id"));
+   			DbUtils.setModelValues(dto, jsh);
+   			jsh.save();
    		}
-    	renderJson(resultMap);
+    	
+    	String fileName = "/report/jobOrder/oceanHead.jasper";
+		String outFileName = "/download/工作单海运头程资料";
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_id;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		
+		Record rec =new Record();
+		rec.set("oceanHeadId", jsh.get("id"));
+		rec.set("down_url", file.substring(file.indexOf("download")-1));
+		renderJson(rec);
 	}
 	
+	
+	//空运booking
+	public void printAirBooking() {
 		
+		String order_no = getPara("order_no");
+		String fileName = "/report/jobOrder/oceanBooking.jasper";
+		String outFileName = "/download/工作单空运booking";
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_no", order_no);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_no;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
+	
+	
+	
 }

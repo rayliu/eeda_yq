@@ -116,7 +116,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="volume" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="number" name="volume" value="'+data+'" class="form-control" style="width:200px" disabled/>';
                 }
             }
         ]
@@ -132,5 +132,22 @@ $(document).ready(function() {
     	var url = "/jobOrder/tableList?order_id="+order_id+"&type=cargoDesc";
     	cargoDesc_table.ajax.url(url).load();
     }
+    
+    //计算体积
+    $('#cargoDesc_table').on('keyup','[name=long],[name=wide],[name=high]',function(){
+    	var row = $(this).parent().parent();
+    	var long = $(row.find('[name=long]')).val();
+    	var wide = $(row.find('[name=wide]')).val();
+    	var high = $(row.find('[name=high]')).val();
+    	if(long!=''&&wide!=''&&high!=''){
+	    	if(!isNaN(long)&&!isNaN(wide)&&!isNaN(high)){
+	    		$(row.find('[name=volume]')).val(parseFloat(long)*parseFloat(wide)*parseFloat(high));
+	    	}else{
+	    		$(row.find('[name=volume]')).val('');
+	    	}
+    	}
+    })
+    
+    
 });
 });

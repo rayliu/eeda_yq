@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="18"/>
+	<property name="ireport.y" value="536"/>
 	<parameter name="order_no" class="java.lang.String">
 		<property name="order_no" value="$P{order_no}"/>
 	</parameter>
@@ -11,92 +11,27 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-(select GROUP_CONCAT(abc SEPARATOR ';') from(SELECT
-	CONCAT(josi.container_type,'x',count(josi.container_type)) abc,'abc' flag
-FROM
-	job_order_shipment_item josi left join job_order jo on jo.id=josi.order_id
-where jo.order_no=$P{order_no}
-GROUP BY
-	josi.container_type
-) A
-GROUP BY A.flag) container_type_count,josi.*,jos.*,jo.*,lo.name por_name,lo1.name pol_name,lo2.name pod_name,SUM(josi.pieces),SUM(josi.gross_weight),SUM(josi.volume),u.c_name,(select GROUP_CONCAT(CN_no SEPARATOR ';') from(SELECT
-	CONCAT(josi.container_no,'/',josi.seal_no) CN_no,'CN_no' flag
-FROM
-	job_order_shipment_item josi left join job_order jo on jo.id=josi.order_id
-where jo.order_no=$P{order_no}
-GROUP BY
-	CN_no
-) A
-GROUP BY A.flag) CN_NO
-FROM job_order_shipment jos
+     *
+FROM job_order_air joa
 
-left join job_order jo on jo.id=jos.order_id
-left join user_login u on u.id = jo.creator
+left join job_order jo
 
-left join job_order_shipment_item josi on jo.id=josi.order_id
+on jo.id=joa.order_id
 
-left join location lo on lo.id=jos.por
+left join job_order_air_cargodesc joac
 
-left join location lo1 on lo1.id=jos.pol
+on jo.id=joac.order_id
 
-left join location lo2 on lo2.id=jos.pod
+left join job_order_air_item joai
 
+on jo.id=joai.order_id
 
 where jo.order_no=$P{order_no}]]>
 	</queryString>
-	<field name="container_type_count" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="order_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="type" class="java.lang.String">
-		<fieldDescription><![CDATA[进出口]]></fieldDescription>
-	</field>
-	<field name="trans_type" class="java.lang.String">
-		<fieldDescription><![CDATA[海运；空运；陆运；]]></fieldDescription>
-	</field>
-	<field name="plan_order_item_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="load_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="container_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="container_amount" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="container_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="seal_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="cargo_name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="unit" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="pieces" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="net_weight" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="gross_weight" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="vgm" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="volume" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="remark" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="shipper" class="java.lang.Integer">
@@ -120,103 +55,49 @@ where jo.order_no=$P{order_no}]]>
 	<field name="booking_agent" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="head_carrier" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="carrier" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="bl_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="hbl_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="hbl_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="mbl_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="mbl_no" class="java.lang.String">
+	<field name="air_company" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="trans_clause" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="vessel" class="java.lang.String">
-		<fieldDescription><![CDATA[船名]]></fieldDescription>
-	</field>
-	<field name="voyage" class="java.lang.String">
-		<fieldDescription><![CDATA[船次]]></fieldDescription>
-	</field>
-	<field name="route" class="java.lang.String">
-		<fieldDescription><![CDATA[航线]]></fieldDescription>
-	</field>
-	<field name="schedule_from" class="java.sql.Date">
+	<field name="hawb_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="schedule_to" class="java.sql.Date">
+	<field name="mawb_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="por" class="java.lang.String">
+	<field name="gross_weight" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pol" class="java.lang.String">
+	<field name="net_weight" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pod" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="fnd" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="etd" class="java.sql.Date">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="eta" class="java.sql.Date">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="booking_mark" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="shipping_mark" class="java.lang.String">
+	<field name="volume" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="cargo_desc" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="hub" class="java.lang.String">
+	<field name="booking_mark" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="trade_type" class="java.lang.String">
+	<field name="goods_mark" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="prepaid" class="java.lang.String">
+	<field name="shipping_mark" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="release_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="oversea_agent" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="SONO" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="export_date" class="java.sql.Date">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="wait_overseaCustom" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="closing_date" class="java.sql.Date">
+	<field name="LWH" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="customer_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="type" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="plan_order_id" class="java.lang.Long">
@@ -237,6 +118,12 @@ where jo.order_no=$P{order_no}]]>
 	<field name="create_stamp" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="remark" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pieces" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="billing_method" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -246,16 +133,36 @@ where jo.order_no=$P{order_no}]]>
 	<field name="si_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="por_name" class="java.lang.String"/>
-	<field name="pol_name" class="java.lang.String"/>
-	<field name="pod_name" class="java.lang.String"/>
-	<field name="SUM(josi.pieces)" class="java.math.BigDecimal"/>
-	<field name="SUM(josi.gross_weight)" class="java.lang.Double"/>
-	<field name="SUM(josi.volume)" class="java.lang.Double"/>
-	<field name="c_name" class="java.lang.String">
+	<field name="long" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="CN_NO" class="java.lang.String"/>
+	<field name="wide" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="high" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amount" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="flight_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="voyage_no" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="start_from" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="etd" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="destination" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="eta" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<variable name="pieces_sum" class="java.lang.Long" incrementType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{pieces}]]></variableExpression>
 	</variable>
@@ -374,21 +281,21 @@ where jo.order_no=$P{order_no}]]>
 				<textElement>
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[Ocean vessel船名Voyage航次]]></text>
+				<text><![CDATA[  Voyage航次]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="280" y="280" width="137" height="34" uuid="7fd05d4d-2609-4c06-a41e-9a44ca9de0f3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[  提单类型：]]></text>
+				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="417" y="280" width="138" height="35" uuid="220e195d-2559-4434-8bfc-7add96752c44"/>
 				<textElement>
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[  No. of Orig. B/L 正本提单数]]></text>
+				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="3" y="315" width="552" height="35" uuid="247032d9-1aa8-481a-843a-f066a5df1db2"/>
@@ -423,7 +330,7 @@ where jo.order_no=$P{order_no}]]>
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="329" y="405" width="81" height="35" uuid="7915bde8-ef0d-4c65-8e3e-d3d462f2574a"/>
+				<reportElement x="329" y="405" width="57" height="35" uuid="7915bde8-ef0d-4c65-8e3e-d3d462f2574a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -441,51 +348,29 @@ where jo.order_no=$P{order_no}]]>
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="410" y="405" width="65" height="35" uuid="eab8a436-be85-42cc-8d9e-9a136e574407"/>
+				<reportElement x="386" y="407" width="64" height="33" uuid="eab8a436-be85-42cc-8d9e-9a136e574407"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[Gross Weight
-毛重（kg）
+毛重
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="475" y="405" width="80" height="35" uuid="ce7380d2-0cb5-4d0b-9cb9-b68af4a34549"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				<reportElement x="452" y="405" width="75" height="25" uuid="ce7380d2-0cb5-4d0b-9cb9-b68af4a34549"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="9" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[ Measuremaent
-体积 (CBM)]]></text>
+				<text><![CDATA[Measurement
+尺码()
+]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="440" width="120" height="80" uuid="a6f9540b-2fbb-4b0d-9dde-60639c0d18ca"/>
-				<textElement>
-					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="120" y="441" width="208" height="78" uuid="d6ed0f20-ed83-4769-9801-68bbc7b663de"/>
-				<textElement>
-					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="410" y="440" width="65" height="80" uuid="b3e168e0-6841-4007-899f-45943f3318e0"/>
-				<textElement>
-					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="520" width="555" height="35" uuid="fc24d211-d778-48fb-9c92-e568d9aea4fd"/>
+				<reportElement x="0" y="555" width="555" height="0" uuid="fc24d211-d778-48fb-9c92-e568d9aea4fd"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[  Container Size柜型:
-  Container No./Seal No.:
-]]></text>
+				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="8" y="555" width="58" height="75" uuid="519ed0a3-c702-4df3-858c-33e412dbaf5e"/>
@@ -552,7 +437,7 @@ where jo.order_no=$P{order_no}]]>
 				<textElement>
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[  Charges to be费用支付方式: ]]></text>
+				<text><![CDATA[  Charges to be费用支付方式: □Prepaid预付   □ Collect到付]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="1" y="650" width="325" height="45" uuid="a15949d1-8184-4c50-bdb8-845662d9bc31"/>
@@ -613,42 +498,7 @@ where jo.order_no=$P{order_no}]]>
 				<textFieldExpression><![CDATA[$F{notify_party_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="143" y="260" width="136" height="20" uuid="9d46cd8f-195a-41d5-84c1-c8c802e3953c"/>
-				<textElement textAlignment="Left">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="284" y="260" width="133" height="20" uuid="2f3ad4dd-8365-4a75-aec7-9cd593e03dc0"/>
-				<textElement textAlignment="Left">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{pod_name}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="421" y="260" width="134" height="20" uuid="1fff4b0f-f92a-43a0-993b-7c3d387023f6"/>
-				<textElement textAlignment="Left">
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="152" y="295" width="59" height="20" uuid="a4b93379-2f76-4e64-8143-10668c113104"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{vessel}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="222" y="295" width="58" height="20" uuid="2253a8c0-ebf5-4945-b4e2-ce35c4236b56"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{voyage}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="8" y="444" width="105" height="75" uuid="f1b8e839-4b61-48a8-b762-b6aa0b627fc3"/>
+				<reportElement x="8" y="444" width="105" height="109" uuid="f1b8e839-4b61-48a8-b762-b6aa0b627fc3"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -697,7 +547,7 @@ where jo.order_no=$P{order_no}]]>
 				<reportElement x="1" y="405" width="555" height="1" uuid="312bd304-1a9f-4605-9c3c-78cd71d0819a"/>
 			</line>
 			<line>
-				<reportElement x="1" y="519" width="555" height="1" uuid="313e10f8-9b15-4ffa-9989-e65fbbd8c2c2"/>
+				<reportElement x="1" y="553" width="555" height="1" uuid="313e10f8-9b15-4ffa-9989-e65fbbd8c2c2"/>
 			</line>
 			<line>
 				<reportElement x="2" y="554" width="553" height="1" uuid="f1e6928c-429e-488b-818f-98508b1be545"/>
@@ -757,25 +607,25 @@ where jo.order_no=$P{order_no}]]>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="120" y="406" width="1" height="113" uuid="ff82227b-831d-4003-8947-d5ed616ed7df"/>
+				<reportElement x="121" y="406" width="1" height="147" uuid="ff82227b-831d-4003-8947-d5ed616ed7df"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="328" y="406" width="1" height="113" uuid="64876140-da00-49f9-87ef-3b5e1edc6421"/>
+				<reportElement x="328" y="406" width="1" height="147" uuid="64876140-da00-49f9-87ef-3b5e1edc6421"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="410" y="405" width="1" height="114" uuid="10b978d0-41c4-40c4-8845-b4cd5a939587"/>
+				<reportElement x="385" y="405" width="1" height="148" uuid="10b978d0-41c4-40c4-8845-b4cd5a939587"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="475" y="405" width="1" height="115" uuid="db65d6db-84cc-4317-8d55-f59a1fd0f09d"/>
+				<reportElement x="450" y="405" width="1" height="148" uuid="db65d6db-84cc-4317-8d55-f59a1fd0f09d"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
@@ -804,151 +654,80 @@ where jo.order_no=$P{order_no}]]>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
-			<textField isBlankWhenNull="true">
-				<reportElement x="5" y="260" width="132" height="20" uuid="494876b7-601f-4b52-b305-0c9ec48242a5"/>
-				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{por_name}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
+			<textField>
 				<reportElement x="352" y="24" width="198" height="15" uuid="6c65cbe9-a4d0-4614-a9ce-15730bca34a2"/>
 				<textElement verticalAlignment="Bottom">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField>
 				<reportElement x="311" y="204" width="239" height="15" uuid="78c279e0-42ea-4994-9b58-9ea3cfe6287a"/>
-				<textElement verticalAlignment="Middle">
+				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{booking_agent}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="329" y="289" width="88" height="15" uuid="b8dc2cc8-68e3-4ff9-af57-9c998a2ae283"/>
-				<textElement verticalAlignment="Middle">
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{release_type}.equals("tlx")?"电放提单":($F{release_type}.equals("swb"))?"电放提单":($F{release_type}.equals("obl"))?"正本提单":"")]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
+			<textField>
 				<reportElement x="50" y="331" width="500" height="15" uuid="7d8c4c9f-57c3-4fa7-b35e-823cff47026a"/>
-				<textElement verticalAlignment="Middle">
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
+				<textElement verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA[($F{transport_type}.equals("ocean")?"海运；":($F{transport_type}.equals("air"))?"空运；":($F{transport_type}.equals("land"))?"陆运":($F{transport_type}.equals("custom"))?"报关；":($F{transport_type}.equals("insurance"))?"保险；":($F{transport_type}.equals("ocean,air"))?"海运；空运；":($F{transport_type}.equals("ocean,land")?"海运；陆运；":($F{transport_type}.equals("ocean,custom"))?"海运；报关；":($F{transport_type}.equals("ocean,insurance"))?"海运；保险；":($F{transport_type}.equals("ocean,air,land"))?"海运；空运；陆运":($F{transport_type}.equals("ocean,air,custom"))?"海运；空运；报关；":($F{transport_type}.equals("ocean,air,insurance")?"海运；空运；保险；":($F{transport_type}.equals("ocean,air,land,custom"))?"空运；海运；陆运；报关":($F{transport_type}.equals("ocean,air,land,insurance"))?"海运；空运；陆运；保险":($F{transport_type}.equals("ocean,air,land,custom,insurance"))?"海运；空运；陆运；报关；保险":($F{transport_type}.equals("air,land"))?"空运；陆运；":($F{transport_type}.equals("air,custom"))?"空运；报关；":($F{transport_type}.equals("air,insurance")?"空运；保险；":($F{transport_type}.equals("air,land,custom"))?"空运；陆运；报关；":($F{transport_type}.equals("air,land,insurance"))?"空运；陆运；保险；":($F{transport_type}.equals("air,land,custom,insurance"))?"空运；陆运；报关；保险":($F{transport_type}.equals("land,custom"))?"陆运；报关；":($F{transport_type}.equals("land,insurance"))?"陆运；保险；":($F{transport_type}.equals("land,custom,insurance"))?"陆运；报关；保险":($F{transport_type}.equals("custom,insurance"))?"报关；保险":""))))]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField>
 				<reportElement x="50" y="315" width="500" height="16" uuid="b2b26265-7c82-4f98-8a60-f7dbc4534b38"/>
 				<textElement verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="8" y="713" width="313" height="88" uuid="72924c80-9e0d-4568-94cb-4ce5edb2d0d7"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{remark}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
+			<textField>
 				<reportElement x="52" y="350" width="498" height="15" uuid="6aacc4e6-6cd0-4d00-b5ca-729ffff96761"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
 				<textFieldExpression><![CDATA[$F{trans_clause}]]></textFieldExpression>
 			</textField>
-			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+			<textField pattern="yyyy-MM-dd">
 				<reportElement x="386" y="728" width="164" height="15" uuid="df6d9f7a-b30f-4ed1-95cd-735d6585e573"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
-			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="386" y="754" width="164" height="15" uuid="1f93827f-0a5a-4c93-8418-41530da5bd3f"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{closing_date}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="52" y="366" width="100" height="15" uuid="5682e753-9cc7-4313-8be6-6af460068afc"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{trade_type}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="137" y="631" width="184" height="15" uuid="d3342163-171d-4546-ac1c-ea85c1d023fe"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{prepaid}.equals("Y")?"预付":"到付")]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="341" y="461" width="58" height="20" uuid="46f43924-766f-4e08-8219-9b30e429b7c3"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[总件数：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="418" y="461" width="47" height="19" uuid="3f0e8f79-8e54-42ef-abae-0c4fbc916e79"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[总重量]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="488" y="460" width="62" height="20" uuid="a0a3691d-1d4a-4cc3-ba31-2a165ca93531"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[总体积]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="343" y="480" width="56" height="20" uuid="e32e4652-35bc-4025-bf32-3c850e280058"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{SUM(josi.pieces)}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="420" y="480" width="45" height="20" uuid="0aebaca5-135e-4d31-a6d1-469774b7f7ea"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{SUM(josi.gross_weight)}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="490" y="480" width="60" height="20" uuid="8ef7e55b-5901-4d29-bed2-c50afb7b636b"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{SUM(josi.volume)}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="126" y="444" width="200" height="75" uuid="edca4d75-23e4-4b3d-8596-f0a7ed3119b6"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{cargo_desc}]]></textFieldExpression>
+			<textField>
+				<reportElement x="285" y="260" width="126" height="20" uuid="45a5d256-0bc7-4b58-ab11-aa37472dd52e"/>
+				<textFieldExpression><![CDATA[$F{destination}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="126" y="520" width="427" height="16" uuid="37fc2891-560c-4e78-b08e-67906909f55a"/>
-				<textFieldExpression><![CDATA[$F{container_type_count}]]></textFieldExpression>
+				<reportElement x="147" y="260" width="127" height="19" uuid="ebd3ed21-75d1-4a31-a36a-337e9c4481ee"/>
+				<textFieldExpression><![CDATA[$F{start_from}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="126" y="536" width="427" height="18" uuid="93757cf2-260b-4549-bf5f-b4c6ed39b354"/>
-				<textFieldExpression><![CDATA[$F{CN_NO}]]></textFieldExpression>
+				<reportElement x="147" y="294" width="127" height="20" uuid="507fafb1-f9a9-4eb4-a8a3-3d7eac7a39f3"/>
+				<textFieldExpression><![CDATA[$F{voyage_no}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="445" y="713" width="105" height="15" uuid="b331fb63-eb60-46ad-afb6-8560dda884c8"/>
-				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
+				<reportElement x="8" y="708" width="313" height="93" uuid="4cb8951c-63fd-4b69-91bb-3989d342e7a8"/>
+				<textFieldExpression><![CDATA[$F{booking_mark}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="126" y="444" width="200" height="109" uuid="a622151f-2e3d-42bf-b225-aa25df432261"/>
+				<textFieldExpression><![CDATA[$F{goods_mark}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="329" y="444" width="226" height="109" uuid="d1b46ac6-3480-45ce-825b-63b0941767fb"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "airBooking_subreport.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="454" y="429" width="73" height="12" uuid="f72df33f-4653-476d-a24c-16813bebabf7"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[长  X   宽   X    高    ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="526" y="407" width="29" height="33" uuid="ea9baf95-0feb-4af4-9642-731e643565c0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[体积]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>

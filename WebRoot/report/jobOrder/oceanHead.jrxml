@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="243"/>
+	<subDataset name="dataset1" uuid="f3ac4a6c-87af-462b-94e1-42cd5ca56644"/>
+	<parameter name="order_id" class="java.lang.String">
+		<property name="order_id" value="$P{order_id}"/>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     jos.*,josi.*,josh.*,lo.name por_name,lo1.name pol_name,lo2.name pod_name,
+(select GROUP_CONCAT(CN_no SEPARATOR ';') from
+(SELECT
+	CONCAT(josi.container_no,'/',josi.seal_no) CN_no
+FROM
+	job_order_shipment_item josi left join job_order_shipment jos on jos.order_id=josi.order_id
+where josi.order_id=$P{order_id}
+GROUP BY
+	CN_no
+) A
+) CN_SN
+
+FROM job_order_shipment jos
+
+left join job_order_shipment_item josi on josi.order_id=jos.order_id
+
+left join job_order_shipment_head josh on josh.order_id=jos.order_id
+
+left join location lo on lo.id=jos.por
+
+left join location lo1 on lo1.id=jos.pol
+
+left join location lo2 on lo2.id=jos.pod
+
+where jos.order_id=$P{order_id}]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="shipper" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="shipper_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="consignee" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="consignee_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="notify_party" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="notify_party_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="booking_agent" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="head_carrier" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="carrier" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bl_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hbl_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hbl_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trans_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mbl_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mbl_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trans_clause" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vessel" class="java.lang.String">
+		<fieldDescription><![CDATA[船名]]></fieldDescription>
+	</field>
+	<field name="voyage" class="java.lang.String">
+		<fieldDescription><![CDATA[船次]]></fieldDescription>
+	</field>
+	<field name="route" class="java.lang.String">
+		<fieldDescription><![CDATA[航线]]></fieldDescription>
+	</field>
+	<field name="schedule_from" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="schedule_to" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="por" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pol" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pod" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fnd" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="etd" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="eta" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gross_weight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="net_weight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="volume" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="booking_mark" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="shipping_mark" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cargo_desc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vgm" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hub" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trade_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="prepaid" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="release_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="oversea_agent" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SONO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="export_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="wait_overseaCustom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="closing_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="type" class="java.lang.String">
+		<fieldDescription><![CDATA[进出口]]></fieldDescription>
+	</field>
+	<field name="plan_order_item_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="load_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="container_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="container_amount" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="container_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="seal_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cargo_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pieces" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="remark" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="endPlace" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="startPlace" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="attn" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tel" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fax" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="port" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="title" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="por_name" class="java.lang.String"/>
+	<field name="pol_name" class="java.lang.String"/>
+	<field name="pod_name" class="java.lang.String"/>
+	<field name="CN_SN" class="java.lang.String"/>
+	<columnHeader>
+		<band height="802" splitType="Stretch">
+			<line>
+				<reportElement x="22" y="127" width="507" height="1" uuid="20141848-82cb-4b57-b7c4-92b05cc84f4f"/>
+			</line>
+			<line>
+				<reportElement x="23" y="128" width="1" height="91" uuid="b88bf786-0756-4907-8e72-8c84d062ea18"/>
+			</line>
+			<line>
+				<reportElement x="529" y="127" width="1" height="92" uuid="a05a7855-15b8-4c23-9e0f-e2ae8200161a"/>
+			</line>
+			<line>
+				<reportElement x="24" y="158" width="504" height="1" uuid="80b51cfb-3867-4484-abf9-0c0aee99db22"/>
+			</line>
+			<line>
+				<reportElement x="24" y="189" width="504" height="1" uuid="2cfecbd0-e49a-48ec-a4a2-8c8f7e566f36"/>
+			</line>
+			<line>
+				<reportElement x="24" y="219" width="504" height="1" uuid="e07e0d15-b938-4ea6-9e21-52b617799cf5"/>
+			</line>
+			<line>
+				<reportElement x="373" y="128" width="1" height="92" uuid="50badf0c-c223-424e-97f7-ca3acb74df29"/>
+			</line>
+			<line>
+				<reportElement x="111" y="127" width="1" height="92" uuid="428412c5-1909-4ea3-905e-1a9027818de8"/>
+			</line>
+			<line>
+				<reportElement x="279" y="127" width="1" height="93" uuid="29a0634a-dcd9-472d-8a3c-88e6b9db8c1a"/>
+			</line>
+			<staticText>
+				<reportElement x="26" y="128" width="84" height="30" uuid="b4e7f51d-a79a-47d0-beb7-b621505d4156"/>
+				<textElement>
+					<font size="15" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[TO：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="282" y="128" width="89" height="30" uuid="da432cbc-7e71-45ee-9fc1-708d39e258c7"/>
+				<textElement>
+					<font size="15" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[FROM:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="159" width="84" height="30" uuid="45c0d7fd-2fca-425f-b0f8-e4b45bc97146"/>
+				<textElement>
+					<font size="15" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[ATTN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="189" width="84" height="30" uuid="57b83cb4-c57b-4d6c-9686-ea0f7e92ecff"/>
+				<textElement>
+					<font size="15" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[FAX:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="159" width="89" height="30" uuid="09c34329-7547-47df-8980-46b558760791"/>
+				<textElement>
+					<font size="15" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[TEL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="189" width="89" height="30" uuid="524c7396-5e07-4aa5-90c7-cf15dd0806d3"/>
+				<textElement>
+					<font size="15" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[DATE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="293" width="46" height="20" uuid="e452a263-53cd-4ba8-9ed3-0f4f48da7125"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[订舱号: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="365" width="72" height="20" uuid="ccc77593-ac6d-43b0-987f-b6737e515234"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[香港收货人: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="327" width="72" height="20" uuid="aad7df20-6de7-4418-b4ac-d51894e80d6d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[头程船公司：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="444" width="84" height="20" uuid="e36ce9a9-8a19-4d03-9a25-837838b9dfdf"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[预订船名航次:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="526" width="57" height="20" uuid="375cae5d-8295-4a5f-b62f-65ed63d95dbd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[目的港：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="567" width="72" height="20" uuid="3520f623-08f1-4e03-b00c-fdb7b15a6c68"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[珠海截关:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="261" width="36" height="20" uuid="04511d9c-ccd5-4c47-95f7-3a1c896c7c47"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[RE：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="297" y="261" width="100" height="20" uuid="d262d235-a6f0-471d-b7f8-c38f1bb51c88"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[装船资料：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="485" width="56" height="20" uuid="387b2c83-575a-4bc4-8f86-901eb5dd450f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[装运港：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="404" width="72" height="20" uuid="3149fc29-4d32-4485-93af-e9c1ed9b7189"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[柜号/封条号:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="214" y="567" width="49" height="20" uuid="c0d5a88a-9cdd-4e00-823d-eb334d40f8f4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[ETD HK:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="377" y="568" width="33" height="20" uuid="37052863-f17f-4a76-84c9-72c1ed58d1e7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[ETA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="608" width="406" height="65" uuid="63809dcb-18eb-4c70-b182-cd050a522bcb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<text><![CDATA[(SCHEDULE IS SUBJECT TO CHANGE WITHOUT PRIOR NOTICE)
+********************************************
+请安排                 港报关出口]]></text>
+			</staticText>
+			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="263" y="567" width="114" height="20" uuid="8d2e8875-dde4-4bdd-8fc6-2cba0cc3a784"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
+				<reportElement x="410" y="567" width="115" height="20" uuid="bd797236-48a6-4460-a82f-6b5a057eb455"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="134" y="444" width="100" height="20" uuid="41a49fc8-ddc1-4a04-9954-4f9a7653061f"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vessel}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="234" y="444" width="100" height="20" uuid="1bdc045a-6675-4744-a48c-aa1a976f4971"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{route}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="107" y="485" width="100" height="20" uuid="71c92c9f-2e28-48eb-ac7f-95e9cc8d01da"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="107" y="526" width="100" height="20" uuid="ab0de0b0-1e70-4000-b5b4-cd96d9c6e209"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
+				<reportElement x="122" y="567" width="92" height="20" uuid="35c7836b-05c8-4ab8-8da0-78d353fa64a0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{closing_date}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="174" y="72" width="200" height="55" uuid="2822a4ec-e64c-4543-9a4d-2840063ece01"/>
+				<imageExpression><![CDATA["yqOceanHead.png"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="122" y="327" width="100" height="20" uuid="22b56d9b-b74f-4a25-b012-2d9866d57479"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{head_carrier}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="122" y="365" width="100" height="20" uuid="999354c2-1199-4102-89bf-bddc32b89bad"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{carrier}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="96" y="293" width="100" height="20" uuid="39e34637-910d-404d-9c54-3c80eb72419a"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SONO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="116" y="159" width="163" height="29" uuid="9bbb998a-9606-4776-bcc8-0fb64af65bf7"/>
+				<textElement>
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{attn}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="379" y="159" width="151" height="29" uuid="4d416ee2-4b8c-4637-9921-addd19dfe65e"/>
+				<textElement>
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tel}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="116" y="190" width="163" height="29" uuid="efa40c9d-d5a9-4437-bb46-fbe9e887fff2"/>
+				<textElement>
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fax}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="379" y="190" width="149" height="29" uuid="bf8ae0f5-593b-42bc-9b00-a9fc8ab77dd9"/>
+				<textElement>
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="116" y="128" width="163" height="30" uuid="dd79ac11-81fe-4c8e-a584-fa762101ba3f"/>
+				<textElement>
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{endPlace}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="379" y="128" width="149" height="30" uuid="2007e9ec-c4f3-4feb-a821-d9e5aad93aca"/>
+				<textElement>
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{startPlace}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="90" y="647" width="50" height="20" uuid="a700f889-2aea-4018-9bef-ba4d64d25170"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{port}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="87" y="261" width="210" height="20" uuid="bd876b8f-6da4-4d76-96df-c981cb7cddd5"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="122" y="404" width="433" height="20" uuid="ecd2ad4c-966c-4cf5-a6b5-98abea359659"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CN_SN}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+</jasperReport>

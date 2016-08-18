@@ -1,15 +1,28 @@
 <%layout("/eeda/layout.html"){%>
 <link rel="stylesheet" href="/yh/js/plugins/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
         <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                     <div id="pdfAlert" class="alert alert-danger alert-dismissable" style="display:none">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        
+        <a data-target='#pdfAlertDetail' data-toggle='modal'>
+        	<button id="pdfAlert" style="display:none"></button>
+		</a>
+		<div class="modal fade" id="pdfAlertDetail">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">生成PDF数据不足详情</div>
+		      	<div class="modal-body">
+		      	
+	      			<div class="alert alert-danger alert-dismissable">
                         <div id="pdfAlertContent"></div> 
                      </div>
-                <!-- /.col-lg-12 -->
-                </div>
-            </div>
+                     
+				</div>
+	       	  <div class="modal-footer">
+	            <button class="btn  btn-default" data-dismiss="modal">返回</button>
+	        </div>
+	    </div>
+	  </div>
+	</div>
+		
             <div class="row">
                 <div class="col-lg-12">
                     <div class="btn-header" style="font-size:32px">工作单</div>
