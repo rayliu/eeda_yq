@@ -330,7 +330,6 @@ $(document).ready(function() {
     	    	if($('#shipping_mark').val()==''){
     	    		alert+='唛头<br><br>';
     	    	}
-    	    	
     	    	if(alert!=''){
     				$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
     				$('#pdfAlert').click();
