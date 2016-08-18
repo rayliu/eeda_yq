@@ -281,9 +281,9 @@ $(document).ready(function() {
     	oceanHead.order_id = $('#order_id').val();
     	
 		$.post('/jobOrderReport/printOceanHead', {params:JSON.stringify(oceanHead)}, function(data){
-				$("#oceanHeadId").val(data.oceanHeadId);
+				$("#oceanHeadId").val(data.OCEANHEADID);
 				if(data){
-	                window.open(data.down_url);
+	                window.open(data.DOWN_URL);
 	             }else{
 	               $.scojs_message('生成海运头程资料失败', $.scojs_message.TYPE_ERROR);
 	               }
