@@ -506,11 +506,5 @@ public class CustomerController extends Controller {
         renderJson(partyList);
     }
     
-    // 列出所有港口名称
-    public void searchPort() {
-        String sql = "SELECT * from location WHERE type='port'";
-        List<Record> portList = Db.find(sql);
-        renderJson(portList);
-    }
     
 }

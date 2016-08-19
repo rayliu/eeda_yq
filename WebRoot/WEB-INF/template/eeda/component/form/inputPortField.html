@@ -24,7 +24,7 @@ $(document).ready(function() {
     inputField.on('input click', function(){
     	var me = this;
 		
-		$.get('/customer/searchPort', function(data){
+		$.get('/location/searchPort', function(data){
 			
 			for(var i = 0; i < data.length; i++){
 				var portName = data[i].NAME;
