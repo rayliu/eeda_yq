@@ -138,25 +138,46 @@ $(document).ready(function() {
             		return '<input type="text" name="car_no" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "CARGO_CONTACTS", "width": "180px",
+            { "data": "CONSIGNOR", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="cargo_contacts" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="consignor" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "PHONE","width": "180px", 
+            { "data": "CONSIGNOR_PHONE","width": "180px", 
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="phone" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="consignor_phone" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "ADDRESS", "width": "180px",
+            { "data": "TAKE_ADDRESS", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="address" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="take_address" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
+            { "data": "CONSIGNEE", "width": "180px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="consignee" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
+            { "data": "CONSIGNEE_PHONE","width": "180px", 
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="consignee_phone" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
+            { "data": "DELIVERY_ADDRESS", "width": "180px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="delivery_address" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
             { "data": "ETA", "width": "180px",
@@ -171,6 +192,13 @@ $(document).ready(function() {
             		if(!data)
             			data='';
             		return '<input type="text" name="cargo_info" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
+            { "data": "REQUIRED_TIME_REMARK", "width": "180px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="required_time_remark" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
             { "data": "SIGN_DESC", "width": "180px",

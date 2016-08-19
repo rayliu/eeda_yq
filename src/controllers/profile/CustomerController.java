@@ -2,7 +2,6 @@
 
 import interceptor.SetAttrLoginUserInterceptor;
 
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -14,9 +13,7 @@ import models.Location;
 import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
-import models.UserLogin;
 import models.UserRole;
-import models.yh.profile.Contact;
 import models.yh.profile.CustomerRoute;
 
 import org.apache.commons.lang.StringUtils;
@@ -508,4 +505,12 @@ public class CustomerController extends Controller {
 
         renderJson(partyList);
     }
+    
+    // 列出所有港口名称
+    public void searchPort() {
+        String sql = "SELECT * from location WHERE type='port'";
+        List<Record> portList = Db.find(sql);
+        renderJson(portList);
+    }
+    
 }

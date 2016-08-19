@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'dataTablesBootstrap'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	var deletedTableIds=[];
