@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="536"/>
+	<parameter name="order_no" class="java.lang.String">
+		<property name="order_no" value="$P{order_no}"/>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Administrator\\Desktop\\jobOrder\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     *
+FROM job_order_air joa
+
+left join job_order jo
+
+on jo.id=joa.order_id
+
+left join job_order_air_cargodesc joac
+
+on jo.id=joac.order_id
+
+left join job_order_air_item joai
+
+on jo.id=joai.order_id
+
+where jo.order_no=$P{order_no}]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="shipper" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="shipper_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="consignee" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="consignee_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="notify_party" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="notify_party_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="booking_agent" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="air_company" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trans_clause" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hawb_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mawb_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gross_weight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="net_weight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="volume" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cargo_desc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="booking_mark" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="goods_mark" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="shipping_mark" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="LWH" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="customer_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plan_order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plan_order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="status" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="creator" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="transport_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="create_stamp" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="remark" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pieces" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="billing_method" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="flag" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="si_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="long" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="wide" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="high" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amount" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="flight_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="voyage_no" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="start_from" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="etd" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="destination" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="eta" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="pieces_sum" class="java.lang.Long" incrementType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{pieces}]]></variableExpression>
+	</variable>
+	<variable name="gross_weight_sum" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{gross_weight}]]></variableExpression>
+	</variable>
+	<variable name="volume_sum" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{volume}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<staticText>
+				<reportElement x="8" y="0" width="181" height="20" uuid="015352fb-464b-4b8f-816b-58892b203a2b"/>
+				<textElement>
+					<font size="13" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[BOOKING CONFIRMATION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="280" height="70" uuid="90d2e6bd-f954-4b76-a09d-96ad16a8cd94"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Shipper(Complete name and address) 托运人(名称和地址)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="20" width="275" height="23" uuid="23c01f61-1049-45ba-816e-9cfc47062764"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[ Booking No: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="90" width="280" height="80" uuid="e2b0860f-987a-484a-98f3-19f45f817393"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Consignee(Complete name and address) 收货人(名称和
+  地址)
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="170" width="280" height="75" uuid="83885c1d-1f1a-4d13-a295-170c6e03fb8c"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Notify Party(Complete name and address.tel.fax)通知人
+  (名称.地址.电话,传真)
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="44" width="275" height="160" uuid="ba4dcbb0-3412-4f88-9806-55ebd2d4cfbb"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="204" width="275" height="40" uuid="eaecbb0b-f1ca-4d54-85a5-8ac5988bc630"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[   To:
+   Attn:
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="245" width="140" height="15" uuid="29db6fe4-556f-4afa-8b87-7d06c039cbf1"/>
+				<textElement>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Place of receipt 收货地点]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="245" width="140" height="15" uuid="73ba8a99-bc69-4f20-b59f-c623c7caa217"/>
+				<textElement>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Port of loading 起运港]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="245" width="137" height="15" uuid="c9a6e8f4-aaba-462b-804d-f56fea303ded"/>
+				<textElement>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Port of discharge卸货港]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="245" width="138" height="15" uuid="051007c0-fb39-4448-b71e-52ee6ed6bd8d"/>
+				<textElement>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Place of Delivery 目的地]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="280" width="140" height="35" uuid="6f0e6341-aee1-47d0-bbf8-44816b2cfb56"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Pre-carriage 头程运输]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="280" width="140" height="35" uuid="c5645d3e-83a0-48b0-acfb-115b1d40b537"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Voyage航次]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="280" width="137" height="34" uuid="7fd05d4d-2609-4c06-a41e-9a44ca9de0f3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="280" width="138" height="35" uuid="220e195d-2559-4434-8bfc-7add96752c44"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="315" width="552" height="35" uuid="247032d9-1aa8-481a-843a-f066a5df1db2"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[服务类型：
+服务项目：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="351" width="550" height="34" uuid="2958b4a7-2dac-4f34-9e0e-9435fc9e7af2"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[运输条款：
+贸易类型：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="385" width="555" height="20" uuid="cd6ddab6-3679-420e-94a7-a71a3d7669a1"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[PARTICULARS FURNISHED BY SHIPPER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="405" width="120" height="35" uuid="87ab993e-a95b-45d7-a17e-58a24866841d"/>
+				<textElement textAlignment="Center">
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[Marks & Numbers
+唛头和号码
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="329" y="405" width="57" height="35" uuid="7915bde8-ef0d-4c65-8e3e-d3d462f2574a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[No. of pkgs
+件数
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="121" y="405" width="208" height="35" uuid="2cc8304f-c354-4273-96f1-c04a08d0128f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[Type of package & description of goods
+包装种类及货名
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="386" y="407" width="64" height="33" uuid="eab8a436-be85-42cc-8d9e-9a136e574407"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[Gross Weight
+毛重
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="405" width="75" height="25" uuid="ce7380d2-0cb5-4d0b-9cb9-b68af4a34549"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="9" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[Measurement
+尺码()
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="555" width="555" height="0" uuid="fc24d211-d778-48fb-9c92-e568d9aea4fd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="555" width="58" height="75" uuid="519ed0a3-c702-4df3-858c-33e412dbaf5e"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[Trucking Arrangment
+拖车安排
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="65" y="555" width="490" height="15" uuid="6af61272-150c-412b-a4da-e4790bd2bce0"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Name 装卸货工厂：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="65" y="570" width="490" height="15" uuid="f5d9b37e-e91b-4153-b060-dc18ec8e4eb2"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Address地址：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="65" y="585" width="490" height="15" uuid="1f97bf0c-c198-4af9-87d6-b57725b7155f"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Appointed Time预约时间：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="66" y="615" width="490" height="15" uuid="b553f180-04bc-4fea-ae54-40dfa7fc59c6"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  TEL/FAX电话/传真：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="66" y="600" width="490" height="15" uuid="d0cb59bf-8d58-4a3a-84de-4d85356d8840"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Contact Person联系人：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="326" y="630" width="230" height="171" uuid="bbe89927-28b3-4ba6-bd87-53b82f2c378b"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Signature & Stamp by Shipper 托运人签名及盖章
+
+
+
+
+
+  Person in charge 经办人：
+     定仓日期:
+
+     出货日期:            ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="630" width="324" height="20" uuid="e47cdbaf-61e4-4f74-9ae6-3ab5ad694129"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Charges to be费用支付方式: □Prepaid预付   □ Collect到付]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="650" width="325" height="45" uuid="a15949d1-8184-4c50-bdb8-845662d9bc31"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Confirmation on Charges费用确认:
+
+  □ 月结 □ 票结 □ 其它
+]]></text>
+			</staticText>
+			<line>
+				<reportElement x="113" y="689" width="123" height="1" uuid="3d01eb57-1b08-42df-9df0-c453bd2db655"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="695" width="325" height="106" uuid="f665cca6-05d6-461c-9e61-f5cb521b77ae"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Remark备注: ]]></text>
+			</staticText>
+			<image>
+				<reportElement x="285" y="47" width="265" height="76" uuid="a4347f40-33b1-4193-bc73-25aeb60e8d99"/>
+				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="285" y="123" width="265" height="36" uuid="b8743ea9-8b1f-427a-a1a7-7706d1d86702"/>
+				<imageExpression><![CDATA["yqname.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="285" y="159" width="265" height="45" uuid="d62e104e-f440-4c83-bec0-14e20f591599"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[  Office:  Tel: 86-756- 3225991/3225992/3225993
+  Fax: 86-756-3225900
+]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="8" y="44" width="273" height="46" uuid="90f35b86-a508-42bb-8344-37f364cee09b"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{shipper_info}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="8" y="123" width="272" height="47" uuid="5988049a-ad69-4a95-b44f-d8bbeb1f267b"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{consignee_info}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="8" y="198" width="272" height="47" uuid="7639877a-e0ad-4ec8-a33e-d4e9f6d255d6"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{notify_party_info}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="8" y="444" width="105" height="109" uuid="f1b8e839-4b61-48a8-b762-b6aa0b627fc3"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{shipping_mark}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="19" width="555" height="1" uuid="6b82f592-b9b9-4d18-a705-ce4c419f2fe3"/>
+			</line>
+			<line>
+				<reportElement x="281" y="203" width="274" height="1" uuid="fd3df5c6-7924-4c0d-a134-1d94a3e0b938"/>
+			</line>
+			<line>
+				<reportElement x="2" y="90" width="277" height="1" uuid="e1bb1c71-17f6-402f-b0b4-61d188bf4a02"/>
+			</line>
+			<line>
+				<reportElement x="3" y="170" width="277" height="1" uuid="c97ed64d-5883-41df-9c93-3d2b567c207c"/>
+			</line>
+			<line>
+				<reportElement x="280" y="20" width="1" height="224" uuid="d0d74659-4eb5-4183-a27d-08382c4e9cd2"/>
+			</line>
+			<line>
+				<reportElement x="555" y="20" width="1" height="782" uuid="80770532-8ea8-437f-97e2-4c01135274e0"/>
+			</line>
+			<line>
+				<reportElement x="1" y="20" width="1" height="782" uuid="00d2911d-2c06-4587-b725-fe5f7055592a"/>
+			</line>
+			<line>
+				<reportElement x="1" y="244" width="555" height="1" uuid="25f4d2e5-e47c-4d1f-aa88-411802d34392"/>
+			</line>
+			<line>
+				<reportElement x="2" y="801" width="553" height="1" uuid="b3016080-e4ac-448a-a0b8-a15fe20c2ef4"/>
+			</line>
+			<line>
+				<reportElement x="280" y="43" width="275" height="1" uuid="a83fe021-195c-4c70-b052-89a1b8950bc8"/>
+			</line>
+			<line>
+				<reportElement x="1" y="314" width="555" height="1" uuid="2241e375-cce5-4d6a-8ddb-a92c405b4078"/>
+			</line>
+			<line>
+				<reportElement x="1" y="350" width="555" height="1" uuid="40460cde-e859-4acf-a70c-78a2ac43385f"/>
+			</line>
+			<line>
+				<reportElement x="1" y="384" width="555" height="1" uuid="570415f4-ba3a-4ff5-a356-e296b545bcef"/>
+			</line>
+			<line>
+				<reportElement x="1" y="405" width="555" height="1" uuid="312bd304-1a9f-4605-9c3c-78cd71d0819a"/>
+			</line>
+			<line>
+				<reportElement x="1" y="553" width="555" height="1" uuid="313e10f8-9b15-4ffa-9989-e65fbbd8c2c2"/>
+			</line>
+			<line>
+				<reportElement x="2" y="554" width="553" height="1" uuid="f1e6928c-429e-488b-818f-98508b1be545"/>
+			</line>
+			<line>
+				<reportElement x="1" y="629" width="555" height="1" uuid="71f7edfc-456e-48db-b021-01d77287c170"/>
+			</line>
+			<line>
+				<reportElement x="326" y="629" width="1" height="172" uuid="4978af28-4b3b-45ce-b402-f7232feb4da2"/>
+			</line>
+			<line>
+				<reportElement x="2" y="649" width="325" height="1" uuid="f7afbf42-cfdb-435d-9e7b-5621c78b4e21"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="2" y="694" width="324" height="1" uuid="e06ac393-1cd1-48a6-821f-be7173d66d8b"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="66" y="570" width="489" height="1" uuid="16fc8357-1ba3-47a2-b386-56427cb437aa"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="67" y="584" width="488" height="1" uuid="e48bdc64-9259-408e-bffe-576c90fd53d0"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="65" y="600" width="490" height="1" uuid="c6c725d0-58b7-4c1f-961a-9f94c0eafa6b"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="67" y="615" width="489" height="1" uuid="b54cf1ef-3358-415d-b0d3-a0d8687d5144"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="65" y="555" width="1" height="74" uuid="da624755-fe05-4607-9e12-ce4fd7a22e01"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="2" y="440" width="554" height="1" uuid="5140d5da-989c-4e5d-b9f6-5ad0097cf3ae"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="121" y="406" width="1" height="147" uuid="ff82227b-831d-4003-8947-d5ed616ed7df"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="328" y="406" width="1" height="147" uuid="64876140-da00-49f9-87ef-3b5e1edc6421"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="385" y="405" width="1" height="148" uuid="10b978d0-41c4-40c4-8845-b4cd5a939587"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="450" y="405" width="1" height="148" uuid="db65d6db-84cc-4317-8d55-f59a1fd0f09d"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="2" y="279" width="553" height="1" uuid="e4ab1bec-9a6f-44f7-baaf-ac1fe0a013e1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="140" y="244" width="1" height="70" uuid="971c7ce6-e951-4796-bc67-0d7c192d6579"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="280" y="244" width="1" height="70" uuid="809dcdaf-8047-45bf-8afa-3e3e8e8b9d43"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="417" y="244" width="1" height="71" uuid="afe50929-4672-45e0-8d1c-ec7b951a0982"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="352" y="24" width="198" height="15" uuid="6c65cbe9-a4d0-4614-a9ce-15730bca34a2"/>
+				<textElement verticalAlignment="Bottom">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="311" y="204" width="239" height="15" uuid="78c279e0-42ea-4994-9b58-9ea3cfe6287a"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{booking_agent}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="331" width="500" height="15" uuid="7d8c4c9f-57c3-4fa7-b35e-823cff47026a"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[($F{transport_type}.equals("ocean")?"海运；":($F{transport_type}.equals("air"))?"空运；":($F{transport_type}.equals("land"))?"陆运":($F{transport_type}.equals("custom"))?"报关；":($F{transport_type}.equals("insurance"))?"保险；":($F{transport_type}.equals("ocean,air"))?"海运；空运；":($F{transport_type}.equals("ocean,land")?"海运；陆运；":($F{transport_type}.equals("ocean,custom"))?"海运；报关；":($F{transport_type}.equals("ocean,insurance"))?"海运；保险；":($F{transport_type}.equals("ocean,air,land"))?"海运；空运；陆运":($F{transport_type}.equals("ocean,air,custom"))?"海运；空运；报关；":($F{transport_type}.equals("ocean,air,insurance")?"海运；空运；保险；":($F{transport_type}.equals("ocean,air,land,custom"))?"空运；海运；陆运；报关":($F{transport_type}.equals("ocean,air,land,insurance"))?"海运；空运；陆运；保险":($F{transport_type}.equals("ocean,air,land,custom,insurance"))?"海运；空运；陆运；报关；保险":($F{transport_type}.equals("air,land"))?"空运；陆运；":($F{transport_type}.equals("air,custom"))?"空运；报关；":($F{transport_type}.equals("air,insurance")?"空运；保险；":($F{transport_type}.equals("air,land,custom"))?"空运；陆运；报关；":($F{transport_type}.equals("air,land,insurance"))?"空运；陆运；保险；":($F{transport_type}.equals("air,land,custom,insurance"))?"空运；陆运；报关；保险":($F{transport_type}.equals("land,custom"))?"陆运；报关；":($F{transport_type}.equals("land,insurance"))?"陆运；保险；":($F{transport_type}.equals("land,custom,insurance"))?"陆运；报关；保险":($F{transport_type}.equals("custom,insurance"))?"报关；保险":""))))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="315" width="500" height="16" uuid="b2b26265-7c82-4f98-8a60-f7dbc4534b38"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="52" y="350" width="498" height="15" uuid="6aacc4e6-6cd0-4d00-b5ca-729ffff96761"/>
+				<textFieldExpression><![CDATA[$F{trans_clause}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd">
+				<reportElement x="386" y="728" width="164" height="15" uuid="df6d9f7a-b30f-4ed1-95cd-735d6585e573"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="285" y="260" width="126" height="20" uuid="45a5d256-0bc7-4b58-ab11-aa37472dd52e"/>
+				<textFieldExpression><![CDATA[$F{destination}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="147" y="260" width="127" height="19" uuid="ebd3ed21-75d1-4a31-a36a-337e9c4481ee"/>
+				<textFieldExpression><![CDATA[$F{start_from}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="147" y="294" width="127" height="20" uuid="507fafb1-f9a9-4eb4-a8a3-3d7eac7a39f3"/>
+				<textFieldExpression><![CDATA[$F{voyage_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="8" y="708" width="313" height="93" uuid="4cb8951c-63fd-4b69-91bb-3989d342e7a8"/>
+				<textFieldExpression><![CDATA[$F{booking_mark}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="444" width="200" height="109" uuid="a622151f-2e3d-42bf-b225-aa25df432261"/>
+				<textFieldExpression><![CDATA[$F{goods_mark}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="329" y="444" width="226" height="109" uuid="d1b46ac6-3480-45ce-825b-63b0941767fb"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "airBooking_subreport.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="454" y="429" width="73" height="12" uuid="f72df33f-4653-476d-a24c-16813bebabf7"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[长  X   宽   X    高    ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="526" y="407" width="29" height="33" uuid="ea9baf95-0feb-4af4-9642-731e643565c0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[体积]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
