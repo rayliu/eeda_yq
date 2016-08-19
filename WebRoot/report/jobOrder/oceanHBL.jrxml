@@ -623,7 +623,7 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="415" y="12" width="136" height="18" uuid="ef0abb56-7319-4ffc-9c9c-134ab6624aa7"/>
+				<reportElement x="415" y="12" width="140" height="18" uuid="ef0abb56-7319-4ffc-9c9c-134ab6624aa7"/>
 				<textElement textAlignment="Center">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>

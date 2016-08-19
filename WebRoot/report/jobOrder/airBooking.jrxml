@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="536"/>
+	<property name="ireport.y" value="714"/>
 	<parameter name="order_no" class="java.lang.String">
 		<property name="order_no" value="$P{order_no}"/>
 	</parameter>
@@ -306,12 +306,12 @@ where jo.order_no=$P{order_no}]]>
 服务项目：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="351" width="550" height="34" uuid="2958b4a7-2dac-4f34-9e0e-9435fc9e7af2"/>
+				<reportElement x="3" y="351" width="63" height="18" uuid="2958b4a7-2dac-4f34-9e0e-9435fc9e7af2"/>
 				<textElement>
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[运输条款：
-贸易类型：]]></text>
+]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="385" width="555" height="20" uuid="cd6ddab6-3679-420e-94a7-a71a3d7669a1"/>
@@ -681,7 +681,7 @@ where jo.order_no=$P{order_no}]]>
 				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="52" y="350" width="498" height="15" uuid="6aacc4e6-6cd0-4d00-b5ca-729ffff96761"/>
+				<reportElement x="67" y="350" width="483" height="18" uuid="6aacc4e6-6cd0-4d00-b5ca-729ffff96761"/>
 				<textFieldExpression><![CDATA[$F{trans_clause}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd">
@@ -727,6 +727,13 @@ where jo.order_no=$P{order_no}]]>
 				<reportElement x="526" y="407" width="29" height="33" uuid="ea9baf95-0feb-4af4-9642-731e643565c0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[体积]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="367" width="63" height="18" uuid="898a6365-175a-4c8b-a443-d289fc72b47d"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[贸易类型：？]]></text>
 			</staticText>
 		</band>
 	</detail>

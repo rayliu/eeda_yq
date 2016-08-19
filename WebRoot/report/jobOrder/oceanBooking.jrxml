@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="18"/>
+	<property name="ireport.y" value="202"/>
 	<parameter name="order_no" class="java.lang.String">
 		<property name="order_no" value="$P{order_no}"/>
 	</parameter>
@@ -374,7 +374,7 @@ where jo.order_no=$P{order_no}]]>
 				<textElement>
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[Ocean vessel船名Voyage航次]]></text>
+				<text><![CDATA[ Ocean vessel船名Voyage航次]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="280" y="280" width="137" height="34" uuid="7fd05d4d-2609-4c06-a41e-9a44ca9de0f3"/>
@@ -391,20 +391,18 @@ where jo.order_no=$P{order_no}]]>
 				<text><![CDATA[  No. of Orig. B/L 正本提单数]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="315" width="552" height="35" uuid="247032d9-1aa8-481a-843a-f066a5df1db2"/>
+				<reportElement x="6" y="315" width="62" height="18" uuid="247032d9-1aa8-481a-843a-f066a5df1db2"/>
 				<textElement>
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[服务类型：
-服务项目：]]></text>
+				<text><![CDATA[服务类型：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="351" width="550" height="34" uuid="2958b4a7-2dac-4f34-9e0e-9435fc9e7af2"/>
+				<reportElement x="5" y="351" width="62" height="18" uuid="2958b4a7-2dac-4f34-9e0e-9435fc9e7af2"/>
 				<textElement>
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[运输条款：
-贸易类型：]]></text>
+				<text><![CDATA[运输条款：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="385" width="555" height="20" uuid="cd6ddab6-3679-420e-94a7-a71a3d7669a1"/>
@@ -415,7 +413,7 @@ where jo.order_no=$P{order_no}]]>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="405" width="120" height="35" uuid="87ab993e-a95b-45d7-a17e-58a24866841d"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[Marks & Numbers
@@ -634,14 +632,14 @@ where jo.order_no=$P{order_no}]]>
 				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="152" y="295" width="59" height="20" uuid="a4b93379-2f76-4e64-8143-10668c113104"/>
+				<reportElement x="147" y="295" width="65" height="20" uuid="a4b93379-2f76-4e64-8143-10668c113104"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{vessel}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="222" y="295" width="58" height="20" uuid="2253a8c0-ebf5-4945-b4e2-ce35c4236b56"/>
+				<reportElement x="212" y="295" width="67" height="20" uuid="2253a8c0-ebf5-4945-b4e2-ce35c4236b56"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -833,14 +831,14 @@ where jo.order_no=$P{order_no}]]>
 				<textFieldExpression><![CDATA[($F{release_type}.equals("tlx")?"电放提单":($F{release_type}.equals("swb"))?"电放提单":($F{release_type}.equals("obl"))?"正本提单":"")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="50" y="331" width="500" height="15" uuid="7d8c4c9f-57c3-4fa7-b35e-823cff47026a"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="69" y="333" width="482" height="18" uuid="7d8c4c9f-57c3-4fa7-b35e-823cff47026a"/>
+				<textElement verticalAlignment="Top">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{transport_type}.equals("ocean")?"海运；":($F{transport_type}.equals("air"))?"空运；":($F{transport_type}.equals("land"))?"陆运":($F{transport_type}.equals("custom"))?"报关；":($F{transport_type}.equals("insurance"))?"保险；":($F{transport_type}.equals("ocean,air"))?"海运；空运；":($F{transport_type}.equals("ocean,land")?"海运；陆运；":($F{transport_type}.equals("ocean,custom"))?"海运；报关；":($F{transport_type}.equals("ocean,insurance"))?"海运；保险；":($F{transport_type}.equals("ocean,air,land"))?"海运；空运；陆运":($F{transport_type}.equals("ocean,air,custom"))?"海运；空运；报关；":($F{transport_type}.equals("ocean,air,insurance")?"海运；空运；保险；":($F{transport_type}.equals("ocean,air,land,custom"))?"空运；海运；陆运；报关":($F{transport_type}.equals("ocean,air,land,insurance"))?"海运；空运；陆运；保险":($F{transport_type}.equals("ocean,air,land,custom,insurance"))?"海运；空运；陆运；报关；保险":($F{transport_type}.equals("air,land"))?"空运；陆运；":($F{transport_type}.equals("air,custom"))?"空运；报关；":($F{transport_type}.equals("air,insurance")?"空运；保险；":($F{transport_type}.equals("air,land,custom"))?"空运；陆运；报关；":($F{transport_type}.equals("air,land,insurance"))?"空运；陆运；保险；":($F{transport_type}.equals("air,land,custom,insurance"))?"空运；陆运；报关；保险":($F{transport_type}.equals("land,custom"))?"陆运；报关；":($F{transport_type}.equals("land,insurance"))?"陆运；保险；":($F{transport_type}.equals("land,custom,insurance"))?"陆运；报关；保险":($F{transport_type}.equals("custom,insurance"))?"报关；保险":""))))]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="50" y="315" width="500" height="16" uuid="b2b26265-7c82-4f98-8a60-f7dbc4534b38"/>
+				<reportElement x="70" y="315" width="482" height="18" uuid="b2b26265-7c82-4f98-8a60-f7dbc4534b38"/>
 				<textElement verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -854,7 +852,7 @@ where jo.order_no=$P{order_no}]]>
 				<textFieldExpression><![CDATA[$F{remark}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="52" y="350" width="498" height="15" uuid="6aacc4e6-6cd0-4d00-b5ca-729ffff96761"/>
+				<reportElement x="67" y="350" width="481" height="18" uuid="6aacc4e6-6cd0-4d00-b5ca-729ffff96761"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -875,7 +873,7 @@ where jo.order_no=$P{order_no}]]>
 				<textFieldExpression><![CDATA[$F{closing_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="52" y="366" width="100" height="15" uuid="5682e753-9cc7-4313-8be6-6af460068afc"/>
+				<reportElement x="71" y="368" width="484" height="16" uuid="5682e753-9cc7-4313-8be6-6af460068afc"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -949,6 +947,20 @@ where jo.order_no=$P{order_no}]]>
 				<reportElement x="445" y="713" width="105" height="15" uuid="b331fb63-eb60-46ad-afb6-8560dda884c8"/>
 				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="6" y="333" width="62" height="18" uuid="99a67832-42e2-410d-a9a7-529050e23c01"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[服务类型：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="368" width="62" height="18" uuid="09a8fb25-01a8-4ced-8353-91c4195d6acf"/>
+				<textElement>
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[贸易类型：]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>

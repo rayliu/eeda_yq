@@ -2,8 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="44"/>
-	<subDataset name="dataset1" uuid="f3ac4a6c-87af-462b-94e1-42cd5ca56644"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -243,13 +242,13 @@ where jos.order_id=$P{order_id}]]>
 				<reportElement x="529" y="127" width="1" height="92" uuid="a05a7855-15b8-4c23-9e0f-e2ae8200161a"/>
 			</line>
 			<line>
-				<reportElement x="24" y="158" width="504" height="1" uuid="80b51cfb-3867-4484-abf9-0c0aee99db22"/>
+				<reportElement x="24" y="158" width="505" height="1" uuid="80b51cfb-3867-4484-abf9-0c0aee99db22"/>
 			</line>
 			<line>
 				<reportElement x="24" y="189" width="504" height="1" uuid="2cfecbd0-e49a-48ec-a4a2-8c8f7e566f36"/>
 			</line>
 			<line>
-				<reportElement x="24" y="219" width="504" height="1" uuid="e07e0d15-b938-4ea6-9e21-52b617799cf5"/>
+				<reportElement x="24" y="219" width="505" height="1" uuid="e07e0d15-b938-4ea6-9e21-52b617799cf5"/>
 			</line>
 			<line>
 				<reportElement x="373" y="128" width="1" height="92" uuid="50badf0c-c223-424e-97f7-ca3acb74df29"/>
@@ -345,20 +344,6 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[珠海截关:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="50" y="261" width="36" height="20" uuid="04511d9c-ccd5-4c47-95f7-3a1c896c7c47"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[RE：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="297" y="261" width="100" height="20" uuid="d262d235-a6f0-471d-b7f8-c38f1bb51c88"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[装船资料：]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="50" y="485" width="56" height="20" uuid="387b2c83-575a-4bc4-8f86-901eb5dd450f"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
@@ -387,13 +372,12 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[ETA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="50" y="608" width="406" height="65" uuid="63809dcb-18eb-4c70-b182-cd050a522bcb"/>
+				<reportElement x="50" y="608" width="406" height="34" uuid="63809dcb-18eb-4c70-b182-cd050a522bcb"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[(SCHEDULE IS SUBJECT TO CHANGE WITHOUT PRIOR NOTICE)
-********************************************
-请安排                 港报关出口]]></text>
+********************************************]]></text>
 			</staticText>
 			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="263" y="567" width="114" height="20" uuid="8d2e8875-dde4-4bdd-8fc6-2cba0cc3a784"/>
@@ -445,8 +429,8 @@ where jos.order_id=$P{order_id}]]>
 				<textFieldExpression><![CDATA[$F{closing_date}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="174" y="72" width="200" height="55" uuid="2822a4ec-e64c-4543-9a4d-2840063ece01"/>
-				<imageExpression><![CDATA["yqOceanHead.png"]]></imageExpression>
+				<reportElement x="174" y="62" width="200" height="55" uuid="2822a4ec-e64c-4543-9a4d-2840063ece01"/>
+				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="true">
 				<reportElement x="122" y="327" width="100" height="20" uuid="22b56d9b-b74f-4a25-b012-2d9866d57479"/>
@@ -471,57 +455,57 @@ where jos.order_id=$P{order_id}]]>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="116" y="159" width="163" height="29" uuid="9bbb998a-9606-4776-bcc8-0fb64af65bf7"/>
-				<textElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{attn}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="379" y="159" width="151" height="29" uuid="4d416ee2-4b8c-4637-9921-addd19dfe65e"/>
-				<textElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tel}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="116" y="190" width="163" height="29" uuid="efa40c9d-d5a9-4437-bb46-fbe9e887fff2"/>
-				<textElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fax}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
 				<reportElement x="379" y="190" width="149" height="29" uuid="bf8ae0f5-593b-42bc-9b00-a9fc8ab77dd9"/>
-				<textElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="116" y="128" width="163" height="30" uuid="dd79ac11-81fe-4c8e-a584-fa762101ba3f"/>
-				<textElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{endPlace}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="379" y="128" width="149" height="30" uuid="2007e9ec-c4f3-4feb-a821-d9e5aad93aca"/>
-				<textElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{startPlace}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="90" y="647" width="50" height="20" uuid="a700f889-2aea-4018-9bef-ba4d64d25170"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="50" y="642" width="406" height="95" uuid="a700f889-2aea-4018-9bef-ba4d64d25170"/>
+				<textElement verticalAlignment="Top">
 					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{port}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="87" y="261" width="210" height="20" uuid="bd876b8f-6da4-4d76-96df-c981cb7cddd5"/>
+				<reportElement x="23" y="261" width="506" height="20" uuid="bd876b8f-6da4-4d76-96df-c981cb7cddd5"/>
 				<textElement verticalAlignment="Middle">
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 			</textField>

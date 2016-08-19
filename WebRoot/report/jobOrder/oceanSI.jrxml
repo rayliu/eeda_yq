@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="61"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -290,14 +290,14 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[  OCEAN VESSEL船名/航次:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="1" y="274" width="227" height="33" uuid="50de6e1a-7e71-4110-926c-36c9a81c8abe"/>
+				<reportElement style="table" x="1" y="274" width="227" height="32" uuid="50de6e1a-7e71-4110-926c-36c9a81c8abe"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[  PORT OF DISCHARGE 卸货港：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="229" y="307" width="325" height="33" uuid="5745ef5a-5d84-4205-8ee1-0b919de7f6d0"/>
+				<reportElement style="table" x="228" y="306" width="326" height="34" uuid="5745ef5a-5d84-4205-8ee1-0b919de7f6d0"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -308,10 +308,10 @@ where jos.order_id=$P{order_id}]]>
 				<textElement textAlignment="Center">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[  PKGS.]]></text>
+				<text><![CDATA[  PKGS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="1" y="307" width="227" height="33" uuid="d465902e-d5f4-490e-8dfe-98cd22d81fa0"/>
+				<reportElement style="table" x="1" y="306" width="227" height="34" uuid="d465902e-d5f4-490e-8dfe-98cd22d81fa0"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -322,14 +322,14 @@ where jos.order_id=$P{order_id}]]>
 				<textElement textAlignment="Center">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[  KGS.]]></text>
+				<text><![CDATA[  KGS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="table" x="471" y="340" width="83" height="26" uuid="ebed2a47-01af-4d18-a2b7-08cbdbd1cecb"/>
 				<textElement textAlignment="Center">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[  CBM.]]></text>
+				<text><![CDATA[  CBM]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="table" x="228" y="214" width="326" height="25" uuid="800b97cb-09b7-46a7-bdca-d3e432b1b6ae"/>
@@ -346,7 +346,7 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[  PORT OF LOADING付运港：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="229" y="274" width="325" height="33" uuid="75baca2c-6ba0-4c22-8aa5-bd6aebf22438"/>
+				<reportElement style="table" x="228" y="274" width="326" height="32" uuid="75baca2c-6ba0-4c22-8aa5-bd6aebf22438"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -467,21 +467,21 @@ where jos.order_id=$P{order_id}]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="13" y="320" width="214" height="20" uuid="1bb5a49c-fa73-4833-9d62-55e6ceb9e825"/>
 				<textElement>
-					<font pdfFontName="STSong-Light"/>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargo_desc}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="262" y="175" width="291" height="39" uuid="ae4e7f4c-b1e6-4bb4-adc9-6c36916f5091"/>
 				<textElement>
-					<font pdfFontName="STSong-Light"/>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{booking_mark}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="284" y="95" width="100" height="20" uuid="6a0d42a0-367b-4429-8b83-1d96ae4bfa3d"/>
 				<textElement>
-					<font pdfFontName="STSong-Light"/>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mbl_no}?$F{mbl_no}:$F{hbl_no}]]></textFieldExpression>
 			</textField>
@@ -490,43 +490,43 @@ where jos.order_id=$P{order_id}]]>
 	<detail>
 		<band height="21" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement style="table" x="471" y="0" width="83" height="20" uuid="a72b24db-56b7-4b0e-ab49-f25ff16baacb"/>
-				<textElement textAlignment="Center">
+				<reportElement style="table" x="471" y="0" width="83" height="21" uuid="a72b24db-56b7-4b0e-ab49-f25ff16baacb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{volume}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table" x="377" y="0" width="94" height="20" uuid="7cd237ca-8911-48d8-94ae-b6ca08d0808a"/>
-				<textElement textAlignment="Center">
+				<reportElement style="table" x="377" y="0" width="94" height="21" uuid="7cd237ca-8911-48d8-94ae-b6ca08d0808a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table" x="1" y="0" width="94" height="20" uuid="d650f0cf-a090-493f-a419-922ce83b474d"/>
-				<textElement textAlignment="Center">
+				<reportElement style="table" x="1" y="0" width="94" height="21" uuid="d650f0cf-a090-493f-a419-922ce83b474d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table" x="95" y="0" width="94" height="20" uuid="178c37bd-b243-4c40-a605-ddd4ae7fafdd"/>
-				<textElement textAlignment="Center">
+				<reportElement style="table" x="95" y="0" width="94" height="21" uuid="178c37bd-b243-4c40-a605-ddd4ae7fafdd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_type}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table" x="189" y="0" width="94" height="20" uuid="236e73de-7d33-4c01-b96b-5ad33ade9643"/>
-				<textElement textAlignment="Center">
+				<reportElement style="table" x="189" y="0" width="94" height="21" uuid="236e73de-7d33-4c01-b96b-5ad33ade9643"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{seal_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="table" x="283" y="0" width="94" height="20" uuid="905b98fd-8b39-408f-a3d4-ba289cf9d856"/>
-				<textElement textAlignment="Center">
+				<reportElement style="table" x="283" y="0" width="94" height="21" uuid="905b98fd-8b39-408f-a3d4-ba289cf9d856"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
