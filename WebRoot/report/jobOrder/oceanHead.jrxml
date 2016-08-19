@@ -202,28 +202,28 @@ where jos.order_id=$P{order_id}]]>
 	<field name="remark" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="endPlace" class="java.lang.String">
+	<field name="head_endPlace" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="startPlace" class="java.lang.String">
+	<field name="head_startPlace" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="attn" class="java.lang.String">
+	<field name="head_attn" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="tel" class="java.lang.String">
+	<field name="head_tel" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="fax" class="java.lang.String">
+	<field name="head_fax" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="date" class="java.sql.Timestamp">
+	<field name="head_date" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="port" class="java.lang.String">
+	<field name="head_remark" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="title" class="java.lang.String">
+	<field name="head_title" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="por_name" class="java.lang.String"/>
@@ -458,56 +458,56 @@ where jos.order_id=$P{order_id}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{attn}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_attn}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="379" y="159" width="151" height="29" uuid="4d416ee2-4b8c-4637-9921-addd19dfe65e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tel}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_tel}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="116" y="190" width="163" height="29" uuid="efa40c9d-d5a9-4437-bb46-fbe9e887fff2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{fax}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_fax}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
 				<reportElement x="379" y="190" width="149" height="29" uuid="bf8ae0f5-593b-42bc-9b00-a9fc8ab77dd9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="116" y="128" width="163" height="30" uuid="dd79ac11-81fe-4c8e-a584-fa762101ba3f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{endPlace}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_endPlace}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="379" y="128" width="149" height="30" uuid="2007e9ec-c4f3-4feb-a821-d9e5aad93aca"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{startPlace}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_startPlace}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="50" y="642" width="406" height="95" uuid="a700f889-2aea-4018-9bef-ba4d64d25170"/>
 				<textElement verticalAlignment="Top">
 					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{port}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_remark}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="23" y="261" width="506" height="20" uuid="bd876b8f-6da4-4d76-96df-c981cb7cddd5"/>
 				<textElement verticalAlignment="Middle">
 					<font size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_title}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="122" y="404" width="433" height="20" uuid="ecd2ad4c-966c-4cf5-a6b5-98abea359659"/>
