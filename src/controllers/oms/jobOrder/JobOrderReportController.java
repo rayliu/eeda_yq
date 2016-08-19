@@ -110,7 +110,7 @@ public class JobOrderReportController extends Controller {
 	public void printAirBooking() {
 		
 		String order_no = getPara("order_no");
-		String fileName = "/report/jobOrder/oceanBooking.jasper";
+		String fileName = "/report/jobOrder/airBooking.jasper";
 		String outFileName = "/download/工作单空运booking";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_no", order_no);
