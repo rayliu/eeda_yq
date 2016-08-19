@@ -17,13 +17,8 @@ import models.InsuranceFinItem;
 import models.InsuranceOrder;
 import models.Party;
 import models.PickupOrderFinItem;
-import models.TransferOrder;
-import models.TransferOrderItem;
-import models.TransferOrderItemDetail;
-import models.TransferOrderMilestone;
 import models.UserLogin;
 import models.yh.arap.ArapMiscCostOrder;
-import models.yh.arap.ArapMiscCostOrderItem;
 import models.yh.delivery.DeliveryOrder;
 import models.yh.profile.Contact;
 
@@ -53,13 +48,13 @@ public class CostCheckOrderController extends Controller {
 	public void index() {
 		setAttr("type", "CUSTOMER");
 		setAttr("classify", "");
-		render("/yh/arap/CostCheckOrder/CostCheckOrderList.html");
+		render("/eeda/arap/CostCheckOrder/CostCheckOrderList.html");
 	}
 
 	public void add() {
 		setAttr("type", "CUSTOMER");
 		setAttr("classify", "");
-		render("/yh/arap/CostCheckOrder/CostCheckOrderCreateSearchList.html");
+		render("/eeda/arap/CostCheckOrder/CostCheckOrderCreateSearchList.html");
 	}
 
 	@RequiresPermissions(value = { PermissionConstant.PERMSSION_CCOI_CREATE })
@@ -233,7 +228,7 @@ public class CostCheckOrderController extends Controller {
 		UserLogin ul = UserLogin.dao.findById(users.get(0).get("id"));
 		setAttr("create_name", ul.get("c_name"));
 		setAttr("status", "new");
-		render("/yh/arap/CostCheckOrder/CostCheckOrderEdit.html");
+		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");
 	}
 
 	// 创建应收对帐单时，先选取合适的回单，条件：客户，时间段
@@ -676,7 +671,7 @@ public class CostCheckOrderController extends Controller {
 					Double.valueOf(String.format("%.2f", changeamount)));
 			setAttr("actualAmount", actualamount);
 		}
-		render("/yh/arap/CostCheckOrder/CostCheckOrderEdit.html");
+		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");
 	}
 
 	// 审核

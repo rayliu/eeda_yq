@@ -2,7 +2,7 @@
 $(document).ready(function() {
 	document.title = '手工成本单查询 | '+document.title;
 
-    $('#menu_finance').addClass('active').find('ul').addClass('in');
+    $('#menu_cost').addClass('active').find('ul').addClass('in');
 
 	//datatable, 动态处理
     var datatable=$('#costMiscOrderList-table').dataTable({

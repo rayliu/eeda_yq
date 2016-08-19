@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	document.title = '应付明细确认| '+document.title;
     $('#menu_cost').addClass('active').find('ul').addClass('in');
+
    
     $("input[name='allCheck']").click(function(){
     	$("input[name='order_check_box']").each(function () {  
@@ -20,9 +21,9 @@ $(document).ready(function() {
         "iDisplayLength": 10,
         "aLengthMenu": [ [10, 25, 50, 100, 9999999], [10, 25, 50, 100, "All"] ],
         //"bServerSide": true,
-    	  "oLanguage": {
-            "sUrl": "/eeda/dataTables.ch.txt"
-        },
+//    	  "oLanguage": {
+//            "sUrl": "/eeda/dataTables.ch.txt"
+//        },
         //"sAjaxSource": "/costConfirmList/list",
         "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $(nRow).attr('id', aData.DID);

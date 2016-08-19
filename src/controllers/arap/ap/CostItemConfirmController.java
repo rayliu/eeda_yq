@@ -36,7 +36,7 @@ public class CostItemConfirmController extends Controller {
     
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_CTC_AFFIRM})
     public void index() {
-    	    render("/yh/arap/CostItemConfirm/CostItemConfirmList.html");
+    	    render("/eeda/arap/CostItemConfirm/CostItemConfirmList.html");
     }
 
 
@@ -52,7 +52,7 @@ public class CostItemConfirmController extends Controller {
         setAttr("customer", contact);
     	setAttr("type", "CUSTOMER");
     	setAttr("classify", "receivable");
-        render("/yh/arap/CostAcceptOrder/CostCheckOrderEdit.html");
+        render("/eeda/arap/CostAcceptOrder/CostCheckOrderEdit.html");
     }
 
     // 应付条目列表

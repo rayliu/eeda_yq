@@ -191,6 +191,7 @@ public class EedaConfig extends JFinalConfig {
 		//ar= account revenue  应收条目处理
         me.add("/chargeConfirmList", controllers.arap.ar.ChargeItemConfirmController.class, contentPath);
         me.add("/chargeCheckOrder", controllers.arap.ar.ChargeCheckOrderController.class, contentPath);
+        me.add("/chargeCheckOrderList", controllers.arap.ar.ChargeCheckOrderController.class, contentPath);
         me.add("/chargePreInvoiceOrder", controllers.arap.ar.ChargePreInvoiceOrderController.class, contentPath);
         me.add("/chargeInvoiceOrder", controllers.arap.ar.ChargeInvoiceOrderController.class, contentPath);
         me.add("/chargeAdjustOrder", controllers.arap.ar.ChargeAdjustOrderController.class, contentPath);

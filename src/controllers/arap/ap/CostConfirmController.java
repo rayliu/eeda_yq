@@ -56,7 +56,7 @@ public class CostConfirmController extends Controller {
     Subject currentUser = SecurityUtils.getSubject();
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_CONFIRMATION})
     public void index() {
-    	render("/yh/arap/CostConfirm/CostConfirmList.html");
+    	render("/eeda/arap/CostConfirm/CostConfirmList.html");
     }
     
    	public void edit() {
@@ -131,7 +131,7 @@ public class CostConfirmController extends Controller {
 		Record re2 = Db.findFirst(sql2);
 		setAttr("total_pay", re2.get("total"));
 
-   		render("/yh/arap/CostConfirm/CostConfrimAdd.html");
+   		render("/eeda/arap/CostConfirm/CostConfrimAdd.html");
    	}
    	
    	
@@ -530,7 +530,7 @@ public class CostConfirmController extends Controller {
 			setAttr("invoiceApplicationOrder", record);
 			setAttr("userName", LoginUserController.getLoginUserName(this));
 		}
-		render("/yh/arap/CostConfirm/CostConfrimAdd.html");
+		render("/eeda/arap/CostConfirm/CostConfrimAdd.html");
 	}
 	
 	

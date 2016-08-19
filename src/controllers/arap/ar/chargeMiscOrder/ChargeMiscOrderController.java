@@ -41,7 +41,7 @@ public class ChargeMiscOrderController extends Controller {
 	Subject currentUser = SecurityUtils.getSubject();
 
 	public void index() {
-		render("/yh/arap/ChargeMiscOrder/ChargeMiscOrderList.html");
+		render("/eeda/arap/ChargeMiscOrder/ChargeMiscOrderList.html");
 	}
 
 	public void confirm() {
@@ -57,7 +57,7 @@ public class ChargeMiscOrderController extends Controller {
 		setAttr("customer", contact);
 		setAttr("type", "CUSTOMER");
 		setAttr("classify", "receivable");
-		render("/yh/arap/ChargeAcceptOrder/ChargeCheckOrderEdit.html");
+		render("/eeda/arap/ChargeAcceptOrder/ChargeCheckOrderEdit.html");
 	}
 
 	public void list() {
@@ -166,7 +166,7 @@ public class ChargeMiscOrderController extends Controller {
 		List<Record> itemList = Collections.emptyList();
 		setAttr("itemList", itemList);
 
-		render("/yh/arap/ChargeMiscOrder/ChargeMiscOrderEdit.html");
+		render("/eeda/arap/ChargeMiscOrder/ChargeMiscOrderEdit.html");
 	}
 
 	@Before(Tx.class)
@@ -381,7 +381,7 @@ public class ChargeMiscOrderController extends Controller {
 						+ " left join fin_item fi on amcoi.fin_item_id = fi.id"
 						+ " where amco.id =?", id);
 		setAttr("itemList", itemList);
-		render("/yh/arap/ChargeMiscOrder/ChargeMiscOrderEdit.html");
+		render("/eeda/arap/ChargeMiscOrder/ChargeMiscOrderEdit.html");
 	}
 
 	public void chargeMiscOrderItemList() {

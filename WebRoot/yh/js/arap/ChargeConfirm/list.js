@@ -1,7 +1,8 @@
 ﻿
 $(document).ready(function() {
 
-    $('#menu_finance').addClass('active').find('ul').addClass('in');
+    document.title = '保险单查询 | '+document.title;
+	$('#menu_damage').addClass('active').find('ul').addClass('in');
 
 	//datatable, 动态处理
     var invoiceApplicationOrderIds = $("#invoiceApplicationOrderIds").val();
@@ -199,6 +200,12 @@ $(document).ready(function() {
 
     
     var refreshData = function(){
+    	
+    	
+    	
+    	
+    	
+    	
     	var receiveConfirnNo = $('#receiveConfirnNo_filter').val();
         var order_no = $('#orderNo').val();
         var status = $('#status_filter').val();

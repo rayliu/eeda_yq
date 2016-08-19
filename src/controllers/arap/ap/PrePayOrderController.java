@@ -43,7 +43,7 @@ public class PrePayOrderController extends Controller {
 
 	@RequiresPermissions(value = { PermissionConstant.PERMSSION_PrePayOrder_LIST })
 	public void index() {
-		render("/yh/arap/PrePayOrder/PrePayOrderList.html");
+		render("/eeda/arap/PrePayOrder/PrePayOrderList.html");
 	}
 
 	@RequiresPermissions(value = { PermissionConstant.PERMSSION_PrePayOrder_LIST })
@@ -137,7 +137,7 @@ public class PrePayOrderController extends Controller {
 		List<Record> itemList = Collections.emptyList();
 		setAttr("itemList", itemList);
 
-		render("/yh/arap/PrePayOrder/PrePayOrderEdit.html");
+		render("/eeda/arap/PrePayOrder/PrePayOrderEdit.html");
 	}
 
 	private ArapPrePayOrder getDestOrder(String originOrderId) throws Exception {
@@ -357,7 +357,7 @@ public class PrePayOrderController extends Controller {
 				+ " left join fin_item fi on appoi.fin_item_id = fi.id"
 				+ " where appoi.order_id = '" + id + "' ");
 		setAttr("itemList", itemList);
-		render("/yh/arap/PrePayOrder/PrePayOrderEdit.html");
+		render("/eeda/arap/PrePayOrder/PrePayOrderEdit.html");
 	}
 
 	public void searchAllAccount() {

@@ -2,7 +2,6 @@ package controllers.arap.ap.costMiscOrder;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -24,9 +23,7 @@ import models.yh.arap.ArapMiscCostOrderItem;
 import models.yh.profile.Contact;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
@@ -41,7 +38,6 @@ import controllers.profile.LoginUserController;
 import controllers.util.LocationUtil;
 import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
-import controllers.util.PermissionConstant;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -49,7 +45,7 @@ public class CostMiscOrderController extends Controller {
     private Log logger = Log.getLog(CostMiscOrderController.class);
 	Subject currentUser = SecurityUtils.getSubject();
     public void index() {
-    	   render("/yh/arap/CostMiscOrder/CostMiscOrderList.html");
+    	   render("/eeda/arap/CostMiscOrder/CostMiscOrderList.html");
     }
 
 
@@ -65,7 +61,7 @@ public class CostMiscOrderController extends Controller {
         setAttr("customer", contact);
     	setAttr("type", "CUSTOMER");
     	setAttr("classify", "receivable");
-        render("/yh/arap/CostAcceptOrder/CostCheckOrderEdit.html");
+        render("/eeda/arap/CostAcceptOrder/CostCheckOrderEdit.html");
     }
 
     public void list() {
@@ -168,7 +164,7 @@ public class CostMiscOrderController extends Controller {
 		List<Record> itemList = Collections.emptyList();
 		setAttr("itemList", itemList);
 		
-			render("/yh/arap/CostMiscOrder/CostMiscOrderEdit.html");
+			render("/eeda/arap/CostMiscOrder/CostMiscOrderEdit.html");
 	}
     
 
@@ -388,7 +384,7 @@ public class CostMiscOrderController extends Controller {
 						+ " left join fin_item fi on amcoi.fin_item_id = fi.id"
 						+ " where amcoi.misc_order_id = '"+ id +"' ");
 			setAttr("itemList", itemList);
-			render("/yh/arap/CostMiscOrder/CostMiscOrderEdit.html");
+			render("/eeda/arap/CostMiscOrder/CostMiscOrderEdit.html");
 	}
     
 

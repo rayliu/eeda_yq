@@ -13,17 +13,11 @@ import java.util.Map;
 
 import models.ArapChargeItem;
 import models.ArapChargeOrder;
-import models.ArapCostItem;
-import models.ArapCostOrder;
-import models.DepartOrder;
 import models.InsuranceOrder;
 import models.Party;
-import models.PickupOrderFinItem;
 import models.ReturnOrder;
 import models.UserLogin;
-import models.yh.arap.ArapMiscCostOrder;
 import models.yh.arap.chargeMiscOrder.ArapMiscChargeOrder;
-import models.yh.delivery.DeliveryOrder;
 import models.yh.profile.Contact;
 import models.yh.returnOrder.ReturnOrderFinItem;
 
@@ -54,13 +48,13 @@ public class ChargeCheckOrderController extends Controller {
 
 	@RequiresPermissions(value = { PermissionConstant.PERMSSION_CCO_LIST })
 	public void index() {
-		render("/yh/arap/ChargeCheckOrder/ChargeCheckOrderList.html");
+		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderList.html");
 	}
 
 	public void add() {
 		setAttr("type", "CUSTOMER");
 		setAttr("classify", "");
-		render("/yh/arap/ChargeCheckOrder/ChargeCheckOrderCreateSearchList.html");
+		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderCreateSearchList.html");
 	}
 
 	@RequiresPermissions(value = { PermissionConstant.PERMSSION_CCO_CREATE })
@@ -153,7 +147,7 @@ public class ChargeCheckOrderController extends Controller {
 
 		List<Record> itemList = getItemList(returnOrderIds, miscOrderIds,null,null,null);
 		setAttr("itemList", itemList);
-		render("/yh/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
+		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
 	}
 
 	@RequiresPermissions(value = { PermissionConstant.PERMSSION_CCO_UPDATE })
@@ -785,7 +779,7 @@ public class ChargeCheckOrderController extends Controller {
 
 		List<Record> itemList = getItemList(returnOrderIds, miscOrderIds,null,null,null);
 		setAttr("itemList", itemList);
-		render("/yh/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
+		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
 	}
 
 	public void returnOrderList() {

@@ -14,14 +14,8 @@ import models.ArapChargeInvoice;
 import models.ArapChargeInvoiceApplication;
 import models.ArapChargeInvoiceItemInvoiceNo;
 import models.ArapChargeOrder;
-import models.ArapCostItem;
-import models.ArapCostOrder;
-import models.DepartOrder;
-import models.InsuranceOrder;
 import models.Party;
 import models.UserLogin;
-import models.yh.arap.ArapMiscCostOrder;
-import models.yh.delivery.DeliveryOrder;
 import models.yh.profile.Contact;
 
 import org.apache.shiro.SecurityUtils;
@@ -47,13 +41,13 @@ public class ChargeInvoiceOrderController extends Controller {
     Subject currentUser = SecurityUtils.getSubject();
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_CIO_LIST})
     public void index() {
-    	    render("/yh/arap/ChargeInvoiceOrder/ChargeInvoiceOrderList.html");
+    	    render("/eeda/arap/ChargeInvoiceOrder/ChargeInvoiceOrderList.html");
     }
 
     public void add() {
     	setAttr("type", "CUSTOMER");
     	setAttr("classify", "");
-        render("/yh/arap/ChargeInvoiceOrder/ChargeInvoiceOrderCreateSearchList.html");
+        render("/eeda/arap/ChargeInvoiceOrder/ChargeInvoiceOrderCreateSearchList.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_CIO_CREATE})
     public void create() {
@@ -127,7 +121,7 @@ public class ChargeInvoiceOrderController extends Controller {
         setAttr("userLogin", userLogin);
 
         setAttr("status", "新建");
-    		render("/yh/arap/ChargeInvoiceOrder/ChargeInvoiceOrderEdit.html");
+    		render("/eeda/arap/ChargeInvoiceOrder/ChargeInvoiceOrderEdit.html");
     }
 
     // 创建应收对帐单时，先选取合适的回单，条件：客户，时间段
@@ -410,7 +404,7 @@ public class ChargeInvoiceOrderController extends Controller {
     	}
     	
 		setAttr("chargePreInvoiceOrderIds", chargePreInvoiceOrderIds);
-    	render("/yh/arap/ChargeInvoiceOrder/ChargeInvoiceOrderEdit.html");
+    	render("/eeda/arap/ChargeInvoiceOrder/ChargeInvoiceOrderEdit.html");
     }
     
     public void chargeInvoiceOrderList() {

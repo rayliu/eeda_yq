@@ -1,8 +1,8 @@
 ﻿
 $(document).ready(function() {
 
-    $('#menu_finance').addClass('active').find('ul').addClass('in');
-
+    $('#menu_cost').addClass('active').find('ul').addClass('in');
+    
 	//datatable, 动态处理
     var invoiceApplicationOrderIds = $("#invoiceApplicationOrderIds").val();
     var total = 0.00;
@@ -15,7 +15,7 @@ $(document).ready(function() {
         "aLengthMenu": [ [10, 25, 50, 100, 9999999], [10, 25, 50, 100, "All"] ],
         "bServerSide": true,
     	"oLanguage": {
-            "sUrl": "/eeda/dataTables.ch.txt"
+            //"sUrl": "/eeda/dataTables.ch.txt"
         },
         "sAjaxSource": "/costConfirm/list",
         "aoColumns": [
