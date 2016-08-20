@@ -65,6 +65,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $('#sp_type_air').attr('checked', 'checked');
             }else if(checkSpType == 'broker'){
                 $('#sp_type_broker').attr('checked', 'checked');
+            }else if(checkSpType == 'air'){
+                $('#sp_type_head_car').attr('checked', 'checked');
+            }else if(checkSpType == 'broker'){
+                $('#sp_type_oversea_agent').attr('checked', 'checked');
             }
         };
 

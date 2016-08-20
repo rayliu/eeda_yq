@@ -12,8 +12,6 @@ import java.util.Map;
 import models.Location;
 import models.ParentOfficeModel;
 import models.Party;
-import models.Product;
-import models.yh.profile.Contact;
 import models.yh.profile.ProviderChargeType;
 
 import org.apache.commons.lang.StringUtils;
@@ -235,7 +233,9 @@ public class ServiceProviderController extends Controller {
                 + (getPara("sp_type_personal")==null?"":getPara("sp_type_personal") +";")
                 + (getPara("sp_type_carrier")==null?"":getPara("sp_type_carrier") +";")
                 + (getPara("sp_type_air")==null?"":getPara("sp_type_air") +";")
-                + (getPara("sp_type_broker")==null?"":getPara("sp_type_broker"));
+                + (getPara("sp_type_delivery")==null?"":getPara("sp_type_delivery") +";")
+                + (getPara("sp_type_head_car")==null?"":getPara("sp_type_head_car") +";")
+                + (getPara("sp_type_oversea_agent")==null?"":getPara("sp_type_oversea_agent"));
         contact.set("sp_type", sp_type);
         contact.set("mobile", getPara("mobile"));
         contact.set("phone", getPara("phone"));
