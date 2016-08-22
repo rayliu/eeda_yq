@@ -77,46 +77,46 @@ $(document).ready(function() {
                 	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
                 }
             },
-            { "data": "LONG",  "width": "180px",
+            { "data": "LONG",  "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="long" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="number" name="long" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
-            { "data": "WIDE", "width": "180px",
+            { "data": "WIDE", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="wide" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="number" name="wide" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
-            { "data": "HIGH", "width": "180px",
+            { "data": "HIGH", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="high" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="number" name="high" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
-            { "data": "GROSS_WEIGHT", "width": "180px",
+            { "data": "GROSS_WEIGHT", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="number" name="gross_weight" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="number" name="gross_weight" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
-            { "data": "AMOUNT", "width": "180px",
+            { "data": "AMOUNT", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="amount" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="number" name="amount" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
-            { "data": "VOLUME", "width": "180px",
+            { "data": "VOLUME", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="volume" value="'+data+'" class="form-control" style="width:200px" disabled/>';
+                    return '<input type="number" name="volume" value="'+data+'" class="form-control" style="width:100px" disabled/>';
                 }
             }
         ]
