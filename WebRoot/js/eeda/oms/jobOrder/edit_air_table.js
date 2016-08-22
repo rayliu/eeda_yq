@@ -101,7 +101,7 @@ $(document).ready(function() {
                                 display_value: full.AIR_COMPANY_NAME
                             }
                         );
-                        return field_html;
+                    return field_html;
                 }
             },
             { "data": "FLIGHT_NO", "width": "180px",
@@ -158,12 +158,12 @@ $(document).ready(function() {
 	                    return field_html;
                 }
             }, { "data": "AIR_COMPANY_NAME", "visible": false,
-                    "render": function ( data, type, full, meta ) {
-                        if(!data)
-                            data='';
-                        return data;
-                    }
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
                 }
+            }
         ]
     });
 

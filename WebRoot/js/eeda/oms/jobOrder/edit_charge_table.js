@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) {
 $(document).ready(function() {
 
 	var deletedTableIds=[];
@@ -63,10 +63,23 @@ $(document).ready(function() {
         return cargo_items_array;
     };
     
-    
+    var bindFieldEvent=function(){
+        // $('table .date').datetimepicker({  
+        //     format: 'yyyy-MM-dd',  
+        //     language: 'zh-CN'
+        // }).on('changeDate', function(el){
+        //     $(".bootstrap-datetimepicker-widget").hide();   
+        //     $(el).trigger('keyup');
+        // });
+
+        eeda.bindTablePartyField('SP_ID');
+    };
     //------------事件处理
     var chargeTable = eeda.dt({
         id: 'charge_table',
+        "drawCallback": function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
+            bindFieldEvent();
+        },
         columns:[
             { 
                 "render": function ( data, type, full, meta ) {
@@ -89,7 +102,14 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="sp_id" style="width:80px" value="'+data+'" class="form-control" />';
+                    var field_html = template('table_party_field_template',
+                        {
+                            id: 'SP_ID',
+                            value: data,
+                            display_value: full.SP_NAME
+                        }
+                    );
+                    return field_html;
                 }
             },
             { "data": "CHARGE_ID",
@@ -153,6 +173,12 @@ $(document).ready(function() {
                     if(!data)
                         data='';
                     return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" />';
+                }
+            }, { "data": "SP_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
                 }
             }
         ]

@@ -292,10 +292,14 @@ public class JobOrderController extends Controller {
     		itemSql = "select * from job_order_land_item jol where order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
-    		itemSql = "select * from job_order_arap  jor where order_id=? and order_type=?";
+    		itemSql = "select jor.*, pr.abbr sp_name from job_order_arap jor "
+    		        + " left join party pr on pr.id=jor.sp_id"
+    		        + " where order_id=? and order_type=?";
     		itemList = Db.find(itemSql, orderId,"charge");
     	}else if("cost".equals(type)){
-	    	itemSql = "select * from job_order_arap  jor where order_id=? and order_type=?";
+	    	itemSql = "select jor.*, pr.abbr sp_name from job_order_arap jor"
+	    	        + " left join party pr on pr.id=jor.sp_id"
+	    	        + " where order_id=? and order_type=?";
 	    	itemList = Db.find(itemSql, orderId,"cost");
     	}else if("doc".equals(type)){
 	    	itemSql = "select jod.*,u.c_name from job_order_doc jod left join user_login u on jod.uploader=u.id "
