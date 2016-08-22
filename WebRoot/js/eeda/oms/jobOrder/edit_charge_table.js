@@ -73,7 +73,9 @@ $(document).ready(function() {
         // });
 
         eeda.bindTablePartyField('SP_ID');
+        eeda.bindTableFinItemField('CHARGE_ID');
     };
+
     //------------事件处理
     var chargeTable = eeda.dt({
         id: 'charge_table',
@@ -104,7 +106,7 @@ $(document).ready(function() {
                         data='';
                     var field_html = template('table_party_field_template',
                         {
-                            id: 'SP_ID',
+                            id: 'SP_ID',//对应数据库字段
                             value: data,
                             display_value: full.SP_NAME
                         }
@@ -116,7 +118,14 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="charge_id" style="width:80px" value="'+data+'" class="form-control" />';
+                    var field_html = template('table_fin_item_field_template',
+                        {
+                            id: 'CHARGE_ID',//对应数据库字段
+                            value: data,
+                            display_value: full.CHARGE_NAME
+                        }
+                    );
+                    return field_html;
                 }
             },
             { "data": "PRICE", 
@@ -175,6 +184,12 @@ $(document).ready(function() {
                     return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" />';
                 }
             }, { "data": "SP_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            }, { "data": "CHARGE_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';

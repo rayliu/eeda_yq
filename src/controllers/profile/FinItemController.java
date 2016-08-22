@@ -34,8 +34,15 @@ public class FinItemController extends Controller {
     Subject currentUser = SecurityUtils.getSubject();
     ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
 
-    public void searchAllFinItem() {
-        List<Record> finItems = Db.find("select * from fin_item");
+    public void search() {
+        String input = getPara("input");
+        
+        List<Record> finItems = null;
+        if (input !=null && input.trim().length() > 0) {
+            finItems = Db.find("select * from fin_item where name like '%"+input+"%'");
+        }else{
+            finItems = Db.find("select * from fin_item");
+        }
         renderJson(finItems);
     }
 

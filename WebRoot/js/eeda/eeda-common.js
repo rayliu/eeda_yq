@@ -364,12 +364,12 @@ eeda.refreshUrl = refreshUrl;
   };
 
   //查找所有party
-  eeda.bindTablePartyField = function(el_id) {
+  eeda.bindTablePartyField = function(el_name) {
       var companyList = $('#table_party_field_list');
-      $('table input[name='+el_id+'_input]').on('keyup click', function(event){
+      $('table input[name='+el_name+'_input]').on('keyup click', function(event){
           var me = this;
           var inputField = $(this);
-          var hiddenField = $(this).parent().find('input[name='+el_id+']');
+          var hiddenField = $(this).parent().find('input[name='+el_name+']');
 
           var inputStr = inputField.val();
 
@@ -401,8 +401,62 @@ eeda.refreshUrl = refreshUrl;
       });
 
       // 1 没选中客户，焦点离开，隐藏列表
-      $('table input[name='+el_id+'_input]').on('blur', function(){
+      $('table input[name='+el_name+'_input]').on('blur', function(){
         var hiddenField = eeda._party_hiddenField;
+        
+        if ($(this).val().trim().length ==0) {
+            hiddenField.val('');
+        };
+        companyList.hide();
+      });
+      
+      // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
+      companyList.on('mousedown', function(){
+          return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+      });
+    
+  };
+
+  //查找所有费用条目
+  eeda.bindTableFinItemField = function(el_name) {
+      var companyList = $('#table_fin_item_field_list');
+      $('table input[name='+el_name+'_input]').on('keyup click', function(event){
+          var me = this;
+          var inputField = $(this);
+          var hiddenField = $(this).parent().find('input[name='+el_name+']');
+
+          var inputStr = inputField.val();
+
+           $.get("/finItem/search", {input: inputStr}, function(data){
+             if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+               return;
+             }
+              companyList.empty();
+              for(var i = 0; i < data.length; i++)
+                  companyList.append("<li><a tabindex='-1' class='fromLocationItem' portId='"+data[i].ID
+                    +"' name='"+data[i].NAME+"' >"+data[i].NAME+"</a></li>");
+              companyList.css({ 
+                  left:$(me).offset().left+"px", 
+                  top:$(me).offset().top+28+"px" 
+              });
+              companyList.show();
+              eeda._fin_inputField = inputField;
+              eeda._fin_hiddenField = hiddenField;
+          },'json');
+      });
+      
+      companyList.on('click', '.fromLocationItem', function(e){
+          var inputField = eeda._fin_inputField;
+          var hiddenField = eeda._fin_hiddenField;
+          inputField.val($(this).text());//名字
+          companyList.hide();
+          var portId = $(this).attr('portId');
+          hiddenField.val(portId);//id
+      });
+
+      // 1 没选中客户，焦点离开，隐藏列表
+      $('table input[name='+el_name+'_input]').on('blur', function(){
+        var hiddenField = eeda._fin_hiddenField;
         
         if ($(this).val().trim().length ==0) {
             hiddenField.val('');
