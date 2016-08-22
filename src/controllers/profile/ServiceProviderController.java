@@ -479,12 +479,11 @@ public class ServiceProviderController extends Controller {
     public void searchCarrier(){
         String name = getPara("name");
         List<Record> recs = null;
+        String sql = "select * from party p where p.type = 'SP' and p.sp_type like '%carrier%' ";
         if(!StringUtils.isBlank(name)){
-            recs = Db.find("select * from party where type = 'SP' and abbr = ? ",name);
-        }else{
-            recs = Db.find("select * from party where type = 'SP' and sp_type like '%carrier%' ");
+        	sql+=" and p.abbr like '%" + name + "%' or p.quick_search_code like '%" + name.toUpperCase() + "%' ";
         }
+        recs = Db.find(sql);
         renderJson(recs);
-        
     }
 }

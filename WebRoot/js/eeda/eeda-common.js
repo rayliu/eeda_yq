@@ -199,6 +199,7 @@ eeda.refreshUrl = refreshUrl;
   	//暂时不处理 
    };
    
+   //查询港口
   eeda.bindTablePortField = function() {
       var companyList = $('#table_port_field_list');
       $('table input[name=port_input]').on('keyup click', function(event){
@@ -253,6 +254,7 @@ eeda.refreshUrl = refreshUrl;
     
   };
 
+  //查询船公司
   eeda.bindTableCarrierField = function() {
       var companyList = $('#table_carrier_field_list');
       $('table input[name=carrier_input]').on('keyup click', function(event){

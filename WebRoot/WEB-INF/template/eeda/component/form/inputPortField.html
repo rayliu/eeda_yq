@@ -23,9 +23,13 @@ $(document).ready(function() {
     //获取供应商的list，选中信息在下方展示其他信息
     inputField.on('input click', function(){
     	var me = this;
-		
-		$.get('/location/searchPort', function(data){
-			
+    	var inputStr = inputField.val();
+    	
+		$.get('/location/searchPort', {portName:inputStr}, function(data){
+			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+				return;
+			}
+			spList.empty();
 			for(var i = 0; i < data.length; i++){
 				var portName = data[i].NAME;
 				
