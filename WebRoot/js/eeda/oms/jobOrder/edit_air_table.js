@@ -57,13 +57,13 @@ $(document).ready(function() {
     };
 
     var bindFieldEvent=function(){
-        // $('table .date').datetimepicker({  
-        //     format: 'yyyy-MM-dd',  
-        //     language: 'zh-CN'
-        // }).on('changeDate', function(el){
-        //     $(".bootstrap-datetimepicker-widget").hide();   
-        //     $(el).trigger('keyup');
-        // });
+         $('table .date').datetimepicker({  
+             format: 'yyyy-MM-dd',  
+             language: 'zh-CN'
+         }).on('changeDate', function(el){
+             $(".bootstrap-datetimepicker-widget").hide();   
+             $(el).trigger('keyup');
+         });
 
         eeda.bindTableAirCarrierField();
     };
@@ -127,9 +127,15 @@ $(document).ready(function() {
             },
             { "data": "ETD", "width": "180px",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="etd" value="'+data+'" class="form-control" style="width:200px"/>';
+            		 if(!data)
+	                        data='';
+	                    var field_html = template('table_date_field_template',
+		                    {
+		                        id: 'ETD',
+		                        value: data.substr(0,19)
+		                    }
+		                );
+	                    return field_html;
             	}
             },
             { "data": "DESTINATION", "width": "180px",
@@ -141,9 +147,15 @@ $(document).ready(function() {
             },
             { "data": "ETA", "width": "180px",
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="eta" value="'+data+'" class="form-control" style="width:200px"/>';
+                	 if(!data)
+	                        data='';
+	                    var field_html = template('table_date_field_template',
+		                    {
+		                        id: 'ETA',
+		                        value: data.substr(0,19)
+		                    }
+		                );
+	                    return field_html;
                 }
             }, { "data": "AIR_COMPANY_NAME", "visible": false,
                     "render": function ( data, type, full, meta ) {
@@ -158,6 +170,7 @@ $(document).ready(function() {
     $('#add_air').on('click', function(){
         var item={};
         cargoTable.row.add(item).draw(true);
+        bindFieldEvent();
     });
     
     //刷新明细表
