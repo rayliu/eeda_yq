@@ -29,6 +29,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                          typeArr = data.split(";");
                          
                          $.each(typeArr, function(index, val) {
+                        	 //line;delivery;pickup;personal;carrier;air;broker;head_car;oversea_agent
                              if(val == "line"){
                                  str += "干线运输供应商<br>";
                              }else if(val == "delivery"){
@@ -38,6 +39,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                              }else if(val == "personal"){
                                  str += "个体供应商<br>";
                              }
+	                         else if(val == "carrier"){
+	                        	 str += "船公司<br>";
+	                         }
+	                         else if(val == "air"){
+	                        	 str += "航空公司<br>";
+	                         }
+	                         else if(val == "broker"){
+	                        	 str += "报关行<br>";
+	                         }
+	                         else if(val == "head_car"){
+	                        	 str += "头程船公司<br>";
+	                         }
+	                         else if(val == "oversea_agent"){
+	                        	 str += "海外代理<br>";
+	                         }
                          });
                          
                          return str;

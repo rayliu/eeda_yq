@@ -51,6 +51,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         var spArr= spType.split(';');
         for (var i = 0; i < spArr.length; i++) {
             var checkSpType = spArr[i];
+            //line;delivery;pickup;personal;carrier;air;broker;head_car;oversea_agent
             if(checkSpType == 'line'){
                 $('#sp_type_line').attr('checked', 'checked');
             }else if(checkSpType == 'delivery'){
@@ -65,11 +66,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $('#sp_type_air').attr('checked', 'checked');
             }else if(checkSpType == 'broker'){
                 $('#sp_type_broker').attr('checked', 'checked');
-            }else if(checkSpType == 'air'){
+            }else if(checkSpType == 'head_car'){
                 $('#sp_type_head_car').attr('checked', 'checked');
-            }else if(checkSpType == 'broker'){
+            }else if(checkSpType == 'oversea_agent'){
                 $('#sp_type_oversea_agent').attr('checked', 'checked');
             }
+            
         };
 
     	if(payment == "monthlyStatement"){

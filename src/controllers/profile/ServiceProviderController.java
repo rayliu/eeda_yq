@@ -233,7 +233,7 @@ public class ServiceProviderController extends Controller {
                 + (getPara("sp_type_personal")==null?"":getPara("sp_type_personal") +";")
                 + (getPara("sp_type_carrier")==null?"":getPara("sp_type_carrier") +";")
                 + (getPara("sp_type_air")==null?"":getPara("sp_type_air") +";")
-                + (getPara("sp_type_delivery")==null?"":getPara("sp_type_delivery") +";")
+                + (getPara("sp_type_broker")==null?"":getPara("sp_type_broker") +";")
                 + (getPara("sp_type_head_car")==null?"":getPara("sp_type_head_car") +";")
                 + (getPara("sp_type_oversea_agent")==null?"":getPara("sp_type_oversea_agent"));
         contact.set("sp_type", sp_type);
@@ -480,7 +480,7 @@ public class ServiceProviderController extends Controller {
         String name = getPara("name");
         List<Record> recs = null;
         if(!StringUtils.isBlank(name)){
-            recs = Db.find("select * from party where type = 'SP' and sp_type like '%carrier%' and (abbr like '%"+name+"%' or company_name like '%"+name+"%')");
+            recs = Db.find("select * from party where type = 'SP' and abbr = ? ",name);
         }else{
             recs = Db.find("select * from party where type = 'SP' and sp_type like '%carrier%' ");
         }
