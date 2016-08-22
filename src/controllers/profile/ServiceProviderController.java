@@ -306,7 +306,7 @@ public class ServiceProviderController extends Controller {
 		String spCon = "";
 		if(spArr.length>0){
 		    for (String spType : spArr) {
-		        spCon += " or c.sp_type like '%"+spType+"%'";
+		        spCon += " or p.sp_type like '%"+spType+"%'";
             }
 		    spCon = spCon.substring(4);
 		}
@@ -336,8 +336,8 @@ public class ServiceProviderController extends Controller {
 							+ "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) limit 0,10",parentID,parentID);
 		} else {
 		    spList = Db
-					.find("select p.*, p.id as pid from party p, office o where o.id = p.office_id"
-					        +" and p.type = '"
+					.find("select p.*, p.id as pid from party p, office o where o.id = p.office_id and "
+					        + " ("+spCon+") and p.type = '"
 							+ Party.PARTY_TYPE_SERVICE_PROVIDER + "'  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?)", parentID, parentID);
 		}
 		renderJson(spList);

@@ -55,7 +55,18 @@ $(document).ready(function() {
         deletedTableIds = [];
         return cargo_items_array;
     };
-    
+
+    var bindFieldEvent=function(){
+        // $('table .date').datetimepicker({  
+        //     format: 'yyyy-MM-dd',  
+        //     language: 'zh-CN'
+        // }).on('changeDate', function(el){
+        //     $(".bootstrap-datetimepicker-widget").hide();   
+        //     $(el).trigger('keyup');
+        // });
+
+        eeda.bindTableAirCarrierField();
+    };
     //------------事件处理
     var cargoTable = $('#air_table').DataTable({
         "processing": true,
@@ -66,6 +77,9 @@ $(document).ready(function() {
         "autoWidth": false,
         "language": {
             "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
+        },
+        "drawCallback": function( settings ) {
+            bindFieldEvent();
         },
         "createdRow": function ( row, data, index ) {
             $(row).attr('id', data.ID);
@@ -80,7 +94,14 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="air_company" value="'+data+'" class="form-control" style="width:200px"/>';
+                    var field_html = template('table_air_carrier_field_template',
+                            {
+                                id: 'AIR_COMPANY',
+                                value: data,
+                                display_value: full.AIR_COMPANY_NAME
+                            }
+                        );
+                        return field_html;
                 }
             },
             { "data": "FLIGHT_NO", "width": "180px",
@@ -124,7 +145,13 @@ $(document).ready(function() {
                         data='';
                     return '<input type="text" name="eta" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
-            }
+            }, { "data": "AIR_COMPANY_NAME", "visible": false,
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return data;
+                    }
+                }
         ]
     });
 

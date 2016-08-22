@@ -281,7 +281,9 @@ public class JobOrderController extends Controller {
     		itemSql = "select * from job_order_shipment_item jos where order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("air".equals(type)){
-    		itemSql = "select * from job_order_air_item joa where order_id=?";
+    		itemSql = "select joa.*, pa.abbr air_company_name from job_order_air_item joa"
+    		        + " left join party pa on pa.id=joa.air_company"
+    		        + " where order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("cargoDesc".equals(type)){
     		itemSql = "select * from job_order_air_cargodesc joac where order_id=?";
