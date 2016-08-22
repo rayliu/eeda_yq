@@ -478,9 +478,9 @@ public class ServiceProviderController extends Controller {
     
     public void searchCarrier(){
         String name = getPara("name");
-        List<Record> recs = Collections.EMPTY_LIST;
+        List<Record> recs = null;
         if(!StringUtils.isBlank(name)){
-            recs = Db.find("select * from party where type = 'SP' and sp_type like '%carrier%' and (abbr like '%?%' or company_name like '%?%')", name, name);
+            recs = Db.find("select * from party where type = 'SP' and sp_type like '%carrier%' and (abbr like '%"+name+"%' or company_name like '%"+name+"%')");
         }else{
             recs = Db.find("select * from party where type = 'SP' and sp_type like '%carrier%' ");
         }

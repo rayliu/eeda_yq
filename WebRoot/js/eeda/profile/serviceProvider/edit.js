@@ -125,6 +125,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		  
     	  });*/
     	 if(!$("#customerForm").valid()){
+    		 $("#save").attr("disabled",false);
     		  return false;
     	 }
     	 $.post("/serviceProvider/save", $("#customerForm").serialize(),function(data){
