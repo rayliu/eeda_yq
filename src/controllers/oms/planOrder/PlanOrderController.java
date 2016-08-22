@@ -39,6 +39,9 @@ public class PlanOrderController extends Controller {
 
 //	@RequiresPermissions(value = { PermissionConstant.PERMISSION_TO_LIST })
 	public void index() {
+		String type=getPara("type");
+		setAttr("type", type);
+		
 		render("/oms/PlanOrder/PlanOrderList.html");
 	}
 	
@@ -130,18 +133,29 @@ public class PlanOrderController extends Controller {
 
     
     public void list() {
+    	String type=getPara("type");
+    	
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-
-        String sql = "SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name"
+        String sql = "";
+        if("todo".equals(type)){
+        	sql =" SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name "
+        			+ " FROM plan_order po "
+        			+ " LEFT JOIN plan_order_item poi ON po.id = poi.order_id "
+        			+ " left join party p on p.id = po.customer_id "
+        			+ " left join user_login u on u.id = po.creator "
+        			+ " WHERE is_gen_job='N' AND factory_loading_time is not NULL "
+        			+ "AND datediff(factory_loading_time, now())<=5";
+        }else{
+        	sql = "SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name"
     			+ "  from plan_order po "
     			+ "  left join party p on p.id = po.customer_id "
     			+ "  left join user_login u on u.id = po.creator"
     			+ "   where 1 =1 ";
-        
+        }
         String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";

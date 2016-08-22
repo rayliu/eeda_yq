@@ -9,7 +9,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             id: 'eeda-table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/planOrder/list",
+            ajax: "/planOrder/list?type="+type,
             columns:[
                   {"data": "ORDER_NO", 
                 	  "render": function ( data, type, full, meta ) {

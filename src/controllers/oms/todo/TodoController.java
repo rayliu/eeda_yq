@@ -32,14 +32,19 @@ public class TodoController extends Controller {
 	}
 	
 	public void getSOTodoCount() {
-		renderText("-1");
+		String sql= " SELECT COUNT(1) total"
+				+ " FROM job_order jo LEFT JOIN job_order_shipment jos ON jo.id=jos.order_id"
+				+ " WHERE jo.type='出口柜货' and jos.SONO is null and jo.transport_type LIKE '%ocean%'";
+		Record jobOrder=Db.findFirst(sql);
+		String total = jobOrder.getLong("TOTAL").toString();
+				renderText(total);
 	}
 	
 	public void getTruckOrderTodoCount() {
 		String sql = "SELECT count(1) total"
-			    +" FROM plan_order_item "
-			    + " WHERE is_gen_job='N' AND factory_loading_time is not NULL"
-			    + " AND datediff(factory_loading_time, now())<=3";
+				+ " FROM job_order_land_item joli LEFT JOIN job_order jo on jo.id = joli.order_id"
+				+ " WHERE datediff(eta,now() )<=3 and (truckorder_flag != 'Y' OR truckorder_flag is null) "
+				+ "and transport_type LIKE '%land%'";
 		Record planOrder = Db.findFirst(sql);
 		String total = planOrder.getLong("TOTAL").toString();
 		
@@ -57,7 +62,12 @@ public class TodoController extends Controller {
 	}
 
 	public void getMBLTodoCount() {
-		renderText("-1");
+		String sql = " SELECT COUNT(1) total,jos.si_flag,jos.mbl_flag"
+				+ " FROM job_order_shipment jos"
+				+ " WHERE si_flag = 'Y' and mbl_flag != 'Y' ";
+		Record jobOrder = Db.findFirst(sql);
+		String total = jobOrder.getLong("TOTAL").toString();
+		renderText(total);
 	}
 
 	public void getWaitCustomTodoCount() {
@@ -72,9 +82,9 @@ public class TodoController extends Controller {
 	}
 
 	public void getWaitBuyInsuranceTodoCount() {
-		String sql = "SELECT count(1) total"
-	               + " FROM job_order " 
-	               + " WHERE transport_type like '%insurance%'";
+		String sql = "SELECT count(1) total "
+				+ " FROM job_order jo LEFT JOIN job_order_insurance joi ON jo.id = joi.order_id "
+				+ " WHERE transport_type LIKE '%insurance%' and joi.insure_no is NULL";
 
 		Record planOrder = Db.findFirst(sql);
 		String total = planOrder.getLong("TOTAL").toString();
@@ -83,7 +93,12 @@ public class TodoController extends Controller {
 	}
 
 	public void getWaitOverseaCustomTodoCount() {
-		renderText("-1");
+		String sql = " SELECT COUNT(1) total"
+				+ " FROM job_order_shipment "
+				+ " WHERE  (afr_ams_flag !='Y' OR afr_ams_flag is  NULL) and wait_overseaCustom = 'Y' and timediff(now(),etd)<TIME('48:00:00') ";
+		Record jobOrderShipment = Db.findFirst(sql);
+        String total = jobOrderShipment.getLong("TOTAL").toString();
+		renderText(total);
 	}
 
 	public void getTlxOrderTodoCount() {

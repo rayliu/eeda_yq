@@ -1,14 +1,19 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
   	document.title = '工作单查询   | '+document.title;
-      $('#menu_order').addClass('active').find('ul').addClass('in');
-      $('#menu_todo_list').removeClass('active').find('ul').removeClass('in');
+//  	  if(type!=""){
+//  		  $('#menu_todo_list').addClass('active').find('ul').addClass('in');
+//  		  $('#menu_order').removeClass('active').find('ul').removeClass('in');
+//  	  }else{
+  		$('#menu_todo_list').removeClass('active').find('ul').removeClass('in');
+		  $('#menu_order').addClass('active').find('ul').addClass('in');
+//  	  }
   	//datatable, 动态处理
       var dataTable = eeda.dt({
           id: 'eeda-table',
           paging: true,
           serverSide: true, //不打开会出现排序不对
-          ajax: "/jobOrder/list",
+          ajax: "/jobOrder/list?type="+type,
           columns: [
               { "data": "ORDER_NO", 
                   "render": function ( data, type, full, meta ) {

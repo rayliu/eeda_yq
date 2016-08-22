@@ -54,9 +54,12 @@ public class JobOrderController extends Controller {
 
 	private Logger logger = Logger.getLogger(JobOrderController.class);
 	Subject currentUser = SecurityUtils.getSubject();
+	private Object type;
 
 //	@RequiresPermissions(value = { PermissionConstant.PERMISSION_TO_LIST })
 	public void index() {
+		String type = getPara("type");
+		setAttr("type",type);
 		render("/oms/JobOrder/JobOrderList.html");
 	}
 	
@@ -94,7 +97,41 @@ public class JobOrderController extends Controller {
         render("/oms/JobOrder/JobOrderEdit.html");
     }
     
+    //插入动作MBL标识符
+    public void mblflag(){
+    	String jsonStr = getPara("order_id");
+    	JobOrderShipment jobOrderShipment = new JobOrderShipment();
+    	jobOrderShipment = JobOrderShipment.dao.findFirst(jsonStr);
+    	jobOrderShipment.set("mbl_flag", "Y");
+    	jobOrderShipment.update();
+    }
+
+    //插入打印动作SI标识符
+    public void siflag(){
+    	String jsonStr = getPara("order_id");
+    	JobOrderShipment jobOrderShipment = new JobOrderShipment();
+    	jobOrderShipment = JobOrderShipment.dao.findFirst(jsonStr);
+    	jobOrderShipment.set("si_flag", "Y");
+    	jobOrderShipment.update();
+    }
     
+    //插入派车单打印动作标记
+    public void truckOrderflag(){
+    	String jsonStr = getPara("order_id");
+    	JobOrderLandItem jobOrderLandItem = new JobOrderLandItem();
+    	jobOrderLandItem = JobOrderLandItem.dao.findFirst(jsonStr);
+    	jobOrderLandItem.set("truckorder_flag", "Y");
+    	jobOrderLandItem.update();
+    }
+    
+    //插入打印动作AFR/AMS标识符
+    public void aframsflag(){
+    	String jsonStr = getPara("order_id");
+    	JobOrderShipment jobOrderShipment = new JobOrderShipment();
+    	jobOrderShipment = JobOrderShipment.dao.findFirst(jsonStr);
+    	jobOrderShipment.set("afr_ams_flag", "Y");
+    	jobOrderShipment.update();
+    }
     
     @SuppressWarnings("unchecked")
 	@Before(Tx.class)
@@ -204,6 +241,8 @@ public class JobOrderController extends Controller {
    		
    		renderJson(r);
    	}
+    
+    
     
     //上传文件
     @Before(Tx.class)
@@ -444,18 +483,84 @@ public class JobOrderController extends Controller {
        
     }
      
-    public void list() {
+    public void list() {    	
+    	String type=getPara("type");
+    	
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        String sql = "";
+        if("sowait".equals(type)){
+        	sql=" SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        			+ " FROM job_order jor "
+        			+ " LEFT JOIN job_order_shipment jos ON jor.id = jos.order_id "
+        			+ " left join party p on p.id = jor.customer_id"
+        			+ " left join user_login u on u.id = jor.creator "
+        			+ " WHERE jor.type = '出口柜货' AND jos.SONO IS NULL AND jor.transport_type LIKE '%ocean%'";        	
+        }else if("truckorderwait".equals(type)){
+        	 sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        			+ " FROM job_order_land_item joli"
+        			+ " left join job_order jor on jor.id = joli.order_id"
+        			+ " left join party p on p.id = jor.customer_id"
+        			+ " left join user_login u on u.id = jor.creator"
+        			+ " WHERE datediff(joli.eta, now()) <= 3 AND (joli.truckorder_flag != 'Y' OR joli.truckorder_flag IS NULL)"
+        			+ " AND jor.transport_type LIKE '%land%'";
+        	
+        	
+        } else if("siwait".equals(type)){
+        	 sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	 		+ " FROM job_order_shipment jos"
+        	 		+ " left join job_order jor on jos.order_id = jor.id"
+        	 		+ " left join party p on p.id = jor.customer_id"
+        	 		+ " left join user_login u on u.id = jor.creator "
+        	 		+ "WHERE TO_DAYS(export_date)=TO_DAYS(now())";
+        	
+        } else if("mblwait".equals(type)){
+        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        			+ " FROM job_order_shipment jos "
+        			+ " left join job_order jor on jos.order_id = jor.id"
+        			+ " left join party p on p.id = jor.customer_id"
+        			+ " left join user_login u on u.id = jor.creator"
+        			+ " WHERE jos.si_flag = 'Y' and (jos.mbl_flag != 'Y' or jos.mbl_flag is null)";
+        	
+        } else if("customwait".equals(type)){
+        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        			+ " FROM job_order jor LEFT JOIN  job_order_custom joc ON jor.id=joc.order_id"
+        			+ " left join party p on p.id = jor.customer_id"
+        			+ " left join user_login u on u.id = jor.creator"
+        			+ " WHERE jor.transport_type like '%custom%' and joc.customs_broker is null";
+        	
+        } else if("insurancewait".equals(type)){
+        	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        			+ " FROM job_order jor LEFT JOIN job_order_insurance joi ON jor.id = joi.order_id"
+        			+ " left join party p on p.id = jor.customer_id"
+        			+ " left join user_login u on u.id = jor.creator"
+        			+ " WHERE jor.transport_type LIKE '%insurance%' and joi.insure_no is NULL";
+        } else if("overseacustomwait".equals(type)){
+        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        			+ " FROM job_order_shipment jos "
+        			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
+        			+ " left join party p on p.id = jor.customer_id"
+        			+ " left join user_login u on u.id = jor.creator"
+        			+ " WHERE  (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
+        			+ "and timediff(now(),jos.etd)<TIME('48:00:00') ";
+        } else if("tlxOrderwait".equals(type)){
+        	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        			+ " FROM job_order_shipment jos"
+        			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
+        			+ " left join party p on p.id = jor.customer_id"
+        			+ " left join user_login u on u.id = jor.creator"
+        			+ " WHERE TO_DAYS(jos.etd)= TO_DAYS(now())";
+        }
+        else{
 
-        String sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name "
+         sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name "
     			+ "  from job_order jor "
     			+ "  left join party p on p.id = jor.customer_id"
     			+ "  left join user_login u on u.id = jor.creator"
-    			+ "   where 1 =1 ";
+    			+ "   where 1 =1 ";}
         
         String condition = DbUtils.buildConditions(getParaMap());
 

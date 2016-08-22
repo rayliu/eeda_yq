@@ -66,7 +66,10 @@ $(document).ready(function() {
 	    	$.post('/jobOrderReport/printOceanSI', {order_id:order_id}, function(data){
 	    		if(data){
 	                window.open(data);
-	             }else{
+	                $.post('/jobOrder/siflag', {order_id:order_id}, function(data){
+	    		    
+	                       });
+	    		  }else{
 	               $.scojs_message('生成海运SI PDF失败', $.scojs_message.TYPE_ERROR);
 	               }
 	    	}); 
@@ -292,6 +295,38 @@ $(document).ready(function() {
 		    	$.scojs_message('失败', $.scojs_message.TYPE_ERROR);
 		  });
 		
+    });
+    
+    //确认MBL标记
+    $('oceanMBL').click(function(){
+    	var order_id = $("#order_id").val();
+    	$.post('/joborder/mblflag',{order_id:order_id},function(data){
+    		});
+    	
+    });
+    
+    
+    //确认AFR/AMS标记
+    $('alreadyAFR_AMS').click(function(){
+    	var order_id = $("#order_id").val();
+    	$.post('/joborder/aframsflag',{order_id:order_id},function(data){
+    		});
+    	
+    });
+    //打印生成派车单truckOrderPDF
+    $('truckOrderPDF').click(function(){
+    	var order_no = $("#order_no").val();
+		$.post('/jobOrderReport/printTruckOrderPDF', {order_no:order_no}, function(data){
+			if(data){
+				window.open(data);
+                $.post('/jobOrder/truckOrderflag', {order_id:order_id}, function(data){
+	    		    
+                });
+			}else{
+				$.scojs_message('生成派车单 PDF失败', $.scojs_message.TYPE_ERROR);
+			}
+		}); 
+    	
     });
     
     
