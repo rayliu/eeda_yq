@@ -492,11 +492,10 @@ $(document).ready(function() {
 			$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
 			$('#pdfAlert').click();
 		}else{
-	    	var order_no = $("#order_no").val();
-			$.post('/jobOrderReport/printTruckOrderPDF', {order_no:order_no}, function(data){
+	    	var order_id = $("#order_id").val();
+			$.post('/jobOrderReport/printTruckOrderPDF', {order_id:order_id}, function(data){
 				if(data){
-					window.open(data);
-					 var order_id = $("#order_id").val();
+					window.open(data);					 
 					 $.post('/jobOrder/truckOrderflag', {order_id:order_id}, function(data){
 			    		    
 		                });
