@@ -199,383 +199,57 @@ eeda.refreshUrl = refreshUrl;
   	//暂时不处理 
    };
    
-   //查询港口
-  eeda.bindTablePortField = function() {
-      var companyList = $('#table_port_field_list');
-      $('table input[name=port_input]').on('keyup click', function(event){
-          var me = this;
-          var inputField = $(this);
-          var hiddenField = $(this).parent().find('input[field_type=port_id]');
-
-          var inputStr = inputField.val();
-
-           $.get("/location/searchPort", {portName:inputStr}, function(data){
-             if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
-               return;
-             }
-              companyList.empty();
-              for(var i = 0; i < data.length; i++)
-                  companyList.append("<li><a tabindex='-1' class='fromLocationItem' portId='"+data[i].ID
-                    +"' code='"+data[i].CODE
-                    +"', name='"+data[i].NAME+"', >"+data[i].NAME+"</a></li>");
-              companyList.css({ 
-                  left:$(me).offset().left+"px", 
-                  top:$(me).offset().top+28+"px" 
-              });
-              companyList.show();
-              eeda._port_inputField = inputField;
-              eeda._port_hiddenField = hiddenField;
-          },'json');
-      });
-      
-      companyList.on('click', '.fromLocationItem', function(e){
-          var inputField = eeda._port_inputField;
-          var hiddenField = eeda._port_hiddenField;
-          inputField.val($(this).text());//名字
-          companyList.hide();
-          var portId = $(this).attr('portId');
-          hiddenField.val(portId);//id
-      });
-
-      // 1 没选中客户，焦点离开，隐藏列表
-      $('table input[name=port_input]').on('blur', function(){
-        var hiddenField = eeda._port_hiddenField;
-        
-        if ($(this).val().trim().length ==0) {
-            hiddenField.val('');
-        };
-        companyList.hide();
-      });
-      
-      // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
-      companyList.on('mousedown', function(){
-          return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
-      });
-    
-  };
-
-  //查询船公司
-  eeda.bindTableCarrierField = function() {
-      var companyList = $('#table_carrier_field_list');
-      $('table input[name=carrier_input]').on('keyup click', function(event){
-          var me = this;
-          var inputField = $(this);
-          var hiddenField = $(this).parent().find('input[field_type=carrier_id]');
-
-          var inputStr = inputField.val();
-
-           $.get("/serviceProvider/searchCarrier", {name: inputStr}, function(data){
-             if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
-               return;
-             }
-              companyList.empty();
-              for(var i = 0; i < data.length; i++)
-                  companyList.append("<li><a tabindex='-1' class='fromLocationItem' portId='"+data[i].ID
-                    +"' name='"+data[i].ABBR+"' >"+data[i].ABBR+"</a></li>");
-              companyList.css({ 
-                  left:$(me).offset().left+"px", 
-                  top:$(me).offset().top+28+"px" 
-              });
-              companyList.show();
-              eeda._carrier_inputField = inputField;
-              eeda._carrier_hiddenField = hiddenField;
-          },'json');
-      });
-      
-      companyList.on('click', '.fromLocationItem', function(e){
-          var inputField = eeda._carrier_inputField;
-          var hiddenField = eeda._carrier_hiddenField;
-          inputField.val($(this).text());//名字
-          companyList.hide();
-          var portId = $(this).attr('portId');
-          hiddenField.val(portId);//id
-      });
-
-      // 1 没选中客户，焦点离开，隐藏列表
-      $('table input[name=carrier_input]').on('blur', function(){
-        var hiddenField = eeda._carrier_hiddenField;
-        
-        if ($(this).val().trim().length ==0) {
-            hiddenField.val('');
-        };
-        companyList.hide();
-      });
-      
-      // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
-      companyList.on('mousedown', function(){
-          return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
-      });
-    
-  };
-
-  
-  //查找航空公司
-  eeda.bindTableAirCarrierField = function() {
-      var companyList = $('#table_air_carrier_field_list');
-      $('table input[name=air_carrier_input]').on('keyup click', function(event){
-          var me = this;
-          var inputField = $(this);
-          var hiddenField = $(this).parent().find('input[field_type=air_carrier_id]');
-
-          var inputStr = inputField.val();
-
-           $.get("/serviceProvider/searchSp", {input: inputStr, sp_type: 'air'}, function(data){
-             if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
-               return;
-             }
-              companyList.empty();
-              for(var i = 0; i < data.length; i++)
-                  companyList.append("<li><a tabindex='-1' class='fromLocationItem' portId='"+data[i].ID
-                    +"' name='"+data[i].ABBR+"' >"+data[i].ABBR+"</a></li>");
-              companyList.css({ 
-                  left:$(me).offset().left+"px", 
-                  top:$(me).offset().top+28+"px" 
-              });
-              companyList.show();
-              eeda._air_carrier_inputField = inputField;
-              eeda._air_carrier_hiddenField = hiddenField;
-          },'json');
-      });
-      
-      companyList.on('click', '.fromLocationItem', function(e){
-          var inputField = eeda._air_carrier_inputField;
-          var hiddenField = eeda._air_carrier_hiddenField;
-          inputField.val($(this).text());//名字
-          companyList.hide();
-          var portId = $(this).attr('portId');
-          hiddenField.val(portId);//id
-      });
-
-      // 1 没选中客户，焦点离开，隐藏列表
-      $('table input[name=air_carrier_input]').on('blur', function(){
-        var hiddenField = eeda._air_carrier_hiddenField;
-        
-        if ($(this).val().trim().length ==0) {
-            hiddenField.val('');
-        };
-        companyList.hide();
-      });
-      
-      // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
-      companyList.on('mousedown', function(){
-          return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
-      });
-    
-  };
-
-  //查找所有party
-  eeda.bindTablePartyField = function(el_name) {
-      var companyList = $('#table_party_field_list');
-      $('table input[name='+el_name+'_input]').on('keyup click', function(event){
-          var me = this;
-          var inputField = $(this);
-          var hiddenField = $(this).parent().find('input[name='+el_name+']');
-
-          var inputStr = inputField.val();
-
-           $.get("/serviceProvider/searchSp", {input: inputStr}, function(data){
-             if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
-               return;
-             }
-              companyList.empty();
-              for(var i = 0; i < data.length; i++)
-                  companyList.append("<li><a tabindex='-1' class='fromLocationItem' portId='"+data[i].ID
-                    +"' name='"+data[i].ABBR+"' >"+data[i].ABBR+"</a></li>");
-              companyList.css({ 
-                  left:$(me).offset().left+"px", 
-                  top:$(me).offset().top+28+"px" 
-              });
-              companyList.show();
-              eeda._party_inputField = inputField;
-              eeda._party_hiddenField = hiddenField;
-          },'json');
-      });
-      
-      companyList.on('click', '.fromLocationItem', function(e){
-          var inputField = eeda._party_inputField;
-          var hiddenField = eeda._party_hiddenField;
-          inputField.val($(this).text());//名字
-          companyList.hide();
-          var portId = $(this).attr('portId');
-          hiddenField.val(portId);//id
-      });
-
-      // 1 没选中客户，焦点离开，隐藏列表
-      $('table input[name='+el_name+'_input]').on('blur', function(){
-        var hiddenField = eeda._party_hiddenField;
-        
-        if ($(this).val().trim().length ==0) {
-            hiddenField.val('');
-        };
-        companyList.hide();
-      });
-      
-      // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
-      companyList.on('mousedown', function(){
-          return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
-      });
-    
-  };
-
-  //查找所有费用条目
-  eeda.bindTableFinItemField = function(el_name) {
-      var companyList = $('#table_fin_item_field_list');
-      $('table input[name='+el_name+'_input]').on('keyup click', function(event){
-          var me = this;
-          var inputField = $(this);
-          var hiddenField = $(this).parent().find('input[name='+el_name+']');
-
-          var inputStr = inputField.val();
-
-           $.get("/finItem/search", {input: inputStr}, function(data){
-             if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
-               return;
-             }
-              companyList.empty();
-              for(var i = 0; i < data.length; i++)
-                  companyList.append("<li><a tabindex='-1' class='fromLocationItem' portId='"+data[i].ID
-                    +"' name='"+data[i].NAME+"' >"+data[i].NAME+"</a></li>");
-              companyList.css({ 
-                  left:$(me).offset().left+"px", 
-                  top:$(me).offset().top+28+"px" 
-              });
-              companyList.show();
-              eeda._fin_inputField = inputField;
-              eeda._fin_hiddenField = hiddenField;
-          },'json');
-      });
-      
-      companyList.on('click', '.fromLocationItem', function(e){
-          var inputField = eeda._fin_inputField;
-          var hiddenField = eeda._fin_hiddenField;
-          inputField.val($(this).text());//名字
-          companyList.hide();
-          var portId = $(this).attr('portId');
-          hiddenField.val(portId);//id
-      });
-
-      // 1 没选中客户，焦点离开，隐藏列表
-      $('table input[name='+el_name+'_input]').on('blur', function(){
-        var hiddenField = eeda._fin_hiddenField;
-        
-        if ($(this).val().trim().length ==0) {
-            hiddenField.val('');
-        };
-        companyList.hide();
-      });
-      
-      // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
-      companyList.on('mousedown', function(){
-          return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
-      });
-  };
-  
-  //查找所有单位
-  eeda.bindTableUnitField = function(el_name) {
-	  var companyList = $('#table_fin_item_field_list');
-	  $('table input[name='+el_name+'_input]').on('keyup click', function(event){
-		  var me = this;
-		  var inputField = $(this);
-		  var hiddenField = $(this).parent().find('input[name='+el_name+']');
+   //dataTable里的下拉列表，查询参数为input,url,添加的参数para,下拉显示的数据库字段
+   eeda.bindTableField = function(el_name,url,para) {
+		  var tableFieldList = $('#table_input_field_list');
+		  $('table input[name='+el_name+'_input]').on('keyup click', function(event){
+			  var me = this;
+			  var inputField = $(this);
+			  var hiddenField = $(this).parent().find('input[name='+el_name+']');
+			  var inputStr = inputField.val();
+			  $.get(url, {input:inputStr,para:para}, function(data){
+				  if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+					  return;
+				  }
+				  tableFieldList.empty();
+				  for(var i = 0; i < data.length; i++)
+					  tableFieldList.append("<li><a tabindex='-1' class='fromLocationItem' dataId='"+data[i].ID
+							  +"' dataName='"+data[i].NAME+"' >"+data[i].NAME+"</a></li>");
+				  tableFieldList.css({ 
+					  left:$(me).offset().left+"px", 
+					  top:$(me).offset().top+28+"px" 
+				  });
+				  tableFieldList.show();
+				  eeda._inputField = inputField;
+				  eeda._hiddenField = hiddenField;
+			  },'json');
+		  });
 		  
-		  var inputStr = inputField.val();
+		  tableFieldList.on('click', '.fromLocationItem', function(e){
+			  var inputField = eeda._inputField;
+			  var hiddenField = eeda._hiddenField;
+			  inputField.val($(this).text());//名字
+			  tableFieldList.hide();
+			  var dataId = $(this).attr('dataId');
+			  hiddenField.val(dataId);//id
+		  });
 		  
-		  $.get("/serviceProvider/searchUnit", {input: inputStr}, function(data){
-			  if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
-				  return;
-			  }
-			  companyList.empty();
-			  for(var i = 0; i < data.length; i++)
-				  companyList.append("<li><a tabindex='-1' class='fromLocationItem' portId='"+data[i].ID
-						  +"' name='"+data[i].NAME+"' >"+data[i].NAME+"</a></li>");
-			  companyList.css({ 
-				  left:$(me).offset().left+"px", 
-				  top:$(me).offset().top+28+"px" 
-			  });
-			  companyList.show();
-			  eeda._fin_inputField = inputField;
-			  eeda._fin_hiddenField = hiddenField;
-		  },'json');
-	  });
-	  
-	  companyList.on('click', '.fromLocationItem', function(e){
-		  var inputField = eeda._fin_inputField;
-		  var hiddenField = eeda._fin_hiddenField;
-		  inputField.val($(this).text());//名字
-		  companyList.hide();
-		  var portId = $(this).attr('portId');
-		  hiddenField.val(portId);//id
-	  });
-	  
-	  // 1 没选中客户，焦点离开，隐藏列表
-	  $('table input[name='+el_name+'_input]').on('blur', function(){
-		  var hiddenField = eeda._fin_hiddenField;
+		  // 1 没选中客户，焦点离开，隐藏列表
+		  $('table input[name='+el_name+'_input]').on('blur', function(){
+			  var hiddenField = eeda._hiddenField;
+			  
+			  if ($(this).val().trim().length ==0) {
+				  hiddenField.val('');
+			  };
+			  tableFieldList.hide();
+		  });
 		  
-		  if ($(this).val().trim().length ==0) {
-			  hiddenField.val('');
-		  };
-		  companyList.hide();
-	  });
-	  
-	  // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
-	  companyList.on('mousedown', function(){
-		  return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
-	  });
-  };
-  
-  //查找所有币制名
-  eeda.bindTableCurrencyField = function(el_name) {
-	  var companyList = $('#table_fin_item_field_list');
-	  $('table input[name='+el_name+'_input]').on('keyup click', function(event){
-		  var me = this;
-		  var inputField = $(this);
-		  var hiddenField = $(this).parent().find('input[name='+el_name+']');
-		  
-		  var inputStr = inputField.val();
-		  
-		  $.get("/serviceProvider/searchCurrency", {input: inputStr}, function(data){
-			  if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
-				  return;
-			  }
-			  companyList.empty();
-			  for(var i = 0; i < data.length; i++)
-				  companyList.append("<li><a tabindex='-1' class='fromLocationItem' portId='"+data[i].ID
-						  +"' name='"+data[i].NAME+"' >"+data[i].NAME+"</a></li>");
-			  companyList.css({ 
-				  left:$(me).offset().left+"px", 
-				  top:$(me).offset().top+28+"px" 
-			  });
-			  companyList.show();
-			  eeda._fin_inputField = inputField;
-			  eeda._fin_hiddenField = hiddenField;
-		  },'json');
-	  });
-	  
-	  companyList.on('click', '.fromLocationItem', function(e){
-		  var inputField = eeda._fin_inputField;
-		  var hiddenField = eeda._fin_hiddenField;
-		  inputField.val($(this).text());//名字
-		  companyList.hide();
-		  var portId = $(this).attr('portId');
-		  hiddenField.val(portId);//id
-	  });
-	  
-	  // 1 没选中客户，焦点离开，隐藏列表
-	  $('table input[name='+el_name+'_input]').on('blur', function(){
-		  var hiddenField = eeda._fin_hiddenField;
-		  
-		  if ($(this).val().trim().length ==0) {
-			  hiddenField.val('');
-		  };
-		  companyList.hide();
-	  });
-	  
-	  // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
-	  companyList.on('mousedown', function(){
-		  return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
-	  });
-  };
-  
+		  // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
+		  tableFieldList.on('mousedown', function(){
+			  return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+		  });
+	  };
+   
   
   
 });

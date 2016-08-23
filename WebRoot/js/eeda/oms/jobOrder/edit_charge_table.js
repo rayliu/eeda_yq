@@ -64,10 +64,10 @@ $(document).ready(function() {
     };
     
     var bindFieldEvent=function(){
-        eeda.bindTablePartyField('SP_ID');
-        eeda.bindTableFinItemField('CHARGE_ID');
-        eeda.bindTableUnitField('UNIT_ID');
-        eeda.bindTableCurrencyField('CURRENCY_ID');
+    	eeda.bindTableField('SP_ID','/serviceProvider/searchCompany','');
+        eeda.bindTableField('CHARGE_ID','/finItem/search','');
+        eeda.bindTableField('UNIT_ID','/serviceProvider/searchUnit','');
+        eeda.bindTableField('CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
 
     //------------事件处理
@@ -98,7 +98,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    var field_html = template('table_party_field_template',
+                    var field_html = template('table_dropdown_template',
                         {
                             id: 'SP_ID',//对应数据库字段
                             value: data,
@@ -112,7 +112,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    var field_html = template('table_fin_item_field_template',
+                    var field_html = template('table_dropdown_template',
                         {
                             id: 'CHARGE_ID',//对应数据库字段
                             value: data,
@@ -140,12 +140,12 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
-                    var field_html = template('table_fin_item_field_template',
+                    var field_html = template('table_dropdown_template',
                         {
                             id: 'UNIT_ID',
                             value: data,
                             display_value: full.UNIT_NAME,
-                            width:'80px'
+                            style:'width:80px'
                         }
                     );
                     return field_html;
@@ -155,12 +155,12 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
-                    var field_html = template('table_fin_item_field_template',
+                    var field_html = template('table_dropdown_template',
                         {
                             id: 'CURRENCY_ID',
                             value: data,
                             display_value: full.CURRENCY_NAME,
-                            width:'80px'
+                            style:'width:80px'
                         }
                     );
                     return field_html;

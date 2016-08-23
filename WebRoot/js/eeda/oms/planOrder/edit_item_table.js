@@ -70,8 +70,10 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	    $(el).trigger('keyup');
 	    	});
 
-	    	eeda.bindTablePortField();
-	    	eeda.bindTableCarrierField();
+	    	eeda.bindTableField('POR','/location/searchPort','');
+	    	eeda.bindTableField('POL','/location/searchPort','');
+	    	eeda.bindTableField('POD','/location/searchPort','');
+	    	eeda.bindTableField('CARRIER','/serviceProvider/searchCarrier','');
 	    };
 
 	    //------------事件处理
@@ -224,7 +226,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var field_html = template('table_port_field_template',
+	                    var field_html = template('table_dropdown_template',
 		                    {
 		                        id: 'POR',
 		                        value: data,
@@ -238,7 +240,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var field_html = template('table_port_field_template',
+	                    var field_html = template('table_dropdown_template',
 		                    {
 		                        id: 'POL',
 		                        value: data,
@@ -252,7 +254,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var field_html = template('table_port_field_template',
+	                    var field_html = template('table_dropdown_template',
 		                    {
 		                        id: 'POD',
 		                        value: data,
@@ -266,7 +268,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var field_html = template('table_carrier_field_template',
+	                    var field_html = template('table_dropdown_template',
 		                    {
 		                        id: 'CARRIER',
 		                        value: data,
@@ -366,7 +368,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    $('#add_cargo').on('click', function(){
 	        var item={};
 	        cargoTable.row.add(item).draw(true);
-	        bindFieldEvent();
 	    });
 	    
 	    //刷新明细表

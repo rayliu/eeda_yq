@@ -476,17 +476,57 @@ public class ServiceProviderController extends Controller {
     	
     }
     
+    //查询船公司下拉
     public void searchCarrier(){
-        String name = getPara("name");
+        String name = getPara("input");
         List<Record> recs = null;
-        String sql = "select * from party p where p.type = 'SP' and p.sp_type like '%carrier%' ";
+        String sql = "select id,abbr name from party p where p.type = 'SP' and p.sp_type like '%carrier%' ";
         if(!StringUtils.isBlank(name)){
-        	sql+=" and p.abbr like '%" + name + "%' or p.quick_search_code like '%" + name.toUpperCase() + "%' ";
+        	sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
         }
         recs = Db.find(sql);
         renderJson(recs);
     }
     
+    //查询结算公司下拉
+    public void searchCompany(){
+    	String input = getPara("input");
+		
+		Long parentID = pom.getParentOfficeId();
+		List<Record> spList = Collections.EMPTY_LIST;
+		if (input !=null && input.trim().length() > 0) {
+		    spList = Db
+					.find(" select p.id,p.abbr name from party p, office o where o.id = p.office_id "
+					        + " and p.type = '"
+							+ Party.PARTY_TYPE_SERVICE_PROVIDER
+							+ "' and (p.company_name like '%"
+							+ input
+							+ "%' or p.abbr like '%"
+							+ input
+							+ "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) limit 0,10",parentID,parentID);
+		} else {
+		    spList = Db
+					.find("select p.id,p.abbr name from party p, office o where o.id = p.office_id "
+					        + " and p.type = '"
+							+ Party.PARTY_TYPE_SERVICE_PROVIDER + "'  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?)", parentID, parentID);
+		}
+		renderJson(spList);
+    }
+    
+    //查询航空公司下拉
+    public void searchAirCompany(){
+    	String name = getPara("input");
+    	String sp_type = getPara("para");
+    	List<Record> recs = null;
+    	String sql = "select p.id,p.abbr name from party p where p.type = 'SP' and p.sp_type like '%"+sp_type+"%' ";
+    	if(!StringUtils.isBlank(name)){
+    		sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
+    	}
+    	recs = Db.find(sql);
+    	renderJson(recs);
+    }
+    
+    //查询单位下拉列表
     public void searchUnit(){
     	String input = getPara("input");
     	List<Record> recs = null;
@@ -498,6 +538,7 @@ public class ServiceProviderController extends Controller {
     	renderJson(recs);
     }
     
+    //查询币制名下拉列表
     public void searchCurrency(){
     	String input = getPara("input");
     	List<Record> recs = null;

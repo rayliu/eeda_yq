@@ -65,7 +65,7 @@ $(document).ready(function() {
              $(el).trigger('keyup');
          });
 
-        eeda.bindTableAirCarrierField();
+        eeda.bindTableField('AIR_COMPANY','/serviceProvider/searchAirCompany','air');
     };
     //------------事件处理
     var cargoTable = $('#air_table').DataTable({
@@ -94,7 +94,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    var field_html = template('table_air_carrier_field_template',
+                    var field_html = template('table_dropdown_template',
                             {
                                 id: 'AIR_COMPANY',
                                 value: data,
@@ -132,7 +132,8 @@ $(document).ready(function() {
 	                    var field_html = template('table_date_field_template',
 		                    {
 		                        id: 'ETD',
-		                        value: data.substr(0,19)
+		                        value: data.substr(0,19),
+		                        style:'width:180px'
 		                    }
 		                );
 	                    return field_html;
@@ -152,7 +153,8 @@ $(document).ready(function() {
 	                    var field_html = template('table_date_field_template',
 		                    {
 		                        id: 'ETA',
-		                        value: data.substr(0,19)
+		                        value: data.substr(0,19),
+		                        style:'width:180px'
 		                    }
 		                );
 	                    return field_html;
