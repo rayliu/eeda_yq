@@ -10,7 +10,7 @@ $(document).ready(function() {
         
         cargoTable.row(tr).remove().draw();
     }); 
-
+    
     itemOrder.buildAirItem=function(){
         var cargo_table_rows = $("#air_table tr");
         var cargo_items_array=[];

@@ -108,6 +108,7 @@ $(document).ready(function() {
                 $("#fileuploadSpan").show();
                 $("#sendEmail").show();
                 $("#oceanPDF").show();
+                $("#airPDF").show();
                 
                 //异步刷新海运明细表
                 itemOrder.refleshOceanTable(order.ID);

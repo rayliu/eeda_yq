@@ -3,6 +3,7 @@ $(document).ready(function() {
 	//未保存或数据不足不生成PDF
 	if($('#order_id').val()==''){
 		$("#oceanPDF").hide();
+		$("#airPDF").hide();
 	}
 	
 	//生成海运SI
