@@ -46,9 +46,13 @@
                                     label:'运输条款', 
                                     value:air.trans_clause!'',
                                     value_list:[
-                                        {code:'export', value:'CY-CY'},
-                                        {code:'import', value:'CY-CFS'}, 
-                                        {code:'both', value:'DOOR-DOOR'}
+                                        {code:'CFS-CFS', value:'CFS-CFS'},
+			                            {code:'CFS-DOOR', value:'CFS-DOOR'}, 
+			                            {code:'CY-CY', value:'CY-CY'},
+			                            {code:'CY-DOOR', value:'CY-DOOR'},
+			                            {code:'DOOR-DOOR', value:'DOOR-DOOR'},
+			                            {code:'DOOR-CFS', value:'DOOR-CFS'},
+			                            {code:'DOOR-CY', value:'DOOR-CY'}
                                     ],
                                     disabled: 'disabled'
                                 }){}%>
