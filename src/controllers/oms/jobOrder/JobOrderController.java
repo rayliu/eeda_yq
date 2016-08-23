@@ -101,16 +101,27 @@ public class JobOrderController extends Controller {
     public void mblflag(){
     	String jsonStr = getPara("order_id");
     	JobOrderShipment jobOrderShipment = new JobOrderShipment();
-    	jobOrderShipment = JobOrderShipment.dao.findFirst(jsonStr);
+    	jobOrderShipment = JobOrderShipment.dao.findFirst("select id,mbl_flag from job_order_shipment where order_id = ?",jsonStr);
     	jobOrderShipment.set("mbl_flag", "Y");
     	jobOrderShipment.update();
+    	renderJson("{\"result\":true}");
+    }
+    
+    //已电放确认表标识
+    public void alreadyInlineFlag(){
+    	String jsonStr = getPara("order_id");
+    	JobOrderShipment jobOrderShipment = new JobOrderShipment();
+    	jobOrderShipment = JobOrderShipment.dao.findFirst("select id,mbl_flag from job_order_shipment where order_id = ?",jsonStr);
+    	jobOrderShipment.set("in_line_flag", "Y");
+    	jobOrderShipment.update();
+    	renderJson("{\"result\":true}");
     }
 
     //插入打印动作SI标识符
     public void siflag(){
     	String jsonStr = getPara("order_id");
     	JobOrderShipment jobOrderShipment = new JobOrderShipment();
-    	jobOrderShipment = JobOrderShipment.dao.findFirst(jsonStr);
+    	jobOrderShipment = JobOrderShipment.dao.findFirst("select id,mbl_flag from job_order_shipment where order_id = ?",jsonStr);
     	jobOrderShipment.set("si_flag", "Y");
     	jobOrderShipment.update();
     }
@@ -119,7 +130,7 @@ public class JobOrderController extends Controller {
     public void truckOrderflag(){
     	String jsonStr = getPara("order_id");
     	JobOrderLandItem jobOrderLandItem = new JobOrderLandItem();
-    	jobOrderLandItem = JobOrderLandItem.dao.findFirst(jsonStr);
+    	jobOrderLandItem = JobOrderLandItem.dao.findFirst("select id,mbl_flag from job_order_land_item where order_id = ?",jsonStr);
     	jobOrderLandItem.set("truckorder_flag", "Y");
     	jobOrderLandItem.update();
     }
@@ -128,9 +139,10 @@ public class JobOrderController extends Controller {
     public void aframsflag(){
     	String jsonStr = getPara("order_id");
     	JobOrderShipment jobOrderShipment = new JobOrderShipment();
-    	jobOrderShipment = JobOrderShipment.dao.findFirst(jsonStr);
+    	jobOrderShipment = JobOrderShipment.dao.findFirst("select id,mbl_flag from job_order_shipment where order_id = ?",jsonStr);
     	jobOrderShipment.set("afr_ams_flag", "Y");
     	jobOrderShipment.update();
+    	renderJson("{\"result\":true}");
     }
     
     @SuppressWarnings("unchecked")

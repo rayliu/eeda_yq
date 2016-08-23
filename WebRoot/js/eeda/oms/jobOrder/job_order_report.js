@@ -300,19 +300,48 @@ $(document).ready(function() {
     });
     
     //确认MBL标记
-    $('oceanMBL').click(function(){
+    $('#oceanMBL').click(function(){
     	var order_id = $("#order_id").val();
-    	$.post('/joborder/mblflag',{order_id:order_id},function(data){
-    		});
+    	$.post('/jobOrder/mblflag',{order_id:order_id},function(data){
+    		if(data.result==true)
+    			$.scojs_message('MBL确认成功', $.scojs_message.TYPE_OK);
+    		else
+    			$.scojs_message('MBL确认失败', $.scojs_message.TYPE_ERROR);
+    			
+    		},'json').fail(function(){
+		    	$.scojs_message('MBL确认失败', $.scojs_message.TYPE_ERROR);
+  		  });
     	
     });
     
     
     //确认AFR/AMS标记
-    $('alreadyAFR_AMS').click(function(){
+    $('#alreadyAFR_AMS').click(function(){
     	var order_id = $("#order_id").val();
-    	$.post('/joborder/aframsflag',{order_id:order_id},function(data){
-    		});
+    	$.post('/jobOrder/aframsflag',{order_id:order_id},function(data){
+    		if(data.result==true)
+			$.scojs_message('AFR/AMS确认成功', $.scojs_message.TYPE_OK);
+		else
+			$.scojs_message('AFR/AMS确认失败', $.scojs_message.TYPE_ERROR);
+			
+		},'json').fail(function(){
+	    	$.scojs_message('AFR/AMS确认失败', $.scojs_message.TYPE_ERROR);
+		  });
+    	
+    });
+    
+    //确认已电放
+    $('#alreadyInline').click(function(){
+    	var order_id = $("#order_id").val();
+    	$.post('/jobOrder/alreadyInlineFlag',{order_id:order_id},function(data){
+    		if(data.result==true)
+			$.scojs_message('已电放确认成功', $.scojs_message.TYPE_OK);
+		else
+			$.scojs_message('已电放确认失败', $.scojs_message.TYPE_ERROR);
+			
+		},'json').fail(function(){
+	    	$.scojs_message('已电放确认失败', $.scojs_message.TYPE_ERROR);
+		  });
     	
     });
     
