@@ -170,7 +170,6 @@ $(document).ready(function() {
     $('#add_air').on('click', function(){
         var item={};
         cargoTable.row.add(item).draw(true);
-        bindFieldEvent();
     });
     
     //刷新明细表

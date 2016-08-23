@@ -64,16 +64,10 @@ $(document).ready(function() {
     };
     
     var bindFieldEvent=function(){
-        // $('table .date').datetimepicker({  
-        //     format: 'yyyy-MM-dd',  
-        //     language: 'zh-CN'
-        // }).on('changeDate', function(el){
-        //     $(".bootstrap-datetimepicker-widget").hide();   
-        //     $(el).trigger('keyup');
-        // });
-
         eeda.bindTablePartyField('SP_ID');
         eeda.bindTableFinItemField('CHARGE_ID');
+        eeda.bindTableUnitField('UNIT_ID');
+        eeda.bindTableCurrencyField('CURRENCY_ID');
     };
 
     //------------事件处理
@@ -144,16 +138,32 @@ $(document).ready(function() {
             },
             { "data": "UNIT_ID", 
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
+                	if(!data)
                         data='';
-                    return '<input type="text" name="unit_id" style="width:80px" value="'+data+'" class="form-control" />';
+                    var field_html = template('table_fin_item_field_template',
+                        {
+                            id: 'UNIT_ID',
+                            value: data,
+                            display_value: full.UNIT_NAME,
+                            width:'80px'
+                        }
+                    );
+                    return field_html;
                 }
             },
             { "data": "CURRENCY_ID", 
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
+                	if(!data)
                         data='';
-                    return '<input type="text" name="currency_id" style="width:80px" value="'+data+'" class="form-control" />';
+                    var field_html = template('table_fin_item_field_template',
+                        {
+                            id: 'CURRENCY_ID',
+                            value: data,
+                            display_value: full.CURRENCY_NAME,
+                            width:'80px'
+                        }
+                    );
+                    return field_html;
                 }
             },
             { "data": "TOTAL_AMOUNT", 
@@ -190,6 +200,18 @@ $(document).ready(function() {
                     return data;
                 }
             }, { "data": "CHARGE_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },{ "data": "UNIT_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },{ "data": "CURRENCY_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';

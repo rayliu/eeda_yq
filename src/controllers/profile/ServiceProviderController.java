@@ -486,4 +486,28 @@ public class ServiceProviderController extends Controller {
         recs = Db.find(sql);
         renderJson(recs);
     }
+    
+    public void searchUnit(){
+    	String input = getPara("input");
+    	List<Record> recs = null;
+    	String sql = "select id,name from unit u";
+    	if(!StringUtils.isBlank(input)){
+    		sql+=" where u.name like '%" + input + "%' ";
+    	}
+    	recs = Db.find(sql);
+    	renderJson(recs);
+    }
+    
+    public void searchCurrency(){
+    	String input = getPara("input");
+    	List<Record> recs = null;
+    	String sql = "select id,code,name from currency c";
+    	if(!StringUtils.isBlank(input)){
+    		sql+=" where c.name like '%" + input + "%' or c.english_name like '%" + input + "%' or c.code like '%" + input + "%' ";
+    	}
+    	recs = Db.find(sql);
+    	renderJson(recs);
+    }
+    
+    
 }
