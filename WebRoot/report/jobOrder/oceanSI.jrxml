@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="76"/>
+	<property name="ireport.y" value="152"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -28,7 +28,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-    josi.*,jos.*,lo.name por_name,lo1.name pol_name,lo2.name pod_name
+    josi.*,jos.*,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name
 FROM job_order_shipment jos
 
 left join job_order_shipment_item josi on josi.order_id=jos.order_id
@@ -39,6 +39,7 @@ left join location lo1 on lo1.id=jos.pol
 
 left join location lo2 on lo2.id=jos.pod
 
+left join location lo3 on lo3.id=jos.fnd
 where jos.order_id=$P{order_id}]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
@@ -167,9 +168,6 @@ where jos.order_id=$P{order_id}]]>
 	<field name="fnd" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="etd" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="eta" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -215,12 +213,16 @@ where jos.order_id=$P{order_id}]]>
 	<field name="afr_ams_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="in_line_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="closing_date" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="por_name" class="java.lang.String"/>
 	<field name="pol_name" class="java.lang.String"/>
 	<field name="pod_name" class="java.lang.String"/>
+	<field name="fnd_name" class="java.lang.String"/>
 	<variable name="id_1" class="java.lang.Long" resetType="Page" calculation="Sum">
 		<variableExpression><![CDATA[$F{id}]]></variableExpression>
 	</variable>
@@ -454,12 +456,12 @@ where jos.order_id=$P{order_id}]]>
 				<textElement verticalAlignment="Top">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fnd_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="315" y="307" width="239" height="33" uuid="270210a8-9ffb-4580-9ca6-666e356825b4"/>
 				<textElement verticalAlignment="Top">
-					<font size="8" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{shipping_mark}]]></textFieldExpression>
 			</textField>
