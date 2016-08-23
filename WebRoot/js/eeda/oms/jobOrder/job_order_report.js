@@ -314,8 +314,46 @@ $(document).ready(function() {
     		});
     	
     });
+    
     //打印生成派车单truckOrderPDF
-    $('truckOrderPDF').click(function(){
+//    $('truckOrderPDF').click(function(){
+//    	$('#shipper_input').val()==''
+//			//数据不足提示
+//	    	var alert = '';
+//	    	if($('#shipper_input').val()==''){
+//	    		alert+='发货人Shipper<br><br>';
+//	    	}
+//	    	if($('#shipper_info').val()==''){
+//	    		alert+='发货人备注<br><br>';
+//	    	}
+//	    	if($('#consignee_input').val()==''){
+//	    		alert+='收货人Consignee<br><br>';
+//	    	}
+//	    	if($('#consignee_info').val()==''){
+//	    		alert+='收货人备注<br><br>';
+//	    	}
+//	    	if($('#notify_party_input').val()==''){
+//	    		alert+='通知人NotifyParty<br><br>';
+//	    	}
+//	    	if($('#notify_party_info').val()==''){
+//	    		alert+='通知人备注<br><br>';
+//	    	}
+//	    	if( $('#air_gross_weight').val()==''){
+//	    		alert+='毛重<br><br>';
+//	    	}
+//	    	if($('#air_net_weight').val()==''){
+//	    		alert+='净重';
+//	    	}
+//	    	if($('#air_volume').val()==''){
+//	    		alert+='体积<br><br>';
+//	    	}
+//	    	if($('#shipping_mark').val()==''){
+//	    		alert+='唛头<br><br>';
+//	    	}
+//	    	if(alert!=''){
+//				$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
+//				$('#pdfAlert').click();
+//			}else{
     	var order_no = $("#order_no").val();
 		$.post('/jobOrderReport/printTruckOrderPDF', {order_no:order_no}, function(data){
 			if(data){
@@ -327,6 +365,7 @@ $(document).ready(function() {
 				$.scojs_message('生成派车单 PDF失败', $.scojs_message.TYPE_ERROR);
 			}
 		}); 
+//	  }
     	
     });
     

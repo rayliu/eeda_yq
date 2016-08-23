@@ -120,6 +120,19 @@ public class JobOrderReportController extends Controller {
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	
+	//路运派车单打印
+	public void printTruckOrderPDF() {
+		
+		String order_no = getPara("order_no");
+		String fileName = "/report/jobOrder/truckOrder.jasper";
+		String outFileName = "/download/路运派车单";
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_no", order_no);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_no;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
 	
 	
 }
