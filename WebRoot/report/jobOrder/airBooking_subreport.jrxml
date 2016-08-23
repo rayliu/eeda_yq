@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="airBooking1_subreport1" language="groovy" pageWidth="230" pageHeight="110" columnWidth="230" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="325dd937-074b-4954-b795-3034d26c0434">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="order_id" class="java.lang.String">
+		<property name="order_id" value="$P{order_id}"/>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from job_order_air_cargodesc
+where order_id=$P{order_id}]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="long" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="wide" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="high" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gross_weight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amount" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="volume" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="long_sum" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{long}]]></variableExpression>
+	</variable>
+	<variable name="width_sum" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{wide}]]></variableExpression>
+	</variable>
+	<variable name="volunms_sum" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{volume}]]></variableExpression>
+	</variable>
+	<variable name="high_sum" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{high}]]></variableExpression>
+	</variable>
+	<variable name="gross_sum" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{gross_weight}]]></variableExpression>
+	</variable>
+	<variable name="amount_sum" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="22" y="1" width="35" height="15" uuid="73be1670-cd3d-466f-ba31-6ad1b5d6a488"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="61" y="1" width="60" height="15" uuid="ab321767-85af-40d0-8495-b9d8cf115b1d"/>
+				<textElement textAlignment="Center">
+					<font size="10" pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="128" y="1" width="26" height="15" uuid="e39d1127-9a43-4f50-b8a5-388494f3d290"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{long}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="154" y="1" width="26" height="15" uuid="c988504f-937e-4731-a0dd-07e98b678304"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{wide}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="180" y="1" width="18" height="15" uuid="30de096a-94cc-4ca2-b42e-c374f0d70554"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{high}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="1" width="25" height="15" uuid="39ed87b0-d017-42ea-b445-4d91f88cb72f"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{volume}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="128" y="0" width="26" height="20" uuid="e52f7050-a6ce-4d6a-ab9e-bede03443d90"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{long_sum}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="154" y="0" width="26" height="20" uuid="2cc19c0e-67a0-48f8-baf8-d66e181bd4e9"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{width_sum}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="0" width="25" height="20" uuid="e982fdb2-4fc0-4b39-acc7-463a55bdc89d"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{volunms_sum}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="180" y="0" width="18" height="20" uuid="67fc35b4-6a15-4b25-ace4-306571fa9ca8"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{high_sum}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="61" y="0" width="60" height="20" uuid="076120a2-cec8-45a7-baf2-524c29a6d721"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{gross_sum}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="22" height="20" uuid="fa06e706-5840-45cf-9693-3f1a2b2bdbeb"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[总计]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="22" y="0" width="39" height="20" uuid="cb99b44f-6a33-4aab-a70b-a69324c8950b"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="STSong-Light"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{amount_sum}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="226" height="1" uuid="ee030b78-facb-4dcc-86a0-b97b057acce6"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
