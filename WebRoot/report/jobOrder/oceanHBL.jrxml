@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="585"/>
+	<property name="ireport.y" value="805"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -37,6 +37,7 @@
 	jo.*,josi.*, jos.*, lo. NAME por_name,p.abbr,
 	lo1. NAME pol_name,
 	lo2. NAME pod_name,
+	lo3. NAME fnd_name,
 	SUM(josi.pieces),
 	SUM(josi.gross_weight),
 	SUM(josi.volume),
@@ -72,6 +73,7 @@ LEFT JOIN job_order_shipment_item josi ON jo.id = josi.order_id
 LEFT JOIN location lo ON lo.id = jos.por
 LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo2 ON lo2.id = jos.pod
+LEFT JOIN location lo3 ON lo3.id = jos.fnd
 left join party p on p.id=jos.consignee
 where jos.order_id=$P{order_id}]]>
 	</queryString>
@@ -280,6 +282,9 @@ where jos.order_id=$P{order_id}]]>
 	<field name="wait_overseaCustom" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="in_line_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="closing_date" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -289,6 +294,7 @@ where jos.order_id=$P{order_id}]]>
 	</field>
 	<field name="pol_name" class="java.lang.String"/>
 	<field name="pod_name" class="java.lang.String"/>
+	<field name="fnd_name" class="java.lang.String"/>
 	<field name="SUM(josi.pieces)" class="java.math.BigDecimal"/>
 	<field name="SUM(josi.gross_weight)" class="java.lang.Double"/>
 	<field name="SUM(josi.volume)" class="java.lang.Double"/>
@@ -461,12 +467,11 @@ NON-NEGOTIABLE]]></text>
 				<text><![CDATA[  Number&Kind of pkgs]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="17" y="327" width="101" height="30" uuid="f96eb501-490d-42c4-adc7-d78f333eb1e2"/>
+				<reportElement x="20" y="327" width="98" height="30" uuid="f96eb501-490d-42c4-adc7-d78f333eb1e2"/>
 				<textElement>
 					<font size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[   Description of pkgs &
-   goods:]]></text>
+				<text><![CDATA[Description of pkgs & goods:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="402" y="327" width="90" height="15" uuid="09b40c83-82c1-4946-8978-26baa4f87700"/>
@@ -617,15 +622,15 @@ NON-NEGOTIABLE]]></text>
 				<text><![CDATA[As Agent]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="167" y="738" width="75" height="15" uuid="3adffe33-04c8-43ac-b6f4-6d07701d33e1"/>
-				<textElement>
+				<reportElement x="167" y="739" width="75" height="15" uuid="3adffe33-04c8-43ac-b6f4-6d07701d33e1"/>
+				<textElement textAlignment="Right">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[Laden on board]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="217" y="752" width="25" height="15" uuid="3b6a1715-6305-415c-af5a-a61aab489bca"/>
-				<textElement>
+				<reportElement x="217" y="754" width="25" height="15" uuid="3b6a1715-6305-415c-af5a-a61aab489bca"/>
+				<textElement textAlignment="Right">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[ By :]]></text>
@@ -803,14 +808,7 @@ NON-NEGOTIABLE]]></text>
 				<textElement>
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="191" y="498" width="362" height="15" uuid="4dda9540-7b95-4a50-b4e4-e63d0a226e3c"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{trans_clause}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fnd_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="279" y="248" width="100" height="15" uuid="35116c87-954f-4793-b29f-3b0c2a0a7852"/>
@@ -865,6 +863,13 @@ NON-NEGOTIABLE]]></text>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
+			<textField>
+				<reportElement x="194" y="496" width="361" height="20" uuid="634292dd-8936-4422-8941-af87cecfcda1"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{container_type_count}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>

@@ -125,7 +125,7 @@ public class JobOrderReportController extends Controller {
 		
 		String order_no = getPara("order_no");
 		String fileName = "/report/jobOrder/truckOrder.jasper";
-		String outFileName = "/download/路运派车单";
+		String outFileName = "/download/陆运派车单";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_no", order_no);
 		fileName = getContextPath() + fileName;
