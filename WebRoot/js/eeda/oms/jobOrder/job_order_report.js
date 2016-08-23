@@ -4,6 +4,7 @@ $(document).ready(function() {
 	if($('#order_id').val()==''){
 		$("#oceanPDF").hide();
 		$("#airPDF").hide();
+		$("#truckOrderPDF").hide();
 	}
 	
 	//生成海运SI
@@ -368,6 +369,8 @@ $(document).ready(function() {
 
     //打印生成派车单truckOrderPDF
     $('#truckOrderPDF').click(function(){
+    	//一条地点都未添加时，提示
+    	
     	var alert = '';
     	var a=0;
     	var b=0;
@@ -451,6 +454,11 @@ $(document).ready(function() {
     	if(i>0){
     		alert+='运输及时间要求<br><br>';
     	}
+//    	if($('#land_table').Rows[8][""]){
+//    		alert();
+//    	}
+    	
+    	
     	if(alert!=''){
 			$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
 			$('#pdfAlert').click();
