@@ -385,6 +385,7 @@ $(document).ready(function() {
     				$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
     				$('#pdfAlert').click();
     			}else{
+    				
 		    		var order_no = $("#order_no").val();
 		    		$.post('/jobOrderReport/printAirBooking', {order_no:order_no}, function(data){
 		    			if(data){

@@ -774,13 +774,15 @@ where jo.order_no=$P{order_no}]]>
 			<staticText>
 				<reportElement x="454" y="429" width="73" height="12" uuid="f72df33f-4653-476d-a24c-16813bebabf7"/>
 				<textElement>
-					<font size="8"/>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[长  X   宽   X    高    ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="523" y="407" width="32" height="33" uuid="ea9baf95-0feb-4af4-9642-731e643565c0"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<text><![CDATA[体积(CBM)]]></text>
 			</staticText>
 			<staticText>
@@ -792,27 +794,44 @@ where jo.order_no=$P{order_no}]]>
 			</staticText>
 			<staticText>
 				<reportElement x="5" y="314" width="50" height="17" uuid="fc8639bb-2d41-41e5-b015-305cdba6f8b2"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<text><![CDATA[服务类型：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="5" y="332" width="50" height="14" uuid="8f5331db-0320-43b8-8586-019bebbc3650"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<text><![CDATA[服务项目：]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="454" y="712" width="101" height="15" uuid="a9812432-0e2b-495c-bd4b-ba5ba7c2ce59"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="329" y="728" width="57" height="15" uuid="78c1547a-ed0b-417f-8e6d-f3105b37d559"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<text><![CDATA[     定仓日期:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="333" y="752" width="55" height="15" uuid="b537feda-fada-46ec-b598-759b09ed9ddc"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<text><![CDATA[出货日期: ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="331" y="712" width="123" height="15" uuid="c21d3cbd-d274-4706-bf5b-ba5fdff3c588"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<text><![CDATA[ Person in charge 经办人：]]></text>
 			</staticText>
 			<line>

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="truckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6e032343-152e-4328-9fc1-a87e482c2444">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="39"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -51,25 +51,24 @@ where order_id=$P{order_id}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="50" splitType="Stretch">
-			<image>
-				<reportElement x="26" y="0" width="190" height="50" uuid="9b947739-3648-4169-bc30-64196ebed7e8"/>
-				<imageExpression><![CDATA["C:\\Users\\Administrator\\Desktop\\jobOrder\\truckorder.png"]]></imageExpression>
-			</image>
-		</band>
+		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="36" splitType="Stretch">
+		<band height="86" splitType="Stretch">
 			<staticText>
-				<reportElement x="235" y="0" width="101" height="35" uuid="1b26dba1-7c26-497e-b00e-4fb82c132fa3"/>
+				<reportElement x="235" y="50" width="101" height="35" uuid="1b26dba1-7c26-497e-b00e-4fb82c132fa3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="22" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[ 派 车 单]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="35" width="555" height="1" uuid="ae76ec21-fffd-41b8-86fc-71b156209727"/>
+				<reportElement x="0" y="85" width="555" height="1" uuid="ae76ec21-fffd-41b8-86fc-71b156209727"/>
 			</line>
+			<image>
+				<reportElement x="26" y="0" width="190" height="50" uuid="9b947739-3648-4169-bc30-64196ebed7e8"/>
+				<imageExpression><![CDATA["C:\\Users\\Administrator\\Desktop\\jobOrder\\truckorder.png"]]></imageExpression>
+			</image>
 		</band>
 	</pageHeader>
 	<columnHeader>
