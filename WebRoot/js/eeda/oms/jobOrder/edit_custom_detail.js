@@ -56,7 +56,7 @@ $(document).ready(function() {
     });
     
     //报关类型checkbox回显
-    var checkArray =$('#hidden_custom_type').val().split(",");
+    var checkArray =custom_type.split(",");
     for(var i=0;i<checkArray.length;i++){
 	    $('#custom_type input[type="checkbox"]').each(function(){
 	        var checkValue=$(this).val();

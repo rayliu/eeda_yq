@@ -196,8 +196,8 @@ $(document).ready(function() {
             hideServiceTab(checkValue);
         }
     });
-    //服务项目checkbox回显
-    var checkArray =$('#hiddenTransports').val().split(",");
+    //服务项目checkbox回显,transport_type是用js拿值
+    var checkArray = transport_type.split(",");
     for(var i=0;i<checkArray.length;i++){
 	    $('#transport_type input[type="checkbox"]').each(function(){
 	        var checkValue=$(this).val();

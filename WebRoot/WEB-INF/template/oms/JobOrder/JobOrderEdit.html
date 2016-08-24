@@ -89,7 +89,6 @@
                                 }){}%>
                         </div><!-- /.col-lg-4 -->
                         <div class="col-lg-8">
-                        	<input type="hidden" id="hiddenTransports" value ="${order.transport_type!planOrderItem.transport_type!''}">
                             <div class="form-group" id="transport_type">
                                 <label class="search-label">服务项目</label>
                                 <label class="checkbox-inline">
@@ -371,6 +370,9 @@
 <script>
     var order_no = '${order.order_no!'订单编辑'}'; 
     var itemOrder = {};
+    var transport_type = '${order.transport_type!planOrderItem.transport_type!''}';
+    var custom_type = '${custom.custom_type!''},${hkCustom.custom_type!''},${abroadCustom.custom_type!''}';
+    
 </script>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
