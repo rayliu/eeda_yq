@@ -264,6 +264,12 @@ $(document).ready(function() {
     		$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
 			$('#pdfAlert').click();
 		}else{
+			var arry = $('#ocean_shipper_info').val().split("\n");
+			$('#head_attn').val(arry[0]);
+			$('#head_customerTel').val(arry[1]);
+			$('#head_endPlace').val($('#ocean_shipper_input').val());
+			$('#head_startPlace').val(loginUserName);
+			$('#head_date').val(getTime());
 			$('#oceanHeadDetailBtn1').click();
 		}
     })

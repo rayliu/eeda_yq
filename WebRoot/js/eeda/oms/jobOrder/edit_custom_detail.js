@@ -153,19 +153,6 @@ $(document).ready(function() {
 	    })
     }
     
-    //取得当前时间
-    var getTime=function(){
-	    var d = new Date();
-	    var year = d.getFullYear();
-	    var mon = d.getMonth() + 1;
-	    var day = d.getDate();
-	    var h = d.getHours(); 
-	    var m = d.getMinutes(); 
-	    var se = d.getSeconds(); 
-	    timeStr=year+"-"+(mon<10 ? "0" + mon : mon)+"-"+(day<10 ? "0"+ day : day)+" "+(h<10 ? "0"+ h : h)+":"+(m<10 ? "0" + m : m)+":"+(se<10 ? "0" +se : se);
-	    return timeStr;
-    }
-    
     //国内报关状态更新人更新时间处理
     var declareSuccess_time = $('#declareSuccess_time').val();
 	var declareSuccess_updater = $('#declareSuccess_updater').val();
