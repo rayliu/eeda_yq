@@ -235,7 +235,8 @@ public class ServiceProviderController extends Controller {
                 + (getPara("sp_type_air")==null?"":getPara("sp_type_air") +";")
                 + (getPara("sp_type_broker")==null?"":getPara("sp_type_broker") +";")
                 + (getPara("sp_type_head_car")==null?"":getPara("sp_type_head_car") +";")
-                + (getPara("sp_type_oversea_agent")==null?"":getPara("sp_type_oversea_agent"));
+                + (getPara("sp_type_oversea_agent")==null?"":getPara("sp_type_oversea_agent"))
+        		+ (getPara("sp_type_booking_agent")==null?"":getPara("sp_type_booking_agent"));
         contact.set("sp_type", sp_type);
         contact.set("mobile", getPara("mobile"));
         contact.set("phone", getPara("phone"));

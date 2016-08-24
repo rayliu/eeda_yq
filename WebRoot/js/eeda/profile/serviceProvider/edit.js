@@ -51,7 +51,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         var spArr= spType.split(';');
         for (var i = 0; i < spArr.length; i++) {
             var checkSpType = spArr[i];
-            //line;delivery;pickup;personal;carrier;air;broker;head_car;oversea_agent
+            //line;delivery;pickup;personal;carrier;air;broker;head_car;oversea_agent;booking_agent
             if(checkSpType == 'line'){
                 $('#sp_type_line').attr('checked', 'checked');
             }else if(checkSpType == 'delivery'){
@@ -70,6 +70,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $('#sp_type_head_car').attr('checked', 'checked');
             }else if(checkSpType == 'oversea_agent'){
                 $('#sp_type_oversea_agent').attr('checked', 'checked');
+            }else if(checkSpType == 'booking_agent'){
+                $('#sp_type_booking_agent').attr('checked', 'checked');
             }
             
         };
@@ -121,15 +123,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       }
       //自动提交改为手动提交
       $("#save").click(function(){
-    	  $("#save").attr("disabled",true);
     	  
     	  /*$.post("/serviceProvider/check",$("#customerForm").serialize(),function(data){
     		  
     	  });*/
     	 if(!$("#customerForm").valid()){
-    		 $("#save").attr("disabled",false);
     		  return false;
     	 }
+    	 $("#save").attr("disabled",true);
     	 $.post("/serviceProvider/save", $("#customerForm").serialize(),function(data){
     		if(data=='abbrError'){
     			$.scojs_message('供应商简称已存在', $.scojs_message.TYPE_ERROR);
