@@ -112,11 +112,11 @@ $(document).ready(function() {
                     return '<input type="number" name="amount" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
-            { "data": "VOLUME", "width": "80px",
+            { "data": "VOLUME", "width": "100px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="volume" value="'+data+'" class="form-control" style="width:100px" disabled/>';
+                    return '<input type="number" name="volume" value="'+data+'" class="form-control" style="width:120px" disabled/>';
                 }
             }
         ]
