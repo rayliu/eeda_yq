@@ -34,10 +34,12 @@
         </div>
         <div class="row">
             <div class="col-lg-4">
-                <%include("/eeda/component/form/inputField.html", 
+                <%include("/eeda/component/form/inputPartyField.html", 
                     {   id:'ocean_booking_agent', 
                         label:'订舱代理', 
-                        value:shipment.booking_agent!''
+                        type:'booking_agent',
+                        value:shipment.booking_agent!'',
+                        display_value:shipment.booking_agent_name!''
                     }){}%>
             </div>
             <div class="col-lg-4">

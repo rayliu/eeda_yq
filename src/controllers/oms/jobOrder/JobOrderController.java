@@ -306,21 +306,23 @@ public class JobOrderController extends Controller {
     private Record getItemDetail(String id,String type){
     	Record re = null;
     	if("shipment".equals(type))
-    		re = Db.findFirst("select jos.*, p1.abbr shipperAbbr , p2.abbr consigneeAbbr, p3.abbr notify_partyAbbr, p4.abbr carrier_name,p5.abbr head_carrier_name,p6.abbr oversea_agent_name from job_order_shipment jos "
+    		re = Db.findFirst("select jos.*, p1.abbr shipperAbbr , p2.abbr consigneeAbbr, p3.abbr notify_partyAbbr, p4.abbr carrier_name,p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name from job_order_shipment jos "
     				+ " left join party p1 on p1.id=jos.shipper"
     				+ " left join party p2 on p2.id=jos.consignee"
     				+ " left join party p3 on p3.id=jos.notify_party"
     				+ " left join party p4 on p4.id=jos.carrier"
     				+ " left join party p5 on p5.id=jos.head_carrier"
     				+ " left join party p6 on p6.id=jos.oversea_agent"
+    				+ " left join party p7 on p7.id=jos.booking_agent"
     				+ " where order_id = ?",id);
     	else if("insure".equals(type)){
     		re = Db.findFirst("select * from job_order_insurance joi where order_id = ?",id);
     	}else if("air".equals(type)){
-    		re = Db.findFirst("select joa.* ,p1.abbr shipperAbbr,p2.abbr consigneeAbbr,p3.abbr notify_partyAbbr from job_order_air joa"
+    		re = Db.findFirst("select joa.* ,p1.abbr shipperAbbr,p2.abbr consigneeAbbr,p3.abbr notify_partyAbbr,p4.abbr booking_agent_name from job_order_air joa"
     				+ " left join party p1 on p1.id=joa.shipper"
     				+ " left join party p2 on p2.id=joa.consignee"
     				+ " left join party p3 on p3.id=joa.notify_party"
+    				+ " left join party p4 on p4.id=joa.booking_agent"
     				+ " where order_id=?", id);
     	}
 		return re;
