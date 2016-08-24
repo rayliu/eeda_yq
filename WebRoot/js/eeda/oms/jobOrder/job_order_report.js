@@ -29,9 +29,6 @@ $(document).ready(function() {
     	if($('#ocean_notify_party_info').val()==''){
     		alert+='通知人备注<br><br>';
     	}
-    	if($('#SONO').val()==''){
-    		alert+='SO NO<br><br>';
-    	}
     	if($('#mbl_no').val()==''){
     		alert+='MBL号码<br><br>';
     	}
@@ -53,10 +50,10 @@ $(document).ready(function() {
     	if($('#fnd').val()==''){
     		alert+='目的地 FND<br><br>';
     	}
-    	if($('#shipping_mark').val()==''){
+    	if($('#ocean_shipping_mark').val()==''){
     		alert+='唛头 <br><br>';
     	}
-    	if($('#cargo_desc').val()==''){
+    	if($('#ocean_cargo_desc').val()==''){
     		alert+='货物描述 ';
     	}
     	
@@ -131,10 +128,10 @@ $(document).ready(function() {
     	if($('#etd').val()==''){
     		alert+='ETD<br><br>';
     	}
-    	if($('#shipping_mark').val()==''){
+    	if($('#ocean_shipping_mark').val()==''){
     		alert+='唛头 <br><br>';
     	}
-    	if($('#cargo_desc').val()==''){
+    	if($('#ocean_cargo_desc').val()==''){
     		alert+='货物描述 ';
     	}
     	
@@ -207,10 +204,10 @@ $(document).ready(function() {
     	if($('#etd').val()==''){
     		alert+='ETD<br><br>';
     	}
-    	if($('#shipping_mark').val()==''){
+    	if($('#ocean_shipping_mark').val()==''){
     		alert+='唛头<br><br>';
     	}
-    	if($('#cargo_desc').val()==''){
+    	if($('#ocean_cargo_desc').val()==''){
     		alert+='货物描述 ';
     	}
     	
@@ -348,7 +345,6 @@ $(document).ready(function() {
     
     //生成空运booking PDF
     $('#printAirBooking').click(function(){
-    	$('#shipper_input').val()==''
     			//数据不足提示
     	    	var alert = '';
     	    	if($('#shipper_input').val()==''){
