@@ -1,16 +1,15 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN',
     './edit_shipment_table','./edit_shipment_detail','./edit_land_table', './edit_charge_table','./edit_charge_cost_table',
     './edit_air_table', './edit_air_cargoDesc_table', './edit_air_detail','./edit_custom_detail',
-    './edit_insurance_detail', './edit_doc_table', './edit_file_upload','./job_order_report'], function ($, metisMenu) {
+    './edit_insurance_detail', './edit_doc_table', './edit_file_upload','./job_order_report'], function ($, metisMenu, template) {
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
 	$('#menu_order').addClass('active').find('ul').addClass('in');
+	
     //------------save
-    $('#saveBtn').click(function(e){
-        //阻止a 的默认响应行为，不需要跳转
-        e.preventDefault();
-        $('#saveBtn').attr('disabled', true);
+    jobOrderSave = function(){ 
+    	
         //提交前，校验数据
         var formRequired = 0;
         $('form').each(function(){
@@ -19,9 +18,10 @@ $(document).ready(function() {
             }
         })
         if(formRequired>0){
-        	$('#saveBtn').attr('disabled', false);
         	return;
         }
+        
+        $('#saveBtn').attr('disabled', true);
         
         //运输方式checkbox遍历取值
         var transport_type = [];
@@ -131,7 +131,14 @@ $(document).ready(function() {
             $.scojs_message('失败', $.scojs_message.TYPE_ERROR);
             $('#saveBtn').attr('disabled', false);
           });
-    });  
+    	
+    }
+    
+    $('#saveBtn').click(function(e){
+		//阻止a 的默认响应行为，不需要跳转
+		e.preventDefault();
+		jobOrderSave();
+	});
     
     //创建派车单URL跳转传参
 //    $('#create_truckOrder').click(function(){

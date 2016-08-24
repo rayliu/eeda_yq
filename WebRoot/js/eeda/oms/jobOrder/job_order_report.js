@@ -9,6 +9,7 @@ $(document).ready(function() {
 	
 	//生成海运SI
 	$('#printOceanSI').click(function(){
+		jobOrderSave();
 		//数据不足提示
     	var alert = '';
     	if($('#ocean_shipper_input').val()==''){
@@ -61,17 +62,17 @@ $(document).ready(function() {
 			$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
 			$('#pdfAlert').click();
 		}else{
-	    	var order_id = $("#order_id").val();
-	    	$.post('/jobOrderReport/printOceanSI', {order_id:order_id}, function(data){
-	    		if(data){
-	                window.open(data);
-	                $.post('/jobOrder/siflag', {order_id:order_id}, function(data){
-	    		    
-	                       });
-	    		  }else{
-	               $.scojs_message('生成海运SI PDF失败', $.scojs_message.TYPE_ERROR);
-	               }
-	    	}); 
+		    	var order_id = $("#order_id").val();
+		    	$.post('/jobOrderReport/printOceanSI', {order_id:order_id}, function(data){
+		    		if(data){
+		                window.open(data);
+		                $.post('/jobOrder/siflag', {order_id:order_id}, function(data){
+		    		    
+		                       });
+		    		  }else{
+		               $.scojs_message('生成海运SI PDF失败', $.scojs_message.TYPE_ERROR);
+		               }
+		    	}); 
     	}
 		
 	})
@@ -139,6 +140,8 @@ $(document).ready(function() {
 			$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
 			$('#pdfAlert').click();
 		}else{
+			//保存，并打印
+			$('#saveBtn').click();
 	    	var order_id = $("#order_id").val();
 	    	$.post('/jobOrderReport/printOceanHBL', {order_id:order_id}, function(data){
 	    		if(data){
@@ -215,6 +218,8 @@ $(document).ready(function() {
     		$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
 			$('#pdfAlert').click();
 		}else{
+			//保存，并打印
+			$('#saveBtn').click();
 	    	var order_no = $("#order_no").val();
 	    	$.post('/jobOrderReport/printOceanBooking', {order_no:order_no}, function(data){
 	    		if(data){
@@ -276,6 +281,8 @@ $(document).ready(function() {
     
     //生成海运头程资料
     $('#printOceanHead').click(function(){
+    	//保存，并打印
+		$('#saveBtn').click();
     	var oceanHead = {}
     	var form = $('#oceanHeadForm input');
     	for(var i = 0; i < form.length; i++){
@@ -387,7 +394,8 @@ $(document).ready(function() {
     				$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
     				$('#pdfAlert').click();
     			}else{
-    				
+    				//保存，并打印
+    				$('#saveBtn').click();
 		    		var order_no = $("#order_no").val();
 		    		$.post('/jobOrderReport/printAirBooking', {order_no:order_no}, function(data){
 		    			if(data){
@@ -495,6 +503,8 @@ $(document).ready(function() {
 			$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
 			$('#pdfAlert').click();
 		}else{
+			//保存，并打印
+			$('#saveBtn').click();
 	    	var order_id = $("#order_id").val();
 			$.post('/jobOrderReport/printTruckOrderPDF', {order_id:order_id}, function(data){
 				if(data){
