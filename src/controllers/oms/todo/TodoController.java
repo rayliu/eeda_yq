@@ -54,7 +54,7 @@ public class TodoController extends Controller {
 	public void getSITodoCount() {
 		String sql = "SELECT count(1) total"
 				    +" FROM job_order_shipment "
-				    +" WHERE TO_DAYS(export_date)=TO_DAYS(now())";
+				    +" WHERE TO_DAYS(export_date)=TO_DAYS(now()) and (si_flag != 'Y' or si_flag is null)";
 		
 		Record planOrder = Db.findFirst(sql);
 		String total = planOrder.getLong("TOTAL").toString();
@@ -64,7 +64,7 @@ public class TodoController extends Controller {
 	public void getMBLTodoCount() {
 		String sql = " SELECT COUNT(1) total,jos.si_flag,jos.mbl_flag"
 				+ " FROM job_order_shipment jos"
-				+ " WHERE si_flag = 'Y' and mbl_flag != 'Y' ";
+				+ " WHERE si_flag = 'Y' and (mbl_flag != 'Y' or mbl_flag is null)";
 		Record jobOrder = Db.findFirst(sql);
 		String total = jobOrder.getLong("TOTAL").toString();
 		renderText(total);
@@ -104,7 +104,7 @@ public class TodoController extends Controller {
 	public void getTlxOrderTodoCount() {
 		String sql = "SELECT count(1) total"
 	               + " FROM job_order_shipment "
-				   + " WHERE TO_DAYS(etd)= TO_DAYS(now())";
+				   + " WHERE TO_DAYS(etd)= TO_DAYS(now()) and (in_line_flag != 'Y' or in_line_flag is null)";
 
 		Record planOrder = Db.findFirst(sql);
 		String total = planOrder.getLong("TOTAL").toString();
