@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'dataTablesBootstrap'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) {
 $(document).ready(function() {
 
 	var deletedTableIds=[];
@@ -62,6 +62,16 @@ $(document).ready(function() {
         return cargo_items_array;
     };
     
+    
+    var bindFieldEvent=function(){
+    	$('table .date').datetimepicker({  
+    	    format: 'yyyy-MM-dd',  
+    	    language: 'zh-CN'
+    	}).on('changeDate', function(el){
+    	    $(".bootstrap-datetimepicker-widget").hide();   
+    	    $(el).trigger('keyup');
+    	});
+    };
     //------------事件处理
     var cargoTable = $('#land_table').DataTable({
         "processing": true,
@@ -76,6 +86,9 @@ $(document).ready(function() {
         "createdRow": function ( row, data, index ) {
             $(row).attr('id', data.ID);
         },
+        "drawCallback": function( settings ) {
+	        bindFieldEvent();
+	    },
         "columns": [
 			{ "data":"ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
@@ -183,8 +196,14 @@ $(document).ready(function() {
             { "data": "ETA", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
-            			data='';
-            		return '<input type="text" name="eta" value="'+data+'" class="form-control" style="width:200px"/>';
+                        data='';
+                    var field_html = template('table_date_field_template',
+	                    {
+	                        id: 'ETA',
+	                        value: data.substr(0,19)
+	                    }
+	                );
+                    return field_html;
             	}
             },
             { "data": "CARGO_INFO", "width": "180px",
