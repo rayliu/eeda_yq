@@ -145,7 +145,10 @@
 </script>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+    	requirejs(['app/index/main']);
         requirejs(['app/oms/planOrder/edit']);
         requirejs(['app/oms/planOrder/edit_item_table']);
+        
     });
+
 </script>
