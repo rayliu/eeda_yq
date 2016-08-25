@@ -8,7 +8,7 @@ $(document).ready(function() {
 
     });
 	  //datatable, 动态处理
-    var chargeConfiremTable = $('#chargeConfirem-table').dataTable({
+    var chargeConfiremTable = $('#chargeConfirm-table').dataTable({
         "bProcessing": true, //table载入数据时，是否显示‘loading...’提示
         "bFilter": false, //不需要默认的搜索框
         "bSort": true, 
@@ -24,7 +24,7 @@ $(document).ready(function() {
 			$(nRow).attr('order_ty', aData.ORDER_TP);
 			return nRow;
 		},
-        "sAjaxSource": "/chargeConfiremList/list",
+        "sAjaxSource": "/chargeConfirmList/list",
         "aoColumns": [ 
             { "mDataProp": null, "sWidth":"20px","bSortable": false,
               "fnRender": function(obj) {
@@ -113,7 +113,7 @@ $(document).ready(function() {
         ]      
     });	
     
-    $("#chargeConfiremBtn").click(function(e){
+    $("#chargeConfirmBtn").click(function(e){
         e.preventDefault();
     	var trArr=[];
     	var orderNoArr=[];
@@ -126,14 +126,14 @@ $(document).ready(function() {
         console.log(trArr);
         var returnOrderIds = trArr.join(",");
         var orderno=orderNoArr.join(",");
-        $.post("/chargeConfiremList/chargeConfiremReturnOrder", {returnOrderIds:returnOrderIds,orderno:orderno}, function(data){
+        $.post("/chargeConfirmList/chargeConfirmReturnOrder", {returnOrderIds:returnOrderIds,orderno:orderno}, function(data){
         	if(data.success){
-        		chargeConfiremTable.fnSettings().sAjaxSource = "/chargeConfiremList/list";
+        		chargeConfiremTable.fnSettings().sAjaxSource = "/chargeConfirmList/list";
         		chargeConfiremTable.fnDraw(); 
         	}
         },'json');
     });
-    $("#chargeConfirem-table").on('blur', 'input:text', function(e){
+    $("#chargeConfirm-table").on('blur', 'input:text', function(e){
 		e.preventDefault();
 		var order_id = $(this).parent().parent().attr("id");
 		var order_ty = $(this).parent().parent().attr("order_ty");
@@ -151,7 +151,7 @@ $(document).ready(function() {
 		 }
 
 		 else{
-			 $.post('/chargeConfiremList/updateOrderFinItem', {order_ty:order_ty,order_id:order_id, name:name, value:value}, function(data){
+			 $.post('/chargeConfirmList/updateOrderFinItem', {order_ty:order_ty,order_id:order_id, name:name, value:value}, function(data){
 				 if(data.success){
 					 $.scojs_message('调整金额成功', $.scojs_message.TYPE_OK);
                  }
@@ -192,7 +192,8 @@ $(document).ready(function() {
 		var customerNo = $("#customerNo_filter").val();
 		var start = $("#start_filter").val();
 		var status = $("#shouru_filter").val();
-	    chargeConfiremTable.fnSettings().sAjaxSource = "/chargeConfiremList/list?customer="+customer
+		
+	    chargeConfiremTable.fnSettings().sAjaxSource = "/chargeConfirmList/list?customer="+customer
 	   												+"&beginTime="+beginTime
 	   												+"&endTime="+endTime
 	   												+"&transferOrderNo="+transferOrderNo

@@ -1,5 +1,3 @@
-
-
 <%layout("/eeda/layout.html"){%>
 <link href="/yh/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet">
@@ -34,11 +32,13 @@
                                                             <div class="row search_panel">
                                                                 <div class="col-lg-4">
                                                                     <div class="form-group">
-                                                                        <label class="search-label">客户</label>
-                                                                        <input type="text" class="form-control search-control customer_filter" id="customer_filter"  placeholder="请输入或者选择客户">
-                                                                        <ul id='companyList' tabindex="-1" class="pull-right dropdown-menu default" style="top: 45%; left: 32%;"></ul>
-                                                                        
-                                                                    </div>
+							                                            <%include("/eeda/component/form/inputCustomerField.html", 
+							                                                {
+							                                                    id:'customer_id', 
+							                                                    label:'客户名称', 
+							                                                    value: ''
+							                                                }){} %>
+							                                        </div>
                                                                     <div class="form-group">
                                                                         <label class="search-label">运输单号</label>
                                                                         <input type="text" class="form-control search-control orderNo_filter" id="orderNo_filter" value="">

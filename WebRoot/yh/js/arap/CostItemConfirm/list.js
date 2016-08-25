@@ -20,11 +20,11 @@ $(document).ready(function() {
         "sDom": "<'row-fluid'<'span6'l><'span6'f>r><'datatable-scroll't><'row-fluid'<'span12'i><'span12 center'p>>",
         "iDisplayLength": 10,
         "aLengthMenu": [ [10, 25, 50, 100, 9999999], [10, 25, 50, 100, "All"] ],
-        //"bServerSide": true,
-//    	  "oLanguage": {
-//            "sUrl": "/eeda/dataTables.ch.txt"
-//        },
-        //"sAjaxSource": "/costConfirmList/list",
+        "bServerSide": true,
+    	  "oLanguage": {
+            "sUrl": "/eeda/dataTables.ch.txt"
+        },
+        "sAjaxSource": "/costConfirmList/list",
         "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $(nRow).attr('id', aData.DID);
           $(nRow).attr('ids', aData.ID);
@@ -272,7 +272,6 @@ $(document).ready(function() {
     		var serial_no = $("#serial_no").val();
     		var sign_no = $("#sign_no").val();
 
-        costConfiremTable.fnSettings().oFeatures.bServerSide = true;
     		costConfiremTable.fnSettings().sAjaxSource = "/costConfirmList/list?orderNo="+orderNo
                               							+"&sp="+sp
 											    		+"&no="+no

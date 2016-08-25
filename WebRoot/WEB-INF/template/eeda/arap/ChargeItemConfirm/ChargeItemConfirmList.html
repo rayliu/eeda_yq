@@ -26,10 +26,12 @@
                                 <div class="row search_panel">
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="search-label">客户</label>
-                                            <input type="text" class="form-control search-control customer_filter" id="customer_filter"  placeholder="请输入或者选择客户">
-                                            <ul id='companyList' tabindex="-1" class="pull-right dropdown-menu default" style="top: 28%; left: 32%;"></ul>
-                                            
+                                            <%include("/eeda/component/form/inputCustomerField.html", 
+                                                {
+                                                    id:'customer_id', 
+                                                    label:'客户名称', 
+                                                    value: ''
+                                                }){} %>
                                         </div>
                                         <div class="form-group">
                                             <label class="search-label">运输单号</label>
@@ -95,17 +97,17 @@
                                             <span id="datetimepicker2" class="input-append date search-control ">
                                             	<a id="searchBtn" class="btn btn-primary"  >查询</a>
                                             	<% if(shiro.hasPermission("ChargeItem.affirm")){%>
-                                                	<button id="chargeConfiremBtn" class="btn btn-success  btn-primary">确认</button>
+                                                	<button id="chargeConfirmBtn" class="btn btn-success  btn-primary">确认</button>
                                             	<%}%>
                                             	
                                             </span>
                                         </div>
-                                </div>
+                                </div> 
                             
                         </form>
                         <input type="hidden" value="" id="type">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="chargeConfirem-table" style="width: 2800px;">
+                                <table class="table table-striped table-bordered table-hover" id="chargeConfirm-table" style="width: 2800px;">
                                     <thead>
                                         <tr>
                                         <th><input type="checkbox" id="allCheck" name="allCheck"></th>

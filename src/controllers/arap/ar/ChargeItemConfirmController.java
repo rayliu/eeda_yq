@@ -292,11 +292,11 @@ public class ChargeItemConfirmController extends Controller {
 			 
 			sql = "select * from ("+ sql +") A " + conditions;
 		}
-		
+		 
 		
 		Record rec = Db.findFirst(sqlTotal);
 		logger.debug("total records:" + rec.getLong("total"));
-
+		
 		List<Record> BillingOrders = Db.find(sql + orderByStr  + sLimit);
 
 		Map BillingOrderListMap = new HashMap();
@@ -346,7 +346,7 @@ public class ChargeItemConfirmController extends Controller {
 		renderJson("{\"success\":true}");
 	}
 	@RequiresPermissions(value = {PermissionConstant.PERMSSION_CI_AFFIRM})
-	public void chargeConfiremReturnOrder() {
+	public void chargeConfirmReturnOrder() {
 		String orderno = getPara("orderno");
 		String returnOrderIds = getPara("returnOrderIds");
 		String[] returnOrderArr = returnOrderIds.split(",");
