@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="guaranteeLetter" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c30e5f41-f30f-4156-a1ef-fc052dd8d462">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="order_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT jos.order_id,josi.order_id,jos.mbl_no,jos.hbl_no,josi.container_type,josi.container_no,lo.name pol_name,lo1.name fnd_name,jos.vessel,jos.voyage,jos.shipper,jos.consignee from job_order_shipment jos LEFT JOIN job_order_shipment_item josi on jos.order_id = josi.order_id
+LEFT JOIN location lo on lo.id = jos.pol
+LEFT JOIN location lo1 on lo1.id = jos.fnd
+where jos.order_id = $P{order_id}]]>
+	</queryString>
+	<field name="order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mbl_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hbl_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="container_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="container_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pol_name" class="java.lang.String"/>
+	<field name="fnd_name" class="java.lang.String"/>
+	<field name="vessel" class="java.lang.String">
+		<fieldDescription><![CDATA[船名]]></fieldDescription>
+	</field>
+	<field name="voyage" class="java.lang.String">
+		<fieldDescription><![CDATA[船次]]></fieldDescription>
+	</field>
+	<field name="shipper" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="consignee" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="800" splitType="Stretch">
+			<image>
+				<reportElement x="16" y="12" width="190" height="50" uuid="078e4bfb-2c1d-4929-9773-6039b06c66c4"/>
+				<imageExpression><![CDATA["C:\\Users\\Administrator\\Desktop\\jobOrder\\guaranteeLetter.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="16" y="82" width="263" height="20" uuid="1d1a2949-2f5c-4de3-8eea-3d4c5c3290a0"/>
+				<textElement>
+					<font size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[致：珠海横琴远桥供应链管理有限公司]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="106" y="124" width="320" height="35" uuid="f447883f-2496-4532-96cc-db8b948a7649"/>
+				<textElement>
+					<font size="24" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[電   報   放   貨   委   托  书]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="86" y="171" width="360" height="20" uuid="219ebd22-4cf1-45b6-97e8-ee77a0be581a"/>
+				<textElement>
+					<font size="14" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[REQUEST AND GUARANTEE FOR TELEX RELEASE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="228" width="56" height="20" uuid="408c3b0f-941f-4d75-8215-354b450ba1c9"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[提單號 ：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="245" y="228" width="53" height="20" uuid="5819ca61-506c-420d-9911-e0d6b6c11ad5"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[ 櫃號: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="264" width="59" height="20" uuid="d15f0b6b-e73a-4ffc-82d4-48935de70846"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[簽發日期: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="245" y="264" width="53" height="20" uuid="4dd6faa3-cc44-459b-8ed1-1c1457ed0f4e"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[裝貨港: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="309" width="56" height="20" uuid="f9170a78-47d3-44d6-aed0-e7020eee4f61"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[航名/航: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="245" y="309" width="53" height="20" uuid="cbd1796f-0a5d-4318-be06-de18d7909762"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[ 目的港: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="357" width="76" height="20" uuid="e667bcd1-070a-4f22-adbf-a7cd6618e2df"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[發貨人名稱：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="403" width="76" height="20" uuid="55bfbbce-eb2a-4682-ad79-c51209319bfc"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[收貨人名稱: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="460" width="526" height="122" uuid="d99162a3-ee75-4fc3-80cc-db8384c560e1"/>
+				<textElement>
+					<font size="20" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[       本公司                         爲促使船運能夠流暢起見,茲根據以上提單資料，請貴司通知貴司屬下公司/代理公司，安排無提單放貨給上述收貨人，一切責任，概由我司負責。]]></text>
+			</staticText>
+			<line>
+				<reportElement x="118" y="485" width="135" height="1" uuid="9d83686f-02b4-4fdd-b2d9-69718849fa1f"/>
+			</line>
+			<line>
+				<reportElement x="330" y="661" width="166" height="1" uuid="70fbb6ae-be57-4caf-93c3-6aef65f833b6"/>
+			</line>
+			<staticText>
+				<reportElement x="330" y="684" width="120" height="20" uuid="dc9b9dd5-f376-4c65-a07d-3858e2d32f6f"/>
+				<textElement>
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[委托人盖章及签名]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="726" width="43" height="20" uuid="0d09ce2a-6c1c-43af-a806-cc42483993b0"/>
+				<textElement>
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[日期：]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="76" y="228" width="143" height="20" uuid="1e97d9c8-233f-4944-9432-a73776581786"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="298" y="228" width="247" height="20" uuid="d876423c-f4c8-483b-ab8e-6e9e3ef5df16"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="298" y="264" width="247" height="20" uuid="4850a9f5-1705-4848-a8a6-ed5ff69bbb66"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="298" y="309" width="244" height="20" uuid="a79949c2-8c53-49cb-ad94-65239491ded8"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fnd_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="74" y="309" width="81" height="20" uuid="9971541d-f33d-4681-8c93-b34018d4fb59"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vessel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="157" y="309" width="88" height="20" uuid="e8d3c3a0-0b95-46e8-87a6-a625c5e13be9"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{voyage}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="357" width="153" height="20" uuid="48ef02ed-6a24-45af-aa08-1e4ee232307f"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{shipper}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="403" width="153" height="20" uuid="1d4c5e43-c401-4f62-8fb0-1f7abb1c51b2"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{consignee}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd">
+				<reportElement x="75" y="264" width="144" height="20" uuid="0426bb0c-0ffa-40c6-8267-2e7d9cd30d00"/>
+				<textElement>
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd">
+				<reportElement x="373" y="726" width="144" height="20" uuid="5be223ec-63ea-4718-a39e-66abadb6ec83"/>
+				<textElement>
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
