@@ -39,7 +39,11 @@
     <script src="/js/lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
     <script src="/js/lib/bootstrap-datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="/js/lib/require-2.1.22.js"></script>
-    
+	<script>
+	        requirejs(['js/common'], function (common) {
+	            requirejs(['app/index/main']);
+	        });
+	</script>    
 </head>
 
 <body>
@@ -102,31 +106,31 @@
                             <a href="#"><i class="fa fa-file-text fa-fw"></i> 待办事项<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="/planOrder">计划订单待处理 <span class="badge">0</span></a>
+                                    <a href="/planOrder?type=todo">计划订单待处理 <span class="badge planOrderWait"></span></a>
                                 </li>
                                 <li>
-                                    <a href="/jobOrder">SO待更新 <span class="badge">0</span></a>
+                                    <a href="/jobOrder?type=sowait">SO待更新 <span class="badge soWait">0</span></a>
                                 </li>
                                 <li>
-                                    <a href="/truckOrder">派车单待处理 <span class="badge">0</span></a>
+                                    <a href="/jobOrder?type=truckorderwait">派车单待处理 <span class="badge truckOrderWait">0</span></a>
                                 </li>
                                 <li>
-                                    <a href="/truckOrder">SI待更新 <span class="badge">0</span></a>
+                                    <a href="/jobOrder?type=siwait">SI待更新 <span class="badge siWait">0</span></a>
                                 </li>
                                 <li>
-                                    <a href="/truckOrder">未确认MBL <span class="badge">0</span></a>
+                                    <a href="/jobOrder?type=mblwait">未确认MBL <span class="badge mblWait">0</span></a>
                                 </li>
                                 <li>
-                                    <a href="/truckOrder">待报关 <span class="badge">0</span></a>
+                                    <a href="/jobOrder?type=customwait">待报关 <span class="badge customWait">0</span></a>
                                 </li>
                                 <li>
-                                    <a href="/truckOrder">待买保险 <span class="badge">0</span></a>
+                                    <a href="/jobOrder?type=insurancewait">待买保险 <span class="badge insuranceWait">0</span></a>
                                 </li>
                                 <li>
-                                    <a href="/truckOrder">待海外申报 <span class="badge">0</span></a>
+                                    <a href="/jobOrder?type=overseacustomwait">待海外申报 <span class="badge overseaCustomWait">0</span></a>
                                 </li>
                                 <li>
-                                    <a href="/truckOrder">待电放提单 <span class="badge">0</span></a>
+                                    <a href="/jobOrder?type=tlxOrderwait">待电放提单 <span class="badge tlxOrderWait">0</span></a>
                                 </li>
                             </ul>
                         </li>

@@ -36,7 +36,7 @@ $(document).ready(function() {
             
             var item={}
             item.id = id;
-            item.order_type = "cost";
+            item.order_type = "cost";//应付
             for(var i = 1; i < row.childNodes.length; i++){
             	var el = $(row.childNodes[i]).find('input');
             	var name = el.attr('name'); 
