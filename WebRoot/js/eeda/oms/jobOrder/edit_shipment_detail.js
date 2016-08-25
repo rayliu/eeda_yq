@@ -51,5 +51,10 @@ $(document).ready(function() {
     	$('#wait_overseaCustom').attr("checked",false);
     }
     
+    $('#pod_list').on('mousedown', '.fromLocationItem', function(){
+	    	$('#fnd_input').val($('#pod_input').val());
+	    	$('#fnd').val($('#pod').val());
+    })
+    
 });
 });
