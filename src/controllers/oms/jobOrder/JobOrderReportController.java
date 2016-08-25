@@ -1,6 +1,7 @@
 package controllers.oms.jobOrder;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class JobOrderReportController extends Controller {
 	}
 	
 	//海运电放保涵word
-	public void printOceanWord() throws UnsupportedEncodingException {
+	public void printOceanWord(){
 		
 		String order_id = getPara("order_id");
 		String fileName = "/report/jobOrder/guaranteeLetter.jasper";
@@ -40,8 +41,10 @@ public class JobOrderReportController extends Controller {
 		hm.put("order_id", order_id);
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
-		PrintPatterns.getInstance().printDoc(fileName,outFileName,hm);
+		String file = PrintPatterns.getInstance().printDoc(fileName,outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
 	}
+
 	
 	public void printOceanHBL() {
 		

@@ -2,7 +2,6 @@ package controllers.util;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,10 +14,9 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
 
-import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.DbKit;
 
-public class PrintPatterns extends Controller{
+public class PrintPatterns{
 	/**
 	 * fileName:当前打印的模板
 	 * outFileName:当前打印的名称
@@ -97,7 +95,7 @@ public class PrintPatterns extends Controller{
 	 * @throws UnsupportedEncodingException 
 	 */
 	@SuppressWarnings({ "deprecation" })
-	public void printDoc(String fileName,String outFileName,HashMap<String, Object> hm) throws UnsupportedEncodingException{
+	public String printDoc(String fileName,String outFileName,HashMap<String, Object> hm){
 		File file = new File("WebRoot/download");
         if(!file.exists()){
        	 file.mkdir();
@@ -117,8 +115,7 @@ public class PrintPatterns extends Controller{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		getResponse().setContentType("application/x-download");
-		getResponse().setHeader("Content-Disposition", "attachment; filename=\""+ URLEncoder.encode(outFileName, "UTF-8") + "\"");  
+		return outFileName;
 	}
 	
 	
