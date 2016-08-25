@@ -7,6 +7,17 @@ $(document).ready(function() {
 		$("#truckOrderPDF").hide();
 	}
 	
+	$('#printOceanWord').click(function(){
+		var order_id = $("#order_id").val();
+    	$.post('/jobOrderReport/printOceanWord', {order_id:order_id}, function(data){
+    		if(data){
+                window.open(data);
+    		  }else{
+    			  $.scojs_message('生成海运电放保涵word失败', $.scojs_message.TYPE_ERROR);
+               }
+    	}); 
+	})
+	
 	//生成海运SI
 	$('#printOceanSI').click(function(){
 		jobOrderSave();
