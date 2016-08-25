@@ -34,9 +34,8 @@
                                                                     <div class="form-group">
 							                                            <%include("/eeda/component/form/inputCustomerField.html", 
 							                                                {
-							                                                    id:'customer_id', 
-							                                                    label:'客户名称', 
-							                                                    value: ''
+							                                                    id:'customer_filter', 
+							                                                    label:'客户'
 							                                                }){} %>
 							                                        </div>
                                                                     <div class="form-group">
@@ -286,9 +285,11 @@
                                     <div class="row">
                                    		<div class="col-lg-4">
 	                                        <div class="form-group">
-	                                            <label class="search-label">客户</label>
-	                                            <input type="text" class="form-control search-control customer_filter" id="select_customer_filter" placeholder="请输入或者选择客户">
-	                                            <ul id='select_companyList' tabindex="-1" class="pull-right dropdown-menu default" style="top: 42%; left: 32%;"></ul>
+	                                            <%include("/eeda/component/form/inputCustomerField.html", 
+	                                                {
+	                                                    id:'select_customer_filter', 
+	                                                    label:'客户'
+	                                                }){} %>
 	                                        </div>
 	                                    </div>
                                     	<div class="col-lg-4">
