@@ -1,4 +1,3 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
 	document.title = '应收明细确认 | '+document.title;
     $('#menu_charge').addClass('active').find('ul').addClass('in');
@@ -8,97 +7,115 @@ $(document).ready(function() {
          });  
 
     });
-    
-    //datatable, 动态处理
-    var chargeConfiremTable = eeda.dt({
-        id: 'chargeConfirm-table',
-        paging: true,
-        serverSide: true, //不打开会出现排序不对
-        ajax: "/chargeConfirmList/list",
-        columns: [
-                  
-            { "width": "20px",
-              "render": function(data, type, full, meta) {
-                return '<input type="checkbox" name="order_check_box" order_type="'+data.ORDER_TP+'" value="'+data.ID+'">';
+//  //datatable, 动态处理
+//    var dataTable = eeda.dt({
+//        id: 'chargeConfirm-table',
+//        paging: true,
+//        serverSide: true, //不打开会出现排序不对
+//        ajax: "/chargeConfirmList/list",
+//        columns: [
+    var chargeConfiremTable = $('#chargeConfirm-table').dataTable({
+        "bProcessing": true, //table载入数据时，是否显示‘loading...’提示
+        "bFilter": false, //不需要默认的搜索框
+        "bSort": true, 
+        "sDom": "<'row-fluid'<'span6'l><'span6'f>r><'datatable-scroll't><'row-fluid'<'span12'i><'span12 center'p>>",
+        "iDisplayLength": 10,
+        "aLengthMenu": [ [10, 25, 50, 100, 9999999], [10, 25, 50, 100, "All"] ],
+        "bServerSide": true,
+    	  "oLanguage": {
+            "sUrl": "/eeda/dataTables.ch.txt"
+        },
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+			$(nRow).attr('id', aData.ID);
+			$(nRow).attr('order_ty', aData.ORDER_TP);
+			return nRow;
+		},
+        "sAjaxSource": "/chargeConfirmList/list",
+        "aoColumns": [ 
+            { "mDataProp": null, "sWidth":"20px","bSortable": false,
+              "fnRender": function(obj) {
+                return '<input type="checkbox" name="order_check_box" order_type="'+obj.aData.ORDER_TP+'" value="'+obj.aData.ID+'">';
               }
             },  
-            {"data":"ORDER_NO", "width":"120px",
-            	"render": function(data, type, full, meta) {
-            		return eeda.getUrlByNo(data.ID, data.ORDER_NO);
+            {"mDataProp":"ID", "bVisible": false},
+            {"mDataProp":"ORDER_NO", "sWidth":"120px",
+            	"fnRender": function(obj) {
+            		return eeda.getUrlByNo(obj.aData.ID, obj.aData.ORDER_NO);
         		}},
-            {"data":"SERIAL_NO", "width":"120px"},
-            {"data":"CUSTOMER_ORDER_NO", "width":"120px"}, 
-            {"data":"TOTAL_AMOUNT", "width":"120px", 
-                "render": function(data, type, full, meta) {
-                    if(data.TOTAL_AMOUNT==null){
+            {"mDataProp":"SERIAL_NO", "sWidth":"120px"},
+            {"mDataProp":"CUSTOMER_ORDER_NO", "sWidth":"120px"}, 
+            {"mDataProp":"TOTAL_AMOUNT", "sWidth":"120px", 
+                "fnRender": function(obj) {
+                    if(obj.aData.TOTAL_AMOUNT==null){
                         return '0';
                     }
                     else{
-                    	return data.TOTAL_AMOUNT;
+                    	return obj.aData.TOTAL_AMOUNT;
                     }
                 }
             }, 
-            {"data":"CHANGE_AMOUNT", "width":"120px", 
-                "render": function(data, type, full, meta) {
-                    if(data.CHANGE_AMOUNT!=null&&data.ORDER_TP=='回单'){
-                        return "<input type='text' style='width:60px' name='change_amount' id='change' value='"+data.CHANGE_AMOUNT+"'/>";
+            {"mDataProp":"CHANGE_AMOUNT", "sWidth":"120px", 
+                "fnRender": function(obj) {
+                    if(obj.aData.CHANGE_AMOUNT!=null&&obj.aData.ORDER_TP=='回单'){
+                        return "<input type='text' style='width:60px' name='change_amount' id='change' value='"+obj.aData.CHANGE_AMOUNT+"'/>";
                     }
-                    else if(data, type, full, meta.aData.CHANGE_AMOUNT==null&&data, type, full, meta.aData.ORDER_TP=='回单'){
-                    	return "<input type='text' style='width:60px' name='change_amount' id='change' value='"+data.TOTAL_AMOUNT+"'/>";
+                    else if(obj.aData.CHANGE_AMOUNT==null&&obj.aData.ORDER_TP=='回单'){
+                    	return "<input type='text' style='width:60px' name='change_amount' id='change' value='"+obj.aData.TOTAL_AMOUNT+"'/>";
                     }
                     else{
-                    	return data.TOTAL_AMOUNT;
+                    	return obj.aData.TOTAL_AMOUNT;
                     }
                 }
             }, 
-            {"data":"ADDRESS", "width":"150px"},
-            {"data":"REF_NO", "width":"150px"},
-            {"data":"PLANNING_TIME", "width":"150px"},
-            {"data":"CNAME", "width":"100px"},
-            {"data":"SP", "width":"150px"},
-            {"data":null, "width":"120px",
-                "render": function(data, type, full, meta) {
+            {"mDataProp":"ADDRESS", "sWidth":"150px"},
+            {"mDataProp":"REF_NO", "sWidth":"150px"},
+            {"mDataProp":"PLANNING_TIME", "sWidth":"150px"},
+            {"mDataProp":"CNAME", "sWidth":"100px"},
+            {"mDataProp":"SP", "sWidth":"150px"},
+            {"mDataProp":null, "sWidth":"120px",
+                "fnRender": function(obj) {
                     return "未收款";
             }},
-            {"data":"DEPART_TIME", "width":"130px"},
-            {"data":"TRANSFER_ORDER_NO", "width":"120px"},
-            {"data":"DELIVERY_ORDER_NO", "width":"120px"},        	
-            {"data":null, "width": "120px", 
-                "render": function(data, type, full, meta) {
-                    if(data.TRANSACTION_STATUS=='new'){
+            {"mDataProp":"DEPART_TIME", "sWidth":"130px"},
+            {"mDataProp":"TRANSFER_ORDER_NO", "sWidth":"120px"},
+            {"mDataProp":"DELIVERY_ORDER_NO", "sWidth":"120px"},        	
+            {"mDataProp":null, "sWidth": "120px", 
+                "fnRender": function(obj) {
+                    if(obj.aData.TRANSACTION_STATUS=='new'){
                         return '新建';
-                    }else if(data.TRANSACTION_STATUS=='checking'){
+                    }else if(obj.aData.TRANSACTION_STATUS=='checking'){
                         return '已发送对帐';
-                    }else if(data.TRANSACTION_STATUS=='confirmed'){
+                    }else if(obj.aData.TRANSACTION_STATUS=='confirmed'){
                         return '已审核';
-                    }else if(data.TRANSACTION_STATUS=='completed'){
+                    }else if(obj.aData.TRANSACTION_STATUS=='completed'){
                         return '已结算';
-                    }else if(data.TRANSACTION_STATUS=='cancel'){
+                    }else if(obj.aData.TRANSACTION_STATUS=='cancel'){
                         return '取消';
                     }
-                    return data.TRANSACTION_STATUS;
+                    return obj.aData.TRANSACTION_STATUS;
                 }
             },            
-            {"data":"RECEIPT_DATE", "width":"150px"},        	
-            {"data":"ROUTE_FROM", "width":"100px"},                        
-            {"data":"ROUTE_TO", "width":"100px"},                        
-            /*{"data":null, "width":"150px"},                         
-            {"data":null, "width":"100px"},*/                        
-            {"data":"CONTRACT_AMOUNT", "width":"80px"},
-            {"data":"TRANSFER_AMOUNT", "width":"150px"},
-            //{"data":"PICKUP_AMOUNT", "width":"100px"},                        
-            {"data":"PICKUP_AMOUNT", "width":"80px"},                        
-            {"data":"SEND_AMOUNT", "width":"80px"},                        
-            {"data":"INSURANCE_AMOUNT", "width":"80px"},                        
-            {"data":"SUPER_MILEAGE_AMOUNT", "width":"80px"},                        
-            {"data":"STEP_AMOUNT", "width":"80px"},                        
-            {"data":"INSTALLATION_AMOUNT", "width":"80px"},                        
-            {"data":"LOAD_AMOUNT", "width":"150px"},                        
-            {"data":"WAREHOUSE_AMOUNT", "width":"80px"},                        
-            {"data":"WAIT_AMOUNT", "width":"80px"},                        
-            {"data":"OTHER_AMOUNT", "width":"80px"},  
-            {"data":null, "width":"80px"},                        
-            {"data":"REMARK", "width":"200px"}                       
+            {"mDataProp":"RECEIPT_DATE", "sWidth":"150px"},        	
+            {"mDataProp":"ROUTE_FROM", "sWidth":"100px"},                        
+            {"mDataProp":"ROUTE_TO", "sWidth":"100px"},                        
+            /*{"mDataProp":null, "sWidth":"150px"},                         
+            {"mDataProp":null, "sWidth":"100px"},*/                        
+            {"mDataProp":"CONTRACT_AMOUNT", "sWidth":"80px"},
+            {"mDataProp":"TRANSFER_AMOUNT", "sWidth":"150px"},
+            //{"mDataProp":"PICKUP_AMOUNT", "sWidth":"100px"},                        
+            {"mDataProp":"PICKUP_AMOUNT", "sWidth":"80px"},                        
+            {"mDataProp":"SEND_AMOUNT", "sWidth":"80px"},                        
+            {"mDataProp":"INSURANCE_AMOUNT", "sWidth":"80px"},                        
+            {"mDataProp":"SUPER_MILEAGE_AMOUNT", "sWidth":"80px"},                        
+            {"mDataProp":"STEP_AMOUNT", "sWidth":"80px"},                        
+            {"mDataProp":"INSTALLATION_AMOUNT", "sWidth":"80px"},                        
+            {"mDataProp":"LOAD_AMOUNT", "sWidth":"150px"},                        
+            {"mDataProp":"WAREHOUSE_AMOUNT", "sWidth":"80px"},                        
+            {"mDataProp":"WAIT_AMOUNT", "sWidth":"80px"},                        
+            {"mDataProp":"OTHER_AMOUNT", "sWidth":"80px"},  
+            {"mDataProp":null, "sWidth":"80px"},                        
+                                   
+            {"mDataProp":"REMARK", "sWidth":"200px"}                       
         ]      
     });	
     
