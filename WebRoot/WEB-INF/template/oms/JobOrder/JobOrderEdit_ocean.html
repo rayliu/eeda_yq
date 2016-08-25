@@ -246,12 +246,13 @@
            </div>
            <div class="row">
                <div class="col-lg-4">                
-                 <%include("/eeda/component/form/inputPartyField.html", 
+                 <%include("/eeda/component/form/inputSelectAreaOfOverseaAgent.html", 
                     {   id:'oversea_agent',
-                        type:  'oversea_agent',
                         label: '海外代理', 
+                        type:'oversea_agent',
                         value: shipment.oversea_agent!'',
-                        display_value: shipment.oversea_agent_name!''
+                        display_value: shipment.oversea_agent_name!'',
+                        textarea_value:shipment.oversea_agent_info!''
                     }){}%>
               </div>
               <div class="col-lg-4">

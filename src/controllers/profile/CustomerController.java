@@ -463,7 +463,7 @@ public class CustomerController extends Controller {
         renderJson(locationList);
     }
     
-    // 列出所有party名称
+    // 列出所有party名称，客户
     public void search_party() {
         String customerName = getPara("customerName");
        
@@ -484,14 +484,10 @@ public class CustomerController extends Controller {
         renderJson(partyList);
     }
     
- // 列出所有party名称
+    // 列出所有party名称,供应商
     public void searchParty() {
         String partyName = getPara("partyName");
         String type = getPara("type");
-        
-        if(StringUtils.isEmpty(partyName)){
-            partyName = "";
-        }
         
         List<Record> partyList = Collections.EMPTY_LIST;
         String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "

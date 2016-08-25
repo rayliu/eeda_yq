@@ -223,7 +223,7 @@ public class ServiceProviderController extends Controller {
     private void setContact(Party contact) {
         contact.set("company_name", getPara("company_name"));
         contact.set("contact_person", getPara("contact_person"));
-        contact.set("contact_person_eng", getPara("contact_person_eng"));
+        contact.set("contact_person_eng", getPara("contact_person_eng")==""?null:getPara("contact_person_eng"));
         contact.set("location", getPara("location"));
         contact.set("email", getPara("email"));
         contact.set("abbr", getPara("abbr"));
@@ -241,7 +241,7 @@ public class ServiceProviderController extends Controller {
         contact.set("mobile", getPara("mobile"));
         contact.set("phone", getPara("phone"));
         contact.set("address", getPara("address"));
-        contact.set("address_eng", getPara("address_eng"));
+        contact.set("address_eng", getPara("address_eng")==""?null:getPara("address_eng"));
         contact.set("introduction", getPara("introduction"));
         contact.set("city", getPara("city"));
         contact.set("postal_code", getPara("postal_code"));
