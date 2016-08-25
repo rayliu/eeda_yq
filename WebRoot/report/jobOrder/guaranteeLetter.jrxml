@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="guaranteeLetter" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c30e5f41-f30f-4156-a1ef-fc052dd8d462">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="96"/>
 	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -163,70 +163,70 @@ where jos.order_id = $P{order_id}]]>
 				</textElement>
 				<text><![CDATA[日期：]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="76" y="228" width="143" height="20" uuid="1e97d9c8-233f-4944-9432-a73776581786"/>
 				<textElement>
 					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="298" y="228" width="247" height="20" uuid="d876423c-f4c8-483b-ab8e-6e9e3ef5df16"/>
 				<textElement>
 					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="298" y="264" width="247" height="20" uuid="4850a9f5-1705-4848-a8a6-ed5ff69bbb66"/>
 				<textElement>
 					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="298" y="309" width="244" height="20" uuid="a79949c2-8c53-49cb-ad94-65239491ded8"/>
 				<textElement>
 					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fnd_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="74" y="309" width="81" height="20" uuid="9971541d-f33d-4681-8c93-b34018d4fb59"/>
 				<textElement>
 					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{vessel}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="157" y="309" width="88" height="20" uuid="e8d3c3a0-0b95-46e8-87a6-a625c5e13be9"/>
 				<textElement>
 					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{voyage}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="92" y="357" width="153" height="20" uuid="48ef02ed-6a24-45af-aa08-1e4ee232307f"/>
 				<textElement>
 					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{shipper}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="92" y="403" width="153" height="20" uuid="1d4c5e43-c401-4f62-8fb0-1f7abb1c51b2"/>
 				<textElement>
 					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{consignee}]]></textFieldExpression>
 			</textField>
-			<textField pattern="yyyy-MM-dd">
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="75" y="264" width="144" height="20" uuid="0426bb0c-0ffa-40c6-8267-2e7d9cd30d00"/>
 				<textElement>
 					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
-			<textField pattern="yyyy-MM-dd">
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="373" y="726" width="144" height="20" uuid="5be223ec-63ea-4718-a39e-66abadb6ec83"/>
 				<textElement>
 					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
