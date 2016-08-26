@@ -51,7 +51,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         var spArr= spType.split(';');
         for (var i = 0; i < spArr.length; i++) {
             var checkSpType = spArr[i];
-            //line;delivery;pickup;personal;carrier;air;broker;head_car;oversea_agent;booking_agent
+            //line;delivery;pickup;personal;carrier;air;broker;head_car;oversea_agent;booking_agent;truck
             if(checkSpType == 'line'){
                 $('#sp_type_line').attr('checked', 'checked');
             }else if(checkSpType == 'delivery'){
@@ -72,6 +72,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $('#sp_type_oversea_agent').attr('checked', 'checked');
             }else if(checkSpType == 'booking_agent'){
                 $('#sp_type_booking_agent').attr('checked', 'checked');
+            }else if(checkSpType == 'truck'){
+                $('#sp_type_truck').attr('checked', 'checked');
             }
             
         };

@@ -235,8 +235,9 @@ public class ServiceProviderController extends Controller {
                 + (getPara("sp_type_air")==null?"":getPara("sp_type_air") +";")
                 + (getPara("sp_type_broker")==null?"":getPara("sp_type_broker") +";")
                 + (getPara("sp_type_head_car")==null?"":getPara("sp_type_head_car") +";")
-                + (getPara("sp_type_oversea_agent")==null?"":getPara("sp_type_oversea_agent"))
-        		+ (getPara("sp_type_booking_agent")==null?"":getPara("sp_type_booking_agent"));
+                + (getPara("sp_type_oversea_agent")==null?"":getPara("sp_type_oversea_agent")+";")
+        		+ (getPara("sp_type_booking_agent")==null?"":getPara("sp_type_booking_agent")+";")
+        		+ (getPara("sp_type_truck")==null?"":getPara("sp_type_truck")+";");
         contact.set("sp_type", sp_type);
         contact.set("mobile", getPara("mobile"));
         contact.set("phone", getPara("phone"));
@@ -525,6 +526,19 @@ public class ServiceProviderController extends Controller {
     	}
     	recs = Db.find(sql);
     	renderJson(recs);
+    }
+    
+    //查询运输公司下拉
+    public void searchTruckCompany(){
+    	String name = getPara("input");
+    	String sp_type = getPara("para");
+    	List<Record> rec = null;
+    	String sql = "select p.id,p.abbr name from party p where p.type = 'SP' and p.sp_type like '%"+sp_type+"%' ";
+    	if(!StringUtils.isBlank(name)){
+    		sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
+    	}
+    	rec = Db.find(sql);
+    	renderJson(rec);
     }
     
     //查询单位下拉列表

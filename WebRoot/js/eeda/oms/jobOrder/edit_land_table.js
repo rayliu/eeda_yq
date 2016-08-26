@@ -71,6 +71,8 @@ $(document).ready(function() {
     	    $(".bootstrap-datetimepicker-widget").hide();   
     	    $(el).trigger('keyup');
     	});
+    	
+    	eeda.bindTableField('TRANSPORT_COMPANY','/serviceProvider/searchTruckCompany','truck');
     };
     //------------事件处理
     var cargoTable = $('#land_table').DataTable({
@@ -118,9 +120,16 @@ $(document).ready(function() {
             },
             { "data": "TRANSPORT_COMPANY", "width": "180px",
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
+                	if(!data)
                         data='';
-                    return '<input type="text" name="transport_company" value="'+data+'" class="form-control" style="width:200px"/>';
+                    var field_html = template('table_dropdown_template',
+                            {
+                                id: 'TRANSPORT_COMPANY',
+                                value: data,
+                                display_value: full.TRANSPORT_COMPANY_NAME
+                            }
+                        );
+                    return field_html;
                 }
             },
             { "data": "DRIVER", "width": "180px",
@@ -233,6 +242,13 @@ $(document).ready(function() {
             			data='';
             		return '<input type="text" name="sign_status" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
+            }, 
+            { "data": "TRANSPORT_COMPANY_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
             }
         ]
     });
