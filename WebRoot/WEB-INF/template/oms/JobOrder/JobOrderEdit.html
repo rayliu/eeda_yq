@@ -369,25 +369,14 @@
 <%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
 
 <script>
+	//取得当前时间
+	var getTime;
 	//当前登陆用户名
 	var loginUserName = '${loginUser!''}';
     var order_no = '${order.order_no!'订单编辑'}'; 
     var itemOrder = {};
     var transport_type = '${order.transport_type!planOrderItem.transport_type!''}';
     var custom_type = '${custom.custom_type!''},${hkCustom.custom_type!''},${abroadCustom.custom_type!''}';
-    //取得当前时间
-    var getTime=function(){
-	    var d = new Date();
-	    var year = d.getFullYear();
-	    var mon = d.getMonth() + 1;
-	    var day = d.getDate();
-	    var h = d.getHours(); 
-	    var m = d.getMinutes(); 
-	    var se = d.getSeconds(); 
-	    timeStr=year+"-"+(mon<10 ? "0" + mon : mon)+"-"+(day<10 ? "0"+ day : day)+" "+(h<10 ? "0"+ h : h)+":"+(m<10 ? "0" + m : m)+":"+(se<10 ? "0" +se : se);
-	    return timeStr;
-    }
-    var jobOrderSave;
 </script>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {

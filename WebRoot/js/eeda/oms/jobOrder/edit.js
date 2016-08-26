@@ -8,8 +8,9 @@ $(document).ready(function() {
 	$('#menu_order').addClass('active').find('ul').addClass('in');
 	
     //------------save
-    jobOrderSave = function(){ 
-    	
+	$('#saveBtn').click(function(e){
+		//阻止a 的默认响应行为，不需要跳转
+		e.preventDefault();
         //提交前，校验数据
         var formRequired = 0;
         $('form').each(function(){
@@ -132,12 +133,6 @@ $(document).ready(function() {
             $('#saveBtn').attr('disabled', false);
           });
     	
-    }
-    
-    $('#saveBtn').click(function(e){
-		//阻止a 的默认响应行为，不需要跳转
-		e.preventDefault();
-		jobOrderSave();
 	});
     
     //创建派车单URL跳转传参
@@ -225,6 +220,18 @@ $(document).ready(function() {
     	}
     });
     
+    //取得当前时间
+    getTime = function(){
+	    var d = new Date();
+	    var year = d.getFullYear();
+	    var mon = d.getMonth() + 1;
+	    var day = d.getDate();
+	    var h = d.getHours(); 
+	    var m = d.getMinutes(); 
+	    var s = d.getSeconds(); 
+	    timeStr=year+"-"+(mon<10 ? "0" + mon : mon)+"-"+(day<10 ? "0"+ day : day)+" "+(h<10 ? "0"+ h : h)+":"+(m<10 ? "0" + m : m)+":"+(s<10 ? "0" +s : s);
+	    return timeStr;
+    }
         
 });
 });
