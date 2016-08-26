@@ -63,7 +63,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    
 	    var bindFieldEvent=function(){
 	    	$('table .date').datetimepicker({  
-	    	    format: 'yyyy-MM-dd',  
+	    	    format: 'yyyy-MM-dd hh:mm:ss',  
 	    	    language: 'zh-CN'
 	    	}).on('changeDate', function(el){
 	    	    $(".bootstrap-datetimepicker-widget").hide();   

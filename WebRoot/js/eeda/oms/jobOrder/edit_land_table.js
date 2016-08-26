@@ -146,11 +146,17 @@ $(document).ready(function() {
                     return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:200px" />';
                 }
             },
-            { "data": "CAR_TYPE", "width": "180px",
+            { "data": "CAR_TYPE", "width": "80px",
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
+                	if(!data)
                         data='';
-                    return '<input type="text" name="car_type" value="'+data+'" class="form-control" style="width:200px"/>';
+                   var field_html = template('table_truck_type_field_template',
+	                    {
+	                        id: 'CAR_TYPE',
+	                        value: data
+	                    }
+	                );
+                    return field_html;
                 }
             },
             { "data": "CAR_NO", "width": "180px",

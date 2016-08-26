@@ -134,6 +134,18 @@ $(document).ready(function() {
                     return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
+            { "data": "UNIT","width": "80px", 
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    var str = '<select name="UNIT" class="form-control search-control" style="width:100px">'
+                    			+'<option></option>'
+			                   +'<option value="板" '+(data=='板' ? 'selected':'')+'>板</option>'
+			                   +'<option value="个" '+(data=='个' ? 'selected':'')+'>个</option>'
+			                   +'</select>';
+                    return str;
+                }
+            },
             { "data": "PALLET_DESC", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
