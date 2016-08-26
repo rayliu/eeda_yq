@@ -141,7 +141,7 @@ $(document).ready(function() {
     	var high = $(row.find('[name=high]')).val();
     	if(long!=''&&wide!=''&&high!=''){
 	    	if(!isNaN(long)&&!isNaN(wide)&&!isNaN(high)){
-	    		$(row.find('[name=volume]')).val(parseFloat(long)*parseFloat(wide)*parseFloat(high));
+	    		$(row.find('[name=volume]')).val(parseFloat(long)*parseFloat(wide)*parseFloat(high)/1000);
 	    	}else{
 	    		$(row.find('[name=volume]')).val('');
 	    	}

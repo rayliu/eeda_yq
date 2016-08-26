@@ -420,115 +420,113 @@ $(document).ready(function() {
 
     //打印生成派车单truckOrderPDF
     $('#truckOrderPDF').click(function(){
-    	//一条地点都未添加时，提示
-    	
-    	var alert = '';
-    	var a=0;
-    	var b=0;
-    	var c=0;
-    	var d=0;
-    	var e=0;
-    	var f=0;
-    	var g=0;
-    	var h=0;
-    	var i=0;
-    	$('#land_table [name=consignor]').each(function(){
-    		if($.trim($(this).val())==''){
-    			a++;
-    		}
-    	})
-    	$('#land_table [name=consignor_phone]').each(function(){
-    		if($.trim($(this).val())==''){
-    			b++;
-    		}
-    	})
-    	$('#land_table [name=take_address]').each(function(){
-    		if($.trim($(this).val())==''){
-    			c++;
-    		}
-    	})
-    	$('#land_table [name=consignee]').each(function(){
-    		if($.trim($(this).val())==''){
-    			d++;
-    		}
-    	})
-    	$('#land_table [name=consignee_phone]').each(function(){
-    		if($.trim($(this).val())==''){
-    			e++;
-    		}
-    	})
-    	$('#land_table [name=delivery_address]').each(function(){
-    		if($.trim($(this).val())==''){
-    			f++;
-    		}
-    	})
-    	$('#land_table [name=eta]').each(function(){
-    		if($.trim($(this).val())==''){
-    			g++;
-    		}
-    	})
-    	$('#land_table [name=cargo_info]').each(function(){
-    		if($.trim($(this).val())==''){
-    			h++;
-    		}
-    	})
-    	$('#land_table [name=required_time_remark]').each(function(){
-    		if($.trim($(this).val())==''){
-    			i++;
-    		}
-    	})
-    	
-    	if(a>0){
-    		alert+='发货人<br><br>';
-    	}
-    	if(b>0){
-    		alert+='发货人电话<br><br>';
-    	}
-    	if(c>0){
-    		alert+='发货地点<br><br>';
-    	}
-    	if(d>0){
-    		alert+='收货人<br><br>';
-    	}
-    	if(e>0){
-    		alert+='收货人电话<br><br>';
-    	}
-    	if(f>0){
-    		alert+='收货地点<br><br>';
-    	}
-    	if(g>0){
-    		alert+='预计到达时间<br><br>';
-    	}
-    	if(h>0){
-    		alert+='货品信息<br><br>';
-    	}
-    	if(i>0){
-    		alert+='运输及时间要求<br><br>';
-    	}
-//    	if($('#land_table').Rows[8][""]){
-//    		alert();
-//    	}
-    	
-    	
-    	if(alert!=''){
-			$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
-			$('#pdfAlert').click();
-		}else{
-			//保存，并打印
-			$('#saveBtn').click();
-	    	var order_id = $("#order_id").val();
-			$.post('/jobOrderReport/printTruckOrderPDF', {order_id:order_id}, function(data){
-				if(data){
+    	//判断table是否添加了一行
+    	if($('#land_table td').length==1){
+    		$.scojs_message('请添加一行地点', $.scojs_message.TYPE_ERROR);
+    	}else {
+	    	var alert = '';
+	    	var a=0;
+	    	var b=0;
+	    	var c=0;
+	    	var d=0;
+	    	var e=0;
+	    	var f=0;
+	    	var g=0;
+	    	var h=0;
+	    	var i=0;
+	    	$('#land_table [name=consignor]').each(function(){
+	    		if($.trim($(this).val())==''){
+	    			a++;
+	    		}
+	    	})
+	    	$('#land_table [name=consignor_phone]').each(function(){
+	    		if($.trim($(this).val())==''){
+	    			b++;
+	    		}
+	    	})
+	    	$('#land_table [name=take_address]').each(function(){
+	    		if($.trim($(this).val())==''){
+	    			c++;
+	    		}
+	    	})
+	    	$('#land_table [name=consignee]').each(function(){
+	    		if($.trim($(this).val())==''){
+	    			d++;
+	    		}
+	    	})
+	    	$('#land_table [name=consignee_phone]').each(function(){
+	    		if($.trim($(this).val())==''){
+	    			e++;
+	    		}
+	    	})
+	    	$('#land_table [name=delivery_address]').each(function(){
+	    		if($.trim($(this).val())==''){
+	    			f++;
+	    		}
+	    	})
+	    	$('#land_table [name=eta]').each(function(){
+	    		if($.trim($(this).val())==''){
+	    			g++;
+	    		}
+	    	})
+	    	$('#land_table [name=cargo_info]').each(function(){
+	    		if($.trim($(this).val())==''){
+	    			h++;
+	    		}
+	    	})
+	    	$('#land_table [name=required_time_remark]').each(function(){
+	    		if($.trim($(this).val())==''){
+	    			i++;
+	    		}
+	    	})
+	    	
+	    	if(a>0){
+	    		alert+='发货人<br><br>';
+	    	}
+	    	if(b>0){
+	    		alert+='发货人电话<br><br>';
+	    	}
+	    	if(c>0){
+	    		alert+='发货地点<br><br>';
+	    	}
+	    	if(d>0){
+	    		alert+='收货人<br><br>';
+	    	}
+	    	if(e>0){
+	    		alert+='收货人电话<br><br>';
+	    	}
+	    	if(f>0){
+	    		alert+='收货地点<br><br>';
+	    	}
+	    	if(g>0){
+	    		alert+='预计到达时间<br><br>';
+	    	}
+	    	if(h>0){
+	    		alert+='货品信息<br><br>';
+	    	}
+	    	if(i>0){
+	    		alert+='运输及时间要求<br><br>';
+	    	}
+	    	if(alert!=''){
+				$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
+				$('#pdfAlert').click();
+			}else{
+				//保存，并打印
+				$('#saveBtn').click();
+		    	var order_id = $("#order_id").val();
+				$.post('/jobOrderReport/printTruckOrderPDF', {order_id:order_id}, function(data){
+					if(data){
 					window.open(data);	
 					var order_id = $("#order_id").val();
-					 $.post('/jobOrder/truckOrderflag', {order_id:order_id}, function(data){
-			    		    
-		                });
-				}else{
-					$.scojs_message('生成派车单 PDF失败', $.scojs_message.TYPE_ERROR);
-				}
-			}); 
-		}
+						 $.post('/jobOrder/truckOrderflag', {order_id:order_id}, function(data){
+				    		    
+			                });
+					}else{
+						$.scojs_message('生成派车单 PDF失败', $.scojs_message.TYPE_ERROR);
+					}
+				}); 
+			}
+    	}
     });
     
     
