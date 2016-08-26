@@ -134,6 +134,13 @@ $(document).ready(function() {
                     return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
+            { "data": "PALLET_DESC", "width": "180px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="pallet_desc" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
             { "data": "GROSS_WEIGHT","width": "80px",  
                 "render": function ( data, type, full, meta ) {
                     if(!data)
