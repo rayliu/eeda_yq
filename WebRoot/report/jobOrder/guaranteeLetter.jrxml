@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="guaranteeLetter" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c30e5f41-f30f-4156-a1ef-fc052dd8d462">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="89"/>
 	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -57,7 +57,7 @@ where jos.order_id = $P{order_id}]]>
 		<band height="800" splitType="Stretch">
 			<image>
 				<reportElement x="16" y="12" width="190" height="50" uuid="078e4bfb-2c1d-4929-9773-6039b06c66c4"/>
-				<imageExpression><![CDATA["C:\\Users\\Administrator\\Desktop\\jobOrder\\guaranteeLetter.png"]]></imageExpression>
+				<imageExpression><![CDATA["guaranteeLetter.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="16" y="82" width="263" height="20" uuid="1d1a2949-2f5c-4de3-8eea-3d4c5c3290a0"/>
@@ -67,7 +67,7 @@ where jos.order_id = $P{order_id}]]>
 				<text><![CDATA[致：珠海横琴远桥供应链管理有限公司]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="106" y="124" width="320" height="35" uuid="f447883f-2496-4532-96cc-db8b948a7649"/>
+				<reportElement x="62" y="124" width="455" height="35" uuid="f447883f-2496-4532-96cc-db8b948a7649"/>
 				<textElement>
 					<font size="24" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -141,7 +141,7 @@ where jos.order_id = $P{order_id}]]>
 				<textElement>
 					<font size="20" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[       本公司                         爲促使船運能夠流暢起見,茲根據以上提單資料，請貴司通知貴司屬下公司/代理公司，安排無提單放貨給上述收貨人，一切責任，概由我司負責。]]></text>
+				<text><![CDATA[   本公司                 爲促使船運能夠流暢起見,茲根據以上提單資料，請貴司通知貴司屬下公司/代理公司，安排無提單放貨給上述收貨人，一切責任，概由我司負責。]]></text>
 			</staticText>
 			<line>
 				<reportElement x="118" y="485" width="135" height="1" uuid="9d83686f-02b4-4fdd-b2d9-69718849fa1f"/>
