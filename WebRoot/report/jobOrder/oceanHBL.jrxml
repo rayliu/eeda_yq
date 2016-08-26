@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="492"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -332,7 +332,7 @@ where jos.order_id=$P{order_id}]]>
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="0" width="255" height="85" uuid="fe0d8278-47cb-4180-a86d-6c80cc157f02"/>
+				<reportElement x="15" y="2" width="255" height="83" uuid="fe0d8278-47cb-4180-a86d-6c80cc157f02"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -353,14 +353,14 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[  Notify Party]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="415" y="2" width="37" height="16" uuid="b2c81a27-d772-446e-bde6-5eda6fc12abe"/>
+				<reportElement x="415" y="1" width="37" height="16" uuid="b2c81a27-d772-446e-bde6-5eda6fc12abe"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[B/L No.]]></text>
 			</staticText>
 			<image>
-				<reportElement x="276" y="1" width="135" height="30" uuid="f58114fa-3e37-475f-a3b3-12254af307e8"/>
+				<reportElement x="276" y="7" width="135" height="23" uuid="f58114fa-3e37-475f-a3b3-12254af307e8"/>
 				<imageExpression><![CDATA["yqlogo1.png"]]></imageExpression>
 			</image>
 			<staticText>
@@ -408,7 +408,7 @@ NON-NEGOTIABLE]]></text>
 				<textElement>
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[  Consignee]]></text>
+				<text><![CDATA[  Ocean Vessel    Voy.No.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="15" y="296" width="115" height="12" uuid="0f438754-fa32-499b-b641-7fe41ba46bfb"/>
@@ -737,18 +737,11 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="451" y="2" width="104" height="16" uuid="ef0abb56-7319-4ffc-9c9c-134ab6624aa7"/>
+				<reportElement x="451" y="1" width="104" height="16" uuid="ef0abb56-7319-4ffc-9c9c-134ab6624aa7"/>
 				<textElement textAlignment="Left">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="21" y="280" width="110" height="16" uuid="b00d8c70-0e4e-4514-9828-49acfe5a3e29"/>
-				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{abbr}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="134" y="252" width="137" height="16" uuid="c2b5278a-fc31-46fb-97bd-4c6af9594889"/>
@@ -765,7 +758,7 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="20" y="357" width="529" height="56" uuid="4c693fdb-2ca0-4a70-9c4e-70776935a829"/>
+				<reportElement x="20" y="357" width="529" height="62" uuid="4c693fdb-2ca0-4a70-9c4e-70776935a829"/>
 				<subreportParameter name="order_id">
 					<subreportParameterExpression><![CDATA[$F{order_id}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -780,18 +773,18 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="413" width="111" height="82" uuid="1bafa8fb-827f-4962-a29e-c34446288817"/>
+				<reportElement x="20" y="419" width="111" height="76" uuid="1bafa8fb-827f-4962-a29e-c34446288817"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{shipping_mark}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="238" y="413" width="124" height="82" uuid="efcca246-ec09-48a8-87a0-3be004d0249e"/>
+				<reportElement x="242" y="357" width="120" height="138" uuid="efcca246-ec09-48a8-87a0-3be004d0249e"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cargo_desc}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[  $F{cargo_desc}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="20" y="308" width="110" height="19" uuid="a04e7ec4-d75f-4c35-910a-a64dcccc2f2a"/>
@@ -808,7 +801,7 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{fnd_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="279" y="248" width="100" height="15" uuid="35116c87-954f-4793-b29f-3b0c2a0a7852"/>
+				<reportElement x="279" y="248" width="270" height="77" uuid="35116c87-954f-4793-b29f-3b0c2a0a7852"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -821,13 +814,6 @@ NON-NEGOTIABLE]]></text>
 				</textElement>
 				<text><![CDATA[SHIPED ON BOARD]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="426" y="477" width="26" height="18" uuid="4b3aabbf-76d7-4737-ac88-9b4255d2effc"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[ETD:]]></text>
-			</staticText>
 			<textField pattern="MMMMMM dd, yyyy" isBlankWhenNull="true">
 				<reportElement x="452" y="475" width="103" height="20" uuid="d61ce27a-94cf-4991-b8e9-c5c5e300c503"/>
 				<textElement>
@@ -836,7 +822,7 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="249" y="740" width="120" height="54" uuid="1ed17896-d32f-4c17-90d9-93feef0068e7"/>
+				<reportElement x="252" y="754" width="120" height="39" uuid="1ed17896-d32f-4c17-90d9-93feef0068e7"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -848,6 +834,29 @@ NON-NEGOTIABLE]]></text>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_type_count}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="412" y="22" width="143" height="1" uuid="a3100411-ce72-47f2-835b-3bf9f89a3adf"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="412" y="2" width="1" height="21" uuid="a83b3ec2-017c-4ee4-b614-cad0addecc36"/>
+			</line>
+			<textField>
+				<reportElement x="18" y="282" width="46" height="14" uuid="4efec50a-c420-4e9b-868e-897a90b2d39b"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vessel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="79" y="282" width="51" height="15" uuid="fc839ff4-00cb-4cdd-bc26-6f44d4171bbe"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{voyage}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

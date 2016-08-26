@@ -73,7 +73,7 @@
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="62" y="0" width="55" height="20" uuid="b4d234f4-2bc6-4dad-a3fb-85fe0fadae96"/>
+				<reportElement x="63" y="0" width="55" height="20" uuid="b4d234f4-2bc6-4dad-a3fb-85fe0fadae96"/>
 				<textElement textAlignment="Left">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -87,7 +87,7 @@
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="120" y="0" width="90" height="20" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
+				<reportElement x="120" y="0" width="86" height="20" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
 				<textElement textAlignment="Center">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>

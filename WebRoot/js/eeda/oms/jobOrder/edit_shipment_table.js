@@ -127,32 +127,32 @@ $(document).ready(function() {
                     return '<input type="text" name="seal_no" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "PIECES", "width": "180px",
+            { "data": "PIECES", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
-            { "data": "GROSS_WEIGHT","width": "180px",  
+            { "data": "GROSS_WEIGHT","width": "80px",  
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="gross_weight" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="gross_weight" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
-            { "data": "VOLUME", "width": "180px",
+            { "data": "VOLUME", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
-            { "data": "VGM", "width": "180px",
+            { "data": "VGM", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="vgm" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="vgm" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             }
         ]
