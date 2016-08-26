@@ -259,7 +259,7 @@ $(document).ready(function() {
     		alert+='船名<br><br>';
     	}
     	if($('#route').val()==''){
-    		alert+='航次<br><br>';
+    		alert+='航线<br><br>';
     	}
     	if($('#pol').val()==''){
     		alert+='装货港 POL<br><br>';

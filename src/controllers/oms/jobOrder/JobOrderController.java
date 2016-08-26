@@ -147,16 +147,15 @@ public class JobOrderController extends Controller {
     
     @SuppressWarnings("unchecked")
 	@Before(Tx.class)
-   	public void save() throws Exception {		
+   	public void save() throws Exception {	
+    	
    		String jsonStr=getPara("params");
-       	
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+        String id = (String) dto.get("id");
+        String planOrderItemID = (String) dto.get("plan_order_item_id");
             
         JobOrder jobOrder = new JobOrder();
-   		String id = (String) dto.get("id");
-   		String planOrderItemID = (String) dto.get("plan_order_item_id");
-   		
    		UserLogin user = LoginUserController.getLoginUser(this);
    		
    		if (StringUtils.isNotEmpty(id)) {
@@ -170,7 +169,43 @@ public class JobOrderController extends Controller {
    			DbUtils.setModelValues(dto, jobOrder);
    			
    			//需后台处理的字段
-   			jobOrder.set("order_no", OrderNoGenerator.getNextOrderNo("GZ"));
+//   		根据出口类型生成单号前缀
+//   		类型：出口柜货（EKO），进口柜货（EKO），出口散货（EKO），进口散货（EKO），
+//   		出口空运（EKA），进口空运（EKA）,
+//   		香港头程（EKL），香港游（EKL），
+//   		加贸（EKP），园区游（EKP）
+//   		陆运（EKT），
+//   		报关（EKC），
+//   		快递（EKE），
+//   		贸易（EKB）
+   			String type = (String) dto.get("type");
+   			String prefix = "";
+   			if(type.equals("出口柜货")||type.equals("进口柜货")||type.equals("出口散货")||type.equals("进口散货")){
+   				prefix+="EKO";
+   			}
+   			else if(type.equals("出口空运")||type.equals("进口空运")){
+   				prefix+="EKA";
+   			}
+   			else if(type.equals("香港头程")||type.equals("香港游")){
+   				prefix+="EKL";
+   			}
+   			else if(type.equals("加贸")||type.equals("园区游")){
+   				prefix+="EKP";
+   			}
+   			else if(type.equals("陆运")){
+   				prefix+="EKT";
+   			}
+   			else if(type.equals("报关")){
+   				prefix+="EKC";
+   			}
+   			else if(type.equals("快递")){
+   				prefix+="EKE";
+   			}
+   			else if(type.equals("贸易")){
+   				prefix+="EKB";
+   			}
+   			String orderPrefix = OrderNoGenerator.getNextOrderNo(prefix);
+            jobOrder.set("order_no", orderPrefix);
    			jobOrder.set("creator", user.getLong("id"));
    			jobOrder.set("create_stamp", new Date());
    			jobOrder.save();
