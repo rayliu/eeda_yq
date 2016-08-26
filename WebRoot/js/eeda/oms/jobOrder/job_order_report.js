@@ -20,7 +20,6 @@ $(document).ready(function() {
 	
 	//生成海运SI
 	$('#printOceanSI').click(function(){
-		jobOrderSave();
 		//数据不足提示
     	var alert = '';
     	if($('#ocean_shipper_input').val()==''){
@@ -73,6 +72,7 @@ $(document).ready(function() {
 			$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
 			$('#pdfAlert').click();
 		}else{
+				jobOrderSave();
 		    	var order_id = $("#order_id").val();
 		    	$.post('/jobOrderReport/printOceanSI', {order_id:order_id}, function(data){
 		    		if(data){
@@ -517,7 +517,6 @@ $(document).ready(function() {
 				$.post('/jobOrderReport/printTruckOrderPDF', {order_id:order_id}, function(data){
 					if(data){
 					window.open(data);	
-					var order_id = $("#order_id").val();
 						 $.post('/jobOrder/truckOrderflag', {order_id:order_id}, function(data){
 				    		    
 			                });
