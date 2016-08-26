@@ -133,6 +133,7 @@ public class JobOrderController extends Controller {
     	jobOrderLandItem = JobOrderLandItem.dao.findFirst("select id,truckorder_flag from job_order_land_item where order_id = ?",jsonStr);
     	jobOrderLandItem.set("truckorder_flag", "Y");
     	jobOrderLandItem.update();
+    	renderJson("{\"result\":true}");
     }
     
     //插入打印动作AFR/AMS标识符

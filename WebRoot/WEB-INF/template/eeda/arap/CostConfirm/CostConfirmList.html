@@ -90,6 +90,22 @@
                         
                             
                                 <div class="table-responsive">
+                              <%include("/eeda/component/form/detailTable.html", 
+                                {
+                                    id:'eeda-table', 
+                                    headers:['付款确认单号',
+                                        '付款申请单号',
+                                        '状态',
+                                        '供应商',
+                                        '收款人',
+                                        '付款金额',
+                                        '已付金额',
+                                        '未付金额',
+                                        '备注',
+                                        '创建人',
+                                        '创建时间']
+                                }){} %>
+                                
                                     <table class="table table-striped table-bordered table-hover" id="costConfirm_table" style="width: 1200px;">
                                         <thead>
                                             <tr>

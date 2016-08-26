@@ -519,7 +519,8 @@ $(document).ready(function() {
 	    	var order_id = $("#order_id").val();
 			$.post('/jobOrderReport/printTruckOrderPDF', {order_id:order_id}, function(data){
 				if(data){
-					window.open(data);					 
+					window.open(data);	
+					var order_id = $("#order_id").val();
 					 $.post('/jobOrder/truckOrderflag', {order_id:order_id}, function(data){
 			    		    
 		                });

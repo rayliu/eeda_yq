@@ -1,7 +1,5 @@
 package controllers.oms.jobOrder;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +34,7 @@ public class JobOrderReportController extends Controller {
 		
 		String order_id = getPara("order_id");
 		String fileName = "/report/jobOrder/guaranteeLetter.jasper";
-		String outFileName = "/download/工作单海运HBL";
+		String outFileName = "/download/生成电放保函word";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
 		fileName = getContextPath() + fileName;
