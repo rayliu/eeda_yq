@@ -65,12 +65,13 @@ $(document).ready(function() {
     
     
     //------------事件处理
-    var bindFieldEvent=function(){
+    var bindFieldEvent=function(){	
         eeda.bindTableField('SP_ID','/serviceProvider/searchCompany','');
         eeda.bindTableField('CHARGE_ID','/finItem/search','');
         eeda.bindTableField('UNIT_ID','/serviceProvider/searchUnit','');
         eeda.bindTableField('CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
+
     var costTable = eeda.dt({
         id: 'cost_table',
         "drawCallback": function( settings ) {//生成相关下拉组件后, 需要再次绑定事件

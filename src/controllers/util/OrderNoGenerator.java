@@ -40,7 +40,45 @@ public class OrderNoGenerator {
 		}
 		return orderNo;
 	}
-
+	
+	//远桥生成单号规则，年月001，201101001
+	public synchronized static String getNextOrderNoForYQ(String orderPrefix) {
+		if("000".equals(count)){
+			initCountFromDBForYQ();
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		String nowdate = sdf.format(new Date());
+		//每月从新计数
+		if(!nowdate.equals(dateValue)){
+			dateValue=nowdate;
+			count = "000";
+		}
+		String orderNo = orderPrefix +nowdate+ getNo(count);
+		
+		CustomizeField cf = CustomizeField.dao.findFirst("select * from customize_field where order_type='latestOrderNo'");
+		if(cf!=null){
+			cf.set("field_code", orderNo).update();
+		}
+		return orderNo;
+	}
+	public synchronized static void initCountFromDBForYQ() {
+		String previousNo="";
+		CustomizeField cf = CustomizeField.dao.findFirst("select * from customize_field where order_type='latestOrderNo'");
+		if(cf!=null){
+			previousNo = cf.get("field_code");
+			//不管前缀长度，后面的数字长度是 13， 2011010100001
+			String ymd = StringUtils.right(previousNo, 13).substring(0, 6); // 获取年月字符串
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+			String nowdate = sdf.format(new Date());
+			dateValue = nowdate;
+			if(ymd.equals(nowdate)){
+				count = StringUtils.right(previousNo, 3); // 获取流水号
+			}
+		}
+		
+	}
+	
 	public synchronized static void initCountFromDB() {
 		String previousNo="";
 		CustomizeField cf = CustomizeField.dao.findFirst("select * from customize_field where order_type='latestOrderNo'");
@@ -67,7 +105,7 @@ public class OrderNoGenerator {
 		int i = Integer.parseInt(rs);
 		i += 1;
 		rs = "" + i;
-		int seqLength = 5;//序列号长度00001
+		int seqLength = 3;//序列号长度00001
 		for (int j = rs.length(); j < seqLength; j++) {
 			rs = "0" + rs;
 		}
