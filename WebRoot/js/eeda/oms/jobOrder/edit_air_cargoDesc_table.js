@@ -134,14 +134,15 @@ $(document).ready(function() {
     }
     
     //计算体积
-    $('#cargoDesc_table').on('keyup','[name=long],[name=wide],[name=high]',function(){
+    $('#cargoDesc_table').on('keyup','[name=long],[name=wide],[name=high],[name=amount]',function(){
     	var row = $(this).parent().parent();
     	var long = $(row.find('[name=long]')).val();
     	var wide = $(row.find('[name=wide]')).val();
     	var high = $(row.find('[name=high]')).val();
-    	if(long!=''&&wide!=''&&high!=''){
-	    	if(!isNaN(long)&&!isNaN(wide)&&!isNaN(high)){
-	    		$(row.find('[name=volume]')).val(parseFloat(long)*parseFloat(wide)*parseFloat(high)/1000);
+    	var amount = $(row.find('[name=amount]')).val();
+    	if(long!=''&&wide!=''&&high!=''&&amount!=''){
+	    	if(!isNaN(long)&&!isNaN(wide)&&!isNaN(high)&&!isNaN(amount)){
+	    		$(row.find('[name=volume]')).val(parseFloat(long)*parseFloat(wide)*parseFloat(high)*parseFloat(amount)/1000);
 	    	}else{
 	    		$(row.find('[name=volume]')).val('');
 	    	}
