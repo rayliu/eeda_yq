@@ -370,7 +370,9 @@ public class JobOrderController extends Controller {
     	String itemSql = "";
     	List<Record> itemList = null;
     	if("shipment".equals(type)){
-    		itemSql = "select * from job_order_shipment_item jos where order_id=?";
+    		itemSql = "select jos.*,u.name unit_name from job_order_shipment_item jos"
+    				+ " left join unit u on u.id=jos.unit_id"
+    				+ " where order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("air".equals(type)){
     		itemSql = "select joa.*, pa.abbr air_company_name from job_order_air_item joa"
@@ -386,15 +388,19 @@ public class JobOrderController extends Controller {
     				+ " where order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
-    		itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name from job_order_arap jor "
+    		itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,u.name unit_name,c.name currency_name from job_order_arap jor "
     		        + " left join party pr on pr.id=jor.sp_id"
     		        + " left join fin_item f on f.id=jor.charge_id"
+    		        + " left join unit u on u.id=jor.unit_id"
+    		        + " left join currency c on c.id=jor.currency_id"
     		        + " where order_id=? and order_type=?";
     		itemList = Db.find(itemSql, orderId,"charge");
     	}else if("cost".equals(type)){
-	    	itemSql = "select jor.*, pr.abbr sp_name, f.name cost_name from job_order_arap jor"
+	    	itemSql = "select jor.*, pr.abbr sp_name, f.name cost_name,u.name unit_name,c.name currency_name from job_order_arap jor"
 	    	        + " left join party pr on pr.id=jor.sp_id"
 	    	        + " left join fin_item f on f.id=jor.charge_id"
+	    	        + " left join unit u on u.id=jor.unit_id"
+    		        + " left join currency c on c.id=jor.currency_id"
 	    	        + " where order_id=? and order_type=?";
 	    	itemList = Db.find(itemSql, orderId,"cost");
     	}else if("doc".equals(type)){

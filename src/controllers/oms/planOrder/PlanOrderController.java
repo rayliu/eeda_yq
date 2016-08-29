@@ -75,7 +75,7 @@ public class PlanOrderController extends Controller {
    			DbUtils.setModelValues(dto, planOrder);
    			
    			//需后台处理的字段
-   			planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("JH"));
+   			planOrder.set("order_no", OrderNoGenerator.getNextOrderNoForYQ("JH"));
    			planOrder.set("creator", user.getLong("id"));
    			planOrder.set("create_stamp", new Date());
    			planOrder.save();
@@ -95,13 +95,14 @@ public class PlanOrderController extends Controller {
     
     
     private List<Record> getPlanOrderItems(String orderId) {
-        String itemSql = "select pi.*, l_por.name por_name, l_pol.name pol_name, l_pod.name pod_name, "
+        String itemSql = "select pi.*, l_por.name por_name, l_pol.name pol_name, l_pod.name pod_name,u.name unit_name,"
                 + " p.abbr carrier_name "
                 + " from plan_order_item pi "
                 +" left join location l_por on pi.por=l_por.id"
                 +" left join location l_pol on pi.pol=l_pol.id"
                 +" left join location l_pod on pi.pod=l_pod.id"
                 +" left join party p on pi.carrier=p.id"
+                +" left join unit u on u.id=pi.unit_id"
                 +" where order_id=?";
 
 		List<Record> itemList = Db.find(itemSql, orderId);

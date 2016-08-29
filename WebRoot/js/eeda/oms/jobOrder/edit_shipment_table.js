@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'dataTablesBootstrap'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) {
 $(document).ready(function() {
 
 	var deletedTableIds=[];
@@ -56,21 +56,17 @@ $(document).ready(function() {
         return cargo_items_array;
     };
     
+    var bindFieldEvent=function(){
+    	eeda.bindTableField('UNIT_ID','/serviceProvider/searchUnit','');
+    };
     //------------事件处理
-    var cargoTable = $('#ocean_cargo_table').DataTable({
-        "processing": true,
-        "searching": false,
-        "paging": false,
-        "info": false,
-        "scrollX":  true,
-        "autoWidth": false,
-        "language": {
-            "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
-        },
-        "createdRow": function ( row, data, index ) {
-            $(row).attr('id', data.ID);
-        },
-        "columns": [
+	var cargoTable = eeda.dt({
+	    id: 'ocean_cargo_table',
+	    autoWidth: false,
+	    "drawCallback": function( settings ) {
+	        bindFieldEvent();
+	    },
+	    columns:[
             { "data":"ID","width": "10px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
@@ -89,7 +85,6 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                    if(!data)
                 	   data='';
-                    
                    var str= '<select name="load_type" class="form-control search-control" style="width:100px">'
                 	   	 	+'<option></option>'
 		                   +'<option value="FCL" '+ (data=='FCL'?'selected':'') +'>FCL</option>'
@@ -134,16 +129,19 @@ $(document).ready(function() {
                     return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
-            { "data": "UNIT","width": "80px", 
+            { "data": "UNIT_ID", 
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
+                	if(!data)
                         data='';
-                    var str = '<select name="UNIT" class="form-control search-control" style="width:100px">'
-                    			+'<option></option>'
-			                   +'<option value="板" '+(data=='板' ? 'selected':'')+'>板</option>'
-			                   +'<option value="个" '+(data=='个' ? 'selected':'')+'>个</option>'
-			                   +'</select>';
-                    return str;
+                    var field_html = template('table_dropdown_template',
+                        {
+                            id: 'UNIT_ID',
+                            value: data,
+                            display_value: full.UNIT_NAME,
+                            style:'width:80px'
+                        }
+                    );
+                    return field_html;
                 }
             },
             { "data": "PALLET_DESC", "width": "180px",
@@ -172,6 +170,12 @@ $(document).ready(function() {
                     if(!data)
                         data='';
                     return '<input type="text" name="vgm" value="'+data+'" class="form-control" style="width:100px"/>';
+                }
+            },{ "data": "UNIT_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
                 }
             }
         ]

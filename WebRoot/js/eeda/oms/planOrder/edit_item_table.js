@@ -70,6 +70,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	    $(el).trigger('keyup');
 	    	});
 
+	    	eeda.bindTableField('UNIT_ID','/serviceProvider/searchUnit','');
 	    	eeda.bindTableField('POR','/location/searchPort','');
 	    	eeda.bindTableField('POL','/location/searchPort','');
 	    	eeda.bindTableField('POD','/location/searchPort','');
@@ -159,6 +160,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    if(!data)
 	                        data='';
 	                   return '<input type="text" name="PIECES" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            { "data": "UNIT_ID", 
+	                "render": function ( data, type, full, meta ) {
+	                	if(!data)
+	                        data='';
+	                    var field_html = template('table_dropdown_template',
+	                        {
+	                            id: 'UNIT_ID',
+	                            value: data,
+	                            display_value: full.UNIT_NAME,
+	                            style:'width:80px'
+	                        }
+	                    );
+	                    return field_html;
 	                }
 	            },
 	            { "data": "VOLUME","width": "180px",
@@ -360,8 +376,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                        data='';
 	                    return data;
 	                }
+	            },{ "data": "UNIT_NAME", "visible": false,
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
 	            }
-
 	        ]
 	    });
 
