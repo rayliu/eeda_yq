@@ -73,18 +73,19 @@ $(document).ready(function() {
     //------------事件处理
     var chargeTable = eeda.dt({
         id: 'charge_table',
-        "drawCallback": function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
+        autoWidth: false,
+        drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
             bindFieldEvent();
         },
         columns:[
-            { 
+            { "width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
+                	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
                 }
             },
-            { "data": "TYPE", 
+            { "data": "TYPE", "width": "80px", 
                 "render": function ( data, type, full, meta ) {
-                    var str = '<select name="container_type" class="form-control search-control">'
+                    var str = '<select name="container_type" class="form-control search-control" style="width:100px">'
                                +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>海运</option>'
                                +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>空运</option>'
                                +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>陆运</option>'
@@ -94,7 +95,7 @@ $(document).ready(function() {
                     return str;
                 }
             },
-            { "data": "SP_ID",
+            { "data": "SP_ID", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -102,13 +103,14 @@ $(document).ready(function() {
                         {
                             id: 'SP_ID',//对应数据库字段
                             value: data,
-                            display_value: full.SP_NAME
+                            display_value: full.SP_NAME,
+                            style:'width:200px'
                         }
                     );
                     return field_html;
                 }
             },
-            { "data": "CHARGE_ID",
+            { "data": "CHARGE_ID", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -116,27 +118,28 @@ $(document).ready(function() {
                         {
                             id: 'CHARGE_ID',//对应数据库字段
                             value: data,
-                            display_value: full.CHARGE_NAME
+                            display_value: full.CHARGE_NAME,
+                            style:'width:200px'
                         }
                     );
                     return field_html;
                 }
             },
-            { "data": "PRICE", 
+            { "data": "PRICE", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="price" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
-            { "data": "AMOUNT",
+            { "data": "AMOUNT","width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="number" name="amount" style="width:80px" value="'+data+'" class="form-control"/>';
                 }
             },
-            { "data": "UNIT_ID", 
+            { "data": "UNIT_ID", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
@@ -151,7 +154,7 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "CURRENCY_ID", 
+            { "data": "CURRENCY_ID", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
@@ -166,28 +169,28 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "TOTAL_AMOUNT", 
+            { "data": "TOTAL_AMOUNT", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" disabled/>';
                 }
             },
-            { "data": "EXCHANGE_RATE", 
+            { "data": "EXCHANGE_RATE", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="exchange_rate" style="width:80px" value="'+data+'" class="form-control"/>';
                 }
             },
-            { "data": "CURRENCY_TOTAL_AMOUNT", 
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
-            { "data": "REMARK",
+            { "data": "REMARK","width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';

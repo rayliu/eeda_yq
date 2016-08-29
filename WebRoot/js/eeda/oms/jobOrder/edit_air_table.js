@@ -68,23 +68,13 @@ $(document).ready(function() {
         eeda.bindTableField('AIR_COMPANY','/serviceProvider/searchAirCompany','air');
     };
     //------------事件处理
-    var cargoTable = $('#air_table').DataTable({
-        "processing": true,
-        "searching": false,
-        "paging": false,
-        "info": false,
-        "scrollX":  true,
-        "autoWidth": false,
-        "language": {
-            "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
-        },
-        "drawCallback": function( settings ) {
-            bindFieldEvent();
-        },
-        "createdRow": function ( row, data, index ) {
-            $(row).attr('id', data.ID);
-        },
-        "columns": [
+    var cargoTable = eeda.dt({
+	    id: 'air_table',
+	    autoWidth: false,
+	    drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
+	        bindFieldEvent();
+	    },
+	    columns:[
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
                 	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';

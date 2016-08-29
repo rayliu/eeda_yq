@@ -63,7 +63,7 @@ $(document).ready(function() {
 	var cargoTable = eeda.dt({
 	    id: 'ocean_cargo_table',
 	    autoWidth: false,
-	    "drawCallback": function( settings ) {
+	    drawCallback: function( settings ) {
 	        bindFieldEvent();
 	    },
 	    columns:[
