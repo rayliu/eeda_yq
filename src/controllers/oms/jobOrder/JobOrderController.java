@@ -124,6 +124,7 @@ public class JobOrderController extends Controller {
     	jobOrderShipment = JobOrderShipment.dao.findFirst("select id,si_flag from job_order_shipment where order_id = ?",jsonStr);
     	jobOrderShipment.set("si_flag", "Y");
     	jobOrderShipment.update();
+    	renderJson("{\"result\":true}");
     }
     
     //插入派车单打印动作标记
