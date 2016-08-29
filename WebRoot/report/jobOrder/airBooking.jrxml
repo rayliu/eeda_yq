@@ -380,12 +380,12 @@ where jo.order_no=$P{order_no}]]>
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="386" y="407" width="64" height="33" uuid="eab8a436-be85-42cc-8d9e-9a136e574407"/>
+				<reportElement x="386" y="405" width="64" height="36" uuid="eab8a436-be85-42cc-8d9e-9a136e574407"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[Gross Weight
-毛重
+毛重(KG)
 ]]></text>
 			</staticText>
 			<staticText>
