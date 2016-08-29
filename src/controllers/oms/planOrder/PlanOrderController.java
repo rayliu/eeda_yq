@@ -149,7 +149,7 @@ public class PlanOrderController extends Controller {
         			+ " left join party p on p.id = po.customer_id "
         			+ " left join user_login u on u.id = po.creator "
         			+ " WHERE is_gen_job='N' AND factory_loading_time is not NULL "
-        			+ "AND datediff(factory_loading_time, now())<=5";
+        			+ " AND datediff(factory_loading_time, now())<=5";
         }else{
         	sql = "SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name"
     			+ "  from plan_order po "

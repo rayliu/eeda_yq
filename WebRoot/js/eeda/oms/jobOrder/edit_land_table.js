@@ -146,13 +146,13 @@ $(document).ready(function() {
                     return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:200px" />';
                 }
             },
-            { "data": "CAR_TYPE", "width": "80px",
+            { "data": "TRUCK_TYPE", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
                    var field_html = template('table_truck_type_field_template',
 	                    {
-	                        id: 'CAR_TYPE',
+	                        id: 'TRUCK_TYPE',
 	                        value: data
 	                    }
 	                );

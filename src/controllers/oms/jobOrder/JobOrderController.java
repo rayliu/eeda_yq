@@ -635,9 +635,7 @@ public class JobOrderController extends Controller {
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
-
         orderListMap.put("data", orderList);
-
         renderJson(orderListMap); 
     }
     

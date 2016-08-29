@@ -14,6 +14,7 @@ import java.util.Map;
 import models.Party;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrder;
+import models.eeda.oms.jobOrder.JobOrderLandItem;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 import models.eeda.oms.truckOrder.TruckOrder;
 import models.eeda.oms.truckOrder.TruckOrderArap;
@@ -76,47 +77,17 @@ public class TruckOrderController extends Controller {
    	public void save() throws Exception {	
     	
    		String jsonStr=getPara("params");
-       	
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
-            
-        TruckOrder truckOrder = new TruckOrder();
    		String id = (String) dto.get("id");
-   		
-   		UserLogin user = LoginUserController.getLoginUser(this);
-   		
-   		if (StringUtils.isNotEmpty(id)) {
-   			//update
-   			truckOrder =TruckOrder.dao.findById(id);
-   			DbUtils.setModelValues(dto, truckOrder);
-   			
-   			truckOrder.update();
-   			
-   		} else {
-   			//create 
-   			DbUtils.setModelValues(dto, truckOrder);
-   			
-   			//需后台处理的字段
-   			truckOrder.set("order_no", OrderNoGenerator.getNextOrderNo("PC"));
-   			truckOrder.set("creator", user.getLong("id"));
-   			truckOrder.set("create_stamp", new Date());
-   			truckOrder.save();
-   			
-   			id = truckOrder.getLong("id").toString();
-   		}
-   		
-   		List<Map<String, String>> cargoList = (ArrayList<Map<String, String>>)dto.get("cargo_list");
-		DbUtils.handleList(cargoList, id, TruckOrderCargo.class, "order_id");
-		
-		List<Map<String, String>> chargeList = (ArrayList<Map<String, String>>)dto.get("charge_list");
-		DbUtils.handleList(chargeList, id, TruckOrderArap.class, "order_id");        
-		
-		long creator = truckOrder.getLong("creator");
-   		String user_name = LoginUserController.getUserNameById(creator);
+   		JobOrderLandItem truckOrder = new JobOrderLandItem();
+   	
+		//update
+		truckOrder =JobOrderLandItem.dao.findById(id);
+		DbUtils.setModelValues(dto, truckOrder);
+		truckOrder.update();
    		
    		Record r = truckOrder.toRecord();
-   		r.set("creator_name", user_name);
-   		
    		renderJson(r);
    	}
     
@@ -124,69 +95,43 @@ public class TruckOrderController extends Controller {
     @Before(Tx.class)
     public void edit() {
     	String id = getPara("id");
-    	TruckOrder truckOrder = TruckOrder.dao.findById(id);
-    	setAttr("order", truckOrder);
-    	//获取明细表信息
-    	setAttr("cargoList", getItems(id,"cargo"));
-    	//获取明细表信息
-    	setAttr("chargeList", getItems(id,"charge"));
-    	
-    	//查询customer_id,sp_id,load_sp_id,unload_sp_id
-    	//构造供应商回显
-    	Party sp = Party.dao.findById(truckOrder.getLong("sp_id"));
-    	setAttr("sp",sp);
-    	
-    	Party unload_sp = Party.dao.findById(truckOrder.getLong("unload_sp_id"));
-    	setAttr("unload_sp",unload_sp);
-    	
-    	Party load_sp = Party.dao.findById(truckOrder.getLong("load_sp_id"));
-    	setAttr("load_sp",load_sp);
-    	
-    	Party customer = Party.dao.findById(truckOrder.getLong("customer_id"));
-    	setAttr("customer",customer);
-    	
-    	//创建人回显信息
-    	long create_by = truckOrder.getLong("creator");
-    	UserLogin user = UserLogin.dao.findById(create_by);
-    	setAttr("user", user);
-    	
+    	String order_id = getPara("order_id");
+    	JobOrderLandItem truckOrder = JobOrderLandItem.dao.findById(id);
+    	JobOrder jobOrder = JobOrder.dao.findById(order_id);
+    	setAttr("truckOrder", truckOrder);
+    	setAttr("jobOrder", jobOrder);
         render("/oms/TruckOrder/TruckOrderEdit.html");
     }
     
     
   
     public void list() {
-    	String sLimit = "";
-        String pageIndex = getPara("sEcho");
-        if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
-            sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
+    	
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-
         
-        String sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p2.abbr sp_name"
-    			+ "  from truck_order jor "
-    			+ "  left join party p on p.id = jor.customer_id"
-    			+ "  left join party p2 on p2.id = jor.sp_id"
-    			+ "  left join user_login u on u.id = jor.creator"
+        String sql = "SELECT jol.*,jo.order_no,jo.create_stamp"
+    			+ "  from job_order_land_item jol "
+    			+ "  left join job_order jo on jo.id=jol.order_id"
     			+ "   where 1 =1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
-        
         Record rec = Db.findFirst(sqlTotal);
         
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> BillingOrders = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
-        
+        List<Record> list = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
         Map map = new HashMap();
-        map.put("sEcho", pageIndex);
-        map.put("iTotalRecords", rec.getLong("total"));
-        map.put("iTotalDisplayRecords", rec.getLong("total"));
-        map.put("aaData", BillingOrders);
-
-        renderJson(map); 
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", list);
+        renderJson(map);  
     }
 
 

@@ -3,33 +3,40 @@ $(document).ready(function() {
 	document.title = '派车单查询   | '+document.title;
     $('#menu_truck').addClass('active').find('ul').addClass('in');
     $('#menu_todo_list').removeClass('active').find('ul').removeClass('in');
-	  //datatable, 动态处理
-    var dataTable = $('#eeda-table').DataTable({
-        "processing": true,
-        "searching": false,
-        //"serverSide": false,
-        "scrollX": true,
-        //"scrollY": "300px",
-        "scrollCollapse": true,
-        "autoWidth": false,
-        "language": {
-            "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
-        },
-        "ajax": "/truckOrder/list",
-        "columns": [
-            { "data": "ORDER_NO", 
-                "render": function ( data, type, full, meta ) {
-                    return "<a href='/truckOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
-                }
-            },
-            { "data": "TRUCK_TYPE"}, 
-            { "data": "CUSTOMER_NAME"}, 
-            { "data": "SP_NAME"}, 
-            { "data": "CREATOR_NAME"}, 
-            { "data": "CREATE_STAMP"},
-            { "data": "STATUS"}
-        ]
-    });
+    
+    //datatable, 动态处理
+	var dataTable = eeda.dt({
+	    id: 'truck_table',
+        paging: true,
+	    serverSide: true, //不打开会出现排序不对
+	    ajax: "/truckOrder/list",
+	    columns:[
+	            { "data": "ORDER_NO","width":"180px",
+	                "render": function ( data, type, full, meta ) {
+	                    return "<a href='/truckOrder/edit?id="+full.ID+"&order_no="+full.ORDER_NO+"&order_id="+full.ORDER_ID+" 'target='_blank'>"+data+"</a>";
+	                }
+	            },
+	            { "data": "CREATE_STAMP","width":"180px"}, 
+	            { "data": "STATUS","width":"180px"}, 
+	            { "data": "UNLOAD_TYPE","width":"180px"}, 
+	            { "data": "TRANSPORT_COMPANY","width":"180px"}, 
+	            { "data": "DRIVER","width":"180px"}, 
+	            { "data": "DRIVER_TEL","width":"180px"}, 
+	            { "data": "TRUCK_TYPE","width":"180px"},
+	            { "data": "CAR_NO","width":"180px"},
+	            { "data": "CONSIGNOR","width":"180px"},
+	            { "data": "CONSIGNOR_PHONE","width":"180px"},
+	            { "data": "TAKE_ADDRESS","width":"180px"},
+	            { "data": "CONSIGNEE","width":"180px"},
+	            { "data": "CONSIGNEE_PHONE","width":"180px"},
+	            { "data": "DELIVERY_ADDRESS","width":"180px"},
+	            { "data": "ETA","width":"180px"},
+	            { "data": "CARGO_INFO","width":"180px"},
+	            { "data": "REQUIRED_TIME_REMARK","width":"180px"},
+	            { "data": "SIGN_DESC","width":"180px"},
+	            { "data": "SIGN_STATUS","width":"180px"}
+	        ]
+	    });
 
     
     $('#resetBtn').click(function(e){
