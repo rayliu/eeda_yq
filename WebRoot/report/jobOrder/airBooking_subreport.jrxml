@@ -103,7 +103,7 @@ where order_id=$P{order_id}]]>
 				<textFieldExpression><![CDATA[$F{high}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="198" y="1" width="25" height="15" uuid="39ed87b0-d017-42ea-b445-4d91f88cb72f"/>
+				<reportElement x="198" y="1" width="32" height="15" uuid="39ed87b0-d017-42ea-b445-4d91f88cb72f"/>
 				<textElement textAlignment="Center">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -128,7 +128,7 @@ where order_id=$P{order_id}]]>
 				<textFieldExpression><![CDATA[$V{width_sum}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="198" y="0" width="25" height="20" uuid="e982fdb2-4fc0-4b39-acc7-463a55bdc89d"/>
+				<reportElement x="198" y="0" width="32" height="20" uuid="e982fdb2-4fc0-4b39-acc7-463a55bdc89d"/>
 				<textElement textAlignment="Center">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
