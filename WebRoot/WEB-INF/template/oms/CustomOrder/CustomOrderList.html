@@ -40,13 +40,14 @@
                             <div class="form-group button-bar" >
                                 <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
                                 <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+                                <a class="btn btn-success btn-sm" href="/customOrder/create">新增报关通知单</a>
                             </div>
 
                             <%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'eeda-table', 
                                     headers:['工作单号',
-                                        '报关单号',
+                                        '报关单号','报关类型',
                                         '客户名称',
                                         '报关状态']
                                 }){} %>

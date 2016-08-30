@@ -1,36 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
-    
-    //报关类型,国内
-    itemOrder.buildCustomDetail=function(){
-		var arrays = [];
-    	var item = {};
-    	
-    	//报关状态checkbox遍历取值
-        var statusVal = [];
-        $('#customForm input[type="checkbox"]:checked').each(function(){
-        	statusVal.push($(this).val()); 
-        });
-        item.status = statusVal.toString();
-        
-        item['id'] = $('#custom_id').val();
-    	item['custom_type'] = "china";
-    	
-    	var customForm = $('#customForm input[type="hidden"]');
-    	for(var i = 0; i < customForm.length; i++){
-    		var name = customForm[i].id;
-        	var value =customForm[i].value;
-        	if(name){
-        		item[name] = value;
-        	}
-    	}
-    	
-	    	arrays.push(item);
-	    	return arrays;
-	}
-    
+   
     //报关状态checkbox回显
-    var checkArray = $('#hidden_status').val().split(",");
+    var checkArray = custom_status_hidden.split(",");
     for(var i=0;i<checkArray.length;i++){
 	    $('#customForm input[type="checkbox"]').each(function(){
 	        var checkValue=$(this).val();
@@ -38,19 +10,6 @@ $(document).ready(function() {
 	        	$(this).attr("checked",true);
 	        }
 	    })
-    }
-    
-    //取得当前时间
-    var getTime=function(){
-	    var d = new Date();
-	    var year = d.getFullYear();
-	    var mon = d.getMonth() + 1;
-	    var day = d.getDate();
-	    var h = d.getHours(); 
-	    var m = d.getMinutes(); 
-	    var se = d.getSeconds(); 
-	    timeStr=year+"-"+(mon<10 ? "0" + mon : mon)+"-"+(day<10 ? "0"+ day : day)+" "+(h<10 ? "0"+ h : h)+":"+(m<10 ? "0" + m : m)+":"+(se<10 ? "0" +se : se);
-	    return timeStr;
     }
     
     //国内报关状态更新人更新时间处理

@@ -46,6 +46,11 @@ public class CustomOrderController extends Controller {
 		render("/oms/CustomOrder/CustomOrderList.html");
 	}
 
+	public void create() {
+		setAttr("loginUser",LoginUserController.getLoginUserName(this));
+		render("/oms/CustomOrder/CustomOrderChina.html");
+    }
+	
 	public void customOrderlist(){
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -53,10 +58,11 @@ public class CustomOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
 
-        String sql = "select jo.*, ifnull(u.c_name, u.user_name) creator_name, p.abbr customer_name, joc.custom_order_no  from job_order jo "
+        String sql = "select jo.order_no,jo.create_stamp, ifnull(u.c_name, u.user_name) creator_name, p.abbr customer_name,joc.id, joc.custom_order_no,joc.custom_type,joc.status"
+        		+ " from job_order jo "
                 + " left join party p on p.id = jo.customer_id"
                 + " left join user_login u on u.id = jo.creator"
-                + " left join job_order_custom joc on order_id = jo.id and joc.custom_type='china' "
+                + " left join job_order_custom joc on joc.order_id = jo.id"
                 + " where jo.transport_type like '%custom%' ";
         
         String condition = DbUtils.buildConditions(getParaMap());
@@ -76,20 +82,27 @@ public class CustomOrderController extends Controller {
         renderJson(orderListMap); 
     }
 
-	public void editCustomOrder(){
-		
-		setAttr("loginUser",LoginUserController.getLoginUserName(this));
-		
+	//有工作单号的报关
+	public void edit(){
         String id = getPara("id");
         String order_no = getPara("order_no");
-        setAttr("order_no", order_no);
-        setAttr("order_id", id);
-        
-        String sql = "select joc.* from job_order_custom joc where order_id = ? and custom_type = 'china' ";
+        String sql = "select joc.* from job_order_custom joc"
+        		   + " where id=? ";
+        setAttr("order_no",order_no);
         setAttr("custom",Db.findFirst(sql,id));
-        
+        setAttr("loginUser",LoginUserController.getLoginUserName(this));
         render("/oms/CustomOrder/CustomOrderEdit.html");
     }
+	
+	//无工作单号的报关
+	public void editOfCreate(){
+		String id = getPara("id");
+		String sql = "select joc.* from job_order_custom joc"
+				+ " where id=? ";
+		setAttr("custom",Db.findFirst(sql,id));
+		setAttr("loginUser",LoginUserController.getLoginUserName(this));
+		render("/oms/CustomOrder/CustomOrderChina.html");
+	}
 
 	@Before(Tx.class)
    	public void save() throws Exception {		
@@ -97,13 +110,23 @@ public class CustomOrderController extends Controller {
        	
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
-            
    		String id = (String) dto.get("id");
-   		
-	   	//报关
-		List<Map<String, String>> chinaCustom = (ArrayList<Map<String, String>>)dto.get("chinaCustom");
-		DbUtils.handleList(chinaCustom, id, JobOrderCustom.class, "order_id");
-		renderJson("{\"result\":true}");
+   		JobOrderCustom joc = new JobOrderCustom();
+   		if (StringUtils.isNotEmpty(id)) {
+   			//update
+   			joc = JobOrderCustom.dao.findById(id);
+   			DbUtils.setModelValues(dto, joc);
+   			joc.update();
+   		} else {
+   			//create 
+   			DbUtils.setModelValues(dto, joc);
+   			joc.set("custom_order_no", OrderNoGenerator.getNextOrderNoForYQ("BG"));
+   			joc.save();
+   			id = joc.getLong("id").toString();
+   		}
+   		Record r = joc.toRecord();
+   		r.set("result", true);
+		renderJson(r);
 	}
 	
 }

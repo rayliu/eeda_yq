@@ -7,7 +7,7 @@
             </div>
 			
              
-<input type="hidden" id="order_id" value="${order_id!''}">
+<input type="hidden" id="order_id" value="${jobOrderCustom.id!''}">
 <input type="hidden" id="custom_id" value="${custom.id!''}">
 <form id="customForm">
             <div class="form-group">  <!--  form row  -->
@@ -59,7 +59,6 @@
                             <%include("/eeda/component/form/selectField.html", 
                                 {   id:'trade_mode', 
                                     label:'贸易方式(监管方式)', 
-                                    required:'required',
                                     value:custom.trade_mode!'',
                                     value_list:[
                                         {code:'export', value:'一般贸易'},
@@ -75,7 +74,6 @@
                             <%include("/eeda/component/form/selectField.html", 
                                 {   id:'trade_clause', 
                                     label:'贸易条款', 
-                                    required:'required',
                                     value:custom.trade_clause!'',
                                     value_list:[
                                         {code:'', value:''},
@@ -104,8 +102,7 @@
                            <div class="col-lg-12">
                                <div class="form-group" >
                                <label class="search-label">状态</label>
-                               <input type="hidden" value="${custom.status!''}" id="hidden_status">
-                            <input type="hidden" value="${loginUser!''}" id="updater">
+                               <input type="hidden" value="${loginUser!''}" id="updater">
                              
                                <div class="checkbox">
                                 <input type="hidden" value="${custom.declareSuccess_updater!''}" id="declareSuccess_updater">
@@ -171,8 +168,6 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-
-
         </div><!--  form row  -->
         <!-- /#page-wrapper -->
 <%}%>
@@ -180,6 +175,8 @@
 <script>
     var order_no = '${order.order_no!'订单编辑'}'; 
     var itemOrder = {};
+    var getTime;
+    var custom_status_hidden = '${custom.status!''}';
 </script>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {

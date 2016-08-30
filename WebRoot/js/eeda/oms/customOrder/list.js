@@ -11,12 +11,43 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           columns: [
               { "data": "ORDER_NO", width: '10%',
                   "render": function ( data, type, full, meta ) {
-                      return "<a href='/customOrder/editCustomOrder?id="+full.ID+"&order_no="+data+" 'target='_blank'>"+data+"</a>";
+                      return "<a href='/customOrder/edit?id="+full.ID+"&order_no="+data+" 'target='_blank'>"+data+"</a>";
                   }
               },
               { "data": "CUSTOM_ORDER_NO", width: '10%',}, 
+              { "data": "CUSTOM_TYPE", width: '10%',
+            	  "render": function ( data, type, full, meta ) {
+                      var str = '';
+                      if(data == 'china'){
+                        str = '国内报关'; 
+                      }else if(data == 'HK/MAC'){
+                        str = '香港澳门报关';
+                      }else if(data == 'abroad'){
+                        str = '海外报关';
+                      }
+                      return str;
+                    }
+              }, 
               { "data": "CUSTOMER_NAME", width: '10%',},
-              { "data": "STATUS"},
+              { "data": "STATUS",
+            	  "render": function ( data, type, full, meta ) {
+                      var str = '';
+                      if(data == 'declareSuccess'){
+                        str = '申报成功'; 
+                      }else if(data == 'declareSuccess,onDataBaseRoad'){
+                        str = '发往海关数据库';
+                      }else if(data == 'declareSuccess,onDataBaseRoad,gateInSuccess'){
+                        str = '入库成功';
+                      }else if(data == 'declareSuccess,onDataBaseRoad,gateInSuccess,customOrderCheck'){
+                        str = '报关单查验';
+                      }else if(data == 'declareSuccess,onDataBaseRoad,gateInSuccess,customOrderCheck,release'){
+                        str = '放行'; 
+                      }else if(data == 'declareSuccess,onDataBaseRoad,gateInSuccess,customOrderCheck,release,conclusion'){
+                        str = '审结';
+                      }
+                      return str;
+                    }
+              },
               
           ]
       });
