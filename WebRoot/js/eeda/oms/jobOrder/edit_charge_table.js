@@ -71,7 +71,7 @@ $(document).ready(function() {
     };
 
     //------------事件处理
-    var totalCharge = 0;
+   
     var chargeTable = eeda.dt({
         id: 'charge_table',
         autoWidth: false,
@@ -175,7 +175,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    totalCharge += parseFloat(data);
+//                    totalCharge += parseFloat(data);
                                       
                     return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" disabled/>';
                 }
@@ -249,7 +249,29 @@ $(document).ready(function() {
     })
     //应收应付结算获取字段
 //    $('.company').text($('input [name=SP_ID_input]').val());
-    $('.chargeRMB').text(totalCharge);  
+    var totalChargeRMB = 0; 
+    var totalChargeUSD = 0;
+
+    var tableCurCharge =$('#charge_table').find('[name=CURRENCY_ID_input]');
+    var tableAmountCharge =$('#charge_table').find('[name=total_amount]');
+    for(var i = 0;i<tableCurCharge.length;i++){
+ 	   if(tableCurCharge[i].value=='RMB'){    		   
+ 		  totalChargeRMB += parseFloat(tableAmountCharge[i].value);   //parseFloat(data)
+ 	   }else if(tableCurCharge[i].value=='USD'){
+ 		  totalChargeUSD += parseFloat(tableAmountCharge[i].value);
+ 	   }
+    }
+    if(totalChargeRMB !=""){
+           $('.chargeRMB').text(totalChargeRMB+"RMB");  
+       }else{
+    	   $('.chargeRMB').text(0+"RMB");  
+        }
+    
+    if(totalChargeUSD !=""){
+        $('.chargeUSD').text(totalChargeUSD+"USD");  
+    }else{
+ 	   $('.chargeUSD').text(0+"USD");  
+     }
     
     
 } );
