@@ -71,7 +71,7 @@ $(document).ready(function() {
         eeda.bindTableField('UNIT_ID','/serviceProvider/searchUnit','');
         eeda.bindTableField('CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
-
+    var totalCost = 0; 
     var costTable = eeda.dt({
         id: 'cost_table',
         autoWidth: false,
@@ -174,6 +174,8 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
+                    totalCost += parseFloat(data);
+                   
                     return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" disabled/>';
                 }
             },
@@ -243,6 +245,35 @@ $(document).ready(function() {
 	    	}
     	}
     })
+    
+//    //获取应收应付字段
+//    var table =$('#cost_table').parent().parent(); 
+//    var RMB = $(table.find('[name=CURRENCY_ID_input]')).val()
+//    totalCostRMB =  totalCost + RMB;
+//    $('.costRMB').text(totalCostRMB);
+       $('.costRMB').text(totalCost);
+//    
+//    var company = $(table.find('[name=SP_ID_input]')).val()
+//    $('.company').text(company);
+//    
+//    var costfree = $(table.find('[name=CHARGE_ID_input]')).val()
+//    $('.costfree').text(costfree);
+    
+    //利润结算      
+    	var chargeRMB = $('[name=chargeRMB]').text();
+    	var costRMB = $('[name=costRMB]').text();
+    	if(chargeRMB!=''&&costRMB!=''){
+	    	if(!isNaN(chargeRMB)&&!isNaN(costRMB)){
+	    	var profitRMB = parseFloat(chargeRMB)-parseFloat(costRMB);
+	    		if(profitRMB>=0){
+	    		$('[name=profitRMB]').text(profitRMB);
+	    	   }else if(profitRMB<0){
+	    		$('[name=profitRMB]').html("<span style='color:red'>"+profitRMB+"</span>");
+	    	 } else{
+	    		 $('[name=profitRMB]').text('');
+	    	 }
+	      }
+    	}
     
 });
 });

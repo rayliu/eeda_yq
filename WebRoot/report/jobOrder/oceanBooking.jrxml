@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="order_no" class="java.lang.String">
 		<property name="order_no" value="$P{order_no}"/>
 	</parameter>
@@ -348,15 +348,6 @@ WHERE
 				<text><![CDATA[ Booking No: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="90" width="280" height="29" uuid="e2b0860f-987a-484a-98f3-19f45f817393"/>
-				<textElement>
-					<font size="10" pdfEncoding="Identity-H" isPdfEmbedded="true" pdfFontName="simfang.ttf"/>
-				</textElement>
-				<text><![CDATA[  Consignee(Complete name and address) 收货人(名称和
-  地址)
-]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="0" y="170" width="280" height="75" uuid="83885c1d-1f1a-4d13-a295-170c6e03fb8c"/>
 				<textElement>
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
@@ -645,7 +636,7 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="8" y="119" width="272" height="51" uuid="5988049a-ad69-4a95-b44f-d8bbeb1f267b"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="仿宋" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{consignee_info}]]></textFieldExpression>
 			</textField>
@@ -1038,6 +1029,14 @@ WHERE
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[托运人(名称和地址)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="91" width="269" height="45" uuid="66de682b-48e7-41f6-aba4-3c7cc76ec52c"/>
+				<textElement>
+					<font fontName="仿宋" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Consignee(Complete name and address)收货人(名称和地址)
+]]></text>
 			</staticText>
 		</band>
 	</detail>
