@@ -48,8 +48,6 @@ $(document).ready(function() {
         //费用明细，应收，应付
         var charge_list = itemOrder.buildChargeDetail();
         var chargeCost_list = itemOrder.buildChargeCostDetail();
-        //相关文档
-        var doc_list = itemOrder.buildDocDetail();
         
         var order={}
         order.id = $('#order_id').val();
@@ -83,8 +81,7 @@ $(document).ready(function() {
        //费用明细，应收，应付
         order.charge_list = charge_list;
         order.chargeCost_list = chargeCost_list;
-        //相关文档
-        order.doc_list = doc_list;
+       
         //异步向后台提交数据
         $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
@@ -199,7 +196,7 @@ $(document).ready(function() {
         }
     });
     //服务项目checkbox回显,transport_type是用js拿值
-    var checkArray = transport_type.split(",");
+    var checkArray = transport_type_hidden.split(",");
     for(var i=0;i<checkArray.length;i++){
 	    $('#transport_type input[type="checkbox"]').each(function(){
 	        var checkValue=$(this).val();

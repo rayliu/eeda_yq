@@ -68,7 +68,6 @@
                             <%include("/eeda/component/form/selectField.html", 
                                 {   id:'type', 
                                     label:'类型', 
-                                    required:'required',
                                     value:order.type!'',
                                     value_list:[
                                         {code:'出口柜货', value:'出口柜货'},
@@ -85,8 +84,7 @@
                                         {code:'加贸', value:'加贸'},
                                         {code:'贸易', value:'贸易'},
                                         {code:'园区游', value:'园区游'}
-                                    ],
-                                    disabled: 'disabled'
+                                    ]
                                 }){}%>
                         </div><!-- /.col-lg-4 -->
                         <div class="col-lg-8">
@@ -405,8 +403,9 @@
 	var loginUserName = '${loginUser!''}';
     var order_no = '${order.order_no!'订单编辑'}'; 
     var itemOrder = {};
-    var transport_type = '${order.transport_type!planOrderItem.transport_type!''}';
+    var transport_type_hidden = '${order.transport_type!planOrderItem.transport_type!''}';
     var custom_type = '${custom.custom_type!''},${hkCustom.custom_type!''},${abroadCustom.custom_type!''}';
+    var custom_status_hidden = '${custom.status!''}';
 </script>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {

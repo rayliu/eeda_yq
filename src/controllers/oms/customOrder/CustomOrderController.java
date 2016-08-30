@@ -120,7 +120,7 @@ public class CustomOrderController extends Controller {
    		} else {
    			//create 
    			DbUtils.setModelValues(dto, joc);
-   			joc.set("custom_order_no", OrderNoGenerator.getNextOrderNoForYQ("BG"));
+//   			joc.set("custom_order_no", OrderNoGenerator.getNextOrderNoForYQ("BG"));
    			joc.save();
    			id = joc.getLong("id").toString();
    		}

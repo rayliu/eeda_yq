@@ -143,7 +143,7 @@ $(document).ready(function() {
     
     
     //报关状态checkbox回显
-    var checkArray = $('#hidden_status').val().split(",");
+    var checkArray = custom_status_hidden.split(",");
     for(var i=0;i<checkArray.length;i++){
 	    $('#customForm input[type="checkbox"]').each(function(){
 	        var checkValue=$(this).val();
@@ -169,7 +169,7 @@ $(document).ready(function() {
 
 	$('.checkbox input[type="checkbox"]').click(function(){
     	if($(this).prop('checked')){
-    		var updater = $('#updater').val();
+    		var updater = loginUserName;
     		var time = getTime();
     		if($(this).val()=='declareSuccess'){
     			$('#declareSuccess_time_span').html(time);
