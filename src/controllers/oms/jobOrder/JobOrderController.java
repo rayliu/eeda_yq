@@ -171,15 +171,6 @@ public class JobOrderController extends Controller {
    			DbUtils.setModelValues(dto, jobOrder);
    			
    			//需后台处理的字段
-//   		根据出口类型生成单号前缀
-//   		类型：出口柜货（EKO），进口柜货（EKO），出口散货（EKO），进口散货（EKO），
-//   		出口空运（EKA），进口空运（EKA）,
-//   		香港头程（EKL），香港游（EKL），
-//   		加贸（EKP），园区游（EKP）
-//   		陆运（EKT），
-//   		报关（EKC），
-//   		快递（EKE），
-//   		贸易（EKB）
    			String type = (String) dto.get("type");
    			String prefix = "";
    			if(type.equals("出口柜货")||type.equals("进口柜货")||type.equals("出口散货")||type.equals("进口散货")){
@@ -241,13 +232,17 @@ public class JobOrderController extends Controller {
 		
 		//报关
 		List<Map<String, String>> chinaCustom = (ArrayList<Map<String, String>>)dto.get("chinaCustom");
-		DbUtils.handleList(chinaCustom, id, JobOrderCustom.class, "order_id");
-		
 		List<Map<String, String>> abroadCustom = (ArrayList<Map<String, String>>)dto.get("abroadCustom");
-		DbUtils.handleList(abroadCustom, id, JobOrderCustom.class, "order_id");
-		
 		List<Map<String, String>> hkCustom = (ArrayList<Map<String, String>>)dto.get("hkCustom");
-		DbUtils.handleList(hkCustom, id, JobOrderCustom.class, "order_id");
+		if(chinaCustom!=null){
+			DbUtils.handleList(chinaCustom, id, JobOrderCustom.class, "order_id");
+		}
+		if(abroadCustom!=null){
+			DbUtils.handleList(abroadCustom, id, JobOrderCustom.class, "order_id");
+		}
+		if(hkCustom!=null){
+			DbUtils.handleList(hkCustom, id, JobOrderCustom.class, "order_id");
+		}
 		
 		//保险
 		List<Map<String, String>> insurance_detail = (ArrayList<Map<String, String>>)dto.get("insurance_detail");

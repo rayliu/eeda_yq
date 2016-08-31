@@ -29,6 +29,14 @@ $(document).ready(function() {
         $('#transport_type input[type="checkbox"]:checked').each(function(){
         	transport_type.push($(this).val()); 
         });
+        var transport_type_str = transport_type.toString();
+        
+        //报关类型遍历取值
+        var custom_type = [];
+        $('#custom_type input[type="checkbox"]:checked').each(function(){
+        	custom_type.push($(this).val()); 
+        });
+        var custom_type_str = custom_type.toString();
         
         //海运
         var shipment_detail = itemOrder.buildShipmentDetail();
@@ -40,9 +48,15 @@ $(document).ready(function() {
         //陆运
         var load_detail = itemOrder.buildLoadItem();
         //报关
-        var chinaCustom = itemOrder.buildCustomDetail();
-        var hkCustom = itemOrder.buildHkCustomDetail();
-        var abroadCustom = itemOrder.buildAbroadCustomDetail();
+        if(custom_type_str.includes("china")){
+        	var chinaCustom = itemOrder.buildCustomDetail();
+        }
+        if(custom_type_str.includes("HK/MAC")){
+        	var hkCustom = itemOrder.buildHkCustomDetail();
+        }
+        if(custom_type_str.includes("abroad")){
+        	var abroadCustom = itemOrder.buildAbroadCustomDetail();
+        }
         //保险
         var insurance_detail=itemOrder.buildInsuranceDetail();
         //费用明细，应收，应付
@@ -57,7 +71,7 @@ $(document).ready(function() {
         order.type = $('#type').val();
         order.status = $('#status').val()==''?'新建':$('#status').val();
         order.remark = $('#note').val();
-        order.transport_type = transport_type.toString();
+        order.transport_type = transport_type_str;
         order.gross_weight = $("#gross_weight").val();
         order.net_weight = $("#net_weight").val();
         order.volume = $("#volume").val();
@@ -85,15 +99,20 @@ $(document).ready(function() {
         //异步向后台提交数据
         $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
-            if(order.ID>0){
+            if(order.ID){
                 $("#order_id").val(order.ID);
                 $("#order_no").val(order.ORDER_NO);
                 $("#creator_name").val(order.CREATOR_NAME);
                 $("#create_stamp").val(order.CREATE_STAMP);
-                
-                $("#custom_id").val(order.CUSTOM.ID);
-                $("#china_custom_id").val(order.ABROADCUSTOM.ID);
-                $("#hk_custom_id").val(order.HKCUSTOM.ID);
+                if(order.CUSTOM.ID){
+                	$("#custom_id").val(order.CUSTOM.ID);
+                }
+                if(order.ABROADCUSTOM.ID){
+                	$("#abroad_custom_id").val(order.ABROADCUSTOM.ID);
+                }
+                if(order.HKCUSTOM.ID){
+                	$("#hk_custom_id").val(order.HKCUSTOM.ID);
+                }
                 
                 $("#shipment_id").val(order.SHIPMENT.ID);
                 $("#insurance_id").val(order.INSURANCE.ID);
