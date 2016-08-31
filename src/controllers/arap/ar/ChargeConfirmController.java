@@ -39,8 +39,6 @@ public class ChargeConfirmController extends Controller {
 
 //	@RequiresPermissions(value = { PermissionConstant.PERMISSION_TO_LIST })
 	public void index() {
-		String type=getPara("type");
-		setAttr("type", type);
 		
 		render("/eeda/arap/ChargeConfirm/ChargeConfirmList.html");
 	}
@@ -134,36 +132,30 @@ public class ChargeConfirmController extends Controller {
 
     
     public void list() {
-    	String type=getPara("type");
-    	
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = "";
-        if("todo".equals(type)){
-        	sql =" SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name "
-        			+ " FROM plan_order po "
-        			+ " LEFT JOIN plan_order_item poi ON po.id = poi.order_id "
-        			+ " left join party p on p.id = po.customer_id "
-        			+ " left join user_login u on u.id = po.creator "
-        			+ " WHERE is_gen_job='N' AND factory_loading_time is not NULL "
-        			+ " AND datediff(factory_loading_time, now())<=5";
-        }else{
-        	sql = "SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name"
-    			+ "  from plan_order po "
-    			+ "  left join party p on p.id = po.customer_id "
-    			+ "  left join user_login u on u.id = po.creator"
-    			+ "   where 1 =1 ";
-        }
+        
+        	sql = " select * from (SELECT joa.*, jo.order_no order_no,pr.abbr sp_name,f.name cost_name,"
+        			+ " u. NAME unit_name,c. NAME currency_name"
+        			+ " FROM job_order_arap joa"
+        			+ " LEFT JOIN job_order jo ON joa.order_id = jo.id"
+        			+ " LEFT JOIN party pr ON pr.id = joa.sp_id "
+        			+ " LEFT JOIN fin_item f ON f.id = joa.charge_id"
+        			+ " LEFT JOIN unit u ON u.id = joa.unit_id"
+        			+ " LEFT JOIN currency c ON c.id = joa.currency_id"
+        			+ " WHERE joa.order_type = 'charge') A where 1 = 1 ";
+        
         String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+        List<Record> orderList = Db.find(sql+ condition  +sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
