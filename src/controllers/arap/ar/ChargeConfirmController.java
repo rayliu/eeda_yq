@@ -73,7 +73,7 @@ public class ChargeConfirmController extends Controller {
    			DbUtils.setModelValues(dto, planOrder);
    			
    			//需后台处理的字段
-   			planOrder.set("order_no", OrderNoGenerator.getNextOrderNoForYQ("JH"));
+   			planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("JH"));
    			planOrder.set("creator", user.getLong("id"));
    			planOrder.set("create_stamp", new Date());
    			planOrder.save();
