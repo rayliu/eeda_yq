@@ -63,11 +63,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/chargeConfirmList/list?order_no="+order_no
-			           +"&customer="+customer
-			           +"&sp="+sp
-		               +"&begin_time="+start_date
-		               +"&end_time="+end_date;
+          var url = "/costConfirmList/list?order_no="+order_no
+			          +"&customer_id="+customer
+			          +"&sp_id="+sp
+			          +"&create_stamp_begin_time="+start_date
+			          +"&create_stamp_end_time="+end_date;
 
           dataTable.ajax.url(url).load();
       };
