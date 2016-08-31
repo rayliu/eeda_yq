@@ -622,12 +622,12 @@ public class JobOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
-        Map orderListMap = new HashMap();
-        orderListMap.put("draw", pageIndex);
-        orderListMap.put("recordsTotal", rec.getLong("total"));
-        orderListMap.put("recordsFiltered", rec.getLong("total"));
-        orderListMap.put("data", orderList);
-        renderJson(orderListMap); 
+        Map map = new HashMap();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orderList);
+        renderJson(map); 
     }
     
     //异步刷新字表

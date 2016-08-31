@@ -47,39 +47,9 @@
 
 
 <%}%>
-
-<!-- Page-Level Plugin Scripts - Tables -->
-<script src="/yh/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script src="/yh/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 <script>
-$(document).ready(function() {
-	document.title = '城市查询 | '+document.title;
-	
-	$('#menu_profile').addClass('active').find('ul').addClass('in');
-/*	
-	 $("#del").click(function(){
-    	alert("waerwerwee");
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/profile/location/list']);
     });
-	 $("#query").click(function(){
-	    	alert("123");
-	    });*/
-	 $('#example').dataTable( {
-		    "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span12'i><'span12 center'p>>",
-	        //"sPaginationType": "bootstrap",
-	        "iDisplayLength": 10,
-	        "bProcessing": true,
-	    	"oLanguage": {
-	            "sUrl": "/eeda/dataTables.ch.txt"
-	        },
-	        "bServerSide": true,
-	        "sAjaxSource": "/location/listLocation",
-			"aoColumns": [
-						{ "mDataProp": "PROVINCE" },
-						{ "mDataProp": "CITY" },
-						{ "mDataProp": "DISTRICT" },
-						{ "mDataProp": "NAME" }
-						]
-
-	} );
-});
 </script>
+

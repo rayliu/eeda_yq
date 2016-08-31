@@ -104,13 +104,13 @@ $(document).ready(function() {
                 $("#order_no").val(order.ORDER_NO);
                 $("#creator_name").val(order.CREATOR_NAME);
                 $("#create_stamp").val(order.CREATE_STAMP);
-                if(order.CUSTOM.ID){
+                if(order.CUSTOM!=null){
                 	$("#custom_id").val(order.CUSTOM.ID);
                 }
-                if(order.ABROADCUSTOM.ID){
+                if(order.ABROADCUSTOM!=null){
                 	$("#abroad_custom_id").val(order.ABROADCUSTOM.ID);
                 }
-                if(order.HKCUSTOM.ID){
+                if(order.HKCUSTOM!=null){
                 	$("#hk_custom_id").val(order.HKCUSTOM.ID);
                 }
                 

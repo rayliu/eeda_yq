@@ -16,8 +16,6 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-
-                            <div class="">  <!--  form row  -->
                                 <form id="orderForm">
                                     <div class="row"><!--  第1行  -->
                                         <div class="col-lg-4"><!--  三列排版  -->
@@ -28,11 +26,14 @@
                                                                 }){}%>
                                         </div>
                                         <div class="col-lg-4">
-                                            <%include("/eeda/component/form/inputDateQueryField.html", {id:'create_stamp', label:'创建时间', value:''}){} %>
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                            {	id:'create_stamp', 
+                                            	label:'创建时间', 
+                                            	value:''
+                                            }){} %>
                                         </div><!-- /.col-lg-4 -->
                                     </div><!-- /.row-->
                                 </form>
-                            </div><!-- /.row -->
 
                             <div class="form-group button-bar" >
                                 <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>

@@ -38,7 +38,7 @@ $(document).ready(function() {
             item.id = id;
             item.order_type = "charge";//应收
             for(var i = 1; i < row.childNodes.length; i++){
-            	var el = $(row.childNodes[i]).find('input');
+            	var el = $(row.childNodes[i]).find('input,select');
             	var name = el.attr('name'); 
             	
             	if(el && name){
@@ -86,12 +86,12 @@ $(document).ready(function() {
             },
             { "data": "TYPE", "width": "80px", 
                 "render": function ( data, type, full, meta ) {
-                    var str = '<select name="container_type" class="form-control search-control" style="width:100px">'
-                               +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>海运</option>'
-                               +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>空运</option>'
-                               +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>陆运</option>'
-                               +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>报关</option>'
-                               +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>保险</option>'
+                    var str = '<select name="type" class="form-control search-control" style="width:100px">'
+                               +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
+                               +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
+                               +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
+                               +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
+                               +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
                                +'</select>';
                     return str;
                 }

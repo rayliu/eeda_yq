@@ -26,6 +26,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
+import controllers.util.DbUtils;
 import controllers.util.PermissionConstant;
 
 @RequiresAuthentication
@@ -35,7 +36,7 @@ public class ChargeItemConfirmController extends Controller {
 	Subject currentUser = SecurityUtils.getSubject();
 	@RequiresPermissions(value = {PermissionConstant.PERMSSION_CI_AFFIRM})
 	public void index() {
-		render("/eeda/arap/ChargeItemConfirm/ChargeItemConfirmList.html");
+		render("/eeda/arap/ChargeItemConfirm/ChargeItemConfirm.html");
 	}
 
 	public void confirm() {
@@ -54,260 +55,37 @@ public class ChargeItemConfirmController extends Controller {
 		render("/eeda/arap/ChargeAcceptOrder/ChargeCheckOrderEdit.html");
 	}
 
-	//
 	public void list() {
-		String customer = getPara("customer");//客户
-		String beginTime = getPara("beginTime");//开始时间
-		String endTime = getPara("endTime");//结束时间
-		String transferOrderNo = getPara("transferOrderNo");//运输单号
-		String customerNo = getPara("customerNo");//客户订单号
-		String start = getPara("start");//始发地
-		String orderNo= getPara("orderNo");//业务单号
-		String serial_no = getPara("serial_no");//始发地
-		String ref_no= getPara("ref_no");//业务单号
 		String sLimit = "";
-		String pageIndex = getPara("sEcho");
-		if (getPara("iDisplayStart") != null
-				&& getPara("iDisplayLength") != null) {
-			sLimit = " LIMIT " + getPara("iDisplayStart") + ", "
-					+ getPara("iDisplayLength");
-		}
-		
-		//升降序
-    	String sortColIndex = getPara("iSortCol_0");
-		String sortBy = getPara("sSortDir_0");
-		String colName = getPara("mDataProp_"+sortColIndex);
-		
-		String orderByStr = " order by A.planning_time desc ";
-        if(colName.length()>0){
-        	orderByStr = " order by A."+colName+" "+sortBy;
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        String sql = "select * from(select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
+				+ " from job_order jo "
+				+ " left join job_order_arap joa on jo.id=joa.order_id "
+				+ " left join party p on p.id=jo.customer_id "
+				+ " left join party p1 on p1.id=joa.sp_id "
+				+ " left join fin_item f on f.id=joa.charge_id "
+				+ " left join unit u on u.id=joa.unit_id "
+				+ " left join currency c on c.id=joa.currency_id "
+				+ " where joa.order_type='charge') A where 1=1 ";
 		
-		String sqlTotal = "";
-		String sql = "";
-		// 收入状态条件没有过滤
-
-		sql = "SELECT "
-				+ "		ror.id,"
-				+ " ror.order_no,"
-				+ " ror.transaction_status,"
-				+ " ror.remark,"
-				+ " ror.receipt_date,"
-				+ " ror.delivery_order_id,"
-				+ " ror.transfer_order_id,"
-				+ " ror.notity_party_id,"
-				+ " ror.customer_id,"
-				+ " (SELECT group_concat( DISTINCT toid.serial_no SEPARATOR '<br/>')"
-				+ " FROM transfer_order_item_detail toid"
-				+ " LEFT JOIN delivery_order_item doi ON toid.id = doi.transfer_item_detail_id"
-				+ " LEFT JOIN delivery_order d_o ON d_o.id = doi.delivery_id"
-				+ " WHERE d_o.id = ror.delivery_order_id) serial_no,"
-				+ " dvr.ref_no ref_no,"
-				+ "		  (select sum(amount) from return_order_fin_item rofi where rofi.return_order_id= ror.id) total_amount,"
-				+ "        ror.path,"
-				+ "        ror.create_date,"
-				+ "        null change_amount,"
-				+ "            IFNULL(tor.order_no, (SELECT "
-				+ "                    GROUP_CONCAT(DISTINCT tor.order_no"
-				+ "                            SEPARATOR '<br/>')"
-				+ "                FROM"
-				+ "                    delivery_order dvr"
-				+ "                LEFT JOIN delivery_order_item doi ON doi.delivery_id = dvr.id"
-				+ "                LEFT JOIN transfer_order tor ON tor.id = doi.transfer_order_id"
-				+ "                WHERE"
-				+ "                    dvr.id = ror.delivery_order_id)) transfer_order_no,"
-				+ "            '回单' order_tp,"
-				+ "            dvr.order_no AS delivery_order_no,"
-				+ "            IFNULL(c.abbr, c2.abbr) cname,"
-				+ "            IFNULL(tor.planning_time, (SELECT "
-				+ "                    GROUP_CONCAT(tor.planning_time SEPARATOR '<br/>')"
-				+"                FROM"
-				+"                    delivery_order dvr"
-				+"                LEFT JOIN delivery_order_item doi ON doi.delivery_id = dvr.id"
-				+"                LEFT JOIN transfer_order tor ON tor.id = doi.transfer_order_id"
-				+"                WHERE"
-				+"                    dvr.id = ror.delivery_order_id)) planning_time,"
-				+"            ifnull(c.address, "
-				+"            (select c.address from party p "
-				+"            		LEFT JOIN contact c ON c.id = p.contact_id"
-                +"                    where p.id = dvr.notify_party_id)"
-				+"            ) address,"
-				+"            IFNULL(tor.customer_order_no, tor2.customer_order_no) customer_order_no,"
-				+"            IFNULL((SELECT "
-				+"                    name"
-				+"                FROM"
-				+"                    location"
-				+"                WHERE"
-				+"                    code = tor.route_from), (SELECT "
-				+"                    name"
-				+"                FROM"
-				+"                    location"
-				+"                WHERE"
-				+"                    code = tor2.route_from)) route_from,"
-				+"            IFNULL((SELECT "
-				+"                    name"
-				+"                FROM"
-				+"                    location"
-				+"                WHERE"
-				+"                    code = tor.route_to), (SELECT "
-				+"                    name"
-				+"                FROM"
-				+"                    location"
-				+"                WHERE"
-				+"                    code = dvr.route_to)) route_to,"
-				+"            (SELECT "
-				+"                    SUM(rofi.amount)"
-				+"                FROM"
-				+"                    return_order_fin_item rofi"
-				+"                WHERE"
-				+"                    rofi.return_order_id = ror.id"
-				+"                        AND rofi.fin_type = 'charge'"
-				+"                        AND rofi.contract_id != '') contract_amount,"
-				+"            DATE(dvr.appointment_stamp) AS depart_time,"
-				+"            NULL pickup_amount,"
-				+"            NULL step_amount,"
-				+"            NULL wait_amount,"
-				+"            NULL other_amount,"
-				+"            NULL load_amount,"
-				+"            NULL warehouse_amount,"
-				+"            NULL transfer_amount,"
-				+"            NULL send_amount,"
-				+"            NULL installation_amount,"
-				+"            NULL super_mileage_amount,"
-				+"            NULL AS charge_total_amount,"
-				+"            NULL insurance_amount,"
-				+"            case tor.sp_id "
-				+"            when tor.sp_id is not null then(  "
-				+"            	select c.abbr from party p  "
-				+"            		LEFT JOIN contact c ON c.id = p.contact_id "
-                +"                    where p.id = tor.sp_id "
-                +"                ) "
-                +"            else ( "
-				+"            	select c.abbr from party p  "
-				+"            		LEFT JOIN contact c ON c.id = p.contact_id "
-                +"                    where p.id = tor2.sp_id "
-				+"            	) "
-				+"            end sp    "
-				+"    FROM"
-				+"        return_order ror"
-				+"    LEFT JOIN transfer_order tor ON tor.id = ror.transfer_order_id"
-				+"    LEFT JOIN party p ON p.id = tor.customer_id"
-				+"    LEFT JOIN contact c ON c.id = p.contact_id"
-				+"    LEFT JOIN depart_transfer dt ON (dt.order_id = tor.id"
-				+"        AND IFNULL(dt.pickup_id, 0) > 0)"
-				+"    LEFT JOIN delivery_order dvr ON ror.delivery_order_id = dvr.id"
-				+"    LEFT JOIN delivery_order_item doi ON doi.delivery_id = dvr.id"
-				+"    LEFT JOIN transfer_order tor2 ON tor2.id = doi.transfer_order_id"
-				+"    LEFT JOIN party p2 ON p2.id = tor2.customer_id"
-				+"    LEFT JOIN contact c2 ON c2.id = p2.contact_id"
-				+"    LEFT JOIN depart_order dor ON dor.id = dt.pickup_id"
-				+"    LEFT JOIN pickup_order_fin_item dofi ON dofi.pickup_order_id = dor.id"
-				+"    LEFT JOIN user_login usl ON usl.id = ror.creator"
-				+"    WHERE"
-				+"        ror.transaction_status = '已签收'"
-				+"    AND ror.customer_id IN ( SELECT customer_id FROM user_customer WHERE user_name = '"+currentUser.getPrincipal()+"' )"
-				+"    GROUP BY ror.id"
-				+"    UNION (SELECT "
-				+"			amco.id id,"
-				+"            amco.order_no order_no,"
-				+"            amco.status transaction_status,"
-				+"            NULL receipt_date,"
-				+"            amco.remark remark,"
-				+"            NULL delivery_order_id,"
-				+"            NULL transfer_order_id,"
-				+"            NULL notity_party_id,"
-				+"            amco.customer_id customer_id,"
-				+" 		      null serial_no,"
-				+" 		      null ref_no,"
-				+"            amco.total_amount total_amount,"
-				+"            NULL path,"
-				+"            amco.create_stamp create_date,"
-				+"            null change_amount,"
-				+"            NULL transfer_order_no,"
-				+"            '收入单' order_tp,"
-				+"            NULL delivery_order_no,"
-				+"            c.abbr cname,"
-				+"            NULL planning_time,"
-				+"            NULL address,"
-				+"            (SELECT "
-				+"                    GROUP_CONCAT(DISTINCT amcoi.customer_order_no"
-				+"                            SEPARATOR '<br/>')"
-				+"                FROM"
-				+"                    arap_misc_charge_order_item amcoi"
-				+"                WHERE"
-				+"                    amcoi.misc_order_id = amco.id) customer_order_no,"
-				+"            NULL route_from,"
-				+"            NULL route_to,"
-				+"            NULL contract_amount,"
-				+"            NULL depart_time,"
-				+"            NULL pickup_amount,"
-				+"            NULL step_amount,"
-				+"            NULL wait_amount,"
-				+"            NULL other_amount,"
-				+"            NULL load_amount,"
-				+"            NULL warehouse_amount,"
-				+"            NULL transfer_amount,"
-				+"            NULL send_amount,"
-				+"            NULL installation_amount,"
-				+"            NULL super_mileage_amount,"
-				+"            amco.total_amount charge_total_amount,"
-				+"            NULL insurance_amount,"
-				+"            c1.abbr sp"
-				+"    FROM"
-				+"        arap_misc_charge_order amco"
-				+"    LEFT JOIN party p ON p.id = amco.customer_id"
-				+"    LEFT JOIN contact c ON c.id = p.id"
-				+"    LEFT JOIN party p1 ON p1.id = amco.sp_id"
-				+"    LEFT JOIN contact c1 ON c1.id = p1.id"
-				+"    WHERE"
-				+"        amco.STATUS = '新建'"
-				+"            AND amco.type = 'biz'"
-				+"            AND amco.total_amount != 0)";
-		if (customer == null && beginTime == null && endTime == null
-				&& transferOrderNo == null && customerNo == null && start == null && orderNo==null&& serial_no==null&& ref_no==null) {
-			sqlTotal = " select count(1) total from ("+ sql +") A";
-			sql = "select * from ("+ sql +") A ";
-		} else {
-			if (beginTime == null || "".equals(beginTime)) {
-				beginTime = "1970-01-01";
-			}
-			if (endTime == null || "".equals(endTime)) {
-				endTime = "2037-12-31";
-			}
-			
-			 String conditions = " where ifnull(A.cname,'')like '%"+customer+"%'"
-				    + " and ifnull(A.route_from,'') like '%"+start
-				    +"%' and ifnull(A.order_no,'') like '%"+orderNo
-				    +"%' and ifnull(A.customer_order_no,'')like '%"+customerNo+"%'"
-				    +"	 and ifnull(A.serial_no,'')like '%"+serial_no+"%'"
-				    +"   and ifnull(A.ref_no,'')like '%"+ref_no+"%'"
-				    +"   and IFNULL(A.transfer_order_no,'') like '%"+transferOrderNo
-				    +"%' and IFNULL(A.planning_time,'1970-01-01')  between '"
-					+ beginTime
-					+ "' and '"
-					+ endTime
-					+ "' ";
-			
-			sqlTotal = " select count(1) total from ("+ sql +") A" + conditions;
-			 
-			sql = "select * from ("+ sql +") A " + conditions;
-		}
-		 
+        String condition = DbUtils.buildConditions(getParaMap());
+        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        
+        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+        Map map = new HashMap();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orderList);
+        renderJson(map); 
 		
-		Record rec = Db.findFirst(sqlTotal);
-		logger.debug("total records:" + rec.getLong("total"));
-		
-		List<Record> BillingOrders = Db.find(sql + orderByStr  + sLimit);
-
-		Map BillingOrderListMap = new HashMap();
-		BillingOrderListMap.put("sEcho", pageIndex);
-		BillingOrderListMap.put("iTotalRecords", rec.getLong("total"));
-		BillingOrderListMap.put("iTotalDisplayRecords", rec.getLong("total"));
-
-		BillingOrderListMap.put("aaData", BillingOrders);
-
-		renderJson(BillingOrderListMap);
 	}
+	
 	@RequiresPermissions(value = { PermissionConstant.PERMSSION_CCO_UPDATE })
 	@Before(Tx.class)
 	public void updateOrderFinItem() {
