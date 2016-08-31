@@ -197,7 +197,7 @@ public class JobOrderController extends Controller {
    			else if(type.equals("贸易")){
    				prefix+="EKB";
    			}
-   			String orderPrefix = OrderNoGenerator.getNextOrderNoForYQ(prefix);
+   			String orderPrefix = OrderNoGenerator.getNextOrderNo(prefix);
             jobOrder.set("order_no", orderPrefix);
    			jobOrder.set("creator", user.getLong("id"));
    			jobOrder.set("create_stamp", new Date());
