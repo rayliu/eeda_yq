@@ -48,7 +48,7 @@ $(document).ready(function() {
     })
 
    var searchData=function(){
-        var order_no = $("#order_no").val(); 
+        var order_no = $.trim($("#order_no").val()); 
         var status = $("#status").val(); 
         var start_date = $("#create_stamp_begin_time").val();
         var end_date = $("#create_stamp_end_time").val();
