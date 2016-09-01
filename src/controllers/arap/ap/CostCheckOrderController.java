@@ -46,8 +46,6 @@ public class CostCheckOrderController extends Controller {
 
 	@RequiresPermissions(value = { PermissionConstant.PERMSSION_CCOI_LIST })
 	public void index() {
-		setAttr("type", "CUSTOMER");
-		setAttr("classify", "");
 		render("/eeda/arap/CostCheckOrder/CostCheckOrderList.html");
 	}
 
