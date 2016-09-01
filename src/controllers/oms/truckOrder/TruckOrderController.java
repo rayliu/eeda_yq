@@ -113,10 +113,10 @@ public class TruckOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         
-        String sql = "SELECT jol.*,jo.order_no,jo.create_stamp"
+        String sql = "SELECT * from ( select jol.*,jo.order_no,jo.create_stamp"
     			+ "  from job_order_land_item jol "
     			+ "  left join job_order jo on jo.id=jol.order_id"
-    			+ "   where 1 =1 ";
+    			+ "   ) A where 1 =1";
         
         String condition = DbUtils.buildConditions(getParaMap());
 

@@ -28,7 +28,7 @@ public class DbUtils {
             	if(key.endsWith("_no") || key.endsWith("_name")){
             		condition += " and " + key + " like '%" + filterValue + "%' ";
             		continue;
-            	}else if(key.endsWith("_id") || key.endsWith("_status")){
+            	}else if(key.endsWith("_id") || key.endsWith("status")){
             		condition += " and " + key + " = '" + filterValue + "' ";
             		continue;
             	}else if(key.endsWith("_begin_time")){
