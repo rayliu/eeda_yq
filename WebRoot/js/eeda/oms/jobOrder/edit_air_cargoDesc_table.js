@@ -140,12 +140,8 @@ $(document).ready(function() {
     	var wide = $(row.find('[name=wide]')).val();
     	var high = $(row.find('[name=high]')).val();
     	var amount = $(row.find('[name=amount]')).val();
-    	if(long!=''&&wide!=''&&high!=''&&amount!=''){
-	    	if(!isNaN(long)&&!isNaN(wide)&&!isNaN(high)&&!isNaN(amount)){
-	    		$(row.find('[name=volume]')).val(parseFloat(long)*parseFloat(wide)*parseFloat(high)*parseFloat(amount)/1000);
-	    	}else{
-	    		$(row.find('[name=volume]')).val('');
-	    	}
+    	if(long!=''&&wide!=''&&high!=''&&amount!=''&&!isNaN(long)&&!isNaN(wide)&&!isNaN(high)&&!isNaN(amount)){
+	    $(row.find('[name=volume]')).val(parseFloat(long)*parseFloat(wide)*parseFloat(high)*parseFloat(amount)/1000);
     	}
     })
     

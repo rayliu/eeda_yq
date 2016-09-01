@@ -268,14 +268,9 @@
                                 </thead>
                                 <tbody>
 	                                <tr>
-	                                     <td class="chargeRMB" name="chargeRMB"></td>
-	                                     <td class="costRMB" name="costRMB"></td>
-	                                     <td class="profitRMB" name="profitRMB"></td>
-	                               </tr>
-	                               <tr>
-	                                     <td class="chargeUSD" name="chargeUSD"></td>
-	                                     <td class="costUSD" name="costUSD"></td>
-	                                     <td class="profitUSD" name="profitUSD"></td>
+	                                     <td class="chargeRMB">${order.total_charge}</td>
+	                                     <td class="costRMB">${order.total_cost}</td>
+	                                     <td class="profitRMB">${order.total_profit}</td>
 	                               </tr>
 	                            </tbody>
                             </table>
@@ -409,7 +404,6 @@
 </script>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
-    	
         requirejs(['app/oms/jobOrder/edit']);
     });
 </script>

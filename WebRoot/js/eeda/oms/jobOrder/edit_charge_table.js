@@ -235,44 +235,30 @@ $(document).ready(function() {
     }
     
     //输入 数量*单价的时候，计算金额
-    $('#charge_table').on('keyup','[name=price],[name=amount]',function(){
+    $('#charge_table').on('keyup','[name=price],[name=amount],[name=exchange_rate]',function(){
     	var row = $(this).parent().parent();
     	var price = $(row.find('[name=price]')).val()
     	var amount = $(row.find('[name=amount]')).val()
-    	if(price!=''&&amount!=''){
-	    	if(!isNaN(price)&&!isNaN(amount)){
-	    		$(row.find('[name=total_amount]')).val(parseFloat(price)*parseFloat(amount));
-	    	}else{
-	    		$(row.find('[name=total_amount]')).val('');
-	    	}
+    	var exchange_rate = $(row.find('[name=exchange_rate]')).val()
+    	if(price!=''&&amount!=''&&!isNaN(price)&&!isNaN(amount)){
+    		var total_amount = parseFloat(price)*parseFloat(amount);
+    		$(row.find('[name=total_amount]')).val(total_amount);
+    		if(exchange_rate!=''&&!isNaN(exchange_rate)){
+    			$(row.find('[name=currency_total_amount]')).val(total_amount*parseFloat(exchange_rate));
+    			//应收结算,目前只用人民币结算
+    			var chargeRMB =$('#charge_table').find('[name=currency_total_amount]');
+    			var totalChargeRMB=0;
+    			for(var i = 0;i<chargeRMB.length;i++){
+    				var j = chargeRMB[i].value;
+    				if(j!=''&&!isNaN(j)){
+    					totalChargeRMB+=parseFloat(j);
+    				}
+    			}
+    			$('.chargeRMB').text(totalChargeRMB+"RMB");  
+    		}
     	}
     })
-    //应收应付结算获取字段
-//    $('.company').text($('input [name=SP_ID_input]').val());
-    var totalChargeRMB = 0; 
-    var totalChargeUSD = 0;
-
-    var tableCurCharge =$('#charge_table').find('[name=CURRENCY_ID_input]');
-    var tableAmountCharge =$('#charge_table').find('[name=total_amount]');
-    for(var i = 0;i<tableCurCharge.length;i++){
- 	   if(tableCurCharge[i].value=='RMB'){    		   
- 		  totalChargeRMB += parseFloat(tableAmountCharge[i].value);   //parseFloat(data)
- 	   }else if(tableCurCharge[i].value=='USD'){
- 		  totalChargeUSD += parseFloat(tableAmountCharge[i].value);
- 	   }
-    }
-    if(totalChargeRMB !=""){
-           $('.chargeRMB').text(totalChargeRMB+"RMB");  
-       }else{
-    	   $('.chargeRMB').text(0+"RMB");  
-        }
-    
-    if(totalChargeUSD !=""){
-        $('.chargeUSD').text(totalChargeUSD+"USD");  
-    }else{
- 	   $('.chargeUSD').text(0+"USD");  
-     }
     
     
-} );
+});
 });

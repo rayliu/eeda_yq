@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN',
     './edit_shipment_table','./edit_shipment_detail','./edit_land_table', './edit_charge_table','./edit_charge_cost_table',
     './edit_air_table', './edit_air_cargoDesc_table', './edit_air_detail','./edit_custom_detail',
-    './edit_insurance_detail', './edit_doc_table', './edit_file_upload','./job_order_report'], function ($, metisMenu, template) {
+    './edit_insurance_detail', './edit_doc_table', './edit_file_upload','./job_order_report'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
@@ -23,6 +23,26 @@ $(document).ready(function() {
         }
         
         $('#saveBtn').attr('disabled', true);
+        
+        //计算这张工作单的总支出，总收入
+        var costRMB =$('#cost_table').find('[name=currency_total_amount]');
+		var chargeRMB =$('#charge_table').find('[name=currency_total_amount]');
+		var totalCostRMB=0;
+		var totalChargeRMB=0;
+		var profitRMB=0;
+		for(var i = 0;i<costRMB.length;i++){
+			var j = costRMB[i].value;
+			if(j!=''&&!isNaN(j)){
+				totalCostRMB+=parseFloat(j);
+			}
+		}
+		for(var i = 0;i<chargeRMB.length;i++){
+			var j = chargeRMB[i].value;
+			if(j!=''&&!isNaN(j)){
+				totalChargeRMB+=parseFloat(j);
+			}
+		}
+		profitRMB = totalChargeRMB-totalCostRMB;
         
         //运输方式checkbox遍历取值
         var transport_type = [];
@@ -77,6 +97,11 @@ $(document).ready(function() {
         order.volume = $("#volume").val();
         order.pieces = $("#pieces").val();
         order.billing_method = $('#billing_method input[type="radio"]:checked').val();
+        
+        //totalCost,totalCharge
+        order.total_cost = totalCostRMB;
+        order.total_charge = totalChargeRMB;
+        order.total_profit = profitRMB;
         //海运
         order.shipment_detail = shipment_detail;
         order.shipment_list = shipment_item;
@@ -100,27 +125,25 @@ $(document).ready(function() {
         $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
             if(order.ID){
+            	eeda.contactUrl("edit?id",order.ID);
+            	$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+            	$('#saveBtn').attr('disabled', false);
                 $("#order_id").val(order.ID);
                 $("#order_no").val(order.ORDER_NO);
                 $("#creator_name").val(order.CREATOR_NAME);
                 $("#create_stamp").val(order.CREATE_STAMP);
-                if(order.CUSTOM!=null){
+                if(order.CUSTOM){
                 	$("#custom_id").val(order.CUSTOM.ID);
                 }
-                if(order.ABROADCUSTOM!=null){
+                if(order.ABROADCUSTOM){
                 	$("#abroad_custom_id").val(order.ABROADCUSTOM.ID);
                 }
-                if(order.HKCUSTOM!=null){
+                if(order.HKCUSTOM){
                 	$("#hk_custom_id").val(order.HKCUSTOM.ID);
                 }
-                
                 $("#shipment_id").val(order.SHIPMENT.ID);
                 $("#insurance_id").val(order.INSURANCE.ID);
                 $("#air_id").val(order.AIR.ID);
-                
-                eeda.contactUrl("edit?id",order.ID);
-                $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-                $('#saveBtn').attr('disabled', false);
                 
                 $("#fileuploadSpan").show();
                 $("#sendEmail").show();
@@ -248,6 +271,9 @@ $(document).ready(function() {
 	    timeStr=year+"-"+(mon<10 ? "0" + mon : mon)+"-"+(day<10 ? "0"+ day : day)+" "+(h<10 ? "0"+ h : h)+":"+(m<10 ? "0" + m : m)+":"+(s<10 ? "0" +s : s);
 	    return timeStr;
     }
-        
+    
+	    
+	    
+	    
 });
 });

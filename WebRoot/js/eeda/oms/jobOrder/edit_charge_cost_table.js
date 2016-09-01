@@ -232,93 +232,43 @@ $(document).ready(function() {
     	var url = "/jobOrder/tableList?order_id="+order_id+"&type=cost";
     	costTable.ajax.url(url).load();
     }
-   //输入 数量*单价的时候，计算金额
-    $('#cost_table').on('keyup','[name=price],[name=amount]',function(){
+   
+    //输入 数量*单价的时候，计算金额
+    $('#cost_table').on('keyup','[name=price],[name=amount],[name=exchange_rate]',function(){
     	var row = $(this).parent().parent();
     	var price = $(row.find('[name=price]')).val()
     	var amount = $(row.find('[name=amount]')).val()
-    	if(price!=''&&amount!=''){
-	    	if(!isNaN(price)&&!isNaN(amount)){
-	    		$(row.find('[name=total_amount]')).val(parseFloat(price)*parseFloat(amount));
-	    	}else{
-	    		$(row.find('[name=total_amount]')).val('');
-	    	}
+    	var exchange_rate = $(row.find('[name=exchange_rate]')).val()
+    	if(price!=''&&amount!=''&&!isNaN(price)&&!isNaN(amount)){
+    		var total_amount = parseFloat(price)*parseFloat(amount);
+    		$(row.find('[name=total_amount]')).val(total_amount);
+    		if(exchange_rate!=''&&!isNaN(exchange_rate)){
+    			$(row.find('[name=currency_total_amount]')).val(total_amount*parseFloat(exchange_rate));
+    			//应付结算,目前只用人民币结算
+    			var costRMB =$('#cost_table').find('[name=currency_total_amount]');
+    			var chargeRMB =$('#charge_table').find('[name=currency_total_amount]');
+    			var totalCostRMB=0;
+    			var totalChargeRMB=0;
+    			var profitRMB=0;
+    			for(var i = 0;i<costRMB.length;i++){
+    				var j = costRMB[i].value;
+    				if(j!=''&&!isNaN(j)){
+    					totalCostRMB+=parseFloat(j);
+    				}
+    			}
+    			for(var i = 0;i<chargeRMB.length;i++){
+    				var j = chargeRMB[i].value;
+    				if(j!=''&&!isNaN(j)){
+    					totalChargeRMB+=parseFloat(j);
+    				}
+    			}
+    			profitRMB = totalChargeRMB-totalCostRMB;
+    			$('.costRMB').text(totalCostRMB+"RMB");
+    			$('.profitRMB').text(profitRMB+"RMB");
+    		}
     	}
     })
     
-//    //获取应收应付字段
-       var totalCostRMB = 0; 
-       var totalCostUSD = 0;
-
-       var tableCur =$('#cost_table').find('[name=CURRENCY_ID_input]');
-       var tableAmount =$('#cost_table').find('[name=total_amount]');
-       for(var i = 0;i<tableCur.length;i++){
-    	   if(tableCur[i].value=='RMB'){    		   
-    		   totalCostRMB += parseFloat(tableAmount[i].value);   //parseFloat(data)
-    	   }else if(tableCur[i].value=='USD'){
-    		   totalCostUSD += parseFloat(tableAmount[i].value);
-    	   }
-       }
-       
-//    var table =$('#cost_table').parent().parent(); 
-//    var RMB = $(table.find('[name=CURRENCY_ID_input]')).val()
-//    totalCostRMB =  totalCost + RMB;
-//    $('.costRMB').text(totalCostRMB);
-       if(totalCostRMB !=""&&!isNaN(totalCostUSD)){
-       $('.costRMB').text(totalCostRMB+'RMB');
-       }else{
-    	   $('.costRMB').text(0+"RMB");
-       }
-       
-      if(totalCostUSD !=''&&!isNaN(totalCostUSD)){
-    	  $('.costUSD').text(totalCostUSD+'USD');    	  
-      }else{
-   	   $('.costUSD').text(0+"USD");
-      }
-//    var company = $(table.find('[name=SP_ID_input]')).val()
-//    $('.company').text(company);
-//    
-//    var costfree = $(table.find('[name=CHARGE_ID_input]')).val()
-//    $('.costfree').text(costfree);
-    
-    //应收字段      
-    	var totalCharge = $('[name=chargeRMB]').text().toString();
-    	var totalChargeU = $('[name=chargeUSD]').text().toString();    	
-    	var totalChargeRMB=parseFloat(totalCharge.replace('RMB',''));    	
-    	var totalChargeUSD=parseFloat(totalChargeU.replace('USD',''));    	
-    	if(isNaN(totalChargeRMB)|| totalChargeRMB =='' ){
-    		totalChargeRMB=0;
-    	}    	
-    	if(isNaN(totalChargeUSD)|| totalChargeUSD =='' ){
-    		totalChargeUSD=0;
-    	}
-//    	var costRMB = $('[name=costRMB]').text();
-    	
-    	
-	    	var profitUSD = parseFloat(totalChargeUSD)-parseFloat(totalCostUSD);
-	    		if(profitUSD>=0){
-	    		$('[name=profitUSD]').text(profitUSD+"USD");
-	    	   }else if(profitUSD<0){
-	    		$('[name=profitUSD]').html("<span style='color:red'>"+profitUSD+"USD</span>");
-	    	 } else{
-	    		 $('[name=profitUSD]').text('');
-	    	 }
-	      
-    	
-    	
-    	
-
-	    	var profitRMB = parseFloat(totalChargeRMB)-parseFloat(totalCostRMB);
-	    		if(profitRMB>=0){
-	    		$('[name=profitRMB]').text(profitRMB+"RMB");
-	    	   }else if(profitRMB<0){
-	    		$('[name=profitRMB]').html("<span style='color:red'>"+profitRMB+"RMB</span>");
-	    	 } else{
-	    		 $('[name=profitRMB]').text('');
-	    	 }
-	      
-    	
-    	
     	
     
 });
