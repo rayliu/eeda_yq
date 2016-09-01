@@ -81,7 +81,11 @@ $(document).ready(function() {
         columns:[
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
+                	if(full.AUDIT_FLAG == 'Y'){
+                		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button> ';
+                	}else{
+                		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
+                	}
                 }
             },
             { "data": "TYPE","width": "80px",

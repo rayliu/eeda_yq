@@ -100,50 +100,45 @@ public class JobOrderController extends Controller {
     //插入动作MBL标识符
     public void mblflag(){
     	String jsonStr = getPara("order_id");
-    	JobOrderShipment jobOrderShipment = new JobOrderShipment();
-    	jobOrderShipment = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
-    	jobOrderShipment.set("mbl_flag", "Y");
-    	jobOrderShipment.update();
+    	JobOrderShipment jos = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
+    	jos.set("mbl_flag", "Y");
+    	jos.update();
     	renderJson("{\"result\":true}");
     }
     
     //已电放确认表标识
     public void alreadyInlineFlag(){
     	String jsonStr = getPara("order_id");
-    	JobOrderShipment jobOrderShipment = new JobOrderShipment();
-    	jobOrderShipment = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
-    	jobOrderShipment.set("in_line_flag", "Y");
-    	jobOrderShipment.update();
+    	JobOrderShipment jos = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
+    	jos.set("in_line_flag", "Y");
+    	jos.update();
     	renderJson("{\"result\":true}");
     }
 
     //插入打印动作SI标识符
     public void siflag(){
     	String jsonStr = getPara("order_id");
-    	JobOrderShipment jobOrderShipment = new JobOrderShipment();
-    	jobOrderShipment = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
-    	jobOrderShipment.set("si_flag", "Y");
-    	jobOrderShipment.update();
+    	JobOrderShipment jos = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
+    	jos.set("si_flag", "Y");
+    	jos.update();
     	renderJson("{\"result\":true}");
     }
     
     //插入派车单打印动作标记
     public void truckOrderflag(){
     	String jsonStr = getPara("order_id");
-    	JobOrderLandItem jobOrderLandItem = new JobOrderLandItem();
-    	jobOrderLandItem = JobOrderLandItem.dao.findFirst("select id from job_order_land_item where order_id = ?",jsonStr);
-    	jobOrderLandItem.set("truckorder_flag", "Y");
-    	jobOrderLandItem.update();
+    	JobOrderLandItem joli = JobOrderLandItem.dao.findFirst("select id from job_order_land_item where order_id = ?",jsonStr);
+    	joli.set("truckorder_flag", "Y");
+    	joli.update();
     	renderJson("{\"result\":true}");
     }
     
     //插入打印动作AFR/AMS标识符
     public void aframsflag(){
     	String jsonStr = getPara("order_id");
-    	JobOrderShipment jobOrderShipment = new JobOrderShipment();
-    	jobOrderShipment = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
-    	jobOrderShipment.set("afr_ams_flag", "Y");
-    	jobOrderShipment.update();
+    	JobOrderShipment jos = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
+    	jos.set("afr_ams_flag", "Y");
+    	jos.update();
     	renderJson("{\"result\":true}");
     }
     

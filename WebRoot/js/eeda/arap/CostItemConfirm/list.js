@@ -16,12 +16,25 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           ajax: "/costConfirmList/list",
           columns: [
 			{ "width": "10px",
-			    "render": function () {
-			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
-			    }
+				    "render": function ( data, type, full, meta ) {
+				    	if(full.AUDIT_FLAG != 'Y')
+				    		return '<input type="checkbox" class="checkBox">';
+				    	else 
+				    		return '<input type="checkbox" class="checkBox" disabled>';
+				    }
 			},
             { "data": "ORDER_NO", "width": "100px"},
             { "data": "CREATE_STAMP", "width": "100px"},
+            { "data": "AUDIT_FLAG", "width": "60px",
+            	"render": function ( data, type, full, meta ) {
+			    	if(data != 'Y')
+			    		return '未确认';
+			    	else 
+			    		return '已确认';
+			    }
+            },
+            { "data": "TOTAL_COST", "width": "60px"},
+            { "data": "TOTAL_CHARGE", "width": "60px"},
             { "data": "CUSTOMER", "width": "100px"},
             { "data": "TYPE", "width": "60px"},
             { "data": "SP_NAME", "width": "100px"},
@@ -68,6 +81,43 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
           dataTable.ajax.url(url).load();
       };
+      
+      	//checkbox选中则button可点击
+		$('#eeda_table').on('click','.checkBox',function(){
+			
+			var hava_check = 0;
+			$('#eeda_table input[type="checkbox"]').each(function(){	
+				var checkbox = $(this).prop('checked');
+	    		if(checkbox){
+	    			hava_check=1;
+	    		}	
+			})
+			if(hava_check>0){
+				$('#confirmBtn').attr('disabled',false);
+			}else{
+				$('#confirmBtn').attr('disabled',true);
+			}
+		});
+		$('#confirmBtn').click(function(){
+			$('#confirmBtn').attr('disabled',true);
+        	var itemIds=[];
+        	$('#eeda_table input[type="checkbox"]').each(function(){
+        		var checkbox = $(this).prop('checked');
+        		if(checkbox){
+        			var itemId = $(this).parent().parent().attr('id');
+        			itemIds.push(itemId);
+        		}
+        	});
+	    	 $.post('/costConfirmList/costConfirm?itemIds='+itemIds, function(data){
+	    		 if(data.RESULT==true){
+	    			 $.scojs_message('确认成功', $.scojs_message.TYPE_ERROR);
+	    			 $('#confirmBtn').attr('disabled', false);
+	    		 }
+	    	 },'json').fail(function() {
+	                $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+	                $('#confirmBtn').attr('disabled', false);
+	              });
+        })
+      
   });
-
 });

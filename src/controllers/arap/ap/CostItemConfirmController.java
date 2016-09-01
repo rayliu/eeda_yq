@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.eeda.oms.jobOrder.JobOrderArap;
+
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -37,7 +39,7 @@ public class CostItemConfirmController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "select * from(select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
+        String sql = "select * from(select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.total_cost,jo.total_charge,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
 				+ " from job_order jo "
 				+ " left join job_order_arap joa on jo.id=joa.order_id "
 				+ " left join party p on p.id=jo.customer_id "
@@ -60,6 +62,17 @@ public class CostItemConfirmController extends Controller {
         map.put("data", orderList);
         renderJson(map); 
 		
+	}
+	
+	public void costConfirm(){
+		String ids = getPara("itemIds");
+		String idAttr[] = ids.split(",");
+		for(int i=0 ; i<idAttr.length ; i++){
+			JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap joa where id = ?",idAttr[i]);
+			joa.set("audit_flag", "Y");
+			joa.update();
+		}
+		renderJson("{\"result\":true}");
 	}
    
 }
