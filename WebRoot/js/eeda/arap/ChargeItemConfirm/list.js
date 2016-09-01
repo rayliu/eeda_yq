@@ -15,12 +15,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对 
           ajax: "/chargeConfirmList/list",
           columns: [
-			{ "data":"ID","width": "10px",
-			    "render": function ( data, type, full, meta ) {
-			    	if(data)
+			{ "width": "10px",
+			    "render": function () {
 			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
-			    	else 
-			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
 			    }
 			},
             { "data": "ORDER_NO", "width": "100px"},
