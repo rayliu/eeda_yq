@@ -13,7 +13,7 @@ eeda.dt = function(opt){
         //scrollY: opt.scrollY || true, //"300px",
         //scrollCollapse: opt.scrollCollapse || true,
         autoWidth: opt.autoWidth || false,
-        aLengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
+        aLengthMenu: [ [10, 25, 50, 100, '9999999999'], [10, 25, 50, 100, "All"] ],
         language: {
             "url": "/js/lib/datatables/i18n/Chinese.json"
         },
