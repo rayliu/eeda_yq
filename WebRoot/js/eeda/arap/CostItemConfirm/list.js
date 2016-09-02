@@ -109,8 +109,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		}
         	});
 	    	 $.post('/costConfirmList/costConfirm?itemIds='+itemIds, function(data){
-	    		 if(data.RESULT==true){
-	    			 $.scojs_message('确认成功', $.scojs_message.TYPE_ERROR);
+	    		 if(data.result==true){
+	    			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+	    			 searchData();
 	    			 $('#confirmBtn').attr('disabled', false);
 	    		 }
 	    	 },'json').fail(function() {
