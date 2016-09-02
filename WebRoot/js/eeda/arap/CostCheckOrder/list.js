@@ -1,6 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '应付明细查询   | '+document.title;
+  	document.title = '应付对账单查询  | '+document.title;
   	  if(type!=""){
   		  $('#menu_todo_list').addClass('active').find('ul').addClass('in');
   		  $('#menu_cost').removeClass('active').find('ul').removeClass('in');
@@ -13,11 +13,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           id: 'eeda_table',
           paging: true,
           serverSide: false, //不打开会出现排序不对 
-          ajax: "/costConfirmList/list",
+          ajax: "/costCheckOrder/list",
           columns: [
 			{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
-				    	if(full.AUDIT_FLAG != 'Y')
+				    	if(full.BILL_FLAG != 'Y')
 				    		return '<input type="checkbox" class="checkBox">';
 				    	else 
 				    		return '<input type="checkbox" disabled>';
@@ -25,28 +25,39 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			},
             { "data": "ORDER_NO", "width": "100px"},
             { "data": "CREATE_STAMP", "width": "100px"},
-            { "data": "AUDIT_FLAG", "width": "60px",
+            { "data": "BILL_FLAG", "width": "60px",
             	"render": function ( data, type, full, meta ) {
 			    	if(data != 'Y')
-			    		return '未确认';
+			    		return '未创建对账单';
 			    	else 
-			    		return '已确认';
+			    		return '已创建对账单';
 			    }
             },
-            { "data": "TOTAL_COST", "width": "60px"},
-            { "data": "TOTAL_CHARGE", "width": "60px"},
-            { "data": "CUSTOMER", "width": "100px"},
+            { "data": null, "width": "60px"},
+            
             { "data": "TYPE", "width": "60px"},
             { "data": "SP_NAME", "width": "100px"},
-            { "data": "CHARGE_NAME", "width": "60px"},
-            { "data": "PRICE", "width": "60px"},
-            { "data": "AMOUNT","width": "60px"},
-            { "data": "UNIT_NAME", "width": "60px"},
-            { "data": "CURRENCY_NAME", "width": "60px"},
-            { "data": "TOTAL_AMOUNT", "width": "60px"},
-            { "data": "EXCHANGE_RATE", "width": "60px"},
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
-            { "data": "REMARK", "width": "180px"},
+            { "data": "TOTAL_COST", "width": "60px"},
+            
+            { "data": null, "width": "60px"},
+            { "data": null, "width": "60px"},
+            { "data": null, "width": "60px"},
+            
+            { "data": "FND", "width": "60px",
+            	"render": function ( data, type, full, meta ) {
+            		if(data)
+			    		return data;
+			    	else 
+			    		return full.DESTINATION;
+			    }
+            },
+            { "data": "VOLUME", "width": "60px"},
+            { "data": "CONTAINER_AMOUNT","width": "60px"},
+            { "data": "NET_WEIGHT", "width": "60px"},
+            { "data": null, "width": "60px"},
+            
+            { "data": "MBL_NO", "width": "60px"},
+            { "data": "CONTAINER_NO", "width": "100px"},
           ]
       });
 
@@ -72,7 +83,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/costConfirmList/list?order_no="+order_no
+          var url = "/costCheckOrder/list?order_no="+order_no
 			           +"&customer_id="+customer
 			           +"&sp_id="+sp
 		               +"&create_stamp_begin_time="+start_date
@@ -81,14 +92,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           dataTable.ajax.url(url).load();
       };
       
-      
       //全选，反选
       $('#AllCheck').click(function(){
       	$(".checkBox").each(function () {  
               this.checked = !this.checked;  
            });  
       });
-   
+      
       	//checkbox选中则button可点击
 		$('#eeda_table').on('click','.checkBox',function(){
 			
@@ -115,7 +125,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         			itemIds.push(itemId);
         		}
         	});
-	    	 $.post('/costConfirmList/costConfirm?itemIds='+itemIds, function(data){
+	    	 $.post('/costCheckOrder/costCheckConfirm?itemIds='+itemIds, function(data){
 	    		 if(data.result==true){
 	    			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
 	    			 searchData();

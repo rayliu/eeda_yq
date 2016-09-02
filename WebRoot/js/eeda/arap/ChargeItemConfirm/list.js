@@ -17,7 +17,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           columns: [
 			{ "width": "10px",
 			    "render": function () {
-			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
+			    		return '<input type="checkbox" class="checkBox">';
 			    }
 			},
             { "data": "ORDER_NO", "width": "100px"},
