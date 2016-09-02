@@ -222,13 +222,15 @@ $(document).ready(function() {
                         data='';
                     return data;
                 }
-            },{ "data": "CURRENCY_NAME", "visible": false,
+            },
+            { "data": "CURRENCY_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return data;
                 }
-            }
+            },
+            { "data": "AUDIT_FLAG", "visible": false}
         ]
     });
 
