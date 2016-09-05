@@ -139,15 +139,20 @@ public class ChargeCheckOrderController extends Controller {
         }
         String sql = "";
         
-        	sql = " select * from (SELECT joa.*, jo.order_no order_no,pr.abbr sp_name,f.name cost_name,"
-        			+ " u. NAME unit_name,c. NAME currency_name"
-        			+ " FROM job_order_arap joa"
-        			+ " LEFT JOIN job_order jo ON joa.order_id = jo.id"
-        			+ " LEFT JOIN party pr ON pr.id = joa.sp_id "
-        			+ " LEFT JOIN fin_item f ON f.id = joa.charge_id"
-        			+ " LEFT JOIN unit u ON u.id = joa.unit_id"
-        			+ " LEFT JOIN currency c ON c.id = joa.currency_id"
-        			+ " WHERE joa.order_type = 'charge') A where 1 = 1 ";
+        	sql = " select * from (select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
+        			+ "jo.net_weight gross_weight,jo.total_chargeRMB rmb,jo.total_chargeUSD usd,jo.ref_no ref_no,"
+        			+ "p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
+        			+ "GROUP_CONCAT(josi.container_no) container_no,count(josi.container_type) container_amount "
+        			+ " from job_order_arap joa"
+        			+ "	left join job_order jo on jo.id=joa.order_id "
+        			+ "	left join job_order_shipment jos on jos.order_id=joa.order_id "
+        			+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
+        			+ "	left join job_order_air_item joai on joai.order_id=joa.order_id "
+        			+ " left join job_order_land_item  jols on jols.order_id=joa.order_id "
+        			+ "	left join party p1 on p1.id=joa.sp_id "
+        			+ "	left join location l on l.id=jos.fnd "
+        			+ "	where joa.order_type='cost' and joa.audit_flag='Y' "
+        			+ " GROUP BY joa.id) A where 1 = 1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
 
