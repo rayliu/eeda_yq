@@ -230,7 +230,13 @@ $(document).ready(function() {
                     return data;
                 }
             },
-            { "data": "AUDIT_FLAG", "visible": false}
+            { "data": "AUDIT_FLAG", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            }
         ]
     });
 

@@ -52,6 +52,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     return str;
                   }
               }, 
+              { "data": "SENT_OUT_TIME"}, 
               { "data": "CUSTOMER_NAME"}, 
               { "data": "CREATOR_NAME"}, 
               { "data": "CREATE_STAMP"}, 
@@ -73,6 +74,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var order_no = $.trim($("#order_no").val()); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
+          var sent_out_time = $("#sent_out_time").val();
           
           /*  
               查询规则：参数对应DB字段名
@@ -84,6 +86,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var url = "/jobOrder/list?order_no="+order_no
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
+          	   +"&sent_out_time="+sent_out_time;
 
           dataTable.ajax.url(url).load();
       };

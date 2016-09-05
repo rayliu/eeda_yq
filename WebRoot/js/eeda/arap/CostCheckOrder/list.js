@@ -52,7 +52,40 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			    }
             },
             { "data": "VOLUME", "width": "60px"},
-            { "data": "CONTAINER_AMOUNT","width": "60px"},
+            { "data": "CONTAINER_AMOUNT","width": "60px",
+            	"render": function ( data, type, full, meta ) {
+	            	if(data){
+	            		var dataArr = data.split(",");
+	            		var a = 0;
+	            		var b = 0;
+	            		var c = 0;
+	            		var dataStr = "";
+	            		for(var i=0;i<dataArr.length;i++){
+	            			if(dataArr[i]=="20GP"){
+	            				a++;
+	            			}
+	            			if(dataArr[i]=="40GP"){
+	            				b++;
+	            			}
+	            			if(dataArr[i]=="45GP"){
+	            				c++;
+	            			}
+	            		}
+	            		if(a>0){
+	            			dataStr+="20GPx"+a+";"
+	            		}
+	            		if(b>0){
+	            			dataStr+="40GPx"+b+";"
+	            		}
+	            		if(c>0){
+	            			dataStr+="45GPx"+c+";"
+	            		}
+	            		return dataStr;
+	            	}else{
+	            		return '';
+	            	}
+            	}
+            },
             { "data": "NET_WEIGHT", "width": "60px"},
             { "data": null, "width": "60px"},
             

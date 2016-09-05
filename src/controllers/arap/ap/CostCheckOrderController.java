@@ -42,7 +42,7 @@ public class CostCheckOrderController extends Controller {
         String sql = "select * from(  "
         		+ " select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.total_cost, "
         		+ " p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination, "
-        		+ " GROUP_CONCAT(josi.container_no) container_no,count(josi.container_type) container_amount "
+        		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
 				+ " from job_order_arap joa "
 				+ " left join job_order jo on jo.id=joa.order_id "
 				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
