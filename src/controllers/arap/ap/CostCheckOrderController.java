@@ -1,10 +1,11 @@
 package controllers.arap.ap;
 
+import interceptor.SetAttrLoginUserInterceptor;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import interceptor.SetAttrLoginUserInterceptor;
 import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.shiro.SecurityUtils;
@@ -40,7 +41,7 @@ public class CostCheckOrderController extends Controller {
         }
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = "select * from(  "
-        		+ " select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.total_cost, "
+        		+ " select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.total_costRMB, "
         		+ " p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination, "
         		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
 				+ " from job_order_arap joa "
