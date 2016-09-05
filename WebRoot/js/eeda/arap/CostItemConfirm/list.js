@@ -82,10 +82,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       };
       
       
-      //全选，反选
+      //全选，全不选
       $('#AllCheck').click(function(){
+    	  var ischeck = this.checked;
       	$(".checkBox").each(function () {  
-              this.checked = !this.checked;  
+              this.checked = ischeck;  
            });  
       });
    
