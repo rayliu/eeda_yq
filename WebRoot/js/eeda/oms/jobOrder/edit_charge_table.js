@@ -71,7 +71,7 @@ $(document).ready(function() {
     };
 
     //------------事件处理
-   
+     var profitTotalCharge = 0;
     var chargeTable = eeda.dt({
         id: 'charge_table',
         autoWidth: false,
@@ -195,6 +195,8 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
+                    profitTotalCharge += parseFloat(data); 			
+        		   
                     return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
@@ -256,21 +258,71 @@ $(document).ready(function() {
     		var total_amount = parseFloat(price)*parseFloat(amount);
     		$(row.find('[name=total_amount]')).val(total_amount);
     		if(exchange_rate!=''&&!isNaN(exchange_rate)){
+    			
     			$(row.find('[name=currency_total_amount]')).val(total_amount*parseFloat(exchange_rate));
-    			//应收结算,目前只用人民币结算
-    			var chargeRMB =$('#charge_table').find('[name=currency_total_amount]');
-    			var totalChargeRMB=0;
-    			for(var i = 0;i<chargeRMB.length;i++){
-    				var j = chargeRMB[i].value;
-    				if(j!=''&&!isNaN(j)){
-    					totalChargeRMB+=parseFloat(j);
-    				}
-    			}
-    			$('.chargeRMB').text(totalChargeRMB+"RMB");  
+    			
     		}
     	}
     })
+	    //应收应付结算获取字段
+//    		    $('.company').text($('input [name=SP_ID_input]').val());
+//    		    $('.chargeRMB').text(totalCharge);  
+	    var totalChargeRMB = 0; 
+	    var totalChargeUSD = 0;
+
+	    var tableCurCharge =$('#charge_table').find('[name=CURRENCY_ID_input]');
+	    var tableAmountCharge =$('#charge_table').find('[name=total_amount]');
+	    for(var i = 0;i<tableCurCharge.length;i++){
+	        if(tableCurCharge[i].value=='RMB'){               
+	           totalChargeRMB += parseFloat(tableAmountCharge[i].value);   //parseFloat(data)
+	        }else if(tableCurCharge[i].value=='USD'){
+	           totalChargeUSD += parseFloat(tableAmountCharge[i].value);
+	        }
+	    }
+	    if(totalChargeRMB!=""&&!isNaN(totalChargeRMB)){
+	           $('.chargeRMB').text(totalChargeRMB+"RMB");  
+	       }else{
+	           $('.chargeRMB').text(0+"RMB");  
+	        }
+	    
+	    if(totalChargeUSD!=""&&!isNaN(totalChargeUSD)){
+	        $('.chargeUSD').text(totalChargeUSD+"USD");  
+	    }else{
+	        $('.chargeUSD').text(0+"USD");  
+	     }
+	 			
+         
+		//计算人民币总额
+	    
+	    
+		//应付结算,目前只用人民币结算
+		
+//    	    	var costRMB =$('#cost_table').find('[name=currency_total_amount]');
+//    	    	var chargeRMB =$('#charge_table').find('[name=currency_total_amount]');
+//    	    	var totalCostRMB=0;
+//    	    	var totalChargeRMB=0;
+//    	    	var profitRMB=0;
+//    	    	for(var i = 0;i<costRMB.length;i++){
+//    	    		var j = costRMB[i].value;
+//    	    		if(j!=''&&!isNaN(j)){
+//    	    			totalCostRMB+=parseFloat(j);
+//    	    		}
+//    	    	}
+//    	    		for(var i = 0;i<chargeRMB.length;i++){
+//    	    			var j = chargeRMB[i].value;
+//    	    			if(j!=''&&!isNaN(j)){
+//    	    				totalChargeRMB+=parseFloat(j);
+//    	    				}
+//    	    			}
+//    	    		profitRMB = totalChargeRMB-totalCostRMB;
+//    	    		$('.costRMB').text(totalCostRMB+"RMB");
+//    	    		$('.chargeRMB').text(totalChargeRMB+"RMB");
+//    	    		$('.profitRMB').text(profitRMB+"RMB");  
+//    			
+//    		}
+  	  
     
-    
+   	  
+    $('.profitTotalCharge').text(profitTotalCharge).hide();
 });
 });

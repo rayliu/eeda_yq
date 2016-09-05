@@ -71,7 +71,8 @@ $(document).ready(function() {
         eeda.bindTableField('UNIT_ID','/serviceProvider/searchUnit','');
         eeda.bindTableField('CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
-   
+    //初始化利润总额
+    var profitTotalCost = 0;
     var costTable = eeda.dt({
         id: 'cost_table',
         autoWidth: false,
@@ -194,6 +195,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
+                    profitTotalCost += parseFloat(data);
                     return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" />';
                 }
             },
@@ -256,32 +258,127 @@ $(document).ready(function() {
     		$(row.find('[name=total_amount]')).val(total_amount);
     		if(exchange_rate!=''&&!isNaN(exchange_rate)){
     			$(row.find('[name=currency_total_amount]')).val(total_amount*parseFloat(exchange_rate));
-    			//应付结算,目前只用人民币结算
-    			var costRMB =$('#cost_table').find('[name=currency_total_amount]');
-    			var chargeRMB =$('#charge_table').find('[name=currency_total_amount]');
-    			var totalCostRMB=0;
-    			var totalChargeRMB=0;
-    			var profitRMB=0;
-    			for(var i = 0;i<costRMB.length;i++){
-    				var j = costRMB[i].value;
-    				if(j!=''&&!isNaN(j)){
-    					totalCostRMB+=parseFloat(j);
-    				}
-    			}
-    			for(var i = 0;i<chargeRMB.length;i++){
-    				var j = chargeRMB[i].value;
-    				if(j!=''&&!isNaN(j)){
-    					totalChargeRMB+=parseFloat(j);
-    				}
-    			}
-    			profitRMB = totalChargeRMB-totalCostRMB;
-    			$('.costRMB').text(totalCostRMB+"RMB");
-    			$('.profitRMB').text(profitRMB+"RMB");
-    		}
-    	}
+    		  }
+    				
+    	}	
     })
+//    		    //获取应收应付字段
+    		       var totalCostRMB = 0; 
+    		       var totalCostUSD = 0;
+
+    		       var tableCur =$('#cost_table').find('[name=CURRENCY_ID_input]');
+    		       var tableAmount =$('#cost_table').find('[name=total_amount]');
+    		       for(var i = 0;i<tableCur.length;i++){
+    		           if(tableCur[i].value=='RMB'){               
+    		               totalCostRMB += parseFloat(tableAmount[i].value);   //parseFloat(data)
+    		           }else if(tableCur[i].value=='USD'){
+    		               totalCostUSD += parseFloat(tableAmount[i].value);
+    		           }
+    		       }
+    		       
+
+    		       $('.costRMB').text(totalCostRMB);
+    		    
+    		       if(totalCostRMB !=""&&!isNaN(totalCostUSD)){
+    		       $('.costRMB').text(totalCostRMB+'RMB');
+    		       }else{
+    		           $('.costRMB').text(0+"RMB");
+    		       }
+    		       
+    		      if(totalCostUSD !=''&&!isNaN(totalCostUSD)){
+    		          $('.costUSD').text(totalCostUSD+'USD');          
+    		      }else{
+    		          $('.costUSD').text(0+"USD");
+    		      }
+//    		    var company = $(table.find('[name=SP_ID_input]')).val()
+//    		    $('.company').text(company);
+    		//    
+      
+		        var totalCharge = $('[name=chargeRMB]').text().toString();
+		        var totalChargeU = $('[name=chargeUSD]').text().toString();        
+		        var totalChargeRMB=parseFloat(totalCharge.replace('RMB',''));        
+		        var totalChargeUSD=parseFloat(totalChargeU.replace('USD',''));        
+		        if(isNaN(totalChargeRMB)|| totalChargeRMB =='' ){
+		            totalChargeRMB=0;
+		           }        
+		        if(isNaN(totalChargeUSD)|| totalChargeUSD =='' ){
+		            totalChargeUSD=0;
+		           }
+		        
+		        var costRMB = $('[name=costRMB]').text();    		        
+		        
+	            var profitUSD = parseFloat(totalChargeUSD)-parseFloat(totalCostUSD);
+	                if(profitUSD>=0){
+	                $('[name=profitUSD]').text(profitUSD+"USD");
+	               }else if(profitUSD<0){
+	                $('[name=profitUSD]').html("<span style='color:red'>"+profitUSD+"USD</span>");
+	               } else{
+	                 $('[name=profitUSD]').text('');
+	               }                
+		        
+		        
+
+	            var profitRMB = parseFloat(totalChargeRMB)-parseFloat(totalCostRMB);
+	                if(profitRMB>=0){
+	                $('[name=profitRMB]').text(profitRMB);
+	                $('[name=profitRMB]').text(profitRMB+"RMB");
+	               }else if(profitRMB<0){
+	                $('[name=profitRMB]').html("<span style='color:red'>"+profitRMB+"</span>");
+	                $('[name=profitRMB]').html("<span style='color:red'>"+profitRMB+"RMB</span>");
+	               } else{
+	                 $('[name=profitRMB]').text('');
+	               }
+    		          
+    		        
+    		        
+    		              			
+
+    			
+    			
+    			
+    			
+    			
     
+    //应付结算,目前只用人民币结算
+//    	var costRMB =$('#cost_table').find('[name=currency_total_amount]');
+//    	var chargeRMB =$('#charge_table').find('[name=currency_total_amount]');
+//    	var totalCostRMB=0;
+//    	var totalChargeRMB=0;
+//    	var profitRMB=0;
+//    	for(var i = 0;i<costRMB.length;i++){
+//    		var j = costRMB[i].value;
+//    		if(j!=''&&!isNaN(j)){
+//    			totalCostRMB+=parseFloat(j);
+//    		}
+//    	}
+//		for(var i = 0;i<chargeRMB.length;i++){
+//			var j = chargeRMB[i].value;
+//			if(j!=''&&!isNaN(j)){
+//				totalChargeRMB+=parseFloat(j);
+//			}
+//		}
+//		profitRMB = totalChargeRMB-totalCostRMB;
+//		$('.costRMB').text(totalCostRMB+"RMB");
+//		$('.chargeRMB').text(totalChargeRMB+"RMB");
+//		$('.profitRMB').text(profitRMB+"RMB"); 
+          
+    //取应收人民币总额字段
+			   
+		    var profitTotalCharge = $('[name=profitTotalCharge]').text();
+		    var profitTotalCost = $('[name=profitTotalCost]').text();
+		    
+		    var profitTotalRMB = parseFloat(profitTotalCharge)-parseFloat(profitTotalCost);
+		    if(profitTotalRMB>=0){
+		
+		    $('[name=profitTotalRMB]').text(profitTotalRMB+"RMB");
+		   }else if(profitTotalRMB<0){
+		
+		    $('[name=profitTotalRMB]').html("<span style='color:red'>"+profitTotalRMB+"RMB</span>");
+		   } else{
+		     $('[name=profitTotalRMB]').text('');
+		       }
     	
     
+           $('[name=profitTotalCost]').text(profitTotalCost).hide();
 });
 });
