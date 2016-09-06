@@ -33,8 +33,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			    		return '已确认';
 			    }
             },
-            { "data": "TOTAL_COST", "width": "60px"},
-            { "data": "TOTAL_CHARGE", "width": "60px"},
+            { "data": "TOTAL_COSTRMB", "width": "60px"},
+            { "data": "TOTAL_CHARGERMB", "width": "60px"},
             { "data": "CUSTOMER", "width": "100px"},
             { "data": "TYPE", "width": "60px"},
             { "data": "SP_NAME", "width": "100px"},

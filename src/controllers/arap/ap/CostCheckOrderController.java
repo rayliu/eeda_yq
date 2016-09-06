@@ -80,4 +80,9 @@ public class CostCheckOrderController extends Controller {
 		renderJson("{\"result\":true}");
 	}
 	
+	public void edit(){
+		
+		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");
+	}
+	
 }

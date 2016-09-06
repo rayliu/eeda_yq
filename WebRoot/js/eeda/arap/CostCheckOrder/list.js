@@ -37,7 +37,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             
             { "data": "TYPE", "width": "60px"},
             { "data": "SP_NAME", "width": "100px"},
-            { "data": "TOTAL_COST", "width": "60px"},
+            { "data": "TOTAL_COSTRMB", "width": "60px"},
             
             { "data": null, "width": "60px"},
             { "data": null, "width": "60px"},

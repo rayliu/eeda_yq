@@ -1079,7 +1079,7 @@ public class CostPreInvoiceOrderController extends Controller {
 			setAttr("submit_name", LoginUserController.getLoginUserName(this));
 			setAttr("saveOK", false);
 			setAttr("status", "new");
-			render("/yh/arap/CostAcceptOrder/payEdit.html");
+			render("/eeda/arap/CostAcceptOrder/payEdit.html");
 		}
 		
 		
