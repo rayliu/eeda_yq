@@ -167,9 +167,33 @@ public class ChargeCheckOrderController extends Controller {
 
         renderJson(orderListMap); 
     }
-    public void create(){
+    
+    public void create2(){
     	render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
-    }   
+    }
+    
+	public void create(){
+		//当前登陆用户
+		String OrderIds = getPara("OrderIds");
+		String totalAmount = getPara("totalAmount");
+		
+//		String strAry[] = OrderIds.split(",");
+//		String id = strAry[0];
+		String sql = " select joa.sp_id,p.company_name sp_name from job_order_arap joa "
+				   + " left join party p on p.id = joa.sp_id "
+				   + " where joa.id in (?) ";
+		setAttr("sp",Db.find(sql,OrderIds));
+		setAttr("totalAmount",totalAmount);
+		setAttr("ids",OrderIds);
+		setAttr("loginUser", LoginUserController.getLoginUserName(this));
+		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
+	}
+    
+    
+    
+    
+    
+    
     
     public void create1(){
     	String orderIds = getPara("returnOrderIds");
