@@ -2,24 +2,33 @@ package controllers.arap.ap;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.ArapCostOrder;
+import models.UserLogin;
+import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderArap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
+import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 
+import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.OrderNoGenerator;
 import controllers.util.PermissionConstant;
 
 @RequiresAuthentication
@@ -69,17 +78,67 @@ public class CostCheckOrderController extends Controller {
 		
 	}
 	
-	public void costCheckConfirm(){
+	public void create(){
+		//当前登陆用户
 		String ids = getPara("itemIds");
-		String idAttr[] = ids.split(",");
-		for(int i=0 ; i<idAttr.length ; i++){
-			JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap joa where id = ?",idAttr[i]);
-			joa.set("bill_flag", "Y");
-			joa.update();
-		}
-		renderJson("{\"result\":true}");
+		String totalAmount = getPara("totalAmount");
+		
+		String strAry[] = ids.split(",");
+		String id = strAry[0];
+		String sql = " select joa.sp_id,p.company_name sp_name from job_order_arap joa "
+				   + " left join party p on p.id = joa.sp_id "
+				   + "  where joa.id = ? ";
+		setAttr("sp",Db.findFirst(sql,id));
+		setAttr("totalAmount",totalAmount);
+		setAttr("ids",ids);
+		setAttr("loginUser", LoginUserController.getLoginUserName(this));
+		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");
 	}
 	
+	@Before(Tx.class)
+	public void save(){
+		String jsonStr=getPara("params");
+       	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+        String id = (String) dto.get("id");
+        String ids = (String) dto.get("ids");
+        
+        
+        ArapCostOrder aco = new ArapCostOrder();
+   		UserLogin user = LoginUserController.getLoginUser(this);
+   		
+   		if (StringUtils.isNotEmpty(id)) {
+   			//update
+   			aco = ArapCostOrder.dao.findById(id);
+   			DbUtils.setModelValues(dto, aco);
+   			aco.update();
+   		} else {
+   			//create 
+   			DbUtils.setModelValues(dto, aco);
+	   		String orderPrefix = OrderNoGenerator.getNextOrderNo("YFDZ");
+	        aco.set("order_no", orderPrefix);
+			aco.set("create_by", user.getLong("id"));
+			aco.set("create_stamp", new Date());
+			aco.save();
+			id = aco.getLong("id").toString();
+			//设置已创建过对账单flag
+			String idAttr[] = ids.split(",");
+			for(int i=0 ; i<idAttr.length ; i++){
+				JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap joa where id = ?",idAttr[i]);
+				joa.set("bill_flag", "Y");
+				joa.update();
+			}
+   		}
+   		
+   		String sql = " select aco.*,p.company_name sp_name from arap_cost_order aco "
+   				+ " left join party p on p.id=aco.sp_id "
+   				+ " where aco.id = ? ";
+   		
+   		Record r = new Record();
+   		r.set("cost", Db.findFirst(sql,id));
+   		r.set("loginUser", LoginUserController.getLoginUserName(this));
+   		renderJson(r);
+	}
 	public void edit(){
 		
 		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");

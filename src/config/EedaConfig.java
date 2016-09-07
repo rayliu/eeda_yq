@@ -6,6 +6,8 @@ import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
 
 import models.ArapAccountAuditLog;
+import models.ArapCostItem;
+import models.ArapCostOrder;
 import models.Category;
 import models.Location;
 import models.Office;
@@ -304,6 +306,11 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("truck_order_arap", TruckOrderArap.class);
         arp.addMapping("truck_order_cargo", TruckOrderCargo.class);
         arp.addMapping("currency", Currency.class);
+        
+        //财务
+        arp.addMapping("arap_cost_order", ArapCostOrder.class);
+        arp.addMapping("arap_cost_item", ArapCostItem.class);
+        
     }
 
     private void initDBconnector() {
