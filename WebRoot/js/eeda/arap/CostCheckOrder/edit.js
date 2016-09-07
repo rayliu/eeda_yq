@@ -36,7 +36,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	$('#end_time').val(order.COST.END_TIME);
                 	$('#login_user').text(order.LOGINUSER);
                     
-                    eeda.contactUrl("edit?id",order.ID);
+                    eeda.contactUrl("edit?id",order.COST.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     $('#saveBtn').attr('disabled', false);
                     

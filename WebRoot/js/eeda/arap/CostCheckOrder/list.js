@@ -17,10 +17,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           columns: [
 			{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
-				    	if(full.BILL_FLAG != 'Y')
 				    		return '<input type="checkbox" class="checkBox">';
-				    	else 
-				    		return '<input type="checkbox" disabled checked="checked">';
 				    }
 			},
             { "data": "ORDER_NO", "width": "100px"},
@@ -37,8 +34,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             
             { "data": "TYPE", "width": "60px"},
             { "data": "SP_NAME", "width": "100px"},
-            { "data": "TOTAL_COSTRMB", "width": "60px"},
-            
+            { "data": "TOTAL_COSTRMB", "width": "60px"
+            },
             { "data": null, "width": "60px"},
             { "data": null, "width": "60px"},
             { "data": null, "width": "60px"},
@@ -125,6 +122,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           dataTable.ajax.url(url).load();
       };
       
+      //计算创建对账单的总额
+      var amount = 0;
+      var sum = 0;
+      $('#eeda_table').on('click','.checkBox',function(){
+    	  var id = $(this).parent().parent().attr('id');
+    	  var amountStr = $($('#'+id+' td')[7]).text();
+    	  if(amountStr!=''){
+	    	  amount = parseFloat( amountStr );
+	    	  if(this.checked==true){
+	    		  sum+=amount;
+	    	  }else{
+	    		  sum-=amount;
+	    	  }
+	    	  $("#totalAmountSpan").html(parseFloat(sum).toFixed(2));
+    	  }
+      })
+      
       //全选，全不选
       $('#AllCheck').click(function(){
     	  var ischeck = this.checked;
@@ -144,13 +158,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    		}	
 			})
 			if(hava_check>0){
-				$('#confirmBtn').attr('disabled',false);
+				$('#createBtn').attr('disabled',false);
 			}else{
-				$('#confirmBtn').attr('disabled',true);
+				$('#createBtn').attr('disabled',true);
 			}
 		});
-		$('#confirmBtn').click(function(){
-			$('#confirmBtn').attr('disabled',true);
+		$('#createBtn').click(function(){
+			$('#createBtn').attr('disabled',true);
         	var itemIds=[];
         	$('#eeda_table input[type="checkbox"]').each(function(){
         		var checkbox = $(this).prop('checked');
@@ -159,16 +173,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         			itemIds.push(itemId);
         		}
         	});
-	    	 $.post('/costCheckOrder/costCheckConfirm?itemIds='+itemIds, function(data){
-	    		 if(data.result==true){
-	    			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
-	    			 searchData();
-	    			 $('#confirmBtn').attr('disabled', false);
-	    		 }
-	    	 },'json').fail(function() {
-	                $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
-	                $('#confirmBtn').attr('disabled', false);
-	              });
+        	var totalAmount = parseFloat($("#totalAmountSpan").text());
+        	location.href ="/costCheckOrder/create?totalAmount="+totalAmount+"&itemIds="+itemIds;
         })
       
   });
