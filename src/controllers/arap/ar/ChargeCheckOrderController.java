@@ -167,8 +167,11 @@ public class ChargeCheckOrderController extends Controller {
 
         renderJson(orderListMap); 
     }
-    
     public void create(){
+    	render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
+    }   
+    
+    public void create1(){
     	String orderIds = getPara("returnOrderIds");
     	String[] orderId = orderIds.split(",");
     	JobOrderArap joa = null;
