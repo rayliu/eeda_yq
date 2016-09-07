@@ -1,5 +1,3 @@
-
-
 <%layout("/eeda/layout.html"){%>
         <div id="page-wrapper">
             <div class="row">
@@ -70,10 +68,9 @@
 
 <%}%>
 
- <script>
+<script>
       var type = "${type!''}";
  </script>
-
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/oms/jobOrder/list']);

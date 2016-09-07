@@ -15,7 +15,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 ids: $('#ids').val(),
                 remark: $('#remark').val(),
                 cost_amount: $('#cost_amount').text(),
-                sp_id: $('#sp_id').val(),
+                payee_id: $('#sp_id').val(),
                 begin_time:$('#begin_time').val(),
                 end_time:$('#end_time').val()
             };

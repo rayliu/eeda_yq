@@ -99,15 +99,11 @@ public class CostAcceptOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = "select * from(  "
-        		+ " select joa.id,joa.sp_id,joa.order_id,joa.bill_flag_time,jo.order_no,jo.total_costRMB,c.pay_amount paid_amount,c.cost_order_id,c.order_type, "
-        		+ " p1.company_name sp_name,acao.STATUS "
-				+ " from job_order_arap joa "
-				+ " left join job_order jo on jo.id=joa.order_id "
-				+ " left join party p1 on p1.id=joa.sp_id "
-				+ " left join cost_application_order_rel c on c.cost_order_id=joa.id "
-				+ " left join arap_cost_application_order acao on acao.order_id=joa.order_id"
-				+ " where joa.order_type='cost' and joa.bill_flag='Y' and c.pay_amount is null or jo.total_costRMB>c.pay_amount "
-				+ " GROUP BY joa.id "
+        		+ " select  aco.id,aco.order_no,aco.order_type,aco.cost_amount totalCostAmount,aco.sp_id,p.company_name sp_name,c.pay_amount paid_amount "
+				+ " from arap_cost_order aco "
+				+ " left join party p on p.id=aco.sp_id "
+				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id "
+				+ " where c.pay_amount is null or aco.cost_amount>c.pay_amount "
 				+ " ) B where 1=1 ";
 		
         String condition = DbUtils.buildConditions(getParaMap());

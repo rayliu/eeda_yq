@@ -117,6 +117,7 @@ public class CostCheckOrderController extends Controller {
    			DbUtils.setModelValues(dto, aco);
 	   		String orderPrefix = OrderNoGenerator.getNextOrderNo("YFDZ");
 	        aco.set("order_no", orderPrefix);
+	        aco.set("order_type", "应付对账单");
 			aco.set("create_by", user.getLong("id"));
 			aco.set("create_stamp", new Date());
 			aco.save();

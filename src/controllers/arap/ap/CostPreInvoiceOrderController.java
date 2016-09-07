@@ -1004,6 +1004,9 @@ public class CostPreInvoiceOrderController extends Controller {
 		@RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_CREATE})
 		public void create() {
 			String ids = getPara("sids");
+			String order_type = getPara("order_type");
+			String[] orderArrId=ids.split(",");
+			String[] types=order_type.split(",");
 			setAttr("ids", ids);
 			
 			String payee_id = "";
@@ -1012,11 +1015,10 @@ public class CostPreInvoiceOrderController extends Controller {
 			String deposit_bank = "";
 			String bank_no = "";
 			String account_name = "";
-			String[] orderArrId=ids.split(",");
+			
 			for (int i=0;i<orderArrId.length;) {
-					String[] one=orderArrId[i].split(":");
-					String id = one[0];
-					String orderType = one[1];
+					String id = orderArrId[i];
+					String orderType = types[i];
 					
 					if("应付对账单".equals(orderType)){
  						ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
@@ -1035,23 +1037,6 @@ public class CostPreInvoiceOrderController extends Controller {
  						}else if(type.equals("insurance")){
  							payee_id = arapMiscCostOrder.getLong("insurance_id").toString();
  						}
- 					}else if("行车单".equals(orderType)){
- 						CarSummaryOrder carSummaryOrder = CarSummaryOrder.dao.findById(id);
- 						payee_name = carSummaryOrder.getStr("main_driver_name");
- 					}else if("报销单".equals(orderType)){
- 						ReimbursementOrder reimbursementOrder = ReimbursementOrder.dao.findById(id);
- 						payee_name = reimbursementOrder.getStr("account_name");
- 						deposit_bank = reimbursementOrder.getStr("account_bank");
- 						bank_no = reimbursementOrder.getStr("account_no");
- 						account_name = reimbursementOrder.getStr("account_name");
- 					}else if("往来票据单".equals(orderType)){
- 						ArapInOutMiscOrder arapInOutMiscOrder = ArapInOutMiscOrder.dao.findById(id);
- 						payee_name = arapInOutMiscOrder.getStr("charge_person");
- 					}else if("货损单".equals(orderType)){
- 						String cname = one[2];
- 						Record record = Db.findFirst("select id from contact c where c.abbr = '"+cname+"' ");
- 						if(record != null)
- 							payee_id = record.getLong("id").toString();
  					}
 					break;
 			}
