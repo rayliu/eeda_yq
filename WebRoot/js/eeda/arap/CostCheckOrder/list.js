@@ -17,7 +17,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           columns: [
 			{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
+				    	if(full.BILL_FLAG != 'Y')
 				    		return '<input type="checkbox" class="checkBox">';
+				    	else
+				    		return '<input type="checkbox" class="checkBox" disabled>';
 				    }
 			},
             { "data": "ORDER_NO", "width": "100px"},

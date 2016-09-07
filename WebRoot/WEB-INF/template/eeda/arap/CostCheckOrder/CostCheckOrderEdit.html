@@ -16,21 +16,21 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <form role="form" id="costCheckOrderForm">
-                                        	<input id="id" type="hidden"/>
+                                        	<input id="id" type="hidden" value="${order.id!''}"/>
                                         	<input id="ids" type="hidden"  value="${ids!''}"/>
-                                        	<input id="sp_id" type="text"  value="${sp.sp_id!''}"/>
+                                        	<input id="sp_id" type="hidden"  value="${sp.sp_id!order.sp_id!''}"/>
                                     <h3>对账单信息</h3>
                                     <div class="form-group">
-                                        <label>对账单号</label> <span id = "order_no"><strong>${order_no!''}${arapAuditOrder.order_no!''}</strong></span>
+                                        <label>对账单号</label> <span id = "order_no"><strong>${order_no!''}${order.order_no!''}</strong></span>
                                     </div>
                                     <div class="form-group">
-                                        <label>单据状态</label> <span id="status">${status!''}${arapAuditOrder.status!''}</span>
+                                        <label>单据状态</label> <span id="status">${status!''}${order.status!''}</span>
                                     </div>
                                     <div class="form-group">
-                                        <label>创建人</label> <span id="login_user"> ${loginUser!''}</span>                                  
+                                        <label>创建人</label> <span id="login_user"> ${loginUser!order.c_name!''}</span>                                  
                                     </div>                             
                                     <div class="form-group">
-                                        <label>创建时间</label> <span id="create_stamp">${arapAuditOrder.create_stamp!''}</span>                                       
+                                        <label>创建时间</label> <span id="create_stamp">${order.create_stamp!''}</span>                                       
                                     </div>                             
                                     <div class="form-group">
                                         <label>对账单确认人</label> <span id="confirm_name">${confirm_name!''}${confirm_user.c_name!''} </span>                             
@@ -40,7 +40,7 @@
                                     </div> 
                                     <div class="form-group">
                                         <label>备注</label>
-                                        <textarea class="form-control" rows="7" id="remark">${arapAuditOrder.remark!''}</textarea>
+                                        <textarea class="form-control" rows="7" id="remark">${order.remark!''}</textarea>
                                     </div>                             
                                     </div>
                                     <!-- /.col-lg-6 (nested) -->
@@ -49,22 +49,22 @@
 	                                    <div class="form-group">
 	                                    
 	                                        <label>供应商</label>
-	                                        <label class="radio-inline" id="company">${sp.sp_name!''}</label>
+	                                        <label class="radio-inline" id="company">${sp.sp_name!order.sp_name!''}</label>
 	                                    </div>
-                                        <div><label>对账确认金额</label><label class="radio-inline" id="cost_amount">${totalAmount!'#.00'}</label></div>
+                                        <div><label>对账确认金额</label><label class="radio-inline" id="cost_amount">${totalAmount!order.cost_amount!'#.00'}</label></div>
 	                                    <div class="row">                                        
 	                                        <div class="col-lg-10">
 	                                        <%include("/eeda/component/form/dateInputField.html", 
 	                                                            {   id: 'begin_time', 
 	                                                                label: '对账开始时间', 
-	                                                                value: ''
+	                                                                value: order.begin_time!''
 	                                                            }){}%>
 	                                        </div>
 	                                        <div class="col-lg-10">
 	                                       <%include("/eeda/component/form/dateInputField.html", 
 	                                                           {   id: 'end_time', 
 	                                                               label: '对账结束时间', 
-	                                                               value: ''
+	                                                               value: order.end_time!''
 	                                                           }){}%>
 	                                        </div>
 		                                </div>
@@ -118,14 +118,14 @@
                                 <div class=".tooltip-demo">
                                     <hr/>
                                 	<a style="display:none" id ="style"><i class='fa fa-check'></i></a>
-                                    <button id="saveBtn" type="button" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">保存</button> 
+                                    <button id="saveBtn" type="button" class="btn  btn-primary">保存</button> 
                                                      
-                                    <button id="auditBtn" type="button" disabled="true" class="btn  btn-primary " data-toggle="tooltip" title="" data-original-title="Default tooltip">确认</button>
+                                    <button id="confirmBtn" type="button" class="btn  btn-primary" disabled>确认</button>
                                    
-							         <button id="printBtn"  type="button" class="btn  btn-primary " data-toggle="tooltip" title="" data-original-title="Default tooltip">打印</button>
+							         <button id="printBtn"  type="button" class="btn  btn-primary">打印</button>
 							      
                                     <a class="btn  btn-primary" href="/costCheckOrder">返回</a>
-                                    <button id="deleteBtn" type="button" class="btn  btn-danger" >撤销</button>
+                                    <button id="deleteBtn" type="button" class="btn  btn-danger" disabled>撤销</button>
                                 </div>
                                 
                                 

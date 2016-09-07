@@ -39,6 +39,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     eeda.contactUrl("edit?id",order.COST.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     $('#saveBtn').attr('disabled', false);
+                    $('#confirmBtn').attr('disabled', false);
                     
                     //异步刷新明细表
                     
@@ -52,7 +53,31 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               });
         });  
         
-    
+        //按钮状态
+        var status = $('#status').text();
+        if(status=='新建'){
+        	$('#confirmBtn').attr('disabled', false);
+        }else if(status=='已确认'){
+        	$('#saveBtn').attr('disabled', true);
+        	$('#confirmBtn').attr('disabled', true);
+        	$('#deleteBtn').attr('disabled', false);
+        }
+        
+        $('#confirmBtn').click(function(){
+        	$(this).attr('disabled', true);
+        	var id = $('#id').val();
+        	 $.post('/costCheckOrder/confirm', {id:id}, function(data){
+    			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+    			 $('#saveBtn').attr('disabled', true);
+    			 $(this).attr('disabled', true);
+    			 $('#deleteBtn').attr('disabled', false);
+	         },'json').fail(function() {
+	        	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+                 $(this).attr('disabled', false);
+                 $('#saveBtn').attr('disabled', false);
+                 $('#deleteBtn').attr('disabled', true);
+	           });
+        })
         
 });
 });

@@ -139,9 +139,25 @@ public class CostCheckOrderController extends Controller {
    		r.set("loginUser", LoginUserController.getLoginUserName(this));
    		renderJson(r);
 	}
+	
 	public void edit(){
-		
+		String id = getPara("id");
+		String sql = " select aco.*,p.company_name sp_name,u.c_name from arap_cost_order aco "
+   				+ " left join party p on p.id=aco.sp_id "
+   				+ " left join user_login u on u.id=aco.create_by"
+   				+ " where aco.id = ? ";
+		setAttr("order", Db.findFirst(sql,id));
 		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");
+	}
+	
+	public void confirm(){
+		String id = getPara("id");
+		ArapCostOrder aco = ArapCostOrder.dao.findById(id);
+		aco.set("status","已确认");
+		aco.set("confirm_stamp", new Date());
+		aco.set("confirm_by", LoginUserController.getLoginUserId(this));
+		aco.update();
+		renderJson("{\"result\":true}");
 	}
 	
 }
