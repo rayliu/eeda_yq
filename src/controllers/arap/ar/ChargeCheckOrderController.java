@@ -12,6 +12,7 @@ import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
+import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -42,10 +43,6 @@ public class ChargeCheckOrderController extends Controller {
 		
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderList.html");
 	}
-	
-    public void create() {
-        render("/oms/ChargeCheckOrder/ChargeCheckOrderEdit.html");
-    }
     
     @Before(Tx.class)
    	public void save() throws Exception {		
@@ -142,7 +139,7 @@ public class ChargeCheckOrderController extends Controller {
         	sql = " select * from (select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
         			+ "jo.net_weight gross_weight,jo.total_chargeRMB rmb,jo.total_chargeUSD usd,jo.ref_no ref_no,"
         			+ "p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
-        			+ "GROUP_CONCAT(josi.container_no) container_no,count(josi.container_type) container_amount "
+        			+ "GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
         			+ " from job_order_arap joa"
         			+ "	left join job_order jo on jo.id=joa.order_id "
         			+ "	left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -151,7 +148,7 @@ public class ChargeCheckOrderController extends Controller {
         			+ " left join job_order_land_item  jols on jols.order_id=joa.order_id "
         			+ "	left join party p1 on p1.id=joa.sp_id "
         			+ "	left join location l on l.id=jos.fnd "
-        			+ "	where joa.order_type='cost' and joa.audit_flag='Y' "
+        			+ "	where joa.order_type='charge' and joa.audit_flag='Y' "
         			+ " GROUP BY joa.id) A where 1 = 1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
@@ -171,7 +168,17 @@ public class ChargeCheckOrderController extends Controller {
         renderJson(orderListMap); 
     }
     
-
+    public void create(){
+    	String orderIds = getPara("returnOrderIds");
+    	String[] orderId = orderIds.split(",");
+    	JobOrderArap joa = null;
+    	for(int i=0;i<orderId.length;i++){
+    		joa = JobOrderArap.dao.findById(orderId[i]);
+    		joa.set("bill_flag", "Y");    		
+    		joa.update();
+    	}
+    	renderJson(joa);
+    }
    
 
 }

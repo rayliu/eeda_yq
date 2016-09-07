@@ -2,11 +2,13 @@ define(['jquery', 'metisMenu', 'sb_admin', './index_weekly_charts', './index_pro
 
     $(document).ready(function () {
         document.title = '管理看板 | ' + document.title;
-
-        $('#menu_todo_list').click(function(){
-        	getTODO();
-        });
-        var getTODO = function(){
+//        $.extend({'getTODO':function(){}});
+//        $.fn.extend({'getTODO':function(){}})
+//       
+//        $('#menu_todo_list').click(function(){
+//        	getTODO();
+//        });
+//        var getTODO = function(){
 	        //查询系统单据数量合计
 	        $.get('/todo/getPlanOrderTodoCount', function(data){
 	            //设置index中
@@ -62,7 +64,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './index_weekly_charts', './index_pro
 	            $("#TlxOrderTodoCount").empty().text(data);
 	            $(".tlxOrderWait").empty().text(data);
 	        });
-        }
+//        }
         
         
         

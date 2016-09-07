@@ -55,7 +55,7 @@
                                 <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
                                 <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
                                 <button id="chargeConfiremBtn" class="btn btn-success  btn-primary">确认</button>
-                                <button id="allCheck" class="btn btn-primary btn-sm" type="button">全选</button>
+                                <button id="allCheck" class="btn btn-primary btn-sm" type="button" style = "display:none">全选</button>
                             </div> 
 
 			                            <%include("/eeda/component/form/detailTable.html", 
@@ -63,6 +63,7 @@
 			                                    id:'eeda-table', 
 			                                    headers:['<input type="checkbox" id="allCheck1">',
 			                                        '工作单号',
+			                                        '创建时间',
 			                                        '类型',
 			                                        '结算公司',
 			                                        '费用名称',

@@ -1,6 +1,7 @@
 package controllers.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -118,5 +119,13 @@ public class PrintPatterns{
 		return outFileName;
 	}
 	
-	
+	public static void main(String[] args) {
+        String outFileName ="http://yqdemo.eeda123.com/download/工作单空运bookingEKO2016082600014-20160906150156757.pdf";
+        try {
+            com.lowagie.tools.Executable.printDocumentSilent(outFileName);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } 
+    }
 }

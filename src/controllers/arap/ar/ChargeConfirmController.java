@@ -130,7 +130,7 @@ public class ChargeConfirmController extends Controller {
         }
         String sql = "";
         
-        	sql = " select * from (SELECT joa.*, jo.order_no order_no,pr.abbr sp_name,f.name cost_name,"
+        	sql = " select * from (SELECT joa.*, jo.order_no order_no,pr.abbr sp_name,f.name cost_name,jo.create_stamp,"
         			+ " u. NAME unit_name,c. NAME currency_name"
         			+ " FROM job_order_arap joa"
         			+ " LEFT JOIN job_order jo ON joa.order_id = jo.id"
@@ -138,7 +138,7 @@ public class ChargeConfirmController extends Controller {
         			+ " LEFT JOIN fin_item f ON f.id = joa.charge_id"
         			+ " LEFT JOIN unit u ON u.id = joa.unit_id"
         			+ " LEFT JOIN currency c ON c.id = joa.currency_id"
-        			+ " WHERE joa.order_type = 'charge') A where 1 = 1 ";
+        			+ " WHERE joa.order_type = 'charge' and audit_flag != 'Y') A where 1 = 1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
 
@@ -159,30 +159,34 @@ public class ChargeConfirmController extends Controller {
     
     public void chargeConFirmReturnOrder(){
     	String returnOrderIds = getPara("returnOrderIds");
-    	String orderType = getPara("orderType");
+    	String orderType = getPara("orderTypes");
     	String[] idArr = returnOrderIds.split(",");
-    	String[] orderNoArr = orderType.split(",");
+    	String[] orderTypeArr = orderType.split(",");
     	for(int i=0 ; i<idArr.length ; i++){
-    		if("海运".equals(orderNoArr[i])){
+    		if("海运".equals(orderTypeArr[i])){
     			JobOrderArap jobOrderArap = JobOrderArap.dao.findById(idArr[i]);
     			jobOrderArap.set("audit_flag", "Y");
+    			jobOrderArap.set("create_time", new Date());
     			jobOrderArap.update();
-    		}else if("空运".equals(orderNoArr[i])){
+    		}else if("空运".equals(orderTypeArr[i])){
     			JobOrderArap jobOrderArap = JobOrderArap.dao.findById(idArr[i]);
     			jobOrderArap.set("audit_flag", "Y");
+    			jobOrderArap.set("create_time", new Date());
     			jobOrderArap.update();
-    		}else if("陆运".equals(orderNoArr[i])){
+    		}else if("陆运".equals(orderTypeArr[i])){
     			JobOrderArap jobOrderArap = JobOrderArap.dao.findById(idArr[i]);
     			jobOrderArap.set("audit_flag", "Y");
+    			jobOrderArap.set("create_time", new Date());
     			jobOrderArap.update();
-    		}else if("报关".equals(orderNoArr[i])){
+    		}else if("报关".equals(orderTypeArr[i])){
     			JobOrderArap jobOrderArap = JobOrderArap.dao.findById(idArr[i]);
     			jobOrderArap.set("audit_flag", "Y");
-    			
+    			jobOrderArap.set("create_time", new Date());
     			jobOrderArap.update();
-    		}else if("保险".equals(orderNoArr[i])){
+    		}else if("保险".equals(orderTypeArr[i])){
     			JobOrderArap jobOrderArap = JobOrderArap.dao.findById(idArr[i]);
     			jobOrderArap.set("audit_flag", "Y");
+    			jobOrderArap.set("create_time", new Date());
     			jobOrderArap.update();
     		}else{
     			JobOrderArap jobOrderArap = JobOrderArap.dao.findById(idArr[i]);
@@ -193,21 +197,6 @@ public class ChargeConfirmController extends Controller {
     	}
         renderJson("{\"success\":true}");
     }
-  //异步刷新字表
-//    public void tableList(){
-//    	String order_id = getPara("order_id");
-//    	List<Record> list = null;
-//    	list = getPlanOrderItems(order_id);
-//
-//    	Map BillingOrderListMap = new HashMap();
-//        BillingOrderListMap.put("sEcho", 1);
-//        BillingOrderListMap.put("iTotalRecords", list.size());
-//        BillingOrderListMap.put("iTotalDisplayRecords", list.size());
-//
-//        BillingOrderListMap.put("aaData", list);
-//
-//        renderJson(BillingOrderListMap); 
-//    }
-   
+
 
 }
