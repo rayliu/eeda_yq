@@ -78,7 +78,7 @@
                             </div>
                             <div role="tabpanel" class="tab-pane fade in" id="cost_check_order">
                                 <div class="panel-body">
-                                    <form id="checkOrderForm">
+                                    <form id="orderSearchForm">
                                         <div class="row">
                                             <div class="col-lg-4">
                                                 <%include("/eeda/component/form/inputField.html", 
@@ -116,14 +116,14 @@
                                     </form>
 
                                     <div class="form-group button-bar" >
-                                        <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
-                                        <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+                                        <button id="searchOrderBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+                                        <button id="resetOrderBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
                                     </div>
                                     <%include("/eeda/component/form/detailTable.html", 
                                         {
                                             id:'order_table', 
                                             style:'width:1900px',
-                                            headers:['<input type="checkbox" id="AllCheck" >','工作单号','创建时间','状态','DEBIT_NO','类型','结算公司','合计支出(RMB)','合计支出(USD)','合计支出(HKD)','合计支出(JPY)',
+                                            headers:['对账单号','创建时间','状态','DEBIT_NO','类型','结算公司','合计支出(RMB)','合计支出(USD)','合计支出(HKD)','合计支出(JPY)',
                                              'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','箱号'
                                             ]
                                         }){} %>
@@ -143,6 +143,6 @@
  </script>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
-        requirejs(['app/arap/CostCheckOrder/list']);
+        requirejs(['app/arap/CostCheckOrder/list', 'app/arap/CostCheckOrder/order_list']);
     });
 </script>

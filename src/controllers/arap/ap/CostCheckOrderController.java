@@ -60,7 +60,7 @@ public class CostCheckOrderController extends Controller {
 				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
 				+ " left join party p1 on p1.id=joa.sp_id "
 				+ " left join location l on l.id=jos.fnd "
-				+ " where joa.order_type='cost' and joa.audit_flag='Y' "
+				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' "
 				+ " GROUP BY joa.id "
 				+ " ) B where 1=1 ";
 		
@@ -76,6 +76,28 @@ public class CostCheckOrderController extends Controller {
         map.put("data", orderList);
         renderJson(map); 
 		
+	}
+	public void orderList() {
+	    String sLimit = "";
+	    String pageIndex = getPara("draw");
+	    if (getPara("start") != null && getPara("length") != null) {
+	        sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+	    }
+	    String condition = DbUtils.buildConditions(getParaMap());
+	    String sql = "select * from  arap_cost_order where 1=1 ";
+	    
+	    String sqlTotal = "select count(1) total from ("+sql+ condition+") C";
+	    Record rec = Db.findFirst(sqlTotal);
+	    logger.debug("total records:" + rec.getLong("total"));
+	    
+	    List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+	    Map map = new HashMap();
+	    map.put("draw", pageIndex);
+	    map.put("recordsTotal", rec.getLong("total"));
+	    map.put("recordsFiltered", rec.getLong("total"));
+	    map.put("data", orderList);
+	    renderJson(map); 
+	    
 	}
 	
 	public void create(){
