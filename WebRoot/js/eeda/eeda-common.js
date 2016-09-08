@@ -1,4 +1,19 @@
-define(function(){
+define(['app/index/todo'], function(todoController){
+
+   $(document).ready(function() {
+
+
+      var moudleUrl = window.location.pathname.split('/')[1];
+      if(moudleUrl.length>0 && location.search.indexOf('type')>0){
+          todoController.updateTodo();
+      }
+
+      $('#menu_todo_list').click(function(){
+        if($(".planOrderWait").html()==""){
+          todoController.updateTodo();
+        }
+      });
+   });
 var eeda={};
 window.eeda =eeda;
 //dataTables builder for 1.10
