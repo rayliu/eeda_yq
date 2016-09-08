@@ -158,7 +158,7 @@ public class ChargeCheckOrderController extends Controller {
             			+ " left join job_order_land_item  jols on jols.order_id=joa.order_id "
             			+ "	left join party p1 on p1.id=joa.sp_id "
             			+ "	left join location l on l.id=jos.fnd "
-            			+ "	where joa.order_type='charge' and joa.audit_flag='Y' "
+            			+ "	where joa.order_type='charge' and joa.audit_flag='Y' and joa.bill_flag !='Y' "
             			+ " GROUP BY joa.id) A where 1 = 1 ";		
         				
         			}
@@ -180,8 +180,45 @@ public class ChargeCheckOrderController extends Controller {
         renderJson(orderListMap); 
     }
     
-    public void create2(){
-    	render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
+    public void checkedList(){
+    	String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+        String sql = "";        
+        		sql = " select * from (select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
+            			+ "jo.net_weight gross_weight,jo.total_chargeRMB rmb,jo.total_chargeUSD usd,jo.total_profitTotalRMB totalrmb,jo.ref_no ref_no,"
+            			+ "p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
+            			+ "GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
+            			+ " from job_order_arap joa"
+            			+ "	left join job_order jo on jo.id=joa.order_id "
+            			+ "	left join job_order_shipment jos on jos.order_id=joa.order_id "
+            			+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
+            			+ "	left join job_order_air_item joai on joai.order_id=joa.order_id "
+            			+ " left join job_order_land_item  jols on jols.order_id=joa.order_id "
+            			+ "	left join party p1 on p1.id=joa.sp_id "
+            			+ "	left join location l on l.id=jos.fnd "
+            			+ "	where joa.order_type='charge' and joa.audit_flag='Y' and joa.bill_flag='Y'"
+            			+ " GROUP BY joa.id) A where 1 = 1 ";	  				
+        			
+        
+        String condition = DbUtils.buildConditions(getParaMap());
+
+        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        
+        List<Record> orderList = Db.find(sql+ condition  +sLimit);
+        Map orderListMap = new HashMap();
+        orderListMap.put("draw", pageIndex);
+        orderListMap.put("recordsTotal", rec.getLong("total"));
+        orderListMap.put("recordsFiltered", rec.getLong("total"));
+
+        orderListMap.put("data", orderList);
+
+        renderJson(orderListMap);
+    	
     }
     
 	public void create(){
@@ -191,11 +228,25 @@ public class ChargeCheckOrderController extends Controller {
 		
 		String strAry[] = OrderIds.split(",");
 		String id = strAry[0];
-		String sql = " select joa.sp_id,p.company_name sp_name from job_order_arap joa "
-				   + " left join party p on p.id = joa.sp_id "
-				   + " where joa.id = ? ";
-		setAttr("sp",Db.findFirst(sql,id));
+		String sql = " select * from ( SELECT joa.sp_id,p.company_name sp_name,jos.shipper_info,"
+				+ " jo.total_profitRMB total_profitRMB,jo.total_profitTotalCost total_profitTotalCost,jo.total_profitTotalRMB total_profitTotalRMB"
+				+ " FROM job_order_arap joa	"
+				+ " LEFT JOIN party p ON p.id = joa.sp_id "
+				+ " LEFT JOIN job_order_shipment jos on jos.order_id = joa.order_id"
+				+ " LEFT JOIN job_order  jo on jo.id = joa.order_id"
+				+ " where joa.id= ? ) A where 1 = 1";
+		Record rec =Db.findFirst(sql,id);
+		 
+		String shipper_info= rec.get("shipper_info");
+		String[] info = shipper_info.split("\n");
+		String address = info[0];
+		String name = info[1];
+		String phone = info[2];
+		setAttr("sp",rec);
 		setAttr("totalAmount",totalAmount);
+		setAttr("address",address);
+		setAttr("name",name);
+		setAttr("phone",phone);
 		setAttr("ids",OrderIds);
 		setAttr("loginUser", LoginUserController.getLoginUserName(this));
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
