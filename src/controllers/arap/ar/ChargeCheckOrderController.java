@@ -123,13 +123,14 @@ public class ChargeCheckOrderController extends Controller {
     
     public void list() {
     	String checked = getPara("checked");
+    	
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = "";
-        if(checked=="Y"){
+        if(checked.equals("Y")){
         	sql = " select * from (select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
         			+ "jo.net_weight gross_weight,jo.total_profitRMB rmb,jo.total_profitUSD usd,jo.total_profitTotalRMB totalrmb,jo.ref_no ref_no,"
         			+ "p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
