@@ -236,8 +236,11 @@ public class ChargeCheckOrderController extends Controller {
 				+ " LEFT JOIN job_order  jo on jo.id = joa.order_id"
 				+ " where joa.id= ? ) A where 1 = 1";
 		Record rec =Db.findFirst(sql,id);
-		 
+		
 		String shipper_info= rec.get("shipper_info");
+		if(shipper_info.isEmpty()){
+			shipper_info="";
+		}
 		String[] info = shipper_info.split("\n");
 		String address = info[0];
 		String name = info[1];

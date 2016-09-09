@@ -42,8 +42,8 @@ import controllers.util.PermissionConstant;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class ChargeInvoiceOrderController extends Controller {
-    private Log logger = Log.getLog(ChargeInvoiceOrderController.class);
+public class ChargeInvoiceOrderController1 extends Controller {
+    private Log logger = Log.getLog(ChargeInvoiceOrderController1.class);
     Subject currentUser = SecurityUtils.getSubject();
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_CIO_LIST})
     public void index() {
