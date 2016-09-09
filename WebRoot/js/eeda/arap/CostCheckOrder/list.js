@@ -17,6 +17,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           columns: [
 			{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
+				    	if(!full.BILL_FLAG)
+	                        return '';
 				    	if(full.BILL_FLAG != 'Y')
 				    		return '<input type="checkbox" class="checkBox">';
 				    	else
@@ -27,6 +29,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "CREATE_STAMP", "width": "100px"},
             { "data": "BILL_FLAG", "width": "60px",
             	"render": function ( data, type, full, meta ) {
+            		if(!data)
+                        return '';
 			    	if(data != 'Y')
 			    		return '未创建对账单';
 			    	else 
