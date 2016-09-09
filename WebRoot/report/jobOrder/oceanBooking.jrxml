@@ -636,7 +636,7 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="8" y="119" width="272" height="51" uuid="5988049a-ad69-4a95-b44f-d8bbeb1f267b"/>
 				<textElement>
-					<font fontName="仿宋" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{consignee_info}]]></textFieldExpression>
 			</textField>
@@ -1033,7 +1033,7 @@ WHERE
 			<staticText>
 				<reportElement x="8" y="91" width="269" height="45" uuid="66de682b-48e7-41f6-aba4-3c7cc76ec52c"/>
 				<textElement>
-					<font fontName="仿宋" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[Consignee(Complete name and address)收货人(名称和地址)
 ]]></text>
