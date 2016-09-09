@@ -2,11 +2,9 @@ package controllers.arap.ap;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,14 +20,12 @@ import models.CostApplicationOrderRel;
 import models.Party;
 import models.UserLogin;
 import models.eeda.profile.Account;
-import models.yh.arap.ArapAccountAuditSummary;
 import models.yh.arap.ArapMiscCostOrder;
 import models.yh.arap.ReimbursementOrder;
 import models.yh.arap.inoutorder.ArapInOutMiscOrder;
 import models.yh.arap.prePayOrder.ArapPrePayOrder;
 import models.yh.carmanage.CarSummaryOrder;
 import models.yh.damageOrder.DamageOrder;
-import models.yh.damageOrder.DamageOrderFinItem;
 import models.yh.profile.Contact;
 
 import org.apache.commons.lang.StringUtils;
@@ -1008,6 +1004,7 @@ public class CostPreInvoiceOrderController extends Controller {
 			String[] orderArrId=ids.split(",");
 			String[] types=order_type.split(",");
 			setAttr("ids", ids);
+			setAttr("order_types", order_type);
 			
 			String payee_id = "";
 			String payee_filter = "";
@@ -1020,7 +1017,7 @@ public class CostPreInvoiceOrderController extends Controller {
 					String id = orderArrId[i];
 					String orderType = types[i];
 					
-					if("应付对账单".equals(orderType)){
+					if("对账单".equals(orderType)){
  						ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
  						payee_id = arapCostOrder.getLong("payee_id").toString();
  					}else if("预付单".equals(orderType)){
@@ -1068,10 +1065,9 @@ public class CostPreInvoiceOrderController extends Controller {
 		}
 		
 		
-		//新模块
-		//性逻辑
 		public void costOrderList() {
 	        String ids = getPara("ids");
+	        String order_types = getPara("order_types");
 	        String application_id = getPara("application_id");
 	        String dz_id ="" ;//对账单
 	        String yf_id = "";//预付单
@@ -1085,15 +1081,15 @@ public class CostPreInvoiceOrderController extends Controller {
 	        String payee_unit = "";
 	        if(application_id.equals("")){
 	        	if(!application_id.equals(ids)){
-	        		String[] orderArrId=ids.split(",");
+	        		String[] idArr=ids.split(",");
+	        		String[] orderTypeArr=order_types.split(",");
 	        		
-	 				for (int i=0;i<orderArrId.length;i++) {
-	 					String[] one=orderArrId[i].split(":");
-	 					String id = one[0];
-	 					String orderType = one[1];
+	 				for (int i=0;i<idArr.length;i++) {
+	 					String id = idArr[i];
+	 					String orderType = orderTypeArr[i];
 	 					
 	 					
-	 					if("应付对账单".equals(orderType)){
+	 					if("对账单".equals(orderType)){
 	 						dz_id += id+",";
 	 					}else if("预付单".equals(orderType)){
 	 						yf_id += id+",";
@@ -1105,11 +1101,12 @@ public class CostPreInvoiceOrderController extends Controller {
 	 						bx_id += id+",";
 	 					}else if("往来票据单".equals(orderType)){
 	 						wl_id += id+",";
-	 					}else if("货损单".equals(orderType)){
-	 						cname =" and dofi.party_name = '"+ one[2] +"'";
-	 						payee_unit = one[2];
-	 						hs_id += id+",";
 	 					}
+//	 					else if("货损单".equals(orderType)){
+//	 						cname =" and dofi.party_name = '"+ one[2] +"'";
+//	 						payee_unit = one[2];
+//	 						hs_id += id+",";
+//	 					}
 	 				}
 	 				if(!dz_id.equals(""))
 	 					dz_id = dz_id.substring(0, dz_id.length()-1);
@@ -1144,11 +1141,11 @@ public class CostPreInvoiceOrderController extends Controller {
 				
 			
 				sql = " SELECT aco.id,aco.payee_id,null payee_name,aco.order_no, '对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
-						+ " c.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name, aco.cost_amount,"
+						+ " c.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name, aco.total_amount cost_amount, "
 						+ " ( SELECT ifnull(sum(caor.pay_amount),0) FROM cost_application_order_rel caor "
 						+ " WHERE caor.cost_order_id = aco.id AND caor.order_type = '对账单' "
 						+ " ) pay_amount,"
-						+ " (aco.cost_amount - (SELECT ifnull(sum(caor.pay_amount), 0) "
+						+ " (aco.total_amount - (SELECT ifnull(sum(caor.pay_amount), 0) "
 						+ " FROM cost_application_order_rel caor "
 						+ " WHERE caor.cost_order_id = aco.id AND caor.order_type = '对账单'"
 						+ " )) yufu_amount,null item_ids,null payee_unit "

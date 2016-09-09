@@ -8,74 +8,51 @@ $(document).ready(function() {
 		$('#menu_todo_list').removeClass('active').find('ul').removeClass('in');
 		$('#menu_finance').addClass('active').find('ul').addClass('in');
 	  }
-   
-
-	//datatable, 动态处理
-    var ids = $("#ids").val();
-    var total = 0.00;
-    var nopay = 0.00;
-    var pay = 0.00;
-    var datatable = $('#CostOrder-table').dataTable({
-        "bFilter": false, //不需要默认的搜索框
-        "sDom": "<'row-fluid'<'span6'l><'span6'f>r><'datatable-scroll't><'row-fluid'<'span12'i><'span12 center'p>>",
-        "bPaginate" : false, //显示分页器
-        "bSort": false, // 不要排序
-        "bServerSide": true,
-    	  "oLanguage": {
-            "sUrl": "/eeda/dataTables.ch.txt"
-        },
-        "sAjaxSource": "/costPreInvoiceOrder/costOrderList?ids="+ids+"&application_id="+$("#application_id").val(),
-        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-			$(nRow).attr({id: aData.ID});
-			$(nRow).attr({item_ids:aData.ITEM_IDS});
-			$(nRow).attr({payee_unit:aData.PAYEE_UNIT});
-		},
-        "aoColumns": [   
-                      
-             {"mDataProp":"ORDER_TYPE","sWidth": "100px","sClass":'order_type'},
-             {"mDataProp":"ORDER_NO","sWidth": "120px",
-            	"fnRender": function(obj) {
-            		return eeda.getUrlByNo(obj.aData.ID,obj.aData.ORDER_NO);
+		//datatable, 动态处理
+	    var ids = $("#ids").val();
+	    var order_types = $("#order_types").val();
+	    var total = 0.00;
+	    var nopay = 0.00;
+	    var pay = 0.00;
+		var dataTable = eeda.dt({
+		    id: 'CostOrder-table',
+		    paging: true,
+		    serverSide: true, //不打开会出现排序不对
+		    ajax: "/costPreInvoiceOrder/costOrderList?ids="+ids+"&order_types="+order_types+"&application_id="+$("#application_id").val(),
+		    columns:[
+             {"data":"ORDER_TYPE","width": "100px"},
+             {"data":"ORDER_NO","width": "120px",
+            	"render": function(data, type, full, meta) {
+            		return '<a href="/costCheckOrder/edit?id='+full.ID+'">'+data+'</a>';
         		}
              },
-        	{"mDataProp":"CNAME","sWidth": "250px"},
-        	{"mDataProp":"PAYEE_NAME","sWidth": "120px"},
-    		{"mDataProp":"COST_AMOUNT","sWidth": "100px",
-    			"fnRender": function(obj) {
-					total = total + parseFloat(obj.aData.COST_AMOUNT) ;
+        	{"data":"CNAME","width": "250px"},
+        	{"data":"PAYEE_NAME","width": "120px"},
+    		{"data":"COST_AMOUNT","width": "100px",
+    			"render": function(data, type, full, meta) {
+					total = total + parseFloat(data) ;
 					$("#total").html(total);
-					return obj.aData.COST_AMOUNT;
+					return data;
     			}
     		},
-    		{"mDataProp":"YUFU_AMOUNT","sWidth": "100px","sClass":'yufu_amount',
-    			"fnRender": function(obj) {
-					nopay = nopay + parseFloat(obj.aData.YUFU_AMOUNT) ;
+    		{"data":"YUFU_AMOUNT","width": "100px",
+    			"render": function(data, type, full, meta) {
+					nopay = nopay + parseFloat(data) ;
 					$("#nopay").html(nopay);
-					return obj.aData.YUFU_AMOUNT;
+					return data;
     			}
     		},
-    		{"mDataProp":null,"sWidth": "100px",
-    			"fnRender": function(obj) {
-					if($('#application_id').val()==''){
-						pay = pay + parseFloat(obj.aData.YUFU_AMOUNT) ;
-						$("#pay").html(pay);
-						$("#pay_amount").val(pay);
-						return "<input type ='text' name='amount' style='width:80px' id ='amount' value='"+obj.aData.YUFU_AMOUNT+"'>";
-					}
-					else{
-						if(obj.aData.PAY_AMOUNT==0){
-	    					obj.aData.PAY_AMOUNT = obj.aData.YUFU_AMOUNT;
-	    				}
-						pay = pay + parseFloat(obj.aData.PAY_AMOUNT) ;
-						$("#pay").html(pay);
-						$("#pay_amount").val(pay);
-						return "<input type ='text' name='amount' style='width:80px' id ='amount' value='"+obj.aData.PAY_AMOUNT+"'>";
-					}
+    		{"data":null,"width": "100px",
+    			"render": function(data, type, full, meta) {
+					pay = pay + parseFloat(full.YUFU_AMOUNT) ;
+					$("#pay").html(pay);
+					$("#pay_amount").val(pay);
+					return "<input type ='text' name='amount' style='width:80px' id ='amount' value='"+full.YUFU_AMOUNT+"'>";
     			}
     		},
-    		{"mDataProp":"CREATOR_NAME","sWidth": "120px"},
-    		{"mDataProp":"CREATE_STAMP","sWidth": "150px"},
-    		{"mDataProp":"REMARK","sWidth": "150px"}
+    		{"data":"CREATOR_NAME","width": "120px"},
+    		{"data":"CREATE_STAMP","width": "150px"},
+    		{"data":"REMARK","width": "150px"}
         ]      
     });	
     
@@ -103,7 +80,7 @@ $(document).ready(function() {
     
 
     //申请保存
-  //付款确认
+    //付款确认
 	$("#saveBtn").on('click',function(){
 		$("#saveBtn").attr("disabled", true);
 		$("#printBtn").attr("disabled", true);
@@ -126,12 +103,12 @@ $(document).ready(function() {
 				$("#printBtn").attr("disabled", false);
 				$("#checkBtn").attr('disabled',false);
 				$("#deleteBtn").attr("disabled", false);
-				contactUrl("edit?id",data.ID);
+				eeda.contactUrl("edit?id",data.ID);
 				total = 0.00;
 				nopay = 0.00;
 				pay = 0.00;
-				datatable.fnSettings().sAjaxSource = "/costPreInvoiceOrder/costOrderList?application_id="+$("#application_id").val();;
-				datatable.fnDraw();
+				var url = "/costPreInvoiceOrder/costOrderList?application_id="+$("#application_id").val();;
+				dataTable.ajax.url(url).load();
 			}else{
 				$.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
 			}
