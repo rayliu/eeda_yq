@@ -254,8 +254,7 @@ public class ChargeCheckOrderController extends Controller {
 				 address = info[0];
 			}
 			
-		}
-		
+		}		
 		setAttr("sp",rec);
 		setAttr("totalAmount",totalAmount);
 		setAttr("address",address);
