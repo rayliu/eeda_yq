@@ -62,6 +62,7 @@ public class CostCheckOrderController extends Controller {
 				+ " left join party p1 on p1.id=jo.customer_id "
 				+ " left join location l on l.id=jos.fnd "
 				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' "
+				+ " GROUP BY joa.id"
 				+ " ) B where 1=1 ";
 		
         String sqlTotal = "select count(1) total from ("+sql+ condition+") C";

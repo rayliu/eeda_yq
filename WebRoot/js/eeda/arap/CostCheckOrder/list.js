@@ -17,44 +17,45 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           columns: [
 			{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
-				    	if(!full.BILL_FLAG)
-				    		return '<input type="checkbox" class="checkBox" disabled>';
-				    	else if(full.BILL_FLAG != 'Y')
-				    		return '<input type="checkbox" class="checkBox">';
-				    	else
-				    		return '<input type="checkbox" class="checkBox" disabled>';
+				    	if(full.BILL_FLAG != ''){
+					        if(full.BILL_FLAG != 'Y')
+					    		return '<input type="checkbox" class="checkBox">';
+					    	else
+					    		return '<input type="checkbox" class="checkBox" disabled>';
+				    	}else{
+				    		return '';
+				    	}
 				    }
 			},
             { "data": "ORDER_NO", "width": "100px"},
             { "data": "CREATE_STAMP", "width": "100px"},
             { "data": "BILL_FLAG", "width": "60px",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
-                        return '';
-            		else if(data != 'Y')
-			    		return '未创建对账单';
-			    	else 
-			    		return '已创建对账单';
+            		if(data){
+	            		if(data != 'Y')
+				    		return '未创建对账单';
+				    	else 
+				    		return '已创建对账单';
+            		}else{
+            			return '';
+            		}
 			    }
             },
             { "data": null, "width": "60px"},
-            
             { "data": "TYPE", "width": "60px"},
             { "data": "CUSTOMER_NAME", "width": "100px"},
             { "data": "SP_NAME", "width": "100px"},
-            { "data": "TOTAL_COSTRMB", "width": "60px"
-            },
+            { "data": "TOTAL_COSTRMB", "width": "60px"},
             { "data": null, "width": "60px"},
             { "data": null, "width": "60px"},
             { "data": null, "width": "60px"},
-            
             { "data": "FND", "width": "60px",
             	"render": function ( data, type, full, meta ) {
             		if(data)
 			    		return data;
-			    	else 
+            		else
 			    		return full.DESTINATION;
-			    }
+            	}
             },
             { "data": "VOLUME", "width": "60px"},
             { "data": "CONTAINER_AMOUNT","width": "60px",
@@ -93,7 +94,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             },
             { "data": "NET_WEIGHT", "width": "60px"},
             { "data": null, "width": "60px"},
-            
             { "data": "MBL_NO", "width": "60px"},
             { "data": "CONTAINER_NO", "width": "100px"},
           ]
@@ -147,14 +147,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  }
       })
       
-      //全选，全不选
-      $('#AllCheck').click(function(){
-    	  var ischeck = this.checked;
-      	$(".checkBox").each(function () {  
-              this.checked = ischeck;  
-           });  
-      });
-      
       	//checkbox选中则button可点击
 		$('#eeda_table').on('click','.checkBox',function(){
 			
@@ -174,15 +166,29 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		$('#createBtn').click(function(){
 			$('#createBtn').attr('disabled',true);
         	var itemIds=[];
-        	$('#eeda_table input[type="checkbox"]').each(function(){
-        		var checkbox = $(this).prop('checked');
-        		if(checkbox){
+        	var abbrs=[];
+        	$('#eeda_table input[type="checkbox"]').each(function(){ 
+        		if(this.checked==true){
         			var itemId = $(this).parent().parent().attr('id');
+        			var abbr = $($('#'+itemId+' td')[7]).text();
         			itemIds.push(itemId);
+        			abbrs.push(abbr);
         		}
         	});
-        	var totalAmount = parseFloat($("#totalAmountSpan").text());
-        	location.href ="/costCheckOrder/create?totalAmount="+totalAmount+"&itemIds="+itemIds;
+        	var a = abbrs[0];
+        	var b = 0;
+        	for(var i=1;i<abbrs.length;i++){
+        		if(abbrs[i]!=a){
+        			b++;
+        		}
+        	}
+        	if(b>0){
+        		alert("请选择相同结算公司");
+        		$('#createBtn').attr('disabled',false);
+        	}else{
+	        	var totalAmount = parseFloat($("#totalAmountSpan").text());
+	        	location.href ="/costCheckOrder/create?totalAmount="+totalAmount+"&itemIds="+itemIds;
+        	}
         })
       
   });
