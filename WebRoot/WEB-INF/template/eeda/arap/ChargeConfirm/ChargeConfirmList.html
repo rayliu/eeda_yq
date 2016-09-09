@@ -20,7 +20,7 @@
                             
                             <div class="">  <!--  form row  -->
                                 <form id="orderForm">
-                                    <div class="row"><!--  第1行  -->
+                                   <div class="row"><!--  第1行  -->
                                      <div class="col-lg-4">
                                         <%include("/eeda/component/form/inputSpField.html", 
 						                    {   
@@ -28,26 +28,19 @@
 						                        label:'结算公司'
 						                    }){}%>
                                         </div>
+                                    <div class="col-lg-4"><!--  三列排版  -->
+                                        <%include("/eeda/component/form/inputField.html", 
+	                                {   
+	                                    id:'order_no', 
+	                                    label:'工作单号', 
+	                                    value:order.order_no!''
+	                                   }){}%>
                                     </div>
-                                        <div class="row"><!--  第1行  -->
-                                        <div class="col-lg-4"><!--  三列排版  -->
-                                            <%include("/eeda/component/form/inputField.html", 
-					                                {   
-					                                    id:'order_no', 
-					                                    label:'工作单号', 
-					                                    value:order.order_no!''
-					                              //      disabled: 'disabled'
-					                              }){}%>
-                                        </div>
-                                        <div class="col-lg-4">        
-                                            <%include("/eeda/component/form/inputDateQueryField.html", {id:'create_stamp', label:'创建时间', value:''}){} %>
-                                        </div><!-- /.col-lg-4 -->
+                                    <div class="col-lg-4">        
+                                        <%include("/eeda/component/form/inputDateQueryField.html", {id:'create_stamp', label:'创建时间', value:''}){} %>
+                                    </div><!-- /.col-lg-4 -->
                                        
-                                    </div><!-- /.row-->
-
-                                   
-
-                                    
+                                  </div><!-- /.row-->
                                 </form>
                             </div><!-- /.row -->
 
