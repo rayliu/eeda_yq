@@ -1,13 +1,7 @@
 ﻿define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
 	document.title = '付款申请单 | '+document.title;
-    if(type!=""){
-		  $('#menu_todo_list').addClass('active').find('ul').addClass('in');
-		  $('#menu_finance').addClass('active').find('ul').addClass('in');
-	  }else{
-		$('#menu_todo_list').removeClass('active').find('ul').removeClass('in');
-		$('#menu_finance').addClass('active').find('ul').addClass('in');
-	  }
+
 		//datatable, 动态处理
 	    var ids = $("#ids").val();
 	    var order_types = $("#order_types").val();
