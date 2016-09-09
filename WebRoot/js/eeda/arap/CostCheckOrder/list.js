@@ -36,6 +36,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": null, "width": "60px"},
             
             { "data": "TYPE", "width": "60px"},
+            { "data": "CUSTOMER_NAME", "width": "100px"},
             { "data": "SP_NAME", "width": "100px"},
             { "data": "TOTAL_COSTRMB", "width": "60px"
             },
@@ -130,7 +131,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       var sum = 0;
       $('#eeda_table').on('click','.checkBox',function(){
     	  var id = $(this).parent().parent().attr('id');
-    	  var amountStr = $($('#'+id+' td')[7]).text();
+    	  var amountStr = $($('#'+id+' td')[8]).text();
     	  if(amountStr!=''){
 	    	  amount = parseFloat( amountStr );
 	    	  if(this.checked==true){
@@ -138,7 +139,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  }else{
 	    		  sum-=amount;
 	    	  }
-	    	  $("#totalAmountSpan").html(parseFloat(sum).toFixed(2));
+	    	  $("#totalAmountSpan").text(parseFloat(sum).toFixed(2));
     	  }
       })
       

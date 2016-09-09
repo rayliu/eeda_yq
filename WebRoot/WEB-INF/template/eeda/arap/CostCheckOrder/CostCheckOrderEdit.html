@@ -51,7 +51,7 @@
 	                                        <label>供应商</label>
 	                                        <label class="radio-inline" id="company">${sp.sp_name!order.sp_name!''}</label>
 	                                    </div>
-                                        <div><label>对账确认金额</label><label class="radio-inline" id="cost_amount">${totalAmount!order.cost_amount!'#.00'}</label></div>
+                                        <div><label>对账确认金额</label><label class="radio-inline" id="total_amount">${totalAmount!order.total_amount!'#.00'}</label></div>
 	                                    <div class="row">                                        
 	                                        <div class="col-lg-10">
 	                                        <%include("/eeda/component/form/dateInputField.html", 
@@ -125,7 +125,7 @@
 							         <button id="printBtn"  type="button" class="btn  btn-primary">打印</button>
 							      
                                     <a class="btn  btn-primary" href="/costCheckOrder">返回</a>
-                                    <button id="deleteBtn" type="button" class="btn  btn-danger" disabled>撤销</button>
+                                    <!-- <button id="deleteBtn" type="button" class="btn  btn-danger" disabled>撤销</button> -->
                                 </div>
                                 
                                 
