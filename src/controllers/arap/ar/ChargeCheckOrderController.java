@@ -237,14 +237,25 @@ public class ChargeCheckOrderController extends Controller {
 				+ " where joa.id= ? ) A where 1 = 1";
 		Record rec =Db.findFirst(sql,id);
 		
+		String address="";
+		String name="";
+		String phone="";
 		String shipper_info= rec.get("shipper_info");
-		if(shipper_info.isEmpty()){
-			shipper_info="";
+		if(StringUtils.isNotEmpty(shipper_info)){
+			String[] info = shipper_info.split("\n");
+			if(info.length==3){
+				 address = info[0];
+				 name = info[1];
+				 phone = info[2];
+			}else if(info.length==2){
+				 address = info[0];
+				 name = info[1];
+			}else{
+				 address = info[0];
+			}
+			
 		}
-		String[] info = shipper_info.split("\n");
-		String address = info[0];
-		String name = info[1];
-		String phone = info[2];
+		
 		setAttr("sp",rec);
 		setAttr("totalAmount",totalAmount);
 		setAttr("address",address);
