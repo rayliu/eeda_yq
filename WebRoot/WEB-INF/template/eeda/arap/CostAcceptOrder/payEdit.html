@@ -194,6 +194,9 @@
 		</div>
 	</div>
 <%}%>
+ <script>
+      var type = "${type!''}";
+ </script>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/arap/CostAcceptOrder/payEdit']);

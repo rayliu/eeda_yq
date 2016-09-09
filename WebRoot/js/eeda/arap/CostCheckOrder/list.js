@@ -18,7 +18,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
 				    	if(!full.BILL_FLAG)
-				    		return '';
+				    		return '<input type="checkbox" class="checkBox" disabled>';
 				    	else if(full.BILL_FLAG != 'Y')
 				    		return '<input type="checkbox" class="checkBox">';
 				    	else
