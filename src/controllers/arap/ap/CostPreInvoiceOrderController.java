@@ -1042,7 +1042,7 @@ public class CostPreInvoiceOrderController extends Controller {
 			}
 			
 			if(!payee_id.equals("")){
-				Contact contact = Contact.dao.findFirst("select * from contact c left join party p on c.id = p.contact_id where p.id = ?",payee_id);
+				Party contact = Party.dao.findFirst("select * from  party where id = ?",payee_id);
 				payee_filter = contact.getStr("company_name");
 				deposit_bank = contact.getStr("bank_name");
 				bank_no = contact.getStr("bank_no");

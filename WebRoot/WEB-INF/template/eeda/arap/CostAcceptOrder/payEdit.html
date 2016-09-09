@@ -1,5 +1,4 @@
-<%layout("/yh/layout.html"){%>
-	<link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet">   
+<%layout("/eeda/layout.html"){%>
 	<div id="page-wrapper">
 		<div class="row">
              <div class="col-lg-12">
@@ -179,7 +178,7 @@
 	                                <label class="search-label">申请付款金额</label>
 	                                <input type="text" class="form-control search-control pay_amount" readonly="readonly" id="pay_amount" name="pay_amount">
 	                            </div>
-	                            <%include("/yh/component/form/dateInputField.html", {id:'pay_date', label:'付款时间', value:invoiceApplication.pay_time!''}){} %>
+	                            <%include("/eeda/component/form/dateInputField.html", {id:'pay_date', label:'付款时间', value:invoiceApplication.pay_time!''}){} %>
 	                        </div>
 	                    </div>
 	                         
@@ -195,11 +194,8 @@
 		</div>
 	</div>
 <%}%>
-<!-- 引入校验的js 文件及其 中文 文件-->
-<script src="/yh/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script src="/yh/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-<script src="/yh/js/bootstrap-datetimepicker.min.js"></script>
-<script src="/yh/js/bootstrap-datetimepicker.zh-CN.js"></script>
-<script src="/yh/js/plugins/sco/js/sco.message.js"></script>
-<script src="/yh/js/eeda-common.js"></script>
-<script src="/yh/js/arap/CostAcceptOrder/payEdit.js"></script>
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/arap/CostAcceptOrder/payEdit']);
+    });
+</script>
