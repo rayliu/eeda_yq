@@ -31,6 +31,16 @@
                                                     value: ''
                                                 }){} %>
                                         </div>
+                                         <div class="col-lg-4">
+							                <%include("/eeda/component/form/selectField.html", 
+							                    {   id:'audit_flag', 
+							                        label:'状态', 
+							                        value_list:[
+							                            {code:'N', value:'未确认'},
+							                            {code:'Y', value:'已确认'}
+							                        ]
+							                    }){}%>
+							            </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-4">

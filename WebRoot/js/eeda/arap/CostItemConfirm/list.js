@@ -65,6 +65,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var sp = $("#sp").val(); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
+          var audit_flag = $("#audit_flag").val();
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -76,7 +77,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			           +"&customer_id="+customer
 			           +"&sp_id="+sp
 		               +"&create_stamp_begin_time="+start_date
-		               +"&create_stamp_end_time="+end_date;
+		               +"&create_stamp_end_time="+end_date
+          			   +"&audit_flag="+audit_flag;
 
           dataTable.ajax.url(url).load();
       };
