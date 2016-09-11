@@ -29,8 +29,7 @@ public class ChargeConfirmController extends Controller {
 	Subject currentUser = SecurityUtils.getSubject();
 
 //	@RequiresPermissions(value = { PermissionConstant.PERMISSION_TO_LIST })
-	public void index() {
-		
+	public void index() {		
 		render("/eeda/arap/ChargeConfirm/ChargeConfirmList.html");
 	}
 	

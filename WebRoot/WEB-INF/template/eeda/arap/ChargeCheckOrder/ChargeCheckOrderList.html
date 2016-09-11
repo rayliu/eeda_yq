@@ -45,7 +45,7 @@
                                         <div class="row">  
                                             <div class="col-lg-4">
 		                                           <%include("/eeda/component/form/inputDateQueryField.html", 
-		                                           {   id:'create_stamp', 
+		                                           {   id:'create_stamp1', 
 		                                               label:'创建时间', 
 		                                               value:''
 		                                           }){} %>
@@ -95,22 +95,21 @@
                                      <div class="col-lg-4">
                                         <%include("/eeda/component/form/inputSpField.html", 
 						                    {   
-						                        id:'sp',
+						                        id:'sp1',
 						                        label:'结算公司'
 						                    }){}%>
                                         </div>
                                         <div class="col-lg-4"><!--  三列排版  -->
                                             <%include("/eeda/component/form/inputField.html", 
 					                                {   
-					                                    id:'order_no', 
-					                                    label:'工作单号', 
+					                                    id:'order_no1', 
+					                                    label:'对帐单号', 
 					                                    value:order.order_no!''
-					                              //      disabled: 'disabled'
 					                              }){}%>
                                         </div>  
                                         <div class="col-lg-4"><!--  三列排版  -->  
                                             <%include("/eeda/component/form/inputDateQueryField.html", 
-                                            {    id:'create_stamp', 
+                                            {    id:'create_stamp1', 
                                                  label:'创建时间', 
                                                  value:''
                                                }){} %>
@@ -119,28 +118,20 @@
                                    </form>
 
                                     <div class="form-group button-bar" >
-                                        <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+                                        <button id="searchBtn1" class="btn btn-primary btn-sm" type="button">查询</button>
 		                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
 		                             </div>
                                     <%include("/eeda/component/form/detailTable.html", 
 		                                {   
 		                                    id:'eeda-tableChecked',
-		                                    headers:['',
-		                                        '工作单号',
+		                                    headers:[' ',
+		                                        '对账单号',
 		                                        '创建时间',			                                       
 		                                        '结算公司',
 		                                        '状态',
 		                                        '合计收入(RMB)',
 		                                        '合计收入(USD)',                                      
-		                                        'FND',
-		                                        '体积',
-		                                        '箱量',
-		                                        '重量',
-		                                        '箱号',
-		                                        'REF_NO',
-		                                        'MBL_NO',
-		                                        'HBL_NO',
-		                                        '车型'		                                        			                                        
+		                                        '已付款(RMB)'		                                        			                                        
 		                                    ]
 		                                }){} %>   
                                 </div>
@@ -157,6 +148,7 @@
  <script>
       var type = "${type!''}";
  </script>
+
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/arap/ChargeCheckOrder/list', 'app/arap/ChargeCheckOrder/checkedList']);

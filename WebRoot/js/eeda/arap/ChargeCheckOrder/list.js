@@ -21,19 +21,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 						    		return '<input type="checkbox" disabled  value="'+full.ID+'" checked="checked">';
 						  }
 					    },		                
-					  { "data": "ORDER_NO",
-						  "render": function ( data, type, full, meta ) {
-		                      return "<a href='/jobOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
-		                  }
-					  },
+					  { "data": "ORDER_NO" },
 					  { "data": "CREATE_TIME"},  
 					  { "data": "SP_NAME","sClass":"SP_NAME"}, 
 					  { "data": "BILL_FLAG","width": "60px",
 						 "render":function(data){
 							 if(data !='Y')
-								 return '未创建对账单';
+								 return '新建';
 							 else
-								 return '已创建对账单';
+								 return '已创建';
 						  } 
 					     },
 					  { "data": "RMB",
@@ -48,7 +44,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	                  { "data": "USD",
 			    		 "render":function(data, type, full, meta){
 			    			 if(data<0){
-			    				 return '<span style="red">'+data+'</span>';
+			    				 return '<span style="color:red">'+data+'</span>';
 			    			 }else{
 			    				 return data;
 			    			 }

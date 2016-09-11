@@ -21,22 +21,22 @@
                                         	<input id="sp_id" type="hidden"  value="${sp.sp_id!order.sp_id!''}" />
                                     <h3>客户信息</h3>
                                     <div class="form-group">
-                                        <label>地址</label> <span id = "order_no">${address!''}</span>
+                                        <label>地址</label> <span id = "address">${address!''}</span>
                                     </div>
                                     <div class="form-group">
-                                        <label>联系人</label> <span id="status">${name!''}</span>
+                                        <label>联系人</label> <span id="customer">${customer!''}</span>
                                     </div>
                                     <div class="form-group">
-                                        <label>电话</label> <span id="login_user"> ${phone!''}</span>                                  
+                                        <label>电话</label> <span id="phone"> ${phone!''}</span>                                  
                                     </div>                             
                                     <div class="form-group">
-                                        <label>应收RMB总金额</label> <span id="create_stamp">${sp.total_profitRMB!''}</span>                                       
+                                        <label>应收RMB总金额</label> <span id="total_profitRMB">${sp.total_profitRMB!''}${order.charge.total_profitrmb!''}</span>                                       
                                     </div>                                                                 
                                     <div class="form-group">
-                                        <label>扣款金额</label> <span id="confirm_name">${sp.total_profitTotalCost!''} </span>                             
+                                        <label>扣款金额</label> <span id="total_profitTotalCost">${sp.total_profitTotalCost!''} ${order.charge.total_profittotalcost!''} </span>                             
                                     </div>  
                                     <div class="form-group">                           
-                                        <label>对账确认金额</label><label class="radio-inline" id="charge_amount">${sp.total_profitTotalRMB!''}</label>
+                                        <label>对账确认金额</label><label class="radio-inline" id="total_profitTotalRMB">${sp.total_profitTotalRMB!''}${order.charge.total_profittotalrmb!''}</label>
                                     </div>
                                     <div class="form-group">
                                         <label>备注</label>
@@ -49,15 +49,15 @@
 	                                    <div class="form-group">
 	                                    
 	                                     <label>对账单号</label>
-	                                        <span id="confirm_name">${order_no!''}${order.order_no!''} </span>
+	                                        <span id="order_no">${order_no!''}${order.order_no!''} </span>
 	                                    </div>
 	                                    <div class="form-group">
 	                                    <label>单据状态</label>
-	                                        <span id="confirm_name">${confirm_name!''}${confirm_user.c_name!''} </span>
+	                                        <span id="status">${status!''}${order.charge.status!''} </span>
 	                                    </div>
 	                                    <div class="form-group">	                                                                       
 	                                        <label>创建人</label>
-	                                          <span id="login_user"> ${loginUser!''}${order.LOGINUSER!''}</span>
+	                                          <span id="login_user"> ${loginUser!''}${order.loginuser!''}</span>
 	                                    </div>
                                         
 	                                    <div class="row">                                        
@@ -95,7 +95,7 @@
                                             <%include("/eeda/component/form/inputField.html",
                                                 {   id:'billing_unit', 
                                                     label:'开票单位' ,
-                                                    value:arapAuditOrder.billing_unit!customer.company_name!'' 
+                                                    value:order.charge.billing_unit!'' 
                                                    }){} %>                                             
                                             </div>
                                             </div>
@@ -104,7 +104,7 @@
 	                                        <%include("/eeda/component/form/inputField.html",
 	                                            {   id:'payee', 
 	                                                label:'收&nbsp;&nbsp;款&nbsp;&nbsp;人' ,
-	                                                value:arapAuditOrder.payee!'' 
+	                                                value:order.charge.payee!'' 
 	                                               }){} %>	 
 	                                        </div>
 	                                        </div>                                             
@@ -121,39 +121,27 @@
                             <br>
                                     <div class="panel-body">
                                         <div class="table-responsive">
-			                                <table class="table table-striped table-bordered table-hover" id="costConfirem-table"  style="width: 2500px;">
-			                                    <thead>
-			                                        <tr>
-			                                           <th>操作类型</th>
-			                                           <th>供应商</th>
-			                                           <th>业务状态</th>
-			                                           <!-- <th>回单收集</th> -->
-			                                           <!-- <th>成本确认</th> -->
-			                                           <th>业务单号</th>
-			                                           <th>托运单号</th>
-			                                           <th>序列号</th>
-			                                           <th>签收单据号</th>
-			                                           <th>运输单号</th>
-			                                           <th>客户单号</th>
-			                                           <th>操作时间</th>
-			                                           <th>数量</th>
-			                                           <th>客户名称</th>
-			                                           <th>始发城市</th>
-			                                           <th>目的城市</th>
-			                                           <th>送货地址</th>
-			                                           <th>体积</th>
-			                                           <th>重量</th>
-			                                           <th>总费用</th>
-			                                           <th>对账确认金额</th>
-			                                           <th>操作网点</th>
-			                                           <th>备注</th>
-			                                           <th>操作</th>
-			                                       </tr>
-			                                    </thead>
-			                                    <tbody>
-			                                                                                                                                            
-			                                    </tbody>
-			                                </table>
+			                                 <%include("/eeda/component/form/detailTable.html", 
+			                                {
+			                                    id:'eeda-table', 
+			                                    headers:['',
+			                                        '工作单号',
+			                                        '创建时间',			                                       
+			                                        '结算公司',
+			                                        '状态',
+			                                        '合计收入(RMB)',
+			                                        '合计收入(USD)',                                      
+			                                        'FND',
+			                                        '体积',
+			                                        '箱量',
+			                                        '重量',
+			                                        '箱号',
+			                                        'REF_NO',
+			                                        'MBL_NO',
+			                                        'HBL_NO',
+			                                        '车型'		                                        
+			                                    ]
+			                                }){} %>
                                         </div>
                                         <!-- /.table-responsive -->
                                     </div>

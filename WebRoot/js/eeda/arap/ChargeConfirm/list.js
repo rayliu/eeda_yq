@@ -4,8 +4,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
     	document.title = '应收对账明细查询 | '+document.title;
 
     		$('#menu_charge').addClass('active').find('ul').addClass('in');
-    	    
-
 
     	//datatable, 动态处理
         var dataTable = eeda.dt({
@@ -81,6 +79,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
             		for(var i = 0;i<$checked.length;i++){
                 		$checked[i].parent().parent().hide();
                 	}
+            		searchData();
             		$.scojs_message('单据确认成功', $.scojs_message.TYPE_OK);
             	}else{
             		alert('确认失败，请联系管理员进行优化');
