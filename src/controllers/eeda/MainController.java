@@ -122,7 +122,11 @@ public class MainController extends Controller {
             			+ " where oc.office_id =?";
             	Record rec = Db.findFirst(officeConfig, user.getLong("office_id"));
             	if(rec == null || rec.getStr("index_page_path") == null){
-            		render("/eeda/index.html");
+            	    if(getAttr("modules")==null){
+                        redirect("/");
+                    }else{
+                        render("/yh/index.html");
+                    };
             	}else{
             		render(rec.getStr("index_page_path"));
             	}
