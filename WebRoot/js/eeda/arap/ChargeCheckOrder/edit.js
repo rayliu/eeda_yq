@@ -111,12 +111,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 charge_amount: $('#charge_amount').text(),
                 sp_id: $('#sp_id').val(),
                 begin_time:$('#begin_time').val(),
-                end_time:$('#end_time').val()
-                billing_unit:$('#billing_unit').val();
-                payee:$('#payee').val();
-                total_profitRMB:$('#total_profitRMB').val();
-                total_profitTotalCost:$('#total_profitTotalCost').val();
-                total_profitTotalRMB:$('#total_profitTotalRMB').val();
+                end_time:$('#end_time').val(),
+                billing_unit:$('#billing_unit').val(),
+                payee:$('#payee').val(),
+                total_profitRMB:$('#total_profitRMB').text(),
+                total_profitTotalCost:$('#total_profitTotalCost').text(),
+                total_profitTotalRMB:$('#total_profitTotalRMB').text()
             };
 
             //异步向后台提交数据

@@ -24,8 +24,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 						  "render":function(data){
 							  return '应收对账单';}
 					    }, 
-					  { "data": "SP_NAME"}, 
-					  { "data": "COST_NAME"},
+					  { "data": "COST_NAME"}, 
+					  { "data": "SP_NAME"},
 	                  { "data": "PRICE" },
 		              { "data": "AMOUNT"}, 
 		              { "data": "UNIT_NAME"}, 

@@ -262,14 +262,15 @@ $(document).ready(function() {
     				
     	}	
     })
-//    		    //获取应收应付字段
+    
+    //获取应收应付字段
        var totalCostRMB = 0; 
        var totalCostUSD = 0;
 
        var tableCur =$('#cost_table').find('[name=CURRENCY_ID_input]');
        var tableAmount =$('#cost_table').find('[name=total_amount]');
        for(var i = 0;i<tableCur.length;i++){
-           if(tableCur[i].value=='RMB'){               
+           if(tableCur[i].value=='CNY'){               
                totalCostRMB += parseFloat(tableAmount[i].value);   //parseFloat(data)
            }else if(tableCur[i].value=='USD'){
                totalCostUSD += parseFloat(tableAmount[i].value);

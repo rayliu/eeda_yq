@@ -273,7 +273,7 @@ $(document).ready(function() {
 	    var tableCurCharge =$('#charge_table').find('[name=CURRENCY_ID_input]');
 	    var tableAmountCharge =$('#charge_table').find('[name=total_amount]');
 	    for(var i = 0;i<tableCurCharge.length;i++){
-	        if(tableCurCharge[i].value=='RMB'){               
+	        if(tableCurCharge[i].value=='CNY'){               
 	           totalChargeRMB += parseFloat(tableAmountCharge[i].value);   //parseFloat(data)
 	        }else if(tableCurCharge[i].value=='USD'){
 	           totalChargeUSD += parseFloat(tableAmountCharge[i].value);

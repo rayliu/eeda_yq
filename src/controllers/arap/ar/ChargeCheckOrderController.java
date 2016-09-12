@@ -51,8 +51,8 @@ public class ChargeCheckOrderController extends Controller {
         String billing_unit = (String) dto.get("billing_unit");
         String payee = (String) dto.get("payee");
         String total_profitRMB = (String) dto.get("total_profitRMB");
-        String total_profitTotalCost = (String) dto.get("total_profitTotalCost");
-        String total_profitTotalRMB = (String) dto.get("total_profitTotalRMB");
+//        String total_profitTotalCost = (String) dto.get("total_profitTotalCost");
+//        String total_profitTotalRMB = (String) dto.get("total_profitTotalRMB");
         
         ArapChargeOrder aco = new ArapChargeOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
@@ -73,8 +73,8 @@ public class ChargeCheckOrderController extends Controller {
 			aco.set("payee", payee);
 			aco.set("status", "已创建 ");
 			aco.set("total_profitRMB", total_profitRMB);
-			aco.set("total_profitTotalCost", total_profitTotalCost);
-			aco.set("total_profitTotalRMB", total_profitTotalRMB);
+//			aco.set("total_profitTotalCost", total_profitTotalCost);
+//			aco.set("total_profitTotalRMB", total_profitTotalRMB);
 			aco.save();
 			id = aco.getLong("id").toString();
 			//设置已创建过对账单flag
@@ -122,11 +122,7 @@ public class ChargeCheckOrderController extends Controller {
     
     @Before(Tx.class)
 	public void editList(){
-    	String jsonStr=getPara("params");
-       	Gson gson = new Gson();  
-        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class); 
-    	String ids = (String) dto.get("ids");
-    	
+
     	String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
@@ -146,7 +142,7 @@ public class ChargeCheckOrderController extends Controller {
             			+ " left join job_order_land_item  jols on jols.order_id=joa.order_id "
             			+ "	left join party p1 on p1.id=joa.sp_id "
             			+ "	left join location l on l.id=jos.fnd "
-            			+ "	where joa.order_type='charge' and joa.audit_flag='Y' and  joa.id in (?)"
+            			+ "	where joa.order_type='charge' and joa.audit_flag='Y' "
             			+ " GROUP BY joa.id) A where 1 = 1 ";		
         						
         
@@ -156,7 +152,7 @@ public class ChargeCheckOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition  +sLimit,ids);
+        List<Record> orderList = Db.find(sql+ condition  +sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
