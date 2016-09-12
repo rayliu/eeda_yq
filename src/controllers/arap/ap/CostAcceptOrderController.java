@@ -37,12 +37,13 @@ public class CostAcceptOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = "select * from(  "
-        		+ " select  aco.id,aco.order_no,aco.order_type,aco.status,aco.create_stamp,aco.total_amount totalCostAmount,aco.sp_id,p.company_name sp_name,c.pay_amount paid_amount "
+        		+ " select  aco.id,aco.order_no,aco.order_type,aco.status,aco.create_stamp,aco.total_amount totalCostAmount,aco.sp_id,p.company_name sp_name, "
+        		+ " sum(c.pay_amount) paid_amount "
 				+ " from arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id "
-				+ " where c.pay_amount is null or aco.total_amount>c.pay_amount "
-				+ " ) B where 1=1 ";
+				+ " GROUP BY c.cost_order_id "
+				+ " ) A where totalCostAmount>paid_amount ";
 		
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
@@ -66,7 +67,7 @@ public class CostAcceptOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = "select * from(  "
-        		+ " select jo.order_no,acao.id,acao.order_no application_order_no,acao.STATUS,acao.payment_method,acao.create_stamp,acao.check_stamp,acao.pay_time, "
+        		+ " select jo.order_no,acao.id,acao.order_no application_order_no,acao.status,acao.payment_method,acao.create_stamp,acao.check_stamp,acao.pay_time, "
         		+ " acao.remark,acao.payee_unit,acao.payee_name, "
         		+ " caor.order_type,caor.pay_amount,joa.sp_id "
 				+ " from arap_cost_application_order acao "
