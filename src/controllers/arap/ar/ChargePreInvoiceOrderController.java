@@ -15,7 +15,7 @@ import models.ArapAccountAuditLog;
 import models.ArapChargeInvoice;
 import models.ArapChargeInvoiceApplication;
 import models.ArapChargeOrder;
-import models.ArapCostInvoiceApplication;
+import models.ArapCostApplication;
 import models.ArapCostOrder;
 import models.ChargeApplicationOrderRel;
 import models.CostApplicationOrderRel;

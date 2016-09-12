@@ -66,7 +66,7 @@ public class CostAcceptOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = "select * from(  "
-        		+ " select jo.order_no,acao.order_no application_order_no,acao.STATUS,acao.payment_method,acao.create_stamp,acao.check_stamp,acao.pay_time, "
+        		+ " select jo.order_no,acao.id,acao.order_no application_order_no,acao.STATUS,acao.payment_method,acao.create_stamp,acao.check_stamp,acao.pay_time, "
         		+ " acao.remark,acao.payee_unit,acao.payee_name, "
         		+ " caor.order_type,caor.pay_amount,joa.sp_id "
 				+ " from arap_cost_application_order acao "

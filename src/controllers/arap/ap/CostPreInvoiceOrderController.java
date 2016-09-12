@@ -12,21 +12,23 @@ import java.util.List;
 import java.util.Map;
 
 import models.ArapAccountAuditLog;
-import models.ArapCostInvoiceApplication;
+import models.ArapCostApplication;
 import models.ArapCostInvoiceItemInvoiceNo;
 import models.ArapCostOrder;
 import models.ArapCostOrderInvoiceNo;
+import models.ArapMiscCostOrder;
 import models.CostApplicationOrderRel;
 import models.Party;
 import models.UserLogin;
 import models.eeda.profile.Account;
-import models.yh.arap.ArapMiscCostOrder;
 import models.yh.arap.ReimbursementOrder;
 import models.yh.arap.inoutorder.ArapInOutMiscOrder;
 import models.yh.arap.prePayOrder.ArapPrePayOrder;
 import models.yh.carmanage.CarSummaryOrder;
 import models.yh.damageOrder.DamageOrder;
 import models.yh.profile.Contact;
+
+
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -54,10 +56,7 @@ public class CostPreInvoiceOrderController extends Controller {
 	private Log logger = Log
 			.getLog(CostPreInvoiceOrderController.class);
 	Subject currentUser = SecurityUtils.getSubject();
-	@RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_LIST})
-	public void index() {
-		render("/yh/arap/CostPreInvoiceOrder/CostPreInvoiceOrderList.html");
-	}
+	
 
 	public void confirm() {
 		String ids = getPara("ids");
@@ -80,30 +79,7 @@ public class CostPreInvoiceOrderController extends Controller {
 				.find("select * from fin_account f where bank_name<>'现金'");
 		renderJson(locationList);
 	}
-	//供应商下拉列表查询
-	public void sp_filter_list(){
-		String input = getPara("input");
-		List<Record> locationList = Collections.EMPTY_LIST;
-		locationList = Db
-				.find("select * from contact c where company_name<>''and (c.company_name like '%"
-							+ input
-							+ "%' or c.abbr like '%"
-							+ input
-							+ "%' or c.contact_person like '%"
-							+ input
-							+ "%' or c.email like '%"
-							+ input
-							+ "%' or c.mobile like '%"
-							+ input
-							+ "%' or c.phone like '%"
-							+ input
-							+ "%' or c.address like '%"
-							+ input
-							+ "%' or c.postal_code like '%"
-							+ input
-							+ "%')");
-		renderJson(locationList);
-	}
+	
 	// 应付条目列表
 	@RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_LIST})
 	public void list() {
@@ -140,7 +116,7 @@ public class CostPreInvoiceOrderController extends Controller {
 				+ " 		where caor.application_order_id = aaia.id and caor.order_type='预付单'),'')"
 				+ " ) cost_order_no,"
 				+ " (SELECT sum(caor.pay_amount) from cost_application_order_rel caor WHERE caor.application_order_id = aaia.id ) pay_amount,"
-				+ " aaia.*, MONTH (aaia.create_stamp) AS c_stamp,c.abbr cname,c.company_name as company_name,o.office_name oname,ifnull(ul.c_name,ul.user_name) create_b,ul2.user_name audit_by,ul3.user_name approval_by from arap_cost_invoice_application_order aaia "
+				+ " aaia.*, MONTH (aaia.create_stamp) AS c_stamp,c.abbr cname,c.company_name as company_name,o.office_name oname,ifnull(ul.c_name,ul.user_name) create_b,ul2.user_name audit_by,ul3.user_name approval_by from arap_cost_application_order aaia "
 				+ " left join user_login ul on ul.id = aaia.create_by"
 				+ " left join user_login ul2 on ul2.id = aaia.audit_by"
 				+ " left join user_login ul3 on ul3.id = aaia.approver_by"
@@ -169,7 +145,7 @@ public class CostPreInvoiceOrderController extends Controller {
 
 		}
 
-		sqlTotal = "select count(1) total from arap_cost_invoice_application_order aaia "
+		sqlTotal = "select count(1) total from arap_cost_application_order aaia "
 				+ " left join user_login ul on ul.id = aaia.create_by"
 				+ " left join user_login ul2 on ul2.id = aaia.audit_by"
 				+ " left join user_login ul3 on ul3.id = aaia.approver_by"
@@ -269,7 +245,7 @@ public class CostPreInvoiceOrderController extends Controller {
 	@Before(Tx.class)
 	public void save() {
 		String ids = getPara("ids");
-		ArapCostInvoiceApplication arapAuditInvoiceApplication = null;
+		ArapCostApplication aca = null;
 		String application_id = getPara("application_id");
 		String paymentMethod = getPara("payment_method");//付款方式
 		String bank_no = getPara("bank_no");          //收款账号
@@ -284,21 +260,21 @@ public class CostPreInvoiceOrderController extends Controller {
 
 		
 		if (!"".equals(application_id) && application_id != null) {
-			arapAuditInvoiceApplication = ArapCostInvoiceApplication.dao.findById(application_id);
-			arapAuditInvoiceApplication.set("last_modified_by",LoginUserController.getLoginUserId(this));
-			arapAuditInvoiceApplication.set("last_modified_stamp", new Date());
-			arapAuditInvoiceApplication.set("payee_name", payee_name);
-			arapAuditInvoiceApplication.set("payment_method", paymentMethod);
-			arapAuditInvoiceApplication.set("payee_unit", payee_unit);
-			arapAuditInvoiceApplication.set("billing_unit", billing_unit);
-			arapAuditInvoiceApplication.set("bill_type", billtype);
-			arapAuditInvoiceApplication.set("bank_no", bank_no);
-			arapAuditInvoiceApplication.set("bank_name", bank_name);
-			arapAuditInvoiceApplication.set("num_name", numname);
+			aca = ArapCostApplication.dao.findById(application_id);
+			aca.set("last_modified_by",LoginUserController.getLoginUserId(this));
+			aca.set("last_modified_stamp", new Date());
+			aca.set("payee_name", payee_name);
+			aca.set("payment_method", paymentMethod);
+			aca.set("payee_unit", payee_unit);
+			aca.set("billing_unit", billing_unit);
+			aca.set("bill_type", billtype);
+			aca.set("bank_no", bank_no);
+			aca.set("bank_name", bank_name);
+			aca.set("num_name", numname);
 			if (total_amount != null && !"".equals(total_amount)) {
-				arapAuditInvoiceApplication.set("total_amount",total_amount);
+				aca.set("total_amount",total_amount);
 			}
-			arapAuditInvoiceApplication.update();
+			aca.update();
 			
 			String strJson = getPara("detailJson");
 			Gson gson = new Gson();
@@ -310,33 +286,33 @@ public class CostPreInvoiceOrderController extends Controller {
 				String value = (String)map.get("value");
 
 				CostApplicationOrderRel costApplicationOrderRel = CostApplicationOrderRel.dao.findFirst("select * from cost_application_order_rel where cost_order_id =? and application_order_id = ?",id,application_id);
-				costApplicationOrderRel.set("application_order_id", arapAuditInvoiceApplication.getLong("id"));
+				costApplicationOrderRel.set("application_order_id", aca.getLong("id"));
 				costApplicationOrderRel.set("cost_order_id", id);
 				costApplicationOrderRel.set("order_type", order_type);
 				costApplicationOrderRel.set("pay_amount", value);
 				costApplicationOrderRel.update();
 			}
 		} else {
-			arapAuditInvoiceApplication = new ArapCostInvoiceApplication();
-			arapAuditInvoiceApplication.set("order_no",
+			aca = new ArapCostApplication();
+			aca.set("order_no",
 					OrderNoGenerator.getNextOrderNo("YFSQ"));
-			arapAuditInvoiceApplication.set("status", "新建");
-			arapAuditInvoiceApplication.set("create_by", LoginUserController.getLoginUserId(this));
-			arapAuditInvoiceApplication.set("create_stamp", new Date());
-			arapAuditInvoiceApplication.set("payee_name", payee_name);
-			arapAuditInvoiceApplication.set("payment_method", paymentMethod);
-			arapAuditInvoiceApplication.set("payee_unit", payee_unit);
-			arapAuditInvoiceApplication.set("billing_unit", billing_unit);
-			arapAuditInvoiceApplication.set("bill_type", billtype);
-			arapAuditInvoiceApplication.set("bank_no", bank_no);
-			arapAuditInvoiceApplication.set("bank_name", bank_name);
-			arapAuditInvoiceApplication.set("num_name", numname);
-			arapAuditInvoiceApplication.set("payee_id", payee_id);
+			aca.set("status", "新建");
+			aca.set("create_by", LoginUserController.getLoginUserId(this));
+			aca.set("create_stamp", new Date());
+			aca.set("payee_name", payee_name);
+			aca.set("payment_method", paymentMethod);
+			aca.set("payee_unit", payee_unit);
+			aca.set("billing_unit", billing_unit);
+			aca.set("bill_type", billtype);
+			aca.set("bank_no", bank_no);
+			aca.set("bank_name", bank_name);
+			aca.set("num_name", numname);
+			aca.set("payee_id", payee_id);
 		
 			if (total_amount != null && !"".equals(total_amount)) {
-				arapAuditInvoiceApplication.set("total_amount",total_amount);
+				aca.set("total_amount",total_amount);
 			}
-			arapAuditInvoiceApplication.save();
+			aca.save();
 			
 			String strJson = getPara("detailJson");
 			Gson gson = new Gson();
@@ -349,7 +325,7 @@ public class CostPreInvoiceOrderController extends Controller {
 				String cname = (String)map.get("payee_unit");
 
 				CostApplicationOrderRel costApplicationOrderRel = new CostApplicationOrderRel();
-				costApplicationOrderRel.set("application_order_id", arapAuditInvoiceApplication.getLong("id"));
+				costApplicationOrderRel.set("application_order_id", aca.getLong("id"));
 				costApplicationOrderRel.set("cost_order_id", id);
 				costApplicationOrderRel.set("order_type", order_type);
 				costApplicationOrderRel.set("pay_amount", value);
@@ -364,31 +340,15 @@ public class CostPreInvoiceOrderController extends Controller {
 				}else if(order_type.equals("成本单")){
 					ArapMiscCostOrder arapMiscCostOrder = ArapMiscCostOrder.dao.findById(id);
 					arapMiscCostOrder.set("audit_status", "付款申请中").update();
-				}else if(order_type.equals("行车单")){
-					CarSummaryOrder carSummaryOrder = CarSummaryOrder.dao.findById(id);
-					carSummaryOrder.set("status", "付款申请中").update();
-				}else if(order_type.equals("预付单")){
-					ArapPrePayOrder arapPrePayOrder = ArapPrePayOrder.dao.findById(id);
-					arapPrePayOrder.set("status", "付款申请中").update();
-				}else if(order_type.equals("报销单")){
-					ReimbursementOrder reimbursementOrder = ReimbursementOrder.dao.findById(id);
-					reimbursementOrder.set("status", "付款申请中").update();
-				}else if(order_type.equals("往来票据单")){
-					ArapInOutMiscOrder arapInOutMiscOrder = ArapInOutMiscOrder.dao.findById(id);
-					arapInOutMiscOrder.set("pay_status", "付款申请中").update();
-				}else if(order_type.equals("货损单")){
-					DamageOrder damageOrder = DamageOrder.dao.findById(id);
-					if(!damageOrder.getStr("status").equals("已结案"))
-						damageOrder.set("status", "单据处理中").update();
 				}
 			}
 
 		}
-		renderJson(arapAuditInvoiceApplication);
+		renderJson(aca);
 	}
 	
 	private void updateYfOrder(
-			ArapCostInvoiceApplication arapAuditInvoiceApplication, String id) {
+			ArapCostApplication aca, String id) {
 		ArapPrePayOrder arapPrePayOrder = ArapPrePayOrder.dao.findById(id);
 		//判断是否已全部付款
 		String sql5 = "select ifnull(sum(caor.pay_amount), 0) total_pay from cost_application_order_rel caor"
@@ -404,13 +364,13 @@ public class CostPreInvoiceOrderController extends Controller {
 	}
 
 	private void updateDzOrder(
-			ArapCostInvoiceApplication arapAuditInvoiceApplication, String id) {
+			ArapCostApplication aca, String id) {
 		ArapCostOrder arapAuditOrder = ArapCostOrder.dao.findById(id);
-		arapAuditOrder.set("application_order_id", arapAuditInvoiceApplication.get("id"));
+		arapAuditOrder.set("application_order_id", aca.get("id"));
 		//判断是否已全部付款
 		String sql5 = "select ifnull(sum(caor.pay_amount),0) total_pay from arap_cost_order aco  "
 				+ "LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = aco.id and caor.order_type='对账单'"
-				+ "LEFT JOIN arap_cost_invoice_application_order aciao on aciao.id = caor.application_order_id where aco.id = '"+id+"'";
+				+ "LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id where aco.id = '"+id+"'";
 		Record r = Db.findFirst(sql5);
 		if( arapAuditOrder.getDouble("cost_amount") > r.getDouble("total_pay")){
 			arapAuditOrder.set("status", "部分付款申请中");
@@ -424,9 +384,9 @@ public class CostPreInvoiceOrderController extends Controller {
 	@RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_APPROVAL})
 	public void auditCostPreInvoiceOrder() {
 		String costPreInvoiceOrderId = getPara("costPreInvoiceOrderId");
-		ArapCostInvoiceApplication arapAuditOrder = null;
+		ArapCostApplication arapAuditOrder = null;
 		if (costPreInvoiceOrderId != null && !"".equals(costPreInvoiceOrderId)) {
-			arapAuditOrder = ArapCostInvoiceApplication.dao.findById(costPreInvoiceOrderId);
+			arapAuditOrder = ArapCostApplication.dao.findById(costPreInvoiceOrderId);
 			arapAuditOrder.set("status", "已审核");
 			String name = (String) currentUser.getPrincipal();
 			List<UserLogin> users = UserLogin.dao
@@ -447,9 +407,9 @@ public class CostPreInvoiceOrderController extends Controller {
 	@RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_CONFIRMATION})
 	public void approvalCostPreInvoiceOrder() {
 		String costPreInvoiceOrderId = getPara("costPreInvoiceOrderId");
-		ArapCostInvoiceApplication arapAuditOrder = null;
+		ArapCostApplication arapAuditOrder = null;
 		if (costPreInvoiceOrderId != null && !"".equals(costPreInvoiceOrderId)) {
-			arapAuditOrder = ArapCostInvoiceApplication.dao
+			arapAuditOrder = ArapCostApplication.dao
 					.findById(costPreInvoiceOrderId);
 			arapAuditOrder.set("status", "已审批");
 			String name = (String) currentUser.getPrincipal();
@@ -471,7 +431,7 @@ public class CostPreInvoiceOrderController extends Controller {
 	// 添加发票
 	public void addInvoiceItem() {
 		String costPreInvoiceOrderId = getPara("costPreInvoiceOrderId");
-		ArapCostInvoiceApplication application = ArapCostInvoiceApplication.dao
+		ArapCostApplication application = ArapCostApplication.dao
 				.findById(costPreInvoiceOrderId);
 		if (costPreInvoiceOrderId != null && !"".equals(costPreInvoiceOrderId)) {
 			ArapCostInvoiceItemInvoiceNo arapCostInvoiceItemInvoiceNo = new ArapCostInvoiceItemInvoiceNo();
@@ -772,7 +732,7 @@ public class CostPreInvoiceOrderController extends Controller {
 					+ getPara("iDisplayLength");
 		}
 
-		String sqlTotal = "select count(1) total from arap_cost_invoice_application_order appl_order"
+		String sqlTotal = "select count(1) total from arap_cost_application_order appl_order"
 				+ " LEFT JOIN cost_application_order_rel caor on caor.application_order_id = appl_order.id "
 //				+ " LEFT JOIN arap_cost_order aco on aco.id = caor.cost_order_id"
 //				+ " left join party p on p.id = aco.payee_id left join contact c on c.id = p.contact_id"
@@ -800,7 +760,7 @@ public class CostPreInvoiceOrderController extends Controller {
 				+ " ( SELECT caor.pay_amount this_pay FROM cost_application_order_rel caor"
 				+ " WHERE caor.cost_order_id = aco.id and caor.order_type='对账单' and caor.application_order_id = appl_order.id ) pay_amount ,"
 				+ " (aco.cost_amount - (SELECT ifnull(sum(caor.pay_amount), 0) total_pay FROM cost_application_order_rel caor WHERE caor.cost_order_id = aco.id and caor.order_type='对账单')) yufu_amount "
-				+ " from arap_cost_invoice_application_order appl_order, cost_application_order_rel caor"
+				+ " from arap_cost_application_order appl_order, cost_application_order_rel caor"
 				+ " LEFT JOIN arap_cost_order aco on aco.id = caor.cost_order_id"
 				+ " left join party p on p.id = aco.payee_id left join contact c on c.id = p.contact_id"
 				+ " left join user_login ul on ul.id = aco.create_by"
@@ -825,7 +785,7 @@ public class CostPreInvoiceOrderController extends Controller {
 				+ "  ( SELECT caor.pay_amount this_pay FROM cost_application_order_rel caor"
 				+ " WHERE caor.cost_order_id = ppo.id and caor.order_type='预付单' and caor.application_order_id = appl_order.id ) pay_amount,"
 				+ " (ppo.total_amount - (SELECT ifnull(sum(caor.pay_amount), 0) total_pay FROM cost_application_order_rel caor WHERE caor.cost_order_id = ppo.id and caor.order_type='预付单')) yufu_amount "
-				+ " from  arap_cost_invoice_application_order appl_order, cost_application_order_rel caor"
+				+ " from  arap_cost_application_order appl_order, cost_application_order_rel caor"
 				+ " LEFT JOIN  arap_pre_pay_order ppo on caor.cost_order_id = ppo.id"
 				+ " left outer join party p on ppo.sp_id = p.id"
 				+ " left outer join contact c on c.id = p.contact_id"
@@ -887,7 +847,7 @@ public class CostPreInvoiceOrderController extends Controller {
 				arapMiscCostOrder.set("status", "已付款确认");
 				arapMiscCostOrder.update();
             }else{
-                ArapCostInvoiceApplication arapcostInvoice = ArapCostInvoiceApplication.dao.findById(orderId);
+                ArapCostApplication arapcostInvoice = ArapCostApplication.dao.findById(orderId);
                 arapcostInvoice.set("status", "已付款确认");
                 arapcostInvoice.update();
                /* //应收对账单的状态改变
@@ -926,12 +886,12 @@ public class CostPreInvoiceOrderController extends Controller {
 		                    }
 						}else{
 							//rec = Db.findFirst("select aci.total_amount total from arap_cost_invoice_application_order aci where aci.order_no='"+orderNo+"'");
-							String sql = "select sum(caor.pay_amount) total from arap_cost_invoice_application_order aci "
+							String sql = "select sum(caor.pay_amount) total from arap_cost_application_order aci "
 									+ " LEFT JOIN cost_application_order_rel caor on caor.application_order_id = aci.id"
 									+ " where aci.id = '"+id+"'";
 							rec = Db.findFirst(sql);
 							if(rec.getDouble("total") == null){
-	                            rec = Db.findFirst("select aci.total_amount total from arap_cost_invoice_application_order aci where aci.order_no='"+orderNo+"'");
+	                            rec = Db.findFirst("select aci.total_amount total from arap_cost_application_order aci where aci.order_no='"+orderNo+"'");
 							}
 							if(rec!=null){
 		                    	double total = rec.getDouble("total")==null?0.0:rec.getDouble("total");
@@ -958,12 +918,12 @@ public class CostPreInvoiceOrderController extends Controller {
 		                    }
 						}else{
 							//rec = Db.findFirst("select aci.total_amount total from arap_cost_invoice_application_order aci where aci.order_no='"+orderNo+"'");
-							String sql = "select sum(caor.pay_amount) total from arap_cost_invoice_application_order aci "
+							String sql = "select sum(caor.pay_amount) total from arap_cost_application_order aci "
 									+ " LEFT JOIN cost_application_order_rel caor on caor.application_order_id = aci.id"
 									+ " where aci.id = '"+id+"'";
 							rec = Db.findFirst(sql);
 							if(rec.getDouble("total") == null){
-	                            rec = Db.findFirst("select aci.total_amount total from arap_cost_invoice_application_order aci where aci.order_no='"+orderNo+"'");
+	                            rec = Db.findFirst("select aci.total_amount total from arap_cost_application_order aci where aci.order_no='"+orderNo+"'");
 							}
 		                    if(rec!=null){
 		                    	double total = rec.getDouble("total")==null?0.0:rec.getDouble("total");
@@ -1289,7 +1249,7 @@ public class CostPreInvoiceOrderController extends Controller {
 						+ " )) yufu_amount, aciao.id app_id "
 						+ " FROM arap_cost_order aco "
 						+ " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = aco.id"
-						+ " LEFT JOIN arap_cost_invoice_application_order aciao on aciao.id = caor.application_order_id"
+						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
 						+ " LEFT JOIN party p ON p.id = aco.payee_id"
 						+ " LEFT JOIN contact c ON c.id = p.contact_id"
 						+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
@@ -1312,7 +1272,7 @@ public class CostPreInvoiceOrderController extends Controller {
 						+ " AND caor.order_type = '预付单' ) ) yufu_amount, aciao.id app_id "
 						+ " FROM arap_pre_pay_order ppo"
 						+ " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = ppo.id"
-						+ " LEFT JOIN arap_cost_invoice_application_order aciao on aciao.id = caor.application_order_id"
+						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
 						+ " LEFT OUTER JOIN party p ON ppo.sp_id = p.id"
 						+ " LEFT OUTER JOIN contact c ON c.id = p.contact_id"
 						+ " LEFT OUTER JOIN user_login ul ON ppo.creator = ul.id"
@@ -1337,7 +1297,7 @@ public class CostPreInvoiceOrderController extends Controller {
 						+ " )) yufu_amount, aciao.id app_id "
 						+ " FROM arap_misc_cost_order aco "
 						+ " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = aco.id"
-						+ " LEFT JOIN arap_cost_invoice_application_order aciao on aciao.id = caor.application_order_id"
+						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
 						+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
 						+ " where caor.order_type = '成本单'"
 						 + " union"
@@ -1355,7 +1315,7 @@ public class CostPreInvoiceOrderController extends Controller {
 						+ " )) yufu_amount, aciao.id app_id "
 						+ " FROM car_summary_order aco"
 						+ " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = aco.id"
-						+ " LEFT JOIN arap_cost_invoice_application_order aciao on aciao.id = caor.application_order_id"
+						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
 						+ " where caor.order_type = '行车单'"
 						+ " union "
 					    + " SELECT ror.id, null payee_id,ror.account_name payee_name, ror.order_no, '报销单' order_type,"
@@ -1372,7 +1332,7 @@ public class CostPreInvoiceOrderController extends Controller {
 					    + " AND caor.order_type = '报销单' ) ) yufu_amount, aciao.id app_id"
 					    + " FROM reimbursement_order ror"
 					    + " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = ror.id"
-						+ " LEFT JOIN arap_cost_invoice_application_order aciao on aciao.id = caor.application_order_id"
+						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
 					    + " LEFT JOIN user_login ul ON ul.id = ror.create_id"
 					    + " where caor.order_type = '报销单'"
 					    + " union"
@@ -1392,7 +1352,7 @@ public class CostPreInvoiceOrderController extends Controller {
 					    + " AND caor.order_type = '往来票据单' ) ) yufu_amount, aciao.id app_id"
 					    + " FROM arap_in_out_misc_order aio"
 					    + " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = aio.id"
-						+ " LEFT JOIN arap_cost_invoice_application_order aciao on aciao.id = caor.application_order_id"
+						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
 					    + " LEFT JOIN user_login ul ON ul.id = aio.creator_id"
 					    + " where caor.order_type = '往来票据单'"
 						+ " union"
@@ -1420,7 +1380,7 @@ public class CostPreInvoiceOrderController extends Controller {
 					    + " LEFT JOIN damage_order_fin_item dofi on dofi.order_id = dor.id "
 					    + " and dofi.party_name = caor.payee_unit and dofi.status = '已确认' and dofi.type = 'cost'"
 					    //+ " and dofi.id in(caor.item_ids)"
-						+ " LEFT JOIN arap_cost_invoice_application_order aciao on aciao.id = caor.application_order_id"
+						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
 					    + " LEFT JOIN user_login ul ON ul.id = dor.creator"
 					    + " left join party p on p.id = dor.customer_id "
 					    + " left join contact c on c.id = p.contact_id "
@@ -1445,20 +1405,20 @@ public class CostPreInvoiceOrderController extends Controller {
 			String id = getPara("id");
 			setAttr("application_id", id);
 			
-			ArapCostInvoiceApplication arapAuditInvoiceApplication = ArapCostInvoiceApplication.dao.findById(id);
-			setAttr("invoiceApplication", arapAuditInvoiceApplication);
+			ArapCostApplication aca = ArapCostApplication.dao.findById(id);
+			setAttr("invoiceApplication", aca);
 			
-			Contact con  = Contact.dao.findFirst("select * from contact c left join party p on c.id = p.contact_id where p.id =?",arapAuditInvoiceApplication.get("payee_id"));
+			Party con  = Party.dao.findFirst("select * from party  where id =?",aca.get("payee_id"));
 			if(con != null){
 				String payee_filter = con.get("company_name");
 				setAttr("payee_filter", payee_filter);
 			}
 			UserLogin userLogin = null;
-			userLogin = UserLogin.dao .findById(arapAuditInvoiceApplication.get("create_by"));
+			userLogin = UserLogin.dao .findById(aca.get("create_by"));
 			String submit_name = userLogin.get("c_name");
 			setAttr("submit_name", submit_name);
 			
-			Long check_by = arapAuditInvoiceApplication.getLong("check_by");
+			Long check_by = aca.getLong("check_by");
 			if( check_by != null){
 				userLogin = UserLogin.dao .findById(check_by);
 				String check_name = userLogin.get("c_name");
@@ -1468,7 +1428,7 @@ public class CostPreInvoiceOrderController extends Controller {
 			List<Record> Account = Db.find("select * from fin_account where bank_name != '现金'");
 			setAttr("accountList", Account);
 			
-			render("/yh/arap/CostAcceptOrder/payEdit.html");
+			render("/eeda/arap/CostAcceptOrder/payEdit.html");
 		}
 		
 		
@@ -1477,7 +1437,7 @@ public class CostPreInvoiceOrderController extends Controller {
 	    public void checkStatus(){
 	        String application_id=getPara("application_id");
 	        
-	        ArapCostInvoiceApplication arapCostInvoiceApplication = ArapCostInvoiceApplication.dao.findById(application_id);
+	        ArapCostApplication arapCostInvoiceApplication = ArapCostApplication.dao.findById(application_id);
 	        arapCostInvoiceApplication.set("status", "已复核");
 	        arapCostInvoiceApplication.set("check_by", LoginUserController.getLoginUserId(this));
 	        arapCostInvoiceApplication.set("check_stamp", new Date()).update();
@@ -1564,7 +1524,7 @@ public class CostPreInvoiceOrderController extends Controller {
 	    public void returnOrder(){
 	        String application_id=getPara("application_id");
 	        
-	        ArapCostInvoiceApplication arapCostInvoiceApplication = ArapCostInvoiceApplication.dao.findById(application_id);
+	        ArapCostApplication arapCostInvoiceApplication = ArapCostApplication.dao.findById(application_id);
 	        arapCostInvoiceApplication.set("status", "新建");
 	        arapCostInvoiceApplication.set("return_by", LoginUserController.getLoginUserId(this));
 	        arapCostInvoiceApplication.set("return_stamp", new Date()).update();
@@ -1646,7 +1606,7 @@ public class CostPreInvoiceOrderController extends Controller {
 			}
 			
 			//删除主表数据
-			ArapCostInvoiceApplication arapCostInvoiceApplication = ArapCostInvoiceApplication.dao.findById(application_id);
+			ArapCostApplication arapCostInvoiceApplication = ArapCostApplication.dao.findById(application_id);
 	        arapCostInvoiceApplication.delete();
 		        
 			
@@ -1667,7 +1627,7 @@ public class CostPreInvoiceOrderController extends Controller {
 	   			pay_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 	   		}
 	        
-	        ArapCostInvoiceApplication arapCostInvoiceApplication = ArapCostInvoiceApplication.dao.findById(application_id);
+	        ArapCostApplication arapCostInvoiceApplication = ArapCostApplication.dao.findById(application_id);
 	        String pay_amount = arapCostInvoiceApplication.getDouble("total_amount").toString();
 	        arapCostInvoiceApplication.set("status", "已付款");
 	        arapCostInvoiceApplication.set("pay_type", pay_type);
@@ -1762,7 +1722,7 @@ public class CostPreInvoiceOrderController extends Controller {
 					Record rec = Db.findFirst("select sum(ifnull(amount,0)) total_amount from damage_order_fin_item dof where dof.order_id = ?",id);
 					Double total_amount = rec.getDouble("total_amount");
 					Record re = Db.findFirst("select ifnull(sum(pay_amount),0) total from cost_application_order_rel cao"
-							+ "  LEFT JOIN arap_cost_invoice_application_order acia on acia.id = cao.application_order_id"
+							+ "  LEFT JOIN arap_cost_application_order acia on acia.id = cao.application_order_id"
 							+ "  where cost_order_id =? and order_type = '货损单' and acia.`STATUS`='已付款'",id);
 					Record re2 = Db.findFirst("select ifnull(sum(receive_amount),0) total2 from charge_application_order_rel cao"
 							+ " LEFT JOIN arap_charge_invoice_application_order acia on acia.id = cao.application_order_id "
@@ -1805,7 +1765,7 @@ public class CostPreInvoiceOrderController extends Controller {
 	    public void returnConfirmOrder(){
 	        String application_id=getPara("application_id");
 	        
-	        ArapCostInvoiceApplication arapCostInvoiceApplication = ArapCostInvoiceApplication.dao.findById(application_id);
+	        ArapCostApplication arapCostInvoiceApplication = ArapCostApplication.dao.findById(application_id);
 	        arapCostInvoiceApplication.set("status", "已复核");
 	        arapCostInvoiceApplication.set("return_confirm_by", LoginUserController.getLoginUserId(this));
 	        arapCostInvoiceApplication.set("return_confirm_stamp", new Date());

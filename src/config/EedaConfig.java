@@ -9,9 +9,12 @@ import java.sql.SQLException;
 import models.ArapAccountAuditLog;
 import models.ArapChargeItem;
 import models.ArapChargeOrder;
+import models.ArapCostApplication;
 import models.ArapCostItem;
 import models.ArapCostOrder;
+import models.ArapMiscCostOrder;
 import models.Category;
+import models.CostApplicationOrderRel;
 import models.Location;
 import models.Office;
 import models.Party;
@@ -320,6 +323,9 @@ public class EedaConfig extends JFinalConfig {
         //财务
         arp.addMapping("arap_cost_order", ArapCostOrder.class);
         arp.addMapping("arap_cost_item", ArapCostItem.class);
+        arp.addMapping("arap_misc_cost_order", ArapMiscCostOrder.class);
+        arp.addMapping("arap_cost_application_order", ArapCostApplication.class);
+        arp.addMapping("cost_application_order_rel", CostApplicationOrderRel.class);
         arp.addMapping("arap_charge_order", ArapChargeOrder.class);
         arp.addMapping("arap_charge_item", ArapChargeItem.class);
         

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.ArapCostInvoiceApplication;
+import models.ArapCostApplication;
 import models.ArapCostOrder;
 import models.DepartOrder;
 import models.Location;
@@ -314,7 +314,7 @@ public class CostMiscOrderController extends Controller {
 	public void auditCostPreInvoiceOrder(){
 		String costPreInvoiceOrderId = getPara("costPreInvoiceOrderId");
 		if(costPreInvoiceOrderId != null && !"".equals(costPreInvoiceOrderId)){
-			ArapCostInvoiceApplication arapAuditOrder = ArapCostInvoiceApplication.dao.findById(costPreInvoiceOrderId);
+			ArapCostApplication arapAuditOrder = ArapCostApplication.dao.findById(costPreInvoiceOrderId);
 			arapAuditOrder.set("status", "已审核");
             String name = (String) currentUser.getPrincipal();
 			List<UserLogin> users = UserLogin.dao.find("select * from user_login where user_name='" + name + "'");
