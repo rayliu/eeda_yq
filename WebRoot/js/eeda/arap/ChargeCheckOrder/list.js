@@ -16,9 +16,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 					  { "data": null,"width": "10px",
 						  "render": function ( data, type, full, meta ) {
 							  if(full.BILL_FLAG != 'Y')
-							  return '<input type="checkbox" class="checkBox" name="order_check_box" order_type="'+full.SP_NAME+'" value="'+full.ID+'">';
+								  	return '<input type="checkbox" class="checkBox" name="order_check_box">';
 							  else 
-						    		return '<input type="checkbox" disabled  value="'+full.ID+'" checked="checked">';
+						    		return '<input type="checkbox" disabled checked="checked">';
 						  }
 					    },		                
 					  { "data": "ORDER_NO" },
@@ -237,7 +237,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
                +"&create_stamp_end_time="+end_date;
 
           dataTable.ajax.url(url).load();
-            }
+        }
        
     });
 });

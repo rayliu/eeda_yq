@@ -11,12 +11,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
             scrollX:false,
             serverSide: true, //不打开会出现排序不对
             ajax: "/chargeCheckOrder/checkedList",
-            columns:[
-					  { "data": null,"width":"30px",
-						  "render": function ( data, type, full, meta ) {
-							  return '<input type="checkbox" class="checkBox" name="order_check_box" order_type="'+full.TYPE+'" value="'+full.ID+'">';			  
-	                	  }
-					     },		                
+            columns:[	                
 					  { "data": "ORDER_NO","width": "100px"},
 					  { "data": "CREATE_STAMP", "width": "100px"},  
 					  { "data": "SP_NAME", "width": "60px"}, 
