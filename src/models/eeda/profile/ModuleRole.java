@@ -1,0 +1,1 @@
+package models.eeda.profile;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class ModuleRole extends Model<ModuleRole> {	public static final ModuleRole dao = new ModuleRole();}

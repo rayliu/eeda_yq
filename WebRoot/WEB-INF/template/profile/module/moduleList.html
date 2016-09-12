@@ -1,0 +1,180 @@
+<%layout("/profile/module/moduleLayout.html"){%>
+<link href="/js/lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet">
+<link href="/js/lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+
+<div id="page-wrapper">
+<div class="row">
+	<h2>模块及权限定义 <button id="addModuleBtn" type="button" class="btn btn-success btn-xs">添加模块</button></h2>
+	<div class="col-lg-2">
+
+		<input type="hidden" id="customerId" />
+		<input type="hidden" id="categoryId" />
+		<input type="hidden" id="module_id" />
+		<input type="hidden" id="module_version" />
+		<div id='treeListDiv'>
+	        <ul id="moduleTree" class="ztree"></ul>
+	    </div>
+    </div>
+    <!--end of col4 -->
+    <div class="col-lg-10">
+    	<div id="displayDiv" style="display: none;">
+    		<div class="btn-header">
+		    	<div id="addProductDiv" style="display: block;">
+		    		<h3>权限</h3>
+				</div>
+			</div>
+			<div>
+				  <!-- Nav tabs -->
+				  <ul class="nav nav-tabs" role="tablist">
+				  	 <li role="presentation" class="active" >
+				 	 	<a href="#permission" aria-controls="permission" role="tab" data-toggle="tab">权限</a>
+				 	 </li>
+				 	 <li role="presentation">
+				 	 	<a href="#role_permission" aria-controls="role_permission" role="tab" data-toggle="tab">岗位-权限</a>
+				 	 </li>
+				  </ul>
+
+				  <!-- Tab panes -->
+				  <div class="tab-content">
+				  	<div role="tabpanel" class="tab-pane active" id="permission">
+				    	<div class="form-group">
+				    		<div class="col-lg-12">
+							    <section class=''>
+							        <div class="row">
+							    		<div class="form-group button-bar" >
+									    	<button type="button" class="btn btn-success btn-xs" id="addPermissionBtn">添加权限</button>
+									    </div>
+							    	</div>
+									<div class="row" name="body">
+							    		<table id="permission_table" class="display" cellspacing="0" style="width: 100%;">
+								            <thead class="eeda">
+								                <tr>
+								                    <th></th>
+								                    <th>权限ID</th>
+								                    <th>权限code</th>
+								                    <th>权限名称</th>
+								                    <th>权限URL</th>
+								                </tr>
+								            </thead>
+								            <tbody>
+								            </tbody>
+								        </table>
+							    	</div>
+							    </section>
+							</div>
+						</div>
+				    </div>
+				    <div role="tabpanel" class="tab-pane" id="role_permission">
+				    	<div class="form-group">
+				    		<div class="col-lg-12">
+							    <section class=''>
+							        <div class="row">
+							    		<div class="form-group button-bar" >
+									    	<button type="button" class="btn btn-success btn-xs" id="addAuthBtn">添加岗位</button>
+									    </div>
+							    	</div>
+									<div class="row" name="body">
+							    		<table id="auth_table" class="display" cellspacing="0" style="width: 100%;">
+								            <thead class="eeda">
+								                <tr>
+								                    <th></th>
+								                    <th></th>
+								                    <th>岗位</th>
+								                    <th>权限</th>
+								                </tr>
+								            </thead>
+								            <tbody>
+								            </tbody>
+								        </table>
+							    	</div>
+							    </section>
+							</div>
+						</div>
+				    </div>
+				  </div>
+
+				  <div class="form-group button-bar" >
+				    	<button id="saveBtn" type="button" class="btn btn-success">保存</button>
+				    	<!--button id="stopBtn" type="button" class="btn btn-default">停用</button-->
+				  </div>
+					<div class="row">
+		                <div class="col-lg-8">
+		                    <div class="panel panel-yellow">
+		                        <div class="panel-heading">
+		                            注意:
+		                        </div>
+		                        <div class="panel-body">
+	                            	<ol style="line-height: 1.5;">
+										<li style="margin-bottom: 10px;">权限采用格式: 模块名.list, 模块名.add, 模块名.edit</li>
+										<li>在页面HTML中, 用shiro 判断是否有此权限
+											<code>
+												< % if(shiro.hasPermission("salesOrder.add")) % >
+											</code>
+										</li>
+									</ol>
+		                        </div>
+		                    </div>
+		                    <!-- /.col-lg-4 -->
+		                </div>
+		            </div>
+			</div>
+	    </div>
+    </div>
+    <!--end of col8 -->
+</div>
+<!--end of row -->
+
+</div>
+    <!-- 模态框 -->
+   
+<%}%>
+
+<script>
+
+	// template.helper('JsonStringify', function (content) {
+	//     return JSON.stringify(content);
+	// });
+
+    var Module={};
+</script>
+
+<link href="/yh/css/productTree.css" rel="stylesheet" />
+<style type="text/css">
+	.ztree li span.button.add {
+		margin-left:2px; 
+		margin-right: -1px; 
+		background-position:-144px 0; 
+		vertical-align:top; 
+		*vertical-align:middle
+	}
+</style>
+
+<link rel="stylesheet" href="/js/lib/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<!--script type="text/javascript" src="/js/lib/zTree_v3/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="/js/lib/zTree_v3/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="/js/lib/zTree_v3/js/jquery.ztree.exedit-3.5.js"></script>
+
+<script src="/js/lib/datatables-1.10.9/js/jquery.dataTables.js"></script>
+<script src="/js/lib/datatables-1.10.9/js/dataTables.bootstrap.js"></script>
+
+<script src="/js/lib/sco/js/sco.message.js"></script>
+
+<script src="/js/lib/aui-artTemplate-3/template.js"></script>
+
+<script src="/js/eeda/eeda-common.js"></script>
+
+<script src="/js/eeda/module/list_tree.js"></script>
+<script src="/js/eeda/module/permission.js"></script>
+<script src="/js/eeda/module/auth.js"></script>
+<script src="/yh/js/profile/module/fields_add_btn_type.js"></script>
+<script src="/yh/js/profile/module/action.js"></script>
+<script src="/yh/js/profile/module/action_btn_visible.js"></script-->
+
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/profile/module/list_tree', 
+        	'app/profile/module/permission',
+        	'app/profile/module/auth']);
+    });
+</script>
