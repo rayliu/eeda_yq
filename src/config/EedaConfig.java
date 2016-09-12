@@ -1,6 +1,7 @@
 package config;
 
 import handler.UrlHanlder;
+import interceptor.EedaMenuInterceptor;
 
 import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
@@ -46,6 +47,8 @@ import models.eeda.profile.Country;
 import models.eeda.profile.Currency;
 import models.eeda.profile.Custom;
 import models.eeda.profile.FinItem;
+import models.eeda.profile.Module;
+import models.eeda.profile.ModuleRole;
 import models.eeda.profile.Unit;
 import models.eeda.profile.Warehouse;
 import models.yh.profile.CustomizeField;
@@ -64,6 +67,7 @@ import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.ext.handler.UrlSkipHandler;
 import com.jfinal.ext.plugin.shiro.ShiroInterceptor;
+import com.jfinal.ext.plugin.shiro.ShiroKit;
 import com.jfinal.ext.plugin.shiro.ShiroPlugin;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
@@ -71,6 +75,7 @@ import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
+import controllers.eeda.ModuleController;
 import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.jobOrder.JobOrderReportController;
@@ -159,6 +164,7 @@ public class EedaConfig extends JFinalConfig {
 	private void setScmRoute(Routes me, String contentPath) {
 		// yh project controller
         me.add("/", controllers.eeda.MainController.class, contentPath);
+        me.add("/module", ModuleController.class, contentPath);
        // me.add("/apidoc", controllers.eeda.DocController.class);
 //        me.add("/debug", controllers.profile.LogController.class, contentPath);
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
@@ -261,6 +267,8 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("permission", Permission.class);
         arp.addMapping("user_role", UserRole.class);
         arp.addMapping("role_permission", RolePermission.class);
+        arp.addMapping("eeda_modules", Module.class);
+        arp.addMapping("module_role", ModuleRole.class);
         arp.addMapping("unit", Unit.class);
         arp.addMapping("country", Country.class);
         arp.addMapping("fin_item", FinItem.class);
@@ -353,8 +361,12 @@ public class EedaConfig extends JFinalConfig {
     	if("Y".equals(getProperty("is_check_permission"))){
     		logger.debug("is_check_permission = Y");
          	me.add(new ShiroInterceptor());
+         	//针对shiro 设置错误页面
+            ShiroKit.setUnauthorizedUrl("/noPermission");
     	}
-        //me.add(new SetAttrLoginUserInterceptor());
+    	// 添加控制层全局拦截器, 每次进入页面时构造菜单项
+        //me.addGlobalActionInterceptor(new EedaMenuInterceptor());
+        me.add(new EedaMenuInterceptor());
     }
 
     @Override

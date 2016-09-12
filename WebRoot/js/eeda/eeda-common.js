@@ -265,6 +265,47 @@ eeda.refreshUrl = refreshUrl;
 		  });
 	  };
    
-  
+    eeda.buildTableDetail=function(table_id, deletedTableIds){
+      var item_table_rows = $("#"+table_id+" tr");
+        var items_array=[];
+        for(var index=0; index<item_table_rows.length; index++){
+            if(index==0)
+                continue;
+
+            var row = item_table_rows[index];
+            var empty = $(row).find('.dataTables_empty').text();
+            if(empty)
+              continue;
+            
+            var id = $(row).attr('id');
+            if(!id){
+                id='';
+            }
+            
+            var item={}
+            item.id = id;
+            for(var i = 1; i < row.childNodes.length; i++){
+              var name = $(row.childNodes[i]).find('input,select').attr('name');
+              var value = $(row.childNodes[i]).find('input,select').val();
+              if(name){
+                item[name] = value;
+              }
+            }
+            item.action = id.length > 0?'UPDATE':'CREATE';
+            items_array.push(item);
+        }
+
+        //add deleted items
+        for(var index=0; index<deletedTableIds.length; index++){
+            var id = deletedTableIds[index];
+            var item={
+                id: id,
+                action: 'DELETE'
+            };
+            items_array.push(item);
+        }
+        deletedTableIds = [];
+        return items_array;
+    };
   
 });
