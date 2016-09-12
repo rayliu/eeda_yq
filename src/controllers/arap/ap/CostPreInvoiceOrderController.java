@@ -4,8 +4,6 @@ import interceptor.SetAttrLoginUserInterceptor;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,9 +11,7 @@ import java.util.Map;
 
 import models.ArapAccountAuditLog;
 import models.ArapCostApplication;
-import models.ArapCostInvoiceItemInvoiceNo;
 import models.ArapCostOrder;
-import models.ArapCostOrderInvoiceNo;
 import models.ArapMiscCostOrder;
 import models.CostApplicationOrderRel;
 import models.Party;
@@ -26,11 +22,7 @@ import models.yh.arap.inoutorder.ArapInOutMiscOrder;
 import models.yh.arap.prePayOrder.ArapPrePayOrder;
 import models.yh.carmanage.CarSummaryOrder;
 import models.yh.damageOrder.DamageOrder;
-import models.yh.profile.Contact;
 
-
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -57,7 +49,9 @@ public class CostPreInvoiceOrderController extends Controller {
 			.getLog(CostPreInvoiceOrderController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
-	
+	public void index() {
+		redirect("/costCheckOrder");
+	}
 	
 	@RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_CREATE,
 			PermissionConstant.PERMSSION_CPO_UPDATE}, logical = Logical.OR)
@@ -607,8 +601,6 @@ public class CostPreInvoiceOrderController extends Controller {
 	        String wl_id = "";//往来票据单
 	        String hs_id = "";//货损单
 	        String sql = "";
-	        String cname = "";
-	        String payee_unit = "";
 	        if(application_id.equals("")){
 	        	if(!application_id.equals(ids)){
 	        		String[] idArr=ids.split(",");
@@ -632,11 +624,7 @@ public class CostPreInvoiceOrderController extends Controller {
 	 					}else if("往来票据单".equals(orderType)){
 	 						wl_id += id+",";
 	 					}
-//	 					else if("货损单".equals(orderType)){
-//	 						cname =" and dofi.party_name = '"+ one[2] +"'";
-//	 						payee_unit = one[2];
-//	 						hs_id += id+",";
-//	 					}
+
 	 				}
 	 				if(!dz_id.equals(""))
 	 					dz_id = dz_id.substring(0, dz_id.length()-1);
@@ -684,128 +672,10 @@ public class CostPreInvoiceOrderController extends Controller {
 						+ " LEFT JOIN contact c ON c.id = p.contact_id"
 						+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
 						+ " WHERE "
-						+ " aco.id in(" + dz_id +")"
-						+ " union "
-						+ " SELECT ppo.id,ppo.sp_id payee_id,null payee_name, ppo.order_no, '预付单' order_type, ppo. STATUS, ppo.remark, "
-						+ " ppo.create_date create_stamp, c.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name, "
-						+ " ppo.total_amount cost_amount,"
-						+ " ( SELECT ifnull(sum(caor.pay_amount),0 ) "
-						+ " FROM cost_application_order_rel caor "
-						+ " WHERE caor.cost_order_id = ppo.id"
-						+ " AND caor.order_type = '预付单'"
-						+ " ) pay_amount,"
-						+ " ( ppo.total_amount - ( SELECT ifnull(sum(caor.pay_amount), 0) total_pay"
-						+ " FROM cost_application_order_rel caor "
-						+ " WHERE caor.cost_order_id = ppo.id "
-						+ " AND caor.order_type = '预付单' ) ) yufu_amount,null item_ids,null payee_unit "
-						+ " FROM arap_pre_pay_order ppo"
-						+ " LEFT OUTER JOIN party p ON ppo.sp_id = p.id"
-						+ " LEFT OUTER JOIN contact c ON c.id = p.contact_id"
-						+ " LEFT OUTER JOIN user_login ul ON ppo.creator = ul.id"
-						+ " LEFT OUTER JOIN office o ON ppo.office_id = o.id"
-						+ " WHERE "
-						+ " ppo.id in(" + yf_id +")"
-					    + " union"
-					    + " SELECT aco.id,"
-					    + " (case when aco.cost_to_type = 'sp' then aco.sp_id"
-						+ " when aco.cost_to_type = 'customer' then aco.customer_id"
-						+ " when aco.cost_to_type = 'insurance' then aco.insurance_id end) payee_id,aco.others_name payee_name,"
-					    + " aco.order_no, '成本单' order_type, aco.audit_STATUS, aco.remark, aco.create_stamp,"
-						+ " (case when aco.cost_to_type = 'sp' then (select c.company_name from contact c left join party p on c.id = p.contact_id where p.id = aco.sp_id)"
-						+ " when aco.cost_to_type = 'customer' then (select c.company_name from contact c left join party p on c.id = p.contact_id where p.id = aco.customer_id)"
-						+ " when aco.cost_to_type = 'insurance' then (select c.company_name from contact c left join party p on c.id = p.contact_id where p.id = aco.insurance_id) end) cname,"
-						+ "  ifnull(ul.c_name, ul.user_name) creator_name, aco.total_amount cost_amount,"
-						+ " ( SELECT ifnull(sum(caor.pay_amount),0) FROM cost_application_order_rel caor "
-						+ " WHERE caor.cost_order_id = aco.id AND caor.order_type = '成本单' "
-						+ " ) pay_amount,"
-						+ " (aco.total_amount - (SELECT ifnull(sum(caor.pay_amount), 0) "
-						+ " FROM cost_application_order_rel caor "
-						+ " WHERE caor.cost_order_id = aco.id AND caor.order_type = '成本单'"
-						+ " )) yufu_amount,null item_ids,null payee_unit "
-						+ " FROM arap_misc_cost_order aco "
-						+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
-						+ " WHERE "
-						+ " aco.id in(" + cb_id +")"
-						 + " union"
-					    + " SELECT aco.id,null payee_id,aco.main_driver_name payee_name, aco.order_no, '行车单' order_type, aco.STATUS, '' remark, aco.create_data create_stamp,"
-						+ " '' cname,"
-						+ " '' creator_name, aco.actual_payment_amount cost_amount,"
-						+ " ( SELECT ifnull(sum(caor.pay_amount),0) FROM cost_application_order_rel caor "
-						+ " WHERE caor.cost_order_id = aco.id AND caor.order_type = '行车单' "
-						+ " ) pay_amount,"
-						+ " (aco.actual_payment_amount - (SELECT ifnull(sum(caor.pay_amount), 0) "
-						+ " FROM cost_application_order_rel caor "
-						+ " WHERE caor.cost_order_id = aco.id AND caor.order_type = '行车单'"
-						+ " )) yufu_amount,null item_ids,null payee_unit "
-						+ " FROM car_summary_order aco "
-						+ " WHERE "
-						+ " aco.id in(" + xc_id +")"
-					    + " union "
-					    + " SELECT ror.id, null payee_id,ror.account_name payee_name, ror.order_no, '报销单' order_type,"
-					    + " ror. STATUS, ror.remark, ror.create_stamp, null cname,"
-					    + " ifnull(ul.c_name, ul.user_name) creator_name,"
-					    + " ror.amount cost_amount,"
-					    + " ( SELECT ifnull(sum(caor.pay_amount), 0)"
-					    + " FROM cost_application_order_rel caor"
-					    + " WHERE caor.cost_order_id = ror.id"
-					    + " AND caor.order_type = '报销单'"
-					    + " ) pay_amount,"
-					    + " ( ror.amount - ( SELECT ifnull(sum(caor.pay_amount), 0) "
-					    + " FROM cost_application_order_rel caor"
-					    + " WHERE caor.cost_order_id = ror.id"
-					    + " AND caor.order_type = '报销单' ) ) yufu_amount,null item_ids,null payee_unit "
-					    + " FROM reimbursement_order ror"
-					    + " LEFT JOIN user_login ul ON ul.id = ror.create_id"
-					    + " WHERE ror.id in(" + bx_id +")"
-					    + " union"
-					    + " SELECT aio.id, null payee_id,aio.charge_person payee_name, aio.order_no, '往来票据单' order_type,"
-					    + " aio.pay_status STATUS, aio.remark, aio.create_date create_stamp, aio.charge_unit cname,"
-					    + " ifnull(ul.c_name, ul.user_name) creator_name,"
-					    + " aio.pay_amount cost_amount,"
-					    + " ( SELECT ifnull(sum(caor.pay_amount), 0)"
-					    + " FROM cost_application_order_rel caor"
-					    + " WHERE caor.cost_order_id = aio.id"
-					    + " AND caor.order_type = '往来票据单'"
-					    + " ) pay_amount,"
-					    + " ( aio.pay_amount - ( SELECT ifnull(sum(caor.pay_amount), 0) "
-					    + " FROM cost_application_order_rel caor"
-					    + " WHERE caor.cost_order_id = aio.id"
-					    + " AND caor.order_type = '往来票据单' ) ) yufu_amount,null item_ids,null payee_unit "
-					    + " FROM arap_in_out_misc_order aio"
-					    + " LEFT JOIN user_login ul ON ul.id = aio.creator_id"
-					    + " WHERE aio.id in(" + wl_id +")"
-					    + " union"
-					    + " SELECT dor.id, dor.customer_id payee_id, '' payee_name, dor.order_no, '货损单' order_type,"
-					    + " dofi.status STATUS, dofi.remark, dor.create_date create_stamp,"
-					    + " (case when dofi.party_type ='客户' "
-					    + " then c.abbr "
-        	            + " else"
-        	            + " dofi.party_name"
-        	            + " end) cname," //收款单位
-					    + " ifnull(ul.c_name, ul.user_name) creator_name,"
-					    + " sum(ifnull(dofi.amount,0)) cost_amount,"
-					    + " ( SELECT ifnull(sum(caor.pay_amount), 0)"
-					    + " FROM cost_application_order_rel caor"
-					    + " WHERE caor.cost_order_id = dor.id"
-					    + " AND caor.order_type = '货损单'"
-					    + " and caor.payee_unit = dofi.party_name "
-					    + " ) pay_amount,"
-					    + " (sum(ifnull(dofi.amount,0)) - ( SELECT ifnull(sum(caor.pay_amount), 0) "
-					    + " FROM cost_application_order_rel caor"
-					    + " WHERE caor.cost_order_id = dor.id"
-					    + " AND caor.order_type = '货损单'  and caor.payee_unit = dofi.party_name ) ) yufu_amount,GROUP_CONCAT(cast(dofi.id as char)) item_ids,'"+payee_unit+"' payee_unit "
-					    + " FROM damage_order dor"
-					    + " LEFT JOIN damage_order_fin_item dofi on dofi.order_id = dor.id and dofi.type = 'cost' and dofi.status='已确认'"
-					    + " LEFT JOIN user_login ul ON ul.id = dor.creator"
-					    + "	left join party p on p.id = dor.customer_id "
-					    + " left join contact c on c.id = p.contact_id "
-					    + " WHERE dor.id in(" + hs_id +")"
-					    +   cname
-					    + " group by dofi.party_name ";
+						+ " aco.id in(" + dz_id +")";
 			}else{
-				//Record re = Db.findFirst("select ");
 				
-				sql = "select * from( SELECT aco.id,aco.payee_id,null payee_name,aco.order_no, '对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
+				sql = " SELECT aco.id,aco.payee_id,null payee_name,aco.order_no, '对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
 						+ " c.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name, aco.cost_amount,"
 						+ " ( SELECT ifnull(sum(caor.pay_amount),0) FROM cost_application_order_rel caor "
 						+ " WHERE "
@@ -823,140 +693,8 @@ public class CostPreInvoiceOrderController extends Controller {
 						+ " LEFT JOIN party p ON p.id = aco.payee_id"
 						+ " LEFT JOIN contact c ON c.id = p.contact_id"
 						+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
-						+ " where caor.order_type = '对账单'"
-						
-						+ " union "
-						+ " SELECT ppo.id,ppo.sp_id payee_id,null payee_name,  ppo.order_no, '预付单' order_type, ppo. STATUS, ppo.remark, "
-						+ " ppo.create_date create_stamp, c.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name, "
-						+ " ppo.total_amount cost_amount,"
-						+ " ( SELECT ifnull(sum(caor.pay_amount),0 ) "
-						+ " FROM cost_application_order_rel caor "
-						+ " WHERE "
-						+ " caor.application_order_id = aciao.id"
-						+ " and caor.cost_order_id = ppo.id"
-						+ " AND caor.order_type = '预付单'"
-						+ " ) pay_amount,"
-						+ " ( ppo.total_amount - ( SELECT ifnull(sum(caor.pay_amount), 0) total_pay"
-						+ " FROM cost_application_order_rel caor "
-						+ " WHERE caor.cost_order_id = ppo.id "
-						+ " AND caor.order_type = '预付单' ) ) yufu_amount, aciao.id app_id "
-						+ " FROM arap_pre_pay_order ppo"
-						+ " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = ppo.id"
-						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
-						+ " LEFT OUTER JOIN party p ON ppo.sp_id = p.id"
-						+ " LEFT OUTER JOIN contact c ON c.id = p.contact_id"
-						+ " LEFT OUTER JOIN user_login ul ON ppo.creator = ul.id"
-						+ " LEFT OUTER JOIN office o ON ppo.office_id = o.id"
-						+ " where caor.order_type = '预付单'"
-					    + " union"
-					    + " SELECT aco.id,"
-					    + " (case when aco.cost_to_type = 'sp' then aco.sp_id"
-						+ " when aco.cost_to_type = 'customer' then aco.customer_id end) payee_id,aco.others_name payee_name, "
-					    + " aco.order_no, '成本单' order_type, aco.audit_STATUS, aco.remark, aco.create_stamp,"
-						+ " (case when aco.cost_to_type = 'sp' then (select c.company_name from contact c left join party p on c.id = p.contact_id where p.id = aco.sp_id)"
-						+ " when aco.cost_to_type = 'customer' then (select c.company_name from contact c left join party p on c.id = p.contact_id where p.id = aco.customer_id) end) cname,"
-						+ "  ifnull(ul.c_name, ul.user_name) creator_name, aco.total_amount cost_amount,"
-						+ " ( SELECT ifnull(sum(caor.pay_amount),0) FROM cost_application_order_rel caor "
-						+ " WHERE "
-						+ " caor.application_order_id = aciao.id"
-						+ " and caor.cost_order_id = aco.id AND caor.order_type = '成本单' "
-						+ " ) pay_amount,"
-						+ " (aco.total_amount - (SELECT ifnull(sum(caor.pay_amount), 0) "
-						+ " FROM cost_application_order_rel caor "
-						+ " WHERE caor.cost_order_id = aco.id AND caor.order_type = '成本单'"
-						+ " )) yufu_amount, aciao.id app_id "
-						+ " FROM arap_misc_cost_order aco "
-						+ " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = aco.id"
-						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
-						+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
-						+ " where caor.order_type = '成本单'"
-						 + " union"
-					    + " SELECT aco.id,null payee_id,aco.main_driver_name payee_name, aco.order_no, '行车单' order_type, aco.STATUS, '' remark, aco.create_data create_stamp,"
-						+ " '' cname,"
-						+ " '' creator_name, aco.actual_payment_amount cost_amount,"
-						+ " ( SELECT ifnull(sum(caor.pay_amount),0) FROM cost_application_order_rel caor "
-						+ " WHERE  "
-						+ " caor.application_order_id = aciao.id "
-						+ " and caor.cost_order_id = aco.id AND caor.order_type = '行车单' "
-						+ " ) pay_amount,"
-						+ " (aco.actual_payment_amount - (SELECT ifnull(sum(caor.pay_amount), 0) "
-						+ " FROM cost_application_order_rel caor "
-						+ " WHERE caor.cost_order_id = aco.id AND caor.order_type = '行车单'"
-						+ " )) yufu_amount, aciao.id app_id "
-						+ " FROM car_summary_order aco"
-						+ " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = aco.id"
-						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
-						+ " where caor.order_type = '行车单'"
-						+ " union "
-					    + " SELECT ror.id, null payee_id,ror.account_name payee_name, ror.order_no, '报销单' order_type,"
-					    + " ror. STATUS, ror.remark, ror.create_stamp, null cname,"
-					    + " ifnull(ul.c_name, ul.user_name) creator_name,"
-					    + " ror.amount cost_amount,"
-					    + " ( SELECT ifnull(sum(caor.pay_amount), 0)  FROM cost_application_order_rel caor"
-					    + " WHERE caor.cost_order_id = ror.id and "
-					    + " caor.application_order_id = aciao.id  AND caor.order_type = '报销单'"
-					    + " ) pay_amount,"
-					    + " ( ror.amount - ( SELECT ifnull(sum(caor.pay_amount), 0) "
-					    + " FROM cost_application_order_rel caor"
-					    + " WHERE caor.cost_order_id = ror.id"
-					    + " AND caor.order_type = '报销单' ) ) yufu_amount, aciao.id app_id"
-					    + " FROM reimbursement_order ror"
-					    + " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = ror.id"
-						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
-					    + " LEFT JOIN user_login ul ON ul.id = ror.create_id"
-					    + " where caor.order_type = '报销单'"
-					    + " union"
-					    + " SELECT aio.id, null payee_id,aio.charge_person payee_name, aio.order_no, '往来票据单' order_type,"
-					    + " aio.pay_status STATUS, aio.remark, aio.create_date create_stamp, aio.charge_unit cname,"
-					    + " ifnull(ul.c_name, ul.user_name) creator_name,"
-					    + " aio.pay_amount cost_amount,"
-					    + " ( SELECT ifnull(sum(caor.pay_amount), 0)"
-					    + " FROM cost_application_order_rel caor"
-					    + " WHERE "
-					    + " caor.cost_order_id = aio.id and caor.application_order_id = aciao.id"
-					    + " AND caor.order_type = '往来票据单'"
-					    + " ) pay_amount,"
-					    + " ( aio.pay_amount - ( SELECT ifnull(sum(caor.pay_amount), 0) "
-					    + " FROM cost_application_order_rel caor"
-					    + " WHERE caor.cost_order_id = aio.id"
-					    + " AND caor.order_type = '往来票据单' ) ) yufu_amount, aciao.id app_id"
-					    + " FROM arap_in_out_misc_order aio"
-					    + " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = aio.id"
-						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
-					    + " LEFT JOIN user_login ul ON ul.id = aio.creator_id"
-					    + " where caor.order_type = '往来票据单'"
-						+ " union"
-					    + " SELECT dor.id, dor.customer_id payee_id,'' payee_name, dor.order_no, '货损单' order_type,"
-					    + " dofi.status STATUS, dofi.remark, dor.create_date create_stamp, "
-					    + " (case when dofi.party_type ='客户' "
-					    + " then c.abbr "
-			            + " else"
-			            + " dofi.party_name"
-			            + " end) cname,"
-					    + " ifnull(ul.c_name, ul.user_name) creator_name,"
-					    + " sum(ifnull(dofi.amount,0)) cost_amount,"
-					    + " ( SELECT ifnull(sum(caor.pay_amount), 0)"
-					    + " FROM cost_application_order_rel caor"
-					    + " WHERE "
-					    + " caor.cost_order_id = dor.id and caor.application_order_id = aciao.id"
-					    + " AND caor.order_type = '货损单'"
-					    + " ) pay_amount,"
-					    + " (sum(ifnull(dofi.amount,0)) - ( SELECT ifnull(sum(caor.pay_amount), 0) "
-					    + " FROM cost_application_order_rel caor"
-					    + " WHERE caor.cost_order_id = dor.id"
-					    + " AND caor.order_type = '货损单' AND dofi.party_name = caor.payee_unit)) yufu_amount, aciao.id app_id"
-					    + " FROM damage_order dor"
-					    + " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = dor.id"
-					    + " LEFT JOIN damage_order_fin_item dofi on dofi.order_id = dor.id "
-					    + " and dofi.party_name = caor.payee_unit and dofi.status = '已确认' and dofi.type = 'cost'"
-					    //+ " and dofi.id in(caor.item_ids)"
-						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
-					    + " LEFT JOIN user_login ul ON ul.id = dor.creator"
-					    + " left join party p on p.id = dor.customer_id "
-					    + " left join contact c on c.id = p.contact_id "
-					    + " where caor.order_type = '货损单'"
-					    + " GROUP BY caor.application_order_id"
-						+ " ) A where app_id ="+application_id ;
+						+ " where caor.order_type = '对账单' and aciao.id="+application_id
+					    + " GROUP BY caor.application_order_id ";
 			}
 			
 			Map BillingOrderListMap = new HashMap();
@@ -1025,7 +763,7 @@ public class CostPreInvoiceOrderController extends Controller {
 				
 				if(order_type.equals("对账单")){
 					ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
-					Double total_amount = arapCostOrder.getDouble("cost_amount");
+					Double total_amount = arapCostOrder.getDouble("total_amount");
 					Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '对账单'",id);
 					Double paid_amount = re.getDouble("total");
 					if(!total_amount.equals(paid_amount)){
@@ -1086,7 +824,10 @@ public class CostPreInvoiceOrderController extends Controller {
 						arapInOutMiscOrder.set("pay_status", "已复核").update();
 				}			
 			}
-			renderJson(arapCostInvoiceApplication);
+			Record r = arapCostInvoiceApplication.toRecord();
+			String check_name = LoginUserController.getUserNameById(arapCostInvoiceApplication.getLong("check_by").toString());
+			r.set("check_name", check_name);
+			renderJson(r);
 	    }
 		
 		//退回
@@ -1210,11 +951,9 @@ public class CostPreInvoiceOrderController extends Controller {
 	        	arapCostInvoiceApplication.set("pay_time", new Date());
 	        else
 	        	arapCostInvoiceApplication.set("pay_time", pay_time);
-	        arapCostInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
-	        arapCostInvoiceApplication.set("confirm_stamp", new Date());
-	        arapCostInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
-	        arapCostInvoiceApplication.set("confirm_stamp", new Date());
-	        arapCostInvoiceApplication.update();
+		        arapCostInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
+		        arapCostInvoiceApplication.set("confirm_stamp", new Date());
+		        arapCostInvoiceApplication.update();
 	        
 	        //更改原始单据状态
 	        String strJson = getPara("detailJson");
@@ -1245,17 +984,6 @@ public class CostPreInvoiceOrderController extends Controller {
 					}else
 						arapMiscCostOrder.set("audit_status", "已付款").update();
 										
-				}else if(order_type.equals("行车单")){
-					CarSummaryOrder carSummaryOrder = CarSummaryOrder.dao.findById(id);
-					
-					Double total_amount = carSummaryOrder.getDouble("actual_payment_amount");
-					Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '行车单'",id);
-					Double paid_amount = re.getDouble("total");
-					if(!total_amount.equals(paid_amount)){
-						carSummaryOrder.set("status", "部分已付款").update();
-					}else
-						carSummaryOrder.set("status", "已付款").update();
-					
 				}else if(order_type.equals("预付单")){
 					ArapPrePayOrder arapPrePayOrder = ArapPrePayOrder.dao.findById(id);
 					
@@ -1267,43 +995,6 @@ public class CostPreInvoiceOrderController extends Controller {
 					}else
 						arapPrePayOrder.set("status", "已付款").update();
 					
-				}else if(order_type.equals("报销单")){
-					ReimbursementOrder reimbursementOrder = ReimbursementOrder.dao.findById(id);
-					Double total_amount = reimbursementOrder.getDouble("amount");
-					Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '报销单'",id);
-					Double paid_amount = re.getDouble("total");
-					if(!total_amount.equals(paid_amount)){
-						reimbursementOrder.set("status", "部分已付款").update();
-					}else
-						reimbursementOrder.set("status", "已付款").update();
-					
-				}else if(order_type.equals("往来票据单")){
-					ArapInOutMiscOrder arapInOutMiscOrder = ArapInOutMiscOrder.dao.findById(id);
-					
-					Double total_amount = arapInOutMiscOrder.getDouble("pay_amount");
-					Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '往来票据单'",id);
-					Double paid_amount = re.getDouble("total");
-					if(!total_amount.equals(paid_amount)){
-						arapInOutMiscOrder.set("pay_status", "部分已付款").update();
-					}else
-						arapInOutMiscOrder.set("pay_status", "已付款").update();
-				} else if(order_type.equals("货损单")){
-					DamageOrder damageOrder = DamageOrder.dao.findById(id);
-					Record rec = Db.findFirst("select sum(ifnull(amount,0)) total_amount from damage_order_fin_item dof where dof.order_id = ?",id);
-					Double total_amount = rec.getDouble("total_amount");
-					Record re = Db.findFirst("select ifnull(sum(pay_amount),0) total from cost_application_order_rel cao"
-							+ "  LEFT JOIN arap_cost_application_order acia on acia.id = cao.application_order_id"
-							+ "  where cost_order_id =? and order_type = '货损单' and acia.`STATUS`='已付款'",id);
-					Record re2 = Db.findFirst("select ifnull(sum(receive_amount),0) total2 from charge_application_order_rel cao"
-							+ " LEFT JOIN arap_charge_invoice_application_order acia on acia.id = cao.application_order_id "
-							+ " where charge_order_id =? and order_type = '货损单' and acia.`STATUS`='已收款'",id);
-					Double paid_amount = re.getDouble("total");
-					Double receive_amount = re2.getDouble("total2");
-					Double total = paid_amount + receive_amount;
-					if(total_amount.equals(total)){
-						if(!damageOrder.getStr("status").equals("已结案"))
-							damageOrder.set("status", "已完成").update();
-					}
 				}
 			}
 	        

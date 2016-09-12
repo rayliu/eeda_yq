@@ -14,7 +14,7 @@ $(document).ready(function() {
 		    serverSide: true, //不打开会出现排序不对
 		    ajax: "/costPreInvoiceOrder/costOrderList?ids="+ids+"&order_types="+order_types+"&application_id="+$("#application_id").val(),
 		    columns:[
-             {"data":"ORDER_TYPE","width": "100px"},
+             {"data":"ORDER_TYPE","width": "100px","sClass":"order_type"},
              {"data":"ORDER_NO","width": "120px",
             	"render": function(data, type, full, meta) {
             		return '<a href="/costCheckOrder/edit?id='+full.ID+'">'+data+'</a>';
@@ -70,11 +70,7 @@ $(document).ready(function() {
     };
     
     
-    
-    
-
-    //申请保存
-    //付款确认
+    //保存
 	$("#saveBtn").on('click',function(){
 		$("#saveBtn").attr("disabled", true);
 		$("#printBtn").attr("disabled", true);
@@ -101,7 +97,7 @@ $(document).ready(function() {
 				total = 0.00;
 				nopay = 0.00;
 				pay = 0.00;
-				var url = "/costPreInvoiceOrder/costOrderList?application_id="+$("#application_id").val();;
+				var url = "/costPreInvoiceOrder/costOrderList?application_id="+$("#application_id").val();
 				dataTable.ajax.url(url).load();
 			}else{
 				$.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
@@ -139,7 +135,7 @@ $(document).ready(function() {
 		  	
 			$.get("/costPreInvoiceOrder/checkStatus", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val()}, function(data){
 				if(data.ID>0){
-					$("#check_name").val();
+					$("#check_name").val(data.CHECK_NAME);
 					$("#check_stamp").val(data.CHECK_STAMP);
 					$("#status").val(data.STATUS);
 					$.scojs_message('复核成功', $.scojs_message.TYPE_OK);
