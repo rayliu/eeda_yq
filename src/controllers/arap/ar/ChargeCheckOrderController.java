@@ -50,7 +50,7 @@ public class ChargeCheckOrderController extends Controller {
         String ids = (String) dto.get("ids");
         String billing_unit = (String) dto.get("billing_unit");
         String payee = (String) dto.get("payee");
-        String total_profitRMB = (String) dto.get("total_profitRMB");
+        Double total_profitRMB = Double.parseDouble((String)dto.get("total_profitRMB")) ;
 //        String total_profitTotalCost = (String) dto.get("total_profitTotalCost");
 //        String total_profitTotalRMB = (String) dto.get("total_profitTotalRMB");
         
@@ -73,7 +73,7 @@ public class ChargeCheckOrderController extends Controller {
 			aco.set("payee", payee);
 			aco.set("status", "已创建 ");
 			aco.set("total_profitRMB", total_profitRMB);
-//			aco.set("total_profitTotalCost", total_profitTotalCost);
+			aco.set("total_profitTotalCost", 0);
 //			aco.set("total_profitTotalRMB", total_profitTotalRMB);
 			aco.save();
 			id = aco.getLong("id").toString();

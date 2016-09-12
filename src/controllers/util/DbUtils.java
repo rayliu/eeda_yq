@@ -202,7 +202,7 @@ public class DbUtils {
                         value=null;
                     }
             		try {
-                        model.set(key, value);
+                        model.set(key, value.trim());
                         if("Field".equals(modelName) && "field_display_name".equals(key)){//对field 的特殊处理
                             model.set("field_name", PingYinUtil.getFirstSpell(value).toUpperCase());
                             //需判断当前表是否有相同字段名

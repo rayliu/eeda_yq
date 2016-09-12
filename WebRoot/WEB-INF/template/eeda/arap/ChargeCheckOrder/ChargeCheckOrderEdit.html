@@ -21,7 +21,7 @@
                                         	<input id="sp_id" type="hidden"  value="${sp.sp_id!order.sp_id!''}" />
                                     <h3>客户信息</h3>
                                     <div class="form-group">
-                                        <label>地址</label> <span id = "address">${address!''}</span>
+                                        <label>地址</label> <span id = "address">${address!''}${order.address!''}</span>
                                     </div>
                                     <div class="form-group">
                                         <label>联系人</label> <span id="customer">${customer!''}</span>
@@ -30,13 +30,13 @@
                                         <label>电话</label> <span id="phone"> ${phone!''}</span>                                  
                                     </div>                             
                                     <div class="form-group">
-                                        <label>应收RMB总金额</label> <span id="total_profitRMB">${sp.total_profitRMB!''}${order.charge.total_profitrmb!''}</span>                                       
+                                        <label>应收RMB总金额</label> <span id="total_profitRMB">${sp.total_profitRMB!''}${order.total_profitrmb!''}</span>                                       
                                     </div>                                                                 
                                     <div class="form-group">
-                                        <label>扣款金额</label> <span id="total_profitTotalCost">${sp.total_profitTotalCost!''} ${order.charge.total_profittotalcost!''} </span>                             
+                                        <label>扣款金额</label> <span id="total_profitTotalCost">${sp.total_profitTotalCost!''} ${order.total_profittotalcost!''} </span>                             
                                     </div>  
                                     <div class="form-group">                           
-                                        <label>对账确认金额</label><label class="radio-inline" id="total_profitTotalRMB">${sp.total_profitTotalRMB!''}${order.charge.total_profittotalrmb!''}</label>
+                                        <label>对账确认金额</label><label class="radio-inline" id="total_profitTotalRMB">${sp.total_profitTotalRMB!''}${order.total_profittotalrmb!''}</label>
                                     </div>
                                     <div class="form-group">
                                         <label>备注</label>
@@ -49,15 +49,15 @@
 	                                    <div class="form-group">
 	                                    
 	                                     <label>对账单号</label>
-	                                        <span id="order_no">${order_no!''}${order.order_no!''} </span>
+	                                        <span id="order_no">${order.order_no!''} </span>
 	                                    </div>
 	                                    <div class="form-group">
 	                                    <label>单据状态</label>
-	                                        <span id="status">${status!''}${order.charge.status!''} </span>
+	                                        <span id="status">${order.status!''} </span>
 	                                    </div>
 	                                    <div class="form-group">	                                                                       
 	                                        <label>创建人</label>
-	                                          <span id="login_user"> ${loginUser!''}${order.loginuser!''}</span>
+	                                          <span id="login_user">${order.c_name!''}</span>
 	                                    </div>
                                         
 	                                    <div class="row">                                        
@@ -65,7 +65,7 @@
 	                                        <%include("/eeda/component/form/dateInputField.html", 
                                                  {   id: 'begin_time', 
                                                      label: '对账开始时间', 
-                                                     value: ''
+                                                     value: order.begin_time!''
                                                  }){}%>
 	                                        </div>
 	                                    </div>
@@ -74,7 +74,7 @@
 	                                        <%include("/eeda/component/form/dateInputField.html", 
                                                   {   id: 'end_time', 
                                                       label: '对账结束时间', 
-                                                      value: ''
+                                                      value: order.end_time!''
                                                   }){}%>
 	                                        </div>	                                        
 		                                </div>
@@ -95,7 +95,7 @@
                                             <%include("/eeda/component/form/inputField.html",
                                                 {   id:'billing_unit', 
                                                     label:'开票单位' ,
-                                                    value:order.charge.billing_unit!'' 
+                                                    value: order.billing_unit!'' 
                                                    }){} %>                                             
                                             </div>
                                             </div>
@@ -104,7 +104,7 @@
 	                                        <%include("/eeda/component/form/inputField.html",
 	                                            {   id:'payee', 
 	                                                label:'收&nbsp;&nbsp;款&nbsp;&nbsp;人' ,
-	                                                value:order.charge.payee!'' 
+	                                                value:order.payee!'' 
 	                                               }){} %>	 
 	                                        </div>
 	                                        </div>                                             
@@ -180,4 +180,5 @@
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/arap/ChargeCheckOrder/edit']);
     });
+    
 </script>

@@ -195,7 +195,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    profitTotalCharge += parseFloat(data); 			
+//                    profitTotalCharge += parseFloat(data); 			
         		   
                     return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" />';
                 }
@@ -249,7 +249,7 @@ $(document).ready(function() {
     }
     
     //输入 数量*单价的时候，计算金额
-    $('#charge_table').on('keyup','[name=price],[name=amount],[name=exchange_rate]',function(){
+    $('#charge_table').on('keyup','[name=price],[name=amount],[name=exchange_rate],[name=CURRENCY_ID_input]',function(){
     	var row = $(this).parent().parent();
     	var price = $(row.find('[name=price]')).val()
     	var amount = $(row.find('[name=amount]')).val()
@@ -262,23 +262,31 @@ $(document).ready(function() {
     			$(row.find('[name=currency_total_amount]')).val(total_amount*parseFloat(exchange_rate));
     			
     		}
+    		getTotalCharge();
     	}
     })
-	    //应收应付结算获取字段
-//    		    $('.company').text($('input [name=SP_ID_input]').val());
-//    		    $('.chargeRMB').text(totalCharge);  
-	    var totalChargeRMB = 0; 
-	    var totalChargeUSD = 0;
+    
 
+    
+	    //计算应收字段
+    var getTotalCharge= function(){
+    	var totalChargeRMB = 0; 
+	    var totalChargeUSD = 0;
+	    var profitTotalCharge = 0;
 	    var tableCurCharge =$('#charge_table').find('[name=CURRENCY_ID_input]');
 	    var tableAmountCharge =$('#charge_table').find('[name=total_amount]');
+	    var currencyTotalAmount = $('#charge_table').find('[name=currency_total_amount]');
 	    for(var i = 0;i<tableCurCharge.length;i++){
 	        if(tableCurCharge[i].value=='CNY'){               
 	           totalChargeRMB += parseFloat(tableAmountCharge[i].value);   //parseFloat(data)
 	        }else if(tableCurCharge[i].value=='USD'){
 	           totalChargeUSD += parseFloat(tableAmountCharge[i].value);
 	        }
+	        profitTotalCharge += parseFloat(currencyTotalAmount[i].value);
 	    }
+	    //隐藏字段   应收人民币汇总字段
+	    $('.profitTotalCharge').text(profitTotalCharge).hide();
+	    
 	    if(totalChargeRMB!=""&&!isNaN(totalChargeRMB)){
 	           $('.chargeRMB').text(totalChargeRMB+"RMB");  
 	       }else{
@@ -290,39 +298,57 @@ $(document).ready(function() {
 	    }else{
 	        $('.chargeUSD').text(0+"USD");  
 	     }
-	 			
-         
-		//计算人民币总额
 	    
-	    
-		//应付结算,目前只用人民币结算
-		
-//    	    	var costRMB =$('#cost_table').find('[name=currency_total_amount]');
-//    	    	var chargeRMB =$('#charge_table').find('[name=currency_total_amount]');
-//    	    	var totalCostRMB=0;
-//    	    	var totalChargeRMB=0;
-//    	    	var profitRMB=0;
-//    	    	for(var i = 0;i<costRMB.length;i++){
-//    	    		var j = costRMB[i].value;
-//    	    		if(j!=''&&!isNaN(j)){
-//    	    			totalCostRMB+=parseFloat(j);
-//    	    		}
-//    	    	}
-//    	    		for(var i = 0;i<chargeRMB.length;i++){
-//    	    			var j = chargeRMB[i].value;
-//    	    			if(j!=''&&!isNaN(j)){
-//    	    				totalChargeRMB+=parseFloat(j);
-//    	    				}
-//    	    			}
-//    	    		profitRMB = totalChargeRMB-totalCostRMB;
-//    	    		$('.costRMB').text(totalCostRMB+"RMB");
-//    	    		$('.chargeRMB').text(totalChargeRMB+"RMB");
-//    	    		$('.profitRMB').text(profitRMB+"RMB");  
-//    			
-//    		}
-  	  
+	    window.calcCurrency();
+    }
     
-   	  
-    $('.profitTotalCharge').text(profitTotalCharge).hide();
-});
+    window.calcCurrency =  function (){
+		var chargeRMB = $('[name=chargeRMB]').text().replace('RMB','');
+		var costRMB = $('[name=costRMB]').text().replace('RMB','');
+	    var profitRMB = parseFloat(chargeRMB)-parseFloat(costRMB);
+	       if(profitRMB>=0){
+	          $('[name=profitRMB]').text(profitRMB+"RMB");
+	       }else if(profitRMB<0){
+	    	  $('[name=profitRMB]').html("<span style='color:red'>"+profitRMB+"RMB</span>");
+	       } else{
+	    	  $('[name=profitRMB]').text(0+"RMB");
+	       }
+
+		var chargeUSD = $('[name=chargeUSD]').text().replace('RMB','');
+		var costUSD = $('[name=costUSD]').text().replace('RMB','');
+		var profitUSD = parseFloat(chargeUSD)-parseFloat(costUSD);
+	       if(profitUSD>=0){
+	          $('[name=profitUSD]').text(profitUSD+"USD");
+	       }else if(profitUSD<0){
+	    	  $('[name=profitUSD]').html("<span style='color:red'>"+profitUSD+"USD</span>");
+	       } else{
+	    	  $('[name=profitUSD]').text(0+"USD");
+	       }
+
+		//人民币利润汇总字段
+		var profitTotalCharge = $('[name=profitTotalCharge]').text();
+	    if(profitTotalCharge ==''&&isNaN(profitTotalCharge)){
+	    	profitTotalCharge=0;
+	        $('[name=profitTotalCharge]').text(profitTotalCharge);
+	    }
+	    var profitTotalCost = $('[name=profitTotalCost]').text();
+	    if(profitTotalCost ==''&&isNaN(profitTotalCost)){  
+	    	  profitTotalCost = 0;
+	          $('[name=profitTotalCost]').text(profitTotalCost);
+	      }
+
+	    var profitTotalRMB = parseFloat(profitTotalCharge)-parseFloat(profitTotalCost);
+	    if(profitTotalRMB>=0){
+	    $('[name=profitTotalRMB]').text(profitTotalRMB+"RMB");
+	    }else if(profitTotalRMB<0){
+	    	$('[name=profitTotalRMB]').html("<span style='color:red'>"+profitTotalRMB+"RMB</span>");
+	    } else{
+	    	$('[name=profitTotalRMB]').text(0+"RMB");
+	    }
+	}
+    
+    getTotalCharge();
+	     
+    
+  });
 });

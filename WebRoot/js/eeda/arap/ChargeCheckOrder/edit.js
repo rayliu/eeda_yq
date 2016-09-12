@@ -9,7 +9,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             id: 'eeda-table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/chargeCheckOrder/editList",
+            ajax: "/chargeCheckOrder/editList?id="+$('#ids').val(),
             columns:[
 					  { "data": null,"width": "10px",
 						  "render": function ( data, type, full, meta ) {
