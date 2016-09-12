@@ -137,10 +137,10 @@
                                 <% if(module.orders != null ){%>
                                     <ul class="nav nav-second-level">
                                         <%
-                                        for(order in module.orders){
+                                        for(menu_order in module.orders){
                                         %>
                                             <li id="${order.id}">
-                                                <a href="/${order.url!''}">${order.module_name!}</a>
+                                                <a href="/${order.url!''}">${menu_order.module_name!}</a>
                                             </li>
                                         <%}%>
                                     </ul>

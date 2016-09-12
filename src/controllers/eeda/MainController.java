@@ -125,7 +125,7 @@ public class MainController extends Controller {
             	    if(getAttr("modules")==null){
                         redirect("/");
                     }else{
-                        render("/yh/index.html");
+                        render("/eeda/index.html");
                     };
             	}else{
             		render(rec.getStr("index_page_path"));
