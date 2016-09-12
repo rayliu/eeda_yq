@@ -254,10 +254,10 @@ $(document).ready(function() {
     	var amount = $(row.find('[name=amount]')).val()
     	var exchange_rate = $(row.find('[name=exchange_rate]')).val()
     	if(price!=''&&amount!=''&&!isNaN(price)&&!isNaN(amount)){
-    		var total_amount = parseFloat(price)*parseFloat(amount);
+    		var total_amount = parseFloat(price*amount);
     		$(row.find('[name=total_amount]')).val(total_amount);
     		if(exchange_rate!=''&&!isNaN(exchange_rate)){
-    			$(row.find('[name=currency_total_amount]')).val(total_amount*parseFloat(exchange_rate));
+    			$(row.find('[name=currency_total_amount]')).val(parseFloat(total_amount*exchange_rate));
     		  }
     				
     	}	

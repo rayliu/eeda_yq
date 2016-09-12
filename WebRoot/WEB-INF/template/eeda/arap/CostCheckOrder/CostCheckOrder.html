@@ -88,13 +88,6 @@
                                                                     }){}%>
                                             </div>
                                             <div class="col-lg-4">
-                                                <%include("/eeda/component/form/inputCustomerField.html", 
-                                                                    {   id: 'customer1', 
-                                                                        label: '客户', 
-                                                                        value: ''
-                                                                    }){}%>
-                                            </div>
-                                            <div class="col-lg-4">
                                                 <%include("/eeda/component/form/inputSpField.html", 
                                                     {
                                                         id:'sp1', 
@@ -102,6 +95,19 @@
                                                         value: ''
                                                     }){} %>
                                             </div>
+                                             <div class="col-lg-4">
+								                <%include("/eeda/component/form/selectField.html", 
+								                    {   id:'status', 
+								                        label:'状态', 
+								                        value_list:[
+								                            {code:'', value:''},
+								                            {code:'新建', value:'新建'},
+								                            {code:'已确认', value:'已确认'},
+								                            {code:'部分申请付款中', value:'部分申请付款中'},
+								                            {code:'全额申请付款中', value:'全额申请付款中'}
+								                        ]
+								                    }){}%>
+								            </div>
                                         </div>
                                         <div class="row">
                                             
@@ -112,18 +118,6 @@
                                                     value:''
                                                 }){} %>
                                             </div>
-                                            <div class="col-lg-4">
-								                <%include("/eeda/component/form/selectField.html", 
-								                    {   id:'status', 
-								                        label:'状态', 
-								                        value_list:[
-								                            {code:'新建', value:'新建'},
-								                            {code:'已确认', value:'已确认'},
-								                            {code:'部分申请付款中', value:'部分申请付款中'},
-								                            {code:'全额申请付款中', value:'全额申请付款中'}
-								                        ]
-								                    }){}%>
-								            </div>
                                         </div>
                                     </form>
 
