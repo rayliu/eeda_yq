@@ -2,12 +2,9 @@ package controllers.arap.ar;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -130,15 +127,13 @@ public class ChargeInvoiceOrderController extends Controller {
         }
         String sql = "";
         
-        	sql = " select * from (SELECT joa.*, jo.order_no order_no,pr.abbr sp_name,f.name cost_name,jo.create_stamp,"
-        			+ " u. NAME unit_name,c. NAME currency_name"
-        			+ " FROM job_order_arap joa"
-        			+ " LEFT JOIN job_order jo ON joa.order_id = jo.id"
-        			+ " LEFT JOIN party pr ON pr.id = joa.sp_id "
-        			+ " LEFT JOIN fin_item f ON f.id = joa.charge_id"
-        			+ " LEFT JOIN unit u ON u.id = joa.unit_id"
-        			+ " LEFT JOIN currency c ON c.id = joa.currency_id"
-        			+ " WHERE joa.order_type = 'charge') A where 1 = 1 ";
+        	sql = " select * from (SELECT"
+        			+ "	aco.*, substring(create_stamp, 6, 2) moon,pr.abbr sp_name"
+        			+ " FROM"
+        			+ "	arap_charge_order aco"
+        			+ " LEFT JOIN job_order_arap joa on joa.order_id = aco.id"
+        			+ " LEFT JOIN party pr ON pr.id = aco.sp_id "
+        			+ " WHERE joa.order_type = 'charge') B where 1 = 1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
 
@@ -157,46 +152,7 @@ public class ChargeInvoiceOrderController extends Controller {
         renderJson(orderListMap); 
     }   
     
-    public void chargeConFirmReturnOrder(){
-    	String returnOrderIds = getPara("returnOrderIds");
-    	String orderType = getPara("orderTypes");
-    	String[] idArr = returnOrderIds.split(",");
-    	String[] orderTypeArr = orderType.split(",");
-    	for(int i=0 ; i<idArr.length ; i++){
-    		if("海运".equals(orderTypeArr[i])){
-    			JobOrderArap jobOrderArap = JobOrderArap.dao.findById(idArr[i]);
-    			jobOrderArap.set("audit_flag", "Y");
-    			jobOrderArap.set("create_time", new Date());
-    			jobOrderArap.update();
-    		}else if("空运".equals(orderTypeArr[i])){
-    			JobOrderArap jobOrderArap = JobOrderArap.dao.findById(idArr[i]);
-    			jobOrderArap.set("audit_flag", "Y");
-    			jobOrderArap.set("create_time", new Date());
-    			jobOrderArap.update();
-    		}else if("陆运".equals(orderTypeArr[i])){
-    			JobOrderArap jobOrderArap = JobOrderArap.dao.findById(idArr[i]);
-    			jobOrderArap.set("audit_flag", "Y");
-    			jobOrderArap.set("create_time", new Date());
-    			jobOrderArap.update();
-    		}else if("报关".equals(orderTypeArr[i])){
-    			JobOrderArap jobOrderArap = JobOrderArap.dao.findById(idArr[i]);
-    			jobOrderArap.set("audit_flag", "Y");
-    			jobOrderArap.set("create_time", new Date());
-    			jobOrderArap.update();
-    		}else if("保险".equals(orderTypeArr[i])){
-    			JobOrderArap jobOrderArap = JobOrderArap.dao.findById(idArr[i]);
-    			jobOrderArap.set("audit_flag", "Y");
-    			jobOrderArap.set("create_time", new Date());
-    			jobOrderArap.update();
-    		}else{
-    			JobOrderArap jobOrderArap = JobOrderArap.dao.findById(idArr[i]);
-    			jobOrderArap.set("audit_flag", "Y");
-    			jobOrderArap.set("create_time", new Date());
-    			jobOrderArap.update();
-    		}
-    	}
-        renderJson("{\"success\":true}");
-    }
+
 
 
 }

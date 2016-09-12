@@ -24,12 +24,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 						  "render":function(data){
 							  return '应收对账单';}
 					    }, 
-					  { "data": "COST_NAME"}, 
-					  { "data": "SP_NAME"},
-	                  { "data": "PRICE" },
-		              { "data": "AMOUNT"}, 
-		              { "data": "UNIT_NAME"}, 
-		              { "data": "CURRENCY_NAME"}
+					  { "data": "MOON"}, 
+					  { "data": "STATUS"},
+	                  { "data": "SP_NAME" },
+		              { "data": "TOTAL_PROFITRMB"}, 
+		              { "data": "REMARK"}, 
+		              { "data": null,
+		            	  return '系统管理员';},
+		              { "data": "CREATE_STAMP"},
             ]
         });
         
