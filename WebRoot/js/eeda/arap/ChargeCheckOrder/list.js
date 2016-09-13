@@ -13,25 +13,33 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
             serverSide: true, //不打开会出现排序不对
             ajax: "/chargeCheckOrder/list?checked="+checked,
             columns:[
-					  { "data": null,"width": "10px",
-						  "render": function ( data, type, full, meta ) {
-							  if(full.BILL_FLAG != 'Y')
-								  	return '<input type="checkbox" class="checkBox" name="order_check_box">';
-							  else 
-						    		return '<input type="checkbox" disabled checked="checked">';
-						  }
-					    },		                
+				      { "width": "10px",
+					    "render": function ( data, type, full, meta ) {
+					    	if(full.BILL_FLAG != ''){
+						        if(full.BILL_FLAG != 'Y')
+						    		return '<input type="checkbox" class="checkBox" name="order_check_box">';
+						    	else
+						    		return '<input type="checkbox" class="checkBox" disabled>';
+					    	}else{
+					    		return '';
+					    	}
+					    }
+				      },
 					  { "data": "ORDER_NO" },
 					  { "data": "CREATE_TIME"},  
 					  { "data": "SP_NAME","sClass":"SP_NAME"}, 
-					  { "data": "BILL_FLAG","width": "60px",
-						 "render":function(data){
-							 if(data !='Y')
-								 return '新建';
-							 else
-								 return '已创建';
-						  } 
-					     },
+					  { "data": "BILL_FLAG", "width": "60px",
+			            	"render": function ( data, type, full, meta ) {
+			            		if(data){
+				            		if(data != 'Y')
+							    		return '未创建对账单';
+							    	else 
+							    		return '已创建对账单';
+			            		}else{
+			            			return '';
+			            		}
+						    }
+			          },
 					  { "data": "RMB",
 				    	 "render":function(data, type, full, meta){
 				    		 if(data<0){
@@ -97,12 +105,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 		              { "data": "TRUCK_TYPE"}
             ]
         });
-        //反选
-		$('#allCheck').click(function(){
-	    	$("input[name='order_check_box']").each(function () {  
-	            this.checked = !this.checked;  
-	         });
-		});
+        
 		//选择是否是同一个客户
 		var cnames = [];
 		$('#eeda-table').on('click',"input[name='order_check_box']",function () {
@@ -200,15 +203,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
         	var totalAmount = parseFloat($("#totalAmountUSDSpan").text());
         	var OrderIds = itemIds.join(",");
         	location.href ="/chargeCheckOrder/create?totalAmount="+totalAmount+"&OrderIds="+OrderIds;
-        	
-        	
 
         });
   
-
-
-        
-        
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();

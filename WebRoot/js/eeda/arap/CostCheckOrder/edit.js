@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
     $(document).ready(function() {
     	
-    	document.title = ' | ' + document.title;
+    	document.title = '创建应付对账单 | ' + document.title;
         $('#menu_cost').addClass('active').find('ul').addClass('in');
         
         //datatable, 动态处理

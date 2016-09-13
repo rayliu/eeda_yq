@@ -185,7 +185,7 @@ public class ChargeCheckOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = "";
-        if(checked.equals("Y")){
+        if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
         	sql = " select * from (select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
         			+ "jo.net_weight gross_weight,jo.total_profitRMB rmb,jo.total_profitUSD usd,jo.total_profitTotalRMB totalrmb,jo.ref_no ref_no,"
         			+ "p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
@@ -242,7 +242,7 @@ public class ChargeCheckOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = "";        
-        		sql = " select * from (select aco.order_no,aco.create_stamp,aco.status,aco.total_profitRMB,"
+        		sql = " select * from (select aco.id,aco.order_no,aco.create_stamp,aco.status,aco.total_profitRMB,"
         				+ "caor.pay_amount paid_amount,p.abbr sp_name,jo.total_chargeRMB rmb,jo.total_chargeUSD usd"
         				+ "	from arap_charge_order aco "
         				+ "	left join party p on p.id=aco.sp_id "

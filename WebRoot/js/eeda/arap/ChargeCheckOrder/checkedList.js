@@ -12,7 +12,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
             serverSide: true, //不打开会出现排序不对
             ajax: "/chargeCheckOrder/checkedList",
             columns:[	                
-					  { "data": "ORDER_NO","width": "100px"},
+					  { "data": "ORDER_NO", "width": "100px",
+			            	 "render": function ( data, type, full, meta ) {
+			           		  return "<a href='/chargeCheckOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+			           	  }
+			          },
 					  { "data": "CREATE_STAMP", "width": "100px"},  
 					  { "data": "SP_NAME", "width": "60px"}, 
 					  { "data": "STATUS", "width": "100px"},
@@ -40,8 +44,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
             ]
         });
    	           
-      $('#resetBtn').click(function(e){
-          $("#orderForm")[0].reset();
+      $('#resetBtn1').click(function(e){
+          $("#orderSearchForm")[0].reset();
       });
 
       $('#searchBtn1').click(function(){

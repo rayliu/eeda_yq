@@ -26,11 +26,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       });
 
       
-      $('#resetBtn').click(function(e){
-          $("#orderForm")[0].reset();
+      $('#resetOrderBtn').click(function(e){
+          $("#orderSearchForm")[0].reset();
       });
 
-      $('#searchBtn').click(function(){
+      $('#searchOrderBtn').click(function(){
           searchData(); 
       })
 
