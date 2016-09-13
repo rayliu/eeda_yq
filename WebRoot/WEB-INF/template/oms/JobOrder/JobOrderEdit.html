@@ -296,9 +296,13 @@
                         </div>
                         <div class="col-lg-12">
                             <h3>应收信息</h3>
+                            
                         </div>
                         <div class="col-lg-12">
                             <button class="btn btn-success btn-xs" id="add_charge">添加费用</button>
+                         <a data-target='#printDebit' data-toggle='modal'>
+                            <button class="btn btn-success btn-xs" id="print_debit_note">打印Debit_note</button>
+                         </a>
                             <br>
                             <%include("/eeda/component/form/detailTable.html", 
                                 {
@@ -310,7 +314,35 @@
                                     value_list: chargeList![]
                                 }){} %>
                         </div>
-                        
+                        <div class="modal fade" id="printDebit">
+							<div class="modal-dialog">
+								    <div class="modal-content">
+								      	<div class="modal-body">
+											<div class="form-group">
+											选择结算公司： <%include("/eeda/component/form/inputSpField.html", 
+                                                    {
+                                                        id:'sp', 
+                                                        label:'结算公司', 
+                                                        value: ''
+                                                    }){} %>	
+											</div>
+											<div class="form-group"> 
+								                    <label class="checkbox-inline">
+								                        <input type="radio" id="debit_note" name='debit_note' value='Debit_ note' checked>Debit note(国内)
+								                    </label><br />
+								                    <label class="checkbox-inline">
+								                        <input type="radio" id="invoice" name='debit_note' value='Invoice'>Invoice(境外)
+								                    </label>
+					                         </div>
+					                       </div>
+								       
+								        <div class="modal-footer">
+								        	<button type="button" id="printDebitNoteBtn" class="btn btn-primary">打印</button>
+								        	<button type="button" id="returnBtn" class="btn  btn-default" data-dismiss="modal">返回</button>         
+								        </div>
+								      </div>   	       
+								  </div>
+						  </div>
                         
 
                          <div class="col-lg-12">
