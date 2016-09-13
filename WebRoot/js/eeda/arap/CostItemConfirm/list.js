@@ -1,14 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
   	document.title = '应付明细查询   | '+document.title;
-  	  if(type!=""){
-  		  $('#menu_todo_list').addClass('active').find('ul').addClass('in');
-  		  $('#menu_cost').removeClass('active').find('ul').removeClass('in');
-  	  }else{
-  		$('#menu_todo_list').removeClass('active').find('ul').removeClass('in');
-		  $('#menu_cost').addClass('active').find('ul').addClass('in');
-  	  }
-  	//datatable, 动态处理
+      $('#menu_cost').addClass('active').find('ul').addClass('in');
+  	
       var dataTable = eeda.dt({
           id: 'eeda_table',
           paging: true,
@@ -84,7 +78,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       };
       
       
-      //全选，全不选
+      //全选
       $('#AllCheck').click(function(){
     	  var ischeck = this.checked;
       	$(".checkBox").each(function () {  
@@ -120,12 +114,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	});
 	    	 $.post('/costConfirmList/costConfirm?itemIds='+itemIds, function(data){
 	    		 if(data.result==true){
-	    			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+	    			 $.scojs_message('单据确认成功', $.scojs_message.TYPE_OK);
 	    			 searchData();
 	    			 $('#confirmBtn').attr('disabled', false);
 	    		 }
 	    	 },'json').fail(function() {
-	                $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+	                $.scojs_message('单据确认失败', $.scojs_message.TYPE_ERROR);
 	                $('#confirmBtn').attr('disabled', false);
 	              });
         })
