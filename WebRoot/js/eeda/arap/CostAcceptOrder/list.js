@@ -51,7 +51,6 @@ $(document).ready(function() {
             	 }
             },
             {"data":"ORDER_TYPE", "width":"70px"},
-            {"data":"ORDER_NO", "width":"120px"},  
             {"data":"STATUS", "width":"50px"},    
             {"data":"PAY_AMOUNT", "width":"70px",
             	"render": function(data, type, full, meta) {

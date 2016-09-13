@@ -448,39 +448,13 @@ public class ChargePreInvoiceOrderController extends Controller {
 		String account_name = "";
 		String[] orderArrId=ids.split(",");
 		for (int i=0;i<orderArrId.length;) {
-			String[] one=orderArrId[i].split(":");
-			String id = one[0];
-			String orderType = one[1];
-			
-			if("应收对账单".equals(orderType)){
-				ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(id);
-				payee_id = arapChargeOrder.getLong("payee_id").toString();
-			}else if("开票记录单".equals(orderType)){
-				ArapChargeInvoice arapChargeInvoice = ArapChargeInvoice.dao.findById(id);
-				payee_id = arapChargeInvoice.getLong("payee_id").toString();
-			}else if("手工收入单".equals(orderType)){
-				ArapMiscChargeOrder arapMiscChargeOrder = ArapMiscChargeOrder.dao.findById(id);
-				String type = arapMiscChargeOrder.getStr("charge_from_type");
-				payee_name = arapMiscChargeOrder.getStr("others_name");
-				if(type.equals("sp")){
-					payee_id = arapMiscChargeOrder.getLong("sp_id").toString();
-				}else if(type.equals("customer")){
-					payee_id = arapMiscChargeOrder.getLong("customer_id").toString();
-				}
-			}else if("往来票据单".equals(orderType)){
-				ArapInOutMiscOrder arapInOutMiscOrder = ArapInOutMiscOrder.dao.findById(id);
-				payee_name = arapInOutMiscOrder.getStr("charge_person");
-			}else if("货损单".equals(orderType)){
-				String cname = one[2];
-				Record record = Db.findFirst("select id from contact c where c.abbr = '"+cname+"' ");
-				if(record != null)
-					payee_id = record.getLong("id").toString();
-			}
-			break;
+			String id = orderArrId[i];
+			ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(id);
+			payee_id = arapChargeOrder.getLong("sp_id").toString();
 		}
 		
 		if(!payee_id.equals("")){
-			Contact contact = Contact.dao.findFirst("select * from contact c left join party p on c.id = p.contact_id where p.id = ?",payee_id);
+			Party contact = Party.dao.findFirst("select * from party where id = ?",payee_id);
 			deposit_bank = contact.getStr("bank_name");
 			bank_no = contact.getStr("bank_no");
 			account_name = contact.getStr("receiver");
@@ -499,7 +473,7 @@ public class ChargePreInvoiceOrderController extends Controller {
 		
 		setAttr("submit_name", LoginUserController.getLoginUserName(this));
 		setAttr("status", "new");
-		render("/yh/arap/ChargeAcceptOrder/chargeEdit.html");
+		render("/eeda/arap/ChargeAcceptOrder/chargeEdit.html");
 	}
 	
 	

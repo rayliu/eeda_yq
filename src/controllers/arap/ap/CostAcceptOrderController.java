@@ -67,13 +67,11 @@ public class CostAcceptOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = "select * from(  "
-        		+ " select jo.order_no,acao.id,acao.order_no application_order_no,acao.status,acao.payment_method,acao.create_stamp,acao.check_stamp,acao.pay_time, "
+        		+ " select acao.id,acao.order_no application_order_no,acao.status,acao.payment_method,acao.create_stamp,acao.check_stamp,acao.pay_time, "
         		+ " acao.remark,acao.payee_unit,acao.payee_name, "
-        		+ " caor.order_type,caor.pay_amount,joa.sp_id "
+        		+ " caor.order_type,caor.pay_amount "
 				+ " from arap_cost_application_order acao "
 				+ " left join cost_application_order_rel caor on caor.application_order_id = acao.id "
-				+ " left join job_order jo on jo.id=acao.order_id "
-				+ " left join job_order_arap joa on joa.order_id=acao.order_id "
 				+ " ) B where 1=1 ";
 		
         String condition = DbUtils.buildConditions(getParaMap());
