@@ -34,18 +34,6 @@
                                                     value: ''
                                                 }){} %>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="search-label">单据类型</label>
-                                        <select id="orderType" class="form-control search-control status_filter">
-											<option value=""></option>
-											<option value="对账单">对账单</option>
-											<option value="成本单">成本单</option>
-											<option value="行车单">行车单</option>
-											<option value="预付单">预付单</option>
-											<option value="报销单">报销单</option>
-											<option value="往来票据单">往来票据单</option>
-										</select>
-                                    </div>
 								</div>
 								<div class="col-lg-4">
                                     <div class="form-group">
@@ -172,9 +160,6 @@
 </div>
 
 <%}%>
- <script>
-      var type = "${type!''}";
- </script>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/arap/CostAcceptOrder/list']);

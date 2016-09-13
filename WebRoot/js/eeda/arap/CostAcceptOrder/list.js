@@ -1,13 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
 	document.title = '复核付款| '+document.title;
-    if(type!=""){
-		  $('#menu_todo_list').addClass('active').find('ul').addClass('in');
-		  $('#menu_finance').addClass('active').find('ul').addClass('in');
-	  }else{
-		$('#menu_todo_list').removeClass('active').find('ul').removeClass('in');
-		$('#menu_finance').addClass('active').find('ul').addClass('in');
-	  }
+    $('#menu_finance').addClass('active').find('ul').addClass('in');
     
 	var costAccept_table = eeda.dt({
 	    id: 'costAccept_table',
@@ -115,14 +109,12 @@ $(document).ready(function() {
     	  var sp = $("#sp").val(); 
           var order_no = $("#orderNo_filter1").val().trim(); 
           var status = $('#status_filter1').val();
-          var orderType = $('#orderType').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
    
           var url = "/costAcceptOrder/list?sp_id="+sp
           	   +"&order_no="+order_no
                +"&status="+status
-               +"&order_type="+orderType
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 
