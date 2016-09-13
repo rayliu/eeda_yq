@@ -15,7 +15,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: false, //不打开会出现排序不对 
           ajax: "/costCheckOrder/orderList",
           columns: [
-            { "data": "ORDER_NO", "width": "100px"},
+            { "data": "ORDER_NO", "width": "100px",
+            	 "render": function ( data, type, full, meta ) {
+           		  return "<a href='/costCheckOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+           	  }
+            },
             { "data": "CREATE_STAMP", "width": "100px"},
             { "data": "STATUS", "width": "60px"},
             { "data": "SP_NAME", "width": "100px"},

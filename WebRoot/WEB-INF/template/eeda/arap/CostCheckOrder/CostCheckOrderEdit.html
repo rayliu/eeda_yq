@@ -74,42 +74,15 @@
                             </div>
                             <br>
                                     <div class="panel-body">
-                                        <div class="table-responsive">
-			                                <table class="table table-striped table-bordered table-hover" id="costConfirem-table"  style="width: 2500px;">
-			                                    <thead>
-			                                        <tr>
-			                                           <th>操作类型</th>
-			                                           <th>供应商</th>
-			                                           <th>业务状态</th>
-			                                           <!-- <th>回单收集</th> -->
-			                                           <!-- <th>成本确认</th> -->
-			                                           <th>业务单号</th>
-			                                           <th>托运单号</th>
-			                                           <th>序列号</th>
-			                                           <th>签收单据号</th>
-			                                           <th>运输单号</th>
-			                                           <th>客户单号</th>
-			                                           <th>操作时间</th>
-			                                           <th>数量</th>
-			                                           <th>客户名称</th>
-			                                           <th>始发城市</th>
-			                                           <th>目的城市</th>
-			                                           <th>送货地址</th>
-			                                           <th>体积</th>
-			                                           <th>重量</th>
-			                                           <th>总费用</th>
-			                                           <th>对账确认金额</th>
-			                                           <th>操作网点</th>
-			                                           <th>备注</th>
-			                                           <th>操作</th>
-			                                       </tr>
-			                                    </thead>
-			                                    <tbody>
-			                                                                                                                                            
-			                                    </tbody>
-			                                </table>
-                                        </div>
-                                        <!-- /.table-responsive -->
+			                                <%include("/eeda/component/form/detailTable.html", 
+	                                        {
+	                                            id:'eeda_table', 
+	                                            style:'width:1900px',
+	                                            headers:['','工作单号','创建时间','状态','DEBIT_NO','类型','客户','结算公司','合计支出(RMB)','合计支出(USD)','合计支出(HKD)','合计支出(JPY)',
+	                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','箱号'
+	                                            ],
+	                                            value_list: tableList![]
+	                                        }){} %>
                                     </div>
                                     <!-- /.panel-body -->
                                 
@@ -141,7 +114,9 @@
         <!-- /#page-wrapper -->
 
 <%}%>
-
+ <script>
+      var type = "${type!''}";
+ </script>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/arap/CostCheckOrder/edit']);
