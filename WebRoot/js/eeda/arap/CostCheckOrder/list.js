@@ -1,14 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
   	document.title = '应付对账单查询  | '+document.title;
-  	  if(type!=""){
-  		  $('#menu_todo_list').addClass('active').find('ul').addClass('in');
-  		  $('#menu_cost').removeClass('active').find('ul').removeClass('in');
-  	  }else{
-  		$('#menu_todo_list').removeClass('active').find('ul').removeClass('in');
-		  $('#menu_cost').addClass('active').find('ul').addClass('in');
-  	  }
-  	//datatable, 动态处理
+  	  $('#menu_cost').addClass('active').find('ul').removeClass('in');
+  	  
       var dataTable = eeda.dt({
           id: 'eeda_table',
           paging: true,
