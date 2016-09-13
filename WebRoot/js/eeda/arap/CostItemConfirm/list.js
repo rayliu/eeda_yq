@@ -13,7 +13,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           id: 'eeda_table',
           paging: true,
           serverSide: false, //不打开会出现排序不对 
-          ajax: "/costConfirmList/list",
+          ajax: "/costConfirmList/list?audit_flag="+$("#audit_flag").val(),
           columns: [
 			{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
