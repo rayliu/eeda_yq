@@ -14,21 +14,37 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                                 <div class="row">
-                                    <div class="col-lg-6">
-                                        <form role="form" id="costCheckOrderForm">
+                                    
+                                    <form role="form" id="costCheckOrderForm">
                                         	<input id="id" type="hidden" value="${order.id!''}"/>
                                         	<input id="ids" type="hidden"  value="${ids!''}"/>
                                         	<input id="sp_id" type="hidden"  value="${sp.sp_id!order.sp_id!''}"/>
                                     <h3>对账单信息</h3>
-                                    <div class="form-group">
-                                        <label>对账单号</label> <span id = "order_no"><strong>${order_no!''}${order.order_no!''}</strong></span>
+                                    <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+                                                            {   id:'order_no', 
+                                                                label:'对账单号', 
+                                                                value: order.order_no!'',
+                                                                disabled: 'disabled'
+                                                            }){}%>
                                     </div>
-                                    <div class="form-group">
-                                        <label>单据状态</label> <span id="status">${status!''}${order.status!''}</span>
+                                    <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+                                                            {   id:'status', 
+                                                                label:'单据状态', 
+                                                                value: order.status!'',
+                                                                disabled: 'disabled'
+                                                            }){}%>
                                     </div>
-                                    <div class="form-group">
-                                        <label>创建人</label> <span id="login_user"> ${loginUser!order.c_name!''}</span>                                  
-                                    </div>                             
+                                    <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+                                                            {   id:'status', 
+                                                                label:'创建人', 
+                                                                value: order.c_name!'',
+                                                                disabled: 'disabled'
+                                                            }){}%>
+                                    </div>
+                                                               
                                     <div class="form-group">
                                         <label>创建时间</label> <span id="create_stamp">${order.create_stamp!''}</span>                                       
                                     </div>                             
@@ -42,13 +58,13 @@
                                         <label>备注</label>
                                         <textarea class="form-control" rows="7" id="remark">${order.remark!''}</textarea>
                                     </div>                             
-                                    </div>
+                                    
                                     <!-- /.col-lg-6 (nested) -->
                                     <div class="col-lg-6">
                                     	<h3>应付信息</h3>
 	                                    <div class="form-group">
 	                                    
-	                                        <label>供应商</label>
+	                                        <label>结算公司</label>
 	                                        <label class="radio-inline" id="company">${sp.sp_name!order.sp_name!''}</label>
 	                                    </div>
                                         <div><label>对账确认金额</label><label class="radio-inline" id="total_amount">${totalAmount!order.total_amount!'#.00'}</label></div>

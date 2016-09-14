@@ -1,31 +1,45 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '应付对账单查询  | '+document.title;
-  	  $('#menu_cost').addClass('active').find('ul').addClass('in');
-  	  
+  	
+  	  $('#cost_check_order_tab').click(function(){
+          $('#order_table').DataTable().draw();
+      });
+
       var dataTable = eeda.dt({
           id: 'order_table',
           paging: true,
-          serverSide: false, //不打开会出现排序不对 
+          autoWidth: true,
+          serverSide: true, 
           ajax: "/costCheckOrder/orderList",
           columns: [
-            { "data": "ORDER_NO", "width": "100px",
+            { "data": "ORDER_NO",
             	 "render": function ( data, type, full, meta ) {
            		  return "<a href='/costCheckOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
            	  }
             },
-            { "data": "CREATE_STAMP", "width": "100px"},
-            { "data": "STATUS", "width": "60px"},
-            { "data": "SP_NAME", "width": "100px"},
-            { "data": "TOTAL_AMOUNT", "width": "60px"},
-            { "data": null, "width": "60px"},
-            { "data": null, "width": "60px"},
-            { "data": null, "width": "60px"},
-            { "data": "PAID_AMOUNT", "width": "60px"},
+            { "data": "CREATE_STAMP"},
+            { "data": "STATUS"},
+            { "data": "SP_NAME"},
+            { "data": "TOTAL_AMOUNT"},
+            { "data": null,
+                "render": function ( data, type, full, meta ) {
+                    return "";
+                }
+            },
+            { "data": null,
+                "render": function ( data, type, full, meta ) {
+                    return "";
+                }
+            },
+            { "data": null,
+                "render": function ( data, type, full, meta ) {
+                    return "";
+                }
+            },
+            { "data": "PAID_AMOUNT"},
           ]
       });
 
-      
       $('#resetOrderBtn').click(function(e){
           $("#orderSearchForm")[0].reset();
       });
@@ -56,6 +70,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           dataTable.ajax.url(url).load();
       };
       
-   
+      
   });
 });

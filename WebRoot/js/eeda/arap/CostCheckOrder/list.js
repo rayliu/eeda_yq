@@ -6,36 +6,40 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       var dataTable = eeda.dt({
           id: 'eeda_table',
           paging: true,
-          serverSide: false, //不打开会出现排序不对 
+          serverSide: true, //不打开会出现排序不对 
           ajax: "/costCheckOrder/list",
           columns: [
-			{ "width": "10px",
-				    "render": function ( data, type, full, meta ) {
-				    	if(full.BILL_FLAG != ''){
-					        if(full.BILL_FLAG != 'Y')
-					    		return '<input type="checkbox" class="checkBox">';
-					    	else
-					    		return '<input type="checkbox" class="checkBox" disabled>';
-				    	}else{
-				    		return '';
-				    	}
-				    }
-			},
+      			{ "width": "10px",
+      				    "render": function ( data, type, full, meta ) {
+      				    	if(full.BILL_FLAG != ''){
+      					        if(full.BILL_FLAG != 'Y')
+      					    		return '<input type="checkbox" class="checkBox">';
+      					    	else
+      					    		return '<input type="checkbox" class="checkBox" disabled>';
+      				    	}else{
+      				    		return '';
+      				    	}
+      				    }
+      			},
             { "data": "ORDER_NO", "width": "100px"},
             { "data": "CREATE_STAMP", "width": "100px"},
             { "data": "BILL_FLAG", "width": "60px",
-            	"render": function ( data, type, full, meta ) {
-            		if(data){
-	            		if(data != 'Y')
-				    		return '未创建对账单';
-				    	else 
-				    		return '已创建对账单';
-            		}else{
-            			return '';
-            		}
-			    }
+                "render": function ( data, type, full, meta ) {
+                		if(data){
+      	            		if(data != 'Y')
+      				    		    return '未创建对账单';
+      				    	   else 
+      				    		  return '已创建对账单';
+                  	}else{
+                			return '';
+                		}
+    			       }
             },
-            { "data": null, "width": "60px"},
+            { "data": null, "width": "60px",
+                "render": function ( data, type, full, meta ) {
+                    return "";
+                }
+            },
             { "data": "TYPE", "width": "60px"},
             { "data": "CUSTOMER_NAME", "width": "100px"},
             { "data": "SP_NAME", "width": "100px"},
@@ -67,12 +71,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "FND", "width": "60px",
             	"render": function ( data, type, full, meta ) {
             		if(data)
-			    		return data;
+			    		     return data;
             		else
-			    		return full.DESTINATION;
+			    		     return full.DESTINATION;
             	}
             },
-            { "data": "VOLUME", "width": "60px"},
+            { "data": "VOLUME", "width": "60px",
+                "render": function ( data, type, full, meta ) {
+                    return "";
+                }
+            },
             { "data": "CONTAINER_AMOUNT","width": "60px",
             	"render": function ( data, type, full, meta ) {
 	            	if(data){
@@ -108,7 +116,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	}
             },
             { "data": "NET_WEIGHT", "width": "60px"},
-            { "data": null, "width": "60px"},
+            { "data": null, "width": "60px",
+                "render": function ( data, type, full, meta ) {
+                    return "";
+                }
+            },
             { "data": "MBL_NO", "width": "60px"},
             { "data": "CONTAINER_NO", "width": "100px"},
           ]
