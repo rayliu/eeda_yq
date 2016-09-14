@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.Party;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,6 +19,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PermissionConstant;
 
@@ -38,12 +41,19 @@ public class CostAcceptOrderController extends Controller {
         }
         String sql = "select * from(  "
         		+ " select  aco.id,aco.order_no,aco.order_type,aco.status,aco.create_stamp,aco.total_amount totalCostAmount,aco.sp_id,p.company_name sp_name, "
-        		+ " sum(c.pay_amount) paid_amount "
+        		+ " c.pay_amount paid_amount "
 				+ " from arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id "
-				+ " GROUP BY c.cost_order_id "
-				+ " ) A where totalCostAmount>paid_amount ";
+				+ " ) A where 1=1 ";
+//        String sql = "select * from(  "
+//        		+ " select  aco.id,aco.order_no,aco.order_type,aco.status,aco.create_stamp,aco.total_amount totalCostAmount,aco.sp_id,p.company_name sp_name, "
+//        		+ " sum(c.pay_amount) paid_amount "
+//        		+ " from arap_cost_order aco "
+//        		+ " left join party p on p.id=aco.sp_id "
+//        		+ " left join cost_application_order_rel c on c.cost_order_id=aco.id "
+//        		+ " GROUP BY c.cost_order_id "
+//        		+ " ) A where totalCostAmount>paid_amount ";
 		
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";

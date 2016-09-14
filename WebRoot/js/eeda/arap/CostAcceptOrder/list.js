@@ -194,15 +194,13 @@ $(document).ready(function() {
 		$('#createBtn').click(function(){
 			$('#createBtn').attr('disabled',true);
 	      	var itemIds=[];
-	      	$('#costAccept_table input[type="checkbox"]').each(function(){
-	      		var checkbox = $(this).prop('checked');
-	      		if(checkbox){
-	      			var itemId = $(this).parent().parent().attr('id');
-	      			itemIds.push(itemId);
-	      		}
+	      	$('#costAccept_table input[type="checkbox"]:checked').each(function(){
+      			var itemId = $(this).parent().parent().attr('id');
+      			itemIds.push(itemId);
 	      	});
-	      	location.href ="/costPreInvoiceOrder/create?sids="+itemIds;
+	      	$("#itemIds").val(itemIds);
+	      	$("#createForm").submit();
 		})
-      
+		
 });
 });

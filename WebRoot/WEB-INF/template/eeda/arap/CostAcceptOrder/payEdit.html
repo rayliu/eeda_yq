@@ -10,14 +10,8 @@
             		 	<form id="checkForm">
             			<div class="row search_panel">
             			<input id='ids' name='ids' type="hidden" value="${ids!''}">
-            			<input id='order_types' name='order_types' type="hidden" value="${order_types!''}">
-            			<input id='payee_id' name='payee_id' type="hidden" value="${payee_id!''}${invoiceApplication.payee_id!''}" >
-            			<input id='account_id' name='account_id' type="hidden" value="">
             			<input id='application_id' name='application_id' type="hidden" value="${application_id!''}">
-            			<input id='status' name='status' type="hidden" value="${status!''}${invoiceApplication.status!''}">
             			<input id='detailJson' name='detailJson' type="hidden">
-            			<input id='total_amount' name='total_amount' type="hidden">
-            			<!-- <input id='attribute' name='attribute' type="hidden" value="${attribute!''}"> -->
             			
                             <div class="col-lg-4">
                                 <div class="form-group">
@@ -123,11 +117,11 @@
 				       <div class=".tooltip-demo">
                             <hr/>
                         	<a style="display:none" id ="style"><i class='fa fa-check'></i></a>
-                        	<button id="saveBtn" type="button" disabled="disabled" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">保存</button> 
-                            <button id="printBtn" type="button" disabled="disabled" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">打印</button>
-                            <a class="btn  btn-primary" href="/costAcceptOrder?page=return">返回</a>
-                            <button id="checkBtn" type="button" disabled="disabled" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">复核</button>
-                            <button id="returnBtn" type="button" disabled="disabled" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">退回</button>
+                        	<button id="saveBtn" type="button"  class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">保存</button> 
+                            <button id="printBtn" type="button"  class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">打印</button>
+                            <a class="btn  btn-primary" href="/costAcceptOrder">返回</a>
+                            <button id="checkBtn" type="button"  class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">复核</button>
+                            <button id="returnBtn" type="button" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">退回</button>
                             <button id="deleteBtn" type="button" class="btn  btn-danger" >撤销</button>
                        </div><br/><br/>
                        <hr/>

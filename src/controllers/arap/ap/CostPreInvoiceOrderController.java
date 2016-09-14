@@ -523,12 +523,9 @@ public class CostPreInvoiceOrderController extends Controller {
 		
 		@RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_CREATE})
 		public void create() {
-			String ids = getPara("sids");
-			String order_type = getPara("order_type");
-			String[] orderArrId=ids.split(",");
-			String[] types=order_type.split(",");
-			setAttr("ids", ids);
-			setAttr("order_types", order_type);
+			String ids = getPara("itemIds");
+			String[] idArr=ids.split(",");
+			setAttr("ids",ids);
 			
 			String payee_id = "";
 			String payee_filter = "";
@@ -536,33 +533,11 @@ public class CostPreInvoiceOrderController extends Controller {
 			String deposit_bank = "";
 			String bank_no = "";
 			String account_name = "";
-			
-			for (int i=0;i<orderArrId.length;) {
-					String id = orderArrId[i];
-					String orderType = types[i];
-					
-					if("对账单".equals(orderType)){
- 						ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
- 						payee_id = arapCostOrder.getLong("payee_id").toString();
- 					}else if("预付单".equals(orderType)){
- 						ArapPrePayOrder arapPrePayOrder = ArapPrePayOrder.dao.findById(id);
- 						payee_id = arapPrePayOrder.getLong("sp_id").toString();
- 					}else if("成本单".equals(orderType)){
- 						ArapMiscCostOrder arapMiscCostOrder = ArapMiscCostOrder.dao.findById(id);
- 						String type = arapMiscCostOrder.getStr("cost_to_type");
- 						payee_name = arapMiscCostOrder.getStr("others_name");
- 						if(type.equals("sp")){
- 							payee_id = arapMiscCostOrder.getLong("sp_id").toString();
- 						}else if(type.equals("customer")){
- 							payee_id = arapMiscCostOrder.getLong("customer_id").toString();
- 						}else if(type.equals("insurance")){
- 							payee_id = arapMiscCostOrder.getLong("insurance_id").toString();
- 						}
- 					}
-					break;
-			}
-			
-			if(!payee_id.equals("")){
+
+			ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(idArr[0]);
+			payee_id = arapCostOrder.getLong("sp_id").toString();
+	
+			if(!payee_id.equals("")&&payee_id!=null){
 				Party contact = Party.dao.findFirst("select * from  party where id = ?",payee_id);
 				payee_filter = contact.getStr("company_name");
 				deposit_bank = contact.getStr("bank_name");
@@ -591,72 +566,9 @@ public class CostPreInvoiceOrderController extends Controller {
 		
 		public void costOrderList() {
 	        String ids = getPara("ids");
-	        String order_types = getPara("order_types");
 	        String application_id = getPara("application_id");
-	        String dz_id ="" ;//对账单
-	        String yf_id = "";//预付单
-	        String cb_id = "";//成本单
-	        String xc_id = "";//行车单
-	        String bx_id = "";//报销单
-	        String wl_id = "";//往来票据单
-	        String hs_id = "";//货损单
 	        String sql = "";
-	        if(application_id.equals("")){
-	        	if(!application_id.equals(ids)){
-	        		String[] idArr=ids.split(",");
-	        		String[] orderTypeArr=order_types.split(",");
-	        		
-	 				for (int i=0;i<idArr.length;i++) {
-	 					String id = idArr[i];
-	 					String orderType = orderTypeArr[i];
-	 					
-	 					
-	 					if("对账单".equals(orderType)){
-	 						dz_id += id+",";
-	 					}else if("预付单".equals(orderType)){
-	 						yf_id += id+",";
-	 					}else if("成本单".equals(orderType)){
-	 						cb_id += id+",";
-	 					}else if("行车单".equals(orderType)){
-	 						xc_id += id+",";
-	 					}else if("报销单".equals(orderType)){
-	 						bx_id += id+",";
-	 					}else if("往来票据单".equals(orderType)){
-	 						wl_id += id+",";
-	 					}
-
-	 				}
-	 				if(!dz_id.equals(""))
-	 					dz_id = dz_id.substring(0, dz_id.length()-1);
-	 				else
-	 					dz_id = "''";
-	 				if(!yf_id.equals(""))
-	 					yf_id = yf_id.substring(0, yf_id.length()-1);
-	 				else
-	 					yf_id = "''";
-	 				if(!cb_id.equals(""))
-	 					cb_id = cb_id.substring(0, cb_id.length()-1);
-	 				else
-	 					cb_id = "''";
-	 				if(!xc_id.equals(""))
-	 					xc_id = xc_id.substring(0, xc_id.length()-1);
-	 				else
-	 					xc_id = "''";
-	 				if(!bx_id.equals(""))
-	 					bx_id = bx_id.substring(0, bx_id.length()-1);
-	 				else
-	 					bx_id = "''";
-	 				if(!wl_id.equals(""))
-	 					wl_id = wl_id.substring(0, wl_id.length()-1);
-	 				else
-	 					wl_id = "''";
-	 				if(!hs_id.equals(""))
-	 					hs_id = hs_id.substring(0, hs_id.length()-1);
-	 				else
-	 					hs_id = "''";
-	        	}
-		       
-				
+	        if("".equals(application_id)){
 			
 				sql = " SELECT aco.id,aco.payee_id,null payee_name,aco.order_no, '对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
 						+ " c.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name, aco.total_amount cost_amount, "
@@ -672,7 +584,7 @@ public class CostPreInvoiceOrderController extends Controller {
 						+ " LEFT JOIN contact c ON c.id = p.contact_id"
 						+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
 						+ " WHERE "
-						+ " aco.id in(" + dz_id +")";
+						+ " aco.id in(" + ids +")";
 			}else{
 				
 				sql = " SELECT aco.id,aco.payee_id,null payee_name,aco.order_no, '对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
@@ -711,20 +623,13 @@ public class CostPreInvoiceOrderController extends Controller {
 		@RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_UPDATE})
 		public void edit() throws ParseException {
 			String id = getPara("id");
-			setAttr("application_id", id);
-			
 			ArapCostApplication aca = ArapCostApplication.dao.findById(id);
 			setAttr("invoiceApplication", aca);
 			
 			Party con  = Party.dao.findFirst("select * from party  where id =?",aca.get("payee_id"));
-			if(con != null){
-				String payee_filter = con.get("company_name");
-				setAttr("payee_filter", payee_filter);
-			}
-			UserLogin userLogin = null;
-			userLogin = UserLogin.dao .findById(aca.get("create_by"));
-			String submit_name = userLogin.get("c_name");
-			setAttr("submit_name", submit_name);
+			setAttr("payee_filter", con.get("company_name"));
+			UserLogin userLogin = UserLogin.dao .findById(aca.get("create_by"));
+			setAttr("submit_name", userLogin.get("c_name"));
 			
 			Long check_by = aca.getLong("check_by");
 			if( check_by != null){

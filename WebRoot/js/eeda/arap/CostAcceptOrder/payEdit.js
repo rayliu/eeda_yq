@@ -4,7 +4,6 @@ $(document).ready(function() {
 	$('#menu_finance').addClass('active').find('ul').addClass('in');
 		//datatable, 动态处理
 	    var ids = $("#ids").val();
-	    var order_types = $("#order_types").val();
 	    var total = 0.00;
 	    var nopay = 0.00;
 	    var pay = 0.00;
@@ -12,7 +11,7 @@ $(document).ready(function() {
 		    id: 'CostOrder-table',
 		    paging: true,
 		    serverSide: true, //不打开会出现排序不对
-		    ajax: "/costPreInvoiceOrder/costOrderList?ids="+ids+"&order_types="+order_types+"&application_id="+$("#application_id").val(),
+		    ajax: "/costPreInvoiceOrder/costOrderList?ids="+ids+"&application_id="+$("#application_id").val(),
 		    columns:[
              {"data":"ORDER_TYPE","width": "100px","sClass":"order_type"},
              {"data":"ORDER_NO","width": "120px",
@@ -106,27 +105,7 @@ $(document).ready(function() {
 		
 	});
 	
-    //打印
-	 $("#printBtn").on('click',function(){
-	    	var order_no = $("#application_no").val();
-	    	if(order_no != null && order_no != ""){
-		    	$.post('/report/printPayMent', {order_no:order_no}, function(data){
-		    		if(data.indexOf(",")>=0){
-						var file = data.substr(0,data.length-1);
-		    			var str = file.split(",");
-		    			for(var i = 0 ;i<str.length;i++){
-		    				window.open(str[i]);
-		    			}
-					}else{
-						window.open(data);
-					}
-		    	});
-	    	}else{
-	    		$.scojs_message('当前单号为空', $.scojs_message.TYPE_ERROR);
-	    	}
-	    	
-
-	    });
+	
 	  $("#checkBtn").on('click',function(){
 		  	$("#checkBtn").attr("disabled", true);
 		  	$("#saveBtn").attr("disabled", true);
@@ -212,7 +191,7 @@ $(document).ready(function() {
 	  
 	  
 	  
-	//撤销单据
+	  //撤销单据
 	  $("#deleteBtn").on('click',function(){
 		  	$("#deleteBtn").attr("disabled", true);
 		  	if(confirm("确定撤撤销此单据？返回到上一步重新做单？")){
@@ -272,7 +251,7 @@ $(document).ready(function() {
     	}
     }; 	
     
-  //付款方式文本框控制
+    //付款方式文本框控制
     $('#payment_method').on('change',function(){
     	payment();
     });
