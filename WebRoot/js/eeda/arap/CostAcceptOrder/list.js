@@ -35,7 +35,7 @@ $(document).ready(function() {
             		return full.TOTALCOSTAMOUNT - full.PAID_AMOUNT;	
             	}
             },
-            {"data":"SP_NAME",  "width":"150px"}
+            {"data":"SP_NAME",  "width":"150px","sClass":"SP_NAME"}
         ]      
     });
                       
@@ -154,6 +154,28 @@ $(document).ready(function() {
           application_table.ajax.url(url).load();
       };
     	
+      	//选择是否是同一个客户
+		var cnames = [];
+		$('#costAccept_table').on('click','input[type="checkbox"]',function () {
+				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
+				
+				if($(this).prop('checked')==true){	
+					if(cnames.length > 0 ){
+						if(cnames[0]!=cname){
+							$.scojs_message('请选择同一个结算公司', $.scojs_message.TYPE_ERROR);
+							$(this).attr('checked',false);
+							return false;
+						}else{
+							cnames.push(cname);
+						}
+					}else{
+						cnames.push(cname);	
+					}
+				}else{
+					cnames.pop(cname);
+			 }
+  	 });
+      
       	//checkbox选中则button可点击
 		$('#costAccept_table').on('click','.checkBox',function(){
 			var hava_check = 0;
@@ -172,17 +194,14 @@ $(document).ready(function() {
 		$('#createBtn').click(function(){
 			$('#createBtn').attr('disabled',true);
 	      	var itemIds=[];
-	      	var order_type=[];
 	      	$('#costAccept_table input[type="checkbox"]').each(function(){
 	      		var checkbox = $(this).prop('checked');
 	      		if(checkbox){
 	      			var itemId = $(this).parent().parent().attr('id');
-	      			var type=$($("#"+itemId+" td")[2]).text();
 	      			itemIds.push(itemId);
-	      			order_type.push(type);
 	      		}
 	      	});
-	      	location.href ="/costPreInvoiceOrder/create?sids="+itemIds+"&order_type="+order_type;
+	      	location.href ="/costPreInvoiceOrder/create?sids="+itemIds;
 		})
       
 });

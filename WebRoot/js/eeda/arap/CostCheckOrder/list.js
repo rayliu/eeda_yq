@@ -42,7 +42,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             },
             { "data": "TYPE", "width": "60px"},
             { "data": "CUSTOMER_NAME", "width": "100px"},
-            { "data": "SP_NAME", "width": "100px"},
+            { "data": "SP_NAME", "width": "100px","sClass":"SP_NAME"},
             { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
             { "data": "CURRENCY_NAME", "width": "60px",
             	"render": function ( data, type, full, meta ) {
@@ -174,6 +174,28 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  }
       })
       
+      	//选择是否是同一个客户
+		var cnames = [];
+		$('#eeda_table').on('click','input[type="checkbox"]',function () {
+				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
+				
+				if($(this).prop('checked')==true){	
+					if(cnames.length > 0 ){
+						if(cnames[0]!=cname){
+							$.scojs_message('请选择同一个结算公司', $.scojs_message.TYPE_ERROR);
+							$(this).attr('checked',false);
+							return false;
+						}else{
+							cnames.push(cname);
+						}
+					}else{
+						cnames.push(cname);	
+					}
+				}else{
+					cnames.pop(cname);
+			 }
+    	 });
+		
       	//checkbox选中则button可点击
 		$('#eeda_table').on('click','.checkBox',function(){
 			
@@ -190,32 +212,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				$('#createBtn').attr('disabled',true);
 			}
 		});
+      
 		$('#createBtn').click(function(){
 			$('#createBtn').attr('disabled',true);
         	var itemIds=[];
-        	var abbrs=[];
         	$('#eeda_table input[type="checkbox"]').each(function(){ 
         		if(this.checked==true){
         			var itemId = $(this).parent().parent().attr('id');
-        			var abbr = $($('#'+itemId+' td')[7]).text();
         			itemIds.push(itemId);
-        			abbrs.push(abbr);
         		}
         	});
-        	var a = abbrs[0];
-        	var b = 0;
-        	for(var i=1;i<abbrs.length;i++){
-        		if(abbrs[i]!=a){
-        			b++;
-        		}
-        	}
-        	if(b>0){
-        		$.scojs_message('请选择相同的结算公司', $.scojs_message.TYPE_ERROR);
-        		$('#createBtn').attr('disabled',false);
-        	}else{
-	        	var totalAmount = parseFloat($("#totalAmountSpan").text());
-	        	location.href ="/costCheckOrder/create?totalAmount="+totalAmount+"&itemIds="+itemIds;
-        	}
+        	var totalAmount = parseFloat($("#totalAmountSpan").text());
+        	location.href ="/costCheckOrder/create?totalAmount="+totalAmount+"&itemIds="+itemIds;
         })
       
   });
