@@ -39,10 +39,31 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "TYPE", "width": "60px"},
             { "data": "CUSTOMER_NAME", "width": "100px"},
             { "data": "SP_NAME", "width": "100px"},
-            { "data": "TOTAL_COSTRMB", "width": "60px"},
-            { "data": null, "width": "60px"},
-            { "data": null, "width": "60px"},
-            { "data": null, "width": "60px"},
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
+            { "data": "CURRENCY_NAME", "width": "60px",
+            	"render": function ( data, type, full, meta ) {
+	            	if(data == 'USD')
+	            		return full.TOTAL_AMOUNT;
+	            	else 
+	            		return '';
+            	}
+            },
+            { "data": "CURRENCY_NAME", "width": "60px",
+            	"render": function ( data, type, full, meta ) {
+	            	if(data == 'HKD')
+	            		return full.TOTAL_AMOUNT;
+	            	else 
+	            		return '';
+            	}
+            },
+            { "data": "CURRENCY_NAME", "width": "60px",
+            	"render": function ( data, type, full, meta ) {
+	            	if(data == 'JPY')
+	            		return full.TOTAL_AMOUNT;
+	            	else 
+	            		return '';
+            	}
+            },
             { "data": "FND", "width": "60px",
             	"render": function ( data, type, full, meta ) {
             		if(data)
