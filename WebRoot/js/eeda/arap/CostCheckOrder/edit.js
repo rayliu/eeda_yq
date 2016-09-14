@@ -152,14 +152,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             //阻止a 的默认响应行为，不需要跳转
             e.preventDefault();
             
-            if($('#begin_time').val()==""){
-            	$.scojs_message('对账开始日期不能为空', $.scojs_message.TYPE_ERROR);
-            	return;
-            }
-            if($('#end_time').val()==""){
-            	$.scojs_message('对账结束日期不能为空', $.scojs_message.TYPE_ERROR);
-            	return;
-            }
             $(this).attr('disabled', true);
 
             var order = {
@@ -178,22 +170,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 if(order.ID){
                 	$('#id').val(order.ID);
                 	$('#sp_id').val(order.SP_ID);
-                	$('#order_no').text(order.ORDER_NO);
-                	$('#status').text(order.STATUS);
-                	$('#create_stamp').text(order.CREATE_STAMP);
-                	$('#remark').text(order.REMARK);
+                	$('#order_no').val(order.ORDER_NO);
+                	$('#status').val(order.STATUS);
+                	$('#creator').val(order.CREATOR_NAME);
+                	$('#create_stamp').val(order.CREATE_STAMP);
                 	$('#company').text(order.SP_NAME);
                 	$('#cost_amount').text(order.COST_AMOUNT);
-                	$('#begin_time').val(order.BEGIN_TIME);
-                	$('#end_time').val(order.END_TIME);
-                	$('#login_user').text(order.CREATOR_NAME);
+                	$('#audit_begin_time').val(order.BEGIN_TIME);
+                	$('#audit_end_time').val(order.END_TIME);
+                	$('#remark').text(order.REMARK);
                     
                     eeda.contactUrl("edit?id",order.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     $('#saveBtn').attr('disabled', false);
                     $('#confirmBtn').attr('disabled', false);
-                    
-                    //异步刷新明细表
                     
                 }else{
                     $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
@@ -224,8 +214,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    			 $('#saveBtn').attr('disabled', true);
 	    			 $(this).attr('disabled', true);
 	    			 $('#deleteBtn').attr('disabled', false);
-	    			 $('#confirm_name').text(data.CONFIRM_BY_NAME);
-	    			 $('#confirm_stamp').text(data.CONFIRM_STAMP);
+	    			 $('#confirm_name').val(data.CONFIRM_BY_NAME);
+	    			 $('#confirm_stamp').val(data.CONFIRM_STAMP);
         		 }
 	         },'json').fail(function() {
 	        	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);

@@ -78,6 +78,7 @@ public class CostCheckOrderController extends Controller {
                 + " left join location l on l.id=jos.fnd "
                 + " left join currency cur on cur.id=joa.currency_id "
                 + " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' and joa.id in("+ids+") "
+                + " GROUP BY joa.id "
                 + " ) B ";
 		List<Record> jobOrderRecs = Db.find(detailSql);
 		order.set("item_list", jobOrderRecs);
@@ -245,7 +246,7 @@ public class CostCheckOrderController extends Controller {
 	
 	public void edit(){
 		String id = getPara("id");
-		String sql = " select aco.*,p.abbr sp_name,u.c_name creator_name from arap_cost_order aco "
+		String sql = " select aco.*,p.abbr sp_name,u.c_name creator_name,u1.c_name confirm_by_name from arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by "
    				+ " left join user_login u1 on u1.id=aco.confirm_by "

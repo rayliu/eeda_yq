@@ -35,7 +35,7 @@
                                         </div>
                                         <div class="col-lg-4">
                                             <%include("/eeda/component/form/inputField.html", 
-                                                                {   id:'login_user', 
+                                                                {   id:'creator', 
                                                                     label:'创建人', 
                                                                     value: order.creator_name!'',
                                                                     disabled: 'disabled'
@@ -53,7 +53,7 @@
                                             <%include("/eeda/component/form/inputField.html", 
                                                                 {   id:'confirm_name', 
                                                                     label:'确认人', 
-                                                                    value: confirm_user.c_name!'',
+                                                                    value: order.confirm_by_name!'',
                                                                     disabled: 'disabled'
                                                                 }){}%>
                                         </div>
