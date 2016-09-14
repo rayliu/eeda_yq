@@ -210,7 +210,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		}
         	}
         	if(b>0){
-        		alert("请选择相同结算公司");
+        		$.scojs_message('请选择相同的结算公司', $.scojs_message.TYPE_ERROR);
         		$('#createBtn').attr('disabled',false);
         	}else{
 	        	var totalAmount = parseFloat($("#totalAmountSpan").text());

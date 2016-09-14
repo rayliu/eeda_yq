@@ -68,9 +68,10 @@ public class CostCheckOrderController extends Controller {
 		if (getPara("start") != null && getPara("length") != null) {
 			sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
 		}
-		String sql = " select joa.id,joa.type,joa.sp_id,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.total_costRMB, "
+		String sql = " select joa.id,joa.type,joa.sp_id,joa.total_amount,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
 				+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
-				+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
+				+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
+				+ " cur.name currency_name "
 				+ " from job_order_arap joa "
 				+ " left join job_order jo on jo.id=joa.order_id "
 				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -79,7 +80,9 @@ public class CostCheckOrderController extends Controller {
 				+ " left join party p on p.id=joa.sp_id "
 				+ " left join party p1 on p1.id=jo.customer_id "
 				+ " left join location l on l.id=jos.fnd "
-				+ " where joa.id in ( "+ids+" )";
+				+ " left join currency cur on cur.id=joa.currency_id "
+				+ " where joa.id in ( "+ids+" ) "
+				+ " GROUP BY joa.id ";
 				
 		
 		String sqlTotal = "select count(1) total from ("+sql+") C";
@@ -118,6 +121,7 @@ public class CostCheckOrderController extends Controller {
 				+ " left join location l on l.id=jos.fnd "
 				+ " left join currency cur on cur.id=joa.currency_id "
 				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' "
+				+ " GROUP BY joa.id "
 				+ " ) B where 1=1 ";
 		
         String sqlTotal = "select count(1) total from ("+sql+ condition+") C";
@@ -235,7 +239,8 @@ public class CostCheckOrderController extends Controller {
 				+ " left join location l on l.id=jos.fnd "
 				+ " left join arap_cost_item aci on aci.ref_order_id = joa.id"
 				+ " left join arap_cost_order aco on aco.id = aci.cost_order_id "
-				+ " where joa.id = aci.ref_order_id and aco.id = ? ";
+				+ " where joa.id = aci.ref_order_id and aco.id = ? "
+				+ " GROUP BY joa.id ";
 		setAttr("tableList", Db.find(sql1,id));
 		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");
 	}
