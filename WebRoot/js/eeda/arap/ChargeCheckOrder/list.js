@@ -189,8 +189,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 				$('#createBtn').attr('disabled',true);
 			}
 		});
+		
 		$('#createBtn').click(function(){
 			$('#createBtn').attr('disabled',true);
+			
         	var itemIds=[];
         	$('.checkBox').each(function(){
         		var checkbox = $(this).prop('checked');
@@ -199,11 +201,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
         			itemIds.push(itemId);
         		}
         	});
-        	var totalAmount = parseFloat($("#totalAmountSpan").text());
-        	var totalAmount = parseFloat($("#totalAmountUSDSpan").text());
-        	var OrderIds = itemIds.join(",");
-        	location.href ="/chargeCheckOrder/create?totalAmount="+totalAmount+"&OrderIds="+OrderIds;
-
+        	
+        	$('#idsArray').val(itemIds);
+        	$('#billForm').submit();
         });
   
       

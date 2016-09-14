@@ -2,13 +2,16 @@ package controllers.arap.ar;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.ArapChargeItem;
 import models.ArapChargeOrder;
 import models.UserLogin;
+import models.eeda.oms.jobOrder.JobOrderAir;
 import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
@@ -41,136 +44,116 @@ public class ChargeCheckOrderController extends Controller {
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderList.html");
 	}
 	
-	
-	public void save(){
-		String jsonStr=getPara("params");
+	@Before(Tx.class)
+   	public void save() throws Exception {		
+   		String jsonStr=getPara("params");
+       	
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
-        String id = (String) dto.get("id");
-        String ids = (String) dto.get("ids");
-        String billing_unit = (String) dto.get("billing_unit");
-        String payee = (String) dto.get("payee");
-        Double total_profitRMB = Double.parseDouble((String)dto.get("total_profitRMB")) ;
-//        String total_profitTotalCost = (String) dto.get("total_profitTotalCost");
-//        String total_profitTotalRMB = (String) dto.get("total_profitTotalRMB");
-        
-        ArapChargeOrder aco = new ArapChargeOrder();
+            
+        ArapChargeOrder order = new ArapChargeOrder();
+   		String id = (String) dto.get("id");
+   		
    		UserLogin user = LoginUserController.getLoginUser(this);
    		
    		if (StringUtils.isNotEmpty(id)) {
    			//update
-   			aco = ArapChargeOrder.dao.findById(id);
-   			DbUtils.setModelValues(dto, aco);
-   			aco.update();
+   			order = ArapChargeOrder.dao.findById(id);
+   			DbUtils.setModelValues(dto, order);
+   			
+   			//需后台处理的字段
+   			order.set("update_by", user.getLong("id"));
+   			order.set("update_stamp", new Date());
+   			order.update();
    		} else {
    			//create 
-   			DbUtils.setModelValues(dto, aco);
-	   		String orderPrefix = OrderNoGenerator.getNextOrderNo("YSDZ");
-	        aco.set("order_no", orderPrefix);
-			aco.set("create_by", user.getLong("id"));
-			aco.set("create_stamp", new Date());
-			aco.set("billing_unit", billing_unit);
-			aco.set("payee", payee);
-			aco.set("status", "已创建 ");
-			aco.set("total_profitRMB", total_profitRMB);
-			aco.set("total_profitTotalCost", 0);
-//			aco.set("total_profitTotalRMB", total_profitTotalRMB);
-			aco.save();
-			id = aco.getLong("id").toString();
-			//设置已创建过对账单flag
-			String idAttr[] = ids.split(",");
-			for(int i=0 ; i<idAttr.length ; i++){
-				JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap joa where id = ?",idAttr[i]);
-				joa.set("bill_flag", "Y");
-				joa.update();
-			}
+   			DbUtils.setModelValues(dto, order);
+   			
+   			//需后台处理的字段
+   			order.set("order_no", OrderNoGenerator.getNextOrderNo("YSDZ"));
+   			order.set("create_by", user.getLong("id"));
+   			order.set("create_stamp", new Date());
+   			order.save();
+   			
+   			id = order.getLong("id").toString();
    		}
-   		
-   		String sql = " select aco.*,p.company_name sp_name from arap_charge_order aco "
-   				+ " left join party p on p.id=aco.sp_id "
-   				+ " where aco.id = ? ";
-        Record rec =Db.findFirst(sql,id);
+
+   		ArapChargeItem aci = new ArapChargeItem();
+   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
+		for(Map<String, String> item :itemList){
+			String action = item.get("action");
+			String itemId = item.get("id");
+			if("CREATE".equals(action)){
+				aci.set("ref_order_type", "工作单");
+				aci.set("ref_order_id", itemId);
+				aci.set("charge_order_id", id);
+				aci.save();
+				
+				JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
+				jobOrderArap.set("bill_flag", "Y");
+				jobOrderArap.update();
+			}
+		}
 		
-		String address="";
-		String customer="";
-		String phone="";
-		String shipper_info= rec.get("shipper_info");
+		long create_by = order.getLong("create_by");
+   		String user_name = LoginUserController.getUserNameById(create_by);
+		Record r = order.toRecord();
+   		r.set("creator_name", user_name);
+   		renderJson(r);
+   	}
+
+    
+   
+    public void edit(){
+		String id = getPara("id");
+		String condition = "select ref_order_id from arap_charge_item where charge_order_id ="+id;
+		
+		ArapChargeOrder aco = ArapChargeOrder.dao.findById(id);
+		long create_by = aco.getLong("create_by");
+		UserLogin ul = UserLogin.dao.findById(create_by);
+		setAttr("checkOrder", aco);
+		setAttr("user", ul);
+		
+		
+		String sql = "SELECT jos.shipper_info, "
+				+ " sum(case when cur.name = 'CNY' "
+				+ " then (joa.total_amount) "
+				+ " when cur.name = 'USD'  "
+				+ " then (joa.total_amount*joa.exchange_rate)"
+				+ " end ) total_CNY"
+				+ " FROM"
+				+ " job_order_arap joa"
+				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
+				+ " LEFT JOIN job_order_shipment jos ON jos.order_id = joa.order_id"
+				+ " LEFT JOIN job_order jo ON jo.id = joa.order_id"
+				+ " WHERE"
+				+ " joa.id in("+ condition +")"
+				+ " group by joa.order_id";
+		Record rec =Db.findFirst(sql);
+		
+		String address = null;
+		String customer = null;
+		String phone = null;
+		String shipper_info = rec.get("shipper_info");
 		if(StringUtils.isNotEmpty(shipper_info)){
 			String[] info = shipper_info.split("\n");
-			if(info.length==3){
+			if(info.length == 3){
 				 address = info[0];
 				 customer = info[1];
 				 phone = info[2];
-			}else if(info.length==2){
+			}else if(info.length == 2){
 				 address = info[0];
 				 customer = info[1];
 			}else{
 				 address = info[0];
-			}	
-		}
-		setAttr("address",address);
-		setAttr("customer",customer);
-		setAttr("phone",phone);
-   		
-   		Record r = new Record();
-   		r.set("charge", Db.findFirst(sql,id));
-   		r.set("loginUser", LoginUserController.getLoginUserName(this));
-   		renderJson(r);
-	}
-	
-    
-    
-    @Before(Tx.class)
-	public void editList(){
-
-    	String sLimit = "";
-        String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
-        String sql = "";
-        
-        		sql = " select * from (select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
-            			+ "jo.net_weight gross_weight,jo.total_chargeRMB rmb,jo.total_chargeUSD usd,jo.total_profitTotalRMB totalrmb,jo.ref_no ref_no,"
-            			+ "p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
-            			+ "GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
-            			+ " from job_order_arap joa"
-            			+ "	left join job_order jo on jo.id=joa.order_id "
-            			+ "	left join job_order_shipment jos on jos.order_id=joa.order_id "
-            			+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
-            			+ "	left join job_order_air_item joai on joai.order_id=joa.order_id "
-            			+ " left join job_order_land_item  jols on jols.order_id=joa.order_id "
-            			+ "	left join party p1 on p1.id=joa.sp_id "
-            			+ "	left join location l on l.id=jos.fnd "
-            			+ "	where joa.order_type='charge' and joa.audit_flag='Y' "
-            			+ " GROUP BY joa.id) A where 1 = 1 ";		
-        						
-        
-        String condition = DbUtils.buildConditions(getParaMap());
-
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") A";
-        Record rec = Db.findFirst(sqlTotal);
-        logger.debug("total records:" + rec.getLong("total"));
-        
-        List<Record> orderList = Db.find(sql+ condition  +sLimit);
-        Map orderListMap = new HashMap();
-        orderListMap.put("draw", pageIndex);
-        orderListMap.put("recordsTotal", rec.getLong("total"));
-        orderListMap.put("recordsFiltered", rec.getLong("total"));
-
-        orderListMap.put("data", orderList);
-
-        renderJson(orderListMap); 
-    	
-    }   	
-
-    public void edit(){
-		String id = getPara("id");
-		String sql = " select aco.*,p.company_name sp_name,u.c_name from arap_charge_order aco "
-   				+ " left join party p on p.id=aco.sp_id "
-   				+ " left join user_login u on u.id=aco.create_by"
-   				+ " where aco.id = ? ";
-		setAttr("order", Db.findFirst(sql,id));
+			}
+		}	
+		rec.set("address", address);
+		rec.set("customer", customer);
+		rec.set("phone", phone);
+		rec.set("user", LoginUserController.getLoginUserName(this));
+		setAttr("itemList",getItemList(condition));
+		setAttr("order",rec);
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
 	}
     
@@ -187,10 +170,14 @@ public class ChargeCheckOrderController extends Controller {
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
         	sql = " select * from (select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
-        			+ "jo.net_weight gross_weight,jo.total_profitRMB rmb,jo.total_profitUSD usd,jo.total_profitTotalRMB totalrmb,jo.ref_no ref_no,"
-        			+ "p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
-        			+ "GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
+        			+ "jo.net_weight gross_weight,"
+        			+ " if(cur.name='CNY',joa.total_amount,0) rmb,"
+        			+ " if(cur.name='USD',joa.total_amount,0) usd,"
+        			+ " jo.ref_no ref_no,"
+        			+ " p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
+        			+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
         			+ " from job_order_arap joa"
+        			+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
         			+ "	left join job_order jo on jo.id=joa.order_id "
         			+ "	left join job_order_shipment jos on jos.order_id=joa.order_id "
         			+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
@@ -202,10 +189,14 @@ public class ChargeCheckOrderController extends Controller {
         			+ " GROUP BY joa.id) A where 1 = 1 ";
         	}else{
         		sql = " select * from (select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
-            			+ "jo.net_weight gross_weight,jo.total_chargeRMB rmb,jo.total_chargeUSD usd,jo.total_profitTotalRMB totalrmb,jo.ref_no ref_no,"
-            			+ "p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
-            			+ "GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
+            			+ " jo.net_weight gross_weight,"
+            			+ " if(cur.name='CNY',joa.total_amount,0) rmb,"
+            			+ " if(cur.name='USD',joa.total_amount,0) usd,"
+            			+ " jo.ref_no ref_no,"
+            			+ " p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
+            			+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
             			+ " from job_order_arap joa"
+            			+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
             			+ "	left join job_order jo on jo.id=joa.order_id "
             			+ "	left join job_order_shipment jos on jos.order_id=joa.order_id "
             			+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
@@ -268,67 +259,97 @@ public class ChargeCheckOrderController extends Controller {
     	
     }
     
+    
+    public List<Record> getItemList(String ids){
+    	String sql = " select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
+    			+ " jo.net_weight gross_weight,"
+    			+ " if(cur.name='CNY',joa.total_amount,0) rmb,"
+    			+ " if(cur.name='USD',joa.total_amount,0) usd,"
+    			+ " jo.total_profitTotalRMB totalrmb,jo.ref_no ref_no,"
+    			+ " p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
+    			+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
+    			+ " from job_order_arap joa"
+    			+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
+    			+ "	left join job_order jo on jo.id=joa.order_id "
+    			+ "	left join job_order_shipment jos on jos.order_id=joa.order_id "
+    			+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
+    			+ "	left join job_order_air_item joai on joai.order_id=joa.order_id "
+    			+ " left join job_order_land_item  jols on jols.order_id=joa.order_id "
+    			+ "	left join party p1 on p1.id=joa.sp_id "
+    			+ "	left join location l on l.id=jos.fnd "
+    			+ "	where joa.order_type='charge' and joa.audit_flag='Y' "
+    			+ " and joa.id in("+ids+")"
+    			+ " GROUP BY joa.id";	
+    	List<Record> re = Db.find(sql);
+    	
+    	return re;
+    }
+    
 	public void create(){
 		//当前登陆用户
-		String OrderIds = getPara("OrderIds");
-		String totalAmount = getPara("totalAmount");
+		String ids = getPara("idsArray");
 		
-		String strAry[] = OrderIds.split(",");
-		String id = strAry[0];
-		String sql = " select * from ( SELECT joa.sp_id,p.company_name sp_name,jos.shipper_info,"
-				+ " jo.total_profitRMB total_profitRMB,jo.total_profitTotalCost total_profitTotalCost,jo.total_profitTotalRMB total_profitTotalRMB"
-				+ " FROM job_order_arap joa	"
-				+ " LEFT JOIN party p ON p.id = joa.sp_id "
-				+ " LEFT JOIN job_order_shipment jos on jos.order_id = joa.order_id"
-				+ " LEFT JOIN job_order  jo on jo.id = joa.order_id"
-				+ " where joa.id= ? ) A where 1 = 1";
-		Record rec =Db.findFirst(sql,id);
 		
-		String address="";
-		String customer="";
-		String phone="";
-		String shipper_info= rec.get("shipper_info");
+		String sql = "SELECT jos.shipper_info, "
+				+ " sum(case when cur.name = 'CNY' "
+				+ " then (joa.total_amount) "
+				+ " when cur.name = 'USD'  "
+				+ " then (joa.total_amount*joa.exchange_rate)"
+				+ " end ) total_CNY"
+				+ " FROM"
+				+ " job_order_arap joa"
+				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
+				+ " LEFT JOIN job_order_shipment jos ON jos.order_id = joa.order_id"
+				+ " LEFT JOIN job_order jo ON jo.id = joa.order_id"
+				+ " WHERE"
+				+ " joa.id in("+ ids +")"
+				+ " group by joa.order_id";
+		Record rec =Db.findFirst(sql);
+		
+		String address = null;
+		String customer = null;
+		String phone = null;
+		String shipper_info = rec.get("shipper_info");
 		if(StringUtils.isNotEmpty(shipper_info)){
 			String[] info = shipper_info.split("\n");
-			if(info.length==3){
+			if(info.length == 3){
 				 address = info[0];
 				 customer = info[1];
 				 phone = info[2];
-			}else if(info.length==2){
+			}else if(info.length == 2){
 				 address = info[0];
 				 customer = info[1];
 			}else{
 				 address = info[0];
 			}
-			
-		}		
-		setAttr("sp",rec);
-		setAttr("totalAmount",totalAmount);
-		setAttr("address",address);
-		setAttr("customer",customer);
-		setAttr("phone",phone);
-		setAttr("ids",OrderIds);
-		setAttr("loginUser", LoginUserController.getLoginUserName(this));
+		}	
+		rec.set("idsArray", ids);
+		rec.set("address", address);
+		rec.set("customer", customer);
+		rec.set("phone", phone);
+		rec.set("user", LoginUserController.getLoginUserName(this));
+		setAttr("itemList",getItemList(ids));
+		setAttr("order",rec);
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
 	}
-    
-    
-    
-    
-    
-    
-    
-//    public void create1(){
-//    	String orderIds = getPara("returnOrderIds");
-//    	String[] orderId = orderIds.split(",");
-//    	JobOrderArap joa = null;
-//    	for(int i=0;i<orderId.length;i++){
-//    		joa = JobOrderArap.dao.findById(orderId[i]);
-//    		joa.set("bill_flag", "Y");    		
-//    		joa.update();
-//    	}
-//    	renderJson(joa);
-//    }
-   
+
+	
+	//异步刷新字表
+    public void tableList(){
+    	String order_id = getPara("order_id");
+    	List<Record> list = null;
+    	String condition = "select ref_order_id from arap_charge_item where charge_order_id ="+order_id;
+    	list = getItemList(condition);
+
+    	Map BillingOrderListMap = new HashMap();
+        BillingOrderListMap.put("sEcho", 1);
+        BillingOrderListMap.put("iTotalRecords", list.size());
+        BillingOrderListMap.put("iTotalDisplayRecords", list.size());
+
+        BillingOrderListMap.put("aaData", list);
+
+        renderJson(BillingOrderListMap); 
+    }
+
 
 }

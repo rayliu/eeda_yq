@@ -40,7 +40,7 @@
                                                </div>
                                              <div class="col-lg-4">
                                                  <input type="checkbox" name="checkOrderAll" id="checkOrderAll" value="Y">查看应收应付对账
-                                               </div>
+                                             </div>
                                          </div>       
                                         <div class="row">  
                                             <div class="col-lg-4">
@@ -60,7 +60,11 @@
 		                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
                                     </div>
                                     <div class="form-group">
-                                        <button id="createBtn" disabled type="button" class="btn  btn-success" >创建对账单</button>
+                                    	<form id="billForm" action="/chargeCheckOrder/create" method="post">
+                                    		<input id="idsArray" name="idsArray" type="hidden">
+                                    		<button id="createBtn" disabled type="button" class="btn  btn-success" >创建对账单</button>
+                                    	</form>
+                                        
 										<span class="badge" style='margin-top:12px;'> 总额RMB: <span id="totalAmountSpan">0</span></span> &nbsp;&nbsp;
 										<span class="badge" style='margin-top:12px;'> 总额USD: <span id="totalAmountUSDSpan">0</span></span> &nbsp;&nbsp;		 
                                    </div>
