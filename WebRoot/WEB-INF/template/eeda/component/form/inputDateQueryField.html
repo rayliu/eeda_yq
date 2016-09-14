@@ -27,7 +27,7 @@
     	});
 
         //回显
-        var dateValue_begin = '${value}';
+        var dateValue_begin = '${begin_value!''}';
         if(dateValue_begin){
             $('#${id}_begin_time').val(dateValue_begin.substr(0,10));
         }
@@ -42,7 +42,7 @@
         });
 
         //回显
-        var dateValue_end = '${value}';
+        var dateValue_end = '${end_value!''}';
         if(dateValue_end){
             $('#${id}_end_time').val(dateValue_end.substr(0,10));
         }

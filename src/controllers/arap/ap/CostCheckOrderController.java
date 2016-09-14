@@ -46,7 +46,7 @@ public class CostCheckOrderController extends Controller {
 	
 	public void create(){
 		
-		String ids = getPara("itemIds");
+		String ids = getPara("itemIds");//jobOrder arap ids
 		String totalAmount = getPara("totalAmount");
 		
 		String strAry[] = ids.split(",");
@@ -54,10 +54,35 @@ public class CostCheckOrderController extends Controller {
 		String sql = " select joa.sp_id,p.company_name sp_name from job_order_arap joa "
 				   + " left join party p on p.id = joa.sp_id "
 				   + "  where joa.id = ? ";
-		setAttr("sp",Db.findFirst(sql,id));
-		setAttr("totalAmount",totalAmount);
-		setAttr("ids",ids);
-		setAttr("loginUser", LoginUserController.getLoginUserName(this));
+		Record spRec = Db.findFirst(sql,id);
+		Record order = new Record();
+		order.set("sp_id", spRec.get("sp_id"));
+		order.set("sp_name", spRec.get("sp_name"));
+		order.set("total_amount",totalAmount);
+		order.set("ids",ids);
+		order.set("creator_name", LoginUserController.getLoginUserName(this));
+		
+		
+		String detailSql = "select * from(  "
+                + " select joa.id,joa.type,joa.sp_id,joa.total_amount,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
+                + " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
+                + " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
+                + " cur.name currency_name "
+                + " from job_order_arap joa "
+                + " left join job_order jo on jo.id=joa.order_id "
+                + " left join job_order_shipment jos on jos.order_id=joa.order_id "
+                + " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
+                + " left join job_order_air_item joai on joai.order_id=joa.order_id "
+                + " left join party p on p.id=joa.sp_id "
+                + " left join party p1 on p1.id=jo.customer_id "
+                + " left join location l on l.id=jos.fnd "
+                + " left join currency cur on cur.id=joa.currency_id "
+                + " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' and joa.id in("+ids+") "
+                + " ) B ";
+		List<Record> jobOrderRecs = Db.find(detailSql);
+		order.set("item_list", jobOrderRecs);
+		setAttr("order", order);
+		
 		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");
 	}
 	
@@ -171,6 +196,7 @@ public class CostCheckOrderController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
         String id = (String) dto.get("id");
+        String sp_id = (String) dto.get("sp_id");
         String ids = (String) dto.get("ids");
         
         
@@ -208,26 +234,25 @@ public class CostCheckOrderController extends Controller {
 			}
    		}
    		
-   		String sql = " select aco.*,p.abbr sp_name from arap_cost_order aco "
+   		String sql = " select aco.*, p.abbr sp_name, u.c_name creator_name from arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
+   				+ " left join user_login u on u.id=aco.create_by"
    				+ " where aco.id = ? ";
    		
-   		Record r = new Record();
-   		r.set("cost", Db.findFirst(sql,id));
-   		r.set("loginUser", LoginUserController.getLoginUserName(this));
+   		Record r = Db.findFirst(sql,id);
    		renderJson(r);
 	}
 	
 	public void edit(){
 		String id = getPara("id");
-		String sql = " select aco.*,p.abbr sp_name,u.c_name create_name,u1.c_name confirm_name  from arap_cost_order aco "
+		String sql = " select aco.*,p.abbr sp_name,u.c_name creator_name from arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by "
    				+ " left join user_login u1 on u1.id=aco.confirm_by "
    				+ " where aco.id = ? ";
-		setAttr("order", Db.findFirst(sql,id));
+		Record order = Db.findFirst(sql,id);
 		
-		String sql1 = " select joa.id,joa.type,joa.sp_id,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.total_costRMB, "
+		String detailSql = " select joa.id,joa.type,joa.sp_id,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.total_costRMB, "
 				+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
 				+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
 				+ " from job_order_arap joa "
@@ -239,10 +264,12 @@ public class CostCheckOrderController extends Controller {
 				+ " left join party p1 on p1.id=jo.customer_id "
 				+ " left join location l on l.id=jos.fnd "
 				+ " left join arap_cost_item aci on aci.ref_order_id = joa.id"
-				+ " left join arap_cost_order aco on aco.id = aci.cost_order_id "
-				+ " where joa.id = aci.ref_order_id and aco.id = ? "
-				+ " GROUP BY joa.id ";
-		setAttr("tableList", Db.find(sql1,id));
+				+ " left join arap_cost_order aco on aco.id = aci.cost_order_id and aco.id"
+				+ " where joa.id = aci.ref_order_id and aco.id = ? ";
+		List<Record> itemList = Db.find(detailSql,id);
+		order.set("item_list", itemList);
+		
+		setAttr("order", order);
 		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");
 	}
 	

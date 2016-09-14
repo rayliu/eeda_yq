@@ -1,65 +1,79 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	
-    	document.title = '创建应付对账单 | ' + document.title;
-        $('#menu_cost').addClass('active').find('ul').addClass('in');
-        
+    	  
+        var order_no = $('#order_no').val();
+        if(order_no){
+            document.title = order_no + ' | ' + document.title;
+        }else{
+            document.title = '创建应付对账单 | ' + document.title;
+        }
+        console.log('1111');
         //datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda_table',
-            paging: true,
             serverSide: false, //不打开会出现排序不对 
-            ajax: "/costCheckOrder/createList?itemIds="+$('#ids').val(),
+            //ajax: "/costCheckOrder/createList?itemIds="+$('#ids').val(),
             columns: [
-  			{ "width": "10px",
-  				    "render": function ( data, type, full, meta ) {
-  				    	if(full.BILL_FLAG != ''){
-  					        if(full.BILL_FLAG != 'Y')
-  					    		return '<input type="checkbox" class="checkBox">';
-  					    	else
-  					    		return '<input type="checkbox" class="checkBox" disabled>';
-  				    	}else{
-  				    		return '';
-  				    	}
-  				    }
-  			},
+              { "data": "ID", "visible": false},
               { "data": "ORDER_NO", "width": "100px"},
               { "data": "CREATE_STAMP", "width": "100px"},
               { "data": "BILL_FLAG", "width": "60px",
-              	"render": function ( data, type, full, meta ) {
-              		if(data){
-  	            		if(data != 'Y')
-  				    		return '未创建对账单';
-  				    	else 
-  				    		return '已创建对账单';
-              		}else{
-              			return '';
-              		}
-  			    }
+                	"render": function ( data, type, full, meta ) {
+                		if(data){
+    	            		if(data != 'Y')
+    				    		    return '未创建对账单';
+    				    	    else 
+    				    		    return '已创建对账单';
+                		}else{
+                			return '';
+                		}
+    			         }
               },
-              { "data": null, "width": "60px"},
+              { "data": "TYPE", "width": "60px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                        return data;
+                      }else
+                        return "";
+                  }
+              },
               { "data": "TYPE", "width": "60px"},
               { "data": "CUSTOMER_NAME", "width": "100px"},
               { "data": "SP_NAME", "width": "100px"},
-              { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
-              { "data": "CURRENCY_NAME", "width": "60px",
-              	"render": function ( data, type, full, meta ) {
-  	            	if(data == 'USD')
-  	            		return full.TOTAL_AMOUNT;
-  	            	else 
-  	            		return '';
-              	}
+              { "data": "TOTAL_COSTRMB", "width": "60px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                        return data;
+                      }else
+                        return "";
+                  }
+              }/*,
+              { "data": "TYPE", "width": "60px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                        return data;
+                      }else
+                        return "";
+                  }
               },
-              { "data": "CURRENCY_NAME", "width": "60px",
-              	"render": function ( data, type, full, meta ) {
-  	            	if(data == 'HKD')
-  	            		return full.TOTAL_AMOUNT;
-  	            	else 
-  	            		return '';
-              	}
+              { "data": "TYPE", "width": "60px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                        return data;
+                      }else
+                        return "";
+                  }
               },
-              { "data": "CURRENCY_NAME", "width": "60px",
+              { "data": "TYPE", "width": "60px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                        return data;
+                      }else
+                        return "";
+                  }
+              },
+              { "data": "TYPE", "width": "60px",
               	"render": function ( data, type, full, meta ) {
   	            	if(data == 'JPY')
   	            		return full.TOTAL_AMOUNT;
@@ -70,9 +84,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "data": "FND", "width": "60px",
               	"render": function ( data, type, full, meta ) {
               		if(data)
-  			    		return data;
-              		else
-  			    		return full.DESTINATION;
+      			    		return data;
+                  else
+      			    		return "";
               	}
               },
               { "data": "VOLUME", "width": "60px"},
@@ -111,14 +125,28 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               	}
               },
               { "data": "NET_WEIGHT", "width": "60px"},
-              { "data": null, "width": "60px"},
+              { "data": "MBL_NO", "width": "60px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                        return data;
+                      }else
+                        return "";
+                  }
+              },
               { "data": "MBL_NO", "width": "60px"},
-              { "data": "CONTAINER_NO", "width": "100px"},
+              { "data": "CONTAINER_NO", "width": "100px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                        return data;
+                      }else
+                        return "";
+                  }
+              }*/
 	          
             ]
         });
         
-        
+        console.log('2222');
         //------------save
         $('#saveBtn').click(function(e){
             //阻止a 的默认响应行为，不需要跳转
@@ -138,29 +166,29 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 id: $('#id').val(),
                 ids: $('#ids').val(),
                 remark: $('#remark').val(),
-                total_amount: parseFloat($('#total_amount').text()).toFixed(2),
+                total_amount: parseFloat($('#total_amount').val()).toFixed(2),
                 sp_id: $('#sp_id').val(),
-                begin_time:$('#begin_time').val(),
-                end_time:$('#end_time').val()
+                begin_time:$('#audit_begin_time').val(),
+                end_time:$('#audit_end_time').val()
             };
 
             //异步向后台提交数据
             $.post('/costCheckOrder/save', {params:JSON.stringify(order)}, function(data){
                 var order = data;
-                if(order.COST.ID){
-                	$('#id').val(order.COST.ID);
-                	$('#sp_id').val(order.COST.SP_ID);
-                	$('#order_no').val(order.COST.ORDER_NO);
-                	$('#status').val(order.COST.STATUS);
-                	$('#create_by').val(order.LOGINUSER);
-                	$('#create_stamp').text(order.COST.CREATE_STAMP);
-                	$('#remark').text(order.COST.REMARK);
-                	$('#company').text(order.COST.SP_NAME);
-                	$('#cost_amount').text(order.COST.COST_AMOUNT);
-                	$('#begin_time').val(order.COST.BEGIN_TIME);
-                	$('#end_time').val(order.COST.END_TIME);
+                if(order.ID){
+                	$('#id').val(order.ID);
+                	$('#sp_id').val(order.SP_ID);
+                	$('#order_no').text(order.ORDER_NO);
+                	$('#status').text(order.STATUS);
+                	$('#create_stamp').text(order.CREATE_STAMP);
+                	$('#remark').text(order.REMARK);
+                	$('#company').text(order.SP_NAME);
+                	$('#cost_amount').text(order.COST_AMOUNT);
+                	$('#begin_time').val(order.BEGIN_TIME);
+                	$('#end_time').val(order.END_TIME);
+                	$('#login_user').text(order.CREATOR_NAME);
                     
-                    eeda.contactUrl("edit?id",order.COST.ID);
+                    eeda.contactUrl("edit?id",order.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     $('#saveBtn').attr('disabled', false);
                     $('#confirmBtn').attr('disabled', false);
