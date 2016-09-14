@@ -38,9 +38,9 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <%include("/eeda/component/form/inputField.html", 
-                                                            {   id:'status', 
+                                                            {   id:'create_by', 
                                                                 label:'创建人', 
-                                                                value: order.c_name!'',
+                                                                value: order.create_name!'',
                                                                 disabled: 'disabled'
                                                             }){}%>
                                     </div>
@@ -49,10 +49,10 @@
                                         <label>创建时间</label> <span id="create_stamp">${order.create_stamp!''}</span>                                       
                                     </div>                             
                                     <div class="form-group">
-                                        <label>对账单确认人</label> <span id="confirm_name">${confirm_name!''}${confirm_user.c_name!''} </span>                             
+                                        <label>对账单确认人</label> <span id="confirm_name">${order.confirm_name!''} </span>                             
                                     </div>                             
                                     <div class="form-group">
-                                        <label>对账单确认时间</label> <span id="confirm_stamp">${arapAuditOrder.confirm_stamp!''}</span>                                            
+                                        <label>对账单确认时间</label> <span id="confirm_stamp">${order.confirm_stamp!''}</span>                                            
                                     </div> 
                                     <div class="form-group">
                                         <label>备注</label>
@@ -63,7 +63,6 @@
                                     <div class="col-lg-6">
                                     	<h3>应付信息</h3>
 	                                    <div class="form-group">
-	                                    
 	                                        <label>结算公司</label>
 	                                        <label class="radio-inline" id="company">${sp.sp_name!order.sp_name!''}</label>
 	                                    </div>

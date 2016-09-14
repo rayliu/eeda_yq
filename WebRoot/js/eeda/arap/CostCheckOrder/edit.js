@@ -150,15 +150,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 if(order.COST.ID){
                 	$('#id').val(order.COST.ID);
                 	$('#sp_id').val(order.COST.SP_ID);
-                	$('#order_no').text(order.COST.ORDER_NO);
-                	$('#status').text(order.COST.STATUS);
+                	$('#order_no').val(order.COST.ORDER_NO);
+                	$('#status').val(order.COST.STATUS);
+                	$('#create_by').val(order.LOGINUSER);
                 	$('#create_stamp').text(order.COST.CREATE_STAMP);
                 	$('#remark').text(order.COST.REMARK);
                 	$('#company').text(order.COST.SP_NAME);
                 	$('#cost_amount').text(order.COST.COST_AMOUNT);
                 	$('#begin_time').val(order.COST.BEGIN_TIME);
                 	$('#end_time').val(order.COST.END_TIME);
-                	$('#login_user').text(order.LOGINUSER);
                     
                     eeda.contactUrl("edit?id",order.COST.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
@@ -178,7 +178,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         });  
         
         //按钮状态
-        var status = $('#status').text();
+        var status = $('#status').val();
         if(status=='新建'){
         	$('#confirmBtn').attr('disabled', false);
         }else if(status=='已确认'){

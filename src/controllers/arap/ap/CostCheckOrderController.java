@@ -220,9 +220,10 @@ public class CostCheckOrderController extends Controller {
 	
 	public void edit(){
 		String id = getPara("id");
-		String sql = " select aco.*,p.abbr sp_name,u.c_name from arap_cost_order aco "
+		String sql = " select aco.*,p.abbr sp_name,u.c_name create_name,u1.c_name confirm_name  from arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
-   				+ " left join user_login u on u.id=aco.create_by"
+   				+ " left join user_login u on u.id=aco.create_by "
+   				+ " left join user_login u1 on u1.id=aco.confirm_by "
    				+ " where aco.id = ? ";
 		setAttr("order", Db.findFirst(sql,id));
 		
