@@ -27,8 +27,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			    		return '已确认';
 			    }
             },
-            { "data": "TOTAL_COSTRMB", "width": "60px"},
-            { "data": "TOTAL_CHARGERMB", "width": "60px"},
             { "data": "CUSTOMER", "width": "100px"},
             { "data": "TYPE", "width": "60px"},
             { "data": "SP_NAME", "width": "100px"},
@@ -36,9 +34,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "PRICE", "width": "60px"},
             { "data": "AMOUNT","width": "60px"},
             { "data": "UNIT_NAME", "width": "60px"},
-            { "data": "CURRENCY_NAME", "width": "60px"},
             { "data": "TOTAL_AMOUNT", "width": "60px"},
+            { "data": "CURRENCY_NAME", "width": "60px"},
             { "data": "EXCHANGE_RATE", "width": "60px"},
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
             { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
             { "data": "REMARK", "width": "180px"},
           ]

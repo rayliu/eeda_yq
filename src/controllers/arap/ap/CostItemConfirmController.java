@@ -39,7 +39,8 @@ public class CostItemConfirmController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "select * from(select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.total_costRMB,jo.total_chargeRMB,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
+        String sql = "select * from( "
+        		+ " select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
 				+ " from job_order_arap joa "
 				+ " left join job_order jo on jo.id=joa.order_id "
 				+ " left join party p on p.id=jo.customer_id "
