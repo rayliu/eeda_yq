@@ -173,7 +173,7 @@ public class CostCheckOrderController extends Controller {
         		+ " select aco.id,aco.order_no,aco.create_stamp,aco.status,aco.total_amount,c.pay_amount paid_amount,p.abbr sp_name "
 				+ " from arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
-				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id "
+				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id order by aco.id desc"
 				+ " ) B where 1=1 ";
 		
         String condition = DbUtils.buildConditions(getParaMap());

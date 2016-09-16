@@ -1,7 +1,10 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
 	document.title = '复核付款| '+document.title;
-    $('#menu_finance').addClass('active').find('ul').addClass('in');
+
+  $('#costCheckOrderbasic').click(function(event) {
+      application_table.draw();
+  });
     
 	var costAccept_table = eeda.dt({
 	    id: 'costAccept_table',
@@ -191,16 +194,17 @@ $(document).ready(function() {
 				$('#createBtn').attr('disabled',true);
 			}
 		});
-		$('#createBtn').click(function(){
-			$('#createBtn').attr('disabled',true);
-	      	var itemIds=[];
-	      	$('#costAccept_table input[type="checkbox"]:checked').each(function(){
-      			var itemId = $(this).parent().parent().attr('id');
-      			itemIds.push(itemId);
-	      	});
-	      	$("#itemIds").val(itemIds);
-	      	$("#createForm").submit();
-		})
+
+    $('#createBtn').click(function(){
+      $('#createBtn').attr('disabled',true);
+      var itemIds=[];
+      $('#costAccept_table input[type="checkbox"]:checked').each(function(){
+        var itemId = $(this).parent().parent().attr('id');
+        itemIds.push(itemId);
+      });
+      $("#itemIds").val(itemIds);
+      $("#createForm").submit();
+    });
 		
 });
 });

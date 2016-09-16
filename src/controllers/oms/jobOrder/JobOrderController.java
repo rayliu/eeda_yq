@@ -201,8 +201,10 @@ public class JobOrderController extends Controller {
    			
    			//创建过工作单，设置plan_order_item的字段
    			PlanOrderItem planOrderItem = PlanOrderItem.dao.findById(planOrderItemID);
-   			planOrderItem.set("is_gen_job", "Y");
-   			planOrderItem.update();
+   			if(planOrderItem!=null){
+                   planOrderItem.set("is_gen_job", "Y");
+                   planOrderItem.update();
+   			}
    		}
 		
 		//海运
