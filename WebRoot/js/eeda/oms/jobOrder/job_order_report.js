@@ -517,6 +517,38 @@ $(document).ready(function() {
     	}
     });
     
+  //打印Debit_note
+	$('#printDebitNoteBtn').click(function(){
+		//数据不足提示
+    	var order_id = $('#order_id').val();
+    	var company = $('#spDebitNote_input').val();
+    	
+    	if($('input[name=debit_note]:checked').val()=='debitNote'){
+	    	$.post('/jobOrderReport/printDebitNotePDF', {order_id:order_id,company:company}, function(data){
+	    		if(data){
+	                window.open(data);
+	    		  }else{
+	               $.scojs_message('生成DebitNote PDF失败', $.scojs_message.TYPE_ERROR);
+	               }
+	    	}); 
+    	}
+    	
+    	if($('input[name=debit_note]:checked').val()=='Invoice'){
+    		$.post('/jobOrderReport/printInvoicePDF',{order_id:order_id,company:company},function(data){
+    			if(data){window.open(data);
+		    		}else{
+		    			$.socjs_message('生成Invoice PDF失败',$.scojs_massage.TYPE_ERROR); 
+		    		}
+    		});
+    	}
+		
+	});
+    
+    
+    
+    
+    
+    
     
     
 });

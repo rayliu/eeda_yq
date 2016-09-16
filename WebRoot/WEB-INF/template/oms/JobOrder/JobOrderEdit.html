@@ -314,21 +314,26 @@
                                     value_list: chargeList![]
                                 }){} %>
                         </div>
+                        
+                        
                         <div class="modal fade" id="printDebit">
 							<div class="modal-dialog">
 								    <div class="modal-content">
-								      	<div class="modal-body">
-											<div class="form-group">
-											选择结算公司： <%include("/eeda/component/form/inputSpField.html", 
+								       <div class="modal-body">
+										 <div class="form-group">
+											选择结算公司：<br /><br />
+											 <div class="col-lg-8">
+											 <%include("/eeda/component/form/inputSpField.html", 
                                                     {
-                                                        id:'sp', 
+                                                        id:'spDebitNote', 
                                                         label:'结算公司', 
                                                         value: ''
                                                     }){} %>	
-											</div>
+                                              </div>
+										   </div> <br /><br /><br />
 											<div class="form-group"> 
 								                    <label class="checkbox-inline">
-								                        <input type="radio" id="debit_note" name='debit_note' value='Debit_ note' checked>Debit note(国内)
+								                        <input type="radio" id="debit_note" name='debit_note' value='debitNote' checked>Debit note(国内)
 								                    </label><br />
 								                    <label class="checkbox-inline">
 								                        <input type="radio" id="invoice" name='debit_note' value='Invoice'>Invoice(境外)

@@ -78,12 +78,13 @@ public class ChargeCheckOrderController extends Controller {
    			id = order.getLong("id").toString();
    		}
 
-   		ArapChargeItem aci = new ArapChargeItem();
+   		ArapChargeItem aci = null;
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
 		for(Map<String, String> item :itemList){
 			String action = item.get("action");
 			String itemId = item.get("id");
 			if("CREATE".equals(action)){
+				aci = new ArapChargeItem();
 				aci.set("ref_order_type", "工作单");
 				aci.set("ref_order_id", itemId);
 				aci.set("charge_order_id", id);
@@ -233,7 +234,7 @@ public class ChargeCheckOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = "";        
-        		sql = " select * from (select aco.id,aco.order_no,aco.create_stamp,aco.status,aco.total_profitRMB,"
+        		sql = " select * from (select aco.id,aco.order_no,aco.create_stamp,aco.status,"
         				+ "caor.pay_amount paid_amount,p.abbr sp_name,jo.total_chargeRMB rmb,jo.total_chargeUSD usd"
         				+ "	from arap_charge_order aco "
         				+ "	left join party p on p.id=aco.sp_id "

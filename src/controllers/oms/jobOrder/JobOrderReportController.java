@@ -149,5 +149,36 @@ public class JobOrderReportController extends Controller {
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	
+	//打印debitNote中文
+	public void printDebitNotePDF() {
+		
+		String order_id = getPara("order_id");
+		String company = getPara("company").trim();
+		String fileName = "/report/jobOrder/truckOrder.jasper";
+		String outFileName = "/download/debitNote中文";
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		hm.put("company", company);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_id;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
+	
+	//打印Invoice英文
+	public void printInvoicePDF() {
+		String order_id = getPara("order_id");
+		String company = getPara("company").trim();
+		String fileName = "/report/jobOrder/truckOrder.jasper";
+		String outFileName = "/download/Invoice英文";
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		hm.put("company", company);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_id;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
+	
 	
 }
