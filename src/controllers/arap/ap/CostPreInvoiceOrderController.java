@@ -570,8 +570,8 @@ public class CostPreInvoiceOrderController extends Controller {
 	        String sql = "";
 	        if("".equals(application_id)){
 			
-				sql = " SELECT aco.id,aco.payee_id,null payee_name,aco.order_no, '对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
-						+ " c.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name, aco.total_amount cost_amount, "
+				sql = " SELECT aco.id,aco.sp_id, p.company_name payee_name,aco.order_no, '对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
+						+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name, aco.total_amount cost_amount, "
 						+ " ( SELECT ifnull(sum(caor.pay_amount),0) FROM cost_application_order_rel caor "
 						+ " WHERE caor.cost_order_id = aco.id AND caor.order_type = '对账单' "
 						+ " ) pay_amount,"
@@ -580,15 +580,14 @@ public class CostPreInvoiceOrderController extends Controller {
 						+ " WHERE caor.cost_order_id = aco.id AND caor.order_type = '对账单'"
 						+ " )) yufu_amount,null item_ids,null payee_unit "
 						+ " FROM arap_cost_order aco "
-						+ " LEFT JOIN party p ON p.id = aco.payee_id"
-						+ " LEFT JOIN contact c ON c.id = p.contact_id"
+						+ " LEFT JOIN party p ON p.id = aco.sp_id"
 						+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
 						+ " WHERE "
 						+ " aco.id in(" + ids +")";
 			}else{
 				
-				sql = " SELECT aco.id,aco.payee_id,null payee_name,aco.order_no, '对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
-						+ " c.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name, aco.cost_amount,"
+				sql = " SELECT aco.id,aco.sp_id, p.company_name payee_name,aco.order_no, '对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
+						+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name, aco.cost_amount,"
 						+ " ( SELECT ifnull(sum(caor.pay_amount),0) FROM cost_application_order_rel caor "
 						+ " WHERE "
 						+ " caor.cost_order_id = aco.id and caor.application_order_id = aciao.id "
@@ -602,8 +601,7 @@ public class CostPreInvoiceOrderController extends Controller {
 						+ " FROM arap_cost_order aco "
 						+ " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = aco.id"
 						+ " LEFT JOIN arap_cost_application_order aciao on aciao.id = caor.application_order_id"
-						+ " LEFT JOIN party p ON p.id = aco.payee_id"
-						+ " LEFT JOIN contact c ON c.id = p.contact_id"
+						+ " LEFT JOIN party p ON p.id = aco.sp_id"
 						+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
 						+ " where caor.order_type = '对账单' and aciao.id="+application_id
 					    + " GROUP BY caor.application_order_id ";
@@ -627,7 +625,8 @@ public class CostPreInvoiceOrderController extends Controller {
 			setAttr("invoiceApplication", aca);
 			
 			Party con  = Party.dao.findFirst("select * from party  where id =?",aca.get("payee_id"));
-			setAttr("payee_filter", con.get("company_name"));
+			if(con!=null)
+			    setAttr("payee_filter", con.get("company_name"));
 			UserLogin userLogin = UserLogin.dao .findById(aca.get("create_by"));
 			setAttr("submit_name", userLogin.get("c_name"));
 			

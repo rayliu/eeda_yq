@@ -39,28 +39,18 @@ public class CostAcceptOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "select * from(  "
-        		+ " select  aco.id,aco.order_no,aco.order_type,aco.status,aco.create_stamp,aco.total_amount totalCostAmount,aco.sp_id,p.company_name sp_name, "
-        		+ " c.pay_amount paid_amount "
+        String sql = " select * from (select  aco.id,aco.order_no,aco.order_type,aco.status,aco.create_stamp,aco.total_amount totalCostAmount,aco.sp_id,p.company_name sp_name, "
+        		+ " ifnull( (select SUM(c.pay_amount) from  cost_application_order_rel c where c.cost_order_id=aco.id), 0 ) paid_amount "
 				+ " from arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
-				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id "
-				+ " ) A where 1=1 ";
-//        String sql = "select * from(  "
-//        		+ " select  aco.id,aco.order_no,aco.order_type,aco.status,aco.create_stamp,aco.total_amount totalCostAmount,aco.sp_id,p.company_name sp_name, "
-//        		+ " sum(c.pay_amount) paid_amount "
-//        		+ " from arap_cost_order aco "
-//        		+ " left join party p on p.id=aco.sp_id "
-//        		+ " left join cost_application_order_rel c on c.cost_order_id=aco.id "
-//        		+ " GROUP BY c.cost_order_id "
-//        		+ " ) A where totalCostAmount>paid_amount ";
-		
+				+ " where aco.status='已确认') A where (totalCostAmount-ifnull(paid_amount,0))>0  ";
+
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition +sLimit);
+        List<Record> orderList = Db.find(sql+ condition + "order by id desc "+sLimit);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

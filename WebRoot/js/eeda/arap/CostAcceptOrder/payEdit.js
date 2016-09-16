@@ -1,7 +1,9 @@
 ﻿define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
 	document.title = '付款申请单 | '+document.title;
+
 	$('#menu_finance').addClass('active').find('ul').addClass('in');
+
 		//datatable, 动态处理
 	    var ids = $("#ids").val();
 	    var total = 0.00;
@@ -12,6 +14,11 @@ $(document).ready(function() {
 		    paging: true,
 		    serverSide: true, //不打开会出现排序不对
 		    ajax: "/costPreInvoiceOrder/costOrderList?ids="+ids+"&application_id="+$("#application_id").val(),
+            createdRow: function ( row, data, index ) {
+                $(row).attr('id', data.ID);
+                $(row).attr('item_ids', data.ITEM_IDS);
+                $(row).attr('payee_unit', data.SP_ID);//收款单位
+            },
 		    columns:[
              {"data":"ORDER_TYPE","width": "100px","sClass":"order_type"},
              {"data":"ORDER_NO","width": "120px",
