@@ -119,12 +119,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 							return false;
 						}else{
 							cnames.push(cname);
+							amountRMB_USD();
 						}
 					}else{
 						cnames.push(cname);	
+						amountRMB_USD();
 					}
 				}else{
 					cnames.pop(cname);
+					amountRMB_USD();
 			 }
     	 });
 		
@@ -140,7 +143,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
     	   });
 		
 		
-		 //计算创建对账单的RMB总额
+		 //计算创建对账单的RMB，USD总额
+	  var amountRMB_USD= function(){
 	      var amount = 0;
 	      var amountUSD = 0;
 	      var totalRBM = 0;
@@ -170,7 +174,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 
 	    	  }
 	      });		
-		
+	  }
         
         
       	//checkbox选中则button可点击   创建对账单
