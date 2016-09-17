@@ -34,7 +34,7 @@ public class AccountAuditLogController extends Controller {
     	
     	List<ArapAccountAuditLog> accountlist = ArapAccountAuditLog.dao.find("SELECT DISTINCT a.bank_name FROM arap_account_audit_log aaa left join fin_account a on a.id = aaa.account_id");
     	setAttr("accountList", accountlist);
-    	render("/yh/arap/AccountAuditLog/AccountAuditLogList.html");
+    	render("/eeda/arap/AccountAuditLog/AccountAuditLogList.html");
     }
 
     public void list() {
