@@ -9,7 +9,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	//datatable, 动态处理
         var checkedIds = [];
         var accountAuditLogTable = eeda.dt({
-            id: 'costAccept_table',
+            id: 'accountAuditLog-table',
             paging: true,
             serverSide: true, 
             ajax: "/accountAuditLog/list?beginTime="+$("#beginTime_filter").val(),

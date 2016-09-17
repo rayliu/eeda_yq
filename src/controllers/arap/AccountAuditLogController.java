@@ -15,6 +15,7 @@ import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -54,9 +55,9 @@ public class AccountAuditLogController extends Controller {
 		String colName = getPara("mDataProp_"+sortColIndex);
 		
 		String orderByStr = " order by A.create_date desc ";
-        if(colName.length()>0){
-        	orderByStr = " order by A."+colName+" "+sortBy;
-        }
+//        if(!StrKit.isBlank(colName)){
+//        	orderByStr = " order by A."+colName+" "+sortBy;
+//        }
     	if(ids != null && !"".equals(ids)){
     		condiction += " and account_id in("+ids+") ";
     	}
@@ -95,24 +96,23 @@ public class AccountAuditLogController extends Controller {
     		condiction += " and '" + end + "' ";
     	}
     	
-    	
         String sLimit = "";
-        String pageIndex = getPara("sEcho");
-        if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
-            sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " limit " + getPara("start") + ", " + getPara("length");
         }
         
         String sql = "";
         if(true){
         	sql = " select * from (select aaal.*,aci.order_no invoice_order_no,ifnull(ul.c_name, ul.user_name) user_name, fa.bank_name,"
         			+ " (CASE"
-					+ " WHEN aaal.source_order = '应付开票申请单' THEN"
-					+ " (SELECT IFNULL(payee_name,payee_unit) FROM arap_cost_invoice_application_order WHERE id = aaal.invoice_order_id)"
+					+ " WHEN aaal.source_order = '应付开票申请单' THEN '' "
+//					+ " (SELECT IFNULL(payee_name,payee_unit) FROM arap_cost_invoice_application_order WHERE id = aaal.invoice_order_id)"
 					+ " WHEN aaal.source_order = '转账单'"
 					+ " THEN(SELECT fa.bank_person FROM transfer_accounts_order tao LEFT JOIN fin_account fa on fa.id= tao.bank_in WHERE tao.id = aaal.invoice_order_id) else ''end) payee_name_in,"
 					+ " (CASE"
-					+ " WHEN aaal.source_order = '应收开票申请单' THEN"
-					+ " (SELECT IFNULL(payee_name,payee_unit) FROM arap_charge_invoice_application_order WHERE id = aaal.invoice_order_id)"
+					+ " WHEN aaal.source_order = '应收开票申请单' THEN ''"
+//					+ " (SELECT IFNULL(payee_name,payee_unit) FROM arap_charge_invoice_application_order WHERE id = aaal.invoice_order_id)"
 					+ " WHEN aaal.source_order = '转账单' THEN"
 					+ " (SELECT fa.bank_person FROM transfer_accounts_order tao LEFT JOIN fin_account fa on fa.id= tao.bank_out WHERE tao.id = aaal.invoice_order_id) else '' end) payee_name_out,"
         			+ " (CASE "
@@ -123,13 +123,13 @@ public class AccountAuditLogController extends Controller {
 				    + " WHEN aaal.source_order = '行车报销单' "
 				    + " THEN ( SELECT group_concat( DISTINCT rei.order_no SEPARATOR '<br/>' ) FROM reimbursement_order rei LEFT JOIN arap_cost_pay_confirm_order_detail acp on acp.reimbursement_order_id = rei.id where acp.order_id = aaal.invoice_order_id )"
 					+ " WHEN aaal.source_order = '应付申请单' "  //旧数据
-					+ " THEN "
-					+ " (SELECT group_concat( DISTINCT aci.order_no SEPARATOR '<br/>' ) FROM arap_cost_invoice_application_order aci LEFT JOIN arap_cost_pay_confirm_order_detail acp on acp.application_order_id = aci.id where acp.order_id = aaal.invoice_order_id)"
+					+ " THEN ''"
+//					+ " (SELECT group_concat( DISTINCT aci.order_no SEPARATOR '<br/>' ) FROM arap_cost_invoice_application_order aci LEFT JOIN arap_cost_pay_confirm_order_detail acp on acp.application_order_id = aci.id where acp.order_id = aaal.invoice_order_id)"
 				    + " WHEN "
-				    + " aaal.source_order = '应付开票申请单' "  //新数据
-				    + " THEN (select order_no from arap_cost_invoice_application_order where id = aaal.invoice_order_id)"
-				    + " WHEN aaal.source_order = '应收开票申请单' "
-				    + " then (select order_no from arap_charge_invoice_application_order where id = aaal.invoice_order_id)"
+				    + " aaal.source_order = '应付开票申请单' "  //新数据 (select order_no from arap_cost_invoice_application_order where id = aaal.invoice_order_id)
+				    + " THEN '' "
+				    + " WHEN aaal.source_order = '应收开票申请单' then '' "
+//				    + " then (select order_no from arap_charge_invoice_application_order where id = aaal.invoice_order_id)"
 				    + " WHEN aaal.source_order = '转账单' "
 				    + " then (select order_no from transfer_accounts_order where id = aaal.invoice_order_id)"
 				    + " WHEN aaal.source_order = '应收对账单' "
@@ -155,18 +155,16 @@ public class AccountAuditLogController extends Controller {
 
         Record rec = Db.findFirst("select count(*) total from ("+sql + condiction + ") B ");
         logger.debug("total records:" + rec.getLong("total"));
-        List<Record> BillingOrders = Db.find(sql + condiction + orderByStr + sLimit);
+        List<Record> orders = Db.find(sql + condiction + orderByStr + sLimit);
 
         
         
-        Map BillingOrderListMap = new HashMap();
-        BillingOrderListMap.put("sEcho", pageIndex);
-        BillingOrderListMap.put("iTotalRecords", rec.getLong("total"));
-        BillingOrderListMap.put("iTotalDisplayRecords", rec.getLong("total"));
-
-        BillingOrderListMap.put("aaData", BillingOrders);
-
-        renderJson(BillingOrderListMap);
+        Map map = new HashMap();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orders);
+        renderJson(map);
     }
     
     //出纳日记帐：所有账户的按月期初期末总计
