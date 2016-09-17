@@ -629,7 +629,7 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="8" y="43" width="269" height="47" uuid="90f35b86-a508-42bb-8344-37f364cee09b"/>
 				<textElement>
-					<font size="8" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					<font fontName="宋体" size="8" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{shipper_info}]]></textFieldExpression>
 			</textField>
@@ -1024,16 +1024,16 @@ WHERE
 				<text><![CDATA[  Container No./Seal No.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="187" y="19" width="90" height="20" uuid="b72f3a0b-97ee-457a-bc04-fd4e49c1061a"/>
+				<reportElement x="183" y="19" width="97" height="20" uuid="b72f3a0b-97ee-457a-bc04-fd4e49c1061a"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[托运人(名称和地址)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="8" y="91" width="269" height="45" uuid="66de682b-48e7-41f6-aba4-3c7cc76ec52c"/>
 				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="SansSerif" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[Consignee(Complete name and address)收货人(名称和地址)
 ]]></text>
