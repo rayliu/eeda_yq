@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="341"/>
+	<property name="ireport.y" value="144"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -414,6 +414,9 @@ where jos.order_id=$P{order_id}]]>
 			</staticText>
 			<textField>
 				<reportElement x="43" y="0" width="320" height="82" uuid="b4785ce2-98ee-473d-b5bf-ebcb621be368"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{shipper_info}]]></textFieldExpression>
 			</textField>
 			<line>
@@ -428,34 +431,58 @@ where jos.order_id=$P{order_id}]]>
 			</textField>
 			<textField>
 				<reportElement x="167" y="89" width="68" height="15" uuid="6a264388-6268-45fe-af46-61ccb5a52836"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{voyage}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="74" y="110" width="254" height="15" uuid="12467054-823e-4a70-8005-7ed958f4f86e"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="74" y="130" width="289" height="14" uuid="233fbb37-7715-446b-a4ee-5cd20d0a8821"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{pol}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="74" y="149" width="100" height="15" uuid="d27820b1-a0c0-40eb-ba6a-8bc241b6f65e"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="74" y="170" width="289" height="15" uuid="b9064271-0dcc-45d0-945b-bc2e4d818741"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="MMMMM dd, yyyy">
 				<reportElement x="440" y="45" width="115" height="15" uuid="fe80cc78-973f-488c-84b7-7fe43c5732dd"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="441" y="65" width="114" height="17" uuid="27502a39-69d8-427a-a4dd-9d270889bd80"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="MMMMM dd, yyyy">
 				<reportElement x="440" y="89" width="115" height="15" uuid="01b48f23-9a69-4e9e-ba26-98f48207a25f"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
 			<textField pattern="MMMMM dd, yyyy">
@@ -464,14 +491,23 @@ where jos.order_id=$P{order_id}]]>
 			</textField>
 			<textField>
 				<reportElement x="441" y="130" width="114" height="14" uuid="536e3e0d-cf2d-451c-b50e-58f70e27f32a"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{pod}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="441" y="150" width="19" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="460" y="150" width="72" height="14" uuid="031deb20-ad6a-4dd0-a3fb-54e016073a88"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{unit_name}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -484,7 +520,7 @@ where jos.order_id=$P{order_id}]]>
 					<subreportParameterExpression><![CDATA[$F{order_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "payment_subreport1.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "INVOICE_subreport1.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

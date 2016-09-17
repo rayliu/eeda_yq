@@ -105,26 +105,44 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id}]]>
 		<band height="27" splitType="Stretch">
 			<textField isBlankWhenNull="true">
 				<reportElement x="2" y="1" width="130" height="20" uuid="f0369b48-d60a-4f47-b145-67e043adfec7"/>
+                    <textElement>
+                        <font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+                    </textElement>
 				<textFieldExpression><![CDATA[$F{charge_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="132" y="1" width="40" height="20" uuid="24180cc2-8979-4c32-917a-3d2583f6fbbb"/>
+                    <textElement>
+                        <font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+                    </textElement>
 				<textFieldExpression><![CDATA[($F{currency_name}.equals("CNY")?"RMB":$F{currency_name})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="196" y="0" width="48" height="20" uuid="6041f6e7-0d81-4bba-abc5-dd79a3aeea7e"/>
+                    <textElement>
+                        <font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+                    </textElement>
 				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="296" y="0" width="40" height="20" uuid="73dd2c89-3aad-41eb-87e5-e0671bb0deed"/>
+                    <textElement>
+                        <font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+                    </textElement>
 				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="409" y="1" width="40" height="20" uuid="231e70a2-7014-40a5-bb74-6d79f0e21fcb"/>
+                    <textElement>
+                        <font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+                    </textElement>
 				<textFieldExpression><![CDATA[$F{exchange_rate}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="497" y="1" width="58" height="20" uuid="1b8d5615-f2b4-4f1a-ae4a-5297dce29489"/>
+                    <textElement>
+                        <font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+                    </textElement>
 				<textFieldExpression><![CDATA[$F{currency_total_amount}]]></textFieldExpression>
 			</textField>
 			<staticText>

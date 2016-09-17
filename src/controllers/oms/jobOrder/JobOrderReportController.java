@@ -154,7 +154,7 @@ public class JobOrderReportController extends Controller {
 		
 		String order_id = getPara("order_id");
 		String company = getPara("company").trim();
-		String fileName = "/report/jobOrder/payment.jasper";
+		String fileName = "/report/jobOrder/debitNote.jasper";
 		String outFileName = "/download/debitNote中文";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
