@@ -40,7 +40,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			            		}
 						    }
 			          },
-					  { "data": "RMB",
+					  { "data": "RMB","class":'rmb',
 				    	 "render":function(data, type, full, meta){
 				    		 if(data<0){
 				    			 return '<span style="color:red">'+data+'</span>';
@@ -49,7 +49,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 				    		 }
 				    	 }
 					     },
-	                  { "data": "USD",
+	                  { "data": "USD","class":'usd',
 			    		 "render":function(data, type, full, meta){
 			    			 if(data<0){
 			    				 return '<span style="color:red">'+data+'</span>';
@@ -108,27 +108,37 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
         
 		//选择是否是同一个客户
 		var cnames = [];
+        var totalrmb = 0.0;
+        var totalusd = 0.0;
 		$('#eeda-table').on('click',"input[name='order_check_box']",function () {
 				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
-				
+				var rbm_amount = $(this).parent().siblings('.rmb')[0].textContent;
+				var usd_amount = $(this).parent().siblings('.usd')[0].textContent;
+
 				if($(this).prop('checked')==true){	
 					if(cnames.length > 0 ){
-						if(cnames[0]!=cname){
+						if(cnames[0]==cname){
+							totalrmb += parseFloat(rbm_amount);
+							totalusd += parseFloat(usd_amount);
+							cnames.push(cname);
+						}else{
 							$.scojs_message('请选择同一个结算公司', $.scojs_message.TYPE_ERROR);
 							$(this).attr('checked',false);
 							return false;
-						}else{
-							cnames.push(cname);
-							amountRMB_USD();
 						}
 					}else{
+						totalrmb += parseFloat(rbm_amount);
+						totalusd += parseFloat(usd_amount);
 						cnames.push(cname);	
-						amountRMB_USD();
 					}
 				}else{
+					totalrmb -= parseFloat(rbm_amount);
+					totalusd -= parseFloat(usd_amount);
 					cnames.pop(cname);
-					amountRMB_USD();
 			 }
+				
+			 $('#totalAmountSpan').html(totalrmb);
+	    	 $('#totalAmountUSDSpan').html(totalusd);
     	 });
 		
 		//查看应收应付对账结果
@@ -143,38 +153,30 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
     	   });
 		
 		
-		 //计算创建对账单的RMB，USD总额
-	  var amountRMB_USD= function(){
-	      var amount = 0;
-	      var amountUSD = 0;
-	      var totalRBM = 0;
-	      var sum = 0;
-	      var sumUSD = 0;
-	      var sumtotalRBM = 0;
-	      $('#eeda-table').on('click',"input[name='order_check_box']",function () {
-	    	  var id = $(this).parent().parent().attr('id');
-	    	  var amountStr = $($('#'+id+' td')[5]).text();
-	    	  var amounUSDtStr = $($('#'+id+' td')[6]).text();
-
-	    	  if(amountStr!='' & amounUSDtStr!='' ){
-		    	  amount = parseFloat( amountStr );
-		    	  amountUSD = parseFloat( amounUSDtStr );
-
-		    	  if(this.checked==true){
-		    		  sum+=amount;
-		    		  sumUSD+=amountUSD;
-
-		    	  }else{
-		    		  sum-=amount;
-		    		  sumUSD-=amountUSD;
-
-		    	  }
-		    	  $('#totalAmountSpan').html(parseFloat(sum).toFixed(3));
-		    	  $('#totalAmountUSDSpan').html(parseFloat(sumUSD).toFixed(3));
-
-	    	  }
-	      });		
-	  }
+		 
+//	      var totalRMB_USD=function(){
+//	    	  var id = $("input[name='order_check_box']").parent().parent().attr('id');
+//	    	  var amountStr = $($('#'+id+' td')[5]).text();
+//	    	  var amounUSDtStr = $($('#'+id+' td')[6]).text();
+//	    	  if(amountStr!='' & amounUSDtStr!='' ){
+//		    	  amount = parseFloat( amountStr );
+//		    	  amountUSD = parseFloat( amounUSDtStr );
+//
+//		    	  if($("input[name='order_check_box']").prop('checked')==true){
+//		    		  sum+=amount;
+//		    		  sumUSD+=amountUSD;
+//
+//		    	  }else{
+//		    		  sum-=amount;
+//		    		  sumUSD-=amountUSD;
+//
+//		    	  }
+//		    	  $('#totalAmountSpan').html(parseFloat(sum).toFixed(3));
+//		    	  $('#totalAmountUSDSpan').html(parseFloat(sumUSD).toFixed(3));
+//
+//	    	  }
+//	
+//	      }
         
         
       	//checkbox选中则button可点击   创建对账单
