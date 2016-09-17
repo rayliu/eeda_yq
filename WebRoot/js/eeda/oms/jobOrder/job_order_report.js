@@ -305,7 +305,7 @@ $(document).ready(function() {
 	                window.open(data.DOWN_URL);
 	             }else{
 	               $.scojs_message('生成海运头程资料失败', $.scojs_message.TYPE_ERROR);
-	               }
+	             }
 				
 		},'json').fail(function(){
 		    	$.scojs_message('失败', $.scojs_message.TYPE_ERROR);
@@ -541,21 +541,14 @@ $(document).ready(function() {
     	
     	if($('input[name=debit_note]:checked').val()=='Invoice'){
     		$.post('/jobOrderReport/printInvoicePDF',{order_id:order_id,company:company},function(data){
-    			if(data){window.open(data);
-		    		}else{
-		    			$.socjs_message('生成Invoice PDF失败',$.scojs_massage.TYPE_ERROR); 
-		    		}
+    			if(data){
+    				window.open(data);
+		    	}else{
+		    		$.socjs_message('生成Invoice PDF失败',$.scojs_massage.TYPE_ERROR); 
+		    	}
     		});
     	}
 		
-	});
-    
-    
-    
-    
-    
-    
-    
-    
+	});   
 });
 });
