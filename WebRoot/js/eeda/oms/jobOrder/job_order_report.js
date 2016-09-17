@@ -317,8 +317,10 @@ $(document).ready(function() {
     $('#oceanMBL').click(function(){
     	var order_id = $("#order_id").val();
     	$.post('/jobOrder/mblflag',{order_id:order_id},function(data){
-    		if(data.result==true)
+    		if(data.result==true){
     			$.scojs_message('MBL确认成功', $.scojs_message.TYPE_OK);
+    		    $('#oceanMBL').attr('disabled',true);
+    		}
     		else
     			$.scojs_message('MBL确认失败', $.scojs_message.TYPE_ERROR);
     			
@@ -333,8 +335,10 @@ $(document).ready(function() {
     $('#alreadyAFR_AMS').click(function(){
     	var order_id = $("#order_id").val();
     	$.post('/jobOrder/aframsflag',{order_id:order_id},function(data){
-    		if(data.result==true)
-			$.scojs_message('AFR/AMS确认成功', $.scojs_message.TYPE_OK);
+    		if(data.result==true){
+			    $.scojs_message('AFR/AMS确认成功', $.scojs_message.TYPE_OK);
+			    $('#alreadyAFR_AMS').attr('disabled',true);
+    		}
 		else
 			$.scojs_message('AFR/AMS确认失败', $.scojs_message.TYPE_ERROR);
 			
@@ -348,8 +352,10 @@ $(document).ready(function() {
     $('#alreadyInline').click(function(){
     	var order_id = $("#order_id").val();
     	$.post('/jobOrder/alreadyInlineFlag',{order_id:order_id},function(data){
-    		if(data.result==true)
-			$.scojs_message('已电放确认成功', $.scojs_message.TYPE_OK);
+    		if(data.result==true){
+    			$.scojs_message('已电放确认成功', $.scojs_message.TYPE_OK);
+    			$('#alreadyInline').attr('disabled',true);
+    		}
 		else
 			$.scojs_message('已电放确认失败', $.scojs_message.TYPE_ERROR);
 			

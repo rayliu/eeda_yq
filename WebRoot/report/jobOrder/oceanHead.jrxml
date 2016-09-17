@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHead" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="99"/>
+	<property name="ireport.y" value="76"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -208,9 +208,6 @@ where jos.order_id=$P{order_id}]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="cargo_name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="unit" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="pieces" class="java.lang.Integer">
@@ -547,7 +544,7 @@ where jos.order_id=$P{order_id}]]>
 			<line>
 				<reportElement x="24" y="248" width="505" height="1" uuid="991b3092-3614-46e5-8677-01099f44aa5f"/>
 			</line>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="118" y="190" width="161" height="29" uuid="23edd1d8-c19b-40cc-b2c1-d1e346776de2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
