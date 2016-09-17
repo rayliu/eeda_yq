@@ -91,18 +91,43 @@ $(document).ready(function() {
             },
             { "data": "TYPE","width": "80px",
                 "render": function ( data, type, full, meta ) {
-                	var str = '<select name="type" class="form-control search-control" style="width:100px">'
-                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
-                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
-                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
-                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
-                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
-                        +'</select>';
-                	return str;
+                	if(full.AUDIT_FLAG == 'Y'){
+                		var str = '<select name="type" class="form-control search-control" style="width:100px" disabled>'
+	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
+	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
+	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
+	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
+	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
+	                        +'</select>';
+	                	return str;
+                	}else{
+	                	var str = '<select name="type" class="form-control search-control" style="width:100px">'
+	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
+	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
+	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
+	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
+	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
+	                        +'</select>';
+	                	return str;
+                	}
                 }
             },
             { "data": "SP_ID","width": "180px",
                 "render": function ( data, type, full, meta ) {
+                	if(full.AUDIT_FLAG == 'Y'){
+                		if(!data)
+                            data='';
+                        var field_html = template('table_dropdown_template',
+                            {
+                                id: 'SP_ID',
+                                value: data,
+                                display_value: full.SP_NAME,
+                                style:'width:200px',
+                                disabled:'disabled'
+                            }
+                        );
+                        return field_html;
+                     }else{
                     if(!data)
                         data='';
                     var field_html = template('table_dropdown_template',
@@ -114,10 +139,25 @@ $(document).ready(function() {
                         }
                     );
                     return field_html;
-                }
+                 }
+               }
             },
             { "data": "CHARGE_ID","width": "180px",
                 "render": function ( data, type, full, meta ) {
+                	if(full.AUDIT_FLAG == 'Y'){
+                		if(!data)
+                            data='';
+                        var field_html = template('table_dropdown_template',
+                            {
+                                id: 'SP_ID',
+                                value: data,
+                                display_value: full.SP_NAME,
+                                style:'width:200px',
+                                disabled:'disabled'
+                            }
+                        );
+                        return field_html;
+                     }else{
                     if(!data)
                         data='';
                     var field_html = template('table_dropdown_template',
@@ -130,23 +170,37 @@ $(document).ready(function() {
                     );
                     return field_html;
                 }
+              }
             },
             { "data": "PRICE", "width": "60px",
                 "render": function ( data, type, full, meta ) {
+                	if(full.AUDIT_FLAG == 'Y'){
+                		if(!data)
+                            data='';
+                        return '<input type="text" name="price" style="width:80px" value="'+data+'" class="form-control" disabled />';
+                     }else{
                     if(!data)
                         data='';
                     return '<input type="text" name="price" style="width:80px" value="'+data+'" class="form-control" />';
                 }
+               }
             },
             { "data": "AMOUNT","width": "60px",
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="number" name="amount" style="width:80px" value="'+data+'" class="form-control "/>';
-                }
+                	if(full.AUDIT_FLAG == 'Y'){
+                		if(!data)
+                            data='';
+                        return '<input type="number" name="amount" style="width:80px" value="'+data+'" class="form-control " disabled/>';
+                     }else{
+	                    if(!data)
+	                        data='';
+	                    return '<input type="number" name="amount" style="width:80px" value="'+data+'" class="form-control "/>';
+	                }
+              }
             },
             { "data": "UNIT_ID","width": "60px",
                 "render": function ( data, type, full, meta ) {
+                	if(full.AUDIT_FLAG == 'Y'){
                 	 if(!data)
                          data='';
                      var field_html = template('table_dropdown_template',
@@ -154,26 +208,55 @@ $(document).ready(function() {
                              id: 'UNIT_ID',
                              value: data,
                              display_value: full.UNIT_NAME,
-                             style:'width:80px'
+                             style:'width:80px',
+                             disabled:'disabled'
                          }
                      );
                      return field_html;
+                }else{
+            	   if(!data)
+                       data='';
+                   var field_html = template('table_dropdown_template',
+                       {
+                           id: 'UNIT_ID',
+                           value: data,
+                           display_value: full.UNIT_NAME,
+                           style:'width:80px'
+                       }
+                   );
+                   return field_html;
                 }
+              }
             },
-            { "data": "CURRENCY_ID", "width": "60px",
+            { "data": "CURRENCY_ID", "width":"60px",
                 "render": function ( data, type, full, meta ) {
-                	if(!data)
-                        data='';
-                    var field_html = template('table_dropdown_template',
-                        {
-                            id: 'CURRENCY_ID',
-                            value: data,
-                            display_value: full.CURRENCY_NAME,
-                            style:'width:80px'
-                        }
-                    );
-                    return field_html;
+                	if(full.AUDIT_FLAG == 'Y'){
+	                	if(!data)
+	                        data='';
+	                    var field_html = template('table_dropdown_template',
+	                        {
+	                            id: 'CURRENCY_ID',
+	                            value: data,
+	                            display_value: full.CURRENCY_NAME,
+	                            style:'width:80px',
+	                            disabled:'disabled'
+	                        }
+	                    );
+	                    return field_html;
+                }else{
+            	   if(!data)
+                       data='';
+                   var field_html = template('table_dropdown_template',
+                       {
+                           id: 'CURRENCY_ID',
+                           value: data,
+                           display_value: full.CURRENCY_NAME,
+                           style:'width:80px'
+                       }
+                   );
+                   return field_html; 
                 }
+              }
             },
             { "data": "TOTAL_AMOUNT", "width": "60px",
                 "render": function ( data, type, full, meta ) {
@@ -186,25 +269,44 @@ $(document).ready(function() {
             },
             { "data": "EXCHANGE_RATE", "width": "60px",
                 "render": function ( data, type, full, meta ) {
+                if(full.AUDIT_FLAG == 'Y'){
                     if(!data)
                         data='';
-                    return '<input type="text" name="exchange_rate" style="width:80px" value="'+data+'" class="form-control"/>';
-                }
+                    return '<input type="text" name="exchange_rate" style="width:80px" value="'+data+'" class="form-control" disabled/>';
+                }else{
+            	   if(!data)
+                       data='';
+                   return '<input type="text" name="exchange_rate" style="width:80px" value="'+data+'" class="form-control"/>';
+               }
+              }
             },
             { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px",
                 "render": function ( data, type, full, meta ) {
+                if(full.AUDIT_FLAG == 'Y'){
                     if(!data)
                         data='';
                     profitTotalCost += parseFloat(data);
-                    return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" />';
+                    return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" disabled />';
+                } else{
+                  if(!data)
+                      data='';
+                  profitTotalCost += parseFloat(data);
+                  return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control"  />';
                 }
+              }
             },
             { "data": "REMARK","width": "180px",
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" />';
-                }
+                	if(full.AUDIT_FLAG == 'Y'){
+	                    if(!data)
+	                        data='';
+	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" disabled />';
+	                }else{
+	            	   if(!data)
+	                       data='';
+	                   return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" />';
+	                }
+               }
             }, { "data": "SP_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
@@ -296,7 +398,7 @@ $(document).ready(function() {
        }else{
           $('.costUSD').text(0+"USD");
        }
-       window.calcCurrency();
+       calcCurrency();
    }
 
     getTotalCost();

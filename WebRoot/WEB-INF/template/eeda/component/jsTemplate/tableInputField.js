@@ -1,7 +1,7 @@
 <script id="table_dropdown_template" type="text/html">
         <div class="form-group">
             <input type="text" name="{{id}}" value="{{value}}" style="display:none;"/>
-            <input type="text" class="form-control search-control" 
+            <input type="text" {{disabled}} class="form-control search-control" 
                    name="{{id}}_input" placeholder="请选择" value="{{display_value}}" style="{{style}}">
         </div> 
 </script>
