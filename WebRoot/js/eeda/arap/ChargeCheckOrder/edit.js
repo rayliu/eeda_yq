@@ -38,6 +38,7 @@ $(document).ready(function() {
         $(this).attr('disabled', true);
 
         var order = buildOrder();
+        order.have_invoice = $('[name="invoiceType"]:checked').val();
         order.id = $('#order_id').val();
         order.item_list = itemOrder.buildItemDetail();
         
@@ -77,7 +78,5 @@ $(document).ready(function() {
     		$('#confirmBtn').attr('disabled', false);
     	}
     }
-    
-
 } );
 } );

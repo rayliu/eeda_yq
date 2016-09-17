@@ -1,89 +1,98 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '计划订单查询 | '+document.title;
-
-    		$('#menu_charge').addClass('active').find('ul').addClass('in');
-    	    
-
-
     	//datatable, 动态处理
         var dataTable = eeda.dt({
-            id: 'eeda-table',
+            id: 'create-table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/chargeInvoiceOrder/list",
+            ajax: "/chargeInvoiceOrder/createlist",
             columns:[
-					  { "data": null,"width": "10px",
-						  "render": function ( data, type, full, meta ) {
-							  return '<input type="checkbox" class="checkBox" name="order_check_box" order_type="'+data.ORDER_NO+'" value="'+data.ID+'">';			  
-	                	  }		            
-					  },		                
-					  { "data": "ORDER_NO" }, 
-					  { "data": null,
-						  "render":function(data){
-							  return '应收对账单';}
-					    }, 
-					  { "data": "MOON"}, 
-					  { "data": "STATUS"},
-	                  { "data": "SP_NAME" },
-		              { "data": "TOTAL_PROFITRMB"}, 
-		              { "data": "REMARK"}, 
-		              { "data": null,
-		            	  return '系统管理员';},
-		              { "data": "CREATE_STAMP"},
+				      { "width": "10px",
+					    "render": function ( data, type, full, meta ) {
+					    	return '<input type="checkbox" class="checkBox">';
+					    }
+				      },
+					  { "data": "ORDER_NO" },
+					  { "data": "PAYEE_NAME","class":"SP_NAME"}, 
+					  { "data": "STATUS"}, 
+					  { "data": "CREATE_NAME"}, 
+					  { "data": "CREATE_STAMP"}	 
             ]
         });
         
-		$("#allCheck").click(function(){
-	    	$("input[name='order_check_box']").each(function () {  
-	            this.checked = !this.checked;  
-	         });
+		//选择是否是同一个客户
+		var cnames = [];
+		$('#create-table').on('click',".checkBox",function () {
+				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
+				
+				if($(this).prop('checked')==true){	
+					if(cnames.length > 0 ){
+						if(cnames[0]!=cname){
+							$.scojs_message('请选择同一个结算公司', $.scojs_message.TYPE_ERROR);
+							$(this).attr('checked',false);
+							return false;
+						}else{
+							cnames.push(cname);
+						}
+					}else{
+						cnames.push(cname);	
+					}
+				}else{
+					cnames.pop(cname);
+			 }
+			 if (cnames.length>0){
+				 $('#createBtn').prop('disabled',false);
+			 }else{
+				 $('#createBtn').prop('disabled',true);
+			 }
+    	 });
+		
+		//查看应收应付对账结果
+		var checked = '';
+    	$('#checkOrderAll').click(function(){
+    		 checked = '';
+	         if($('#checkOrderAll').prop('checked')==true){
+	        	 checked = $('#checkOrderAll').val();	        	
+	            }
+	         var url = "/chargeCheckOrder/list?checked="+checked;	         
+	         dataTable.ajax.url(url).load();
+    	});
+		
+		
+      	//checkbox选中则button可点击   创建对账单
+		$('#eeda-table').on('click',"input[name='order_check_box']",function () {
+			
+			var hava_check = 0;
+			$('.checkBox').each(function(){	
+				var checkbox = $(this).prop('checked');
+	    		if(checkbox){
+	    			hava_check=1;
+	    		}	
+			});
+			if(hava_check>0){
+				$('#createBtn').attr('disabled',false);
+			}else{
+				$('#createBtn').attr('disabled',true);
+			}
 		});
-        
-
-        $("#chargeConfiremBtn").click(function(e){//确认
-            e.preventDefault();
-            $("#chargeConfiremBtn").attr("disabled",true);
-            
-        	var trArr=[];
-        	var orderNoArr=[];
-        	var $checked = [];
-            $("input[name='order_check_box']").each(function(){
-            	if($(this).prop('checked') == true && $(this).prop('disabled') == false){
-            		trArr.push($(this).val());
-            		orderNoArr.push($(this).attr('order_no'));
-            		$checked.push($(this));
-            		$(this).attr("disabled",true);
-            	}
-            });     
-            
-            if(trArr.length==0){
-            	alert("请选择单据");
-            	$("#chargeConfiremBtn").attr("disabled",false);
-            	return false;
-            }
-            
-            console.log(trArr);
-            var returnOrderIds = trArr.join(",");
-            var orderno=orderNoArr.join(",");
-            $.post("/chargeConfiremList/chargeConfiremReturnOrder", {returnOrderIds:returnOrderIds,orderno:orderno}, function(data){
-            	if(data.success){
-            		//chargeConfiremTable.fnSettings().sAjaxSource = "/chargeConfiremList/list";
-            		//chargeConfiremTable.fnDraw(); 
-            		//refreshCreateList(); 
-            		$("#chargeConfiremBtn").attr("disabled",false);
-            		for(var i = 0;i<$checked.length;i++){
-                		$checked[i].parent().parent().hide();
-                	}
-            		$.scojs_message('单据确认成功', $.scojs_message.TYPE_OK);
-            	}else{
-            		alert('确认失败，请联系管理员进行优化');
-            	}
-            },'json');
+		
+		$('#createBtn').click(function(){
+			$('#createBtn').attr('disabled',true);
+			
+        	var itemIds=[];
+        	$('.checkBox').each(function(){
+        		var checkbox = $(this).prop('checked');
+        		if(checkbox){
+        			var itemId = $(this).parent().parent().attr('id');
+        			itemIds.push(itemId);
+        		}
+        	});
+        	
+        	$('#idsArray').val(itemIds);
+        	$('#billForm').submit();
         });
-        
-        
+  
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
@@ -91,7 +100,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 
       $('#searchBtn').click(function(){
           searchData(); 
-      })
+      });
 
      var searchData=function(){
           var order_no = $("#order_no").val(); 
@@ -106,13 +115,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/ChargeCheckOrder/list?order_no="+order_no
+          var url = "/chargeCheckOrder/list?order_no="+order_no
                +"&sp_name="+sp_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 
           dataTable.ajax.url(url).load();
-      };
-    	
+        }
+       
     });
 });
