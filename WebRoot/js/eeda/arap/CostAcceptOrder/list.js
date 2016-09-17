@@ -45,7 +45,7 @@ $(document).ready(function() {
       var application_table = eeda.dt({
           id: 'application_table',
           paging: true,
-          serverSide: false, //不打开会出现排序不对 
+          serverSide: true, 
           ajax: "/costAcceptOrder/applicationList",
           columns: [
             {"data":"APPLICATION_ORDER_NO","width":"120px",
@@ -107,6 +107,7 @@ $(document).ready(function() {
       $('#resetBtn').click(function(e){
     	  $("#costAcceptForm")[0].reset();
       });
+
       var searchData=function(){
     	  var sp = $("#sp").val(); 
           var order_no = $("#orderNo_filter1").val().trim(); 

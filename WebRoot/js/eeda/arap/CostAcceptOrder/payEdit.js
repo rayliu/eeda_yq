@@ -35,7 +35,7 @@ $(document).ready(function() {
 					return data;
     			}
     		},
-    		{"data":"YUFU_AMOUNT","width": "100px",
+    		{"data":"PAY_AMOUNT","width": "100px",
     			"render": function(data, type, full, meta) {
 					nopay = nopay + parseFloat(data) ;
 					$("#nopay").html(nopay);
@@ -44,10 +44,10 @@ $(document).ready(function() {
     		},
     		{"data":null,"width": "100px",
     			"render": function(data, type, full, meta) {
-					pay = pay + parseFloat(full.YUFU_AMOUNT) ;
+					pay = pay + parseFloat(full.DAIFU_AMOUNT) ;
 					$("#pay").html(pay);
 					$("#pay_amount").val(pay);
-					return "<input type ='text' name='amount' style='width:80px' id ='amount' value='"+full.YUFU_AMOUNT+"'>";
+					return "<input type ='text' name='amount' style='width:80px' id ='amount' value='"+full.DAIFU_AMOUNT+"'>";
     			}
     		},
     		{"data":"CREATOR_NAME","width": "120px"},

@@ -79,7 +79,7 @@ public class CostAcceptOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition +sLimit);
+        List<Record> orderList = Db.find(sql+ condition + " order by id desc " + sLimit);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
