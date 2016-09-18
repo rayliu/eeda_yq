@@ -61,15 +61,18 @@
                                             }){} %>
 									</div>
 									</div>
-								<!-- end of col-lg-6-->
 							</div>
-							<!-- end of row-->
-							<button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
-                            <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
 					</form>
-					<div class="form-group">
-							<button id="createBtn" disabled type="button" class="btn  btn-primary" >创建申请单</button>
-					</div>
+					
+					<div class="form-group button-bar" >
+                         <form id="billForm" action="/chargeAcceptOrder/create" method="post">
+                         <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+                         <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+                             <input id="idsArray" name="idsArray" type="hidden">
+                             <button id="createBtn" disabled type="button" class="btn btn-primary btn-sm" >创建申请单</button>
+                         </form>
+                    </div>
+
 
 					<input type="hidden" value="" id="type">
 						<%include("/eeda/component/form/detailTable.html", 
@@ -77,7 +80,7 @@
                                     id:'costAccept_table', 
                                     style:'width:1000px',
                                     headers:['',
-                                    '单号','单据类型','应收金额','已收金额','待收金额','付款单位','付款人','发票号','状态','备注'
+                                    '单号','单据类型','收款对象','应收金额','已收金额','待收金额','发票号','状态','备注'
                                     ]
                                 }){} %>
 				</div>
@@ -127,10 +130,9 @@
 					</form>
 						<%include("/eeda/component/form/detailTable.html", 
                                 {
-                                    id:'application_table', 
-                                    style:'width:1900px',
+                                    id:'application_table',
                                     headers:[
-                                    '申请单号','单据类型','发票号','状态	','应收金额','收款人','收款对象','备注'
+                                    '申请单号','单据类型','状态','创建人','创建时间','备注'
                                     ]
                                 }){} %>
 				</div>	

@@ -5,7 +5,7 @@ $(document).ready(function() {
     $('#menu_finance').addClass('active').find('ul').addClass('in');
 
 	//datatable, 动态处理
-    var ids = $("#ids").val();
+    var idsArray = $("#idsArray").val();
     var total = 0.00;
     var nopay = 0.00;
     var pay = 0.00;
@@ -14,17 +14,16 @@ $(document).ready(function() {
 	    id: 'CostOrder-table',
 	    paging: true,
 	    serverSide: true, //不打开会出现排序不对
-	    ajax: "/chargePreInvoiceOrder/chargeOrderList?ids="+ids+"&application_id="+$("#application_id").val(),
+	    ajax: "/chargeAcceptOrder/chargeOrderList?idsArray="+idsArray+"&application_id="+$("#application_id").val(),
 	    columns:[
-             {"data":"ORDER_TYPE","width": "100px","sClass":'order_type'},
+             {"data":"ORDER_TYPE","width": "100px","class":'order_type'},
              {"data":"ORDER_NO","width": "120px",
             	"render": function(data, type, full, meta) {
             		return '<a href="/chargeCheckOrder/edit?id='+full.ID+'">'+data+'</a>';
         		}
              },
-        	{"data":"CNAME","width": "250px"},
         	{"data":"PAYEE_NAME","width": "120px"},
-    		{"data":"CHARGE_AMOUNT","width": "100px",
+    		{"data":"TOTAL_AMOUNT","width": "100px",
     			"render": function(data, type, full, meta) {
 					total = total + parseFloat(data) ;
 					$("#total").html(parseFloat(total).toFixed(2));
@@ -57,9 +56,8 @@ $(document).ready(function() {
 					}
     			}
     		},
-    		{"data":"CREATOR_NAME","width": "120px"},
-    		{"data":"CREATE_STAMP","width": "150px"},
-    		{"data":"REMARK","width": "150px"}
+    		{"data":"CREATE_NAME","width": "120px"},
+    		{"data":"CREATE_STAMP","width": "150px"}
         ]      
     });	
     
@@ -99,7 +97,7 @@ $(document).ready(function() {
 				return false;
 			}
 		}
-		$.get('/chargePreInvoiceOrder/save',$("#checkForm").serialize(), function(data){
+		$.get('/chargeAcceptOrder/save',$("#checkForm").serialize(), function(data){
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 				$("#application_id").val(data.ID);
@@ -270,37 +268,10 @@ $(document).ready(function() {
     
  
 
-    var payment = function(){
-    	if($('#payment_method').val()=='transfers'){
-    		$("#transfers_massage").show();
-    	}else if($('#payment_method').val()=='cash'){
-    		$("#transfers_massage").hide();
-    	}
-    }; 	
-    
-  //收款方式文本框控制
-    $('#payment_method').on('change',function(){
-    	payment();
-    });
-    
-    
-    
-    var receiveType = function(){
-    	if($('#receive_type').val()=='cash'){
-    		$("#receive_bank").val('');
-    		$("#receive_type_massage").hide();
-    	}else{
-    		$("#receive_type_massage").show();
-    	}
-    };
-    //收款方式（收款确认）控制
-    $('#receive_type').on('change',function(){
-    	receiveType();
-    });
     
    
     //按钮控制
-	if($('#status').val()=='new'){
+	if($('#status').val()==''){
 		$("#saveBtn").attr('disabled',false);
 		$("#deleteBtn").attr("disabled", true);
 	}else if($('#status').val()=='新建' || $('#status').val()=='已审批'){
@@ -320,27 +291,5 @@ $(document).ready(function() {
 	}
 	
 
-    //回显
-    //收款类型
-    $('#payment_method').val($('#payment_method_show').val());
-    
-    //开票类型
-    $('#invoice_type').val($('#invoice_type_show').val());
-    
-    ////收款方式（收款确认）回显控制
-    if($('#receive_type_show').val()!=''){
-    	$('#receive_type').val($('#receive_type_show').val()); 
-    }
-    receiveType();
-    
-    
-    //收款银行回显
-    $('#receive_bank').val($('#receive_banks').val());
-    if($('#deposit_bank').val()!='' || $('#bank_no').val()!='' || $('#account_name').val()!=''){
-    	$('#payment_method').val('transfers');
-    }else{
-    	$('#payment_method').val('cash');
-    	payment();
-    }
 });
 });

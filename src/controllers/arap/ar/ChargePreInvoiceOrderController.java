@@ -480,7 +480,7 @@ public class ChargePreInvoiceOrderController extends Controller {
 	//新模块
 	//新逻辑
 	public void chargeOrderList() {
-        String ids = getPara("ids");
+        String ids = getPara("idsArray");
         String application_id = getPara("application_id");
         String dz_id ="" ;//对账单
         String kpjl_id = "";//开票记录单
