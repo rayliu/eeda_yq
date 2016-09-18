@@ -52,6 +52,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                                  str += "订舱代理<br>";
                              }else if(val == "truck"){
                                  str += "运输公司<br>";
+                             }else if(val == "cargo_agent"){
+                                 str += "货代公司<br>";
                              }
                          });
                          

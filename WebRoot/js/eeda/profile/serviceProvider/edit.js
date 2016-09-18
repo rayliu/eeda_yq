@@ -74,6 +74,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $('#sp_type_booking_agent').attr('checked', 'checked');
             }else if(checkSpType == 'truck'){
                 $('#sp_type_truck').attr('checked', 'checked');
+            }else if(checkSpType == 'cargo_agent'){
+                $('#sp_type_cargo_agent').attr('checked', 'checked');
             }
             
         };
