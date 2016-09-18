@@ -33,7 +33,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
       });
 
      var searchData=function(){
-          var order_no = $("#order_no1").val();
+          var order_no = $("#order_no1").val().trim();
           var sp_name = $('#sp1_input').val();
           var start_date = $("#create_stamp1_begin_time").val();
           var end_date = $("#create_stamp1_end_time").val();
@@ -45,7 +45,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/chargeCheckOrder/checkedList?order_no="+order_no
+          var url = "/chargeInvoiceOrder/list?order_no="+order_no
                +"&sp_name="+sp_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;

@@ -47,6 +47,11 @@ public class ChargeInvoiceOrderController extends Controller {
     public void create(){
 		//当前登陆用户
 		String ids = getPara("idsArray");
+		String[] idArr = ids.split(",");
+		String sql = " select aco.payee_id,p.contact_person,p.phone,p.address from arap_charge_order aco "
+				+ " left join party p on p.id = aco.sp_id "
+				+ " where aco.id = ? ";
+		setAttr("create",Db.find(sql,idArr[0]));
 		setAttr("itemList",getItemList(ids));
 		render("/eeda/arap/ChargeInvoiceOrder/ChargeInvoiceOrderEdit.html");
 	}
@@ -163,16 +168,16 @@ public class ChargeInvoiceOrderController extends Controller {
    			id = order.getLong("id").toString();
    		}
 
-   		ArapChargeItem aci = null;
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
 		for(Map<String, String> item :itemList){
 			String item_id = item.get("id");
 			String invoice_no = item.get("invoice_no");
 			
 			ArapChargeOrder aco = ArapChargeOrder.dao.findById(item_id);
-			aco.set("invoice_order_id", id).update();
-			aco.set("invoice_no", invoice_no).update();
-			
+			aco.set("have_invoice", 'Y');
+			aco.set("invoice_order_id", id);
+			aco.set("invoice_no", invoice_no);
+			aco.update();
 		}
 		
 		long create_by = order.getLong("create_by");
@@ -185,37 +190,15 @@ public class ChargeInvoiceOrderController extends Controller {
     
     public void edit(){
 		String id = getPara("id");
-		String condition = "select id from arap_charge_order where invoice_order_id ="+id;
-		Record rec = new Record();
-		ArapChargeInvoice aco = ArapChargeInvoice.dao.findById(id);
-		long create_by = aco.getLong("create_by");
-		UserLogin ul = UserLogin.dao.findById(create_by);
-		setAttr("invoiceOrder", aco);
-		setAttr("user", ul);
-		String address = null;
-		String customer = null;
-		String phone = null;
-		String shipper_info = null;
-		if(StringUtils.isNotEmpty(shipper_info)){
-			String[] info = shipper_info.split("\n");
-			if(info.length == 3){
-				 address = info[0];
-				 customer = info[1];
-				 phone = info[2];
-			}else if(info.length == 2){
-				 address = info[0];
-				 customer = info[1];
-			}else{
-				 address = info[0];
-			}
-		}	
-		rec.set("address", address);
-		rec.set("customer", customer);
-		rec.set("phone", phone);
-		rec.set("user", LoginUserController.getLoginUserName(this));
-		setAttr("itemList",getItemList(condition));
-		setAttr("order",rec);
-		render("/eeda/arap/ChargeInvoiceOrder/ChargeInvoiceOrderEdit.html");
+		String itemSql = "select id from arap_charge_order where invoice_order_id = "+id;
+		
+		String sql = " select aci.*,u.c_name from arap_charge_invoice aci "
+				+ " left join user_login u on u.id = aci.create_by "
+				+ " where aci.id = ? ";
+		
+		setAttr("invoiceOrder", Db.find(sql,id));
+		setAttr("itemList",getItemList(itemSql));
+		render("/eeda/arap/ChargeInvoiceOrder/ChargeInvoiceOrderEdit.html"); 
 	}
     
     

@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table',  'dataTablesBoots
 
 $(document).ready(function() {
 
-	document.title = order_no + ' | ' + document.title;
+	document.title = '创建开票单 | ' + document.title;
 
     $('#menu_order').addClass('active').find('ul').addClass('in');
     
@@ -45,15 +45,19 @@ $(document).ready(function() {
         $.post('/chargeInvoiceOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
             if(order.ID>0){
+            	eeda.contactUrl("edit?id",order.ID);
+            	$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+            	$("#order_id").val(order.ID);
+            	$("#order_no").val(order.ORDER_NO);
             	$("#creator_name").val(order.CREATOR_NAME);
                 $("#create_stamp").val(order.CREATE_STAMP);
-                $("#order_no").val(order.ORDER_NO);
-                $("#order_id").val(order.ID);
                 $("#status").val(order.STATUS);
-                eeda.contactUrl("edit?id",order.ID);
-                $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-                $('#saveBtn').attr('disabled', false);
+                $("#total_amount").val(order.TOTAL_AMOUNT);
                 
+                $("#address").val(order.STATUS);
+                $("#contact_person").val(order.CONTACT_PERSON);
+                $("#phone").val(order.PHONE);
+                $('#saveBtn').attr('disabled', false);
                 //异步刷新明细表
                 itemOrder.refleshTable(order.ID);
             }else{
@@ -77,5 +81,5 @@ $(document).ready(function() {
     		$('#confirmBtn').attr('disabled', false);
     	}
     }
-} );
-} );
+});
+});

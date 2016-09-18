@@ -6,13 +6,11 @@
 		</div>
 	</div>
 
-	<input id="order_id" type="hidden" name="order_id"
-		value="${order.id!''}" />
-	<input id="idsArray" type="hidden" name="idsArray"
-		value="${order.idsArray!''}" />
 	<div class="form_group">
 		<!--  form row  -->
 		<form id="orderForm">
+			<input id="id" type="hidden" name="id" value="${invoiceOrder.id!''}" />
+			
 			<div class="row">
 				<!--  第1行  -->
 				<div class="form-group">
@@ -21,18 +19,21 @@
 					</div>
 				</div>
 				<div class="col-lg-4">
-					<%include("/eeda/component/form/inputField.html", { id:'address',
-					label:'地址', value:order.address!'',disabled:'disabled'
+					<%include("/eeda/component/form/inputField.html", { 
+					id:'address',
+					label:'地址',
+					value:'',
+					 disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-4">
-					<%include("/eeda/component/form/inputField.html", { id:'customer',
-					label:'联系人', value:order.customer!'',disabled:'disabled'
+					<%include("/eeda/component/form/inputField.html", { id:'contact_person',
+					label:'联系人', value:'',disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", { id:'phone',
-					label:'电话', value:order.phone!'',disabled:'disabled'
+					label:'电话', value:'',disabled:'disabled'
 					}){}%>
 				</div>
 			</div> 
@@ -49,7 +50,7 @@
 					'disabled' }){}%></div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", {
-					id:'creator_name', label:'创建人', value:user.c_name!'', disabled:
+					id:'creator_name', label:'创建人', value:invoiceOrder.c_name!'', disabled:
 					'disabled' }){}%></div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", {
@@ -57,10 +58,10 @@
 					disabled: 'disabled' }){}%></div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", { id:'status',
-					label:'状态', value:checkOrder.status!'新建', disabled: 'disabled' }){}%></div>
+					label:'状态', value:invoiceOrder.status!'新建', disabled: 'disabled' }){}%></div>
 				<div class="col-lg-4">
-					<%include("/eeda/component/form/inputField.html", { id:'check_amount',
-					label:'应收总金额:', value:order.check_amount!'',disabled:'disabled'
+					<%include("/eeda/component/form/inputField.html", { id:'total_amount',
+					label:'应收总金额:', value:invoiceOrder.total_amount!'',disabled:'disabled'
 					}){}%>
 				</div>
 			</div>
@@ -96,9 +97,9 @@
 			</div>
 		</div>
 	</div>
-	<br>
 	<div class="row">
 		<div class="col-lg-12">
+			<br>
 			<button id='saveBtn' class="btn  btn-primary" disabled >保存</button> 
 			<button id='confrimBtn' class="btn  btn-primary" disabled >确认</button> 
 			<button id="printBtn" type="button" class="btn  btn-primary" >打印</button>
