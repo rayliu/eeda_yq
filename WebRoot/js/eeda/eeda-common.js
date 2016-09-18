@@ -38,17 +38,15 @@ eeda.dt = function(opt){
             }
         },
         drawCallback: opt.drawCallback || function ( settings ) {},
-        ajax: {
-          url: opt.ajax,
-          error: function (xhr, error, thrown) {
-            if(xhr.responseText.indexOf('忘记密码')>0){
-              alert( '您未登录, 请重新登录.' );
-            }
-            else{
-              alert( '后台出错, 请联系技术人员查看.' );
-            }
-          }
-        } || '',
+        ajax: opt.ajax || '',
+        // ajax: {
+        //   url: opt.ajax,
+        //   error: function (xhr, error, thrown) {
+        //     if(xhr.responseText.indexOf('忘记密码')>0){
+        //       alert( '您未登录, 请重新登录.' );
+        //     }
+        //   }
+        // } || '',
         columns: opt.columns || []
     };
 
