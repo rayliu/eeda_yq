@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="109"/>
+	<property name="ireport.y" value="362"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -234,46 +234,46 @@ where jos.order_id=$P{order_id}]]>
 	<pageHeader>
 		<band height="151" splitType="Stretch">
 			<staticText>
-				<reportElement x="208" y="106" width="146" height="30" uuid="c036f7f5-965b-47d3-9415-8881f9f7781f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="宋体" size="24" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-V" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[DEBIT NOTE]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="146" y="26" width="282" height="22" uuid="1f17ff0a-6c4f-4e21-a8f0-17f61bc37be6"/>
+				<reportElement x="146" y="41" width="282" height="22" uuid="1f17ff0a-6c4f-4e21-a8f0-17f61bc37be6"/>
 				<textElement>
 					<font size="16" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[ZHUHAI HENGQIN ENKYO SCM CO.,LTD.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="48" width="353" height="15" uuid="05510db4-0f2e-4cd4-8c3c-be1339f553d3"/>
+				<reportElement x="121" y="63" width="353" height="15" uuid="05510db4-0f2e-4cd4-8c3c-be1339f553d3"/>
 				<textElement>
 					<font fontName="SansSerif" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[7th FI. Shanhaiyipin,56# of Shihua Road, Jida,Zhuhai, Guangding,Chian]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="169" y="63" width="119" height="15" uuid="39e3da46-96b0-46ea-87d4-c1c3e7bcac70"/>
+				<reportElement x="169" y="78" width="119" height="15" uuid="39e3da46-96b0-46ea-87d4-c1c3e7bcac70"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[TEL:86-756-3225991]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="292" y="63" width="121" height="15" uuid="e6480da6-0695-4c86-9f46-1ce609cd332a"/>
+				<reportElement x="288" y="78" width="121" height="15" uuid="e6480da6-0695-4c86-9f46-1ce609cd332a"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[FAX:86-756-3225900]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="169" y="0" width="259" height="26" uuid="e1e2aafd-07ba-4e27-a38b-5dfadd484cdc"/>
+				<reportElement x="169" y="15" width="259" height="26" uuid="e1e2aafd-07ba-4e27-a38b-5dfadd484cdc"/>
 				<textElement>
 					<font fontName="宋体" size="16"/>
 				</textElement>
 				<text><![CDATA[珠海横琴远桥供应链管理有限公司]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="198" y="104" width="218" height="47" uuid="d571b9e8-d46a-468f-9c9a-d8627d0c77b9"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[DEBIT NOTE]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -450,55 +450,55 @@ where jos.order_id=$P{order_id}]]>
 			<line>
 				<reportElement x="0" y="214" width="555" height="1" uuid="92ec3e54-b78d-4dd2-833b-994d18652e10"/>
 			</line>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="74" y="89" width="92" height="15" uuid="bba3c900-6b7e-4404-b98e-38e22f312d91"/>
 				<textFieldExpression><![CDATA[$F{vessel}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="167" y="89" width="68" height="15" uuid="6a264388-6268-45fe-af46-61ccb5a52836"/>
 				<textFieldExpression><![CDATA[$F{voyage}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="74" y="110" width="254" height="15" uuid="12467054-823e-4a70-8005-7ed958f4f86e"/>
 				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="74" y="130" width="289" height="14" uuid="233fbb37-7715-446b-a4ee-5cd20d0a8821"/>
 				<textFieldExpression><![CDATA[$F{pol}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="74" y="149" width="100" height="15" uuid="d27820b1-a0c0-40eb-ba6a-8bc241b6f65e"/>
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="74" y="170" width="289" height="15" uuid="b9064271-0dcc-45d0-945b-bc2e4d818741"/>
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
-			<textField pattern="MMMMM dd, yyyy">
+			<textField pattern="MMMMM dd, yyyy" isBlankWhenNull="true">
 				<reportElement x="440" y="45" width="115" height="15" uuid="fe80cc78-973f-488c-84b7-7fe43c5732dd"/>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="441" y="65" width="114" height="17" uuid="27502a39-69d8-427a-a4dd-9d270889bd80"/>
 				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
-			<textField pattern="MMMMM dd, yyyy">
+			<textField pattern="MMMMM dd, yyyy" isBlankWhenNull="true">
 				<reportElement x="440" y="89" width="115" height="15" uuid="01b48f23-9a69-4e9e-ba26-98f48207a25f"/>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
-			<textField pattern="MMMMM dd, yyyy">
+			<textField pattern="MMMMM dd, yyyy" isBlankWhenNull="true">
 				<reportElement x="441" y="110" width="114" height="15" uuid="be92611a-c302-41a7-91e6-b8ba5c48afa0"/>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="441" y="130" width="114" height="14" uuid="536e3e0d-cf2d-451c-b50e-58f70e27f32a"/>
 				<textFieldExpression><![CDATA[$F{pod}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="441" y="150" width="19" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="460" y="150" width="72" height="14" uuid="031deb20-ad6a-4dd0-a3fb-54e016073a88"/>
 				<textFieldExpression><![CDATA[$F{unit_name}]]></textFieldExpression>
 			</textField>
