@@ -57,6 +57,7 @@ $(document).ready(function() {
 	                }
 	            },
 	            { "data": "ORDER_NO"},
+	            { "data": "TOTAL_AMOUNT"},
 	            { "data": "PAYEE_NAME"},
 	            { "data": "STATUS"},
 	            { "data": "CREATE_STAMP"}

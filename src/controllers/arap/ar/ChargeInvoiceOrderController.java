@@ -46,19 +46,21 @@ public class ChargeInvoiceOrderController extends Controller {
 	
     public void create(){
 		//当前登陆用户
+    	String total_amount = getPara("total_amount");
 		String ids = getPara("idsArray");
 		String[] idArr = ids.split(",");
 		String sql = " select aco.payee_id,p.contact_person,p.phone,p.address from arap_charge_order aco "
 				+ " left join party p on p.id = aco.sp_id "
 				+ " where aco.id = ? ";
-		setAttr("create",Db.find(sql,idArr[0]));
+		setAttr("create",Db.findFirst(sql,idArr[0]));
 		setAttr("itemList",getItemList(ids));
+		setAttr("total_amount",total_amount);
 		render("/eeda/arap/ChargeInvoiceOrder/ChargeInvoiceOrderEdit.html");
 	}
     
     
     public List<Record> getItemList(String ids){
-    	String sql = "select acor.id,acor.order_no,acor.`status`,acor.invoice_no,p.abbr payee_name,acor.create_stamp, ul.c_name create_name"
+    	String sql = "select acor.id,acor.order_no,acor.total_amount,acor.`status`,acor.invoice_no,p.abbr payee_name,acor.create_stamp, ul.c_name create_name"
     			+ " from arap_charge_order acor"
     			+ " LEFT JOIN party p on p.id = acor.payee_id"
     			+ " LEFT JOIN user_login ul on ul.id = acor.create_by"
@@ -77,7 +79,7 @@ public class ChargeInvoiceOrderController extends Controller {
         }
         String sql = "";
         
-    	sql = " select * from (select acor.id,acor.order_no,acor.`status`,p.abbr payee_name,acor.create_stamp, ul.c_name create_name"
+    	sql = " select * from (select acor.id,acor.order_no,acor.total_amount,acor.`status`,p.abbr payee_name,acor.create_stamp, ul.c_name create_name"
     			+ " from arap_charge_order acor"
     			+ " LEFT JOIN party p on p.id = acor.payee_id"
     			+ " LEFT JOIN user_login ul on ul.id = acor.create_by"
@@ -110,7 +112,7 @@ public class ChargeInvoiceOrderController extends Controller {
         }
         String sql = "";
         
-    	sql = " select * from (select acor.id,acor.order_no ,p.abbr payee_name ,acor.`status`,acor.create_stamp, ul.c_name create_name"
+    	sql = " select * from (select acor.id,acor.order_no ,acor.total_amount,p.abbr payee_name ,acor.`status`,acor.create_stamp, ul.c_name create_name"
     			+ " from arap_charge_invoice acor"
     			+ " LEFT JOIN party p on p.id = acor.payee_id"
     			+ " LEFT JOIN user_login ul on ul.id = acor.create_by"
@@ -174,9 +176,9 @@ public class ChargeInvoiceOrderController extends Controller {
 			String invoice_no = item.get("invoice_no");
 			
 			ArapChargeOrder aco = ArapChargeOrder.dao.findById(item_id);
-			aco.set("have_invoice", 'Y');
-			aco.set("invoice_order_id", id);
-			aco.set("invoice_no", invoice_no);
+			aco.set("have_invoice","Y");
+			aco.set("invoice_order_id",id);
+			aco.set("invoice_no",invoice_no);
 			aco.update();
 		}
 		
@@ -189,15 +191,20 @@ public class ChargeInvoiceOrderController extends Controller {
     
     
     public void edit(){
-		String id = getPara("id");
-		String itemSql = "select id from arap_charge_order where invoice_order_id = "+id;
+		String id = getPara("id");//invoice_order_id
+		
+		String itemSql = "select acor.id,acor.order_no,acor.total_amount,acor.`status`,acor.invoice_no,p.abbr payee_name,acor.create_stamp, ul.c_name create_name"
+    			+ " from arap_charge_order acor"
+    			+ " LEFT JOIN party p on p.id = acor.payee_id"
+    			+ " LEFT JOIN user_login ul on ul.id = acor.create_by"
+    			+ " where acor.invoice_order_id = ? ";
 		
 		String sql = " select aci.*,u.c_name from arap_charge_invoice aci "
 				+ " left join user_login u on u.id = aci.create_by "
 				+ " where aci.id = ? ";
 		
-		setAttr("invoiceOrder", Db.find(sql,id));
-		setAttr("itemList",getItemList(itemSql));
+		setAttr("invoiceOrder", Db.findFirst(sql,id));
+		setAttr("itemList",Db.find(itemSql,id));
 		render("/eeda/arap/ChargeInvoiceOrder/ChargeInvoiceOrderEdit.html"); 
 	}
     

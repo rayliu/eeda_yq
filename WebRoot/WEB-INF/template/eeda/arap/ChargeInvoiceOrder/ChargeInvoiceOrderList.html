@@ -55,6 +55,7 @@
 	                                	<button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
 		                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
                                 		<input id="idsArray" name="idsArray" type="hidden">
+                                		<input id="total_amount" name="total_amount" type="hidden">
                                 		<button id="createBtn" disabled type="button" class="btn btn-primary btn-sm" >创建开票单</button>
                                     </form>
                                 </div>
@@ -62,7 +63,8 @@
                                 {
                                    id:'create-table', 
                                    headers:['',
-                                       '对账单号',		                                       
+                                       '对账单号',	
+                                       '应收总额',	                                       
                                        '结算公司',
                                        '状态',
                                        '创建人',
@@ -109,7 +111,8 @@
 	                                  id:'eeda-table',
 	                                  style:'width:1900px',
 	                                  headers:[
-	                                      '开票单号',			                                       
+	                                      '开票单号',	
+	                                      '应收总额',		                                       
 	                                      '结算公司',
 	                                      '状态',
 	                                      '创建人',

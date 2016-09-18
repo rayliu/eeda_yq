@@ -47,14 +47,14 @@ $(document).ready(function() {
             if(order.ID>0){
             	eeda.contactUrl("edit?id",order.ID);
             	$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-            	$("#order_id").val(order.ID);
+            	$("#id").val(order.ID);
             	$("#order_no").val(order.ORDER_NO);
             	$("#creator_name").val(order.CREATOR_NAME);
                 $("#create_stamp").val(order.CREATE_STAMP);
                 $("#status").val(order.STATUS);
                 $("#total_amount").val(order.TOTAL_AMOUNT);
                 
-                $("#address").val(order.STATUS);
+                $("#address").val(order.ADDRESS);
                 $("#contact_person").val(order.CONTACT_PERSON);
                 $("#phone").val(order.PHONE);
                 $('#saveBtn').attr('disabled', false);

@@ -17,6 +17,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			           		  return "<a href='/chargeInvoiceOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
 			           	  }
 			          },
+			          { "data": "TOTAL_AMOUNT","width": "60px"},
 					  { "data": "PAYEE_NAME", "width": "60px"}, 
 					  { "data": "STATUS", "width": "100px"},
 					  { "data": "CREATE_NAME", "width": "100px"},  

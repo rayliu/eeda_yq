@@ -22,18 +22,18 @@
 					<%include("/eeda/component/form/inputField.html", { 
 					id:'address',
 					label:'地址',
-					value:'',
+					value:create.address!invoiceOrder.address!'',
 					 disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", { id:'contact_person',
-					label:'联系人', value:'',disabled:'disabled'
+					label:'联系人', value:create.contact_person!invoiceOrder.contact_person!'',disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", { id:'phone',
-					label:'电话', value:'',disabled:'disabled'
+					label:'电话', value:create.phone!invoiceOrder.create!'',disabled:'disabled'
 					}){}%>
 				</div>
 			</div> 
@@ -61,7 +61,7 @@
 					label:'状态', value:invoiceOrder.status!'新建', disabled: 'disabled' }){}%></div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", { id:'total_amount',
-					label:'应收总金额:', value:invoiceOrder.total_amount!'',disabled:'disabled'
+					label:'应收总金额:', value:total_amount!invoiceOrder.total_amount!'',disabled:'disabled'
 					}){}%>
 				</div>
 			</div>
@@ -85,12 +85,13 @@
                                 id:'eeda-table', 
                                 headers:['',
                                 	'发票号码',
-                                    '对账单号',	                                       
+                                    '对账单号',
+                                    '应收总额',	                                       
                                     '结算公司',
                                     '状态',
                                     '创建时间'                                
                                 ],
-					field_list:['id','invoice_no', 'order_no','payee_name','status','create_stamp'], 
+					field_list:['id','invoice_no', 'order_no','total_amount','payee_name','status','create_stamp'], 
 					value_list: itemList![] }){} %>
 					</div>
 				</div>

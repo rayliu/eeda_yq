@@ -14,6 +14,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 					    }
 				      },
 					  { "data": "ORDER_NO" },
+					  { "data": "TOTAL_AMOUNT" },
 					  { "data": "PAYEE_NAME","class":"SP_NAME"}, 
 					  { "data": "STATUS"}, 
 					  { "data": "CREATE_NAME"}, 
@@ -48,17 +49,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
              }
          });
         
-        //查看应收应付对账结果
-        var checked = '';
-        $('#checkOrderAll').click(function(){
-             checked = '';
-             if($('#checkOrderAll').prop('checked')==true){
-                 checked = $('#checkOrderAll').val();                
-                }
-             var url = "/chargeCheckOrder/list?checked="+checked;             
-             dataTable.ajax.url(url).load();
-        });
-
 		
       	//checkbox选中则button可点击   创建对账单
 		$('#eeda-table').on('click',"input[name='order_check_box']",function () {
@@ -81,15 +71,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			$('#createBtn').attr('disabled',true);
 			
         	var itemIds=[];
+        	var amount = 0;
+        	var sum = 0;
         	$('.checkBox').each(function(){
         		var checkbox = $(this).prop('checked');
         		if(checkbox){
         			var itemId = $(this).parent().parent().attr('id');
         			itemIds.push(itemId);
+        			var amountStr = $($('#'+itemId+' td')[2]).text();
+        			if(amountStr!=''){
+        				amount = parseFloat( amountStr );
+        				sum+=amount;
+        			}
         		}
         	});
         	
         	$('#idsArray').val(itemIds);
+        	$('#total_amount').val(sum);
         	$('#billForm').submit();
         });
   
