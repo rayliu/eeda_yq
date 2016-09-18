@@ -350,7 +350,7 @@ $(document).ready(function() {
     }
    
     //输入 数量*单价的时候，计算金额
-    $('#cost_table [name=price],#cost_table [name=amount],#cost_table [name=exchange_rate],#cost_table [name=CURRENCY_ID_input]').on('keyup',function(){
+    $('#cost_table ').on('blur', ' [name=price],[name=amount], [name=exchange_rate], [name=CURRENCY_ID_input]', function(){
     	var row = $(this).parent().parent();
     	var price = $(row.find('[name=price]')).val()
     	var amount = $(row.find('[name=amount]')).val()
