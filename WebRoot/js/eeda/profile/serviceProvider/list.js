@@ -38,24 +38,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                                  str += "提货供应商<br>";
                              }else if(val == "personal"){
                                  str += "个体供应商<br>";
-                             }
-	                         else if(val == "carrier"){
+                             }else if(val == "carrier"){
 	                        	 str += "船公司<br>";
-	                         }
-	                         else if(val == "air"){
+	                         }else if(val == "air"){
 	                        	 str += "航空公司<br>";
-	                         }
-	                         else if(val == "broker"){
+	                         }else if(val == "broker"){
 	                        	 str += "报关行<br>";
-	                         }
-	                         else if(val == "head_car"){
+	                         }else if(val == "head_car"){
 	                        	 str += "头程船公司<br>";
-	                         }
-	                         else if(val == "oversea_agent"){
+	                         }else if(val == "oversea_agent"){
 	                        	 str += "海外代理<br>";
-	                         }
-                             else if(val == "booking_agent"){
+	                         }else if(val == "booking_agent"){
                                  str += "订舱代理<br>";
+                             }else if(val == "truck"){
+                                 str += "运输公司<br>";
                              }
                          });
                          
