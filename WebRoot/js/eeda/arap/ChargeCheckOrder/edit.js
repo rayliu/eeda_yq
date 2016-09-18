@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table',  'dataTablesBoots
 
 $(document).ready(function() {
 
-	document.title = order_no + ' | ' + document.title;
+	document.title = '创建应收对账单 | ' + document.title;
 
     $('#menu_order').addClass('active').find('ul').addClass('in');
     

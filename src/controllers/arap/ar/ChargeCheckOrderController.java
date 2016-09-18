@@ -172,7 +172,7 @@ public class ChargeCheckOrderController extends Controller {
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
         	sql = " select * from (select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
         			+ "jo.net_weight gross_weight,"
-        			+ " if(cur.name='CNY',joa.total_amount,0) rmb,"
+        			+ " ifnull(joa.currency_total_amount,0)  rmb,"
         			+ " if(cur.name='USD',joa.total_amount,0) usd,"
         			+ " jo.ref_no ref_no,"
         			+ " p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
@@ -183,15 +183,16 @@ public class ChargeCheckOrderController extends Controller {
         			+ "	left join job_order_shipment jos on jos.order_id=joa.order_id "
         			+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
         			+ "	left join job_order_air_item joai on joai.order_id=joa.order_id "
+        			
         			+ " left join job_order_land_item  jols on jols.order_id=joa.order_id "
         			+ "	left join party p1 on p1.id=joa.sp_id "
         			+ "	left join location l on l.id=jos.fnd "
-        			+ "	where joa.order_type='charge' and joa.audit_flag='Y' "
+        			+ "	where joa.order_type='charge' and joa.audit_flag='Y'  "
         			+ " GROUP BY joa.id) A where 1 = 1 ";
         	}else{
         		sql = " select * from (select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
             			+ " jo.net_weight gross_weight,"
-            			+ " if(cur.name='CNY',joa.total_amount,0) rmb,"
+            			+ " ifnull(joa.currency_total_amount,0) rmb,"
             			+ " if(cur.name='USD',joa.total_amount,0) usd,"
             			+ " jo.ref_no ref_no,"
             			+ " p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
@@ -205,7 +206,7 @@ public class ChargeCheckOrderController extends Controller {
             			+ " left join job_order_land_item  jols on jols.order_id=joa.order_id "
             			+ "	left join party p1 on p1.id=joa.sp_id "
             			+ "	left join location l on l.id=jos.fnd "
-            			+ "	where joa.order_type='charge' and joa.audit_flag='Y' and joa.bill_flag !='Y' "
+            			+ "	where joa.order_type='charge' and joa.audit_flag='Y' and joa.bill_flag ='N' "
             			+ " GROUP BY joa.id) A where 1 = 1 ";		
         				
         			}
@@ -233,15 +234,13 @@ public class ChargeCheckOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "";        
-        		sql = " select * from (select aco.id,aco.order_no,aco.create_stamp,aco.status,"
-        				+ "caor.pay_amount paid_amount,p.abbr sp_name,jo.total_chargeRMB rmb,jo.total_chargeUSD usd"
-        				+ "	from arap_charge_order aco "
-        				+ "	left join party p on p.id=aco.sp_id "
-        				+ " left join job_order jo on aco.id = jo.id"
-        				+ "	left join charge_application_order_rel caor on caor.charge_order_id=aco.id) B where 1 = 1 ";	  				
         			
-        
+        String sql = "select * from(  "
+        		+ " select aco.id,aco.order_no,aco.create_stamp,aco.status,aco.total_amount,c.pay_amount paid_amount,p.abbr sp_name "
+				+ " from arap_charge_order aco "
+				+ " left join party p on p.id=aco.sp_id "
+				+ " left join charge_application_order_rel c on c.charge_order_id=aco.id "
+				+ " ) B where 1=1 ";
         String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
@@ -264,7 +263,7 @@ public class ChargeCheckOrderController extends Controller {
     public List<Record> getItemList(String ids){
     	String sql = " select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
     			+ " jo.net_weight gross_weight,"
-    			+ " if(cur.name='CNY',joa.total_amount,0) rmb,"
+    			+ " ifnull(joa.currency_total_amount,0) rmb,"
     			+ " if(cur.name='USD',joa.total_amount,0) usd,"
     			+ " jo.total_profitTotalRMB totalrmb,jo.ref_no ref_no,"
     			+ " p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
@@ -292,12 +291,8 @@ public class ChargeCheckOrderController extends Controller {
 		
 		
 		String sql = "SELECT jos.shipper_info, "
-				+ " sum(case when cur.name = 'CNY' "
-				+ " then (joa.total_amount) "
-				+ " when cur.name = 'USD'  "
-				+ " then (joa.total_amount*joa.exchange_rate)"
-				+ " end ) total_CNY"
-				+ " FROM"
+				+ " sum( ifnull(joa.currency_total_amount,0) ) total_amount "
+				+ " FROM "
 				+ " job_order_arap joa"
 				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
 				+ " LEFT JOIN job_order_shipment jos ON jos.order_id = joa.order_id"

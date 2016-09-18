@@ -20,7 +20,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 					  { "data": "CREATE_STAMP", "width": "100px"},  
 					  { "data": "SP_NAME", "width": "60px"}, 
 					  { "data": "STATUS", "width": "100px"},
-					  { "data": "RMB","width": "60px",
+					  { "data": "TOTAL_AMOUNT","width": "60px",
 				    	 "render":function(data, type, full, meta){
 				    		 if(data<0){
 				    			 return '<span style="color:red">'+data+'</span>';
@@ -28,18 +28,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 				    			 return data;
 				    		 }
 				    	 }
-					     },
-	                  { "data": "USD","width": "60px",
-			    		 "render":function(data, type, full, meta){
-			    			 if(data<0){
-			    				 return '<span style="red">'+data+'</span>';
-			    			 }else{
-			    				 return data;
-			    			 }
-				    	}
-					    },
-//		              { "data": "HKD"}, 
-//		              { "data": "JPY"}, 
+					  },
+	            
 		              {"data": "PAID_AMOUNT", "width": "60px"}
             ]
         });

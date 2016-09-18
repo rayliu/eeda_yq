@@ -42,7 +42,7 @@ $(document).ready(function() {
         "paging": false,
         "autoWidth": true,
         "language": {
-            "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
+        	"url": "/js/lib/datatables/i18n/Chinese.json"
         },
         "createdRow": function ( row, data, index ) {
             $(row).attr('id', data.ID);
@@ -52,7 +52,6 @@ $(document).ready(function() {
             { "data": "ORDER_NO"},
             { "data": "CREATE_TIME"},
             { "data": "SP_NAME"},
-            { "data": "BILL_FLAG"},
             { "data": "RMB"},
             { "data": "USD"},
             { "data": "FND"},
