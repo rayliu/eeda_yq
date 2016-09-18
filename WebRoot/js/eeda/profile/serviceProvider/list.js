@@ -54,6 +54,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                         else if(val == "oversea_agent"){
 	                        	 str += "海外代理<br>";
 	                         }
+                             else if(val == "booking_agent"){
+                                 str += "订舱代理<br>";
+                             }
                          });
                          
                          return str;
