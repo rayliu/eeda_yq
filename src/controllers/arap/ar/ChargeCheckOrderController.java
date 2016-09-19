@@ -10,6 +10,7 @@ import java.util.Map;
 
 import models.ArapChargeItem;
 import models.ArapChargeOrder;
+import models.ArapCostOrder;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrderAir;
 import models.eeda.oms.jobOrder.JobOrderArap;
@@ -89,10 +90,10 @@ public class ChargeCheckOrderController extends Controller {
 				aci.set("ref_order_id", itemId);
 				aci.set("charge_order_id", id);
 				aci.save();
-				
-				JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
-				jobOrderArap.set("bill_flag", "Y");
-				jobOrderArap.update();
+                JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
+                jobOrderArap.set("bill_flag", "Y");
+                jobOrderArap.update();
+
 			}
 		}
 		
@@ -106,53 +107,19 @@ public class ChargeCheckOrderController extends Controller {
     
    
     public void edit(){
-		String id = getPara("id");
+		String id = getPara("id");//arap_charge_order id
 		String condition = "select ref_order_id from arap_charge_item where charge_order_id ="+id;
 		
-		ArapChargeOrder aco = ArapChargeOrder.dao.findById(id);
-		long create_by = aco.getLong("create_by");
-		UserLogin ul = UserLogin.dao.findById(create_by);
-		setAttr("checkOrder", aco);
-		setAttr("user", ul);
-		
-		
-		String sql = "SELECT jos.shipper_info, "
-				+ " sum(case when cur.name = 'CNY' "
-				+ " then (joa.total_amount) "
-				+ " when cur.name = 'USD'  "
-				+ " then (joa.total_amount*joa.exchange_rate)"
-				+ " end ) total_CNY"
-				+ " FROM"
-				+ " job_order_arap joa"
-				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
-				+ " LEFT JOIN job_order_shipment jos ON jos.order_id = joa.order_id"
-				+ " LEFT JOIN job_order jo ON jo.id = joa.order_id"
-				+ " WHERE"
-				+ " joa.id in("+ condition +")"
-				+ " group by joa.order_id";
+		String sql = " select aco.*,p.abbr sp_name,p.contact_person,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from arap_charge_order aco "
+   				+ " left join party p on p.id=aco.sp_id "
+   				+ " left join user_login u on u.id=aco.create_by "
+   				+ " left join user_login u1 on u1.id=aco.confirm_by "
+   				+ " where aco.id = ? ";
 		Record rec =Db.findFirst(sql);
-		
-		String address = null;
-		String customer = null;
-		String phone = null;
-		String shipper_info = rec.get("shipper_info");
-		if(StringUtils.isNotEmpty(shipper_info)){
-			String[] info = shipper_info.split("\n");
-			if(info.length == 3){
-				 address = info[0];
-				 customer = info[1];
-				 phone = info[2];
-			}else if(info.length == 2){
-				 address = info[0];
-				 customer = info[1];
-			}else{
-				 address = info[0];
-			}
-		}	
-		rec.set("address", address);
-		rec.set("customer", customer);
-		rec.set("phone", phone);
-		rec.set("user", LoginUserController.getLoginUserName(this));
+
+		rec.set("address", rec.get("address"));
+		rec.set("customer", rec.get("contact_person"));
+		rec.set("phone", rec.get("phone"));
 		setAttr("itemList",getItemList(condition));
 		setAttr("order",rec);
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
@@ -287,43 +254,20 @@ public class ChargeCheckOrderController extends Controller {
     }
     
 	public void create(){
-		//当前登陆用户
-		String ids = getPara("idsArray");
+		String ids = getPara("idsArray");//job_order_arap ids
 		
-		
-		String sql = "SELECT jos.shipper_info, "
+		String sql = "SELECT p.phone,p.contact_person,p.address, "
 				+ " sum( ifnull(joa.currency_total_amount,0) ) total_amount "
-				+ " FROM "
-				+ " job_order_arap joa"
-				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
-				+ " LEFT JOIN job_order_shipment jos ON jos.order_id = joa.order_id"
-				+ " LEFT JOIN job_order jo ON jo.id = joa.order_id"
-				+ " WHERE"
-				+ " joa.id in("+ ids +")"
+				+ " FROM job_order_arap joa"
+				+ " left join party p on p.id = joa.sp_id "
+				+ " WHERE joa.id in("+ ids +")"
 				+ " group by joa.order_id";
 		Record rec =Db.findFirst(sql);
-		
-		String address = null;
-		String customer = null;
-		String phone = null;
-		String shipper_info = rec.get("shipper_info");
-		if(StringUtils.isNotEmpty(shipper_info)){
-			String[] info = shipper_info.split("\n");
-			if(info.length == 3){
-				 address = info[0];
-				 customer = info[1];
-				 phone = info[2];
-			}else if(info.length == 2){
-				 address = info[0];
-				 customer = info[1];
-			}else{
-				 address = info[0];
-			}
-		}	
+
 		rec.set("idsArray", ids);
-		rec.set("address", address);
-		rec.set("customer", customer);
-		rec.set("phone", phone);
+		rec.set("address", rec.get("address"));
+		rec.set("customer", rec.get("contact_person"));
+		rec.set("phone", rec.get("phone"));
 		rec.set("user", LoginUserController.getLoginUserName(this));
 		setAttr("itemList",getItemList(ids));
 		setAttr("order",rec);
@@ -348,5 +292,17 @@ public class ChargeCheckOrderController extends Controller {
         renderJson(BillingOrderListMap); 
     }
 
+    
+    public void confirm(){
+		String id = getPara("id");
+		ArapChargeOrder aco = ArapChargeOrder.dao.findById(id);
+		aco.set("status","已确认");
+		aco.set("confirm_stamp", new Date());
+		aco.set("confirm_by", LoginUserController.getLoginUserId(this));
+		aco.update();
+		Record r = aco.toRecord();
+		r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
+		renderJson(r);
+	}
 
 }

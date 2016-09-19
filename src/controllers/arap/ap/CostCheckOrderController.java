@@ -2,7 +2,6 @@ package controllers.arap.ap;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +11,6 @@ import models.ArapCostItem;
 import models.ArapCostOrder;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrderArap;
-import models.eeda.oms.jobOrder.JobOrderShipment;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -46,7 +44,7 @@ public class CostCheckOrderController extends Controller {
 	
 	public void create(){
 		
-		String ids = getPara("itemId");//jobOrder arap ids
+		String ids = getPara("itemId");//job_order_arap ids
 		String totalAmount = getPara("totalAmount");
 		
 		String strAry[] = ids.split(",");

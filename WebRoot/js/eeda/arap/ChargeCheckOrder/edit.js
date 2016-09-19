@@ -78,5 +78,20 @@ $(document).ready(function() {
     		$('#confirmBtn').attr('disabled', false);
     	}
     }
-} );
-} );
+    
+  
+    $('#confirmBtn').click(function(){
+        	$(this).attr('disabled', true);
+        	var id = $("#order_id").val();
+        	 $.post('/chargeCheckOrder/confirm', {id:id}, function(data){
+        		 if(data){
+	    			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+        		 }
+	         },'json').fail(function() {
+	        	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+	           });
+        })
+        
+    
+});
+});

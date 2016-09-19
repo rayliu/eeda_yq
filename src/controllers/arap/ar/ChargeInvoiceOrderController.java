@@ -83,7 +83,7 @@ public class ChargeInvoiceOrderController extends Controller {
     			+ " from arap_charge_order acor"
     			+ " LEFT JOIN party p on p.id = acor.payee_id"
     			+ " LEFT JOIN user_login ul on ul.id = acor.create_by"
-    			+ " where acor.invoice_order_id is null"
+    			+ " where acor.have_invoice='Y' and acor.invoice_order_id is null"
     			+ " ) A where 1 = 1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
@@ -176,7 +176,6 @@ public class ChargeInvoiceOrderController extends Controller {
 			String invoice_no = item.get("invoice_no");
 			
 			ArapChargeOrder aco = ArapChargeOrder.dao.findById(item_id);
-			aco.set("have_invoice","Y");
 			aco.set("invoice_order_id",id);
 			aco.set("invoice_no",invoice_no);
 			aco.update();

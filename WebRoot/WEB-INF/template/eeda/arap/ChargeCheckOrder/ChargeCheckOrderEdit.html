@@ -46,7 +46,7 @@
 				</div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", { id:'check_amount',
-					label:'对账确认金额', value:order.check_amount!'',disabled:'disabled'
+					label:'对账确认金额(CNY)', value:order.total_amount!'',disabled:'disabled'
 					}){}%>
 				</div>
 			</div>
@@ -61,19 +61,19 @@
 				<!--  第4行  -->
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", {
-					id:'order_no', label:'对账单号', value:checkOrder.order_no!'', disabled:
+					id:'order_no', label:'对账单号', value:order.order_no!'', disabled:
 					'disabled' }){}%></div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", {
-					id:'creator_name', label:'创建人', value:user.c_name!'', disabled:
+					id:'creator_name', label:'创建人', value:order.user!order.creator_name!'', disabled:
 					'disabled' }){}%></div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", {
-					id:'create_stamp', label:'创建时间', value:checkOrder.create_stamp!'',
+					id:'create_stamp', label:'创建时间', value:order.create_stamp!'',
 					disabled: 'disabled' }){}%></div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", { id:'status',
-					label:'状态', value:checkOrder.status!'新建', disabled: 'disabled' }){}%></div>
+					label:'状态', value:order.status!'新建', disabled: 'disabled' }){}%></div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputDateQueryField.html", { id:'check_time',
 					label:'对账时间', value:order.check_time!'', disabled: 'disabled' }){}%></div>
@@ -149,9 +149,9 @@
 			</div>
 		</div>
 	</div>
-	<br>
 	<div class="row">
 		<div class="col-lg-12">
+			<br>
 			<button id='saveBtn' class="btn  btn-primary" disabled >保存</button> 
 			<button id='confrimBtn' class="btn  btn-primary" disabled >确认</button> 
 			<button id="printBtn" type="button" class="btn  btn-primary" >打印</button>
