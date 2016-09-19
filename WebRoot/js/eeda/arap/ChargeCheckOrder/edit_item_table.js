@@ -42,7 +42,7 @@ $(document).ready(function() {
             columns:[
             { "data": "ID","visible":false},
             { "data": "ORDER_NO"},
-            { "data": "CREATE_TIME"},
+            { "data": "CREATE_STAMP"},
             { "data": "SP_NAME"},
             { "data": "RMB"},
             { "data": "USD"},
