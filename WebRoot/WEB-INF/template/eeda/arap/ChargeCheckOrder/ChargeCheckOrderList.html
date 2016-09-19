@@ -66,29 +66,14 @@
 									<span class="badge" style='margin-top:12px;'> 总额RMB: <span id="totalAmountSpan">0</span></span> &nbsp;&nbsp;
 									<span class="badge" style='margin-top:12px;'> 总额USD: <span id="totalAmountUSDSpan">0</span></span> &nbsp;&nbsp;		 
 			                    </div>
-                                <%include("/eeda/component/form/detailTable.html", 
-                                {
-                                   id:'eeda-table', 
-                                   style:'width:1900px',
-                                   headers:['',
-                                       '工作单号',
-                                       '创建时间',			                                       
-                                       '结算公司',
-                                       '状态',
-                                       '合计收入(RMB)',
-                                       '合计收入(USD)',                                      
-                                       'FND',
-                                       '体积',
-                                       '箱量',
-                                       '重量',
-                                       '箱号',
-                                       'REF_NO',
-                                       'MBL_NO',
-                                       'HBL_NO',
-                                       '车型'
-                                       			                                        
-                                   ]
-                               }){} %>
+                               <%include("/eeda/component/form/detailTable.html", 
+                                        {
+                                            id:'eeda-table', 
+                                            style: 'width:2500px',
+                                            headers:['','工作单号','创建时间','状态','DEBIT_NO','类型','客户','结算公司','合计支出(RMB)','合计支出(USD)','合计支出(HKD)','合计支出(JPY)',
+                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','箱号','车型'
+                                            ]
+                                        }){} %>
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="charge_check_order">
@@ -127,7 +112,7 @@
                                 <%include("/eeda/component/form/detailTable.html", 
 	                              {   
 	                                  id:'eeda-tableChecked',
-	                                  style:'width:1900px',
+	                                  style:'width:1500px',
 	                                  headers:[
 	                                      '对账单号',
 	                                      '创建时间',			                                       

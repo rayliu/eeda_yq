@@ -8,7 +8,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       var dataTable = eeda.dt({
           id: 'order_table',
           paging: true,
-          autoWidth: true,
+          autoWidth: false,
           serverSide: true, 
           ajax: "/costCheckOrder/orderList",
           columns: [

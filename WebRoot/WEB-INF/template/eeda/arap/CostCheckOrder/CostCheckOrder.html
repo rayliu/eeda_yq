@@ -11,7 +11,7 @@
                     
                         <ul class="nav nav-tabs" role="tablist" >
                             <li role="presentation" class="active" >
-                                <a href="#unselected" data-toggle="tab">未对账明细</a>
+                                <a href="#unselected" data-toggle="tab">应付未对账明细</a>
                             </li>
                             <li role="presentation">
                                 <a id="cost_check_order_tab" href="#cost_check_order" data-toggle="tab">应付对账单列表</a>
@@ -66,12 +66,12 @@
                                             <button id="createBtn" disabled type="button" class="btn  btn-success" >创建对账单</button>
                                             <span class="badge" style='margin-top:12px;' id="totalAmountSpan"> 总额: 0</span> 
                                     </div>
-                                    <%include("/eeda/component/form/detailTable.html", 
+                                     <%include("/eeda/component/form/detailTable.html", 
                                         {
                                             id:'eeda_table', 
-                                            style: 'width: 100%',
+                                            style: 'width:2000px',
                                             headers:['','工作单号','创建时间','状态','DEBIT_NO','类型','客户','结算公司','合计支出(RMB)','合计支出(USD)','合计支出(HKD)','合计支出(JPY)',
-                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','箱号'
+                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','箱号','车型'
                                             ]
                                         }){} %>
                                 </div>
@@ -128,6 +128,7 @@
                                     <%include("/eeda/component/form/detailTable.html", 
                                         {
                                             id:'order_table',
+                                            style:'width:1800px',
                                             headers:['对账单号','创建时间','状态','结算公司','合计支出(RMB)','合计支出(USD)','合计支出(HKD)','合计支出(JPY)','已付款(RMB)'
                                             ]
                                         }){} %>

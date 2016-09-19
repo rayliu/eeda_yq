@@ -76,11 +76,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			    		     return full.DESTINATION;
             	}
             },
-            { "data": "VOLUME", "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                    return "";
-                }
-            },
+            { "data": "VOLUME", "width": "60px"},
             { "data": "CONTAINER_AMOUNT","width": "60px",
             	"render": function ( data, type, full, meta ) {
 	            	if(data){
@@ -116,13 +112,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	}
             },
             { "data": "NET_WEIGHT", "width": "60px"},
-            { "data": null, "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                    return "";
-                }
-            },
+            { "data": "REF_NO", "width": "60px"},
             { "data": "MBL_NO", "width": "60px"},
+            { "data": "HBL_NO", "width": "60px"},
             { "data": "CONTAINER_NO", "width": "100px"},
+            { "data": "TRUCK_TYPE", "width": "100px"},
           ]
       });
 

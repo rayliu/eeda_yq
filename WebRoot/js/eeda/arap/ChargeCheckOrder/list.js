@@ -13,98 +13,120 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
             serverSide: true, //不打开会出现排序不对
             ajax: "/chargeCheckOrder/list?checked="+checked,
             columns:[
-				      { "width": "10px",
-					    "render": function ( data, type, full, meta ) {
-					    	if(full.BILL_FLAG != ''){
-						        if(full.BILL_FLAG != 'Y')
-						    		return '<input type="checkbox" class="checkBox" name="order_check_box">';
-						    	else
-						    		return '<input type="checkbox" class="checkBox" disabled>';
-					    	}else{
-					    		return '';
-					    	}
-					    }
-				      },
-					  { "data": "ORDER_NO" },
-					  { "data": "CREATE_TIME"},  
-					  { "data": "SP_NAME","sClass":"SP_NAME"}, 
-					  { "data": "BILL_FLAG", "width": "60px",
-			            	"render": function ( data, type, full, meta ) {
-			            		if(data){
-				            		if(data != 'Y')
-							    		return '未创建对账单';
-							    	else 
-							    		return '已创建对账单';
-			            		}else{
-			            			return '';
-			            		}
-						    }
-			          },
-					  { "data": "RMB","class":'rmb',
-				    	 "render":function(data, type, full, meta){
-				    		 if(data<0){
-				    			 return '<span style="color:red">'+data+'</span>';
-				    		 }else{
-				    			 return data;
-				    		 }
-				    	 }
-					     },
-	                  { "data": "USD","class":'usd',
-			    		 "render":function(data, type, full, meta){
-			    			 if(data<0){
-			    				 return '<span style="color:red">'+data+'</span>';
-			    			 }else{
-			    				 return data;
-			    			 }
+			      { "width": "10px",
+				    "render": function ( data, type, full, meta ) {
+				    	if(full.BILL_FLAG != ''){
+					        if(full.BILL_FLAG != 'Y')
+					    		return '<input type="checkbox" class="checkBox" name="order_check_box">';
+					    	else
+					    		return '<input type="checkbox" class="checkBox" disabled>';
+				    	}else{
+				    		return '';
 				    	}
-					    },
-//		              { "data": "HKD"}, 
-//		              { "data": "JPY"}, 
-		              { "data": "FND"}, 
-		              { "data": "VGM"}, 
-		              { "data": "CONTAINER_AMOUNT",
-		            	  "render":function(data, type, full, meta){
-		            		  if(data){
-		            			  var dataArr = data;
-		            			  var Arr = dataArr.split(",");
-		            			  var a = 0;
-			  	            	  var b = 0;
-			  	            	  var c = 0;
-			  	            	  var dataStr = "";
-			  	            	for(var i=0;i<Arr.length;i++){
-			            			if(Arr[i]=="20GP"){
-			            				a++;
-			            			}
-			            			if(Arr[i]=="40GP"){
-			            				b++;
-			            			}
-			            			if(Arr[i]=="45GP"){
-			            				c++;
-			            			}
-			            		}
-			            		if(a>0){
-			            			dataStr+="20GPx"+a+";"
-			            		}
-			            		if(b>0){
-			            			dataStr+="40GPx"+b+";"
-			            		}
-			            		if(c>0){
-			            			dataStr+="45GPx"+c+";"
-			            		}
-			            		return dataStr;
-			            	}else{
-			            		return '';
-		            		  }
-		            	  }
-		                 }, 
-                      { "data": "GROSS_WEIGHT"}, 
-		              { "data": "CONTAINER_NO"},
-		              { "data": "REF_NO"}, 
-		              { "data": "MBL_NO"},
-		              { "data": "HBL_NO"},
-		              { "data": "TRUCK_TYPE"}
-            ]
-        });
+				    }
+			      },
+	            { "data": "ORDER_NO", "width": "100px"},
+	            { "data": "CREATE_STAMP", "width": "100px"},
+	            { "data": "BILL_FLAG", "width": "60px",
+	                "render": function ( data, type, full, meta ) {
+	                		if(data){
+	      	            		if(data != 'Y')
+	      				    		    return '未创建对账单';
+	      				    	   else 
+	      				    		  return '已创建对账单';
+	                  	}else{
+	                			return '';
+	                		}
+	    			       }
+	            },
+	            { "data": null, "width": "60px",
+	                "render": function ( data, type, full, meta ) {
+	                    return "";
+	                }
+	            },
+	            { "data": "TYPE", "width": "60px"},
+	            { "data": "CUSTOMER_NAME", "width": "100px"},
+	            { "data": "SP_NAME", "width": "100px","sClass":"SP_NAME"},
+	            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
+	            { "data": "CURRENCY_NAME", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+		            	if(data == 'USD')
+		            		return full.TOTAL_AMOUNT;
+		            	else 
+		            		return '';
+	            	}
+	            },
+	            { "data": "CURRENCY_NAME", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+		            	if(data == 'HKD')
+		            		return full.TOTAL_AMOUNT;
+		            	else 
+		            		return '';
+	            	}
+	            },
+	            { "data": "CURRENCY_NAME", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+		            	if(data == 'JPY')
+		            		return full.TOTAL_AMOUNT;
+		            	else 
+		            		return '';
+	            	}
+	            },
+	            { "data": "FND", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(data)
+				    		     return data;
+	            		else
+				    		     return full.DESTINATION;
+	            	}
+	            },
+	            { "data": "VOLUME", "width": "60px",
+	                "render": function ( data, type, full, meta ) {
+	                    return "";
+	                }
+	            },
+	            { "data": "CONTAINER_AMOUNT","width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+		            	if(data){
+		            		var dataArr = data.split(",");
+		            		var a = 0;
+		            		var b = 0;
+		            		var c = 0;
+		            		var dataStr = "";
+		            		for(var i=0;i<dataArr.length;i++){
+		            			if(dataArr[i]=="20GP"){
+		            				a++;
+		            			}
+		            			if(dataArr[i]=="40GP"){
+		            				b++;
+		            			}
+		            			if(dataArr[i]=="45GP"){
+		            				c++;
+		            			}
+		            		}
+		            		if(a>0){
+		            			dataStr+="20GPx"+a+";"
+		            		}
+		            		if(b>0){
+		            			dataStr+="40GPx"+b+";"
+		            		}
+		            		if(c>0){
+		            			dataStr+="45GPx"+c+";"
+		            		}
+		            		return dataStr;
+		            	}else{
+		            		return '';
+		            	}
+	            	}
+	            },
+	            { "data": "NET_WEIGHT", "width": "60px"},
+	            { "data": "REF_NO", "width": "60px"},
+	            { "data": "MBL_NO", "width": "60px"},
+	            { "data": "HBL_NO", "width": "60px"},
+	            { "data": "CONTAINER_NO", "width": "100px"},
+	            { "data": "TRUCK_TYPE", "width": "100px"},
+	          ]
+	      });
         
 		//选择是否是同一个客户
 		var cnames = [];
