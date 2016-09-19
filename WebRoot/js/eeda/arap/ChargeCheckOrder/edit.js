@@ -96,7 +96,19 @@ $(document).ready(function() {
 	        	 $(this).attr('disabled', false);
 	           });
         })
-        
+    //打印应收对账明细
+    $('#printBtn').click(function(){
+    	var order_id = $('#order_id1').val();
+    	var company_name = $('结算公司').val();
+    	$.post('/jobOrderReport/printReceiveDetailPDF',{order_id:order_id,company_name:company_name},function(data){
+    		if(data){
+    			window.open(data);
+    		}else{
+    			$.scojs_message('生成应收对账单PDF失败',$.scojs_message.TYPE_ERROR);
+    		}
+    	});
+    });
+      
     
 });
 });

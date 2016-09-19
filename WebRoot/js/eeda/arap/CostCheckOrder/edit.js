@@ -225,5 +225,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	           });
         })
         
+        //应付对账单打印明细
+        $('#printBtn').click(function(){
+        	var order_id = $('order_id').val();
+        	var company_name = $('结算公司').val();
+        	$.post('/jobOrderReport/payableDetailPDF',{order_id:order_id,company_name:company_name},function(data){
+        		if(data){
+        			window.open(data);
+        		}else{
+        			$.scojs_message('生成应付对账单 PDF失败', $.scojs_message.TYPE_ERROR);
+        		}
+        	});
+        	
+        });
+        
 });
 });

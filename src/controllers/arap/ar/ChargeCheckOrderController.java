@@ -10,9 +10,7 @@ import java.util.Map;
 
 import models.ArapChargeItem;
 import models.ArapChargeOrder;
-import models.ArapCostOrder;
 import models.UserLogin;
-import models.eeda.oms.jobOrder.JobOrderAir;
 import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
@@ -256,7 +254,7 @@ public class ChargeCheckOrderController extends Controller {
 	public void create(){
 		String ids = getPara("idsArray");//job_order_arap ids
 		
-		String sql = "SELECT p.phone,p.contact_person,p.address,joa.sp_id, "
+		String sql = "SELECT p.phone,p.contact_person,p.address,joa.sp_id,joa.order_id,"
 				+ " sum( ifnull(joa.currency_total_amount,0) ) total_amount "
 				+ " FROM job_order_arap joa"
 				+ " left join party p on p.id = joa.sp_id "
