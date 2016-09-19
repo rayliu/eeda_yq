@@ -8,11 +8,11 @@
 
 	<input id="order_id" type="hidden" name="order_id"
 		value="${order.id!''}" />
-	<input id="idsArray" type="hidden" name="idsArray"
-		value="${order.idsArray!''}" />
 	<div class="form_group">
 		<!--  form row  -->
 		<form id="orderForm">
+			<input id="sp_id" type="hidden" name="sp_id"
+			value="${order.sp_id!''}" />
 			<div class="row">
 				<!--  第1行  -->
 				<div class="form-group">
@@ -76,7 +76,7 @@
 					label:'状态', value:order.status!'新建', disabled: 'disabled' }){}%></div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputDateQueryField.html", { id:'check_time',
-					label:'对账时间', value:order.check_time!'', disabled: 'disabled' }){}%></div>
+					label:'对账时间', begin_value:order.begin_time!'', end_value:order.end_time!'', disabled: 'disabled' }){}%></div>
 			</div>
 			<div class="row">
 				<!--  第4行  -->

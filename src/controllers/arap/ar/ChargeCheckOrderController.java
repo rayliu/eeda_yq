@@ -115,7 +115,7 @@ public class ChargeCheckOrderController extends Controller {
    				+ " left join user_login u on u.id=aco.create_by "
    				+ " left join user_login u1 on u1.id=aco.confirm_by "
    				+ " where aco.id = ? ";
-		Record rec =Db.findFirst(sql);
+		Record rec =Db.findFirst(sql,id);
 
 		rec.set("address", rec.get("address"));
 		rec.set("customer", rec.get("contact_person"));
@@ -256,7 +256,7 @@ public class ChargeCheckOrderController extends Controller {
 	public void create(){
 		String ids = getPara("idsArray");//job_order_arap ids
 		
-		String sql = "SELECT p.phone,p.contact_person,p.address, "
+		String sql = "SELECT p.phone,p.contact_person,p.address,joa.sp_id, "
 				+ " sum( ifnull(joa.currency_total_amount,0) ) total_amount "
 				+ " FROM job_order_arap joa"
 				+ " left join party p on p.id = joa.sp_id "
