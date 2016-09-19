@@ -1,21 +1,11 @@
-define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn'], function ($, metisMenu) {
 
 	$(document).ready(function() {
 		document.title = '岗位查询 | '+document.title;
 		$('#menu_sys_profile').addClass('active').find('ul').addClass('in');
 
-		$('#example').DataTable({
-			"processing": true,
-	        "searching": false,
-	        //"serverSide": true,
-	        "scrollX": true,
-	        //"scrollY": "300px",
-	        "scrollCollapse": true,
-	        "autoWidth": false,
-	        "aLengthMenu": [ [10, 25, 50, 100, 9999999], [10, 25, 50, 100, "All"] ],
-	        "language": {
-	            "url": "/js/lib/datatables/i18n/Chinese.json"
-	        },
+		eeda.dt({
+			id: 'example',
 	        "ajax": "/role/list",
 	        "columns": [
 	            { "data": "NAME",},
@@ -23,12 +13,10 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn'], functio
 	            { "data": null,
 	            	"width": "20%",
 	            	"render": function ( data, type, full, meta ) {
-	            		
 						var role_update_permission = Role.UpdatePermission;
 						var role_del_permission = Role.DelPermission;
-						
+
 						var str="";
-									
 						if(role_update_permission){
 							str += "<nobr><a class='btn  btn-primary btn-sm' href='/role/ClickRole?id="+full.ID+"' target='_blank'>"
 								+ "<i class='fa fa-edit fa-fw'></i> "
@@ -42,19 +30,14 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn'], functio
 								+ "</a>";
 						}
 						return str +="</nobr>";
-						
-                   
                   }
 	        	}
-	            
 	        ]
-				
 			});
 		$("#createBtn").click(function(){
 			document.title=document.title.substring(6, 11);
 			$("#roleList").hide();
 			$("#addRole").show();
-		
 		});	
 	    /*$("#saveBtn").click(function(){
 	    	$("#roleList").show();

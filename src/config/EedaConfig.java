@@ -180,7 +180,7 @@ public class EedaConfig extends JFinalConfig {
         //register loginUser
 //        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
         me.add("/reset",controllers.profile.ResetPassWordController.class,contentPath);
-//        me.add("/role", controllers.profile.RoleController.class, contentPath);
+        me.add("/role", controllers.profile.RoleController.class, contentPath);
         me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
         me.add("/customer", controllers.profile.CustomerController.class, contentPath);
         me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);
