@@ -1,5 +1,51 @@
 define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) {
+    window.calcCurrency =  function (){
+        var chargeRMB = $('[name=chargeRMB]').text().replace('RMB','');
+        var costRMB = $('[name=costRMB]').text().replace('RMB','');
+        var profitRMB = parseFloat(chargeRMB)-parseFloat(costRMB);
+           if(profitRMB>=0){
+              $('[name=profitRMB]').text(profitRMB+"RMB");
+           }else if(profitRMB<0){
+              $('[name=profitRMB]').html("<span style='color:red'>"+profitRMB+"RMB</span>");
+           } else{
+              $('[name=profitRMB]').text(0+"RMB");
+           }
+
+        var chargeUSD = $('[name=chargeUSD]').text().replace('RMB','');
+        var costUSD = $('[name=costUSD]').text().replace('RMB','');
+        var profitUSD = parseFloat(chargeUSD)-parseFloat(costUSD);
+           if(profitUSD>=0){
+              $('[name=profitUSD]').text(profitUSD+"USD");
+           }else if(profitUSD<0){
+              $('[name=profitUSD]').html("<span style='color:red'>"+profitUSD+"USD</span>");
+           } else{
+              $('[name=profitUSD]').text(0+"USD");
+           }
+
+        //人民币利润汇总字段
+        var profitTotalCharge = $('[name=profitTotalCharge]').text();
+        if(profitTotalCharge ==''&&isNaN(profitTotalCharge)){
+            profitTotalCharge=0;
+            $('[name=profitTotalCharge]').text(profitTotalCharge);
+        }
+        var profitTotalCost = $('[name=profitTotalCost]').text();
+        if(profitTotalCost ==''&&isNaN(profitTotalCost)){  
+              profitTotalCost = 0;
+              $('[name=profitTotalCost]').text(profitTotalCost);
+          }
+
+        var profitTotalRMB = parseFloat(profitTotalCharge)-parseFloat(profitTotalCost);
+        if(profitTotalRMB>=0){
+        $('[name=profitTotalRMB]').text(profitTotalRMB+"RMB");
+        }else if(profitTotalRMB<0){
+            $('[name=profitTotalRMB]').html("<span style='color:red'>"+profitTotalRMB+"RMB</span>");
+        } else{
+            $('[name=profitTotalRMB]').text(0+"RMB");
+        }
+    };
+
 $(document).ready(function() {
+    
 
 	var deletedTableIds=[];
 	
@@ -404,50 +450,7 @@ $(document).ready(function() {
 	    calcCurrency();
     }
     
-    window.calcCurrency =  function (){
-		var chargeRMB = $('[name=chargeRMB]').text().replace('RMB','');
-		var costRMB = $('[name=costRMB]').text().replace('RMB','');
-	    var profitRMB = parseFloat(chargeRMB)-parseFloat(costRMB);
-	       if(profitRMB>=0){
-	          $('[name=profitRMB]').text(profitRMB+"RMB");
-	       }else if(profitRMB<0){
-	    	  $('[name=profitRMB]').html("<span style='color:red'>"+profitRMB+"RMB</span>");
-	       } else{
-	    	  $('[name=profitRMB]').text(0+"RMB");
-	       }
-
-		var chargeUSD = $('[name=chargeUSD]').text().replace('RMB','');
-		var costUSD = $('[name=costUSD]').text().replace('RMB','');
-		var profitUSD = parseFloat(chargeUSD)-parseFloat(costUSD);
-	       if(profitUSD>=0){
-	          $('[name=profitUSD]').text(profitUSD+"USD");
-	       }else if(profitUSD<0){
-	    	  $('[name=profitUSD]').html("<span style='color:red'>"+profitUSD+"USD</span>");
-	       } else{
-	    	  $('[name=profitUSD]').text(0+"USD");
-	       }
-
-		//人民币利润汇总字段
-		var profitTotalCharge = $('[name=profitTotalCharge]').text();
-	    if(profitTotalCharge ==''&&isNaN(profitTotalCharge)){
-	    	profitTotalCharge=0;
-	        $('[name=profitTotalCharge]').text(profitTotalCharge);
-	    }
-	    var profitTotalCost = $('[name=profitTotalCost]').text();
-	    if(profitTotalCost ==''&&isNaN(profitTotalCost)){  
-	    	  profitTotalCost = 0;
-	          $('[name=profitTotalCost]').text(profitTotalCost);
-	      }
-
-	    var profitTotalRMB = parseFloat(profitTotalCharge)-parseFloat(profitTotalCost);
-	    if(profitTotalRMB>=0){
-	    $('[name=profitTotalRMB]').text(profitTotalRMB+"RMB");
-	    }else if(profitTotalRMB<0){
-	    	$('[name=profitTotalRMB]').html("<span style='color:red'>"+profitTotalRMB+"RMB</span>");
-	    } else{
-	    	$('[name=profitTotalRMB]').text(0+"RMB");
-	    }
-	}
+    
     
     getTotalCharge();
 	     
