@@ -1,0 +1,147 @@
+<div id='partyModal' class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">新增联系人</h4>
+      </div>
+      <div class="modal-body">
+            <form id = "partyForm">
+                <div class="form-group">  <!--  form row  -->
+                    <div class="row">
+                        <div class="col-lg-4"><!--  三列排版  -->
+                            <%include("/eeda/component/form/inputSelectArea.html", 
+                                {   id:'shipper', 
+                                    label:'发货人Shipper', 
+                                    display_value:air.shipperAbbr!'',
+                                    value:air.shipper!'',
+                                    textarea_value:air.shipper_info!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4"><!--  三列排版  -->
+                            <%include("/eeda/component/form/inputSelectArea.html", 
+                                {   id:'consignee', 
+                                    label:'收货人Consignee', 
+                                    display_value:air.consigneeAbbr!'',
+                                    value:air.consignee!'',
+                                    textarea_value:air.consignee_info!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputSelectArea.html", 
+                                {
+                                    id:'notify_party', 
+                                    label:'通知人Notify Party', 
+                                    display_value:air.notify_partyAbbr!'',
+                                    value:air.notify_party!'',
+                                    textarea_value:air.notify_party_info!''
+                                }){} %>
+                       </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputPartyField.html", 
+                                {   id:'booking_agent', 
+                                    label:'订舱代理', 
+                                    type:'booking_agent',
+                                    value:air.booking_agent!'',
+                                    display_value:air.booking_agent_name!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/selectField.html", 
+                                {   id:'trans_clause', 
+                                    label:'运输条款', 
+                                    value:air.trans_clause!'',
+                                    value_list:[
+                                        {code:'CFS-CFS', value:'CFS-CFS'},
+                                        {code:'CFS-DOOR', value:'CFS-DOOR'}, 
+                                        {code:'CY-CY', value:'CY-CY'},
+                                        {code:'CY-DOOR', value:'CY-DOOR'},
+                                        {code:'DOOR-DOOR', value:'DOOR-DOOR'},
+                                        {code:'DOOR-CFS', value:'DOOR-CFS'},
+                                        {code:'DOOR-CY', value:'DOOR-CY'}
+                                    ]
+                                }){}%>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'hawb_no', 
+                                    label:'HAWB号码', 
+                                    value:air.hawb_no!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'mawb_no', 
+                                    label:'MAWB号码', 
+                                    value:air.mawb_no!''
+                                }){}%>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'air_gross_weight', 
+                                    label:'毛重(KG)', 
+                                    value:air.gross_weight!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'air_net_weight', 
+                                    label:'净重(KG)', 
+                                    value:air.net_weight!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'air_volume', 
+                                    label:'体积(CBM)', 
+                                    value:air.volume!''
+                                }){}%>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputArea.html", 
+                                {   id:'shipping_mark', 
+                                    label:'唛头', 
+                                    value:air.shipping_mark!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputArea.html", 
+                                {   id:'goods_mark', 
+                                    label:'货物描述', 
+                                    value:air.goods_mark!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputArea.html", 
+                                {   id:'booking_mark', 
+                                    label:'booking备注', 
+                                    value:air.booking_mark!''
+                                }){}%>
+                        </div>
+                    </div>
+            </div><!-- /.row -->
+            <div class="form-group" id="airPDF">
+                 <input id="printAirBooking" type="button" class="btn btn-success" value="生成booking PDF"><br><br>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+        <button type="button" class="btn btn-primary">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
