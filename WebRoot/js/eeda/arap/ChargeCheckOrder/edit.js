@@ -38,7 +38,7 @@ $(document).ready(function() {
         $(this).attr('disabled', true);
 
         var order = buildOrder();
-        order.have_invoice = $('[name="invoiceType"]:checked').val();
+        order.have_invoice = $('input[type="radio"]:checked').val();
         order.id = $('#order_id').val();
         order.item_list = itemOrder.buildItemDetail();
         
@@ -54,6 +54,7 @@ $(document).ready(function() {
                 eeda.contactUrl("edit?id",order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $('#saveBtn').attr('disabled', false);
+                $('#confrimBtn').attr('disabled', false);
                 
                 //异步刷新明细表
                 itemOrder.refleshTable(order.ID);
@@ -67,6 +68,8 @@ $(document).ready(function() {
           });
     });  
  
+
+    
     //按钮控制
     var order_id = $("#order_id").val();
     var status = $("#status").val()
@@ -75,20 +78,22 @@ $(document).ready(function() {
     }else{
     	if(status=='新建'){
     		$('#saveBtn').attr('disabled', false);
-    		$('#confirmBtn').attr('disabled', false);
+    		$('#confrimBtn').attr('disabled', false);
     	}
     }
     
-  
-    $('#confirmBtn').click(function(){
+    //确认单据
+    $('#confrimBtn').click(function(){
         	$(this).attr('disabled', true);
         	var id = $("#order_id").val();
         	 $.post('/chargeCheckOrder/confirm', {id:id}, function(data){
         		 if(data){
+        			 $('#saveBtn').attr('disabled', true);
 	    			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
         		 }
 	         },'json').fail(function() {
 	        	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+	        	 $(this).attr('disabled', false);
 	           });
         })
         

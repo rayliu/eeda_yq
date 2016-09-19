@@ -264,7 +264,6 @@ public class ChargeCheckOrderController extends Controller {
 				+ " group by joa.order_id";
 		Record rec =Db.findFirst(sql);
 
-		rec.set("idsArray", ids);
 		rec.set("address", rec.get("address"));
 		rec.set("customer", rec.get("contact_person"));
 		rec.set("phone", rec.get("phone"));
