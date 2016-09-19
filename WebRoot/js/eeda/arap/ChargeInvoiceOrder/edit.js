@@ -10,7 +10,7 @@ $(document).ready(function() {
     //构造主表json
     var buildOrder = function(){
     	var item = {};
-    	var orderForm = $('#orderForm input,select,textarea');
+    	var orderForm = $('#orderForm input');
     	for(var i = 0; i < orderForm.length; i++){
     		var name = orderForm[i].id;
         	var value =orderForm[i].value;
@@ -38,7 +38,6 @@ $(document).ready(function() {
         $(this).attr('disabled', true);
 
         var order = buildOrder();
-        order.id = $('#order_id').val();
         order.item_list = itemOrder.buildItemDetail();
         
         //异步向后台提交数据
@@ -71,14 +70,14 @@ $(document).ready(function() {
     });  
  
     //按钮控制
-    var order_id = $("#order_id").val();
-    var status = $("#status").val()
+    var order_id = $("#id").val();
+    var status = $("#status").val();
     if(order_id==""){
     	$('#saveBtn').attr('disabled', false);
     }else{
     	if(status=='新建'){
     		$('#saveBtn').attr('disabled', false);
-    		$('#confirmBtn').attr('disabled', false);
+    		$('#confrimBtn').attr('disabled', false);
     	}
     }
 });
