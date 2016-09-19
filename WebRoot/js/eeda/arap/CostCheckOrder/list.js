@@ -214,14 +214,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		$('#createBtn').click(function(){
 			$('#createBtn').attr('disabled',true);
         	var itemIds=[];
-        	$('#eeda_table input[type="checkbox"]').each(function(){ 
-        		if(this.checked==true){
+        	$('#eeda_table input[type="checkbox"]:checked').each(function(){ 
         			var itemId = $(this).parent().parent().attr('id');
         			itemIds.push(itemId);
-        		}
         	});
-        	var totalAmount = parseFloat($("#totalAmountSpan").text());
-        	location.href ="/costCheckOrder/create?totalAmount="+totalAmount+"&itemIds="+itemIds;
+        	var total = parseFloat($('#totalAmountSpan').text());
+        	$('#itemId').val(itemIds);
+        	$('#totalAmount').val(total);
+        	$('#createForm').submit();
         })
       
   });

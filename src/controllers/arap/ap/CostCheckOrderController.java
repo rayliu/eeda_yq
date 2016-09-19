@@ -46,7 +46,7 @@ public class CostCheckOrderController extends Controller {
 	
 	public void create(){
 		
-		String ids = getPara("itemIds");//jobOrder arap ids
+		String ids = getPara("itemId");//jobOrder arap ids
 		String totalAmount = getPara("totalAmount");
 		
 		String strAry[] = ids.split(",");
