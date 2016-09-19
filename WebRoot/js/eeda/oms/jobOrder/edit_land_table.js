@@ -76,23 +76,13 @@ $(document).ready(function() {
     	eeda.bindTableField('TRANSPORT_COMPANY','/serviceProvider/searchTruckCompany','truck');
     };
     //------------事件处理
-    var cargoTable = $('#land_table').DataTable({
-        "processing": true,
-        "searching": false,
-        "paging": false,
-        "info": false,
-        "scrollX":  true,
-        "autoWidth": false,
-        "language": {
-            "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
-        },
-        "createdRow": function ( row, data, index ) {
-            $(row).attr('id', data.ID);
-        },
-        "drawCallback": function( settings ) {
-	        bindFieldEvent();
-	    },
-        "columns": [
+	 var cargoTable = eeda.dt({
+	        id: 'land_table',
+	        autoWidth: false,
+	        drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
+	        	bindFieldEvent();
+	        },
+	        columns:[
 			{ "data":"ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
 			    	if(data)

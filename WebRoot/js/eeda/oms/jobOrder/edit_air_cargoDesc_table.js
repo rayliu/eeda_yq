@@ -58,20 +58,10 @@ $(document).ready(function() {
     
     
     //------------事件处理
-    var cargoDesc_table = $('#cargoDesc_table').DataTable({
-        "processing": true,
-        "searching": false,
-        "paging": false,
-        "info": false,
-        "scrollX":  true,
-        "autoWidth": false,
-        "language": {
-            "url": "/yh/js/plugins/datatables-1.10.9/i18n/Chinese.json"
-        },
-        "createdRow": function ( row, data, index ) {
-            $(row).attr('id', data.ID);
-        },
-        "columns": [
+	var cargoDesc_table = eeda.dt({
+	    id: 'cargoDesc_table',
+	    autoWidth: false,
+	    columns:[
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
                 	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
@@ -81,42 +71,42 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="long" value="'+data+'" class="form-control" style="width:100px"/>';
+                    return '<input type="text" name="long" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
             { "data": "WIDE", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="wide" value="'+data+'" class="form-control" style="width:100px"/>';
+                    return '<input type="text" name="wide" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
             { "data": "HIGH", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="high" value="'+data+'" class="form-control" style="width:100px"/>';
+                    return '<input type="text" name="high" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
             { "data": "GROSS_WEIGHT", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="number" name="gross_weight" value="'+data+'" class="form-control" style="width:100px"/>';
+            		return '<input type="text" name="gross_weight" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
             { "data": "AMOUNT", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="amount" value="'+data+'" class="form-control" style="width:100px"/>';
+                    return '<input type="text" name="amount" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
             { "data": "VOLUME", "width": "100px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="number" name="volume" value="'+data+'" class="form-control" style="width:120px" disabled/>';
+                    return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:120px" disabled/>';
                 }
             }
         ]

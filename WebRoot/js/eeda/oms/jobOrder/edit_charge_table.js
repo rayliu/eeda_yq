@@ -70,8 +70,8 @@ $(document).ready(function() {
         eeda.bindTableField('CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
 
+    
     //------------事件处理
-     var profitTotalCharge = 0;
     var chargeTable = eeda.dt({
         id: 'charge_table',
         autoWidth: false,
@@ -189,11 +189,11 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
                             data='';
-                        return '<input type="number" name="amount" style="width:80px" value="'+data+'" class="form-control " disabled/>';
+                        return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control " disabled/>';
                      }else{
 	                    if(!data)
 	                        data='';
-	                    return '<input type="number" name="amount" style="width:80px" value="'+data+'" class="form-control"/>';
+	                    return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control"/>';
 	                }
                 }
             },
@@ -266,9 +266,7 @@ $(document).ready(function() {
                     }else{
 	                    if(!data)
 	                        data='';
-	//                    totalCharge += parseFloat(data);
-	                                      
-	                    return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" disabled/>';
+	                    return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" />';
 	                }
                 }
             },
@@ -277,7 +275,6 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
                         if(!data)
                             data='';
-                        profitTotalCost += parseFloat(data);
                         return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" disabled />';
                     } else{
 	                    if(!data)
@@ -291,7 +288,6 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
                         if(!data)
                             data='';
-                        profitTotalCost += parseFloat(data);
                         return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" disabled />';
                     } else{
 	                    if(!data)

@@ -36,18 +36,11 @@ $(document).ready(function() {
     };
     
     //------------事件处理
-    var itemTable = $("#"+tableName).DataTable({
-        "processing": true,
-        "searching": false,
-        "paging": false,
-        "autoWidth": true,
-        "language": {
-        	"url": "/js/lib/datatables/i18n/Chinese.json"
-        },
-        "createdRow": function ( row, data, index ) {
-            $(row).attr('id', data.ID);
-        },
-        "columns": [
+        var itemTable = eeda.dt({
+            id: 'eeda-table',
+            paging: true,
+            serverSide: true, //不打开会出现排序不对
+            columns:[
             { "data": "ID","visible":false},
             { "data": "ORDER_NO"},
             { "data": "CREATE_TIME"},

@@ -71,8 +71,7 @@ $(document).ready(function() {
         eeda.bindTableField('UNIT_ID','/serviceProvider/searchUnit','');
         eeda.bindTableField('CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
-    //初始化利润总额
-    var profitTotalCost = 0;
+    
     var costTable = eeda.dt({
         id: 'cost_table',
         autoWidth: false,
@@ -190,11 +189,11 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
                             data='';
-                        return '<input type="number" name="amount" style="width:80px" value="'+data+'" class="form-control " disabled/>';
+                        return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control " disabled/>';
                      }else{
 	                    if(!data)
 	                        data='';
-	                    return '<input type="number" name="amount" style="width:80px" value="'+data+'" class="form-control "/>';
+	                    return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control "/>';
 	                }
               }
             },
@@ -260,11 +259,15 @@ $(document).ready(function() {
             },
             { "data": "TOTAL_AMOUNT", "width": "60px",
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-//                    totalCost += parseFloat(data);
-                   
-                    return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" disabled/>';
+                	if(full.AUDIT_FLAG == 'Y'){
+	                    if(!data)
+	                        data='';
+	                    return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" disabled/>';
+                	}else{
+                		if(!data)
+	                        data='';
+	                    return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" />';
+                	}
                 }
             },
             { "data": "EXCHANGE_RATE", "width": "60px",
@@ -282,17 +285,15 @@ $(document).ready(function() {
             },
             { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px",
                 "render": function ( data, type, full, meta ) {
-                if(full.AUDIT_FLAG == 'Y'){
-                    if(!data)
-                        data='';
-                    profitTotalCost += parseFloat(data);
-                    return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" disabled />';
-                } else{
-                  if(!data)
-                      data='';
-                  profitTotalCost += parseFloat(data);
-                  return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control"  />';
-                }
+	                if(full.AUDIT_FLAG == 'Y'){
+		                    if(!data)
+		                        data='';
+		                    return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" disabled />';
+	                }else{
+		                  if(!data)
+		                      data='';
+		                  return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control"  />';
+	                }
               }
             },
             { "data": "REMARK","width": "180px",
@@ -307,19 +308,22 @@ $(document).ready(function() {
 	                   return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" />';
 	                }
                }
-            }, { "data": "SP_NAME", "visible": false,
+            }, 
+            { "data": "SP_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return data;
                 }
-            }, { "data": "COST_NAME", "visible": false,
+            }, 
+            { "data": "COST_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return data;
                 }
-            },{ "data": "UNIT_NAME", "visible": false,
+            },
+            { "data": "UNIT_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
