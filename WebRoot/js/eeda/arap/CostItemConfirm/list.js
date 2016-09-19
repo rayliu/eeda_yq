@@ -17,7 +17,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				    		return '<input type="checkbox" disabled>';
 				    }
 			},
-            { "data": "ORDER_NO", "width": "100px"},
+			{ "data": "ORDER_NO", "width": "100px",
+		    	  "render": function ( data, type, full, meta ) {
+                    return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+                }
+			},
             { "data": "CREATE_STAMP", "width": "100px"},
             { "data": "AUDIT_FLAG", "width": "60px",
             	"render": function ( data, type, full, meta ) {

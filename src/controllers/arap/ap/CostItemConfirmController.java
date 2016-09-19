@@ -40,7 +40,7 @@ public class CostItemConfirmController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = "select * from( "
-        		+ " select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
+        		+ " select joa.*,jo.id jobid,jo.order_no,jo.create_stamp,jo.customer_id,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
 				+ " from job_order_arap joa "
 				+ " left join job_order jo on jo.id=joa.order_id "
 				+ " left join party p on p.id=jo.customer_id "

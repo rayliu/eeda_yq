@@ -21,104 +21,108 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       				    	}
       				    }
       			},
-            { "data": "ORDER_NO", "width": "100px"},
-            { "data": "CREATE_STAMP", "width": "100px"},
-            { "data": "BILL_FLAG", "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                		if(data){
-      	            		if(data != 'Y')
-      				    		    return '未创建对账单';
-      				    	   else 
-      				    		  return '已创建对账单';
-                  	}else{
-                			return '';
-                		}
-    			       }
-            },
-            { "data": null, "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                    return "";
-                }
-            },
-            { "data": "TYPE", "width": "60px"},
-            { "data": "CUSTOMER_NAME", "width": "100px"},
-            { "data": "SP_NAME", "width": "100px","sClass":"SP_NAME"},
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
-            { "data": "CURRENCY_NAME", "width": "60px",
-            	"render": function ( data, type, full, meta ) {
-	            	if(data == 'USD')
-	            		return full.TOTAL_AMOUNT;
-	            	else 
-	            		return '';
-            	}
-            },
-            { "data": "CURRENCY_NAME", "width": "60px",
-            	"render": function ( data, type, full, meta ) {
-	            	if(data == 'HKD')
-	            		return full.TOTAL_AMOUNT;
-	            	else 
-	            		return '';
-            	}
-            },
-            { "data": "CURRENCY_NAME", "width": "60px",
-            	"render": function ( data, type, full, meta ) {
-	            	if(data == 'JPY')
-	            		return full.TOTAL_AMOUNT;
-	            	else 
-	            		return '';
-            	}
-            },
-            { "data": "FND", "width": "60px",
-            	"render": function ( data, type, full, meta ) {
-            		if(data)
-			    		     return data;
-            		else
-			    		     return full.DESTINATION;
-            	}
-            },
-            { "data": "VOLUME", "width": "60px"},
-            { "data": "CONTAINER_AMOUNT","width": "60px",
-            	"render": function ( data, type, full, meta ) {
-	            	if(data){
-	            		var dataArr = data.split(",");
-	            		var a = 0;
-	            		var b = 0;
-	            		var c = 0;
-	            		var dataStr = "";
-	            		for(var i=0;i<dataArr.length;i++){
-	            			if(dataArr[i]=="20GP"){
-	            				a++;
-	            			}
-	            			if(dataArr[i]=="40GP"){
-	            				b++;
-	            			}
-	            			if(dataArr[i]=="45GP"){
-	            				c++;
-	            			}
-	            		}
-	            		if(a>0){
-	            			dataStr+="20GPx"+a+";"
-	            		}
-	            		if(b>0){
-	            			dataStr+="40GPx"+b+";"
-	            		}
-	            		if(c>0){
-	            			dataStr+="45GPx"+c+";"
-	            		}
-	            		return dataStr;
-	            	}else{
-	            		return '';
+      			{ "data": "ORDER_NO", "width": "100px",
+			    	  "render": function ( data, type, full, meta ) {
+	                      return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+	                  }
+	            },
+	            { "data": "CREATE_STAMP", "width": "100px"},
+	            { "data": "BILL_FLAG", "width": "60px",
+	                "render": function ( data, type, full, meta ) {
+	                		if(data){
+	      	            		if(data != 'Y')
+	      				    		    return '未创建对账单';
+	      				    	   else 
+	      				    		  return '已创建对账单';
+	                  	}else{
+	                			return '';
+	                		}
+	    			       }
+	            },
+	            { "data": null, "width": "60px",
+	                "render": function ( data, type, full, meta ) {
+	                    return "";
+	                }
+	            },
+	            { "data": "TYPE", "width": "60px"},
+	            { "data": "CUSTOMER_NAME", "width": "100px"},
+	            { "data": "SP_NAME", "width": "100px","sClass":"SP_NAME"},
+	            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
+	            { "data": "CURRENCY_NAME", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+		            	if(data == 'USD')
+		            		return full.TOTAL_AMOUNT;
+		            	else 
+		            		return '';
 	            	}
-            	}
-            },
-            { "data": "NET_WEIGHT", "width": "60px"},
-            { "data": "REF_NO", "width": "60px"},
-            { "data": "MBL_NO", "width": "60px"},
-            { "data": "HBL_NO", "width": "60px"},
-            { "data": "CONTAINER_NO", "width": "100px"},
-            { "data": "TRUCK_TYPE", "width": "100px"},
-          ]
-      });
+	            },
+	            { "data": "CURRENCY_NAME", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+		            	if(data == 'HKD')
+		            		return full.TOTAL_AMOUNT;
+		            	else 
+		            		return '';
+	            	}
+	            },
+	            { "data": "CURRENCY_NAME", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+		            	if(data == 'JPY')
+		            		return full.TOTAL_AMOUNT;
+		            	else 
+		            		return '';
+	            	}
+	            },
+	            { "data": "FND", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(data)
+				    		     return data;
+	            		else
+				    		     return full.DESTINATION;
+	            	}
+	            },
+	            { "data": "VOLUME", "width": "60px"},
+	            { "data": "CONTAINER_AMOUNT","width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+		            	if(data){
+		            		var dataArr = data.split(",");
+		            		var a = 0;
+		            		var b = 0;
+		            		var c = 0;
+		            		var dataStr = "";
+		            		for(var i=0;i<dataArr.length;i++){
+		            			if(dataArr[i]=="20GP"){
+		            				a++;
+		            			}
+		            			if(dataArr[i]=="40GP"){
+		            				b++;
+		            			}
+		            			if(dataArr[i]=="45GP"){
+		            				c++;
+		            			}
+		            		}
+		            		if(a>0){
+		            			dataStr+="20GPx"+a+";"
+		            		}
+		            		if(b>0){
+		            			dataStr+="40GPx"+b+";"
+		            		}
+		            		if(c>0){
+		            			dataStr+="45GPx"+c+";"
+		            		}
+		            		return dataStr;
+		            	}else{
+		            		return '';
+		            	}
+	            	}
+	            },
+	            { "data": "NET_WEIGHT", "width": "60px"},
+	            { "data": "REF_NO", "width": "60px"},
+	            { "data": "MBL_NO", "width": "60px"},
+	            { "data": "HBL_NO", "width": "60px"},
+	            { "data": "CONTAINER_NO", "width": "100px"},
+	            { "data": "TRUCK_TYPE", "width": "100px"},
+	          ]
+	      });
 
       
       $('#resetBtn').click(function(e){
