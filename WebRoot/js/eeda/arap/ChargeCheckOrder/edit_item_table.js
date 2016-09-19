@@ -18,7 +18,6 @@ $(document).ready(function() {
             if(!id){
                 id='';
             }
-            
             var item={}
             item.id = id;
             for(var i = 1; i < row.childNodes.length; i++){

@@ -4,7 +4,7 @@ $(document).ready(function() {
 
 	document.title = '创建应收对账单 | ' + document.title;
 
-    $('#menu_order').addClass('active').find('ul').addClass('in');
+    $('#menu_charge').addClass('active').find('ul').addClass('in');
     
     
     //构造主表json
