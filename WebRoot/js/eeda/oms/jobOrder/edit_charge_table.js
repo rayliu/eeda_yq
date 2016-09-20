@@ -452,7 +452,7 @@ $(document).ready(function() {
     
     
     
-    getTotalCharge();
+    //getTotalCharge();
 	     
     
   });
