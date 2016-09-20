@@ -7,136 +7,149 @@
       </div>
       <div class="modal-body">
             <form id = "partyForm">
-                <div class="form-group">  <!--  form row  -->
+                <div class="form-group"> 
+                	<div class="row">
+							<div align="center">
+		                         <label class="label-margin">公司类型</label>
+		                         <label class="radio-inline">
+		                             <input type="radio" name="comType" value="SP" >供应商
+		                         </label>
+		                         <label class="radio-inline">
+		                             <input type="radio" name="comType"  value="CUSTOMER">客户
+		                         </label>
+		                     </div>
+					</div>
+					<hr/>
                     <div class="row">
-                        <div class="col-lg-4"><!--  三列排版  -->
-                            <%include("/eeda/component/form/inputSelectArea.html", 
-                                {   id:'shipper', 
-                                    label:'发货人Shipper', 
-                                    display_value:air.shipperAbbr!'',
-                                    value:air.shipper!'',
-                                    textarea_value:air.shipper_info!''
+                    	<div class="col-lg-6">
+	                       <%include("/eeda/component/form/inputField.html", 
+	                                {   id:'company_name', 
+	                                    label:'公司名称',
+	                                    required:'required'
+	                                }){}%>
+                        </div>
+                        <div class="col-lg-6"> 
+                       		<%include("/eeda/component/form/inputField.html", 
+                                {   id:'abbr', 
+                                    label:'公司简称',
+                                    required:'required'
                                 }){}%>
                         </div>
-                        <div class="col-lg-4"><!--  三列排版  -->
-                            <%include("/eeda/component/form/inputSelectArea.html", 
-                                {   id:'consignee', 
-                                    label:'收货人Consignee', 
-                                    display_value:air.consigneeAbbr!'',
-                                    value:air.consignee!'',
-                                    textarea_value:air.consignee_info!''
+                        <div class="col-lg-6"> 
+                       		<%include("/eeda/component/form/inputField.html", 
+                                {   id:'phone', 
+                                    label:'联系电话',
+                                    required:'required'
                                 }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputSelectArea.html", 
-                                {
-                                    id:'notify_party', 
-                                    label:'通知人Notify Party', 
-                                    display_value:air.notify_partyAbbr!'',
-                                    value:air.notify_party!'',
-                                    textarea_value:air.notify_party_info!''
-                                }){} %>
-                       </div>
+                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputPartyField.html", 
-                                {   id:'booking_agent', 
-                                    label:'订舱代理', 
-                                    type:'booking_agent',
-                                    value:air.booking_agent!'',
-                                    display_value:air.booking_agent_name!''
+                    	<div class="col-lg-6"> 
+                       		<%include("/eeda/component/form/inputField.html", 
+                                {   id:'contact_person', 
+                                    label:'联系人',
+                                    required:'required'
                                 }){}%>
                         </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/selectField.html", 
-                                {   id:'trans_clause', 
-                                    label:'运输条款', 
-                                    value:air.trans_clause!'',
-                                    value_list:[
-                                        {code:'CFS-CFS', value:'CFS-CFS'},
-                                        {code:'CFS-DOOR', value:'CFS-DOOR'}, 
-                                        {code:'CY-CY', value:'CY-CY'},
-                                        {code:'CY-DOOR', value:'CY-DOOR'},
-                                        {code:'DOOR-DOOR', value:'DOOR-DOOR'},
-                                        {code:'DOOR-CFS', value:'DOOR-CFS'},
-                                        {code:'DOOR-CY', value:'DOOR-CY'}
-                                    ]
+                        <div class="col-lg-6"> 
+                       		<%include("/eeda/component/form/inputField.html", 
+                                {   id:'address', 
+                                    label:'联系地址',
+                                    required:'required'
                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'hawb_no', 
-                                    label:'HAWB号码', 
-                                    value:air.hawb_no!''
+                    	<div class="col-lg-6"> 
+                       		<%include("/eeda/component/form/inputField.html", 
+                                {   id:'contact_person_eng', 
+                                    label:'联系人（英）',
+                                    required:'required'
                                 }){}%>
                         </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'mawb_no', 
-                                    label:'MAWB号码', 
-                                    value:air.mawb_no!''
+                        <div class="col-lg-6"> 
+                       		<%include("/eeda/component/form/inputField.html", 
+                                {   id:'address_eng', 
+                                    label:'联系地址（英）',
+                                    required:'required'
                                 }){}%>
-                        </div>
+                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'air_gross_weight', 
-                                    label:'毛重(KG)', 
-                                    value:air.gross_weight!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'air_net_weight', 
-                                    label:'净重(KG)', 
-                                    value:air.net_weight!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'air_volume', 
-                                    label:'体积(CBM)', 
-                                    value:air.volume!''
-                                }){}%>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputArea.html", 
-                                {   id:'shipping_mark', 
-                                    label:'唛头', 
-                                    value:air.shipping_mark!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputArea.html", 
-                                {   id:'goods_mark', 
-                                    label:'货物描述', 
-                                    value:air.goods_mark!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputArea.html", 
-                                {   id:'booking_mark', 
-                                    label:'booking备注', 
-                                    value:air.booking_mark!''
-                                }){}%>
-                        </div>
-                    </div>
-            </div><!-- /.row -->
-            <div class="form-group" id="airPDF">
-                 <input id="printAirBooking" type="button" class="btn btn-success" value="生成booking PDF"><br><br>
-            </div>
-        </form>
+                    <div class="row" id="show_type" style="display:none">
+                     	 <div class=col-lg-12>
+                         	<label>供应商类型</label><hr/>
+                         </div>
+                         <div class="col-lg-6"> 
+                         <div class="checkbox">
+                             <label>
+                                 <input id="sp_type_truck" name="sp_type_truck" type="checkbox" value="truck" >运输公司
+                             </label>
+                         </div>
+                         <div class="checkbox">
+                             <label>
+                                 <input id="sp_type_carrier" name="sp_type_carrier" type="checkbox" value="carrier" style="margin-top: 0px;">船公司
+                             </label>
+                         </div>
+                         <div class="checkbox">
+                             <label>
+                                 <input id="sp_type_air" name="sp_type_air" type="checkbox" value="air" style="margin-top: 0px;">航空公司
+                             </label>
+                         </div>
+                         <div class="checkbox">
+                             <label>
+                                 <input id="sp_type_broker" name="sp_type_broker" type="checkbox" value="broker" style="margin-top: 0px;">报关行
+                             </label>
+                         </div>
+                         <div class="checkbox">
+                             <label>
+                                 <input id="sp_type_line" name="sp_type_line" type="checkbox" value="line" style="margin-top: 0px;">干线运输供应商
+                             </label>
+                         </div>
+                         <div class="checkbox">
+                             <label>
+                                 <input id="sp_type_delivery" name="sp_type_delivery" type="checkbox" value="delivery" style="margin-top: 0px;">配送供应商
+                             </label>
+                         </div>
+                         </div>
+                         <div class="col-lg-6"> 
+                         <div class="checkbox">
+                             <label>
+                                 <input id="sp_type_pickup" name="sp_type_pickup" type="checkbox" value="pickup" style="margin-top: 0px;">提货供应商
+                             </label>
+                         </div>
+                         <div class="checkbox">
+                             <label>
+                                 <input id="sp_type_personal" name="sp_type_personal" type="checkbox" value="personal" style="margin-top: 0px;">个人运输供应商
+                             </label>
+                         </div>
+                         <div class="checkbox">
+                             <label>
+                                 <input id="sp_type_head_car" name="sp_type_head_car" type="checkbox" value="head_car" style="margin-top: 0px;">头程船公司
+                             </label>
+                         </div>
+                         <div class="checkbox">
+                             <label>
+                                 <input id="sp_type_oversea_agent" name="sp_type_oversea_agent" type="checkbox" value="oversea_agent" style="margin-top: 0px;">海外代理
+                             </label>
+                         </div>
+                         <div class="checkbox">
+                             <label>
+                                 <input id="sp_type_booking_agent" name="sp_type_booking_agent" type="checkbox" value="booking_agent" style="margin-top: 0px;">订舱代理
+                             </label>
+                         </div>
+                         <div class="checkbox">
+                             <label>
+                                 <input id="sp_type_cargo_agent" name="sp_type_cargo_agent" type="checkbox" value="cargo_agent" style="margin-top: 0px;">货运代理
+                             </label>
+                         </div>
+                         </div>
+                     </div>
+            	</div>
+      		</form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
-        <button type="button" class="btn btn-primary">保存</button>
+        <button type="button" id="returnOrderBtn"  class="btn btn-default" data-dismiss="modal">返回</button>
+        <button type="button" id="savePartyBtn" class="btn btn-primary">保存</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

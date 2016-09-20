@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.ArapChargeItem;
+import models.ArapChargeOrder;
+import models.ParentOfficeModel;
 import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
@@ -47,11 +50,12 @@ import config.EedaConfig;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
+import controllers.util.ParentOffice;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
 public class JobOrderController extends Controller {
-
+	ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
 	private Logger logger = Logger.getLogger(JobOrderController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 	private Object type;
@@ -643,6 +647,30 @@ public class JobOrderController extends Controller {
         map.put("aaData", list);
 
         renderJson(map); 
+    }
+    
+    public void saveParty(){
+    	String jsonStr=getPara("params");
+       	String id = null;
+       	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+            
+        Party order = new Party();
+   		UserLogin user = LoginUserController.getLoginUser(this);
+   		
+   		if (true)  {
+   			//create 
+   			DbUtils.setModelValues(dto, order);
+   			
+   			//需后台处理的字段
+   			order.set("creator", user.getLong("id"));
+   			order.set("create_date", new Date());
+   			order.set("office_id", pom.getCurrentOfficeId());
+   			order.save();
+   			
+   			id = order.getLong("id").toString();
+   		}
+   		renderJson(order);
     }
    
    
