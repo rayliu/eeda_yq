@@ -39,21 +39,13 @@
                                     <input id="invoice_type_show" type="hidden" value="${invoiceApplication.bill_type!''}">
                                     <select id="invoice_type" class="form-control search-control invoice_type" name="invoice_type">
                                     <option value="wbill">无发票</option>
-                                    <option value="mbill">自开发票</option>
-                                    <option value="dbill">代开发票</option>
+                                    <option value="mbill">增值税普通发票</option>
+                                    <option value="dbill">增值税专用发票</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="search-label">开票单位</label>
+                                    <label class="search-label">发票号</label>
                                     <input type="text" class="form-control search-control billing_unit" id="billing_unit" name="billing_unit"  value="${invoiceApplication.billing_unit!''}">
-                                </div>
-                                <div class="form-group">
-                                    <label class="search-label">收款单位</label>
-                                    <input type="text" class="form-control search-control payee_unit" id="payee_unit" name="payee_unit"  value="${invoiceApplication.payee_unit!''}">
-                                </div>
-                                 <div class="form-group">
-                                    <label class="search-label">收款人</label>
-                                    <input type="text" class="form-control search-control payee_name" id="payee_name" name="payee_name"  value="${payee_name!''}${invoiceApplication.payee_name!''}">
                                 </div>
                             </div>
                             <div class="col-lg-4">

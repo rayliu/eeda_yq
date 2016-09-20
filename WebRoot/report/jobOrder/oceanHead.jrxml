@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHead" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="76"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -447,7 +447,7 @@ where jos.order_id=$P{order_id}]]>
 				<textFieldExpression><![CDATA[$F{closing_date}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="174" y="62" width="200" height="55" uuid="2822a4ec-e64c-4543-9a4d-2840063ece01"/>
+				<reportElement x="0" y="-14" width="200" height="55" uuid="2822a4ec-e64c-4543-9a4d-2840063ece01"/>
 				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="true">
