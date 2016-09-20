@@ -13,6 +13,7 @@ import models.ArapChargeItem;
 import models.ArapChargeOrder;
 import models.ParentOfficeModel;
 import models.Party;
+import models.UserCustomer;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
@@ -669,6 +670,10 @@ public class JobOrderController extends Controller {
    			order.save();
    			
    			id = order.getLong("id").toString();
+   			UserCustomer  customer = new UserCustomer();
+   			customer.set("customer_id", id);
+   			customer.set("user_name", user.getStr("user_name"));
+   			customer.save();
    		}
    		renderJson(order);
     }
