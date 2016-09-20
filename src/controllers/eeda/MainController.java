@@ -426,8 +426,4 @@ public class MainController extends Controller {
         renderJson(map);
     }
     
-    public void testGenNo(){
-        OrderNoGenerator.test();
-        renderText("done");
-    }
 }

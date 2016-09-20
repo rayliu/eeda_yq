@@ -55,6 +55,7 @@ import models.eeda.profile.Custom;
 import models.eeda.profile.FinItem;
 import models.eeda.profile.Module;
 import models.eeda.profile.ModuleRole;
+import models.eeda.profile.OrderNoSeq;
 import models.eeda.profile.Unit;
 import models.eeda.profile.Warehouse;
 import models.yh.profile.CustomizeField;
@@ -285,7 +286,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("product", Product.class);
         arp.addMapping("category", Category.class);
         arp.addMapping("location", Location.class);
-
+        arp.addMapping("order_no_seq", OrderNoSeq.class);
         //基本数据用户网点
         arp.addMapping("user_office", UserOffice.class);
         arp.addMapping("user_customer", UserCustomer.class);
