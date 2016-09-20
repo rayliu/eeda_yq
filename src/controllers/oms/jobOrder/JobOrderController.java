@@ -360,20 +360,20 @@ public class JobOrderController extends Controller {
     	if("shipment".equals(type)){
     		itemSql = "select jos.*,u.name unit_name from job_order_shipment_item jos"
     				+ " left join unit u on u.id=jos.unit_id"
-    				+ " where order_id=?";
+    				+ " where order_id=? order by jos.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("air".equals(type)){
     		itemSql = "select joa.*, pa.abbr air_company_name from job_order_air_item joa"
     		        + " left join party pa on pa.id=joa.air_company"
-    		        + " where order_id=?";
+    		        + " where order_id=? order by joa.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("cargoDesc".equals(type)){
-    		itemSql = "select * from job_order_air_cargodesc joac where order_id=?";
+    		itemSql = "select * from job_order_air_cargodesc where order_id=? order by id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("land".equals(type)){
     		itemSql = "select jol.*,p.abbr transport_company_name from job_order_land_item jol "
     				+ " left join party p on p.id=jol.transport_company"
-    				+ " where order_id=?";
+    				+ " where order_id=? order by jol.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
     		itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,u.name unit_name,c.name currency_name from job_order_arap jor "
@@ -381,7 +381,7 @@ public class JobOrderController extends Controller {
     		        + " left join fin_item f on f.id=jor.charge_id"
     		        + " left join unit u on u.id=jor.unit_id"
     		        + " left join currency c on c.id=jor.currency_id"
-    		        + " where order_id=? and order_type=?";
+    		        + " where order_id=? and order_type=? order by jor.id";
     		itemList = Db.find(itemSql, orderId,"charge");
     	}else if("cost".equals(type)){
 	    	itemSql = "select jor.*, pr.abbr sp_name, f.name cost_name,u.name unit_name,c.name currency_name from job_order_arap jor"
@@ -389,14 +389,14 @@ public class JobOrderController extends Controller {
 	    	        + " left join fin_item f on f.id=jor.charge_id"
 	    	        + " left join unit u on u.id=jor.unit_id"
     		        + " left join currency c on c.id=jor.currency_id"
-	    	        + " where order_id=? and order_type=?";
+	    	        + " where order_id=? and order_type=? order by jor.id";
 	    	itemList = Db.find(itemSql, orderId,"cost");
     	}else if("doc".equals(type)){
 	    	itemSql = "select jod.*,u.c_name from job_order_doc jod left join user_login u on jod.uploader=u.id "
-	    			+ " where order_id=? ";
+	    			+ " where order_id=? order by jod.id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("mail".equals(type)){
-	    	itemSql = "select * from job_order_sendMail where order_id=?";
+	    	itemSql = "select * from job_order_sendMail where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }
 		return itemList;

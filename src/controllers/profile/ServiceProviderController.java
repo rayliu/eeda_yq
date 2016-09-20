@@ -491,7 +491,7 @@ public class ServiceProviderController extends Controller {
         renderJson(recs);
     }
     
-    //查询结算公司下拉
+    //查询结算公司下拉,包括供应商和客户
     public void searchCompany(){
     	String input = getPara("input");
 		
@@ -500,9 +500,7 @@ public class ServiceProviderController extends Controller {
 		if (input !=null && input.trim().length() > 0) {
 		    spList = Db
 					.find(" select p.id,p.abbr name from party p, office o where o.id = p.office_id "
-					        + " and p.type = '"
-							+ Party.PARTY_TYPE_SERVICE_PROVIDER
-							+ "' and (p.company_name like '%"
+							+ " and (p.company_name like '%"
 							+ input
 							+ "%' or p.abbr like '%"
 							+ input
@@ -510,8 +508,7 @@ public class ServiceProviderController extends Controller {
 		} else {
 		    spList = Db
 					.find("select p.id,p.abbr name from party p, office o where o.id = p.office_id "
-					        + " and p.type = '"
-							+ Party.PARTY_TYPE_SERVICE_PROVIDER + "'  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?)", parentID, parentID);
+							+ " and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?)", parentID, parentID);
 		}
 		renderJson(spList);
     }
