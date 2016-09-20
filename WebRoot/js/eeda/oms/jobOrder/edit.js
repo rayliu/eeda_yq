@@ -25,15 +25,15 @@ $(document).ready(function() {
         $('#saveBtn').attr('disabled', true);
         
         //这张工作单的应收应付汇总存数据进数据库
-        var chargeRMB =$('#profit_table').find('[name=chargeRMB]').text().replace('RMB','');
-        var chargeUSD =$('#profit_table').find('[name=chargeUSD]').text().replace('USD','');
-        var profitTotalCharge =$('#profit_table').find('[name=profitTotalCharge]').text().replace('RMB','');
-        var costRMB =$('#profit_table').find('[name=costRMB]').text().replace('RMB','');
-        var costUSD =$('#profit_table').find('[name=costUSD]').text().replace('USD','');
-        var profitTotalCost =$('#profit_table').find('[name=profitTotalCost]').text().replace('RMB','');
-        var profitRMB =$('#profit_table').find('[name=profitRMB]').text().replace('RMB','');
-        var profitUSD =$('#profit_table').find('[name=profitUSD]').text().replace('USD','');
-        var profitTotalRMB =$('#profit_table').find('[name=profitTotalRMB]').text().replace('RMB','');
+        var chargeRMB =$('#profit_table').find('[name=chargeRMB]').text().replace('CNY ','');
+        var chargeUSD =$('#profit_table').find('[name=chargeUSD]').text().replace('USD ','');
+        var profitTotalCharge =$('#profit_table').find('[name=profitTotalCharge]').text().replace('CNY ','');
+        var costRMB =$('#profit_table').find('[name=costRMB]').text().replace('CNY ','');
+        var costUSD =$('#profit_table').find('[name=costUSD]').text().replace('USD ','');
+        var profitTotalCost =$('#profit_table').find('[name=profitTotalCost]').text().replace('CNY ','');
+        var profitRMB =$('#profit_table').find('[name=profitRMB]').text().replace('CNY ','');
+        var profitUSD =$('#profit_table').find('[name=profitUSD]').text().replace('USD ','');
+        var profitTotalRMB =$('#profit_table').find('[name=profitTotalRMB]').text().replace('CNY ','');
         
         
         //运输方式checkbox遍历取值
@@ -92,15 +92,15 @@ $(document).ready(function() {
         order.ref_no = $("#ref_no").val();
         
         //totalCost,totalCharge
-        order.total_chargeRMB = chargeRMB;
-        order.total_chargeUSD = chargeUSD;
-        order.total_profitTotalCharge = profitTotalCharge;
-        order.total_costRMB = costRMB;
-        order.total_costUSD = costUSD;
-        order.total_profitTotalCost = profitTotalCost;
-        order.total_profitRMB = profitRMB;
-        order.total_profitUSD = profitUSD;
-        order.total_profitTotalRMB = profitTotalRMB;
+//        order.total_chargeRMB = chargeRMB;
+//        order.total_chargeUSD = chargeUSD;
+//        order.total_profitTotalCharge = profitTotalCharge;
+//        order.total_costRMB = costRMB;
+//        order.total_costUSD = costUSD;
+//        order.total_profitTotalCost = profitTotalCost;
+//        order.total_profitRMB = profitRMB;
+//        order.total_profitUSD = profitUSD;
+//        order.total_profitTotalRMB = profitTotalRMB;
 
         //海运
         order.shipment_detail = shipment_detail;

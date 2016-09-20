@@ -123,10 +123,6 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id}]]>
 				<reportElement x="409" y="1" width="40" height="20" uuid="231e70a2-7014-40a5-bb74-6d79f0e21fcb"/>
 				<textFieldExpression><![CDATA[$F{exchange_rate}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="497" y="1" width="58" height="20" uuid="1b8d5615-f2b4-4f1a-ae4a-5297dce29489"/>
-				<textFieldExpression><![CDATA[$F{currency_total_amount}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="460" y="1" width="19" height="20" uuid="fbc2d8d0-403a-4749-a507-12fea3b64b27"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -151,6 +147,13 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id}]]>
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
+			<textField>
+				<reportElement x="497" y="1" width="56" height="20" uuid="bc70754e-a86e-40bf-b789-a07df9249cf7"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_amount}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>

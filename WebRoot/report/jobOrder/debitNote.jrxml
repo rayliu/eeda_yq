@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="362"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -262,7 +262,7 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[FAX:86-756-3225900]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="169" y="15" width="259" height="26" uuid="e1e2aafd-07ba-4e27-a38b-5dfadd484cdc"/>
+				<reportElement x="166" y="11" width="262" height="30" uuid="e1e2aafd-07ba-4e27-a38b-5dfadd484cdc"/>
 				<textElement>
 					<font fontName="宋体" size="16"/>
 				</textElement>

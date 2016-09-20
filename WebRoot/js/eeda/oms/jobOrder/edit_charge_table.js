@@ -1,25 +1,25 @@
 
 window.calcCurrency =  function (){
-        var chargeRMB = $('[name=chargeRMB]').text().replace('RMB','');
-        var costRMB = $('[name=costRMB]').text().replace('RMB','');
+        var chargeRMB = $('[name=chargeRMB]').text().replace('CNY','');
+        var costRMB = $('[name=costRMB]').text().replace('CNY','');
         var profitRMB = parseFloat(chargeRMB)-parseFloat(costRMB);
            if(profitRMB>=0){
-              $('[name=profitRMB]').text(profitRMB+"RMB");
+              $('[name=profitRMB]').text("CNY "+eeda.numFormat(parseFloat(profitRMB).toFixed(2),3));
            }else if(profitRMB<0){
-              $('[name=profitRMB]').html("<span style='color:red'>"+profitRMB+"RMB</span>");
+              $('[name=profitRMB]').html("<span style='color:red'>CNY "+eeda.numFormat(parseFloat(profitRMB).toFixed(2),3)+"</span>");
            } else{
-              $('[name=profitRMB]').text(0+"RMB");
+              $('[name=profitRMB]').text("CNY "+eeda.numFormat(parseFloat(0).toFixed(2),3));
            }
 
-        var chargeUSD = $('[name=chargeUSD]').text().replace('RMB','');
-        var costUSD = $('[name=costUSD]').text().replace('RMB','');
+        var chargeUSD = $('[name=chargeUSD]').text().replace('USD','');
+        var costUSD = $('[name=costUSD]').text().replace('USD','');
         var profitUSD = parseFloat(chargeUSD)-parseFloat(costUSD);
            if(profitUSD>=0){
-              $('[name=profitUSD]').text(profitUSD+"USD");
+              $('[name=profitUSD]').text("USD "+eeda.numFormat(parseFloat(profitUSD).toFixed(2),3));
            }else if(profitUSD<0){
-              $('[name=profitUSD]').html("<span style='color:red'>"+profitUSD+"USD</span>");
+              $('[name=profitUSD]').html("<span style='color:red'>USD "+eeda.numFormat(parseFloat(profitUSD).toFixed(2),3)+"</span>");
            } else{
-              $('[name=profitUSD]').text(0+"USD");
+              $('[name=profitUSD]').text("USD "+eeda.numFormat(parseFloat(0).toFixed(2),3));
            }
 
         //人民币利润汇总字段
@@ -36,11 +36,11 @@ window.calcCurrency =  function (){
 
         var profitTotalRMB = parseFloat(profitTotalCharge)-parseFloat(profitTotalCost);
         if(profitTotalRMB>=0){
-        $('[name=profitTotalRMB]').text(profitTotalRMB+"RMB");
+        $('[name=profitTotalRMB]').text("CNY "+eeda.numFormat(parseFloat(profitTotalRMB).toFixed(2),3));
         }else if(profitTotalRMB<0){
-            $('[name=profitTotalRMB]').html("<span style='color:red'>"+profitTotalRMB+"RMB</span>");
+            $('[name=profitTotalRMB]').html("<span style='color:red'>CNY "+eeda.numFormat(parseFloat(profitTotalRMB).toFixed(2),3)+"</span>");
         } else{
-            $('[name=profitTotalRMB]').text(0+"RMB");
+            $('[name=profitTotalRMB]').text("CNY "+eeda.numFormat(parseFloat(0).toFixed(2),3));
         }
     };
     
@@ -415,11 +415,14 @@ $(document).ready(function() {
     			getTotalCharge();
     		}
     	}
-    })
-    
+    });
+    //币制下拉列表点击触发
+//    $('#charge_table').on('mousedown', '[name=CURRENCY_ID_input]', function(){
+//    	getTotalCharge();
+//    });
 
+	//计算应收字段
     
-	    //计算应收字段
     var getTotalCharge= function(){
     	var totalChargeRMB = 0; 
 	    var totalChargeUSD = 0;
@@ -439,15 +442,15 @@ $(document).ready(function() {
 	    $('.profitTotalCharge').text(profitTotalCharge).hide();
 	    
 	    if(totalChargeRMB!=""&&!isNaN(totalChargeRMB)){
-	           $('.chargeRMB').text(totalChargeRMB+"RMB");  
+	           $('.chargeRMB').text("CNY "+eeda.numFormat(parseFloat(totalChargeRMB).toFixed(2),3));  
 	       }else{
-	           $('.chargeRMB').text(0+"RMB");  
+	           $('.chargeRMB').text("CNY "+eeda.numFormat(parseFloat(0).toFixed(2),3));  
 	        }
 	    
 	    if(totalChargeUSD!=""&&!isNaN(totalChargeUSD)){
-	        $('.chargeUSD').text(totalChargeUSD+"USD");  
+	        $('.chargeUSD').text("USD "+eeda.numFormat(parseFloat(totalChargeUSD).toFixed(2),3));  
 	    }else{
-	        $('.chargeUSD').text(0+"USD");  
+	        $('.chargeUSD').text("USD "+eeda.numFormat(parseFloat(0).toFixed(2),3));  
 	     }
 	    
 	    calcCurrency();
@@ -455,7 +458,7 @@ $(document).ready(function() {
     
     
     
-   // getTotalCharge();
+    //getTotalCharge();
     
     var buildSpList = function(){
     	//获取选中的结算公司

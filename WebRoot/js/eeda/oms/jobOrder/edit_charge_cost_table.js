@@ -393,19 +393,19 @@ $(document).ready(function() {
        //赋值
        $('.costRMB').text(totalCostRMB);
        if(totalCostRMB !=""&&!isNaN(totalCostUSD)){
-       $('.costRMB').text(totalCostRMB+'RMB');
+       $('.costRMB').text('CNY '+eeda.numFormat(parseFloat(totalCostRMB).toFixed(2),3));
        }else{
-           $('.costRMB').text(0+"RMB");
+           $('.costRMB').text('CNY '+eeda.numFormat(parseFloat(0).toFixed(2),3));
        }
        if(totalCostUSD !=''&&!isNaN(totalCostUSD)){
-          $('.costUSD').text(totalCostUSD+'USD');          
+          $('.costUSD').text('USD '+eeda.numFormat(parseFloat(totalCostUSD).toFixed(2),3));          
        }else{
-          $('.costUSD').text(0+"USD");
+          $('.costUSD').text('USD '+eeda.numFormat(parseFloat(0).toFixed(2),3));
        }
        calcCurrency();
    }
 
-    //getTotalCost();
+   // getTotalCost();
 //       var totalCharge = $('[name=chargeRMB]').text().toString();
 //       var totalChargeU = $('[name=chargeUSD]').text().toString();        
 //       var totalChargeRMB=parseFloat(totalCharge.replace('RMB',''));        
