@@ -323,12 +323,9 @@
 										 <div class="form-group">
 											选择结算公司：<br /><br />
 											 <div class="col-lg-8">
-											 <%include("/eeda/component/form/inputSpField.html", 
-                                                    {
-                                                        id:'spDebitNote', 
-                                                        label:'结算公司', 
-                                                        value: ''
-                                                    }){} %>	
+											 	<select class="form-control search-control spList" name="spList" id="spList" >
+				                        	   		<option></option>
+			                               		</select>
                                               </div>
 										   </div> <br /><br /><br />
 											<div class="form-group"> 
@@ -449,6 +446,7 @@
 
 <script>
 	//取得当前时间
+	
 	var getTime;
 	//当前登陆用户名
 	var loginUserName = '${loginUser!''}';

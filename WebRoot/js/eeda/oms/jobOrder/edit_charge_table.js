@@ -452,7 +452,37 @@ $(document).ready(function() {
     
     
     
-    //getTotalCharge();
+   // getTotalCharge();
+    
+    var buildSpList = function(){
+    	//获取选中的结算公司
+    	$("#spList").empty();
+    	$("#spList").append('<option></option>');
+        var nameArray = [];
+    	$("#charge_table tr").each(function(e){
+    		if(e.toString()==0)
+    			return;
+    		var sp_id = $(this).find('[name="SP_ID"]').val();
+    		var sp_name = $(this).find('[name="SP_ID_input"]').val();
+
+    		if(sp_name != ''){
+    			for(name in nameArray){
+    				if(nameArray[name]==sp_name){
+    					return;
+    				}
+    			}
+    			nameArray.push(sp_name);
+    			
+    			$("#spList").append('<option value='+sp_id+'>'+sp_name+'</option>');
+    		}
+    		
+    	})
+    }
+    
+    $('#print_debit_note').click(function(){
+    	buildSpList();
+    })
+    
 	     
     
   });
