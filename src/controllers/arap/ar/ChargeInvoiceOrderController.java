@@ -79,11 +79,11 @@ public class ChargeInvoiceOrderController extends Controller {
         }
         String sql = "";
         
-    	sql = " select * from (select acor.id,acor.order_no,acor.total_amount,acor.`status`,p.abbr payee_name,acor.create_stamp, ul.c_name create_name"
+    	sql = " select * from (select acor.id,acor.order_no,acor.total_amount,acor.status,p.abbr payee_name,acor.create_stamp, ul.c_name create_name"
     			+ " from arap_charge_order acor"
     			+ " LEFT JOIN party p on p.id = acor.payee_id"
     			+ " LEFT JOIN user_login ul on ul.id = acor.create_by"
-    			+ " where acor.have_invoice='Y' and acor.invoice_order_id is null"
+    			+ " where acor.have_invoice='Y' and acor.invoice_order_id is null and acor.status='已确认' "
     			+ " ) A where 1 = 1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());

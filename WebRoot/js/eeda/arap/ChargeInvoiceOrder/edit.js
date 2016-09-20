@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin','dataTablesBootstrap','sco','validate_cn','./edit_item_table'], function ($, metisMenu) { 
 
 $(document).ready(function() {
 
@@ -8,23 +8,23 @@ $(document).ready(function() {
     
     
     //构造主表json
-    var buildOrder = function(){
-    	var item = {};
-    	var orderForm = $('#orderForm input');
-    	for(var i = 0; i < orderForm.length; i++){
-    		var name = orderForm[i].id;
-        	var value =orderForm[i].value;
-        	if(name){
-        		if(name.indexOf("begin_time") != -1){
-        			name = "begin_time";
-        		}else if(name.indexOf("end_time") != -1){
-        			name = "end_time"
-        		}
-        		item[name] = value;
-        	}
-    	}
-        return item;
-    }
+//    var buildOrder = function(){
+//    	var item = {};
+//    	var orderForm = $('#orderForm input');
+//    	for(var i = 0; i < orderForm.length; i++){
+//    		var name = orderForm[i].id;
+//        	var value =orderForm[i].value;
+//        	if(name){
+//        		if(name.indexOf("begin_time") != -1){
+//        			name = "begin_time";
+//        		}else if(name.indexOf("end_time") != -1){
+//        			name = "end_time"
+//        		}
+//        		item[name] = value;
+//        	}
+//    	}
+//        return item;
+//    }
     
     //------------save
     $('#saveBtn').click(function(e){
@@ -37,11 +37,17 @@ $(document).ready(function() {
         
         $(this).attr('disabled', true);
 
-        var order = buildOrder();
+        var order = {};
+        order.id = $('#id').val();
+        order.contact_person = $('#contact_person').val();
+        order.phone = $('#phone').val();
+        order.address = $('#address').val();
+        order.total_amount = $('#total_amount').val();
         order.item_list = itemOrder.buildItemDetail();
         
         //异步向后台提交数据
         $.post('/chargeInvoiceOrder/save', {params:JSON.stringify(order)}, function(data){
+        	debugger
             var order = data;
             if(order.ID>0){
             	eeda.contactUrl("edit?id",order.ID);
@@ -57,6 +63,7 @@ $(document).ready(function() {
                 $("#contact_person").val(order.CONTACT_PERSON);
                 $("#phone").val(order.PHONE);
                 $('#saveBtn').attr('disabled', false);
+                $('#confrimBtn').attr('disabled', false);
                 //异步刷新明细表
                 itemOrder.refleshTable(order.ID);
             }else{
