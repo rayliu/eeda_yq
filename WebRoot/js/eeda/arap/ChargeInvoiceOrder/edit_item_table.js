@@ -28,7 +28,7 @@ $(document).ready(function() {
                     item[name] = value;
                 }
             }
-            item.action = $('#order_id').val() != ''?'UPDATE':'CREATE';
+            item.action = $('#id').val() != ''?'UPDATE':'CREATE';
             items_array.push(item);
         }
 

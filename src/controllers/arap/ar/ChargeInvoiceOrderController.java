@@ -45,7 +45,6 @@ public class ChargeInvoiceOrderController extends Controller {
 	}
 	
     public void create(){
-		//当前登陆用户
     	String total_amount = getPara("total_amount");
 		String ids = getPara("idsArray");
 		String[] idArr = ids.split(",");
