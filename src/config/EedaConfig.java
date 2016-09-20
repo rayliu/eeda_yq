@@ -51,6 +51,7 @@ import models.eeda.profile.Account;
 import models.eeda.profile.ContainerType;
 import models.eeda.profile.Country;
 import models.eeda.profile.Currency;
+import models.eeda.profile.CurrencyRate;
 import models.eeda.profile.Custom;
 import models.eeda.profile.FinItem;
 import models.eeda.profile.Module;
@@ -93,6 +94,7 @@ import controllers.profile.AccountController;
 import controllers.profile.ContainerTypeController;
 import controllers.profile.CountryController;
 import controllers.profile.CurrencyController;
+import controllers.profile.CurrencyRateController;
 import controllers.profile.CustomController;
 import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
@@ -203,6 +205,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/customOrder", CustomOrderController.class, contentPath);
 		me.add("/truckOrder", TruckOrderController.class, contentPath);
 		me.add("/currency", CurrencyController.class, contentPath);
+		me.add("/currencyRate", CurrencyRateController.class, contentPath);
 		
 		//ar= account revenue  应收条目处理
         me.add("/chargeConfirmList", controllers.arap.ar.ChargeItemConfirmController.class, contentPath);
@@ -322,6 +325,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("truck_order_arap", TruckOrderArap.class);
         arp.addMapping("truck_order_cargo", TruckOrderCargo.class);
         arp.addMapping("currency", Currency.class);
+        arp.addMapping("currency_rate", CurrencyRate.class);
         
         //财务
         arp.addMapping("arap_cost_order", ArapCostOrder.class);

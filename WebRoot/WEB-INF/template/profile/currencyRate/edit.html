@@ -1,0 +1,74 @@
+<%layout("/eeda/layout.html"){%>
+
+	<div id="page-wrapper">
+	<div class="row">
+        <div class="col-lg-12 panel-body">
+        </div>
+    </div>
+		<div class="row">
+             <div class="col-lg-12">
+                 <div class="panel panel-default">
+                   <div class="panel-heading"style="font-size: 32px">
+                 		汇率信息
+            		</div>
+            		<div class="panel-body">
+            			<div class="row">
+            			<form lass="form-horizontal" id='accountFrom' name="accountFrom" action="" method="post">
+							<input id="id" name="id" type="hidden" value="${order.id!''}">
+							<div class="form-group">
+								<div class="form-group">
+									<div class="col-lg-4"><!--  三列排版  -->
+									<%include("/eeda/component/form/inputField.html", 
+	                                    {   id:'currency_code', 
+	                                        label:'币制', 
+	                                        value:order.currency_code!'',
+	                                        required:'required'
+	                                    }){}%></div>
+		                            <div class="col-lg-4"><!--  三列排版  -->
+		                                <%include("/eeda/component/form/inputField.html", 
+		                                    {   id:'rate', 
+		                                        label:'汇率', 
+		                                        value:order.rate!'',
+		                                        required:'required'
+		                                    }){}%>
+		                            </div>
+		                            <div class="col-lg-4">
+		                                <%include("/eeda/component/form/inputDateQueryField.html", 
+		                                    {   id:'peroid', 
+		                                        label:'有效时间', 
+		                                        begin_value:order.from_stamp!'',
+                                                end_value:order.to_stamp!'',
+		                                        required:'required'
+		                                    }){}%>
+		                            </div>
+								</div>
+								<div class="col-lg-12">
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'remark', 
+                                        label:'备注', 
+                                        value:order.remark!''
+                                    }){}%>
+                            	</div>
+							</div>
+				        </form>
+                        </div>
+		         		<div>
+			            	<a style="display:none" id ="style"><i class='fa fa-check'></i></a>
+			            	<button id="saveBtn" class="btn  btn-primary btn-sm" >保存</button>
+			             	<a class="btn btn-default btn-sm" href="/currencyRate">返回</a>
+			            </div>
+            		</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<%}%>
+
+<script type="text/javascript">
+	var bank_name = '${ul.bank_name!''}';
+</script>
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/profile/currencyRate/edit']);
+    });
+</script>
