@@ -173,28 +173,28 @@ $(document).ready(function() {
             },
             { "data": "PRICE", "width": "60px",
                 "render": function ( data, type, full, meta ) {
+                	if(data)
+                        var str =  parseFloat(data).toFixed(2);
+                    else
+                    	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
-                		if(!data)
-                            data='';
-                        return '<input type="text" name="price" style="width:80px" value="'+data+'" class="form-control" disabled />';
+                    		return '<input type="text" name="price" style="width:80px" value="'+str+'" class="form-control" disabled />';
                      }else{
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="price" style="width:80px" value="'+data+'" class="form-control" />';
-                }
+                 			return '<input type="text" name="price" style="width:80px" value="'+str+'" class="form-control" />';
+                     }
                }
             },
             { "data": "AMOUNT","width": "60px",
                 "render": function ( data, type, full, meta ) {
+                	if(data)
+                        var str =  parseFloat(data).toFixed(2);
+                    else
+                    	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
-                		if(!data)
-                            data='';
-                        return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control " disabled/>';
+                        	return '<input type="text" name="amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
                      }else{
-	                    if(!data)
-	                        data='';
-	                    return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control "/>';
-	                }
+                         	return '<input type="text" name="amount" style="width:80px" value="'+str+'" class="form-control" />';
+	                 }
               }
             },
             { "data": "UNIT_ID","width": "60px",
@@ -259,40 +259,40 @@ $(document).ready(function() {
             },
             { "data": "TOTAL_AMOUNT", "width": "60px",
                 "render": function ( data, type, full, meta ) {
+                	if(data)
+                        var str =  parseFloat(data).toFixed(2);
+                    else
+                    	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
-	                    if(!data)
-	                        data='';
-	                    return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" disabled/>';
+                        	return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
                 	}else{
-                		if(!data)
-	                        data='';
-	                    return '<input type="text" name="total_amount" style="width:80px" value="'+data+'" class="form-control" />';
+                        	return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control" />';
                 	}
                 }
             },
             { "data": "EXCHANGE_RATE", "width": "60px",
                 "render": function ( data, type, full, meta ) {
+                	if(data)
+                        var str =  parseFloat(data).toFixed(2);
+                    else
+                    	str = '';
                 if(full.AUDIT_FLAG == 'Y'){
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="exchange_rate" style="width:80px" value="'+data+'" class="form-control" disabled/>';
+                    	return '<input type="text" name="exchange_rate" style="width:80px" value="'+str+'" class="form-control" disabled />';
                 }else{
-            	   if(!data)
-                       data='';
-                   return '<input type="text" name="exchange_rate" style="width:80px" value="'+data+'" class="form-control"/>';
+                    	return '<input type="text" name="exchange_rate" style="width:80px" value="'+str+'" class="form-control" />';
                }
               }
             },
             { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px",
                 "render": function ( data, type, full, meta ) {
+                	if(data)
+                        var str =  parseFloat(data).toFixed(2);
+                    else
+                    	str = '';
 	                if(full.AUDIT_FLAG == 'Y'){
-		                    if(!data)
-		                        data='';
-		                    return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control" disabled />';
+	                    	return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
 	                }else{
-		                  if(!data)
-		                      data='';
-		                  return '<input type="text" name="currency_total_amount" style="width:80px" value="'+data+'" class="form-control"  />';
+	                    	return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control" />';
 	                }
               }
             },
@@ -364,10 +364,10 @@ $(document).ready(function() {
     		$(row.find('[name=total_amount]')).val(total_amount);
     		if(exchange_rate!=''&&!isNaN(exchange_rate)){
     			$(row.find('[name=currency_total_amount]')).val(parseFloat(total_amount*exchange_rate));
+    			getTotalCost();
     		  }
     				
     	}
-    	getTotalCost();
     })
    
     
@@ -405,7 +405,7 @@ $(document).ready(function() {
        calcCurrency();
    }
 
-    getTotalCost();
+//    getTotalCost();
 //       var totalCharge = $('[name=chargeRMB]').text().toString();
 //       var totalChargeU = $('[name=chargeUSD]').text().toString();        
 //       var totalChargeRMB=parseFloat(totalCharge.replace('RMB',''));        
