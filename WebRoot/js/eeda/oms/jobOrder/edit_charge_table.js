@@ -1,5 +1,5 @@
-define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) {
-    window.calcCurrency =  function (){
+
+window.calcCurrency =  function (){
         var chargeRMB = $('[name=chargeRMB]').text().replace('RMB','');
         var costRMB = $('[name=costRMB]').text().replace('RMB','');
         var profitRMB = parseFloat(chargeRMB)-parseFloat(costRMB);
@@ -43,6 +43,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             $('[name=profitTotalRMB]').text(0+"RMB");
         }
     };
+    
+define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) {
+    
 
 $(document).ready(function() {
     
