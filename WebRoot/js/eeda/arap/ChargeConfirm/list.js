@@ -59,6 +59,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
         	$(".checkBox").each(function () {  
                 this.checked = ischeck;  
              });  
+        	if(ischeck==true){
+        		$('#confirmBtn').attr('disabled',false);
+        	}else{
+        		$('#confirmBtn').attr('disabled',true);
+        	}
         });
         
       

@@ -84,9 +84,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       //全选
       $('#AllCheck').click(function(){
     	  var ischeck = this.checked;
-      	$(".checkBox").each(function () {  
-              this.checked = ischeck;  
-           });  
+	      	$(".checkBox").each(function () {  
+	              this.checked = ischeck;  
+	           });  
+	      	if(ischeck==true){
+        		$('#confirmBtn').attr('disabled',false);
+        	}else{
+        		$('#confirmBtn').attr('disabled',true);
+        	}
       });
    
       	//checkbox选中则button可点击
