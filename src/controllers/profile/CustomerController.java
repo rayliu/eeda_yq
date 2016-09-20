@@ -60,18 +60,20 @@ public class CustomerController extends Controller {
         
         Long parentID = pom.getParentOfficeId();
         
+        String sLimit = "";
+        String pageIndex = getPara("sEcho");
+        if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
+        	sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
+        }
+        String sql="";
+        String sqlTotal="";
         if (company_name == null && contact_person == null && abbr == null && address == null
                 && location == null) {
-            String sLimit = "";
-            String pageIndex = getPara("sEcho");
-            if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
-                sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
-            }
 
-            String sqlTotal = "select count(1) total from party p left join office o on p.office_id = o.id where p.type='CUSTOMER'and (o.id = " + parentID + " or o.belong_office = "+ parentID +")";
+             sqlTotal = "select count(1) total from party p left join office o on p.office_id = o.id where p.type='CUSTOMER'and (o.id = " + parentID + " or o.belong_office = "+ parentID +")";
             
 
-            String sql = "select p.*,p.id as pid,l.name,trim(concat(l2.name, ' ', l1.name,' ',l.name)) as dname from party p "
+             sql = "select p.*,p.id as pid,l.name,trim(concat(l2.name, ' ', l1.name,' ',l.name)) as dname from party p "
 //                    + "left join contact c on p.contact_id=c.id "
                     + " left join location l on l.code=p.location "
                     + " left join location  l1 on l.pcode =l1.code "
@@ -79,26 +81,9 @@ public class CustomerController extends Controller {
                     + " left join office o on o.id = p.office_id  "
                     + "where p.type='CUSTOMER' and (o.id = " + parentID + " or o.belong_office = " + parentID + ") order by p.create_date desc " + sLimit;
             
-            Record rec = Db.findFirst(sqlTotal);
-            logger.debug("total records:" + rec.getLong("total"));
-            
-            List<Record> customers = Db.find(sql);
-
-            Map customerListMap = new HashMap();
-            customerListMap.put("sEcho", pageIndex);
-            customerListMap.put("iTotalRecords", rec.getLong("total"));
-            customerListMap.put("iTotalDisplayRecords", rec.getLong("total"));
-            customerListMap.put("aaData", customers);
-            renderJson(customerListMap);
         } else {
 
-            String sLimit = "";
-            String pageIndex = getPara("sEcho");
-            if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
-                sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
-            }
-
-            String sql = "select p.*,p.id as pid,l.name,trim(concat(l2.name, ' ', l1.name,' ',l.name)) as dname from party p "
+             sql = "select p.*,p.id as pid,l.name,trim(concat(l2.name, ' ', l1.name,' ',l.name)) as dname from party p "
 //                    + "left join contact c on p.contact_id=c.id "
                     + "left join location l on l.code=p.location "
                     + "left join location  l1 on l.pcode =l1.code "
@@ -113,24 +98,26 @@ public class CustomerController extends Controller {
                     + address
                     + "%' and ifnull(p.abbr,'') like '%" + abbr + "%'  and (o.id = " + parentID + " or o.belong_office = " + parentID + ") order by p.create_date desc ";
 
-            String sqlTotal = "select count(1) total from ("+sql+") A";
-            Record rec = Db.findFirst(sqlTotal);
-            logger.debug("total records:" + rec.getLong("total"));
-            
-            List<Record> customers = Db.find(sql + sLimit);
-
-            Map customerListMap = new HashMap();
-            customerListMap.put("sEcho", pageIndex);
-            customerListMap.put("iTotalRecords", rec.getLong("total"));
-            customerListMap.put("iTotalDisplayRecords", rec.getLong("total"));
-            customerListMap.put("aaData", customers);
-            renderJson(customerListMap);
+             sqlTotal = "select count(1) total from ("+sql+") A";
         }
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        
+        List<Record> customers = Db.find(sql + sLimit);
+        
+        Map customerListMap = new HashMap();
+        customerListMap.put("sEcho", pageIndex);
+        customerListMap.put("iTotalRecords", rec.getLong("total"));
+        customerListMap.put("iTotalDisplayRecords", rec.getLong("total"));
+        customerListMap.put("aaData", customers);
+        renderJson(customerListMap);
     }
+    
+    
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_CREATE})
     public void add() {
         setAttr("saveOK", false);
-            render("/profile/customer/CustomerEdit.html");
+            render("/eeda/profile/customer/CustomerEdit.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_UPDATE})
     public void edit() {
@@ -169,7 +156,7 @@ public class CustomerController extends Controller {
 //                + id);
 //        setAttr("contact", contact);
 
-        render("/profile/customer/CustomerEdit.html");
+        render("/eeda/profile/customer/CustomerEdit.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_DELETE})
     public void delete() {
@@ -195,73 +182,56 @@ public class CustomerController extends Controller {
         Date createDate = Calendar.getInstance().getTime();
         if (!"".equals(id) && id != null) {
             party = Party.dao.findById(id);
-            party.set("company_name", getPara("company_name"));
-            party.set("contact_person", getPara("contact_person"));
-            party.set("contact_person_eng", getPara("contact_person_eng"));
-            party.set("email", getPara("email"));
-            party.set("abbr", getPara("abbr"));
-            party.set("location", getPara("location"));
-            party.set("introduction", getPara("introduction"));
-            party.set("mobile", getPara("mobile"));
-            party.set("phone", getPara("phone"));
-            party.set("address", getPara("address"));
-            party.set("address_eng", getPara("address_eng"));
-            party.set("city", getPara("city"));
-            party.set("postal_code", getPara("postal_code"));
             party.set("last_modified_by", userId);
             party.set("last_updated_stamp", createDate);
-            party.set("remark", getPara("remark"));
-            party.set("payment", getPara("payment"));
+            party.set("code", getPara("code"));
+            party.set("abbr", getPara("abbr"));
+            party.set("company_name", getPara("company_name"));
+            party.set("company_name_eng", getPara("company_name_eng"));
+            party.set("address", getPara("address"));
+            party.set("address_eng", getPara("address_eng"));
+            party.set("contact_person", getPara("contact_person"));
+            party.set("phone", getPara("phone"));
+            party.set("email", getPara("email"));
+            party.set("fax", getPara("fax"));
             party.set("receipt", getPara("receipt"));
+            party.set("payment", getPara("payment"));
             party.set("charge_type", getPara("chargeType"));
-//            party.set("is_auto_ps", getPara("isAutoPS"));
-            party.set("default_loc_from", getPara("default_loc_from"));
-//            if("Y".equals(getPara("isInventoryControl"))){
-//            	party.set("is_inventory_control", true);
-//            }else{
-//            	party.set("is_inventory_control", false);
-//            }
+            party.set("introduction", getPara("introduction"));
+            party.set("remark", getPara("remark"));
             if(getPara("insurance_rates") != ""){
-            	party.set("insurance_rates", getPara("insurance_rates"));
+            party.set("insurance_rates", getPara("insurance_rates"));
             }
             party.update();
 
         } else {
             
             party = new Party();
+            party.set("office_id", pom.getCurrentOfficeId());
             party.set("type", Party.PARTY_TYPE_CUSTOMER);
-            party.set("company_name", getPara("company_name"));
-            party.set("contact_person", getPara("contact_person"));
-            party.set("contact_person_eng", getPara("contact_person"));
-            party.set("email", getPara("email"));
-            party.set("abbr", getPara("abbr"));
-            party.set("location", getPara("location"));
-            party.set("introduction", getPara("introduction"));
-            party.set("mobile", getPara("mobile"));
-            party.set("phone", getPara("phone"));
-            party.set("address", getPara("address"));
-            party.set("address_eng", getPara("address_eng"));
-            party.set("city", getPara("city"));
-            party.set("postal_code", getPara("postal_code"));
             party.set("creator", userId);
             party.set("create_date", createDate);
             party.set("last_modified_by", userId);
             party.set("last_updated_stamp", createDate);
-            party.set("remark", getPara("remark"));
+            party.set("code", getPara("code"));
+            party.set("abbr", getPara("abbr"));
+            party.set("company_name", getPara("company_name"));
+            party.set("company_name_eng", getPara("company_name_eng"));
+            party.set("address", getPara("address"));
+            party.set("address_eng", getPara("address_eng"));
+            party.set("contact_person", getPara("contact_person"));
+            party.set("phone", getPara("phone"));
+            party.set("email", getPara("email"));
+            party.set("fax", getPara("fax"));
             party.set("receipt", getPara("receipt"));
             party.set("payment", getPara("payment"));
             party.set("charge_type", getPara("chargeType"));
-            party.set("office_id", pom.getCurrentOfficeId());
-//            party.set("is_auto_ps", getPara("isAutoPS"));
-            party.set("default_loc_from", getPara("default_loc_from"));
-//            if("Y".equals(getPara("isInventoryControl"))){
-//            	party.set("is_inventory_control", true);
-//            }else{
-//            	party.set("is_inventory_control", false);
-//            }
+            party.set("introduction", getPara("introduction"));
+            party.set("remark", getPara("remark"));
             if(getPara("insurance_rates") != ""){
-            	party.set("insurance_rates", getPara("insurance_rates"));
+            party.set("insurance_rates", getPara("insurance_rates"));
             }
+
             party.save();
             
             Long parentID = pom.getParentOfficeId();

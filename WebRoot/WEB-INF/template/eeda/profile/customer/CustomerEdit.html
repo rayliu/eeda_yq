@@ -1,0 +1,233 @@
+﻿<%layout("/eeda/layout.html"){%>
+ <!-- <link href="/yh/js/plugins/datatables-1.10.9/css/jquery.dataTables.min.css" rel="stylesheet">
+ <link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet">  -->
+ <div id="page-wrapper">
+    
+    <div class="row">
+        <div class="col-lg-12 panel-body">
+
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+    <div class="row">
+                <div class="col-lg-13">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            客户基本信息
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <form id="customerForm" role="form" action="/customer/save" method="post">
+                                    <input id="partyId" name="party_id" type="hidden" value="${party.id!''}">
+                                    <!-- /.col-lg-6 (odd) 奇数列 -->
+                                    
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>代码</label>
+                                                <input class="form-control" id="code" type="text" name="code" value="${party.code!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+
+                                                <label>公司简称(必填)</label>
+                                                <input  class="form-control" id="abbr" name="abbr" type="text" value="${party.abbr!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                
+                                                <label>公司中文名称(必填)</label>
+                                                <input  class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                
+                                                <label>公司英文名称</label>
+                                                <input  class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                   
+
+                                    <!-- /.col-lg-6 (even) 偶数列-->                                    
+                                     <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>中文地址</label>
+                                                <input  class="form-control" id="address" type="text" name="address" value="${party.address!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>   
+
+                                    <!-- /.col-lg-6 (odd) 奇数列 -->
+                                     <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>英文地址</label>
+                                                <input  class="form-control" id="address_eng" type="text" name="address_eng" value="${party.address_eng!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>                                    
+                                    
+                                    <!-- /.col-lg-6 (even) 偶数列 -->
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>联系人</label>
+                                                <input class="form-control" id="contact_person" type="text" name="contact_person" value="${party.contact_person!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    
+                                    <!-- /.col-lg-6 (odd) 奇数列 -->
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>联系人电话</label>
+                                                <input class="form-control" id="phone" type="text" name="phone" value="${party.phone!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>邮箱</label>
+                                                <input  class="form-control " id="email" type="text" name="email" value="${party.email!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>传真</label>
+                                                <input  class="form-control " id="fax" type="text" name="fax" value="${party.fax!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+
+									<div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>开票单位</label>
+                                                <input class="form-control" id="receipt" type="text" name="receipt" value="${party.receipt!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>收款方式</label>
+	                                           	<select class="form-control" id="payment" name="payment">
+	                                           		<option value="monthlyStatement"  <%if(party.payment!''=='monthlyStatement'){ %>selected<%}%>>月结</option>
+	                                           		<option value="freightCollect"  <%if(party.payment!''=='freightCollect'){ %>selected<%}%>>到付</option>
+	                                           		<option value="cashPayment" <%if(party.payment!''=='cashPayment'){ %>selected<%}%>>现付</option>
+	                                           	</select>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>计费方式</label>
+	                                         	<input type="hidden" value="${party.charge_type!''}" id="chargeTypeSelect">
+	                                           	<select class="form-control" id="chargeType" name="chargeType">
+	                                           		<option value="perUnit">计件</option>
+	                                           		<option value="perCar">整车</option>
+	                                           		<option value="perCargo">零担</option>
+	                                           	</select>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>保险费率</label>
+                                                <input class="form-control" id="insurance_rates" name="insurance_rates" type="text" value="${party.insurance_rates!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>公司简介</label>
+												<textarea class="form-control" rows="5" name="introduction">${party.introduction!''}</textarea>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>备注</label>
+												<textarea class="form-control" rows="5" name="remark">${party.remark!''}</textarea>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <!-- <div class="col-lg-6">
+                                            
+                                            <div class="form-group">
+                                                <input type="hidden" name="inventoryControl" id="inventoryControl" value="${is_inventory_control!''}">
+                                                <label>是否需要库存管理</label>
+                                                <input type="radio" name="isInventoryControl" id="isInventoryControlY" value="Y" checked="checked">是
+                                                <input type="radio" name="isInventoryControl" id="isInventoryControlN" value="N">否
+                                            </div>
+                                    </div> -->
+									
+                                    <!-- /.col-lg-6 (odd) 奇数列 -->
+                                    <div class="col-lg-6" style="clear:both;">
+                                        <button type="submit" class="btn  btn-primary">保存</button>
+                                        <a class="btn  btn-primary" href="/customer">返回</a>
+                                    </div>
+								</form>       
+                            </div>
+                            <!-- /.row (nested) -->
+                            
+                            
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->      
+</div>
+			
+	<!--/span-->
+
+
+<!--/row-->
+
+<!-- content ends -->
+<%}%>
+<!-- 引入校验的js 文件及其 中文 文件-->
+<!-- <script src="/yh/js/plugins/datatables-1.10.9/js/jquery.dataTables.js"></script>
+<script src="/yh/js/plugins/datatables-1.10.9/js/dataTables.bootstrap.js"></script>
+<script src="/yh/js/jquery.validate.min.js"></script>
+<script src="/yh/js/jvalidate.messages_cn.js"></script>
+<script src="/yh/js/plugins/sco/js/sco.message.js"></script>
+<script src="/js/eeda/profile/customer/edit.js"></script> -->
+<script>
+    requirejs(['/js/common.js'], function (common) {
+        requirejs(['app/profile/customer/edit']);
+    });
+</script>
+<script>
+if('${party.company_name!''}'){
+	document.title = '${party.company_name!''}'+' | '+document.title;
+}
+
+</script>
