@@ -9,6 +9,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
             "searching": false,
             //"serverSide": true,
             "scrollX": true,
+            "sort":true,
             //"scrollY": "300px",
             "scrollCollapse": true,
             "autoWidth": false,
