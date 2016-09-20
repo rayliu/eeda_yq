@@ -41,7 +41,7 @@ public class ServiceProviderController extends Controller {
     
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_LIST})
     public void index() {
-        render("/profile/serviceProvider/serviceProviderList.html");
+        render("/eeda/profile/serviceProvider/serviceProviderList.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_LIST})
     public void list() {
@@ -134,7 +134,7 @@ public class ServiceProviderController extends Controller {
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_CREATE})
     public void add() {
         setAttr("saveOK", false);
-            render("/profile/serviceProvider/serviceProviderEdit.html");
+            render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_UPDATE})
     public void edit() {
@@ -148,7 +148,7 @@ public class ServiceProviderController extends Controller {
 
         setAttr("party", party);
      
-        render("/profile/serviceProvider/serviceProviderEdit.html");
+        render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_DELETE})
     public void delete() {
@@ -221,7 +221,10 @@ public class ServiceProviderController extends Controller {
     }
 
     private void setContact(Party contact) {
-        contact.set("company_name", getPara("company_name"));
+    	contact.set("code", getPara("code"));
+    	contact.set("fax", getPara("fax"));
+    	contact.set("company_name", getPara("company_name"));
+        contact.set("company_name_eng", getPara("company_name_eng"));
         contact.set("contact_person", getPara("contact_person"));
         contact.set("contact_person_eng", getPara("contact_person_eng")==""?null:getPara("contact_person_eng"));
         contact.set("location", getPara("location"));

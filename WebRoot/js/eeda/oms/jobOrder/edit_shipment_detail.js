@@ -51,6 +51,7 @@ $(document).ready(function() {
     	$('#wait_overseaCustom').attr("checked",false);
     }
     
+    //选择卸货港时自动填上目的港
     $('#pod_list').on('mousedown', '.fromLocationItem', function(){
 	    	$('#fnd_input').val($('#pod_input').val());
 	    	$('#fnd').val($('#pod').val());
