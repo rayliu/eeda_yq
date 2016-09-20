@@ -13,7 +13,7 @@ import java.util.Map;
 
 import models.ArapAccountAuditLog;
 import models.ArapChargeInvoice;
-import models.ArapChargeInvoiceApplication;
+import models.ArapChargeApplication;
 import models.ArapChargeOrder;
 import models.ArapCostApplication;
 import models.ArapCostOrder;
@@ -170,10 +170,10 @@ public class ChargePreInvoiceOrderController extends Controller {
     //@RequiresPermissions(value = {PermissionConstant.PERMSSION_CPIO_APPROVAL})
 	public void auditChargePreInvoiceOrder(){
 		String chargePreInvoiceOrderId = getPara("chargePreInvoiceOrderId");
-		ArapChargeInvoiceApplication arapAuditOrder = null;
+		ArapChargeApplication arapAuditOrder = null;
 		Map map =new HashMap();
 		if(chargePreInvoiceOrderId != null && !"".equals(chargePreInvoiceOrderId)){
-			arapAuditOrder = ArapChargeInvoiceApplication.dao.findById(chargePreInvoiceOrderId);
+			arapAuditOrder = ArapChargeApplication.dao.findById(chargePreInvoiceOrderId);
 			arapAuditOrder.set("status", "已审核");
             String name = (String) currentUser.getPrincipal();
 			List<UserLogin> users = UserLogin.dao.find("select * from user_login where user_name='" + name + "'");
@@ -193,7 +193,7 @@ public class ChargePreInvoiceOrderController extends Controller {
 		String chargePreInvoiceOrderId = getPara("chargePreInvoiceOrderId");
 		Map map =new HashMap();
 		if(chargePreInvoiceOrderId != null && !"".equals(chargePreInvoiceOrderId)){
-			ArapChargeInvoiceApplication arapAuditOrder = ArapChargeInvoiceApplication.dao.findById(chargePreInvoiceOrderId);
+			ArapChargeApplication arapAuditOrder = ArapChargeApplication.dao.findById(chargePreInvoiceOrderId);
 			arapAuditOrder.set("status", "已审批");
             String name = (String) currentUser.getPrincipal();
 			List<UserLogin> users = UserLogin.dao.find("select * from user_login where user_name='" + name + "'");
@@ -421,7 +421,7 @@ public class ChargePreInvoiceOrderController extends Controller {
 		Double receive_amount = chargeApplicationOrderRel1.getDouble("receive_amount");
 		
 		//更新主表金额数据
-		ArapChargeInvoiceApplication.dao.findById(chargePreInvoiceOrderId).set("total_amount", receive_amount).update();
+		ArapChargeApplication.dao.findById(chargePreInvoiceOrderId).set("total_amount", receive_amount).update();
 		//Double total_amount = ArapChargeInvoiceApplication.dao.findById(chargePreInvoiceOrderId).getDouble("total_amount");
 		Double total_noreceive = totalAmount - totalReceive;
 		Map map = new HashMap();
@@ -761,7 +761,7 @@ public class ChargePreInvoiceOrderController extends Controller {
 		String id = getPara("id");
 		setAttr("application_id", id);
 		
-		ArapChargeInvoiceApplication arapAuditInvoiceApplication = ArapChargeInvoiceApplication.dao.findById(id);
+		ArapChargeApplication arapAuditInvoiceApplication = ArapChargeApplication.dao.findById(id);
 		setAttr("invoiceApplication", arapAuditInvoiceApplication);
 		
 		Contact con  = Contact.dao.findFirst("select * from contact c left join party p on c.id = p.contact_id where p.id = ?",arapAuditInvoiceApplication.get("payee_id"));
@@ -790,7 +790,7 @@ public class ChargePreInvoiceOrderController extends Controller {
 	
 	@Before(Tx.class)
 	public void save() {
-		ArapChargeInvoiceApplication arapAuditInvoiceApplication = null;
+		ArapChargeApplication arapAuditInvoiceApplication = null;
 		String application_id = getPara("application_id");
 		String paymentMethod = getPara("payment_method");//收款方式
 		String bank_no = getPara("bank_no");          //收款账号
@@ -805,7 +805,7 @@ public class ChargePreInvoiceOrderController extends Controller {
 
 		
 		if (!"".equals(application_id) && application_id != null) {
-			arapAuditInvoiceApplication = ArapChargeInvoiceApplication.dao.findById(application_id);
+			arapAuditInvoiceApplication = ArapChargeApplication.dao.findById(application_id);
 			arapAuditInvoiceApplication.set("last_modified_by",LoginUserController.getLoginUserId(this));
 			arapAuditInvoiceApplication.set("last_modified_stamp", new Date());
 			arapAuditInvoiceApplication.set("payee_name", payee_name);
@@ -838,7 +838,7 @@ public class ChargePreInvoiceOrderController extends Controller {
 				chargeApplicationOrderRel.update();
 			}
 		} else {
-			arapAuditInvoiceApplication = new ArapChargeInvoiceApplication();
+			arapAuditInvoiceApplication = new ArapChargeApplication();
 			arapAuditInvoiceApplication.set("order_no",
 					OrderNoGenerator.getNextOrderNo("YSSQ"));
 			arapAuditInvoiceApplication.set("status", "新建");
@@ -910,7 +910,7 @@ public class ChargePreInvoiceOrderController extends Controller {
     public void checkStatus(){
         String application_id=getPara("application_id");
         
-        ArapChargeInvoiceApplication arapChargeInvoiceApplication = ArapChargeInvoiceApplication.dao.findById(application_id);
+        ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(application_id);
         arapChargeInvoiceApplication.set("status", "已复核");
         arapChargeInvoiceApplication.set("check_by", LoginUserController.getLoginUserId(this));
         arapChargeInvoiceApplication.set("check_stamp", new Date()).update();
@@ -977,7 +977,7 @@ public class ChargePreInvoiceOrderController extends Controller {
     public void returnOrder(){
         String application_id=getPara("application_id");
         
-        ArapChargeInvoiceApplication arapChargeInvoiceApplication = ArapChargeInvoiceApplication.dao.findById(application_id);
+        ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(application_id);
         arapChargeInvoiceApplication.set("status", "新建");
         arapChargeInvoiceApplication.set("return_by", LoginUserController.getLoginUserId(this));
         arapChargeInvoiceApplication.set("return_stamp", new Date()).update();
@@ -1023,7 +1023,7 @@ public class ChargePreInvoiceOrderController extends Controller {
         	receive_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
    		}
         
-        ArapChargeInvoiceApplication arapChargeInvoiceApplication = ArapChargeInvoiceApplication.dao.findById(application_id);
+        ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(application_id);
         String pay_amount = arapChargeInvoiceApplication.getDouble("total_amount").toString();
         arapChargeInvoiceApplication.set("status", "已收款");
         arapChargeInvoiceApplication.set("receive_type", receive_type);
@@ -1135,7 +1135,7 @@ public class ChargePreInvoiceOrderController extends Controller {
     public void returnConfirmOrder(){
         String application_id=getPara("application_id");
         
-        ArapChargeInvoiceApplication arapChargeInvoiceApplication = ArapChargeInvoiceApplication.dao.findById(application_id);
+        ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(application_id);
         arapChargeInvoiceApplication.set("status", "已复核");
         arapChargeInvoiceApplication.set("return_confirm_by", LoginUserController.getLoginUserId(this));
         arapChargeInvoiceApplication.set("return_confirm_stamp", new Date());
@@ -1245,7 +1245,7 @@ public class ChargePreInvoiceOrderController extends Controller {
 		}
 		
 		//删除主表数据
-		ArapChargeInvoiceApplication arapCostInvoiceApplication = ArapChargeInvoiceApplication.dao.findById(application_id);
+		ArapChargeApplication arapCostInvoiceApplication = ArapChargeApplication.dao.findById(application_id);
         arapCostInvoiceApplication.delete();
 	        
 		

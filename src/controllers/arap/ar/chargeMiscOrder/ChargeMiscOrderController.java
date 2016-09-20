@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.ArapChargeInvoiceApplication;
+import models.ArapChargeApplication;
 import models.ArapChargeOrder;
 import models.Party;
 import models.UserLogin;
@@ -297,7 +297,7 @@ public class ChargeMiscOrderController extends Controller {
 		String chargePreInvoiceOrderId = getPara("chargePreInvoiceOrderId");
 		if (chargePreInvoiceOrderId != null
 				&& !"".equals(chargePreInvoiceOrderId)) {
-			ArapChargeInvoiceApplication arapAuditOrder = ArapChargeInvoiceApplication.dao
+			ArapChargeApplication arapAuditOrder = ArapChargeApplication.dao
 					.findById(chargePreInvoiceOrderId);
 			arapAuditOrder.set("status", "已审核");
 			String name = (String) currentUser.getPrincipal();
@@ -316,7 +316,7 @@ public class ChargeMiscOrderController extends Controller {
 		String chargePreInvoiceOrderId = getPara("chargePreInvoiceOrderId");
 		if (chargePreInvoiceOrderId != null
 				&& !"".equals(chargePreInvoiceOrderId)) {
-			ArapChargeInvoiceApplication arapAuditOrder = ArapChargeInvoiceApplication.dao
+			ArapChargeApplication arapAuditOrder = ArapChargeApplication.dao
 					.findById(chargePreInvoiceOrderId);
 			arapAuditOrder.set("status", "已审批");
 			String name = (String) currentUser.getPrincipal();

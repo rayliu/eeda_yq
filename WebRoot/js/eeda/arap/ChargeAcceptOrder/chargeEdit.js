@@ -3,7 +3,59 @@ $(document).ready(function() {
 	document.title = '收款申请单 | '+document.title;
 
     $('#menu_finance').addClass('active').find('ul').addClass('in');
+    
+    //构造主表json
+    var buildOrder = function(){
+    	var item = {};
+    	item.id = $('#order_id').val();
+    	var orderForm = $('#orderForm input,select,textarea');
+    	for(var i = 0; i < orderForm.length; i++){
+    		var name = orderForm[i].id;
+        	var value =orderForm[i].value;
+        	if(name){
+        		if(name.indexOf("begin_time") != -1){
+        			name = "begin_time";
+        		}else if(name.indexOf("end_time") != -1){
+        			name = "end_time"
+        		}
+        		item[name] = value;
+        	}
+    	}
+        return item;
+    }
 
+
+    var buildItem = function(){
+    	var item_table_rows = $("#eeda-table tr");
+        var items_array=[];
+        for(var index=0; index<item_table_rows.length; index++){
+            if(index<2)
+                continue;
+            
+            var row = item_table_rows[index];
+            var empty = $(row).find('.dataTables_empty').text();
+            if(empty)
+            	continue;
+            
+            var id = $(row).attr('id');
+            if(!id){
+                id='';
+            }
+            var item={};
+            for(var i = 0; i < row.childNodes.length; i++){
+            	var name = $(row.childNodes[i]).find('input').attr('name');
+            	var value = $(row.childNodes[i]).find('input').val();
+            	if(name){
+            		item[name] = value;
+            	}
+            }
+            item.id = id;
+            item.action = $('#order_id').val() != ''?'UPDATE':'CREATE';
+            items_array.push(item);
+        }
+        return items_array;
+    }
+    
 	//datatable, 动态处理
     var idsArray = $("#idsArray").val();
     var total = 0.00;
@@ -11,18 +63,22 @@ $(document).ready(function() {
     var pay = 0.00;
    
 	var dataTable = eeda.dt({
-	    id: 'CostOrder-table',
+	    id: 'eeda-table',
 	    paging: true,
 	    serverSide: true, //不打开会出现排序不对
-	    ajax: "/chargeAcceptOrder/chargeOrderList?idsArray="+idsArray+"&application_id="+$("#application_id").val(),
+	    ajax: "/chargeAcceptOrder/chargeOrderList?idsArray="+idsArray+"&application_id="+$("#order_id").val(),
 	    columns:[
-             {"data":"ORDER_TYPE","width": "100px","class":'order_type'},
-             {"data":"ORDER_NO","width": "120px",
+            {"data":"ORDER_TYPE","width": "100px","class":'order_type',
+        		"render": function(data, type, full, meta) {
+        			return "<input type ='text' name='order_type' value='"+data+"'>";
+        		}
+        	},
+            {"data":"ORDER_NO","width": "120px",
             	"render": function(data, type, full, meta) {
             		return '<a href="/chargeCheckOrder/edit?id='+full.ID+'">'+data+'</a>';
         		}
-             },
-        	{"data":"PAYEE_NAME","width": "120px"},
+            },
+        	{"data":"SP_NAME","width": "120px"},
     		{"data":"TOTAL_AMOUNT","width": "100px",
     			"render": function(data, type, full, meta) {
 					total = total + parseFloat(data) ;
@@ -39,11 +95,12 @@ $(document).ready(function() {
     		},
     		{"data":null,"width": "100px",
     			"render": function(data, type, full, meta) {
-					if($('#application_id').val()==''){
+					if($('#order_id').val()==''){
 						pay = pay + parseFloat(full.NORECEIVE_AMOUNT) ;
 						$("#pay").html(parseFloat(pay).toFixed(2));
 						$("#pay_amount").val(parseFloat(pay).toFixed(2));
-						return "<input type ='text' name='amount' style='width:80px' id ='amount' value='"+full.NORECEIVE_AMOUNT+"'>";
+						$("#total_amount").val(parseFloat(pay).toFixed(2));
+						return "<input type ='text' name='amount' style='width:80px' value='"+full.NORECEIVE_AMOUNT+"'>";
 					}
 					else{
 						if(full.NORECEIVE_AMOUNT==0){
@@ -52,44 +109,22 @@ $(document).ready(function() {
 						pay = pay + parseFloat(full.RECEIVE_AMOUNT) ;
 						$("#pay").html(parseFloat(pay).toFixed(2));
 						$("#pay_amount").val(parseFloat(pay).toFixed(2));
-						return "<input type ='text' name='amount' style='width:80px' id ='amount' value='"+full.RECEIVE_AMOUNT+"'>";
+						$("#total_amount").val(parseFloat(pay).toFixed(2));
+						return "<input type ='text' name='amount' style='width:80px'  value='"+full.RECEIVE_AMOUNT+"'>";
 					}
     			}
     		},
-    		{"data":"CREATE_NAME","width": "120px"},
+    		{"data":"CREATOR_NAME","width": "120px"},
     		{"data":"CREATE_STAMP","width": "150px"}
         ]      
     });	
-    
-    var orderjson = function(){
-    	var array=[];
-    	var sum=0.0;
-    	$("#CostOrder-table input[name='amount']").each(function(){
-    		var obj={};
-    		obj.id = $(this).parent().parent().attr('id');
-    		obj.order_type = $(this).parent().parent().find('.order_type').text();
-    		obj.value = $(this).val();
-    		obj.payee_unit = $(this).parent().parent().attr('payee_unit');
-    		sum+=parseFloat(obj.value);
-    		array.push(obj);
-    	});
-    	
-    	$("#total_amount").val(parseFloat(sum).toFixed(2));
-    	var str_JSON = JSON.stringify(array);
-    	console.log(str_JSON);
-    	$("#detailJson").val(str_JSON);
-    };
-    
-    
-    
     
 
     //申请保存
 	$("#saveBtn").on('click',function(){
 		$("#saveBtn").attr("disabled", true);
 		$("#printBtn").attr("disabled", true);
-	
-		orderjson();
+
 	
 		if($("#payment_method").val()=='transfers'){
 			if($("#deposit_bank").val()=='' && $("#bank_no").val()==''&& $("#account_name").val()==''){
@@ -97,27 +132,34 @@ $(document).ready(function() {
 				return false;
 			}
 		}
-		$.get('/chargeAcceptOrder/save',$("#checkForm").serialize(), function(data){
+		
+		var order = buildOrder();
+		order.item_list = buildItem();
+		
+		$.get('/chargeAcceptOrder/save',{params:JSON.stringify(order)}, function(data){
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-				$("#application_id").val(data.ID);
-				$("#application_no").val(data.ORDER_NO);
-				$("#application_date").val(data.CREATE_STAMP);
+				$("#order_id").val(data.ID);
+				$("#order_no").val(data.ORDER_NO);
+				$("#create_stamp").val(data.CREATE_STAMP);
+				$("#creator_name").val(data.CREATOR_NAME);
 				$("#saveBtn").attr("disabled", false);
 				$("#printBtn").attr("disabled", false);
 				$("#checkBtn").attr('disabled',false);
 				$("#deleteBtn").attr("disabled", false);
-				contactUrl("edit?id",data.ID);
+				eeda.contactUrl("edit?id",data.ID);
 				total = 0.00;
 				nopay = 0.00;
 				pay = 0.00;
-				datatable.fnSettings().sAjaxSource = "/chargePreInvoiceOrder/chargeOrderList?application_id="+$("#application_id").val();;
-				datatable.fnDraw();
+				
+				//dataTable.ajax.url("/chargeAcceptOrder/chargeOrderList?application_id="+$("#order_id").val()).load();
+				
 			}else{
 				$.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
 			}
 		},'json');
 	});
+	
 	
     //打印
 	 $("#printBtn").on('click',function(){
@@ -243,7 +285,7 @@ $(document).ready(function() {
 	
 	  
 	 //异步显示总金额
-    $("#CostOrder-table").on('input', 'input', function(e){
+    $("#eeda-table").on('input', 'input', function(e){
 		e.preventDefault();
 		var value = 0.00;
 		var currentValue = $(this).val();
@@ -264,6 +306,7 @@ $(document).ready(function() {
 	    });		
 		$("#pay").html(parseFloat(value).toFixed(2));
 		$("#pay_amount").val(parseFloat(value).toFixed(2));
+		$("#total_amount").val(parseFloat(value).toFixed(2));
 	});	
     
  
