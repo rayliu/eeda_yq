@@ -66,7 +66,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     eeda.contactUrl("edit?id",order.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     $('#saveBtn').attr('disabled', false);
-                    
+                    $('#confirmCompleted').attr('disabled', false);
                     //异步刷新明细表
                     salesOrder.refleshTable(order.ID);
                 }else{
