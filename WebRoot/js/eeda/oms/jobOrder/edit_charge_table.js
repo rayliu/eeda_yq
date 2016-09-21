@@ -498,7 +498,7 @@ $(document).ready(function() {
     
     
     
-    //getTotalCharge();
+    getTotalCharge();
     
     var buildSpList = function(){
     	//获取选中的结算公司

@@ -443,7 +443,7 @@ $(document).ready(function() {
        calcCurrency();
    }
 
-   // getTotalCost();
+    getTotalCost();
 //       var totalCharge = $('[name=chargeRMB]').text().toString();
 //       var totalChargeU = $('[name=chargeUSD]').text().toString();        
 //       var totalChargeRMB=parseFloat(totalCharge.replace('RMB',''));        
