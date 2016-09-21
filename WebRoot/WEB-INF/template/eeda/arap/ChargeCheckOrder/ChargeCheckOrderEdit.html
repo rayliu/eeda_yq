@@ -83,15 +83,15 @@
 					<div class="form-group">
                          <label class="label-margin">是否开票</label>
                         	<label class="radio-inline">
-                             <input type="radio" name="invoiceType" value="Y" <% if(order.have_invoice=='Y'||order.have_invoice==''){ %>checked="checked"<% }%>>是
+                             <input type="radio" name="invoiceType" value="Y" <% if(order.have_invoice!''=='Y'||order.have_invoice==''){ %>checked="checked"<% }%>>是
                          </label>
                         	<label class="radio-inline">
-                             <input type="radio" name="invoiceType"  value="N" <% if(order.have_invoice=='N'){%>checked="checked"<% }%>>否
+                             <input type="radio" name="invoiceType"  value="N" <% if(order.have_invoice!'N'=='N'){%>checked="checked"<% }%>>否
                          </label>
                      </div>
                 </div>
 			</div>
-			<div class="row">
+			<div class="row" id="invoice_flag" style="display:none">
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", { id:'billing_unit',
 					label:'开票单位', value:order.billing_unit!''}){}%></div>

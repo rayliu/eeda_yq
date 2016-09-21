@@ -67,9 +67,8 @@ $(document).ready(function() {
             $('#saveBtn').attr('disabled', false);
           });
     });  
- 
 
-    
+
     //按钮控制
     var order_id = $("#order_id").val();
     var status = $("#status").val()
@@ -84,18 +83,20 @@ $(document).ready(function() {
     
     //确认单据
     $('#confrimBtn').click(function(){
-        	$(this).attr('disabled', true);
-        	var id = $("#order_id").val();
-        	 $.post('/chargeCheckOrder/confirm', {id:id}, function(data){
-        		 if(data){
-        			 $('#saveBtn').attr('disabled', true);
-	    			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
-        		 }
-	         },'json').fail(function() {
-	        	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
-	        	 $(this).attr('disabled', false);
-	           });
-        })
+    	$(this).attr('disabled', true);
+    	var id = $("#order_id").val();
+    	 $.post('/chargeCheckOrder/confirm', {id:id}, function(data){
+    		 if(data){
+    			 $('#saveBtn').attr('disabled', true);
+    			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+    		 }
+         },'json').fail(function() {
+        	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+        	 $(this).attr('disabled', false);
+           });
+    })
+    
+    
     //打印应收对账明细
     $('#printBtn').click(function(){
     	var order_id = $('#order_id').val();
@@ -107,6 +108,18 @@ $(document).ready(function() {
     			$.scojs_message('生成应收对账单PDF失败',$.scojs_message.TYPE_ERROR);
     		}
     	});
+    });
+    
+
+    
+    $('input[type=radio]').on('click',function(){
+    	var checked = $(this).val();
+    	
+    	if(checked=='Y'){
+    		$('#invoice_flag').show();
+    	}else{
+    		$('#invoice_flag').hide();
+    	}
     });
       
     
