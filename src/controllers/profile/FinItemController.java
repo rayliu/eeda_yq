@@ -53,9 +53,9 @@ public class FinItemController extends Controller {
     	
     	List<Record> finItems = null;
     	if (input !=null && input.trim().length() > 0) {
-    		finItems = Db.find("select ifnull(f.name_eng,f.name) name from fin_item f where f.name_eng like '%"+input+"%'");
+    		finItems = Db.find("select f.id,ifnull(f.name_eng,f.name) name from fin_item f where f.name_eng like '%"+input+"%'");
     	}else{
-    		finItems = Db.find("select ifnull(f.name_eng,f.name) name from fin_item f");
+    		finItems = Db.find("select f.id,ifnull(f.name_eng,f.name) name from fin_item f");
     	}
     	renderJson(finItems);
     }

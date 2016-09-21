@@ -7,6 +7,9 @@ import models.eeda.profile.OrderNoSeq;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
+
 /**
  * generate Order number
  * 
@@ -23,22 +26,24 @@ public class OrderNoGenerator {
         
 		//1. 从数据库获取orderPrefix的最后号码, 没有该orderPrefix则新增一行记录
         //2. 判断是否日期相同, 相同就累加, 不同就重新计数
-	    OrderNoSeq orderSeq = OrderNoSeq.dao.findFirst("select * from order_no_seq where prefix=?", orderPrefix);
+	    Record orderSeq = Db.findFirst("select * from order_no_seq where prefix=?", orderPrefix);
         if(orderSeq!=null){
             String seq = "000";
             String lastOrderNo = orderSeq.get("last_order_no");
-            //不管前缀长度，后面的数字长度是 13， 2011010100001
-            String ymd = StringUtils.right(lastOrderNo, 13).substring(0, 8); // 获取年月日字符串
-            if(ymd.equals(nowdate)){//如果年月日 =今天， 获取流水号
-                seq = StringUtils.right(lastOrderNo, 5); // 获取流水号
+            //不管前缀长度，后面的数字长度是 13， 201101001
+            String ym = StringUtils.right(lastOrderNo, 9).substring(0, 6); // 获取年月字符串
+            if(ym.equals(nowdate)){//如果年月 =今天， 获取流水号
+                seq = StringUtils.right(lastOrderNo, 3); // 获取流水号
             }
             orderNo = orderPrefix +nowdate+ getNo(seq);
-            orderSeq.set("last_order_no", orderNo).update();
+            orderSeq.set("last_order_no", orderNo);
+            Db.update("order_no_seq", orderSeq);
         }else{
-            orderSeq = new OrderNoSeq();
+            orderSeq = new Record();
             orderNo = orderPrefix +nowdate+ getNo("000");
             orderSeq.set("prefix", orderPrefix);
-            orderSeq.set("last_order_no", orderNo).save();
+            orderSeq.set("last_order_no", orderNo);
+            Db.save("order_no_seq", orderSeq);
         }
 		
 		return orderNo;
