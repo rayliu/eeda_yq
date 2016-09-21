@@ -154,6 +154,7 @@ $(document).ready(function() {
             	eeda.contactUrl("edit?id",order.ID);
             	$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
             	$('#saveBtn').attr('disabled', false);
+            	$('#confirmCompleted').attr('disabled', false);
                 $("#order_id").val(order.ID);
                 $("#order_no").val(order.ORDER_NO);
                 $("#creator_name").val(order.CREATOR_NAME);
@@ -177,16 +178,12 @@ $(document).ready(function() {
                 $("#airPDF").show();
                 $("#truckOrderPDF").show();
                 
-                //异步刷新海运明细表
+                //异步刷新明细表
                 itemOrder.refleshOceanTable(order.ID);
-                //异步刷新空运明细表
                 itemOrder.refleshAirItemTable(order.ID);
                 itemOrder.refleshCargoDescTable(order.ID);
-                //异步刷新路运明细表
                 itemOrder.refleshLandItemTable(order.ID);
-                //异步刷新费用明细应收
                 itemOrder.refleshChargeTable(order.ID);
-                //异步刷新费用明细应付
                 itemOrder.refleshCostTable(order.ID);
                 
             }else{
