@@ -91,7 +91,7 @@
                      </div>
                 </div>
 			</div>
-			<div class="row" id="invoice_flag" style="display:none">
+			<div class="row" id="invoice_flag" <% if(order.have_invoice!'N'=='N'){%>style="display:none"<% }%>>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", { id:'billing_unit',
 					label:'开票单位', value:order.billing_unit!''}){}%></div>

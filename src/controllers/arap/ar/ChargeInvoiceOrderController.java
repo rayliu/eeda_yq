@@ -48,7 +48,7 @@ public class ChargeInvoiceOrderController extends Controller {
     	String total_amount = getPara("total_amount");
 		String ids = getPara("idsArray");
 		String[] idArr = ids.split(",");
-		String sql = " select aco.payee_id,p.contact_person,p.phone,p.address from arap_charge_order aco "
+		String sql = " select aco.sp_id,p.contact_person,p.phone,p.address from arap_charge_order aco "
 				+ " left join party p on p.id = aco.sp_id "
 				+ " where aco.id = ? ";
 		setAttr("create",Db.findFirst(sql,idArr[0]));
@@ -61,7 +61,7 @@ public class ChargeInvoiceOrderController extends Controller {
     public List<Record> getItemList(String ids){
     	String sql = "select acor.id,acor.order_no,acor.total_amount,acor.`status`,acor.invoice_no,p.abbr payee_name,acor.create_stamp, ul.c_name create_name"
     			+ " from arap_charge_order acor"
-    			+ " LEFT JOIN party p on p.id = acor.payee_id"
+    			+ " LEFT JOIN party p on p.id = acor.sp_id"
     			+ " LEFT JOIN user_login ul on ul.id = acor.create_by"
     			+ " where acor.id in("+ids+")" ;	
     	List<Record> re = Db.find(sql);
@@ -80,7 +80,7 @@ public class ChargeInvoiceOrderController extends Controller {
         
     	sql = " select * from (select acor.id,acor.order_no,acor.total_amount,acor.status,p.abbr payee_name,acor.create_stamp, ul.c_name create_name"
     			+ " from arap_charge_order acor"
-    			+ " LEFT JOIN party p on p.id = acor.payee_id"
+    			+ " LEFT JOIN party p on p.id = acor.sp_id"
     			+ " LEFT JOIN user_login ul on ul.id = acor.create_by"
     			+ " where acor.have_invoice='Y' and acor.invoice_order_id is null and acor.status='已确认' "
     			+ " ) A where 1 = 1 ";
@@ -113,7 +113,7 @@ public class ChargeInvoiceOrderController extends Controller {
         
     	sql = " select * from (select acor.id,acor.order_no ,acor.total_amount,p.abbr payee_name ,acor.`status`,acor.create_stamp, ul.c_name create_name"
     			+ " from arap_charge_invoice acor"
-    			+ " LEFT JOIN party p on p.id = acor.payee_id"
+    			+ " LEFT JOIN party p on p.id = acor.sp_id"
     			+ " LEFT JOIN user_login ul on ul.id = acor.create_by"
     			+ " ) A where 1 = 1 ";
         
@@ -193,7 +193,7 @@ public class ChargeInvoiceOrderController extends Controller {
 		
 		String itemSql = "select acor.id,acor.order_no,acor.total_amount,acor.`status`,acor.invoice_no,p.abbr payee_name,acor.create_stamp, ul.c_name create_name"
     			+ " from arap_charge_order acor"
-    			+ " LEFT JOIN party p on p.id = acor.payee_id"
+    			+ " LEFT JOIN party p on p.id = acor.sp_id"
     			+ " LEFT JOIN user_login ul on ul.id = acor.create_by"
     			+ " where acor.invoice_order_id = ? ";
 		

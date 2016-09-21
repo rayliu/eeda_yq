@@ -88,12 +88,13 @@ $(document).ready(function() {
     	 $.post('/chargeCheckOrder/confirm', {id:id}, function(data){
     		 if(data){
     			 $('#saveBtn').attr('disabled', true);
+    			 $("#status").val('已确认');
     			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
     		 }
          },'json').fail(function() {
         	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
         	 $(this).attr('disabled', false);
-           });
+         });
     })
     
     
