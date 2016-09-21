@@ -25,7 +25,7 @@ $(document).ready(function() {
     	var me = this;
     	var inputStr = inputField.val();
     	
-		$.get('/location/searchPortAndCity', {portName:inputStr}, function(data){
+		$.get('/location/searchPortAndCity', {input:inputStr}, function(data){
 			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 				return;
 			}
