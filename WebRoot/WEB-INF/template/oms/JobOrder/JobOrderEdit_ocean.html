@@ -48,7 +48,7 @@
                         type:  'carrier',
                         label: '船公司', 
                         value: shipment.carrier!planOrderItem.carrier!'',
-                        display_value: port.carrier_name!shipment.carrier_name!''
+                        display_value: shipment.carrier_name!portCreate.carrier_name!''
                     }){}%>
             </div>
              <div class="col-lg-4">
@@ -160,7 +160,7 @@
                        {   id:'por', 
                            label:'收货港 POR', 
                            value:shipment.por!planOrderItem.por!'',
-                           display_value:port.por_name!''
+                           display_value:port.por_name!portCreate.por_name!''
                        }){}%>
                </div>
                <div class="col-lg-4">
@@ -168,7 +168,7 @@
                        {   id:'pol', 
                            label:'装货港 POL', 
                            value:shipment.pol!planOrderItem.pol!'',
-                           display_value:port.pol_name!''
+                           display_value:port.pol_name!portCreate.pol_name!''
                        }){}%>
                </div>
                <div class="col-lg-4">
@@ -186,15 +186,15 @@
                        {   id:'pod', 
                            label:'卸货港 POD', 
                            value:shipment.pod!planOrderItem.pod!'',
-                           display_value:port.pod_name!''
+                           display_value:port.pod_name!portCreate.pod_name!''
                        }){}%>
                </div>
                <div class="col-lg-4">
                    <%include("/eeda/component/form/inputPortAndCityField.html", 
                        {   id:'fnd', 
                            label:'目的地 FND', 
-                           value:shipment.fnd!'',
-                           display_value:port.fnd_name!''
+                           value:shipment.fnd!planOrderItem.pod!'',
+                           display_value:port.fnd_name!portCreate.pod_name!''
                        }){}%>
                </div>
            </div>

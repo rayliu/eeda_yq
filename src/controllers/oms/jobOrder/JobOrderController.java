@@ -94,7 +94,7 @@ public class JobOrderController extends Controller {
 				    			+" LEFT JOIN location lo2 on lo2.id = joi.pod"
 				    			+ " left join party p on p.id = joi.carrier"
 				    			+" where joi.id = ?";
-	    	setAttr("port",Db.findFirst(port_sql,id));
+	    	setAttr("portCreate",Db.findFirst(port_sql,id));
 	    	
     	}
     	setAttr("loginUser",LoginUserController.getLoginUserName(this));
