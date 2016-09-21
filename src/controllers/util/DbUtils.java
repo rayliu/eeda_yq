@@ -65,7 +65,7 @@ public class DbUtils {
             		continue;
             	}
 			}
-        	condition += " and " + key + " between '" + beginTime + "' and '" + endTime+ " 23:59:59' ";
+        	condition += " and " + key + " between '" + beginTime + " 00:00:00' and '" + endTime+ " 23:59:59' ";
         }
         logger.debug("condition: "+condition);
         return condition;
