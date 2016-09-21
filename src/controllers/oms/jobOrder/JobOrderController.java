@@ -87,12 +87,13 @@ public class JobOrderController extends Controller {
 	    	PlanOrderItem plan_order_item = PlanOrderItem.dao.findById(id);
 	    	setAttr("planOrderItem", plan_order_item);
 	    	
-	    	//返回海运的港口名称
-	    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name from plan_order_item jos"
-				    			+" LEFT JOIN location lo on lo.id = jos.por"
-				    			+" LEFT JOIN location lo1 on lo1.id = jos.pol"
-				    			+" LEFT JOIN location lo2 on lo2.id = jos.pod"
-				    			+" where jos.id = ?";
+	    	//返回海运的港口名称,加多一个船公司
+	    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name,p.abbr carrier_name from plan_order_item joi"
+				    			+" LEFT JOIN location lo on lo.id = joi.por"
+				    			+" LEFT JOIN location lo1 on lo1.id = joi.pol"
+				    			+" LEFT JOIN location lo2 on lo2.id = joi.pod"
+				    			+ " left join party p on p.id = joi.carrier"
+				    			+" where joi.id = ?";
 	    	setAttr("port",Db.findFirst(port_sql,id));
 	    	
     	}
