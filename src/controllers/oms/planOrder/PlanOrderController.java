@@ -12,6 +12,7 @@ import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
+import models.eeda.oms.jobOrder.JobOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -174,7 +175,7 @@ public class PlanOrderController extends Controller {
         renderJson(orderListMap); 
     }
     
-  //异步刷新字表
+    //异步刷新字表
     public void tableList(){
     	String order_id = getPara("order_id");
     	List<Record> list = null;
@@ -190,5 +191,14 @@ public class PlanOrderController extends Controller {
         renderJson(BillingOrderListMap); 
     }
    
+    
+    //确认已完成计划单
+    public void confirmCompleted(){
+    	String id = getPara("id");
+    	PlanOrder order = PlanOrder.dao.findById(id);
+    	order.set("status", "已完成");
+    	renderJson("{\"result\":true}");
+    }
+    
 
 }

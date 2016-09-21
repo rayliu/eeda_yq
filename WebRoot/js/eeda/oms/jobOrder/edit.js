@@ -7,6 +7,32 @@ $(document).ready(function() {
 	document.title = order_no + ' | ' + document.title;
 	$('#menu_order').addClass('active').find('ul').addClass('in');
 	
+	 //按钮状态
+	var id = $('#order_id').val();
+	var status = $('#status').val();
+    if(id==''){
+    	$('#confirmCompleted').attr('disabled', true);
+    }else{
+		if(status=='已完成'){
+			$('#confirmCompleted').attr('disabled', true);
+			$('#saveBtn').attr('disabled', true);
+		}
+    }
+     
+	
+	//已完成工作单确认
+	$('#confirmCompleted').click(function(){
+		$('#confirmCompleted').attr('disabled', true);
+		id = $('#order_id').val();
+		$.post('/jobOrder/confirmCompleted', {id:id}, function(data){
+	            $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+	            $('#saveBtn').attr('disabled', true);
+	    },'json').fail(function() {
+	        $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+	        $('#confirmCompleted').attr('disabled', false);
+	      });
+	})
+	
     //------------save
 	$('#saveBtn').click(function(e){
 		//阻止a 的默认响应行为，不需要跳转
@@ -168,26 +194,11 @@ $(document).ready(function() {
                 $('#saveBtn').attr('disabled', false);
             }
         },'json').fail(function() {
-            $.scojs_message('失败', $.scojs_message.TYPE_ERROR);
+            $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
             $('#saveBtn').attr('disabled', false);
           });
     	
 	});
-    
-    //创建派车单URL跳转传参
-//    $('#create_truckOrder').click(function(){
-//    	$(this).attr('disabled', true);
-//    	var order_id = $('#order_id').val();
-//    	var itemIds=[];
-//    	$('#cargo_table input[type="checkbox"]').each(function(){
-//    		var checkbox = $(this).prop('checked');
-//    		if(checkbox){
-//    			var itemId = $(this).parent().parent().attr('id');
-//    			itemIds.push(itemId);
-//    		}
-//    	});
-//    	location.href ="/truckOrder/create?order_id="+order_id+"&itemIds="+itemIds;
-//    });
     
     var showServiceTab=function(service){
         switch (service){
@@ -250,7 +261,7 @@ $(document).ready(function() {
 	    })
     }
     
-  //放货方式radio回显
+    //放货方式radio回显
     var radioVal = $('#hidden_billing_method').val();
     $('#billing_method input[type="radio"]').each(function(){
     	var checkValue = $(this).val();
@@ -272,7 +283,6 @@ $(document).ready(function() {
 	    return timeStr;
     }
     
-	    
 	    
 	    
 });

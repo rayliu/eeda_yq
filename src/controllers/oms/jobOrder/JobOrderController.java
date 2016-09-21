@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.ArapChargeItem;
-import models.ArapChargeOrder;
 import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
@@ -678,5 +676,13 @@ public class JobOrderController extends Controller {
    		renderJson(order);
     }
    
+    //确认已完成工作单
+    public void confirmCompleted(){
+    	String id = getPara("id");
+    	JobOrder order = JobOrder.dao.findById(id);
+    	order.set("status", "已完成");
+    	renderJson("{\"result\":true}");
+    }
+    
    
 }

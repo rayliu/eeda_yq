@@ -4,6 +4,33 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	
     	document.title = order_no + ' | ' + document.title;
         $('#menu_order').addClass('active').find('ul').addClass('in');
+        
+      //按钮状态
+    	var id = $('#order_id').val();
+    	var status = $('#status').val();
+        if(id==''){
+        	$('#confirmCompleted').attr('disabled', true);
+        }else{
+    		if(status=='已完成'){
+    			$('#confirmCompleted').attr('disabled', true);
+    			$('#saveBtn').attr('disabled', true);
+    		}
+        }
+         
+    	
+    	//已完成计划单确认
+    	$('#confirmCompleted').click(function(){
+    		$('#confirmCompleted').attr('disabled', true);
+    		id = $('#order_id').val();
+    		$.post('/planOrder/confirmCompleted', {id:id}, function(data){
+    	            $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+    	            $('#saveBtn').attr('disabled', true);
+    	    },'json').fail(function() {
+    	        $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+    	        $('#confirmCompleted').attr('disabled', false);
+    	      });
+    	})
+        
         //------------save
         $('#saveBtn').click(function(e){
             //阻止a 的默认响应行为，不需要跳转
