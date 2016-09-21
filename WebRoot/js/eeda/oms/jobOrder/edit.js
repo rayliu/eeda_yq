@@ -151,7 +151,7 @@ $(document).ready(function() {
         $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
             if(order.ID){
-            	eeda.contactUrl("edit/id",order.ID);
+            	eeda.contactUrl("edit?id",order.ID);
             	$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
             	$('#saveBtn').attr('disabled', false);
                 $("#order_id").val(order.ID);
