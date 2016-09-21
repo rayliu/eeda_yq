@@ -13,7 +13,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-list fa-fw"></i>订单列表                            
+                            <i class="fa fa-list fa-fw"></i>计划单列表                            
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -24,7 +24,7 @@
                                         <div class="col-lg-4"><!--  三列排版  -->
                                             <%include("/eeda/component/form/inputField.html", 
                                                                 {   id: 'order_no', 
-                                                                    label: '订单号', 
+                                                                    label: '计划单号', 
                                                                     value: ''
                                                                 }){}%>
                                         </div>
@@ -57,13 +57,13 @@
                             <div class="form-group button-bar" >
                                 <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
                                 <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
-                                <a class="btn btn-success btn-sm" href="/planOrder/create">新增订单</a>
+                                <a class="btn btn-success btn-sm" href="/planOrder/create">新增计划单</a>
                             </div> 
 
                             <%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'eeda-table', 
-                                    headers:['计划订单号',
+                                    headers:['计划单号',
                                         '类型',
                                         '客户名称',
                                         '创建人',

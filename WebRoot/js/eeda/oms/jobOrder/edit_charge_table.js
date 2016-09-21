@@ -115,6 +115,7 @@ $(document).ready(function() {
     var bindFieldEvent=function(){
     	eeda.bindTableField('SP_ID','/serviceProvider/searchCompany','');
         eeda.bindTableField('CHARGE_ID','/finItem/search','');
+        eeda.bindTableField('CHARGE_ENG_ID','/finItem/search_eng','');
         eeda.bindTableField('UNIT_ID','/serviceProvider/searchUnit','');
         eeda.bindTableField('CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
@@ -197,9 +198,9 @@ $(document).ready(function() {
                             data='';
                         var field_html = template('table_dropdown_template',
                             {
-                                id: 'SP_ID',
+                                id: 'CHARGE_ID',
                                 value: data,
-                                display_value: full.SP_NAME,
+                                display_value: full.CHARGE_NAME,
                                 style:'width:200px',
                                 disabled:'disabled'
                             }
@@ -219,6 +220,36 @@ $(document).ready(function() {
                     return field_html;
                 }
               }
+            },
+            { "data": "CHARGE_ENG_ID", "width": "180px",
+            	"render": function ( data, type, full, meta ) {
+            		if(full.AUDIT_FLAG == 'Y'){
+            			if(!data)
+            				data='';
+            			var field_html = template('table_dropdown_template',
+            					{
+            				id: 'CHARGE_ENG_ID',
+            				value: data,
+            				display_value: full.CHARGE_NAME_ENG,
+            				style:'width:200px',
+            				disabled:'disabled'
+            					}
+            			);
+            			return field_html;
+            		}else{
+            			if(!data)
+            				data='';
+            			var field_html = template('table_dropdown_template',
+            					{
+            				id: 'CHARGE_ENG_ID',
+            				value: data,
+            				display_value: full.CHARGE_NAME_ENG,
+            				style:'width:200px'
+            					}
+            			);
+            			return field_html;
+            		}
+            	}
             },
             { "data": "PRICE", "width": "60px",
                 "render": function ( data, type, full, meta ) {
@@ -363,13 +394,22 @@ $(document).ready(function() {
                         data='';
                     return data;
                 }
-            }, { "data": "CHARGE_NAME", "visible": false,
+            }, 
+            { "data": "CHARGE_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return data;
                 }
-            },{ "data": "UNIT_NAME", "visible": false,
+            },
+            { "data": "CHARGE_NAME_ENG", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return data;
+            	}
+            },
+            { "data": "UNIT_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';

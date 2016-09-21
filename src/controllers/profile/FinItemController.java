@@ -34,6 +34,7 @@ public class FinItemController extends Controller {
     Subject currentUser = SecurityUtils.getSubject();
     ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
 
+    //查询费用中文名称
     public void search() {
         String input = getPara("input");
         
@@ -44,6 +45,19 @@ public class FinItemController extends Controller {
             finItems = Db.find("select * from fin_item");
         }
         renderJson(finItems);
+    }
+    
+    //查询费用英文名称
+    public void search_eng() {
+    	String input = getPara("input");
+    	
+    	List<Record> finItems = null;
+    	if (input !=null && input.trim().length() > 0) {
+    		finItems = Db.find("select ifnull(f.name_eng,f.name) name from fin_item f where f.name_eng like '%"+input+"%'");
+    	}else{
+    		finItems = Db.find("select ifnull(f.name_eng,f.name) name from fin_item f");
+    	}
+    	renderJson(finItems);
     }
 
     @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_LIST })
