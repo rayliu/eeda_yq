@@ -546,16 +546,17 @@ public class JobOrderController extends Controller {
         }
         String sql = "";
         if("sowait".equals(type)){
-        	sql=" SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	sql=" SELECT jor.*,ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"
         			+ " FROM job_order jor "
-        			+ " LEFT JOIN job_order_shipment jos ON jor.id = jos.order_id "
+        			+ " LEFT JOIN job_order_shipment jos on jor.id = jos.order_id "
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator "
         			+ " WHERE jor.type = '出口柜货' AND jos.SONO IS NULL AND jor.transport_type LIKE '%ocean%'";        	
         }else if("truckorderwait".equals(type)){
-        	 sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	 sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"
         			+ " FROM job_order_land_item joli"
         			+ " left join job_order jor on jor.id = joli.order_id"
+        			+ " left join job_order_shipment jos on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " WHERE datediff(joli.eta, now()) <= 3 AND (joli.truckorder_flag != 'Y' OR joli.truckorder_flag IS NULL)"
@@ -563,7 +564,7 @@ public class JobOrderController extends Controller {
         	
         	
         } else if("siwait".equals(type)){
-        	 sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	 sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"
         	 		+ " FROM job_order_shipment jos"
         	 		+ " left join job_order jor on jos.order_id = jor.id"
         	 		+ " left join party p on p.id = jor.customer_id"
@@ -571,7 +572,7 @@ public class JobOrderController extends Controller {
         	 		+ " WHERE TO_DAYS(export_date)=TO_DAYS(now())";
         	
         } else if("mblwait".equals(type)){
-        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"
         			+ " FROM job_order_shipment jos "
         			+ " left join job_order jor on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
@@ -579,20 +580,22 @@ public class JobOrderController extends Controller {
         			+ " WHERE jos.si_flag = 'Y' and (jos.mbl_flag != 'Y' or jos.mbl_flag is null)";
         	
         } else if("customwait".equals(type)){
-        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"
         			+ " FROM job_order jor LEFT JOIN  job_order_custom joc ON jor.id=joc.order_id"
+        			+ " left join job_order_shipment jos on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " WHERE jor.transport_type like '%custom%' and joc.customs_broker is null";
         	
         } else if("insurancewait".equals(type)){
-        	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"
         			+ " FROM job_order jor LEFT JOIN job_order_insurance joi ON jor.id = joi.order_id"
+        			+ " left join job_order_shipment jos on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " WHERE jor.transport_type LIKE '%insurance%' and joi.insure_no is NULL";
         } else if("overseacustomwait".equals(type)){
-        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"
         			+ " FROM job_order_shipment jos "
         			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
@@ -600,7 +603,7 @@ public class JobOrderController extends Controller {
         			+ " WHERE  (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
         			+ " and timediff(now(),jos.etd)<TIME('48:00:00') ";
         } else if("tlxOrderwait".equals(type)){
-        	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"
         			+ " FROM job_order_shipment jos"
         			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
@@ -609,11 +612,11 @@ public class JobOrderController extends Controller {
         }
         else{
         	
-         sql = "SELECT jo.*,jos.export_date,ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name "
+         sql = "SELECT * from (select jo.*, jos.export_date sent_out_time, ifnull(u.c_name, u.user_name) creator_name, p.abbr customer_name "
     			+ " from job_order jo "
     			+ " left join job_order_shipment jos on jos.order_id = jo.id"
     			+ " left join party p on p.id = jo.customer_id"
-    			+ " left join user_login u on u.id = jo.creator"
+    			+ " left join user_login u on u.id = jo.creator) A"
     			+ " where 1 =1 ";
          }
         

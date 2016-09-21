@@ -37,6 +37,19 @@
                                             	value:''
                                             }){} %>
                                         </div><!-- /.col-lg-4 -->
+                                        <div class="col-lg-4">
+                                             <%include("/eeda/component/form/selectField.html", 
+                                                    {   id:'status', 
+                                                        label:'状态', 
+                                                        value: '',
+                                                        value_list:[
+                                                            {code:'', value:''},
+                                                            {code:'新建', value:'新建'},
+                                                            {code:'已完成', value:'已完成'}
+                                                        ]
+                                                    }
+                                                 ){} %>
+                                        </div><!-- /.col-lg-4 -->
                                     </div><!-- /.row-->
                                 </form>
 
