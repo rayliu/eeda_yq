@@ -74,19 +74,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var order_no = $.trim($("#order_no").val()); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
-          var sent_out_time = $("#sent_out_time").val();
+          var sent_out_time_begin_time = $("#sent_out_time_begin_time").val();
+          var sent_out_time_end_time = $("#sent_out_time_end_time").val();
           
-          /*  
-              查询规则：参数对应DB字段名
-              *_no like
-              *_id =
-              *_status =
-              时间字段需成双定义  *_begin_time *_end_time   between
-          */
+          //增加海运export_date，出口日期查询
           var url = "/jobOrder/list?order_no="+order_no
                +"&create_stamp_begin_time="+start_date
-               +"&create_stamp_end_time="+end_date;
-          	   +"&sent_out_time="+sent_out_time;
+               +"&create_stamp_end_time="+end_date
+          	   +"&export_date_begin_time="+sent_out_time_begin_time
+          	   +"&export_date_end_time="+sent_out_time_end_time;
 
           dataTable.ajax.url(url).load();
       };

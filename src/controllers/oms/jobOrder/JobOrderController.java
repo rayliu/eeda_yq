@@ -568,7 +568,7 @@ public class JobOrderController extends Controller {
         	 		+ " left join job_order jor on jos.order_id = jor.id"
         	 		+ " left join party p on p.id = jor.customer_id"
         	 		+ " left join user_login u on u.id = jor.creator "
-        	 		+ "WHERE TO_DAYS(export_date)=TO_DAYS(now())";
+        	 		+ " WHERE TO_DAYS(export_date)=TO_DAYS(now())";
         	
         } else if("mblwait".equals(type)){
         	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
@@ -598,7 +598,7 @@ public class JobOrderController extends Controller {
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " WHERE  (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
-        			+ "and timediff(now(),jos.etd)<TIME('48:00:00') ";
+        			+ " and timediff(now(),jos.etd)<TIME('48:00:00') ";
         } else if("tlxOrderwait".equals(type)){
         	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
         			+ " FROM job_order_shipment jos"
@@ -608,12 +608,14 @@ public class JobOrderController extends Controller {
         			+ " WHERE TO_DAYS(jos.etd)= TO_DAYS(now())";
         }
         else{
-
-         sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name "
-    			+ "  from job_order jor "
-    			+ "  left join party p on p.id = jor.customer_id"
-    			+ "  left join user_login u on u.id = jor.creator"
-    			+ "   where 1 =1 ";}
+        	
+         sql = "SELECT jo.*,jos.export_date,ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name "
+    			+ " from job_order jo "
+    			+ " left join job_order_shipment jos on jos.order_id = jo.id"
+    			+ " left join party p on p.id = jo.customer_id"
+    			+ " left join user_login u on u.id = jo.creator"
+    			+ " where 1 =1 ";
+         }
         
         String condition = DbUtils.buildConditions(getParaMap());
 
