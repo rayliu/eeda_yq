@@ -29,6 +29,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
                     }
                 },
                 { "data": "ABBR"}, 
+                { "data": "CODE"}, 
                 { "data": "CONTACT_PERSON"}, 
                 { "data": "PHONE"}, 
                 { "data": "ADDRESS","width": "15%"}, 
