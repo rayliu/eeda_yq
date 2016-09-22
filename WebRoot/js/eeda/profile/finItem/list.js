@@ -9,9 +9,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             id: 'eeda-table',
             ajax: "/finItem/list",
             columns:[
-	              { "data": "NAME"},          
-	              { "data": "REMARK"},
-                {"data": null, 
+                 { "data": "CODE"},          
+                 { "data": "NAME"},          
+                 { "data": "NAME_ENG"},          
+                 { "data": "REMARK"},
+                 {"data": null, 
                     "render": function ( data, type, full, meta ) {
                       var str = "<a class='btn  btn-primary btn-sm' href='/finItem/edit?id="+full.ID+"' target='_blank'>"+
                         "<i class='fa fa-edit fa-fw'></i>"+
@@ -31,19 +33,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       })
 
      var searchData=function(){
-          var name = $("#name").val();
+          var code = $("#code").val().trim();
+          var name = $("#name").val().trim();
+          var name_eng = $("#name_eng").val().trim();
           
-          /*  
-              查询规则：参数对应DB字段名
-              *_no like
-              *_id =
-              *_status =
-              时间字段需成双定义  *_begin_time *_end_time   between
-          */
-          var url = "/finItem/list?name="+name;
-
+          var url = "/finItem/list?name="+name+"&code="+code+"&name_eng="+name_eng;
           dataTable.ajax.url(url).load();
       };
     	
+      
+      
     });
 });

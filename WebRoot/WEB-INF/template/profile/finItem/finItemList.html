@@ -14,8 +14,22 @@
                                     <div class="row"><!--  第1行  -->
                                         <div class="col-lg-4"><!--  三列排版  -->
                                             <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'code', 
+                                                                    label: '费用代码', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
                                                                 {   id: 'name', 
                                                                     label: '费用名称', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'name_eng', 
+                                                                    label: '费用名称(英)', 
                                                                     value: ''
                                                                 }){}%>
                                         </div>
@@ -32,7 +46,7 @@
                             <%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'eeda-table', 
-                                    headers:['费用名称', '备注','']
+                                    headers:['费用代码','费用名称','费用名称(英)', '备注','']
                                 }){} %>
                         </div>
                     </div>

@@ -71,21 +71,32 @@ public class FinItemController extends Controller {
     
 
     public void list() {
+    	
+        String code = getPara("code");
+        String name = getPara("name");
+        String name_eng = getPara("name_eng");
+        
         String sLimit = "";
         String pageIndex = getPara("sEcho");
         if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
             sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
         }
-
-        String sql = "SELECT id,name,remark from fin_item where 1 =1 ";
         
-        String condition = DbUtils.buildConditions(getParaMap());
+        String sql = "";
+        if(code==null&&name==null&&name_eng==null){
+        	sql = "SELECT id,code,name_eng,name,remark from fin_item where 1 =1 ";
+        }else{
+        	sql = "SELECT id,code,name_eng,name,remark from fin_item where 1 =1 "
+        			+ " and code like '%"+code
+        			+"%' and name like '%"+name
+        			+"%' and name_eng like '%"+name_eng+"%'";
+        }
 
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> BillingOrders = Db.find(sql+ condition + " order by id desc " +sLimit);
+        List<Record> BillingOrders = Db.find(sql + " order by id desc " +sLimit);
         Map BillingOrderListMap = new HashMap();
         BillingOrderListMap.put("sEcho", pageIndex);
         BillingOrderListMap.put("iTotalRecords", rec.getLong("total"));
