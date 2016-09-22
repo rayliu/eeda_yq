@@ -324,6 +324,7 @@ $(document).ready(function() {
 	    	$('#payee_unit').attr("readonly",false);
 	    	$('#payee_name').attr("readonly",false);
     		$('#payment_method').val('cash');
+    		$('invoice_No').hide();
     	}else if(value=='mbill'){
     		clean();
     		$('#payment_method').val('transfers');

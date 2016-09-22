@@ -2,35 +2,28 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="624"/>
 	<parameter name="order_no" class="java.lang.String">
 		<property name="order_no" value="$P{order_no}"/>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	(
-		SELECT
-			GROUP_CONCAT(abc SEPARATOR ' ; ')
-		FROM
-			(
-				SELECT
-					CONCAT(
-						josi.container_type,
-						'x',
-						count(josi.container_type)
-					) abc,
-					'abc' flag
-				FROM
-					job_order_shipment_item josi
-				LEFT JOIN job_order jo ON jo.id = josi.order_id
-				WHERE
-					jo.order_no = $P{order_no}
-				GROUP BY
-					josi.container_type
-			) A
-		GROUP BY
-			A.flag
-	) container_type_count,
+(
+  SELECT
+	GROUP_CONCAT(abc SEPARATOR ' ; ')
+  FROM
+    ( SELECT
+        CONCAT(josi.container_type,'x',count(josi.container_type)
+	) abc,'abc' flag
+	FROM
+	   job_order_shipment_item josi
+	   LEFT JOIN job_order jo ON jo.id = josi.order_id
+	WHERE
+	   jo.order_no = $P{order_no}
+	GROUP BY
+	   josi.container_type) A
+	GROUP BY
+	   A.flag) container_type_count,
 	p.company_name,jo.*,josi.*, jos.*, lo. NAME por_name,
 	lo1. NAME pol_name,
 	lo2. NAME pod_name,
@@ -39,31 +32,23 @@
 	SUM(josi.gross_weight),
 	SUM(josi.volume),
 	u.c_name,
-	(
-		SELECT
-			GROUP_CONCAT(CN_no SEPARATOR ' ; ')
-		FROM
-			(
-				SELECT
-					CONCAT(
-						josi.container_no,
-						'/ ',
-						josi.seal_no
-					) CN_no,
-					'CN_no' flag
-				FROM
-					job_order_shipment_item josi
-				LEFT JOIN job_order jo ON jo.id = josi.order_id
-				WHERE
-					jo.order_no = $P{order_no}
-				GROUP BY
-					CN_no
-			) A
-		GROUP BY
-			A.flag
-	) CN_NO
+	( SELECT
+                GROUP_CONCAT(CN_no SEPARATOR ' ; ')
+	FROM
+	   ( SELECT
+	       CONCAT(josi.container_no,'/ ',josi.seal_no) CN_no,
+		'CN_no' flag
+	FROM
+		job_order_shipment_item josi
+		LEFT JOIN job_order jo ON jo.id = josi.order_id
+ 	WHERE
+		jo.order_no = $P{order_no}
+	GROUP BY
+		CN_no) A
+	GROUP BY
+		A.flag) CN_NO
 FROM
-	job_order_shipment jos
+          job_order_shipment jos
 LEFT JOIN job_order jo ON jo.id = jos.order_id
 LEFT JOIN user_login u ON u.id = jo.creator
 LEFT JOIN job_order_shipment_item josi ON jo.id = josi.order_id
@@ -127,6 +112,9 @@ WHERE
 	<field name="billing_method" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="ref_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="flag" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -137,6 +125,33 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="mbl_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_chargeRMB" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_chargeUSD" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_profitTotalCharge" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_costRMB" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_costUSD" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_profitTotalCost" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_profitRMB" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_profitUSD" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_profitTotalRMB" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="order_id" class="java.lang.Long">
@@ -164,6 +179,9 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="cargo_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unit_id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="pallet_desc" class="java.lang.String">
@@ -944,14 +962,14 @@ WHERE
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargo_desc}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="126" y="521" width="422" height="16" uuid="37fc2891-560c-4e78-b08e-67906909f55a"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_type_count}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="126" y="536" width="421" height="18" uuid="93757cf2-260b-4549-bf5f-b4c6ed39b354"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>

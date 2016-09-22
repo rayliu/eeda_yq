@@ -153,12 +153,12 @@ public class JobOrderReportController extends Controller {
 	public void printDebitNotePDF() {
 		
 		String order_id = getPara("order_id");
-		String company = getPara("company").trim();
+		String sp_name = getPara("sp_name").trim();
 		String fileName = "/report/jobOrder/debitNote.jasper";
 		String outFileName = "/download/debitNote中文";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
-		hm.put("company", company);
+		hm.put("sp_name", sp_name);
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
@@ -168,12 +168,12 @@ public class JobOrderReportController extends Controller {
 	//打印Invoice英文
 	public void printInvoicePDF() {
 		String order_id = getPara("order_id");
-		String company = getPara("company").trim();
+		String sp_name = getPara("sp_name").trim();
 		String fileName = "/report/jobOrder/INVOICE.jasper";
 		String outFileName = "/download/Invoice英文";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
-		hm.put("company", company);
+		hm.put("sp_name", sp_name);
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
@@ -184,7 +184,7 @@ public class JobOrderReportController extends Controller {
 	public void printReceiveDetailPDF(){
 		String order_id = getPara("order_id");
 		String company_name = getPara("company_name");
-		String fileName = "/report/jobOrder/ReceivableDetails.jasper";
+		String fileName = "/report/checkOrder/ReceivableDetails.jasper";
 		String outFileName = "/download/应收对账单PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
@@ -199,7 +199,7 @@ public class JobOrderReportController extends Controller {
 	public void payableDetailPDF(){
 		String order_id = getPara("order_id");
 		String company_name = getPara("company_name");
-		String fileName = "/report/jobOrder/payableDetails.jrxml";
+		String fileName = "/report/checkOrder/payableDetails.jrxml";
 		String outFileName = "/download/应付对账单PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
