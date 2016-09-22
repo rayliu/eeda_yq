@@ -161,7 +161,47 @@ public class FinItemController extends Controller {
         renderJson(r);
     }
     
+    //校验是否存在此费用
+    public void checkCodeExist(){
+    	String para= getPara("code");
+    	String sql = "select * from fin_item where code = ?";
+    	boolean ifExist;
+    	Record r = Db.findFirst(sql,para);
+    	if(r==null){
+    		ifExist = true;
+    	}else{
+    		ifExist = false;
+    	}
+    	renderJson(ifExist);
+    }
     
+    //校验是否存在此费用
+    public void checkNameExist(){
+    	String para= getPara("name");
+    	String sql = "select * from fin_item where name = ?";
+    	boolean ifExist;
+    	Record r = Db.findFirst(sql,para);
+    	if(r==null){
+    		ifExist = true;
+    	}else{
+    		ifExist = false;
+    	}
+    	renderJson(ifExist);
+    }
+    
+    //校验是否存在此费用
+    public void checkNameEngExist(){
+    	String para= getPara("name_eng");
+    	String sql = "select * from fin_item where name_eng = ?";
+    	boolean ifExist;
+    	Record r = Db.findFirst(sql,para);
+    	if(r==null){
+    		ifExist = true;
+    	}else{
+    		ifExist = false;
+    	}
+    	renderJson(ifExist);
+    }
     
     
 }

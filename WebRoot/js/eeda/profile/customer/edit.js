@@ -1,5 +1,4 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn'], function ($, metisMenu) { 
-
     $(document).ready(function() {
   
         $('#menu_profile').addClass('active').find('ul').addClass('in');
@@ -10,32 +9,32 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn'], functio
             rules: {
                 mbProvince:{
                   digits:true 
-              },
-              cmbCity:{
+                },
+                cmbCity:{
                   digits:true 
                 },
-              company_name: {//form 中company_name为必填, 注意input 中定义的id, name都要为company_name
-                required: true,
-                remote:{
-                    url: "/customer/checkCustomerNameExist", //后台处理程序x
-                    type: "post",  //数据发送方式
-                    data:  {   //要传递的数据
-                        company_name: function() { 
-                            // $("#company_name").val()
-                            if($("#partyId").val()==null||$("#partyId").val()==""){
-                                 return $("#company_name").val();
-                            }else{
-                                if(cname==$("#company_name").val()){
-                                    return true;
-                                }else{
-                                    return $("#company_name").val();
-                                }
-                            }
-                          }
-                    }
-                }
-              },
-              abbr:{//form 中 abbr为必填
+                company_name: {//form 中company_name为必填, 注意input 中定义的id, name都要为company_name
+                	required: true,
+                	remote:{
+	                    url: "/customer/checkCustomerNameExist", //后台处理程序x
+	                    type: "post",  //数据发送方式
+	                    data:  {   //要传递的数据
+	                        company_name: function() { 
+	                            // $("#company_name").val()
+	                            if($("#partyId").val()==null||$("#partyId").val()==""){
+	                                 return $("#company_name").val();
+	                            }else{
+	                                if(cname==$("#company_name").val()){
+	                                    return true;
+	                                }else{
+	                                    return $("#company_name").val();
+	                                }
+	                            }
+	                        }
+                    	}
+                	}
+                },
+                abbr:{//form 中 abbr为必填
                   required: true,
                   remote:{
                     url: "/customer/checkCustomerAbbrExist", //后台处理程序    

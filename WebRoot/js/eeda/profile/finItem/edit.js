@@ -2,13 +2,72 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     $(document).ready(function() {
 
         $('#menu_profile').addClass('active').find('ul').addClass('in');
+        
+        //校验是否已存在此费用
+        $('#orderForm').validate({
+	            rules: {
+	                code: {
+	                	remote:{
+		                    url: "/finItem/checkCodeExist",
+		                    type: "post",
+		                    data:  {
+		                        code: function() { 
+		                              return $("#code").val();
+		                        }
+	                    	}
+	                	}
+	                },
+	                name: {
+	                	required: true,
+	                	remote:{
+	                		url: "/finItem/checkNameExist",
+	                		type: "post",
+	                		data:  {
+	                			code: function() { 
+	                				return $("#name").val();
+	                			}
+	                		}
+	                	}
+	                },
+	                name_eng: {
+	                	remote:{
+	                		url: "/finItem/checkNameEngExist",
+	                		type: "post",
+	                		data:  {
+	                			code: function() { 
+	                				return $("#name_eng").val();
+	                			}
+	                		}
+	                	}
+	                }
+	            },
+	            messages:{
+	                code:{
+	                    remote:"此费用代码已存在"
+	                },
+	                name:{
+	                	remote:"此费用名称已存在"
+	                },
+	                name_eng: {
+	                	remote:"此费用名称(英)已存在"
+	                }
+	            },
+	            highlight: function(element) {
+	                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+	            },
+	            success: function(element) {
+	                element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
+	            }
+        });
+ 
+        
         //------------save
         $('#saveBtn').click(function(e){
             //阻止a 的默认响应行为，不需要跳转
             e.preventDefault();
             //提交前，校验数据
             if(!$("#orderForm").valid()){
-                return;
+                return false;
             }
             
             $(this).attr('disabled', true);
@@ -42,6 +101,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $('#saveBtn').attr('disabled', false);
             });
         });  
+        
+        
+        
 
      });
 });
