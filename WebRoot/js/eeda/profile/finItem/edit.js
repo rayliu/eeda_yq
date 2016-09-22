@@ -16,17 +16,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
            
             var order = {
                 id: $('#id').val(),
+                code: $('#code').val(),                
                 name: $('#name').val(),                
+                name_eng: $('#name_eng').val(),                
                 remark: $('#remark').val()
             };
             //异步向后台提交数据
             $.post('/finItem/save', {params:JSON.stringify(order)}, function(data){
                 var order = data;
                 if(order.ID>0){
+                	$("#id").val(order.ID);
+                	$("#code").val(order.CODE);
                 	$("#name").val(order.NAME);
+                	$("#name_eng").val(order.NAME_ENG);
                 	$("#remark").val(order.REMARK);
-                    
-                	$('#id').val(order.ID);
                     eeda.contactUrl("edit?id",order.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     $('#saveBtn').attr('disabled', false);

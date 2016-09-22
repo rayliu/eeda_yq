@@ -1,8 +1,4 @@
 <%layout("/eeda/layout.html"){%>
-	<!-- <link href="/yh/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/yh/css/ui/jquery-ui.css">
-    <link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet"> 
-    <link href="/yh/js/plugins/datatables-1.10.9/css/jquery.dataTables.min.css" rel="stylesheet"> -->
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -19,12 +15,28 @@
                     <div class="row"><!--  第1行  -->
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 
+                                {   id:'code', 
+                                    label:'费用代码', 
+                                    value:order.code!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4"><!--  三列排版  -->
+                            <%include("/eeda/component/form/inputField.html", 
                                 {   id:'name', 
                                     label:'费用名称', 
                                     value:order.NAME!'',
                                     required:'required'
                                 }){}%>
                         </div>
+                        <div class="col-lg-4"><!--  三列排版  -->
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'name_eng', 
+                                    label:'费用名称(英)', 
+                                    value:order.name_eng!''
+                                }){}%>
+                        </div>
+                    </div>
+                    <div class="row">
                          <div class="col-lg-8">
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'remark', 

@@ -46,11 +46,11 @@ public class UnitController extends Controller {
 
     @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_LIST })
     public void index() {
-        render("/profile/unit/unitList.html");
+        render("/eeda/profile/unit/unitList.html");
     }
     
     public void create() {
-        render("/profile/unit/unitEdit.html");
+        render("/eeda/profile/unit/unitEdit.html");
     }
     
     @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_LIST })
@@ -88,7 +88,7 @@ public class UnitController extends Controller {
         Unit u = Unit.dao.findById(id);
         setAttr("order", u);
         
-        render("/profile/unit/unitEdit.html");
+        render("/eeda/profile/unit/unitEdit.html");
         
     }
 
@@ -115,24 +115,24 @@ public class UnitController extends Controller {
             PermissionConstant.PERMSSION_T_UPDATE }, logical = Logical.OR)
     public void save() {
         String jsonStr=getPara("params");
-        
         Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
-        
         String id = (String) dto.get("id");
-        String name = (String) dto.get("name");
+        Unit u = new Unit();
         if (StringUtils.isBlank(id)) {
-            Unit r = new Unit();
-
-            boolean s = r.set("name", name).save();
-            if (s == true) {
-                renderJson(r);
-            }
+        	//create
+   			DbUtils.setModelValues(dto, u);
+            u.save();
+            id = u.getLong("id").toString();
         } else {
-            Unit toll = Unit.dao.findById(id);
-            boolean b = toll.set("name", name).update();
-            renderJson(toll);
+            u = Unit.dao.findById(id);
+            DbUtils.setModelValues(dto, u);
+            u.update();
         }
-
+        u.toRecord();
+        renderJson(u);
     }
+    
+    
+    
 }

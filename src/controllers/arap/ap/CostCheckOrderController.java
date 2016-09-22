@@ -197,7 +197,6 @@ public class CostCheckOrderController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
         String id = (String) dto.get("id");
-        String sp_id = (String) dto.get("sp_id");
         String ids = (String) dto.get("ids");
         
         

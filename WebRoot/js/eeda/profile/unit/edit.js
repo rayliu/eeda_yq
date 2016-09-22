@@ -16,13 +16,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
            
             var order = {
                 id: $('#id').val(),
+                code: $('#code').val(),
                 name: $('#name').val(),
+                name_eng: $('#name_eng').val(),
             };
             //异步向后台提交数据
             $.post('/unit/save', {params:JSON.stringify(order)}, function(data){
                 var order = data;
                 if(order.ID>0){
+                	$("#id").val(order.ID);
+                	$("#code").val(order.CODE);
                 	$("#name").val(order.NAME);
+                	$("#name_eng").val(order.NAME_ENG);
                     
                     eeda.contactUrl("edit?id",order.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
@@ -36,6 +41,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $('#saveBtn').attr('disabled', false);
               });
         });  
-
+        
+        
+        
      });
 });

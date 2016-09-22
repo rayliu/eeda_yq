@@ -138,22 +138,30 @@ public class FinItemController extends Controller {
         FinItem r = null;
         
         String id = (String) dto.get("id");
+        String code = (String) dto.get("code");
         String name = (String) dto.get("name");
+        String name_eng = (String) dto.get("name_eng");
         String remark = (String) dto.get("remark");
         
         if (StringUtils.isBlank(id)) {
         	r = new FinItem();
-
-            r.set("name", name);
+        	r.set("code", code);
+        	r.set("name", name);
+            r.set("name_eng", name_eng);
             r.set("remark", remark);            
             r.save();
         } else {
         	r = FinItem.dao.findById(id);
-
+        	r.set("code", code);
         	r.set("name", name);
+            r.set("name_eng", name_eng);
             r.set("remark", remark);            
             r.update();
         }
         renderJson(r);
     }
+    
+    
+    
+    
 }
