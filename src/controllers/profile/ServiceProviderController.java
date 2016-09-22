@@ -47,7 +47,7 @@ public class ServiceProviderController extends Controller {
     public void list() {
         String company_name = getPara("COMPANY_NAME");
         String contact_person = getPara("CONTACT_PERSON");
-        String receipt = getPara("RECEIPT");
+        String code = getPara("code");
         String abbr = getPara("ABBR");
         String address = getPara("ADDRESS");
         String location = getPara("LOCATION");
@@ -55,7 +55,7 @@ public class ServiceProviderController extends Controller {
         
         Long parentID = pom.getParentOfficeId();
         
-        if (company_name == null && contact_person == null && receipt == null && abbr == null && address == null
+        if (company_name == null && contact_person == null && code == null && abbr == null && address == null
                 && location == null) {
             String sLimit = "";
             String pageIndex = getPara("sEcho");
@@ -98,8 +98,8 @@ public class ServiceProviderController extends Controller {
                     + company_name
                     + "%' and ifnull(p.contact_person,'') like '%"
                     + contact_person
-                    + "%' and ifnull(p.receipt,'') like '%"
-                    + receipt
+                    + "%' and ifnull(p.code,'') like '%"
+                    + code
                     + "%' and ifnull(p.address,'') like '%"
                     + address
                     + "%' and ifnull(p.abbr,'') like '%" + abbr + "%' and (o.id = " + parentID + " or o.belong_office = " + parentID + ")" ;
@@ -116,8 +116,8 @@ public class ServiceProviderController extends Controller {
                     + company_name
                     + "%' and ifnull(p.contact_person,'') like '%"
                     + contact_person
-                    + "%' and ifnull(p.receipt,'') like '%"
-                    + receipt
+                    + "%' and ifnull(p.code,'') like '%"
+                    + code
                     + "%' and ifnull(p.address,'') like '%"
                     + address
                     + "%' and ifnull(p.abbr,'') like '%" + abbr + "%' and (o.id = " + parentID + " or o.belong_office = " + parentID + ") " + sLimit;

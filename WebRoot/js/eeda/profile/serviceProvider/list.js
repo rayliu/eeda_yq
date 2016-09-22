@@ -112,16 +112,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             ]
         });
         
-
+      //清空查询条件
+    	$('#resetBtn').click(function(e){
+            $("#orderForm")[0].reset();
+        });
+    	
         //条件筛选
     	$("#searchBtn").on('click', function () {    	 	
           	var COMPANY_NAME = $("#COMPANY_NAME").val();
           	var CONTACT_PERSON = $("#CONTACT_PERSON").val();
-        	var RECEIPT = $("#RECEIPT").val();
+        	var code = $("#code").val();
           	var ABBR = $("#ABBR").val();    	
           	var ADDRESS = $("#ADDRESS").val();
           	var LOCATION = $("#LOCATION").val();
-          	var url = "/serviceProvider/list?COMPANY_NAME="+COMPANY_NAME+"&CONTACT_PERSON="+CONTACT_PERSON+"&RECEIPT="+RECEIPT+"&ABBR="+ABBR+"&ADDRESS="+ADDRESS+"&LOCATION="+LOCATION;
+          	var url = "/serviceProvider/list?COMPANY_NAME="+COMPANY_NAME+"&CONTACT_PERSON="+CONTACT_PERSON+"&code="+code+"&ABBR="+ABBR+"&ADDRESS="+ADDRESS+"&LOCATION="+LOCATION;
           	dataTable.ajax.url(url).load();
         });
 
