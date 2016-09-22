@@ -344,37 +344,68 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                );
 	                    return field_html;
 	                }
-	            }, { "data": "POR_NAME", "visible": false,
+	            }, 
+	            { "data": "CUSTOMS_TYPE","width": "80px",
+	                "render": function ( data, type, full, meta ) {
+	                   if(!data)
+	                	   data='';
+	                   var str= '<select name="customs_type" class="form-control search-control">'
+	                	   	 	+'<option></option>'
+			                   +'<option value="代理报关" '+ (data=='代理报关'?'selected':'') +'>代理报关</option>'
+			                   +'<option value="自理报关" '+ (data=='自理报关'?'selected':'') +'>自理报关</option>'
+			                   +'</select>';
+			           return str;
+	                }
+	            },
+	            { "data": "CUSTOMS_DATA","width": "180px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    var field_html = template('table_date_field_template',
+		                    {
+		                        id: 'CUSTOMS_DATA',
+		                        value: data.substr(0,19)
+		                    }
+		                );
+	                    return field_html;
+	                }
+	            }, 
+	            { "data": "POR_NAME", "visible": false,
 	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    return data;
 	                }
-	            }, { "data": "POL_NAME", "visible": false,
+	            }, 
+	            { "data": "POL_NAME", "visible": false,
 	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    return data;
 	                }
-	            }, { "data": "POD_NAME", "visible": false,
+	            },
+	            { "data": "POD_NAME", "visible": false,
 	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    return data;
 	                }
-	            }, { "data": "CARRIER_NAME", "visible": false,
+	            }, 
+	            { "data": "CARRIER_NAME", "visible": false,
 	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    return data;
 	                }
-	            }, { "data": "IS_GEN_JOB", "visible": false,
+	            }, 
+	            { "data": "IS_GEN_JOB", "visible": false,
 	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    return data;
 	                }
-	            },{ "data": "UNIT_NAME", "visible": false,
+	            },
+	            { "data": "UNIT_NAME", "visible": false,
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
