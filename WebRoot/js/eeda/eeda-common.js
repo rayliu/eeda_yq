@@ -13,6 +13,13 @@ define(['app/index/todo'], function(todoController){
           todoController.updateTodo();
         }
       });
+
+      var pathname = window.location.pathname;
+      if(pathname == '/')
+          return;
+      pathname = pathname.split('/')[1];
+      var folder_li = $('#left_side_bar').find('[href="/'+pathname+'"]').parent().parent().parent();
+      folder_li.addClass('active').find('ul').addClass('in');
    });
 var eeda={};
 window.eeda =eeda;
