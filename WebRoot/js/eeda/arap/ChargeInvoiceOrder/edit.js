@@ -6,26 +6,6 @@ $(document).ready(function() {
 
     $('#menu_order').addClass('active').find('ul').addClass('in');
     
-    
-    //构造主表json
-//    var buildOrder = function(){
-//    	var item = {};
-//    	var orderForm = $('#orderForm input');
-//    	for(var i = 0; i < orderForm.length; i++){
-//    		var name = orderForm[i].id;
-//        	var value =orderForm[i].value;
-//        	if(name){
-//        		if(name.indexOf("begin_time") != -1){
-//        			name = "begin_time";
-//        		}else if(name.indexOf("end_time") != -1){
-//        			name = "end_time"
-//        		}
-//        		item[name] = value;
-//        	}
-//    	}
-//        return item;
-//    }
-    
     //------------save
     $('#saveBtn').click(function(e){
         //阻止a 的默认响应行为，不需要跳转

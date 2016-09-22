@@ -21,7 +21,7 @@ $(document).ready(function() {
             
             var item={}
             item.id = id;
-            for(var i = 1; i < row.childNodes.length; i++){
+            for(var i = 0; i < row.childNodes.length; i++){
                 var name = $(row.childNodes[i]).find('input').attr('name');
                 var value = $(row.childNodes[i]).find('input').val();
                 if(name){
