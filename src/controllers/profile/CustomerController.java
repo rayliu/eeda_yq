@@ -47,7 +47,7 @@ public class CustomerController extends Controller {
     // me.add("/eeda", controllers.yh.AppController.class, "/eeda");
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_LIST})
     public void index() {
-            render("/profile/customer/CustomerList.html");
+            render("/eeda/profile/customer/CustomerList.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_LIST})
     public void list() {
@@ -56,7 +56,7 @@ public class CustomerController extends Controller {
 //        String receipt = getPara("RECEIPT");
         String abbr = getPara("ABBR");
         String address = getPara("ADDRESS");
-        String location = getPara("LOCATION");
+        String code = getPara("code");
         
         Long parentID = pom.getParentOfficeId();
         
@@ -67,8 +67,9 @@ public class CustomerController extends Controller {
         }
         String sql="";
         String sqlTotal="";
+        String condition="";
         if (company_name == null && contact_person == null && abbr == null && address == null
-                && location == null) {
+                && code == null) {
 
              sqlTotal = "select count(1) total from party p left join office o on p.office_id = o.id where p.type='CUSTOMER'and (o.id = " + parentID + " or o.belong_office = "+ parentID +")";
             
@@ -90,7 +91,9 @@ public class CustomerController extends Controller {
                     + "left join location l2 on l1.pcode = l2.code "
                     + "left join office o on o.id = p.office_id "
                     + "where p.type='CUSTOMER' "
-                    + "and ifnull(p.company_name,'') like '%"
+                    + "and ifnull(p.code,'') like '%"
+                    + code
+                    + "%' and ifnull(p.company_name,'') like '%"
                     + company_name
                     + "%' and ifnull(p.contact_person,'') like '%"
                     + contact_person
