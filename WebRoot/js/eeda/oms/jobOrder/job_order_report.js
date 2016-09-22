@@ -524,10 +524,12 @@ $(document).ready(function() {
     });
     
   //打印Debit_note
-	$('##printDebit').click(function(){
+	$('#printDebitNoteBtn').click(function(){
 		//数据不足提示
+		var sp_name = $('#spList').text();
+		if(sp_name!=""){
     	var order_id = $('#order_id').val();
-    	var sp_name = $('#spList').val();
+    	
     	
     	if($('input[name=debit_note]:checked').val()=='debitNote'){
 	    	$.post('/jobOrderReport/printDebitNotePDF', {order_id:order_id,sp_name:sp_name}, function(data){
@@ -537,7 +539,7 @@ $(document).ready(function() {
 	               $.scojs_message('生成DebitNote PDF失败', $.scojs_message.TYPE_ERROR);
 	               }
 	    	}); 
-    	}
+    	}     
     	
     	if($('input[name=debit_note]:checked').val()=='Invoice'){
     		$.post('/jobOrderReport/printInvoicePDF',{order_id:order_id,sp_name:sp_name},function(data){
@@ -548,7 +550,7 @@ $(document).ready(function() {
 		    	}
     		});
     	}
-		
+      }	
 	});   
 });
 });
