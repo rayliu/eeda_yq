@@ -95,10 +95,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 				},
 	            {"width": "10px",
 	                "render": function ( data, type, full, meta ) {
-	                	if(full.IS_GEN_JOB == 'N')
+	                	if(full.IS_GEN_JOB == 'N'){
 	                		return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
-	                	else
+	                	}else if(full.IS_GEN_JOB == 'Y'){
 	                		return '<button type="button" class="delete btn btn-default btn-xs" disabled>删除</button> ';
+	                	}else{
+	                		return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
+	                	}
 	                }
 	            },
 	            { "data": "TRANSPORT_TYPE","width": "80px",
