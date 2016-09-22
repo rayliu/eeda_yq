@@ -31,17 +31,12 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            
 	            var item={}
 	            item.id = id;
+	           
 	            for(var i = 1; i < row.childNodes.length; i++){
-	            	var el = $(row.childNodes[i]).find('input, select');
-	            	if(el.length>1){
-	            		el = $(el[0]);
-	            	}
-
-	            	var name = el.attr('name'); //name='abc'
-	            	
-	            	if(el && name){
-	                	var value = $(el).val();//元素的值
-	                	item[name] = value;
+	            	var name = $(row.childNodes[i]).find('input,select').attr('name');
+	            	var value = $(row.childNodes[i]).find('input,select').val();
+	            	if(name){
+	            		item[name] = value;
 	            	}
 	            }
 	            item.action = id.length > 0?'UPDATE':'CREATE';

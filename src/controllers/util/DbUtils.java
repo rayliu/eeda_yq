@@ -81,18 +81,20 @@ public class DbUtils {
     		String rowId = rowMap.get("id");
     		String action = rowMap.get("action");
     		if(StringUtils.isEmpty(rowId)){
-				setModelValues(rowMap, model);
-    			model.set(master_col_name, master_order_id);
-    			model.save();	
+    			if(!"DELETE".equals(action)){
+					setModelValues(rowMap, model);
+	    			model.set(master_col_name, master_order_id);
+	    			model.save();	
+    			}
     		}else{
-    			if("DELETE".equals(action)){//delete
-    				Model<?> deleteModel = model.findById(rowId);
-        			deleteModel.delete();
-        		}else{//UPDATE
-        			Model<?> updateModel = model.findById(rowId);
-        			setModelValues(rowMap, updateModel);
-        			updateModel.update();
-        		}
+    				if("DELETE".equals(action)  ){//delete
+        				Model<?> deleteModel = model.findById(rowId);
+            			deleteModel.delete();
+            		}else{//UPDATE
+            			Model<?> updateModel = model.findById(rowId);
+            			setModelValues(rowMap, updateModel);
+            			updateModel.update();
+            		}
     		}
     			
 		}
