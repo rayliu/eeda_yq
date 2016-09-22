@@ -1,0 +1,124 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta property="qc:admins" content="1621525725152022123671306654" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+    <title>${SYS_CONFIG.system_title!'易达物流'}</title>
+	<% if(SYS_CONFIG.logo==""){%>
+	<link rel="shortcut icon" href="/yh/img/eeda_logo.ico">
+	<%}else{%>
+	<link rel="shortcut icon" href="${SYS_CONFIG.logo!''}">
+	<%}%>
+
+    <!-- Core CSS - Include with every page -->
+    <link href="/yh/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/yh/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/yh/css/sb-admin.css" rel="stylesheet">
+
+</head>
+
+<body style="background-image:url(<% if(SYS_CONFIG.login_bg=="")%>/upload/bg-1.jpg<%else%>${SYS_CONFIG.login_bg!''});background-repeat : no-repeat;background-size: 100%;">
+
+    <div class="container" >
+        <div class="row">
+        	<% var msg=errMsg!'';
+        	  if(msg!='') {%>
+	     		<div class="alert alert-danger alert-dismissible fade in" role="alert">
+			      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+			      <p>${errMsg}</p>
+			    </div>
+			<%}%>
+            <!--[if IE]>
+                <div class="alert alert-danger" role="alert"><strong>注意：</strong>本系统不支持IE浏览器，为使页面正常显示，请使用Chrome或FireFox浏览器.</div>
+            <![endif]-->
+            <div class="col-md-4 col-md-offset-4">
+            	
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+
+                        <h3 class="panel-title">${SYS_CONFIG.system_title!'易达物流'}</h3>
+
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" action="/login" id="login" method="post" style="margin-bottom: 10px;">
+                            <fieldset>
+                                <div class="form-group" >
+                                    <input class="form-control" placeholder="用户名" id="username" name="username" type="text" autofocus value="" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="用户密码" id="password" name="password" type="password" value="">
+                                </div>
+                                <br/><br/>
+                                <!--div class="checkbox">
+                                    <label>
+                                        <input name="remember" type="checkbox" value="Y">下次自动登录
+                                    </label>
+                                     <span id="qqLoginBtn"></span>
+                                </div-->
+                                <button type="submit" class="btn btn-lg btn-success btn-block">登录</button>
+                               
+                            </fieldset>
+                        </form>
+                            <% var title=SYS_CONFIG.system_title!'';
+                                if(title=='易达物流'){ %>
+                                    <a href = "/register" style="float:left;" >新用户注册</a>
+                            <%  }%>
+
+                        	<a href ="/reset" style = "float:right">忘记密码?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts - Include with every page 
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101116610" data-redirecturi="http://56.eeda123.com" charset="utf-8"></script>
+    -->
+    <script src="/yh/js/jquery-1.10.2.js"></script>
+    <script src="/yh/js/bootstrap.min.js"></script>
+    <script src="/yh/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/yh/js/jquery.validate.min.js"></script>
+    <script src="/yh/js/jvalidate.messages_cn.js"></script>
+    <!-- SB Admin Scripts - Include with every page -->
+    <script src="/yh/js/sb-admin.js"></script>
+<script>
+    $(document).ready(function() {
+    
+        //QC.Login({
+          // btnId:"qqLoginBtn"    //插入按钮的节点id
+        //});
+
+        $('#login').validate({
+            rules: {
+            username: {//form 中company_name为必填, 注意input 中定义的id, name都要为company_name
+                required: true
+              },
+              password:{//form 中 name为必填
+                required: true
+              }
+             
+            },
+            messages:{
+              	username:"请输入用户名",
+              	password:"请输入用户密码"
+              },
+            highlight: function(element) {
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function(element) {
+                element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
+            }
+        }); 
+    });
+</script>
+
+</body>
+
+</html>
