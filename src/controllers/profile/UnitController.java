@@ -55,21 +55,31 @@ public class UnitController extends Controller {
     
     @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_LIST })
     public void list() {
+    	String code = getPara("code");
+        String name = getPara("name");
+        String name_eng = getPara("name_eng");
+        
         String sLimit = "";
         String pageIndex = getPara("sEcho");
         if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
             sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
         }
-
-        String sql = "SELECT * from unit where 1 =1 ";
         
-        String condition = DbUtils.buildConditions(getParaMap());
+        String sql = "";
+        if(code==null&&name==null&&name_eng==null){
+        	sql = "SELECT id,code,name_eng,name from unit ";
+        }else{
+        	sql = "SELECT id,code,name_eng,name from unit where"
+        			+ "  code like '%"+code
+        			+"%' and name like '%"+name
+        			+"%' and name_eng like '%"+name_eng+"%'";
+        }
 
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> BillingOrders = Db.find(sql+ condition + " order by id desc " +sLimit);
+        List<Record> BillingOrders = Db.find(sql + " order by id desc " +sLimit);
         Map BillingOrderListMap = new HashMap();
         BillingOrderListMap.put("sEcho", pageIndex);
         BillingOrderListMap.put("iTotalRecords", rec.getLong("total"));
@@ -77,7 +87,7 @@ public class UnitController extends Controller {
 
         BillingOrderListMap.put("aaData", BillingOrders);
 
-        renderJson(BillingOrderListMap); 
+        renderJson(BillingOrderListMap);  
     }
 
     // 编辑条目按钮
