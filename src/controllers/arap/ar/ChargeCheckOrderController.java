@@ -108,7 +108,7 @@ public class ChargeCheckOrderController extends Controller {
 		String id = getPara("id");//arap_charge_order id
 		String condition = "select ref_order_id from arap_charge_item where charge_order_id ="+id;
 		
-		String sql = " select aco.*,p.abbr sp_name,p.contact_person,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from arap_charge_order aco "
+		String sql = " select aco.*,p.company_name,p.contact_person,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from arap_charge_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by "
    				+ " left join user_login u1 on u1.id=aco.confirm_by "
@@ -254,7 +254,7 @@ public class ChargeCheckOrderController extends Controller {
 	public void create(){
 		String ids = getPara("idsArray");//job_order_arap ids
 		
-		String sql = "SELECT p.phone,p.contact_person,p.address,joa.sp_id,joa.order_id,"
+		String sql = "SELECT p.phone,p.contact_person,p.address,p.company_name,joa.sp_id,joa.order_id,"
 				+ " sum( ifnull(joa.currency_total_amount,0) ) total_amount "
 				+ " FROM job_order_arap joa"
 				+ " left join party p on p.id = joa.sp_id "
