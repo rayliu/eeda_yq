@@ -11,7 +11,7 @@
             	<div class="panel panel-default">
                     <div class="panel-heading">
                     	<div class="form-group">
-                    		<big style="font-size:32px;">管理看板</big>
+                    		<big style="font-size:22px;">管理看板</big>
 	                    </div>
                     </div>
                     <div class="panel-body">
@@ -22,227 +22,218 @@
 			                    show = 'block';
 			                }
 			            %>
-			            <!-- <div class="row" style='display:${show}'>
-			                <div class="col-lg-12">
-			                    <div class="panel panel-default">
-			                        <div class="panel-heading">
-			                            <div class="form-group">
-			                            <i class="fa fa-bar-chart-o fa-fw"></i> 系统单据
-			                            </div>
-			                        </div> -->
-			                        <!-- /.panel-heading -->
-			                        <!-- <div class="panel-body"> -->
-			                            <div class="row">
-						                    <div class="col-lg-3 col-md-6">
-						                        <div class="panel panel-primary">
-						                            <div class="panel-heading">
-						                                <div class="row">
-						                                    <div class="col-xs-3">
-						                                        <i class="fa fa-file-text fa-4x"></i>
-						                                    </div>
-						                                    <div class="col-xs-9 text-right">
-						                                        <div class="huge" id="planOrderTodoCount" style="font-size:26px;">
-                                                                    <img src="/images/loading.gif" style="height: 32px;">
+			           
+                                        <div class="col-lg-6">
+    			                            <div class="row">
+    						                    <div class="col-lg-6 col-md-6">
+    						                        <div class="panel panel-primary">
+    						                            <div class="panel-heading">
+    						                                <div class="row">
+    						                                    <div class="col-xs-3">
+    						                                        <i class="fa fa-file-text fa-4x"></i>
+    						                                    </div>
+    						                                    <div class="col-xs-9 text-right">
+    						                                        <div class="huge" id="planOrderTodoCount" style="font-size:26px;">
+                                                                        <img src="/images/loading.gif" style="height: 32px;">
+                                                                    </div>
+    						                                        <div style="font-size:14px;">计划订单待处理</div>
+    						                                    </div>
+    						                                </div>
+    						                            </div>
+    						                            <a href="/planOrder?type=todo">
+    						                                <div class="panel-footer">
+    						                                    <span class="pull-left"></span>
+    						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+    						                                    <div class="clearfix"></div>
+    						                                </div>
+    						                            </a>
+    						                        </div>
+    						                    </div>
+    						                    <div class="col-lg-6 col-md-6">
+    						                        <div class="panel panel-green">
+    						                            <div class="panel-heading">
+    						                                <div class="row">
+    						                                    <div class="col-xs-3">
+    						                                        <i class="fa fa-file-text fa-4x"></i>
+    						                                    </div>
+    						                                    <div class="col-xs-9 text-right">
+    						                                        <div class="huge" id="SOTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
+    						                                        <div style="font-size:14px;">SO待更新</div>
+    						                                    </div>
+    						                                </div>
+    						                            </div>
+    						                            <a href="/jobOrder?type=sowait">
+    						                                <div class="panel-footer">
+    						                                    <span class="pull-left"></span>
+    						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+    						                                    <div class="clearfix"></div>
+    						                                </div>
+    						                            </a>
+    						                        </div>
+    						                    </div>
+    						                    <div class="col-lg-6 col-md-6">
+    						                        <div class="panel panel-yellow">
+    						                            <div class="panel-heading">
+    						                                <div class="row">
+    						                                    <div class="col-xs-3">
+    						                                        <i class="fa fa-file-text fa-4x"></i>
+    						                                    </div>
+    						                                    <div class="col-xs-9 text-right">
+    						                                        <div class="huge" id="truckOrderTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
+    						                                        <div style="font-size:14px;">派车单待处理</div>
+    						                                    </div>
+    						                                </div>
+    						                            </div>
+    						                            <a href="/jobOrder?type=truckorderwait">
+    						                                <div class="panel-footer">
+    						                                    <span class="pull-left"></span>
+    						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+    						                                    <div class="clearfix"></div>
+    						                                </div>
+    						                            </a>
+    						                        </div>
+    						                    </div>
+    						                    <div class="col-lg-6 col-md-6">
+    						                        <div class="panel panel-red">
+    						                            <div class="panel-heading">
+    						                                <div class="row">
+    						                                    <div class="col-xs-3">
+    						                                        <i class="fa fa-file-text fa-4x"></i>
+    						                                    </div>
+    						                                    <div class="col-xs-9 text-right">
+    						                                        <div class="huge" id="SITodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
+    						                                        <div style="font-size:14px;">SI待更新</div>
+    						                                    </div>
+    						                                </div>
+    						                            </div>
+    						                            <a href="/jobOrder?type=siwait">
+    						                                <div class="panel-footer">
+    						                                    <span class="pull-left"></span>
+    						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+    						                                    <div class="clearfix"></div>
+    						                                </div>
+    						                            </a>
+    						                        </div>
+    						                    </div>
+                                            </div>
+                                            <div class="row">
+    						                    <div class="col-lg-6 col-md-6">
+    						                        <div class="panel panel-info">
+    						                            <div class="panel-heading">
+    						                                <div class="row">
+    						                                    <div class="col-xs-3">
+    						                                        <i class="fa fa-file-text fa-4x"></i>
+    						                                    </div>
+    						                                    <div class="col-xs-9 text-right">
+    						                                        <div class="huge" id="MBLTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
+    						                                        <div style="font-size:14px;">未确认MBL</div>
+    						                                    </div>
+    						                                </div>
+    						                            </div>
+    						                            <a href="/jobOrder?type=mblwait">
+    						                                <div class="panel-footer">
+    						                                    <span class="pull-left"></span>
+    						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+    						                                    <div class="clearfix"></div>
+    						                                </div>
+    						                            </a>
+    						                        </div>
+    						                    </div>
+    						                    <div class="col-lg-6 col-md-6">
+    						                        <div class="panel panel-danger">
+    						                            <div class="panel-heading">
+    						                                <div class="row">
+    						                                    <div class="col-xs-3">
+    						                                        <i class="fa fa-file-text fa-4x"></i>
+    						                                    </div>
+    						                                    <div class="col-xs-9 text-right">
+    						                                        <div class="huge" id="waitCustomTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
+    						                                        <div style="font-size:14px;">待报关</div>
+    						                                    </div>
+    						                                </div>
+    						                            </div>
+    						                            <a href="/jobOrder?type=customwait">
+    						                                <div class="panel-footer">
+    						                                    <span class="pull-left"></span>
+    						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+    						                                    <div class="clearfix"></div>
+    						                                </div>
+    						                            </a>
+    						                        </div>
+    						                    </div>
+    						                    <div class="col-lg-6 col-md-6">
+                                                    <div class="panel panel-danger">
+                                                        <div class="panel-heading">
+                                                            <div class="row">
+                                                                <div class="col-xs-3">
+                                                                    <i class="fa fa-file-text fa-4x"></i>
                                                                 </div>
-						                                        <div style="font-size:14px;">计划订单待处理</div>
-						                                    </div>
-						                                </div>
-						                            </div>
-						                            <a href="/planOrder?type=todo">
-						                                <div class="panel-footer">
-						                                    <span class="pull-left"></span>
-						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-						                                    <div class="clearfix"></div>
-						                                </div>
-						                            </a>
-						                        </div>
-						                    </div>
-						                    <div class="col-lg-3 col-md-6">
-						                        <div class="panel panel-green">
-						                            <div class="panel-heading">
-						                                <div class="row">
-						                                    <div class="col-xs-3">
-						                                        <i class="fa fa-file-text fa-4x"></i>
-						                                    </div>
-						                                    <div class="col-xs-9 text-right">
-						                                        <div class="huge" id="SOTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-						                                        <div style="font-size:14px;">SO待更新</div>
-						                                    </div>
-						                                </div>
-						                            </div>
-						                            <a href="/jobOrder?type=sowait">
-						                                <div class="panel-footer">
-						                                    <span class="pull-left"></span>
-						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-						                                    <div class="clearfix"></div>
-						                                </div>
-						                            </a>
-						                        </div>
-						                    </div>
-						                    <div class="col-lg-3 col-md-6">
-						                        <div class="panel panel-yellow">
-						                            <div class="panel-heading">
-						                                <div class="row">
-						                                    <div class="col-xs-3">
-						                                        <i class="fa fa-file-text fa-4x"></i>
-						                                    </div>
-						                                    <div class="col-xs-9 text-right">
-						                                        <div class="huge" id="truckOrderTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-						                                        <div style="font-size:14px;">派车单待处理</div>
-						                                    </div>
-						                                </div>
-						                            </div>
-						                            <a href="/jobOrder?type=truckorderwait">
-						                                <div class="panel-footer">
-						                                    <span class="pull-left"></span>
-						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-						                                    <div class="clearfix"></div>
-						                                </div>
-						                            </a>
-						                        </div>
-						                    </div>
-						                    <div class="col-lg-3 col-md-6">
-						                        <div class="panel panel-red">
-						                            <div class="panel-heading">
-						                                <div class="row">
-						                                    <div class="col-xs-3">
-						                                        <i class="fa fa-file-text fa-4x"></i>
-						                                    </div>
-						                                    <div class="col-xs-9 text-right">
-						                                        <div class="huge" id="SITodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-						                                        <div style="font-size:14px;">SI待更新</div>
-						                                    </div>
-						                                </div>
-						                            </div>
-						                            <a href="/jobOrder?type=siwait">
-						                                <div class="panel-footer">
-						                                    <span class="pull-left"></span>
-						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-						                                    <div class="clearfix"></div>
-						                                </div>
-						                            </a>
-						                        </div>
-						                    </div>
+                                                                <div class="col-xs-9 text-right">
+                                                                    <div class="huge" id="waitBuyInsuranceTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
+                                                                    <div style="font-size:14px;">待买保险</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a href="/jobOrder?type=insurancewait">
+                                                            <div class="panel-footer">
+                                                                <span class="pull-left"></span>
+                                                                <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="panel panel-danger">
+                                                        <div class="panel-heading">
+                                                            <div class="row">
+                                                                <div class="col-xs-3">
+                                                                    <i class="fa fa-file-text fa-4x"></i>
+                                                                </div>
+                                                                <div class="col-xs-9 text-right">
+                                                                    <div class="huge" id="waitOverseaCustomTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
+                                                                    <div style="font-size:14px;">待海外系统申报</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a href="/jobOrder?type=overseacustomwait">
+                                                            <div class="panel-footer">
+                                                                <span class="pull-left"></span>
+                                                                <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="panel panel-danger">
+                                                        <div class="panel-heading">
+                                                            <div class="row">
+                                                                <div class="col-xs-3">
+                                                                    <i class="fa fa-file-text fa-4x"></i>
+                                                                </div>
+                                                                <div class="col-xs-9 text-right">
+                                                                    <div class="huge" id="TlxOrderTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
+                                                                    <div style="font-size:14px;">待电放提单</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a href="/jobOrder?type=tlxOrderwait">
+                                                            <div class="panel-footer">
+                                                                <span class="pull-left"></span>
+                                                                <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+    						                </div>
+    			                        </div>
+                                        <div class="col-lg-6">
+                                            <%include("/eeda/index/msgPanel.html",{}){} %>
                                         </div>
-                                        <div class="row">
-						                    <div class="col-lg-3 col-md-6">
-						                        <div class="panel panel-info">
-						                            <div class="panel-heading">
-						                                <div class="row">
-						                                    <div class="col-xs-3">
-						                                        <i class="fa fa-file-text fa-4x"></i>
-						                                    </div>
-						                                    <div class="col-xs-9 text-right">
-						                                        <div class="huge" id="MBLTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-						                                        <div style="font-size:14px;">未确认MBL</div>
-						                                    </div>
-						                                </div>
-						                            </div>
-						                            <a href="/jobOrder?type=mblwait">
-						                                <div class="panel-footer">
-						                                    <span class="pull-left"></span>
-						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-						                                    <div class="clearfix"></div>
-						                                </div>
-						                            </a>
-						                        </div>
-						                    </div>
-						                    <div class="col-lg-3 col-md-6">
-						                        <div class="panel panel-danger">
-						                            <div class="panel-heading">
-						                                <div class="row">
-						                                    <div class="col-xs-3">
-						                                        <i class="fa fa-file-text fa-4x"></i>
-						                                    </div>
-						                                    <div class="col-xs-9 text-right">
-						                                        <div class="huge" id="waitCustomTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-						                                        <div style="font-size:14px;">待报关</div>
-						                                    </div>
-						                                </div>
-						                            </div>
-						                            <a href="/jobOrder?type=customwait">
-						                                <div class="panel-footer">
-						                                    <span class="pull-left"></span>
-						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-						                                    <div class="clearfix"></div>
-						                                </div>
-						                            </a>
-						                        </div>
-						                    </div>
-						                    <div class="col-lg-3 col-md-6">
-                                                <div class="panel panel-danger">
-                                                    <div class="panel-heading">
-                                                        <div class="row">
-                                                            <div class="col-xs-3">
-                                                                <i class="fa fa-file-text fa-4x"></i>
-                                                            </div>
-                                                            <div class="col-xs-9 text-right">
-                                                                <div class="huge" id="waitBuyInsuranceTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-                                                                <div style="font-size:14px;">待买保险</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <a href="/jobOrder?type=insurancewait">
-                                                        <div class="panel-footer">
-                                                            <span class="pull-left"></span>
-                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-                                                            <div class="clearfix"></div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-md-6">
-                                                <div class="panel panel-danger">
-                                                    <div class="panel-heading">
-                                                        <div class="row">
-                                                            <div class="col-xs-3">
-                                                                <i class="fa fa-file-text fa-4x"></i>
-                                                            </div>
-                                                            <div class="col-xs-9 text-right">
-                                                                <div class="huge" id="waitOverseaCustomTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-                                                                <div style="font-size:14px;">待海外系统申报</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <a href="/jobOrder?type=overseacustomwait">
-                                                        <div class="panel-footer">
-                                                            <span class="pull-left"></span>
-                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-                                                            <div class="clearfix"></div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-3 col-md-6">
-                                                <div class="panel panel-danger">
-                                                    <div class="panel-heading">
-                                                        <div class="row">
-                                                            <div class="col-xs-3">
-                                                                <i class="fa fa-file-text fa-4x"></i>
-                                                            </div>
-                                                            <div class="col-xs-9 text-right">
-                                                                <div class="huge" id="TlxOrderTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-                                                                <div style="font-size:14px;">待电放提单</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <a href="/jobOrder?type=tlxOrderwait">
-                                                        <div class="panel-footer">
-                                                            <span class="pull-left"></span>
-                                                            <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-                                                            <div class="clearfix"></div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-						                </div>
-			                        <!-- </div>
-			                    </div>
-			                </div>
-			            </div>      -->
-			            <!-- /.row -->
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="panel panel-default">
