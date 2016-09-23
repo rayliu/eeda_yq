@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="432"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -392,7 +392,7 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[  Notify Party]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="415" y="1" width="37" height="16" uuid="b2c81a27-d772-446e-bde6-5eda6fc12abe"/>
+				<reportElement x="415" y="5" width="37" height="16" uuid="b2c81a27-d772-446e-bde6-5eda6fc12abe"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -776,7 +776,7 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="451" y="1" width="104" height="16" uuid="ef0abb56-7319-4ffc-9c9c-134ab6624aa7"/>
+				<reportElement x="451" y="5" width="104" height="16" uuid="ef0abb56-7319-4ffc-9c9c-134ab6624aa7"/>
 				<textElement textAlignment="Left">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
