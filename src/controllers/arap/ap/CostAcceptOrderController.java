@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.Party;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -19,7 +17,6 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
-import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PermissionConstant;
 
@@ -73,11 +70,12 @@ public class CostAcceptOrderController extends Controller {
         String sql = "select * from(  "
         		+ " select acao.id,acao.order_no application_order_no,acao.status,acao.payment_method,acao.create_stamp,acao.check_stamp,acao.pay_time, "
         		+ " acao.remark,acao.payee_unit,acao.payee_name, "
-        		+ " caor.order_type,caor.pay_amount,aco.order_no cost_order_no,u.c_name "
+        		+ " caor.order_type,acao.total_amount,aco.order_no cost_order_no,u.c_name "
 				+ " from arap_cost_application_order acao "
 				+ " left join cost_application_order_rel caor on caor.application_order_id = acao.id "
 				+ " left join arap_cost_order aco on aco.id = caor.cost_order_id"
 				+ " left join user_login u on u.id = acao.create_by"
+				+ " group by acao.id"
 				+ " ) B where 1=1 ";
 		
         String condition = DbUtils.buildConditions(getParaMap());

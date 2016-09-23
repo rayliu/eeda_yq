@@ -58,9 +58,12 @@ $(document).ready(function() {
             {"data":"ORDER_TYPE"},
             {"data":"COST_ORDER_NO"},
             {"data":"STATUS"},    
-            {"data":"PAY_AMOUNT",
+            {"data":"TOTAL_AMOUNT",
             	"render": function(data, type, full, meta) {
-            		return parseFloat(data).toFixed(2);	
+            		if(data)
+            			return parseFloat(data).toFixed(2);
+            		else
+            			return '0.00';
             	}
             },
             {"data":"PAYEE_UNIT"},  
