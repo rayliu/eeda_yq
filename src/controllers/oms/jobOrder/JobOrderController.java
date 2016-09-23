@@ -146,6 +146,36 @@ public class JobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
+    //根据工作单类型生成不同前缀
+    public String generateJobPrefix(String type){
+    		String prefix = "";
+			if(type.equals("出口柜货")||type.equals("进口柜货")||type.equals("出口散货")||type.equals("进口散货")){
+				prefix+="EKO";
+			}
+			else if(type.equals("出口空运")||type.equals("进口空运")){
+				prefix+="EKA";
+			}
+			else if(type.equals("香港头程")||type.equals("香港游")){
+				prefix+="EKL";
+			}
+			else if(type.equals("加贸")||type.equals("园区游")){
+				prefix+="EKP";
+			}
+			else if(type.equals("陆运")){
+				prefix+="EKT";
+			}
+			else if(type.equals("报关")){
+				prefix+="EKC";
+			}
+			else if(type.equals("快递")){
+				prefix+="EKE";
+			}
+			else if(type.equals("贸易")){
+				prefix+="EKB";
+			}
+			return prefix;
+    }
+    
     @SuppressWarnings("unchecked")
 	@Before(Tx.class)
    	public void save() throws Exception {	
@@ -155,13 +185,22 @@ public class JobOrderController extends Controller {
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
         String id = (String) dto.get("id");
         String planOrderItemID = (String) dto.get("plan_order_item_id");
-            
+        String type = (String) dto.get("type");//根据工作单类型生成不同前缀
+        
         JobOrder jobOrder = new JobOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
    		
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			jobOrder = JobOrder.dao.findById(id);
+   			
+   			if(type!=jobOrder.get("type")){
+	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type));
+	            jobOrder.set("order_no", order_no);
+   			}
+            
+   			jobOrder.set("updator", user.getLong("id"));
+   			jobOrder.set("update_stamp", new Date());
    			DbUtils.setModelValues(dto, jobOrder);
    			
    			jobOrder.update();
@@ -170,34 +209,8 @@ public class JobOrderController extends Controller {
    			DbUtils.setModelValues(dto, jobOrder);
    			
    			//需后台处理的字段
-   			String type = (String) dto.get("type");
-   			String prefix = "";
-   			if(type.equals("出口柜货")||type.equals("进口柜货")||type.equals("出口散货")||type.equals("进口散货")){
-   				prefix+="EKO";
-   			}
-   			else if(type.equals("出口空运")||type.equals("进口空运")){
-   				prefix+="EKA";
-   			}
-   			else if(type.equals("香港头程")||type.equals("香港游")){
-   				prefix+="EKL";
-   			}
-   			else if(type.equals("加贸")||type.equals("园区游")){
-   				prefix+="EKP";
-   			}
-   			else if(type.equals("陆运")){
-   				prefix+="EKT";
-   			}
-   			else if(type.equals("报关")){
-   				prefix+="EKC";
-   			}
-   			else if(type.equals("快递")){
-   				prefix+="EKE";
-   			}
-   			else if(type.equals("贸易")){
-   				prefix+="EKB";
-   			}
-   			String orderPrefix = OrderNoGenerator.getNextOrderNo(prefix);
-            jobOrder.set("order_no", orderPrefix);
+   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type));
+            jobOrder.set("order_no", order_no);
    			jobOrder.set("creator", user.getLong("id"));
    			jobOrder.set("create_stamp", new Date());
    			jobOrder.save();
