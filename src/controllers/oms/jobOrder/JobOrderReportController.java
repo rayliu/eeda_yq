@@ -198,8 +198,8 @@ public class JobOrderReportController extends Controller {
 	//答应应付对账单PDF
 	public void payableDetailPDF(){
 		String order_id = getPara("order_id");
-		String company_name = getPara("company_name");
-		String fileName = "/report/checkOrder/payableDetails.jrxml";
+		String company_name = getPara("sp_name");
+		String fileName = "/report/checkOrder/payableDetails.jasper";
 		String outFileName = "/download/应付对账单PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);

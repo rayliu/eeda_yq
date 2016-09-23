@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="debitNote" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="19"/>
+	<property name="ireport.x" value="11"/>
+	<property name="ireport.y" value="143"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -34,7 +34,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[select jor.*, pr.abbr sp_name, f.name charge_name,u.name unit_name,c.name currency_name,josi.gross_weight,
-   josi.pieces,josi.container_no,jos.order_id,jos.hbl_no,jos.vessel,jos.voyage,jos.mbl_no,jos.etd,jos.eta,jo.ref_no,
+   josi.pieces,josi.container_no,jos.order_id,jos.hbl_no,jos.vessel,jos.voyage,jos.mbl_no,jos.etd,jos.eta,jo.ref_no,jo.order_no,
    lo.name fnd,lo1.name pol,u1.name unit_name,IFNULL(pr.company_name,pr.company_name_eng) company_name,
    IFNULL(pr.address,pr.address_eng) address,pr.phone,(SELECT sum(total_amount) FROM job_order_arap jor
    left join currency c on c.id=jor.currency_id
@@ -151,6 +151,9 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 	<field name="ref_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="fnd" class="java.lang.String"/>
 	<field name="pol" class="java.lang.String"/>
 	<field name="company_name" class="java.lang.String">
@@ -174,14 +177,7 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="148" splitType="Stretch">
-			<staticText>
-				<reportElement x="204" y="115" width="146" height="30" uuid="c036f7f5-965b-47d3-9415-8881f9f7781f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="宋体" size="24" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-V" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[DEBIT NOTE]]></text>
-			</staticText>
+		<band height="151" splitType="Stretch">
 			<staticText>
 				<reportElement x="146" y="41" width="364" height="22" uuid="1f17ff0a-6c4f-4e21-a8f0-17f61bc37be6"/>
 				<textElement>
@@ -210,13 +206,6 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				</textElement>
 				<text><![CDATA[FAX:86-756-3225900]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="169" y="15" width="299" height="26" uuid="e1e2aafd-07ba-4e27-a38b-5dfadd484cdc"/>
-				<textElement>
-					<font fontName="宋体" size="16"/>
-				</textElement>
-				<text><![CDATA[珠海横琴远桥供应链管理有限公司]]></text>
-			</staticText>
 			<line>
 				<reportElement x="0" y="110" width="555" height="1" uuid="9740ad94-a013-4730-b564-377abc00a4ba"/>
 				<graphicElement>
@@ -227,6 +216,20 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				<reportElement x="0" y="-9" width="140" height="31" uuid="44b39cc7-80f7-43ee-beb3-35f96e91d3ca"/>
 				<imageExpression><![CDATA["yqlogo1.png"]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="180" y="111" width="271" height="36" uuid="ac92119a-3fdc-4f7d-9f2c-a5f2c23c930c"/>
+				<textElement>
+					<font fontName="SansSerif" size="24" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[DEBIT NOTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="166" y="12" width="322" height="29" uuid="cef834b4-b820-4d40-b449-6d7f77b55ab0"/>
+				<textElement>
+					<font fontName="宋体" size="18" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[珠海横琴远桥供应链管理有限公司]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -237,20 +240,6 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[TO:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="351" y="0" width="32" height="20" uuid="9082e3cf-5ef5-4b25-8b51-e42961ddf7d3"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[Page:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="403" y="0" width="142" height="20" uuid="534df344-12d4-45a3-8871-fd9ae3f495a3"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="18" y="39" width="25" height="15" uuid="d33d0326-6907-4f48-941e-93e23ce94b3b"/>
@@ -271,7 +260,7 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[Vel/Voy:]]></text>
+				<text><![CDATA[Vel / Voy:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="18" y="110" width="56" height="15" uuid="39eff2eb-c391-4a11-9411-9213a9a2817a"/>
@@ -517,6 +506,20 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ref_no}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="352" y="2" width="58" height="20" uuid="2b1d3b07-aa9b-437b-bd78-c589ebb969d4"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[JOB NO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="415" y="1" width="140" height="20" uuid="991facb4-7a53-4676-a280-5b2af336f2f5"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
@@ -572,7 +575,7 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 			</textField>
 			<staticText>
 				<reportElement x="419" y="0" width="19" height="20" uuid="232c7d4b-3f6a-4d58-884c-6594d8012380"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[*]]></text>
@@ -629,21 +632,21 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 			<staticText>
 				<reportElement x="20" y="175" width="96" height="20" uuid="c2745b55-21a5-4968-87df-d544ce9de735"/>
 				<textElement>
-					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[开户银行：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="21" y="148" width="85" height="20" uuid="b49158ea-f904-46f7-93af-29aef9333601"/>
+				<reportElement x="21" y="148" width="105" height="20" uuid="b49158ea-f904-46f7-93af-29aef9333601"/>
 				<textElement>
-					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[账        号：]]></text>
+				<text><![CDATA[账    号：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="122" width="85" height="20" uuid="f77458ed-3298-4aae-8acc-ceaeaf327496"/>
 				<textElement>
-					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[账户名称：]]></text>
 			</staticText>
