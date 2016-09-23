@@ -539,6 +539,8 @@ public class JobOrderController extends Controller {
      
     public void list() {    	
     	String type=getPara("type");
+    	String customer_code=getPara("customer_code")==null?"":getPara("customer_code");
+    	String customer_name=getPara("customer")==null?"":getPara("customer");
     	
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -613,12 +615,17 @@ public class JobOrderController extends Controller {
         }
         else{
         	
-         sql = "SELECT * from (select jo.*, jos.export_date sent_out_time, ifnull(u.c_name, u.user_name) creator_name, p.abbr customer_name "
+         sql = "SELECT * from (select jo.*, jos.export_date sent_out_time, ifnull(u.c_name, u.user_name) creator_name, p.abbr customer_name,p.code "
     			+ " from job_order jo "
     			+ " left join job_order_shipment jos on jos.order_id = jo.id"
     			+ " left join party p on p.id = jo.customer_id"
-    			+ " left join user_login u on u.id = jo.creator) A"
-    			+ " where 1 =1 ";
+    			+ " left join user_login u on u.id = jo.creator"
+    			+ " where abbr like '%"
+    			+ customer_name
+    			+ "%' and code like '%"
+    			+ customer_code
+    			+ "%' )A"
+         	    + " where 1 =1 ";
          }
         
         String condition = DbUtils.buildConditions(getParaMap());

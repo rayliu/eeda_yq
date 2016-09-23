@@ -75,6 +75,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           var status = $('#status').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
+          var customer_code = $("#customer_code").val().trim();
+          var customer_name = $("#customer_name").val().trim();
           
           /*  
               查询规则：参数对应DB字段名
@@ -85,6 +87,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           */
           var url = "/planOrder/list?order_no="+order_no
                +"&status="+status
+               +"&customer_code="+customer_code
+               +"&customer="+customer_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 

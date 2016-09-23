@@ -83,9 +83,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var sent_out_time_begin_time = $("#sent_out_time_begin_time").val();
           var sent_out_time_end_time = $("#sent_out_time_end_time").val();
           var status = $('#status').val();
+          var customer_code = $("#customer_code").val().trim();
+          var customer_name = $("#customer_name").val().trim();
           //增加出口日期查询
           var url = "/jobOrder/list?order_no="+order_no
           	   +"&status="+status
+          	   +"&customer_code="+customer_code
+               +"&customer="+customer_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
           	   +"&sent_out_time_begin_time="+sent_out_time_begin_time

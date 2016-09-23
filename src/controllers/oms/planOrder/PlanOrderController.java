@@ -136,6 +136,8 @@ public class PlanOrderController extends Controller {
     
     public void list() {
     	String type=getPara("type");
+    	String customer_code=getPara("customer_code")==null?"":getPara("customer_code");
+    	String customer_name=getPara("customer")==null?"":getPara("customer");
     	
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -143,6 +145,7 @@ public class PlanOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = "";
+        String condition="";
         if("todo".equals(type)){
         	sql =" SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name "
         			+ " FROM plan_order po "
@@ -152,14 +155,20 @@ public class PlanOrderController extends Controller {
         			+ " WHERE is_gen_job='N' AND factory_loading_time is not NULL "
         			+ " AND datediff(factory_loading_time, now())<=5";
         }else{
-        	sql = "SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name"
+        	sql = "SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name,p.code"
     			+ "  from plan_order po "
     			+ "  left join party p on p.id = po.customer_id "
     			+ "  left join user_login u on u.id = po.creator"
-    			+ "   where 1 =1 ";
+    			+ "  where 1 =1 "
+    			+ "  and abbr like '%"
+    			+ customer_name
+    			+ "%' and code like '%"
+    			+ customer_code
+    			+ "%'";
         }
-        String condition = DbUtils.buildConditions(getParaMap());
-
+        condition = DbUtils.buildConditions(getParaMap());
+        
+        
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
