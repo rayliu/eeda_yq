@@ -6,9 +6,10 @@ $(document).ready(function() {
 
 		//datatable, 动态处理
 	    var ids = $("#ids").val();
-	    var total = 0.00;
-	    var nopay = 0.00;
-	    var pay = 0.00;
+        var total = 0.00;
+        var nopay = 0.00;
+        var pay = 0.00;
+
 		var dataTable = eeda.dt({
 		    id: 'CostOrder-table',
 		    paging: true,
@@ -28,26 +29,34 @@ $(document).ready(function() {
              },
         	{"data":"CNAME","width": "250px"},
         	{"data":"PAYEE_NAME","width": "120px"},
-    		{"data":"COST_AMOUNT","width": "100px",
+    		{"data":"TOTAL_AMOUNT","width": "100px",
     			"render": function(data, type, full, meta) {
-					total = total + parseFloat(data) ;
-					$("#total").html(total);
-					return data;
+					var str = parseFloat(data).toFixed(2);
+					total = total + parseFloat(data);
+					$("#total").html(total.toFixed(2));
+					return str;
     			}
     		},
-    		{"data":"PAY_AMOUNT","width": "100px",
+    		{"data":"PAID_AMOUNT","width": "100px",
     			"render": function(data, type, full, meta) {
-					nopay = nopay + parseFloat(data) ;
-					$("#nopay").html(nopay);
-					return data;
+					var str = parseFloat(full.TOTAL_AMOUNT-data).toFixed(2);
+					nopay = nopay + parseFloat(full.TOTAL_AMOUNT-data);
+					$("#nopay").html(nopay.toFixed(2));
+					return str;
     			}
     		},
-    		{"data":null,"width": "100px",
+    		{"data":"PAID_AMOUNT","width": "100px",
     			"render": function(data, type, full, meta) {
-					pay = pay + parseFloat(full.DAIFU_AMOUNT) ;
-					$("#pay").html(pay);
-					$("#pay_amount").val(pay);
-					return "<input type ='text' name='amount' style='width:80px' id ='amount' value='"+full.DAIFU_AMOUNT+"'>";
+    				if($('#application_id').val()==''){
+    					var str = parseFloat(full.TOTAL_AMOUNT-data).toFixed(2);
+    					pay = pay + parseFloat(full.TOTAL_AMOUNT-data);
+    				}else{
+    					var str = parseFloat(data).toFixed(2);
+    					pay = pay + parseFloat(data);
+    				}
+    				$("#pay").html(pay.toFixed(2));
+					$("#pay_amount").val(pay.toFixed(2));
+					return "<input type ='text' name='amount' style='width:80px' id ='amount' value='"+str+"'>";
     			}
     		},
     		{"data":"CREATOR_NAME","width": "120px"},
@@ -71,6 +80,7 @@ $(document).ready(function() {
     	});
     	
     	$("#total_amount").val(sum);
+    	debugger
     	var str_JSON = JSON.stringify(array);
     	$("#detailJson").val(str_JSON);
     };
@@ -89,7 +99,7 @@ $(document).ready(function() {
 				return false;
 			}
 		}
-		$.get('/costPreInvoiceOrder/save',$("#checkForm").serialize(), function(data){
+		$.post('/costPreInvoiceOrder/save',$("#checkForm").serialize(), function(data){
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 				$("#application_id").val(data.ID);

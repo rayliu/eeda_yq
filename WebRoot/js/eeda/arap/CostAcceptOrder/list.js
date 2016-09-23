@@ -8,61 +8,64 @@ $(document).ready(function() {
     
 	var costAccept_table = eeda.dt({
 	    id: 'costAccept_table',
+	    autoWidth: true,
 	    paging: true,
 	    serverSide: false, //不打开会出现排序不对 
 	    ajax: "/costAcceptOrder/list",
 	    columns: [
-			{ "width":"10px", 
+			{ 
 			    "render": function(data, type, full, meta) {
 			        return '<input type="checkbox" class="checkBox" >';
 			    }
 			},
-            {"data":"ORDER_NO","width":"70px",
+            {"data":"ORDER_NO",
             	"render": function(data, type, full, meta) {
             		return "<a href='/costCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
         		}
             },
-            {"data":"ORDER_TYPE", "width":"70px"},   
-            {"data":"STATUS", "width":"70px"},   
-            {"data":"TOTALCOSTAMOUNT", "width":"70px"},  
-            {"data":"PAID_AMOUNT", "width":"70px" ,
+            {"data":"ORDER_TYPE"},   
+            {"data":"STATUS"},   
+            {"data":"TOTALCOSTAMOUNT"},  
+            {"data":"PAID_AMOUNT",
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);	
             		else 
-            			return '';
+            			return '0.00';
             	}
             },
-            {"width":"70px",
+            {
             	"render": function(data, type, full, meta) {
             		return full.TOTALCOSTAMOUNT - full.PAID_AMOUNT;	
             	}
             },
-            {"data":"SP_NAME",  "width":"150px","sClass":"SP_NAME"}
+            {"data":"SP_NAME","sClass":"SP_NAME"}
         ]      
     });
                       
       var application_table = eeda.dt({
           id: 'application_table',
+          autoWidth: true,
           paging: true,
           serverSide: true, 
           ajax: "/costAcceptOrder/applicationList",
           columns: [
-            {"data":"APPLICATION_ORDER_NO","width":"120px",
+            {"data":"APPLICATION_ORDER_NO",
             	 "render": function(data, type, full, meta) {
             			return "<a href='/costPreInvoiceOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
             	 }
             },
-            {"data":"ORDER_TYPE", "width":"70px"},
-            {"data":"STATUS", "width":"50px"},    
-            {"data":"PAY_AMOUNT", "width":"70px",
+            {"data":"ORDER_TYPE"},
+            {"data":"COST_ORDER_NO"},
+            {"data":"STATUS"},    
+            {"data":"PAY_AMOUNT",
             	"render": function(data, type, full, meta) {
             		return parseFloat(data).toFixed(2);	
             	}
             },
-            {"data":"PAYEE_UNIT",  "width":"150px"},  
-            {"data":"PAYEE_NAME", "width":"100px"},
-            {"data":"PAYMENT_METHOD",  "width":"60px",
+            {"data":"PAYEE_UNIT"},  
+            {"data":"PAYEE_NAME"},
+            {"data":"PAYMENT_METHOD",
                 "render": function(data, type, full, meta) {
                     if(data == 'cash')
                         return '现金';
@@ -72,7 +75,8 @@ $(document).ready(function() {
                     	return data;
                 }
             },
-            {"data":"CREATE_STAMP", "width":"60px",
+            {"data":"C_NAME"},
+            {"data":"CREATE_STAMP",
         		"render":function(data, type, full, meta){
         			if(data)
         				return data.substr(0,10);
@@ -80,7 +84,7 @@ $(document).ready(function() {
         				return '';
     			}
     		},
-        	{"data":"CHECK_STAMP", "width":"60px",
+        	{"data":"CHECK_STAMP",
         		"render":function(data, type, full, meta){
         			if(data)
         				return data.substr(0,10);
@@ -88,7 +92,7 @@ $(document).ready(function() {
         				return '';
     			}
         	},
-        	{"data":"PAY_TIME", "width":"60px",
+        	{"data":"PAY_TIME",
         		"render":function(data, type, full, meta){
         			if(data)
         				return data.substr(0,10);
@@ -96,7 +100,7 @@ $(document).ready(function() {
         				return '';
     			}
         	},
-            {"data":"REMARK", "width":"200px"}
+            {"data":"REMARK"}
         ]      
     });
       
@@ -134,7 +138,7 @@ $(document).ready(function() {
       });
      var searchData1=function(){
     	  var sp_id = $('#sp_id').val();
-          var order_no = $("#orderNo").val().trim(); 
+          var cost_order_no = $("#cost_order_no").val().trim(); 
           var applicationOrderNo = $('#applicationOrderNo').val();
           var status2 = $("#status2").val();
           var begin_date_begin_time = $("#begin_date_begin_time").val();
@@ -145,7 +149,7 @@ $(document).ready(function() {
           var confirmBegin_date_end_time = $("#confirmBegin_date_end_time").val();
    
           var url = "/costAcceptOrder/applicationList?sp_id="+sp_id
-               +"&order_no="+order_no
+               +"&cost_order_no="+cost_order_no
                +"&application_order_no="+applicationOrderNo
                +"&STATUS="+status2
                +"&create_stamp_begin_time="+begin_date_begin_time

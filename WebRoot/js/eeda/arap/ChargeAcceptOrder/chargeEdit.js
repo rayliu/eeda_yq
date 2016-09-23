@@ -68,11 +68,7 @@ $(document).ready(function() {
 	    serverSide: true, //不打开会出现排序不对
 	    ajax: "/chargeAcceptOrder/chargeOrderList?idsArray="+idsArray+"&application_id="+$("#order_id").val(),
 	    columns:[
-            {"data":"ORDER_TYPE","width": "100px","class":'order_type',
-        		"render": function(data, type, full, meta) {
-        			return "<input type ='text' name='order_type' value='"+data+"'>";
-        		}
-        	},
+            {"data":"ORDER_TYPE","width": "100px","class":'order_type'},
             {"data":"ORDER_NO","width": "120px",
             	"render": function(data, type, full, meta) {
             		return '<a href="/chargeCheckOrder/edit?id='+full.ID+'">'+data+'</a>';
