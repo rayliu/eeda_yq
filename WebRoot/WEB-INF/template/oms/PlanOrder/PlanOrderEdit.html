@@ -6,7 +6,7 @@
                 </div>
             </div>
             <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
-            <div class="row">
+            <div class="form-group">
                 <form id="orderForm">
                     <div class="row">
                         <div class="col-lg-4">
@@ -79,9 +79,7 @@
                     </div>
                     
                 </form>
-            </div>
             
-            <div class="row">
             	<div class="form-group">
                  <label>备注</label>
                  <textarea id='note' class="form-control" rows="3" name="note">${order.remark!''}</textarea>
