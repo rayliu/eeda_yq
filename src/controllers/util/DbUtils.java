@@ -196,15 +196,15 @@ public class DbUtils {
 		for (Entry<String, ?> entry : dto.entrySet()) { 
 			String key = entry.getKey();
 			if(!key.endsWith("_list")){
-            	String value = String.valueOf(entry.getValue()) ;
+            	String value = String.valueOf(entry.getValue()).trim();
             	//忽略  action 字段
-            	if(StringUtils.isNotEmpty(value) && !"action".equals(key)){
+            	if(!"action".equals(key)){
             		logger.debug(key+":"+value);
-            		if("null".equals(value)){
+            		if(StringUtils.isEmpty(value)){
                         value=null;
                     }
             		try {
-                        model.set(key, value.trim());
+                        model.set(key, value);
                         if("Field".equals(modelName) && "field_display_name".equals(key)){//对field 的特殊处理
                             model.set("field_name", PingYinUtil.getFirstSpell(value).toUpperCase());
                             //需判断当前表是否有相同字段名
