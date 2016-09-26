@@ -198,12 +198,10 @@ public class JobOrderReportController extends Controller {
 	//打印应付对账单PDF
 	public void payableDetailPDF(){
 		String order_id = getPara("aoc_id");
-		String company_name = getPara("sp_name");
 		String fileName = "/report/checkOrder/payableDetails.jasper";
 		String outFileName = "/download/应付对账单PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
-		hm.put("company_name", company_name);
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);

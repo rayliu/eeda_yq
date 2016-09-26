@@ -91,16 +91,17 @@ IF (
 	jo.customer_id,
 	jo.volume,
 	jo.net_weight,
-            p1.company_name sp_name,
-            p1.address address,
-            p1.phone phone,
-            p1.contact_person,
+  p1.company_name sp_name,
+  p1.address address,
+  p1.phone phone,
+  p1.contact_person,
+  p1.fax,
 	jos.mbl_no,
 	jos.etd,
 	l. NAME fnd,
 	joai.destination,
-            aco.begin_time,
-            aco.end_time,
+  aco.begin_time,
+  aco.end_time,
 	cur. NAME cur_name,
 	GROUP_CONCAT(josi.container_no) container_no,
 	GROUP_CONCAT(josi.container_type) container_amount
@@ -119,7 +120,7 @@ LEFT JOIN arap_cost_item aci ON aci.ref_order_id = joa.id
 LEFT JOIN arap_cost_order aco ON aco.id = aci.cost_order_id
 WHERE
 	joa.id = aci.ref_order_id
-AND aco.id = 1180
+AND aco.id = $P{aco_id}
 GROUP BY
 	joa.id]]>
 	</queryString>
@@ -164,6 +165,9 @@ GROUP BY
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="contact_person" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fax" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="mbl_no" class="java.lang.String">
@@ -333,7 +337,7 @@ GROUP BY
 				<text><![CDATA[FAX:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="91" width="62" height="20" uuid="4ddd4e90-7751-4e44-b12b-46f55f57cc20"/>
+				<reportElement x="0" y="91" width="77" height="20" uuid="4ddd4e90-7751-4e44-b12b-46f55f57cc20"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -468,12 +472,16 @@ GROUP BY
 				<reportElement x="123" y="72" width="100" height="20" uuid="0ed81480-377b-40c0-9064-c2b1cd2f23ba"/>
 				<textFieldExpression><![CDATA[$F{end_time}]]></textFieldExpression>
 			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="335" y="52" width="181" height="20" uuid="51e24686-8ece-445a-a0a6-41cb4f65eab2"/>
+				<textFieldExpression><![CDATA[$F{fax}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="23" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="62" height="20" uuid="8b1b394d-1950-4880-b90d-02c2224060a7"/>
+				<reportElement x="0" y="0" width="77" height="20" uuid="8b1b394d-1950-4880-b90d-02c2224060a7"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
