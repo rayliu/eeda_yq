@@ -526,7 +526,7 @@ $(document).ready(function() {
   //打印Debit_note
 	$('#printDebitNoteBtn').click(function(){
 		//数据不足提示
-		var sp_name = $('#spList').text();
+		var sp_name = $("#spList").find("option:selected").text();
 		if(sp_name!=""){
     	var order_id = $('#order_id').val();
     	

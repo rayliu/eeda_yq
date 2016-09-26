@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="debitNote" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="11"/>
-	<property name="ireport.y" value="143"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="126"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -478,21 +478,21 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				</textElement>
 				<textFieldExpression><![CDATA[$F{unit_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="41" y="1" width="303" height="39" uuid="1d53aa30-90fc-490b-acf5-b4488a9a9499"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="39" width="301" height="15" uuid="5da3f075-434d-4e64-bfb9-459dddc561e4"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{company_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="55" width="301" height="17" uuid="246046ec-ad77-4259-a2a0-d0dba018e0cf"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
@@ -513,7 +513,7 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				</textElement>
 				<text><![CDATA[JOB NO:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="415" y="1" width="140" height="20" uuid="991facb4-7a53-4676-a280-5b2af336f2f5"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
@@ -538,7 +538,7 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				</textElement>
 				<textFieldExpression><![CDATA[($F{currency_name}.equals("CNY")?"RMB":$F{currency_name})]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="204" y="0" width="48" height="20" uuid="3a69d325-db40-463a-abe5-e39cf8ffc13c"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
@@ -672,11 +672,11 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				<reportElement x="312" y="22" width="30" height="20" uuid="8e538073-085e-4640-affb-d64ff6017ee0"/>
 				<text><![CDATA[USD:]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="344" y="3" width="40" height="20" uuid="94430653-2374-406c-b2d8-fb704eae0631"/>
 				<textFieldExpression><![CDATA[$F{total_RMB}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="344" y="23" width="40" height="20" uuid="7006bb1b-db18-4f61-a282-a2a8749216f3"/>
 				<textFieldExpression><![CDATA[$F{total_USD}]]></textFieldExpression>
 			</textField>
@@ -684,8 +684,11 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				<reportElement x="398" y="3" width="93" height="20" uuid="14c45892-c9f5-4b31-8c07-115cd3edc7c4"/>
 				<text><![CDATA[TOTAOL Amount:]]></text>
 			</staticText>
-			<textField>
+			<textField pattern="###0.00">
 				<reportElement x="491" y="3" width="64" height="20" uuid="1e4d6b1a-a3cd-40e0-8a5d-ad9b9f23d657"/>
+				<textElement>
+					<font fontName="仿宋"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{totoa_amountRMB}]]></textFieldExpression>
 			</textField>
 			<line>
