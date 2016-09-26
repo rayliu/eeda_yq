@@ -136,9 +136,9 @@
                     <div class="row">
                     	<div class="col-lg-4">
 			                <%include("/eeda/component/form/selectField.html", 
-			                    {   id:'ocean_trans_clause', 
+			                    {   id:'trans_clause', 
 			                        label:'运输条款', 
-			                        value:shipment.trans_clause!'',
+			                        value:order.trans_clause!'',
 			                        value_list:[
 			                            {code:'CFS-CFS', value:'CFS-CFS'},
 			                            {code:'CFS-DOOR', value:'CFS-DOOR'}, 
@@ -154,7 +154,7 @@
 			                  <%include("/eeda/component/form/selectField.html", 
 			                    {   id:'trade_type', 
 			                        label:'贸易类型', 
-			                        value:shipment.trade_type!'',
+			                        value:order.trade_type!'',
 			                        value_list:[
 			                            {code:'FOB', value:'FOB'},
 			                            {code:'CIF', value:'CIF'},

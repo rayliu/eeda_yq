@@ -116,8 +116,9 @@ $(document).ready(function() {
         order.pieces = $("#pieces").val();
         order.billing_method = $('#billing_method input[type="radio"]:checked').val();
         order.ref_no = $("#ref_no").val();
+        order.trans_clause = $("#trans_clause").val();
+        order.trade_type = $("#trade_type").val();
         
-        //totalCost,totalCharge
 //        order.total_chargeRMB = chargeRMB;
 //        order.total_chargeUSD = chargeUSD;
 //        order.total_profitTotalCharge = profitTotalCharge;

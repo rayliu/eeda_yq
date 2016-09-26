@@ -43,24 +43,6 @@
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
-                            <%include("/eeda/component/form/selectField.html", 
-                                {   id:'trans_clause', 
-                                    label:'运输条款', 
-                                    value:air.trans_clause!'',
-                                    value_list:[
-                                        {code:'CFS-CFS', value:'CFS-CFS'},
-			                            {code:'CFS-DOOR', value:'CFS-DOOR'}, 
-			                            {code:'CY-CY', value:'CY-CY'},
-			                            {code:'CY-DOOR', value:'CY-DOOR'},
-			                            {code:'DOOR-DOOR', value:'DOOR-DOOR'},
-			                            {code:'DOOR-CFS', value:'DOOR-CFS'},
-			                            {code:'DOOR-CY', value:'DOOR-CY'}
-                                    ]
-                                }){}%>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'hawb_no', 
                                     label:'HAWB号码', 
@@ -76,18 +58,18 @@
                         </div>
                     </div>
                     <div class="row">
+                    	<div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'air_net_weight', 
+                                    label:'净重(KG)', 
+                                    value:air.net_weight!''
+                                }){}%>
+                        </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'air_gross_weight', 
                                     label:'毛重(KG)', 
                                     value:air.gross_weight!''
-                                }){}%>
-                        </div>
-                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'air_net_weight', 
-                                    label:'净重(KG)', 
-                                    value:air.net_weight!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
