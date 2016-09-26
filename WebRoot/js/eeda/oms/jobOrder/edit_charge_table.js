@@ -549,28 +549,7 @@ $(document).ready(function() {
     	buildSpList();
     	$('#invoiceNo').val($('#ref_no').val());
     })
-    
-	$('#confirmBtn').click(function(){
-		$('#confirmBtn').attr('disabled',true);
-      	var itemIds=[];
-      	$('#charge_table input[type="checkbox"]').each(function(){
-      		var checkbox = $(this).prop('checked');
-      		if(checkbox){
-      			var itemId = $(this).parent().parent().attr('id');
-      			itemIds.push(itemId);
-      		}
-      	 });
-    	 $.post('/chargeConfirm/chargeConfirm?itemIds='+itemIds, function(data){
-    		 if(data.result==true){
-    			 $.scojs_message('单据确认成功', $.scojs_message.TYPE_OK);
-    			 searchData();
-    			 $('#confirmBtn').attr('disabled', false);
-    		 }
-    	 },'json').fail(function() {
-                $.scojs_message('单据确认失败', $.scojs_message.TYPE_ERROR);
-                $('#confirmBtn').attr('disabled', false);
-              });
-      })
+  
     
 	     
     

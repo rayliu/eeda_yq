@@ -710,5 +710,20 @@ public class JobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
+    //费用应收打印PDF前保存
+    public void saveDebitNote(){
+    	String ids = getPara("itemIds");
+    	String[] idArr = ids.split(",");
+    	String invoiceNo = getPara("invoiceNo");
+    	JobOrderArap order = null;
+    	//checkbox选中的几条发票号一样
+    	for(int i=0;i<idArr.length;i++){
+    		order = JobOrderArap.dao.findById(idArr[i]);
+    		order.set("invoice_no", invoiceNo);
+    	}
+    	renderJson("{\"result\":true}");
+    }
+    
+    
    
 }

@@ -93,7 +93,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
           dataTable.ajax.url(url).load();
       };
       
-    //checkbox选中则button可点击
+      	//checkbox选中则button可点击
 		$('#eeda_table').on('click','.checkBox',function(){
 			
 			var hava_check = 0;
@@ -109,16 +109,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 				$('#confirmBtn').attr('disabled',true);
 			}
 		});
+		
 		$('#confirmBtn').click(function(){
 			$('#confirmBtn').attr('disabled',true);
-      	var itemIds=[];
-      	$('#eeda_table input[type="checkbox"]').each(function(){
-      		var checkbox = $(this).prop('checked');
-      		if(checkbox){
-      			var itemId = $(this).parent().parent().attr('id');
-      			itemIds.push(itemId);
-      		}
-      	});
+	      	var itemIds=[];
+	      	$('#eeda_table input[type="checkbox"]').each(function(){
+	      		var checkbox = $(this).prop('checked');
+	      		if(checkbox){
+	      			var itemId = $(this).parent().parent().attr('id');
+	      			itemIds.push(itemId);
+	      		}
+	      	});
 	    	 $.post('/chargeConfirm/chargeConfirm?itemIds='+itemIds, function(data){
 	    		 if(data.result==true){
 	    			 $.scojs_message('单据确认成功', $.scojs_message.TYPE_OK);

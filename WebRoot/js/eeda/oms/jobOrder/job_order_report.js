@@ -308,7 +308,7 @@ $(document).ready(function() {
 	             }
 				
 		},'json').fail(function(){
-		    	$.scojs_message('失败', $.scojs_message.TYPE_ERROR);
+		    	$.scojs_message('生成海运头程资料失败', $.scojs_message.TYPE_ERROR);
 		  });
 		
     });
@@ -523,34 +523,59 @@ $(document).ready(function() {
     	}
     });
     
-  //打印Debit_note
+    //打印Debit_note
 	$('#printDebitNoteBtn').click(function(){
+		$('#printDebitNoteBtn').attr('disabled', true);
 		//数据不足提示
 		var sp_name = $("#spList").find("option:selected").text();
-		if(sp_name!=""){
-    	var order_id = $('#order_id').val();
-    	
-    	
-    	if($('input[name=debit_note]:checked').val()=='debitNote'){
-	    	$.post('/jobOrderReport/printDebitNotePDF', {order_id:order_id,sp_name:sp_name}, function(data){
-	    		if(data){
-	                window.open(data);
-	    		  }else{
-	               $.scojs_message('生成DebitNote PDF失败', $.scojs_message.TYPE_ERROR);
-	               }
-	    	}); 
-    	}     
-    	
-    	if($('input[name=debit_note]:checked').val()=='Invoice'){
-    		$.post('/jobOrderReport/printInvoicePDF',{order_id:order_id,sp_name:sp_name},function(data){
-    			if(data){
-    				window.open(data);
-		    	}else{
-		    		$.socjs_message('生成Invoice PDF失败',$.scojs_massage.TYPE_ERROR); 
-		    	}
-    		});
-    	}
-      }	
+//		if(sp_name!=""){
+			var order_id = $('#order_id').val();
+			var debit_note = $('input[name=debit_note]:checked').val();
+			
+	    	var invoiceNo = $('#invoiceNo').val();
+	      	var itemIds=[];
+	      	$('#charge_table input[type="checkbox"]').each(function(){
+	      		var checkbox = $(this).prop('checked');
+	      		if(checkbox){
+	      			var itemId = $(this).parent().parent().attr('id');
+	      			itemIds.push(itemId);
+	      		}
+	      	 });
+	    	 $.post('/jobOrder/saveDebitNote', {itemIds:itemIds.toString(),invoiceNo:invoiceNo}, function(data){
+	    		 if(data.result==true){
+	    			 if(debit_note=='debitNote'){
+	    			    	$.post('/jobOrderReport/printDebitNotePDF', {order_id:order_id,sp_name:sp_name}, function(data){
+	    			    		if(data){
+	    			                window.open(data);
+	    			    		  }else{
+		    			               $.scojs_message('生成DebitNote PDF失败', $.scojs_message.TYPE_ERROR);
+		    			               $('#printDebitNoteBtn').attr('disabled', false);
+	    			               }
+	    			    	}).fail(function() { 
+	    		                $.scojs_message('生成PDF失败', $.scojs_message.TYPE_ERROR);
+	    		                $('#printDebitNoteBtn').attr('disabled', false);
+	    		              });
+	    		    	}     
+	    		    	
+    		    	if(debit_note=='Invoice'){
+    		    		$.post('/jobOrderReport/printInvoicePDF',{order_id:order_id,sp_name:sp_name},function(data){
+    		    			if(data){
+    		    				window.open(data);
+    				    	}else{
+    				    		$.socjs_message('生成Invoice PDF失败',$.scojs_massage.TYPE_ERROR); 
+    				    		$('#printDebitNoteBtn').attr('disabled', false);
+    				    	}
+    		    		}).fail(function() { 
+    		                $.scojs_message('生成PDF失败', $.scojs_message.TYPE_ERROR);
+    		                $('#printDebitNoteBtn').attr('disabled', false);
+    		              });
+    		    	}
+	    		 }
+	    	 },'json').fail(function() { 
+	                $.scojs_message('生成PDF失败', $.scojs_message.TYPE_ERROR);
+	                $('#printDebitNoteBtn').attr('disabled', false);
+	              });
+      
 	});   
 });
 });
