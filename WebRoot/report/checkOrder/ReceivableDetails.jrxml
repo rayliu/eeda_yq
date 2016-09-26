@@ -226,42 +226,42 @@ GROUP BY
 				<text><![CDATA[DATE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="51" y="66" width="60" height="15" uuid="64467f91-acc8-4246-b170-dc2861052e28"/>
+				<reportElement x="51" y="66" width="70" height="15" uuid="64467f91-acc8-4246-b170-dc2861052e28"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[DEBIT NO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="111" y="66" width="72" height="15" uuid="a7d6ecde-9476-466d-ac9e-42cf41f8fa2f"/>
+				<reportElement x="121" y="66" width="72" height="15" uuid="a7d6ecde-9476-466d-ac9e-42cf41f8fa2f"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[DESTINATION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="183" y="66" width="30" height="15" uuid="1384bf7d-a986-4f8a-abe9-066a193c46c7"/>
+				<reportElement x="193" y="66" width="30" height="15" uuid="1384bf7d-a986-4f8a-abe9-066a193c46c7"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[CBM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="213" y="66" width="29" height="15" uuid="783b170c-4d40-4059-b113-108edb8eb1d3"/>
+				<reportElement x="221" y="66" width="29" height="15" uuid="783b170c-4d40-4059-b113-108edb8eb1d3"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[CTNS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="242" y="66" width="25" height="15" uuid="59288b4d-326a-4a71-95b4-3c9414ec5a6a"/>
+				<reportElement x="248" y="66" width="25" height="15" uuid="59288b4d-326a-4a71-95b4-3c9414ec5a6a"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[KGS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="267" y="66" width="48" height="15" uuid="8f8b6526-8b49-4f14-b97d-05edbf88b451"/>
+				<reportElement x="273" y="66" width="42" height="15" uuid="8f8b6526-8b49-4f14-b97d-05edbf88b451"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
@@ -363,22 +363,22 @@ GROUP BY
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="21" splitType="Stretch">
+		<band height="49" splitType="Stretch">
 			<line>
-				<reportElement x="1" y="19" width="553" height="1" uuid="4c55ac81-c00e-44b4-b6a1-fdc0872caab8"/>
+				<reportElement x="1" y="48" width="553" height="1" uuid="4c55ac81-c00e-44b4-b6a1-fdc0872caab8"/>
 				<graphicElement>
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="183" y="0" width="30" height="20" uuid="031ec9cc-8b73-404c-94d7-8695bbeabf86"/>
+				<reportElement x="193" y="0" width="30" height="20" uuid="031ec9cc-8b73-404c-94d7-8695bbeabf86"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{vgm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="112" y="0" width="71" height="20" uuid="b47f4b0c-359f-4d35-b125-b37107c4ef04"/>
+				<reportElement x="121" y="0" width="72" height="49" uuid="b47f4b0c-359f-4d35-b125-b37107c4ef04"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -399,7 +399,7 @@ GROUP BY
 				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="242" y="0" width="25" height="20" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
+				<reportElement x="249" y="1" width="25" height="20" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -448,20 +448,20 @@ GROUP BY
 				<textFieldExpression><![CDATA[$F{create_stamp}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="51" y="0" width="61" height="20" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
+				<reportElement x="51" y="0" width="70" height="20" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="267" y="0" width="48" height="20" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
+				<reportElement x="273" y="0" width="42" height="20" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="213" y="1" width="29" height="20" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
+				<reportElement x="221" y="1" width="29" height="20" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
