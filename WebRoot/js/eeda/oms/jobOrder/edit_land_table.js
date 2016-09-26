@@ -117,7 +117,8 @@ $(document).ready(function() {
                             {
                                 id: 'TRANSPORT_COMPANY',
                                 value: data,
-                                display_value: full.TRANSPORT_COMPANY_NAME
+                                display_value: full.TRANSPORT_COMPANY_NAME,
+                                style:'width:200px'
                             }
                         );
                     return field_html;
@@ -219,11 +220,32 @@ $(document).ready(function() {
                     return field_html;
             	}
             },
-            { "data": "CARGO_INFO", "width": "180px",
+            { "data": "CARGO_DESC", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="cargo_info" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="cargo_desc" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
+            { "data": "PIECES", "width": "180px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
+            { "data": "GROSS_WEIGHT", "width": "180px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="gross_weight" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
+            { "data": "VOLUME", "width": "180px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
             { "data": "REQUIRED_TIME_REMARK", "width": "180px",

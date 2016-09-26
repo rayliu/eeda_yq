@@ -10,10 +10,10 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'land_table',
-                                        style:'width:3880px',
-                                        headers:['','', '收卸货类型', '运输公司', '运单号', '司机', '司机电话', '车型','车牌','发货人','发货人电话', '发货地点','收货人','收货人电话', '收货地点', '预约到达时间', '货品信息','运输及时间要求','签收文件描述', '签收状态','TRANSPORT_COMPANY_NAME'],
+                                        style:'width:4680px',
+                                        headers:['','', '收卸货类型', '运输公司', '运单号', '司机', '司机电话', '车型','车牌','发货人','发货人电话', '发货地点','收货人','收货人电话', '收货地点', '预约到达时间', '货品描述','件数','毛重(KG)','体积(CBM)','运输及时间要求','签收文件描述', '签收状态','TRANSPORT_COMPANY_NAME'],
                                         field_list:['id','', 'unload_type', 'transport_company', 'trans_no', 'driver','driver_tel','truck_type','car_no',
-                                        'consignor','consignor_phone','take_address','consignee','consignee_phone','delivery_address','eta','cargo_info','required_time_remark','sign_desc','sign_status','TRANSPORT_COMPANY_NAME'],
+                                        'consignor','consignor_phone','take_address','consignee','consignee_phone','delivery_address','eta','cargo_desc','pieces','gross_weight','volume','required_time_remark','sign_desc','sign_status','TRANSPORT_COMPANY_NAME'],
                                         value_list: landList![]
                                     }){} %>
                             </div>

@@ -149,7 +149,8 @@ $(document).ready(function() {
 		                );
 	                    return field_html;
                 }
-            }, { "data": "AIR_COMPANY_NAME", "visible": false,
+            }, 
+            { "data": "AIR_COMPANY_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
