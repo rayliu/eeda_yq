@@ -1,14 +1,18 @@
 
         <div class="form-group">
             <div id="${id}_begin_div" class="input-date">
-                <label class="search-label">${label}</label>
-                <input id="${id}_begin_time" name="${id}_begin_time" class="form-control search-control date" type="text" value="">
+                <label class="search-label">${label}
+                <%if(required!'' =='required'){%>
+			        <span style='color:red; display:initial;'>*</span>
+			    <%}%>
+			    </label>
+                <input id="${id}_begin_time" name="${id}_begin_time" class="form-control search-control date" type="text" value="" ${required!''} >
                 <span class="add-on"> 
                 	<i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                 </span>
             </div> ~
             <div id="${id}_end_div" class="input-date">
-                <input id="${id}_end_time" name="${id}_end_time" class="form-control search-control date" type="text" value="">
+                <input id="${id}_end_time" name="${id}_end_time" class="form-control search-control date" type="text" value="" ${required!''} >
                 <span class="add-on"> 
                     <i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                 </span>
