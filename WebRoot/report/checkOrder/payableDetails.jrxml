@@ -44,7 +44,7 @@
 		</box>
 	</style>
 	<subDataset name="Table Dataset 1" uuid="bbb601dc-9fa2-4056-bc3d-c986a039ff9a"/>
-	<parameter name="aco_id" class="java.lang.String">
+	<parameter name="aco_id" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>

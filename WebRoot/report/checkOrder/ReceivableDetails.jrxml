@@ -3,106 +3,102 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="company_name" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
 	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-  joa.id,
-  joa.sp_id,
-  jo.order_no,
-  jo.ref_no,
-  joa.order_id,
-  aco.invoice_no,
-  jo.create_stamp,
-  jo.customer_id,
-  jo.volume vgm,
-  jo.type,
-  jos.etd,
-  jos.mbl_no,
-  jos.hbl_no,
-  joa.total_amount,
-  joa.charge_id,
-  fi. NAME fy_name,
-  cur. NAME cur_name,
-  jo.net_weight gross_weight,
-  ifnull(
-	joa.currency_total_amount,
-	0
-  ) rmb,
+	joa.id,
+	joa.type,
+	joa.sp_id,
+	joa.total_amount,
+ifnull(
+		joa.currency_total_amount,
+		0
+	) rmb,
 
-  IF (
+IF (
 	cur. NAME = 'USD',
 	joa.total_amount,
 	0
-  ) usd,
+) usd,
 
-  IF (
+IF (
 	cur. NAME = 'CNY',
 	joa.total_amount,
 	0
-  ) cny,
+) cny,
 
-  IF (
+IF (
 	cur. NAME = 'JPY',
 	joa.total_amount,
 	0
-  ) jpy,
+) jpy,
 
-  IF (
+IF (
 	cur. NAME = 'HKD',
 	joa.total_amount,
 	0
-  ) HKD,
- jo.ref_no ref_no,
- p1.company_name sp_name,
- p1.address address,
- p1.phone phone,
- p1.contact_person,
- aco.begin_time,
- aco.end_time,
- aco.create_stamp,
- l. NAME fnd,
- GROUP_CONCAT(josi.container_no) container_no,
- GROUP_CONCAT(josi.container_type) container_amount
+) HKD,
+	fi. NAME fy_name,
+	jo.order_no,
+	jo.create_stamp,
+	jo.customer_id,
+	jo.volume vgm,
+	jo.net_weight gross_weight,
+  p1.company_name sp_name,
+  p1.address address,
+  p1.phone phone,
+  p1.contact_person,
+  p1.fax,
+	jos.mbl_no,
+  jos.hbl_no,
+	jos.etd,
+	l. NAME fnd,
+	joai.destination,
+  aco.begin_time,
+  aco.end_time,
+	cur. NAME cur_name,
+	GROUP_CONCAT(josi.container_no) container_no,
+	GROUP_CONCAT(josi.container_type) container_amount
+
 FROM
 	job_order_arap joa
-LEFT JOIN currency cur ON cur.id = joa.currency_id
 LEFT JOIN job_order jo ON jo.id = joa.order_id
 LEFT JOIN job_order_shipment jos ON jos.order_id = joa.order_id
 LEFT JOIN job_order_shipment_item josi ON josi.order_id = joa.order_id
+LEFT JOIN job_order_air_item joai ON joai.order_id = joa.order_id
 LEFT JOIN party p1 ON p1.id = joa.sp_id
 LEFT JOIN location l ON l.id = jos.fnd
 LEFT JOIN fin_item fi ON fi.id = joa.charge_id
-LEFT JOIN arap_charge_item aci on aci.ref_order_id = joa.id
-LEFT JOIN arap_charge_order aco on aco.id = aci.charge_order_id
+LEFT JOIN currency cur ON cur.id = joa.currency_id
+LEFT JOIN arap_charge_item aci ON aci.ref_order_id = joa.id
+LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
 WHERE
-     joa.order_type = 'charge'
-AND joa.audit_flag = 'Y'
-AND p1.company_name =$P{company_name}
-AND joa.order_id = $P{order_id}
+	joa.id = aci.ref_order_id
+AND aco.id = 282
 GROUP BY
 	joa.id]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="sp_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[供应商id]]></fieldDescription>
 	</field>
+	<field name="total_amount" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rmb" class="java.lang.Double"/>
+	<field name="usd" class="java.lang.Double"/>
+	<field name="cny" class="java.lang.Double"/>
+	<field name="jpy" class="java.lang.Double"/>
+	<field name="HKD" class="java.lang.Double"/>
+	<field name="fy_name" class="java.lang.String"/>
 	<field name="order_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="ref_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="order_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="invoice_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="create_stamp" class="java.sql.Timestamp">
@@ -112,34 +108,9 @@ GROUP BY
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="vgm" class="java.lang.Double"/>
-	<field name="type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="etd" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="mbl_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="hbl_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="total_amount" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="charge_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[费用id]]></fieldDescription>
-	</field>
-	<field name="fy_name" class="java.lang.String"/>
-	<field name="cur_name" class="java.lang.String"/>
 	<field name="gross_weight" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="rmb" class="java.lang.Double"/>
-	<field name="usd" class="java.lang.Double"/>
-	<field name="cny" class="java.lang.Double"/>
-	<field name="jpy" class="java.lang.Double"/>
-	<field name="HKD" class="java.lang.Double"/>
 	<field name="sp_name" class="java.lang.String"/>
 	<field name="address" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -150,13 +121,29 @@ GROUP BY
 	<field name="contact_person" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="fax" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mbl_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hbl_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="etd" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fnd" class="java.lang.String"/>
+	<field name="destination" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="begin_time" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="end_time" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="fnd" class="java.lang.String"/>
+	<field name="cur_name" class="java.lang.String"/>
 	<field name="container_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -347,15 +334,15 @@ GROUP BY
 				<reportElement x="152" y="1" width="100" height="20" uuid="6a3692e1-bd15-495d-962f-7ce234bf4708"/>
 				<textFieldExpression><![CDATA[$F{end_time}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="61" y="21" width="100" height="20" uuid="8a4c37c2-aba7-4d10-aa4d-3a3918ec6101"/>
 				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="61" y="40" width="100" height="20" uuid="209a763c-2f6b-46a0-a887-54972ea3d44e"/>
 				<textFieldExpression><![CDATA[$F{contact_person}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="242" y="41" width="100" height="20" uuid="f48450bb-b275-4661-8330-0259ab5755d1"/>
 				<textFieldExpression><![CDATA[$F{phone}]]></textFieldExpression>
 			</textField>
@@ -365,6 +352,13 @@ GROUP BY
 			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
 				<reportElement x="464" y="20" width="90" height="20" uuid="daf6f9b9-91ca-4155-9d07-8161acb33b7e"/>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="394" y="41" width="100" height="20" uuid="022eafb6-77cf-4fa0-aeb0-bb8d79fd56e7"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fax}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -446,7 +440,7 @@ GROUP BY
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
-			<textField pattern="MMM-yy" isBlankWhenNull="true">
+			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
 				<reportElement x="1" y="0" width="50" height="19" uuid="3512196d-f5c9-4c4f-bf9d-35288b99e69e"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
@@ -454,7 +448,7 @@ GROUP BY
 				<textFieldExpression><![CDATA[$F{create_stamp}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="51" y="0" width="60" height="20" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
+				<reportElement x="51" y="0" width="61" height="20" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -465,7 +459,6 @@ GROUP BY
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{ref_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="213" y="1" width="29" height="20" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
