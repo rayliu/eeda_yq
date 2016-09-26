@@ -23,6 +23,7 @@ import models.yh.arap.prePayOrder.ArapPrePayOrder;
 import models.yh.carmanage.CarSummaryOrder;
 import models.yh.damageOrder.DamageOrder;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -536,7 +537,7 @@ public class CostPreInvoiceOrderController extends Controller {
 			ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(idArr[0]);
 			payee_id = arapCostOrder.getLong("sp_id").toString();
 	
-			if(!payee_id.equals("")&&payee_id!=null){
+			if(StringUtils.isNotEmpty(payee_id)){
 				Party contact = Party.dao.findFirst("select * from  party where id = ?",payee_id);
 				payee_filter = contact.getStr("company_name");
 				deposit_bank = contact.getStr("bank_name");

@@ -19,6 +19,10 @@
                                     <label class="search-label">申请单号</label>
                                     <input type="text" class="form-control search-control application_no" id="application_no" name="application_no" readonly="readonly" value="${invoiceApplication.order_no!''}">
                                 </div>
+                                <div class="form-group">
+                                    <label class="search-label">状态</label>
+                                    <input type="text" class="form-control search-control status" id="status" name="status" readonly="readonly" value="${invoiceApplication.status!'新建'}">
+                                </div>
                                  <div class="form-group">
                                     <label class="search-label">申请日期</label>
                                     <input type="text" class="form-control search-control application_date" id="application_date" name="application_date" readonly="readonly" value="${invoiceApplication.create_stamp!''}">
@@ -37,14 +41,14 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="search-label">发票类型</label>
-                                    <input id="invoice_type_show" type="hidden" value="${invoiceApplication.bill_type!''}">
                                     <select id="invoice_type" class="form-control search-control invoice_type" name="invoice_type">
-                                    <option value="wbill">无发票</option>
-                                    <option value="mbill">增值税普通发票</option>
-                                    <option value="dbill">增值税专用发票</option>
+                                    <option></option>
+                                    <option value="wbill" <% if(invoiceApplication.bill_type!'wbill'=='wbill'){%>selected<% }%>>无发票</option>
+                                    <option value="mbill" <% if(invoiceApplication.bill_type!''=='mbill'){%>selected<% }%>>增值税普通发票</option>
+                                    <option value="dbill" <% if(invoiceApplication.bill_type!''=='dbill'){%>selected<% }%>>增值税专用发票</option>
                                     </select>
                                 </div>
-                                <div class="form-group invoice_No" >
+                                <div id = "invoiceDiv" class="form-group invoice_No" <% if(invoiceApplication.bill_type!'wbill'=='wbill'){%>style="display:none"<% }%>>
                                     <label class="search-label">发票号</label>
                                     <input type="text" class="form-control search-control billing_unit" id="billing_unit" name="billing_unit"  value="${invoiceApplication.billing_unit!''}">
                                 </div>
@@ -55,11 +59,11 @@
                                     <input type="hidden" id="payment_method_show" value="${invoiceApplication.payment_method!''}"/>
                                 	<select id="payment_method" class="form-control search-control payment_method" name="payment_method" >
                                     <option value=""></option>
-                                    <option value="cash">现金</option>
-                                    <option value="transfers">转账</option>
+                                    <option value="cash" <% if(invoiceApplication.payment_method!'cash'=='cash'){%>selected<% }%>>现金</option>
+                                    <option value="transfers" <% if(invoiceApplication.payment_method!''=='transfers'){%>selected<% }%>>转账</option>
                                     </select>
                                 </div>
-	                            <div id="transfers_massage">
+	                            <div id="transfers_massage" <% if(invoiceApplication.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
 	                                <div class="form-group">    
 	                                    <label class="search-label">开户行</label> 
 	                                   <input type="text" class="form-control search-control deposit_bank" id="deposit_bank" name="deposit_bank"  value="${deposit_bank!''}${invoiceApplication.bank_name!''}">
@@ -83,8 +87,7 @@
                                     <tr>
                                         <th>应付类别</th>
                                         <th>对账单号</th>
-                                        <th>收款单位</th>
-                                        <th>收款人</th>
+                                        <th>结算单位</th>
                                         <th>应付金额</th>
                                         <th>待付金额</th>
                                         <th>本次付款</th>
@@ -97,7 +100,7 @@
                                 </tbody>
                                 <tfoot>
                                 	<tr>
-                                        <th colspan="4"><div align="center">合计</div></th>
+                                        <th colspan="3"><div align="center">合计</div></th>
                                         <th><span id="total"></span></th>
                                         <th><span id="nopay"></span></th>
                                         <th><span id="pay"></span></th>
@@ -110,12 +113,12 @@
 				       <div class=".tooltip-demo">
                             <hr/>
                         	<a style="display:none" id ="style"><i class='fa fa-check'></i></a>
-                        	<button id="saveBtn" type="button"  class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">保存</button> 
-                            <button id="printBtn" type="button"  class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">打印</button>
-                            <a class="btn  btn-primary" href="/costAcceptOrder">返回</a>
-                            <button id="checkBtn" type="button"  class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">复核</button>
-                            <button id="returnBtn" type="button" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">退回</button>
-                            <button id="deleteBtn" type="button" class="btn  btn-danger" >撤销</button>
+                        	<button id="saveBtn" type="button"  class="btn  btn-primary" disabled>保存</button> 
+                            <button id="printBtn" type="button"  class="btn  btn-primary" disabled>打印</button>
+                            <a class="btn  btn-default" href="/costAcceptOrder">返回</a>
+                            <button id="checkBtn" type="button"  class="btn  btn-primary" disabled>复核</button>
+                            <button id="returnBtn" type="button" class="btn  btn-primary" style="display:none">退回</button>
+                            <button id="deleteBtn" type="button" class="btn  btn-danger" style="display:none">撤销</button>
                        </div><br/><br/>
                        <hr/>
                          	<!-- <div class="col-lg-6">
@@ -142,20 +145,20 @@
 	                       <div class="col-lg-4">
 	                       		<div class="form-group">
 	                           	   <label class="search-label">付款方式</label>
-	                           	   <input type="hidden" id="pay_type_show"  name="pay_type_show" value="${invoiceApplication.pay_type!''}"> 
 	                                  <select id="pay_type" class="form-control search-control pay_type" name="pay_type">
-	                                  	<option value="cash">现金</option>
-	                                    <option value="transfers">转账</option>                                             
+	                                    <option value=""></option>
+	                                    <option value="cash" <% if(invoiceApplication.pay_type!'cash'=='cash'){%>selected<% }%>>现金</option>
+	                                    <option value="transfers" <% if(invoiceApplication.pay_type!''=='transfers'){%>selected<% }%>>转账</option>
 	                                  </select>
 	                            </div>
-	                            <div id="pay_type_massage">
+	                            <div id="pay_type_massage" <% if(invoiceApplication.pay_type!'cash'=='cash'){%>style="display:none"<% }%>>
 		                            <div class="form-group">
 			                            <label class="search-label">支付银行</label>
 			                            <input type="hidden" id="pay_banks" placeholder="请选择支付银行" name="pay_banks" value="${invoiceApplication.confirm_bank_id!''}"> 
 			                        	   <select class="form-control search-control pay_bank" name="pay_bank" id="pay_bank" >
 			                        	   		<option></option>
 			                              		<%for(account in accountList){ %>
-			                             		<option value='${account.ID!''}'>${account.BANK_NAME!''}</option>
+			                             		<option value='${account.ID!''}' <%if(invoiceApplication.confirm_bank_id!'4'==account.ID!){%>selected<% }%>>${account.BANK_NAME!''}</option>
 			                             		<%}%>
 			                               </select>
 		                        	</div>
@@ -172,9 +175,9 @@
 	                         
                         <div class=".tooltip-demo">
                             <hr/>
-                            <button id="confirmBtn" type="button" class="btn  btn-primary" data-toggle="modal" disabled="disabled"  data-target=".bs-example-modal-sm">付款确认</button> 
-                            <a class="btn  btn-primary" href="/costAcceptOrder?page=return">返回</a>
-                            <button id="returnConfirmBtn" type="button" class="btn  btn-primary"  disabled >撤回</button>
+                            <button id="confirmBtn" type="button" class="btn  btn-primary" disabled>付款确认</button> 
+                            <a class="btn btn-default" href="/costAcceptOrder">返回</a>
+                            <button id="returnConfirmBtn" type="button" class="btn  btn-default"  style="display:none" >撤回</button>
                         </div>
            			</div>
            		</div>	

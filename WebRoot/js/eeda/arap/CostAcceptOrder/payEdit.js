@@ -3,7 +3,6 @@ $(document).ready(function() {
 	document.title = '付款申请单 | '+document.title;
 
 	$('#menu_finance').addClass('active').find('ul').addClass('in');
-
 		//datatable, 动态处理
 	    var ids = $("#ids").val();
         var total = 0.00;
@@ -28,7 +27,6 @@ $(document).ready(function() {
         		}
              },
         	{"data":"CNAME","width": "250px"},
-        	{"data":"PAYEE_NAME","width": "120px"},
     		{"data":"TOTAL_AMOUNT","width": "100px",
     			"render": function(data, type, full, meta) {
 					var str = parseFloat(data).toFixed(2);
@@ -80,7 +78,6 @@ $(document).ready(function() {
     	});
     	
     	$("#total_amount").val(sum);
-    	debugger
     	var str_JSON = JSON.stringify(array);
     	$("#detailJson").val(str_JSON);
     };
@@ -103,6 +100,7 @@ $(document).ready(function() {
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 				$("#application_id").val(data.ID);
+				$("#status").val(data.STATUS);
 				$("#application_no").val(data.ORDER_NO);
 				$("#application_date").val(data.CREATE_STAMP);
 				$("#saveBtn").attr("disabled", false);
@@ -113,8 +111,9 @@ $(document).ready(function() {
 				total = 0.00;
 				nopay = 0.00;
 				pay = 0.00;
-				var url = "/costPreInvoiceOrder/costOrderList?application_id="+$("#application_id").val();
-				dataTable.ajax.url(url).load();
+				
+				//var url = "/costPreInvoiceOrder/costOrderList?application_id="+$("#application_id").val();
+				//$('#CostOrder-table').dataTable().fnDraw();
 			}else{
 				$.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
 			}
@@ -175,6 +174,7 @@ $(document).ready(function() {
 				if(data.success){
 					$("#returnBtn").attr("disabled", true);
 					$("#deleteBtn").attr("disabled", true);
+					$("#status").val(data.STATUS);
 					$("#returnConfirmBtn").attr("disabled", false);
 					$.scojs_message('付款成功', $.scojs_message.TYPE_OK);
 				}else{
@@ -255,173 +255,51 @@ $(document).ready(function() {
 		$("#pay_amount").val(value);
 	});	
     
- 
-    
-    var payment = function(){
-    	if($('#payment_method').val()=='transfers'){
-    		$("#transfers_massage").show();
-    	}else if($('#payment_method').val()=='cash'){
-    		$("#deposit_bank").val('');
-    		$("#bank_no").val('');
-    		$("#account_name").val('');
-    		$("#transfers_massage").hide();
-    	}
-    }; 	
-    
-    //付款方式文本框控制
-    $('#payment_method').on('change',function(){
-    	payment();
-    });
-    
-    
-    
-    var payType = function(){
-    	if($('#pay_type').val()=='cash'){
-    		$("#pay_bank").val('');
-    		$("#pay_type_massage").hide();
-    	}else{
-    		$("#pay_type_massage").show();
-    	}
-    };
-    //付款方式（付款确认）控制
-    $('#pay_type').on('change',function(){
-    	payType();
-    });
-    
    
     //按钮控制
-	if($('#status').val()=='new'){
+	if($('#application_id').val()==''){
 		$("#saveBtn").attr('disabled',false);
-		$("#deleteBtn").attr('disabled',true);
-	}else if($('#status').val()=='新建' || $('#status').val()=='已审批'){
-		if($('#application_id').val()!=''){
+	}else{
+		if($('#status').val()=='新建'){
 			$("#saveBtn").attr('disabled',false);
-			$("#printBtn").attr('disabled',false);
 			$("#checkBtn").attr('disabled',false);
+		}else if($('#status').val()=='已复核'){
+			$("#confirmBtn").attr('disabled',false);
 		}
-	}else if($('#status').val()=='已复核'){
-		$("#printBtn").attr('disabled',false);
-		$("#returnBtn").attr('disabled',false);
-		$("#confirmBtn").attr('disabled',false);
-	}else if($('#status').val()=='已付款'){
-		$("#deleteBtn").attr('disabled',true);
-		$("#printBtn").attr('disabled',false);
-		$("#returnConfirmBtn").attr('disabled',false);
 	}
-
-	//开票类型控制
-	 var clean = function(){
-		$('#billing_unit').val('');
- 		$('#payee_unit').val('');
- 		$('#payee_name').val('');
- 		$('#account_name').val('');
- 		$('#payee_name').attr('disabled',false);
- 		$('#account_name').attr('disabled',false);
-	 };
-	 $('#payment_method').on('change',function(){
-		 var value = $('#payment_method').val();
-		 if(value=="cash"){
-			 $('#payee_name').attr("readonly",false);
-		 }else{
-			 $('#payee_name').attr("readonly","readonly");
-		 }
-	 });
-	 $('#invoice_type').on('change',function(){
-		var value = $('#invoice_type').val();
-    	if(value=='wbill'){
-    		clean();
-    		$('#account_name').attr("readonly",false);
-	    	$('#payee_unit').attr("readonly",false);
-	    	$('#payee_name').attr("readonly",false);
-    		$('#payment_method').val('cash');
-    		$('invoice_No').hide();
-    	}else if(value=='mbill'){
-    		clean();
-    		$('#payment_method').val('transfers');
-   		 	payment();
-    		$('#account_name').val($('#payee_filter').val());
-    		$('#payee_unit').val($('#payee_filter').val());
-    		$('#payee_name').val("");
-    		$('#account_name').attr("readonly","readonly");
-    		$('#payee_unit').attr("readonly","readonly");
-    		var method = $('#payment_method').val();
-    		if(method=="cash"){
-   			 $('#payee_name').attr("readonly",false);
-   		    }else{
-   			 $('#payee_name').attr("readonly","readonly");
-   		 }
-    	}else if(value=='dbill'){
-    		clean();
-    		$('#payee_unit').val($('#account_name').val());
-    		$('#account_name').attr("readonly","readonly");
-	    	$('#payee_unit').attr("readonly","readonly");
-	    	var method = $('#payment_method').val();
-	    	if(method=="cash"){
-				 $('#payee_name').attr("readonly",false);
-			 }else{
-				 $('#payee_name').attr("readonly","readonly");
-			 }
-    		$('#billing_unit').on('input',function(){
-    			 $('#payment_method').val('transfers');
-    			 payment();
-    		 });
-    	}
-	 });
-	 $('#billing_unit').on('input',function(){
-		 if($('#invoice_type').val()=='dbill'){
-			$('#payment_method').val('transfers');
-			payment();
-			$('#payee_unit').val($('#billing_unit').val());
-			$('#account_name').val($('#billing_unit').val());
-			$('#payee_name').val(""); 
-		 } 
-	 });
-	 
-	 
-
+	
+	
+	//付款方式回显（1）
+	$('#payment_method').change(function(){
+		var type = $(this).val();
+		if(type == 'cash'){
+			$('#transfers_massage').hide();
+		}else{
+			$('#transfers_massage').show();
+		}
+	})
+	
+	//发票类型（1）
+	$('#invoice_type').change(function(){
+		var type = $(this).val();
+		if(type == 'wbill'){
+			$('#invoiceDiv').hide();
+		}else{
+			$('#invoiceDiv').show();
+		}
+	})
+	
+	//付款方式回显（2）
+	$('#pay_type').change(function(){
+		var type = $(this).val();
+		if(type == 'cash'){
+			$('#pay_type_massage').hide();
+		}else{
+			$('#pay_type_massage').show();
+		}
+	})
+	
 	
 
-
-    //回显
-    //付款类型
-    $('#payment_method').val($('#payment_method_show').val());
-    
-    //开票类型
-    if($('#invoice_type_show').val()=='')
-    	$('#invoice_type').val('wbill');
-    else{
-    	$('#invoice_type').val($('#invoice_type_show').val());
-    }
-    if($('#invoice_type').val()=='wbill'){
- 		$('#account_name').attr("readonly",false);
-	    $('#payee_unit').attr("readonly",false);
-	    $('#payee_name').attr("readonly",false);
- 	}else if($('#invoice_type').val()=='mbill'){
- 		$('#account_name').attr("readonly","readonly");
- 		$('#payee_unit').attr("readonly","readonly");
- 		$('#payee_name').attr("readonly","readonly");
- 	}else if($('#invoice_type').val()=='dbill'){
- 		$('#account_name').attr("readonly","readonly");
-	    $('#payee_unit').attr("readonly","readonly");
-	    $('#payee_name').attr("readonly","readonly");
- 	}
-    ////付款方式（付款确认）回显控制
-    if($('#pay_type_show').val()==''){
-    	 $('#pay_type').val('cash');
-    }else{
-    	 $('#pay_type').val($('#pay_type_show').val());
-    }
-    payType();
-    
-    
-    //付款银行回显
-    $('#pay_bank').val($('#pay_banks').val());
-    
-    if($('#deposit_bank').val()!='' || $('#bank_no').val()!='' || $('#account_name').val()!=''){
-    	$('#payment_method').val('transfers');
-    }else{
-    	$('#payment_method').val('cash');
-    	payment();
-    }
 });
 });
