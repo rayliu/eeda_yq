@@ -546,10 +546,11 @@ public class ServiceProviderController extends Controller {
     public void searchUnit(){
     	String input = getPara("input");
     	List<Record> recs = null;
-    	String sql = "select id,name from unit u";
+    	String sql = "select id,GROUP_CONCAT(name,name_eng) name from unit";
     	if(!StringUtils.isBlank(input)){
-    		sql+=" where u.name like '%" + input + "%' ";
+    		sql+=" where name like '%" + input + "%' "+"or name_eng like '%"+input+"%'";
     	}
+    	sql+=" group by id";
     	recs = Db.find(sql);
     	renderJson(recs);
     }

@@ -80,6 +80,14 @@ $(document).ready(function() {
             bindFieldEvent();
         },
         columns:[
+			{"data": "ID","width": "10px",
+			    "render": function ( data, type, full, meta ) {
+			    	if(data)
+			    		return '<input type="checkbox" style="width:30px">';
+			    	else 
+			    		return '<input type="checkbox" style="width:30px" disabled>';
+			    }
+			},
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
