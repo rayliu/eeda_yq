@@ -315,37 +315,51 @@
                                 }){} %>
                         </div>
                         
-                        
                         <div class="modal fade" id="printDebit">
 							<div class="modal-dialog">
 								    <div class="modal-content">
 								       <div class="modal-body">
-										 <div class="form-group">
-											选择结算公司：<br /><br />
-											 <div class="col-lg-8">
-											 	<select class="form-control search-control spList" name="spList" id="spList" >
-				                        	   		<option></option>
-			                               		</select>
+								       		<div class="row">
+												 <div class="form-group">
+													 <div class="col-lg-10">
+														<label class="search-label">选择结算公司</label>
+													 	<select class="form-control search-control spList" name="spList" id="spList" >
+						                        	   		<option></option>
+					                               		</select>
+		                                              </div>
+	                                              </div>
                                               </div>
-										   </div> <br /><br /><br />
-											<div class="form-group"> 
-								                    <label class="checkbox-inline">
-								                        <input type="radio" id="debit_note" name='debit_note' value='debitNote' checked>Debit note(国内)
-								                    </label><br />
-								                    <label class="checkbox-inline">
-								                        <input type="radio" id="invoice" name='debit_note' value='Invoice'>Invoice(境外)
-								                    </label>
+                                              <br>
+				                              <div class="row">
+					                              <div class="form-group">
+													 <div class="col-lg-10">
+													 	<label class="search-label">发票号</label>
+													 	<input class="form-control search-control" name="invoiceNo" id="invoiceNo" >
+		                                             </div>
+	                                             </div>
+                                             </div>
+                                             <br>
+								   			 <div class="row">
+	                                             <div class="form-group">
+									                    <label class="checkbox-inline">
+									                        <input type="radio" id="debit_note" name='debit_note' value='debitNote' checked>Debit note(国内)
+									                    </label><br />
+									                    <label class="checkbox-inline">
+									                        <input type="radio" id="invoice" name='debit_note' value='Invoice'>Invoice(境外)
+									                    </label>
+						                         </div>
 					                         </div>
+					                         <br>
 					                       </div>
 								       
 								        <div class="modal-footer">
+								        	<button type="submit" id="saveDebitNote" class="btn btn-primary">保存</button>
 								        	<button type="button" id="printDebitNoteBtn" class="btn btn-primary">打印</button>
 								        	<button type="button" id="returnBtn" class="btn  btn-default" data-dismiss="modal">返回</button>         
 								        </div>
 								      </div>   	       
 								  </div>
 						  </div>
-                        
 
                          <div class="col-lg-12">
                             <h3>应付信息</h3>

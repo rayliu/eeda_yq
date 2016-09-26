@@ -132,9 +132,9 @@ $(document).ready(function() {
 			{"data": "ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
 			    	if(data)
-			    		return '<input type="checkbox" style="width:30px">';
+			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
 			    	else 
-			    		return '<input type="checkbox" style="width:30px" disabled>';
+			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
 			    }
 			},
             { "width": "30px",
@@ -503,9 +503,6 @@ $(document).ready(function() {
 	    
 	    calcCurrency();
     }
-    
-    
-    
     getTotalCharge();
     
     var buildSpList = function(){
@@ -533,9 +530,47 @@ $(document).ready(function() {
     	})
     }
     
+    //checkbox选中则button可点击
+    $('#charge_table').on('click','.checkBox',function(){
+    	var hava_check = 0;
+    	$('#charge_table input[type="checkbox"]').each(function(){	
+    		var checkbox = $(this).prop('checked');
+    		if(checkbox){
+    			hava_check=1;
+    		}	
+    	})
+    	if(hava_check>0){
+    		$('#print_debit_note').attr('disabled',false);
+    	}else{
+    		$('#print_debit_note').attr('disabled',true);
+    	}
+    });
     $('#print_debit_note').click(function(){
     	buildSpList();
+    	$('#invoiceNo').val($('#ref_no').val());
     })
+    
+	$('#confirmBtn').click(function(){
+		$('#confirmBtn').attr('disabled',true);
+      	var itemIds=[];
+      	$('#charge_table input[type="checkbox"]').each(function(){
+      		var checkbox = $(this).prop('checked');
+      		if(checkbox){
+      			var itemId = $(this).parent().parent().attr('id');
+      			itemIds.push(itemId);
+      		}
+      	 });
+    	 $.post('/chargeConfirm/chargeConfirm?itemIds='+itemIds, function(data){
+    		 if(data.result==true){
+    			 $.scojs_message('单据确认成功', $.scojs_message.TYPE_OK);
+    			 searchData();
+    			 $('#confirmBtn').attr('disabled', false);
+    		 }
+    	 },'json').fail(function() {
+                $.scojs_message('单据确认失败', $.scojs_message.TYPE_ERROR);
+                $('#confirmBtn').attr('disabled', false);
+              });
+      })
     
 	     
     

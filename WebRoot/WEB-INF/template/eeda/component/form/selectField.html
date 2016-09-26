@@ -1,6 +1,6 @@
 <div class="form-group">
     <label class="search-label">${label}</label>
-    <select id="${id}" class="form-control search-control" ${disabled!''}>
+    <select id="${id}" name="${id}" class="form-control search-control" ${disabled!''}>
     	<%for(item in value_list){%>
         	<option value="${item.code}">${item.value}</option>
         <%}%>
