@@ -195,9 +195,9 @@ public class JobOrderReportController extends Controller {
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	
-	//答应应付对账单PDF
+	//打印应付对账单PDF
 	public void payableDetailPDF(){
-		String order_id = getPara("order_id");
+		String order_id = getPara("aoc_id");
 		String company_name = getPara("sp_name");
 		String fileName = "/report/checkOrder/payableDetails.jasper";
 		String outFileName = "/download/应付对账单PDF";
