@@ -63,7 +63,6 @@
            
         </div>
         <div class="row">
-            
             <div class="col-lg-4">
                 <%include("/eeda/component/form/inputField.html", 
                     {   id:'hbl_no', 
@@ -71,7 +70,6 @@
                         value:shipment.hbl_no!''
                     }){}%>
             </div>
-            
             <div class="col-lg-4">
                 <%include("/eeda/component/form/inputField.html", 
                     {   id:'mbl_no', 
@@ -80,24 +78,6 @@
                     }){}%>
             </div>
             <div class="col-lg-4">
-                <%include("/eeda/component/form/selectField.html", 
-                    {   id:'ocean_trans_clause', 
-                        label:'运输条款', 
-                        value:shipment.trans_clause!'',
-                        value_list:[
-                            {code:'CFS-CFS', value:'CFS-CFS'},
-                            {code:'CFS-DOOR', value:'CFS-DOOR'}, 
-                            {code:'CY-CY', value:'CY-CY'},
-                            {code:'CY-DOOR', value:'CY-DOOR'},
-                            {code:'DOOR-DOOR', value:'DOOR-DOOR'},
-                            {code:'DOOR-CFS', value:'DOOR-CFS'},
-                            {code:'DOOR-CY', value:'DOOR-CY'}
-                        ]
-                    }){}%>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8">
                 <div class="form-group">
                 	<input type="hidden" id="hidden_release_type" value="${shipment.release_type!''}">
                     <label class="search-label">放货方式</label>
@@ -111,24 +91,6 @@
                         <input type="radio" name='release_radio' value='obl'>OBL
                     </label>
                 </div>
-            </div>
-           <div class="col-lg-4">
-
-            </div>
-           <div class="col-lg-4">
-                  <%include("/eeda/component/form/selectField.html", 
-                    {   id:'trade_type', 
-                        label:'贸易类型', 
-                        value:shipment.trade_type!'',
-                        value_list:[
-                            {code:'FOB', value:'FOB'},
-                            {code:'CIF', value:'CIF'},
-                            {code:'CFR', value:'CFR'},
-                            {code:'DDU', value:'DDU'},
-                            {code:'DDP', value:'DDP'},
-                            {code:'OTHER', value:'OTHER'}
-                        ]
-                    }){}%>
             </div>
         </div>
         <div class="row">
