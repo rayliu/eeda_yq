@@ -28,6 +28,9 @@
 								<%include("/eeda/component/form/inputField.html", { id:'creator_name',
 								label:'提交人', value:order.creator_name!'',disabled:'disabled'
 								}){}%>
+								<%include("/eeda/component/form/inputField.html", { id:'status',
+								label:'状态', value:order.status!'新建',disabled:'disabled'
+								}){}%>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
@@ -60,7 +63,7 @@
                                     <option value="transfers" <% if(order.payment_method!''=='transfers'){%>selected<% }%>>转账</option>
                                     </select>
                                 </div>
-	                            <div id="transfers_massage">
+	                             <div id="transfers_massage" <% if(invoiceApplication.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
 		                            <%include("/eeda/component/form/inputField.html", { id:'deposit_bank',
 									label:'开户行', value:order.deposit_bank!''
 									}){}%>
@@ -106,12 +109,12 @@
 				       <div class=".tooltip-demo">
                             <hr/>
                         	<a style="display:none" id ="style"><i class='fa fa-check'></i></a>
-                        	<button id="saveBtn" type="button" disabled="disabled" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">保存</button> 
-                            <button id="printBtn" type="button" disabled="disabled" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">打印</button>
-                            <a class="btn  btn-primary" href="/chargeAcceptOrder">返回</a>
-                            <button id="checkBtn" type="button" disabled="disabled" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">复核</button>
-                            <button id="returnBtn" type="button" disabled="disabled" class="btn  btn-primary" data-toggle="tooltip" title="" data-original-title="Default tooltip">退回</button>
-                            <button id="deleteBtn" type="button" class="btn  btn-danger" >撤销</button>
+                        	<button id="saveBtn" type="button" disabled="disabled" class="btn  btn-primary" >保存</button> 
+                            <button id="printBtn" type="button" disabled="disabled" class="btn  btn-primary" >打印</button>
+                            <a class="btn  btn-default" href="/chargeAcceptOrder">返回</a>
+                            <button id="checkBtn" type="button" disabled="disabled" class="btn  btn-primary" >复核</button>
+                            <button id="returnBtn" type="button" disabled="disabled" class="btn  btn-primary"  style="display:none" >退回</button>
+                            <button id="deleteBtn" type="button" class="btn  btn-danger"  style="display:none"  >撤销</button>
                        </div><br/><br/>
                        <hr/>
                       
@@ -136,14 +139,14 @@
 	                                    <option value="transfers">转账</option>                                             
 	                                  </select>
 	                            </div>
-	                            <div id="receive_type_massage">
+	                             <div id="receive_type_massage" <% if(invoiceApplication.receive_type!'cash'=='cash'){%>style="display:none"<% }%>>
 		                            <div class="form-group">
 			                            <label class="search-label">收入银行</label>
 			                            <input type="hidden" id="receive_banks" placeholder="请选择支付银行" name="receive_banks" value="${invoiceApplication.receive_bank_id!''}"> 
 			                        	   <select class="form-control search-control receive_bank" name="receive_bank" id="receive_bank" >
 			                        	   		<option></option>
-			                              		<%for(account in accountList){ %>
-			                             		<option value='${account.ID!''}'>${account.BANK_NAME!''}</option>
+			                             		<%for(account in accountList){ %>
+			                             		<option value='${account.ID!''}' <%if(invoiceApplication.receive_bank_id!'4'==account.ID!){%>selected<% }%>>${account.BANK_NAME!''}</option>
 			                             		<%}%>
 			                               </select>
 		                        	</div>
@@ -160,8 +163,8 @@
                         <div class=".tooltip-demo">
                             <hr/>
                             <button id="confirmBtn" type="button" class="btn  btn-primary" data-toggle="modal" disabled="disabled"  data-target=".bs-example-modal-sm">收款确认</button>
-                            <a class="btn  btn-primary" href="/chargeAcceptOrder">返回</a>
-                            <button id="returnConfirmBtn" type="button" class="btn  btn-primary" disabled >撤回</button>
+                            <a class="btn  btn-default" href="/chargeAcceptOrder">返回</a>
+                            <button id="returnConfirmBtn" type="button" class="btn  btn-primary" style="display:none" >撤回</button>
                         </div>
            				</div>
            			 </form>

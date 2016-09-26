@@ -16,6 +16,8 @@ import models.ArapChargeOrder;
 import models.ChargeApplicationOrderRel;
 import models.Party;
 import models.UserLogin;
+import models.yh.arap.chargeMiscOrder.ArapMiscChargeOrder;
+import models.yh.arap.inoutorder.ArapInOutMiscOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -24,6 +26,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.log.Log;
@@ -60,7 +63,7 @@ public class ChargeAcceptOrderController extends Controller {
 			if("应收对账单".equals(order_type)){
 				ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(id);
 				//sp_id = arapChargeOrder.getLong("sp_id").toString();
-			}else if("开票单".equals(order_type)){
+			}else if("应收开票单".equals(order_type)){
 				ArapChargeInvoice arapChargeInvoice = ArapChargeInvoice.dao.findById(id);
 				//sp_id = arapChargeInvoice.getLong("sp_id").toString();
 			}
@@ -89,17 +92,18 @@ public class ChargeAcceptOrderController extends Controller {
         		+ " arap_charge_order aco"
         		+ " LEFT JOIN party p ON p.id = aco.sp_id"
         		+ " LEFT JOIN charge_application_order_rel caor ON caor.charge_order_id = aco.id and caor.order_type = '应收对账单'"
-        		+ " where have_invoice = 'N'"
+        		+ " where aco.have_invoice = 'N' and aco.status = '已确认'"
         		+ " GROUP BY aco.id"
         		+ " union"
         		+ " SELECT"
-        		+ " aci.id, aci.order_no, '开票单' order_type, aci.total_amount total_amount,"
+        		+ " aci.id, aci.order_no, '应收开票单' order_type, aci.total_amount total_amount,"
         		+ " sum(ifnull(caor.receive_amount,0)) receive_amount, aci.status, aco.invoice_no, p.abbr payee_name,"
         		+ " aci.remark "
         		+ " FROM arap_charge_invoice aci"
         		+ " LEFT JOIN party p ON p.id = aci.sp_id"
         		+ " LEFT JOIN arap_charge_order aco on aco.invoice_order_id = aci.id"
-        		+ " LEFT JOIN charge_application_order_rel caor ON caor.charge_order_id = aci.id and caor.order_type = '开票单'"
+        		+ " LEFT JOIN charge_application_order_rel caor ON caor.charge_order_id = aci.id and caor.order_type = '应收开票单'"
+        		+ " where aci.status = '已确认'"
         		+ " GROUP BY aci.id"
         		+ " ) A where total_amount>receive_amount ";
 		
@@ -196,14 +200,14 @@ public class ChargeAcceptOrderController extends Controller {
   					+ " WHERE "
   					+ " aco.id in(" + dz_id +")"
   					+ " union "
-  					+ " SELECT aci.id, aci.sp_id sp_id,aci.order_no, '开票单' order_type, aci. STATUS, aci.remark, "
+  					+ " SELECT aci.id, aci.sp_id sp_id,aci.order_no, '应收开票单' order_type, aci. STATUS, aci.remark, "
   					+ " aci.create_stamp create_stamp, p.abbr sp_name, ifnull(ul.c_name, ul.user_name) creator_name, aci.total_amount, "
   					+ " ( SELECT ifnull(sum(caor.receive_amount), 0)"
   					+ "  FROM charge_application_order_rel caor "
-  					+ " WHERE caor.charge_order_id = aci.id AND caor.order_type = '开票单' ) receive_amount, "
+  					+ " WHERE caor.charge_order_id = aci.id AND caor.order_type = '应收开票单' ) receive_amount, "
   					+ " ( aci.total_amount - ( SELECT ifnull(sum(caor.receive_amount), 0) FROM "
   					+ " charge_application_order_rel caor"
-  					+ " WHERE caor.charge_order_id = aci.id AND caor.order_type = '开票单' ) ) noreceive_amount"
+  					+ " WHERE caor.charge_order_id = aci.id AND caor.order_type = '应收开票单' ) ) noreceive_amount"
   					+ " FROM arap_charge_invoice aci "
   					+ " LEFT OUTER JOIN party p ON aci.sp_id = p.id "
   					+ " LEFT OUTER JOIN contact c ON c.id = p.contact_id "
@@ -350,4 +354,38 @@ public class ChargeAcceptOrderController extends Controller {
 		
 		render("/eeda/arap/ChargeAcceptOrder/chargeEdit.html");
 	}
+  	
+  	
+  //复核
+  	@Before(Tx.class)
+    public void checkOrder(){
+        String application_id=getPara("order_id");
+          
+        ArapChargeApplication order = ArapChargeApplication.dao.findById(application_id);
+        order.set("status", "已复核");
+        order.set("check_by", LoginUserController.getLoginUserId(this));
+        order.set("check_stamp", new Date()).update();
+     
+        //更改原始单据状态
+        List<Record> res = Db.find("select * from charge_application_order_rel where application_order_id = ?",application_id);
+  		for (Record re : res) {
+  			Long id = re.getLong("charge_order_id");
+  			String order_type = re.getStr("order_type");
+
+  			if("应收对账单".equals(order_type)){
+			    ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(id);
+				arapChargeOrder.set("status", "收款申请中").update();
+			}else if("开票记录单".equals(order_type)){
+			    ArapChargeInvoice arapChargeInvoice = ArapChargeInvoice.dao.findById(id);
+				arapChargeInvoice.set("status", "收款申请中").update();
+			}
+  		}
+  		  
+  		long check_by = order.getLong("check_by");
+   		String user_name = LoginUserController.getUserNameById(check_by);
+  		  
+  		Record re = order.toRecord();
+  		re.set("check_name",user_name);
+  	    renderJson(re);
+    }
 }

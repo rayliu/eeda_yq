@@ -68,7 +68,11 @@ $(document).ready(function() {
 	    serverSide: true, //不打开会出现排序不对
 	    ajax: "/chargeAcceptOrder/chargeOrderList?idsArray="+idsArray+"&application_id="+$("#order_id").val(),
 	    columns:[
-            {"data":"ORDER_TYPE","width": "100px","class":'order_type'},
+            {"data":"ORDER_TYPE","width": "100px","class":'order_type',
+            	"render": function(data, type, full, meta) {
+            	    return"<input type ='text' style='border-left:0px;border-top:0px;border-right:0px;border-bottom:1px;width:80px ' name='order_type' value='"+data+"'>";
+            	}
+            },
             {"data":"ORDER_NO","width": "120px",
             	"render": function(data, type, full, meta) {
             		return '<a href="/chargeCheckOrder/edit?id='+full.ID+'">'+data+'</a>';
@@ -177,15 +181,14 @@ $(document).ready(function() {
 	    	}	
 	    });
 	 
+	 //复核
 	  $("#checkBtn").on('click',function(){
 		  	$("#checkBtn").attr("disabled", true);
 		  	$("#saveBtn").attr("disabled", true);
-		  	
-		  	orderjson();
-		  	
-			$.get("/chargePreInvoiceOrder/checkStatus", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val()}, function(data){
+		  
+			$.get("/chargeAcceptOrder/checkOrder", {order_id:$('#order_id').val(),}, function(data){
 				if(data.ID>0){
-					$("#check_name").val();
+					$("#check_name").val(data.CHECK_NAME);
 					$("#check_stamp").val(data.CHECK_STAMP);
 					$("#status").val(data.STATUS);
 					$.scojs_message('复核成功', $.scojs_message.TYPE_OK);
@@ -306,28 +309,61 @@ $(document).ready(function() {
 	});	
     
  
-
-    
-   
-    //按钮控制
-	if($('#status').val()==''){
+  //按钮控制
+	if($('#order_id').val()==''){
 		$("#saveBtn").attr('disabled',false);
-		$("#deleteBtn").attr("disabled", true);
-	}else if($('#status').val()=='新建' || $('#status').val()=='已审批'){
-		if($('#application_id').val()!=''){
+	}else{
+		if($('#status').val()=='新建'){
 			$("#saveBtn").attr('disabled',false);
-			$("#printBtn").attr('disabled',false);
 			$("#checkBtn").attr('disabled',false);
+		}else if($('#status').val()=='已复核'){
+			$("#confirmBtn").attr('disabled',false);
 		}
-	}else if($('#status').val()=='已复核'){
-		$("#printBtn").attr('disabled',false);
-		$("#returnBtn").attr('disabled',false);
-		$("#confirmBtn").attr('disabled',false);
-	}else if($('#status').val()=='已收款'){
-		$("#returnConfirmBtn").attr('disabled',false);
-		$("#printBtn").attr('disabled',false);
-		$("#deleteBtn").attr("disabled", true);
 	}
+	
+	
+	//按钮控制
+	if($('#application_id').val()==''){
+		$("#saveBtn").attr('disabled',false);
+	}else{
+		if($('#status').val()=='新建'){
+			$("#saveBtn").attr('disabled',false);
+			$("#checkBtn").attr('disabled',false);
+		}else if($('#status').val()=='已复核'){
+			$("#confirmBtn").attr('disabled',false);
+		}
+	}
+	
+	
+	//付款方式回显（1）
+	$('#payment_method').change(function(){
+		var type = $(this).val();
+		if(type == 'cash'){
+			$('#transfers_massage').hide();
+		}else{
+			$('#transfers_massage').show();
+		}
+	})
+	
+	//发票类型（1）
+	$('#invoice_type').change(function(){
+		var type = $(this).val();
+		if(type == 'wbill'){
+			$('#invoiceDiv').hide();
+		}else{
+			$('#invoiceDiv').show();
+		}
+	})
+	
+	//付款方式回显（2）
+	$('#receive_type').change(function(){
+		var type = $(this).val();
+		if(type == 'cash'){
+			$('#receive_type_massage').hide();
+		}else{
+			$('#receive_type_massage').show();
+		}
+	})
 	
 
 });
