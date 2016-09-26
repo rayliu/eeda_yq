@@ -284,7 +284,7 @@ GROUP BY
 			</staticText>
 			<image>
 				<reportElement x="0" y="-11" width="109" height="34" uuid="d7c0123f-4c00-4bb2-b117-c27a6b980223"/>
-				<imageExpression><![CDATA["C:\\Users\\Administrator\\Desktop\\jobOrder\\yqlogo.png"]]></imageExpression>
+				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
 			</image>
 		</band>
 	</pageHeader>
