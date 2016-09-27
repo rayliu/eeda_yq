@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="truckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6e032343-152e-4328-9fc1-a87e482c2444">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
-	<parameter name="order_id" class="java.lang.String">
+	<property name="ireport.y" value="96"/>
+	<parameter name="itemId" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
 	<queryString>
@@ -16,9 +16,13 @@ consignee_phone,
 delivery_address,
 eta,
 cargo_info,
-required_time_remark
+required_time_remark,
+pieces,
+gross_weight,
+volume,
+cargo_desc
 from job_order_land_item
-where order_id=$P{order_id}]]>
+where id=$P{itemId}]]>
 	</queryString>
 	<field name="consignor" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -47,6 +51,18 @@ where order_id=$P{order_id}]]>
 	<field name="required_time_remark" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="pieces" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gross_weight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="volume" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cargo_desc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -56,7 +72,7 @@ where order_id=$P{order_id}]]>
 	<pageHeader>
 		<band height="86" splitType="Stretch">
 			<staticText>
-				<reportElement x="235" y="46" width="101" height="35" uuid="1b26dba1-7c26-497e-b00e-4fb82c132fa3"/>
+				<reportElement x="235" y="47" width="101" height="35" uuid="1b26dba1-7c26-497e-b00e-4fb82c132fa3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="22" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -110,7 +126,7 @@ where order_id=$P{order_id}]]>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="322" width="51" height="20" uuid="52037e35-966d-4fd7-827f-ad572e2cfdcf"/>
-				<textElement textAlignment="Right">
+				<textElement textAlignment="Left">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[货物信息：]]></text>
@@ -172,11 +188,11 @@ where order_id=$P{order_id}]]>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="7" y="342" width="531" height="69" uuid="13a3418f-e3cb-422c-adc8-3dfa84296fc4"/>
+				<reportElement x="53" y="322" width="238" height="89" uuid="13a3418f-e3cb-422c-adc8-3dfa84296fc4"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cargo_info}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cargo_desc}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="2" y="411" width="82" height="20" uuid="3cf98ab8-75d7-4664-9f27-e546c100f207"/>
@@ -198,6 +214,39 @@ where order_id=$P{order_id}]]>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{take_address}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="291" y="322" width="45" height="20" uuid="8b6a8f86-8066-4bc9-8a82-88eca0b91fe2"/>
+				<text><![CDATA[件数：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="346" y="322" width="70" height="20" uuid="a2cf2910-1fa5-442e-b4f1-49f02387d65a"/>
+				<text><![CDATA[毛重（KG）：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="424" y="322" width="76" height="20" uuid="bf2fb5c7-6eba-4185-926b-e21faee2edd9"/>
+				<text><![CDATA[体积（CMB）：]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="291" y="342" width="45" height="69" uuid="cb2bdb2d-3dcf-463c-9946-d94b5ca18cd5"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="346" y="342" width="70" height="69" uuid="ffd5637d-a814-4f91-b0ea-00a8b62116d3"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="424" y="342" width="76" height="69" uuid="39a6f79d-38e1-40df-86f6-931913746b0b"/>
+				<textElement textAlignment="Left">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{volume}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

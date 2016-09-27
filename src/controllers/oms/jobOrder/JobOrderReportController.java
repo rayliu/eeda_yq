@@ -138,13 +138,13 @@ public class JobOrderReportController extends Controller {
 	//路运派车单打印
 	public void printTruckOrderPDF() {
 		
-		String order_id = getPara("order_id");
+		String itemId = getPara("itemId");
 		String fileName = "/report/jobOrder/truckOrder.jasper";
 		String outFileName = "/download/陆运派车单";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
-		hm.put("order_id", order_id);
+		hm.put("itemId", itemId);
 		fileName = getContextPath() + fileName;
-		outFileName = getContextPath() + outFileName + order_id;
+		outFileName = getContextPath() + outFileName + itemId;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
 		renderText(file.substring(file.indexOf("download")-1));
 	}
@@ -166,10 +166,11 @@ public class JobOrderReportController extends Controller {
 	//打印Invoice英文
 	public void printInvoicePDF() {
 		String order_id = getPara("itemIds");
+		String [] orderIdArr= order_id.split(",");
 		String fileName = "/report/jobOrder/INVOICE.jasper";
 		String outFileName = "/download/Invoice英文";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
-		hm.put("order_id", (order_id));
+		hm.put("order_id", orderIdArr);
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);

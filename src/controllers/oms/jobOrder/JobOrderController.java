@@ -130,8 +130,8 @@ public class JobOrderController extends Controller {
     
     //插入派车单打印动作标记
     public void truckOrderflag(){
-    	String jsonStr = getPara("order_id");
-    	JobOrderLandItem joli = JobOrderLandItem.dao.findFirst("select id from job_order_land_item where order_id = ?",jsonStr);
+    	String jsonStr = getPara("itemId");
+    	JobOrderLandItem joli = JobOrderLandItem.dao.findFirst("select id from job_order_land_item where id = ?",jsonStr);
     	joli.set("truckorder_flag", "Y");
     	joli.update();
     	renderJson("{\"result\":true}");

@@ -415,7 +415,7 @@ $(document).ready(function() {
     			}
     	});
 
-    //打印生成派车单truckOrderPDF
+    //打印生成陆运派车单truckOrderPDF
     $('#truckOrderPDF').click(function(){
     	//判断table是否添加了一行
     	if($('#land_table td').length==1){
@@ -508,17 +508,37 @@ $(document).ready(function() {
 				$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
 				$('#pdfAlert').click();
 			}else{
-		    	var order_id = $("#order_id").val();
-				$.post('/jobOrderReport/printTruckOrderPDF', {order_id:order_id}, function(data){
-					if(data){
-					window.open(data);	
-						 $.post('/jobOrder/truckOrderflag', {order_id:order_id}, function(data){
-				    		    
-			                });
-					}else{
-						$.scojs_message('生成派车单 PDF失败', $.scojs_message.TYPE_ERROR);
+				var itemIds=[];
+				var k = 0;
+				$('#land_table input[type="checkbox"]').each(function(){
+					var checkbox = $(this).prop('checked');
+					if(checkbox){
+						var itemId = $(this).parent().parent().attr('id');
+						k++;
+				    	$.post('/jobOrderReport/printTruckOrderPDF', {itemId:itemId}, function(data){
+							if(data){
+							window.open(data);	
+								 $.post('/jobOrder/truckOrderflag', {itemId:itemId}, function(data){
+						    		    
+					                });
+							}else{
+								$.scojs_message('所选中的里面第'+k+'条生成派车单 PDF失败', $.scojs_message.TYPE_ERROR);
+							}
+						}); 
+						itemIds.push(itemId);
 					}
-				}); 
+				});
+//		    	var order_id = $("#order_id").val();
+//				$.post('/jobOrderReport/printTruckOrderPDF', {order_id:order_id}, function(data){
+//					if(data){
+//					window.open(data);	
+//						 $.post('/jobOrder/truckOrderflag', {order_id:order_id}, function(data){
+//				    		    
+//			                });
+//					}else{
+//						$.scojs_message('生成派车单 PDF失败', $.scojs_message.TYPE_ERROR);
+//					}
+//				}); 
 			}
     	}
     });
