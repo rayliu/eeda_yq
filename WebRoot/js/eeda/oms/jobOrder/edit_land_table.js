@@ -302,6 +302,15 @@ $(document).ready(function() {
     	cargoTable.ajax.url(url).load();
     }
     
+    //全选
+    $('#allCheckOfLand').click(function(){
+    	var ischeck = this.checked;
+    	$('.checkBox').each(function(){
+    		this.checked = ischeck;
+    	})
+    })
+    
+    
 	//上传签收文件
 	$("#land_table").on('click', '.upload', function(){
 		var id = $(this).parent().parent().parent().attr('id');

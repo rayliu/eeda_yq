@@ -551,6 +551,29 @@ $(document).ready(function() {
     })
   
     
+  //选择是否是同一结算公司
+	var cnames = [];
+	$('#charge_table').on('click','input[type="checkbox"]',function () {
+			var cname = $($(this).parent().parent().find('[name="SP_ID"]')).val();
+			
+			if($(this).prop('checked')==true){	
+				if(cnames.length > 0 ){
+					if(cnames[0]!=cname){
+						$.scojs_message('请选择同一个结算公司', $.scojs_message.TYPE_ERROR);
+						$(this).attr('checked',false);
+						return false;
+					}else{
+						cnames.push(cname);
+					}
+				}else{
+					cnames.push(cname);	
+				}
+			}else{
+				cnames.pop(cname);
+		 }
+	 });
+    
+    
 	     
     
   });
