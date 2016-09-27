@@ -187,6 +187,19 @@ public class ChargeInvoiceOrderController extends Controller {
    		renderJson(r);
    	}
     
+    /**确认动作
+     * 
+     */
+    @Before(Tx.class)
+    public void confirm(){
+    	String id = getPara("id");
+    	ArapChargeInvoice order = ArapChargeInvoice.dao.findById(id);
+    	order.set("status","已确认");
+    	order.update();
+    	
+    	renderJson(order);
+    }
+    
     
     public void edit(){
 		String id = getPara("id");//invoice_order_id
