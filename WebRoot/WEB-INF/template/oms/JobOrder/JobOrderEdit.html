@@ -419,8 +419,8 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'doc_table',
-                                        style:'width:1000px',
-                                        headers:['','', '文档名称', '上传人', '上传时间', '备注'],
+                                        style:'width:1100px',
+                                        headers:['<input id="allCheckOfDoc" type="checkbox" style="width:30px">','', '文档名称', '上传人', '上传时间', '备注'],
                                         field_list:['id','', 'doc_name','c_name','upload_time', 'remark'],
                                         value_list: docList![]
                                     }){} %>
@@ -456,11 +456,15 @@
 	      	<div class="modal-body">
 				<div class="form-group">
 				<form id="emailForm">
-					  <span id="attachment"></span><br><br>   
-	                  <label>收件邮箱</label>
-	                  <input type="email" id="email" name="email" class="form-control" required><br>
+					  <font size="5px"><span id="attachment"></span></font><br><br>   
+	                  <label>收件人</label>
+	                  <input type="text" id="email" name="email" class="form-control" required><br>
+	                  <label>抄送人</label>
+	                  <input type="text" id="ccEmail" name="ccEmail" class="form-control"><br>
+	                  <label>密送人</label>
+	                  <input type="text" id="bccEmail" name="bccEmail" class="form-control"><br>
 	                  <label>邮件标题</label>
-	                  <input type="text" id="emailTitle" name="emailTitle" class="form-control" required><br>
+	                  <input type="text" id="emailTitle" name="emailTitle" class="form-control"><br>
 	                  <label>邮件正文</label>
 	                  <textarea id='emailContent' class="form-control" rows="3"></textarea><br>
 				</form>

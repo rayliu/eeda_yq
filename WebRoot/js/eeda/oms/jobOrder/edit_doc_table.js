@@ -67,11 +67,11 @@ $(document).ready(function() {
                     return '<input type="text" value="'+data+'" class="form-control" style="width:200px" disabled/>';
                 }
             },
-            { "data": "REMARK","width": "180px",
+            { "data": "REMARK","width": "280px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
                 }
             }
         ]
@@ -99,9 +99,11 @@ $(document).ready(function() {
         	docs.push(doc_name);
         });
         var email =  $('#email').val();
+        var ccEmail =  $('#ccEmail').val();
+        var bccEmail =  $('#bccEmail').val();
     	var title = $('#emailTitle').val();
     	var content = $('#emailContent').val();
-    	$.post('/jobOrder/sendMail', {order_id:order_id,mailTitle:title,userEmail:email,mailContent:content,docs:docs.toString()}, function(data){
+    	$.post('/jobOrder/sendMail', {order_id:order_id,mailTitle:title,email:email,ccEmail:ccEmail,bccEmail:bccEmail,mailContent:content,docs:docs.toString()}, function(data){
     		if(data.result==true){
 	        	 $.scojs_message('发送邮件成功', $.scojs_message.TYPE_OK);
 	        	 itemOrder.refleshEmailTable(order_id);
@@ -140,6 +142,15 @@ $(document).ready(function() {
     	var url = "/upload/doc/"+$(this).val();
     	window.open(url);
     })
+    
+    //全选
+    $('#allCheckOfDoc').click(function(){
+    	var ischeck = this.checked;
+    	$('.checkBox').each(function(){
+    		this.checked = ischeck;
+    	})
+    })
+    
     
 });
 });

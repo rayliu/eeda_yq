@@ -506,13 +506,14 @@ public class JobOrderController extends Controller {
     @Before(Tx.class)
     public void sendMail() throws Exception {
     	String order_id = getPara("order_id");
-    	String userEmail = getPara("userEmail");
+    	String userEmail = getPara("email");
+    	String ccEmail = getPara("ccEmail");
+    	String bccEmail = getPara("bccEmail");
     	String mailTitle = getPara("mailTitle");
     	String mailContent = getPara("mailContent");
     	String docs = getPara("docs");
     	
         MultiPartEmail email = new MultiPartEmail();  
-        email.setCharset("GB2312");
         /*smtp.exmail.qq.com*/
         email.setHostName("smtp.exmail.qq.com");
         email.setSmtpPort(465);
@@ -527,13 +528,31 @@ public class JobOrderController extends Controller {
         
         //设置收件人，邮件标题，邮件内容
         if(StringUtils.isNotEmpty(userEmail)){
-	        email.addTo(userEmail);
+        	String[] arr = userEmail.split("-");
+        	for(int i=0;i<arr.length;i++){
+        		email.addTo(arr[i]);
+        	}
         }
         if(StringUtils.isNotEmpty(mailTitle)){
 	        email.setSubject(mailTitle);
         }
         if(StringUtils.isNotEmpty(mailContent)){
 	        email.setMsg(mailContent);
+        }
+        
+        //抄送
+        if(StringUtils.isNotEmpty(ccEmail)){
+        	String[] arr = ccEmail.split("-");
+        	for(int i=0;i<arr.length;i++){
+        		email.addCc(arr[i]);
+        	}
+        }
+        //密送
+        if(StringUtils.isNotEmpty(bccEmail)){
+        	String[] arr = bccEmail.split("-");
+        	for(int i=0;i<arr.length;i++){
+        		email.addBcc(arr[i]);
+        	}
         }
         
         //添加附件
@@ -545,9 +564,8 @@ public class JobOrderController extends Controller {
 	            File file = new File(filePath);
 	            if (file.exists() && file.isFile()) {
 	            	
-	            	String localAttachmentPath = filePath;
 	            	EmailAttachment attachment = new EmailAttachment();
-	            	attachment.setPath(localAttachmentPath);  
+	            	attachment.setPath(filePath);  
 	            	attachment.setDisposition(EmailAttachment.ATTACHMENT); 
 	            	attachment.setName(strAry[i]); 
 	            	email.attach(attachment);
@@ -555,6 +573,7 @@ public class JobOrderController extends Controller {
 	        }
         }
         try{
+        	email.setCharset("gbk");
         	email.send();
         	JobOrderSendMail jsm = new JobOrderSendMail();
         	jsm.set("order_id", order_id);
