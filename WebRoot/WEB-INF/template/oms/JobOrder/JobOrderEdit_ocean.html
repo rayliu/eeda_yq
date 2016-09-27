@@ -4,10 +4,13 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="collapsed">常用海运信息</a>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOceanInfo" aria-expanded="false" class="collapsed">
+            <i id='collapseOceanIcon' class="fa 
+            <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用海运信息
+            </a>
         </h4>
     </div>
-    <div id="collapseOne" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+    <div id="collapseOceanInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
         <div class="panel-body">
             <ul id="usedOceanInfo" class="usedOceanInfo">
               <%for(userInfo in usedOceanInfo![]){%>

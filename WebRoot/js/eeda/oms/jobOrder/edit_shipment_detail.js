@@ -76,7 +76,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $('#pod').val(li.attr('pod_id'));
             $('#fnd_input').val(li.attr('fnd_name'));
             $('#fnd').val(li.attr('fnd_id'));
-        })
-        
+        });
+
+        $('#collapseOceanInfo').on('show.bs.collapse', function () {
+          $('#collapseOceanIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+        });
+        $('#collapseOceanInfo').on('hide.bs.collapse', function () {
+          $('#collapseOceanIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
+        });
     });
 });
