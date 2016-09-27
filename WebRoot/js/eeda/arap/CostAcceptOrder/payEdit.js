@@ -1,7 +1,7 @@
 ﻿define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
 	document.title = '付款申请单 | '+document.title;
-
+	$('#pay_date').val(eeda.getDate());
 	$('#menu_finance').addClass('active').find('ul').addClass('in');
 		//datatable, 动态处理
 	    var ids = $("#ids").val();

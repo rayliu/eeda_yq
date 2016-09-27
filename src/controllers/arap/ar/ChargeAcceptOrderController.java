@@ -95,7 +95,7 @@ public class ChargeAcceptOrderController extends Controller {
         		+ " arap_charge_order aco"
         		+ " LEFT JOIN party p ON p.id = aco.sp_id"
         		+ " LEFT JOIN charge_application_order_rel caor ON caor.charge_order_id = aco.id and caor.order_type = '应收对账单'"
-        		+ " where aco.have_invoice = 'N' and aco.status = '已确认'"
+        		+ " where aco.have_invoice = 'N' and aco.status != '新建'"
         		+ " GROUP BY aco.id"
         		+ " union"
         		+ " SELECT"
@@ -106,7 +106,7 @@ public class ChargeAcceptOrderController extends Controller {
         		+ " LEFT JOIN party p ON p.id = aci.sp_id"
         		+ " LEFT JOIN arap_charge_order aco on aco.invoice_order_id = aci.id"
         		+ " LEFT JOIN charge_application_order_rel caor ON caor.charge_order_id = aci.id and caor.order_type = '应收开票单'"
-        		+ " where aci.status = '已确认'"
+        		+ " where aci.status != '新建'"
         		+ " GROUP BY aci.id"
         		+ " ) A where total_amount>receive_amount ";
 		
@@ -158,7 +158,7 @@ public class ChargeAcceptOrderController extends Controller {
           String ids = getPara("idsArray");
           String application_id = getPara("application_id");
           String dz_id ="" ;//应收对账单
-          String kpjl_id = "";//开票记录单
+          String kpjl_id = "";//应收开票单
           String sql = "";
           
           if(application_id.equals("")){
@@ -172,7 +172,7 @@ public class ChargeAcceptOrderController extends Controller {
    					
    					if("应收对账单".equals(orderType)){
    						dz_id += id+",";
-   					}else if("开票记录单".equals(orderType)){
+   					}else if("应收开票单".equals(orderType)){
    						kpjl_id += id+",";
    					}
    				}
@@ -233,20 +233,20 @@ public class ChargeAcceptOrderController extends Controller {
   					+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
   					+ " where caor.order_type = '应收对账单'"
   					+ " union "
-  					+ " SELECT caor.id, aci.sp_id sp_id,  aci.order_no, '开票记录单' order_type, aci. STATUS, aci.remark, "
+  					+ " SELECT caor.id, aci.sp_id sp_id,  aci.order_no, '应收开票单' order_type, aci. STATUS, aci.remark, "
   					+ " aci.create_stamp create_stamp, p.abbr sp_name, ifnull(ul.c_name, ul.user_name) creator_name, aci.total_amount total_amount, "
   					+ " ( SELECT ifnull(sum(caor.receive_amount), 0)"
   					+ "  FROM charge_application_order_rel caor "
-  					+ " WHERE caor.charge_order_id = aci.id and caor.application_order_id = aciao.id AND caor.order_type = '开票记录单' ) receive_amount, "
+  					+ " WHERE caor.charge_order_id = aci.id and caor.application_order_id = aciao.id AND caor.order_type = '应收开票单' ) receive_amount, "
   					+ " ( aci.total_amount - ( SELECT ifnull(sum(caor.receive_amount), 0) FROM "
   					+ " charge_application_order_rel caor"
-  					+ " WHERE caor.charge_order_id = aci.id AND caor.order_type = '开票记录单' ) ) noreceive_amount, aciao.id app_id  "
+  					+ " WHERE caor.charge_order_id = aci.id AND caor.order_type = '应收开票单' ) ) noreceive_amount, aciao.id app_id  "
   					+ " FROM arap_charge_invoice aci "
   					+ " LEFT JOIN charge_application_order_rel caor on caor.charge_order_id = aci.id"
   					+ " LEFT JOIN arap_charge_application_order aciao on aciao.id = caor.application_order_id"
   					+ " LEFT OUTER JOIN party p ON aci.sp_id = p.id "
   					+ " LEFT OUTER JOIN user_login ul ON aci.create_by = ul.id"
-  					+ " where caor.order_type = '开票记录单'"
+  					+ " where caor.order_type = '应收开票单'"
   					+ " ) A where app_id ="+application_id ;	    
   		}
   		
@@ -317,7 +317,7 @@ public class ChargeAcceptOrderController extends Controller {
                 if("应收对账单".equals(order_type)){
 					ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(itemId);
 					arapChargeOrder.set("status", "收款申请中").update();
-				}else if("开票记录单".equals(order_type)){
+				}else if("应收开票单".equals(order_type)){
 					ArapChargeInvoice arapChargeInvoice = ArapChargeInvoice.dao.findById(itemId);
 					arapChargeInvoice.set("status", "收款申请中").update();
 				}
@@ -349,7 +349,10 @@ public class ChargeAcceptOrderController extends Controller {
 		String creator_name = userLogin.get("c_name");
 		
 		userLogin = UserLogin.dao .findById(order.get("check_by"));
-		String check_name = userLogin.get("c_name");
+		String check_name = null;
+		if(userLogin != null){
+			check_name = userLogin.get("c_name");
+		}
 		
 		Record r = order.toRecord();
 		r.set("creator_name", creator_name);
@@ -382,7 +385,7 @@ public class ChargeAcceptOrderController extends Controller {
   			if("应收对账单".equals(order_type)){
 			    ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(id);
 				arapChargeOrder.set("status", "已复核").update();
-			}else if("开票记录单".equals(order_type)){
+			}else if("应收开票单".equals(order_type)){
 			    ArapChargeInvoice arapChargeInvoice = ArapChargeInvoice.dao.findById(id);
 				arapChargeInvoice.set("status", "已复核").update();
 			}
@@ -432,7 +435,7 @@ public class ChargeAcceptOrderController extends Controller {
   			if("应收对账单".equals(order_type)){
 			    ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(charge_order_id);
 				arapChargeOrder.set("status", "已收款").update();
-			}else if("开票记录单".equals(order_type)){
+			}else if("应收开票单".equals(order_type)){
 			    ArapChargeInvoice arapChargeInvoice = ArapChargeInvoice.dao.findById(charge_order_id);
 				arapChargeInvoice.set("status", "已收款").update();
 			}

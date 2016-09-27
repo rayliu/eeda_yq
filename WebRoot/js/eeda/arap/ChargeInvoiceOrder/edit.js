@@ -55,6 +55,32 @@ $(document).ready(function() {
             $('#saveBtn').attr('disabled', false);
           });
     });  
+    
+    /**
+     * confirm
+     * 
+     */
+    $('#confrimBtn').click(function(e){
+    	var self = this;
+    	$(self).attr('disabled',true);
+    	
+    	//异步向后台提交数据
+        $.post('/chargeInvoiceOrder/confirm', {id:$('#id').val()}, function(data){
+            var order = data;
+            if(order.ID>0){
+            	$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+                $("#status").val(order.STATUS);
+                $('#saveBtn').attr('disabled', true);
+            }else{
+                $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+                $(self).attr('disabled', false);
+            }
+        },'json').fail(function() {
+            $.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+            $(self).attr('disabled', false);
+        });
+    	
+    });
  
     //按钮控制
     var order_id = $("#id").val();
