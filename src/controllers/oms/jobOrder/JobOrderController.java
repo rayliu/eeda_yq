@@ -580,6 +580,8 @@ public class JobOrderController extends Controller {
         	jsm.set("mail_title", mailTitle);
         	jsm.set("doc_name", docs);
         	jsm.set("receive_mail", userEmail);
+        	jsm.set("cc_mail", ccEmail);
+        	jsm.set("bcc_mail", bccEmail);
         	jsm.set("sender", LoginUserController.getLoginUserName(this));
         	jsm.set("send_time", new Date());
         	jsm.save();

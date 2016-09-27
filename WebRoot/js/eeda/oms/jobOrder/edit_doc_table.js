@@ -121,7 +121,9 @@ $(document).ready(function() {
         columns:[
             { "data": "MAIL_TITLE","width": "100px"},
             { "data": "DOC_NAME","width": "300px"}, 
-            { "data": "RECEIVE_MAIL","width": "100px"}, 
+            { "data": "RECEIVE_MAIL","width": "300px"}, 
+            { "data": "CC_MAIL","width": "300px"}, 
+            { "data": "BCC_MAIL","width": "300px"}, 
             { "data": "SENDER","width": "100px"}, 
             { "data": "SEND_TIME","width": "100px"}
         ]

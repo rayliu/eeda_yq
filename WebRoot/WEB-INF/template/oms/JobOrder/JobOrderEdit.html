@@ -429,9 +429,9 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'email_table', 
-                                    style:'width:1300px',
-                                    headers:['邮件标题','发送文档','收件人', '发送人','发送时间'],
-                                    field_list:['mail_title', 'doc_name','receive_mail','sender','send_time'],
+                                    style:'width:2000px',
+                                    headers:['邮件标题','发送文档','收件人','抄送人','密送人', '发送人','发送时间'],
+                                    field_list:['mail_title', 'doc_name','receive_mail','cc_mail','bcc_mail','sender','send_time'],
                                     value_list: mailList![]
                                 }){} %>
                            
