@@ -50,7 +50,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" value="'+data+'" class="doc_name form-control" style="width:200px" disabled/>';
+                    return '<input type="button" value="'+data+'" class="doc_name form-control" style="width:200px"/>';
                 }
             },
             { "data": "C_NAME","width": "180px",
@@ -134,6 +134,12 @@ $(document).ready(function() {
     	var url = "/jobOrder/tableList?order_id="+order_id+"&type=mail";
     	emailTable.ajax.url(url).load();
     }
+    
+    //查看文档
+    $("#doc_table").on('click', '.doc_name',function(){
+    	var url = "/upload/doc/"+$(this).val();
+    	window.open(url);
+    })
     
 });
 });

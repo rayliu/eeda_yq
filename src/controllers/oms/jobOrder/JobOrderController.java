@@ -298,12 +298,10 @@ public class JobOrderController extends Controller {
     
     
     
-    //上传文件
+    //上传相关文档
     @Before(Tx.class)
     public void saveDocFile(){
-    	UserLogin user = LoginUserController.getLoginUser(this);
     	String order_id = getPara("order_id");
-    	
     	List<UploadFile> fileList = getFiles("doc");
     	
 		for (int i = 0; i < fileList.size(); i++) {
@@ -312,7 +310,7 @@ public class JobOrderController extends Controller {
     		
 			JobOrderDoc jobOrderDoc = new JobOrderDoc();
 			jobOrderDoc.set("order_id", order_id);
-			jobOrderDoc.set("uploader", user.getLong("id"));
+			jobOrderDoc.set("uploader", LoginUserController.getLoginUserId(this));
 			jobOrderDoc.set("doc_name", fileName);
 			jobOrderDoc.set("upload_time", new Date());
 			jobOrderDoc.save();
@@ -322,7 +320,31 @@ public class JobOrderController extends Controller {
     	renderJson(resultMap);
     }
     
-    //删除文件
+    //上传陆运签收文件描述
+    @Before(Tx.class)
+    public void uploadSignDesc(){
+    	String id = getPara("id");
+    	
+    	JobOrderLandItem order = JobOrderLandItem.dao.findById(id);
+    	String uploadPath = getRequest().getServletContext().getRealPath("/")+"\\upload\\";
+    	//删除旧文件
+		String oldFileName = order.getStr("sign_desc");
+		if(oldFileName!=null&&!"".equals(oldFileName)){
+			String oldFilePath = uploadPath+oldFileName;
+			File oldFile = new File(oldFilePath);
+	        if (oldFile.exists() && oldFile.isFile()) {
+	            oldFile.delete();
+	        }
+		}
+		
+        UploadFile upfile = getFile();//默认路径 是 upload
+    	String fileName = upfile.getFileName();
+		order.set("sign_desc", fileName);
+		order.update();
+		renderJson("{\"result\":true}");
+    }
+    
+    //删除相关文档
     @Before(Tx.class)
     public void deleteDoc(){
     	String id = getPara("docId");
@@ -720,6 +742,7 @@ public class JobOrderController extends Controller {
     	for(int i=0;i<idArr.length;i++){
     		order = JobOrderArap.dao.findById(idArr[i]);
     		order.set("invoice_no", invoiceNo);
+    		order.update();
     	}
     	renderJson("{\"result\":true}");
     }

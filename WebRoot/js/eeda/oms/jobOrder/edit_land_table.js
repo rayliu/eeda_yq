@@ -2,6 +2,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 $(document).ready(function() {
 
 	var deletedTableIds=[];
+	
     //删除一行
     $("#land_table").on('click', '.delete', function(e){
         e.preventDefault();
@@ -95,6 +96,22 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                 	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
                 }
+            },
+            { "data":"ID","width": "80px",
+            	"render": function ( data, type, full, meta ) {
+            		if(data)
+	            		return '<span class="btn btn-success btn-xs fileinput-button">' 
+		                		+'<i class="glyphicon glyphicon-plus"></i>'
+		                		+'<span>上传签收文件</span>'
+		                		+'<input class="upload" type="file" name="file" >'
+		                		+'</span>'
+		            else
+		            	return '<span class="btn btn-default btn-xs fileinput-button">' 
+		                		+'<i class="glyphicon glyphicon-plus"></i>'
+		                		+'<span>上传签收文件</span>'
+		                		+'<input  class="upload" type="file" name="file" disabled>'
+		                		+'</span>'			
+            	}
             },
             { "data": "UNLOAD_TYPE", "width": "80px",
                 "render": function ( data, type, full, meta ) {
@@ -259,7 +276,7 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="sign_desc" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="button" name="sign_desc" value="'+data+'" class="sign_desc form-control" style="width:200px"/>';
             	}
             },
             { "data": "SIGN_STATUS", "width": "180px",
@@ -285,6 +302,34 @@ $(document).ready(function() {
     	cargoTable.ajax.url(url).load();
     }
     
+	//上传签收文件
+	$("#land_table").on('click', '.upload', function(){
+		var id = $(this).parent().parent().parent().attr('id');
+		var order_id = $('#order_id').val();
+			$(this).fileupload({
+				autoUpload: true, 
+			    url: '/jobOrder/uploadSignDesc?id='+id,
+			    dataType: 'json',
+		        done: function (e, data) {
+	        	if(data.result){
+			    		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
+			    		//异步刷新table
+			    		itemOrder.refleshLandItemTable(order_id);
+			    	}else{
+			    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
+			    	}
+			     },
+		        error: function () {
+		            alert('上传的时候出现了错误！');
+		        }
+			});
+	});
+	
+	//查看签收文件
+    $("#land_table").on('click', '.sign_desc',function(){
+    	var url = "/upload/"+$(this).val();
+    	window.open(url);
+    })
 
 });
 });
