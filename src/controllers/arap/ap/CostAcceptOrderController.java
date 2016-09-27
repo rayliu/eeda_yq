@@ -42,7 +42,7 @@ public class CostAcceptOrderController extends Controller {
 				+ " from arap_cost_order aco "
 				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id"
 				+ " left join party p on p.id=aco.sp_id "
-				+ " where aco.status='已确认'"
+				+ " where aco.status!='新建'"
 				+ " group by aco.id"
 				+ " ) A where totalCostAmount>paid_amount";
 
