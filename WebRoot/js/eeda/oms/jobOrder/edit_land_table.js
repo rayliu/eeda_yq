@@ -100,13 +100,13 @@ $(document).ready(function() {
             { "data":"ID","width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(data)
-	            		return '<span class="btn btn-success btn-xs fileinput-button">' 
+	            		return '<span class="btn btn-success btn-xs fileinput-button" style="width:100px">' 
 		                		+'<i class="glyphicon glyphicon-plus"></i>'
 		                		+'<span>上传签收文件</span>'
 		                		+'<input class="upload" type="file" name="file" >'
 		                		+'</span>'
 		            else
-		            	return '<span class="btn btn-default btn-xs fileinput-button">' 
+		            	return '<span class="btn btn-default btn-xs fileinput-button" style="width:100px">' 
 		                		+'<i class="glyphicon glyphicon-plus"></i>'
 		                		+'<span>上传签收文件</span>'
 		                		+'<input  class="upload" type="file" name="file" disabled>'
@@ -155,7 +155,7 @@ $(document).ready(function() {
                     return '<input type="text" name="driver" value="'+data+'" class="form-control" style="width:200px" />';
                 }
             },
-            { "data": "DRIVER_TEL", "width": "80px",
+            { "data": "DRIVER_TEL", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -231,7 +231,8 @@ $(document).ready(function() {
                     var field_html = template('table_date_field_template',
 	                    {
 	                        id: 'ETA',
-	                        value: data.substr(0,19)
+	                        value: data.substr(0,19),
+	                        style:'width:180px'
 	                    }
 	                );
                     return field_html;

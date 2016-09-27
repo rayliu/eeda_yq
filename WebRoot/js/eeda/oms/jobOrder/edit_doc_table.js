@@ -46,11 +46,11 @@ $(document).ready(function() {
                 	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
                 }
             },
-            { "data": "DOC_NAME","width": "180px",
+            { "data": "DOC_NAME","width": "280px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="button" value="'+data+'" class="doc_name form-control" style="width:200px"/>';
+                    return '<input type="button" value="'+data+'" class="doc_name form-control" style="width:300px"/>';
                 }
             },
             { "data": "C_NAME","width": "180px",
