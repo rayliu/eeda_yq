@@ -45,6 +45,7 @@
 <form id = "shipmentForm">
     <div class="form-group">  <!--  form row  -->
         <div class="row">
+        	
             <div class="col-lg-4"><!--  三列排版  -->
                 <%include("/eeda/component/form/inputSelectArea.html", 
                     {   id:'ocean_shipper', 
@@ -317,6 +318,7 @@
 				<button id="oceanHeadDetailBtn1" style="display:none"></button>
 			 </a>
            	 <button id="oceanMBL" class="btn btn-success">确认MBL</button>
+           	 <input id="oceanMBLHidden" type="hidden" value="${shipment.mbl_flag!''}" >
            	 <button id="alreadyAFR_AMS" class="btn btn-success">已AFR/AMS</button>
            	 <button id="alreadyInline" class="btn btn-success">已电放</button>
 			 <br><br>

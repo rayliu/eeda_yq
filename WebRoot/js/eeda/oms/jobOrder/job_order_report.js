@@ -330,6 +330,10 @@ $(document).ready(function() {
     	
     });
     
+    if($('#oceanMBLHidden').val()=="Y"){
+    	$('#oceanMBL').attr('disabled',true);
+    }
+    
     
     //确认AFR/AMS标记
     $('#alreadyAFR_AMS').click(function(){
