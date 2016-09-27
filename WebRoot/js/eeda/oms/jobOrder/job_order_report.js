@@ -517,7 +517,7 @@ $(document).ready(function() {
 						k++;
 				    	$.post('/jobOrderReport/printTruckOrderPDF', {itemId:itemId}, function(data){
 							if(data){
-							window.open(data);	
+								 window.open(data);	
 								 $.post('/jobOrder/truckOrderflag', {itemId:itemId}, function(data){
 						    		    
 					                });
@@ -563,12 +563,8 @@ $(document).ready(function() {
 	    		 if(data.result==true){
 	    			 if(debit_note=='debitNote'){
 	    			    	$.post('/jobOrderReport/printDebitNotePDF', {itemIds:itemIds.toString()}, function(data){
-	    			    		if(data){
 	    			                window.open(data);
-	    			    		  }else{
-		    			               $.scojs_message('生成DebitNote PDF失败', $.scojs_message.TYPE_ERROR);
-		    			               $('#printDebitNoteBtn').attr('disabled', false);
-	    			               }
+		    			            $('#printDebitNoteBtn').attr('disabled', false);
 	    			    	}).fail(function() { 
 	    		                $.scojs_message('生成DebitNote PDF失败', $.scojs_message.TYPE_ERROR);
 	    		                $('#printDebitNoteBtn').attr('disabled', false);
@@ -577,14 +573,10 @@ $(document).ready(function() {
 	    		    	
     		    	if(debit_note=='Invoice'){
     		    		$.post('/jobOrderReport/printInvoicePDF',{itemIds:itemIds.toString()},function(data){
-    		    			if(data){
     		    				window.open(data);
-    				    	}else{
-    				    		$.socjs_message('生成Invoice PDF失败',$.scojs_massage.TYPE_ERROR); 
     				    		$('#printDebitNoteBtn').attr('disabled', false);
-    				    	}
     		    		}).fail(function() { 
-    		                $.scojs_message('生成PDF失败', $.scojs_message.TYPE_ERROR);
+    		                $.scojs_message('生成Invoice PDF失败', $.scojs_message.TYPE_ERROR);
     		                $('#printDebitNoteBtn').attr('disabled', false);
     		              });
     		    	}
