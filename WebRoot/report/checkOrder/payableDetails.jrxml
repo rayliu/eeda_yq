@@ -44,7 +44,7 @@
 		</box>
 	</style>
 	<subDataset name="Table Dataset 1" uuid="bbb601dc-9fa2-4056-bc3d-c986a039ff9a"/>
-	<parameter name="aco_id" class="java.lang.Long">
+	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -120,7 +120,7 @@ LEFT JOIN arap_cost_item aci ON aci.ref_order_id = joa.id
 LEFT JOIN arap_cost_order aco ON aco.id = aci.cost_order_id
 WHERE
 	joa.id = aci.ref_order_id
-AND aco.id = $P{aco_id}
+AND aco.id =$P{order_id}
 GROUP BY
 	joa.id]]>
 	</queryString>
@@ -344,7 +344,7 @@ GROUP BY
 				<text><![CDATA[工作单号]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="77" y="91" width="42" height="20" uuid="ecc2080e-767d-46a2-8452-93b33174d5c8"/>
+				<reportElement x="77" y="91" width="52" height="20" uuid="ecc2080e-767d-46a2-8452-93b33174d5c8"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -365,15 +365,15 @@ GROUP BY
 				<text><![CDATA[提单号]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="230" y="91" width="52" height="20" uuid="300cbc78-f0da-47ac-b62e-c73cf0da985e"/>
+				<reportElement x="230" y="91" width="32" height="20" uuid="300cbc78-f0da-47ac-b62e-c73cf0da985e"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[类型]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="282" y="91" width="50" height="20" uuid="a43148fc-c959-4cb6-94ad-9c215b7cf055"/>
-				<textElement>
+				<reportElement x="262" y="91" width="70" height="20" uuid="a43148fc-c959-4cb6-94ad-9c215b7cf055"/>
+				<textElement textAlignment="Center">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[目的港]]></text>
@@ -479,80 +479,80 @@ GROUP BY
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="23" splitType="Stretch">
+		<band height="73" splitType="Stretch">
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="77" height="20" uuid="8b1b394d-1950-4880-b90d-02c2224060a7"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
 				<reportElement x="77" y="0" width="52" height="20" uuid="54c8fd4a-dbfb-4a94-b28f-d6cdff6b2cf0"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="230" y="0" width="52" height="20" uuid="daef4cd1-3971-49e4-9c4c-f7886151bb22"/>
+				<reportElement x="230" y="0" width="32" height="20" uuid="daef4cd1-3971-49e4-9c4c-f7886151bb22"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="282" y="0" width="51" height="20" uuid="495bbab4-8cdd-4b37-8124-1a1aaa0fc521"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				<reportElement x="262" y="0" width="71" height="44" uuid="495bbab4-8cdd-4b37-8124-1a1aaa0fc521"/>
+				<textElement textAlignment="Center">
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="333" y="0" width="52" height="20" uuid="d381a7ce-d0d9-48ad-b932-b9434108a8a0"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="385" y="0" width="50" height="20" uuid="e5c3e23f-6998-41f0-8468-9968893bb6af"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_amount}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="435" y="2" width="50" height="20" uuid="ca99461c-cddd-4be7-be4d-eb75253257e3"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fy_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="485" y="2" width="31" height="20" uuid="96f1ab88-c295-4b92-9008-3e46616260c0"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cur_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="518" y="2" width="37" height="20" uuid="b730d503-4974-4250-80ae-f1370c5fe04e"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total_amount}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="19" width="555" height="1" uuid="ec869746-35ec-4548-8262-ae005258a196"/>
+				<reportElement x="0" y="44" width="555" height="1" uuid="ec869746-35ec-4548-8262-ae005258a196"/>
 				<graphicElement>
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="178" y="2" width="52" height="20" uuid="ab4a71a0-795f-4f93-875e-454b64d097b6"/>
+				<reportElement x="178" y="1" width="52" height="20" uuid="ab4a71a0-795f-4f93-875e-454b64d097b6"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
 			</textField>

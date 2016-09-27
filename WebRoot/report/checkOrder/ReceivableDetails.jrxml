@@ -76,7 +76,7 @@ LEFT JOIN arap_charge_item aci ON aci.ref_order_id = joa.id
 LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
 WHERE
 	joa.id = aci.ref_order_id
-AND aco.id = 282
+AND aco.id = $P{order_id}
 GROUP BY
 	joa.id]]>
 	</queryString>
@@ -433,7 +433,7 @@ GROUP BY
 				</textElement>
 				<textFieldExpression><![CDATA[$F{jpy}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="400" y="1" width="50" height="20" uuid="d3d45fa5-a3d7-444d-aa12-85feab34e35a"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>

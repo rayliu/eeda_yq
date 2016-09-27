@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="24"/>
+	<property name="ireport.y" value="96"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -26,33 +26,73 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<parameter name="order_id" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
-	<parameter name="sp_name" class="java.lang.String">
+	<parameter name="order_id" class="java.util.List">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select jor.*, pr.abbr sp_name, f.name charge_name_eng,u.name unit_name,c.name currency_name,josi.gross_weight,
-   josi.pieces,josi.container_no,jos.order_id,jos.hbl_no,jos.vessel,jos.voyage,jos.mbl_no,jos.etd,jos.eta,jo.ref_no,jo.order_no,
-   lo.name fnd,lo1.name pol,u1.name unit_name,IFNULL(pr.company_name_eng,pr.company_name) company_name,
-   IFNULL(pr.address_eng,pr.address) address,pr.phone,(SELECT sum(total_amount) FROM job_order_arap jor
-   left join currency c on c.id=jor.currency_id
-   WHERE jor.order_type ='charge' and c.name='CNY' and jor.order_id=$P{order_id}) total_RMB,(SELECT sum(total_amount) FROM job_order_arap jor
-   left join currency c on c.id=jor.currency_id
-   WHERE jor.order_type ='charge' and c.name='USD'  and jor.order_id=$P{order_id}) total_USD
-from job_order_arap jor
- left join party pr on pr.id=jor.sp_id
- LEFT JOIN job_order jo on jo.id = jor.order_id
- LEFT JOIN job_order_shipment jos on jos.order_id = jor.order_id
- LEFT JOIN job_order_shipment_item josi on josi.order_id = jor.order_id
- LEFT JOIN unit u1 on josi.unit_id = u1.id
- left join unit u on u.id=jor.unit_id
- left join fin_item f on f.id=jor.charge_id
- left join currency c on c.id=jor.currency_id
- LEFT JOIN location lo1 ON lo1.id = jos.pol
- LEFT JOIN location lo ON lo.id = jos.fnd
-where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp_name}]]>
+		<![CDATA[SELECT
+	jor.*, pr.abbr sp_name,
+	f. NAME charge_name_eng,
+	u. NAME unit_name,
+	c. NAME currency_name,
+	josi.gross_weight,
+	josi.pieces,
+	josi.container_no,
+	jos.order_id,
+	jos.hbl_no,
+	jos.vessel,
+	jos.voyage,
+	jos.mbl_no,
+	jos.etd,
+	jos.eta,
+	jo.ref_no,
+	jo.order_no,
+	lo. NAME fnd,
+	lo1. NAME pol,
+	u1. NAME unit_name,
+	IFNULL(
+		pr.company_name_eng,
+		pr.company_name
+	) company_name,
+	IFNULL(pr.address_eng, pr.address) address,
+	pr.phone,
+	(
+		SELECT
+			sum(total_amount)
+		FROM
+			job_order_arap jor
+		LEFT JOIN currency c ON c.id = jor.currency_id
+		WHERE
+			jor.order_type = 'charge'
+		AND c. NAME = 'CNY'
+		AND $X{IN,jor.id,order_id}
+	) total_RMB,
+	(
+		SELECT
+			sum(total_amount)
+		FROM
+			job_order_arap jor
+		LEFT JOIN currency c ON c.id = jor.currency_id
+		WHERE
+			jor.order_type = 'charge'
+		AND c. NAME = 'USD'
+		AND $X{IN,jor.id,order_id}
+	) total_USD
+FROM
+	job_order_arap jor
+LEFT JOIN party pr ON pr.id = jor.sp_id
+LEFT JOIN job_order jo ON jo.id = jor.order_id
+LEFT JOIN job_order_shipment jos ON jos.order_id = jor.order_id
+LEFT JOIN job_order_shipment_item josi ON josi.order_id = jor.order_id
+LEFT JOIN unit u1 ON josi.unit_id = u1.id
+LEFT JOIN unit u ON u.id = jor.unit_id
+LEFT JOIN fin_item f ON f.id = jor.charge_id
+LEFT JOIN currency c ON c.id = jor.currency_id
+LEFT JOIN location lo1 ON lo1.id = jos.pol
+LEFT JOIN location lo ON lo.id = jos.fnd
+WHERE
+	jor.order_type = 'charge'
+AND  $X{IN,jor.id,order_id}]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -420,7 +460,7 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				<reportElement x="416" y="110" width="114" height="15" uuid="be92611a-c302-41a7-91e6-b8ba5c48afa0"/>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="416" y="149" width="19" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
@@ -434,22 +474,22 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				</textElement>
 				<textFieldExpression><![CDATA[$F{unit_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="0" width="301" height="39" uuid="c706ac6c-9eab-42a2-8ea0-83bb9932e437"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="39" width="301" height="15" uuid="84f0a969-bfd6-4f4d-9a12-ec14a167a8f9"/>
 				<textFieldExpression><![CDATA[$F{company_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="55" width="301" height="17" uuid="bec3e378-28f2-49ef-a6de-acb1d3f6580d"/>
 				<textFieldExpression><![CDATA[$F{phone}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="376" y="130" width="179" height="14" uuid="0e5373a5-76a5-42d4-a375-d5882fbd0388"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
@@ -470,7 +510,7 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				</textElement>
 				<text><![CDATA[A/C NO:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="414" y="1" width="140" height="20" uuid="f76ed8ed-6975-46a3-b6c7-05a39de3bc8d"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
@@ -489,7 +529,7 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				<textFieldExpression><![CDATA[$F{charge_name_eng}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="140" y="0" width="40" height="20" uuid="43672bca-27de-4633-b106-507d58822e0e"/>
+				<reportElement x="140" y="0" width="68" height="20" uuid="43672bca-27de-4633-b106-507d58822e0e"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -627,7 +667,7 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				<reportElement x="390" y="3" width="98" height="20" uuid="d8b01e86-6463-4378-8cfe-079af2125484"/>
 				<text><![CDATA[TOTAOL Amount:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="487" y="2" width="67" height="20" uuid="e193b6bf-a94a-40e4-8057-983b4ffffd37"/>
 				<textFieldExpression><![CDATA[$V{totoa_amountRMB}]]></textFieldExpression>
 			</textField>
