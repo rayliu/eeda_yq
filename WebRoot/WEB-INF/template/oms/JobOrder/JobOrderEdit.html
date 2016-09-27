@@ -166,15 +166,10 @@
 			                    }){}%>
 			            </div>
 			        </div>
-			        <div class="row">
-			            <div class="col-lg-8">
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'ref_no', 
-                                    label:'发票号', 
-                                    value: order.ref_no!''
-                                }){}%>
-                         </div>
-                    </div>
+                    <div class="form-group">
+	                 <label>发票号</label>
+	                 <textarea id='ref_no' class="form-control" rows="3" name="ref_no">${order.ref_no!''}</textarea>
+	            	</div>
                     <div class="row">
                         <div class="col-lg-12">
                             <h3>货品信息</h3>
@@ -414,9 +409,9 @@
                         <div class="form-group">
                             	<h3>文档信息</h3>
 								<span class="btn btn-success btn-xs fileinput-button" id="fileuploadSpan"> 
-				                <i class="glyphicon glyphicon-plus"></i> 
-				                <span>选择文件</span> 
-				                <input id="fileupload" type="file" name="files[]" multiple> 
+					                <i class="glyphicon glyphicon-plus"></i> 
+					                <span>选择文件</span> 
+					                <input id="fileupload" type="file" name="files[]" multiple> 
 				           	    </span> 
                             	<a data-target='#sendDetail' data-toggle='modal'>
 									<button id="sendEmail" class="btn btn-success btn-xs">发送邮件</button>
