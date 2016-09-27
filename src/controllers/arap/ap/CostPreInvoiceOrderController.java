@@ -462,7 +462,7 @@ public class CostPreInvoiceOrderController extends Controller {
 		                        //银行账户 金额处理
 		                        account.set("amount", (account.getDouble("amount")==null?0.0:account.getDouble("amount")) - total).update();
 		                        //日记账
-		                        createAuditLog(orderId, account, total, paymentMethod, "应付开票申请单");
+		                        createAuditLog(orderId, account, total, paymentMethod, "应付申请单");
 		                    }
 						}
 					}
@@ -494,7 +494,7 @@ public class CostPreInvoiceOrderController extends Controller {
 		                        //银行账户 金额处理
 		                        account.set("amount", (account.getDouble("amount")==null?0.0:account.getDouble("amount")) - total).update();
 		                        //日记账
-		                        createAuditLog(orderId, account, total, paymentMethod, "应付开票申请单");
+		                        createAuditLog(orderId, account, total, paymentMethod, "应付申请单");
 		                    }
 						}
 	                }
@@ -903,7 +903,7 @@ public class CostPreInvoiceOrderController extends Controller {
 	        	auditLog.set("account_id", pay_bank_id);
 	        else
 	        	auditLog.set("account_id", 4);
-	        auditLog.set("source_order", "应付开票申请单");
+	        auditLog.set("source_order", "应付申请单");
 	        auditLog.set("invoice_order_id", application_id);
 	        auditLog.save();
 	                
@@ -1006,7 +1006,7 @@ public class CostPreInvoiceOrderController extends Controller {
 			
 			//撤销对应日记账信息
 			ArapAccountAuditLog arapAccountAuditLog = ArapAccountAuditLog
-					.dao.findFirst("select * from arap_account_audit_log where source_order = '应付开票申请单' and payment_type = 'COST' and invoice_order_id = ? ",application_id);
+					.dao.findFirst("select * from arap_account_audit_log where source_order = '应付申请单' and payment_type = 'COST' and invoice_order_id = ? ",application_id);
 			arapAccountAuditLog.delete();
   
 			renderJson("{\"success\":true}");

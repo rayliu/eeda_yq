@@ -3,12 +3,14 @@ package controllers.arap.ar;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.ArapAccountAuditLog;
 import models.ArapChargeApplication;
 import models.ArapChargeInvoice;
 import models.ArapChargeOrder;
@@ -18,6 +20,7 @@ import models.Party;
 import models.UserLogin;
 import models.yh.arap.chargeMiscOrder.ArapMiscChargeOrder;
 import models.yh.arap.inoutorder.ArapInOutMiscOrder;
+import models.yh.damageOrder.DamageOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -345,8 +348,12 @@ public class ChargeAcceptOrderController extends Controller {
 		userLogin = UserLogin.dao .findById(order.get("create_by"));
 		String creator_name = userLogin.get("c_name");
 		
+		userLogin = UserLogin.dao .findById(order.get("check_by"));
+		String check_name = userLogin.get("c_name");
+		
 		Record r = order.toRecord();
 		r.set("creator_name", creator_name);
+		r.set("check_name", check_name);
 		setAttr("order", r);
 
 		List<Record> Account = Db.find("select * from fin_account where bank_name != '现金'");
@@ -356,7 +363,7 @@ public class ChargeAcceptOrderController extends Controller {
 	}
   	
   	
-  //复核
+    //复核
   	@Before(Tx.class)
     public void checkOrder(){
         String application_id=getPara("order_id");
@@ -374,10 +381,10 @@ public class ChargeAcceptOrderController extends Controller {
 
   			if("应收对账单".equals(order_type)){
 			    ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(id);
-				arapChargeOrder.set("status", "收款申请中").update();
+				arapChargeOrder.set("status", "已复核").update();
 			}else if("开票记录单".equals(order_type)){
 			    ArapChargeInvoice arapChargeInvoice = ArapChargeInvoice.dao.findById(id);
-				arapChargeInvoice.set("status", "收款申请中").update();
+				arapChargeInvoice.set("status", "已复核").update();
 			}
   		}
   		  
@@ -387,5 +394,62 @@ public class ChargeAcceptOrderController extends Controller {
   		Record re = order.toRecord();
   		re.set("check_name",user_name);
   	    renderJson(re);
+    }
+  	
+  	
+    //收款确认
+  	@Before(Tx.class)
+	public void confirmOrder(){
+  		String jsonStr=getPara("params");
+  		int receive_bank = 4;
+       	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+            
+   		String id = (String) dto.get("id");
+   		String receive_type = (String) dto.get("receive_type");
+   		if(StringUtils.isNotEmpty((String)dto.get("receive_bank"))){
+   			receive_bank = Integer.parseInt((String)dto.get("receive_bank")) ;
+   		}
+   		
+   		String receive_time = (String) dto.get("receive_time");
+   		String receive_amount = (String) dto.get("receive_amount");
+   		
+        ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(id);
+        arapChargeInvoiceApplication.set("status", "已收款");
+        arapChargeInvoiceApplication.set("receive_type", receive_type);
+        arapChargeInvoiceApplication.set("receive_bank_id", receive_bank);
+        arapChargeInvoiceApplication.set("receive_time", receive_time);
+        arapChargeInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
+        arapChargeInvoiceApplication.set("confirm_stamp", new Date());
+        arapChargeInvoiceApplication.update();
+          
+        //更改原始单据状态
+        List<Record> res = Db.find("select * from charge_application_order_rel where application_order_id = ?",id);
+  		for (Record re : res) {
+  			Long charge_order_id = re.getLong("charge_order_id");
+  			String order_type = re.getStr("order_type");
+
+  			if("应收对账单".equals(order_type)){
+			    ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(charge_order_id);
+				arapChargeOrder.set("status", "已收款").update();
+			}else if("开票记录单".equals(order_type)){
+			    ArapChargeInvoice arapChargeInvoice = ArapChargeInvoice.dao.findById(charge_order_id);
+				arapChargeInvoice.set("status", "已收款").update();
+			}
+  		}
+          
+        //新建日记账表数据
+  		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
+        auditLog.set("payment_method", receive_type);
+        auditLog.set("payment_type", ArapAccountAuditLog.TYPE_CHARGE);
+        auditLog.set("amount", receive_amount);
+        auditLog.set("creator", LoginUserController.getLoginUserId(this));
+        auditLog.set("create_date", receive_time);
+        auditLog.set("account_id", receive_bank);
+        auditLog.set("source_order", "应收申请单");
+        auditLog.set("invoice_order_id", id);
+        auditLog.save();
+                  
+        renderJson("{\"success\":true}");  
     }
 }

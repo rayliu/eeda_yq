@@ -3,6 +3,7 @@ $(document).ready(function() {
 	document.title = '收款申请单 | '+document.title;
 
     $('#menu_finance').addClass('active').find('ul').addClass('in');
+    $('#receive_time').val(eeda.getDate());
     
     //构造主表json
     var buildOrder = function(){
@@ -98,7 +99,7 @@ $(document).ready(function() {
 					if($('#order_id').val()==''){
 						pay = pay + parseFloat(full.NORECEIVE_AMOUNT) ;
 						$("#pay").html(parseFloat(pay).toFixed(2));
-						$("#pay_amount").val(parseFloat(pay).toFixed(2));
+						$("#receive_amount").val(parseFloat(pay).toFixed(2));
 						$("#total_amount").val(parseFloat(pay).toFixed(2));
 						return "<input type ='text' name='amount' style='width:80px' value='"+full.NORECEIVE_AMOUNT+"'>";
 					}
@@ -108,7 +109,7 @@ $(document).ready(function() {
 	    				}
 						pay = pay + parseFloat(full.RECEIVE_AMOUNT) ;
 						$("#pay").html(parseFloat(pay).toFixed(2));
-						$("#pay_amount").val(parseFloat(pay).toFixed(2));
+						$("#receive_amount").val(parseFloat(pay).toFixed(2));
 						$("#total_amount").val(parseFloat(pay).toFixed(2));
 						return "<input type ='text' name='amount' style='width:80px'  value='"+full.RECEIVE_AMOUNT+"'>";
 					}
@@ -242,12 +243,23 @@ $(document).ready(function() {
 		});
 	  
 	  
-	  //确认
+	  //收款确认
 	  $("#confirmBtn").on('click',function(){
 		  	$("#confirmBtn").attr("disabled", true);
-		  	orderjson();
-			$.get("/chargePreInvoiceOrder/confirmOrder", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val(),receive_time:$('#receive_time').val(),receive_type:$('#receive_type').val(),receive_bank:$('#receive_bank').val()}, function(data){
+		  	
+		  	if($("#receive_type").val()=='transfers'){
+				if($("#receive_bank").val()==''){
+					$.scojs_message('收入银行不能为空', $.scojs_message.TYPE_FALSE);
+					return false;
+				}
+			}
+			
+			var order = buildOrder();
+			order.item_list = buildItem();
+		  	
+			$.get("/chargeAcceptOrder/confirmOrder", {params:JSON.stringify(order)}, function(data){
 				if(data.success){
+					$("#status").val('已收款');
 					$("#returnBtn").attr("disabled", true);
 					$("#returnConfirmBtn").attr("disabled", false);
 					$("#deleteBtn").attr("disabled", true);
@@ -304,7 +316,7 @@ $(document).ready(function() {
 			}
 	    });		
 		$("#pay").html(parseFloat(value).toFixed(2));
-		$("#pay_amount").val(parseFloat(value).toFixed(2));
+		$("#receive_amount").val(parseFloat(value).toFixed(2));
 		$("#total_amount").val(parseFloat(value).toFixed(2));
 	});	
     

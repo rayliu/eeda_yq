@@ -6,18 +6,13 @@
               		<div class="btn-header" style="font-size: 32px" align="left">收款申请单</div>
 				</div>
                 <div class="panel panel-default">
+                <form id="orderForm">
             		<div class="panel-body">
-            		 	<form id="orderForm">
             			<div class="row search_panel">
             			<input id='idsArray' name='idsArray' type="hidden" value="${idsArray!''}">
             			<input id='sp_id' name='sp_id' type="hidden" value="${order.sp_id!''}" >
-            			<input id='account_id' name='account_id' type="hidden" value="${order.account_id!''}">
             			<input id='order_id' name='order_id' type="hidden" value="${order.id!''}">
-            			<input id='status' name='status' type="hidden" value="${order.status!''}">
-            			
-            			<input id='detailJson' name='detailJson' type="hidden">
             			<input id='total_amount' name='total_amount' type="hidden">
-            			
                             <div class="col-lg-4">
                             	<%include("/eeda/component/form/inputField.html", { id:'order_no',
 								label:'申请单号', value:order.order_no!'',disabled:'disabled'
@@ -132,29 +127,28 @@
                            
 	                       <div class="col-lg-4">
 	                       		<div class="form-group">
-	                           	   <label class="search-label">收款方式</label>
-	                           	   <input type="hidden" id="receive_type_show"  name="receive_type_show" value="${invoiceApplication.receive_type!''}"> 
+	                           	   <label class="search-label">收款方式</label> 
 	                                  <select id="receive_type" class="form-control search-control receive_type" name="receive_type">
-	                                  	<option value="cash">现金</option>
-	                                    <option value="transfers">转账</option>                                             
+	                                  	<option value=""></option>
+                                    	<option value="cash" <% if(order.receive_type!'cash'=='cash'){%>selected<% }%>>现金</option>
+                                    	<option value="transfers" <% if(order.receive_type!''=='transfers'){%>selected<% }%>>转账</option>                                       
 	                                  </select>
 	                            </div>
-	                             <div id="receive_type_massage" <% if(invoiceApplication.receive_type!'cash'=='cash'){%>style="display:none"<% }%>>
+	                             <div id="receive_type_massage" <% if(order.receive_type!'cash'=='cash'){%>style="display:none"<% }%>>
 		                            <div class="form-group">
 			                            <label class="search-label">收入银行</label>
-			                            <input type="hidden" id="receive_banks" placeholder="请选择支付银行" name="receive_banks" value="${invoiceApplication.receive_bank_id!''}"> 
 			                        	   <select class="form-control search-control receive_bank" name="receive_bank" id="receive_bank" >
 			                        	   		<option></option>
 			                             		<%for(account in accountList){ %>
-			                             		<option value='${account.ID!''}' <%if(invoiceApplication.receive_bank_id!'4'==account.ID!){%>selected<% }%>>${account.BANK_NAME!''}</option>
+			                             		<option value="${account.ID!''}" <%if(order.receive_bank_id!'4'==account.ID!){%>selected<% }%>>${account.BANK_NAME!''}</option>
 			                             		<%}%>
 			                               </select>
 		                        	</div>
 	                        	</div>
 	                       </div>
 	                       <div class="col-lg-4">
-	                       		<%include("/eeda/component/form/inputField.html", { id:'pay_amount',
-								label:'复申请收款金额', value:order.pay_amount!'',disabled:'disabled'
+	                       		<%include("/eeda/component/form/inputField.html", { id:'receive_amount',
+								label:'复申请收款金额', value:order.receive_amount!'',disabled:'disabled'
 								}){}%>
 	                            <%include("/eeda/component/form/dateInputField.html", {id:'receive_time', label:'收款时间', value:invoiceApplication.receive_time!''}){} %>
 	                        </div>
