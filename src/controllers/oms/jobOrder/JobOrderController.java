@@ -97,6 +97,7 @@ public class JobOrderController extends Controller {
 	    	setAttr("portCreate",Db.findFirst(port_sql,id));
 	    	
     	}
+    	setAttr("usedOceanInfo", getUsedOceanInfo());
     	setAttr("loginUser",LoginUserController.getLoginUserName(this));
         render("/oms/JobOrder/JobOrderEdit.html");
     }
@@ -293,10 +294,42 @@ public class JobOrderController extends Controller {
 						+" where order_id = ?";
    		r.set("port",Db.findFirst(port_sql,id));
    		
+   		//保存海运填写模板
+   		saveOceanTemplate(shipment_detail);
    		renderJson(r);
    	}
     
-    
+    public void saveOceanTemplate(List<Map<String, String>> shipment_detail){
+        if(shipment_detail.size()<=0)
+            return;
+        Map<String, String> recMap=shipment_detail.get(0);
+        
+        Long creator_id = LoginUserController.getLoginUserId(this);
+        Long shipper = Long.parseLong(recMap.get("shipper"));
+        Long consignee = Long.parseLong(recMap.get("consignee"));
+        Long notify_party = Long.parseLong(recMap.get("notify_party"));
+        Long por = Long.parseLong(recMap.get("por"));
+        Long pol = Long.parseLong(recMap.get("pol"));
+        Long pod = Long.parseLong(recMap.get("pod"));
+        Long fnd = Long.parseLong(recMap.get("fnd"));
+        
+        Record checkRec = Db.findFirst("select 1 from job_order_ocean_template where"
+                + " creator_id=? and shipper=? and consignee=? and notify_party=?"
+                + " and por=? and pol=? and pod=? and fnd=? ", creator_id, shipper,
+                consignee, notify_party, por, pol, pod, fnd);
+        if(checkRec==null){
+            Record r= new Record();
+            r.set("creator_id", creator_id);
+            r.set("shipper", shipper);
+            r.set("consignee", consignee);
+            r.set("notify_party", notify_party);
+            r.set("por", por);
+            r.set("pol", pol);
+            r.set("pod", pod);
+            r.set("fnd", fnd);
+            Db.save("job_order_ocean_template", r);
+        }
+    }
     
     //上传相关文档
     @Before(Tx.class)
@@ -448,6 +481,7 @@ public class JobOrderController extends Controller {
     	setAttr("order", jobOrder);
 
     	//获取海运明细表信息
+    	setAttr("usedOceanInfo", getUsedOceanInfo());
     	setAttr("shipmentList", getItems(id,"shipment"));
     	setAttr("shipment", getItemDetail(id,"shipment"));
 
@@ -500,6 +534,26 @@ public class JobOrderController extends Controller {
    		setAttr("oceanHead", Db.findFirst("select * from job_order_shipment_head where order_id = ?",id));
     	  
         render("/oms/JobOrder/JobOrderEdit.html");
+    }
+    
+    public List<Record> getUsedOceanInfo(){
+        List<Record> list = Db.find("select t.*,"
+                + " p1.abbr shipperAbbr , "
+                + " concat(ifnull(p1.address_eng, p1.address), '\r', ifnull(p1.contact_person_eng, p1.contact_person), '\r', ifnull(p1.phone,'')) shipper_info,"
+                + " p2.abbr consigneeAbbr,"
+                + " concat(ifnull(p2.address_eng, p2.address), '\r', ifnull(p2.contact_person_eng, p2.contact_person), '\r', ifnull(p2.phone,'')) consignee_info,"
+                + " p3.abbr notify_partyAbbr,"
+                + " concat(ifnull(p3.address_eng, p3.address), '\r', ifnull(p3.contact_person_eng, p3.contact_person), '\r', ifnull(p3.phone,'')) notify_info,"
+                + " lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name from job_order_ocean_template t "
+                + " left join party p1 on p1.id= t.shipper"
+                + " left join party p2 on p2.id= t.consignee"
+                + " left join party p3 on p3.id= t.notify_party"
+                + " LEFT JOIN location lo on lo.id = t.por"
+                + " LEFT JOIN location lo1 on lo1.id = t.pol"
+                + " LEFT JOIN location lo2 on lo2.id = t.pod"
+                + " LEFT JOIN location lo3 on lo3.id = t.fnd"
+                + " where t.creator_id=?", LoginUserController.getLoginUserId(this));
+        return list;
     }
     
     //使用common-email, javamail

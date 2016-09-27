@@ -18,14 +18,7 @@
 		<copy tofile="${project.classpath}/job.properties" file="WebRoot/WEB-INF/config/job.properties" overwrite="true"/>
 		<copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-mysql" overwrite="true"/>
 		<copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-mysql" overwrite="true"/>
-        <java classname="com.jfinal.core.JFinal" classpathref="project.lib.path">
-            <arg value="WebRoot"/>
-            <arg value="8080"/>
-            <arg value="/"/>
-            <arg value="5"/>
-            <classpath path="${project.classpath}"></classpath>
-        	<arg value="org.eclipse.jetty.server.Request.maxFormContentSize=-1"/>
-        </java>
+       
     </target>
 	
 	<target name="prod" depends="clean, compile">

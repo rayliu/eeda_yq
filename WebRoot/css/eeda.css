@@ -373,4 +373,17 @@ a.edit {
 .checkbox-inline>input{
     margin-top: 0px;
 }
+
+.usedOceanInfo li{
+    list-style-type: none;
+}
+
+.usedOceanInfo input{
+    margin-top: 0px;
+}
+
+.usedOceanInfo .port{
+    margin-left: 0px; 
+    color: darkgray;
+}
 /* ray added */

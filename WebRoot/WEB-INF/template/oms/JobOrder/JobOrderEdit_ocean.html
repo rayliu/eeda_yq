@@ -1,5 +1,47 @@
 
 <input type="hidden" id="shipment_id" value="${shipment.id!''}">
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="collapsed">常用海运信息</a>
+        </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+        <div class="panel-body">
+            <ul id="usedOceanInfo" class="usedOceanInfo">
+              <%for(userInfo in usedOceanInfo![]){%>
+                    <li shipper_id="${userInfo.shipper}"
+                        shipper_abbr="${userInfo.shipperAbbr}"
+                        shipper_info="${userInfo.shipper_info}"
+                        consignee_id="${userInfo.consignee}"
+                        consignee_abbr="${userInfo.consigneeAbbr}"
+                        consignee_info="${userInfo.consignee_info}"
+                        notify_id="${userInfo.notify_party}"
+                        notify_abbr="${userInfo.notify_partyAbbr}"
+                        notify_info="${userInfo.notify_info}"
+                        por_id="${userInfo.por}" 
+                        pol_id="${userInfo.pol}" 
+                        pod_id="${userInfo.pod}" 
+                        fnd_id="${userInfo.fnd}" 
+                        por_name="${userInfo.por_name}" 
+                        pol_name="${userInfo.pol_name}" 
+                        pod_name="${userInfo.pod_name}" 
+                        fnd_name="${userInfo.fnd_name}" >
+                      <div class="radio">
+                        <label>
+                            <input type="radio" value="1" name="usedOceanInfo" style="margin-top: 0px;">
+                            <span>Shipper:${userInfo.shipperAbbr}, Consignee:${userInfo.consigneeAbbr}, NotifyParty: ${userInfo.notify_partyAbbr}</span><br>
+                            <span class="port">POR:${userInfo.por_name}, POL:${userInfo.pol_name}, POD:${userInfo.pod_name}，FND:${userInfo.fnd_name}</span> 
+                        </label>
+                      </div>
+                    </li>
+              <%}%>
+            </ul>
+        </div>
+    </div>
+</div>
+
 <form id = "shipmentForm">
     <div class="form-group">  <!--  form row  -->
         <div class="row">
