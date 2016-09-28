@@ -176,12 +176,36 @@ $(document).ready(function() {
         var ccEmail =  $('#ccEmail').val().trim();
         var bccEmail =  $('#bccEmail').val().trim();
     	var remark = $('#emailTemplateRemark').val().trim();
+    	
+//    	var arr = email.split(",");
+//    	var arr1 = ccEmail.split(",");
+//    	var arr2 = bccEmail.split(",");
+//     	//验证邮箱合法性
+//    	 var reg = /\w+[@]{1}\w+[.]\w+/;
+//    	 for(var i=0;i<arr.length;i++){
+//    	   if(!reg.test(arr[i])){
+//    		   $.scojs_message('收件人含有不合法邮箱', $.scojs_message.TYPE_ERROR);
+//    		   return false;
+//    	   }
+//    	 }
+//    	 for(var i=0;i<arr1.length;i++){
+//    		 if(!reg.test(arr1[i])){
+//    			 $.scojs_message('抄送人含有不合法邮箱', $.scojs_message.TYPE_ERROR);
+//    			 return;
+//    		 }
+//    	 }
+//    	 for(var i=0;i<arr2.length;i++){
+//    		 if(!reg.test(arr2[i])){
+//    			 $.scojs_message('密送人含有不合法邮箱', $.scojs_message.TYPE_ERROR);
+//    			 return;
+//    		 }
+//    	 }
     	$.post('/jobOrder/saveEmailTemplate', {email:email,ccEmail:ccEmail,bccEmail:bccEmail,remark:remark}, function(data){
     		if(data.result==true){
 	        	 $.scojs_message('添加成功', $.scojs_message.TYPE_OK);
 	        	 itemOrder.refleshEmailTable(order_id);
-	       	 }else if(data.result==false){
-	       		 $.scojs_message('添加失败', $.scojs_message.TYPE_ERROR);
+	       	 }else{
+	       		 $.scojs_message(data.result, $.scojs_message.TYPE_ERROR);
 	       	 }
     	},'json').fail(function() {
         	 $.scojs_message('添加失败!', $.scojs_message.TYPE_ERROR);

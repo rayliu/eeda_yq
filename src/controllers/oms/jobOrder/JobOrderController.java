@@ -304,15 +304,45 @@ public class JobOrderController extends Controller {
     
     //保存常用邮箱模版
     public void saveEmailTemplate(){
-    	String email = getPara("ccEmail");
+    	String email = getPara("email");
     	String ccEmail = getPara("ccEmail");
     	String bccEmail = getPara("bccEmail");
     	String remark = getPara("remark");
+    	String regex = "\\s+|,|，|;|；";//以空格或 ， ,；;分割
+    	
+    	//验证邮箱合法性
+    	String[] arr = email.split(regex);
+    	String reg = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
+    	for(int i=0;i<arr.length;i++){
+    		if(!arr[i].matches(reg)){
+    			renderJson("{\"result\":\"添加失败，收件人含有不合法邮箱\"}");
+    			return;
+    		}
+    	}
+    	if(StringUtils.isNotEmpty(ccEmail)){
+	    	String[] arr1 = ccEmail.split(regex);
+	    	for(int i=0;i<arr1.length;i++){
+	    		if(!arr1[i].matches(reg)){
+	    			renderJson("{\"result\":\"添加失败，抄送人含有不合法邮箱\"}");
+	    			return;
+	    		}
+	    	}
+    	}
+    	if(StringUtils.isNotEmpty(bccEmail)){
+	    	String[] arr2 = bccEmail.split(regex);
+	    	for(int i=0;i<arr2.length;i++){
+	    		if(!arr2[i].matches(reg)){
+	    			renderJson("{\"result\":\"添加失败，密送人含有不合法邮箱\"}");
+	    			return;
+	    		}
+	    	}
+    	}
     	JobOrderSendMailTemplate order = new JobOrderSendMailTemplate();
     	order.set("receive_mail", email);
     	order.set("cc_mail", ccEmail);
     	order.set("bcc_mail", bccEmail);
     	order.set("remark", remark);
+    	order.set("creator", LoginUserController.getLoginUserId(this));
     	order.save();
     	renderJson("{\"result\":true}");
     }
@@ -607,6 +637,7 @@ public class JobOrderController extends Controller {
     	String mailTitle = getPara("mailTitle");
     	String mailContent = getPara("mailContent");
     	String docs = getPara("docs");
+    	String regex = "\\s+|,|，|;|；";//以空格或 ， ,；;分割
     	
         MultiPartEmail email = new MultiPartEmail();  
         /*smtp.exmail.qq.com*/
@@ -623,7 +654,7 @@ public class JobOrderController extends Controller {
         
         //设置收件人，邮件标题，邮件内容
         if(StringUtils.isNotEmpty(userEmail)){
-        	String[] arr = userEmail.split("\\s+|,|，|;|；");//以空格或 ， ,；;分割
+        	String[] arr = userEmail.split(regex);
         	for(int i=0;i<arr.length;i++){
         		email.addTo(arr[i]);
         	}
@@ -637,14 +668,14 @@ public class JobOrderController extends Controller {
         
         //抄送
         if(StringUtils.isNotEmpty(ccEmail)){
-        	String[] arr = ccEmail.split("\\s+|,|，|;|；");//以空格或 ， ,；;分割
+        	String[] arr = ccEmail.split(regex);
         	for(int i=0;i<arr.length;i++){
         		email.addCc(arr[i]);
         	}
         }
         //密送
         if(StringUtils.isNotEmpty(bccEmail)){
-        	String[] arr = bccEmail.split("\\s+|,|，|;|；");//以空格或 ， ,；;分割
+        	String[] arr = bccEmail.split(regex);
         	for(int i=0;i<arr.length;i++){
         		email.addBcc(arr[i]);
         	}

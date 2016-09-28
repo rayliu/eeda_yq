@@ -452,7 +452,7 @@
 
 	  
 	  <div class="modal fade" id="sendDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" style="width:1500px;">
+	  <div class="modal-dialog" style="width:1000px;">
 	    <div class="modal-content">
 	      <div class="modal-header">发送邮件详情</div>
 	      	<div class="modal-body">
@@ -477,8 +477,8 @@
 				                      <div class="radio">
 				                        <label>
 				                            <input type="radio" value="1" name="useEmailTemplate" style="margin-top: 0px;">
-				                            <font size="3px"><span>备注:${Info.remark}</span></font><br> 
-				                            <span>收件人:${Info.receive_mail}  抄送人:${Info.cc_mail}  密送人: ${Info.bcc_mail}</span><br>
+				                            <font size="3px"><span>名称:${Info.remark}</span></font><br> 
+				                            <span>收件人:${Info.receive_mail}<br>抄送人:${Info.cc_mail}<br>密送人: ${Info.bcc_mail}</span><br>
 				                        </label>
 				                      </div>
 				                    </li>
@@ -491,17 +491,17 @@
 				<form id="emailForm">
 					  <font size="5px"><span id="attachment"></span></font><br><br>   
 	                  <label>收件人</label>
-	                  <input type="text" id="email" name="email" class="form-control" required><br>
+	                  <textarea id="email" name="email" class="form-control" rows="3" required></textarea><br>
 	                  <label>抄送人</label>
-	                  <input type="text" id="ccEmail" name="ccEmail" class="form-control"><br>
+	                  <textarea id="ccEmail" name="ccEmail" class="form-control" rows="3"></textarea><br>
 	                  <label>密送人</label>
-	                  <input type="text" id="bccEmail" name="bccEmail" class="form-control"><br>
+	                  <textarea id="bccEmail" name="bccEmail" class="form-control" rows="3"></textarea><br>
 	                  <label>邮件标题</label>
 	                  <input type="text" id="emailTitle" name="emailTitle" class="form-control"><br>
 	                  <label>邮件正文</label>
-	                  <textarea id='emailContent' class="form-control" rows="3"></textarea><br>
-	                  <label>常用邮箱模版备注</label>
-	                  <textarea id='emailTemplateRemark' class="form-control" rows="3"></textarea><br>
+	                  <textarea id='emailContent' class="form-control" rows="5"></textarea><br>
+	                  <label>常用邮箱模版名称</label>
+	                  <textarea id='emailTemplateRemark' class="form-control" rows="2"></textarea><br>
 				</form>
 				</div>   
 	        </div>
