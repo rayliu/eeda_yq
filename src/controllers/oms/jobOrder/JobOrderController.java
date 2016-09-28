@@ -108,7 +108,7 @@ public class JobOrderController extends Controller {
     	JobOrderShipment jos = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
     	jos.set("mbl_flag", "Y");
     	jos.update();
-    	renderJson("{\"result\":true}");
+    	renderJson("{\"result\":true,\"mbl_flag\":\"Y\"}");
     }
     
     //已电放确认表标识
@@ -693,12 +693,14 @@ public class JobOrderController extends Controller {
         			+ " WHERE jos.si_flag = 'Y' and (jos.mbl_flag != 'Y' or jos.mbl_flag is null)";
         	
         } else if("customwait".equals(type)){
-        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"
-        			+ " FROM job_order jor LEFT JOIN  job_order_custom joc ON jor.id=joc.order_id"
+        	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,jos.export_date sent_out_time "
+        			+ " from job_order jor "
+        			+ "	LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
         			+ " left join job_order_shipment jos on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
-        			+ " WHERE jor.transport_type like '%custom%' and joc.customs_broker is null";
+        			+ "	where jor.transport_type LIKE '%custom%'"
+        			+ "	and ifnull(joc.custom_type,'') = ''";
         	
         } else if("insurancewait".equals(type)){
         	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"

@@ -39,6 +39,13 @@ define(['jquery'], function ($) {
             $(".mblWait").empty().text(data);
         });
         
+        $.get('/todo/getWaitCustomTodoCountPlan', function(data){
+            if(bIndex){
+            	$("#waitCustomTodoCountPlan").empty().text(data);
+            }
+            $(".customwaitPlan").empty().text(data);
+        });
+        
         $.get('/todo/getWaitCustomTodoCount', function(data){
             if(bIndex){
             	$("#waitCustomTodoCount").empty().text(data);

@@ -153,10 +153,11 @@ public class JobOrderReportController extends Controller {
 	public void printDebitNotePDF() {
 		
 		String order_id = getPara("itemIds");
+		String [] orderIdArr= order_id.split(",");
 		String fileName = "/report/jobOrder/debitNote.jasper";
 		String outFileName = "/download/debitNote中文";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
-		hm.put("order_id", order_id);		
+		hm.put("order_id", orderIdArr);		
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);

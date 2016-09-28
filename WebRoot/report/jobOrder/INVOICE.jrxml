@@ -349,42 +349,42 @@ AND  $X{IN,jor.id,order_id}]]>
 				<text><![CDATA[Qty:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="13" y="195" width="127" height="20" uuid="7aa6e948-64ac-4ce6-8313-135e39595e01"/>
+				<reportElement x="13" y="197" width="127" height="17" uuid="7aa6e948-64ac-4ce6-8313-135e39595e01"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[Description]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="140" y="195" width="68" height="20" uuid="0c832077-31b2-40be-9b6b-47f6c7c62ea3"/>
+				<reportElement x="140" y="197" width="68" height="17" uuid="0c832077-31b2-40be-9b6b-47f6c7c62ea3"/>
 				<textElement>
 					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[Currency]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="208" y="195" width="69" height="20" uuid="c3ba15f8-7281-4b62-bc5d-6eb94500f02f"/>
+				<reportElement x="208" y="197" width="69" height="17" uuid="c3ba15f8-7281-4b62-bc5d-6eb94500f02f"/>
 				<textElement>
 					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[Unit Price]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="294" y="195" width="110" height="20" uuid="cdd36543-5977-49d5-9d3b-ba5cd05d5a0b"/>
+				<reportElement x="294" y="197" width="110" height="17" uuid="cdd36543-5977-49d5-9d3b-ba5cd05d5a0b"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[Quantity]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="424" y="195" width="53" height="20" uuid="40a30709-5493-4ca4-81bf-4851a03a4a26"/>
+				<reportElement x="424" y="197" width="53" height="17" uuid="40a30709-5493-4ca4-81bf-4851a03a4a26"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[Rate]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="477" y="194" width="78" height="20" uuid="bc8a67e4-7eb6-43be-9c03-e5534890e96a"/>
+				<reportElement x="477" y="196" width="78" height="17" uuid="bc8a67e4-7eb6-43be-9c03-e5534890e96a"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>

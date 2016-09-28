@@ -314,6 +314,10 @@ $(document).ready(function() {
     });
     
     //确认MBL标记
+    var mblflag=$('#oceanMBLHide').val();
+    if(mblflag=='Y'){
+    	$('#oceanMBL').attr('disabled',true);
+    }
     $('#oceanMBL').click(function(){
     	var order_id = $("#order_id").val();
     	$.post('/jobOrder/mblflag',{order_id:order_id},function(data){

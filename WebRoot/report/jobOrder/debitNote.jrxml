@@ -23,13 +23,7 @@
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
-	</parameter>
-	<parameter name="order_id" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
-	<parameter name="sp_name" class="java.lang.String">
+	<parameter name="order_id" class="java.util.List">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -38,9 +32,9 @@
    lo.name fnd,lo1.name pol,u1.name unit_name,IFNULL(pr.company_name,pr.company_name_eng) company_name,
    IFNULL(pr.address,pr.address_eng) address,pr.phone,(SELECT sum(total_amount) FROM job_order_arap jor
    left join currency c on c.id=jor.currency_id
-   WHERE jor.order_type ='charge' and c.name='CNY' and jor.order_id=$P{order_id}) total_RMB,(SELECT sum(total_amount) FROM job_order_arap jor
+   WHERE jor.order_type ='charge' and c.name='CNY' and $X{IN,jor.id,order_id}) total_RMB,(SELECT sum(total_amount) FROM job_order_arap jor
    left join currency c on c.id=jor.currency_id
-   WHERE jor.order_type ='charge' and c.name='USD'  and jor.order_id=$P{order_id}) total_USD
+   WHERE jor.order_type ='charge' and c.name='USD'  and $X{IN,jor.id,order_id}) total_USD
 from job_order_arap jor
  left join party pr on pr.id=jor.sp_id
  LEFT JOIN job_order jo on jo.id = jor.order_id
@@ -52,7 +46,7 @@ from job_order_arap jor
  left join currency c on c.id=jor.currency_id
  LEFT JOIN location lo1 ON lo1.id = jos.pol
  LEFT JOIN location lo ON lo.id = jos.fnd
-where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp_name}]]>
+where jor.order_type ='charge' and $X{IN,jor.id,order_id}]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -684,7 +678,7 @@ where jor.order_type ='charge' and jor.order_id=$P{order_id} and pr.abbr = $P{sp
 				<reportElement x="398" y="3" width="93" height="20" uuid="14c45892-c9f5-4b31-8c07-115cd3edc7c4"/>
 				<text><![CDATA[TOTAOL Amount:]]></text>
 			</staticText>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="491" y="3" width="64" height="20" uuid="1e4d6b1a-a3cd-40e0-8a5d-ad9b9f23d657"/>
 				<textElement>
 					<font fontName="仿宋"/>

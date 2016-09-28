@@ -497,6 +497,11 @@
     var order_no = '${order.order_no!'订单编辑'}'; 
     var itemOrder = {};
     var transport_type_hidden = '${order.transport_type!planOrderItem.transport_type!''}';
+    
+    var custom_type_hidden = '${planOrderItem.customs_type!''}';
+    if(custom_type_hidden=="自理报关"){
+    	transport_type_hidden+=",custom";
+    }
     var custom_type = '${custom.custom_type!''},${hkCustom.custom_type!''},${abroadCustom.custom_type!''}';
     var custom_status_hidden = '${custom.status!''}';
 </script>

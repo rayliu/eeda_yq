@@ -70,10 +70,23 @@ public class TodoController extends Controller {
 		renderText(total);
 	}
 
+	public void getWaitCustomTodoCountPlan() {
+		String sql = " select count(1) total from plan_order por"
+				+ " LEFT JOIN plan_order_item poi on poi.order_id = por.id"
+				+ " where "
+				+ " poi.customs_type = '自理报关' and poi.is_gen_job = 'N'";
+
+		Record planOrder = Db.findFirst(sql);
+		String total = planOrder.getLong("TOTAL").toString();
+
+		renderText(total);
+	}
+	
 	public void getWaitCustomTodoCount() {
-		String sql = "SELECT count(1) total"
-	               + " FROM job_order jo LEFT JOIN  job_order_custom joc ON jo.id=joc.order_id" 
-	               + " WHERE transport_type like '%custom%' and joc.customs_broker is null" ;
+		String sql = " select count(1) total from job_order jor "
+				+ " LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
+				+ " where jor.transport_type LIKE '%custom%'"
+				+ " and ifnull(joc.custom_type,'') = ''";
 
 		Record planOrder = Db.findFirst(sql);
 		String total = planOrder.getLong("TOTAL").toString();

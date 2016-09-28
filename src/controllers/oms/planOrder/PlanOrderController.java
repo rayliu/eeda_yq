@@ -12,7 +12,6 @@ import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
-import models.eeda.oms.jobOrder.JobOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -154,6 +153,17 @@ public class PlanOrderController extends Controller {
         			+ " left join user_login u on u.id = po.creator "
         			+ " WHERE is_gen_job='N' AND factory_loading_time is not NULL "
         			+ " AND datediff(factory_loading_time, now())<=5";
+        }else if ("customwaitPlan".equals(type)){
+        	sql =" SELECT po.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p. CODE"
+        			+ " FROM"
+        			+ "	plan_order po"
+        			+ " LEFT JOIN plan_order_item poi ON poi.order_id = po.id"
+        			+ " LEFT JOIN user_login u ON u.id = po.creator"
+        			+ " LEFT JOIN party p ON p.id = po.customer_id"
+        			+ " WHERE"
+        			+ "	poi.customs_type = '自理报关'"
+        			+ " AND poi.is_gen_job = 'N'"
+        			+ " GROUP BY poi.id ";
         }else{
         	sql = "SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name,p.code"
     			+ "  from plan_order po "
