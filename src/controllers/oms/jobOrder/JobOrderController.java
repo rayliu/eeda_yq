@@ -192,7 +192,7 @@ public class JobOrderController extends Controller {
         
         JobOrder jobOrder = new JobOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
-   		
+   		long office_id = user.getLong("office_id");
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			jobOrder = JobOrder.dao.findById(id);
@@ -216,6 +216,7 @@ public class JobOrderController extends Controller {
             jobOrder.set("order_no", order_no);
    			jobOrder.set("creator", user.getLong("id"));
    			jobOrder.set("create_stamp", new Date());
+   			jobOrder.set("office_id", office_id);
    			jobOrder.save();
    			id = jobOrder.getLong("id").toString();
    			
@@ -320,16 +321,28 @@ public class JobOrderController extends Controller {
     public void saveOceanTemplate(List<Map<String, String>> shipment_detail){
         if(shipment_detail.size()<=0)
             return;
+        
+        
         Map<String, String> recMap=shipment_detail.get(0);
         
+        if(recMap.get("shipper").length()==0 &&
+            recMap.get("consignee").length()==0 &&
+            recMap.get("notify_party").length()==0 &&
+            recMap.get("por").length()==0 &&
+            recMap.get("pol").length()==0 &&
+            recMap.get("pod").length()==0 &&
+            recMap.get("fnd").length()==0 )
+               return;
+        
         Long creator_id = LoginUserController.getLoginUserId(this);
-        Long shipper = Long.parseLong(recMap.get("shipper"));
-        Long consignee = Long.parseLong(recMap.get("consignee"));
-        Long notify_party = Long.parseLong(recMap.get("notify_party"));
-        Long por = Long.parseLong(recMap.get("por"));
-        Long pol = Long.parseLong(recMap.get("pol"));
-        Long pod = Long.parseLong(recMap.get("pod"));
-        Long fnd = Long.parseLong(recMap.get("fnd"));
+        
+        Long shipper = Long.parseLong(recMap.get("shipper").length()==0?"-1":recMap.get("shipper"));
+        Long consignee = Long.parseLong(recMap.get("consignee").length()==0?"-1":recMap.get("consignee"));
+        Long notify_party = Long.parseLong(recMap.get("notify_party").length()==0?"-1":recMap.get("notify_party"));
+        Long por = Long.parseLong(recMap.get("por").length()==0?"-1":recMap.get("por"));
+        Long pol = Long.parseLong(recMap.get("pol").length()==0?"-1":recMap.get("pol"));
+        Long pod = Long.parseLong(recMap.get("pod").length()==0?"-1":recMap.get("pod"));
+        Long fnd = Long.parseLong(recMap.get("fnd").length()==0?"-1":recMap.get("fnd"));
         
         Record checkRec = Db.findFirst("select 1 from job_order_ocean_template where"
                 + " creator_id=? and shipper=? and consignee=? and notify_party=?"
@@ -676,6 +689,9 @@ public class JobOrderController extends Controller {
     }
      
     public void list() {    	
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        
     	String type=getPara("type");
     	String customer_code=getPara("customer_code")==null?"":getPara("customer_code");
     	String customer_name=getPara("customer")==null?"":getPara("customer");
@@ -692,7 +708,8 @@ public class JobOrderController extends Controller {
         			+ " LEFT JOIN job_order_shipment jos on jor.id = jos.order_id "
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator "
-        			+ " WHERE jor.type = '出口柜货' AND jos.SONO IS NULL AND jor.transport_type LIKE '%ocean%'";        	
+        			+ " WHERE jor.office_id="+office_id
+        			+ " and jor.type = '出口柜货' AND jos.SONO IS NULL AND jor.transport_type LIKE '%ocean%'";        	
         }else if("truckorderwait".equals(type)){
         	 sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"
         			+ " FROM job_order_land_item joli"
@@ -700,7 +717,8 @@ public class JobOrderController extends Controller {
         			+ " left join job_order_shipment jos on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
-        			+ " WHERE datediff(joli.eta, now()) <= 3 AND (joli.truckorder_flag != 'Y' OR joli.truckorder_flag IS NULL)"
+        			+ " WHERE jor.office_id="+office_id
+        			+ " and datediff(joli.eta, now()) <= 3 AND (joli.truckorder_flag != 'Y' OR joli.truckorder_flag IS NULL)"
         			+ " AND jor.transport_type LIKE '%land%'";
         	
         	
@@ -710,7 +728,8 @@ public class JobOrderController extends Controller {
         	 		+ " left join job_order jor on jos.order_id = jor.id"
         	 		+ " left join party p on p.id = jor.customer_id"
         	 		+ " left join user_login u on u.id = jor.creator "
-        	 		+ " WHERE TO_DAYS(export_date)=TO_DAYS(now())";
+        	 		+ " WHERE jor.office_id="+office_id
+                    + " and TO_DAYS(export_date)=TO_DAYS(now())";
         	
         } else if("mblwait".equals(type)){
         	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"
@@ -718,7 +737,8 @@ public class JobOrderController extends Controller {
         			+ " left join job_order jor on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
-        			+ " WHERE jos.si_flag = 'Y' and (jos.mbl_flag != 'Y' or jos.mbl_flag is null)";
+        			+ " WHERE jor.office_id="+office_id
+                    + " and  jos.si_flag = 'Y' and (jos.mbl_flag != 'Y' or jos.mbl_flag is null)";
         	
         } else if("customwait".equals(type)){
         	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,jos.export_date sent_out_time "
@@ -727,7 +747,8 @@ public class JobOrderController extends Controller {
         			+ " left join job_order_shipment jos on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
-        			+ "	where jor.transport_type LIKE '%custom%'"
+        			+ "	where jor.office_id="+office_id
+                    + " and  jor.transport_type LIKE '%custom%'"
         			+ "	and ifnull(joc.custom_type,'') = ''";
         	
         } else if("insurancewait".equals(type)){
@@ -736,14 +757,16 @@ public class JobOrderController extends Controller {
         			+ " left join job_order_shipment jos on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
-        			+ " WHERE jor.transport_type LIKE '%insurance%' and joi.insure_no is NULL";
+        			+ " WHERE jor.office_id="+office_id
+                    + " and  jor.transport_type LIKE '%insurance%' and joi.insure_no is NULL";
         } else if("overseacustomwait".equals(type)){
         	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"
         			+ " FROM job_order_shipment jos "
         			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
-        			+ " WHERE  (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
+        			+ " WHERE jor.office_id="+office_id
+                    + " and (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
         			+ " and timediff(now(),jos.etd)<TIME('48:00:00') ";
         } else if("tlxOrderwait".equals(type)){
         	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"
@@ -751,7 +774,8 @@ public class JobOrderController extends Controller {
         			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
-        			+ " WHERE TO_DAYS(jos.etd)= TO_DAYS(now())";
+        			+ " WHERE jor.office_id="+office_id
+                    + " and TO_DAYS(jos.etd)= TO_DAYS(now())";
         }
         else{
         	
@@ -760,7 +784,8 @@ public class JobOrderController extends Controller {
     			+ " left join job_order_shipment jos on jos.order_id = jo.id"
     			+ " left join party p on p.id = jo.customer_id"
     			+ " left join user_login u on u.id = jo.creator"
-    			+ " where abbr like '%"
+    			+ " where jo.office_id="+office_id
+                + " and abbr like '%"
     			+ customer_name
     			+ "%' and code like '%"
     			+ customer_code
