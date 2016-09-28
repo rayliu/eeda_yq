@@ -87,6 +87,7 @@ $(document).ready(function() {
     })
     
     $('#confirmSendBtn').click(function(){
+    	$('#confirmSendBtn').attr("disabled",true);
     	//提交前，校验数据
         if(!$("#emailForm").valid()){
             return;
@@ -103,6 +104,7 @@ $(document).ready(function() {
     	var title = $('#emailTitle').val().trim();
     	var content = $('#emailContent').val().trim();
     	$.post('/jobOrder/sendMail', {order_id:order_id,mailTitle:title,email:email,ccEmail:ccEmail,bccEmail:bccEmail,mailContent:content,docs:docs.toString()}, function(data){
+    		$('#confirmSendBtn').attr("disabled",false);
     		if(data.result==true){
 	        	 $.scojs_message('发送邮件成功', $.scojs_message.TYPE_OK);
 	        	 itemOrder.refleshEmailTable(order_id);
@@ -110,6 +112,7 @@ $(document).ready(function() {
 	       		 $.scojs_message('发送邮件失败', $.scojs_message.TYPE_ERROR);
 	       	 }
     	},'json').fail(function() {
+    		 $('#confirmSendBtn').attr("disabled",false);
         	 $.scojs_message('发送邮件时出现未知错误，请查看邮箱是否填错!', $.scojs_message.TYPE_ERROR);
         });
     })
