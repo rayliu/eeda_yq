@@ -91,18 +91,17 @@ $(document).ready(function() {
         if(!$("#emailForm").valid()){
             return;
         }
-        $('#returnBtn').click();
     	var order_id = $('#order_id').val();
         var docs = [];
         $('#doc_table input[type="checkbox"]:checked').each(function(){
         	var doc_name = $($(this).parent().parent().find('.doc_name')).val();
         	docs.push(doc_name);
         });
-        var email =  $('#email').val();
-        var ccEmail =  $('#ccEmail').val();
-        var bccEmail =  $('#bccEmail').val();
-    	var title = $('#emailTitle').val();
-    	var content = $('#emailContent').val();
+        var email =  $('#email').val().trim();
+        var ccEmail =  $('#ccEmail').val().trim();
+        var bccEmail =  $('#bccEmail').val().trim();
+    	var title = $('#emailTitle').val().trim();
+    	var content = $('#emailContent').val().trim();
     	$.post('/jobOrder/sendMail', {order_id:order_id,mailTitle:title,email:email,ccEmail:ccEmail,bccEmail:bccEmail,mailContent:content,docs:docs.toString()}, function(data){
     		if(data.result==true){
 	        	 $.scojs_message('发送邮件成功', $.scojs_message.TYPE_OK);
@@ -111,7 +110,7 @@ $(document).ready(function() {
 	       		 $.scojs_message('发送邮件失败', $.scojs_message.TYPE_ERROR);
 	       	 }
     	},'json').fail(function() {
-        	 $.scojs_message('发送邮件时出现未知错误!', $.scojs_message.TYPE_ERROR);
+        	 $.scojs_message('发送邮件时出现未知错误，请查看邮箱是否填错!', $.scojs_message.TYPE_ERROR);
         });
     })
     //------------事件处理,email_table
@@ -151,6 +150,39 @@ $(document).ready(function() {
     	$('.checkBox').each(function(){
     		this.checked = ischeck;
     	})
+    })
+    
+    //常用邮箱模版
+    $('#useEmailTemplate').on('click', 'li', function(){
+        var li = $(this);
+        $('#email').val(li.attr('email'));
+        $('#ccEmail').val(li.attr('ccEmail'));
+        $('#bccEmail').val(li.attr('bccEmail'));
+       
+    });
+    $('#collapseEmailInfo').on('show.bs.collapse', function () {
+      $('#collapseEmailIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+    });
+    $('#collapseEmailInfo').on('hide.bs.collapse', function () {
+      $('#collapseEmailIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
+    });
+    
+    //添加常用邮箱模版
+    $('#addEmailTemplate').click(function(){
+    	var email =  $('#email').val().trim();
+        var ccEmail =  $('#ccEmail').val().trim();
+        var bccEmail =  $('#bccEmail').val().trim();
+    	var remark = $('#emailTemplateRemark').val().trim();
+    	$.post('/jobOrder/saveEmailTemplate', {email:email,ccEmail:ccEmail,bccEmail:bccEmail,remark:remark}, function(data){
+    		if(data.result==true){
+	        	 $.scojs_message('添加成功', $.scojs_message.TYPE_OK);
+	        	 itemOrder.refleshEmailTable(order_id);
+	       	 }else if(data.result==false){
+	       		 $.scojs_message('添加失败', $.scojs_message.TYPE_ERROR);
+	       	 }
+    	},'json').fail(function() {
+        	 $.scojs_message('添加失败!', $.scojs_message.TYPE_ERROR);
+        });
     })
     
     

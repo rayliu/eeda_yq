@@ -451,10 +451,41 @@
 			<br><br><br><br><br><br><br>
 	<div class="modal fade" id="sendDetail">
 	  <div class="modal-dialog">
-	    <div class="modal-content">
+	    <div class="modal-content" style="width:1000px">
 	      <div class="modal-header">发送邮件详情</div>
 	      	<div class="modal-body">
 				<div class="form-group">
+				
+				<div class="panel panel-default">
+				    <div class="panel-heading">
+				        <h4 class="panel-title">
+				            <a data-toggle="collapse" data-parent="#accordion" href="#collapseEmailInfo" aria-expanded="false" class="collapsed">
+				            <i id="collapseEmailIcon" class="fa 
+				            <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用邮箱信息
+				            </a>
+				        </h4>
+				    </div>
+				    <div id="collapseEmailInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+				        <div class="panel-body">
+				            <ul id="useEmailTemplate" class="useEmailTemplate">
+				              <%for(Info in emailTemplateInfo![]){%>
+				                    <li email="${Info.receive_mail}"
+				                        ccEmail="${Info.cc_mail}"
+				                        bccEmail="${Info.bcc_mail}" >
+				                      <div class="radio">
+				                        <label>
+				                            <input type="radio" value="1" name="useEmailTemplate" style="margin-top: 0px;">
+				                            <font size="3px"><span>备注:${Info.remark}</span></font><br> 
+				                            <span>收件人:${Info.receive_mail}  抄送人:${Info.cc_mail}  密送人: ${Info.bcc_mail}</span><br>
+				                        </label>
+				                      </div>
+				                    </li>
+				              <%}%>
+				            </ul>
+				        </div>
+				    </div>
+				</div>
+				
 				<form id="emailForm">
 					  <font size="5px"><span id="attachment"></span></font><br><br>   
 	                  <label>收件人</label>
@@ -467,11 +498,14 @@
 	                  <input type="text" id="emailTitle" name="emailTitle" class="form-control"><br>
 	                  <label>邮件正文</label>
 	                  <textarea id='emailContent' class="form-control" rows="3"></textarea><br>
+	                  <label>常用邮箱模版备注</label>
+	                  <textarea id='emailTemplateRemark' class="form-control" rows="3"></textarea><br>
 				</form>
 				</div>   
 	        </div>
 	        <div class="modal-footer">
 	        	<button id="confirmSendBtn" class="btn btn-primary">发送</button>
+	        	<button id="addEmailTemplate" class="btn btn-primary">添加常用邮箱模版</button>
 	            <button id="returnBtn" class="btn  btn-default" data-dismiss="modal">返回</button>
 	        </div>
 	    </div>

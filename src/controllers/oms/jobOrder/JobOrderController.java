@@ -25,6 +25,7 @@ import models.eeda.oms.jobOrder.JobOrderDoc;
 import models.eeda.oms.jobOrder.JobOrderInsurance;
 import models.eeda.oms.jobOrder.JobOrderLandItem;
 import models.eeda.oms.jobOrder.JobOrderSendMail;
+import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 
@@ -98,6 +99,7 @@ public class JobOrderController extends Controller {
 	    	
     	}
     	setAttr("usedOceanInfo", getUsedOceanInfo());
+    	setAttr("emailTemplateInfo", getEmailTemplateInfo());
     	setAttr("loginUser",LoginUserController.getLoginUserName(this));
         render("/oms/JobOrder/JobOrderEdit.html");
     }
@@ -299,6 +301,22 @@ public class JobOrderController extends Controller {
    		renderJson(r);
    	}
     
+    //保存常用邮箱模版
+    public void saveEmailTemplate(){
+    	String email = getPara("ccEmail");
+    	String ccEmail = getPara("ccEmail");
+    	String bccEmail = getPara("bccEmail");
+    	String remark = getPara("remark");
+    	JobOrderSendMailTemplate order = new JobOrderSendMailTemplate();
+    	order.set("receive_mail", email);
+    	order.set("cc_mail", ccEmail);
+    	order.set("bcc_mail", bccEmail);
+    	order.set("remark", remark);
+    	order.save();
+    	renderJson("{\"result\":true}");
+    }
+    
+    //保存海运填写模板
     public void saveOceanTemplate(List<Map<String, String>> shipment_detail){
         if(shipment_detail.size()<=0)
             return;
@@ -506,7 +524,9 @@ public class JobOrderController extends Controller {
     	setAttr("costList", getItems(id,"cost"));
     	//相关文档
     	setAttr("docList", getItems(id,"doc"));
+    	//邮件记录
     	setAttr("mailList", getItems(id,"mail"));
+    	setAttr("emailTemplateInfo", getEmailTemplateInfo());
 
     	//客户回显
     	Party party = Party.dao.findById(jobOrder.get("customer_id"));
@@ -535,6 +555,14 @@ public class JobOrderController extends Controller {
     	  
         render("/oms/JobOrder/JobOrderEdit.html");
     }
+    
+    //常用邮箱模版
+    public List<Record> getEmailTemplateInfo(){
+    	List<Record> list = Db.find("select t.* from job_order_sendmail_template t"
+                + " where t.creator=?", LoginUserController.getLoginUserId(this));
+        return list;
+    }
+    
     
     public List<Record> getUsedOceanInfo(){
         List<Record> list = Db.find("select t.*,"
@@ -582,7 +610,7 @@ public class JobOrderController extends Controller {
         
         //设置收件人，邮件标题，邮件内容
         if(StringUtils.isNotEmpty(userEmail)){
-        	String[] arr = userEmail.split("-");
+        	String[] arr = userEmail.split("\\s+|,|，|;|；");//以空格或 ， ,；;分割
         	for(int i=0;i<arr.length;i++){
         		email.addTo(arr[i]);
         	}
@@ -596,14 +624,14 @@ public class JobOrderController extends Controller {
         
         //抄送
         if(StringUtils.isNotEmpty(ccEmail)){
-        	String[] arr = ccEmail.split("-");
+        	String[] arr = ccEmail.split("\\s+|,|，|;|；");//以空格或 ， ,；;分割
         	for(int i=0;i<arr.length;i++){
         		email.addCc(arr[i]);
         	}
         }
         //密送
         if(StringUtils.isNotEmpty(bccEmail)){
-        	String[] arr = bccEmail.split("-");
+        	String[] arr = bccEmail.split("\\s+|,|，|;|；");//以空格或 ， ,；;分割
         	for(int i=0;i<arr.length;i++){
         		email.addBcc(arr[i]);
         	}
@@ -627,12 +655,12 @@ public class JobOrderController extends Controller {
 	        }
         }
         try{
-        	email.setCharset("gbk");
+        	email.setCharset("gbk"); 
         	email.send();
         	JobOrderSendMail jsm = new JobOrderSendMail();
         	jsm.set("order_id", order_id);
         	jsm.set("mail_title", mailTitle);
-        	jsm.set("doc_name", docs);
+        	jsm.set("doc_name", docs.replace(",", "  "));
         	jsm.set("receive_mail", userEmail);
         	jsm.set("cc_mail", ccEmail);
         	jsm.set("bcc_mail", bccEmail);
