@@ -60,7 +60,7 @@ public class PlanOrderController extends Controller {
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
-   		
+   		long office_id = user.getLong("office_id");
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			planOrder = PlanOrder.dao.findById(id);
@@ -78,6 +78,7 @@ public class PlanOrderController extends Controller {
    			planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("JH"));
    			planOrder.set("creator", user.getLong("id"));
    			planOrder.set("create_stamp", new Date());
+   			planOrder.set("office_id", office_id);
    			planOrder.save();
    			
    			id = planOrder.getLong("id").toString();
@@ -134,6 +135,9 @@ public class PlanOrderController extends Controller {
 
     
     public void list() {
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        
     	String type=getPara("type");
     	String customer_code=getPara("customer_code")==null?"":getPara("customer_code");
     	String customer_name=getPara("customer")==null?"":getPara("customer");
@@ -151,7 +155,7 @@ public class PlanOrderController extends Controller {
         			+ " LEFT JOIN plan_order_item poi ON po.id = poi.order_id "
         			+ " left join party p on p.id = po.customer_id "
         			+ " left join user_login u on u.id = po.creator "
-        			+ " WHERE is_gen_job='N' AND factory_loading_time is not NULL "
+        			+ " WHERE office_id="+office_id+" and is_gen_job='N' AND factory_loading_time is not NULL "
         			+ " AND datediff(factory_loading_time, now())<=5";
         }else if ("customwaitPlan".equals(type)){
         	sql =" SELECT po.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p. CODE"
@@ -161,7 +165,7 @@ public class PlanOrderController extends Controller {
         			+ " LEFT JOIN user_login u ON u.id = po.creator"
         			+ " LEFT JOIN party p ON p.id = po.customer_id"
         			+ " WHERE"
-        			+ "	poi.customs_type = '自理报关'"
+        			+ " po.office_id="+office_id+" and poi.customs_type = '自理报关'"
         			+ " AND poi.is_gen_job = 'N'"
         			+ " GROUP BY poi.id ";
         }else{
@@ -170,7 +174,7 @@ public class PlanOrderController extends Controller {
     			+ "  left join party p on p.id = po.customer_id "
     			+ "  left join user_login u on u.id = po.creator"
     			+ "  where 1 =1 "
-    			+ "  and abbr like '%"
+    			+ "  and po.office_id="+office_id+" and abbr like '%"
     			+ customer_name
     			+ "%' and code like '%"
     			+ customer_code
