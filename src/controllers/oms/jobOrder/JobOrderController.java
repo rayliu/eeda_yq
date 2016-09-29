@@ -355,7 +355,39 @@ public class JobOrderController extends Controller {
         
         Map<String, String> recMap=shipment_detail.get(0);
         
-        if(recMap.get("shipper").length()==0 &&
+        
+        
+        Long creator_id = LoginUserController.getLoginUserId(this);
+        Long shipper = null;
+        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
+        	shipper = Long.parseLong(recMap.get("shipper"));
+        }
+        Long consignee=null;
+        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
+        	 consignee = Long.parseLong(recMap.get("consignee"));
+        }
+        Long notify_party = null;
+        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
+        	 notify_party = Long.parseLong(recMap.get("notify_party"));
+        }
+        Long por = null;
+        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
+        	 por = Long.parseLong(recMap.get("por"));
+        }
+        Long pol = null;
+        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
+        	 pol = Long.parseLong(recMap.get("pol"));
+        }
+        Long pod = null;
+        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
+        	 pod = Long.parseLong(recMap.get("pod"));
+        }
+        Long fnd = null;
+        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
+        	 fnd = Long.parseLong(recMap.get("fnd"));
+        }
+        
+        if(shipper == null &&
             recMap.get("consignee").length()==0 &&
             recMap.get("notify_party").length()==0 &&
             recMap.get("por").length()==0 &&
@@ -363,16 +395,6 @@ public class JobOrderController extends Controller {
             recMap.get("pod").length()==0 &&
             recMap.get("fnd").length()==0 )
                return;
-        
-        Long creator_id = LoginUserController.getLoginUserId(this);
-        
-        Long shipper = Long.parseLong(recMap.get("shipper").length()==0?"-1":recMap.get("shipper"));
-        Long consignee = Long.parseLong(recMap.get("consignee").length()==0?"-1":recMap.get("consignee"));
-        Long notify_party = Long.parseLong(recMap.get("notify_party").length()==0?"-1":recMap.get("notify_party"));
-        Long por = Long.parseLong(recMap.get("por").length()==0?"-1":recMap.get("por"));
-        Long pol = Long.parseLong(recMap.get("pol").length()==0?"-1":recMap.get("pol"));
-        Long pod = Long.parseLong(recMap.get("pod").length()==0?"-1":recMap.get("pod"));
-        Long fnd = Long.parseLong(recMap.get("fnd").length()==0?"-1":recMap.get("fnd"));
         
         Record checkRec = Db.findFirst("select 1 from job_order_ocean_template where"
                 + " creator_id=? and shipper=? and consignee=? and notify_party=?"
@@ -431,7 +453,7 @@ public class JobOrderController extends Controller {
 	        }
 		}
 		
-        UploadFile upfile = getFile();//默认路径 是 upload
+        UploadFile upfile = getFile();//默认路径 是upload
     	String fileName = upfile.getFileName();
 		order.set("sign_desc", fileName);
 		order.update();
@@ -652,7 +674,7 @@ public class JobOrderController extends Controller {
         /*EedaConfig.mailUser*/
         email.setFrom(EedaConfig.mailUser);//设置发信人
         
-        //设置收件人，邮件标题，邮件内容
+        //设置收件人，邮件标题，邮件内�
         if(StringUtils.isNotEmpty(userEmail)){
         	String[] arr = userEmail.split(regex);
         	for(int i=0;i<arr.length;i++){
@@ -673,7 +695,7 @@ public class JobOrderController extends Controller {
         		email.addCc(arr[i]);
         	}
         }
-        //密送
+       //密送
         if(StringUtils.isNotEmpty(bccEmail)){
         	String[] arr = bccEmail.split(regex);
         	for(int i=0;i<arr.length;i++){
@@ -774,13 +796,13 @@ public class JobOrderController extends Controller {
         } else if("customwait".equals(type)){
         	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,jos.export_date sent_out_time "
         			+ " from job_order jor "
-        			+ "	LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
+        			+ " LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
         			+ " left join job_order_shipment jos on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
-        			+ "	where jor.office_id="+office_id
-                    + " and  jor.transport_type LIKE '%custom%'"
-        			+ "	and ifnull(joc.custom_type,'') = ''";
+        			+ " where jor.office_id="+office_id
+                                + "  and  jor.transport_type LIKE '%custom%'"
+        			+ "  and ifnull(joc.customs_broker,'') = ''";
         	
         } else if("insurancewait".equals(type)){
         	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, jos.export_date sent_out_time"

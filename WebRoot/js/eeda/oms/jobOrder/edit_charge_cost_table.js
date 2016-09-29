@@ -421,6 +421,8 @@ $(document).ready(function() {
        //计算应付字段
        var totalCostRMB = 0; 
        var totalCostUSD = 0;
+       var totalCostJPY = 0; 
+       var totalCostHDK = 0;
        var profitTotalCost = 0;
        
        var tableCur =$('#cost_table').find('[name=CURRENCY_ID_input]');
@@ -431,6 +433,10 @@ $(document).ready(function() {
                totalCostRMB += parseFloat(tableAmount[i].value);   //parseFloat(data)
            }else if(tableCur[i].value=='USD'){
                totalCostUSD += parseFloat(tableAmount[i].value);
+           }else if(tableCur[i].value=='JPY'){
+               totalCostJPY += parseFloat(tableAmount[i].value);
+           }else if(tableCur[i].value=='HDK'){
+               totalCostHDK += parseFloat(tableAmount[i].value);
            }
            profitTotalCost+= parseFloat(currencyTotalAmountCost[i].value);
        }
@@ -438,16 +444,30 @@ $(document).ready(function() {
        $('[name=profitTotalCost]').text(profitTotalCost).hide();   
        //赋值
        $('.costRMB').text(totalCostRMB);
-       if(totalCostRMB !=""&&!isNaN(totalCostUSD)){
-       $('.costRMB').text('CNY '+eeda.numFormat(parseFloat(totalCostRMB).toFixed(2),3));
+       if(totalCostRMB !=""&&!isNaN(totalCostRMB)){
+    	   $('.costRMB').text('CNY '+eeda.numFormat(parseFloat(totalCostRMB).toFixed(2),3));
        }else{
            $('.costRMB').text('CNY '+eeda.numFormat(parseFloat(0).toFixed(2),3));
-       }
+        }
+       
        if(totalCostUSD !=''&&!isNaN(totalCostUSD)){
           $('.costUSD').text('USD '+eeda.numFormat(parseFloat(totalCostUSD).toFixed(2),3));          
        }else{
           $('.costUSD').text('USD '+eeda.numFormat(parseFloat(0).toFixed(2),3));
-       }
+        }
+
+       if(totalCostJPY !=""&&!isNaN(totalCostJPY)){
+           $('.costJPY').text('JPY '+eeda.numFormat(parseFloat(totalCostJPY).toFixed(2),3));
+       	}else{
+               $('.costJPY').text('JPY '+eeda.numFormat(parseFloat(0).toFixed(2),3));
+        }
+       
+       if(totalCostHDK !=''&&!isNaN(totalCostHDK)){
+              $('.costHDK').text('HDK '+eeda.numFormat(parseFloat(totalCostHDK).toFixed(2),3));          
+        }else{
+              $('.costHDK').text('HDK '+eeda.numFormat(parseFloat(0).toFixed(2),3));
+         }
+
        calcCurrency();
    }
 

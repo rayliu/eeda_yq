@@ -355,6 +355,9 @@ $(document).ready(function() {
 		  });
     	
     });
+    if($('#alreadyAFR_AMShide').val()=="Y"}{
+    	$('#alreadyAFR_AMS').attr('disabled',true);
+    }
     
     //确认已电放
     $('#alreadyInline').click(function(){
@@ -372,6 +375,9 @@ $(document).ready(function() {
 		  });
     	
     });
+    if($('#alreadyInlineHide').val()=="Y"){
+    	$('#alreadyInline').attr('disabled',true);
+    }
     
     
     //生成空运booking PDF
