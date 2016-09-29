@@ -43,7 +43,7 @@ window.calcCurrency =  function (){
         var costHKD = $('[name=costHKD]').text().replace('HKD','');
          	costHKD = costHKD.replace(/,/g,'');
         var profitHKD = parseFloat(chargeHKD)-parseFloat(costHKD);
-           if(profitUSD>=0){
+           if(profitHKD>=0){
                $('[name=profitHKD]').text("HKD "+eeda.numFormat(parseFloat(profitHKD).toFixed(2),3));
             }else if(profitHKD<0){
                $('[name=profitHKD]').html("<span style='color:red'>HKD "+eeda.numFormat(parseFloat(profitHKD).toFixed(2),3)+"</span>");

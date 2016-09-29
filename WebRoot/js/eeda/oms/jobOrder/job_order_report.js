@@ -355,7 +355,7 @@ $(document).ready(function() {
 		  });
     	
     });
-    if($('#alreadyAFR_AMShide').val()=="Y"}{
+    if($('#alreadyAFR_AMShide').val()=="Y"){
     	$('#alreadyAFR_AMS').attr('disabled',true);
     }
     

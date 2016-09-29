@@ -422,7 +422,7 @@ $(document).ready(function() {
        var totalCostRMB = 0; 
        var totalCostUSD = 0;
        var totalCostJPY = 0; 
-       var totalCostHDK = 0;
+       var totalCostHKD = 0;
        var profitTotalCost = 0;
        
        var tableCur =$('#cost_table').find('[name=CURRENCY_ID_input]');
@@ -435,8 +435,8 @@ $(document).ready(function() {
                totalCostUSD += parseFloat(tableAmount[i].value);
            }else if(tableCur[i].value=='JPY'){
                totalCostJPY += parseFloat(tableAmount[i].value);
-           }else if(tableCur[i].value=='HDK'){
-               totalCostHDK += parseFloat(tableAmount[i].value);
+           }else if(tableCur[i].value=='HKD'){
+               totalCostHKD += parseFloat(tableAmount[i].value);
            }
            profitTotalCost+= parseFloat(currencyTotalAmountCost[i].value);
        }
@@ -462,10 +462,10 @@ $(document).ready(function() {
                $('.costJPY').text('JPY '+eeda.numFormat(parseFloat(0).toFixed(2),3));
         }
        
-       if(totalCostHDK !=''&&!isNaN(totalCostHDK)){
-              $('.costHDK').text('HDK '+eeda.numFormat(parseFloat(totalCostHDK).toFixed(2),3));          
+       if(totalCostHKD !=''&&!isNaN(totalCostHKD)){
+              $('.costHKD').text('HKD '+eeda.numFormat(parseFloat(totalCostHKD).toFixed(2),3));          
         }else{
-              $('.costHDK').text('HDK '+eeda.numFormat(parseFloat(0).toFixed(2),3));
+              $('.costHKD').text('HKD '+eeda.numFormat(parseFloat(0).toFixed(2),3));
          }
 
        calcCurrency();
