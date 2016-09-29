@@ -27,6 +27,7 @@ define(['jquery', 'template', 'dataTablesBootstrap', 'sco'], function ($, templa
 
             getRoleListPromise.done(function(data){
                 console.log(data);
+                role_list=[];
                 if(data){
                     $.each(data, function(i, item){
                         var role={
