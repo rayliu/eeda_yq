@@ -240,6 +240,9 @@ public class EedaConfig extends JFinalConfig {
         me.add("/costPrePayOrder", controllers.arap.ap.PrePayOrderController.class, contentPath);
         //audit log
         me.add("/accountAuditLog", controllers.arap.AccountAuditLogController.class, contentPath);
+        
+        //运营报表
+        me.add("/profitReport", controllers.arap.ProfitReportController.class, contentPath);
 	}
 
     @Override
