@@ -31,7 +31,7 @@ public class ProfitReportController extends Controller {
     
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_PCO_LIST})
     public void index() {
-    	render("eeda/statusReport/dailyReport.html");
+    	render("eeda/statusReport/profitReport.html");
     }
 
     public void list() {
