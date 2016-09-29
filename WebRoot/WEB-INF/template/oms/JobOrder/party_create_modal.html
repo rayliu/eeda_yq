@@ -9,15 +9,21 @@
             <form id = "partyForm">
                 <div class="form-group"> 
                 	<div class="row">
-							<div align="center">
-		                         <label class="label-margin">公司类型</label>
-		                         <label class="radio-inline">
-		                             <input type="radio" name="comType" value="SP" >供应商
-		                         </label>
-		                         <label class="radio-inline">
-		                             <input type="radio" name="comType"  value="CUSTOMER" checked>客户
-		                         </label>
-		                     </div>
+						<div align="center">
+	                         <label class="label-margin">公司类型</label>
+	                         <label class="radio-inline">
+	                             <input type="radio" name="comType" value="SP">供应商
+	                         </label>
+	                         <label class="radio-inline">
+	                             <input type="radio" name="comType"  value="CUSTOMER" checked>客户
+	                         </label>
+                             <label class="radio-inline">
+                                 <input type="radio" name="comType" value="TRUCK_OUT">陆运发货人
+                             </label>
+                             <label class="radio-inline">
+                                 <input type="radio" name="comType"  value="TRUCK_IN">陆运收货人
+                             </label>
+	                     </div>
 					</div>
 					<hr/>
                     <div class="row">
@@ -35,13 +41,7 @@
                                     required:'required'
                                 }){}%>
                         </div>
-                        <div class="col-lg-6"> 
-                       		<%include("/eeda/component/form/inputField.html", 
-                                {   id:'phone', 
-                                    label:'联系电话',
-                                    required:'required'
-                                }){}%>
-                         </div>
+                        
                     </div>
                     <div class="row">
                     	<div class="col-lg-6"> 
@@ -52,6 +52,15 @@
                                 }){}%>
                         </div>
                         <div class="col-lg-6"> 
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'phone', 
+                                    label:'联系电话',
+                                    required:'required'
+                                }){}%>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12"> 
                        		<%include("/eeda/component/form/inputField.html", 
                                 {   id:'address', 
                                     label:'联系地址',
@@ -63,14 +72,16 @@
                     	<div class="col-lg-6"> 
                        		<%include("/eeda/component/form/inputField.html", 
                                 {   id:'contact_person_eng', 
-                                    label:'联系人（英）',
+                                    label:'联系人(英)',
                                     required:'required'
                                 }){}%>
                         </div>
-                        <div class="col-lg-6"> 
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12"> 
                        		<%include("/eeda/component/form/inputField.html", 
                                 {   id:'address_eng', 
-                                    label:'联系地址（英）',
+                                    label:'联系地址(英)',
                                     required:'required'
                                 }){}%>
                          </div>
