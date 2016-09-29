@@ -62,12 +62,12 @@ public class UserRoleController extends Controller {
 		Long parentID =pom.getBelongOffice();
 		if(parentID == null || "".equals(parentID)){
 			parentID = pom.getParentOfficeId();
-			totalWhere ="select count(1) total from user_role ur left join role r on r.code = ur.role_code left join user_login ul on ur.user_name = ul.user_name where !isnull(ul.is_stop) != 1 and r.office_id = " + parentID;
-			sql = "select ur.user_name,ul.c_name,group_concat(r.name separator '<br>') name,ur.remark,ur.role_code from user_role ur left join role r on r.code=ur.role_code left join user_login ul on ur.user_name = ul.user_name left join office o on ul.office_id = o.id where !isnull(ul.is_stop) != 1 and (o.id = " + parentID + " or o.belong_office = " + parentID + ") and (r.office_id = " + parentID + " or r.office_id is null) group by ur.user_name" + sLimit;
+			totalWhere ="select count(1) total from user_role ur left join role r on r.id = ur.role_id left join user_login ul on ur.user_name = ul.user_name where !isnull(ul.is_stop) != 1 and r.office_id = " + parentID;
+			sql = "select ur.user_name,ul.c_name,group_concat(r.name separator '<br>') name,ur.remark,ur.role_code from user_role ur left join role r on r.id=ur.role_id left join user_login ul on ur.user_name = ul.user_name left join office o on ul.office_id = o.id where !isnull(ul.is_stop) != 1 and (o.id = " + parentID + " or o.belong_office = " + parentID + ") and (r.office_id = " + parentID + " or r.office_id is null) group by ur.user_name" + sLimit;
 
 		}else{
 			totalWhere ="select count(1) total from user_role ur left join user_login ul on ur.user_name = ul.user_name where !isnull(ul.is_stop) != 1 and ul.office_id = " + pom.getCurrentOfficeId();
-			sql = "select ur.user_name,ul.c_name,group_concat(r.name separator '<br>') name,ur.remark,ur.role_code from user_role ur left join role r on r.code=ur.role_code left join user_login ul on ur.user_name = ul.user_name where !isnull(ul.is_stop) != 1 and ul.office_id = " + pom.getCurrentOfficeId() + " and r.office_id = " + parentID + " group by ur.user_name" + sLimit;
+			sql = "select ur.user_name,ul.c_name,group_concat(r.name separator '<br>') name,ur.remark,ur.role_code from user_role ur left join role r on r.id=ur.role_id left join user_login ul on ur.user_name = ul.user_name where !isnull(ul.is_stop) != 1 and ul.office_id = " + pom.getCurrentOfficeId() + " and r.office_id = " + parentID + " group by ur.user_name" + sLimit;
 		}
 		// 获取总条数
        /* String sql = "select ur.user_name,group_concat(r.name separator '<br>') name,ur.remark,ur.role_code from user_role ur left join role r on r.code=ur.role_code group by ur.user_name" + sLimit;*/
@@ -130,13 +130,11 @@ public class UserRoleController extends Controller {
 	public void saveUserRole(){
 		String name = getPara("name");
 		String r = getPara("roles");
-		String[] roles = r.split(",");
-		for (String id : roles) {
+		String[] roleIds = r.split(",");
+		for (String id : roleIds) {
 			UserRole ur = new UserRole();
 			ur.set("user_name", name);
-			/*根据id找到Role*/
-			Role role = Role.dao.findFirst("select * from role where id=?",id);
-			ur.set("role_code", role.get("code"));
+			ur.set("role_id", id);
 			ur.save();
 		}
 		renderJson();
