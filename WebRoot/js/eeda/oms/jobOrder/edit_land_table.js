@@ -295,7 +295,7 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="button" name="sign_desc" value="'+data+'" class="sign_desc form-control" style="width:200px"/>';
+            		return '<a href="/upload/'+data+'" class="sign_desc" style="width:200px" target="_blank">'+data+'</a>';
             	}
             },
             { "data": "SIGN_STATUS", "width": "180px",
@@ -368,10 +368,10 @@ $(document).ready(function() {
 	});
 	
 	//查看签收文件
-    $("#land_table").on('click', '.sign_desc',function(){
-    	var url = "/upload/"+$(this).val();
-    	window.open(url);
-    })
+//    $("#land_table").on('click', '.sign_desc',function(){
+//    	var url = "/upload/"+$(this).val();
+//    	window.open(url);
+//    })
 
 });
 });

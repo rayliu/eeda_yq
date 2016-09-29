@@ -50,7 +50,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="button" value="'+data+'" class="doc_name form-control" style="width:300px"/>';
+                    return '<a class="doc_name" href="#" style="width:300px">'+data+'</a>';
                 }
             },
             { "data": "C_NAME","width": "180px",
@@ -95,7 +95,7 @@ $(document).ready(function() {
     	var order_id = $('#order_id').val();
         var docs = [];
         $('#doc_table input[type="checkbox"]:checked').each(function(){
-        	var doc_name = $($(this).parent().parent().find('.doc_name')).val();
+        	var doc_name = $($(this).parent().parent().find('.doc_name')).text();
         	docs.push(doc_name);
         });
         var email =  $('#email').val().trim();
@@ -143,7 +143,7 @@ $(document).ready(function() {
     
     //查看文档
     $("#doc_table").on('click', '.doc_name',function(){
-    	var url = "/upload/doc/"+$(this).val();
+    	var url = "/upload/doc/"+$(this).text();
     	window.open(url);
     })
     
