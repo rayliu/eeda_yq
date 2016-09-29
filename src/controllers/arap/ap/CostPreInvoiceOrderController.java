@@ -584,8 +584,8 @@ public class CostPreInvoiceOrderController extends Controller {
 				
 				sql = " SELECT aco.id,aco.sp_id, p.company_name payee_name,aco.order_no, '应付对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
 						+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name, aco.total_amount,"
-						+ " sum(ifnull(caor.pay_amount,0)) paid_amount,"
-						+ " acao.id app_id "
+						+ " (select sum(ifnull(c.pay_amount, 0)) from  cost_application_order_rel c where c.cost_order_id = aco.id) paid_amount,"
+						+ " caor.pay_amount application_amount, acao.id app_id "
 						+ " FROM arap_cost_order aco "
 						+ " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = aco.id"
 						+ " LEFT JOIN arap_cost_application_order acao on acao.id = caor.application_order_id"

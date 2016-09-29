@@ -49,8 +49,8 @@ $(document).ready(function() {
     					var str = parseFloat(full.TOTAL_AMOUNT-data).toFixed(2);
     					pay = pay + parseFloat(full.TOTAL_AMOUNT-data);
     				}else{
-    					var str = parseFloat(data).toFixed(2);
-    					pay = pay + parseFloat(data);
+    					var str = parseFloat(full.APPLICATION_AMOUNT).toFixed(2);
+    					pay = pay + parseFloat(full.APPLICATION_AMOUNT);
     				}
     				$("#pay").html(pay.toFixed(2));
 					$("#pay_amount").val(pay.toFixed(2));
