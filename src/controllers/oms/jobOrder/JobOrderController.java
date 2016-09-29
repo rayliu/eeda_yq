@@ -388,12 +388,12 @@ public class JobOrderController extends Controller {
         }
         
         if(shipper == null &&
-            recMap.get("consignee").length()==0 &&
-            recMap.get("notify_party").length()==0 &&
-            recMap.get("por").length()==0 &&
-            recMap.get("pol").length()==0 &&
-            recMap.get("pod").length()==0 &&
-            recMap.get("fnd").length()==0 )
+           consignee==null &&
+           notify_party == null &&
+           por == null &&
+           pol == null &&
+           pod == null &&
+           fnd == null )
                return;
         
         Record checkRec = Db.findFirst("select 1 from job_order_ocean_template where"
