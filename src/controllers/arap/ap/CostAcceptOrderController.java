@@ -70,7 +70,7 @@ public class CostAcceptOrderController extends Controller {
         String sql = "select * from(  "
         		+ " select acao.id,acao.order_no application_order_no,acao.status,acao.payment_method,acao.create_stamp,acao.check_stamp,acao.pay_time, "
         		+ " acao.remark,acao.payee_unit,acao.payee_name, "
-        		+ " caor.order_type,acao.total_amount,aco.order_no cost_order_no,u.c_name "
+        		+ " '申请单' order_type,acao.total_amount,aco.order_no cost_order_no,u.c_name "
 				+ " from arap_cost_application_order acao "
 				+ " left join cost_application_order_rel caor on caor.application_order_id = acao.id "
 				+ " left join arap_cost_order aco on aco.id = caor.cost_order_id"
