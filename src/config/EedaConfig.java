@@ -242,7 +242,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/accountAuditLog", controllers.arap.AccountAuditLogController.class, contentPath);
         
         //运营报表
-        me.add("/profitReport", controllers.arap.ProfitReportController.class, contentPath);
+        me.add("/profitReport", controllers.report.ProfitReportController.class, contentPath);
 	}
 
     @Override

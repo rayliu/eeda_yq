@@ -1,4 +1,4 @@
-package controllers.arap;
+package controllers.report;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
