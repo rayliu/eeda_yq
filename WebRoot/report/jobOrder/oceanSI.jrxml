@@ -498,7 +498,7 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[  放货形式：]]></text>
 			</staticText>
 			<line>
-				<reportElement x="554" y="94" width="1" height="60" uuid="9d40ce3f-ddbd-4b05-886e-05d512c49438"/>
+				<reportElement x="553" y="94" width="1" height="60" uuid="9d40ce3f-ddbd-4b05-886e-05d512c49438"/>
 			</line>
 			<staticText>
 				<reportElement x="232" y="217" width="138" height="22" uuid="dfc0f58c-574c-416c-9042-1002f04199e5"/>
