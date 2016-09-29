@@ -496,13 +496,6 @@ AND  $X{IN,jor.id,order_id}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="416" y="25" width="129" height="14" uuid="d4d29c62-b7b1-41d6-b810-574844d3c5ec"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{ref_no}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="345" y="170" width="69" height="15" uuid="5a6bff12-40a8-44c6-b037-d689b0a5ec46"/>
 				<textElement>
@@ -516,6 +509,13 @@ AND  $X{IN,jor.id,order_id}]]>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="416" y="25" width="138" height="14" uuid="838f806e-871d-43b2-b605-a3562590f472"/>
+				<textElement>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{invoice_no}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
