@@ -25,7 +25,13 @@ public class DbUtils {
             
             if(StringUtils.isNotEmpty(filterValue) && !"undefined".equals(filterValue)){
             	logger.debug(key + ":" + filterValue);
-            	if(key.endsWith("_no") || key.endsWith("_name")){
+            	if(key.endsWith("_equals")){
+            		condition += " and " + key.replace("_equals", "") + " = '" + filterValue + "' ";
+            		continue;
+            	}else if(key.endsWith("_like")){
+            		condition += " and " + key.replace("_like", "") + " like '%" + filterValue + "%' ";
+            		continue;
+            	}else if(key.endsWith("_no") || key.endsWith("_name")){
             		condition += " and " + key + " like '%" + filterValue + "%' ";
             		continue;
             	}else if(key.endsWith("_id") || key.endsWith("status") ||key.endsWith("_type")||key.endsWith("flag")){

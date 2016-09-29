@@ -101,27 +101,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       
       $('#oceanDetailTab').click(function(e){
     	  var transport_type = "ocean";
-    	  	var url = "/jobOrder/list?transport_type="+transport_type;
+    	  	var url = "/jobOrder/list?transport_type_like="+transport_type;
     	  	dataTable.ajax.url(url).load();
       })
       $('#airDetailTab').click(function(e){
     	  var transport_type = "air";
-    	  var url = "/jobOrder/list?transport_type="+transport_type;
+    	  var url = "/jobOrder/list?transport_type_like="+transport_type;
     	  dataTable.ajax.url(url).load();
       })
       $('#landDetailTab').click(function(e){
     	  var transport_type = "land";
-    	  var url = "/jobOrder/list?transport_type="+transport_type;
+    	  var url = "/jobOrder/list?transport_type_like="+transport_type;
     	  dataTable.ajax.url(url).load();
       })
       $('#customDetailTab').click(function(e){
     	  var transport_type = "custom";
-    	  var url = "/jobOrder/list?transport_type="+transport_type;
+    	  var url = "/jobOrder/list?transport_type_like="+transport_type;
     	  dataTable.ajax.url(url).load();
       })
       $('#allTab').click(function(e){
-    	  var transport_type = "all";
-    	  var url = "/jobOrder/list?transport_type="+transport_type;
+    	  var transport_type = "";
+    	  var url = "/jobOrder/list?transport_type_like="+transport_type;
     	  dataTable.ajax.url(url).load();
       })
       

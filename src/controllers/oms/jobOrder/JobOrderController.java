@@ -748,7 +748,7 @@ public class JobOrderController extends Controller {
     	String type=getPara("type");
     	String customer_code=getPara("customer_code")==null?"":getPara("customer_code");
     	String customer_name=getPara("customer")==null?"":getPara("customer");
-    	String transport_type=getPara("transport_type");
+    	String transport_type=getPara("transport_type_like");
     	
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -832,50 +832,18 @@ public class JobOrderController extends Controller {
                     + " and TO_DAYS(jos.etd)= TO_DAYS(now())";
         }
         else{
-        	
-        	if(transport_type==null){
-        		sql = "SELECT * from (select jo.*, jos.export_date sent_out_time, ifnull(u.c_name, u.user_name) creator_name, p.abbr customer_name,p.company_name,p.code "
-            			+ " from job_order jo "
-            			+ " left join job_order_shipment jos on jos.order_id = jo.id"
-            			+ " left join party p on p.id = jo.customer_id"
-            			+ " left join user_login u on u.id = jo.creator"
-            			+ " where jo.office_id="+office_id
-            			+ " and transport_type like '%ocean%'"
-                        + " and abbr or company_name like '%"
-            			+ customer_name
-            			+ "%' and code like '%"
-            			+ customer_code
-            			+ "%' )A"
-                 	    + " where 1 =1 ";
-        	}else if("all".equals(transport_type)){
-        		sql = "SELECT * from (select jo.*, jos.export_date sent_out_time, ifnull(u.c_name, u.user_name) creator_name, p.abbr customer_name,p.company_name,p.code "
-            			+ " from job_order jo "
-            			+ " left join job_order_shipment jos on jos.order_id = jo.id"
-            			+ " left join party p on p.id = jo.customer_id"
-            			+ " left join user_login u on u.id = jo.creator"
-            			+ " where jo.office_id="+office_id
-                        + " and abbr or company_name like '%"
-            			+ customer_name
-            			+ "%' and code like '%"
-            			+ customer_code
-            			+ "%' )A"
-                 	    + " where 1 =1 ";
-        	}else{
 		         sql = "SELECT * from (select jo.*, jos.export_date sent_out_time, ifnull(u.c_name, u.user_name) creator_name, p.abbr customer_name,p.company_name,p.code "
 		    			+ " from job_order jo "
 		    			+ " left join job_order_shipment jos on jos.order_id = jo.id"
 		    			+ " left join party p on p.id = jo.customer_id"
 		    			+ " left join user_login u on u.id = jo.creator"
 		    			+ " where jo.office_id="+office_id
-		    			+ " and transport_type like '%"
-		    			+ transport_type
-		                + "%' and abbr or company_name like '%"
+		                + " and abbr or company_name like '%"
 		    			+ customer_name
 		    			+ "%' and code like '%"
 		    			+ customer_code
 		    			+ "%' )A"
 		         	    + " where 1 =1 ";
-        	}
          }
         
         String condition = DbUtils.buildConditions(getParaMap());
