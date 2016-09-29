@@ -748,7 +748,6 @@ public class JobOrderController extends Controller {
     	String type=getPara("type");
     	String customer_code=getPara("customer_code")==null?"":getPara("customer_code");
     	String customer_name=getPara("customer")==null?"":getPara("customer");
-    	String transport_type=getPara("transport_type_like");
     	
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -838,7 +837,7 @@ public class JobOrderController extends Controller {
 		    			+ " left join party p on p.id = jo.customer_id"
 		    			+ " left join user_login u on u.id = jo.creator"
 		    			+ " where jo.office_id="+office_id
-		                + " and abbr or company_name like '%"
+		                + " and abbr like '%"
 		    			+ customer_name
 		    			+ "%' and code like '%"
 		    			+ customer_code
