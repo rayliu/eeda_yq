@@ -75,6 +75,8 @@ $(document).ready(function() {
     	});
     	
     	eeda.bindTableField('TRANSPORT_COMPANY','/serviceProvider/searchTruckCompany','truck');
+        eeda.bindTableFieldTruckOut('CONSIGNOR');
+        eeda.bindTableFieldTruckIn('CONSIGNEE');
     };
     //------------事件处理
 	 var cargoTable = eeda.dt({
@@ -184,19 +186,27 @@ $(document).ready(function() {
             },
             { "data": "CONSIGNOR", "width": "180px",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="consignor" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
+                    if(!data)
+                        data='';
+                    var field_html = template('table_truck_out_template',
+                        {
+                            id: 'CONSIGNOR',
+                            value: data,
+                            display_value: full.CONSIGNOR_NAME,
+                            style:'width:200px'
+                        }
+                    );
+                    return field_html;
+                }
             },
-            { "data": "CONSIGNOR_PHONE","width": "180px", 
+            { "data": "CONSIGNOR_PHONE","width": "180px", "className":"consigner_phone",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
             		return '<input type="text" name="consignor_phone" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "TAKE_ADDRESS", "width": "180px",
+            { "data": "TAKE_ADDRESS", "width": "180px", "className":"consigner_addr",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
@@ -205,19 +215,27 @@ $(document).ready(function() {
             },
             { "data": "CONSIGNEE", "width": "180px",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="consignee" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
+                    if(!data)
+                        data='';
+                    var field_html = template('table_truck_in_template',
+                        {
+                            id: 'CONSIGNEE',
+                            value: data,
+                            display_value: full.CONSIGNEE_NAME,
+                            style:'width:200px'
+                        }
+                    );
+                    return field_html;
+                }
             },
-            { "data": "CONSIGNEE_PHONE","width": "180px", 
+            { "data": "CONSIGNEE_PHONE","width": "180px",  "className":"consignee_phone",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
             		return '<input type="text" name="consignee_phone" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "DELIVERY_ADDRESS", "width": "180px",
+            { "data": "DELIVERY_ADDRESS", "width": "180px", "className":"consignee_addr",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
@@ -288,6 +306,20 @@ $(document).ready(function() {
             	}
             }, 
             { "data": "TRANSPORT_COMPANY_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },
+            { "data": "CONSIGNOR_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },
+            { "data": "CONSIGNEE_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';

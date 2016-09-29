@@ -362,6 +362,119 @@ eeda.refreshUrl = refreshUrl;
     	else
     		curDateTime = curDateTime +":0"+seconds;
     	return curDateTime; 
-	}
-  
+	};
+
+    eeda.bindTableFieldTruckOut = function(el_name) {
+          var tableFieldList = $('#table_truck_out_input_field_list');
+          $('table input[name='+el_name+'_input]').on('keyup click', function(event){
+              var me = this;
+              var inputField = $(this);
+              var hiddenField = $(this).parent().find('input[name='+el_name+']');
+              var inputStr = inputField.val();
+              $.get('/serviceProvider/searchTruckOut', {input:inputStr}, function(data){
+                  if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+                      return;
+                  }
+                  tableFieldList.empty();
+                  for(var i = 0; i < data.length; i++)
+                      tableFieldList.append("<li><a tabindex='-1' class='item' dataId='"+data[i].ID
+                              +"' dataName='"+data[i].NAME+"' "
+                              +" phone='"+data[i].PHONE+"' "
+                              +" addr='"+data[i].ADDRESS+"' >"+data[i].NAME
+                              +"</a></li>");
+                  tableFieldList.css({ 
+                      left:$(me).offset().left+"px", 
+                      top:$(me).offset().top+28+"px" 
+                  });
+                  tableFieldList.show();
+                  eeda._inputField = inputField;
+                  eeda._hiddenField = hiddenField;
+              },'json');
+          });
+          
+          tableFieldList.on('click', '.item', function(e){
+              var inputField = eeda._inputField;
+              var hiddenField = eeda._hiddenField;
+              inputField.val($(this).text());//名字
+              tableFieldList.hide();
+              var dataId = $(this).attr('dataId');
+              hiddenField.val(dataId);//id
+
+              var row = inputField.parent().parent().parent();
+              row.find('.consigner_phone input').val($(this).attr('phone'));
+              row.find('.consigner_addr input').val($(this).attr('addr'));
+          });
+          
+          // 1 没选中item，焦点离开，隐藏列表
+          $('table input[name='+el_name+'_input]').on('blur', function(){
+              var hiddenField = eeda._hiddenField;
+              
+              if ($(this).val().trim().length ==0) {
+                  hiddenField.val('');
+              };
+              tableFieldList.hide();
+          });
+          
+          // 2 当用户只点击了滚动条，没选item，再点击页面别的地方时，隐藏列表
+          tableFieldList.on('mousedown', function(){
+              return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+          });
+      };
+
+    eeda.bindTableFieldTruckIn = function(el_name) {
+          var tableFieldList = $('#table_truck_in_input_field_list');
+          $('table input[name='+el_name+'_input]').on('keyup click', function(event){
+              var me = this;
+              var inputField = $(this);
+              var hiddenField = $(this).parent().find('input[name='+el_name+']');
+              var inputStr = inputField.val();
+              $.get('/serviceProvider/searchTruckIn', {input:inputStr}, function(data){
+                  if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+                      return;
+                  }
+                  tableFieldList.empty();
+                  for(var i = 0; i < data.length; i++)
+                      tableFieldList.append("<li><a tabindex='-1' class='item' dataId='"+data[i].ID
+                              +"' dataName='"+data[i].NAME+"' "
+                              +" phone='"+data[i].PHONE+"' "
+                              +" addr='"+data[i].ADDRESS+"' >"+data[i].NAME
+                              +"</a></li>");
+                  tableFieldList.css({ 
+                      left:$(me).offset().left+"px", 
+                      top:$(me).offset().top+28+"px" 
+                  });
+                  tableFieldList.show();
+                  eeda._inputField = inputField;
+                  eeda._hiddenField = hiddenField;
+              },'json');
+          });
+          
+          tableFieldList.on('click', '.item', function(e){
+              var inputField = eeda._inputField;
+              var hiddenField = eeda._hiddenField;
+              inputField.val($(this).text());//名字
+              tableFieldList.hide();
+              var dataId = $(this).attr('dataId');
+              hiddenField.val(dataId);//id
+
+              var row = inputField.parent().parent().parent();
+              row.find('.consignee_phone input').val($(this).attr('phone'));
+              row.find('.consignee_addr input').val($(this).attr('addr'));
+          });
+          
+          // 1 没选中item，焦点离开，隐藏列表
+          $('table input[name='+el_name+'_input]').on('blur', function(){
+              var hiddenField = eeda._hiddenField;
+              
+              if ($(this).val().trim().length ==0) {
+                  hiddenField.val('');
+              };
+              tableFieldList.hide();
+          });
+          
+          // 2 当用户只点击了滚动条，没选item，再点击页面别的地方时，隐藏列表
+          tableFieldList.on('mousedown', function(){
+              return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+          });
+      };
 });

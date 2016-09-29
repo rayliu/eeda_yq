@@ -12,6 +12,7 @@ import java.util.Map;
 import models.Location;
 import models.ParentOfficeModel;
 import models.Party;
+import models.UserLogin;
 import models.yh.profile.ProviderChargeType;
 
 import org.apache.commons.lang.StringUtils;
@@ -484,9 +485,12 @@ public class ServiceProviderController extends Controller {
     
     //查询船公司下拉
     public void searchCarrier(){
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
+        
         String name = getPara("input");
         List<Record> recs = null;
-        String sql = "select id,abbr name from party p where p.type = 'SP' and p.sp_type like '%carrier%' ";
+        String sql = "select id,abbr name from party p where office_id="+office_id+" and p.type = 'SP' and p.sp_type like '%carrier%' ";
         if(!StringUtils.isBlank(name)){
         	sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
         }
@@ -518,10 +522,12 @@ public class ServiceProviderController extends Controller {
     
     //查询航空公司下拉
     public void searchAirCompany(){
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
     	String name = getPara("input");
     	String sp_type = getPara("para");
     	List<Record> recs = null;
-    	String sql = "select p.id,p.abbr name from party p where p.type = 'SP' and p.sp_type like '%"+sp_type+"%' ";
+    	String sql = "select p.id,p.abbr name from party p where office_id="+office_id+" and p.type = 'SP' and p.sp_type like '%"+sp_type+"%' ";
     	if(!StringUtils.isBlank(name)){
     		sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
     	}
@@ -531,10 +537,12 @@ public class ServiceProviderController extends Controller {
     
     //查询运输公司下拉
     public void searchTruckCompany(){
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
     	String name = getPara("input");
     	String sp_type = getPara("para");
     	List<Record> rec = null;
-    	String sql = "select p.id,p.abbr name from party p where p.type = 'SP' and p.sp_type like '%"+sp_type+"%' ";
+    	String sql = "select p.id,p.abbr name from party p where office_id="+office_id+" and p.type = 'SP' and p.sp_type like '%"+sp_type+"%' ";
     	if(!StringUtils.isBlank(name)){
     		sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
     	}
@@ -567,5 +575,31 @@ public class ServiceProviderController extends Controller {
     	renderJson(recs);
     }
     
+    //查询发货人下拉列表
+    public void searchTruckOut(){
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
+        String name = getPara("input");
+        List<Record> rec = null;
+        String sql = "select p.id,p.abbr name, p.phone, p.address from party p where p.type = 'TRUCK_OUT' and office_id="+office_id;
+        if(!StringUtils.isBlank(name)){
+            sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
+        }
+        rec = Db.find(sql);
+        renderJson(rec);
+    }
     
+    //查询收货人下拉列表
+    public void searchTruckIn(){
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
+        String name = getPara("input");
+        List<Record> rec = null;
+        String sql = "select p.id,p.abbr name, p.phone, p.address from party p where p.type = 'TRUCK_IN' and office_id="+office_id;
+        if(!StringUtils.isBlank(name)){
+            sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
+        }
+        rec = Db.find(sql);
+        renderJson(rec);
+    } 
 }
