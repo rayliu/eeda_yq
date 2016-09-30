@@ -124,16 +124,16 @@
                     }){}%>
             </div>
             <div class="col-lg-4">
-                <div class="form-group">
+                <div class="form-group" id="release_radio_div">
                 	<input type="hidden" id="hidden_release_type" value="${shipment.release_type!''}">
                     <label class="search-label">放货方式</label>
-                    <label class="checkbox-inline">
+                    <label class="radio-inline">
                         <input type="radio" name='release_radio' value='tlx' checked>电放
                     </label>
-                    <label class="checkbox-inline">
+                    <label class="radio-inline">
                         <input type="radio" name='release_radio' value='swb'>SeaWayBill
                     </label>
-                    <label class="checkbox-inline">
+                    <label class="radio-inline">
                         <input type="radio" name='release_radio' value='obl'>OBL
                     </label>
                 </div>

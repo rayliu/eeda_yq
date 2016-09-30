@@ -378,6 +378,7 @@ li{
     list-style-type: none;
 }
 
+/* 海运 */
 .usedOceanInfo input{
     margin-top: 0px;
 }
@@ -393,4 +394,13 @@ li{
 #partyForm .col-lg-12>.form-group .search-control {
     width: 83.5%;
 }
+
+#release_radio_div .radio-inline{
+    padding-left: 0px;
+    padding-right: 5px;
+}
+#release_radio_div .radio-inline input[type=radio] {
+    margin-left: -15px;
+}
+
 /* ray added */
