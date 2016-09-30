@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.ArapAccountAuditLog;
+import models.UserLogin;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -20,6 +21,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PermissionConstant;
 
@@ -40,7 +42,8 @@ public class ProfitReportController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
     	String sql = "select * from ("
     			+ " select jo.id,jo.order_no, jo.customer_id, jo.pieces, jo.gross_weight, jo.volume,p.abbr,"
     			+ " (select sum(ifnull(joa.currency_total_amount,0)) from job_order_arap joa where joa.order_type='cost' and joa.order_id = jo.id) cost,"
@@ -48,6 +51,8 @@ public class ProfitReportController extends Controller {
     			+ " from job_order jo"
     			+ " left join job_order_arap joa on joa.order_id = jo.id"
     			+ " left join party p on p.id = jo.customer_id"
+    			+ " WHERE jo.office_id="+office_id
+    			+ " group by jo.id"
     			+ " )A where 1=1 ";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
