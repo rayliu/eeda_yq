@@ -147,7 +147,7 @@ public class CostPreInvoiceOrderController extends Controller {
 					costApplicationOrderRel.set("payee_unit", cname);
 				costApplicationOrderRel.save();
 				
-                if(order_type.equals("对账单")){
+                if(order_type.equals("应付对账单")){
 					ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
 					arapCostOrder.set("status", "付款申请中").update();
 				}else if(order_type.equals("成本单")){
@@ -178,9 +178,9 @@ public class CostPreInvoiceOrderController extends Controller {
 		String sqlTotal = "";
 		String sql = "select * from(select "
 				+ " ( SELECT sum(caor.pay_amount) total_pay FROM cost_application_order_rel caor"
-				+ " WHERE caor.cost_order_id = aco.id and caor.order_type='对账单'"
+				+ " WHERE caor.cost_order_id = aco.id and caor.order_type='应付对账单'"
 				+ " ) total_pay,"
-				+ " '对账单' order_type,"
+				+ " '应付对账单' order_type,"
 				+ " aco.id,"
 				+ " aco.order_no,"
 			    + " aco.status,"
@@ -306,7 +306,7 @@ public class CostPreInvoiceOrderController extends Controller {
 		Record rec = Db.findFirst(sqlTotal);
 		logger.debug("total records:" + rec.getLong("total"));
 
-		String sql = "select '对账单' order_type,"
+		String sql = "select '应付对账单' order_type,"
 				+ " aco.id,"
 			    + " aco.order_no,"
 			    + " aco.status,"
@@ -322,13 +322,13 @@ public class CostPreInvoiceOrderController extends Controller {
 				+ " ( SELECT ifnull(sum(caor.pay_amount), 0) total_pay FROM cost_application_order_rel caor"
 				+ " WHERE caor.cost_order_id = aco.id ) total_pay ,"
 				+ " ( SELECT caor.pay_amount this_pay FROM cost_application_order_rel caor"
-				+ " WHERE caor.cost_order_id = aco.id and caor.order_type='对账单' and caor.application_order_id = appl_order.id ) pay_amount ,"
-				+ " (aco.cost_amount - (SELECT ifnull(sum(caor.pay_amount), 0) total_pay FROM cost_application_order_rel caor WHERE caor.cost_order_id = aco.id and caor.order_type='对账单')) yufu_amount "
+				+ " WHERE caor.cost_order_id = aco.id and caor.order_type='应付对账单' and caor.application_order_id = appl_order.id ) pay_amount ,"
+				+ " (aco.cost_amount - (SELECT ifnull(sum(caor.pay_amount), 0) total_pay FROM cost_application_order_rel caor WHERE caor.cost_order_id = aco.id and caor.order_type='应付对账单')) yufu_amount "
 				+ " from arap_cost_application_order appl_order, cost_application_order_rel caor"
 				+ " LEFT JOIN arap_cost_order aco on aco.id = caor.cost_order_id"
 				+ " left join party p on p.id = aco.payee_id left join contact c on c.id = p.contact_id"
 				+ " left join user_login ul on ul.id = aco.create_by"
-				+ " where caor.application_order_id = appl_order.id and caor.order_type = '对账单' and appl_order.id = "
+				+ " where caor.application_order_id = appl_order.id and caor.order_type = '应付对账单' and appl_order.id = "
 				+ costPreInvoiceOrderId
 				+ " union"
 				+ " select"
@@ -607,10 +607,10 @@ public class CostPreInvoiceOrderController extends Controller {
 				String order_type = (String)map.get("order_type");
 
 				
-				if(order_type.equals("对账单")){
+				if(order_type.equals("应付对账单")){
 					ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
 					Double total_amount = arapCostOrder.getDouble("total_amount");
-					Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '对账单'",id);
+					Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '应付对账单'",id);
 					Double paid_amount = re.getDouble("total");
 					if(!total_amount.equals(paid_amount)){
 						arapCostOrder.set("status", "部分已复核").update();
@@ -696,7 +696,7 @@ public class CostPreInvoiceOrderController extends Controller {
 				String order_type = (String)map.get("order_type");
 
 				
-				if(order_type.equals("对账单")){
+				if(order_type.equals("应付对账单")){
 					ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
 					arapCostOrder.set("status", "付款申请中").update();
 				}else if(order_type.equals("成本单")){
@@ -738,7 +738,7 @@ public class CostPreInvoiceOrderController extends Controller {
 				String order_type = crel.getStr("order_type");
 				
 				//修改相关单据状态
-				if(order_type.equals("对账单")){
+				if(order_type.equals("应付对账单")){
 					ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
 					arapCostOrder.set("status", "已确认").update();
 				}else if(order_type.equals("成本单")){
@@ -810,10 +810,10 @@ public class CostPreInvoiceOrderController extends Controller {
 				String id = (String)map.get("id");
 				String order_type = (String)map.get("order_type");
 
-				if(order_type.equals("对账单")){
+				if(order_type.equals("应付对账单")){
 					ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
 					Double total_amount = arapCostOrder.getDouble("cost_amount");
-					Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '对账单'",id);
+					Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '应付对账单'",id);
 					Double paid_amount = re.getDouble("total");
 					if(!total_amount.equals(paid_amount)){
 						arapCostOrder.set("status", "部分已付款").update();
@@ -887,10 +887,10 @@ public class CostPreInvoiceOrderController extends Controller {
 				String id = (String)map.get("id");
 				String order_type = (String)map.get("order_type");
 
-				if(order_type.equals("对账单")){
+				if(order_type.equals("应付对账单")){
 					ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
 					Double total_amount = arapCostOrder.getDouble("cost_amount");
-					Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '对账单'",id);
+					Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '应付对账单'",id);
 					Double paid_amount = re.getDouble("total");
 					if(!total_amount.equals(paid_amount)){
 						arapCostOrder.set("status", "部分已复核").update();
