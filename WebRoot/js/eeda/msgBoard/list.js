@@ -11,7 +11,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             columns:[
                   {"data": "TITLE", 
                 	  "render": function ( data, type, full, meta ) {
-                		  return "<a href='/msgBoard/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+                		  return "<a href='#' class='edit' >"+data+"</a>";
                 	  }
                   },
 	              { "data": "CONTENT"}, 
@@ -37,6 +37,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 
           dataTable.ajax.url(url).load();
       };
+      
     	
 });
 });

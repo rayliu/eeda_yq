@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.UserLogin;
+
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -43,21 +45,38 @@ public class MsgBoardController extends Controller {
         r.set("create_stamp", new Date());
         r.set("creator", LoginUserController.getLoginUserId(this));
         Db.save("msg_board", r);
-        renderJson("{\"result\":true}");
+        redirect("/");
    	}
     
+    @Before(Tx.class)
+    public void saveOfMsgBoard() throws Exception {
+    	String title = getPara("radioTitle");
+    	String content = getPara("radioContent");
+    	Record r= new Record();
+    	r.set("title", title);
+    	r.set("content", content);
+    	r.set("create_stamp", new Date());
+    	r.set("creator", LoginUserController.getLoginUserId(this));
+    	Db.save("msg_board", r);
+    	redirect("/msgBoard");
+    }
+    
     public void list(){
-    	 String sLimit = "";
-         String pageIndex = getPara("draw");
-         if (getPara("start") != null && getPara("length") != null) {
-             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-         }
+    	
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+        	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
          
     	String sql = "select * from ("
     			+ " select m.*, u.c_name create_name, u1.c_name update_name"
         		+ " from msg_board m "
         		+ " left join user_login u on u.id = m.creator"
         		+ " left join user_login u1 on u1.id = m.updator"
+        		+ " where m.office_id="+office_id
         		+ " ) A where 1=1 ";
     	
     	String condition = DbUtils.buildConditions(getParaMap());

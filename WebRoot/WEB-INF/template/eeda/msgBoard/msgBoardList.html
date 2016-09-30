@@ -35,6 +35,11 @@
 	                            <div class="form-group button-bar" >
 	                                <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
 	                                <button id="resetBtn" class="btn btn-default btn-sm" type="reset">清空条件</button>
+	                                <% if(shiro.hasPermission("msg.create")){%>
+							          <a data-target='#addRadioDetail' data-toggle='modal'>
+							                <button id="addRadio" type="button" class="btn btn-primary btn-sm">发布公告</button>
+							          </a>
+							        <%}%>
 	                            </div>
                            </form>
                         
@@ -56,8 +61,30 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-          
         </div><!-- end of  .page-wrapper-->
+        
+<!-- 拟态框 -->
+<div class="modal fade" id="addRadioDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width:1000px;">
+    <div class="modal-content">
+      <div class="modal-header">发送公告详情</div>
+            <form action="/msgBoard/saveOfMsgBoard" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                          <label>公告标题</label>
+                          <input type="text" id="radioTitle" name="radioTitle" class="form-control" required><br>
+                          <label>公告正文</label>
+                          <textarea id="radioContent" name="radioContent" class="form-control" rows="5" required></textarea><br>
+                    </div>   
+                </div>
+                <div class="modal-footer">
+                    <button id="addRadioBtn" class="btn btn-primary" type="submit">发布公告</button>
+                    <button id="returnBtn" class="btn  btn-default" data-dismiss="modal">返回</button>
+                </div>
+            </form>
+    </div>
+  </div>
+</div>
 
 <%}%>
 <script>
