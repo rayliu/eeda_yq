@@ -85,6 +85,7 @@ import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
+import controllers.cms.jobOrder.CustomJobOrderController;
 import controllers.eeda.ModuleController;
 import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
@@ -208,6 +209,9 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/truckOrder", TruckOrderController.class, contentPath);
 		me.add("/currency", CurrencyController.class, contentPath);
 		me.add("/currencyRate", CurrencyRateController.class, contentPath);
+		
+		//cms 报关管理
+		me.add("/customJobOrder", CustomJobOrderController.class, contentPath);
 		
 		//ar= account revenue  应收条目处理
         me.add("/chargeConfirmList", controllers.arap.ar.ChargeItemConfirmController.class, contentPath);
