@@ -4,16 +4,17 @@
         <span style='color:red; display:initial;'>*</span>
     <%}%>
     </label>
-    <input type="text" class="form-control search-control" 
+    <% if(shiro.hasPermission("party.add")) {%>
+        <a href='#' data-toggle="modal" data-target="#partyModal"><i class="fa fa-plus-square-o"></i></a>
+    <%}%>
+    <input type="text" class="form-control" 
     id="${id}_input" name="${id}_input"
     placeholder="${placeholder!'请选择'}"  value="${display_value!''}" ${required!''} ${disabled!''}>
     <ul id='${id}_list' tabindex="-1" 
         class="pull-right dropdown-menu default dropdown-scroll" 
         style="top: 22%; left: 33%;">
     </ul>
-    <% if(shiro.hasPermission("party.add")) {%>
-        <a href='#' data-toggle="modal" data-target="#partyModal"><i class="fa fa-plus-square-o"></i></a>
-    <%}%>
+    
     <textarea id="${id}_info" name="${id}_info" class="form-control" rows="${rows!'5'}" style="margin-top: 5px;"
     ${required!''} ${disabled!''}>${textarea_value !''}</textarea>
     <input id="${id}" style="display: none;" name="${id}" value="${value!''}"/>
