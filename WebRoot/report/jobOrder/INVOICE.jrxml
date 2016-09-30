@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="74"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -32,7 +32,7 @@
 	<queryString>
 		<![CDATA[SELECT
 	jor.*, pr.abbr sp_name,
-	f. NAME charge_name_eng,
+	f.name_eng charge_name_eng,
 	u. NAME unit_name,
 	c. NAME currency_name,
 	josi.gross_weight,
@@ -86,7 +86,7 @@ LEFT JOIN job_order_shipment jos ON jos.order_id = jor.order_id
 LEFT JOIN job_order_shipment_item josi ON josi.order_id = jor.order_id
 LEFT JOIN unit u1 ON josi.unit_id = u1.id
 LEFT JOIN unit u ON u.id = jor.unit_id
-LEFT JOIN fin_item f ON f.id = jor.charge_id
+LEFT JOIN fin_item f ON f.id = jor.charge_eng_id
 LEFT JOIN currency c ON c.id = jor.currency_id
 LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo ON lo.id = jos.fnd
@@ -269,7 +269,7 @@ AND  $X{IN,jor.id,order_id}]]>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[Vel/Voy:]]></text>
+				<text><![CDATA[Vel / Voy:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="18" y="110" width="56" height="15" uuid="39eff2eb-c391-4a11-9411-9213a9a2817a"/>
