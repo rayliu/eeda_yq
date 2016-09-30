@@ -228,6 +228,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/costConfirm", controllers.arap.ap.CostConfirmController.class, contentPath);
         //运营报表
         me.add("/arapReport", controllers.arap.ArapReportController.class, contentPath);
+        me.add("/profitReport", controllers.report.ProfitReportController.class, contentPath);
         //应付报销单
         //ßme.add("/costReimbursement", controllers.arap.ap.CostReimbursementOrder.class, contentPath);
         //财务转账单
@@ -243,8 +244,8 @@ public class EedaConfig extends JFinalConfig {
         //audit log
         me.add("/accountAuditLog", controllers.arap.AccountAuditLogController.class, contentPath);
         
-        //运营报表
-        me.add("/profitReport", controllers.report.ProfitReportController.class, contentPath);
+        //发布公告
+        me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
 	}
 
     @Override

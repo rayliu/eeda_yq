@@ -93,6 +93,8 @@ public class MainController extends Controller {
             setAttr("user_login_id", currentUser.getPrincipal());
             setAttr("login_time",user.get("last_login"));
             setAttr("lastIndex",user.get("last_index") == null ? "pastOneDay" : user.get("last_index"));
+            //公告
+    		setAttr("msgBoardInfo",Db.find("select m.*,u.c_name from msg_board m left join user_login u on u.id = m.creator"));
             
             //查询两个月内即将过期的客户合同
 //            String sql ="select p.id, p.name, p.period_to from user_customer uc"
