@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.ArapCostOrder;
+import models.Party;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,6 +21,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PermissionConstant;
 
@@ -92,7 +97,47 @@ public class CostAcceptOrderController extends Controller {
         renderJson(map); 
     }
     
-    
+    @RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_CREATE})
+    public void create() {
+        String ids = getPara("itemIds");
+        String[] idArr=ids.split(",");
+        setAttr("ids",ids);
+        
+        String payee_id = "";
+        String payee_filter = "";
+        String payee_name = "";
+        String deposit_bank = "";
+        String bank_no = "";
+        String account_name = "";
+
+        ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(idArr[0]);
+        payee_id = arapCostOrder.getLong("sp_id").toString();
+
+        if(StringUtils.isNotEmpty(payee_id)){
+            Party contact = Party.dao.findFirst("select * from  party where id = ?",payee_id);
+            payee_filter = contact.getStr("company_name");
+            deposit_bank = contact.getStr("bank_name");
+            bank_no = contact.getStr("bank_no");
+            account_name = contact.getStr("receiver");
+        }
+        setAttr("payee_filter", payee_filter);
+        setAttr("deposit_bank", deposit_bank);
+        setAttr("bank_no", bank_no);
+        setAttr("account_name", account_name);
+        
+        setAttr("payee_id", payee_id);
+        setAttr("payee_name", payee_name);
+        
+            
+        List<Record> Account = null;
+        Account = Db.find("select * from fin_account where bank_name != '现金'");
+        setAttr("accountList", Account);
+        
+        setAttr("submit_name", LoginUserController.getLoginUserName(this));
+        setAttr("saveOK", false);
+        setAttr("status", "new");
+        render("/eeda/arap/CostAcceptOrder/payEdit.html");
+    } 
     
   
     
