@@ -170,7 +170,7 @@ $(document).ready(function() {
 	$('.checkbox input[type="checkbox"]').click(function(){
     	if($(this).prop('checked')){
     		var updater = loginUserName;
-    		var time = getTime();
+    		var time = eeda.getDate();
     		if($(this).val()=='declareSuccess'){
     			$('#declareSuccess_time_span').html(time);
     			$('#declareSuccess_updater_span').html(updater);

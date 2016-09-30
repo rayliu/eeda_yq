@@ -269,20 +269,6 @@ $(document).ready(function() {
     	}
     });
     
-    //取得当前时间
-    getTime = function(){
-	    var d = new Date();
-	    var year = d.getFullYear();
-	    var mon = d.getMonth() + 1;
-	    var day = d.getDate();
-	    var h = d.getHours(); 
-	    var m = d.getMinutes(); 
-	    var s = d.getSeconds(); 
-	    timeStr=year+"-"+(mon<10 ? "0" + mon : mon)+"-"+(day<10 ? "0"+ day : day)+" "+(h<10 ? "0"+ h : h)+":"+(m<10 ? "0" + m : m)+":"+(s<10 ? "0" +s : s);
-	    return timeStr;
-    }
-    
-	    
 	    
 });
 });
