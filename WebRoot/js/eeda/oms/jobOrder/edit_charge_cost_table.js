@@ -203,7 +203,8 @@ $(document).ready(function() {
             				id: 'CHARGE_ENG_ID',
             				value: data,
             				display_value: full.CHARGE_NAME_ENG,
-            				style:'width:200px'
+            				style:'width:200px',
+            				disabled:'disabled'
             					}
             			);
             			return field_html;
@@ -305,7 +306,7 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
                         	return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
                 	}else{
-                        	return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control" />';
+                        	return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control" disabled/>';
                 	}
                 }
             },
@@ -331,7 +332,7 @@ $(document).ready(function() {
 	                if(full.AUDIT_FLAG == 'Y'){
 	                    	return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
 	                }else{
-	                    	return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control" />';
+	                    	return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
 	                }
               }
             },
