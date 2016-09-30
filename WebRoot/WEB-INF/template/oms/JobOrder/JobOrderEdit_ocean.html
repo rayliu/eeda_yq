@@ -231,7 +231,7 @@
                <div class="col-lg-4">
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'export_date', 
-                           label:'出口日期(出货时间)', 
+                           label:'出货时间', 
                            value:shipment.export_date!''
                        }){}%>
                </div>
@@ -243,10 +243,14 @@
                        }){}%>
                </div>
                <div class="col-lg-4">
-               <input type="hidden" id="hidden_wait_overseaCustom" value="${shipment.wait_overseaCustom!''}">
-               <label class="checkbox-inline">                 
-                      <input id="wait_overseaCustom" type="checkbox" value="" >待海外系统申报</input>
-               </label>
+                  <input type="hidden" id="hidden_wait_overseaCustom" value="${shipment.wait_overseaCustom!''}">
+                  <label class="checkbox-inline">                 
+                        <input id="wait_overseaCustom" type="checkbox">待海外系统申报
+                  </label>
+                  <input type="hidden" id="hidden_prepaid" value="${shipment.prepaid!''}">
+                  <label class="checkbox-inline">                 
+                      <input id='prepaid' type="checkbox">预付
+                  </label>
                </div>      
 
            </div>
@@ -266,10 +270,7 @@
 
               </div>
               <div class="col-lg-4">
-              <input type="hidden" id="hidden_prepaid" value="${shipment.prepaid!''}">
-                 <label class="checkbox-inline">                 
-                      <input id='prepaid' type="checkbox" value='' >预付</input>
-                 </label>
+                  
               </div>   
            </div>
            
