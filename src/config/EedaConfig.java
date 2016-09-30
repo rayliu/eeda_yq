@@ -102,6 +102,7 @@ import controllers.profile.CustomController;
 import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.UnitController;
+import controllers.report.OrderStatusController;
 
 public class EedaConfig extends JFinalConfig {
     private Logger logger = Logger.getLogger(EedaConfig.class);
@@ -250,6 +251,7 @@ public class EedaConfig extends JFinalConfig {
         
         //发布公告
         me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
+        me.add("/orderStatus", OrderStatusController.class, contentPath);
 	}
 
     @Override
