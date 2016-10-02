@@ -118,7 +118,15 @@
       var type = "${type!''}";
  </script>
 <script>
-    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], 
+        function (common) {
         requirejs(['app/oms/jobOrder/list']);
+    },
+    function(error) {
+        console.error('报错了: ',error);
+        //error.requireModules : is Array of all failed modules
+        var failedId = error.requireModules && error.requireModules[0];
+        console.error(failedId);
+        console.error(error.message);
     });
 </script>
