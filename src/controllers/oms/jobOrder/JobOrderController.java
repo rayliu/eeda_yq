@@ -197,7 +197,7 @@ public class JobOrderController extends Controller {
    			//update
    			jobOrder = JobOrder.dao.findById(id);
    			
-   			if(type!=jobOrder.get("type")){
+   			if(!type.equals(jobOrder.get("type"))){
 	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type));
 	            jobOrder.set("order_no", order_no);
    			}
