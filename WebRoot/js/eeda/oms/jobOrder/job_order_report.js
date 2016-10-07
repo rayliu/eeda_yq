@@ -253,9 +253,6 @@ $(document).ready(function() {
     	if($('#vessel').val()==''){
     		alert+='船名<br><br>';
     	}
-    	if($('#route').val()==''){
-    		alert+='航线<br><br>';
-    	}
     	if($('#pol').val()==''){
     		alert+='装货港 POL<br><br>';
     	}
