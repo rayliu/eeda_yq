@@ -225,7 +225,7 @@ eeda.refreshUrl = refreshUrl;
 				  }
 				  tableFieldList.empty();
 				  for(var i = 0; i < data.length; i++)
-					  tableFieldList.append("<li><a tabindex='-1' class='fromLocationItem' dataId='"+data[i].ID
+					  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID
 							  +"' dataName='"+data[i].NAME+"' >"+data[i].NAME+"</a></li>");
 				  tableFieldList.css({ 
 					  left:$(me).offset().left+"px", 
@@ -234,6 +234,7 @@ eeda.refreshUrl = refreshUrl;
 				  tableFieldList.show();
 				  eeda._inputField = inputField;
 				  eeda._hiddenField = hiddenField;
+          tableFieldList.find('li').first().focus();
 			  },'json');
 		  });
 		  
@@ -245,6 +246,17 @@ eeda.refreshUrl = refreshUrl;
 			  var dataId = $(this).attr('dataId');
 			  hiddenField.val(dataId);//id
 		  });
+
+      tableFieldList.on('keydown', 'li', function(e){
+        if (e.keyCode == 13) {
+          var inputField = eeda._inputField;
+          var hiddenField = eeda._hiddenField;
+          inputField.val($(this).text());//名字
+          tableFieldList.hide();
+          var dataId = $(this).attr('dataId');
+          hiddenField.val(dataId);//id
+        }
+      });
 		  
 		  // 1 没选中客户，焦点离开，隐藏列表
 		  $('table input[name='+el_name+'_input]').on('blur', function(){
@@ -260,6 +272,21 @@ eeda.refreshUrl = refreshUrl;
 		  tableFieldList.on('mousedown', function(){
 			  return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
 		  });
+
+      tableFieldList.on('focus', 'li', function() {
+          $this = $(this);
+          $this.addClass('active').siblings().removeClass();
+          // $this.closest('div.container').scrollTop($this.index() * $this.outerHeight());
+      }).on('keydown', 'li', function(e) {
+          $this = $(this);
+          if (e.keyCode == 40) {
+              $this.next().focus();
+              return false;
+          } else if (e.keyCode == 38) {
+              $this.prev().focus();
+              return false;
+          }
+      }).find('li').first().focus();
 	  };
    
     eeda.buildTableDetail=function(table_id, deletedTableIds){
@@ -353,7 +380,7 @@ eeda.refreshUrl = refreshUrl;
                   }
                   tableFieldList.empty();
                   for(var i = 0; i < data.length; i++)
-                      tableFieldList.append("<li><a tabindex='-1' class='item' dataId='"+data[i].ID
+                      tableFieldList.append("<li tabindex='"+i+"'><a class='item' dataId='"+data[i].ID
                               +"' dataName='"+data[i].NAME+"' "
                               +" phone='"+data[i].PHONE+"' "
                               +" addr='"+data[i].ADDRESS+"' >"+data[i].NAME
@@ -410,7 +437,7 @@ eeda.refreshUrl = refreshUrl;
                   }
                   tableFieldList.empty();
                   for(var i = 0; i < data.length; i++)
-                      tableFieldList.append("<li><a tabindex='-1' class='item' dataId='"+data[i].ID
+                      tableFieldList.append("<li tabindex='"+i+"'><a class='item' dataId='"+data[i].ID
                               +"' dataName='"+data[i].NAME+"' "
                               +" phone='"+data[i].PHONE+"' "
                               +" addr='"+data[i].ADDRESS+"' >"+data[i].NAME
