@@ -181,21 +181,24 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'pieces', 
                                     label:'件数', 
-                                    value: order.pieces!planOrderItem.pieces!''
+                                    value: order.pieces!planOrderItem.pieces!'',
+                                    placeholder:'请输入数字'
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'net_weight', 
                                     label:'净重(KG)', 
-                                    value: order.net_weight!planOrderItem.net_weight!''
+                                    value: order.net_weight!planOrderItem.net_weight!'',
+                                    placeholder:'请输入数字'
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'gross_weight', 
                                     label:'毛重(KG)', 
-                                    value: order.gross_weight!planOrderItem.gross_weight!''
+                                    value: order.gross_weight!planOrderItem.gross_weight!'',
+                                    placeholder:'请输入数字'
                                 }){}%>
                         </div>
                     </div>
@@ -204,7 +207,8 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'volume', 
                                     label:'体积(CBM)', 
-                                    value: order.volume!planOrderItem.volume!''
+                                    value: order.volume!planOrderItem.volume!'',
+                                    placeholder:'请输入数字'
                                 }){}%>
                         </div>
                         <div class="col-lg-8">
