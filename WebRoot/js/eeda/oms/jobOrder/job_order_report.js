@@ -277,7 +277,7 @@ $(document).ready(function() {
 			$('#head_customerTel').val(arry[1]);
 			$('#head_endPlace').val($('#ocean_shipper_input').val());
 			$('#head_startPlace').val(loginUserName);
-			$('#head_date').val(getTime());
+			$('#head_date').val(eeda.getDate());
 			$('#oceanHeadDetailBtn1').click();
 		}
     })
