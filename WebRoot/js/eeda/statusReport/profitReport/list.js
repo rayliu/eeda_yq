@@ -29,7 +29,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "data": "CHARGE",
             	  "render": function ( data, type, full, meta ) {
             		  if(data)
-            			  return ((data-full.COST)/data).toFixed(2);
+            			  return ((data-full.COST)*100/data).toFixed(2) + '%';
             		  else
             			  return '';
                   }
