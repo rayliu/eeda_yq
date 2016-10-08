@@ -86,6 +86,7 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.cms.jobOrder.CustomJobOrderController;
+import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.ModuleController;
 import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
@@ -213,6 +214,7 @@ public class EedaConfig extends JFinalConfig {
 		
 		//cms 报关管理
 		me.add("/customJobOrder", CustomJobOrderController.class, contentPath);
+		me.add("/customPlanOrder", CustomPlanOrderController.class, contentPath);
 		
 		//ar= account revenue  应收条目处理
         me.add("/chargeConfirmList", controllers.arap.ar.ChargeItemConfirmController.class, contentPath);
