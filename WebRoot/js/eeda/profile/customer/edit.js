@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_doc_table'], function ($, metisMenu) { 
     $(document).ready(function() {
   
         $('#menu_profile').addClass('active').find('ul').addClass('in');
@@ -156,9 +156,22 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn'], functio
                 }
             });
         });
+        
+        $('#saveBtn').click(function(){
+        	$('#saveBtn').attr('disabled', true);
+        	$.post('/customer/save', $('#customerForm').serialize(), function(data){
+        		eeda.refreshUrl("edit/"+data.ID);
+        		$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+        		$('#partyId').val(data.ID);
+        		$('#saveBtn').attr('disabled', false);
+        		$("#fileuploadSpan").show();
+        	},'json').fail(function(){
+                $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+                $('#saveBtn').attr('disabled', false);
+              });
+        })
 
         
 
     });
-
 });

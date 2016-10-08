@@ -12,7 +12,6 @@ $(document).ready(function() {
         e.preventDefault();
         var tr = $(this).parent().parent();
         var id = tr.attr('id');
-        var order_id = $('#order_id').val();
         
          $.post('/jobOrder/deleteDoc', {docId:id}, function(data){
         	 if(data.result==true){

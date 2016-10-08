@@ -2,6 +2,7 @@
 
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -29,6 +30,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.upload.UploadFile;
 
 import controllers.util.ParentOffice;
 import controllers.util.PermissionConstant;
@@ -158,7 +160,9 @@ public class CustomerController extends Controller {
 //        Contact contact = Contact.dao.findFirst("select c.* from contact c,party p where c.id=p.contact_id and p.id="
 //                + id);
 //        setAttr("contact", contact);
-
+        String sql = "select jod.*,u.c_name from party_doc jod left join user_login u on jod.uploader=u.id "
+    			+ " where party_id=? order by jod.id";
+        setAttr("docList", Db.find(sql,id));
         render("/eeda/profile/customer/CustomerEdit.html");
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_DELETE})
@@ -187,6 +191,7 @@ public class CustomerController extends Controller {
             party = Party.dao.findById(id);
             party.set("last_modified_by", userId);
             party.set("last_updated_stamp", createDate);
+            party.set("registration", getPara("registration"));
             party.set("code", getPara("code"));
             party.set("abbr", getPara("abbr"));
             party.set("company_name", getPara("company_name"));
@@ -216,6 +221,7 @@ public class CustomerController extends Controller {
             party.set("create_date", createDate);
             party.set("last_modified_by", userId);
             party.set("last_updated_stamp", createDate);
+            party.set("registration", getPara("registration"));
             party.set("code", getPara("code"));
             party.set("abbr", getPara("abbr"));
             party.set("company_name", getPara("company_name"));
@@ -251,8 +257,7 @@ public class CustomerController extends Controller {
             
         }
 
-        setAttr("saveOK", true);
-            redirect("/customer");
+    	renderJson(party);
     }
 
    
@@ -473,6 +478,66 @@ public class CustomerController extends Controller {
         partyList = Db.find(sql);
 
         renderJson(partyList);
+    }
+    
+    
+  //上传相关文档
+    @Before(Tx.class)
+    public void saveDocFile(){
+    	String id = getPara("order_id");
+    	List<UploadFile> fileList = getFiles("customer_doc");
+    	
+		for (int i = 0; i < fileList.size(); i++) {
+    		File file = fileList.get(i).getFile();
+    		String fileName = file.getName();
+    		
+    		Record r = new Record();
+    		r.set("party_id", id);
+			r.set("uploader", LoginUserController.getLoginUserId(this));
+			r.set("doc_name", fileName);
+			r.set("upload_time", new Date());
+			Db.save("party_doc",r);
+		}
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("result", true);
+    	renderJson(resultMap);
+    }
+    
+    
+  //删除相关文档
+    @Before(Tx.class)
+    public void deleteDoc(){
+    	String id = getPara("docId");
+    	Record r = Db.findById("party_doc", id);
+    	String fileName = r.getStr("doc_name");
+    	Map<String,Object> resultMap = new HashMap<String,Object>();
+    	
+    	String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\customer_doc\\"+fileName;
+        File file = new File(filePath);
+        if (file.exists() && file.isFile()) {
+            boolean result = file.delete();
+            Db.delete("party_doc", r);
+            resultMap.put("result", result);
+        }else{
+        	resultMap.put("result", "文件不存在可能已被删除!");
+        }
+        renderJson(resultMap);
+    }
+    
+  //异步刷新字表
+    public void tableList(){
+    	String order_id = getPara("order_id");
+    	String sql = "select jod.*,u.c_name from party_doc jod left join user_login u on jod.uploader=u.id "
+    			+ " where party_id=? order by jod.id";
+    	List<Record> list = Db.find(sql,order_id);
+    	
+    	Map map = new HashMap();
+        map.put("sEcho", 1);
+        map.put("iTotalRecords", list.size());
+        map.put("iTotalDisplayRecords", list.size());
+        map.put("aaData", list);
+        renderJson(map); 
     }
     
     
