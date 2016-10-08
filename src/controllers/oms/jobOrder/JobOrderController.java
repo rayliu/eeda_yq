@@ -271,6 +271,10 @@ public class JobOrderController extends Controller {
 		DbUtils.handleList(charge_list, id, JobOrderArap.class, "order_id");
 		List<Map<String, String>> chargeCost_list = (ArrayList<Map<String, String>>)dto.get("chargeCost_list");
 		DbUtils.handleList(chargeCost_list, id, JobOrderArap.class, "order_id");
+		
+		//相关文档
+		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
+		DbUtils.handleList(doc_list, id, JobOrderDoc.class, "order_id");
 
 		long creator = jobOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);

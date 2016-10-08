@@ -148,6 +148,8 @@ $(document).ready(function() {
        //费用明细，应收，应付
         order.charge_list = charge_list;
         order.chargeCost_list = chargeCost_list;
+        //相关文档
+        order.doc_list = itemOrder.buildDocItem();
        
         //异步向后台提交数据
         $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
