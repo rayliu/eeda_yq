@@ -554,9 +554,22 @@ public class ServiceProviderController extends Controller {
     public void searchUnit(){
     	String input = getPara("input");
     	List<Record> recs = null;
-    	String sql = "select id,GROUP_CONCAT(name,name_eng) name from unit";
+    	String sql = "select id,GROUP_CONCAT(name,name_eng) name from unit where type='order'";
     	if(!StringUtils.isBlank(input)){
-    		sql+=" where name like '%" + input + "%' "+"or name_eng like '%"+input+"%'";
+    		sql+=" and name like '%" + input + "%' "+"or name_eng like '%"+input+"%'";
+    	}
+    	sql+=" group by id";
+    	recs = Db.find(sql);
+    	renderJson(recs);
+    }
+    
+    //查询工作单应收应付的单位下拉列表
+    public void searchChargeUnit(){
+    	String input = getPara("input");
+    	List<Record> recs = null;
+    	String sql = "select id, name from unit where type='charge'";
+    	if(!StringUtils.isBlank(input)){
+    		sql+=" and name like '%" + input + "%' "+"or name_eng like '%"+input+"%'";
     	}
     	sql+=" group by id";
     	recs = Db.find(sql);

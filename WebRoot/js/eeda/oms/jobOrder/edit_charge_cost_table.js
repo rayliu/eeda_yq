@@ -69,7 +69,7 @@ $(document).ready(function() {
         eeda.bindTableField('SP_ID','/serviceProvider/searchCompany','');
         eeda.bindTableField('CHARGE_ID','/finItem/search','');
         eeda.bindTableField('CHARGE_ENG_ID','/finItem/search_eng','');
-        eeda.bindTableField('UNIT_ID','/serviceProvider/searchUnit','');
+        eeda.bindTableField('UNIT_ID','/serviceProvider/searchChargeUnit','');
         eeda.bindTableField('CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
     
