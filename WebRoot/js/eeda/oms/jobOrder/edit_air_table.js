@@ -65,7 +65,7 @@ $(document).ready(function() {
              $(el).trigger('keyup');
          });
 
-        eeda.bindTableField('AIR_COMPANY','/serviceProvider/searchAirCompany','air');
+        eeda.bindTableField('air_table','AIR_COMPANY','/serviceProvider/searchAirCompany','air');
     };
     //------------事件处理
     var cargoTable = eeda.dt({

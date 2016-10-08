@@ -66,11 +66,11 @@ $(document).ready(function() {
     
     //------------事件处理
     var bindFieldEvent=function(){	
-        eeda.bindTableField('SP_ID','/serviceProvider/searchCompany','');
-        eeda.bindTableField('CHARGE_ID','/finItem/search','');
-        eeda.bindTableField('CHARGE_ENG_ID','/finItem/search_eng','');
-        eeda.bindTableField('UNIT_ID','/serviceProvider/searchChargeUnit','');
-        eeda.bindTableField('CURRENCY_ID','/serviceProvider/searchCurrency','');
+        eeda.bindTableField('cost_table','SP_ID','/serviceProvider/searchCompany','');
+        eeda.bindTableField('cost_table','CHARGE_ID','/finItem/search','');
+        eeda.bindTableField('cost_table','CHARGE_ENG_ID','/finItem/search_eng','');
+        eeda.bindTableField('cost_table','UNIT_ID','/serviceProvider/searchChargeUnit','');
+        eeda.bindTableField('cost_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
     
     var costTable = eeda.dt({

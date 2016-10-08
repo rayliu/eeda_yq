@@ -57,7 +57,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         };
         
         var bindFieldEvent=function(){
-        	eeda.bindTableField('UNIT_ID','/serviceProvider/searchUnit','');
+        	eeda.bindTableField('ocean_cargo_table','UNIT_ID','/serviceProvider/searchUnit','');
         };
         //------------事件处理
     	var cargoTable = eeda.dt({

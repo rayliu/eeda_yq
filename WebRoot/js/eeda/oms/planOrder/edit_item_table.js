@@ -65,11 +65,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	    $(el).trigger('keyup');
 	    	});
 
-	    	eeda.bindTableField('UNIT_ID','/serviceProvider/searchUnit','');
-	    	eeda.bindTableField('POR','/location/searchPort','');
-	    	eeda.bindTableField('POL','/location/searchPort','');
-	    	eeda.bindTableField('POD','/location/searchPort','');
-	    	eeda.bindTableField('CARRIER','/serviceProvider/searchCarrier','');
+	    	eeda.bindTableField('cargo_table','UNIT_ID','/serviceProvider/searchUnit','');
+	    	eeda.bindTableField('cargo_table','POR','/location/searchPort','');
+	    	eeda.bindTableField('cargo_table','POL','/location/searchPort','');
+	    	eeda.bindTableField('cargo_table','POD','/location/searchPort','');
+	    	eeda.bindTableField('cargo_table','CARRIER','/serviceProvider/searchCarrier','');
 	    };
 
 	    //------------事件处理

@@ -212,30 +212,37 @@ eeda.refreshUrl = refreshUrl;
    };
    
    //dataTable里的下拉列表，查询参数为input,url,添加的参数para,下拉显示的数据库字段
-   eeda.bindTableField = function(el_name,url,para) {
+   eeda.bindTableField = function(table_id, el_name,url,para) {
 		  var tableFieldList = $('#table_input_field_list');
-		  $('table input[name='+el_name+'_input]').on('keyup click', function(event){
+		  $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
+
 			  var me = this;
 			  var inputField = $(this);
 			  var hiddenField = $(this).parent().find('input[name='+el_name+']');
 			  var inputStr = inputField.val();
+
+        if (event.keyCode == 40) {
+            tableFieldList.find('li').first().focus();
+            return false;
+        }
+
 			  $.get(url, {input:inputStr,para:para}, function(data){
-				  if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
-					  return;
-				  }
-				  tableFieldList.empty();
-				  for(var i = 0; i < data.length; i++)
-					  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID
-							  +"' dataName='"+data[i].NAME+"' >"+data[i].NAME+"</a></li>");
-				  tableFieldList.css({ 
-					  left:$(me).offset().left+"px", 
-					  top:$(me).offset().top+28+"px" 
-				  });
-				  tableFieldList.show();
-				  eeda._inputField = inputField;
-				  eeda._hiddenField = hiddenField;
-          tableFieldList.find('li').first().focus();
-			  },'json');
+  				  if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+  					  return;
+  				  }
+  				  tableFieldList.empty();
+  				  for(var i = 0; i < data.length; i++)
+  					  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID
+  							  +"' dataName='"+data[i].NAME+"' >"+data[i].NAME+"</a></li>");
+  				  tableFieldList.css({ 
+  					  left:$(me).offset().left+"px", 
+              top:$(me).offset().top+28+"px" 
+            });
+            tableFieldList.show();
+            eeda._inputField = inputField;
+            eeda._hiddenField = hiddenField;
+            //tableFieldList;
+  	    },'json');
 		  });
 		  
 		  tableFieldList.on('click', '.fromLocationItem', function(e){
@@ -259,13 +266,18 @@ eeda.refreshUrl = refreshUrl;
       });
 		  
 		  // 1 没选中客户，焦点离开，隐藏列表
-		  $('table input[name='+el_name+'_input]').on('blur', function(){
-			  var hiddenField = eeda._hiddenField;
+		  $(document).on('click', function(event){
+        
+          if (tableFieldList.is(':visible') ){
+              var clickedEl = $(this);
+              var hiddenField = eeda._hiddenField;
+          
+              if ($(this).find('a').val().trim().length ==0) {
+                hiddenField.val('');
+              };
+              tableFieldList.hide();
+          }
 			  
-			  if ($(this).val().trim().length ==0) {
-				  hiddenField.val('');
-			  };
-			  tableFieldList.hide();
 		  });
 		  
 		  // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表

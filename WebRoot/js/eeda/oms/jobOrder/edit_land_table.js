@@ -74,7 +74,7 @@ $(document).ready(function() {
     	    $(el).trigger('keyup');
     	});
     	
-    	eeda.bindTableField('TRANSPORT_COMPANY','/serviceProvider/searchTruckCompany','truck');
+    	eeda.bindTableField('land_table','TRANSPORT_COMPANY','/serviceProvider/searchTruckCompany','truck');
         eeda.bindTableFieldTruckOut('CONSIGNOR');
         eeda.bindTableFieldTruckIn('CONSIGNEE');
     };

@@ -113,11 +113,11 @@ $(document).ready(function() {
     };
     
     var bindFieldEvent=function(){
-    	eeda.bindTableField('SP_ID','/serviceProvider/searchCompany','');
-        eeda.bindTableField('CHARGE_ID','/finItem/search','');
-        eeda.bindTableField('CHARGE_ENG_ID','/finItem/search_eng','');
-        eeda.bindTableField('UNIT_ID','/serviceProvider/searchUnit','');
-        eeda.bindTableField('CURRENCY_ID','/serviceProvider/searchCurrency','');
+    	eeda.bindTableField('charge_table','SP_ID','/serviceProvider/searchCompany','');
+        eeda.bindTableField('charge_table','CHARGE_ID','/finItem/search','');
+        eeda.bindTableField('charge_table','CHARGE_ENG_ID','/finItem/search_eng','');
+        eeda.bindTableField('charge_table','UNIT_ID','/serviceProvider/searchUnit','');
+        eeda.bindTableField('charge_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
 
     
