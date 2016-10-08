@@ -1,0 +1,436 @@
+
+<input type="hidden" id="shipment_id" value="${shipment.id!''}">
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOceanInfo" aria-expanded="false" class="collapsed">
+            <i id='collapseOceanIcon' class="fa 
+            <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用海运信息
+            </a>
+        </h4>
+    </div>
+    <div id="collapseOceanInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+        <div class="panel-body">
+            <ul id="usedOceanInfo" class="usedOceanInfo">
+              <%for(userInfo in usedOceanInfo![]){%>
+                    <li shipper_id="${userInfo.shipper}"
+                        shipper_abbr="${userInfo.shipperAbbr}"
+                        shipper_info="${userInfo.shipper_info}"
+                        consignee_id="${userInfo.consignee}"
+                        consignee_abbr="${userInfo.consigneeAbbr}"
+                        consignee_info="${userInfo.consignee_info}"
+                        notify_id="${userInfo.notify_party}"
+                        notify_abbr="${userInfo.notify_partyAbbr}"
+                        notify_info="${userInfo.notify_info}"
+                        por_id="${userInfo.por}" 
+                        pol_id="${userInfo.pol}" 
+                        pod_id="${userInfo.pod}" 
+                        fnd_id="${userInfo.fnd}" 
+                        por_name="${userInfo.por_name}" 
+                        pol_name="${userInfo.pol_name}" 
+                        pod_name="${userInfo.pod_name}" 
+                        fnd_name="${userInfo.fnd_name}" >
+                      <div class="radio">
+                        <label>
+                            <input type="radio" value="1" name="usedOceanInfo" style="margin-top: 0px;">
+                            <span>Shipper:${userInfo.shipperAbbr}, Consignee:${userInfo.consigneeAbbr}, NotifyParty: ${userInfo.notify_partyAbbr}</span><br>
+                            <span class="port">POR:${userInfo.por_name}, POL:${userInfo.pol_name}, POD:${userInfo.pod_name}，FND:${userInfo.fnd_name}</span> 
+                        </label>
+                      </div>
+                    </li>
+              <%}%>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<form id = "shipmentForm">
+    <div class="form-group">  <!--  form row  -->
+        <div class="row">
+        	
+            <div class="col-lg-4"><!--  三列排版  -->
+                <%include("/eeda/component/form/inputSelectArea.html", 
+                    {   id:'ocean_shipper', 
+                        label:'发货人Shipper', 
+                        display_value:shipment.shipperAbbr!'',
+                        value:shipment.shipper!'',
+                        textarea_value:shipment.shipper_info!''
+                    }){}%>
+            </div>
+            <div class="col-lg-4"><!--  三列排版  -->
+                <%include("/eeda/component/form/inputSelectArea.html", 
+                    {   id:'ocean_consignee', 
+                        label:'收货人Consignee', 
+                        display_value:shipment.consigneeAbbr!'',
+                        value:shipment.consignee!'',
+                        textarea_value:shipment.consignee_info!''
+                    }){}%>
+            </div>
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/inputSelectArea.html", 
+                    {
+                        id:'ocean_notify_party', 
+                        label:'通知人NotifyParty', 
+                        display_value:shipment.notify_partyAbbr!'',
+                        value:shipment.notify_party!'',
+                        textarea_value:shipment.notify_party_info!''
+                    }){} %>
+           </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/inputPartyField.html", 
+                    {   id:'ocean_booking_agent', 
+                        label:'订舱代理', 
+                        type:'booking_agent',
+                        value:shipment.booking_agent!'',
+                        display_value:shipment.booking_agent_name!''
+                    }){}%>
+            </div>
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/inputPartyField.html", 
+                    {   id:'carrier',
+                        type:  'carrier',
+                        label: '船公司', 
+                        value: shipment.carrier!planOrderItem.carrier!'',
+                        display_value: shipment.carrier_name!portCreate.carrier_name!''
+                    }){}%>
+            </div>
+             <div class="col-lg-4">
+                <%include("/eeda/component/form/inputPartyField.html", 
+                    {   id:'head_carrier',
+                        type:  'head_car',
+                        label: '头程船公司', 
+                        value: shipment.head_carrier!'',
+                        display_value: shipment.head_carrier_name!''
+                    }){}%>
+            </div>
+           
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/inputField.html", 
+                    {   id:'hbl_no', 
+                        label:'HBL号码', 
+                        value:shipment.hbl_no!''
+                    }){}%>
+            </div>
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/inputField.html", 
+                    {   id:'mbl_no', 
+                        label:'MBL号码', 
+                        value:shipment.mbl_no!''
+                    }){}%>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                	<input type="hidden" id="hidden_release_type" value="${shipment.release_type!''}">
+                    <label class="search-label">放货方式</label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name='release_radio' value='tlx' checked>电放
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name='release_radio' value='swb'>SeaWayBill
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name='release_radio' value='obl'>OBL
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/inputField.html", 
+                    {   id:'vessel', 
+                        label:'船名', 
+                        value:shipment.vessel!planOrderItem.vessel!''
+                    }){}%>
+            </div>
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/inputField.html", 
+                    {   id:'route', 
+                        label:'航线',
+                        value:shipment.route!''
+                    }){}%>
+            </div>
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/inputField.html", 
+                    {   id:'voyage', 
+                        label:'航次',
+                        value:shipment.voyage!planOrderItem.voyage!''
+                    }){}%>
+            </div>  
+         </div>
+           <div class="row">
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/inputPortField.html", 
+                       {   id:'por', 
+                           label:'收货港 POR', 
+                           value:shipment.por!planOrderItem.por!'',
+                           display_value:port.por_name!portCreate.por_name!''
+                       }){}%>
+               </div>
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/inputPortField.html", 
+                       {   id:'pol', 
+                           label:'装货港 POL', 
+                           value:shipment.pol!planOrderItem.pol!'',
+                           display_value:port.pol_name!portCreate.pol_name!''
+                       }){}%>
+               </div>
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/inputPortField.html", 
+                       {   id:'hub', 
+                           label:'转运港 HUB',
+                           value:shipment.hub!'',
+                           display_value:port.hub_name!''
+                       }){}%>
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/inputPortField.html", 
+                       {   id:'pod', 
+                           label:'卸货港 POD', 
+                           value:shipment.pod!planOrderItem.pod!'',
+                           display_value:port.pod_name!portCreate.pod_name!''
+                       }){}%>
+               </div>
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/inputPortAndCityField.html", 
+                       {   id:'fnd', 
+                           label:'目的地 FND', 
+                           value:shipment.fnd!planOrderItem.pod!'',
+                           display_value:port.fnd_name!portCreate.pod_name!''
+                       }){}%>
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/dateInputField.html", 
+                       {   id:'etd', 
+                           label:'ETD',
+                           value:shipment.etd!planOrderItem.etd!''
+                       }){}%>
+               </div>
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/dateInputField.html", 
+                       {   id:'eta', 
+                           label:'ETA', 
+                           value:shipment.eta!planOrderItem.eta!''
+                       }){}%>
+               </div>
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/inputField.html", 
+                       {   id:'SONO', 
+                           label:'SO NO', 
+                           value:shipment.SONO!''
+                       }){}%>
+               </div>
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/dateInputField.html", 
+                       {   id:'export_date', 
+                           label:'出口日期(出货时间)', 
+                           value:shipment.export_date!''
+                       }){}%>
+               </div>
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/dateInputField.html", 
+                       {   id:'closing_date', 
+                           label:'截关日期',
+                           value:shipment.closing_date!planOrderItem.cls!''
+                       }){}%>
+               </div>
+               <div class="col-lg-4">
+               <input type="hidden" id="hidden_wait_overseaCustom" value="${shipment.wait_overseaCustom!''}">
+               <label class="checkbox-inline">                 
+                      <input id="wait_overseaCustom" type="checkbox" value="" >待海外系统申报</input>
+               </label>
+               </div>      
+
+           </div>
+           <div class="row">
+               <div class="col-lg-4">                
+                 <%include("/eeda/component/form/inputSelectAreaOfOverseaAgent.html", 
+                    {   id:'oversea_agent',
+                        label: '海外代理', 
+                        type:'oversea_agent',
+                        value: shipment.oversea_agent!'',
+                        display_value: shipment.oversea_agent_name!'',
+                        textarea_value:shipment.oversea_agent_info!''
+                    }){}%>
+              </div>
+              <div class="col-lg-4">
+
+
+              </div>
+              <div class="col-lg-4">
+              <input type="hidden" id="hidden_prepaid" value="${shipment.prepaid!''}">
+                 <label class="checkbox-inline">                 
+                      <input id='prepaid' type="checkbox" value='' >预付</input>
+                 </label>
+              </div>   
+           </div>
+           
+           <div class="row">
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/inputArea.html", 
+                       {   id:'ocean_shipping_mark', 
+                           label:'唛头', 
+                           value:shipment.shipping_mark!''
+                       }){}%>
+               </div>
+               
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/inputArea.html", 
+                       {   id:'ocean_cargo_desc', 
+                           label:'货物描述', 
+                           value:shipment.cargo_desc!''
+                       }){}%>
+               </div>
+               
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/inputArea.html", 
+                       {   id:'ocean_booking_mark', 
+                           label:'booking备注', 
+                           value:shipment.booking_mark!''
+                       }){}%>
+               </div>
+              
+           </div>
+           <div class="row">
+               <div class="col-lg-4">
+                   <%include("/eeda/component/form/inputField.html", 
+                       {   id:'vgm', 
+                           label:'总重量VGM', 
+                           value:shipment.vgm!''
+                       }){}%>
+               </div>
+           </div>
+     </div>
+</form>
+     <div id="oceanPDF" class="form-group">
+     	 <button id="printOceanHBL" class="btn btn-success">生成托运申报单</button>
+     	 <button id="printOceanWord" class="btn btn-success">生成出口报关单</button>
+     	 <button id="printOceanBooking" class="btn btn-success">生成进口报关单</button>
+       <br><br>
+     </div>
+           
+     <div class="modal fade" id="oceanHeadDetail">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">生成头程资料详情</div>
+	      	<div class="modal-body">
+	      	
+	      	<input type="hidden" value="${oceanHead.id!oceanHeadId!''}" id="oceanHeadId">
+	      	<form id = "oceanHeadForm">
+				<div class="form-group">
+						<div class="row">
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_endPlace', 
+			                           label:'TO',
+			                           value:oceanHead.head_endPlace!''
+			                       }){}%>
+			               </div>
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_startPlace', 
+			                           label:'FROM',
+			                           value:oceanHead.head_startPlace!''
+			                       }){}%>
+			               </div>
+			           </div>
+						<div class="row">
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_attn', 
+			                           label:'ATTN',
+			                           value:oceanHead.head_attn!''
+			                       }){}%>
+			               </div>
+			               <div class="col-lg-6">
+				                 <%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_tel', 
+			                           label:'TEL',
+			                           value:oceanHead.head_tel!'3225992'
+			                       }){}%>
+			               </div>
+			           </div>
+						<div class="row">
+							<div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_customerTel', 
+			                           label:'TEL',
+			                           value:oceanHead.head_customerTel!''
+			                       }){}%>
+			               </div>
+			               <div class="col-lg-6">
+				               		<%include("/eeda/component/form/inputField.html", 
+				                       {   id:'head_date',
+				                           label:'DATE',
+				                           disabled:'disabled',
+				                           value:oceanHead.head_date!''
+				                       }){}%>
+				           </div>
+			           </div>
+						<div class="row">
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_fax', 
+			                           label:'FAX',
+			                           value:oceanHead.head_fax!''
+			                       }){}%>
+			               </div>
+						</div>
+						<div class="row">
+			               <div class="col-lg-12">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_title', 
+			                           label:'标题',
+			                           value:oceanHead.head_title!'1X40HQ FM ZHUHAI TO OSAKA'
+			                       }){}%>
+			               </div>
+			           </div>
+			           <div class="row">
+			               <div class="col-lg-12">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_remark',
+			                           label:'备注',
+			                           value:oceanHead.head_remark!'请安排10/AUG 西域港报关出口'
+			                       }){}%>
+			               </div>
+			           </div>
+					
+				</div>   
+				</form>
+	        </div>
+	        <div class="modal-footer">
+	        	<button id="printOceanHead" class="btn btn-primary">确认打印PDF</button>
+	            <button class="btn  btn-default" data-dismiss="modal">返回</button>
+	        </div>
+	    </div>
+	  </div>
+	</div>
+                    
+<div class="row">
+    <div class="form-group">
+        <div class="col-lg-12">
+            <button class="btn btn-success btn-xs" id="add_ocean_cargo">添加货品</button> 
+                    <br>
+            <%include("/eeda/component/form/detailTable.html", 
+                {
+                    id:'ocean_cargo_table',
+                    style:'width:1580px',
+                    headers:   ['', '', '负载方式', '箱型', '箱号', '封条号', '件数','单位','托板描述', '毛重(KG)', '体积(CBM)', '总重量VGM','unit_name'],
+                    field_list:['id', '', 'load_type', 'container_type', 'container_no', 'seal_no', 'pieces','unit_id','pallet_desc', 'gross_weight', 'volume', 'vgm','unit_name'],
+                    value_list: shipmentList![]
+                }){} %>
+        </div>
+    </div>
+</div>
+            
+
+
+

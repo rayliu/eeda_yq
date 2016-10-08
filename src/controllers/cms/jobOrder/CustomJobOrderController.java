@@ -500,7 +500,10 @@ public class CustomJobOrderController extends Controller {
 	    }else if("mail".equals(type)){
 	    	itemSql = "select * from job_order_sendMail where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
-	    }
+	    }else if("custom".equals(type)){
+            itemSql = "select * from custom_order where job_order_id=? order by id";
+            itemList = Db.find(itemSql, orderId);
+        }
 		return itemList;
 	}
     
@@ -509,7 +512,9 @@ public class CustomJobOrderController extends Controller {
     	String id = getPara("id");
     	JobOrder jobOrder = JobOrder.dao.findById(id);
     	setAttr("order", jobOrder);
-
+    	//报关
+        setAttr("custom", getItemDetail(id,"custom"));
+        
     	//获取海运明细表信息
     	setAttr("usedOceanInfo", getUsedOceanInfo());
     	setAttr("shipmentList", getItems(id,"shipment"));
@@ -522,12 +527,6 @@ public class CustomJobOrderController extends Controller {
     	
     	//获取陆运明细表信息
     	setAttr("landList", getItems(id,"land"));
-    	
-    	//报关
-    	setAttr("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
-   		setAttr("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
-   		setAttr("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
-    	
     	//保险
     	setAttr("insurance", getItemDetail(id,"insure"));
     	
@@ -876,6 +875,4 @@ public class CustomJobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
-    
-   
 }
