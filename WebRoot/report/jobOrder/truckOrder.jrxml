@@ -2,12 +2,14 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="truckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6e032343-152e-4328-9fc1-a87e482c2444">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="24"/>
 	<parameter name="itemId" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
 	<queryString>
 		<![CDATA[select
+p.company_name consignor_name,
+p1.company_name consignee_name,
 consignor,
 consignor_phone,
 take_address,
@@ -21,9 +23,13 @@ pieces,
 gross_weight,
 volume,
 cargo_desc
-from job_order_land_item
-where id=$P{itemId}]]>
+from job_order_land_item joli
+LEFT JOIN party p on p.id =  joli.consignor
+LEFT JOIN party p1 on p1.id =  joli.consignee
+where joli.id=$P{itemId}]]>
 	</queryString>
+	<field name="consignor_name" class="java.lang.String"/>
+	<field name="consignee_name" class="java.lang.String"/>
 	<field name="consignor" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -143,7 +149,7 @@ where id=$P{itemId}]]>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{consignor}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{consignor_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="7" y="158" width="530" height="47" uuid="f3a3e785-61fb-450b-934e-8e36b0fb2db6"/>
