@@ -264,22 +264,19 @@ eeda.refreshUrl = refreshUrl;
           hiddenField.val(dataId);//id
         }
       });
-		  
+
 		  // 1 没选中客户，焦点离开，隐藏列表
 		  $(document).on('click', function(event){
-        
           if (tableFieldList.is(':visible') ){
               var clickedEl = $(this);
               var hiddenField = eeda._hiddenField;
-          
               if ($(this).find('a').val().trim().length ==0) {
                 hiddenField.val('');
               };
               tableFieldList.hide();
           }
-			  
 		  });
-		  
+
 		  // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
 		  tableFieldList.on('mousedown', function(){
 			  return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
@@ -346,46 +343,52 @@ eeda.refreshUrl = refreshUrl;
     
     
     eeda.getDate =  function() {
-    	var d = new Date(); 
-    	var year = d.getFullYear(); 
-    	var month = d.getMonth()+1; 
-    	var date = d.getDate(); 
-    	var day = d.getDay(); 
-    	var hours = d.getHours(); 
-    	var minutes = d.getMinutes(); 
-    	var seconds = d.getSeconds(); 
-    	var ms = d.getMilliseconds(); 
-    	var curDateTime= year;
-    	if(month>9)
-    		curDateTime = curDateTime +"-"+month;
-    	else
-    		curDateTime = curDateTime +"-0"+month;
-    	if(date>9)
-    		curDateTime = curDateTime +"-"+date;
-    	else
-    		curDateTime = curDateTime +"-0"+date;
-    	if(hours>9)
-    		curDateTime = curDateTime +" "+hours;
-    	else
-    		curDateTime = curDateTime +"0"+hours;
-    	if(minutes>9)
-    		curDateTime = curDateTime +":"+minutes;
-    	else
-    		curDateTime = curDateTime +":0"+minutes;
-    	if(seconds>9)
-    		curDateTime = curDateTime +":"+seconds;
-    	else
-    		curDateTime = curDateTime +":0"+seconds;
-    	return curDateTime; 
+      	var d = new Date(); 
+      	var year = d.getFullYear(); 
+      	var month = d.getMonth()+1; 
+      	var date = d.getDate(); 
+      	var day = d.getDay(); 
+      	var hours = d.getHours(); 
+      	var minutes = d.getMinutes(); 
+      	var seconds = d.getSeconds(); 
+      	var ms = d.getMilliseconds(); 
+      	var curDateTime= year;
+      	if(month>9)
+      		curDateTime = curDateTime +"-"+month;
+      	else
+      		curDateTime = curDateTime +"-0"+month;
+      	if(date>9)
+      		curDateTime = curDateTime +"-"+date;
+      	else
+      		curDateTime = curDateTime +"-0"+date;
+      	if(hours>9)
+      		curDateTime = curDateTime +" "+hours;
+      	else
+      		curDateTime = curDateTime +"0"+hours;
+      	if(minutes>9)
+      		curDateTime = curDateTime +":"+minutes;
+      	else
+      		curDateTime = curDateTime +":0"+minutes;
+      	if(seconds>9)
+      		curDateTime = curDateTime +":"+seconds;
+      	else
+      		curDateTime = curDateTime +":0"+seconds;
+      	return curDateTime; 
 	};
 
-    eeda.bindTableFieldTruckOut = function(el_name) {
+    eeda.bindTableFieldTruckOut = function(talbe_id, el_name) {
           var tableFieldList = $('#table_truck_out_input_field_list');
-          $('table input[name='+el_name+'_input]').on('keyup click', function(event){
+          $('#'+talbe_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
               var me = this;
               var inputField = $(this);
               var hiddenField = $(this).parent().find('input[name='+el_name+']');
               var inputStr = inputField.val();
+
+              if (event.keyCode == 40) {
+                  tableFieldList.find('li').first().focus();
+                  return false;
+              }
+
               $.get('/serviceProvider/searchTruckOut', {input:inputStr}, function(data){
                   if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
                       return;
@@ -419,30 +422,68 @@ eeda.refreshUrl = refreshUrl;
               row.find('.consigner_phone input').val($(this).attr('phone'));
               row.find('.consigner_addr input').val($(this).attr('addr'));
           });
-          
-          // 1 没选中item，焦点离开，隐藏列表
-          $('table input[name='+el_name+'_input]').on('blur', function(){
-              var hiddenField = eeda._hiddenField;
-              
-              if ($(this).val().trim().length ==0) {
-                  hiddenField.val('');
-              };
-              tableFieldList.hide();
+
+          tableFieldList.on('keydown', 'li', function(e){
+              if (e.keyCode == 13) {
+                  var inputField = eeda._inputField;
+                  var hiddenField = eeda._hiddenField;
+                  inputField.val($(this).text());//名字
+                  tableFieldList.hide();
+                  var $a = $(this).find('a');
+                  var dataId = $a.attr('dataId');
+                  hiddenField.val(dataId);//id
+
+                  var row = inputField.parent().parent().parent();
+                  row.find('.consigner_phone input').val($a.attr('phone'));
+                  row.find('.consigner_addr input').val($a.attr('addr'));
+              }
           });
-          
+          // 1 没选中item，焦点离开，隐藏列表
+          $(document).on('click', function(event){
+              if (tableFieldList.is(':visible') ){
+                  var clickedEl = $(this);
+                  var hiddenField = eeda._hiddenField;
+                  if ($(this).find('a').val().trim().length ==0) {
+                    hiddenField.val('');
+                  };
+                  tableFieldList.hide();
+              }
+          });
+
           // 2 当用户只点击了滚动条，没选item，再点击页面别的地方时，隐藏列表
           tableFieldList.on('mousedown', function(){
               return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
           });
+
+          tableFieldList.on('focus', 'li', function() {
+              $this = $(this);
+              $this.addClass('active').siblings().removeClass();
+              // $this.closest('div.container').scrollTop($this.index() * $this.outerHeight());
+          }).on('keydown', 'li', function(e) {
+              $this = $(this);
+              if (e.keyCode == 40) {
+                  $this.next().focus();
+                  return false;
+              } else if (e.keyCode == 38) {
+                  $this.prev().focus();
+                  return false;
+              }
+          }).find('li').first().focus();
       };
 
-    eeda.bindTableFieldTruckIn = function(el_name) {
+    eeda.bindTableFieldTruckIn = function(talbe_id, el_name) {
           var tableFieldList = $('#table_truck_in_input_field_list');
-          $('table input[name='+el_name+'_input]').on('keyup click', function(event){
+          $('#'+talbe_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
               var me = this;
               var inputField = $(this);
               var hiddenField = $(this).parent().find('input[name='+el_name+']');
               var inputStr = inputField.val();
+
+              if (event.keyCode == 40) {
+                  tableFieldList.find('li').first().focus();
+                  return false;
+              }
+
               $.get('/serviceProvider/searchTruckIn', {input:inputStr}, function(data){
                   if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
                       return;
@@ -463,7 +504,7 @@ eeda.refreshUrl = refreshUrl;
                   eeda._hiddenField = hiddenField;
               },'json');
           });
-          
+
           tableFieldList.on('click', '.item', function(e){
               var inputField = eeda._inputField;
               var hiddenField = eeda._hiddenField;
@@ -476,20 +517,52 @@ eeda.refreshUrl = refreshUrl;
               row.find('.consignee_phone input').val($(this).attr('phone'));
               row.find('.consignee_addr input').val($(this).attr('addr'));
           });
-          
+
+          tableFieldList.on('keydown', 'li', function(e){
+              if (e.keyCode == 13) {
+                  var inputField = eeda._inputField;
+                  var hiddenField = eeda._hiddenField;
+                  inputField.val($(this).text());//名字
+                  tableFieldList.hide();
+                  var $a = $(this).find('a');
+                  var dataId = $a.attr('dataId');
+                  hiddenField.val(dataId);//id
+
+                  var row = inputField.parent().parent().parent();
+                  row.find('.consignee_phone input').val($a.attr('phone'));
+                  row.find('.consignee_addr input').val($a.attr('addr'));
+              }
+          });
           // 1 没选中item，焦点离开，隐藏列表
-          $('table input[name='+el_name+'_input]').on('blur', function(){
-              var hiddenField = eeda._hiddenField;
-              
-              if ($(this).val().trim().length ==0) {
-                  hiddenField.val('');
-              };
-              tableFieldList.hide();
+          $(document).on('click', function(event){
+              if (tableFieldList.is(':visible') ){
+                  var clickedEl = $(this);
+                  var hiddenField = eeda._hiddenField;
+                  if ($(this).find('a').val().trim().length ==0) {
+                    hiddenField.val('');
+                  };
+                  tableFieldList.hide();
+              }
           });
           
           // 2 当用户只点击了滚动条，没选item，再点击页面别的地方时，隐藏列表
           tableFieldList.on('mousedown', function(){
               return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
           });
+
+          tableFieldList.on('focus', 'li', function() {
+              $this = $(this);
+              $this.addClass('active').siblings().removeClass();
+              // $this.closest('div.container').scrollTop($this.index() * $this.outerHeight());
+          }).on('keydown', 'li', function(e) {
+              $this = $(this);
+              if (e.keyCode == 40) {
+                  $this.next().focus();
+                  return false;
+              } else if (e.keyCode == 38) {
+                  $this.prev().focus();
+                  return false;
+              }
+          }).find('li').first().focus();
       };
 });

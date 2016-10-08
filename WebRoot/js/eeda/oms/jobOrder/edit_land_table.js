@@ -75,8 +75,8 @@ $(document).ready(function() {
     	});
     	
     	eeda.bindTableField('land_table','TRANSPORT_COMPANY','/serviceProvider/searchTruckCompany','truck');
-        eeda.bindTableFieldTruckOut('CONSIGNOR');
-        eeda.bindTableFieldTruckIn('CONSIGNEE');
+        eeda.bindTableFieldTruckOut('land_table', 'CONSIGNOR');
+        eeda.bindTableFieldTruckIn('land_table', 'CONSIGNEE');
     };
     //------------事件处理
 	 var cargoTable = eeda.dt({
