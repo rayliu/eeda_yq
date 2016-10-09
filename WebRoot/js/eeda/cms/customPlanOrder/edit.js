@@ -16,8 +16,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     			$('#saveBtn').attr('disabled', true);
     		}
         }
-         
-    	
+             	
     	//已完成计划单确认
     	$('#confirmCompleted').click(function(){
     		$('#confirmCompleted').attr('disabled', true);
@@ -35,7 +34,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         $('#saveBtn').click(function(e){
             //阻止a 的默认响应行为，不需要跳转
             e.preventDefault();
-            //提交前，校验数据
+            //提交前，校验页面中必填字段
             if(!$("#orderForm").valid()){
                 return;
             }
