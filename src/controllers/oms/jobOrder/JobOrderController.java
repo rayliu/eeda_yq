@@ -417,7 +417,7 @@ public class JobOrderController extends Controller {
         if(oversea_agent_id!=null&&!"".equals(oversea_agent_id)){
         	oversea_agent = Long.parseLong(oversea_agent_id);
         }
-        
+        String release_type = recMap.get("release_type");
         if(shipper == null &&
            consignee==null &&
            notify_party == null &&
@@ -430,8 +430,8 @@ public class JobOrderController extends Controller {
         Record checkRec = Db.findFirst("select 1 from job_order_ocean_template where"
                 + " creator_id=? and shipper=? and consignee=? and notify_party=?"
                 + " and por=? and pol=? and pod=? and fnd=? and booking_agent=? "
-                + " and carrier=? and head_carrier=? and oversea_agent=?", creator_id, shipper,
-                consignee, notify_party, por, pol, pod, fnd,booking_agent,carrier,head_carrier,oversea_agent);
+                + " and carrier=? and head_carrier=? and oversea_agent=? and release_type=?", creator_id, shipper,
+                consignee, notify_party, por, pol, pod, fnd,booking_agent,carrier,head_carrier,oversea_agent,release_type);
         if(checkRec==null){
             Record r= new Record();
             r.set("creator_id", creator_id);
@@ -446,6 +446,7 @@ public class JobOrderController extends Controller {
             r.set("carrier", carrier);
             r.set("head_carrier", head_carrier);
             r.set("oversea_agent", oversea_agent);
+            r.set("release_type", release_type);
             Db.save("job_order_ocean_template", r);
         }
     }

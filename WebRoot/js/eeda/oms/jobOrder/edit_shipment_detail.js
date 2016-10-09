@@ -86,6 +86,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $('#oversea_agent_info').val(li.attr('oversea_agent_info'));
             $('#head_carrier').val(li.attr('booking_agent'));
             $('#head_carrier_input').val(li.attr('booking_agent_name'));
+            
+            var release_type = li.attr('release_type');
+            $('#shipmentForm input[type="radio"]').each(function(){
+            	var checkValue = $(this).val();
+            	if(release_type==checkValue){
+            		$(this).attr("checked",true);
+            	}
+            });
         });
         $('#collapseOceanInfo').on('show.bs.collapse', function () {
           $('#collapseOceanIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
