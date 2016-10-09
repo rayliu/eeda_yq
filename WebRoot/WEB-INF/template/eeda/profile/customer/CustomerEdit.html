@@ -34,7 +34,7 @@
                                             <div class="form-group">
 
                                                 <label>公司简称(必填)</label>
-                                                <input  class="form-control" id="abbr" name="abbr" type="text" value="${party.abbr!''}">
+                                                <input  class="form-control" id="abbr" name="abbr" type="text" value="${party.abbr!''}" required>
                                             </div>                                     
                                         </fieldset>
                                     </div>
@@ -43,7 +43,7 @@
                                             <div class="form-group">
                                                 
                                                 <label>公司中文名称(必填)</label>
-                                                <input  class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}">
+                                                <input  class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}" required>
                                             </div>                                     
                                         </fieldset>
                                     </div>
@@ -52,7 +52,7 @@
                                             <div class="form-group">
                                                 
                                                 <label>公司英文名称</label>
-                                                <input  class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}">
+                                                <input  class="form-control" id="company_name_eng" name="company_name_eng" type="text" value="${party.company_name_eng!''}">
                                             </div>                                     
                                         </fieldset>
                                     </div>
@@ -162,7 +162,7 @@
                                         <fieldset>
                                             <div class="form-group">
                                                 <label>公司简介</label>
-												<textarea class="form-control" rows="5" name="introduction">${party.introduction!''}</textarea>
+												<textarea class="form-control" rows="5"  id="introduction" name="introduction">${party.introduction!''}</textarea>
                                             </div>
                                         </fieldset>
                                     </div>
@@ -171,7 +171,7 @@
                                         <fieldset>
                                             <div class="form-group">
                                                 <label>备注</label>
-												<textarea class="form-control" rows="5" name="remark">${party.remark!''}</textarea>
+												<textarea class="form-control" rows="5" id="remark" name="remark">${party.remark!''}</textarea>
                                             </div>
                                         </fieldset>
                                     </div>

@@ -3,6 +3,7 @@
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -15,6 +16,8 @@ import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
 import models.UserRole;
+import models.eeda.oms.jobOrder.JobOrderShipment;
+import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 import models.yh.profile.CustomerRoute;
 
 import org.apache.commons.lang.StringUtils;
@@ -24,6 +27,7 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
+import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.log.Log;
@@ -32,6 +36,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
+import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
 import controllers.util.PermissionConstant;
 
@@ -126,7 +131,7 @@ public class CustomerController extends Controller {
     }
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_UPDATE})
     public void edit() {
-        String id = getPara();
+        String id = getPara("id");
 
         Party party = Party.dao.findById(id);
         //Contact locationCode = Contact.dao.findById(party.get("contact_id"));
@@ -183,33 +188,21 @@ public class CustomerController extends Controller {
     @Before(Tx.class)
     public void save() {
 
-        String id = getPara("party_id");
+    	String jsonStr=getPara("params");
+       	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+        String id = (String) dto.get("id");
+        
         Party party = null;
         Long userId = LoginUserController.getLoginUserId(this);
         Date createDate = Calendar.getInstance().getTime();
+        
         if (!"".equals(id) && id != null) {
+        	
             party = Party.dao.findById(id);
             party.set("last_modified_by", userId);
             party.set("last_updated_stamp", createDate);
-            party.set("registration", getPara("registration"));
-            party.set("code", getPara("code"));
-            party.set("abbr", getPara("abbr"));
-            party.set("company_name", getPara("company_name"));
-            party.set("company_name_eng", getPara("company_name_eng"));
-            party.set("address", getPara("address"));
-            party.set("address_eng", getPara("address_eng"));
-            party.set("contact_person", getPara("contact_person"));
-            party.set("phone", getPara("phone"));
-            party.set("email", getPara("email"));
-            party.set("fax", getPara("fax"));
-            party.set("receipt", getPara("receipt"));
-            party.set("payment", getPara("payment"));
-            party.set("charge_type", getPara("chargeType"));
-            party.set("introduction", getPara("introduction"));
-            party.set("remark", getPara("remark"));
-            if(getPara("insurance_rates") != ""){
-            party.set("insurance_rates", getPara("insurance_rates"));
-            }
+            DbUtils.setModelValues(dto, party);
             party.update();
 
         } else {
@@ -219,29 +212,9 @@ public class CustomerController extends Controller {
             party.set("type", Party.PARTY_TYPE_CUSTOMER);
             party.set("creator", userId);
             party.set("create_date", createDate);
-            party.set("last_modified_by", userId);
-            party.set("last_updated_stamp", createDate);
-            party.set("registration", getPara("registration"));
-            party.set("code", getPara("code"));
-            party.set("abbr", getPara("abbr"));
-            party.set("company_name", getPara("company_name"));
-            party.set("company_name_eng", getPara("company_name_eng"));
-            party.set("address", getPara("address"));
-            party.set("address_eng", getPara("address_eng"));
-            party.set("contact_person", getPara("contact_person"));
-            party.set("phone", getPara("phone"));
-            party.set("email", getPara("email"));
-            party.set("fax", getPara("fax"));
-            party.set("receipt", getPara("receipt"));
-            party.set("payment", getPara("payment"));
-            party.set("charge_type", getPara("chargeType"));
-            party.set("introduction", getPara("introduction"));
-            party.set("remark", getPara("remark"));
-            if(getPara("insurance_rates") != ""){
-            party.set("insurance_rates", getPara("insurance_rates"));
-            }
-
+            DbUtils.setModelValues(dto, party);
             party.save();
+            id = party.getLong("id").toString();
             
             Long parentID = pom.getParentOfficeId();
             //判断当前是否是系统管理员，是的话将当前的客户默认给
@@ -256,7 +229,8 @@ public class CustomerController extends Controller {
             }
             
         }
-
+        List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("docItem");
+		DbUtils.handleList(itemList, "party_doc", id, "party_id");
     	renderJson(party);
     }
 

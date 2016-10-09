@@ -26,6 +26,7 @@ $(document).ready(function() {
            });
     }); 
 
+    
     //------------事件处理,文档table
     var docTable = eeda.dt({
         id: 'doc_table',

@@ -157,10 +157,70 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             });
         });
         
+        
+        var buildDocItem=function(){
+            var cargo_table_rows = $("#doc_table tr");
+            var cargo_items_array=[];
+            for(var index=0; index<cargo_table_rows.length; index++){
+                if(index==0)
+                    continue;
+
+                var row = cargo_table_rows[index];
+                var empty = $(row).find('.dataTables_empty').text();
+                if(empty)
+                	continue;
+                
+                var id = $(row).attr('id');
+                if(!id){
+                    id='';
+                }
+                
+                var item={}
+                item.id = id;
+                for(var i = 1; i < row.childNodes.length; i++){
+                	var el = $(row.childNodes[i]).find('input, select');
+                	var name = el.attr('name');
+                	if(el && name){
+                    	var value = el.val();
+                    	item[name] = value;
+                	}
+                }
+                item.action = id.length > 0?'UPDATE':'CREATE';
+                cargo_items_array.push(item);
+            }
+
+            return cargo_items_array;
+        };
+        
         $('#saveBtn').click(function(){
+        	//提交前，校验必填
+            if(!$("#customerForm").valid()){
+                return;
+            }
+            var order ={}
+            order.id = $("#partyId").val();
+            order.code = $("#code").val();
+            order.abbr = $("#abbr").val();
+            order.company_name = $("#company_name").val();
+            order.company_name_eng = $("#company_name_eng").val();
+            order.address = $("#address").val();
+            order.address_eng = $("#address_eng").val();
+            order.contact_person = $("#contact_person").val();
+            order.phone = $("#phone").val();
+            order.email = $("#email").val();
+            order.fax = $("#fax").val();
+            order.receipt = $("#receipt").val();
+            order.payment = $("#payment").val();
+            order.chargeType = $("#chargeType").val();
+            order.insurance_rates = $("#insurance_rates").val();
+            order.introduction = $("#introduction").val();
+            order.remark = $("#remark").val();
+            order.registration = $("#registration").val();
+            order.docItem = buildDocItem();
+            		
         	$('#saveBtn').attr('disabled', true);
-        	$.post('/customer/save', $('#customerForm').serialize(), function(data){
-        		eeda.refreshUrl("edit/"+data.ID);
+        	$.post('/customer/save', {params:JSON.stringify(order)}, function(data){
+        		eeda.contactUrl("edit?id",data.ID);
         		$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
         		$('#partyId').val(data.ID);
         		$('#saveBtn').attr('disabled', false);

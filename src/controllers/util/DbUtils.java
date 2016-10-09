@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.plugin.activerecord.Record;
 
 public class DbUtils {
 	private static Log logger = Log.getLog(DbUtils.class);
@@ -105,6 +106,7 @@ public class DbUtils {
     			
 		}
 	}
+	
 	
 	public static void handleLists(List<Map<String, ?>> itemList,
 	        String master_order_id, Class<?> clazz,Class<?> itemClazz,
@@ -241,4 +243,52 @@ public class DbUtils {
 //            }
 		}
 	}
+	
+	
+	//无model,db方式增删改
+	public static void handleList(List<Map<String, String>> itemList,String table,
+			String master_order_id,String master_col_name){
+		for (Map<String, String> rowMap : itemList) {//获取每一行
+			
+			String rowId = rowMap.get("id");
+			String action = rowMap.get("action");
+			if(StringUtils.isEmpty(rowId)){
+				if(!"DELETE".equals(action)){
+					Record r = new Record();
+					setModelValues(rowMap, r);
+					r.set(master_col_name, master_order_id);
+					Db.save(table, r);	
+				}
+			}else{
+				if("DELETE".equals(action)  ){//delete
+					Record r = Db.findById(table,rowId);
+					Db.delete(table, r);
+				}else{//UPDATE
+					Record r = Db.findById(table,rowId);
+					setModelValues(rowMap, r);
+					Db.update(table,r);
+				}
+			}
+			
+		}
+	}
+	public static void setModelValues(Map<String, ?> dto, Record r) {
+		
+		for (Entry<String, ?> entry : dto.entrySet()) { 
+			String key = entry.getKey();
+			if(!key.endsWith("_list")){
+				String value = String.valueOf(entry.getValue()).trim();
+				//忽略  action 字段
+				if(!"action".equals(key)){
+					logger.debug(key+":"+value);
+					if(StringUtils.isEmpty(value)){
+						value=null;
+					}
+					r.set(key, value);
+				}
+			}
+		}
+	}
+	
+	
 }

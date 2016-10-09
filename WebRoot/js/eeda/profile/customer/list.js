@@ -22,7 +22,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
                 { "data": "COMPANY_NAME","width": "15%",
                     "render": function ( data, type, full, meta ) {
                         if(Customer.updatePermission){
-                             return "<a href='/customer/edit/"+full.PID+"'target='_blank'>" + data + "</a>";
+                             return "<a href='/customer/edit?id="+full.PID+"'target='_blank'>" + data + "</a>";
                          }else{
                              return data;
                          }
