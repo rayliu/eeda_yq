@@ -53,9 +53,13 @@
 		</div>
 	</div>
 <%}%>
-<!-- 引入校验的js 文件及其 中文 文件-->
+<!-- 引入校验的js 文件及其 中文 文件
 <script src="/js/lib/crypto-js.js"></script>
 <script src="/yh/js/jquery.validate.min.js"></script>
 <script src="/yh/js/jvalidate.messages_cn.js"></script>
-<script src="/js/eeda/profile/loginUser/userProfile.js"></script>
-
+<script src="/js/eeda/profile/loginUser/userProfile.js"></script>-->
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/profile/loginUser/userProfile']);
+    });
+</script>

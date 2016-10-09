@@ -18,8 +18,21 @@ define(['app/index/todo'], function(todoController){
         if (doPrevent)
             e.preventDefault();
     });
-
-
+    //控制td 长度
+    jQuery.fn.limit=function(){ 
+        var self = $("td[limit]"); 
+        self.each(function(){ 
+            var objString = $(this).text(); 
+            var objLength = $(this).text().length; 
+            var num = $(this).attr("limit"); 
+            if(objLength > num){ 
+            $(this).attr("title",objString); 
+                objString = $(this).text(objString.substring(0,num) + "..."); 
+            } 
+        }) ;
+    } ;
+    //$(document.body).limit();
+    
    $(document).ready(function() {
 
       var moudleUrl = window.location.pathname.split('/')[1];
