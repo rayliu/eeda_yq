@@ -444,23 +444,20 @@ public class JobOrderController extends Controller {
     @Before(Tx.class)
     public void uploadSignDesc(){
     	String id = getPara("id");
+    	List<UploadFile> fileList = getFiles("\\");
     	
-    	JobOrderLandItem order = JobOrderLandItem.dao.findById(id);
-    	String uploadPath = getRequest().getServletContext().getRealPath("/")+"\\upload\\";
-    	//删除旧文件
-		String oldFileName = order.getStr("sign_desc");
-		if(oldFileName!=null&&!"".equals(oldFileName)){
-			String oldFilePath = uploadPath+oldFileName;
-			File oldFile = new File(oldFilePath);
-	        if (oldFile.exists() && oldFile.isFile()) {
-	            oldFile.delete();
-	        }
+		for (int i = 0; i < fileList.size(); i++) {
+    		File file = fileList.get(i).getFile();
+    		String fileName = file.getName();
+    		JobOrderLandItem order = JobOrderLandItem.dao.findById(id);
+    		String sign_desc = order.getStr("sign_desc");
+    		if("".equals(sign_desc)||sign_desc==null){
+    			order.set("sign_desc", fileName);
+    		}else{
+    			order.set("sign_desc", sign_desc+","+fileName);
+    		}
+    		order.update();
 		}
-		
-        UploadFile upfile = getFile();//默认路径 是upload
-    	String fileName = upfile.getFileName();
-		order.set("sign_desc", fileName);
-		order.update();
 		renderJson("{\"result\":true}");
     }
     

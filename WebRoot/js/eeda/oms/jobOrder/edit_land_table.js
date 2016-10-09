@@ -105,7 +105,7 @@ $(document).ready(function() {
 	            		return '<span class="btn btn-success btn-xs fileinput-button" style="width:100px">' 
 		                		+'<i class="glyphicon glyphicon-plus"></i>'
 		                		+'<span>上传签收文件</span>'
-		                		+'<input class="upload" type="file" name="file" >'
+		                		+'<input class="upload" type="file" name="file" multiple>'
 		                		+'</span>'
 		            else
 		            	return '<span class="btn btn-default btn-xs fileinput-button" style="width:100px">' 
@@ -293,9 +293,17 @@ $(document).ready(function() {
             },
             { "data": "SIGN_DESC", "width": "180px",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
+            		if(!data){
             			data='';
-            		return '<a href="/upload/'+data+'" class="sign_desc" style="width:200px" target="_blank">'+data+'</a>';
+            		}
+            		else{
+            			var arr = data.split(",");
+            			var str = "";
+	            		for(var i=0;i<arr.length;i++){
+	            			str += '<a href="/upload/'+arr[i]+'" class="sign_desc" style="width:200px" target="_blank">'+arr[i]+'</a>&nbsp;&nbsp;'
+	            		}
+	            		return str;
+            		}
             	}
             },
             { "data": "SIGN_STATUS", "width": "180px",
