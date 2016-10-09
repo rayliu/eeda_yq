@@ -201,9 +201,8 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'doc_table',
-                                        style:'width:1200px',
-                                        headers:['','文档名称', '上传人', '上传时间', '备注'],
-                                        field_list:['','doc_name','c_name','upload_time', 'remark'],
+                                        headers:['','文档名称', '备注', '上传人', '上传时间'],
+                                        field_list:['','doc_name', 'remark','c_name','upload_time'],
                                         value_list: docList![]
                                     }){} %>
                                  <br>

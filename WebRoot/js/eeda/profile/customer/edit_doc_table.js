@@ -43,25 +43,19 @@ $(document).ready(function() {
                     return '<a class="doc_name" href="#" style="width:300px">'+data+'</a>';
                 }
             },
-            { "data": "C_NAME","width": "180px",
-                "render": function ( data, type, full, meta ) {
-                	if(!data)
-                        data='';
-                	return '<input type="text" value="'+data+'" class="form-control" style="width:200px" disabled/>';
-                }
-            },
-            { "data": "UPLOAD_TIME", "width": "180px",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" value="'+data+'" class="form-control" style="width:200px" disabled/>';
-                }
-            },
             { "data": "REMARK","width": "280px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
+                }
+            },
+            { "data": "C_NAME"},
+            { "data": "UPLOAD_TIME", 
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data.substring(0, 19);
                 }
             }
         ]
