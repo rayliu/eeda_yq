@@ -381,21 +381,25 @@ public class JobOrderController extends Controller {
         String por_id = recMap.get("por");
         if(por_id!=null&&!"".equals(por_id)){
         	 por = Long.parseLong(por_id);
+        	 savePortQueryHistory(por);
         }
         Long pol = null;
         String pol_id = recMap.get("pol");
         if(pol_id!=null&&!"".equals(pol_id)){
         	 pol = Long.parseLong(pol_id);
+        	 savePortQueryHistory(pol);
         }
         Long pod = null;
         String pod_id = recMap.get("pod");
         if(pod_id!=null&&!"".equals(pod_id)){
         	 pod = Long.parseLong(pod_id);
+        	 savePortQueryHistory(pod);
         }
         Long fnd = null;
         String fnd_id = recMap.get("fnd");
         if(fnd_id!=null&&!"".equals(fnd_id)){
         	 fnd = Long.parseLong(fnd_id);
+        	 savePortQueryHistory(fnd);
         }
         Long booking_agent = null;
         String booking_agent_id = recMap.get("booking_agent");
@@ -448,6 +452,22 @@ public class JobOrderController extends Controller {
             r.set("oversea_agent", oversea_agent);
             r.set("release_type", release_type);
             Db.save("job_order_ocean_template", r);
+        }
+    }
+    
+    private void savePortQueryHistory(long portId){
+        Long userId = LoginUserController.getLoginUserId(this);
+        Record rec = Db.findFirst("select * from user_query_history where type='port' and ref_id=? and user_id=?", portId, userId);
+        if(rec==null){
+            rec = new Record();
+            rec.set("ref_id", portId);
+            rec.set("type", "port");
+            rec.set("user_id", userId);
+            rec.set("query_stamp", new Date());
+            Db.save("user_query_history", rec);
+        }else{
+            rec.set("query_stamp", new Date());
+            Db.update("user_query_history", rec);
         }
     }
     //保存空运填写模板
