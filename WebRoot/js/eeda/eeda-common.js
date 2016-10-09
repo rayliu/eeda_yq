@@ -1,7 +1,26 @@
 define(['app/index/todo'], function(todoController){
 
-   $(document).ready(function() {
+    //防止退格键返回上一页
+    $(document).keydown(function (e) {
+        var doPrevent;
+        if (e.keyCode == 8) {
+            var d = e.srcElement || e.target;
+            if ( (d.tagName.toUpperCase() == 'INPUT' && d.type.toUpperCase() =='TEXT')
+                  || d.tagName.toUpperCase() == 'TEXTAREA') {
+                doPrevent = d.readOnly || d.disabled;
+            }
+            else
+                doPrevent = true;
+        }
+        else
+            doPrevent = false;
 
+        if (doPrevent)
+            e.preventDefault();
+    });
+
+
+   $(document).ready(function() {
 
       var moudleUrl = window.location.pathname.split('/')[1];
       if(moudleUrl.length>0 && location.search.indexOf('type')>0){
