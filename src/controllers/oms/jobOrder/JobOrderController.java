@@ -99,6 +99,7 @@ public class JobOrderController extends Controller {
 	    	
     	}
     	setAttr("usedOceanInfo", getUsedOceanInfo());
+    	setAttr("usedAirInfo", getUsedAirInfo());
     	setAttr("emailTemplateInfo", getEmailTemplateInfo());
     	setAttr("loginUser",LoginUserController.getLoginUserName(this));
         render("/oms/JobOrder/JobOrderEdit.html");
@@ -744,8 +745,7 @@ public class JobOrderController extends Controller {
     			+ " concat(ifnull(p2.address_eng, p2.address), '\r', ifnull(p2.contact_person_eng, p2.contact_person), '\r', ifnull(p2.phone,'')) consignee_info,"
     			+ " p3.abbr notify_partyAbbr,"
     			+ " concat(ifnull(p3.address_eng, p3.address), '\r', ifnull(p3.contact_person_eng, p3.contact_person), '\r', ifnull(p3.phone,'')) notify_info,"
-    			+ " p7.abbr booking_agent_name,"
-    			+ " lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name from job_order_air_template t "
+    			+ " p7.abbr booking_agent_name from job_order_air_template t "
     			+ " left join party p1 on p1.id= t.shipper"
     			+ " left join party p2 on p2.id= t.consignee"
     			+ " left join party p3 on p3.id= t.notify_party"
