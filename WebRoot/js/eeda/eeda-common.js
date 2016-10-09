@@ -69,14 +69,16 @@ eeda.dt = function(opt){
         },
         drawCallback: opt.drawCallback || function ( settings ) {},
         ajax: opt.ajax || '',
-        // ajax: {
-        //   url: opt.ajax,
-        //   error: function (xhr, error, thrown) {
-        //     if(xhr.responseText.indexOf('忘记密码')>0){
-        //       alert( '您未登录, 请重新登录.' );
-        //     }
-        //   }
-        // } || '',
+        ajax: {
+          url: opt.ajax,
+          error: function (xhr, error, thrown) {
+            if(xhr.responseText.indexOf('忘记密码')>0){
+              alert( '您未登录, 请重新登录.' );
+            }else{
+              alert(xhr.responseText);
+            }
+          }
+        } || '',
         columns: opt.columns || []
     };
 
