@@ -17,11 +17,11 @@
 			                        </div>
 			                        <div class="form-group">
 			                         <label class="control-label">密码(必填)</label>
-			                         <input type="password" class="form-control" id="password" name="password" value="${lu.password!''}">
+			                         <input type="password" class="form-control" id="password" name="password" value="">
 			                        </div>
 			                        <div class="form-group">
 			                           <label class="control-label">确认输入密码(必填)</label>
-			                           <input type="password" class="form-control" id="confirm_password" name="confirm_password" value="${lu.password!''}">
+			                           <input type="password" class="form-control" id="confirm_password" name="confirm_password" value="">
 			                        </div>
 		                      </div><!-- col-md-6 -->
 		
@@ -109,99 +109,11 @@
 		</div>
 	</div>
 <%}%>
-<!-- 引入校验的js 文件及其 中文 文件-->
-<script src="/yh/js/jquery.validate.min.js"></script>
-<script src="/yh/js/jvalidate.messages_cn.js"></script>
-
-<script src="/yh/js/profile/loginUser/add.js"></script>
-
-<script src="/yh/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script src="/yh/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-
 
 <script>
-	$(document).ready(function() {
-		if('${lu.user_name!''}'){
-			document.title ='${lu.user_name!''}'+' | '+document.title;
-		}
-		var name =$("#username").val();
-		jQuery.validator.addMethod("stringCheck", function(value, element) {
-			return this.optional(element) || ( /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/).test(value);
-			}, "登陆名格式不正确(邮箱格式)");
-
-    $('#menu_sys_profile').addClass('active').find('ul').addClass('in');
-        $('#leadsForm').validate({
-            rules: {
-            	username: {
-                required: true,
-                stringCheck:true,
-                remote:{
-                	url: "/loginUser/checkNameExist", //后台处理程序    
-                    type: "post",  //数据发送方式  
-                    data:  {                     //要传递的数据   
-                    	username: function() {   
-                    		if($("#userId").val()==""){
-                    			return $("#username").val(); 
-                    		}else{
-                    			if(name==$("#username").val()){
-                    				return true;
-                    			}else{
-                    				return $("#username").val();
-                    			}
-                    		}
-                              
-                          },
-                    }   
-    
-                }
-			},
-			chineseName:{
-          	  required: true
-            },
-              password:{//form 中 name为必填
-                required: true,
-                minlength: 6
-              },
-              confirm_password: { 
-            	  required: true, 
-            	  minlength: 6, 
-            	  equalTo: "#password" 
-            	  } 
-             },
-             messages:{
-            	 username:{
-            		 required:"用户名不能为空",
-            		 remote:"用户名已存在"
-            	 },
-                 password:{//form 中 name为必填
-                     required: "密码不能为空",
-                     minlength: "密码长度至少为6位"
-                },
-                   confirm_password: { 
-                 	  required: "确认密码不能为空", 
-                 	  minlength: "确认密码长度至少为6位", 
-                 	  equalTo: "两次密码不一致" 
-                }
-             },
-            highlight: function(element) {
-                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-            },
-            success: function(element) {
-                element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
-            }
-        });
-        
-        var alerMsg='<div id="message_trigger_err" class="alert alert-danger alert-dismissable"  style="display:none">'+
-				    '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'+
-				    'Lorem ipsum dolor sit amet, consectetur adipisicing elit. <a href="#" class="alert-link">Alert Link</a>.'+
-				    '</div>';
-		$('body').append(alerMsg);
-	
-		$('#message_trigger_err').on('click', function(e) {
-			e.preventDefault();
-		});
-		/* $("#saveBtn").on('click',function(){
-				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-		}); */
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/profile/loginUser/editUser']);
     });
 </script>
+
+
