@@ -303,6 +303,8 @@ public class JobOrderController extends Controller {
    		
    		//保存海运填写模板
    		saveOceanTemplate(shipment_detail);
+   		//保存空运填写模板
+   		saveAirTemplate(air_detail);
    		renderJson(r);
    	}
     
@@ -356,39 +358,63 @@ public class JobOrderController extends Controller {
         if(shipment_detail.size()<=0)
             return;
         
-        
         Map<String, String> recMap=shipment_detail.get(0);
-        
-        
-        
         Long creator_id = LoginUserController.getLoginUserId(this);
+        
         Long shipper = null;
-        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
-        	shipper = Long.parseLong(recMap.get("shipper"));
+        String shipper_id = recMap.get("shipper");
+        if(shipper_id!=null&&!"".equals(shipper_id)){
+        	shipper = Long.parseLong(shipper_id);
         }
         Long consignee=null;
-        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
-        	 consignee = Long.parseLong(recMap.get("consignee"));
+        String consignee_id = recMap.get("consignee");
+        if(consignee_id!=null&&!"".equals(consignee_id)){
+        	 consignee = Long.parseLong(consignee_id);
         }
         Long notify_party = null;
-        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
-        	 notify_party = Long.parseLong(recMap.get("notify_party"));
+        String notify_party_id = recMap.get("notify_party");
+        if(notify_party_id!=null&&!"".equals(notify_party_id)){
+        	 notify_party = Long.parseLong(notify_party_id);
         }
         Long por = null;
-        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
-        	 por = Long.parseLong(recMap.get("por"));
+        String por_id = recMap.get("por");
+        if(por_id!=null&&!"".equals(por_id)){
+        	 por = Long.parseLong(por_id);
         }
         Long pol = null;
-        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
-        	 pol = Long.parseLong(recMap.get("pol"));
+        String pol_id = recMap.get("pol");
+        if(pol_id!=null&&!"".equals(pol_id)){
+        	 pol = Long.parseLong(pol_id);
         }
         Long pod = null;
-        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
-        	 pod = Long.parseLong(recMap.get("pod"));
+        String pod_id = recMap.get("pod");
+        if(pod_id!=null&&!"".equals(pod_id)){
+        	 pod = Long.parseLong(pod_id);
         }
         Long fnd = null;
-        if(recMap.get("shipper")!=null&&!"".equals(recMap.get("shipper"))){
-        	 fnd = Long.parseLong(recMap.get("fnd"));
+        String fnd_id = recMap.get("fnd");
+        if(fnd_id!=null&&!"".equals(fnd_id)){
+        	 fnd = Long.parseLong(fnd_id);
+        }
+        Long booking_agent = null;
+        String booking_agent_id = recMap.get("booking_agent");
+        if(booking_agent_id!=null&&!"".equals(booking_agent_id)){
+        	booking_agent = Long.parseLong(booking_agent_id);
+        }
+        Long carrier = null;
+        String carrier_id = recMap.get("carrier");
+        if(carrier_id!=null&&!"".equals(carrier_id)){
+        	carrier = Long.parseLong(carrier_id);
+        }
+        Long head_carrier = null;
+        String head_carrier_id = recMap.get("head_carrier");
+        if(head_carrier_id!=null&&!"".equals(head_carrier_id)){
+        	head_carrier = Long.parseLong(head_carrier_id);
+        }
+        Long oversea_agent = null;
+        String oversea_agent_id = recMap.get("oversea_agent");
+        if(oversea_agent_id!=null&&!"".equals(oversea_agent_id)){
+        	oversea_agent = Long.parseLong(oversea_agent_id);
         }
         
         if(shipper == null &&
@@ -402,8 +428,9 @@ public class JobOrderController extends Controller {
         
         Record checkRec = Db.findFirst("select 1 from job_order_ocean_template where"
                 + " creator_id=? and shipper=? and consignee=? and notify_party=?"
-                + " and por=? and pol=? and pod=? and fnd=? ", creator_id, shipper,
-                consignee, notify_party, por, pol, pod, fnd);
+                + " and por=? and pol=? and pod=? and fnd=? and booking_agent=? "
+                + " and carrier=? and head_carrier=? and oversea_agent=?", creator_id, shipper,
+                consignee, notify_party, por, pol, pod, fnd,booking_agent,carrier,head_carrier,oversea_agent);
         if(checkRec==null){
             Record r= new Record();
             r.set("creator_id", creator_id);
@@ -414,8 +441,57 @@ public class JobOrderController extends Controller {
             r.set("pol", pol);
             r.set("pod", pod);
             r.set("fnd", fnd);
+            r.set("booking_agent", booking_agent);
+            r.set("carrier", carrier);
+            r.set("head_carrier", head_carrier);
+            r.set("oversea_agent", oversea_agent);
             Db.save("job_order_ocean_template", r);
         }
+    }
+    //保存空运填写模板
+    public void saveAirTemplate(List<Map<String, String>> detail){
+    	if(detail.size()<=0)
+    		return;
+    	
+    	Map<String, String> recMap=detail.get(0);
+    	Long creator_id = LoginUserController.getLoginUserId(this);
+    	
+    	Long shipper = null;
+    	String shipper_id = recMap.get("shipper");
+    	if(shipper_id!=null&&!"".equals(shipper_id)){
+    		shipper = Long.parseLong(shipper_id);
+    	}
+    	Long consignee=null;
+    	String consignee_id = recMap.get("consignee");
+    	if(consignee_id!=null&&!"".equals(consignee_id)){
+    		consignee = Long.parseLong(consignee_id);
+    	}
+    	Long notify_party = null;
+    	String notify_party_id = recMap.get("notify_party");
+    	if(notify_party_id!=null&&!"".equals(notify_party_id)){
+    		notify_party = Long.parseLong(notify_party_id);
+    	}
+    	Long booking_agent = null;
+    	String booking_agent_id = recMap.get("booking_agent");
+    	if(booking_agent_id!=null&&!"".equals(booking_agent_id)){
+    		booking_agent = Long.parseLong(booking_agent_id);
+    	}
+    	
+    	if(shipper == null &&consignee==null &&notify_party == null &&booking_agent == null)
+    		return;
+    	
+    	Record checkRec = Db.findFirst("select 1 from job_order_air_template where"
+    			+ " creator_id=? and shipper=? and consignee=? and notify_party=? and booking_agent=?", creator_id, shipper,
+    			consignee, notify_party,booking_agent);
+    	if(checkRec==null){
+    		Record r= new Record();
+    		r.set("creator_id", creator_id);
+    		r.set("shipper", shipper);
+    		r.set("consignee", consignee);
+    		r.set("notify_party", notify_party);
+    		r.set("booking_agent", booking_agent);
+    		Db.save("job_order_air_template", r);
+    	}
     }
     
     //上传相关文档
@@ -573,6 +649,7 @@ public class JobOrderController extends Controller {
     	setAttr("shipment", getItemDetail(id,"shipment"));
 
     	//获取空运运明细表信息
+    	setAttr("usedAirInfo", getUsedAirInfo());
     	setAttr("airList", getItems(id,"air"));
     	setAttr("cargoDescList", getItems(id,"cargoDesc"));
     	setAttr("air", getItemDetail(id,"air"));
@@ -632,7 +709,7 @@ public class JobOrderController extends Controller {
         return list;
     }
     
-    
+    //常用海运信息
     public List<Record> getUsedOceanInfo(){
         List<Record> list = Db.find("select t.*,"
                 + " p1.abbr shipperAbbr , "
@@ -641,16 +718,40 @@ public class JobOrderController extends Controller {
                 + " concat(ifnull(p2.address_eng, p2.address), '\r', ifnull(p2.contact_person_eng, p2.contact_person), '\r', ifnull(p2.phone,'')) consignee_info,"
                 + " p3.abbr notify_partyAbbr,"
                 + " concat(ifnull(p3.address_eng, p3.address), '\r', ifnull(p3.contact_person_eng, p3.contact_person), '\r', ifnull(p3.phone,'')) notify_info,"
+                + " p4.abbr carrier_name,p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name,"
+                + " concat(ifnull(p6.address_eng, p6.address), '\r', ifnull(p6.contact_person_eng, p6.contact_person), '\r', ifnull(p6.phone,'')) oversea_agent_info,"
                 + " lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name from job_order_ocean_template t "
                 + " left join party p1 on p1.id= t.shipper"
                 + " left join party p2 on p2.id= t.consignee"
                 + " left join party p3 on p3.id= t.notify_party"
+                + " left join party p4 on p4.id=t.carrier"
+        		+ " left join party p5 on p5.id=t.head_carrier"
+        		+ " left join party p6 on p6.id=t.oversea_agent"
+        		+ " left join party p7 on p7.id=t.booking_agent"
                 + " LEFT JOIN location lo on lo.id = t.por"
                 + " LEFT JOIN location lo1 on lo1.id = t.pol"
                 + " LEFT JOIN location lo2 on lo2.id = t.pod"
                 + " LEFT JOIN location lo3 on lo3.id = t.fnd"
                 + " where t.creator_id=?", LoginUserController.getLoginUserId(this));
         return list;
+    }
+    //常用空运信息
+    public List<Record> getUsedAirInfo(){
+    	List<Record> list = Db.find("select t.*,"
+    			+ " p1.abbr shipperAbbr , "
+    			+ " concat(ifnull(p1.address_eng, p1.address), '\r', ifnull(p1.contact_person_eng, p1.contact_person), '\r', ifnull(p1.phone,'')) shipper_info,"
+    			+ " p2.abbr consigneeAbbr,"
+    			+ " concat(ifnull(p2.address_eng, p2.address), '\r', ifnull(p2.contact_person_eng, p2.contact_person), '\r', ifnull(p2.phone,'')) consignee_info,"
+    			+ " p3.abbr notify_partyAbbr,"
+    			+ " concat(ifnull(p3.address_eng, p3.address), '\r', ifnull(p3.contact_person_eng, p3.contact_person), '\r', ifnull(p3.phone,'')) notify_info,"
+    			+ " p7.abbr booking_agent_name,"
+    			+ " lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name from job_order_air_template t "
+    			+ " left join party p1 on p1.id= t.shipper"
+    			+ " left join party p2 on p2.id= t.consignee"
+    			+ " left join party p3 on p3.id= t.notify_party"
+    			+ " left join party p7 on p7.id=t.booking_agent"
+    			+ " where t.creator_id=?", LoginUserController.getLoginUserId(this));
+    	return list;
     }
     
     //使用common-email, javamail
