@@ -865,7 +865,7 @@ public class JobOrderController extends Controller {
         	sql=" SELECT jor.*,ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, ifnull(jos.export_date,joa.export_date) sent_out_time"
         			+ " FROM job_order jor "
         			+ " LEFT JOIN job_order_shipment jos on jor.id = jos.order_id "
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jo.id"
+        			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator "
         			+ " WHERE jor.office_id="+office_id

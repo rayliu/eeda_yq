@@ -2,8 +2,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
     $(document).ready(function() {
     	
-    	document.title = order_no + ' | ' + document.title;
-        $('#menu_order').addClass('active').find('ul').addClass('in');
         
       //按钮状态
     	var id = $('#order_id').val();
@@ -35,29 +33,46 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             //阻止a 的默认响应行为，不需要跳转
             e.preventDefault();
             //提交前，校验页面中必填字段
-            if(!$("#orderForm").valid()){
+            if(!$("#customForm").valid()){
                 return;
             }
             
             $(this).attr('disabled', true);
+            
+            
+            
+        	var order = {};
+        	order['id'] = $('#order_id').val();
+        	
+        	var customForm = $('#customForm input,#customForm select,#customForm textarea');
+        	for(var i = 0; i < customForm.length; i++){
+        		var name = customForm[i].id;
+            	var value =customForm[i].value;
+            if(name){
+            	order[name] = value;
+        	  }
+        	}
+        	
 
-            var items_array = salesOrder.buildCargoDetail();
-            var order = {
-                id: $('#order_id').val(),
-                customer_id: $('#customer_id').val(),
-                type: $('#type').val(),
-                remark: $('#note').val(),
-                status: $('#status').val()==''?'新建':$('#status').val(),
-                item_list:items_array
-                
-            };
+//            var items_array = salesOrder.buildCargoDetail();
+//            var order = {
+//            		    id: $('#order_id').val(),
+//            	carrier_id: $('#carrier').val(),
+//            	 deal_mode: $('#deal_mode').val(),
+//                      type: $('#type').val(),
+//                    remark: $('#note').val(),
+//                    status: $('#status').val()==''?'新建':$('#status').val(),
+//                 item_list:items_array
+//                
+//            };
 
             //异步向后台提交数据
-            $.post('/planOrder/save', {params:JSON.stringify(order)}, function(data){
+            $.post('/customPlanOrder/save', {params:JSON.stringify(order)}, function(data){
                 var order = data;
                 if(order.ID>0){
-                	$("#creator_name").val(order.CREATOR_NAME);
+                	$("#carrier_input").val(order.CARRIER);
                     $("#create_stamp").val(order.CREATE_STAMP);
+                    $("#creator").val(order.CREATOR_NAME);
                     $("#order_id").val(order.ID);
                     $("#order_no").val(order.ORDER_NO);
                     $("#status").val(order.STATUS);
@@ -67,7 +82,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     $('#saveBtn').attr('disabled', false);
                     $('#confirmCompleted').attr('disabled', false);
                     //异步刷新明细表
-                    salesOrder.refleshTable(order.ID);
+//                    salesOrder.refleshTable(order.ID);
                 }else{
                     $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                     $('#saveBtn').attr('disabled', false);

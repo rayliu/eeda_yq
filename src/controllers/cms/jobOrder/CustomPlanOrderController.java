@@ -2,16 +2,14 @@ package controllers.cms.jobOrder;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.Party;
 import models.UserLogin;
+import models.eeda.cms.CustomPlanOrder;
 import models.eeda.oms.PlanOrder;
-import models.eeda.oms.PlanOrderItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -56,40 +54,40 @@ public class CustomPlanOrderController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
-        PlanOrder planOrder = new PlanOrder();
+        CustomPlanOrder customPlanOrder = new CustomPlanOrder();
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
    		if (StringUtils.isNotEmpty(id)) {
    			//update
-   			planOrder = PlanOrder.dao.findById(id);
-   			DbUtils.setModelValues(dto, planOrder);
+   			customPlanOrder = CustomPlanOrder.dao.findById(id);
+   			DbUtils.setModelValues(dto, customPlanOrder);
    			
    			//需后台处理的字段
-   			planOrder.set("updator", user.getLong("id"));
-   			planOrder.set("update_stamp", new Date());
-   			planOrder.update();
+   			customPlanOrder.set("updator", user.getLong("id"));
+   			customPlanOrder.set("update_stamp", new Date());
+   			customPlanOrder.update();
    		} else {
    			//create 
-   			DbUtils.setModelValues(dto, planOrder);
+   			DbUtils.setModelValues(dto, customPlanOrder);
    			
    			//需后台处理的字段
-   			planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("JH"));
-   			planOrder.set("creator", user.getLong("id"));
-   			planOrder.set("create_stamp", new Date());
-   			planOrder.set("office_id", office_id);
-   			planOrder.save();
+   			customPlanOrder.set("order_no", OrderNoGenerator.getNextOrderNo("BGSQ"));
+   			customPlanOrder.set("creator", user.getLong("id"));
+   			customPlanOrder.set("create_stamp", new Date());
+   			customPlanOrder.set("office_id", office_id);
+   			customPlanOrder.save();
    			
-   			id = planOrder.getLong("id").toString();
+   			id = customPlanOrder.getLong("id").toString();
    		}
    		
-   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-		DbUtils.handleList(itemList, id, PlanOrderItem.class, "order_id");
+//   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
+//		DbUtils.handleList(itemList, id, PlanOrderItem.class, "order_id");
 
-		long creator = planOrder.getLong("creator");
+		long creator = customPlanOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
-		Record r = planOrder.toRecord();
+		Record r = customPlanOrder.toRecord();
    		r.set("creator_name", user_name);
    		renderJson(r);
    	}
@@ -114,22 +112,22 @@ public class CustomPlanOrderController extends Controller {
     @Before(Tx.class)
     public void edit() {
     	String id = getPara("id");
-    	PlanOrder planOrder = PlanOrder.dao.findById(id);
-    	setAttr("order", planOrder);
+    	CustomPlanOrder customPlanOrder = CustomPlanOrder.dao.findById(id);
+    	setAttr("order", customPlanOrder);
     	
     	//获取明细表信息
-    	setAttr("itemList", getPlanOrderItems(id));
+//    	setAttr("itemList", getPlanOrderItems(id));
     	
     	//回显客户信息
-    	Party party = Party.dao.findById(planOrder.getLong("customer_id"));
-    	setAttr("party", party);
+//    	Party party = Party.dao.findById(customPlanOrder.getLong("customer_id"));
+//    	setAttr("party", party);
 
     	//用户信息
-    	long creator = planOrder.getLong("creator");
+    	long creator = customPlanOrder.getLong("creator");
     	UserLogin user = UserLogin.dao.findById(creator);
     	setAttr("user", user);
     	
-        render("/oms/PlanOrder/PlanOrderEdit.html");
+        render("/cms/customPlanOrder/CustomPlanOrderEdit.html");
     }
     
 

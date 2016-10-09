@@ -8,7 +8,7 @@
             </div>
             <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
             <div class="form-group">
-                <form id="orderForm">
+                <form id="customForm">
                     <div class="row"><!--  第1行  --> 
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
@@ -20,66 +20,64 @@
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'creator_name', 
-                                                    label:'创建人', 
-                                                    value:user.c_name!'', 
-                                                    disabled: 'disabled'
+                                               {   id:'creator_name', 
+                                                   label:'创建人', 
+                                                   value:user.c_name!'', 
+                                                   disabled: 'disabled'
                                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'create_stamp', 
-                                                    label:'创建时间', 
-                                                    value:order.create_stamp!'', 
-                                                    disabled: 'disabled'
-                                                }){}%>
+                                               {   id:'create_stamp', 
+                                                   label:'创建时间', 
+                                                   value:order.create_stamp!'', 
+                                                   disabled: 'disabled'
+                                               }){}%>
                         </div>                        
                         
                      </div>
-                     <div class="row"><!--  第2行  --> 
+                     <div class="row"><!--  第2行  --> <!--         	  required:'required',-->
                        <div class="col-lg-4">
-                           <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'application_company',
-                                                	required:'required', 
-                                                    label:'申请企业', 
-                                                    value:order.order_no!''
-                                                }){}%>
+                            <%include("/eeda/component/form/inputSelectArea.html", 
+							                  {   id:'application_company',
+							                      label:'申请企业', 
+							                      display_value:order.application_company_input!'',
+							                      value:order.application_company!'',
+							                      textarea_value:order.application_company_info!''
+							                  }){}%>
                        </div>
                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'date_custom', 
-                                                    label:'报关日期', 
-                                                    value:order.create_stamp!''
-                                                }){}%>
+                       		<%include("/eeda/component/form/inputSelectArea.html", 
+			                                 {   id:'export_consignee', 
+			                                     label:'(出口)收货人', 
+			                                     display_value:order.export_consignee_input!'',
+							                     value:order.export_consignee!'',
+							                     textarea_value:order.export_consignee_info!'' 
+			                                  }){}%>
                         </div>
                        <div class="col-lg-4">
-                            <%include("/eeda/component/form/selectField.html", 
-                                {   id:'type', 
-                                    label:'类型', 
-                                    required:'required',
-                                    value:order.type!'',
-                                    value_list:[
-                                        {code:'出口', value:'出口'},
-                                        {code:'进口', value:'进口'}
-                                    ]
-                                }){}%>
+                       		<%include("/eeda/component/form/dateInputField.html", 
+	                                         {   id:'date_custom', 
+	                                             label:'报关日期', 
+	                                             value:order.date_custom!''
+	                                          }){}%>
                         </div><!-- /.col-lg-4 -->
                     </div>
                     <div class="row"><!--  第3行  -->    
                          <div class="col-lg-4">
                             <%include("/eeda/component/form/inputPartyField.html", 
-			                    {   id:'carrier',
-			                        type:  'carrier',
-			                        label: '船公司', 
-			                        value: shipment.carrier!planOrderItem.carrier!'',
-			                        display_value: shipment.carrier_name!portCreate.carrier_name!''
-			                    }){}%>
+						                  {   id:'carrier',
+						                      type:  'carrier',
+						                      label: '船公司', 
+						                      value: order.carrier!'',
+						                      display_value: order.carrier_name!''
+						                    }){}%>
                          </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/selectField.html", 
                                 {   id:'deal_mode', 
                                     label:'成交方式', 
-                                    value:order.type!'',
+                                    value:order.deal_mode!'',
                                     value_list:[
                                         {code:'出口', value:'出口'},
                                         {code:'进口', value:'进口'}
@@ -87,11 +85,15 @@
                                 }){}%>
                          </div>
                          <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-                                 {   id:'export_consignee', 
-                                     label:'(出口)收货人', 
-                                     value:order.create_stamp!'' 
-                                 }){}%>
+                             <%include("/eeda/component/form/selectField.html", 
+                                {   id:'type', 
+                                    label:'类型', 
+                                    value:order.type!'',
+                                    value_list:[
+                                        {code:'出口', value:'出口'},
+                                        {code:'进口', value:'进口'}
+                                    ]
+                                }){}%>
                         </div>
                     </div>
                     <div class="row"><!--  第4行  -->
@@ -99,7 +101,7 @@
                             <%include("/eeda/component/form/selectField.html", 
                                  {   id:'state', 
                                      label:'状态', 
-                                     value:order.create_stamp!'' ,
+                                     value:order.state!'' ,
                                      value_list:[
                                         {code:'新建', value:'新建'},
                                         {code:'已完成报关', value:'已完成报关'}
@@ -113,7 +115,7 @@
                             <%include("/eeda/component/form/selectField.html", 
                                 {   id:'supervise_mode', 
                                     label:'监管方式', 
-                                    value:order.type!'',
+                                    value:order.supervise_mode!'',
                                     value_list:[
                                         {code:'出口', value:'出口'},
                                         {code:'进口', value:'进口'}
@@ -124,7 +126,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'package_number', 
                                     label:'件数', 
-                                    value:order.type!'',
+                                    value:order.package_number!'',
                                     value_list:[
                                         {code:'出口', value:'出口'},
                                         {code:'进口', value:'进口'}
@@ -135,7 +137,7 @@
                             <%include("/eeda/component/form/selectField.html", 
                                  {   id:'package_type', 
                                      label:'包装种类', 
-                                     value:order.create_stamp!'',
+                                     value:order.package_type!'',
                                      value_list:[
                                         {code:'出口', value:'出口'},
                                         {code:'进口', value:'进口'}
@@ -148,15 +150,15 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'export_country', 
                                     label:'(出口)目的国', 
-                                    value:order.type!''
+                                    value:order.export_country!''
                                 }){}%>
                          </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputPortField.html", 
 			                       {   id:'export_port', 
 			                           label:'(出口)指运港', 
-			                           value:shipment.por!planOrderItem.por!'',
-			                           display_value:port.por_name!portCreate.por_name!''
+			                           value:order.export_port!'',
+			                           display_value:order.export_port_input!''
 			                       }){}%>
                          </div>
                          <div class="col-lg-4">
@@ -172,15 +174,15 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'import_country', 
                                     label:'(进口)启运国', 
-                                    value:order.type!''
+                                    value:order.import_country!''
                                 }){}%>
                          </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputPortField.html", 
 			                       {   id:'import_port', 
 			                           label:'(进口)装货港', 
-			                           value:shipment.por!planOrderItem.por!'',
-			                           display_value:port.por_name!portCreate.por_name!''
+			                           value:order.import_port!'',
+			                           display_value:order.import_port_input!''
 			                       }){}%>
                          </div>
                          <div class="col-lg-4">
@@ -197,14 +199,14 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'transport_fee', 
                                     label:'运费', 
-                                    value:order.type!''
+                                    value:order.transport_fee!''
                                 }){}%>
                          </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
 			                       {   id:'protect_fee', 
 			                           label:'保费', 
-			                           value:shipment.por!planOrderItem.por!''
+			                           value:order.protect_fee!''
 			                       }){}%>
                          </div>
                          <div class="col-lg-4">
@@ -219,7 +221,7 @@
             
             	<div class="form-group">
                  <label>备注</label>
-                 <textarea id='note' class="form-control" rows="3" name="note">${order.remark!''}</textarea>
+                 <textarea id='note' class="form-control" rows="3" name="note">${order.note!''}</textarea>
             	</div>
             </div>
 
@@ -255,7 +257,7 @@
             <br>
             <div class="row">
                 <div class="col-lg-12">
-                    <a id='saveBtn' class="btn  btn-primary" href="#">保存</a>
+                    <a id="saveBtn" class="btn  btn-primary" href="#">保存</a>
                     <button id="confirmCompleted" class="btn btn-primary">确认</button>
                     <a class="btn  btn-default" href="/customPlanOrder">返回</a>
                 </div>

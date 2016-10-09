@@ -29,6 +29,8 @@ import models.UserCustomer;
 import models.UserLogin;
 import models.UserOffice;
 import models.UserRole;
+import models.eeda.cms.CustomPlanOrder;
+import models.eeda.cms.CustomPlanOrderItem;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.jobOrder.JobOrder;
@@ -356,6 +358,11 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("arap_charge_invoice", ArapChargeInvoice.class);
         arp.addMapping("arap_charge_application_order", ArapChargeApplication.class);
         arp.addMapping("charge_application_order_rel", ChargeApplicationOrderRel.class);
+        
+      //cms 报关管理
+        arp.addMapping("custom_plan_order", CustomPlanOrder.class);
+        arp.addMapping("custom_plan_order_item", CustomPlanOrderItem.class);
+        
         
     }
 
