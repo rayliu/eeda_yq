@@ -83,16 +83,17 @@ eeda.dt = function(opt){
         },
         drawCallback: opt.drawCallback || function ( settings ) {},
         ajax: opt.ajax || '',
-        ajax: {
-          url: opt.ajax,
-          error: function (xhr, error, thrown) {
-            if(xhr.responseText.indexOf('忘记密码')>0){
-              alert( '您未登录, 请重新登录.' );
-            }else{
-              alert(xhr.responseText);
-            }
-          }
-        } || '',
+        // ajax: {
+        //   url: opt.ajax || '',
+        //   error: function (xhr, error, thrown) {
+        //     if(xhr.responseText.indexOf('忘记密码')>0){
+        //       alert( '您未登录, 请重新登录.' );
+        //     }else{
+        //       console.log(thrown);
+        //       alert('表格处理出错了, 请联系技术人员查看.' );
+        //     }
+        //   }
+        // } || '',
         columns: opt.columns || []
     };
 
