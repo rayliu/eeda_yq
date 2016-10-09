@@ -84,7 +84,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<a class="doc_name" href="#" style="width:300px">'+data+'</a>';
+                    return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
                 }
             },
             { "data": "C_NAME","width": "180px",
@@ -174,12 +174,6 @@ $(document).ready(function() {
     	var url = "/jobOrder/tableList?order_id="+order_id+"&type=mail";
     	emailTable.ajax.url(url).load();
     }
-    
-    //查看文档
-    $("#doc_table").on('click', '.doc_name',function(){
-    	var url = "/upload/doc/"+$(this).text();
-    	window.open(url);
-    })
     
     //全选
     $('#allCheckOfDoc').click(function(){

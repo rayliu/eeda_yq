@@ -374,12 +374,6 @@ $(document).ready(function() {
 		        }
 			});
 	});
-	
-	//查看签收文件
-//    $("#land_table").on('click', '.sign_desc',function(){
-//    	var url = "/upload/"+$(this).val();
-//    	window.open(url);
-//    })
 
 });
 });
