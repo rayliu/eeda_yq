@@ -14,7 +14,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 		  return "<a href='#' class='edit' >"+data+"</a>";
                 	  }
                   },
-	              { "data": "CONTENT"}, 
+	              { "data": "CONTENT", "className":"content"}, 
 	              { "data": "CREATE_NAME"}, 
 	              { "data": "CREATE_STAMP"}, 
 	              { "data": "UPDATE_NAME"},
@@ -38,6 +38,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           dataTable.ajax.url(url).load();
       };
       
+      $('#eeda_table').on('click','.edit',function(){
+    	  var tr = $(this).parent().parent()
+    	  $('#edit_id').val(tr.attr('id'))
+    	  $('#edit_radioTitle').val($(this).text())
+    	  $('#edit_radioContent').val($(tr.find(".content")).text())
+    	  $('#editRadio').click()
+      })
     	
 });
 });

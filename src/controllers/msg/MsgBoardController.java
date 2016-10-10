@@ -39,9 +39,12 @@ public class MsgBoardController extends Controller {
    	public void save() throws Exception {
     	String title = getPara("radioTitle");
     	String content = getPara("radioContent");
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
     	Record r= new Record();
         r.set("title", title);
         r.set("content", content);
+        r.set("office_id", office_id);
         r.set("create_stamp", new Date());
         r.set("creator", LoginUserController.getLoginUserId(this));
         Db.save("msg_board", r);
@@ -52,9 +55,12 @@ public class MsgBoardController extends Controller {
     public void saveOfMsgBoard() throws Exception {
     	String title = getPara("radioTitle");
     	String content = getPara("radioContent");
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
     	Record r= new Record();
     	r.set("title", title);
     	r.set("content", content);
+    	r.set("office_id", office_id);
     	r.set("create_stamp", new Date());
     	r.set("creator", LoginUserController.getLoginUserId(this));
     	Db.save("msg_board", r);
@@ -94,8 +100,17 @@ public class MsgBoardController extends Controller {
         renderJson(map); 
     	
     }
+    
     public void edit(){
-    	
+    	String id = getPara("edit_id");
+    	String title = getPara("edit_radioTitle");
+    	String content = getPara("edit_radioContent");
+    	Record r= Db.findById("msg_board", id);
+    	r.set("title", title);
+    	r.set("content", content);
+    	r.set("update_stamp", new Date());
+    	r.set("updator", LoginUserController.getLoginUserId(this));
+    	Db.update("msg_board", r);
     }
 
 }

@@ -250,22 +250,22 @@ public class DbUtils {
 			String master_order_id,String master_col_name){
 		for (Map<String, String> rowMap : itemList) {//获取每一行
 			
+			Record r = new Record();
 			String rowId = rowMap.get("id");
 			String action = rowMap.get("action");
 			if(StringUtils.isEmpty(rowId)){
 				if(!"DELETE".equals(action)){
-					Record r = new Record();
-					setModelValues(rowMap, r);
 					r.set(master_col_name, master_order_id);
+					setModelValues(rowMap, r);
 					Db.save(table, r);	
 				}
 			}else{
 				if("DELETE".equals(action)  ){//delete
-					Record r = Db.findById(table,rowId);
-					Db.delete(table, r);
+					Record r1 = Db.findById(table,rowId);
+					Db.delete(table, r1);
 				}else{//UPDATE
-					Record r = Db.findById(table,rowId);
-					setModelValues(rowMap, r);
+					Record r2 = Db.findById(table,rowId);
+					setModelValues(rowMap, r2);
 					Db.update(table,r);
 				}
 			}

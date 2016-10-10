@@ -63,7 +63,7 @@
             </div>
         </div><!-- end of  .page-wrapper-->
         
-<!-- 拟态框 -->
+<!-- 拟态框 ,添加公告-->
 <div class="modal fade" id="addRadioDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" style="width:1000px;">
     <div class="modal-content">
@@ -80,6 +80,35 @@
                 <div class="modal-footer">
                     <button id="addRadioBtn" class="btn btn-primary" type="submit">发布公告</button>
                     <button id="returnBtn" class="btn  btn-default" data-dismiss="modal">返回</button>
+                </div>
+            </form>
+    </div>
+  </div>
+</div>
+
+<!-- 拟态框，编辑修改公告 -->
+<% if(shiro.hasPermission("msg.create")){%>
+  <a data-target='#editRadioDetail' data-toggle='modal'>
+        <button id="editRadio" style="display:none" ></button>
+  </a>
+<%}%>
+<div class="modal fade" id="editRadioDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width:1000px;">
+    <div class="modal-content">
+      <div class="modal-header">发送公告详情</div>
+            <form action="/msgBoard/edit" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                          <input type="hidden" id="edit_id" name="edit_id">
+                          <label>公告标题</label>
+                          <input type="text" id="edit_radioTitle" name="edit_radioTitle" class="form-control" required><br>
+                          <label>公告正文</label>
+                          <textarea id="edit_radioContent" name="edit_radioContent" class="form-control" rows="5" required></textarea><br>
+                    </div>   
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">修改</button>
+                    <button class="btn  btn-default" data-dismiss="modal">返回</button>
                 </div>
             </form>
     </div>
