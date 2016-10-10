@@ -146,9 +146,8 @@ $(document).ready(function() {
         eeda.bindTableField('charge_table','CHARGE_ID','/finItem/search','');
         eeda.bindTableField('charge_table','CHARGE_ENG_ID','/finItem/search_eng','');
         eeda.bindTableField('charge_table','UNIT_ID','/serviceProvider/searchChargeUnit','');
-        eeda.bindTableField('charge_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
+        eeda.bindTableFieldCurrencyId('charge_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
-
     
     //------------事件处理
     var chargeTable = eeda.dt({
@@ -388,7 +387,7 @@ $(document).ready(function() {
 	                }
                 }
             },
-            { "data": "EXCHANGE_RATE", "width": "60px",
+            { "data": "EXCHANGE_RATE", "width": "60px", "className":"currency_rate",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);

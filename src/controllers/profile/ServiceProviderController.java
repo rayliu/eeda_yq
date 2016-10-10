@@ -2,6 +2,7 @@ package controllers.profile;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -579,10 +580,14 @@ public class ServiceProviderController extends Controller {
     //查询币制名下拉列表
     public void searchCurrency(){
     	String input = getPara("input");
+    	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    	String d = sf.format(new Date());
     	List<Record> recs = null;
-    	String sql = "select id,code,name from currency c";
+    	
+    	String sql = "select c.id,c.code,c.name,cast( if(cr.from_stamp<'"+d+"' and cr.to_stamp>'"+d+"',cr.rate,'') as char ) rate from currency c"
+    			+ " left join currency_rate cr on cr.currency_code = c.code";
     	if(!StringUtils.isBlank(input)){
-    		sql+=" where c.name like '%" + input + "%' or c.english_name like '%" + input + "%' or c.code like '%" + input + "%' ";
+    		sql+=" and c.name like '%" + input + "%' or c.english_name like '%" + input + "%' or c.code like '%" + input + "%' ";
     	}
     	recs = Db.find(sql);
     	renderJson(recs);

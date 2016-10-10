@@ -2,6 +2,7 @@ package controllers.profile;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -120,5 +121,5 @@ public class CurrencyRateController extends Controller {
 
         renderJson(orderListMap); 
     }
-
+    
 }

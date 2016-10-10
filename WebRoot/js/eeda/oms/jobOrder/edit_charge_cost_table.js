@@ -70,7 +70,7 @@ $(document).ready(function() {
         eeda.bindTableField('cost_table','CHARGE_ID','/finItem/search','');
         eeda.bindTableField('cost_table','CHARGE_ENG_ID','/finItem/search_eng','');
         eeda.bindTableField('cost_table','UNIT_ID','/serviceProvider/searchChargeUnit','');
-        eeda.bindTableField('cost_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
+        eeda.bindTableFieldCurrencyId('cost_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
     
     var costTable = eeda.dt({
@@ -312,7 +312,7 @@ $(document).ready(function() {
                 	}
                 }
             },
-            { "data": "EXCHANGE_RATE", "width": "60px",
+            { "data": "EXCHANGE_RATE", "width": "60px", "className":"currency_rate",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);

@@ -280,6 +280,5 @@ $(document).ready(function() {
     	}
     });
     
-	    
 });
 });
