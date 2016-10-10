@@ -111,6 +111,7 @@ public class MsgBoardController extends Controller {
     	r.set("update_stamp", new Date());
     	r.set("updator", LoginUserController.getLoginUserId(this));
     	Db.update("msg_board", r);
+    	redirect("/msgBoard");
     }
 
 }
