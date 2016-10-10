@@ -1,10 +1,14 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 
+        'validate_cn', 'sco', 'datetimepicker_CN', 'jq_blockui'], function ($, metisMenu) { 
+    // $.blockUI({ 
+    //     message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/></h4>' 
+    // });
 
     $(document).ready(function() {
-    	
+
     	document.title = order_no + ' | ' + document.title;
         $('#menu_order').addClass('active').find('ul').addClass('in');
-        
+
       //按钮状态
     	var id = $('#order_id').val();
     	var status = $('#status').val();
@@ -16,21 +20,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     			$('#saveBtn').attr('disabled', true);
     		}
         }
-         
-    	
+
+
     	//已完成计划单确认
     	$('#confirmCompleted').click(function(){
+            $.blockUI({ 
+                message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
+            });
     		$('#confirmCompleted').attr('disabled', true);
     		id = $('#order_id').val();
     		$.post('/planOrder/confirmCompleted', {id:id}, function(data){
     	            $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
     	            $('#saveBtn').attr('disabled', true);
+                    $.unblockUI();
     	    },'json').fail(function() {
     	        $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
     	        $('#confirmCompleted').attr('disabled', false);
-    	      });
+                $.unblockUI();
+    	    });
     	})
-        
+
         //------------save
         $('#saveBtn').click(function(e){
             //阻止a 的默认响应行为，不需要跳转
@@ -40,6 +49,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 return;
             }
             
+            $.blockUI({ 
+                message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
+            });
             $(this).attr('disabled', true);
 
             var items_array = salesOrder.buildCargoDetail();
@@ -67,16 +79,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     $('#saveBtn').attr('disabled', false);
                     $('#confirmCompleted').attr('disabled', false);
+
+                    $.unblockUI();
                     //异步刷新明细表
                     salesOrder.refleshTable(order.ID);
                 }else{
                     $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                     $('#saveBtn').attr('disabled', false);
+
+                    $.unblockUI();
                 }
             },'json').fail(function() {
                 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                 $('#saveBtn').attr('disabled', false);
-              });
+                $.unblockUI();
+            });
         });  
         
         

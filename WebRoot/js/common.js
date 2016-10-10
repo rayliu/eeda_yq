@@ -5,6 +5,7 @@ requirejs.config({
         app: '../eeda',
         jquery: 'jquery/jquery-1.10.2',
         jquery_ui:'jquery-ui-1.11.4/jquery-ui',
+        jq_blockui: 'jquery-blockUI-2.7/jquery.blockUI',
         template: 'aui-artTemplate-3/template',
         bootstrap:'bootstrap/bootstrap',
         metisMenu:'metisMenu/jquery.metisMenu',
@@ -24,6 +25,15 @@ requirejs.config({
         echarts: 'echarts3.1.10/echarts.common.min'
     },
     shim: {
+        jquery_ui: {
+            deps: ['jquery']
+        },
+        jq_ui_widget:{
+            deps: ['jquery']
+        },
+        jq_blockui:{
+            deps: ['jquery']
+        },
         bootstrap:{
             deps: ['jquery']
         },
@@ -45,9 +55,6 @@ requirejs.config({
         zTree: {
             deps: ['jquery']
         },
-        jquery_ui: {
-            deps: ['jquery']
-        },
         sco: {
             deps: ['jquery']
         },
@@ -65,9 +72,6 @@ requirejs.config({
         },
         validate_cn:{
             deps: ['validate']
-        },
-        jq_ui_widget:{
-            deps: ['jquery']
         },
         file_upload:{
             deps: ['jq_ui_widget']

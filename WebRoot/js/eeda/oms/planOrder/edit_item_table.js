@@ -78,6 +78,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             autoWidth: false,
             "drawCallback": function( settings ) {
 		        bindFieldEvent();
+		        $.unblockUI();
 		    },
             columns:[
 				{ "width": "10px",
