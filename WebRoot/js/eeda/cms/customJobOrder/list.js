@@ -58,7 +58,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             			  return data;
             		  return '';
             	  }
-              }, 
+              },
+              { "data": "CUSTOMERkouan_NAME"}, 
               { "data": "CUSTOMER_NAME"}, 
               { "data": "CREATOR_NAME"}, 
               { "data": "CREATE_STAMP"}, 

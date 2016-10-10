@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="96"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -884,16 +884,16 @@ NON-NEGOTIABLE]]></text>
 				<reportElement x="412" y="2" width="1" height="21" uuid="a83b3ec2-017c-4ee4-b614-cad0addecc36"/>
 			</line>
 			<textField>
-				<reportElement x="18" y="282" width="46" height="14" uuid="4efec50a-c420-4e9b-868e-897a90b2d39b"/>
+				<reportElement x="18" y="282" width="63" height="14" uuid="4efec50a-c420-4e9b-868e-897a90b2d39b"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{vessel}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="79" y="282" width="51" height="15" uuid="fc839ff4-00cb-4cdd-bc26-6f44d4171bbe"/>
+				<reportElement x="81" y="282" width="49" height="15" uuid="fc839ff4-00cb-4cdd-bc26-6f44d4171bbe"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{voyage}]]></textFieldExpression>
 			</textField>
