@@ -9,13 +9,11 @@ define(['jquery', 'metisMenu', 'sb_admin', './todo', './index_weekly_charts', '.
         $('.seeMsgBoardDetail').click(function(){
         	var id = $(this).attr("msgBoardId");
         	$.post('/msgBoard/seeMsgBoardDetail', {id:id}, function(data){
-        		$('#addRadioBtn').hide()
-	            $('#radioTitle').val(data.TITLE)
-	            $('#radioContent').val(data.CONTENT)
-	            $('#addRadio').click()
+        		$('#radioTitleSpan').text(data.TITLE)
+        		$('#radioContentSpan').text(data.CONTENT)
+	            $('#seeRadio').click()
         	},'json')
         })
-        
         
     });
 });

@@ -15,19 +15,19 @@
         <ul class="chat">
                 <%for(info in msgBoardInfo![]){%>
 	            <li class="left clearfix">
-	                <span class="chat-img pull-left">
+	             <!--    <span class="chat-img pull-left">
 	                    <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle">
-	                </span>
+	                </span> -->
 	                <div class="chat-body clearfix">
+	                    <p>
+	                        <a href='#' class="seeMsgBoardDetail" msgBoardId="${info.id}">[${info.title}]:</a><br>${info.content}
+	                    </p>
 	                    <div class="header">
 	                        <strong class="primary-font">${info.c_name}</strong>
 	                        <small class="pull-right text-muted">
 	                            <i class="fa fa-clock-o fa-fw"></i> ${info.create_stamp}
 	                        </small>
 	                    </div>
-	                    <p>
-	                        <a href='#' class="seeMsgBoardDetail" msgBoardId="${info.id}">[${info.title}]:</a><br>${info.content}
-	                    </p>
 	                </div>
 	            </li>
                 <%}%>
@@ -41,7 +41,7 @@
 <div class="modal fade" id="addRadioDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog" style="width:1000px;">
         <div class="modal-content">
-          <div class="modal-header">发送公告详情</div>
+          <div class="modal-header">公告详情</div>
                 <form action="/msgBoard/save" method="post">
 	                <div class="modal-body">
 		                <div class="form-group">
@@ -58,4 +58,24 @@
 	            </form>
         </div>
       </div>
-    </div>
+</div>
+
+<!-- 拟态框,查看 -->
+<a data-target='#seeRadioDetail' data-toggle='modal'>
+<button id="seeRadio" type="button" class="btn btn-warning btn-xs"></button>
+</a>
+<div class="modal fade" id="seeRadioDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" style="width:1000px;">
+        <div class="modal-content">
+          <div class="modal-header">公告详情</div>
+               <div class="modal-body">
+                <div class="form-group">
+                      <label>公告标题</label><br>
+                      <span id="radioTitleSpan" style="dispaly:none"></span><br><br><br>
+                      <label>公告正文</label><br>
+                      <span id="radioContentSpan" style="dispaly:none"></span><br><br><br>
+                </div>   
+            </div>
+        </div>
+      </div>
+</div>
