@@ -353,7 +353,6 @@ eeda.refreshUrl = refreshUrl;
 					  return;
 				  }
 				  tableFieldList.empty();
-				  debugger;
 				  for(var i = 0; i < data.length; i++)
 					  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID
 							  +"' dataName='"+data[i].NAME+"' currency_rate='"+data[i].RATE+"' >"+data[i].NAME+"</a></li>");

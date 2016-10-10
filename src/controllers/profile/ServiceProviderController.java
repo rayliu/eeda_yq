@@ -585,9 +585,9 @@ public class ServiceProviderController extends Controller {
     	List<Record> recs = null;
     	
     	String sql = "select c.id,c.code,c.name,cast( if(cr.from_stamp<'"+d+"' and cr.to_stamp>'"+d+"',cr.rate,'') as char ) rate from currency c"
-    			+ " left join currency_rate cr on cr.currency_code = c.code";
+    			+ " left join currency_rate cr on cr.currency_code = c.code where 1=1 ";
     	if(!StringUtils.isBlank(input)){
-    		sql+=" and c.name like '%" + input + "%' or c.english_name like '%" + input + "%' or c.code like '%" + input + "%' ";
+    		sql+=" and (c.name like '%" + input + "%' or c.english_name like '%" + input + "%' or c.code like '%" + input + "%') ";
     	}
     	recs = Db.find(sql);
     	renderJson(recs);
