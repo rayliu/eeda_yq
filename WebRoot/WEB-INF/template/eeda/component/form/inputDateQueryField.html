@@ -21,9 +21,22 @@
  
     <script>
     $(document).ready(function() {
+    	var type = '${date_type!}';
+    	var format = 'yyyy-MM-dd';
+    	var viewMode = 'days';
+    	if(type=='year'){
+    		format = 'yyyy';
+    		viewMode = 'years';
+    	}else if(type=='month'){
+    		format = 'yyyy-MM';
+    		viewMode = 'months';
+    	}
+    	
+    	
     	//时间控件
     	$('#${id}_begin_div').datetimepicker({  
-    	    format: 'yyyy-MM-dd',  
+    	    format: format, 
+    	    viewMode: viewMode,
     	    language: 'zh-CN'
     	}).on('changeDate', function(ev){
     	    $(".bootstrap-datetimepicker-widget").hide();   
@@ -38,7 +51,8 @@
 
         //时间控件
         $('#${id}_end_div').datetimepicker({  
-            format: 'yyyy-MM-dd',  
+        	 format: format, 
+     	    viewMode: viewMode,
             language: 'zh-CN'
         }).on('changeDate', function(ev){
             $(".bootstrap-datetimepicker-widget").hide();   
