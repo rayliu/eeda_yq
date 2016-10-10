@@ -209,7 +209,7 @@ eeda.refreshUrl = refreshUrl;
 	             if(suffix != '') {
 	                 return t + "." + suffix;
 	             }else {
-	                 return t;
+	                 return parseFloat(t).toFixed(2);
 	             }
 	         }else {
 	             return '传入的多少位不正确';
