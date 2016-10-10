@@ -12,6 +12,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        cargoTable.row(tr).remove().draw();
 	    }); 
 	    
+	    //构造函数，获得json
 	    salesOrder.buildCargoDetail=function(){
 	    	var cargo_table_rows = $("#cargo_table tr");
 	        var cargo_items_array=[];
@@ -97,127 +98,95 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                	}
 	                }
 	            },
-	            { "data": "TRANSPORT_TYPE","width": "80px",
+	            { "data": "COMMODITY_CODE","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var str = '<select name="transport_type" class="form-control search-control">'
-                			+'<option></option>'
-		                   +'<option value="ocean" '+(data=='ocean' ? 'selected':'')+'>海运</option>'
-		                   +'<option value="land" '+(data=='land' ? 'selected':'')+'>陆运</option>'
-		                   +'<option value="air" '+(data=='air' ? 'selected':'')+'>空运</option>'
-		                   +'</select>';
-	                    return str;
+	                    return '<input type="text" name="COMMODITY_CODE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "LOAD_TYPE","width": "80px",
+	            { "data": "COMMODITY_NAME","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
 	                	   data='';
-	                   var str= '<select name="load_type" class="form-control search-control">'
-	                	   	 	+'<option></option>'
-			                   +'<option value="FCL" '+ (data=='FCL'?'selected':'') +'>FCL</option>'
-			                   +'<option value="LCL" '+ (data=='LCL'?'selected':'') +'>LCL</option>'
-			                   +'<option value="FTL" '+ (data=='FTL'?'selected':'') +'>FTL</option>'
-			                   +'<option value="LTL" '+ (data=='LTL'?'selected':'') +'>LTL</option>'
-			                   +'</select>';
-			           return str;
+	                   return '<input type="text" name="COMMODITY_NAME" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "CONTAINER_TYPE","width": "80px",
+	            { "data": "STANDARD","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var str = '<select name="container_type" class="form-control search-control">'
-	                    			+'<option></option>'
-				                   +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>20GP</option>'
-				                   +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>40GP</option>'
-				                   +'<option value="40HQ" '+(data=='40HQ' ? 'selected':'')+'>40HQ</option>'
-				                   +'</select>';
-	                    return str;
+	                    return '<input type="text" name="STANDARD" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "CONTAINER_AMOUNT","width": "180px",
+	            { "data": "DECLARE_ELEMENT","width": "180px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="CONTAINER_AMOUNT" value="'+data+'" class="form-control search-control" />';
+	                   return '<input type="text" name="DECLARE_ELEMENT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "CARGO_NAME","width": "180px",
+	            { "data": "TRANSACTION_AMOUNT","width": "180px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="CARGO_NAME" value="'+data+'" class="form-control search-control" />';
+	                   return '<input type="text" name="TRANSACTION_AMOUNT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "PIECES" ,"width": "180px",
+	            { "data": "TRANSACTION_UNIT" ,"width": "180px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="PIECES" value="'+data+'" class="form-control search-control" />';
+	                   return '<input type="text" name="TRANSACTION_UNIT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "UNIT_ID", 
+	            { "data": "LEGAL_AMOUNT", 
 	                "render": function ( data, type, full, meta ) {
 	                	if(!data)
 	                        data='';
-	                    var field_html = template('table_dropdown_template',
-	                        {
-	                            id: 'UNIT_ID',
-	                            value: data,
-	                            display_value: full.UNIT_NAME,
-	                            style:'width:80px'
-	                        }
-	                    );
-	                    return field_html;
+	                	return '<input type="text" name="LEGAL_AMOUNT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "VOLUME","width": "180px",
+	            { "data": "LEGAL_UNIT","width": "180px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="VOLUME" value="'+data+'" class="form-control search-control" />';
+	                   return '<input type="text" name="LEGAL_UNIT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "NET_WEIGHT","width": "180px",
+	            { "data": "PRICE","width": "180px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="NET_WEIGHT" value="'+data+'" class="form-control search-control" />';
+	                   return '<input type="text" name="PRICE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "GROSS_WEIGHT","width": "180px",
+	            { "data": "TOTAL_PRICE","width": "180px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="GROSS_WEIGHT" value="'+data+'" class="form-control search-control" />';
+	                   return '<input type="text" name="TOTAL_PRICE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "FACTORY_LOADING_TIME" ,"width": "180px",
+	            { "data": "CURRENCY" ,"width": "180px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var field_html = template('table_date_field_template',
-		                    {
-		                        id: 'FACTORY_LOADING_TIME',
-		                        value: data.substr(0,19)
-		                    }
-		                );
-	                    return field_html;
+	                    return '<input type="text" name="CURRENCY" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "TRUCK_TYPE","width": "80px",
+	            { "data": "EXEMPTION","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   var field_html = template('table_truck_type_field_template',
-		                    {
-		                        id: 'TRUCK_TYPE',
-		                        value: data
-		                    }
-		                );
-	                    return field_html;
+	                    return '<input type="text" name="EXEMPTION" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            { "data": "IS_GEN_JOB", "visible": false,
+	            	"render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
 	                }
 	            }
 //	            { "data": "PICKUP_ADDR","width": "180px",
@@ -396,13 +365,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 //	                    return data;
 //	                }
 //	            }, 
-//	            { "data": "IS_GEN_JOB", "visible": false,
-//	            	"render": function ( data, type, full, meta ) {
-//	                    if(!data)
-//	                        data='';
-//	                    return data;
-//	                }
-//	            },
+//	            
 //	            { "data": "UNIT_NAME", "visible": false,
 //	                "render": function ( data, type, full, meta ) {
 //	                    if(!data)
@@ -420,7 +383,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    
 	    //刷新明细表
 	    salesOrder.refleshTable = function(order_id){
-	    	var url = "/planOrder/tableList?order_id="+order_id;
+	    	var url = "/customPlanOrder/tableList?order_id="+order_id;
 	    	cargoTable.ajax.url(url).load();
 	    }
 	    

@@ -2,6 +2,7 @@ package controllers.cms.jobOrder;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
+import models.eeda.cms.CustomPlanOrderItem;
 import models.eeda.oms.PlanOrder;
 
 import org.apache.commons.lang.StringUtils;
@@ -82,8 +84,8 @@ public class CustomPlanOrderController extends Controller {
    			id = customPlanOrder.getLong("id").toString();
    		}
    		
-//   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-//		DbUtils.handleList(itemList, id, PlanOrderItem.class, "order_id");
+   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
+		DbUtils.handleList(itemList, id, CustomPlanOrderItem.class, "order_id");
 
 		long creator = customPlanOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
@@ -93,16 +95,10 @@ public class CustomPlanOrderController extends Controller {
    	}
     
     
-    private List<Record> getPlanOrderItems(String orderId) {
-        String itemSql = "select pi.*, l_por.name por_name, l_pol.name pol_name, l_pod.name pod_name,u.name unit_name,"
-                + " p.abbr carrier_name "
-                + " from plan_order_item pi "
-                +" left join location l_por on pi.por=l_por.id"
-                +" left join location l_pol on pi.pol=l_pol.id"
-                +" left join location l_pod on pi.pod=l_pod.id"
-                +" left join party p on pi.carrier=p.id"
-                +" left join unit u on u.id=pi.unit_id"
-                +" where order_id=?";
+    private List<Record> getCustomPlanOrderItems(String orderId) {
+        String itemSql = "SELECT * FROM"
+        		+ "	custom_plan_order_item"
+        		+ " WHERE order_id=?";
 
 		List<Record> itemList = Db.find(itemSql, orderId);
 		return itemList;
@@ -116,7 +112,7 @@ public class CustomPlanOrderController extends Controller {
     	setAttr("order", customPlanOrder);
     	
     	//获取明细表信息
-//    	setAttr("itemList", getPlanOrderItems(id));
+    	setAttr("itemList", getCustomPlanOrderItems(id));
     	
     	//回显客户信息
 //    	Party party = Party.dao.findById(customPlanOrder.getLong("customer_id"));
@@ -200,7 +196,7 @@ public class CustomPlanOrderController extends Controller {
     public void tableList(){
     	String order_id = getPara("order_id");
     	List<Record> list = null;
-    	list = getPlanOrderItems(order_id);
+    	list = getCustomPlanOrderItems(order_id);
 
     	Map BillingOrderListMap = new HashMap();
         BillingOrderListMap.put("sEcho", 1);

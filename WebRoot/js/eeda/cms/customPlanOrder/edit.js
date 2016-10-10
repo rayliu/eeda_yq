@@ -19,7 +19,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	$('#confirmCompleted').click(function(){
     		$('#confirmCompleted').attr('disabled', true);
     		id = $('#order_id').val();
-    		$.post('/planOrder/confirmCompleted', {id:id}, function(data){
+    		$.post('/customPlanOrder/confirmCompleted', {id:id}, function(data){
     	            $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
     	            $('#saveBtn').attr('disabled', true);
     	    },'json').fail(function() {
@@ -40,21 +40,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $(this).attr('disabled', true);
             
             
-            
+       //获取页面数据，构造json     
         	var order = {};
+        	var items_array = salesOrder.buildCargoDetail();
         	order['id'] = $('#order_id').val();
+        	order['note'] = $('#note').val();
         	
         	var customForm = $('#customForm input,#customForm select,#customForm textarea');
         	for(var i = 0; i < customForm.length; i++){
         		var name = customForm[i].id;
             	var value =customForm[i].value;
             if(name){
+            	if(name='status'){
+            		var value =customForm[i].value==''?'新建':customForm[i].value;
+            	}
             	order[name] = value;
         	  }
         	}
-        	
+        	order['item_list'] = items_array;
 
-//            var items_array = salesOrder.buildCargoDetail();
+            
 //            var order = {
 //            		    id: $('#order_id').val(),
 //            	carrier_id: $('#carrier').val(),
@@ -76,13 +81,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     $("#order_id").val(order.ID);
                     $("#order_no").val(order.ORDER_NO);
                     $("#status").val(order.STATUS);
-                    $("#note").val(order.REMARK);
+                    $("#note").val(order.NOTE);
                     eeda.contactUrl("edit?id",order.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     $('#saveBtn').attr('disabled', false);
                     $('#confirmCompleted').attr('disabled', false);
                     //异步刷新明细表
-//                    salesOrder.refleshTable(order.ID);
+                    salesOrder.refleshTable(order.ID);
                 }else{
                     $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                     $('#saveBtn').attr('disabled', false);
