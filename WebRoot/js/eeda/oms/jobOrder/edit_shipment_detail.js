@@ -50,13 +50,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         else{
         	$('#wait_overseaCustom').attr("checked",false);
         }
-        
+
         //选择卸货港时自动填上目的港
         $('#pod_list').on('mousedown', '.fromLocationItem', function(){
     	    	$('#fnd_input').val($('#pod_input').val());
     	    	$('#fnd').val($('#pod').val());
-        })
-        
+        });
+
+        $('#pod_list').on('keydown', 'li', function(event){
+            if (event.keyCode == 13) {
+                $('#fnd_input').val($('#pod_input').val());
+                $('#fnd').val($('#pod').val());
+            }
+        });
+
         //常用海运信息模版
         $('#usedOceanInfo').on('click', 'li', function(){
             var li = $(this);
