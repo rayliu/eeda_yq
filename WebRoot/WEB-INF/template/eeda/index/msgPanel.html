@@ -12,8 +12,6 @@
         <%}%>
     </div>
     <div class="panel-body">
-        
-    
         <ul class="chat">
                 <%for(info in msgBoardInfo![]){%>
 	            <li class="left clearfix">
@@ -28,7 +26,7 @@
 	                        </small>
 	                    </div>
 	                    <p>
-	                        <a href='#'>[${info.title}]：${info.content}</a>
+	                        <a href='#' class="seeMsgBoardDetail" msgBoardId="${info.id}">[${info.title}]:</a><br>${info.content}
 	                    </p>
 	                </div>
 	            </li>

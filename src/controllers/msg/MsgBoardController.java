@@ -114,4 +114,10 @@ public class MsgBoardController extends Controller {
     	redirect("/msgBoard");
     }
 
+    public void seeMsgBoardDetail(){
+    	String id = getPara("id");
+    	Record r= Db.findById("msg_board", id);
+    	renderJson(r);
+    }
+    
 }
