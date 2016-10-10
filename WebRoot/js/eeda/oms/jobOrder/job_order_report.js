@@ -115,9 +115,6 @@ $(document).ready(function() {
     	if($('#vessel').val()==''){
     		alert+='船名<br><br>';
     	}
-    	if($('#route').val()==''){
-    		alert+='航线<br><br>';
-    	}
     	if($('#voyage').val()==''){
     		alert+='航次<br><br>';
     	}
@@ -132,9 +129,6 @@ $(document).ready(function() {
     	}
     	if($('#fnd').val()==''){
     		alert+='目的地 FND<br><br>';
-    	}
-    	if($('#hub').val()==''){
-    		alert+='转运港 HUB<br><br>';
     	}
     	if($('#etd').val()==''){
     		alert+='ETD<br><br>';
