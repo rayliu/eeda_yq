@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN',
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'jq_blockui',
     './edit_shipment_table','./edit_shipment_detail','./edit_land_table', './edit_charge_table','./edit_charge_cost_table',
     './edit_air_table', './edit_air_cargoDesc_table', './edit_air_detail','./edit_custom_detail',
     './edit_insurance_detail','./edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report'], function ($, metisMenu) {
@@ -22,6 +22,9 @@ $(document).ready(function() {
 	
 	//已完成工作单确认
 	$('#confirmCompleted').click(function(){
+        $.blockUI({ 
+            message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
+        });
 		$('#confirmCompleted').attr('disabled', true);
 		id = $('#order_id').val();
 		$.post('/jobOrder/confirmCompleted', {id:id}, function(data){
@@ -30,7 +33,8 @@ $(document).ready(function() {
 	    },'json').fail(function() {
 	        $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
 	        $('#confirmCompleted').attr('disabled', false);
-	      });
+            $.unblockUI();
+	   });
 	})
 	
     //------------save
@@ -48,6 +52,9 @@ $(document).ready(function() {
         	return;
         }
         
+        $.blockUI({ 
+            message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
+        });
         $('#saveBtn').attr('disabled', true);
         
         //这张工作单的应收应付汇总存数据进数据库
@@ -189,15 +196,17 @@ $(document).ready(function() {
                 itemOrder.refleshLandItemTable(order.ID);
                 itemOrder.refleshChargeTable(order.ID);
                 itemOrder.refleshCostTable(order.ID);
-                
+                $.unblockUI();
             }else{
                 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                 $('#saveBtn').attr('disabled', false);
+                $.unblockUI();
             }
         },'json').fail(function() {
             $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
             $('#saveBtn').attr('disabled', false);
-          });
+            $.unblockUI();
+        });
     	
 	});
     

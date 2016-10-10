@@ -78,6 +78,8 @@ $(document).ready(function() {
         autoWidth: false,
         drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
             bindFieldEvent();
+
+            $.unblockUI();
         },
         columns:[
 			{"data": "ID","width": "10px",
