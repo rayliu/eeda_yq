@@ -304,6 +304,7 @@ $(document).ready(function() {
 	            		}
 	            		return str;
             		}
+                    return data;
             	}
             },
             { "data": "SIGN_STATUS", "width": "180px",
