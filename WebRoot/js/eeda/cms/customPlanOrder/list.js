@@ -15,47 +15,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             id: 'eeda-table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/customPlanOrder/list?type="+type,
+            ajax: "/customPlanOrder/list",
             columns:[
                   {"data": "ORDER_NO", 
                 	  "render": function ( data, type, full, meta ) {
                 		  return "<a href='/customPlanOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
                 	  }
                   },
-	              { "data": "TYPE",
-                    "render": function ( data, type, full, meta ) {
-                      var str = '';
-                      if(data == '出口柜货'){
-                        str = '出口柜货'; 
-                      }else if(data == '进口柜货'){
-                        str = '进口柜货';
-                      }else if(data == '进口散货'){
-                        str = '进口散货';
-                      }else if(data == '进口散货'){
-                        str = '出口空运';
-                      }else if(data == '出口空运'){
-                        str = '进口空运'; 
-                      }else if(data == '香港头程'){
-                        str = '香港头程';
-                      }else if(data == '香港游'){
-                        str = '香港游';
-                      }else if(data == '陆运'){
-                        str = '陆运';
-                      }else if(data == '报关'){
-                        str = '报关'; 
-                      }else if(data == '快递'){
-                        str = '快递';
-                      }else if(data == '加贸'){
-                        str = '加贸';
-                      }else if(data == '贸易'){
-                        str = '贸易';
-                      }else if(data == '园区游'){
-                        str = '园区游';
-                      }
-                      return str;
-                    }
-                }, 
-	              { "data": "CUSTOMER_NAME"}, 
+	              { "data": "TYPE"}, 
+	              { "data": "APPLICATION_COMPANY_NAME"}, 
 	              { "data": "CREATOR_NAME"}, 
 	              { "data": "CREATE_STAMP"}, 
 	              { "data": "STATUS"}
@@ -71,12 +39,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       })
 
      var searchData=function(){
-          var order_no = $.trim($("#order_no").val()); 
-          var status = $('#status').val();
+          var order_no = $.trim($("#order_no").val());
+          var customer_name = $('#customer_name').val().trim();
+          var status = $('#status').val().trim();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
-          var customer_code = $("#customer_code").val().trim();
-          var customer_name = $("#customer_name").val().trim();
           
           /*  
               查询规则：参数对应DB字段名
@@ -85,10 +52,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/planOrder/list?order_no="+order_no
+          var url = "/customPlanOrder/list?order_no="+order_no
                +"&status="+status
-               +"&customer_code="+customer_code
-               +"&customer="+customer_name
+               +"&application_company_name="+customer_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 

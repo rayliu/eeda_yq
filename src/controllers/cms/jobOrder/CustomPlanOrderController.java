@@ -132,7 +132,7 @@ public class CustomPlanOrderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         
-    	String type=getPara("type");
+    	
     	String customer_code=getPara("customer_code")==null?"":getPara("customer_code");
     	String customer_name=getPara("customer")==null?"":getPara("customer");
     	
@@ -143,37 +143,14 @@ public class CustomPlanOrderController extends Controller {
         }
         String sql = "";
         String condition="";
-        if("todo".equals(type)){
-        	sql =" SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name "
-        			+ " FROM plan_order po "
-        			+ " LEFT JOIN plan_order_item poi ON po.id = poi.order_id "
-        			+ " left join party p on p.id = po.customer_id "
-        			+ " left join user_login u on u.id = po.creator "
-        			+ " WHERE po.office_id="+office_id+" and is_gen_job='N' AND factory_loading_time is not NULL "
-        			+ " AND datediff(factory_loading_time, now())<=5";
-        }else if ("customwaitPlan".equals(type)){
-        	sql =" SELECT po.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p. CODE"
-        			+ " FROM"
-        			+ "	plan_order po"
-        			+ " LEFT JOIN plan_order_item poi ON poi.order_id = po.id"
-        			+ " LEFT JOIN user_login u ON u.id = po.creator"
-        			+ " LEFT JOIN party p ON p.id = po.customer_id"
-        			+ " WHERE"
-        			+ " po.office_id="+office_id+" and poi.customs_type = '自理报关'"
-        			+ " AND poi.is_gen_job = 'N'"
-        			+ " GROUP BY poi.id ";
-        }else{
-        	sql = "SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name,p.code"
-    			+ "  from plan_order po "
-    			+ "  left join party p on p.id = po.customer_id "
-    			+ "  left join user_login u on u.id = po.creator"
-    			+ "  where 1 =1 "
-    			+ "  and po.office_id="+office_id+" and abbr like '%"
-    			+ customer_name
-    			+ "%' and code like '%"
-    			+ customer_code
-    			+ "%'";
-        }
+        
+        	sql = "SELECT * from (SELECT cpo.id,cpo.order_no,cpo.type,cpo.application_company_input application_company_name,ul.c_name creator_name,"
+        			+ " cpo.create_stamp,cpo.status"
+        			+ " FROM custom_plan_order cpo"
+        			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
+        			+ " where cpo.office_id="+office_id+")A"
+    		        + " where 1 =1 ";
+
         condition = DbUtils.buildConditions(getParaMap());
         
         

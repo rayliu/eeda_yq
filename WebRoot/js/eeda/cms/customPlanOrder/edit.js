@@ -6,8 +6,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       //按钮状态
     	var id = $('#order_id').val();
     	var status = $('#status').val();
-        if(id==''){
-        	$('#confirmCompleted').attr('disabled', true);
+        if(id!=''){
+        	$('#confirmCompleted').attr('disabled', false);
         }else{
     		if(status=='已完成'){
     			$('#confirmCompleted').attr('disabled', true);
@@ -40,21 +40,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $(this).attr('disabled', true);
             
             
-       //获取页面数据，构造json     
+       //获取页面数据，构造json 
+            var items_array = salesOrder.buildCargoDetail();
         	var order = {};
-        	var items_array = salesOrder.buildCargoDetail();
         	order['id'] = $('#order_id').val();
         	order['note'] = $('#note').val();
-        	
         	var customForm = $('#customForm input,#customForm select,#customForm textarea');
         	for(var i = 0; i < customForm.length; i++){
         		var name = customForm[i].id;
             	var value =customForm[i].value;
             if(name){
-            	if(name='status'){
+            	if(name=='status'){
             		var value =customForm[i].value==''?'新建':customForm[i].value;
+            	}else{
+            		order[name] = value;
             	}
-            	order[name] = value;
         	  }
         	}
         	order['item_list'] = items_array;

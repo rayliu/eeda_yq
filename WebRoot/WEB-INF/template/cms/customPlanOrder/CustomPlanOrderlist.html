@@ -30,16 +30,16 @@
                                         </div>
                                         <div class="col-lg-4"> 
                                             <%include("/eeda/component/form/selectField.html", 
-                                                    {   id:'status', 
-                                                        label:'状态', 
-                                                        value: '',
-                                                        value_list:[
-                                                            {code:'', value:''},
-                                                            {code:'新建', value:'新建'},
-                                                            {code:'已完成报关', value:'已完成报关'}
-                                                        ]
-                                                    }
-                                                 ){} %>
+			                                                   {   id:'status', 
+			                                                       label:'状态', 
+			                                                       value: '',
+			                                                       value_list:[
+			                                                           {code:'', value:''},
+			                                                           {code:'新建', value:'新建'},
+			                                                           {code:'已提交报关', value:'已提交报关'}
+			                                                       ]
+			                                                   }
+			                                                ){} %>
                                         </div>
                                         <div class="col-lg-4">        
                                             <%include("/eeda/component/form/inputDateQueryField.html", {id:'create_stamp', label:'创建时间', value:''}){} %>
@@ -66,15 +66,15 @@
                             </div> 
 
                             <%include("/eeda/component/form/detailTable.html", 
-                                {
-                                    id:'eeda-table', 
-                                    headers:['报关申请单号',
-                                    	'类型',
-                                        '客户名称',
-                                        '创建人',
-                                        '创建时间',
-                                        '状态']
-                                }){} %>
+							                                {
+							                                    id:'eeda-table', 
+							                                    headers:['报关申请单号',
+							                                    	'类型',
+							                                        '申请企业',
+							                                        '创建人',
+							                                        '创建时间',
+							                                        '状态']
+							                                }){} %>
                             
                         </div>
                         <!-- /.panel-body -->
