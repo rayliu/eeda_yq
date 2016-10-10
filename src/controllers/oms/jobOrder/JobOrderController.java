@@ -228,7 +228,8 @@ public class JobOrderController extends Controller {
                    planOrderItem.update();
    			}
    		}
-		
+   		long customerId = Long.valueOf(dto.get("customer_id").toString());
+   		saveCustomerQueryHistory(customerId);
 		//海运
 		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
 		DbUtils.handleList(shipment_detail, id, JobOrderShipment.class, "order_id");
@@ -462,6 +463,22 @@ public class JobOrderController extends Controller {
             rec = new Record();
             rec.set("ref_id", portId);
             rec.set("type", "port");
+            rec.set("user_id", userId);
+            rec.set("query_stamp", new Date());
+            Db.save("user_query_history", rec);
+        }else{
+            rec.set("query_stamp", new Date());
+            Db.update("user_query_history", rec);
+        }
+    }
+    
+    private void saveCustomerQueryHistory(long customerId){
+        Long userId = LoginUserController.getLoginUserId(this);
+        Record rec = Db.findFirst("select * from user_query_history where type='CUSTOMER' and ref_id=? and user_id=?", customerId, userId);
+        if(rec==null){
+            rec = new Record();
+            rec.set("ref_id", customerId);
+            rec.set("type", "CUSTOMER");
             rec.set("user_id", userId);
             rec.set("query_stamp", new Date());
             Db.save("user_query_history", rec);

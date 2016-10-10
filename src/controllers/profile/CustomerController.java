@@ -30,6 +30,7 @@ import org.apache.shiro.subject.Subject;
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -394,25 +395,35 @@ public class CustomerController extends Controller {
     
     // 列出客户公司名称
     public void search() {
-        String customerName = getPara("locationName");
-        if(StringUtils.isEmpty(customerName)){
-            customerName = getPara("customerName");
-        }
-        
+        String customerName = getPara("customerName");
+
         if(StringUtils.isEmpty(customerName)){
             customerName = "";
         }
+        long userId = LoginUserController.getLoginUserId(this);
         
-        List<Record> locationList = Collections.EMPTY_LIST;
-        String sql = "select p.id, p.abbr from party p where p.type = 'CUSTOMER' "
-                + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
-                    
-        if (customerName.trim().length() > 0) {
-            sql +=" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" + customerName.toUpperCase() + "%') ";
-        }
-        locationList = Db.find(sql);
+        List<Record> resultList = Collections.EMPTY_LIST;
+        if(StrKit.isBlank(customerName)){//从历史记录查找
+            String sql = "select h.ref_id, p.id, p.abbr from user_query_history h, party p "
+                    + "where h.ref_id=p.id and h.type='CUSTOMER' and h.user_id=?";
+            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
+            if(resultList.size()==0){
+                sql = "select p.id, p.abbr from party p where p.type = 'CUSTOMER' "
+                        + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
+                resultList = Db.find(sql+" order by abbr limit 10");
+            }
+            renderJson(resultList);
+        }else{
+            String sql = "select p.id, p.abbr from party p where p.type = 'CUSTOMER' "
+                    + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
+                        
+            if (customerName.trim().length() > 0) {
+                sql +=" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" + customerName.toUpperCase() + "%') ";
+            }
+            resultList = Db.find(sql+" order by abbr limit 10");
 
-        renderJson(locationList);
+            renderJson(resultList);
+        }
     }
     
     // 列出所有party名称，客户
