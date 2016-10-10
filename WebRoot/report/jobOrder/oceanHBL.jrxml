@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="313"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -31,7 +31,7 @@
 		GROUP BY
 			A.flag
 	) container_type_count,
-	jo.*,josi.*, jos.*, lo. NAME por_name,p.abbr,
+	jo.*,josi.*, jos.*, lo. NAME por_name,p.abbr,p1.company_name oversea_agent_name,
 	lo1. NAME pol_name,
 	lo2. NAME pod_name,
 	lo3. NAME fnd_name,
@@ -72,6 +72,7 @@ LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo2 ON lo2.id = jos.pod
 LEFT JOIN location lo3 ON lo3.id = jos.fnd
 left join party p on p.id=jos.consignee
+left join party p1 on p1.id=jos.oversea_agent
 where jos.order_id=$P{order_id}]]>
 	</queryString>
 	<field name="container_type_count" class="java.lang.String"/>
@@ -102,7 +103,7 @@ where jos.order_id=$P{order_id}]]>
 	<field name="create_stamp" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="updator" class="java.lang.String">
+	<field name="updator" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="update_stamp" class="java.sql.Timestamp">
@@ -169,6 +170,15 @@ where jos.order_id=$P{order_id}]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="total_profitTotalRMB" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trans_clause" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trade_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="office_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="order_id" class="java.lang.Long">
@@ -249,9 +259,6 @@ where jos.order_id=$P{order_id}]]>
 	<field name="mbl_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="trans_clause" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="vessel" class="java.lang.String">
 		<fieldDescription><![CDATA[船名]]></fieldDescription>
 	</field>
@@ -297,9 +304,6 @@ where jos.order_id=$P{order_id}]]>
 	<field name="hub" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="trade_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="prepaid" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -331,6 +335,7 @@ where jos.order_id=$P{order_id}]]>
 	<field name="abbr" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="oversea_agent_name" class="java.lang.String"/>
 	<field name="pol_name" class="java.lang.String"/>
 	<field name="pod_name" class="java.lang.String"/>
 	<field name="fnd_name" class="java.lang.String"/>
@@ -844,7 +849,7 @@ NON-NEGOTIABLE]]></text>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{oversea_agent}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{oversea_agent_info}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="450" y="462" width="100" height="15" uuid="e7fafa5d-11ed-44c6-88d0-c1c27ef10b57"/>
