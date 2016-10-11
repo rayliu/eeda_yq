@@ -1,26 +1,6 @@
 <%layout("/eeda/layout.html"){%>
 <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
         <div id="page-wrapper">
-        <a data-target='#pdfAlertDetail' data-toggle='modal'>
-        	<button id="pdfAlert" style="display:none"></button>
-		</a>
-		<div class="modal fade" id="pdfAlertDetail">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">生成PDF数据不足详情</div>
-		      	<div class="modal-body">
-		      	
-	      			<div class="alert alert-danger alert-dismissable">
-                        <div id="pdfAlertContent"></div> 
-                     </div>
-                     
-				</div>
-	       	  <div class="modal-footer">
-	            <button class="btn  btn-default" data-dismiss="modal">返回</button>
-	        </div>
-	    </div>
-	  </div>
-	</div>
 		
             <div class="row">
                 <div class="col-lg-12">
@@ -56,7 +36,7 @@
                                 {
                                     id:'ref_no', 
                                     label:'外部订单号',
-                                    value:order.customer_id!planOrder.customer_id!''
+                                    value:order.ref_no!planOrder.ref_no!''
                                 }){} %>
                        </div>
                     </div>
@@ -81,7 +61,7 @@
                                 }){}%>
                         </div><!-- /.col-lg-4 -->
                         <div class="col-lg-8">
-                            <div class="form-group" id="transport_type">
+                            <div class="form-group" id="service_items">
                                 <label class="search-label">服务项目</label>
                                 
                                 <label class="checkbox-inline">
@@ -107,22 +87,22 @@
                                     label:'客户', 
                                     required:'required',
                                     value:order.customer_id!planOrder.customer_id!'',
-                                    display_value:party.abbr!''
+                                    display_value:order.abbr!''
                                 }){} %>
                         </div>
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'customer_id', 
+                                {   id:'contacts', 
                                     label:'联系人', 
-                                    value:order.order_no!'',
+                                    value:order.contacts!'',
                                     disabled: 'disabled'
                                 }){}%>
                         </div>
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 
-                                {   id:'plan_order_no', 
+                                {   id:'contacts_phone', 
                                     label:'联系人电话', 
-                                    value: order.plan_order_no!planOrder.order_no!'',
+                                    value: order.contacts_phone!planOrder.contacts_phone!'',
                                     disabled: 'disabled'
                                 }){}%>
                         </div>
@@ -141,7 +121,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'creator_name', 
                                     label:'创建人', 
-                                    value:user.c_name!'', 
+                                    value:order.c_name!'', 
                                     disabled: 'disabled'
                                 }){}%>
                         </div>
@@ -241,7 +221,7 @@
             
 	            <div class="form-group">
 	                 <label>备注</label>
-	                 <textarea id='note' class="form-control" rows="3" name="note">${order.remark!''}</textarea>
+	                 <textarea id='remark' class="form-control" rows="3" name="remark">${order.remark!''}</textarea>
 	            </div>
 
             </div><!-- /.row -->
@@ -460,8 +440,7 @@
             <br>
             <div class="row">
                 <div class="col-lg-12">
-                    <a id='saveBtn' class="btn  btn-primary" href="#">保存</a>
-                    <button id="confirmCompleted" class="btn btn-primary">已完成</button>
+                    <button id='saveBtn' class="btn  btn-primary">保存</button>
                     <a class="btn  btn-default" href="/jobOrder">返回</a>
                 </div>
                 <!-- /.col-lg-12 -->
@@ -543,21 +522,10 @@
 <%include("/cms/customJobOrder/party_create_modal.html", {}){} %>
 
 <script>
-	//取得当前时间
-	
-	var getTime;
 	//当前登陆用户名
 	var loginUserName = '${loginUser!''}';
     var order_no = '${order.order_no!'订单编辑'}'; 
     var itemOrder = {};
-    var transport_type_hidden = '${order.transport_type!planOrderItem.transport_type!''}';
-    
-    var custom_type_hidden = '${planOrderItem.customs_type!''}';
-    if(custom_type_hidden=="自理报关"){
-    	transport_type_hidden+=",custom";
-    }
-    var custom_type = '${custom.custom_type!''},${hkCustom.custom_type!''},${abroadCustom.custom_type!''}';
-    var custom_status_hidden = '${custom.status!''}';
 </script>
 
 <script>

@@ -1,4 +1,4 @@
-  
+  <input type="hidden" id="custom_id" value="${custom.id!''}">
 	<div class="row">
       <div class="col-lg-12">
           <button class="btn btn-success btn-xs"  data-toggle="modal" data-target="#customOrderExportModal">添加报关单</button>
@@ -8,6 +8,8 @@
                   id:'custom_table',
                   headers:['', '报关单类型', '报关单号码', '海关状态', '单据信息', '货品信息']
               }){} %>
+               <!--    field_list:['','item_no', 'commodity_no', 'commodity_name', 'specification_model','quantity_and_unit'],
+                  value_list: customList![] -->
       </div>
 	</div>
   <%include("/cms/customJobOrder/JobOrderEdit_customType_china_export.html", {}){} %>

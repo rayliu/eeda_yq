@@ -17,7 +17,7 @@ $(document).ready(function() {
     	costTable.row.add(item).draw(true);
     });
 
-    itemOrder.buildChargeCostDetail=function(){
+    itemOrder.buildCostDetail=function(){
         var cargo_table_rows = $("#cost_table tr");
         var cargo_items_array=[];
         for(var index=0; index<cargo_table_rows.length; index++){

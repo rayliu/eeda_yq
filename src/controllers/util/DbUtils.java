@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -256,7 +257,7 @@ public class DbUtils {
 			if(StringUtils.isEmpty(rowId)){
 				if(!"DELETE".equals(action)){
 					r.set(master_col_name, master_order_id);
-					setModelValues(rowMap, r);
+					setModelValues(rowMap, r, table);
 					Db.save(table, r);	
 				}
 			}else{
@@ -265,30 +266,43 @@ public class DbUtils {
 					Db.delete(table, r1);
 				}else{//UPDATE
 					Record r2 = Db.findById(table,rowId);
-					setModelValues(rowMap, r2);
+					setModelValues(rowMap, r2, table);
 					Db.update(table,r);
 				}
 			}
 			
 		}
 	}
-	public static void setModelValues(Map<String, ?> dto, Record r) {
-		
+	
+	
+	public static void setModelValues(Map<String, ?> dto, Record r, String table) {
+		String sql = "select COLUMN_NAME from information_schema.COLUMNS where table_name = ?";
+		List<Record> re = Db.find(sql, table);
 		for (Entry<String, ?> entry : dto.entrySet()) { 
 			String key = entry.getKey();
-			if(!key.endsWith("_list")){
-				String value = String.valueOf(entry.getValue()).trim();
-				//忽略  action 字段
-				if(!"action".equals(key)){
-					logger.debug(key+":"+value);
-					if(StringUtils.isEmpty(value)){
-						value=null;
+			for(Record name :re){
+				String col_name = name.get(key);
+				
+				if(col_name!=null){
+					String value = String.valueOf(entry.getValue()).trim();
+					//忽略  action 字段
+					if(!"action".equals(key)){
+						logger.debug(key+":"+value);
+						if(StringUtils.isEmpty(value)){
+							value=null;
+						}
+						try{
+							r.set(key, value);
+						} catch (Exception e) {
+	                        logger.error(e.getMessage());
+	                    }
 					}
-					r.set(key, value);
-				}
+				} 
 			}
+			
 		}
 	}
+	
 	
 	
 }

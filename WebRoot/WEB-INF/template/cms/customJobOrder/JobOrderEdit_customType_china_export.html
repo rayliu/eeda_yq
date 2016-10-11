@@ -6,24 +6,24 @@
         <h4 class="modal-title">报关单填写</h4>
       </div>
       <div class="modal-body">
-            <form id = "partyForm">
+            <form id = "customDetailExportForm">
                 <div class="form-group"> 
                   <div class="row">
-                    <div align="center">
-                                   <label class="label-margin">类型</label>
-                                   <label class="radio-inline">
-                                       <input type="radio" name="type" value="export" checked>出口
-                                   </label>
-                                   <label class="radio-inline">
-                                       <input type="radio" name="type"  value="import" >进口
-                                   </label>
-                               </div>
+                         <div align="center">
+                             <label class="label-margin">类型</label>
+                             <label class="radio-inline">
+                                 <input type="radio" name="type" value="export" checked>出口
+                             </label>
+                             <label class="radio-inline">
+                                 <input type="radio" name="type"  value="import" >进口
+                             </label>
+                         </div>
                     </div>
                     <hr/>
                     <div class="row">
                       <div class="col-lg-6">
                          <%include("/eeda/component/form/inputField.html", 
-                                  {   id:'company_name', 
+                                  {   id:'consigner', 
                                       label:'收发货人',
                                       inline: false,
                                       required:'required'
@@ -31,7 +31,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'abbr', 
+                                {   id:'export_port', 
                                     label:'出口口岸',
                                     inline: false,
                                     required:'required'
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'phone', 
+                                {   id:'export_date', 
                                     label:'出口日期',
                                     inline: false,
                                     required:'required'
@@ -47,7 +47,7 @@
                          </div>
                          <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'phone', 
+                                {   id:'application_date', 
                                     label:'申报日期',
                                     inline: false,
                                     required:'required'
@@ -57,7 +57,7 @@
                     <div class="row">
                       <div class="col-lg-6"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'contact_person', 
+                                {   id:'production_and_sales', 
                                     label:'生产销售单位',
                                     inline: false,
                                     required:'required'
@@ -65,7 +65,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address', 
+                                {   id:'transport_type', 
                                     label:'运输方式',
                                     inline: false,
                                     required:'required'
@@ -73,7 +73,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address', 
+                                {   id:'transport_tool', 
                                     label:'运输工具名称',
                                     inline: false,
                                     required:'required'
@@ -81,7 +81,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address', 
+                                {   id:'tracking_no', 
                                     label:'提运单号',
                                     inline: false,
                                     required:'required'
@@ -91,7 +91,7 @@
                     <div class="row">
                         <div class="col-lg-6"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'contact_person_eng', 
+                                {   id:'application_unit', 
                                     label:'申报单位',
                                     inline: false,
                                     required:'required'
@@ -99,7 +99,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'supervision_mode', 
                                     label:'监管方式',
                                     inline: false,
                                     required:'required'
@@ -107,7 +107,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'nature_of_exemption', 
                                     label:'征免性质',
                                     inline: false,
                                     required:'required'
@@ -115,7 +115,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'record_no', 
                                     label:'备案号',
                                     inline: false,
                                     required:'required'
@@ -125,7 +125,7 @@
                     <div class="row">
                         <div class="col-lg-6"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'contact_person_eng', 
+                                {   id:'trading_country', 
                                     label:'贸易国',
                                     inline: false,
                                     required:'required'
@@ -133,7 +133,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'destination_country', 
                                     label:'运抵国',
                                     inline: false,
                                     required:'required'
@@ -141,7 +141,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'destination_port', 
                                     label:'指运港',
                                     inline: false,
                                     required:'required'
@@ -149,7 +149,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'supply_of_goods', 
                                     label:'境内货源地',
                                     inline: false,
                                     required:'required'
@@ -159,7 +159,7 @@
                     <div class="row">
                         <div class="col-lg-4"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'contact_person_eng', 
+                                {   id:'license_no', 
                                     label:'许可证号',
                                     inline: false,
                                     required:'required'
@@ -167,7 +167,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'transaction_mode', 
                                     label:'成交方式',
                                     inline: false,
                                     required:'required'
@@ -175,33 +175,30 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'freight', 
                                     label:'运费',
-                                    inline: false,
-                                    required:'required'
+                                    inline: false
                                 }){}%>
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'insurance_premium', 
                                     label:'保费',
-                                    inline: false,
-                                    required:'required'
+                                    inline: false
                                 }){}%>
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'incidental', 
                                     label:'杂费',
-                                    inline: false,
-                                    required:'required'
+                                    inline: false
                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'contact_person_eng', 
+                                {   id:'contract_agreement_no', 
                                     label:'合同协议号',
                                     inline: false,
                                     required:'required'
@@ -209,7 +206,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'number', 
                                     label:'件数',
                                     inline: false,
                                     required:'required'
@@ -217,7 +214,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'package_type', 
                                     label:'包装种类',
                                     inline: false,
                                     required:'required'
@@ -225,7 +222,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'custom_gross_weight', 
                                     label:'毛重(KG)',
                                     inline: false,
                                     required:'required'
@@ -233,7 +230,7 @@
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'custom_net_weight', 
                                     label:'净重(KG)',
                                     inline: false,
                                     required:'required'
@@ -243,7 +240,7 @@
                     <div class="row">
                         <div class="col-lg-4"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'contact_person_eng', 
+                                {   id:'container_no', 
                                     label:'集装箱号',
                                     inline: false,
                                     required:'required'
@@ -251,7 +248,7 @@
                         </div>
                         <div class="col-lg-8"> 
                           <%include("/eeda/component/form/inputField.html", 
-                                {   id:'address_eng', 
+                                {   id:'documents_attached', 
                                     label:'随附单证',
                                     inline: false,
                                     required:'required'
@@ -262,7 +259,7 @@
                         <div class="col-lg-12"> 
                           <div class="form-group">
                                <label>标记唛码及备注</label>
-                               <textarea id='remark' class="form-control" rows="3" name="remark">${order.remark!''}</textarea>
+                               <textarea id='shipping_marks' class="form-control" rows="3" name="shipping_marks">${order.shipping_marks!''}</textarea>
                           </div>
                         </div>
                     </div>
@@ -274,9 +271,9 @@
                                 {
                                     id:'custom_item_table',
                                     headers:['', '项号', '商品编号', '商品名称、规格型号','数量及单位', '最终目的国(地区)','单价', '总价', '币制', '征免'],
-                                    field_list:['id','', 'type', 'sp_id', 'charge_id','charge_eng_id', 'price', 'amount', 'unit_id', 'currency_id', 'total_amount',
-                                     'exchange_rate', 'currency_total_amount','remark'],
-                                    value_list: chargeList![]
+                                    field_list:['','item_no', 'commodity_no', 'commodity_name', 'specification_model','quantity_and_unit', 'destination_country', 'price', 'total',
+                                     'currency', 'exemption'],
+                                    value_list: customItemList![]
                                 }){} %>
                         </div>
                     </div>
