@@ -11,7 +11,6 @@ import java.util.Map;
 import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
 import models.eeda.cms.CustomPlanOrderItem;
-import models.eeda.oms.PlanOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -186,12 +185,13 @@ public class CustomPlanOrderController extends Controller {
     }
    
     
-    //确认已完成计划单
+    //提交申请单给报关行
     public void confirmCompleted(){
     	String id = getPara("id");
-    	PlanOrder order = PlanOrder.dao.findById(id);
-    	order.set("status", "已完成");
-    	renderJson("{\"result\":true}");
+    	CustomPlanOrder order = CustomPlanOrder.dao.findById(id);
+    	order.set("status","处理中");
+    	order.update();
+    	renderJson(order);
     }
     
 

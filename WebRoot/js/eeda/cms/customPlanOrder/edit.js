@@ -3,31 +3,86 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     $(document).ready(function() {
     	
         
-      //按钮状态
+     
+        
+             	
+    	//已报关行按钮状态
+    	$('#confirmCompleted,#passBtn,#refuseBtn').click(function(){
+    		var btnId = $(this).attr("id");
+    		$(this).attr('disabled', true);
+    		
+    		id = $('#order_id').val();
+    		$.post('/customPlanOrder/confirmCompleted', {id:id,btnId:btnId}, function(order){
+    				var status=$('#status').val(order.STATUS);
+					//提交报关行按钮状态
+    				if(status=="处理中"){
+						$('#confirmCompleted').attr('disabled', true);
+						$('#saveBtn').attr('disabled', true);
+						//审核按钮状态
+						$('#passBtn').attr('disabled',false);
+			        	$('#refuseBtn').attr('disabled',false);
+		        	}
+    				if(status=="审核通过"){
+		        		$('#confirmCompleted').attr('disabled', true);
+						$('#saveBtn').attr('disabled', true);
+						//审核按钮状态
+						$('#passBtn').attr('disabled',true);
+			        	$('#refuseBtn').attr('disabled',true);
+		        	}
+    				if(status=="审核不通过"){
+    					$('#confirmCompleted').attr('disabled', true);
+						$('#saveBtn').attr('disabled', true);
+						//审核按钮状态
+						$('#passBtn').attr('disabled',false);
+			        	$('#refuseBtn').attr('disabled',false);
+    				}
+		        	
+    	            $.scojs_message('申请单提交成功', $.scojs_message.TYPE_OK);
+    	    },'json').fail(function() {
+    	        $.scojs_message('申请单提交失败', $.scojs_message.TYPE_ERROR);
+    	        $('#confirmCompleted').attr('disabled', false);
+    	      });
+    	})
+    	
+    	
+    	
+    	 //提交报关行按钮状态
     	var id = $('#order_id').val();
     	var status = $('#status').val();
         if(id!=''){
         	$('#confirmCompleted').attr('disabled', false);
-        }else{
-    		if(status=='已完成'){
-    			$('#confirmCompleted').attr('disabled', true);
-    			$('#saveBtn').attr('disabled', true);
-    		}
         }
-             	
-    	//已完成计划单确认
-    	$('#confirmCompleted').click(function(){
-    		$('#confirmCompleted').attr('disabled', true);
-    		id = $('#order_id').val();
-    		$.post('/customPlanOrder/confirmCompleted', {id:id}, function(data){
-    	            $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
-    	            $('#saveBtn').attr('disabled', true);
-    	    },'json').fail(function() {
-    	        $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
-    	        $('#confirmCompleted').attr('disabled', false);
-    	      });
-    	})
+		if(status=='处理中'){
+			//提交报关行按钮状态
+			$('#confirmCompleted').attr('disabled', true);
+			$('#saveBtn').attr('disabled', true);
+			//审核按钮状态
+			$('#passBtn').attr('disabled',false);
+        	$('#refuseBtn').attr('disabled',false);
+        }
+		
+		if(status=="审核通过"){
+			//提交报关行按钮状态
+			$('#confirmCompleted').attr('disabled', true);
+			$('#saveBtn').attr('disabled',true);
+			//审核按钮状态
+			$('#passBtn').attr('disabled',true);
+        	$('#refuseBtn').attr('disabled',true);
+		}
+		if(status=="审核不通过"){
+			//提交报关行按钮状态
+			$('#confirmCompleted').attr('disabled', false);
+			$('#saveBtn').attr('disabled',false);
+			//审核按钮状态
+			$('#passBtn').attr('disabled',true);
+        	$('#refuseBtn').attr('disabled',true);
+		}
+       
         
+       
+
+    	
+    	
         //------------save
         $('#saveBtn').click(function(e){
             //阻止a 的默认响应行为，不需要跳转
@@ -50,11 +105,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		var name = customForm[i].id;
             	var value =customForm[i].value;
             if(name){
-            	if(name=='status'){
-            		var value =customForm[i].value==''?'新建':customForm[i].value;
-            	}else{
-            		order[name] = value;
+            	if(name=="status"){
+            		value =customForm[i].value==""?"新建":customForm[i].value;
             	}
+            		order[name] = value;
+            	
         	  }
         	}
         	order['item_list'] = items_array;
@@ -75,7 +130,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $.post('/customPlanOrder/save', {params:JSON.stringify(order)}, function(data){
                 var order = data;
                 if(order.ID>0){
-                	$("#carrier_input").val(order.CARRIER);
                     $("#create_stamp").val(order.CREATE_STAMP);
                     $("#creator").val(order.CREATOR_NAME);
                     $("#order_id").val(order.ID);
