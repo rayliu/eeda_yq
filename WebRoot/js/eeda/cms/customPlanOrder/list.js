@@ -26,7 +26,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 	              { "data": "APPLICATION_COMPANY_NAME"}, 
 	              { "data": "CREATOR_NAME"}, 
 	              { "data": "CREATE_STAMP"}, 
-	              { "data": "STATUS"}
+	              { "data": "STATUS",
+	            	"render": function(data, type, full, meta){
+	            		if(data=="审核不通过"){
+	            			return "<span style='color:red'>"+data+"</span>";
+	            		}else{
+	            			return data;
+	            		}	            		
+	            	}  
+	              }
             ]
         });
       

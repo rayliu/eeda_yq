@@ -17,7 +17,10 @@
 		CAST(gross_weight AS CHAR),
 		' KGS'
 	) gross_weight,
-	volume
+	CONCAT(
+		CAST(volume AS CHAR),
+		' CBM'
+	) volume
 FROM
 	job_order_shipment_item
 WHERE
@@ -30,7 +33,7 @@ WHERE
 	<field name="gross_weight" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="volume" class="java.lang.Double">
+	<field name="volume" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<detail>
@@ -47,7 +50,7 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="138" y="0" width="79" height="20" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
 				<textElement textAlignment="Center">
-					<font fontName="仿宋"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>

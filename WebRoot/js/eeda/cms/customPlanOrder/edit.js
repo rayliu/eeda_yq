@@ -10,10 +10,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	$('#confirmCompleted,#passBtn,#refuseBtn').click(function(){
     		var btnId = $(this).attr("id");
     		$(this).attr('disabled', true);
-    		
     		id = $('#order_id').val();
     		$.post('/customPlanOrder/confirmCompleted', {id:id,btnId:btnId}, function(order){
-    				var status=$('#status').val(order.STATUS);
+    				$('#status').val(order.STATUS);
+    				var status = order.STATUS;
 					//提交报关行按钮状态
     				if(status=="处理中"){
 						$('#confirmCompleted').attr('disabled', true);
@@ -21,6 +21,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 						//审核按钮状态
 						$('#passBtn').attr('disabled',false);
 			        	$('#refuseBtn').attr('disabled',false);
+			        	$.scojs_message('申请单提交成功', $.scojs_message.TYPE_OK);
 		        	}
     				if(status=="审核通过"){
 		        		$('#confirmCompleted').attr('disabled', true);
@@ -28,20 +29,35 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 						//审核按钮状态
 						$('#passBtn').attr('disabled',true);
 			        	$('#refuseBtn').attr('disabled',true);
+			        	$.scojs_message('审核成功', $.scojs_message.TYPE_OK);
+			        	if(confirm('确定要前往工作单？')){
+			        		location.href="/customJobOrder/edit?id="+order.JOB_ORDER_ID;
+			        	}
+			        	
 		        	}
     				if(status=="审核不通过"){
     					$('#confirmCompleted').attr('disabled', true);
 						$('#saveBtn').attr('disabled', true);
 						//审核按钮状态
-						$('#passBtn').attr('disabled',false);
-			        	$('#refuseBtn').attr('disabled',false);
+						$('#passBtn').attr('disabled',true);
+			        	$('#refuseBtn').attr('disabled',true);
+			        	$.scojs_message('审核成功', $.scojs_message.TYPE_OK);
     				}
-		        	
-    	            $.scojs_message('申请单提交成功', $.scojs_message.TYPE_OK);
-    	    },'json').fail(function() {
-    	        $.scojs_message('申请单提交失败', $.scojs_message.TYPE_ERROR);
-    	        $('#confirmCompleted').attr('disabled', false);
-    	      });
+		    	    },'json').fail(function() {
+		    	    	if(status=="新建"){
+			    	        $.scojs_message('申请单提交失败', $.scojs_message.TYPE_ERROR);
+			    	        $('#confirmCompleted').attr('disabled', false);
+			    	        $('#passBtn').attr('disabled',true);
+				        	$('#refuseBtn').attr('disabled',true);
+		    	        }
+		    	    	if(status=="处理中"){
+		    	    		$.scojs_message('申请单提交失败', $.scojs_message.TYPE_ERROR);
+			    	        $('#confirmCompleted').attr('disabled', true);
+			    	        $('#saveBtn').attr('disabled', true);
+			    	        $('#passBtn').attr('disabled',false);
+				        	$('#refuseBtn').attr('disabled',false);
+		    	    	}
+		    	      });
     	})
     	
     	
@@ -61,18 +77,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	$('#refuseBtn').attr('disabled',false);
         }
 		
-		if(status=="审核通过"){
+		if(status=="审核通过"||status=="审核不通过"){
 			//提交报关行按钮状态
 			$('#confirmCompleted').attr('disabled', true);
 			$('#saveBtn').attr('disabled',true);
-			//审核按钮状态
-			$('#passBtn').attr('disabled',true);
-        	$('#refuseBtn').attr('disabled',true);
-		}
-		if(status=="审核不通过"){
-			//提交报关行按钮状态
-			$('#confirmCompleted').attr('disabled', false);
-			$('#saveBtn').attr('disabled',false);
 			//审核按钮状态
 			$('#passBtn').attr('disabled',true);
         	$('#refuseBtn').attr('disabled',true);

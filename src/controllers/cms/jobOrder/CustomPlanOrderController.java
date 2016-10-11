@@ -188,10 +188,37 @@ public class CustomPlanOrderController extends Controller {
     //提交申请单给报关行
     public void confirmCompleted(){
     	String id = getPara("id");
+    	String plan_order_no = getPara("plan_order_no");
+    	String btnId = getPara("btnId");
     	CustomPlanOrder order = CustomPlanOrder.dao.findById(id);
-    	order.set("status","处理中");
+    	if("confirmCompleted".equals(btnId)){
+    		order.set("status","处理中");
+    	}
+    	if("passBtn".equals(btnId)){
+    		order.set("status","审核通过");
+    		Record r = new Record();
+    		r.set("plan_order_id", id);
+    		r.set("plan_order_no", plan_order_no);
+    		
+       		UserLogin user = LoginUserController.getLoginUser(this);
+       		long office_id = user.getLong("office_id");
+       		r.set("creator", user.getLong("id"));
+   			r.set("create_stamp", new Date());
+   			r.set("office_id", office_id);
+    		r.set("order_no", OrderNoGenerator.getNextOrderNo("BGGZD"));
+    		Db.save("custom_job_order", r);
+    		id = r.getLong("id").toString();
+    		
+    		
+    	}
+    	if("refuseBtn".equals(btnId)){
+    		order.set("status","审核不通过");
+    	}
     	order.update();
-    	renderJson(order);
+    	
+    	Record rec = order.toRecord();
+    	rec.set("job_order_id", id);
+    	renderJson(rec);
     }
     
 
