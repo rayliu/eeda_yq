@@ -853,9 +853,7 @@ NON-NEGOTIABLE]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="194" y="496" width="361" height="20" uuid="634292dd-8936-4422-8941-af87cecfcda1"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
+
 				<textFieldExpression><![CDATA[$F{container_type_count}]]></textFieldExpression>
 			</textField>
 			<line>
