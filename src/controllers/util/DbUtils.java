@@ -251,11 +251,11 @@ public class DbUtils {
 			String master_order_id,String master_col_name){
 		for (Map<String, String> rowMap : itemList) {//获取每一行
 			
-			Record r = new Record();
 			String rowId = rowMap.get("id");
 			String action = rowMap.get("action");
 			if(StringUtils.isEmpty(rowId)){
 				if(!"DELETE".equals(action)){
+					Record r = new Record();
 					r.set(master_col_name, master_order_id);
 					setModelValues(rowMap, r, table);
 					Db.save(table, r);	
@@ -267,7 +267,7 @@ public class DbUtils {
 				}else{//UPDATE
 					Record r2 = Db.findById(table,rowId);
 					setModelValues(rowMap, r2, table);
-					Db.update(table,r);
+					Db.update(table,r2);
 				}
 			}
 			
@@ -281,9 +281,9 @@ public class DbUtils {
 		for (Entry<String, ?> entry : dto.entrySet()) { 
 			String key = entry.getKey();
 			for(Record name :re){
-				String col_name = name.get(key);
+				String col_name = name.getStr("COLUMN_NAME");
 				
-				if(col_name!=null){
+				if(col_name.equals(key)){
 					String value = String.valueOf(entry.getValue()).trim();
 					//忽略  action 字段
 					if(!"action".equals(key)){
