@@ -94,11 +94,15 @@ public class MainController extends Controller {
             setAttr("login_time",user.get("last_login"));
             setAttr("lastIndex",user.get("last_index") == null ? "pastOneDay" : user.get("last_index"));
             //公告
+            UserLogin u = LoginUserController.getLoginUser(this);
+            long office_id=u.getLong("office_id");
             String sql = "select m.id, m.create_stamp, u.c_name,"
             		+ " (case when length(m.title)>50 then CONCAT(substr(m.title,1,70),'....') else m.title end) title,"
             		+ " (case when length(m.content)>50 then CONCAT(substr(m.content,1,75),'....') else m.content end) content"
             		+ " from msg_board m "
-            		+ " left join user_login u on u.id = m.creator order by create_stamp desc"
+            		+ " left join user_login u on u.id = m.creator "
+            		+ " WHERE m.office_id="+office_id
+            		+ " order by create_stamp desc"
             		+ " LIMIT 0,8 ";
     		setAttr("msgBoardInfo",Db.find(sql));
     		
