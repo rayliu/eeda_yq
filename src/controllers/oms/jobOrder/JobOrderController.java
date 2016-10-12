@@ -944,7 +944,7 @@ public class JobOrderController extends Controller {
         			+ " from job_order jor "
         			+ " LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
         			+ " left join job_order_shipment jos on jos.order_id = jor.id"
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jo.id"
+        			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " where jor.office_id="+office_id

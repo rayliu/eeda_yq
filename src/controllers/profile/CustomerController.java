@@ -15,9 +15,8 @@ import models.Location;
 import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
+import models.UserLogin;
 import models.UserRole;
-import models.eeda.oms.jobOrder.JobOrderShipment;
-import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 import models.yh.profile.CustomerRoute;
 
 import org.apache.commons.lang.StringUtils;
@@ -451,11 +450,13 @@ public class CustomerController extends Controller {
     public void searchParty() {
         String partyName = getPara("partyName");
         String type = getPara("type");
+        UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
         
         List<Record> partyList = Collections.EMPTY_LIST;
         String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                + " ifnull(p.address_eng, p.address) address, p.phone from party p where  "
-                + " sp_type like '%"+type+"%'";
+                + " ifnull(p.address_eng, p.address) address, p.phone from party p where office_id="+office_id
+                + " and sp_type like '%"+type+"%'";
                     
         if (partyName.trim().length() > 0) {
             sql +=" and (p.abbr like '%" + partyName + "%' or p.quick_search_code like '%" + partyName.toUpperCase() + "%') ";
