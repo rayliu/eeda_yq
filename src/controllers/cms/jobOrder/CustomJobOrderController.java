@@ -602,5 +602,12 @@ public class CustomJobOrderController extends Controller {
         renderJson(map); 
     }
   
+    public void searchContacts(){
+    	String id = getPara("id");
+    	String sql = "select ifnull(phone,'') phone, (CASE WHEN ISNULL(contact_person) THEN ifnull(contact_person_eng,'') ELSE contact_person END) contacts"
+    			+ " from party where id = ?";
+    	Record r = Db.findFirst(sql,id);
+    	renderJson(r);
+    }
     
 }

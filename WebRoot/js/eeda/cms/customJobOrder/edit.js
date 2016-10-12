@@ -7,8 +7,35 @@ $(document).ready(function() {
 	document.title = order_no + ' | ' + document.title;
 	$('#menu_order').addClass('active').find('ul').addClass('in');
 	
+	$('#confirmCustomDetailBtn').click(function(e){
+		$('#returnCustomOrderExportModal').click()
+	})
+	
+	$('#customDetailExportForm input[name="type"]').click(function(){
+		if($(this).val()=="export"){
+			$($('#export_port').parent().find("label")).text("出口口岸");
+			$($('#custom_export_date').parent().find("label")).text("出口日期");
+		}else{
+			$($('#export_port').parent().find("label")).text("进口口岸");
+			$($('#custom_export_date').parent().find("label")).text("进口日期");
+		}
+	})
+	
+	$('#customer_id_input').keyup(function(e){
+		if($(this).val()==""){
+			$('#contacts').val("");
+			$('#contacts_phone').val("");
+		}	
+	})
+	$('#customer_id_list').on('click','li',function(e){
+		var id = $('#customer_id').val();
+		$.get('/customJobOrder/searchContacts', {id:id}, function(data){
+			$('#contacts').val(data.CONTACTS);
+			$('#contacts_phone').val(data.PHONE);
+		})
+	})
     //------------save
-	$('#saveBtn').click(function(e){
+	$('#saveBtn').click(function(){
         //提交前，校验数据
         var formRequired = 0;
         $('form').each(function(){
@@ -36,6 +63,8 @@ $(document).ready(function() {
         order.type = $('#type').val();
         order.service_items = service_items_str;
         order.customer_id = $('#customer_id').val();
+        order.contacts = $('#contacts').val();
+        order.contacts_phone = $('#contacts_phone').val();
         order.status = $('#status').val()==''?'新建':$('#status').val();
         order.remark = $('#remark').val();
         order.gross_weight = $("#gross_weight").val();
@@ -74,16 +103,11 @@ $(document).ready(function() {
                 $("#order_no").val(order.ORDER_NO);
                 $("#creator_name").val(order.CREATOR_NAME);
                 $("#create_stamp").val(order.CREATE_STAMP);
-                
                 $("#shipment_id").val(order.SHIPMENT.ID);
                 $("#custom_id").val(order.CUSTOM.ID);
                 
                 $("#fileuploadSpan").show();
                 $("#sendEmail").show();
-                $("#oceanPDF").show();
-                $("#airPDF").show();
-                $("#truckOrderPDF").show();
-                
                 //异步刷新明细表
                 itemOrder.refleshOceanTable(order.ID);
                 itemOrder.refleshLandItemTable(order.ID);
