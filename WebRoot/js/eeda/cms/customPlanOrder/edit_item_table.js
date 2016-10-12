@@ -81,21 +81,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		        bindFieldEvent();
 		    },
             columns:[
-				{ "width": "10px",
-				    "render": function ( data, type, full, meta ) {
-				    	if(full.IS_GEN_JOB == 'N')
-				    		return '<input type="checkbox" class="checkBox">';
-				    	else 
-				    		return '<input type="checkbox" class="checkBox" disabled>';
-				    }
-				},
 	            {"width": "10px",
 	                "render": function ( data, type, full, meta ) {
-	                	if(full.IS_GEN_JOB == 'Y'){
-	                		return '<button type="button" class="delete btn btn-default btn-xs" disabled>删除</button> ';
-	                	}else{
 	                		return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
-	                	}
 	                }
 	            },
 	            { "data": "COMMODITY_CODE","width": "80px",

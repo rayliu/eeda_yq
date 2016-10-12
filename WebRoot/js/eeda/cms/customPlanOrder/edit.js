@@ -139,7 +139,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 var order = data;
                 if(order.ID>0){
                     $("#create_stamp").val(order.CREATE_STAMP);
-                    $("#creator").val(order.CREATOR_NAME);
+                    $("#creator_name").val(order.CREATOR_NAME);
                     $("#order_id").val(order.ID);
                     $("#order_no").val(order.ORDER_NO);
                     $("#status").val(order.STATUS);
