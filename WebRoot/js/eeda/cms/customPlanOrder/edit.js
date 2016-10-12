@@ -11,7 +11,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		var btnId = $(this).attr("id");
     		$(this).attr('disabled', true);
     		id = $('#order_id').val();
-    		$.post('/customPlanOrder/confirmCompleted', {id:id,btnId:btnId}, function(order){
+    		var plan_order_no = $('#order_no').val();
+    		var customer_id = $('#application_company').val();
+    		$.post('/customPlanOrder/confirmCompleted', {id:id,btnId:btnId,plan_order_no:plan_order_no,customer_id:customer_id}, function(order){
     				$('#status').val(order.STATUS);
     				var status = order.STATUS;
 					//提交报关行按钮状态
@@ -85,11 +87,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			$('#passBtn').attr('disabled',true);
         	$('#refuseBtn').attr('disabled',true);
 		}
-       
-        
-       
-
-    	
     	
         //------------save
         $('#saveBtn').click(function(e){
@@ -122,7 +119,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	}
         	order['item_list'] = items_array;
 
-            
 //            var order = {
 //            		    id: $('#order_id').val(),
 //            	carrier_id: $('#carrier').val(),
@@ -133,7 +129,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 //                 item_list:items_array
 //                
 //            };
-
             //异步向后台提交数据
             $.post('/customPlanOrder/save', {params:JSON.stringify(order)}, function(data){
                 var order = data;

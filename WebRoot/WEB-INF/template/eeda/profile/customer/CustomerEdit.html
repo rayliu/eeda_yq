@@ -56,9 +56,25 @@
                                             </div>                                     
                                         </fieldset>
                                     </div>
-                                   
+                              </div>
+                              <div class="row">
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                
+                                                <label>企业类型</label>
+                                                <select  class="form-control" id="company_type" name="company_type" type="text" >
+                                                <option ></option>
+                                                <option value="生产" <% if(party.company_type=='生产'){%>selected<% }%>>生产</option>
+                                                <option value="贸易" <% if(party.company_type=='贸易'){%>selected<% }%>>贸易</option>
+                                                </select>
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                </div>  
 
-                                    <!-- /.col-lg-6 (even) 偶数列-->                                    
+                                    <!-- /.col-lg-6 (even) 偶数列-->
+                                <div class="row">                                    
                                      <div class="col-lg-6">
                                         <fieldset>
                                             <div class="form-group">
@@ -178,8 +194,16 @@
                                     <div class="col-lg-6">
                                         <fieldset>
                                             <div class="form-group">
-                                                <label>备案号</label>
+                                                <label>商检企业备案号</label>
                                                 <input class="form-control" id="registration" type="text" name="registration" value="${party.registration!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>海关备案号</label>
+                                                <input class="form-control" id="custom_registration" type="text" name="custom_registration" value="${party.custom_registration!''}">
                                             </div>
                                         </fieldset>
                                     </div>

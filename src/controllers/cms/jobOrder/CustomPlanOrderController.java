@@ -189,6 +189,7 @@ public class CustomPlanOrderController extends Controller {
     public void confirmCompleted(){
     	String id = getPara("id");
     	String plan_order_no = getPara("plan_order_no");
+    	String customer_id= getPara("customer_id");
     	String btnId = getPara("btnId");
     	CustomPlanOrder order = CustomPlanOrder.dao.findById(id);
     	if("confirmCompleted".equals(btnId)){
@@ -199,6 +200,7 @@ public class CustomPlanOrderController extends Controller {
     		Record r = new Record();
     		r.set("plan_order_id", id);
     		r.set("plan_order_no", plan_order_no);
+    		r.set("customer_id", customer_id);
     		
        		UserLogin user = LoginUserController.getLoginUser(this);
        		long office_id = user.getLong("office_id");

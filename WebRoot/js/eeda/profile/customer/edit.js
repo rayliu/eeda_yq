@@ -203,6 +203,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             order.abbr = $("#abbr").val();
             order.company_name = $("#company_name").val();
             order.company_name_eng = $("#company_name_eng").val();
+            order.company_type = $("#company_type").val();
             order.address = $("#address").val();
             order.address_eng = $("#address_eng").val();
             order.contact_person = $("#contact_person").val();
@@ -216,6 +217,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             order.introduction = $("#introduction").val();
             order.remark = $("#remark").val();
             order.registration = $("#registration").val();
+            order.custom_registration = $("#custom_registration").val();
             order.docItem = buildDocItem();
             		
         	$('#saveBtn').attr('disabled', true);
