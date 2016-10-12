@@ -139,7 +139,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                                 id: 'UNIT_ID',
                                 value: data,
                                 display_value: full.UNIT_NAME,
-                                style:'width:80px'
+                                style:'width:200px'
                             }
                         );
                         return field_html;

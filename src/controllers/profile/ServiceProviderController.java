@@ -555,11 +555,10 @@ public class ServiceProviderController extends Controller {
     public void searchUnit(){
     	String input = getPara("input");
     	List<Record> recs = null;
-    	String sql = "select id,GROUP_CONCAT(name,name_eng) name from unit where type='order'";
+    	String sql = "select id,CONCAT(name,name_eng) name from unit where type='order'";
     	if(!StringUtils.isBlank(input)){
     		sql+=" and name like '%" + input + "%' "+"or name_eng like '%"+input+"%'";
     	}
-    	sql+=" group by id";
     	recs = Db.find(sql);
     	renderJson(recs);
     }
@@ -572,7 +571,6 @@ public class ServiceProviderController extends Controller {
     	if(!StringUtils.isBlank(input)){
     		sql+=" and name like '%" + input + "%' "+"or name_eng like '%"+input+"%'";
     	}
-    	sql+=" group by id";
     	recs = Db.find(sql);
     	renderJson(recs);
     }

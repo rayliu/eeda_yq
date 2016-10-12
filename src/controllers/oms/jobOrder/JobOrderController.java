@@ -283,25 +283,12 @@ public class JobOrderController extends Controller {
    		
 		Record r = jobOrder.toRecord();
    		r.set("creator_name", user_name);
-   		
-   		//海运头程资料
-   		r.set("oceanHead", Db.findFirst("select * from job_order_shipment_head where order_id = ?",id));
-   		
    		r.set("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
    		r.set("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
    		r.set("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
-   		
    		r.set("shipment", getItemDetail(id,"shipment"));
     	r.set("air", getItemDetail(id,"air"));
    		r.set("insurance", getItemDetail(id,"insure"));
-   		
-   		//返回海运的港口名称
-    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name from job_order_shipment jos"
-						+" LEFT JOIN location lo on lo.id = jos.por"
-						+" LEFT JOIN location lo1 on lo1.id = jos.pol"
-						+" LEFT JOIN location lo2 on lo2.id = jos.pod"
-						+" where order_id = ?";
-   		r.set("port",Db.findFirst(port_sql,id));
    		
    		//保存海运填写模板
    		saveOceanTemplate(shipment_detail);
@@ -602,7 +589,10 @@ public class JobOrderController extends Controller {
     private Record getItemDetail(String id,String type){
     	Record re = null;
     	if("shipment".equals(type)){
-    		re = Db.findFirst("select jos.*, p1.abbr shipperAbbr , p2.abbr consigneeAbbr, p3.abbr notify_partyAbbr, p4.abbr carrier_name,p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name from job_order_shipment jos "
+    		re = Db.findFirst("select jos.*, p1.abbr shipperAbbr , p2.abbr consigneeAbbr, p3.abbr notify_partyAbbr, p4.abbr carrier_name,"
+    				+ " p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name,"
+    				+ " lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name,lo4.name hub_name"
+    				+ " from job_order_shipment jos "
     				+ " left join party p1 on p1.id=jos.shipper"
     				+ " left join party p2 on p2.id=jos.consignee"
     				+ " left join party p3 on p3.id=jos.notify_party"
@@ -610,6 +600,11 @@ public class JobOrderController extends Controller {
     				+ " left join party p5 on p5.id=jos.head_carrier"
     				+ " left join party p6 on p6.id=jos.oversea_agent"
     				+ " left join party p7 on p7.id=jos.booking_agent"
+    				+ " LEFT JOIN location lo on lo.id = jos.por"
+					+ " LEFT JOIN location lo1 on lo1.id = jos.pol"
+					+ " LEFT JOIN location lo2 on lo2.id = jos.pod"
+					+ " LEFT JOIN location lo3 on lo3.id = jos.fnd"
+					+ " LEFT JOIN location lo4 on lo4.id = jos.hub"
     				+ " where order_id = ?",id);
     	}else if("insure".equals(type)){
     		re = Db.findFirst("select * from job_order_insurance joi where order_id = ?",id);
@@ -629,7 +624,7 @@ public class JobOrderController extends Controller {
     	String itemSql = "";
     	List<Record> itemList = null;
     	if("shipment".equals(type)){
-    		itemSql = "select jos.*,u.name unit_name from job_order_shipment_item jos"
+    		itemSql = "select jos.*,CONCAT(u.name,u.name_eng) unit_name from job_order_shipment_item jos"
     				+ " left join unit u on u.id=jos.unit_id"
     				+ " where order_id=? order by jos.id";
     		itemList = Db.find(itemSql, orderId);
@@ -721,16 +716,6 @@ public class JobOrderController extends Controller {
     	long creator = jobOrder.getLong("creator");
     	UserLogin user = UserLogin.dao.findById(creator);
     	setAttr("user", user);
-    	
-    	//返回海运的港口名称
-    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name,lo4.name hub_name from job_order_shipment jos"
-						+" LEFT JOIN location lo on lo.id = jos.por"
-						+" LEFT JOIN location lo1 on lo1.id = jos.pol"
-						+" LEFT JOIN location lo2 on lo2.id = jos.pod"
-						+" LEFT JOIN location lo3 on lo3.id = jos.fnd"
-						+" LEFT JOIN location lo4 on lo4.id = jos.hub"
-						+" where order_id = ?";
-   		setAttr("port",Db.findFirst(port_sql,id)); 
     	
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
