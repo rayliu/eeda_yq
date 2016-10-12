@@ -10,6 +10,7 @@
             </a>
         </h4>
     </div>
+    
     <div id="collapseOceanInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
         <div class="panel-body">
             <ul id="usedOceanInfo" class="usedOceanInfo">
@@ -56,18 +57,29 @@
     </div>
 </div>
 
+    <%
+      //如果只有edit, 没指定特定的, 默认都有编辑权限
+      var updatePermission = shiro.hasPermission("jobOrder.edit");
+      var oceanPermission = shiro.hasPermission("jobOrder.edit.ocean");
+      var boolOcean = updatePermission && oceanPermission;
+      var boolAir = updatePermission && oceanPermission;
+    %>
+
 <form id = "shipmentForm">
     <div class="form-group">  <!--  form row  -->
         <div class="row">
         	
             <div class="col-lg-4"><!--  三列排版  -->
+                
                 <%include("/eeda/component/form/inputSelectArea.html", 
                     {   id:'ocean_shipper', 
                         label:'发货人Shipper', 
                         display_value:shipment.shipperAbbr!'',
                         value:shipment.shipper!'',
-                        textarea_value:shipment.shipper_info!''
+                        textarea_value:shipment.shipper_info!'',
+                        disabled: boolDisableOcean==true?'disabled':''
                     }){}%>
+                
             </div>
             <div class="col-lg-4"><!--  三列排版  -->
                 <%include("/eeda/component/form/inputSelectArea.html", 
@@ -75,7 +87,8 @@
                         label:'收货人Consignee', 
                         display_value:shipment.consigneeAbbr!'',
                         value:shipment.consignee!'',
-                        textarea_value:shipment.consignee_info!''
+                        textarea_value:shipment.consignee_info!'',
+                        disabled: boolDisableOcean==true?'disabled':''
                     }){}%>
             </div>
             <div class="col-lg-4">
@@ -85,12 +98,14 @@
                         label:'通知人NotifyParty', 
                         display_value:shipment.notify_partyAbbr!'',
                         value:shipment.notify_party!'',
-                        textarea_value:shipment.notify_party_info!''
+                        textarea_value:shipment.notify_party_info!'',
+                        disabled: boolDisableOcean==true?'disabled':''
                     }){} %>
            </div>
         </div>
         <div class="row">
             <div class="col-lg-4">
+              <% if(boolOcean){ %>
                 <%include("/eeda/component/form/inputPartyField.html", 
                     {   id:'ocean_booking_agent', 
                         label:'订舱代理', 
@@ -98,6 +113,9 @@
                         value:shipment.booking_agent!'',
                         display_value:shipment.booking_agent_name!''
                     }){}%>
+              <%}else{%>
+              <label>订舱代理 </label> ${shipment.booking_agent_name!''}
+              <%}%>
             </div>
             <div class="col-lg-4">
                 <%include("/eeda/component/form/inputPartyField.html", 
