@@ -601,7 +601,7 @@ public class JobOrderController extends Controller {
     //返回对象	
     private Record getItemDetail(String id,String type){
     	Record re = null;
-    	if("shipment".equals(type))
+    	if("shipment".equals(type)){
     		re = Db.findFirst("select jos.*, p1.abbr shipperAbbr , p2.abbr consigneeAbbr, p3.abbr notify_partyAbbr, p4.abbr carrier_name,p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name from job_order_shipment jos "
     				+ " left join party p1 on p1.id=jos.shipper"
     				+ " left join party p2 on p2.id=jos.consignee"
@@ -611,7 +611,7 @@ public class JobOrderController extends Controller {
     				+ " left join party p6 on p6.id=jos.oversea_agent"
     				+ " left join party p7 on p7.id=jos.booking_agent"
     				+ " where order_id = ?",id);
-    	else if("insure".equals(type)){
+    	}else if("insure".equals(type)){
     		re = Db.findFirst("select * from job_order_insurance joi where order_id = ?",id);
     	}else if("air".equals(type)){
     		re = Db.findFirst("select joa.* ,p1.abbr shipperAbbr,p2.abbr consigneeAbbr,p3.abbr notify_partyAbbr,p4.abbr booking_agent_name from job_order_air joa"

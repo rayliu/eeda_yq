@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN',
     './edit_shipment_table','./edit_shipment_detail','./edit_land_table', './edit_charge_table','./edit_cost_table',
     './edit_air_table', './edit_air_cargoDesc_table', './edit_air_detail','./edit_custom_detail','./edit_custom_table',
-    './edit_insurance_detail','./edit_doc_table', './edit_file_upload','./job_order_report'], function ($, metisMenu) {
+    './edit_doc_table', './edit_file_upload'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
@@ -52,6 +52,10 @@ $(document).ready(function() {
         //海运
         order.shipment_detail = itemOrder.buildShipmentDetail();
         order.shipment_item = itemOrder.buildShipmentItem();
+        //空运
+        order.air_detail = itemOrder.buildAirDetail();
+        order.air_item = itemOrder.buildAirItem();
+        order.air_cargoDescItem = itemOrder.buildCargoDescItem();
         //陆运
         order.load_item = itemOrder.buildLoadItem();
         //报关
@@ -148,18 +152,18 @@ $(document).ready(function() {
             hideServiceTab(checkValue);
         }
     });
-    //服务项目checkbox回显,transport_type是用js拿值
-//    var checkArray = transport_type_hidden.split(",");
-//    for(var i=0;i<checkArray.length;i++){
-//	    $('#transport_type input[type="checkbox"]').each(function(){
-//	        var checkValue=$(this).val();
-//	        if(checkArray[i]==checkValue){
-//	        	$(this).attr("checked",true);
-//
-//                showServiceTab(checkValue);
-//	        }
-//	    })
-//    }
+    //服务项目checkbox回显,用js拿值
+    var checkArray = service_items.split(",");
+    for(var i=0;i<checkArray.length;i++){
+	    $('#service_items input[type="checkbox"]').each(function(){
+	        var checkValue=$(this).val();
+	        if(checkArray[i]==checkValue){
+	        	$(this).attr("checked",true);
+
+                showServiceTab(checkValue);
+	        }
+	    })
+    }
     
     //放货方式radio回显
     var radioVal = $('#hidden_billing_method').val();

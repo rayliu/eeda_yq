@@ -7,7 +7,7 @@ define(['jquery', 'file_upload' ,'sco'], function ($, metisMenu) {
 			$('#fileupload').fileupload({
 					validation: {allowedExtensions: ['doc','docx']},
 					autoUpload: true, 
-				    url: '/jobOrder/saveDocFile?order_id='+order_id,
+				    url: '/customJobOrder/saveDocFile?order_id='+order_id,
 				    dataType: 'json',
 			        done: function (e, data) {
 		        	if(data.result){

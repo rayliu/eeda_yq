@@ -395,7 +395,7 @@ $(document).ready(function() {
 
     //刷新明细表
     itemOrder.refleshCostTable = function(order_id){
-    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=cost";
+    	var url = "/customJobOrder/tableList?order_id="+order_id+"&type=cost";
     	costTable.ajax.url(url).load();
     }
    

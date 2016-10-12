@@ -11,7 +11,7 @@ $(document).ready(function() {
         cargoDesc_table.row(tr).remove().draw();
     }); 
 
-    itemOrder.buildCargoDescDetail=function(){
+    itemOrder.buildCargoDescItem=function(){
         var cargo_table_rows = $("#cargoDesc_table tr");
         var cargo_items_array=[];
         for(var index=0; index<cargo_table_rows.length; index++){
@@ -119,7 +119,7 @@ $(document).ready(function() {
     
     //刷新明细表
     itemOrder.refleshCargoDescTable = function(order_id){
-    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=cargoDesc";
+    	var url = "/customJobOrder/tableList?order_id="+order_id+"&type=cargoDesc";
     	cargoDesc_table.ajax.url(url).load();
     }
     

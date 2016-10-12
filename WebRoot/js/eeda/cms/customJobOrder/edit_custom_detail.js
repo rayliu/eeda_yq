@@ -19,9 +19,6 @@ $(document).ready(function() {
     
     var dataTable = eeda.dt({
         id: 'custom_table',
-        paging: false,
-        serverSide: true, //不打开会出现排序不对
-        ajax: "/customJobOrder/tableList?type=custom&order_id=1",
         columns: [
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {

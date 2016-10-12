@@ -145,6 +145,13 @@ public class CustomJobOrderController extends Controller {
 		DbUtils.handleList(shipment_detail, "custom_job_order_shipment", id, "order_id");
 		List<Map<String, String>> shipment_item = (ArrayList<Map<String, String>>)dto.get("shipment_item");
 		DbUtils.handleList(shipment_item, "custom_job_order_shipment_item", id, "order_id");
+		//空运
+		List<Map<String, String>> air_detail = (ArrayList<Map<String, String>>)dto.get("air_detail");
+		DbUtils.handleList(air_detail, "custom_job_order_air", id, "order_id");
+		List<Map<String, String>> air_item = (ArrayList<Map<String, String>>)dto.get("air_item");
+		DbUtils.handleList(air_item, "custom_job_order_air_item", id, "order_id");
+		List<Map<String, String>> air_cargoDescItem = (ArrayList<Map<String, String>>)dto.get("air_cargoDescItem");
+		DbUtils.handleList(air_cargoDescItem, "custom_job_order_air_cargodesc", id, "order_id");
 		
 		//陆运
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("load_item");
@@ -166,70 +173,13 @@ public class CustomJobOrderController extends Controller {
    		r.set("creator_name", user_name);
    		
    		r.set("shipment", getItemDetail(id,"shipment"));
+   		r.set("air", getItemDetail(id,"air"));
     	r.set("custom", getItemDetail(id,"custom"));
    		renderJson(r);
    	}
     
-    //保存常用邮箱模版
-    public void saveEmailTemplate(){
-    	String email = getPara("ccEmail");
-    	String ccEmail = getPara("ccEmail");
-    	String bccEmail = getPara("bccEmail");
-    	String remark = getPara("remark");
-    	JobOrderSendMailTemplate order = new JobOrderSendMailTemplate();
-    	order.set("receive_mail", email);
-    	order.set("cc_mail", ccEmail);
-    	order.set("bcc_mail", bccEmail);
-    	order.set("remark", remark);
-    	order.save();
-    	renderJson("{\"result\":true}");
-    }
-    
-    //保存海运填写模板
-    public void saveOceanTemplate(List<Map<String, String>> shipment_detail){
-        if(shipment_detail.size()<=0)
-            return;
-        
-        
-        Map<String, String> recMap=shipment_detail.get(0);
-        
-        if(recMap.get("shipper").length()==0 &&
-            recMap.get("consignee").length()==0 &&
-            recMap.get("notify_party").length()==0 &&
-            recMap.get("por").length()==0 &&
-            recMap.get("pol").length()==0 &&
-            recMap.get("pod").length()==0 &&
-            recMap.get("fnd").length()==0 )
-               return;
-        
-        Long creator_id = LoginUserController.getLoginUserId(this);
-        
-        Long shipper = Long.parseLong(recMap.get("shipper").length()==0?"-1":recMap.get("shipper"));
-        Long consignee = Long.parseLong(recMap.get("consignee").length()==0?"-1":recMap.get("consignee"));
-        Long notify_party = Long.parseLong(recMap.get("notify_party").length()==0?"-1":recMap.get("notify_party"));
-        Long por = Long.parseLong(recMap.get("por").length()==0?"-1":recMap.get("por"));
-        Long pol = Long.parseLong(recMap.get("pol").length()==0?"-1":recMap.get("pol"));
-        Long pod = Long.parseLong(recMap.get("pod").length()==0?"-1":recMap.get("pod"));
-        Long fnd = Long.parseLong(recMap.get("fnd").length()==0?"-1":recMap.get("fnd"));
-        
-        Record checkRec = Db.findFirst("select 1 from job_order_ocean_template where"
-                + " creator_id=? and shipper=? and consignee=? and notify_party=?"
-                + " and por=? and pol=? and pod=? and fnd=? ", creator_id, shipper,
-                consignee, notify_party, por, pol, pod, fnd);
-        if(checkRec==null){
-            Record r= new Record();
-            r.set("creator_id", creator_id);
-            r.set("shipper", shipper);
-            r.set("consignee", consignee);
-            r.set("notify_party", notify_party);
-            r.set("por", por);
-            r.set("pol", pol);
-            r.set("pod", pod);
-            r.set("fnd", fnd);
-            Db.save("job_order_ocean_template", r);
-        }
-    }
-    
+   
+  
     //上传相关文档
     @Before(Tx.class)
     public void saveDocFile(){
@@ -240,12 +190,12 @@ public class CustomJobOrderController extends Controller {
     		File file = fileList.get(i).getFile();
     		String fileName = file.getName();
     		
-			JobOrderDoc jobOrderDoc = new JobOrderDoc();
-			jobOrderDoc.set("order_id", order_id);
-			jobOrderDoc.set("uploader", LoginUserController.getLoginUserId(this));
-			jobOrderDoc.set("doc_name", fileName);
-			jobOrderDoc.set("upload_time", new Date());
-			jobOrderDoc.save();
+			Record r = new Record();
+			r.set("order_id", order_id);
+			r.set("uploader", LoginUserController.getLoginUserId(this));
+			r.set("doc_name", fileName);
+			r.set("upload_time", new Date());
+			Db.save("custom_job_order_doc",r);
 		}
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 		resultMap.put("result", true);
@@ -257,7 +207,7 @@ public class CustomJobOrderController extends Controller {
     public void uploadSignDesc(){
     	String id = getPara("id");
     	
-    	JobOrderLandItem order = JobOrderLandItem.dao.findById(id);
+    	Record order = Db.findById("custom_job_order_land", id);
     	String uploadPath = getRequest().getServletContext().getRealPath("/")+"\\upload\\";
     	//删除旧文件
 		String oldFileName = order.getStr("sign_desc");
@@ -272,7 +222,7 @@ public class CustomJobOrderController extends Controller {
         UploadFile upfile = getFile();//默认路径 是 upload
     	String fileName = upfile.getFileName();
 		order.set("sign_desc", fileName);
-		order.update();
+		Db.update("custom_job_order_land",order);
 		renderJson("{\"result\":true}");
     }
     
@@ -280,8 +230,8 @@ public class CustomJobOrderController extends Controller {
     @Before(Tx.class)
     public void deleteDoc(){
     	String id = getPara("docId");
-    	JobOrderDoc jobOrderDoc = JobOrderDoc.dao.findById(id);
-    	String fileName = jobOrderDoc.getStr("doc_name");
+    	Record r = Db.findById("custom_job_order_doc",id);
+    	String fileName = r.getStr("doc_name");
     	Map<String,Object> resultMap = new HashMap<String,Object>();
     	
     	String path = getRequest().getServletContext().getRealPath("/");
@@ -290,7 +240,7 @@ public class CustomJobOrderController extends Controller {
         File file = new File(filePath);
         if (file.exists() && file.isFile()) {
             boolean result = file.delete();
-            jobOrderDoc.delete();
+            Db.delete("custom_job_order_doc",r);
             resultMap.put("result", result);
         }else{
         	resultMap.put("result", "文件不存在可能已被删除!");
@@ -301,7 +251,7 @@ public class CustomJobOrderController extends Controller {
     //返回对象	
     private Record getItemDetail(String id,String type){
     	Record re = null;
-    	if("shipment".equals(type))
+    	if("shipment".equals(type)){
     		re = Db.findFirst("select jos.*, p1.abbr shipperAbbr , p2.abbr consigneeAbbr, p3.abbr notify_partyAbbr, p4.abbr carrier_name,"
     				+ " p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name "
     				+ " from custom_job_order_shipment jos "
@@ -313,8 +263,15 @@ public class CustomJobOrderController extends Controller {
     				+ " left join party p6 on p6.id=jos.oversea_agent"
     				+ " left join party p7 on p7.id=jos.booking_agent"
     				+ " where order_id = ?",id);
-    	else if("custom".equals(type)){
+    	}else if("custom".equals(type)){
     		re = Db.findFirst("select * from custom_job_order_custom where order_id = ?",id);
+    	}else if("air".equals(type)){
+    		re = Db.findFirst("select joa.* ,p1.abbr shipperAbbr,p2.abbr consigneeAbbr,p3.abbr notify_partyAbbr,p4.abbr booking_agent_name from custom_job_order_air joa"
+    				+ " left join party p1 on p1.id=joa.shipper"
+    				+ " left join party p2 on p2.id=joa.consignee"
+    				+ " left join party p3 on p3.id=joa.notify_party"
+    				+ " left join party p4 on p4.id=joa.booking_agent"
+    				+ " where order_id=?", id);
     	}
 		return re;
     }
@@ -327,6 +284,14 @@ public class CustomJobOrderController extends Controller {
     		itemSql = "select jos.*,u.name unit_name from custom_job_order_shipment_item jos"
     				+ " left join unit u on u.id=jos.unit_id"
     				+ " where order_id=? order by jos.id";
+    		itemList = Db.find(itemSql, orderId);
+    	}else if("air".equals(type)){
+    		itemSql = "select joa.*, pa.abbr air_company_name from custom_job_order_air_item joa"
+    		        + " left join party pa on pa.id=joa.air_company"
+    		        + " where order_id=? order by joa.id";
+    		itemList = Db.find(itemSql, orderId);
+    	}else if("cargoDesc".equals(type)){
+    		itemSql = "select * from custom_job_order_air_cargodesc where order_id=? order by id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("land".equals(type)){
     		itemSql = "select jol.*,p.abbr transport_company_name from custom_job_order_land jol "
@@ -350,11 +315,11 @@ public class CustomJobOrderController extends Controller {
 	    	        + " where order_id=? order by jor.id";
 	    	itemList = Db.find(itemSql, orderId);
     	}else if("doc".equals(type)){
-	    	itemSql = "select jod.*,u.c_name from job_order_doc jod left join user_login u on jod.uploader=u.id "
+	    	itemSql = "select jod.*,u.c_name from custom_job_order_doc jod left join user_login u on jod.uploader=u.id "
 	    			+ " where order_id=? order by jod.id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("mail".equals(type)){
-	    	itemSql = "select * from job_order_sendMail where order_id=? order by id";
+	    	itemSql = "select * from custom_job_order_sendMail where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("custom".equals(type)){
             itemSql = "select * from custom_order where job_order_id=? order by id";
@@ -380,6 +345,9 @@ public class CustomJobOrderController extends Controller {
         setAttr("customList", getItems(id,"custom"));
         setAttr("customItemList", getItems(id,"customItem"));
         
+        setAttr("airList", getItems(id,"air"));
+    	setAttr("cargoDescList", getItems(id,"cargoDesc"));
+    	setAttr("air", getItemDetail(id,"air"));
     	//获取海运明细表信息
     	setAttr("shipmentList", getItems(id,"shipment"));
     	setAttr("shipment", getItemDetail(id,"shipment"));
@@ -409,33 +377,7 @@ public class CustomJobOrderController extends Controller {
         render("/cms/customJobOrder/JobOrderEdit.html");
     }
     
-    //常用邮箱模版
-    public List<Record> getEmailTemplateInfo(){
-    	List<Record> list = Db.find("select t.* from job_order_sendmail_template t"
-                + " where t.creator=?", LoginUserController.getLoginUserId(this));
-        return list;
-    }
-    
-    
-    public List<Record> getUsedOceanInfo(){
-        List<Record> list = Db.find("select t.*,"
-                + " p1.abbr shipperAbbr , "
-                + " concat(ifnull(p1.address_eng, p1.address), '\r', ifnull(p1.contact_person_eng, p1.contact_person), '\r', ifnull(p1.phone,'')) shipper_info,"
-                + " p2.abbr consigneeAbbr,"
-                + " concat(ifnull(p2.address_eng, p2.address), '\r', ifnull(p2.contact_person_eng, p2.contact_person), '\r', ifnull(p2.phone,'')) consignee_info,"
-                + " p3.abbr notify_partyAbbr,"
-                + " concat(ifnull(p3.address_eng, p3.address), '\r', ifnull(p3.contact_person_eng, p3.contact_person), '\r', ifnull(p3.phone,'')) notify_info,"
-                + " lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name from job_order_ocean_template t "
-                + " left join party p1 on p1.id= t.shipper"
-                + " left join party p2 on p2.id= t.consignee"
-                + " left join party p3 on p3.id= t.notify_party"
-                + " LEFT JOIN location lo on lo.id = t.por"
-                + " LEFT JOIN location lo1 on lo1.id = t.pol"
-                + " LEFT JOIN location lo2 on lo2.id = t.pod"
-                + " LEFT JOIN location lo3 on lo3.id = t.fnd"
-                + " where t.creator_id=?", LoginUserController.getLoginUserId(this));
-        return list;
-    }
+ 
     
     //使用common-email, javamail
     @Before(Tx.class)
@@ -510,7 +452,7 @@ public class CustomJobOrderController extends Controller {
         try{
         	email.setCharset("gbk"); 
         	email.send();
-        	JobOrderSendMail jsm = new JobOrderSendMail();
+        	Record jsm = new Record();
         	jsm.set("order_id", order_id);
         	jsm.set("mail_title", mailTitle);
         	jsm.set("doc_name", docs.replace(",", "  "));
@@ -519,7 +461,7 @@ public class CustomJobOrderController extends Controller {
         	jsm.set("bcc_mail", bccEmail);
         	jsm.set("sender", LoginUserController.getLoginUserName(this));
         	jsm.set("send_time", new Date());
-        	jsm.save();
+        	Db.save("custom_job_order_sendMail",jsm);
         	renderJson("{\"result\":true}");
         }catch(Exception e){
         	e.printStackTrace();
@@ -665,56 +607,6 @@ public class CustomJobOrderController extends Controller {
 
         renderJson(map); 
     }
-    
-    public void saveParty(){
-    	String jsonStr=getPara("params");
-       	String id = null;
-       	Gson gson = new Gson();  
-        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
-            
-        Party order = new Party();
-   		UserLogin user = LoginUserController.getLoginUser(this);
-   		
-   		if (true)  {
-   			//create 
-   			DbUtils.setModelValues(dto, order);
-   			
-   			//需后台处理的字段
-   			order.set("creator", user.getLong("id"));
-   			order.set("create_date", new Date());
-   			order.set("office_id", pom.getCurrentOfficeId());
-   			order.save();
-   			
-   			id = order.getLong("id").toString();
-   			UserCustomer  customer = new UserCustomer();
-   			customer.set("customer_id", id);
-   			customer.set("user_name", user.getStr("user_name"));
-   			customer.save();
-   		}
-   		renderJson(order);
-    }
-   
-    //确认已完成工作单
-    public void confirmCompleted(){
-    	String id = getPara("id");
-    	JobOrder order = JobOrder.dao.findById(id);
-    	order.set("status", "已完成");
-    	renderJson("{\"result\":true}");
-    }
-    
-    //费用应收打印PDF前保存
-    public void saveDebitNote(){
-    	String ids = getPara("itemIds");
-    	String[] idArr = ids.split(",");
-    	String invoiceNo = getPara("invoiceNo");
-    	JobOrderArap order = null;
-    	//checkbox选中的几条发票号一样
-    	for(int i=0;i<idArr.length;i++){
-    		order = JobOrderArap.dao.findById(idArr[i]);
-    		order.set("invoice_no", invoiceNo);
-    		order.update();
-    	}
-    	renderJson("{\"result\":true}");
-    }
+  
     
 }

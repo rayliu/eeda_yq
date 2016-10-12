@@ -512,20 +512,20 @@
 </div><!--  form row  -->
 <!-- /#page-wrapper -->
 <%}%>
-
+<%include("/eeda/component/jsTemplate/tableInputTruckOutField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputTruckInField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputDateField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
-
-
 <%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>
-
-<%include("/cms/customJobOrder/party_create_modal.html", {}){} %>
+<%include("/eeda/component/jsTemplate/tableInputFieldCurrencyId.js",{}){} %>
+<%include("/oms/JobOrder/party_create_modal.html", {}){} %>
 
 <script>
 	//当前登陆用户名
 	var loginUserName = '${loginUser!''}';
     var order_no = '${order.order_no!'订单编辑'}'; 
     var itemOrder = {};
+    var service_items = '${order.service_items!''}';
 </script>
 
 <script>

@@ -167,7 +167,7 @@ $(document).ready(function() {
     
     //刷新明细表
     itemOrder.refleshAirItemTable = function(order_id){
-    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=air";
+    	var url = "/customJobOrder/tableList?order_id="+order_id+"&type=air";
     	cargoTable.ajax.url(url).load();
     }
     

@@ -443,7 +443,7 @@ $(document).ready(function() {
 
     //刷新明细表
     itemOrder.refleshChargeTable = function(order_id){
-    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=charge";
+    	var url = "/customJobOrder/tableList?order_id="+order_id+"&type=charge";
     	chargeTable.ajax.url(url).load();
     }
     
