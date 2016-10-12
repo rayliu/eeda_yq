@@ -39,7 +39,6 @@ public class CustomController extends Controller {
         renderJson(customs);
     }
 
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_LIST })
     public void index() {
         render("/profile/custom/customList.html");
     }
@@ -48,7 +47,6 @@ public class CustomController extends Controller {
         render("/profile/custom/customEdit.html");
     }
     
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_LIST })
     public void list() {
         String sLimit = "";
         String pageIndex = getPara("sEcho");
@@ -76,8 +74,8 @@ public class CustomController extends Controller {
     }
 
     // 编辑条目按钮
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_CREATE,
-            PermissionConstant.PERMSSION_T_UPDATE }, logical = Logical.OR)
+//    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_CREATE,
+//            PermissionConstant.PERMSSION_T_UPDATE }, logical = Logical.OR)
     public void edit() {
         String id = getPara("id");
         Custom u = Custom.dao.findById(id);
@@ -88,7 +86,6 @@ public class CustomController extends Controller {
     }
 
     // 删除条目
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_DELETE })
     public void delete() {
         String id = getPara();
         if (id != null) {
@@ -106,8 +103,6 @@ public class CustomController extends Controller {
     }
 
     // 添加编辑保存
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_CREATE,
-            PermissionConstant.PERMSSION_T_UPDATE }, logical = Logical.OR)
     public void save() {
         String jsonStr=getPara("params");
         

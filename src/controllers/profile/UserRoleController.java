@@ -40,13 +40,13 @@ public class UserRoleController extends Controller {
 
 	
 	
-	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_LIST})
+//	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_LIST})
 	public void index(){
 		render("/eeda/profile/userRole/userRoleList.html");
 	}
 	
 	/*查询用户角色*/
-	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_LIST})
+//	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_LIST})
 	public void list(){
 		String sLimit = "";
 		String pageIndex = getPara("sEcho");
@@ -87,7 +87,7 @@ public class UserRoleController extends Controller {
 		renderJson(orderMap);
 	}
 	/*编辑*/
-	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_UPDATE})
+//	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_UPDATE})
 	public void edit(){
 		String user_name = getPara("username");
 		setAttr("user_name", user_name);		
@@ -95,7 +95,7 @@ public class UserRoleController extends Controller {
 	}
 	
 	/*给新用户分配角色*/
-	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_CREATE})
+//	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_CREATE})
 	public void add(){
 		render("/eeda/profile/userRole/addRole.html");
 	}
@@ -112,7 +112,7 @@ public class UserRoleController extends Controller {
 		
 	}
 	/*列出没有角色的用户*/
-	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_CREATE})
+//	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_CREATE})
 	public void userList(){
 		String sql = "";
 		Long parentID = pom.getBelongOffice();
@@ -126,7 +126,7 @@ public class UserRoleController extends Controller {
 		List<Record> orders = Db.find(sql);
         renderJson(orders);
 	}
-	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_CREATE})
+//	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_CREATE})
 	public void saveUserRole(){
 		String name = getPara("name");
 		String r = getPara("roles");
@@ -139,7 +139,7 @@ public class UserRoleController extends Controller {
 		}
 		renderJson();
 	}
-	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_UPDATE})
+//	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_UPDATE})
 	public void updateRole(){
 		String name = getPara("name");
 		String r = getPara("roles");

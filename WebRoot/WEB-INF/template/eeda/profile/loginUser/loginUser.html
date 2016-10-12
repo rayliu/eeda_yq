@@ -22,13 +22,7 @@
 								<th>用户名</th>
 								<th>中文名</th>
 								<th>密码提示</th>
-								<% 
-									var updatePermission = shiro.hasPermission("User.update");
-									var delPermission = shiro.hasPermission("User.delete");
-									if(updatePermission || delPermission){
-								%>
 								<th>操作</th>
-								<%}%>
 							</tr>
 						</thead>
 						<tbody>

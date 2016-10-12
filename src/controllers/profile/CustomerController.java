@@ -50,13 +50,12 @@ public class CustomerController extends Controller {
     ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
     
     
-    // in config route已经将路径默认设置为/yh
-    // me.add("/eeda", controllers.yh.AppController.class, "/eeda");
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_LIST})
+  
+//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_LIST})
     public void index() {
             render("/eeda/profile/customer/CustomerList.html");
     }
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_LIST})
+//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_LIST})
     public void list() {
         String company_name = getPara("COMPANY_NAME");
         String contact_person = getPara("CONTACT_PERSON");
@@ -124,12 +123,12 @@ public class CustomerController extends Controller {
     }
     
     
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_CREATE})
+//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_CREATE})
     public void add() {
         setAttr("saveOK", false);
             render("/eeda/profile/customer/CustomerEdit.html");
     }
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_UPDATE})
+//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_UPDATE})
     public void edit() {
         String id = getPara("id");
 
@@ -170,7 +169,7 @@ public class CustomerController extends Controller {
         setAttr("docList", Db.find(sql,id));
         render("/eeda/profile/customer/CustomerEdit.html");
     }
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_DELETE})
+//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_DELETE})
     public void delete() {
         long id = getParaToLong();
         Party party = Party.dao.findById(id);
@@ -184,7 +183,7 @@ public class CustomerController extends Controller {
         party.update();
         redirect("/customer");
     }
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_CREATE, PermissionConstant.PERMSSION_C_UPDATE}, logical=Logical.OR)
+//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_CREATE, PermissionConstant.PERMSSION_C_UPDATE}, logical=Logical.OR)
     @Before(Tx.class)
     public void save() {
 
