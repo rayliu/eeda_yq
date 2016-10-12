@@ -283,7 +283,7 @@ public class DbUtils {
 			for(Record name :re){
 				String col_name = name.getStr("COLUMN_NAME");
 				
-				if(col_name.equals(key)){
+				if(col_name.equalsIgnoreCase(key)){
 					String value = String.valueOf(entry.getValue()).trim();
 					//忽略  action 字段
 					if(!"action".equals(key)){

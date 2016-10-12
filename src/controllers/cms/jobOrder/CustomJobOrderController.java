@@ -296,8 +296,11 @@ public class CustomJobOrderController extends Controller {
     		itemSql = "select * from custom_job_order_air_cargodesc where order_id=? order by id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("land".equals(type)){
-    		itemSql = "select jol.*,p.abbr transport_company_name from custom_job_order_land jol "
+    		itemSql = "select jol.*, p.abbr transport_company_name,"
+    		        + " p1.abbr consignor_name, p2.abbr consignee_name from custom_job_order_land jol "
     				+ " left join party p on p.id=jol.transport_company"
+    				+ " left join party p1 on p1.id=jol.consignor"
+    				+ " left join party p2 on p2.id=jol.consignee"
     				+ " where order_id=? order by jol.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
