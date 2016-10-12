@@ -75,6 +75,8 @@ $(document).ready(function() {
     	});
     	
     	eeda.bindTableField('land_table','TRANSPORT_COMPANY','/serviceProvider/searchTruckCompany','truck');
+        eeda.bindTableFieldTruckOut('land_table', 'CONSIGNOR');
+        eeda.bindTableFieldTruckIn('land_table', 'CONSIGNEE');
     };
     //------------事件处理
 	 var cargoTable = eeda.dt({
@@ -103,7 +105,7 @@ $(document).ready(function() {
 	            		return '<span class="btn btn-success btn-xs fileinput-button" style="width:100px">' 
 		                		+'<i class="glyphicon glyphicon-plus"></i>'
 		                		+'<span>上传签收文件</span>'
-		                		+'<input class="upload" type="file" name="file" >'
+		                		+'<input class="upload" type="file" name="file" multiple>'
 		                		+'</span>'
 		            else
 		            	return '<span class="btn btn-default btn-xs fileinput-button" style="width:100px">' 
@@ -184,19 +186,27 @@ $(document).ready(function() {
             },
             { "data": "CONSIGNOR", "width": "180px",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="consignor" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
+                    if(!data)
+                        data='';
+                    var field_html = template('table_truck_out_template',
+                        {
+                            id: 'CONSIGNOR',
+                            value: data,
+                            display_value: full.CONSIGNOR_NAME,
+                            style:'width:200px'
+                        }
+                    );
+                    return field_html;
+                }
             },
-            { "data": "CONSIGNOR_PHONE","width": "180px", 
+            { "data": "CONSIGNOR_PHONE","width": "180px", "className":"consigner_phone",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
             		return '<input type="text" name="consignor_phone" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "TAKE_ADDRESS", "width": "180px",
+            { "data": "TAKE_ADDRESS", "width": "180px", "className":"consigner_addr",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
@@ -205,19 +215,27 @@ $(document).ready(function() {
             },
             { "data": "CONSIGNEE", "width": "180px",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="consignee" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
+                    if(!data)
+                        data='';
+                    var field_html = template('table_truck_in_template',
+                        {
+                            id: 'CONSIGNEE',
+                            value: data,
+                            display_value: full.CONSIGNEE_NAME,
+                            style:'width:200px'
+                        }
+                    );
+                    return field_html;
+                }
             },
-            { "data": "CONSIGNEE_PHONE","width": "180px", 
+            { "data": "CONSIGNEE_PHONE","width": "180px",  "className":"consignee_phone",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
             		return '<input type="text" name="consignee_phone" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "DELIVERY_ADDRESS", "width": "180px",
+            { "data": "DELIVERY_ADDRESS", "width": "180px", "className":"consignee_addr",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
@@ -275,9 +293,18 @@ $(document).ready(function() {
             },
             { "data": "SIGN_DESC", "width": "180px",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
+            		if(!data){
             			data='';
-            		return '<input type="button" name="sign_desc" value="'+data+'" class="sign_desc form-control" style="width:200px"/>';
+            		}
+            		else{
+            			var arr = data.split(",");
+            			var str = "";
+	            		for(var i=0;i<arr.length;i++){
+	            			str += '<a href="/upload/'+arr[i]+'" class="sign_desc" style="width:200px" target="_blank">'+arr[i]+'</a>&nbsp;&nbsp;'
+	            		}
+	            		return str;
+            		}
+                    return data;
             	}
             },
             { "data": "SIGN_STATUS", "width": "180px",
@@ -288,6 +315,20 @@ $(document).ready(function() {
             	}
             }, 
             { "data": "TRANSPORT_COMPANY_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },
+            { "data": "CONSIGNOR_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },
+            { "data": "CONSIGNEE_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -318,7 +359,7 @@ $(document).ready(function() {
 		var order_id = $('#order_id').val();
 			$(this).fileupload({
 				autoUpload: true, 
-			    url: '/jobOrder/uploadSignDesc?id='+id,
+			    url: '/customJobOrder/uploadSignDesc?id='+id,
 			    dataType: 'json',
 		        done: function (e, data) {
 	        	if(data.result){
@@ -334,12 +375,6 @@ $(document).ready(function() {
 		        }
 			});
 	});
-	
-	//查看签收文件
-    $("#land_table").on('click', '.sign_desc',function(){
-    	var url = "/upload/"+$(this).val();
-    	window.open(url);
-    })
 
 });
 });
