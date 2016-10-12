@@ -1,5 +1,43 @@
 
 <input type="hidden" id="air_id" value="${air.id!''}">
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseAirInfo" aria-expanded="false" class="collapsed">
+            <i id='collapseAirIcon' class="fa 
+            <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用空运信息
+            </a>
+        </h4>
+    </div>
+    <div id="collapseAirInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+        <div class="panel-body">
+            <ul id="usedAirInfo" class="usedAirInfo">
+              <%for(userInfo in usedAirInfo![]){%>
+                    <li shipper_id="${userInfo.shipper}"
+                        shipper_abbr="${userInfo.shipperAbbr}"
+                        shipper_info="${userInfo.shipper_info}"
+                        consignee_id="${userInfo.consignee}"
+                        consignee_abbr="${userInfo.consigneeAbbr}"
+                        consignee_info="${userInfo.consignee_info}"
+                        notify_id="${userInfo.notify_party}"
+                        notify_abbr="${userInfo.notify_partyAbbr}"
+                        notify_info="${userInfo.notify_info}"
+                        booking_agent="${userInfo.booking_agent}" 
+                        booking_agent_name="${userInfo.booking_agent_name}" >
+                      <div class="radio">
+                        <label>
+                            <input type="radio" value="1" name="usedAirInfo" style="margin-top: 0px;">
+                            <span>Shipper:${userInfo.shipperAbbr}, Consignee:${userInfo.consigneeAbbr}, NotifyParty: ${userInfo.notify_partyAbbr}</span><br>
+                        </label>
+                      </div>
+                    </li>
+              <%}%>
+            </ul>
+        </div>
+    </div>
+</div>
+
 <form id = "airForm">
             <div class="form-group">  <!--  form row  -->
                     <div class="row">
@@ -62,25 +100,36 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'air_net_weight', 
                                     label:'净重(KG)', 
-                                    value:air.net_weight!''
+                                    value:air.net_weight!'',
+                                    placeholder:'请输入数字'
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'air_gross_weight', 
                                     label:'毛重(KG)', 
-                                    value:air.gross_weight!''
+                                    value:air.gross_weight!'',
+                                    placeholder:'请输入数字'
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'air_volume', 
                                     label:'体积(CBM)', 
-                                    value:air.volume!''
+                                    value:air.volume!'',
+                                    placeholder:'请输入数字'
                                 }){}%>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-lg-4">
+                           <%include("/eeda/component/form/dateInputField.html", 
+                               {   id:'air_export_date', 
+                                   label:'出货时间', 
+                                   value:air.export_date!''
+                               }){}%>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputArea.html", 

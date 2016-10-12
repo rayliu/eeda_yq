@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) {
+define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'jq_blockui'], function ($, metisMenu, template) {
 $(document).ready(function() {
 
 	var deletedTableIds=[];
@@ -69,8 +69,8 @@ $(document).ready(function() {
         eeda.bindTableField('cost_table','SP_ID','/serviceProvider/searchCompany','');
         eeda.bindTableField('cost_table','CHARGE_ID','/finItem/search','');
         eeda.bindTableField('cost_table','CHARGE_ENG_ID','/finItem/search_eng','');
-        eeda.bindTableField('cost_table','UNIT_ID','/serviceProvider/searchUnit','');
-        eeda.bindTableField('cost_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
+        eeda.bindTableField('cost_table','UNIT_ID','/serviceProvider/searchChargeUnit','');
+        eeda.bindTableFieldCurrencyId('cost_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
     
     var costTable = eeda.dt({
@@ -78,6 +78,8 @@ $(document).ready(function() {
         autoWidth: false,
         drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
             bindFieldEvent();
+
+            $.unblockUI();
         },
         columns:[
 			{"data": "ID","width": "10px",
@@ -203,7 +205,8 @@ $(document).ready(function() {
             				id: 'CHARGE_ENG_ID',
             				value: data,
             				display_value: full.CHARGE_NAME_ENG,
-            				style:'width:200px'
+            				style:'width:200px',
+            				disabled:'disabled'
             					}
             			);
             			return field_html;
@@ -305,11 +308,11 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
                         	return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
                 	}else{
-                        	return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control" />';
+                        	return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control" disabled/>';
                 	}
                 }
             },
-            { "data": "EXCHANGE_RATE", "width": "60px",
+            { "data": "EXCHANGE_RATE", "width": "60px", "className":"currency_rate",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -331,7 +334,7 @@ $(document).ready(function() {
 	                if(full.AUDIT_FLAG == 'Y'){
 	                    	return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
 	                }else{
-	                    	return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control" />';
+	                    	return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
 	                }
               }
             },
@@ -421,6 +424,8 @@ $(document).ready(function() {
        //计算应付字段
        var totalCostRMB = 0; 
        var totalCostUSD = 0;
+       var totalCostJPY = 0; 
+       var totalCostHKD = 0;
        var profitTotalCost = 0;
        
        var tableCur =$('#cost_table').find('[name=CURRENCY_ID_input]');
@@ -431,6 +436,10 @@ $(document).ready(function() {
                totalCostRMB += parseFloat(tableAmount[i].value);   //parseFloat(data)
            }else if(tableCur[i].value=='USD'){
                totalCostUSD += parseFloat(tableAmount[i].value);
+           }else if(tableCur[i].value=='JPY'){
+               totalCostJPY += parseFloat(tableAmount[i].value);
+           }else if(tableCur[i].value=='HKD'){
+               totalCostHKD += parseFloat(tableAmount[i].value);
            }
            profitTotalCost+= parseFloat(currencyTotalAmountCost[i].value);
        }
@@ -438,16 +447,30 @@ $(document).ready(function() {
        $('[name=profitTotalCost]').text(profitTotalCost).hide();   
        //赋值
        $('.costRMB').text(totalCostRMB);
-       if(totalCostRMB !=""&&!isNaN(totalCostUSD)){
-       $('.costRMB').text('CNY '+eeda.numFormat(parseFloat(totalCostRMB).toFixed(2),3));
+       if(totalCostRMB !=""&&!isNaN(totalCostRMB)){
+    	   $('.costRMB').text('CNY '+eeda.numFormat(parseFloat(totalCostRMB).toFixed(2),3));
        }else{
            $('.costRMB').text('CNY '+eeda.numFormat(parseFloat(0).toFixed(2),3));
-       }
+        }
+       
        if(totalCostUSD !=''&&!isNaN(totalCostUSD)){
           $('.costUSD').text('USD '+eeda.numFormat(parseFloat(totalCostUSD).toFixed(2),3));          
        }else{
           $('.costUSD').text('USD '+eeda.numFormat(parseFloat(0).toFixed(2),3));
-       }
+        }
+
+       if(totalCostJPY !=""&&!isNaN(totalCostJPY)){
+           $('.costJPY').text('JPY '+eeda.numFormat(parseFloat(totalCostJPY).toFixed(2),3));
+       	}else{
+               $('.costJPY').text('JPY '+eeda.numFormat(parseFloat(0).toFixed(2),3));
+        }
+       
+       if(totalCostHKD !=''&&!isNaN(totalCostHKD)){
+              $('.costHKD').text('HKD '+eeda.numFormat(parseFloat(totalCostHKD).toFixed(2),3));          
+        }else{
+              $('.costHKD').text('HKD '+eeda.numFormat(parseFloat(0).toFixed(2),3));
+         }
+
        calcCurrency();
    }
 

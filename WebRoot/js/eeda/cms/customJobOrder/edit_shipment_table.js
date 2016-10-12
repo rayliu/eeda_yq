@@ -57,7 +57,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         };
         
         var bindFieldEvent=function(){
-        	eeda.bindTableField('ocean_cargo_table', 'UNIT_ID','/serviceProvider/searchUnit','');
+        	eeda.bindTableField('ocean_cargo_table','unit_id','/serviceProvider/searchUnit','');
         };
         //------------事件处理
     	var cargoTable = eeda.dt({
@@ -136,10 +136,10 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                             data='';
                         var field_html = template('table_dropdown_template',
                             {
-                                id: 'UNIT_ID',
+                                id: 'unit_id',
                                 value: data,
                                 display_value: full.UNIT_NAME,
-                                style:'width:80px'
+                                style:'width:200px'
                             }
                         );
                         return field_html;

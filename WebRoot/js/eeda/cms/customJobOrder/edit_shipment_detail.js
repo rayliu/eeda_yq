@@ -50,13 +50,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         else{
         	$('#wait_overseaCustom').attr("checked",false);
         }
-        
+
         //选择卸货港时自动填上目的港
         $('#pod_list').on('mousedown', '.fromLocationItem', function(){
     	    	$('#fnd_input').val($('#pod_input').val());
     	    	$('#fnd').val($('#pod').val());
-        })
-        
+        });
+
+        $('#pod_list').on('keydown', 'li', function(event){
+            if (event.keyCode == 13) {
+                $('#fnd_input').val($('#pod_input').val());
+                $('#fnd').val($('#pod').val());
+            }
+        });
+
+        //常用海运信息模版
         $('#usedOceanInfo').on('click', 'li', function(){
             var li = $(this);
             $('#ocean_shipper_input').val(li.attr('shipper_abbr'));
@@ -76,13 +84,32 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $('#pod').val(li.attr('pod_id'));
             $('#fnd_input').val(li.attr('fnd_name'));
             $('#fnd').val(li.attr('fnd_id'));
+            $('#ocean_booking_agent').val(li.attr('carrier'));
+            $('#ocean_booking_agent_input').val(li.attr('carrier_name'));
+            $('#carrier').val(li.attr('head_carrier'));
+            $('#carrier_input').val(li.attr('head_carrier_name'));
+            $('#oversea_agent').val(li.attr('oversea_agent'));
+            $('#oversea_agent_input').val(li.attr('oversea_agent_name'));
+            $('#oversea_agent_info').val(li.attr('oversea_agent_info'));
+            $('#head_carrier').val(li.attr('booking_agent'));
+            $('#head_carrier_input').val(li.attr('booking_agent_name'));
+            
+            var release_type = li.attr('release_type');
+            $('#shipmentForm input[type="radio"]').each(function(){
+            	var checkValue = $(this).val();
+            	if(release_type==checkValue){
+            		$(this).attr("checked",true);
+            	}
+            });
         });
-
         $('#collapseOceanInfo').on('show.bs.collapse', function () {
           $('#collapseOceanIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
         });
         $('#collapseOceanInfo').on('hide.bs.collapse', function () {
           $('#collapseOceanIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
         });
+        
+        
+        
     });
 });

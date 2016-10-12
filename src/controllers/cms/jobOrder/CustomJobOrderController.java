@@ -202,30 +202,26 @@ public class CustomJobOrderController extends Controller {
     	renderJson(resultMap);
     }
     
-    //上传陆运签收文件描述
+  //上传陆运签收文件描述
     @Before(Tx.class)
     public void uploadSignDesc(){
     	String id = getPara("id");
+    	List<UploadFile> fileList = getFiles("\\");
     	
-    	Record order = Db.findById("custom_job_order_land", id);
-    	String uploadPath = getRequest().getServletContext().getRealPath("/")+"\\upload\\";
-    	//删除旧文件
-		String oldFileName = order.getStr("sign_desc");
-		if(oldFileName!=null&&!"".equals(oldFileName)){
-			String oldFilePath = uploadPath+oldFileName;
-			File oldFile = new File(oldFilePath);
-	        if (oldFile.exists() && oldFile.isFile()) {
-	            oldFile.delete();
-	        }
+		for (int i = 0; i < fileList.size(); i++) {
+    		File file = fileList.get(i).getFile();
+    		String fileName = file.getName();
+    		Record order = Db.findById("custom_job_order_land", id);
+    		String sign_desc = order.getStr("sign_desc");
+    		if("".equals(sign_desc)||sign_desc==null){
+    			order.set("sign_desc", fileName);
+    		}else{
+    			order.set("sign_desc", sign_desc+","+fileName);
+    		}
+    		Db.update("custom_job_order_land",order);
 		}
-		
-        UploadFile upfile = getFile();//默认路径 是 upload
-    	String fileName = upfile.getFileName();
-		order.set("sign_desc", fileName);
-		Db.update("custom_job_order_land",order);
 		renderJson("{\"result\":true}");
     }
-    
     //删除相关文档
     @Before(Tx.class)
     public void deleteDoc(){
@@ -253,7 +249,8 @@ public class CustomJobOrderController extends Controller {
     	Record re = null;
     	if("shipment".equals(type)){
     		re = Db.findFirst("select jos.*, p1.abbr shipperAbbr , p2.abbr consigneeAbbr, p3.abbr notify_partyAbbr, p4.abbr carrier_name,"
-    				+ " p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name "
+    				+ " p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name,"
+    				+ " lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name,lo4.name hub_name"
     				+ " from custom_job_order_shipment jos "
     				+ " left join party p1 on p1.id=jos.shipper"
     				+ " left join party p2 on p2.id=jos.consignee"
@@ -262,6 +259,11 @@ public class CustomJobOrderController extends Controller {
     				+ " left join party p5 on p5.id=jos.head_carrier"
     				+ " left join party p6 on p6.id=jos.oversea_agent"
     				+ " left join party p7 on p7.id=jos.booking_agent"
+    				+ " LEFT JOIN location lo on lo.id = jos.por"
+					+ " LEFT JOIN location lo1 on lo1.id = jos.pol"
+					+ " LEFT JOIN location lo2 on lo2.id = jos.pod"
+					+ " LEFT JOIN location lo3 on lo3.id = jos.fnd"
+					+ " LEFT JOIN location lo4 on lo4.id = jos.hub"
     				+ " where order_id = ?",id);
     	}else if("custom".equals(type)){
     		re = Db.findFirst("select * from custom_job_order_custom where order_id = ?",id);
@@ -281,7 +283,7 @@ public class CustomJobOrderController extends Controller {
     	String itemSql = "";
     	List<Record> itemList = null;
     	if("shipment".equals(type)){
-    		itemSql = "select jos.*,u.name unit_name from custom_job_order_shipment_item jos"
+    		itemSql = "select jos.*,CONCAT(u.name,u.name_eng) unit_name from custom_job_order_shipment_item jos"
     				+ " left join unit u on u.id=jos.unit_id"
     				+ " where order_id=? order by jos.id";
     		itemList = Db.find(itemSql, orderId);
@@ -342,9 +344,9 @@ public class CustomJobOrderController extends Controller {
     	setAttr("order", r);
     	//报关
         setAttr("custom", getItemDetail(id,"custom"));
-        setAttr("customList", getItems(id,"custom"));
+//        setAttr("customList", getItems(id,"custom"));
         setAttr("customItemList", getItems(id,"customItem"));
-        
+        //空运
         setAttr("airList", getItems(id,"air"));
     	setAttr("cargoDescList", getItems(id,"cargoDesc"));
     	setAttr("air", getItemDetail(id,"air"));
@@ -360,17 +362,6 @@ public class CustomJobOrderController extends Controller {
     	setAttr("docList", getItems(id,"doc"));
     	//邮件记录
     	setAttr("mailList", getItems(id,"mail"));
-    	
-    	//返回海运的港口名称
-    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name,lo4.name hub_name from job_order_shipment jos"
-						+" LEFT JOIN location lo on lo.id = jos.por"
-						+" LEFT JOIN location lo1 on lo1.id = jos.pol"
-						+" LEFT JOIN location lo2 on lo2.id = jos.pod"
-						+" LEFT JOIN location lo3 on lo3.id = jos.fnd"
-						+" LEFT JOIN location lo4 on lo4.id = jos.hub"
-						+" where order_id = ?";
-   		setAttr("port",Db.findFirst(port_sql,id)); 
-    	
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
     	

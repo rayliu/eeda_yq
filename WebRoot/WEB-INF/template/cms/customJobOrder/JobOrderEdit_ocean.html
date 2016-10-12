@@ -30,7 +30,18 @@
                         por_name="${userInfo.por_name}" 
                         pol_name="${userInfo.pol_name}" 
                         pod_name="${userInfo.pod_name}" 
-                        fnd_name="${userInfo.fnd_name}" >
+                        fnd_name="${userInfo.fnd_name}" 
+                        carrier="${userInfo.carrier}" 
+                        carrier_name="${userInfo.carrier_name}" 
+                        head_carrier="${userInfo.head_carrier}" 
+                        head_carrier_name="${userInfo.head_carrier_name}" 
+                        oversea_agent="${userInfo.oversea_agent}" 
+                        oversea_agent_name="${userInfo.oversea_agent_name}" 
+                        oversea_agent_info="${userInfo.oversea_agent_info}" 
+                        booking_agent="${userInfo.booking_agent}" 
+                        booking_agent_name="${userInfo.booking_agent_name}" 
+                        release_type="${userInfo.release_type}" 
+                        >
                       <div class="radio">
                         <label>
                             <input type="radio" value="1" name="usedOceanInfo" style="margin-top: 0px;">
@@ -124,16 +135,16 @@
                     }){}%>
             </div>
             <div class="col-lg-4">
-                <div class="form-group">
+                <div class="form-group" id="release_radio_div">
                 	<input type="hidden" id="hidden_release_type" value="${shipment.release_type!''}">
                     <label class="search-label">放货方式</label>
-                    <label class="checkbox-inline">
+                    <label class="radio-inline">
                         <input type="radio" name='release_radio' value='tlx' checked>电放
                     </label>
-                    <label class="checkbox-inline">
+                    <label class="radio-inline">
                         <input type="radio" name='release_radio' value='swb'>SeaWayBill
                     </label>
-                    <label class="checkbox-inline">
+                    <label class="radio-inline">
                         <input type="radio" name='release_radio' value='obl'>OBL
                     </label>
                 </div>
@@ -168,7 +179,7 @@
                        {   id:'por', 
                            label:'收货港 POR', 
                            value:shipment.por!planOrderItem.por!'',
-                           display_value:port.por_name!portCreate.por_name!''
+                           display_value:shipment.por_name!portCreate.por_name!''
                        }){}%>
                </div>
                <div class="col-lg-4">
@@ -176,7 +187,7 @@
                        {   id:'pol', 
                            label:'装货港 POL', 
                            value:shipment.pol!planOrderItem.pol!'',
-                           display_value:port.pol_name!portCreate.pol_name!''
+                           display_value:shipment.pol_name!portCreate.pol_name!''
                        }){}%>
                </div>
                <div class="col-lg-4">
@@ -184,7 +195,7 @@
                        {   id:'hub', 
                            label:'转运港 HUB',
                            value:shipment.hub!'',
-                           display_value:port.hub_name!''
+                           display_value:shipment.hub_name!''
                        }){}%>
                </div>
            </div>
@@ -194,7 +205,7 @@
                        {   id:'pod', 
                            label:'卸货港 POD', 
                            value:shipment.pod!planOrderItem.pod!'',
-                           display_value:port.pod_name!portCreate.pod_name!''
+                           display_value:shipment.pod_name!portCreate.pod_name!''
                        }){}%>
                </div>
                <div class="col-lg-4">
@@ -202,7 +213,7 @@
                        {   id:'fnd', 
                            label:'目的地 FND', 
                            value:shipment.fnd!planOrderItem.pod!'',
-                           display_value:port.fnd_name!portCreate.pod_name!''
+                           display_value:shipment.fnd_name!portCreate.pod_name!''
                        }){}%>
                </div>
            </div>
@@ -231,7 +242,7 @@
                <div class="col-lg-4">
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'export_date', 
-                           label:'出口日期(出货时间)', 
+                           label:'出货时间', 
                            value:shipment.export_date!''
                        }){}%>
                </div>
@@ -243,10 +254,14 @@
                        }){}%>
                </div>
                <div class="col-lg-4">
-               <input type="hidden" id="hidden_wait_overseaCustom" value="${shipment.wait_overseaCustom!''}">
-               <label class="checkbox-inline">                 
-                      <input id="wait_overseaCustom" type="checkbox" value="" >待海外系统申报</input>
-               </label>
+                  <input type="hidden" id="hidden_wait_overseaCustom" value="${shipment.wait_overseaCustom!''}">
+                  <label class="checkbox-inline">                 
+                        <input id="wait_overseaCustom" type="checkbox">待海外系统申报
+                  </label>
+                  <input type="hidden" id="hidden_prepaid" value="${shipment.prepaid!''}">
+                  <label class="checkbox-inline">                 
+                      <input id='prepaid' type="checkbox">预付
+                  </label>
                </div>      
 
            </div>
@@ -266,10 +281,7 @@
 
               </div>
               <div class="col-lg-4">
-              <input type="hidden" id="hidden_prepaid" value="${shipment.prepaid!''}">
-                 <label class="checkbox-inline">                 
-                      <input id='prepaid' type="checkbox" value='' >预付</input>
-                 </label>
+                  
               </div>   
            </div>
            
@@ -302,20 +314,33 @@
            <div class="row">
                <div class="col-lg-4">
                    <%include("/eeda/component/form/inputField.html", 
-                       {   id:'vgm', 
-                           label:'总重量VGM', 
-                           value:shipment.vgm!''
+                       {    id:'vgm', 
+                            label:'总重量VGM', 
+                            value:shipment.vgm!'',
+                            placeholder:'请输入数字'
                        }){}%>
                </div>
            </div>
      </div>
 </form>
-     <div id="oceanPDF" class="form-group">
-     	 <button id="printOceanHBL" class="btn btn-success">生成托运申报单</button>
-     	 <button id="printOceanWord" class="btn btn-success">生成出口报关单</button>
-     	 <button id="printOceanBooking" class="btn btn-success">生成进口报关单</button>
-       <br><br>
-     </div>
+           <div id="oceanPDF" class="form-group">
+           	 <button id="printOceanHBL" class="btn btn-success">生成HBL PDF</button>
+           	 <button id="printOceanWord" class="btn btn-success">生成电放保函  Word</button>
+           	 <button id="printOceanBooking" class="btn btn-success">生成booking PDF</button>
+           	 <button id="printOceanSI" class="btn btn-success">生成SI PDF</button>
+           	 
+			 <button id="oceanHeadDetailBtn" class="btn btn-success">生成头程资料 PDF</button>
+           	 <a data-target='#oceanHeadDetail' data-toggle='modal'>
+				<button id="oceanHeadDetailBtn1" style="display:none"></button>
+			 </a>
+           	 <button id="oceanMBL" class="btn btn-success">确认MBL</button>
+           	 <input id="oceanMBLHidden" type="hidden" value="${shipment.mbl_flag!''}" >
+           	 <button id="alreadyAFR_AMS" class="btn btn-success">已AFR/AMS</button>
+           	 <input id="alreadyAFR_AMShide" type="hidden" value="${shipment.afr_ams_flag!''}" >
+           	 <button id="alreadyInline" class="btn btn-success">已电放</button>
+           	 <input id="alreadyInlineHide" type="hidden" value="${shipment.in_line_flag!''}">
+			 <br><br>
+           </div>
            
      <div class="modal fade" id="oceanHeadDetail">
 	  <div class="modal-dialog">
@@ -422,7 +447,7 @@
             <%include("/eeda/component/form/detailTable.html", 
                 {
                     id:'ocean_cargo_table',
-                    style:'width:1580px',
+                    style:'width:1700px',
                     headers:   ['', '', '负载方式', '箱型', '箱号', '封条号', '件数','单位','托板描述', '毛重(KG)', '体积(CBM)', '总重量VGM','unit_name'],
                     field_list:['id', '', 'load_type', 'container_type', 'container_no', 'seal_no', 'pieces','unit_id','pallet_desc', 'gross_weight', 'volume', 'vgm','unit_name'],
                     value_list: shipmentList![]

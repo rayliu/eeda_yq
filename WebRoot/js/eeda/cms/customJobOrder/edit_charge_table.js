@@ -1,7 +1,8 @@
-
 window.calcCurrency =  function (){
         var chargeRMB = $('[name=chargeRMB]').text().replace('CNY','');
+            chargeRMB = chargeRMB.replace(/,/g,'');
         var costRMB = $('[name=costRMB]').text().replace('CNY','');
+            costRMB = costRMB.replace(/,/g,'');
         var profitRMB = parseFloat(chargeRMB)-parseFloat(costRMB);
            if(profitRMB>=0){
               $('[name=profitRMB]').text("CNY "+eeda.numFormat(parseFloat(profitRMB).toFixed(2),3));
@@ -12,7 +13,9 @@ window.calcCurrency =  function (){
            }
 
         var chargeUSD = $('[name=chargeUSD]').text().replace('USD','');
+        	chargeUSD = chargeUSD.replace(/,/g,'');
         var costUSD = $('[name=costUSD]').text().replace('USD','');
+        	costUSD = costUSD.replace(/,/g,'');
         var profitUSD = parseFloat(chargeUSD)-parseFloat(costUSD);
            if(profitUSD>=0){
               $('[name=profitUSD]').text("USD "+eeda.numFormat(parseFloat(profitUSD).toFixed(2),3));
@@ -21,6 +24,32 @@ window.calcCurrency =  function (){
            } else{
               $('[name=profitUSD]').text("USD "+eeda.numFormat(parseFloat(0).toFixed(2),3));
            }
+  
+        var chargeJPY = $('[name=chargeJPY]').text().replace('JPY','');
+       		chargeJPY = chargeJPY.replace(/,/g,'');
+        var costJPY = $('[name=costJPY]').text().replace('JPY','');
+       	    costJPY = costJPY.replace(/,/g,'');
+        var profitJPY = parseFloat(chargeJPY)-parseFloat(costJPY);
+          if(profitJPY>=0){
+             $('[name=profitJPY]').text("JPY "+eeda.numFormat(parseFloat(profitJPY).toFixed(2),3));
+          }else if(profitJPY<0){
+             $('[name=profitJPY]').html("<span style='color:red'>JPY "+eeda.numFormat(parseFloat(profitJPY).toFixed(2),3)+"</span>");
+          } else{
+             $('[name=profitJPY]').text("JPY "+eeda.numFormat(parseFloat(0).toFixed(2),3));
+          }
+  
+        var chargeHKD = $('[name=chargeHKD]').text().replace('HKD','');
+         	chargeHKD = chargeHKD.replace(/,/g,'');
+        var costHKD = $('[name=costHKD]').text().replace('HKD','');
+         	costHKD = costHKD.replace(/,/g,'');
+        var profitHKD = parseFloat(chargeHKD)-parseFloat(costHKD);
+           if(profitHKD>=0){
+               $('[name=profitHKD]').text("HKD "+eeda.numFormat(parseFloat(profitHKD).toFixed(2),3));
+            }else if(profitHKD<0){
+               $('[name=profitHKD]').html("<span style='color:red'>HKD "+eeda.numFormat(parseFloat(profitHKD).toFixed(2),3)+"</span>");
+            } else{
+               $('[name=profitHKD]').text("HKD "+eeda.numFormat(parseFloat(0).toFixed(2),3));
+            }
 
         //人民币利润汇总字段
         var profitTotalCharge = $('[name=profitTotalCharge]').text();
@@ -116,10 +145,9 @@ $(document).ready(function() {
     	eeda.bindTableField('charge_table','SP_ID','/serviceProvider/searchCompany','');
         eeda.bindTableField('charge_table','CHARGE_ID','/finItem/search','');
         eeda.bindTableField('charge_table','CHARGE_ENG_ID','/finItem/search_eng','');
-        eeda.bindTableField('charge_table','UNIT_ID','/serviceProvider/searchUnit','');
-        eeda.bindTableField('charge_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
+        eeda.bindTableField('charge_table','UNIT_ID','/serviceProvider/searchChargeUnit','');
+        eeda.bindTableFieldCurrencyId('charge_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
-
     
     //------------事件处理
     var chargeTable = eeda.dt({
@@ -252,7 +280,8 @@ $(document).ready(function() {
             				id: 'CHARGE_ENG_ID',
             				value: data,
             				display_value: full.CHARGE_NAME_ENG,
-            				style:'width:200px'
+            				style:'width:200px',
+            				disabled:'disabled'
             					}
             			);
             			return field_html;
@@ -354,11 +383,11 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
                         return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control" disabled/>';
                     }else{
-	                    return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control" />';
+	                    return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control" disabled/>';
 	                }
                 }
             },
-            { "data": "EXCHANGE_RATE", "width": "60px",
+            { "data": "EXCHANGE_RATE", "width": "60px", "className":"currency_rate",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -367,7 +396,7 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
                         return '<input type="text" name="exchange_rate" style="width:80px" value="'+str+'" class="form-control" disabled />';
                     } else{
-	                    return '<input type="text" name="exchange_rate" style="width:80px" value="'+str+'" class="form-control"/>';
+	                    return '<input type="text" name="exchange_rate" style="width:80px" value="'+str+'" class="form-control" />';
 	                }
                 }
             },
@@ -380,7 +409,7 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
                         return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
                     } else{
-	                    return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control" />';
+	                    return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control" disabled/>';
 	                }
                 }
             },
@@ -474,6 +503,8 @@ $(document).ready(function() {
     var getTotalCharge= function(){
     	var totalChargeRMB = 0; 
 	    var totalChargeUSD = 0;
+	    var totalChargeJPY = 0;
+	    var totalChargeHKD = 0;
 	    var profitTotalCharge = 0;
 	    var tableCurCharge =$('#charge_table').find('[name=CURRENCY_ID_input]');
 	    var tableAmountCharge =$('#charge_table').find('[name=total_amount]');
@@ -483,6 +514,10 @@ $(document).ready(function() {
 	           totalChargeRMB += parseFloat(tableAmountCharge[i].value);   //parseFloat(data)
 	        }else if(tableCurCharge[i].value=='USD'){
 	           totalChargeUSD += parseFloat(tableAmountCharge[i].value);
+	        }else if(tableCurCharge[i].value=='JPY'){
+	           totalChargeJPY += parseFloat(tableAmountCharge[i].value);
+	        }else if(tableCurCharge[i].value=='HKD'){
+	           totalChargeHKD += parseFloat(tableAmountCharge[i].value);
 	        }
 	        profitTotalCharge += parseFloat(currencyTotalAmount[i].value);
 	    }
@@ -491,20 +526,33 @@ $(document).ready(function() {
 	    
 	    if(totalChargeRMB!=""&&!isNaN(totalChargeRMB)){
 	           $('.chargeRMB').text("CNY "+eeda.numFormat(parseFloat(totalChargeRMB).toFixed(2),3));  
-	       }else{
+	     }else{
 	           $('.chargeRMB').text("CNY "+eeda.numFormat(parseFloat(0).toFixed(2),3));  
-	        }
+	      }
 	    
 	    if(totalChargeUSD!=""&&!isNaN(totalChargeUSD)){
 	        $('.chargeUSD').text("USD "+eeda.numFormat(parseFloat(totalChargeUSD).toFixed(2),3));  
 	    }else{
 	        $('.chargeUSD').text("USD "+eeda.numFormat(parseFloat(0).toFixed(2),3));  
 	     }
+
+	    if(totalChargeJPY!=""&&!isNaN(totalChargeJPY)){
+	        $('.chargeJPY').text("JPY "+eeda.numFormat(parseFloat(totalChargeJPY).toFixed(2),3));  
+	    }else{
+	        $('.chargeJPY').text("JPY "+eeda.numFormat(parseFloat(0).toFixed(2),3));  
+	     }
 	    
+	    if(totalChargeHKD!=""&&!isNaN(totalChargeHKD)){
+	        $('.chargeHKD').text("HKD "+eeda.numFormat(parseFloat(totalChargeHKD).toFixed(2),3));  
+	    }else{
+	        $('.chargeHKD').text("HKD "+eeda.numFormat(parseFloat(0).toFixed(2),3));  
+	     }
+
 	    calcCurrency();
     }
     getTotalCharge();
     
+    //弹出框获取结算公司
     var buildSpList = function(){
     	//获取选中的结算公司
     	$("#spList").empty();
@@ -572,9 +620,5 @@ $(document).ready(function() {
 				cnames.pop(cname);
 		 }
 	 });
-    
-    
-	     
-    
   });
 });
