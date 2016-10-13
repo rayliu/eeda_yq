@@ -47,7 +47,12 @@ $(document).ready(function() {
             { "data": "EXPORT_DATE"}, 
             { "data": "APPLY_DATE"}
           ]
-  });
+    });
+	  //刷新明细表
+	itemOrder.refleshCustomTable = function(order_id){
+		var url = "/customJobOrder/tableList?order_id="+order_id+"&type=custom";
+		dataTable.ajax.url(url).load();
+	}
         
 });
 });

@@ -6,10 +6,10 @@
           <%include("/eeda/component/form/detailTable.html", 
               {
                   id:'custom_table',
-                  headers:['', '报关单类型', '报关单号码', '海关状态', '单据信息', '货品信息']
+                  headers:['', '报关单类型', '报关单号码', '海关状态', '单据信息', '货品信息'],
+	              field_list:['','item_no', 'commodity_no', 'commodity_name', 'specification_model','quantity_and_unit'],
+	              value_list: customList![]
               }){} %>
-               <!--    field_list:['','item_no', 'commodity_no', 'commodity_name', 'specification_model','quantity_and_unit'],
-                  value_list: customList![] -->
       </div>
 	</div>
   <%include("/cms/customJobOrder/JobOrderEdit_customType_china_export.html", {}){} %>

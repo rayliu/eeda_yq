@@ -116,6 +116,7 @@ $(document).ready(function() {
                 itemOrder.refleshChargeTable(order.ID);
                 itemOrder.refleshCostTable(order.ID);
                 itemOrder.refleshCustomItemTable(order.ID);
+                itemOrder.refleshCustomTable(order.ID);
                 
             }else{
                 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);

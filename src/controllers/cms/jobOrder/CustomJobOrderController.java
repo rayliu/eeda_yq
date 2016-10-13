@@ -327,7 +327,7 @@ public class CustomJobOrderController extends Controller {
 	    	itemSql = "select * from custom_job_order_sendMail where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("custom".equals(type)){
-            itemSql = "select * from custom_order where job_order_id=? order by id";
+	    	itemSql = "select * from custom_job_order_custom_item where order_id=? order by id";
             itemList = Db.find(itemSql, orderId);
         }else if("customItem".equals(type)){
 	    	itemSql = "select * from custom_job_order_custom_item where order_id=? order by id";
@@ -347,7 +347,7 @@ public class CustomJobOrderController extends Controller {
     	setAttr("order", r);
     	//报关
         setAttr("custom", getItemDetail(id,"custom"));
-//        setAttr("customList", getItems(id,"custom"));
+        setAttr("customList", getItems(id,"custom"));
         setAttr("customItemList", getItems(id,"customItem"));
         //空运
         setAttr("airList", getItems(id,"air"));
