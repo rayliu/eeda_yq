@@ -10,24 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.ParentOfficeModel;
-import models.Party;
-import models.UserCustomer;
 import models.UserLogin;
-import models.eeda.oms.PlanOrder;
-import models.eeda.oms.PlanOrderItem;
-import models.eeda.oms.jobOrder.JobOrder;
-import models.eeda.oms.jobOrder.JobOrderAir;
-import models.eeda.oms.jobOrder.JobOrderAirCargoDesc;
-import models.eeda.oms.jobOrder.JobOrderAirItem;
-import models.eeda.oms.jobOrder.JobOrderArap;
-import models.eeda.oms.jobOrder.JobOrderCustom;
-import models.eeda.oms.jobOrder.JobOrderDoc;
-import models.eeda.oms.jobOrder.JobOrderInsurance;
-import models.eeda.oms.jobOrder.JobOrderLandItem;
-import models.eeda.oms.jobOrder.JobOrderSendMail;
-import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
-import models.eeda.oms.jobOrder.JobOrderShipment;
-import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -239,6 +222,7 @@ public class CustomJobOrderController extends Controller {
             Db.delete("custom_job_order_doc",r);
             resultMap.put("result", result);
         }else{
+        	Db.delete("custom_job_order_doc",r);
         	resultMap.put("result", "文件不存在可能已被删除!");
         }
         renderJson(resultMap);

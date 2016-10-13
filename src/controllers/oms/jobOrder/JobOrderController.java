@@ -580,6 +580,7 @@ public class JobOrderController extends Controller {
             jobOrderDoc.delete();
             resultMap.put("result", result);
         }else{
+        	jobOrderDoc.delete();
         	resultMap.put("result", "文件不存在可能已被删除!");
         }
         renderJson(resultMap);
