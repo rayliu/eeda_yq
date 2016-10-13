@@ -20,6 +20,7 @@ $(document).ready(function() {
         	 }else if(data.result==false){
         		 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
         	 }else{
+        		 docTable.row(tr).remove().draw();
         		 $.scojs_message(data.result, $.scojs_message.TYPE_ERROR);
         	 }
          },'json').fail(function() {
