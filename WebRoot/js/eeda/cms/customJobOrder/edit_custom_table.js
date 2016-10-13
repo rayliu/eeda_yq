@@ -70,7 +70,7 @@ $(document).ready(function() {
 	         {"data": "ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
 			    	if(data)
-			    		return '<input type="checkbox" style="width:30px">';
+			    		return '<input type="checkbox" name="subBox" style="width:30px">';
 			    	else 
 			    		return '<input type="checkbox" style="width:30px" disabled>';
 			    }
@@ -160,6 +160,15 @@ $(document).ready(function() {
     	cargoTable.ajax.url(url).load();
     }
     
+    //全选
+    $("#allCheckOfCustomItem").click(function() {
+        $('input[name="subBox"]').prop("checked",this.checked); 
+    });
+    var $subBox = $("input[name='subBox']");
+    $subBox.click(function(){
+        $("#allCheckOfCustomItem").prop("checked",$subBox.length == $("input[name='subBox']:checked").length ? true : false);
+    });
+
 
 });
 });
