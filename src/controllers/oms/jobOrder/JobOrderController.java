@@ -896,7 +896,7 @@ public class JobOrderController extends Controller {
         			+ " FROM job_order_land_item joli"
         			+ " left join job_order jor on jor.id = joli.order_id"
         			+ " left join job_order_shipment jos on jos.order_id = jor.id"
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jo.id"
+        			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " WHERE jor.office_id="+office_id
@@ -908,14 +908,14 @@ public class JobOrderController extends Controller {
         	 sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, ifnull(jos.export_date,joa.export_date) sent_out_time"
         	 		+ " FROM job_order_shipment jos"
         	 		+ " left join job_order jor on jos.order_id = jor.id"
-        	 		+ " LEFT JOIN job_order_air joa on joa.order_id = jo.id"
+        	 		+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
         	 		+ " left join party p on p.id = jor.customer_id"
         	 		+ " left join user_login u on u.id = jor.creator "
         	 		+ " WHERE jor.office_id="+office_id
-                    + " and TO_DAYS(export_date)=TO_DAYS(now())";
+                    + " and TO_DAYS(jos.export_date)=TO_DAYS(now())";
         	
         } else if("mblwait".equals(type)){
-        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, ifnull(jos.export_date,joa.export_date) sent_out_time"
+        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, ifnull(jos.export_date,jos.export_date) sent_out_time"
         			+ " FROM job_order_shipment jos "
         			+ " left join job_order jor on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
@@ -939,7 +939,7 @@ public class JobOrderController extends Controller {
         	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, ifnull(jos.export_date,joa.export_date) sent_out_time"
         			+ " FROM job_order jor LEFT JOIN job_order_insurance joi ON jor.id = joi.order_id"
         			+ " left join job_order_shipment jos on jos.order_id = jor.id"
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jo.id"
+        			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " WHERE jor.office_id="+office_id
