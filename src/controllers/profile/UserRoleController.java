@@ -18,7 +18,6 @@ import models.UserRole;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Before;
@@ -28,8 +27,8 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.util.CompareStrList;
+import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
-import controllers.util.PermissionConstant;
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
 public class UserRoleController extends Controller {
@@ -49,13 +48,11 @@ public class UserRoleController extends Controller {
 //	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_LIST})
 	public void list(){
 		String sLimit = "";
-		String pageIndex = getPara("sEcho");
-		if (getPara("iDisplayStart") != null
-		        && getPara("iDisplayLength") != null) {
-			sLimit = " LIMIT " + getPara("iDisplayStart") + ", "
-			        + getPara("iDisplayLength");
-		}
-		
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+
 		String totalWhere ="";
 		String sql = "";
 		
@@ -72,19 +69,19 @@ public class UserRoleController extends Controller {
 		// 获取总条数
        /* String sql = "select ur.user_name,group_concat(r.name separator '<br>') name,ur.remark,ur.role_code from user_role ur left join role r on r.code=ur.role_code group by ur.user_name" + sLimit;*/
 
-		Record rec = Db.findFirst(totalWhere);	
-		logger.debug("total records:" + rec.getLong("total"));
-		// 获取当前页的数据
-		List<Record> orders = Db.find(sql + sLimit);
+		String condition = DbUtils.buildConditions(getParaMap());
 
-		Map orderMap = new HashMap();
-		orderMap.put("sEcho", pageIndex);
-		orderMap.put("iTotalRecords", rec.getLong("total"));
-		orderMap.put("iTotalDisplayRecords", rec.getLong("total"));
-
-		orderMap.put("aaData", orders);
-
-		renderJson(orderMap);
+        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        Record rec = Db.findFirst(totalWhere);
+        logger.debug("total records:" + rec.getLong("total"));
+        
+        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+        Map map = new HashMap();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orderList);
+        renderJson(map);
 	}
 	/*编辑*/
 //	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_UPDATE})
