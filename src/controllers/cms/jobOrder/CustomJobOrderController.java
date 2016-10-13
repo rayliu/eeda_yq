@@ -467,26 +467,20 @@ public class CustomJobOrderController extends Controller {
     public void list() {    	
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
-    	String customer_code=getPara("customer_code")==null?"":getPara("customer_code");
-    	String customer_name=getPara("customer")==null?"":getPara("customer");
     	
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "SELECT * from (select jo.*, jos.export_port,jos.application_date, ifnull(u.c_name, u.user_name) creator_name, p.abbr customer_name,p.code "
+        String sql = "SELECT * from (select jo.*, jos.export_port,jos.application_date, ifnull(u.c_name, u.user_name) creator_name,"
+        		+ " p.abbr customer_name,p.code customer_code "
     			+ " from custom_job_order jo "
     			+ " left join custom_job_order_custom jos on jos.order_id = jo.id"
     			+ " left join party p on p.id = jo.customer_id"
     			+ " left join user_login u on u.id = jo.creator"
     			+ " where jo.office_id="+office_id
-                + " and abbr like '%"
-    			+ customer_name
-    			+ "%' and code like '%"
-    			+ customer_code
-    			+ "%' )A"
-         	    + " where 1 =1 ";
+         	    + " ) A where 1=1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
 

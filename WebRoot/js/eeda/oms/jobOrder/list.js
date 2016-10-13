@@ -88,8 +88,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           //增加出口日期查询
           var url = "/jobOrder/list?order_no="+order_no
           	   +"&status="+status
-          	   +"&customer_code="+customer_code
-               +"&customer="+customer_name
+          	   +"&customer_code_like="+customer_code
+               +"&customer_name_like="+customer_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
           	   +"&sent_out_time_begin_time="+sent_out_time_begin_time
