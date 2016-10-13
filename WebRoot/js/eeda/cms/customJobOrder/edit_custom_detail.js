@@ -31,7 +31,7 @@ $(document).ready(function() {
                     return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
                 }
             },
-            { "data": "ORDER_NO", 
+            { "data": "ITEM_NO", 
                 "render": function ( data, type, full, meta ) {
                     return "<a href='/customJobOrder/editCustomOrder?id="+full.ID+"'target='_blank'>"+data+"</a>";
                 }
@@ -43,9 +43,9 @@ $(document).ready(function() {
                     }
                     return "出口";
                 }}, 
-            { "data": "PORT"}, 
-            { "data": "EXPORT_DATE"}, 
-            { "data": "APPLY_DATE"}
+            { "data": "COMMODITY_NO"}, 
+            { "data": "COMMODITY_NAME"}, 
+            { "data": "SPECIFICATION_MODEL"}
           ]
     });
 	  //刷新明细表
