@@ -110,6 +110,8 @@ $(document).ready(function() {
                 $("#sendEmail").show();
                 //异步刷新明细表
                 itemOrder.refleshOceanTable(order.ID);
+                itemOrder.refleshAirItemTable(order.ID);
+                itemOrder.refleshCargoDescTable(order.ID);
                 itemOrder.refleshLandItemTable(order.ID);
                 itemOrder.refleshChargeTable(order.ID);
                 itemOrder.refleshCostTable(order.ID);

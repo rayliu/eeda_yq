@@ -276,30 +276,27 @@ public class DbUtils {
 	
 	
 	public static void setModelValues(Map<String, ?> dto, Record r, String table) {
-		String sql = "select COLUMN_NAME from information_schema.COLUMNS where table_name = ?";
-		List<Record> re = Db.find(sql, table);
+		String sql = "select GROUP_CONCAT(COLUMN_NAME) column_name from information_schema.COLUMNS where table_name = ?";
+		Record re = Db.findFirst(sql, table);
+		String column_name = re.getStr("column_name");
 		for (Entry<String, ?> entry : dto.entrySet()) { 
-			String key = entry.getKey();
-			for(Record name :re){
-				String col_name = name.getStr("COLUMN_NAME");
-				
-				if(col_name.equalsIgnoreCase(key)){
-					String value = String.valueOf(entry.getValue()).trim();
-					//忽略  action 字段
-					if(!"action".equals(key)){
-						logger.debug(key+":"+value);
-						if(StringUtils.isEmpty(value)){
-							value=null;
-						}
-						try{
-							r.set(key, value);
-						} catch (Exception e) {
-	                        logger.error(e.getMessage());
-	                    }
-					}
-				} 
-			}
+			String key = entry.getKey().toLowerCase();
 			
+			if(column_name.indexOf(key) > -1){
+				String value = String.valueOf(entry.getValue()).trim();
+				//忽略  action 字段
+				if(!"action".equals(key)){
+					logger.debug(key+":"+value);
+					if(StringUtils.isEmpty(value)){
+						value=null;
+					}
+					try{
+						r.set(key, value);
+					} catch (Exception e) {
+                        logger.error(e.getMessage());
+                    }
+				}
+			} 
 		}
 	}
 	
