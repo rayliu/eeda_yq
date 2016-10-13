@@ -239,6 +239,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/arapReport", controllers.arap.ArapReportController.class, contentPath);
         me.add("/profitReport", controllers.report.ProfitReportController.class, contentPath);
         me.add("/balanceReport", controllers.report.BalanceReportController.class, contentPath);
+        me.add("/customReport", controllers.report.CustomReportController.class, contentPath);
         //应付报销单
         //ßme.add("/costReimbursement", controllers.arap.ap.CostReimbursementOrder.class, contentPath);
         //财务转账单
