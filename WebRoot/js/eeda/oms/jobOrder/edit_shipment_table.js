@@ -182,6 +182,12 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             ]
         });
 
+    	if(!boolOcean){
+    		$('#ocean_cargo_table input, #ocean_cargo_table select,#ocean_cargo_table button').prop('disabled', true);
+    		$('#ocean_cargo_table button').css('display', 'none');
+    	}
+    	
+    	
         $('#add_ocean_cargo').on('click', function(){
             var item={};
             cargoTable.row.add(item).draw(true);
