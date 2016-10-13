@@ -75,7 +75,7 @@ public class UserRoleController extends Controller {
         Record rec = Db.findFirst(totalWhere);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+        List<Record> orderList = Db.find(sql+ condition);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
