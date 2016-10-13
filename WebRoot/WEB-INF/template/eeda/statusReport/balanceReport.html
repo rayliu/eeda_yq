@@ -1,0 +1,117 @@
+<%layout("/eeda/layout.html"){%>
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="btn-header"></div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-list fa-fw"></i>结算统计报表
+				</div>
+				<div class="panel-body">
+					<form id="orderForm" method="post" action="">
+						<div class="row">	
+							<div class="col-lg-2">    
+								<label><input type="radio" name="type" checked value="month"/>按月统计</label>
+							</div>
+							<div class="col-lg-2">    
+								<label><input type="radio" name="type" value="season"/>按季统计</label>
+							</div>
+							<div class="col-lg-2">    
+								<label><input type="radio" name="type" value="year"/>按年统计</label>
+							</div>
+						</div>
+						<br/>
+						<br/>
+						
+						<div class="row">
+							<!--  第1行  -->
+							<div class="col-lg-4" id="month" style="display:block;">        
+                                <%include("/eeda/component/form/inputDateQueryField.html", {
+                                id:'month', label:'统计日期', value:'',date_type:'month'}){} %>
+                            </div>
+                            <div class="col-lg-4" id="season" style="display:none;">        
+                                <%include("/eeda/component/form/inputDateQueryField.html", {
+                                id:'season', label:'统计日期', value:'',date_type:'month'}){} %>
+                            </div>
+                            <div class="col-lg-4" id="year" style="display:none;">        
+                                <%include("/eeda/component/form/inputDateQueryField.html", {
+                                id:'year', label:'统计日期', value:'',date_type:'year'}){} %>
+                            </div>
+						</div>
+						<div class="row">
+						    <div class="col-lg-4">
+								<%include("/eeda/component/form/inputCustomerField.html", {
+								id:'customer_id', label:'结算公司', value: '' }){} %>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<input type="hidden" id="sp_names"> 
+								<hr>
+								<label>选中列表</label>
+								<ul id='spName_list' class="search-control">
+								</ul>
+								<hr>
+							</div>
+						</div>
+						<div class="row">	
+							<div class="col-lg-3"> 
+							</div>
+							<div class="col-lg-3">    
+								<label><input type="radio" name="balance" checked value="cost"/>成本统计</label>
+							</div>
+							<div class="col-lg-3">    
+								<label><input type="radio" name="balance" value="charge"/>收入统计</label>
+							</div>
+							<div class="col-lg-3">    
+								<label><input type="radio" name="balance" value="total"/>盈利统计</label>
+							</div>
+							<div class="col-lg-3"> 
+							</div>
+						</div>
+						
+						<div class="form-group button-bar" >
+                                <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+                        </div>
+					</form>
+					<%include("/eeda/component/form/detailTable.html", 
+                                {
+                                    id:'eeda-table', 
+                                    headers:[
+                                    	'单据日期',
+                                        '费用条目',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司',
+                                        '结算公司'
+                                        ]
+                                }){} %>
+				</div>
+			</div>
+		</div>
+		<!-- /.col-lg-12 -->
+	</div>
+</div>
+<%}%>
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/statusReport/balanceReport/list']);
+    });
+</script>

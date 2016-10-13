@@ -197,6 +197,4 @@ public class ProfitReportController extends Controller {
         orderListMap.put("data", orderList);
         renderJson(orderListMap); 
     }
-    
-    
 }
