@@ -1,7 +1,6 @@
 
 <input type="hidden" id="shipment_id" value="${shipment.id!''}">
 	<%
-      //如果只有edit, 没指定特定的, 默认都有编辑权限
       var editPermission = shiro.hasPermission("jobOrder.edit");
       var oceanPermission = shiro.hasPermission("jobOrder.edit.ocean");
       var airPermission = shiro.hasPermission("jobOrder.edit.air");
@@ -10,10 +9,10 @@
       var insurPermission = shiro.hasPermission("jobOrder.edit.insur");
       var boolEdit= editPermission;
       var boolOcean = oceanPermission;
-      var boolAir = true;//editPermission || oceanPermission;
-      var boolLand = true;//editPermission || oceanPermission;
-      var boolCustom = true;//editPermission || oceanPermission;
-      var boolInsur = true;//editPermission || oceanPermission;
+      var boolAir = true;
+      var boolLand = true;
+      var boolCustom = true;
+      var boolInsur = true;
       var disableStr = (boolOcean==true?'':'disabled');
     %>
 <div class="panel panel-default">
@@ -650,11 +649,11 @@
 
 <script>
     var editPermission=true;
-    var boolOcean = true;//updatePermission || oceanPermission;
-    var boolAir = true;//updatePermission || oceanPermission;
-    var boolLand = true;//updatePermission || oceanPermission;
-    var boolCustom = true;//updatePermission || oceanPermission;
-    var boolInsur = true;//updatePermission || oceanPermission;
+    var boolOcean = true;
+    var boolAir = true;
+    var boolLand = true;
+    var boolCustom = true;
+    var boolInsur = true;
     var disableStr = (boolOcean==true?'':'disabled');
 </script>
 
