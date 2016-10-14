@@ -648,14 +648,14 @@
     </div>
 </div>
 
-<script>
-    var editPermission=${editPermission!''};
+<!--     var editPermission=${editPermission!''};
     var boolOcean = ${boolOcean!''};//updatePermission || oceanPermission;
     var boolAir = true;//updatePermission || oceanPermission;
     var boolLand = true;//updatePermission || oceanPermission;
     var boolCustom = true;//updatePermission || oceanPermission;
-    var boolInsur = true;//updatePermission || oceanPermission;
-    var disableStr = '';
+    var boolInsur = true;//updatePermission || oceanPermission; -->
+<script>
+    var disableStr = (boolOcean==true?'':'disabled');
 </script>
             
 
