@@ -547,7 +547,15 @@
 <div class="blockUI blockMsg blockPage" style="z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; color: rgb(0, 0, 0); border: 3px solid rgb(170, 170, 170); background-color: rgb(255, 255, 255); cursor: wait;"><h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"></h4></div>
 
 <script>
-
+    var editPermission=${editPermission!''};
+    var boolOcean = ${boolOcean!''};//updatePermission || oceanPermission;
+    var boolAir = true;//updatePermission || oceanPermission;
+    var boolLand = true;//updatePermission || oceanPermission;
+    var boolCustom = true;//updatePermission || oceanPermission;
+    var boolInsur = true;//updatePermission || oceanPermission;
+    var disableStr = (boolOcean==true?'':'disabled');
+</script>
+<script>
 	//当前登陆用户名
 	var loginUserName = '${loginUser!''}';
     var order_no = '${order.order_no!'订单编辑'}'; 
