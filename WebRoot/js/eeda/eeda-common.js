@@ -129,7 +129,7 @@ eeda.refreshUrl = refreshUrl;
 	 	var str = "";
 	 	 if(orderNo.indexOf("JH") == 0){//配送
 	         str = "<a href='/planOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
-	     }else if(orderNo.indexOf("EK") == 0 ){//拼车
+	     }else if(orderNo.indexOf("EK") == 0 || orderNo.indexOf("GZ") == 0 ){//拼车
 	         str = "<a href='/jobOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
 	     }else if(orderNo.indexOf("SGFK") == 0){//手工付款
 	         str = "<a href='/costMiscOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
