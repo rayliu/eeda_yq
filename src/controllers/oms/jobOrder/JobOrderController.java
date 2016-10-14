@@ -543,23 +543,19 @@ public class JobOrderController extends Controller {
     }
     
     //上传陆运签收文件描述
-    @Before(Tx.class)
+
+
     public void uploadSignDesc(){
-    	String id = getPara("id");
-    	List<UploadFile> fileList = getFiles("\\");
-    	
-		for (int i = 0; i < fileList.size(); i++) {
-    		File file = fileList.get(i).getFile();
-    		String fileName = file.getName();
-    		JobOrderLandItem order = JobOrderLandItem.dao.findById(id);
-    		String sign_desc = order.getStr("sign_desc");
-    		if("".equals(sign_desc)||sign_desc==null){
-    			order.set("sign_desc", fileName);
-    		}else{
-    			order.set("sign_desc", sign_desc+","+fileName);
-    		}
-    		order.update();
-		}
+		String id = getPara("id");
+		
+		List<UploadFile> fileList = getFiles(".");
+		File file = fileList.get(0).getFile();
+		
+		String fileName = file.getName();
+		
+		JobOrderLandItem order = JobOrderLandItem.dao.findById(id);
+		order.set("sign_desc",fileName).update();
+
 		renderJson("{\"result\":true}");
     }
     
@@ -584,6 +580,30 @@ public class JobOrderController extends Controller {
         	resultMap.put("result", "文件不存在可能已被删除!");
         }
         renderJson(resultMap);
+    }
+    
+    //删除陆运签收文件
+    @Before(Tx.class)
+    public void deleteSignDesc(){
+    	String id = getPara("id");
+    	JobOrderLandItem order = JobOrderLandItem.dao.findById(id);
+    	String fileName = order.getStr("sign_desc");
+    	
+    	String path = getRequest().getServletContext().getRealPath("/")+"\\upload\\";
+    	
+    	String[] arr = fileName.split(",");
+    	for (int i = 0; i < arr.length; i++) {
+	    	File file = new File(path+arr[i]);
+	    	if (file.exists() && file.isFile()) {
+	    		file.delete();
+	    		order.set("sign_desc","");
+	    		order.update();
+	    	}else{
+	    		order.set("sign_desc","");
+	    		order.update();
+	    	}
+    	}
+    	renderJson("{\"result\":true}");
     }
 
     //返回对象	

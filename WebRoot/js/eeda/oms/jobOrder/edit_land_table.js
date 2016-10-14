@@ -115,6 +115,14 @@ $(document).ready(function() {
 		                		+'</span>'			
             	}
             },
+            { "data": "SIGN_DESC","width": "80px",
+                "render": function ( data, type, full, meta ) {
+                	if(data)
+                		return '<button type="button" class="btn btn-default btn-xs delete_sign_desc" style="width:100px">删除签收文件</button>';
+                	else 
+                		return '';
+                }
+            },
             { "data": "UNLOAD_TYPE", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
@@ -352,7 +360,16 @@ $(document).ready(function() {
     	})
     })
     
-    
+    //删除签收文件
+    $("#land_table").on('click', '.delete_sign_desc', function(){
+    	var tr = $(this).parent().parent();
+    	var id = tr.attr('id');
+	     $.post('/jobOrder/deleteSignDesc', {id:id}, function(data){
+	        	 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+	     },'json').fail(function() {
+	         	 $.scojs_message('删除失败!', $.scojs_message.TYPE_ERROR);
+	     });
+    });
 	//上传签收文件
 	$("#land_table").on('click', '.upload', function(){
 		var id = $(this).parent().parent().parent().attr('id');
@@ -362,13 +379,8 @@ $(document).ready(function() {
 			    url: '/jobOrder/uploadSignDesc?id='+id,
 			    dataType: 'json',
 		        done: function (e, data) {
-	        	if(data.result){
-			    		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
-			    		//异步刷新table
-			    		itemOrder.refleshLandItemTable(order_id);
-			    	}else{
-			    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
-			    	}
+		    		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
+		    		itemOrder.refleshLandItemTable(order_id);
 			     },
 		        error: function () {
 		            alert('上传的时候出现了错误！');

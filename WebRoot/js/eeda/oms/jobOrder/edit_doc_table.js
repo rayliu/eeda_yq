@@ -25,7 +25,7 @@ $(document).ready(function() {
         	 }
          },'json').fail(function() {
              	 $.scojs_message('删除失败!', $.scojs_message.TYPE_ERROR);
-           });
+         });
     }); 
 
     
