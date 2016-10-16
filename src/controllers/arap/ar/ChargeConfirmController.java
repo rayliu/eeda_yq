@@ -73,7 +73,7 @@ public class ChargeConfirmController extends Controller {
 		String ids = getPara("itemIds");
 		String idAttr[] = ids.split(",");
 		for(int i=0 ; i<idAttr.length ; i++){
-			JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap joa where id = ?",idAttr[i]);
+			JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",idAttr[i]);
 			joa.set("audit_flag", "Y");
 			joa.update();
 		}
