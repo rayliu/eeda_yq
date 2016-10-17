@@ -2,6 +2,7 @@ package controllers.arap.ar;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.AppInvoiceDoc;
 import models.ArapAccountAuditLog;
 import models.ArapChargeApplication;
 import models.ArapChargeInvoice;
@@ -18,6 +20,9 @@ import models.ArapChargeOrder;
 import models.ChargeApplicationOrderRel;
 import models.Party;
 import models.UserLogin;
+import models.eeda.oms.PlanOrderItem;
+import models.eeda.oms.jobOrder.JobOrderDoc;
+import models.eeda.oms.jobOrder.JobOrderLandItem;
 import models.yh.arap.chargeMiscOrder.ArapMiscChargeOrder;
 import models.yh.arap.inoutorder.ArapInOutMiscOrder;
 import models.yh.damageOrder.DamageOrder;
@@ -36,6 +41,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.upload.UploadFile;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -264,7 +270,7 @@ public class ChargeAcceptOrderController extends Controller {
   	
   	
   	@Before(Tx.class)
-	public void save() {
+	public void save() throws InstantiationException, IllegalAccessException {
 		String jsonStr=getPara("params");
        	
        	Gson gson = new Gson();  
@@ -297,7 +303,9 @@ public class ChargeAcceptOrderController extends Controller {
    			
    			id = order.getLong("id").toString();
    		}
-		
+   		
+   		List<Map<String, String>> docList = (ArrayList<Map<String, String>>)dto.get("doc_list");
+		DbUtils.handleList(docList, id, AppInvoiceDoc.class, "order_id");
    		
    		ChargeApplicationOrderRel caor = null;
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
@@ -353,6 +361,10 @@ public class ChargeAcceptOrderController extends Controller {
 		if(userLogin != null){
 			check_name = userLogin.get("c_name");
 		}
+		
+		List<Record> list = null;
+    	list = getItems(id);
+    	setAttr("docList", list);
 		
 		Record r = order.toRecord();
 		r.set("creator_name", creator_name);
@@ -455,4 +467,79 @@ public class ChargeAcceptOrderController extends Controller {
                   
         renderJson("{\"success\":true}");  
     }
+  	
+    //上传相关文档
+    @Before(Tx.class)
+    public void saveDocFile(){
+    	String order_id = getPara("order_id");
+    	List<UploadFile> fileList = getFiles("doc");
+    	
+    	AppInvoiceDoc order = new AppInvoiceDoc();
+		for (int i = 0; i < fileList.size(); i++) {
+    		File file = fileList.get(i).getFile();
+    		String fileName = file.getName();
+
+			order.set("order_id", order_id);
+			order.set("uploader", LoginUserController.getLoginUserId(this));
+			order.set("doc_name", fileName);
+			order.set("type", "charge");
+			order.set("upload_time", new Date());
+			order.save();
+		}
+
+    	renderJson(order);
+    }
+    
+    //异步刷新字表
+    public void tableList(){
+    	String order_id = getPara("order_id");
+    	
+    	List<Record> list = null;
+    	list = getItems(order_id);
+    	
+    	Map map = new HashMap();
+        map.put("sEcho", 1);
+        map.put("iTotalRecords", list.size());
+        map.put("iTotalDisplayRecords", list.size());
+
+        map.put("aaData", list);
+
+        renderJson(map); 
+    }
+    
+  //返回list
+    private List<Record> getItems(String orderId) {
+    	String itemSql = "";
+    	List<Record> itemList = null;
+    	
+    	itemSql = "select aid.*,u.c_name from app_invoice_doc aid left join user_login u on aid.uploader=u.id "
+    			+ " where aid.order_id=? order by aid.id desc";
+    	itemList = Db.find(itemSql, orderId);
+	    
+		return itemList;
+	}
+    
+    //删除相关文档
+    @Before(Tx.class)
+    public void deleteDoc(){
+    	String id = getPara("docId");
+    	AppInvoiceDoc order = AppInvoiceDoc.dao.findById(id);
+    	String fileName = order.getStr("doc_name");
+    	Map<String,Object> resultMap = new HashMap<String,Object>();
+    	
+    	String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\doc\\"+fileName;
+    	
+        File file = new File(filePath);
+        if (file.exists() && file.isFile()) {
+            boolean result = file.delete();
+            order.delete();
+            resultMap.put("result", result);
+        }else{
+        	order.delete();
+        	resultMap.put("result", "文件不存在可能已被删除!");
+        }
+        renderJson(resultMap);
+    }
+
 }

@@ -1,4 +1,4 @@
-﻿define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+﻿define(['jquery', 'metisMenu', 'sb_admin','./edit_doc_table',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
 	document.title = '收款申请单 | '+document.title;
 
@@ -136,6 +136,7 @@ $(document).ready(function() {
 		
 		var order = buildOrder();
 		order.item_list = buildItem();
+		order.doc_list = itemOrder.buildDocItem();
 		
 		$.get('/chargeAcceptOrder/save',{params:JSON.stringify(order)}, function(data){
 			if(data.ID>0){
@@ -154,7 +155,7 @@ $(document).ready(function() {
 				pay = 0.00;
 				
 				//dataTable.ajax.url("/chargeAcceptOrder/chargeOrderList?application_id="+$("#order_id").val()).load();
-				
+				itemOrder.refleshDocTable(data.ID);
 			}else{
 				$.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
 			}
