@@ -87,8 +87,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           */
           var url = "/planOrder/list?order_no="+order_no
                +"&status="+status
-               +"&customer_code="+customer_code
-               +"&customer="+customer_name
+               +"&customer_code_like="+customer_code
+               +"&customer_name_like="+customer_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 

@@ -480,7 +480,7 @@
                    <%include("/eeda/component/form/inputField.html", 
                        {    id:'vgm', 
                             label:'总重量VGM', 
-                            value:shipment.vgm!'',
+                            value:shipment.vgm!planOrderItem.vgm!'',
                             placeholder:'请输入数字'
                        }){}%>
                   <%}else{%>

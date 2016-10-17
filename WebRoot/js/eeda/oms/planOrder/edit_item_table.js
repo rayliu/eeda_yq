@@ -195,6 +195,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                   return '<input type="text" name="GROSS_WEIGHT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
+	            { "data": "VGM","width": "180px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(!data)
+	            			data='';
+	            		return '<input type="text" name="VGM" value="'+data+'" class="form-control search-control" />';
+	            	}
+	            },
 	            { "data": "FACTORY_LOADING_TIME" ,"width": "180px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)

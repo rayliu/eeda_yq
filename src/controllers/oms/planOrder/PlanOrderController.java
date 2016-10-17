@@ -139,8 +139,6 @@ public class PlanOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
     	String type=getPara("type");
-    	String customer_code=getPara("customer_code")==null?"":getPara("customer_code");
-    	String customer_name=getPara("customer")==null?"":getPara("customer");
     	
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -169,16 +167,12 @@ public class PlanOrderController extends Controller {
         			+ " AND poi.is_gen_job = 'N'"
         			+ " GROUP BY poi.id ";
         }else{
-        	sql = "SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name,p.code"
-    			+ "  from plan_order po "
-    			+ "  left join party p on p.id = po.customer_id "
-    			+ "  left join user_login u on u.id = po.creator"
-    			+ "  where 1 =1 "
-    			+ "  and po.office_id="+office_id+" and abbr like '%"
-    			+ customer_name
-    			+ "%' and code like '%"
-    			+ customer_code
-    			+ "%'";
+        	sql = "SELECT * from (select po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name,p.code customer_code"
+    			+ " from plan_order po "
+    			+ " left join party p on p.id = po.customer_id "
+    			+ " left join user_login u on u.id = po.creator"
+    			+ " where po.office_id="+office_id
+    			+ " ) A where 1=1 ";
         }
         condition = DbUtils.buildConditions(getParaMap());
         
