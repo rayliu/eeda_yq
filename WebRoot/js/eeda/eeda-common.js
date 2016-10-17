@@ -376,7 +376,12 @@ eeda.refreshUrl = refreshUrl;
 			  hiddenField.val(dataId);//id
 			  
 			  var row = inputField.parent().parent().parent();
-              row.find('.currency_rate input').val($(this).attr('currency_rate'));//选择币制则填入汇率
+			  var currency_rate = $(this).attr('currency_rate');
+              row.find('.currency_rate input').val(currency_rate);//选择币制则填入汇率
+              var total = row.find('[name=total_amount]').val();
+              if(currency_rate!=''&&total!=''){
+            	  row.find('[name=currency_total_amount]').val(currency_rate*total);//计算人民币金额
+              }
 		  });
 		  
 		  tableFieldList.on('keydown', 'li', function(e){
@@ -390,7 +395,12 @@ eeda.refreshUrl = refreshUrl;
                   hiddenField.val(dataId);//id
 
                   var row = inputField.parent().parent().parent();
-                  row.find('.currency_rate input').val($a.attr('currency_rate'));
+                  var currency_rate = $a.attr('currency_rate');
+                  row.find('.currency_rate input').val(currency_rate);
+                  var total = row.find('[name=total_amount]').val();
+                  if(currency_rate!=''&&total!=''){
+                	  row.find('[name=currency_total_amount]').val(currency_rate*total);//计算人民币金额
+                  }
               }
           });
 		  

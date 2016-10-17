@@ -477,18 +477,21 @@ $(document).ready(function() {
     }
     
     //输入 数量*单价的时候，计算金额
-    $('#charge_table').on('keyup','[name=price],[name=amount],[name=exchange_rate],[name=CURRENCY_ID_input]',function(){
+    $('#charge_table').on('keyup','[name=price],[name=amount],[name=exchange_rate]',function(){
     	var row = $(this).parent().parent();
     	var price = $(row.find('[name=price]')).val()
     	var amount = $(row.find('[name=amount]')).val()
     	var exchange_rate = $(row.find('[name=exchange_rate]')).val()
+    	if(price==''||amount==''){
+    		$(row.find('[name=total_amount]')).val('');
+    		$(row.find('[name=currency_total_amount]')).val('');
+    	}
     	if(price!=''&&amount!=''&&!isNaN(price)&&!isNaN(amount)){
     		var total_amount = parseFloat(price)*parseFloat(amount);
     		$(row.find('[name=total_amount]')).val(total_amount);
     		if(exchange_rate!=''&&!isNaN(exchange_rate)){
     			
     			$(row.find('[name=currency_total_amount]')).val(total_amount*parseFloat(exchange_rate));
-    			
     			getTotalCharge();
     		}
     	}
@@ -614,7 +617,7 @@ $(document).ready(function() {
 			if($(this).prop('checked')==true){	
 				if(cnames.length > 0 ){
 					if(cnames[0]!=cname){
-						$.scojs_message('请选择同一个结算公司', $.scojs_message.TYPE_ERROR);
+						$.scojs_message('打印PDF时,请选择同一个结算公司', $.scojs_message.TYPE_ERROR);
 						$(this).attr('checked',false);
 						return false;
 					}else{

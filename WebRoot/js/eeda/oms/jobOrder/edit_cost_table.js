@@ -403,11 +403,15 @@ $(document).ready(function() {
     }
    
     //输入 数量*单价的时候，计算金额
-    $('#cost_table ').on('keyup', ' [name=price],[name=amount], [name=exchange_rate], [name=CURRENCY_ID_input]', function(){
+    $('#cost_table ').on('keyup', ' [name=price],[name=amount], [name=exchange_rate]', function(){
     	var row = $(this).parent().parent();
     	var price = $(row.find('[name=price]')).val()
     	var amount = $(row.find('[name=amount]')).val()
     	var exchange_rate = $(row.find('[name=exchange_rate]')).val()
+    	if(price==''||amount==''){
+    		$(row.find('[name=total_amount]')).val('');
+    		$(row.find('[name=currency_total_amount]')).val('');
+    	}
     	if(price!=''&&amount!=''&&!isNaN(price)&&!isNaN(amount)){
     		var total_amount = parseFloat(price*amount);
     		$(row.find('[name=total_amount]')).val(total_amount);
