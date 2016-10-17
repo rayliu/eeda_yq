@@ -124,6 +124,7 @@ $(document).ready(function() {
         order.ref_no = $("#ref_no").val();
         order.trans_clause = $("#trans_clause").val();
         order.trade_type = $("#trade_type").val();
+        order.land_export_date =$('#land_export_date').val();
         
 //        order.total_chargeRMB = chargeRMB;
 //        order.total_chargeUSD = chargeUSD;
@@ -144,6 +145,7 @@ $(document).ready(function() {
         order.air_cargoDesc = air_cargoDesc;
         //陆运
         order.land_list = load_detail;
+        
         //报关
         order.chinaCustom = chinaCustom;
         order.hkCustom = hkCustom;

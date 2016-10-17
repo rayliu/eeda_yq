@@ -8,7 +8,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	CONCAT(container_no, '/', seal_no) CN_no,
+	CONCAT(container_no, '/', container_type,'/', seal_no) CN_no,
 	CONCAT(
 		CAST(pieces AS CHAR),
 		' CARTONS'
@@ -39,7 +39,7 @@ WHERE
 	<detail>
 		<band height="20">
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="138" height="20" uuid="89d8254b-b3a6-4a3c-98ac-9cd9e0a3426e"/>
+				<reportElement x="0" y="0" width="156" height="20" uuid="89d8254b-b3a6-4a3c-98ac-9cd9e0a3426e"/>
 				<textFieldExpression><![CDATA[$F{CN_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -48,7 +48,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="138" y="0" width="79" height="20" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
+				<reportElement x="158" y="0" width="79" height="20" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif"/>
 				</textElement>

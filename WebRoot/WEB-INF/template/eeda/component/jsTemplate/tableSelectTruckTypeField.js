@@ -9,6 +9,7 @@
       <option {{if value == '8T'}}selected{{/if}}>8T</option>
       <option {{if value == '5T'}}selected{{/if}}>5T</option>
       <option {{if value == '3T'}}selected{{/if}}>3T</option>
+      <option {{if value == '1.5T'}}selected{{/if}}>1.5T</option>
       <option {{if value == '21M'}}selected{{/if}}>21M</option>
       <option {{if value == '18.5M'}}selected{{/if}}>18.5M</option>
       <option {{if value == '18.0M'}}selected{{/if}}>18.0M</option>

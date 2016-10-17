@@ -24,7 +24,7 @@ $(document).ready(function() {
         for(var index=0; index<cargo_table_rows.length; index++){
             if(index==0)
                 continue;
-
+            
             var row = cargo_table_rows[index];
             var empty = $(row).find('.dataTables_empty').text();
             if(empty)

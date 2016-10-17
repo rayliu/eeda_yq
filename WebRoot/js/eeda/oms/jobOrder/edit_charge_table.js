@@ -497,16 +497,16 @@ $(document).ready(function() {
     	}
     });
     //币制下拉列表点击触发
-    var self;
-   $('#charge_table input[name=CURRENCY_ID_input]').on('keyup click', function(event){
-	   self = $(this);
-	   $('#table_currency_input_field_list').on('click', '.fromLocationItem', function(e){
-		   
-		   self.val($(this).text());//名字
-		   getTotalCharge(); 
-       });
-	   	   
-   })
+//    var self;
+//   $('#charge_table input[name=CURRENCY_ID_input]').on('keyup click', function(event){
+//	   self = $(this);
+//	   $('#table_currency_input_field_list').on('click', '.fromLocationItem', function(e){
+//		   
+//		   self.val($(this).text());//名字
+//		   getTotalCharge(); 
+//       });
+//	   	   
+//   })
 
 	//计算应收字段
     

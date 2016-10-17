@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="112"/>
+	<property name="ireport.y" value="643"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -398,7 +398,7 @@ where jos.order_id=$P{order_id}]]>
 			<staticText>
 				<reportElement x="270" y="30" width="285" height="14" uuid="bb4edfbb-4af9-41b1-a99d-6fe1ce1d1f2a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="仿宋" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[珠海横琴远桥供应链管理有限公司
 
@@ -478,7 +478,7 @@ NON-NEGOTIABLE]]></text>
 				<text><![CDATA[FOR DELIVERY OF GOODS PLEASE APPLY TO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="328" width="118" height="15" uuid="7d45dcd3-44ff-4ca3-8ec8-5a396ae2f299"/>
+				<reportElement x="15" y="328" width="137" height="15" uuid="7d45dcd3-44ff-4ca3-8ec8-5a396ae2f299"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
@@ -492,21 +492,21 @@ NON-NEGOTIABLE]]></text>
 				<text><![CDATA[  Marks & Nos.  ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="138" y="328" width="98" height="15" uuid="86285e0a-ba49-46c4-9a67-d24e59a9b64d"/>
+				<reportElement x="157" y="328" width="98" height="15" uuid="86285e0a-ba49-46c4-9a67-d24e59a9b64d"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<text><![CDATA[  Number&Kind of pkgs]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="238" y="328" width="124" height="29" uuid="f96eb501-490d-42c4-adc7-d78f333eb1e2"/>
+				<reportElement x="259" y="328" width="124" height="29" uuid="f96eb501-490d-42c4-adc7-d78f333eb1e2"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<text><![CDATA[Description of pkgs & goods:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="373" y="328" width="93" height="15" uuid="09b40c83-82c1-4946-8978-26baa4f87700"/>
+				<reportElement x="380" y="328" width="93" height="15" uuid="09b40c83-82c1-4946-8978-26baa4f87700"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
@@ -782,7 +782,7 @@ NON-NEGOTIABLE]]></text>
 			<textField isBlankWhenNull="true">
 				<reportElement x="134" y="280" width="137" height="16" uuid="18969407-0dbb-48f6-bf8e-121db6616839"/>
 				<textElement>
-					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
 			</textField>
@@ -804,35 +804,35 @@ NON-NEGOTIABLE]]></text>
 			<textField isBlankWhenNull="true">
 				<reportElement x="20" y="419" width="111" height="76" uuid="1bafa8fb-827f-4962-a29e-c34446288817"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{shipping_mark}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="242" y="357" width="120" height="138" uuid="efcca246-ec09-48a8-87a0-3be004d0249e"/>
+				<reportElement x="263" y="357" width="120" height="138" uuid="efcca246-ec09-48a8-87a0-3be004d0249e"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cargo_desc}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="20" y="308" width="110" height="19" uuid="a04e7ec4-d75f-4c35-910a-a64dcccc2f2a"/>
 				<textElement>
-					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pod_name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="134" y="308" width="136" height="17" uuid="52165661-62d1-41c4-8978-0efa4d9e2d71"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fnd_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="279" y="248" width="270" height="77" uuid="35116c87-954f-4793-b29f-3b0c2a0a7852"/>
 				<textElement>
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{oversea_agent_info}]]></textFieldExpression>
 			</textField>
@@ -843,7 +843,7 @@ NON-NEGOTIABLE]]></text>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="452" y="475" width="103" height="20" uuid="d61ce27a-94cf-4991-b8e9-c5c5e300c503"/>
 				<textElement>
-					<font fontName="SansSerif"/>
+					<font fontName="SansSerif" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
@@ -867,7 +867,7 @@ NON-NEGOTIABLE]]></text>
 			<textField>
 				<reportElement x="18" y="282" width="63" height="14" uuid="4efec50a-c420-4e9b-868e-897a90b2d39b"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{vessel}]]></textFieldExpression>
 			</textField>

@@ -197,7 +197,7 @@ public class JobOrderController extends Controller {
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			jobOrder = JobOrder.dao.findById(id);
-   			
+
    			if(!type.equals(jobOrder.get("type"))){
 	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type));
 	            jobOrder.set("order_no", order_no);
@@ -974,14 +974,14 @@ public class JobOrderController extends Controller {
                     + " and TO_DAYS(jos.etd)= TO_DAYS(now())";
         }
         else{
-		         sql = "SELECT * from (select jo.*, ifnull(jos.export_date,joa.export_date) sent_out_time, ifnull(u.c_name, u.user_name) creator_name,"
-		         		+ " p.abbr customer_name,p.company_name,p.code customer_code"
-		    			+ " from job_order jo "
-		    			+ " left join job_order_shipment jos on jos.order_id = jo.id"
-		    			+ " LEFT JOIN job_order_air joa on joa.order_id = jo.id"
-		    			+ " left join party p on p.id = jo.customer_id"
-		    			+ " left join user_login u on u.id = jo.creator"
-		    			+ " where jo.office_id="+office_id
+		         sql = "SELECT * from (select jo.*,(case when jos.export_date !='' then jos.export_date when joa.export_date !='' then joa.export_date when jo.land_export_date!='' then jo.land_export_date end) AS sent_out_time,"
+		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code"
+		         		+ "	from job_order jo"
+		         		+ "	left join job_order_shipment jos on jos.order_id = jo.id"
+		         		+ "	LEFT JOIN job_order_air joa on joa.order_id = jo.id"
+		         		+ "	left join party p on p.id = jo.customer_id"
+		         		+ "	left join user_login u on u.id = jo.creator"
+		         		+ "	where jo.office_id="+office_id
 		         	    + " ) A where 1 = 1 ";
          }
         
