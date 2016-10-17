@@ -210,41 +210,47 @@ $(document).ready(function() {
     
     var showServiceTab=function(service){
         switch (service){
-          case 'ocean':
-            $('#oceanDetailTab').show();
-            break;
-          case 'air':
-            $('#airDetailTab').show();
-            break;
-          case 'land':
-            $('#domesticDetailTab').show();
-            break;
-          case 'custom':
-            $('#customDetailTab').show();
-            break;
-          case 'insurance':
-            $('#insurDetailTab').show();
-            break;
+            case 'ocean':
+                $('#oceanDetailTab').show();
+                break;
+            case 'air':
+                $('#airDetailTab').show();
+                break;
+            case 'land':
+                $('#domesticDetailTab').show();
+                break;
+            case 'custom':
+                $('#customDetailTab').show();
+                break;
+            case 'insurance':
+                $('#insurDetailTab').show();
+                break;
+            case 'trade':
+                $('#tradeDetailTab').show();
+                break;
         }
     };
 
     var hideServiceTab=function(service){
         switch (service){
-          case 'ocean':
-            $('#oceanDetailTab').hide();
-            break;
-          case 'air':
-            $('#airDetailTab').hide();
-            break;
-          case 'land':
-            $('#domesticDetailTab').hide();
-            break;
-          case 'custom':
-            $('#customDetailTab').hide();
-            break;
-          case 'insurance':
-            $('#insurDetailTab').hide();
-            break;
+            case 'ocean':
+                $('#oceanDetailTab').hide();
+                break;
+            case 'air':
+                $('#airDetailTab').hide();
+                break;
+            case 'land':
+                $('#domesticDetailTab').hide();
+                break;
+            case 'custom':
+                $('#customDetailTab').hide();
+                break;
+            case 'insurance':
+                $('#insurDetailTab').hide();
+                break;
+            case 'trade':
+                $('#tradeDetailTab').hide();
+                break;
         }
     };
 
