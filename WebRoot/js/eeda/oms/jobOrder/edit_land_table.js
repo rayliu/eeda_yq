@@ -115,7 +115,7 @@ $(document).ready(function() {
 		                		+'</span>'			
             	}
             },
-            { "data": "SIGN_DESC","width": "80px",
+            { "data": "DOC_NAME","width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                 		return '<button type="button" class="btn btn-default btn-xs delete_sign_desc" style="width:100px">删除签收文件</button>';
@@ -299,10 +299,10 @@ $(document).ready(function() {
             		return '<input type="text" name="required_time_remark" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "SIGN_DESC", "width": "180px",
+            { "data": "DOC_NAME", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data){
-            			data='';
+            			return '';
             		}
             		else{
             			var arr = data.split(",");
@@ -312,7 +312,6 @@ $(document).ready(function() {
 	            		}
 	            		return str;
             		}
-                    return data;
             	}
             },
             { "data": "SIGN_STATUS", "width": "180px",
@@ -364,8 +363,10 @@ $(document).ready(function() {
     $("#land_table").on('click', '.delete_sign_desc', function(){
     	var tr = $(this).parent().parent();
     	var id = tr.attr('id');
+    	var order_id = $('#order_id').val();
 	     $.post('/jobOrder/deleteSignDesc', {id:id}, function(data){
 	        	 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+	        	 itemOrder.refleshLandItemTable(order_id);
 	     },'json').fail(function() {
 	         	 $.scojs_message('删除失败!', $.scojs_message.TYPE_ERROR);
 	     });

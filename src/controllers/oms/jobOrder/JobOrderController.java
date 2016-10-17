@@ -543,19 +543,19 @@ public class JobOrderController extends Controller {
     }
     
     //上传陆运签收文件描述
-
-
     public void uploadSignDesc(){
 		String id = getPara("id");
 		
-		List<UploadFile> fileList = getFiles(".");
+		List<UploadFile> fileList = getFiles("\\");
 		File file = fileList.get(0).getFile();
-		
 		String fileName = file.getName();
 		
-		JobOrderLandItem order = JobOrderLandItem.dao.findById(id);
-		order.set("sign_desc",fileName).update();
-
+		Record r = new Record();
+		r.set("land_id", id);
+		r.set("doc_name", fileName);
+		r.set("uploader", LoginUserController.getLoginUserId(this));
+		r.set("upload_time", new Date());
+		Db.save("job_order_land_doc",r);
 		renderJson("{\"result\":true}");
     }
     
@@ -586,21 +586,19 @@ public class JobOrderController extends Controller {
     @Before(Tx.class)
     public void deleteSignDesc(){
     	String id = getPara("id");
-    	JobOrderLandItem order = JobOrderLandItem.dao.findById(id);
-    	String fileName = order.getStr("sign_desc");
-    	
     	String path = getRequest().getServletContext().getRealPath("/")+"\\upload\\";
     	
+    	String sql = "select GROUP_CONCAT(doc_name) doc_name from job_order_land_doc where land_id=?";
+    	Record r = Db.findFirst(sql, id);
+    	String fileName = r.getStr("doc_name");
     	String[] arr = fileName.split(",");
     	for (int i = 0; i < arr.length; i++) {
 	    	File file = new File(path+arr[i]);
 	    	if (file.exists() && file.isFile()) {
 	    		file.delete();
-	    		order.set("sign_desc","");
-	    		order.update();
+	    		Db.update("delete from job_order_land_doc where land_id=?", id);
 	    	}else{
-	    		order.set("sign_desc","");
-	    		order.update();
+	    		Db.update("delete from job_order_land_doc where land_id=?", id);
 	    	}
     	}
     	renderJson("{\"result\":true}");
@@ -658,11 +656,12 @@ public class JobOrderController extends Controller {
     		itemSql = "select * from job_order_air_cargodesc where order_id=? order by id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("land".equals(type)){
-    		itemSql = "select jol.*, p.abbr transport_company_name,"
+    		itemSql = "select jol.*, p.abbr transport_company_name,GROUP_CONCAT(doc_name) doc_name,"
     		        + " p1.abbr consignor_name, p2.abbr consignee_name from job_order_land_item jol "
     				+ " left join party p on p.id=jol.transport_company"
     				+ " left join party p1 on p1.id=jol.consignor"
     				+ " left join party p2 on p2.id=jol.consignee"
+    				+ " left join job_order_land_doc jold on jold.land_id=jol.id"
     				+ " where order_id=? order by jol.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
