@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="478"/>
+	<property name="ireport.y" value="112"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -743,21 +743,21 @@ NON-NEGOTIABLE]]></text>
 			<textField isBlankWhenNull="true">
 				<reportElement x="21" y="18" width="244" height="67" uuid="d8acf056-abac-4f8d-b976-9b783e7d731e"/>
 				<textElement>
-					<font fontName="新宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{shipper_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="20" y="103" width="245" height="65" uuid="fe342d77-2c0d-4ee3-a255-3cfe73b9c8c5"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{consignee_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="21" y="189" width="244" height="51" uuid="317921c4-bab9-432d-b4c4-4d877bc2a09f"/>
 				<textElement>
-					<font fontName="仿宋" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{notify_party_info}]]></textFieldExpression>
 			</textField>
@@ -775,14 +775,14 @@ NON-NEGOTIABLE]]></text>
 			<textField isBlankWhenNull="true">
 				<reportElement x="134" y="252" width="137" height="16" uuid="c2b5278a-fc31-46fb-97bd-4c6af9594889"/>
 				<textElement>
-					<font fontName="仿宋" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{por_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="134" y="280" width="137" height="16" uuid="18969407-0dbb-48f6-bf8e-121db6616839"/>
 				<textElement>
-					<font fontName="仿宋" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
 			</textField>
@@ -794,7 +794,7 @@ NON-NEGOTIABLE]]></text>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA["oceanHBL_subreport1.jasper"]]></subreportExpression>
 			</subreport>
-			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="50" y="768" width="100" height="15" uuid="1a8f01a3-c6d6-41e1-a9be-d6be8cd53f81"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
@@ -818,7 +818,7 @@ NON-NEGOTIABLE]]></text>
 			<textField>
 				<reportElement x="20" y="308" width="110" height="19" uuid="a04e7ec4-d75f-4c35-910a-a64dcccc2f2a"/>
 				<textElement>
-					<font fontName="仿宋" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pod_name}]]></textFieldExpression>
 			</textField>
@@ -832,7 +832,7 @@ NON-NEGOTIABLE]]></text>
 			<textField isBlankWhenNull="true">
 				<reportElement x="279" y="248" width="270" height="77" uuid="35116c87-954f-4793-b29f-3b0c2a0a7852"/>
 				<textElement>
-					<font fontName="仿宋" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{oversea_agent_info}]]></textFieldExpression>
 			</textField>
@@ -840,10 +840,10 @@ NON-NEGOTIABLE]]></text>
 				<reportElement x="450" y="462" width="100" height="15" uuid="e7fafa5d-11ed-44c6-88d0-c1c27ef10b57"/>
 				<text><![CDATA[SHIPED ON BOARD]]></text>
 			</staticText>
-			<textField pattern="MMMMMM dd, yyyy" isBlankWhenNull="true">
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="452" y="475" width="103" height="20" uuid="d61ce27a-94cf-4991-b8e9-c5c5e300c503"/>
 				<textElement>
-					<font fontName="仿宋"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
