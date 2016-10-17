@@ -4,11 +4,13 @@ import interceptor.SetAttrLoginUserInterceptor;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.AppInvoiceDoc;
 import models.ArapAccountAuditLog;
 import models.ArapCostApplication;
 import models.ArapCostOrder;
@@ -40,6 +42,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.profile.LoginUserController;
+import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
 import controllers.util.PermissionConstant;
 
@@ -57,7 +60,7 @@ public class CostPreInvoiceOrderController extends Controller {
 	@RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_CREATE,
 			PermissionConstant.PERMSSION_CPO_UPDATE}, logical = Logical.OR)
 	@Before(Tx.class)
-	public void save() {
+	public void save() throws InstantiationException, IllegalAccessException {
 		String ids = getPara("ids");
 		ArapCostApplication aca = null;
 		String application_id = getPara("application_id");
@@ -70,6 +73,7 @@ public class CostPreInvoiceOrderController extends Controller {
 		String billing_unit = getPara("billing_unit"); //收款单位
 		String billtype = getPara("invoice_type");   //开票类型
 		String bank_name= getPara("deposit_bank");   //开户行
+		String invoice_no= getPara("invoice_no"); 
 		String total_amount = getPara("total_amount")==""?"0.00":getPara("total_amount");   //申请总金额
 
 		
@@ -83,6 +87,7 @@ public class CostPreInvoiceOrderController extends Controller {
 			aca.set("billing_unit", billing_unit);
 			aca.set("bill_type", billtype);
 			aca.set("bank_no", bank_no);
+			aca.set("invoice_no", invoice_no);
 			aca.set("bank_name", bank_name);
 			aca.set("num_name", numname);
 			if (total_amount != null && !"".equals(total_amount)) {
@@ -115,6 +120,7 @@ public class CostPreInvoiceOrderController extends Controller {
 			aca.set("payee_name", payee_name);
 			aca.set("payment_method", paymentMethod);
 			aca.set("payee_unit", payee_unit);
+			aca.set("invoice_no", invoice_no);
 			aca.set("billing_unit", billing_unit);
 			aca.set("bill_type", billtype);
 			aca.set("bank_no", bank_no);
@@ -157,6 +163,14 @@ public class CostPreInvoiceOrderController extends Controller {
 			}
 
 		}
+		
+		String docStr=getPara("docJson"); 
+		Gson gson = new Gson();
+		List<Map<String, String>> docList = new Gson().fromJson(docStr, 
+				new TypeToken<List<Map<String, String>>>(){}.getType());
+		
+		DbUtils.handleList(docList, aca.getLong("id").toString(), AppInvoiceDoc.class, "order_id");
+		
 		renderJson(aca);
 	}
 
@@ -560,32 +574,7 @@ public class CostPreInvoiceOrderController extends Controller {
 		
 		
 		
-		@RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_UPDATE})
-		public void edit() throws ParseException {
-			String id = getPara("id");
-			ArapCostApplication aca = ArapCostApplication.dao.findById(id);
-			setAttr("invoiceApplication", aca);
-			
-			Party con  = Party.dao.findFirst("select * from party  where id =?",aca.get("payee_id"));
-			if(con!=null)
-			    setAttr("payee_filter", con.get("company_name"));
-			UserLogin userLogin = UserLogin.dao .findById(aca.get("create_by"));
-			setAttr("submit_name", userLogin.get("c_name"));
-			
-			Long check_by = aca.getLong("check_by");
-			if( check_by != null){
-				userLogin = UserLogin.dao .findById(check_by);
-				String check_name = userLogin.get("c_name");
-				setAttr("check_name", check_name);
-			}
-			
-			List<Record> Account = Db.find("select * from fin_account where bank_name != '现金'");
-			setAttr("accountList", Account);
-			
-			render("/eeda/arap/CostAcceptOrder/payEdit.html");
-		}
-		
-		
+
 		//复核
 		@Before(Tx.class)
 	    public void checkStatus(){
@@ -815,7 +804,7 @@ public class CostPreInvoiceOrderController extends Controller {
 					Double total_amount = arapCostOrder.getDouble("cost_amount");
 					Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '应付对账单'",id);
 					Double paid_amount = re.getDouble("total");
-					if(!total_amount.equals(paid_amount)){
+					if(total_amount!=paid_amount){
 						arapCostOrder.set("status", "部分已付款").update();
 					}else
 						arapCostOrder.set("status", "已付款").update();
@@ -825,7 +814,7 @@ public class CostPreInvoiceOrderController extends Controller {
 					Double total_amount = arapMiscCostOrder.getDouble("total_amount");
 					Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '成本单'",id);
 					Double paid_amount = re.getDouble("total");
-					if(!total_amount.equals(paid_amount)){
+					if(total_amount!=paid_amount){
 						arapMiscCostOrder.set("audit_status", "部分已付款").update();
 					}else
 						arapMiscCostOrder.set("audit_status", "已付款").update();
@@ -836,7 +825,7 @@ public class CostPreInvoiceOrderController extends Controller {
 					Double total_amount = arapPrePayOrder.getDouble("total_amount");
 					Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '预付单'",id);
 					Double paid_amount = re.getDouble("total");
-					if(!total_amount.equals(paid_amount)){
+					if(total_amount!=paid_amount){
 						arapPrePayOrder.set("status", "部分已付款").update();
 					}else
 						arapPrePayOrder.set("status", "已付款").update();

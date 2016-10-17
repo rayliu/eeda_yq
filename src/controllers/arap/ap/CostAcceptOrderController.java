@@ -2,12 +2,18 @@ package controllers.arap.ap;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.io.File;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.AppInvoiceDoc;
+import models.ArapCostApplication;
 import models.ArapCostOrder;
 import models.Party;
+import models.UserLogin;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -20,6 +26,8 @@ import com.jfinal.core.Controller;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.upload.UploadFile;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -139,7 +147,110 @@ public class CostAcceptOrderController extends Controller {
         render("/eeda/arap/CostAcceptOrder/payEdit.html");
     } 
     
-  
     
+    @RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_UPDATE})
+	public void edit() throws ParseException {
+		String id = getPara("id");
+		ArapCostApplication aca = ArapCostApplication.dao.findById(id);
+		setAttr("invoiceApplication", aca);
+		
+		Party con  = Party.dao.findFirst("select * from party  where id =?",aca.get("payee_id"));
+		if(con!=null)
+		    setAttr("payee_filter", con.get("company_name"));
+		UserLogin userLogin = UserLogin.dao .findById(aca.get("create_by"));
+		setAttr("submit_name", userLogin.get("c_name"));
+		
+		Long check_by = aca.getLong("check_by");
+		if( check_by != null){
+			userLogin = UserLogin.dao .findById(check_by);
+			String check_name = userLogin.get("c_name");
+			setAttr("check_name", check_name);
+		}
+		
+		List<Record> list = null;
+    	list = getItems(id);
+    	setAttr("docList", list);
+		
+		List<Record> Account = Db.find("select * from fin_account where bank_name != '现金'");
+		setAttr("accountList", Account);
+		
+		render("/eeda/arap/CostAcceptOrder/payEdit.html");
+	}
+    
+  
+  //上传相关文档
+    @Before(Tx.class)
+    public void saveDocFile(){
+    	String order_id = getPara("order_id");
+    	List<UploadFile> fileList = getFiles("doc");
+    	
+    	AppInvoiceDoc order = new AppInvoiceDoc();
+		for (int i = 0; i < fileList.size(); i++) {
+    		File file = fileList.get(i).getFile();
+    		String fileName = file.getName();
+
+			order.set("order_id", order_id);
+			order.set("uploader", LoginUserController.getLoginUserId(this));
+			order.set("doc_name", fileName);
+			order.set("type", "cost");
+			order.set("upload_time", new Date());
+			order.save();
+		}
+
+    	renderJson(order);
+    }
+    
+    //异步刷新字表
+    public void tableList(){
+    	String order_id = getPara("order_id");
+    	
+    	List<Record> list = null;
+    	list = getItems(order_id);
+    	
+    	Map map = new HashMap();
+        map.put("sEcho", 1);
+        map.put("iTotalRecords", list.size());
+        map.put("iTotalDisplayRecords", list.size());
+
+        map.put("aaData", list);
+
+        renderJson(map); 
+    }
+    
+  //返回list
+    private List<Record> getItems(String orderId) {
+    	String itemSql = "";
+    	List<Record> itemList = null;
+    	
+    	itemSql = "select aid.*,u.c_name from app_invoice_doc aid left join user_login u on aid.uploader=u.id "
+    			+ " where aid.order_id=? and aid.type='cost' order by aid.id desc";
+    	itemList = Db.find(itemSql, orderId);
+	    
+		return itemList;
+	}
+    
+    //删除相关文档
+    @Before(Tx.class)
+    public void deleteDoc(){
+    	String id = getPara("docId");
+    	AppInvoiceDoc order = AppInvoiceDoc.dao.findById(id);
+    	String fileName = order.getStr("doc_name");
+    	Map<String,Object> resultMap = new HashMap<String,Object>();
+    	
+    	String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\doc\\"+fileName;
+    	
+        File file = new File(filePath);
+        if (file.exists() && file.isFile()) {
+            boolean result = file.delete();
+            order.delete();
+            resultMap.put("result", result);
+        }else{
+        	order.delete();
+        	resultMap.put("result", "文件不存在可能已被删除!");
+        }
+        renderJson(resultMap);
+    }
+
     
 }

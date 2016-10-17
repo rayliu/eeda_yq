@@ -1,4 +1,4 @@
-﻿define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+﻿define(['jquery', 'metisMenu', 'sb_admin','./edit_doc_table',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
 	document.title = '付款申请单 | '+document.title;
 	$('#pay_date').val(eeda.getDate());
@@ -96,6 +96,9 @@ $(document).ready(function() {
 				return false;
 			}
 		}
+		
+		
+		$('#docJson').val(JSON.stringify(itemOrder.buildDocItem()));
 		$.post('/costPreInvoiceOrder/save',$("#checkForm").serialize(), function(data){
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
@@ -114,6 +117,7 @@ $(document).ready(function() {
 				
 				//var url = "/costPreInvoiceOrder/costOrderList?application_id="+$("#application_id").val();
 				//$('#CostOrder-table').dataTable().fnDraw();
+				itemOrder.refleshDocTable(data.ID);
 			}else{
 				$.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
 			}

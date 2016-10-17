@@ -54,6 +54,24 @@
 				</div>
 			</div>
 			
+			<div class="row">
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", { id:'phone',
+					label:'原汇率', value:order.phone!'',disabled:'disabled'
+					}){}%>
+				</div>
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", { id:'total_amount',
+					label:'现汇率', value:order.total_amount!'',disabled:'disabled'
+					}){}%>
+				</div>
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", { id:'check_amount',
+					label:'应收RMB总金额', value:order.total_amount!'',disabled:'disabled'
+					}){}%>
+				</div>
+			</div>
+			
 			
 			<div class="row">
 				<div class="col-lg-12">
