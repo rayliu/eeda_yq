@@ -268,7 +268,7 @@ $(document).ready(function() {
 	    $('#transport_type input[type="checkbox"]').each(function(){
 	        var checkValue=$(this).val();
 	        if(checkArray[i]==checkValue){
-	        	$(this).attr("checked",true);
+	        	this.checked = true;
 
                 showServiceTab(checkValue);
 	        }

@@ -98,7 +98,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $('#shipmentForm input[type="radio"]').each(function(){
             	var checkValue = $(this).val();
             	if(release_type==checkValue){
-            		$(this).attr("checked",true);
+                    this.checked = true;
             	}
             });
         });

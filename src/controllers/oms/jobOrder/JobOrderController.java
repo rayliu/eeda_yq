@@ -350,80 +350,74 @@ public class JobOrderController extends Controller {
         Map<String, String> recMap=shipment_detail.get(0);
         Long creator_id = LoginUserController.getLoginUserId(this);
         
-        Long shipper = null;
-        String shipper_id = recMap.get("shipper");
-        if(shipper_id!=null&&!"".equals(shipper_id)){
-        	shipper = Long.parseLong(shipper_id);
-        }
-        Long consignee=null;
-        String consignee_id = recMap.get("consignee");
-        if(consignee_id!=null&&!"".equals(consignee_id)){
-        	 consignee = Long.parseLong(consignee_id);
-        }
-        Long notify_party = null;
-        String notify_party_id = recMap.get("notify_party");
-        if(notify_party_id!=null&&!"".equals(notify_party_id)){
-        	 notify_party = Long.parseLong(notify_party_id);
-        }
-        Long por = null;
-        String por_id = recMap.get("por");
-        if(por_id!=null&&!"".equals(por_id)){
-        	 por = Long.parseLong(por_id);
+        String shipper = recMap.get("shipper")==""?null:recMap.get("shipper");
+        String consignee = recMap.get("consignee")==""?null:recMap.get("consignee");
+        String notify_party = recMap.get("notify_party")==""?null:recMap.get("notify_party");
+        String por = recMap.get("por");
+        String pol = recMap.get("pol");
+        String pod = recMap.get("pod");
+        String fnd = recMap.get("fnd");
+        String booking_agent = recMap.get("booking_agent");
+        String carrier = recMap.get("carrier");
+        String head_carrier = recMap.get("head_carrier");
+        String oversea_agent = recMap.get("oversea_agent");
+        String release_type = recMap.get("release_type");
+        if(por!=null&&!"".equals(por)){
         	 savePortQueryHistory(por);
         }
-        Long pol = null;
-        String pol_id = recMap.get("pol");
-        if(pol_id!=null&&!"".equals(pol_id)){
-        	 pol = Long.parseLong(pol_id);
+        if(pol!=null&&!"".equals(pol)){
         	 savePortQueryHistory(pol);
         }
-        Long pod = null;
-        String pod_id = recMap.get("pod");
-        if(pod_id!=null&&!"".equals(pod_id)){
-        	 pod = Long.parseLong(pod_id);
+        if(pod!=null&&!"".equals(pod)){
         	 savePortQueryHistory(pod);
         }
-        Long fnd = null;
-        String fnd_id = recMap.get("fnd");
-        if(fnd_id!=null&&!"".equals(fnd_id)){
-        	 fnd = Long.parseLong(fnd_id);
+        if(fnd!=null&&!"".equals(fnd)){
         	 savePortQueryHistory(fnd);
         }
-        Long booking_agent = null;
-        String booking_agent_id = recMap.get("booking_agent");
-        if(booking_agent_id!=null&&!"".equals(booking_agent_id)){
-        	booking_agent = Long.parseLong(booking_agent_id);
-        }
-        Long carrier = null;
-        String carrier_id = recMap.get("carrier");
-        if(carrier_id!=null&&!"".equals(carrier_id)){
-        	carrier = Long.parseLong(carrier_id);
-        }
-        Long head_carrier = null;
-        String head_carrier_id = recMap.get("head_carrier");
-        if(head_carrier_id!=null&&!"".equals(head_carrier_id)){
-        	head_carrier = Long.parseLong(head_carrier_id);
-        }
-        Long oversea_agent = null;
-        String oversea_agent_id = recMap.get("oversea_agent");
-        if(oversea_agent_id!=null&&!"".equals(oversea_agent_id)){
-        	oversea_agent = Long.parseLong(oversea_agent_id);
-        }
-        String release_type = recMap.get("release_type");
-        if(shipper == null &&
-           consignee==null &&
-           notify_party == null &&
-           por == null &&
-           pol == null &&
-           pod == null &&
-           fnd == null )
+        
+        if(shipper == null &&consignee==null &&notify_party == null &&por == null &&pol == null &&pod == null
+        		&&fnd == null &&booking_agent==null&&carrier==null&&head_carrier==null&&oversea_agent==null)
                return;
         
-        Record checkRec = Db.findFirst("select 1 from job_order_ocean_template where"
-                + " creator_id=? and shipper=? and consignee=? and notify_party=?"
-                + " and por=? and pol=? and pod=? and fnd=? and booking_agent=? "
-                + " and carrier=? and head_carrier=? and oversea_agent=? and release_type=?", creator_id, shipper,
-                consignee, notify_party, por, pol, pod, fnd,booking_agent,carrier,head_carrier,oversea_agent,release_type);
+        String sql = "select 1 from job_order_ocean_template where"
+                + " creator_id = "+creator_id;
+        if(StringUtils.isNotEmpty(shipper)){
+        	sql+=" and shipper="+shipper;
+        }
+        if(StringUtils.isNotEmpty(consignee)){
+        	sql+=" and consignee="+consignee;
+        }
+        if(StringUtils.isNotEmpty(notify_party)){
+        	sql+=" and notify_party="+notify_party;
+        }
+        if(StringUtils.isNotEmpty(por)){
+        	sql+=" and por="+por;
+        }
+        if(StringUtils.isNotEmpty(pol)){
+        	sql+=" and pol="+pol;
+        }
+        if(StringUtils.isNotEmpty(pod)){
+        	sql+=" and pod="+pod;
+        }
+        if(StringUtils.isNotEmpty(fnd)){
+        	sql+=" and fnd="+fnd;
+        }
+        if(StringUtils.isNotEmpty(booking_agent)){
+        	sql+=" and booking_agent="+booking_agent;
+        }
+        if(StringUtils.isNotEmpty(carrier)){
+        	sql+=" and carrier="+carrier;
+        }
+        if(StringUtils.isNotEmpty(head_carrier)){
+        	sql+=" and head_carrier="+head_carrier;
+        }
+        if(StringUtils.isNotEmpty(oversea_agent)){
+        	sql+=" and oversea_agent="+oversea_agent;
+        }
+        if(StringUtils.isNotEmpty(release_type)){
+        	sql+=" and release_type='"+release_type+"'";
+        }
+        Record checkRec = Db.findFirst(sql);
         if(checkRec==null){
             Record r= new Record();
             r.set("creator_id", creator_id);
@@ -443,7 +437,7 @@ public class JobOrderController extends Controller {
         }
     }
     
-    private void savePortQueryHistory(long portId){
+    private void savePortQueryHistory(String portId){
         Long userId = LoginUserController.getLoginUserId(this);
         Record rec = Db.findFirst("select * from user_query_history where type='port' and ref_id=? and user_id=?", portId, userId);
         if(rec==null){
@@ -482,33 +476,29 @@ public class JobOrderController extends Controller {
     	Map<String, String> recMap=detail.get(0);
     	Long creator_id = LoginUserController.getLoginUserId(this);
     	
-    	Long shipper = null;
-    	String shipper_id = recMap.get("shipper");
-    	if(shipper_id!=null&&!"".equals(shipper_id)){
-    		shipper = Long.parseLong(shipper_id);
-    	}
-    	Long consignee=null;
-    	String consignee_id = recMap.get("consignee");
-    	if(consignee_id!=null&&!"".equals(consignee_id)){
-    		consignee = Long.parseLong(consignee_id);
-    	}
-    	Long notify_party = null;
-    	String notify_party_id = recMap.get("notify_party");
-    	if(notify_party_id!=null&&!"".equals(notify_party_id)){
-    		notify_party = Long.parseLong(notify_party_id);
-    	}
-    	Long booking_agent = null;
-    	String booking_agent_id = recMap.get("booking_agent");
-    	if(booking_agent_id!=null&&!"".equals(booking_agent_id)){
-    		booking_agent = Long.parseLong(booking_agent_id);
-    	}
+    	 String shipper = recMap.get("shipper")==""?null:recMap.get("shipper");
+         String consignee = recMap.get("consignee")==""?null:recMap.get("consignee");
+         String notify_party = recMap.get("notify_party")==""?null:recMap.get("notify_party");
+    	String booking_agent = recMap.get("booking_agent");
     	
     	if(shipper == null &&consignee==null &&notify_party == null &&booking_agent == null)
     		return;
     	
-    	Record checkRec = Db.findFirst("select 1 from job_order_air_template where"
-    			+ " creator_id=? and shipper=? and consignee=? and notify_party=? and booking_agent=?", creator_id, shipper,
-    			consignee, notify_party,booking_agent);
+    	String sql = "select 1 from job_order_air_template where"
+                + " creator_id = "+creator_id;
+        if(StringUtils.isNotEmpty(shipper)){
+        	sql+=" and shipper="+shipper;
+        }
+        if(StringUtils.isNotEmpty(consignee)){
+        	sql+=" and consignee="+consignee;
+        }
+        if(StringUtils.isNotEmpty(notify_party)){
+        	sql+=" and notify_party="+notify_party;
+        }
+        if(StringUtils.isNotEmpty(booking_agent)){
+        	sql+=" and booking_agent="+booking_agent;
+        }
+    	Record checkRec = Db.findFirst(sql);
     	if(checkRec==null){
     		Record r= new Record();
     		r.set("creator_id", creator_id);
