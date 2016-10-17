@@ -130,7 +130,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                         return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:100px"/>';
                     }
                 },
-                { "data": "UNIT_ID", 
+                { "data": "UNIT_ID", "width": "180px",
                     "render": function ( data, type, full, meta ) {
                     	if(!data)
                             data='';
@@ -172,7 +172,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                             data='';
                         return '<input type="text" name="vgm" value="'+data+'" class="form-control" style="width:100px"/>';
                     }
-                },{ "data": "UNIT_NAME", "visible": false,
+                },
+                { "data": "UNIT_NAME", "visible": false,
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';

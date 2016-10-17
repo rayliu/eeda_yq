@@ -159,7 +159,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                   return '<input type="text" name="PIECES" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "UNIT_ID", 
+	            { "data": "UNIT_ID","width": "180px",
 	                "render": function ( data, type, full, meta ) {
 	                	if(!data)
 	                        data='';
@@ -168,7 +168,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                            id: 'UNIT_ID',
 	                            value: data,
 	                            display_value: full.UNIT_NAME,
-	                            style:'width:80px'
+	                            style:'width:200px'
 	                        }
 	                    );
 	                    return field_html;
