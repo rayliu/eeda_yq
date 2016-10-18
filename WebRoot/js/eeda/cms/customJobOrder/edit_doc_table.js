@@ -28,6 +28,22 @@ $(document).ready(function() {
            });
     }); 
 
+    var plan_doc_table = eeda.dt({
+        id: 'plan_doc_table',
+        autoWidth: false,
+        columns:[
+            { "data": "DOC_NAME","width": "400px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<a class="doc_name" href="/upload/doc/'+data+'" target="_blank">'+data+'</a>';
+                }
+            },
+            { "data": "C_NAME","width": "400px"}, 
+            { "data": "UPLOAD_TIME","width": "400px"}, 
+            { "data": "REMARK","width": "400px"}, 
+        ]
+    });
     //------------事件处理,文档table
     var docTable = eeda.dt({
         id: 'doc_table',
@@ -115,17 +131,17 @@ $(document).ready(function() {
     })
     //------------事件处理,email_table
     var emailTable = eeda.dt({
-        id: 'email_table',
-        autoWidth: false,
-        columns:[
-            { "data": "MAIL_TITLE","width": "100px"},
-            { "data": "DOC_NAME","width": "300px"}, 
-            { "data": "RECEIVE_MAIL","width": "300px"}, 
-            { "data": "CC_MAIL","width": "300px"}, 
-            { "data": "BCC_MAIL","width": "300px"}, 
-            { "data": "SENDER","width": "100px"}, 
-            { "data": "SEND_TIME","width": "100px"}
-        ]
+    	id: 'email_table',
+    	autoWidth: false,
+    	columns:[
+    	         { "data": "MAIL_TITLE","width": "100px"},
+    	         { "data": "DOC_NAME","width": "300px"}, 
+    	         { "data": "RECEIVE_MAIL","width": "300px"}, 
+    	         { "data": "CC_MAIL","width": "300px"}, 
+    	         { "data": "BCC_MAIL","width": "300px"}, 
+    	         { "data": "SENDER","width": "100px"}, 
+    	         { "data": "SEND_TIME","width": "100px"}
+    	         ]
     });
     //刷新明细表
     itemOrder.refleshDocTable = function(order_id){

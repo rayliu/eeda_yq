@@ -23,36 +23,6 @@ $(document).ready(function() {
         return arrays;
     };
     
-    var dataTable = eeda.dt({
-        id: 'custom_table',
-        columns: [
-            { "width": "30px",
-                "render": function ( data, type, full, meta ) {
-                    return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
-                }
-            },
-            { "data": "ITEM_NO", 
-                "render": function ( data, type, full, meta ) {
-                    return "<a href='/customJobOrder/editCustomOrder?id="+full.ID+"'target='_blank'>"+data+"</a>";
-                }
-            },
-            { "data": "TYPE", 
-                "render": function ( data, type, full, meta ) {
-                    if(data=='import'){
-                        return '进口'
-                    }
-                    return "出口";
-                }}, 
-            { "data": "COMMODITY_NO"}, 
-            { "data": "COMMODITY_NAME"}, 
-            { "data": "SPECIFICATION_MODEL"}
-          ]
-    });
-	  //刷新明细表
-	itemOrder.refleshCustomTable = function(order_id){
-		var url = "/customJobOrder/tableList?order_id="+order_id+"&type=custom";
-		dataTable.ajax.url(url).load();
-	}
         
 });
 });

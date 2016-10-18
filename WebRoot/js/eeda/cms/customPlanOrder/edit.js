@@ -1,10 +1,5 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN', './edit_doc_table'], function ($, metisMenu) { 
-
     $(document).ready(function() {
-    	
-        
-     
-        
              	
     	//已报关行按钮状态
     	$('#confirmCompleted,#passBtn,#refuseBtn').click(function(){

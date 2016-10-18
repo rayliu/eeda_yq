@@ -355,7 +355,17 @@
                     </div>
                     <div class="tab-pane fade in" id="docDetail">
                         <div class="form-group">
-                            	<h3>文档信息</h3>
+                            	<h3>计划单文档</h3>
+                            	<%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'plan_doc_table',
+                                        style:'width:1600px',
+                                        headers:['文档名称', '上传人', '上传时间', '备注'],
+                                        field_list:['doc_name','c_name','upload_time', 'remark'],
+                                        value_list: planDocList![]
+                                    }){} %>
+                                    <br>
+                            	<h3>工作单文档</h3>
 								<span class="btn btn-success btn-xs fileinput-button" id="fileuploadSpan"> 
 					                <i class="glyphicon glyphicon-plus"></i> 
 					                <span>选择文件</span> 

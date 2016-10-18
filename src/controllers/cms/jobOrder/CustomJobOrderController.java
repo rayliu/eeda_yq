@@ -307,11 +307,17 @@ public class CustomJobOrderController extends Controller {
 	    	itemSql = "select jod.*,u.c_name from custom_job_order_doc jod left join user_login u on jod.uploader=u.id "
 	    			+ " where order_id=? order by jod.id";
 	    	itemList = Db.find(itemSql, orderId);
+	    }else if("plan_doc".equals(type)){
+	    	itemSql = "select jod.*,u.c_name from custom_plan_order_doc jod "
+	    			+ " left join user_login u on jod.uploader=u.id "
+	    			+ " left join custom_job_order cjo on cjo.plan_order_id=jod.order_id"
+	    			+ " where cjo.id=? order by jod.id";
+	    	itemList = Db.find(itemSql, orderId);
 	    }else if("mail".equals(type)){
 	    	itemSql = "select * from custom_job_order_sendMail where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("custom".equals(type)){
-	    	itemSql = "select * from custom_job_order_custom_item where order_id=? order by id";
+	    	itemSql = "select * from custom_job_order_addcustom_item where order_id=? order by id";
             itemList = Db.find(itemSql, orderId);
         }else if("customItem".equals(type)){
 	    	itemSql = "select * from custom_job_order_custom_item where order_id=? order by id";
@@ -347,6 +353,7 @@ public class CustomJobOrderController extends Controller {
     	setAttr("costList", getItems(id,"cost"));
     	//相关文档
     	setAttr("docList", getItems(id,"doc"));
+    	setAttr("planDocList", getItems(id,"plan_doc"));
     	//邮件记录
     	setAttr("mailList", getItems(id,"mail"));
     	//当前登陆用户
