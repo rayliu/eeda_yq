@@ -48,6 +48,27 @@ $(document).ready(function() {
         if(formRequired>0){
         	return;
         }
+        //费用的结算公司必填
+        var sp = 0;
+        $('#chargeDetail [name=SP_ID]').each(function(){
+        	if(this.value==''){
+        		sp++;
+        	}
+        })
+        if(sp>0){
+        	$.scojs_message('费用明细里的结算公司为必填', $.scojs_message.TYPE_ERROR);
+    		return;
+        }
+        var CURRENCY_ID = 0;
+        $('#chargeDetail [name=CURRENCY_ID]').each(function(){
+        	if(this.value==''){
+        		CURRENCY_ID++;
+        	}
+        })
+        if(CURRENCY_ID>0){
+        	$.scojs_message('费用明细里的币制为必填', $.scojs_message.TYPE_ERROR);
+        	return;
+        }
         
         $.blockUI({ 
             message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 

@@ -349,12 +349,7 @@ public class JobOrderController extends Controller {
             return;
         
         Map<String, String> recMap=shipment_detail.get(0);
-    	for (Entry<String, String> entry : recMap.entrySet()) { 
-			String value = entry.getValue();
-    		if(StringUtils.isEmpty(value)){
-                value=null;
-            }
-    	}
+    	
     	Long creator_id = LoginUserController.getLoginUserId(this);
     	String shipper = recMap.get("shipper");
     	String consignee = recMap.get("consignee");
