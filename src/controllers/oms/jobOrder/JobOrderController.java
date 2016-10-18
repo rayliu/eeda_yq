@@ -659,7 +659,7 @@ public class JobOrderController extends Controller {
     				+ " left join party p1 on p1.id=jol.consignor"
     				+ " left join party p2 on p2.id=jol.consignee"
     				+ " left join job_order_land_doc jold on jold.land_id=jol.id"
-    				+ " where order_id=? order by jol.id";
+    				+ " where order_id=? GROUP BY jol.id order by jol.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
     		itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name from job_order_arap jor "

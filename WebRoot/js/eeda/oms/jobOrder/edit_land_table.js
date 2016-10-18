@@ -105,7 +105,7 @@ $(document).ready(function() {
 	            		return '<span class="btn btn-success btn-xs fileinput-button" style="width:100px">' 
 		                		+'<i class="glyphicon glyphicon-plus"></i>'
 		                		+'<span>上传签收文件</span>'
-		                		+'<input class="upload" type="file" name="file" multiple>'
+		                		+'<input class="upload" type="file" multiple>'
 		                		+'</span>'
 		            else
 		            	return '<span class="btn btn-default btn-xs fileinput-button" style="width:100px" title="请先保存再上传文件">' 
