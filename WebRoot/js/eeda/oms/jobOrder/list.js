@@ -22,34 +22,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               },
               { "data": "TYPE",
                   "render": function ( data, type, full, meta ) {
-                    var str = '';
-                    if(data == '出口柜货')
-                      str = '出口柜货'; 
-                    if(data == '进口柜货')
-                      str = '进口柜货';
-                    if(data == '进口散货')
-                      str = '进口散货';
-                    if(data == '出口空运')
-                  	  str = '出口空运';
-                    if(data == '进口空运')
-                  	  str = '进口空运';
-                    if(data == '香港头程')
-                  	  str = '香港头程';
-                    if(data == '香港游')
-                  	  str = '香港游';
-                    if(data == '陆运')
-                  	  str = '陆运';
-                    if(data == '报关')
-                  	  str = '报关';
-                    if(data == '快递')
-                  	  str = '快递';
-                    if(data == '加贸')
-                  	  str = '加贸';
-                    if(data == '贸易')
-                  	  str = '贸易';
-                    if(data == '园区游')
-                  	  str = '园区游';
-                    return str;
+	                    if(!data)
+	                    	data='';
+	                    return data;
                   }
               }, 
               { "data": "SENT_OUT_TIME", 
