@@ -269,10 +269,10 @@
                        {   id:'por', 
                            label:'收货港 POR', 
                            value:shipment.por!planOrderItem.por!'',
-                           display_value:port.por_name!portCreate.por_name!''
+                           display_value:shipment.por_name!portCreate.por_name!''
                        }){}%>
                  <%}else{%>
-              		<label class="search-label">收货港 POR</label> <span class='search-control'>${port.por_name!portCreate.por_name!''}</span>
+              		<label class="search-label">收货港 POR</label> <span class='search-control'>${shipment.por_name!portCreate.por_name!''}</span>
                  <%}%>
                </div>
                <div class="col-lg-4">
@@ -281,10 +281,10 @@
                        {   id:'pol', 
                            label:'装货港 POL', 
                            value:shipment.pol!planOrderItem.pol!'',
-                           display_value:port.pol_name!portCreate.pol_name!''
+                           display_value:shipment.pol_name!portCreate.pol_name!''
                        }){}%>
                    <%}else{%>
-              		   <label class="search-label">装货港 POL</label> <span class='search-control'>${port.pol_name!portCreate.pol_name!''}</span>
+              		   <label class="search-label">装货港 POL</label> <span class='search-control'>${shipment.pol_name!portCreate.pol_name!''}</span>
                    <%}%>
                </div>
                <div class="col-lg-4">
@@ -293,10 +293,10 @@
                        {   id:'hub', 
                            label:'转运港 HUB',
                            value:shipment.hub!'',
-                           display_value:port.hub_name!''
+                           display_value:shipment.hub_name!''
                        }){}%>
                    <%}else{%>
-              		   <label class="search-label">转运港 HUB</label> <span class='search-control'>${port.hub_name!''}</span>
+              		   <label class="search-label">转运港 HUB</label> <span class='search-control'>${shipment.hub_name!''}</span>
                    <%}%>
                </div>
            </div>
@@ -307,10 +307,10 @@
                        {   id:'pod', 
                            label:'卸货港 POD', 
                            value:shipment.pod!planOrderItem.pod!'',
-                           display_value:port.pod_name!portCreate.pod_name!''
+                           display_value:shipment.pod_name!portCreate.pod_name!''
                        }){}%>
                   <%}else{%>
-              		   <label class="search-label">卸货港 POD</label> <span class='search-control'>${port.pod_name!portCreate.pod_name!''}</span>
+              		   <label class="search-label">卸货港 POD</label> <span class='search-control'>${shipment.pod_name!portCreate.pod_name!''}</span>
                   <%}%>
                </div>
                <div class="col-lg-4">
@@ -319,10 +319,10 @@
                        {   id:'fnd', 
                            label:'目的地 FND', 
                            value:shipment.fnd!planOrderItem.pod!'',
-                           display_value:port.fnd_name!portCreate.pod_name!''
+                           display_value:shipment.fnd_name!portCreate.pod_name!''
                        }){}%>
                  <%}else{%>
-              		   <label class="search-label">目的地 FND</label> <span class='search-control'>${port.fnd_name!portCreate.pod_name!''}</span>
+              		   <label class="search-label">目的地 FND</label> <span class='search-control'>${shipment.fnd_name!portCreate.pod_name!''}</span>
                  <%}%>
                </div>
            </div>
