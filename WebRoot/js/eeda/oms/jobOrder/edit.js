@@ -5,7 +5,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
-	$('#menu_order').addClass('active').find('ul').addClass('in');
 	
 	 //按钮状态
 	var id = $('#order_id').val();

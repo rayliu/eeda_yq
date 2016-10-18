@@ -1,6 +1,15 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 $(document).ready(function() {
-	
+
+	$('#createCustomPlanOrderBtn').click(function(event) {
+        var id = $('#order_id').val();
+        if(id==''){
+            $.scojs_message('请先保存单据', $.scojs_message.TYPE_ERROR);
+        }else{
+            window.open("/customPlanOrder/create?jobOrderId="+id, '_blank');
+        }
+    });
+
 	var showServiceTab=function(service){
         if(service=='china'){
             $('#chinaTab').show();
