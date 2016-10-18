@@ -484,14 +484,13 @@ public class ServiceProviderController extends Controller {
     	
     }
     
-    //查询船公司下拉
+    //查询船公司下拉, 这里不用过滤office, 因为船公司是通用的
     public void searchCarrier(){
         UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id = user.getLong("office_id");
         
         String name = getPara("input");
         List<Record> recs = null;
-        String sql = "select id,abbr name from party p where office_id="+office_id+" and p.type = 'SP' and p.sp_type like '%carrier%' ";
+        String sql = "select id,abbr name from party p where p.type = 'SP' and p.sp_type like '%carrier%' ";
         if(!StringUtils.isBlank(name)){
         	sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
         }

@@ -454,9 +454,10 @@ public class CustomerController extends Controller {
         
         List<Record> partyList = Collections.EMPTY_LIST;
         String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                + " ifnull(p.address_eng, p.address) address, p.phone from party p where office_id="+office_id
-                + " and sp_type like '%"+type+"%'";
-                    
+                + " ifnull(p.address_eng, p.address) address, p.phone from party p where sp_type like '%"+type+"%' ";
+        if(!"carrier".equals(type)){
+            sql += "and office_id="+office_id;
+        }
         if (partyName.trim().length() > 0) {
             sql +=" and (p.abbr like '%" + partyName + "%' or p.quick_search_code like '%" + partyName.toUpperCase() + "%') ";
         }
