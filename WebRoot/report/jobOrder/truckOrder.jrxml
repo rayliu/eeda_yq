@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="truckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6e032343-152e-4328-9fc1-a87e482c2444">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="111"/>
+	<property name="ireport.y" value="127"/>
 	<parameter name="itemId" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -10,20 +10,29 @@
 		<![CDATA[select
 p.company_name consignor_name,
 p1.company_name consignee_name,
-consignor,
-consignor_phone,
-take_address,
-consignee,
-consignee_phone,
-delivery_address,
-eta,
-cargo_info,
-required_time_remark,
-pieces,
-gross_weight,
-volume,
-cargo_desc
-from job_order_land_item joli
+joli.consignor,
+joli.consignor_phone,
+joli.take_address,
+joli.consignee,
+joli.consignee_phone,
+joli.delivery_address,
+joli.eta,
+joli.cargo_info,
+joli.required_time_remark,
+joli.pieces,
+joli.gross_weight,
+joli.volume,
+joli.cargo_desc,
+ul.c_name,
+ul.user_name,
+ul.user_phone,
+ul.user_tel,
+ul.user_fax,
+oe.office_name
+from job_order jo
+LEFT JOIN job_order_land_item joli on joli.order_id = jo.id
+LEFT JOIN user_login ul on ul.id = jo.creator
+LEFT JOIN office oe on oe.id = jo.office_id
 LEFT JOIN party p on p.id =  joli.consignor
 LEFT JOIN party p1 on p1.id =  joli.consignee
 where joli.id=$P{itemId}]]>
@@ -69,6 +78,24 @@ where joli.id=$P{itemId}]]>
 	<field name="cargo_desc" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="c_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_phone" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_tel" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_fax" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="office_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -94,7 +121,7 @@ where joli.id=$P{itemId}]]>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="526" splitType="Stretch">
+		<band height="673" splitType="Stretch">
 			<staticText>
 				<reportElement x="2" y="0" width="32" height="17" uuid="a84c775c-483b-4438-975c-e7eb5c404a57"/>
 				<textElement textAlignment="Left">
@@ -237,25 +264,53 @@ where joli.id=$P{itemId}]]>
 				<text><![CDATA[CMB]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="293" y="342" width="61" height="69" uuid="cb2bdb2d-3dcf-463c-9946-d94b5ca18cd5"/>
+				<reportElement x="293" y="342" width="61" height="37" uuid="cb2bdb2d-3dcf-463c-9946-d94b5ca18cd5"/>
 				<textElement textAlignment="Center">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="354" y="342" width="66" height="69" uuid="ffd5637d-a814-4f91-b0ea-00a8b62116d3"/>
+				<reportElement x="354" y="342" width="66" height="37" uuid="ffd5637d-a814-4f91-b0ea-00a8b62116d3"/>
 				<textElement textAlignment="Center">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="424" y="342" width="76" height="69" uuid="39a6f79d-38e1-40df-86f6-931913746b0b"/>
+				<reportElement x="424" y="342" width="76" height="37" uuid="39a6f79d-38e1-40df-86f6-931913746b0b"/>
 				<textElement textAlignment="Center">
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{volume}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="402" y="561" width="45" height="20" uuid="5b813400-2b1b-4eac-89d9-919a33237e41"/>
+				<text><![CDATA[制单人：]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="402" y="581" width="154" height="15" uuid="20afb023-11bd-4087-a1ee-d601911e78c8"/>
+				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="402" y="596" width="154" height="15" uuid="af1e1c1a-5812-47cb-bd4f-e39afe28e6e2"/>
+				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="402" y="611" width="154" height="15" uuid="52695d24-98d2-4dcb-8059-4d56aa62c29b"/>
+				<textFieldExpression><![CDATA[$F{user_tel}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="402" y="626" width="154" height="15" uuid="c79a46d4-7aef-4708-8760-8b86fc08523d"/>
+				<textFieldExpression><![CDATA[$F{user_phone}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="402" y="641" width="154" height="15" uuid="c71c741b-cfa5-42e8-813b-53b5b10e725c"/>
+				<textFieldExpression><![CDATA[$F{user_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="402" y="656" width="153" height="15" uuid="f0eba1c9-c15a-41a0-9487-691c58e261ed"/>
+				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
