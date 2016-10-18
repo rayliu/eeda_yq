@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN', './edit_doc_table'], function ($, metisMenu) { 
 
     $(document).ready(function() {
     	
@@ -118,6 +118,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  }
         	}
         	order['item_list'] = items_array;
+        	order.doc_list = salesOrder.buildDocItem();
 
 //            var order = {
 //            		    id: $('#order_id').val(),

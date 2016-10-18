@@ -535,6 +535,7 @@ public class JobOrderController extends Controller {
     }
     
     //上传陆运签收文件描述
+    @Before(Tx.class)
     public void uploadSignDesc(){
 		String id = getPara("id");
 		

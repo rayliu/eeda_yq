@@ -493,9 +493,7 @@ public class CustomJobOrderController extends Controller {
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
         map.put("iTotalDisplayRecords", list.size());
-
         map.put("aaData", list);
-
         renderJson(map); 
     }
   

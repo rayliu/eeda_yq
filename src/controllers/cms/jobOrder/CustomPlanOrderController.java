@@ -2,6 +2,7 @@ package controllers.cms.jobOrder;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Map;
 import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
 import models.eeda.cms.CustomPlanOrderItem;
+import models.eeda.oms.jobOrder.JobOrderDoc;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -24,6 +26,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.upload.UploadFile;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -85,6 +88,8 @@ public class CustomPlanOrderController extends Controller {
    		
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
 		DbUtils.handleList(itemList, id, CustomPlanOrderItem.class, "order_id");
+		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
+		DbUtils.handleList(doc_list, "custom_plan_order_doc", id, "order_id");
 
 		long creator = customPlanOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
@@ -92,31 +97,30 @@ public class CustomPlanOrderController extends Controller {
    		r.set("creator_name", user_name);
    		renderJson(r);
    	}
+   
+    //返回list
+    private List<Record> getItems(String orderId,String type) {
+    	String itemSql = "";
+    	List<Record> itemList = null;
+    	if("cargo".equals(type)){
+    		itemSql = "SELECT * FROM custom_plan_order_item where order_id=?";
+    		itemList = Db.find(itemSql, orderId);
+    	}else if("doc".equals(type)){
+    		itemSql = "select jod.*,u.c_name from custom_plan_order_doc jod left join user_login u on jod.uploader=u.id "
+	    			+ " where order_id=? order by jod.id";
+    		itemList = Db.find(itemSql, orderId);
+    	}
+    	return itemList;
+    }
     
     
-    private List<Record> getCustomPlanOrderItems(String orderId) {
-        String itemSql = "SELECT * FROM"
-        		+ "	custom_plan_order_item"
-        		+ " WHERE order_id=?";
-
-		List<Record> itemList = Db.find(itemSql, orderId);
-		return itemList;
-	}
-    
-    
-    @Before(Tx.class)
     public void edit() {
     	String id = getPara("id");
     	CustomPlanOrder customPlanOrder = CustomPlanOrder.dao.findById(id);
     	setAttr("order", customPlanOrder);
+    	setAttr("itemList", getItems(id,"cargo"));
+    	setAttr("docList", getItems(id,"doc"));
     	
-    	//获取明细表信息
-    	setAttr("itemList", getCustomPlanOrderItems(id));
-    	
-    	//回显客户信息
-//    	Party party = Party.dao.findById(customPlanOrder.getLong("customer_id"));
-//    	setAttr("party", party);
-
     	//用户信息
     	long creator = customPlanOrder.getLong("creator");
     	UserLogin user = UserLogin.dao.findById(creator);
@@ -168,20 +172,20 @@ public class CustomPlanOrderController extends Controller {
         renderJson(orderListMap); 
     }
     
-    //异步刷新字表
+  //异步刷新字表
     public void tableList(){
     	String order_id = getPara("order_id");
+    	String type = getPara("type");
+    	
     	List<Record> list = null;
-    	list = getCustomPlanOrderItems(order_id);
-
-    	Map BillingOrderListMap = new HashMap();
-        BillingOrderListMap.put("sEcho", 1);
-        BillingOrderListMap.put("iTotalRecords", list.size());
-        BillingOrderListMap.put("iTotalDisplayRecords", list.size());
-
-        BillingOrderListMap.put("aaData", list);
-
-        renderJson(BillingOrderListMap); 
+    	list = getItems(order_id,type);
+    	
+    	Map map = new HashMap();
+        map.put("sEcho", 1);
+        map.put("iTotalRecords", list.size());
+        map.put("iTotalDisplayRecords", list.size());
+        map.put("aaData", list);
+        renderJson(map); 
     }
    
     
@@ -221,6 +225,51 @@ public class CustomPlanOrderController extends Controller {
     	Record rec = order.toRecord();
     	rec.set("job_order_id", id);
     	renderJson(rec);
+    }
+    
+  //上传相关文档
+    @Before(Tx.class)
+    public void uploadDocFile(){
+    	String order_id = getPara("order_id");
+    	List<UploadFile> fileList = getFiles("doc");
+    	
+		for (int i = 0; i < fileList.size(); i++) {
+    		File file = fileList.get(i).getFile();
+    		String fileName = file.getName();
+    		
+			Record r = new Record();
+			r.set("order_id", order_id);
+			r.set("uploader", LoginUserController.getLoginUserId(this));
+			r.set("doc_name", fileName);
+			r.set("upload_time", new Date());
+			Db.save("custom_plan_order_doc",r);
+		}
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("result", true);
+    	renderJson(resultMap);
+    }
+    
+    //删除相关文档
+    @Before(Tx.class)
+    public void deleteDoc(){
+    	String id = getPara("docId");
+    	Record r = Db.findById("custom_plan_order_doc",id);
+    	String fileName = r.getStr("doc_name");
+    	Map<String,Object> resultMap = new HashMap<String,Object>();
+    	
+    	String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\doc\\"+fileName;
+    	
+        File file = new File(filePath);
+        if (file.exists() && file.isFile()) {
+            boolean result = file.delete();
+            Db.delete("custom_plan_order_doc",r);
+            resultMap.put("result", result);
+        }else{
+        	Db.delete("custom_plan_order_doc",r);
+        	resultMap.put("result", "文件不存在可能已被删除!");
+        }
+        renderJson(resultMap);
     }
     
 
