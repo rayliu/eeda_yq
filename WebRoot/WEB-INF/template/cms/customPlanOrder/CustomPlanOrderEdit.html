@@ -148,10 +148,12 @@
                     </div>
                     <div class="row"><!--  第6行  -->    
                          <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
+                            <%include("/eeda/component/form/inputDropListField.html", 
 				                                {   id:'export_country', 
 				                                    label:'(出口)目的国', 
-				                                    value:order.export_country!''
+				                                    value:order.export_country!'',
+                                                    display_value:order.export_country_name!'',
+                                                    url: '/location/searchCountry'
 				                                }){}%>
                          </div>
                         <div class="col-lg-4">
@@ -172,10 +174,12 @@
                     </div>
                     <div class="row"><!--  第7行  -->    
                          <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
+                            <%include("/eeda/component/form/inputDropListField.html", 
 			                                {   id:'import_country', 
 			                                    label:'(进口)启运国', 
-			                                    value:order.import_country!''
+			                                    value:order.import_country!'',
+                                                display_value:order.import_country_name!'',
+                                                url: '/location/searchCountry'
 			                                }){}%>
                          </div>
                         <div class="col-lg-4">
@@ -187,11 +191,13 @@
 					                       }){}%>
                          </div>
                          <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputField.html", 
-		                                 {   id:'trade_country', 
-		                                     label:'贸易国', 
-		                                     value:order.trade_country!''
-		                                 }){}%>
+                            <%include("/eeda/component/form/inputDropListField.html", 
+		                        {   id:'trade_country', 
+		                            label:'贸易国', 
+		                            value:order.trade_country!'',
+                                    display_value:order.trade_country_name!'',
+                                    url: '/location/searchCountry'
+		                        }){}%>
                         </div>
                     </div>
                     <br><br>
