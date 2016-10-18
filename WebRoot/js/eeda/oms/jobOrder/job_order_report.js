@@ -40,9 +40,6 @@ $(document).ready(function() {
     	if($('#ocean_notify_party_info').val()==''){
     		alert+='通知人备注<br><br>';
     	}
-    	if($('#mbl_no').val()==''){
-    		alert+='MBL号码<br><br>';
-    	}
     	if($('#vessel').val()==''){
     		alert+='船名<br><br>';
     	}
