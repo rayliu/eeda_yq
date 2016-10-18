@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import models.ParentOfficeModel;
 import models.Party;
@@ -348,20 +349,26 @@ public class JobOrderController extends Controller {
             return;
         
         Map<String, String> recMap=shipment_detail.get(0);
-        Long creator_id = LoginUserController.getLoginUserId(this);
+    	for (Entry<String, String> entry : recMap.entrySet()) { 
+			String value = entry.getValue();
+    		if(StringUtils.isEmpty(value)){
+                value=null;
+            }
+    	}
+    	Long creator_id = LoginUserController.getLoginUserId(this);
+    	String shipper = recMap.get("shipper");
+    	String consignee = recMap.get("consignee");
+    	String notify_party = recMap.get("notify_party");
+    	String por = recMap.get("por");
+    	String pol = recMap.get("pol");
+    	String pod = recMap.get("pod");
+    	String fnd = recMap.get("fnd");
+    	String booking_agent = recMap.get("booking_agent");
+    	String carrier = recMap.get("carrier");
+    	String head_carrier = recMap.get("head_carrier");
+    	String oversea_agent = recMap.get("oversea_agent");
+    	String release_type = recMap.get("release_type");
         
-        String shipper = recMap.get("shipper")==""?null:recMap.get("shipper");
-        String consignee = recMap.get("consignee")==""?null:recMap.get("consignee");
-        String notify_party = recMap.get("notify_party")==""?null:recMap.get("notify_party");
-        String por = recMap.get("por");
-        String pol = recMap.get("pol");
-        String pod = recMap.get("pod");
-        String fnd = recMap.get("fnd");
-        String booking_agent = recMap.get("booking_agent");
-        String carrier = recMap.get("carrier");
-        String head_carrier = recMap.get("head_carrier");
-        String oversea_agent = recMap.get("oversea_agent");
-        String release_type = recMap.get("release_type");
         if(por!=null&&!"".equals(por)){
         	 savePortQueryHistory(por);
         }
