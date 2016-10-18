@@ -219,9 +219,9 @@ $(document).ready(function(){
 	//点击保存按钮时，将用户网点和用户可见客户的值传到后台中
 	$("#saveBtn").click(function(){
 		//检测验证是否通过
-		if(!$("#leadsForm").valid()){
-			return false;
-		}
+//		if(!$('#leadsForm').valid()){
+//			return false;
+//		}
 		var officeIds=[];
 		var customerIds=[];
 		$("select[name='officeSelect']").each(function(){
