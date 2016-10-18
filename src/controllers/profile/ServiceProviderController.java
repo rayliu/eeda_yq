@@ -616,5 +616,17 @@ public class ServiceProviderController extends Controller {
         }
         rec = Db.find(sql);
         renderJson(rec);
-    } 
+    }
+    
+    //查询贸易方式下拉列表
+    public void searchSupervisionMethod(){
+        String name = getPara("input");
+        List<Record> rec = null;
+        String sql = "select * from supervision_method s where 1=1 ";
+        if(!StringUtils.isBlank(name)){
+            sql+=" and s.name like '%" + name + "%' ";
+        }
+        rec = Db.find(sql + " limit 10");
+        renderJson(rec);
+    }
 }
