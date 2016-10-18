@@ -23,8 +23,8 @@ $(document).ready(function() {
     
     
     //常用海运信息模版
-    $('#usedAirInfo').on('click', 'li', function(){
-        var li = $(this);
+    $('#usedAirInfo').on('click', '.selectAirTemplate', function(){
+    	var li = $(this).parent().parent();
         $('#shipper_input').val(li.attr('shipper_abbr'));
         $('#shipper_info').val(li.attr('shipper_info'));
         $('#shipper').val(li.attr('shipper_id'));
@@ -43,6 +43,22 @@ $(document).ready(function() {
     $('#collapseAirInfo').on('hide.bs.collapse', function () {
       $('#collapseAirIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
     });
+    
+    $('.deleteAirTemplate').click(function(e) {
+    	$(this).attr('disabled', true);
+    	e.preventDefault();
+    	var li = $(this).parent().parent();
+    	var id = li.attr('id');
+    	$.post('/jobOrder/deleteAirTemplate', {id:id}, function(data){
+    		$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+    		$(this).attr('disabled', false);
+    		li.css("display","none");
+    	},'json').fail(function() {
+    		$(this).attr('disabled', false);
+            $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+        });
+    })
+    
     
 } );
 });

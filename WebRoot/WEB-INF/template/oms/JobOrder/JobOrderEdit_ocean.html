@@ -40,7 +40,8 @@
         <div class="panel-body">
             <ul id="usedOceanInfo" class="usedOceanInfo">
               <%for(userInfo in usedOceanInfo![]){%>
-                    <li shipper_id="${userInfo.shipper}"
+                    <li id="${userInfo.id}"
+                        shipper_id="${userInfo.shipper}"
                         shipper_abbr="${userInfo.shipperAbbr}"
                         shipper_info="${userInfo.shipper_info}"
                         consignee_id="${userInfo.consignee}"
@@ -69,14 +70,14 @@
                         release_type="${userInfo.release_type}" 
                         >
                       <div class="radio">
-                        <a href="#" style="margin-right: 10px;padding-top: 6px;float: left;">删除</a>
-                        <label>
+                        <a class="deleteOceanTemplate" href="#" style="margin-right: 10px;padding-top: 6px;float: left;">删除</a>
+                        <label class="selectOceanTemplate">
                             <input type="radio" value="1" name="usedOceanInfo" style="margin-top: 0px;">
                             <span>Shipper:${userInfo.shipperAbbr}, Consignee:${userInfo.consigneeAbbr}, NotifyParty: ${userInfo.notify_partyAbbr}</span><br>
                             <span class="port">POR:${userInfo.por_name}, POL:${userInfo.pol_name}, POD:${userInfo.pod_name}，FND:${userInfo.fnd_name}</span> 
                         </label>
                       </div>
-                    </li>
+                   </li>
               <%}%>
             </ul>
         </div>

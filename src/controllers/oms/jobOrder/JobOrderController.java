@@ -1069,6 +1069,19 @@ public class JobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
+    //删除海运常用信息模版
+    public void deleteOceanTemplate(){
+    	String id = getPara("id");
+    	Db.update("delete from job_order_ocean_template where id = ?",id);
+    	renderJson("{\"result\":true}");
+    }
+    //删除空运常用信息模版
+    public void deleteAirTemplate(){
+    	String id = getPara("id");
+    	Db.update("delete from job_order_air_template where id = ?",id);
+    	renderJson("{\"result\":true}");
+    }
+    
     
    
 }

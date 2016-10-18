@@ -65,8 +65,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         });
 
         //常用海运信息模版
-        $('#usedOceanInfo').on('click', 'li', function(){
-            var li = $(this);
+        $('#usedOceanInfo').on('click', '.selectOceanTemplate', function(){
+            var li = $(this).parent().parent();
             $('#ocean_shipper_input').val(li.attr('shipper_abbr'));
             $('#ocean_shipper_info').val(li.attr('shipper_info'));
             $('#ocean_shipper').val(li.attr('shipper_id'));
@@ -109,6 +109,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           $('#collapseOceanIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
         });
         
+        $('.deleteOceanTemplate').click(function(e) {
+        	$(this).attr('disabled', true);
+        	e.preventDefault();
+        	var li = $(this).parent().parent();
+        	var id = li.attr('id');
+        	$.post('/jobOrder/deleteOceanTemplate', {id:id}, function(data){
+        		$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+        		$(this).attr('disabled', false);
+        		li.css("display","none");
+        	},'json').fail(function() {
+        		$(this).attr('disabled', false);
+                $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+            });
+        })
         
         
     });

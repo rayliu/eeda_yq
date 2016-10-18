@@ -14,7 +14,8 @@
         <div class="panel-body">
             <ul id="usedAirInfo" class="usedAirInfo">
               <%for(userInfo in usedAirInfo![]){%>
-                    <li shipper_id="${userInfo.shipper}"
+                    <li id="${userInfo.id}"
+                        shipper_id="${userInfo.shipper}"
                         shipper_abbr="${userInfo.shipperAbbr}"
                         shipper_info="${userInfo.shipper_info}"
                         consignee_id="${userInfo.consignee}"
@@ -26,7 +27,8 @@
                         booking_agent="${userInfo.booking_agent}" 
                         booking_agent_name="${userInfo.booking_agent_name}" >
                       <div class="radio">
-                        <label>
+                        <a class="deleteAirTemplate" href="#" style="margin-right: 10px;padding-top: 6px;float: left;">删除</a>
+                        <label class="selectAirTemplate">
                             <input type="radio" value="1" name="usedAirInfo" style="margin-top: 0px;">
                             <span>Shipper:${userInfo.shipperAbbr}, Consignee:${userInfo.consigneeAbbr}, NotifyParty: ${userInfo.notify_partyAbbr}</span><br>
                         </label>
