@@ -83,7 +83,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	$('#refuseBtn').attr('disabled',true);
 		}
     	
-        //------------save
+        //------------save保存
         $('#saveBtn').click(function(e){
             //阻止a 的默认响应行为，不需要跳转
             e.preventDefault();
@@ -91,25 +91,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             if(!$("#customForm").valid()){
                 return;
             }
-            
             $(this).attr('disabled', true);
-            
             
        //获取页面数据，构造json 
             var items_array = salesOrder.buildCargoDetail();
         	var order = {};
         	order['id'] = $('#order_id').val();
         	order['note'] = $('#note').val();
+        	order['status'] = $('#status').val()==""?"新建":$('#status').val();
         	var customForm = $('#customForm input,#customForm select,#customForm textarea');
         	for(var i = 0; i < customForm.length; i++){
         		var name = customForm[i].id;
             	var value =customForm[i].value;
             if(name){
-            	if(name=="status"){
-            		value =customForm[i].value==""?"新建":customForm[i].value;
-            	}
             		order[name] = value;
-            	
         	  }
         	}
         	order['item_list'] = items_array;

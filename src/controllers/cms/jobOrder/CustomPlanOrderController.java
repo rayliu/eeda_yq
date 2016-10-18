@@ -116,7 +116,12 @@ public class CustomPlanOrderController extends Controller {
     
     public void edit() {
     	String id = getPara("id");
-    	CustomPlanOrder customPlanOrder = CustomPlanOrder.dao.findById(id);
+    	String sql = "select cpo.*,l.name export_country_name,l1.name import_country_name,l2.name trade_country_name"
+    			+ " from custom_plan_order cpo "
+    			+ " left join location l on l.id=cpo.export_country"
+    			+ " left join location l1 on l1.id=cpo.import_country"
+    			+ " left join location l2 on l2.id=cpo.trade_country";
+    	CustomPlanOrder customPlanOrder = CustomPlanOrder.dao.findFirst(sql);
     	setAttr("order", customPlanOrder);
     	setAttr("itemList", getItems(id,"cargo"));
     	setAttr("docList", getItems(id,"doc"));
