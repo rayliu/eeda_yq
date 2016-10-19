@@ -88,54 +88,108 @@
 
 <form id = "shipmentForm">
     <div class="form-group">  <!--  form row  -->
+      <h4>MBL联系人信息</h4>
         <div class="row">
         	
             <div class="col-lg-4"><!--  三列排版  -->
             <% 
-                var ocean_shippe = '365dfrs256';
+                var ocean_MBLshippe = '365dfrs256';
                 if(boolOcean){
-                	ocean_shippe = 'ocean_shipper';
+                	ocean_MBLshippe = 'ocean_MBLshipper';
                 }
                  %>  
                 <%include("/eeda/component/form/inputSelectArea.html", 
-                    {   id:ocean_shippe, 
-                        label:'发货人Shipper', 
-                        display_value:shipment.shipperAbbr!'',
-                        value:shipment.shipper!'',
-                        textarea_value:shipment.shipper_info!'',
+                    {   id:ocean_MBLshippe, 
+                        label:'发货人MBLShipper', 
+                        display_value:shipment.MBLshipperAbbr!'',
+                        value:shipment.MBLshipper!'',
+                        textarea_value:shipment.MBLshipper_info!'',
                         disabled:disableStr
                     }){}%>
             </div>
             <div class="col-lg-4"><!--  三列排版  -->
             <% 
-                var ocean_consignee = '458dsfs454';
+                var ocean_MBLconsignee = '458dsfs454';
                 if(boolOcean){
-                	ocean_consignee = 'ocean_consignee';
+                	ocean_MBLconsignee = 'ocean_MBLconsignee';
                 }
                  %>
                 <%include("/eeda/component/form/inputSelectArea.html", 
-                    {   id:ocean_consignee, 
-                        label:'收货人Consignee', 
-                        display_value:shipment.consigneeAbbr!'',
-                        value:shipment.consignee!'',
-                        textarea_value:shipment.consignee_info!'',
+                    {   id:ocean_MBLconsignee, 
+                        label:'收货人MBLConsignee', 
+                        display_value:shipment.MBLconsigneeAbbr!'',
+                        value:shipment.MBLconsignee!'',
+                        textarea_value:shipment.MBLconsignee_info!'',
                         disabled:disableStr
                     }){}%>
             </div>
             <div class="col-lg-4">
             <% 
-                var ocean_notify_party = '458dsfs454';
+                var ocean_MBLnotify_party = '458dsfs454';
                 if(boolOcean){
-                	ocean_notify_party = 'ocean_notify_party';
+                	ocean_MBLnotify_party = 'ocean_MBLnotify_party';
                 }
                  %>
                 <%include("/eeda/component/form/inputSelectArea.html", 
                     {
-                        id:ocean_notify_party, 
-                        label:'通知人NotifyParty', 
-                        display_value:shipment.notify_partyAbbr!'',
-                        value:shipment.notify_party!'',
-                        textarea_value:shipment.notify_party_info!'',
+                        id:ocean_MBLnotify_party, 
+                        label:'通知人MBLNotifyParty', 
+                        display_value:shipment.MBLnotify_partyAbbr!'',
+                        value:shipment.MBLnotify_party!'',
+                        textarea_value:shipment.MBLnotify_party_info!'',
+                        disabled:disableStr
+                    }){} %>
+           </div>
+        </div>
+      <h4>HBL联系人信息</h4>
+        <div class="row">
+        	
+            <div class="col-lg-4"><!--  三列排版  -->
+            <% 
+                var ocean_HBLshippe = '365dfrs256';
+                if(boolOcean){
+                	ocean_HBLshippe = 'ocean_HBLshipper';
+                }
+                 %>  
+                <%include("/eeda/component/form/inputSelectArea.html", 
+                    {   id:ocean_HBLshippe, 
+                        label:'发货人HBLShipper', 
+                        display_value:shipment.HBLshipperAbbr!'',
+                        value:shipment.HBLshipper!'',
+                        textarea_value:shipment.HBLshipper_info!'',
+                        disabled:disableStr
+                    }){}%>
+            </div>
+            <div class="col-lg-4"><!--  三列排版  -->
+            <% 
+                var ocean_HBLconsignee = '458dsfs454';
+                if(boolOcean){
+                	ocean_HBLconsignee = 'ocean_HBLconsignee';
+                }
+                 %>
+                <%include("/eeda/component/form/inputSelectArea.html", 
+                    {   id:ocean_HBLconsignee, 
+                        label:'收货人HBLConsignee', 
+                        display_value:HBLshipment.consigneeAbbr!'',
+                        value:shipment.HBLconsignee!'',
+                        textarea_value:shipment.HBLconsignee_info!'',
+                        disabled:disableStr
+                    }){}%>
+            </div>
+            <div class="col-lg-4">
+            <% 
+                var ocean_HBLnotify_party = '458dsfs454';
+                if(boolOcean){
+                	ocean_HBLnotify_party = 'ocean_HBLnotify_party';
+                }
+                 %>
+                <%include("/eeda/component/form/inputSelectArea.html", 
+                    {
+                        id:ocean_HBLnotify_party, 
+                        label:'通知人HBLNotifyParty', 
+                        display_value:shipment.HBLnotify_partyAbbr!'',
+                        value:shipment.HBLnotify_party!'',
+                        textarea_value:shipment.HBLnotify_party_info!'',
                         disabled:disableStr
                     }){} %>
            </div>

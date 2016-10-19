@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import models.ParentOfficeModel;
 import models.Party;
@@ -612,13 +611,13 @@ public class JobOrderController extends Controller {
     private Record getItemDetail(String id,String type){
     	Record re = null;
     	if("shipment".equals(type)){
-    		re = Db.findFirst("select jos.*, p1.abbr shipperAbbr , p2.abbr consigneeAbbr, p3.abbr notify_partyAbbr, p4.abbr carrier_name,"
+    		re = Db.findFirst("select jos.*, p1.abbr MBLshipperAbbr , p2.abbr MBLconsigneeAbbr, p3.abbr MBLnotify_partyAbbr, p4.abbr carrier_name,"
     				+ " p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name,"
     				+ " lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name,lo4.name hub_name"
     				+ " from job_order_shipment jos "
-    				+ " left join party p1 on p1.id=jos.shipper"
-    				+ " left join party p2 on p2.id=jos.consignee"
-    				+ " left join party p3 on p3.id=jos.notify_party"
+    				+ " left join party p1 on p1.id=jos.MBLshipper"
+    				+ " left join party p2 on p2.id=jos.MBLconsignee"
+    				+ " left join party p3 on p3.id=jos.MBLnotify_party"
     				+ " left join party p4 on p4.id=jos.carrier"
     				+ " left join party p5 on p5.id=jos.head_carrier"
     				+ " left join party p6 on p6.id=jos.oversea_agent"
