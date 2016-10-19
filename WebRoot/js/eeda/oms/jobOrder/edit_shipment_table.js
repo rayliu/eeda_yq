@@ -214,6 +214,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                 vgmInput.val('');
             }
     	});
+        
+        $('#ocean_cargo_table').on('keyup','[name=vgm]',function(){
+        	var vgm = 1;
+        	$('#ocean_cargo_table [name=vgm]').each(function(){
+        		var val = this.value;
+            	if(val!=''&&!isNaN(val)){
+            		vgm *= val;
+            	}
+            })
+            if(vgm==1){
+            	vgm = '';
+            }
+            $('#vgm').val(vgm);
+        })
+        
 
     });
 });
