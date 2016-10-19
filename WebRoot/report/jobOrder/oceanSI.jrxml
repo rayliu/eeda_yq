@@ -305,7 +305,7 @@ where jos.order_id=$P{order_id}]]>
 			<staticText>
 				<reportElement style="table" x="228" y="154" width="326" height="60" uuid="08fa7460-07b4-409a-b9a5-f1a82d0fb017"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[  备注：]]></text>
 			</staticText>
