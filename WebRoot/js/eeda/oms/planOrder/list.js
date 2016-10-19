@@ -25,7 +25,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 	              { "data": "TYPE",
                     "render": function ( data, type, full, meta ) {
                       var str = '';
-                      if(data == '出口柜货'){
+                      if(data == '出口散货'){
+                    	str = '出口散货'; 
+                      }else if(data == '出口柜货'){
                         str = '出口柜货'; 
                       }else if(data == '进口柜货'){
                         str = '进口柜货';
