@@ -170,7 +170,7 @@
                 <%include("/eeda/component/form/inputSelectArea.html", 
                     {   id:ocean_HBLconsignee, 
                         label:'收货人HBLConsignee', 
-                        display_value:HBLshipment.consigneeAbbr!'',
+                        display_value:shipment.HBLconsigneeAbbr!'',
                         value:shipment.HBLconsignee!'',
                         textarea_value:shipment.HBLconsignee_info!'',
                         disabled:disableStr
@@ -553,7 +553,8 @@
            	 <button id="printOceanHBL" class="btn btn-success"  disableStr>生成HBL PDF</button>
            	 <button id="printOceanWord" class="btn btn-success" disableStr>生成电放保函  Word</button>
            	 <button id="printOceanBooking" class="btn btn-success" disableStr>生成booking PDF</button>
-           	 <button id="printOceanSI" class="btn btn-success" disableStr>生成SI PDF</button>
+           	 <button id="printOceanSI" class="btn btn-success" disableStr>生成SI MBLPDF</button>
+           	 <button id="printOceanHBLSI" class="btn btn-success" disableStr>生成SI HBLPDF</button>
            	 
 			 <button id="oceanHeadDetailBtn" class="btn btn-success" disableStr>生成头程资料 PDF</button>
            	 <a data-target='#oceanHeadDetail' data-toggle='modal'>
@@ -572,7 +573,8 @@
            	 <button id="printOceanHBL" class="btn btn-success"  disableStr>生成HBL PDF</button>
            	 <button id="printOceanWord" class="btn btn-success" disableStr>生成电放保函  Word</button>
            	 <button id="printOceanBooking" class="btn btn-success" disableStr>生成booking PDF</button>
-           	 <button id="printOceanSI" class="btn btn-success" disableStr>生成SI PDF</button>
+           	 <button id="printOceanSI" class="btn btn-success" disableStr>生成SI MBLPDF</button>
+           	 <button id="printOceanHBLSI" class="btn btn-success" disableStr>生成SI HBLPDF</button>
            	 
 			 <button id="oceanHeadDetailBtn" class="btn btn-success" disableStr>生成头程资料 PDF</button>
            	 <a data-target='#oceanHeadDetail' data-toggle='modal'>

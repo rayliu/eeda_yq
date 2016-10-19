@@ -18,26 +18,26 @@ $(document).ready(function() {
     	}); 
 	})
 	
-	//生成海运SI
+	//生成海运MBLSI
 	$('#printOceanSI').click(function(){
 		//数据不足提示
     	var alert = '';
-    	if($('#ocean_shipper_input').val()==''){
+    	if($('#ocean_MBLshipper_input').val()==''){
     		alert+='发货人Shipper<br><br>';
     	}
-    	if($('#ocean_shipper_info').val()==''){
+    	if($('#ocean_MBLshipper_info').val()==''){
     		alert+='发货人备注<br><br>';
     	}
-    	if($('#ocean_consignee_input').val()==''){
+    	if($('#ocean_MBLconsignee_input').val()==''){
     		alert+='收货人Consignee<br><br>';
     	}
-    	if($('#ocean_consignee_info').val()==''){
+    	if($('#ocean_MBLconsignee_info').val()==''){
     		alert+='收货人备注<br><br>';
     	}
-    	if($('#ocean_notify_party_input').val()==''){
+    	if($('#ocean_MBLnotify_party_input').val()==''){
     		alert+='通知人NotifyParty<br><br>';
     	}
-    	if($('#ocean_notify_party_info').val()==''){
+    	if($('#ocean_MBLnotify_party_info').val()==''){
     		alert+='通知人备注<br><br>';
     	}
     	if($('#vessel').val()==''){
@@ -77,12 +77,79 @@ $(document).ready(function() {
 		    		    
 		                       });
 		    		  }else{
-		               $.scojs_message('生成海运SI PDF失败', $.scojs_message.TYPE_ERROR);
+		               $.scojs_message('生成海运MBLSI PDF失败', $.scojs_message.TYPE_ERROR);
 		               }
 		    	}); 
     	}
 		
 	})
+	    //生成海运HBLSI
+		$('#printOceanHBLSI').click(function(){
+		//数据不足提示
+    	var alert = '';
+    	if($('#ocean_HBLshipper_input').val()==''){
+    		alert+='发货人Shipper<br><br>';
+    	}
+    	if($('#ocean_HBLshipper_info').val()==''){
+    		alert+='发货人备注<br><br>';
+    	}
+    	if($('#ocean_HBLconsignee_input').val()==''){
+    		alert+='收货人Consignee<br><br>';
+    	}
+    	if($('#ocean_HBLconsignee_info').val()==''){
+    		alert+='收货人备注<br><br>';
+    	}
+    	if($('#ocean_HBLnotify_party_input').val()==''){
+    		alert+='通知人NotifyParty<br><br>';
+    	}
+    	if($('#ocean_HBLnotify_party_info').val()==''){
+    		alert+='通知人备注<br><br>';
+    	}
+    	if($('#vessel').val()==''){
+    		alert+='船名<br><br>';
+    	}
+    	if($('#voyage').val()==''){
+    		alert+='航次<br><br>';
+    	}
+    	if($('#por').val()==''){
+    		alert+='收货港 POR<br><br>';
+    	}
+    	if($('#pol').val()==''){
+    		alert+='装货港 POL<br><br>';
+    	}
+    	if($('#pod').val()==''){
+    		alert+='卸货港 POD<br><br>';
+    	}
+    	if($('#fnd').val()==''){
+    		alert+='目的地 FND<br><br>';
+    	}
+    	if($('#ocean_shipping_mark').val()==''){
+    		alert+='唛头 <br><br>';
+    	}
+    	if($('#ocean_cargo_desc').val()==''){
+    		alert+='货物描述 ';
+    	}
+    	
+		if(alert!=''){
+			$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
+			$('#pdfAlert').click();
+		}else{
+		    	var order_id = $("#order_id").val();
+		    	$.post('/jobOrderReport/printOceanHBLSI', {order_id:order_id}, function(data){
+		    		if(data){
+		                window.open(data);
+		                $.post('/jobOrder/siflag', {order_id:order_id}, function(data){
+		    		    
+		                       });
+		    		  }else{
+		               $.scojs_message('生成海运HBLSI PDF失败', $.scojs_message.TYPE_ERROR);
+		               }
+		    	}); 
+    	}
+		
+	})
+	
+	
 	//生成海运HBL PDF
     $('#printOceanHBL').click(function(){
     	//数据不足提示

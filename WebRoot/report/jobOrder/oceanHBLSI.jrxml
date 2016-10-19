@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -409,21 +409,21 @@ where jos.order_id=$P{order_id}]]>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{MBLshipper_info}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{HBLshipper_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="8" y="104" width="220" height="50" uuid="1cdee3b1-2b77-41e7-8ccb-303f5e043348"/>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{MBLconsignee_info}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{HBLconsignee_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="9" y="165" width="214" height="49" uuid="e62cd012-c33f-4a68-8182-01d1cbdd37b2"/>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{MBLnotify_party_info}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{HBLnotify_party_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="262" y="34" width="229" height="15" uuid="847eee4d-73de-4736-baf8-3dc8c7e146a9"/>

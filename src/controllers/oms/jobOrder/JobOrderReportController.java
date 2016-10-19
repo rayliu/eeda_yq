@@ -74,7 +74,20 @@ public class JobOrderReportController extends Controller {
 		
 		String order_id = getPara("order_id");
 		String fileName = "/report/jobOrder/oceanSI.jasper";
-		String outFileName = "/download/工作单海运SI";
+		String outFileName = "/download/工作单海运MBLSI";
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_id;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
+	
+	public void printOceanHBLSI() {
+		
+		String order_id = getPara("order_id");
+		String fileName = "/report/jobOrder/oceanHBLSI.jasper";
+		String outFileName = "/download/工作单海运HBLSI";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
 		fileName = getContextPath() + fileName;
