@@ -3,12 +3,10 @@ $(document).ready(function() {
 
 	var deletedTableIds=[];
     //删除一行
-    $("#air_table").on('click', '.delete', function(e){
-        e.preventDefault();
+    $("#air_table").on('click', '.delete', function(){
         var tr = $(this).parent().parent();
+        tr.css("display","none");
         deletedTableIds.push(tr.attr('id'))
-        
-        cargoTable.row(tr).remove().draw();
     }); 
     
     itemOrder.buildAirItem=function(){

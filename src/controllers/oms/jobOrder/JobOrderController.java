@@ -278,6 +278,16 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
 		DbUtils.handleList(doc_list, id, JobOrderDoc.class, "order_id");
 
+		//贸易
+		List<Map<String, String>> trade_detail = (ArrayList<Map<String, String>>)dto.get("trade_detail");
+		DbUtils.handleList(trade_detail,"job_order_trade",id,"order_id");
+		List<Map<String, String>> trade_cost_list = (ArrayList<Map<String, String>>)dto.get("trade_cost");
+		DbUtils.handleList(trade_cost_list,"job_order_trade_cost",id,"order_id");
+		List<Map<String, String>> trade_service_list = (ArrayList<Map<String, String>>)dto.get("trade_service");
+		DbUtils.handleList(trade_service_list,"job_order_trade_charge_service",id,"order_id");
+		List<Map<String, String>> trade_sale_list = (ArrayList<Map<String, String>>)dto.get("trade_sale");
+		DbUtils.handleList(trade_sale_list,"job_order_trade_charge_sale",id,"order_id");
+
 		long creator = jobOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
    		
@@ -287,6 +297,7 @@ public class JobOrderController extends Controller {
    		r.set("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
    		r.set("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
    		r.set("shipment", getItemDetail(id,"shipment"));
+   		r.set("trade", getItemDetail(id,"trade"));
     	r.set("air", getItemDetail(id,"air"));
    		r.set("insurance", getItemDetail(id,"insure"));
    		
@@ -637,6 +648,12 @@ public class JobOrderController extends Controller {
     				+ " left join party p3 on p3.id=joa.notify_party"
     				+ " left join party p4 on p4.id=joa.booking_agent"
     				+ " where order_id=?", id);
+    	}else if("trade".equals(type)){
+	    	re = Db.findFirst("select jot.*,p.abbr cost_company_abbr,p1.abbr charge_service_company_abbr,p2.abbr charge_sale_company_abbr from job_order_trade jot"
+	    			+ " left join party p on p.id=jot.cost_company "
+	    			+ " left join party p1 on p.id=jot.charge_service_company "
+	    			+ " left join party p2 on p.id=jot.charge_sale_company "
+	    			+ " where order_id=?", id);
     	}
 		return re;
     }
@@ -690,6 +707,15 @@ public class JobOrderController extends Controller {
 	    }else if("mail".equals(type)){
 	    	itemSql = "select * from job_order_sendMail where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
+	    }else if("trade_cost".equals(type)){
+	    	itemSql = "select * from job_order_trade_cost where order_id=? order by id";
+	    	itemList = Db.find(itemSql, orderId);
+	    }else if("trade_sale".equals(type)){
+	    	itemSql = "select * from job_order_trade_charge_sale where order_id=? order by id";
+	    	itemList = Db.find(itemSql, orderId);
+	    }else if("trade_service".equals(type)){
+	    	itemSql = "select * from job_order_trade_charge_service where order_id=? order by id";
+	    	itemList = Db.find(itemSql, orderId);
 	    }
 		return itemList;
 	}
@@ -704,24 +730,25 @@ public class JobOrderController extends Controller {
     	setAttr("usedOceanInfo", getUsedOceanInfo());
     	setAttr("shipmentList", getItems(id,"shipment"));
     	setAttr("shipment", getItemDetail(id,"shipment"));
-
     	//获取空运运明细表信息
     	setAttr("usedAirInfo", getUsedAirInfo());
     	setAttr("airList", getItems(id,"air"));
     	setAttr("cargoDescList", getItems(id,"cargoDesc"));
     	setAttr("air", getItemDetail(id,"air"));
-    	
     	//获取陆运明细表信息
     	setAttr("landList", getItems(id,"land"));
+    	//贸易
+    	setAttr("trade", getItemDetail(id,"trade"));
+    	setAttr("trade_cost_list", getItems(id,"trade_cost"));
+    	setAttr("trade_charge_service_list", getItems(id,"trade_service"));
+    	setAttr("trade_charge_sale_list", getItems(id,"trade_sale"));
     	
     	//报关
     	setAttr("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
    		setAttr("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
    		setAttr("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
-    	
     	//保险
     	setAttr("insurance", getItemDetail(id,"insure"));
-    	
     	//获取费用明细
     	setAttr("chargeList", getItems(id,"charge"));
     	setAttr("costList", getItems(id,"cost"));
@@ -730,19 +757,15 @@ public class JobOrderController extends Controller {
     	//邮件记录
     	setAttr("mailList", getItems(id,"mail"));
     	setAttr("emailTemplateInfo", getEmailTemplateInfo());
-
     	//客户回显
     	Party party = Party.dao.findById(jobOrder.get("customer_id"));
     	setAttr("party", party);
-    	
     	//工作单创建人
     	long creator = jobOrder.getLong("creator");
     	UserLogin user = UserLogin.dao.findById(creator);
     	setAttr("user", user);
-    	
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
-    	
     	//海运头程资料
    		setAttr("oceanHead", Db.findFirst("select * from job_order_shipment_head where order_id = ?",id));
     	  

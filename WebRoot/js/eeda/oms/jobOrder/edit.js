@@ -1,7 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'jq_blockui',
     './edit_shipment_table','./edit_shipment_detail','./edit_land_table', './edit_charge_table','./edit_cost_table',
     './edit_air_table', './edit_air_cargoDesc_table', './edit_air_detail','./edit_custom_detail',
-    './edit_insurance_detail','./edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report'], function ($, metisMenu) {
+    './edit_insurance_detail','./edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report',
+    './edit_trade_cost_table', './edit_trade_charge_sale_table', './edit_trade_charge_service_table','./edit_trade_detail'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
@@ -176,7 +177,13 @@ $(document).ready(function() {
         order.charge_list = charge_list;
         order.chargeCost_list = chargeCost_list;
         //相关文档
-        order.doc_list = itemOrder.buildDocItem();
+        order.doc_list = eeda.buildTableDetail("doc_table","");
+        
+        //贸易
+        order.trade_detail = itemOrder.buildTradeDetail();
+        order.trade_cost = itemOrder.buildTradeCostItem();
+        order.trade_service = itemOrder.buildTradeServiceItem();
+        order.trade_sale = itemOrder.buildTradeSaleItem();
        
         //异步向后台提交数据
         $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
@@ -202,6 +209,7 @@ $(document).ready(function() {
                 $("#shipment_id").val(order.SHIPMENT.ID);
                 $("#insurance_id").val(order.INSURANCE.ID);
                 $("#air_id").val(order.AIR.ID);
+                $("#trade_id").val(order.TRADE.ID);
                 
                 $("#fileuploadSpan").show();
                 $("#sendEmail").show();
@@ -216,6 +224,9 @@ $(document).ready(function() {
                 itemOrder.refleshLandItemTable(order.ID);
                 itemOrder.refleshChargeTable(order.ID);
                 itemOrder.refleshCostTable(order.ID);
+                itemOrder.refleshTradeCostItemTable(order.ID);
+                itemOrder.refleshTradeServiceItemTable(order.ID);
+                itemOrder.refleshTradeSaleItemTable(order.ID);
                 $.unblockUI();
             }else{
                 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);

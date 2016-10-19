@@ -28,41 +28,6 @@ $(document).ready(function() {
          });
     }); 
 
-    
-    itemOrder.buildDocItem=function(){
-        var cargo_table_rows = $("#doc_table tr");
-        var cargo_items_array=[];
-        for(var index=0; index<cargo_table_rows.length; index++){
-            if(index==0)
-                continue;
-
-            var row = cargo_table_rows[index];
-            var empty = $(row).find('.dataTables_empty').text();
-            if(empty)
-            	continue;
-            
-            var id = $(row).attr('id');
-            if(!id){
-                id='';
-            }
-            
-            var item={}
-            item.id = id;
-            for(var i = 1; i < row.childNodes.length; i++){
-            	var el = $(row.childNodes[i]).find('input, select');
-            	var name = el.attr('name');
-            	if(el && name){
-                	var value = el.val();
-                	item[name] = value;
-            	}
-            }
-            item.action = id.length > 0?'UPDATE':'CREATE';
-            cargo_items_array.push(item);
-        }
-
-        return cargo_items_array;
-    };
-    
     //------------事件处理,文档table
     var docTable = eeda.dt({
         id: 'doc_table',

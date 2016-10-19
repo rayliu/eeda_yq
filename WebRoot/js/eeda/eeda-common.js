@@ -468,15 +468,18 @@ eeda.refreshUrl = refreshUrl;
         }
 
         //add deleted items
-        for(var index=0; index<deletedTableIds.length; index++){
-            var id = deletedTableIds[index];
-            var item={
-                id: id,
-                action: 'DELETE'
-            };
-            items_array.push(item);
+        if(deletedTableIds!=''){
+        	
+        	for(var index=0; index<deletedTableIds.length; index++){
+        		var id = deletedTableIds[index];
+        		var item={
+        				id: id,
+        				action: 'DELETE'
+        		};
+        		items_array.push(item);
+        	}
+        	deletedTableIds = [];
         }
-        deletedTableIds = [];
         return items_array;
     };
     

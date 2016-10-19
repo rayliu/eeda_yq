@@ -1,6 +1,11 @@
 <div class="form-group" >
 	<div id="${id}_div" class="input-append date">
-        <label class="search-label">${label!''}
+        <%if(inline!true){%>
+        <label class="search-label">
+         <%}else{%>
+        <label>
+         <%}%>
+        ${label!''}
         <%if(required!'' =='required'){%>
         <span style='color:red; display:initial;'>*</span>
    		<%}%>

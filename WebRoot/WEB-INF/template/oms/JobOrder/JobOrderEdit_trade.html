@@ -1,88 +1,76 @@
 
-            <input type="hidden" id="land_id" value="${land.id!''}">
+            <input type="hidden" id="trade_id" value="${trade.id!''}">
+            <form id="tradeForm">
             <div class="form-group">  <!--  form row  -->
+                    <div class="col-lg-12">
+                        <h3>应付费用</h3>
+                    </div>
                     <div class="row">
-                        <div class="col-lg-4"><!--  三列排版  -->
-                            <%include("/eeda/component/form/inputSelectArea.html", 
-                                {   id:'ocean_shipper', 
-                                    label:'供应商', 
-                                    display_value:shipment.shipperAbbr!'',
-                                    value:shipment.shipper!'',
-                                    textarea_value:shipment.shipper_info!''
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'cost_contract_number', 
+                                    label:'合同号', 
+                                    value:trade.cost_contract_number!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'cost_currency', 
+                                    label:'结算币制', 
+                                    value:trade.cost_currency!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'cost_rate', 
+                                    label:'结算汇率', 
+                                    value:trade.cost_rate!''
                                 }){}%>
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputSelectArea.html", 
+                                {   id:'cost_company', 
+                                    label:'供应商', 
+                                    display_value:trade.cost_company_abbr!'',
+                                    textarea_value:trade.cost_company_info!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/dateInputField.html", 
+                                {   id:'cost_set_out_date', 
+                                    label:'出货日期', 
+                                    value:trade.cost_set_out_date!''
+                                }){}%>
+                        </div>
+                     </div>
+                    <div class="row">
                         <div class="table_row">
                             <div class="col-lg-12">
-                                <h3>应付费用</h3>
-                            </div>
-                            <div class="col-lg-12">
-                                <button class="btn btn-success btn-xs" id="add_land">添加明细</button>
+                                <button class="btn btn-success btn-xs" id="add_trade_cost_table">添加明细</button>
                                 <br>
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
-                                        id:'land3_table',
-                                        style:'width:4800px',
-                                        headers:[
-                                            '<input id="allCheckOfLand" type="checkbox" style="width:30px">',
-                                            '',
-                                            '', 
-                                            '', 
-                                            '收卸货类型', 
-                                            '运输公司', 
-                                            '运单号', 
-                                            '司机', 
-                                            '司机电话', 
-                                            '车型',
-                                            '车牌',
-                                            '发货人',
-                                            '发货人电话', 
-                                            '发货地点',
-                                            '收货人',
-                                            '收货人电话', 
-                                            '收货地点', 
-                                            '预约到达时间', 
-                                            '货品描述',
-                                            '件数',
-                                            '毛重(KG)',
-                                            '体积(CBM)',
-                                            '运输及时间要求',
-                                            '签收文件描述', 
-                                            '签收状态',
-                                            'TRANSPORT_COMPANY_NAME',
-                                            'CONSIGNOR_NAME', 
-                                            'CONSIGNEE_NAME'],
+                                        id:'trade_cost_table',
+                                        style:'width:2100px',
+                                        headers:['商品名称','规格型号','数量','单价','国内货值(CNY)','增值税','退税率','退税金额','总价差异','单价差异','调整后单价','调整后总价','退税金额'],
                                         field_list:[
-                                            'id',
-                                            '',
-                                            'id', 
-                                            'doc_name',
-                                            'unload_type', 
-                                            'transport_company', 
-                                            'trans_no', 
-                                            'driver',
-                                            'driver_tel',
-                                            'truck_type',
-                                            'car_no',
-                                            'consignor',
-                                            'consignor_phone',
-                                            'take_address',
-                                            'consignee',
-                                            'consignee_phone',
-                                            'delivery_address',
-                                            'eta',
-                                            'cargo_desc',
-                                            'pieces',
-                                            'gross_weight',
-                                            'volume',
-                                            'required_time_remark',
-                                            'doc_name',
-                                            'sign_status',
-                                            'TRANSPORT_COMPANY_NAME',
-                                            'CONSIGNOR_NAME', 
-                                            'CONSIGNEE_NAME'],
-                                        value_list: landList![]
+                                        'commodity_name',
+										'specification_model',
+										'number',
+										'price',
+										'domestic_price',
+										'value_added_tax',
+										'tax_refund_rate',
+										'tax_refund_amount',
+										'',
+										'',
+										'adjusted_unit_price',
+										'adjusted_total_price',
+										'adjusted_tax_refund_amount'
+                                            ],
+                                        value_list: trade_cost_list![]
                                     }){} %>
                             </div>
                         </div>
@@ -90,72 +78,41 @@
                             <div class="col-lg-12">
                                 <h3>应收服务费用</h3>
                             </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                       <%include("/eeda/component/form/inputCustomerField.html", 
+		                                {
+		                                    id:'charge_service_company', 
+		                                    label:'结算公司', 
+		                                    value:trade.charge_service_company!'',
+		                                    display_value:trade.charge_service_company_abbr!''
+		                                }){} %>
+                                </div>
+                                <div class="col-lg-4">
+                                    <%include("/eeda/component/form/inputField.html", 
+                                        {   id:'charge_service_currency', 
+                                            label:'结算币制', 
+                                            value:trade.charge_service_currency!''
+                                        }){}%>
+                                </div>
+                                <div class="col-lg-4">
+                                    <%include("/eeda/component/form/inputField.html", 
+                                        {   id:'charge_service_rate', 
+                                            label:'结算汇率', 
+                                            value:trade.charge_service_rate!''
+                                        }){}%>
+                                </div>
+                            </div>
                             <div class="col-lg-12">
-                                <button class="btn btn-success btn-xs" id="add_land">添加明细</button>
+                                <button class="btn btn-success btn-xs" id="add_charge_service_table">添加明细</button>
                                 <br>
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
-                                        id:'land1_table',
-                                        style:'width:4800px',
-                                        headers:[
-                                            '<input id="allCheckOfLand" type="checkbox" style="width:30px">',
-                                            '',
-                                            '', 
-                                            '', 
-                                            '收卸货类型', 
-                                            '运输公司', 
-                                            '运单号', 
-                                            '司机', 
-                                            '司机电话', 
-                                            '车型',
-                                            '车牌',
-                                            '发货人',
-                                            '发货人电话', 
-                                            '发货地点',
-                                            '收货人',
-                                            '收货人电话', 
-                                            '收货地点', 
-                                            '预约到达时间', 
-                                            '货品描述',
-                                            '件数',
-                                            '毛重(KG)',
-                                            '体积(CBM)',
-                                            '运输及时间要求',
-                                            '签收文件描述', 
-                                            '签收状态',
-                                            'TRANSPORT_COMPANY_NAME',
-                                            'CONSIGNOR_NAME', 
-                                            'CONSIGNEE_NAME'],
-                                        field_list:[
-                                            'id',
-                                            '',
-                                            'id', 
-                                            'doc_name',
-                                            'unload_type', 
-                                            'transport_company', 
-                                            'trans_no', 
-                                            'driver',
-                                            'driver_tel',
-                                            'truck_type',
-                                            'car_no',
-                                            'consignor',
-                                            'consignor_phone',
-                                            'take_address',
-                                            'consignee',
-                                            'consignee_phone',
-                                            'delivery_address',
-                                            'eta',
-                                            'cargo_desc',
-                                            'pieces',
-                                            'gross_weight',
-                                            'volume',
-                                            'required_time_remark',
-                                            'doc_name',
-                                            'sign_status',
-                                            'TRANSPORT_COMPANY_NAME',
-                                            'CONSIGNOR_NAME', 
-                                            'CONSIGNEE_NAME'],
-                                        value_list: landList![]
+                                        id:'charge_service_table',
+                                        style:'width:400px',
+                                        headers:['费用名称','金额'],
+                                        field_list:['fee_name','fee_amount'],
+                                        value_list: trade_charge_service_list![]
                                     }){} %>
                             </div>
                         </div>
@@ -163,74 +120,57 @@
                             <div class="col-lg-12">
                                 <h3>销售应收费用</h3>
                             </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputCustomerField.html", 
+                                        {
+                                            id:'charge_sale_company', 
+                                            label:'结算公司', 
+                                            value:trade.charge_sale_company!'',
+                                            display_value:trade.charge_sale_company_abbr!''
+                                        }){} %>
+                                </div>
+                                <div class="col-lg-4">
+                                    <%include("/eeda/component/form/inputField.html", 
+                                        {   id:'charge_sale_currency', 
+                                            label:'结算币制', 
+                                            value:trade.charge_sale_currency!''
+                                        }){}%>
+                                </div>
+                                <div class="col-lg-4">
+                                    <%include("/eeda/component/form/inputField.html", 
+                                        {   id:'charge_sale_rate', 
+                                            label:'结算汇率', 
+                                            value:trade.charge_sale_rate!''
+                                        }){}%>
+                                </div>
+                                <div class="col-lg-4">
+                                    <%include("/eeda/component/form/dateInputField.html", 
+                                        {   id:'charge_sale_set_out_date', 
+                                            label:'出货日期', 
+                                            value:trade.charge_sale_set_out_date!''
+                                        }){}%>
+                                </div>
+                            </div>
                             <div class="col-lg-12">
-                                <button class="btn btn-success btn-xs" id="add_land">添加明细</button>
+                                <button class="btn btn-success btn-xs" id="add_trade_sale_table">添加明细</button>
                                 <br>
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
-                                        id:'land2_table',
-                                        style:'width:4800px',
-                                        headers:[
-                                            '<input id="allCheckOfLand" type="checkbox" style="width:30px">',
-                                            '',
-                                            '', 
-                                            '', 
-                                            '收卸货类型', 
-                                            '运输公司', 
-                                            '运单号', 
-                                            '司机', 
-                                            '司机电话', 
-                                            '车型',
-                                            '车牌',
-                                            '发货人',
-                                            '发货人电话', 
-                                            '发货地点',
-                                            '收货人',
-                                            '收货人电话', 
-                                            '收货地点', 
-                                            '预约到达时间', 
-                                            '货品描述',
-                                            '件数',
-                                            '毛重(KG)',
-                                            '体积(CBM)',
-                                            '运输及时间要求',
-                                            '签收文件描述', 
-                                            '签收状态',
-                                            'TRANSPORT_COMPANY_NAME',
-                                            'CONSIGNOR_NAME', 
-                                            'CONSIGNEE_NAME'],
+                                        id:'trade_sale_table',
+                                        style:'width:1320px',
+                                        headers:['商品名称','规格型号','数量(PCS)','单价','出口货值','备注'],
                                         field_list:[
-                                            'id',
-                                            '',
-                                            'id', 
-                                            'doc_name',
-                                            'unload_type', 
-                                            'transport_company', 
-                                            'trans_no', 
-                                            'driver',
-                                            'driver_tel',
-                                            'truck_type',
-                                            'car_no',
-                                            'consignor',
-                                            'consignor_phone',
-                                            'take_address',
-                                            'consignee',
-                                            'consignee_phone',
-                                            'delivery_address',
-                                            'eta',
-                                            'cargo_desc',
-                                            'pieces',
-                                            'gross_weight',
-                                            'volume',
-                                            'required_time_remark',
-                                            'doc_name',
-                                            'sign_status',
-                                            'TRANSPORT_COMPANY_NAME',
-                                            'CONSIGNOR_NAME', 
-                                            'CONSIGNEE_NAME'],
-                                        value_list: landList![]
+                                        'commodity_name',
+										'specification_model',
+										'number',
+										'price',
+										'export_amout',
+										'remark'],
+                                        value_list: trade_charge_sale_list![]
                                     }){} %>
                             </div>
                         </div>
                     </div>
             </div><!-- /.row -->
+            </form>
