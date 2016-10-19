@@ -492,7 +492,7 @@ NON-NEGOTIABLE]]></text>
 				<text><![CDATA[  Marks & Nos.  ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="165" y="328" width="102" height="15" uuid="86285e0a-ba49-46c4-9a67-d24e59a9b64d"/>
+				<reportElement x="163" y="328" width="109" height="15" uuid="86285e0a-ba49-46c4-9a67-d24e59a9b64d"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
