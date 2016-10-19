@@ -361,9 +361,12 @@ public class JobOrderController extends Controller {
         Map<String, String> recMap=shipment_detail.get(0);
     	
     	Long creator_id = LoginUserController.getLoginUserId(this);
-    	String shipper = recMap.get("shipper");
-    	String consignee = recMap.get("consignee");
-    	String notify_party = recMap.get("notify_party");
+    	String MBLshipper = recMap.get("MBLshipper");
+    	String MBLconsignee = recMap.get("MBLconsignee");
+    	String MBLnotify_party = recMap.get("MBLnotify_party");
+    	String HBLshipper = recMap.get("HBLshipper");
+    	String HBLconsignee = recMap.get("HBLconsignee");
+    	String HBLnotify_party = recMap.get("HBLnotify_party");
     	String por = recMap.get("por");
     	String pol = recMap.get("pol");
     	String pod = recMap.get("pod");
@@ -389,20 +392,31 @@ public class JobOrderController extends Controller {
         	 savePortQueryHistory(fnd);
         }
         
-        if(shipper == null &&consignee==null &&notify_party == null &&por == null &&pol == null &&pod == null
+        if(MBLshipper == null &&MBLconsignee==null &&MBLnotify_party == null&&
+        		HBLshipper == null &&HBLconsignee==null &&HBLnotify_party == null
+        		&&por == null &&pol == null &&pod == null
         		&&fnd == null &&booking_agent==null&&carrier==null&&head_carrier==null&&oversea_agent==null)
                return;
         
         String sql = "select 1 from job_order_ocean_template where"
                 + " creator_id = "+creator_id;
-        if(StringUtils.isNotEmpty(shipper)){
-        	sql+=" and shipper="+shipper;
+        if(StringUtils.isNotEmpty(MBLshipper)){
+        	sql+=" and MBLshipper="+MBLshipper;
         }
-        if(StringUtils.isNotEmpty(consignee)){
-        	sql+=" and consignee="+consignee;
+        if(StringUtils.isNotEmpty(MBLconsignee)){
+        	sql+=" and MBLconsignee="+MBLconsignee;
         }
-        if(StringUtils.isNotEmpty(notify_party)){
-        	sql+=" and notify_party="+notify_party;
+        if(StringUtils.isNotEmpty(MBLnotify_party)){
+        	sql+=" and MBLnotify_party="+MBLnotify_party;
+        }
+        if(StringUtils.isNotEmpty(HBLshipper)){
+        	sql+=" and HBLshipper="+HBLshipper;
+        }
+        if(StringUtils.isNotEmpty(HBLconsignee)){
+        	sql+=" and HBLconsignee="+HBLconsignee;
+        }
+        if(StringUtils.isNotEmpty(HBLnotify_party)){
+        	sql+=" and HBLnotify_party="+HBLnotify_party;
         }
         if(StringUtils.isNotEmpty(por)){
         	sql+=" and por="+por;
@@ -442,9 +456,12 @@ public class JobOrderController extends Controller {
         if(checkRec==null){
             Record r= new Record();
             r.set("creator_id", creator_id);
-            r.set("shipper", shipper);
-            r.set("consignee", consignee);
-            r.set("notify_party", notify_party);
+            r.set("MBLshipper", MBLshipper);
+            r.set("MBLconsignee", MBLconsignee);
+            r.set("MBLnotify_party", MBLnotify_party);
+            r.set("HBLshipper", HBLshipper);
+            r.set("HBLconsignee", HBLconsignee);
+            r.set("HBLnotify_party", HBLnotify_party);
             r.set("por", por);
             r.set("pol", pol);
             r.set("pod", pod);
@@ -653,10 +670,15 @@ public class JobOrderController extends Controller {
     				+ " left join party p4 on p4.id=joa.booking_agent"
     				+ " where order_id=?", id);
     	}else if("trade".equals(type)){
-	    	re = Db.findFirst("select jot.*,p.abbr cost_company_abbr,p1.abbr charge_service_company_abbr,p2.abbr charge_sale_company_abbr from job_order_trade jot"
+	    	re = Db.findFirst("select jot.*,p.abbr cost_company_abbr,p1.abbr charge_service_company_abbr,p2.abbr charge_sale_company_abbr,"
+	    			+ " c.name cost_currency_name, c1.name charge_service_currency_name, c2.name charge_sale_currency_name"
+	    			+ " from job_order_trade jot"
 	    			+ " left join party p on p.id=jot.cost_company "
-	    			+ " left join party p1 on p.id=jot.charge_service_company "
-	    			+ " left join party p2 on p.id=jot.charge_sale_company "
+	    			+ " left join party p1 on p1.id=jot.charge_service_company "
+	    			+ " left join party p2 on p2.id=jot.charge_sale_company "
+	    			+ " left join currency c on c.id=jot.cost_currency"
+	    			+ " left join currency c1 on c1.id=jot.charge_service_currency"
+	    			+ " left join currency c2 on c2.id=jot.charge_sale_currency"
 	    			+ " where order_id=?", id);
     	}
 		return re;
