@@ -68,13 +68,9 @@ public class ServiceProviderController extends Controller {
             Record rec = Db.findFirst(sqlTotal); 
             logger.debug("total records:" + rec.getLong("total"));
 
-            String sql = "select p.*, l.name,trim(concat(l2.name, ' ', l1.name,' ',l.name)) as dname from party p "
-//                    + "left join contact c on p.contact_id=c.id "
-                    + "left join location l on l.code=p.location "
-                    + "left join location  l1 on l.pcode =l1.code "
-                    + "left join location l2 on l1.pcode = l2.code "
-                    + "left join office o on o.id = p.office_id "
-                    + "where p.type='"+Party.PARTY_TYPE_SERVICE_PROVIDER+"' and (o.id = " + parentID + " or o.belong_office = " + parentID + ")  " + sLimit;
+            String sql = " select p.*, null name,(select get_loc_full_name(p.location)) as dname from party p "
+                    + " left join office o on o.id = p.office_id "
+                    + " where p.type='"+Party.PARTY_TYPE_SERVICE_PROVIDER+"' and (o.id = " + parentID + " or o.belong_office = " + parentID + ")  " + sLimit;
             List<Record> customers = Db.find(sql);
             
             Map customerListMap = new HashMap();
