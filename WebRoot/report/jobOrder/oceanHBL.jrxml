@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="643"/>
+	<property name="ireport.y" value="355"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -478,7 +478,7 @@ NON-NEGOTIABLE]]></text>
 				<text><![CDATA[FOR DELIVERY OF GOODS PLEASE APPLY TO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="328" width="137" height="15" uuid="7d45dcd3-44ff-4ca3-8ec8-5a396ae2f299"/>
+				<reportElement x="16" y="328" width="137" height="15" uuid="7d45dcd3-44ff-4ca3-8ec8-5a396ae2f299"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
@@ -492,21 +492,21 @@ NON-NEGOTIABLE]]></text>
 				<text><![CDATA[  Marks & Nos.  ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="157" y="328" width="98" height="15" uuid="86285e0a-ba49-46c4-9a67-d24e59a9b64d"/>
+				<reportElement x="167" y="328" width="98" height="15" uuid="86285e0a-ba49-46c4-9a67-d24e59a9b64d"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<text><![CDATA[  Number&Kind of pkgs]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="259" y="328" width="124" height="29" uuid="f96eb501-490d-42c4-adc7-d78f333eb1e2"/>
+				<reportElement x="267" y="328" width="124" height="29" uuid="f96eb501-490d-42c4-adc7-d78f333eb1e2"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<text><![CDATA[Description of pkgs & goods:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="380" y="328" width="93" height="15" uuid="09b40c83-82c1-4946-8978-26baa4f87700"/>
+				<reportElement x="387" y="328" width="90" height="15" uuid="09b40c83-82c1-4946-8978-26baa4f87700"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
@@ -809,7 +809,7 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{shipping_mark}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="263" y="357" width="120" height="138" uuid="efcca246-ec09-48a8-87a0-3be004d0249e"/>
+				<reportElement x="272" y="357" width="120" height="138" uuid="efcca246-ec09-48a8-87a0-3be004d0249e"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
