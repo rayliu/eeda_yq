@@ -37,25 +37,25 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<detail>
-		<band height="20">
+		<band height="30">
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="156" height="20" uuid="89d8254b-b3a6-4a3c-98ac-9cd9e0a3426e"/>
+				<reportElement x="0" y="0" width="156" height="30" uuid="89d8254b-b3a6-4a3c-98ac-9cd9e0a3426e"/>
 				<textFieldExpression><![CDATA[$F{CN_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="354" y="0" width="96" height="20" uuid="164e8956-d15c-46bf-a09e-2ddbfd4fed72"/>
+				<reportElement x="354" y="0" width="96" height="30" uuid="164e8956-d15c-46bf-a09e-2ddbfd4fed72"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="158" y="0" width="79" height="20" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
+				<reportElement x="158" y="0" width="79" height="30" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="460" y="0" width="63" height="20" uuid="c408bb39-3bf9-4e1a-9515-ec416b4c03bb"/>
+				<reportElement x="460" y="0" width="63" height="30" uuid="c408bb39-3bf9-4e1a-9515-ec416b4c03bb"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{volume}]]></textFieldExpression>
 			</textField>
