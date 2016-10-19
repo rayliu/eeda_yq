@@ -780,7 +780,7 @@ public class JobOrderController extends Controller {
                 + " LEFT JOIN location lo1 on lo1.id = t.pol"
                 + " LEFT JOIN location lo2 on lo2.id = t.pod"
                 + " LEFT JOIN location lo3 on lo3.id = t.fnd"
-                + " where t.creator_id=?", LoginUserController.getLoginUserId(this));
+                + " where t.creator_id=? order by t.id", LoginUserController.getLoginUserId(this));
         return list;
     }
     //常用空运信息
@@ -797,7 +797,7 @@ public class JobOrderController extends Controller {
     			+ " left join party p2 on p2.id= t.consignee"
     			+ " left join party p3 on p3.id= t.notify_party"
     			+ " left join party p7 on p7.id=t.booking_agent"
-    			+ " where t.creator_id=?", LoginUserController.getLoginUserId(this));
+    			+ " where t.creator_id=? order by t.id", LoginUserController.getLoginUserId(this));
     	return list;
     }
     
