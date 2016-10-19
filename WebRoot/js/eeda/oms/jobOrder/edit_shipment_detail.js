@@ -67,15 +67,25 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         //常用海运信息模版
         $('#usedOceanInfo').on('click', '.selectOceanTemplate', function(){
             var li = $(this).parent().parent();
-            $('#ocean_shipper_input').val(li.attr('shipper_abbr'));
-            $('#ocean_shipper_info').val(li.attr('shipper_info'));
-            $('#ocean_shipper').val(li.attr('shipper_id'));
-            $('#ocean_consignee_input').val(li.attr('consignee_abbr'));
-            $('#ocean_consignee_info').val(li.attr('consignee_info'));
-            $('#ocean_consignee').val(li.attr('consignee_id'));
-            $('#ocean_notify_party_input').val(li.attr('notify_abbr'));
-            $('#ocean_notify_party_info').val(li.attr('notify_info'));
-            $('#ocean_notify_party').val(li.attr('notify_id'));
+            $('#ocean_HBLshipper_input').val(li.attr('HBLshipper_abbr'));
+            $('#ocean_HBLshipper_info').val(li.attr('HBLshipper_info'));
+            $('#ocean_HBLshipper').val(li.attr('HBLshipper_id'));
+            $('#ocean_HBLconsignee_input').val(li.attr('HBLconsignee_abbr'));
+            $('#ocean_HBLconsignee_info').val(li.attr('HBLconsignee_info'));
+            $('#ocean_HBLconsignee').val(li.attr('HBLconsignee_id'));
+            $('#ocean_HBLnotify_party_input').val(li.attr('HBLnotify_abbr'));
+            $('#ocean_HBLnotify_party_info').val(li.attr('HBLnotify_info'));
+            $('#ocean_HBLnotify_party').val(li.attr('HBLnotify_id'));
+            
+            $('#ocean_MBLshipper_input').val(li.attr('MBLshipper_abbr'));
+            $('#ocean_MBLshipper_info').val(li.attr('MBLshipper_info'));
+            $('#ocean_MBLshipper').val(li.attr('MBLshipper_id'));
+            $('#ocean_MBLconsignee_input').val(li.attr('MBLconsignee_abbr'));
+            $('#ocean_MBLconsignee_info').val(li.attr('MBLconsignee_info'));
+            $('#ocean_MBLconsignee').val(li.attr('MBLconsignee_id'));
+            $('#ocean_MBLnotify_party_input').val(li.attr('MBLnotify_abbr'));
+            $('#ocean_MBLnotify_party_info').val(li.attr('MBLnotify_info'));
+            $('#ocean_MBLnotify_party').val(li.attr('MBLnotify_id'));
             $('#por_input').val(li.attr('por_name'));
             $('#por').val(li.attr('por_id'));
             $('#pol_input').val(li.attr('pol_name'));
