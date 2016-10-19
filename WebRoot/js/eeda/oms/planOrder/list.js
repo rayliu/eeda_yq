@@ -71,6 +71,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       $('#searchBtn').click(function(){
           searchData(); 
       })
+      
+      if(type!=""){
+    	  $('#orderTabs').css('display','none');
+      }
 
      var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 

@@ -16,8 +16,8 @@
       var boolInsur = true;//editPermission || oceanPermission;
       var disableStr = (boolOcean==true?'':'disabled');
     %>
+<%if(boolOcean){%>
 <div class="panel panel-default">
-  <%if(boolOcean){%>
     <div class="panel-heading">
         <h4 class="panel-title">
             <a data-toggle="collapse" data-parent="#accordion" href="#collapseOceanInfo" aria-expanded="false" class="collapsed">
@@ -27,7 +27,8 @@
         </h4>
     </div>
   <%}else{%>
-    <div class="panel-heading" style="display:none">
+<div class="panel panel-default" style="display:none">
+    <div class="panel-heading" >
         <h4 class="panel-title">
             <a data-toggle="collapse" data-parent="#accordion" href="#collapseOceanInfo" aria-expanded="false" class="collapsed">
             <i id='collapseOceanIcon' class="fa 
@@ -35,6 +36,7 @@
             </a>
         </h4>
     </div>
+
   <%}%> 
     <div id="collapseOceanInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
         <div class="panel-body">

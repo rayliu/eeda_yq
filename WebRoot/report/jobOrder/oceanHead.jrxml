@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHead" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="199"/>
+	<property name="ireport.y" value="348"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -11,14 +11,14 @@
      jos.*,josi.*,josh.*,p.company_name head_company,p1.company_name carrier_company,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
 (select GROUP_CONCAT(CN_no SEPARATOR '  ;  ') from
 (SELECT
-	CONCAT(josi.container_no,' / ',josi.seal_no) CN_no
+	CONCAT(josi.container_no,'/',container_type,'/',josi.seal_no) CN_no
 FROM
 	job_order_shipment_item josi left join job_order_shipment jos on jos.order_id=josi.order_id
 where josi.order_id=$P{order_id}
 GROUP BY
 	CN_no
 ) A
-) CN_SN
+) CN_SN,(SELECT CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage from job_order_shipment jos WHERE jos.order_id=$P{order_id}) Vessel_voyage
 
 FROM job_order_shipment jos
 left join job_order_shipment_item josi on josi.order_id=jos.order_id
@@ -253,6 +253,7 @@ where jos.order_id=$P{order_id}]]>
 	<field name="pod_name" class="java.lang.String"/>
 	<field name="fnd_name" class="java.lang.String"/>
 	<field name="CN_SN" class="java.lang.String"/>
+	<field name="Vessel_voyage" class="java.lang.String"/>
 	<columnHeader>
 		<band height="802" splitType="Stretch">
 			<line>
@@ -417,18 +418,11 @@ where jos.order_id=$P{order_id}]]>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="154" y="444" width="172" height="20" uuid="41a49fc8-ddc1-4a04-9954-4f9a7653061f"/>
+				<reportElement x="154" y="444" width="353" height="20" uuid="41a49fc8-ddc1-4a04-9954-4f9a7653061f"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{vessel}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="335" y="444" width="100" height="20" uuid="1bdc045a-6675-4744-a48c-aa1a976f4971"/>
-				<textElement verticalAlignment="Middle">
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{route}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Vessel_voyage}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="154" y="485" width="172" height="20" uuid="71c92c9f-2e28-48eb-ac7f-95e9cc8d01da"/>
@@ -521,7 +515,7 @@ where jos.order_id=$P{order_id}]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="27" y="642" width="498" height="95" uuid="a700f889-2aea-4018-9bef-ba4d64d25170"/>
 				<textElement>
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{head_remark}]]></textFieldExpression>
 			</textField>

@@ -1,5 +1,6 @@
 ﻿<%layout("/eeda/layout.html"){%>
 <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
+
  <div id="page-wrapper">
     
     <div class="row">
@@ -57,7 +58,28 @@
                                         </fieldset>
                                     </div>
                               </div>
-                             
+                             <div class="row">
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>企业类型</label>
+                                             <% if(party.id==""){%>
+                                             <select  class="form-control" id="company_type" name="company_type" type="text" >
+                                            	<option ></option>
+                                                <option value="生产" ></option>
+                                                <option value="贸易" >贸易</option>  
+                                             </select>   
+                                             <%}else{%> 
+                                             <select  class="form-control" id="company_type" name="company_type" type="text" >
+                                                <option ></option>
+                                                <option value="生产" <% if(party.company_type=='生产'){%>selected<% }%>>生产</option>
+                                                <option value="贸易" <% if(party.company_type=='贸易'){%>selected<% }%>>贸易</option>  
+                                             </select> 
+                                            <% }%> 
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                </div> 
 
                                     <!-- /.col-lg-6 (even) 偶数列-->
                                 <div class="row">                                    
@@ -237,12 +259,13 @@
 <%}%>
 
 <script>
+ var company_name = '${party.company_name!''}';
+if(company_name){
+	document.title = company_name +' | '+document.title;
+}
+</script>
+<script>
 requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/profile/customer/edit']);
     });
-</script>
-<script>
-if('${party.company_name!''}'){
-	document.title = '${party.company_name!''}'+' | '+document.title;
-}
 </script>
