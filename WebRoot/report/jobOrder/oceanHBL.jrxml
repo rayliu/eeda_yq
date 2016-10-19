@@ -492,7 +492,7 @@ NON-NEGOTIABLE]]></text>
 				<text><![CDATA[  Marks & Nos.  ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="167" y="328" width="98" height="15" uuid="86285e0a-ba49-46c4-9a67-d24e59a9b64d"/>
+				<reportElement x="165" y="328" width="102" height="15" uuid="86285e0a-ba49-46c4-9a67-d24e59a9b64d"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
@@ -506,14 +506,14 @@ NON-NEGOTIABLE]]></text>
 				<text><![CDATA[Description of pkgs & goods:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="387" y="328" width="90" height="15" uuid="09b40c83-82c1-4946-8978-26baa4f87700"/>
+				<reportElement x="388" y="328" width="90" height="15" uuid="09b40c83-82c1-4946-8978-26baa4f87700"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<text><![CDATA[  Gross Weight(kgs.)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="475" y="328" width="75" height="15" uuid="cc5416b5-e464-4c4f-aa60-0908d9c6ddae"/>
+				<reportElement x="476" y="328" width="75" height="15" uuid="cc5416b5-e464-4c4f-aa60-0908d9c6ddae"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
