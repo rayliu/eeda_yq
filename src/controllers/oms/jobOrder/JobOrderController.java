@@ -363,6 +363,8 @@ public class JobOrderController extends Controller {
     	String head_carrier = recMap.get("head_carrier");
     	String oversea_agent = recMap.get("oversea_agent");
     	String release_type = recMap.get("release_type");
+    	String cargo_desc = recMap.get("cargo_desc");
+    	String shipping_mark = recMap.get("shipping_mark");
         
         if(por!=null&&!"".equals(por)){
         	 savePortQueryHistory(por);
@@ -419,6 +421,13 @@ public class JobOrderController extends Controller {
         if(StringUtils.isNotEmpty(release_type)){
         	sql+=" and release_type='"+release_type+"'";
         }
+        if(StringUtils.isNotEmpty(release_type)){
+        	sql+=" and cargo_desc='"+cargo_desc+"'";
+        }
+        if(StringUtils.isNotEmpty(release_type)){
+        	sql+=" and shipping_mark='"+shipping_mark+"'";
+        }
+      
         Record checkRec = Db.findFirst(sql);
         if(checkRec==null){
             Record r= new Record();
@@ -435,6 +444,8 @@ public class JobOrderController extends Controller {
             r.set("head_carrier", head_carrier);
             r.set("oversea_agent", oversea_agent);
             r.set("release_type", release_type);
+            r.set("cargo_desc", cargo_desc);
+            r.set("shipping_mark", shipping_mark);
             Db.save("job_order_ocean_template", r);
         }
     }
