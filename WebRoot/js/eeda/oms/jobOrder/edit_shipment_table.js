@@ -216,16 +216,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
     	});
         
         $('#ocean_cargo_table').on('keyup','[name=vgm]',function(){
-        	var vgm = 1;
+        	var vgm = 0;
         	$('#ocean_cargo_table [name=vgm]').each(function(){
         		var val = this.value;
             	if(val!=''&&!isNaN(val)){
-            		vgm *= val;
+            		vgm += parseFloat(val);
             	}
             })
-            if(vgm==1){
-            	vgm = '';
-            }
             $('#vgm').val(vgm);
         })
         
