@@ -23,7 +23,8 @@
                             <%include("/eeda/component/form/inputField.html", 
                                                {   id:'ref_no', 
                                                    label:'关联单号', 
-                                                   value:order.ref_no!''
+                                                   value:order.ref_no!jobOrder.order_no!''
+
                                                }){}%>
                         </div>
                         <div class="col-lg-4">
@@ -278,7 +279,7 @@
 			                            style:'width:2300px',
 			                            headers:['','商品编号', '商品名称', '规格', '申报要素', '成交数量', '成交单位','法定数量', 
                                                   '法定单位','单价', '总价', '币制', '征免','IS_GEN_JOB'],
-			                            field_list:['id','','commodity_code','commodity_name', 'standard', 'declare_element', 'transaction_amount',  'transaction_unit',
+			                            field_list:['id','commodity_code','commodity_name', 'standard', 'declare_element', 'transaction_amount',  'transaction_unit',
 			                            'legal_amount','legal_unit', 'price','total_price', 'currency', 'exemption','IS_GEN_JOB'],
 			                            value_list: itemList![]
 			                        }){} %> 

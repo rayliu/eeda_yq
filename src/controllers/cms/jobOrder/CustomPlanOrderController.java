@@ -12,6 +12,7 @@ import java.util.Map;
 import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
 import models.eeda.cms.CustomPlanOrderItem;
+import models.eeda.oms.jobOrder.JobOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -47,6 +48,10 @@ public class CustomPlanOrderController extends Controller {
 	}
 	
     public void create() {
+        String jobId = getPara("jobOrderId");
+        JobOrder jo = JobOrder.dao.findById(jobId);
+        setAttr("jobOrder", jo);
+
         render("/cms/customPlanOrder/CustomPlanOrderEdit.html");
     }
     
