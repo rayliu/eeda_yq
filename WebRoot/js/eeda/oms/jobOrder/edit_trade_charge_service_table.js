@@ -61,7 +61,7 @@ $(document).ready(function() {
 	    id: 'charge_service_table',
 	    autoWidth: false,
 	    columns:[
-            { "data": "FEE_NAME", "width": "180px",
+            { "data": "FEE_NAME", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	var str = '<select name="type" class="form-control search-control" style="width:100px">'
                         +'<option value="海运费" '+(data=='海运费' ? 'selected':'')+'>海运费</option>'
