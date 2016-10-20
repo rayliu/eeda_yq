@@ -57,28 +57,54 @@ $(document).ready(function() {
     };
 
     //------------事件处理
-    var cargoTable = eeda.dt({
+	var bindFieldEvent=function(){	
+	    eeda.bindTableField('charge_service_table','CHARGE_ID','/finItem/search','');
+	};
+
+	var cargoTable = eeda.dt({
 	    id: 'charge_service_table',
 	    autoWidth: false,
+	    drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
+	        bindFieldEvent();
+	        $.unblockUI();
+	    },
 	    columns:[
-            { "data": "FEE_NAME", "width": "80px",
+			{ "width": "30px",
+			    "render": function ( data, type, full, meta ) {
+			    	if(full.AUDIT_FLAG == 'Y'){
+			    		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button> ';
+			    	}else{
+			    		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
+			    	}
+			    }
+			},
+            { "data": "CHARGE_ID","width": "180px",
                 "render": function ( data, type, full, meta ) {
-                	var str = '<select name="type" class="form-control search-control" style="width:100px">'
-                        +'<option value="海运费" '+(data=='海运费' ? 'selected':'')+'>海运费</option>'
-                        +'<option value="空运费" '+(data=='空运费' ? 'selected':'')+'>空运费</option>'
-                        +'<option value="陆运费" '+(data=='陆运费' ? 'selected':'')+'>陆运费</option>'
-                        +'<option value="报关费" '+(data=='报关费' ? 'selected':'')+'>报关费</option>'
-                        +'<option value="拖车费" '+(data=='拖车费' ? 'selected':'')+'>拖车费</option>'
-                        +'<option value="出口代理费" '+(data=='出口代理费' ? 'selected':'')+'>出口代理费</option>'
-                        +'</select>';
-                	return str;
-                }
+                    if(!data)
+                        data='';
+                    var field_html = template('table_dropdown_template',
+                        {
+                            id: 'CHARGE_ID',
+                            value: data,
+                            display_value: full.CHARGE_NAME,
+                            style:'width:200px'
+                        }
+                    );
+                    return field_html;
+              }
             },
             { "data": "FEE_AMOUNT", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="fee_amount" value="'+data+'" class="form-control" style="width:200px"/>';
+                }
+            },
+            { "data": "CHARGE_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
                 }
             }
         ]

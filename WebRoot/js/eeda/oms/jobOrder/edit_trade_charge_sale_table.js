@@ -61,6 +61,15 @@ $(document).ready(function() {
 	    id: 'trade_sale_table',
 	    autoWidth: false,
 	    columns:[
+			{ "width": "30px",
+			    "render": function ( data, type, full, meta ) {
+			    	if(full.AUDIT_FLAG == 'Y'){
+			    		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button> ';
+			    	}else{
+			    		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
+			    	}
+			    }
+			},
             { "data": "COMMODITY_NAME", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)

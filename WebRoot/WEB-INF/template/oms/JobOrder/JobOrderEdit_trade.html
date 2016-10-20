@@ -36,6 +36,7 @@
                             <%include("/eeda/component/form/inputSelectArea.html", 
                                 {   id:'cost_company', 
                                     label:'供应商', 
+                                    value:trade.cost_company!'',
                                     display_value:trade.cost_company_abbr!'',
                                     textarea_value:trade.cost_company_info!''
                                 }){}%>
@@ -55,9 +56,10 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'trade_cost_table',
-                                        style:'width:2860px',
-                                        headers:['商品名称','规格型号','数量','单价','国内货值(CNY)','增值税','退税率','退税金额','总价差异','单价差异','调整后单价','调整后总价','退税金额'],
+                                        style:'width:2910px',
+                                        headers:['','商品名称','规格型号','数量','单价','国内货值(CNY)','增值税','退税率','退税金额','总价差异','单价差异','调整后单价','调整后总价','退税金额'],
                                         field_list:[
+                                        '',
                                         'commodity_name',
 										'specification_model',
 										'number',
@@ -114,9 +116,9 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'charge_service_table',
-                                        style:'width:340px',
-                                        headers:['费用名称','金额'],
-                                        field_list:['fee_name','fee_amount'],
+                                        style:'width:500px',
+                                        headers:['','费用名称','金额',''],
+                                        field_list:['','charge_id','fee_amount','charge_name'],
                                         value_list: trade_charge_service_list![]
                                     }){} %>
                             </div>
@@ -166,9 +168,10 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'trade_sale_table',
-                                        style:'width:1500px',
-                                        headers:['商品名称','规格型号','数量(PCS)','单价','出口货值','备注'],
+                                        style:'width:1550px',
+                                        headers:['','商品名称','规格型号','数量(PCS)','单价','出口货值','备注'],
                                         field_list:[
+                                        '',
                                         'commodity_name',
 										'specification_model',
 										'number',

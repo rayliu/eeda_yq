@@ -740,7 +740,9 @@ public class JobOrderController extends Controller {
 	    	itemSql = "select * from job_order_trade_charge_sale where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("trade_service".equals(type)){
-	    	itemSql = "select * from job_order_trade_charge_service where order_id=? order by id";
+	    	itemSql = "select jotc.*, f.name charge_name from job_order_trade_charge_service jotc"
+	    			+ " left join fin_item f on f.id=jotc.charge_id"
+	    			+ " where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }
 		return itemList;
@@ -1083,9 +1085,7 @@ public class JobOrderController extends Controller {
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
         map.put("iTotalDisplayRecords", list.size());
-
         map.put("aaData", list);
-
         renderJson(map); 
     }
     
