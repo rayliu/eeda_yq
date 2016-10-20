@@ -137,6 +137,13 @@ $(document).ready(function() {
             		return '' ;
             	}
             },
+            { "data": "ADJUSTED_TAX_REFUND_AMOUNT", "width": "180px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="adjusted_tax_refund_amount" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
             { "data": "ADJUSTED_UNIT_PRICE", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
@@ -150,15 +157,7 @@ $(document).ready(function() {
             			data='';
             		return '<input type="text" name="adjusted_total_price" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
-            },
-            { "data": "ADJUSTED_TAX_REFUND_AMOUNT", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="adjusted_tax_refund_amount" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
             }
-           
         ]
     });
 

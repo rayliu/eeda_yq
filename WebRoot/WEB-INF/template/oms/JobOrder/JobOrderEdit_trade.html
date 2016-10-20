@@ -4,6 +4,44 @@
 <div class="form-group">  <!--  form row  -->
              <div class="row">
                     <div class="col-lg-12">
+                        <h3>贸易商品信息</h3>
+                    </div>
+             </div>
+             
+            <div class="row">
+                    <div class="col-lg-12">
+                        <button class="btn btn-success btn-xs" type="button" id="add_trade_cargo_table">添加明细</button>
+                        <br>
+                        <%include("/eeda/component/form/detailTable.html", 
+                            {
+                                id:'trade_cargo_table',
+                                style:'width:3310px',
+                                headers:['','商品名称','规格型号','数量','单价(CNY)','国内货值(CNY)','增值税','退税率','退税金额','总价差异','单价差异','调整后退税金额','调整后单价','调整后总价','单价(USD)','出口货值（USD)'],
+                                field_list:[
+                                '',
+                                'commodity_name',
+                                'specification_model',
+                                'number',
+                                'cny_price',
+                                'cny_domestic_price',
+                                'value_added_tax',
+                                'tax_refund_rate',
+                                'tax_refund_amount',
+                                '',
+                                '',
+                                'adjusted_tax_refund_amount',
+                                'adjusted_unit_price',
+                                'adjusted_total_price',
+                                'usd_price',
+                                'usd_export_amout'
+                                    ],
+                                value_list: trade_cargo_list![]
+                            }){} %>
+                    </div>
+                </div>
+                        
+             <div class="row">
+                    <div class="col-lg-12">
                         <h3>应付费用</h3>
                     </div>
              </div>
@@ -57,7 +95,7 @@
                                     {
                                         id:'trade_cost_table',
                                         style:'width:2910px',
-                                        headers:['','商品名称','规格型号','数量','单价','国内货值(CNY)','增值税','退税率','退税金额','总价差异','单价差异','调整后单价','调整后总价','退税金额'],
+                                        headers:['','商品名称','规格型号','数量','单价','国内货值(CNY)','增值税','退税率','退税金额','总价差异','单价差异','调整后退税金额','调整后单价','调整后总价'],
                                         field_list:[
                                         '',
                                         'commodity_name',
@@ -70,9 +108,9 @@
 										'tax_refund_amount',
 										'',
 										'',
+										'adjusted_tax_refund_amount',
 										'adjusted_unit_price',
-										'adjusted_total_price',
-										'adjusted_tax_refund_amount'
+										'adjusted_total_price'
                                             ],
                                         value_list: trade_cost_list![]
                                     }){} %>
