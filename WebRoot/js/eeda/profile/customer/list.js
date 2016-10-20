@@ -4,21 +4,12 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
     	document.title = '客户查询 | '+document.title;
     	$('#menu_profile').addClass('active').find('ul').addClass('in');
 
-        var dataTable = $('#eeda-table').DataTable({
-            "processing": true,
-            "searching": false,
-            //"serverSide": true,
-            "scrollX": true,
-            "sort":true,
-            //"scrollY": "300px",
-            "scrollCollapse": true,
-            "autoWidth": false,
-            "aLengthMenu": [ [10, 25, 50, 100, 9999999], [10, 25, 50, 100, "All"] ],
-            "language": {
-                "url": "/js/lib/datatables/i18n/Chinese.json"
-            },
-            "ajax": "/customer/list",
-            "columns": [
+        var dataTable = eeda.dt({
+            id: 'eeda-table',
+            paging: true,
+            serverSide: true, //不打开会出现排序不对
+            ajax: "/customer/list",
+            columns: [
                 { "data": "COMPANY_NAME","width": "15%",
                     "render": function ( data, type, full, meta ) {
                         if(Customer.updatePermission){
@@ -32,7 +23,15 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
                 { "data": "CODE"}, 
                 { "data": "CONTACT_PERSON"}, 
                 { "data": "PHONE"}, 
-                { "data": "ADDRESS","width": "15%"}, 
+                { "data": "ADDRESS",
+                    "render": function ( data, type, full, meta ) {
+                        if(data){
+                            return data;
+                        }else{
+                            return full.ADDRESS_ENG;
+                        }
+                    }
+                },
                 { "data": "PAYMENT","width": "25px",
                     "render": function ( data, type, full, meta ) {
                         if(data == "monthlyStatement"){
@@ -42,15 +41,6 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
                          }else{
                              return "现付";
                          }
-                    }
-                },
-                { "data": null,"width": "25px",
-                    "render": function ( data, type, full, meta ) {
-                        if(full.DNAME == null){
-                            return full.NAME;
-                        }else{
-                            return full.DNAME;
-                        }
                     }
                 },
                 { "data": null,
@@ -84,13 +74,13 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
       //条件筛选
     	$("#searchBtn").on('click', function () {    	 	
           	var COMPANY_NAME = $.trim($("#COMPANY_NAME").val());
-          	var CONTACT_PERSON = $.trim($("#CONTACT_PERSON").val());
           	var ABBR = $.trim($("#ABBR").val());	
           	var ADDRESS = $.trim($("#ADDRESS").val());
-          	var LOCATION = $.trim($("#LOCATION").val());
+          	var CONTACT_PERSON = $.trim($("#CONTACT_PERSON").val());
           	var code = $.trim($("#code").val());
-          	var url= "/customer/list?COMPANY_NAME="+COMPANY_NAME+"&CONTACT_PERSON="+CONTACT_PERSON+"&ABBR="+ABBR
-          		+"&ADDRESS="+ADDRESS+"&LOCATION="+LOCATION+"&code="+code;
+          	
+          	var url= "/customer/list?company_name_like="+COMPANY_NAME+"&contact_person_like="+CONTACT_PERSON+"&abbr_like="+ABBR
+          		+"&address_like="+ADDRESS+"&code_like="+code;
           	dataTable.ajax.url(url).load();
           });
     	

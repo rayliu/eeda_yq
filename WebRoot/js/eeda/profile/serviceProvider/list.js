@@ -8,6 +8,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         var dataTable = eeda.dt({
             id: 'eeda-table',
             paging: true,
+            serverSide: true, //不打开会出现排序不对
             ajax: "/serviceProvider/list",
             columns:[
                 { "data": "COMPANY_NAME","width": "15%",
@@ -63,7 +64,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 }, 
                 { "data": "CONTACT_PERSON"}, 
                 { "data": "PHONE"}, 
-                { "data": "ADDRESS", "width": "15%"},
+                { "data": "ADDRESS",
+                    "render": function ( data, type, full, meta ) {
+                        if(data){
+                            return data;
+                        }else{
+                            return full.ADDRESS_ENG;
+                        }
+                    }
+                },
                 { "data": "RECEIPT"},
                 { "data": "PAYMENT",
                     "render": function(data, type, full, meta) {
@@ -73,19 +82,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                              return "到付";
                          }else{
                              return "现付";
-                         }}},
-                { "data":null,
-                    "render": function(data, type, full, meta) {
-                         if(full.DNAME == null){
-                             return full.NAME;
-                         }else{
-                             return full.DNAME;
                          }
-                     }
+                    }
                 },
                 { 
                     "data": null, 
-                    //"width": "8%",  
+                    "width": "10%",
                     "visible":(Provider.isUpdate || Provider.isDel),
                     "render": function(data, type, full, meta) {
                          var str ="<nobr>";
@@ -125,8 +127,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var code = $("#code").val().trim();
           	var ABBR = $("#ABBR").val().trim(); 	
           	var ADDRESS = $("#ADDRESS").val().trim();
-          	var LOCATION = $("#LOCATION").val().trim();
-          	var url = "/serviceProvider/list?COMPANY_NAME="+COMPANY_NAME+"&CONTACT_PERSON="+CONTACT_PERSON+"&code="+code+"&ABBR="+ABBR+"&ADDRESS="+ADDRESS+"&LOCATION="+LOCATION;
+          	var url = "/serviceProvider/list?company_name_like="+COMPANY_NAME+"&contact_person_like="+CONTACT_PERSON+"&code_like="+code+"&abbr_like="+ABBR+"&address_like="+ADDRESS;
           	dataTable.ajax.url(url).load();
         });
 

@@ -57,69 +57,29 @@ public class CustomerController extends Controller {
     }
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_LIST})
     public void list() {
-        String company_name = getPara("COMPANY_NAME");
-        String contact_person = getPara("CONTACT_PERSON");
-//        String receipt = getPara("RECEIPT");
-        String abbr = getPara("ABBR");
-        String address = getPara("ADDRESS");
-        String code = getPara("code");
-        
         Long parentID = pom.getParentOfficeId();
         
         String sLimit = "";
-        String pageIndex = getPara("sEcho");
-        if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
-        	sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql="";
-        String sqlTotal="";
-        String condition="";
-        if (company_name == null && contact_person == null && abbr == null && address == null
-                && code == null) {
+        String sql = " select * from (select p.*,p.id as pid from party p"
+                    + " left join office o on o.id = p.office_id"
+                    + " where p.type='CUSTOMER' and (o.id = " + parentID + " or o.belong_office = " + parentID + ")"
+                    + " ) A where 1=1";
+      
+        String condition = DbUtils.buildConditions(getParaMap());
 
-             sqlTotal = "select count(1) total from party p left join office o on p.office_id = o.id where p.type='CUSTOMER'and (o.id = " + parentID + " or o.belong_office = "+ parentID +")";
-            
-
-             sql = "select p.*,p.id as pid,l.name,trim(concat(l2.name, ' ', l1.name,' ',l.name)) as dname from party p "
-//                    + "left join contact c on p.contact_id=c.id "
-                    + " left join location l on l.code=p.location "
-                    + " left join location  l1 on l.pcode =l1.code "
-                    + " left join location l2 on l1.pcode = l2.code "
-                    + " left join office o on o.id = p.office_id  "
-                    + "where p.type='CUSTOMER' and (o.id = " + parentID + " or o.belong_office = " + parentID + ") order by p.create_date desc " + sLimit;
-            
-        } else {
-
-             sql = "select p.*,p.id as pid,l.name,trim(concat(l2.name, ' ', l1.name,' ',l.name)) as dname from party p "
-//                    + "left join contact c on p.contact_id=c.id "
-                    + "left join location l on l.code=p.location "
-                    + "left join location  l1 on l.pcode =l1.code "
-                    + "left join location l2 on l1.pcode = l2.code "
-                    + "left join office o on o.id = p.office_id "
-                    + "where p.type='CUSTOMER' "
-                    + "and ifnull(p.code,'') like '%"
-                    + code
-                    + "%' and ifnull(p.company_name,'') like '%"
-                    + company_name
-                    + "%' and ifnull(p.contact_person,'') like '%"
-                    + contact_person
-                    + "%' and ifnull(p.address,'') like '%"
-                    + address
-                    + "%' and ifnull(p.abbr,'') like '%" + abbr + "%'  and (o.id = " + parentID + " or o.belong_office = " + parentID + ") order by p.create_date desc ";
-
-             sqlTotal = "select count(1) total from ("+sql+") A";
-        }
+        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
-        logger.debug("total records:" + rec.getLong("total"));
-        
-        List<Record> customers = Db.find(sql + sLimit);
-        
-        Map customerListMap = new HashMap();
-        customerListMap.put("sEcho", pageIndex);
-        customerListMap.put("iTotalRecords", rec.getLong("total"));
-        customerListMap.put("iTotalDisplayRecords", rec.getLong("total"));
-        customerListMap.put("aaData", customers);
-        renderJson(customerListMap);
+        List<Record> orderList = Db.find(sql+ condition + " order by create_date desc " +sLimit);
+        Map map = new HashMap();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orderList);
+        renderJson(map); 
     }
     
     
