@@ -55,6 +55,7 @@ public class ChargeCheckOrderController extends Controller {
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
    		
    		if (StringUtils.isNotEmpty(id)) {
    			//update
@@ -73,6 +74,7 @@ public class ChargeCheckOrderController extends Controller {
    			order.set("order_no", OrderNoGenerator.getNextOrderNo("YSDZ"));
    			order.set("create_by", user.getLong("id"));
    			order.set("create_stamp", new Date());
+   			order.set("office_id", office_id);
    			order.save();
    			
    			id = order.getLong("id").toString();
@@ -145,6 +147,9 @@ public class ChargeCheckOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
         	
@@ -164,7 +169,7 @@ public class ChargeCheckOrderController extends Controller {
     				+ " left join location l on l.id=jos.fnd "
     				+ " left join currency cur on cur.id=joa.currency_id "
     				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
-    				+ " where joa.order_type='charge' and joa.audit_flag='Y' "
+    				+ " where joa.order_type='charge' and joa.audit_flag='Y' and jo.office_id = "+office_id
     				+ " GROUP BY joa.id "
     				+ " ) B where 1=1 ";
         	}else{
@@ -184,7 +189,7 @@ public class ChargeCheckOrderController extends Controller {
          				+ " left join location l on l.id=jos.fnd "
          				+ " left join currency cur on cur.id=joa.currency_id "
          				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
-         				+ " where joa.order_type='charge' and joa.audit_flag='Y' and joa.bill_flag='N' "
+         				+ " where joa.order_type='charge' and joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
          				+ " GROUP BY joa.id "
          				+ " ) B where 1=1 ";
         			}
@@ -213,11 +218,15 @@ public class ChargeCheckOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         			
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        
         String sql = "select * from(  "
         		+ " select aco.id,aco.order_no,aco.create_stamp,aco.status,aco.total_amount,c.pay_amount paid_amount,p.abbr sp_name "
 				+ " from arap_charge_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " left join charge_application_order_rel c on c.charge_order_id=aco.id "
+				+ " where aco.office_id = "+office_id
 				+ " ) B where 1=1 ";
         String condition = DbUtils.buildConditions(getParaMap());
 

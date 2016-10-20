@@ -49,13 +49,16 @@ public class CostAcceptOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        
+        UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id=user.getLong("office_id");
         String sql = " select * from ("
         		+ " select  aco.id, aco.order_no, aco.order_type, aco.status, aco.create_stamp, aco.total_amount totalCostAmount, aco.sp_id, p.company_name sp_name, "
         		+ " sum(ifnull(c.pay_amount,0)) paid_amount"
 				+ " from arap_cost_order aco "
 				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id"
 				+ " left join party p on p.id=aco.sp_id "
-				+ " where aco.status!='新建'"
+				+ " where aco.status!='新建' and aco.office_id = "+office_id
 				+ " group by aco.id"
 				+ " ) A where totalCostAmount>paid_amount";
 
@@ -80,6 +83,8 @@ public class CostAcceptOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id=user.getLong("office_id");
         String sql = "select * from(  "
         		+ " select acao.id,acao.order_no application_order_no,acao.status,acao.payment_method,acao.create_stamp,acao.check_stamp,acao.pay_time, "
         		+ " acao.remark,acao.payee_unit,acao.payee_name, "
@@ -88,6 +93,7 @@ public class CostAcceptOrderController extends Controller {
 				+ " left join cost_application_order_rel caor on caor.application_order_id = acao.id "
 				+ " left join arap_cost_order aco on aco.id = caor.cost_order_id"
 				+ " left join user_login u on u.id = acao.create_by"
+				+ "	where acao.office_id = "+office_id
 				+ " group by acao.id"
 				+ " ) B where 1=1 ";
 		

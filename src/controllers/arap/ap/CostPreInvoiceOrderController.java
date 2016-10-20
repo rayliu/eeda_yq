@@ -75,7 +75,8 @@ public class CostPreInvoiceOrderController extends Controller {
 		String bank_name= getPara("deposit_bank");   //开户行
 		String invoice_no= getPara("invoice_no"); 
 		String total_amount = getPara("total_amount")==""?"0.00":getPara("total_amount");   //申请总金额
-
+		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id=user.getLong("office_id");
 		
 		if (!"".equals(application_id) && application_id != null) {
 			aca = ArapCostApplication.dao.findById(application_id);
@@ -119,6 +120,7 @@ public class CostPreInvoiceOrderController extends Controller {
 			aca.set("create_stamp", new Date());
 			aca.set("payee_name", payee_name);
 			aca.set("payment_method", paymentMethod);
+			aca.set("office_id", office_id);
 			aca.set("payee_unit", payee_unit);
 			aca.set("invoice_no", invoice_no);
 			aca.set("billing_unit", billing_unit);

@@ -93,6 +93,9 @@ public class ChargeAcceptOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
         String sql = " select * from (SELECT "
         		+ " aco.id, aco.order_no, '应收对账单' order_type, aco.check_amount total_amount, "
         		+ " sum(ifnull(caor.receive_amount,0)) receive_amount, aco.status,"
@@ -101,7 +104,7 @@ public class ChargeAcceptOrderController extends Controller {
         		+ " arap_charge_order aco"
         		+ " LEFT JOIN party p ON p.id = aco.sp_id"
         		+ " LEFT JOIN charge_application_order_rel caor ON caor.charge_order_id = aco.id and caor.order_type = '应收对账单'"
-        		+ " where aco.have_invoice = 'N' and aco.status != '新建'"
+        		+ " where aco.have_invoice = 'N' and aco.status != '新建' and aco.office_id = "+office_id
         		+ " GROUP BY aco.id"
         		+ " union"
         		+ " SELECT"
@@ -112,7 +115,7 @@ public class ChargeAcceptOrderController extends Controller {
         		+ " LEFT JOIN party p ON p.id = aci.sp_id"
         		+ " LEFT JOIN arap_charge_order aco on aco.invoice_order_id = aci.id"
         		+ " LEFT JOIN charge_application_order_rel caor ON caor.charge_order_id = aci.id and caor.order_type = '应收开票单'"
-        		+ " where aci.status != '新建'"
+        		+ " where aci.status != '新建' and aci.office_id = "+office_id
         		+ " GROUP BY aci.id"
         		+ " ) A where total_amount>receive_amount ";
 		
@@ -137,12 +140,17 @@ public class ChargeAcceptOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        
         String sql = "select * from(  "
         		+ " select acao.id,acao.order_no,acao.status,'申请单' order_type,acao.total_amount,acao.create_stamp, "
         		+ " acao.remark,p.abbr payee_name,ul.c_name create_name "
 				+ " from arap_charge_application_order acao "
 				+ " left join user_login ul on ul.id = acao.create_by "
 				+ " left join party p on p.id = acao.sp_id "
+				+ "	where acao.office_id = "+office_id
 				+ " ) A where 1=1 ";
 		
         String condition = DbUtils.buildConditions(getParaMap());
@@ -280,7 +288,7 @@ public class ChargeAcceptOrderController extends Controller {
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
-		
+   		long office_id=user.getLong("office_id");
    		
    		if (StringUtils.isNotEmpty(id)) {
    			//update
@@ -299,6 +307,7 @@ public class ChargeAcceptOrderController extends Controller {
    			order.set("order_no", OrderNoGenerator.getNextOrderNo("YSSQ"));
    			order.set("create_by", user.getLong("id"));
    			order.set("create_stamp", new Date());
+   			order.set("office_id", office_id);
    			order.save();
    			
    			id = order.getLong("id").toString();

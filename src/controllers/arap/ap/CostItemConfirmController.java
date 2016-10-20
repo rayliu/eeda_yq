@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.log4j.Logger;
@@ -18,6 +19,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 
 @RequiresAuthentication
@@ -39,6 +41,9 @@ public class CostItemConfirmController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
         String sql = "select * from( "
         		+ " select joa.*,jo.id jobid,jo.order_no,jo.create_stamp,jo.customer_id,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
 				+ " from job_order_arap joa "
@@ -48,7 +53,7 @@ public class CostItemConfirmController extends Controller {
 				+ " left join fin_item f on f.id=joa.charge_id "
 				+ " left join unit u on u.id=joa.unit_id "
 				+ " left join currency c on c.id=joa.currency_id "
-				+ " where joa.order_type='cost' "
+				+ " where joa.order_type='cost' and jo.office_id = "+office_id
 				+ " ) A where 1=1 ";
 		
         String condition = DbUtils.buildConditions(getParaMap());

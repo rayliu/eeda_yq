@@ -185,6 +185,9 @@ public class CostCheckOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = "select * from(  "
          		+ " select joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
@@ -202,7 +205,7 @@ public class CostCheckOrderController extends Controller {
  				+ " left join location l on l.id=jos.fnd "
  				+ " left join currency cur on cur.id=joa.currency_id "
  				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
- 				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' "
+ 				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' and jo.office_id = "+office_id
  				+ " GROUP BY joa.id "
  				+ " ) B where 1=1 ";
 		
@@ -225,11 +228,16 @@ public class CostCheckOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        
         String sql = "select * from(  "
         		+ " select aco.id,aco.order_no,aco.create_stamp,aco.status,aco.total_amount,c.pay_amount paid_amount,p.abbr sp_name "
 				+ " from arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
-				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id order by aco.id desc"
+				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id"
+				+ " where aco.office_id = "+ office_id
+				+ " order by aco.id desc"
 				+ " ) B where 1=1 ";
 		
         String condition = DbUtils.buildConditions(getParaMap());
@@ -255,9 +263,9 @@ public class CostCheckOrderController extends Controller {
         String id = (String) dto.get("id");
         String ids = (String) dto.get("ids");
         
-        
         ArapCostOrder aco = new ArapCostOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
    		
    		if (StringUtils.isNotEmpty(id)) {
    			//update
@@ -273,6 +281,7 @@ public class CostCheckOrderController extends Controller {
 	        aco.set("order_type", "应付对账单");
 			aco.set("create_by", user.getLong("id"));
 			aco.set("create_stamp", new Date());
+			aco.set("office_id", office_id);
 			aco.save();
 			id = aco.getLong("id").toString();
 			
