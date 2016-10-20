@@ -131,7 +131,18 @@ $(document).ready(function() {
     	var high = $(row.find('[name=high]')).val();
     	var amount = $(row.find('[name=amount]')).val();
     	if(long!=''&&wide!=''&&high!=''&&amount!=''&&!isNaN(long)&&!isNaN(wide)&&!isNaN(high)&&!isNaN(amount)){
-	    $(row.find('[name=volume]')).val(parseFloat(long)*parseFloat(wide)*parseFloat(high)*parseFloat(amount)/1000000);
+    		$(row.find('[name=volume]')).val(parseFloat(long)*parseFloat(wide)*parseFloat(high)*parseFloat(amount)/1000000);
+    		var volume = 1;
+        	$('#cargoDesc_table [name=volume]').each(function(){
+        		var val = this.value;
+            	if(val!=''&&!isNaN(val)){
+            		volume *= val;
+            	}
+            })
+            if(volume==1){
+            	volume = '';
+            }
+            $('#air_volume').val(volume);
     	}
     })
     
