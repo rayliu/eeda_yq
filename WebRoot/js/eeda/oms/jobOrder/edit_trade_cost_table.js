@@ -120,16 +120,12 @@ $(document).ready(function() {
             },
             { "data": "", "width": "180px",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="tax_refund_amount" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '' ;
             	}
             },
             { "data": "", "width": "180px",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="tax_refund_amount" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '' ;
             	}
             },
             { "data": "ADJUSTED_UNIT_PRICE", "width": "180px",

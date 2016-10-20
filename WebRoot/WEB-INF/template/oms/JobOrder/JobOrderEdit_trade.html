@@ -1,10 +1,12 @@
 
-            <input type="hidden" id="trade_id" value="${trade.id!''}">
-            <form id="tradeForm">
-            <div class="form-group">  <!--  form row  -->
+<input type="hidden" id="trade_id" value="${trade.id!''}">
+<form id="tradeForm">
+<div class="form-group">  <!--  form row  -->
+             <div class="row">
                     <div class="col-lg-12">
                         <h3>应付费用</h3>
                     </div>
+             </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
@@ -46,8 +48,7 @@
                                 }){}%>
                         </div>
                      </div>
-                    <div class="row">
-                        <div class="table_row">
+                       <div class="row">
                             <div class="col-lg-12">
                                 <button class="btn btn-success btn-xs" type="button" id="add_trade_cost_table">添加明细</button>
                                 <br>
@@ -75,11 +76,12 @@
                                     }){} %>
                             </div>
                         </div>
-                        <div class="table_row">
+                        <div class="row">
                             <div class="col-lg-12">
                                 <h3>应收服务费用</h3>
                             </div>
-                            <div class="form-gourp">
+                        </div>
+                            <div class="row">
                                 <div class="col-lg-4">
                                        <%include("/eeda/component/form/inputCustomerField.html", 
 		                                {
@@ -105,6 +107,7 @@
                                         }){}%>
                                 </div>
                             </div>
+                            <div class="row">
                             <div class="col-lg-12">
                                 <button class="btn btn-success btn-xs" type="button" id="add_charge_service_table">添加明细</button>
                                 <br>
@@ -117,12 +120,13 @@
                                         value_list: trade_charge_service_list![]
                                     }){} %>
                             </div>
-                        </div>
-                        <div class="table_row">
-                            <div class="col-lg-12">
-                                <h3>销售应收费用</h3>
                             </div>
-                            <div class="form-gourp">
+                           <div class="row">
+	                            <div class="col-lg-12">
+	                                <h3>销售应收费用</h3>
+	                            </div>
+                           </div>
+                            <div class="row">
                                 <div class="col-lg-4">
                                         <%include("/eeda/component/form/inputCustomerField.html", 
                                         {
@@ -155,6 +159,7 @@
                                         }){}%>
                                 </div>
                             </div>
+                            <div class="row">
                             <div class="col-lg-12">
                                 <button class="btn btn-success btn-xs" type="button" id="add_trade_sale_table">添加明细</button>
                                 <br>
@@ -173,7 +178,6 @@
                                         value_list: trade_charge_sale_list![]
                                     }){} %>
                             </div>
-                        </div>
-                    </div>
+                            </div>
             </div><!-- /.row -->
             </form>
