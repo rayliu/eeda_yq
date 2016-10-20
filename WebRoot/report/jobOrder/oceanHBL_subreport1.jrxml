@@ -10,19 +10,20 @@
 		<![CDATA[SELECT
 	CONCAT(container_no, '/', container_type,'/', seal_no) CN_no,
 	CONCAT(
-		CAST(pieces AS CHAR),
+		CAST(FORMAT(pieces,2) AS CHAR),
 		' CARTONS'
 	) pieces,
 	CONCAT(
-		CAST(gross_weight AS CHAR),
+		CAST(FORMAT(gross_weight,2) AS CHAR),
 		' KGS'
 	) gross_weight,
 	CONCAT(
-		CAST(volume AS CHAR),
+		CAST(FORMAT(volume,2) AS CHAR),
 		' CBM'
 	) volume
 FROM
 	job_order_shipment_item
+
 WHERE
 	order_id = $P{order_id}]]>
 	</queryString>
@@ -45,21 +46,21 @@ WHERE
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CN_no}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="377" y="0" width="88" height="15" uuid="164e8956-d15c-46bf-a09e-2ddbfd4fed72"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="153" y="0" width="106" height="15" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="463" y="0" width="72" height="15" uuid="c408bb39-3bf9-4e1a-9515-ec416b4c03bb"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>

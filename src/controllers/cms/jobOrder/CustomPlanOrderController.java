@@ -12,7 +12,6 @@ import java.util.Map;
 import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
 import models.eeda.cms.CustomPlanOrderItem;
-import models.eeda.oms.jobOrder.JobOrderDoc;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -120,14 +119,15 @@ public class CustomPlanOrderController extends Controller {
     			+ " from custom_plan_order cpo "
     			+ " left join location l on l.id=cpo.export_country"
     			+ " left join location l1 on l1.id=cpo.import_country"
-    			+ " left join location l2 on l2.id=cpo.trade_country";
-    	CustomPlanOrder customPlanOrder = CustomPlanOrder.dao.findFirst(sql);
-    	setAttr("order", customPlanOrder);
+    			+ " left join location l2 on l2.id=cpo.trade_country"
+    			+ " where cpo.id = ?";
+    	Record r = Db.findFirst(sql,id);
+    	setAttr("order", r);
     	setAttr("itemList", getItems(id,"cargo"));
     	setAttr("docList", getItems(id,"doc"));
     	
     	//用户信息
-    	long creator = customPlanOrder.getLong("creator");
+    	long creator = r.getLong("creator");
     	UserLogin user = UserLogin.dao.findById(creator);
     	setAttr("user", user);
     	
