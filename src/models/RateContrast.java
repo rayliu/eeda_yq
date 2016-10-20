@@ -1,0 +1,1 @@
+package models;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class RateContrast extends Model<RateContrast> {	public static final RateContrast dao = new RateContrast();}
