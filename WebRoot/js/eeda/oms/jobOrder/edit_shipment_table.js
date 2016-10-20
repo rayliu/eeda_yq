@@ -101,10 +101,10 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                             data='';
                         var str = '<select name="container_type" class="form-control search-control" style="width:100px">'
                         			+'<option></option>'
-    			                   +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>20GP</option>'
-    			                   +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>40GP</option>'
-                                   +'<option value="40HQ" '+(data=='40HQ' ? 'selected':'')+'>40HQ</option>'
-    			                   +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>45GP</option>'
+    			                   +'<option value="20\'GP" '+(data=='20\'GP' ? 'selected':'')+'>20GP</option>'
+    			                   +'<option value="40\'GP" '+(data=='40\'GP' ? 'selected':'')+'>40GP</option>'
+                                   +'<option value="40\'HQ" '+(data=='40\'HQ' ? 'selected':'')+'>40HQ</option>'
+    			                   +'<option value="45\'GP" '+(data=='45\'GP' ? 'selected':'')+'>45GP</option>'
     			                   +'</select>';
                         return str;
                     }

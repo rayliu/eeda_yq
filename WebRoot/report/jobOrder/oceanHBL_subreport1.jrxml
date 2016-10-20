@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL_subreport1" language="groovy" pageWidth="529" pageHeight="56" columnWidth="529" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="399932f8-ff88-4f8f-8185-9c7854753024">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL_subreport1" language="groovy" pageWidth="535" pageHeight="56" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="399932f8-ff88-4f8f-8185-9c7854753024">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -39,24 +39,31 @@ WHERE
 	<detail>
 		<band height="15">
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="176" height="15" uuid="89d8254b-b3a6-4a3c-98ac-9cd9e0a3426e"/>
+				<reportElement x="0" y="0" width="153" height="15" uuid="89d8254b-b3a6-4a3c-98ac-9cd9e0a3426e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{CN_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="354" y="0" width="96" height="15" uuid="164e8956-d15c-46bf-a09e-2ddbfd4fed72"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="377" y="0" width="88" height="15" uuid="164e8956-d15c-46bf-a09e-2ddbfd4fed72"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="174" y="0" width="79" height="15" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
+				<reportElement x="153" y="0" width="106" height="15" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="460" y="0" width="63" height="15" uuid="c408bb39-3bf9-4e1a-9515-ec416b4c03bb"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="463" y="0" width="72" height="15" uuid="c408bb39-3bf9-4e1a-9515-ec416b4c03bb"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{volume}]]></textFieldExpression>
 			</textField>
 		</band>

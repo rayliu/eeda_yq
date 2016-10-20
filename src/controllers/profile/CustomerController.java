@@ -21,9 +21,7 @@ import models.yh.profile.CustomerRoute;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
@@ -38,7 +36,6 @@ import com.jfinal.upload.UploadFile;
 
 import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
-import controllers.util.PermissionConstant;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -363,7 +360,7 @@ public class CustomerController extends Controller {
         
         List<Record> partyList = Collections.EMPTY_LIST;
         String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                + " ifnull(p.address_eng, p.address) address, p.phone from party p where  "
+        		+ " ifnull(p.address_eng, p.address) address, p.phone ,p.fax from party p where  "
                 + " p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
                     
         if (customerName.trim().length() > 0) {

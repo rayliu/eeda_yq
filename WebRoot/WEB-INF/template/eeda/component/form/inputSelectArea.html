@@ -37,7 +37,7 @@ $(document).ready(function() {
             }
             companyList.empty();
             for(var i = 0; i < data.length; i++)
-                companyList.append("<li><a tabindex='-1' class='fromLocationItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' contact_person_eng='"+data[i].CONTACT_PERSON_ENG+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' partyId='"+data[i].ID+"' address='"+data[i].ADDRESS+"' address_eng='"+data[i].ADDRESS_ENG+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].ABBR+"</a></li>");
+                companyList.append("<li><a tabindex='-1' class='fromLocationItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' contact_person_eng='"+data[i].CONTACT_PERSON_ENG+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' fax='"+data[i].FAX+"' partyId='"+data[i].ID+"' address='"+data[i].ADDRESS+"' address_eng='"+data[i].ADDRESS_ENG+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].ABBR+"</a></li>");
                 
             companyList.css({ 
                 left:$(me).position().left+"px", 
@@ -52,8 +52,15 @@ $(document).ready(function() {
         companyList.hide();
         var companyId = $(this).attr('partyId');
         hiddenField.val(companyId);
-        var info = $(this).attr('address')+'\r'+$(this).attr('contact_person')+'\r'+$(this).attr('phone');
-        infoField.val(info);
+        if(companyId=='35333'){
+            var info = $(this).attr('address')+'\r'+$(this).attr('phone')+'\r'+$(this).attr('fax');
+            infoField.val(info);
+        }else{
+            var info = $(this).attr('address')+'\r'+$(this).attr('contact_person')+'\r'+$(this).attr('phone');
+            infoField.val(info);
+        }
+        	
+        
     });
 
     // 1 没选中客户，焦点离开，隐藏列表
