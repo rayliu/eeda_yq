@@ -91,39 +91,8 @@ public class CustomerController extends Controller {
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_UPDATE})
     public void edit() {
         String id = getPara("id");
-
         Party party = Party.dao.findById(id);
-        //Contact locationCode = Contact.dao.findById(party.get("contact_id"));
-        String code = party.get("location");
-
-        List<Location> provinces = Location.dao.find("select * from location where pcode ='1'");
-        Location l = Location.dao
-                .findFirst("select * from location where code = (select pcode from location where code = '" + code
-                        + "')");
-        Location location = null;
-        if (provinces.contains(l)) {
-            location = Location.dao
-                    .findFirst("select l.name as city,l1.name as province,l.code from location l left join location  l1 on l.pcode =l1.code left join location l2 on l1.pcode = l2.code where l.code = '"
-                            + code + "'");
-        } else {
-            location = Location.dao
-                    .findFirst("select l.name as district, l1.name as city,l2.name as province,l.code from location l left join location  l1 on l.pcode =l1.code left join location l2 on l1.pcode = l2.code where l.code ='"
-                            + code + "'");
-        }
-        setAttr("location", location);
-        
-        Record re = Db.findFirst("select get_loc_full_name('"+party.getStr("default_loc_from")+"') as locFrom");
-        setAttr("default_loc_from", re.getStr("locFrom"));
-        
         setAttr("party", party);
-//        if(party.getInt("is_inventory_control")>0){
-//        	setAttr("is_inventory_control", "Y");
-//        }else{
-//        	setAttr("is_inventory_control", "N");
-//        }
-//        Contact contact = Contact.dao.findFirst("select c.* from contact c,party p where c.id=p.contact_id and p.id="
-//                + id);
-//        setAttr("contact", contact);
         String sql = "select jod.*,u.c_name from party_doc jod left join user_login u on jod.uploader=u.id "
     			+ " where party_id=? order by jod.id";
         setAttr("docList", Db.find(sql,id));

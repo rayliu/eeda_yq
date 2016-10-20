@@ -48,7 +48,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
                     "render": function ( data, type, full, meta ) {
                             var str="<nobr>";
                         if(Customer.updatePermission){
-                         str +="<a class='btn  btn-primary btn-sm' href='/customer/edit/"+full.PID+"' target='_blank'>"+
+                         str +="<a class='btn  btn-primary btn-sm' href='/customer/edit?id="+full.PID+"' target='_blank'>"+
                                     "<i class='fa fa-edit fa-fw'></i>"+
                                     "编辑"+"</a> ";
                         }
