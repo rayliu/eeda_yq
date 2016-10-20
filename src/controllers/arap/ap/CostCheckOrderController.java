@@ -2,13 +2,16 @@ package controllers.arap.ap;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.ArapChargeItem;
 import models.ArapCostItem;
 import models.ArapCostOrder;
+import models.RateContrast;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrderArap;
 
@@ -59,40 +62,93 @@ public class CostCheckOrderController extends Controller {
 		order.set("total_amount",totalAmount);
 		order.set("ids",ids);
 		order.set("creator_name", LoginUserController.getLoginUserName(this));
-		
-		
-		String detailSql = "select * from(  "
-                + " select joa.id,joa.type,joa.sp_id,joa.total_amount,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
-                + " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
-                + " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
-                + " cur.name currency_name "
-                + " from job_order_arap joa "
-                + " left join job_order jo on jo.id=joa.order_id "
-                + " left join job_order_shipment jos on jos.order_id=joa.order_id "
-                + " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
-                + " left join job_order_air_item joai on joai.order_id=joa.order_id "
-                + " left join party p on p.id=joa.sp_id "
-                + " left join party p1 on p1.id=jo.customer_id "
-                + " left join location l on l.id=jos.fnd "
-                + " left join currency cur on cur.id=joa.currency_id "
-                + " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' and joa.id in("+ids+") "
-                + " GROUP BY joa.id "
-                + " ) B ";
-		List<Record> jobOrderRecs = Db.find(detailSql);
-		order.set("item_list", jobOrderRecs);
+		order.set("item_list", getItemList(ids,""));
+		order.set("currencyList", getCurrencyList(ids,""));
 		setAttr("order", order);
 		
 		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");
 	}
 	
+	
+	public List<Record> getCurrencyList(String ids,String order_id){
+    	String sql = "SELECT "
+    			+ " (select rc.id from rate_contrast rc "
+    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"') rate_id,"
+    			+ " cur.id ,cur.name currency_name ,group_concat(distinct cast(joa.exchange_rate as char) SEPARATOR ';') exchange_rate ,"
+    			+ " ifnull((select rc.new_rate from rate_contrast rc "
+    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),exchange_rate) new_rate"
+				+ " FROM job_order_arap joa"
+				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
+				+ " WHERE joa.id in("+ ids +") and cur.name!='CNY' group by cur.id" ;
+    	List<Record> re = Db.find(sql);
+    	
+    	return re;
+	}
+	
+	
+	public List<Record> getItemList(String ids,String order_id){
+		String sql = null;
+		if(StringUtils.isEmpty(order_id)){
+			sql = " select joa.id,joa.type,joa.sp_id,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
+	                + " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
+	                + " ifnull((select rc.new_rate from rate_contrast rc "
+	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),joa.exchange_rate) new_rate,"
+	    			+ " (ifnull(joa.total_amount,0)*ifnull(joa.exchange_rate,1)) after_total,"
+	    			+ " ifnull((select rc.new_rate from rate_contrast rc "
+	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
+	                + " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
+	                + " cur.name currency_name "
+	                + " from job_order_arap joa "
+	                + " left join job_order jo on jo.id=joa.order_id "
+	                + " left join job_order_shipment jos on jos.order_id=joa.order_id "
+	                + " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
+	                + " left join job_order_air_item joai on joai.order_id=joa.order_id "
+	                + " left join party p on p.id=joa.sp_id "
+	                + " left join party p1 on p1.id=jo.customer_id "
+	                + " left join location l on l.id=jos.fnd "
+	                + " left join currency cur on cur.id=joa.currency_id "
+	                + " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' and joa.id in("+ids+") "
+	                + " GROUP BY joa.id";	
+		}else{
+			sql = " select joa.id,joa.type,joa.sp_id,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
+	                + " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
+	                + " ifnull((select rc.new_rate from rate_contrast rc "
+	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = aco.id),joa.exchange_rate) new_rate,"
+	    			+ " (ifnull(joa.total_amount,0)*ifnull(joa.exchange_rate,1)) after_total,"
+	    			+ " ifnull((select rc.new_rate from rate_contrast rc "
+	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = aco.id),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
+	                + " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
+	                + " cur.name currency_name "
+	                + " from job_order_arap joa "
+	                + " left join job_order jo on jo.id=joa.order_id "
+	                + " left join job_order_shipment jos on jos.order_id=joa.order_id "
+	                + " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
+	                + " left join job_order_air_item joai on joai.order_id=joa.order_id "
+	                + " left join party p on p.id=joa.sp_id "
+	                + " left join party p1 on p1.id=jo.customer_id "
+	                + " left join location l on l.id=jos.fnd "
+	                + " left join currency cur on cur.id=joa.currency_id "
+	                + " left join arap_cost_item aci on aci.ref_order_id = joa.id"
+					+ " left join arap_cost_order aco on aco.id = aci.cost_order_id "
+					+ " where joa.id = aci.ref_order_id and aco.id =  '"+order_id+"'"
+	                + " GROUP BY joa.id ";
+		}
+    	
+    	List<Record> re = Db.find(sql);
+    	return re;
+    }
+	
+	
 	public void createList() {
 		String ids = getPara("itemIds");
+		String order_id = getPara("order_id")==null?"":getPara("order_id");
 		String sLimit = "";
 		String pageIndex = getPara("draw");
 		if (getPara("start") != null && getPara("length") != null) {
 			sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
 		}
-		String sql = " select joa.id,joa.type,joa.sp_id,joa.total_amount,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
+		
+		String sql = " select joa.id,joa.type,joa.sp_id,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
 				+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
 				+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
 				+ " cur.name currency_name "
@@ -208,6 +264,7 @@ public class CostCheckOrderController extends Controller {
    			aco = ArapCostOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, aco);
    			aco.update();
+   			
    		} else {
    			//create 
    			DbUtils.setModelValues(dto, aco);
@@ -234,6 +291,38 @@ public class CostCheckOrderController extends Controller {
 			}
    		}
    		
+   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("currency_list");
+		for(Map<String, String> item :itemList){
+			String new_rate = item.get("new_rate");
+			String rate = item.get("rate");
+			String order_type = item.get("order_type");
+			String currency_id = item.get("currency_id");
+			String rate_id = item.get("rate_id");
+			String order_id = (String) dto.get("id");
+			
+			RateContrast rc = null;
+			if(StringUtils.isEmpty(rate_id)){
+				rc = new RateContrast();
+				rc.set("order_id", id);
+				rc.set("new_rate", new_rate);
+				rc.set("rate", rate);
+				rc.set("currency_id", currency_id);
+				rc.set("order_type", order_type);
+				rc.set("create_by", LoginUserController.getLoginUserId(this));
+				rc.set("create_stamp", new Date());
+				rc.save();
+			}else{
+				rc = RateContrast.dao.findById(rate_id);
+				if(rc == null){
+					rc = RateContrast.dao.findFirst("select * from rate_contrast where order_id = ? and currency_id = ?",order_id,currency_id);
+				}
+				rc.set("new_rate", new_rate);
+				rc.set("update_by", LoginUserController.getLoginUserId(this));
+				rc.set("update_stamp", new Date());
+				rc.update();
+			}	
+		}
+   		
    		String sql = " select aco.*, p.abbr sp_name, u.c_name creator_name from arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by"
@@ -252,26 +341,9 @@ public class CostCheckOrderController extends Controller {
    				+ " where aco.id = ? ";
 		Record order = Db.findFirst(sql,id);
 		
-		String detailSql = " select joa.id,joa.type,joa.sp_id,joa.total_amount,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
-                + " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
-                + " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
-                + " cur.name currency_name "
-                + " from job_order_arap joa "
-                + " left join job_order jo on jo.id=joa.order_id "
-                + " left join job_order_shipment jos on jos.order_id=joa.order_id "
-                + " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
-                + " left join job_order_air_item joai on joai.order_id=joa.order_id "
-                + " left join party p on p.id=joa.sp_id "
-                + " left join party p1 on p1.id=jo.customer_id "
-                + " left join location l on l.id=jos.fnd "
-                + " left join currency cur on cur.id=joa.currency_id "
-                + " left join arap_cost_item aci on aci.ref_order_id = joa.id"
-				+ " left join arap_cost_order aco on aco.id = aci.cost_order_id "
-				+ " where joa.id = aci.ref_order_id and aco.id = ? "
-                + " GROUP BY joa.id ";
-		
-		List<Record> itemList = Db.find(detailSql,id);
-		order.set("item_list", itemList);
+		String condition = "select ref_order_id from arap_cost_item where cost_order_id ="+id;
+		order.set("currencylist", getCurrencyList(condition,id));
+		order.set("item_list", getItemList("",id));
 		
 		setAttr("order", order);
 		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");
@@ -288,5 +360,7 @@ public class CostCheckOrderController extends Controller {
 		r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
 		renderJson(r);
 	}
+	
+	
 	
 }

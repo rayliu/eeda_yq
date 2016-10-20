@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN'], function ($, metisMenu) { 
 
     $(document).ready(function() {
     	  
@@ -8,145 +8,30 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         }else{
             document.title = '创建应付对账单 | ' + document.title;
         }
-        console.log('1111');
-        //datatable, 动态处理
-        var dataTable = eeda.dt({
-            id: 'eeda_table',
-            serverSide: false, //不打开会出现排序不对 
-            //ajax: "/costCheckOrder/createList?itemIds="+$('#ids').val(),
-            columns: [
-              { "data": "ID", "visible": false},
-              { "data": "ORDER_NO", "width": "100px"},
-              { "data": "CREATE_STAMP", "width": "100px"},
-              { "data": "BILL_FLAG", "width": "60px",
-                	"render": function ( data, type, full, meta ) {
-                		if(data){
-    	            		if(data != 'Y')
-    				    		    return '未创建对账单';
-    				    	    else 
-    				    		    return '已创建对账单';
-                		}else{
-                			return '';
-                		}
-    			         }
-              },
-              { "data": "TYPE", "width": "60px",
-                  "render": function ( data, type, full, meta ) {
-                      if(data){
-                        return data;
-                      }else
-                        return "";
-                  }
-              },
-              { "data": "TYPE", "width": "60px"},
-              { "data": "CUSTOMER_NAME", "width": "100px"},
-              { "data": "SP_NAME", "width": "100px"},
-              { "data": "TOTAL_COSTRMB", "width": "60px",
-                  "render": function ( data, type, full, meta ) {
-                      if(data){
-                        return data;
-                      }else
-                        return "";
-                  }
-              }/*,
-              { "data": "TYPE", "width": "60px",
-                  "render": function ( data, type, full, meta ) {
-                      if(data){
-                        return data;
-                      }else
-                        return "";
-                  }
-              },
-              { "data": "TYPE", "width": "60px",
-                  "render": function ( data, type, full, meta ) {
-                      if(data){
-                        return data;
-                      }else
-                        return "";
-                  }
-              },
-              { "data": "TYPE", "width": "60px",
-                  "render": function ( data, type, full, meta ) {
-                      if(data){
-                        return data;
-                      }else
-                        return "";
-                  }
-              },
-              { "data": "TYPE", "width": "60px",
-              	"render": function ( data, type, full, meta ) {
-  	            	if(data == 'JPY')
-  	            		return full.TOTAL_AMOUNT;
-  	            	else 
-  	            		return '';
-              	}
-              },
-              { "data": "FND", "width": "60px",
-              	"render": function ( data, type, full, meta ) {
-              		if(data)
-      			    		return data;
-                  else
-      			    		return "";
-              	}
-              },
-              { "data": "VOLUME", "width": "60px"},
-              { "data": "CONTAINER_AMOUNT","width": "60px",
-              	"render": function ( data, type, full, meta ) {
-  	            	if(data){
-  	            		var dataArr = data.split(",");
-  	            		var a = 0;
-  	            		var b = 0;
-  	            		var c = 0;
-  	            		var dataStr = "";
-  	            		for(var i=0;i<dataArr.length;i++){
-  	            			if(dataArr[i]=="20GP"){
-  	            				a++;
-  	            			}
-  	            			if(dataArr[i]=="40GP"){
-  	            				b++;
-  	            			}
-  	            			if(dataArr[i]=="45GP"){
-  	            				c++;
-  	            			}
-  	            		}
-  	            		if(a>0){
-  	            			dataStr+="20GPx"+a+";"
-  	            		}
-  	            		if(b>0){
-  	            			dataStr+="40GPx"+b+";"
-  	            		}
-  	            		if(c>0){
-  	            			dataStr+="45GPx"+c+";"
-  	            		}
-  	            		return dataStr;
-  	            	}else{
-  	            		return '';
-  	            	}
-              	}
-              },
-              { "data": "NET_WEIGHT", "width": "60px"},
-              { "data": "MBL_NO", "width": "60px",
-                  "render": function ( data, type, full, meta ) {
-                      if(data){
-                        return data;
-                      }else
-                        return "";
-                  }
-              },
-              { "data": "MBL_NO", "width": "60px"},
-              { "data": "CONTAINER_NO", "width": "100px",
-                  "render": function ( data, type, full, meta ) {
-                      if(data){
-                        return data;
-                      }else
-                        return "";
-                  }
-              }*/
-	          
-            ]
-        });
         
-        console.log('2222');
+        var buildCurJson = function(){
+        	var items_array=[];
+        	$('#currencyDiv ul li').each(function(){
+        		var item={};
+        		var new_rate = $(this).find('[name=new_rate]').val();
+        		var rate = $(this).find('[name=rate]').val();
+        		var currency_id = $(this).find('[name=new_rate]').attr('currency_id');
+        		var rate_id = $(this).find('[name=new_rate]').attr('rate_id');
+        		if(new_rate==''){
+        			new_rate = rate;
+        		}
+        		
+        		item.new_rate = new_rate;
+        		item.rate = rate;
+        		item.rate_id = rate_id;
+        		item.currency_id = currency_id;
+        		item.order_type = 'cost';
+        		items_array.push(item);
+        	})
+        	return items_array;
+        }
+        
+       
         //------------save
         $('#saveBtn').click(function(e){
             //阻止a 的默认响应行为，不需要跳转
@@ -159,10 +44,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 ids: $('#ids').val(),
                 remark: $('#remark').val(),
                 total_amount: parseFloat($('#total_amount').val()).toFixed(2),
+                cost_amount: $('#cost_amount').val(),
                 sp_id: $('#sp_id').val(),
                 begin_time:$('#audit_begin_time').val(),
                 end_time:$('#audit_end_time').val()
             };
+            order.currency_list = buildCurJson();
 
             //异步向后台提交数据
             $.post('/costCheckOrder/save', {params:JSON.stringify(order)}, function(data){

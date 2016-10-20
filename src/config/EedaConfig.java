@@ -24,6 +24,7 @@ import models.Office;
 import models.Party;
 import models.Permission;
 import models.Product;
+import models.RateContrast;
 import models.Role;
 import models.RolePermission;
 import models.UserCustomer;
@@ -362,6 +363,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("arap_charge_application_order", ArapChargeApplication.class);
         arp.addMapping("charge_application_order_rel", ChargeApplicationOrderRel.class);
         arp.addMapping("app_invoice_doc", AppInvoiceDoc.class);
+        arp.addMapping("rate_contrast", RateContrast.class);
         
         //cms 报关管理
         arp.addMapping("custom_plan_order", CustomPlanOrder.class);

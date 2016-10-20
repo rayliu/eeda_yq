@@ -10,14 +10,12 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
-
+                		<form role="form" id="costCheckOrderForm">
                                 <div class="row">
                                     
-                                    <form role="form" id="costCheckOrderForm">
                                         	<input id="id" type="hidden" value="${order.id!''}"/>
                                         	<input id="ids" type="hidden"  value="${order.ids!''}"/>
                                         	<input id="sp_id" type="hidden"  value="${order.sp_id!''}"/>
-                                    
                                         <div class="col-lg-4">
                                             <%include("/eeda/component/form/inputField.html", 
                                                                 {   id:'order_no', 
@@ -75,14 +73,6 @@
                                                                 }){}%>
                                         </div>
                                         <div class="col-lg-4">
-                                            <%include("/eeda/component/form/inputField.html", 
-                                                                {   id:'total_amount', 
-                                                                    label:'对账确认金额', 
-                                                                    value: order.total_amount!'0.00',
-                                                                    disabled: 'disabled'
-                                                                }){}%>
-                                        </div>
-                                        <div class="col-lg-4">
                                             <%include("/eeda/component/form/inputDateQueryField.html", 
                                             {   id:'audit', 
                                                 label:'对账时间段', 
@@ -91,68 +81,111 @@
                                                 end_value: order.end_time!''
                                             }){} %>
                                         </div>
-                                        <div class="col-lg-8">
-                                            <div class="form-group">
-                                                <label>备注</label>
-                                                <textarea class="form-control" rows="4" id="remark">${order.remark!''}</textarea>
-                                            </div>
-                                        </div>
-                                    </form>
                                 </div>
-                               
+                                <div class = "row">
+                                	<div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+                                                            {   id:'total_amount', 
+                                                                label:'应收总金额', 
+                                                                value: order.total_amount!'0.00',
+                                                                disabled: 'disabled'
+                                                            }){}%>
+                                    </div>
+                                	<div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+                                                            {   id:'cost_amount', 
+                                                                label:'对账总金额', 
+                                                                value: order.cost_amount!order.total_amount!'0.00',
+                                                                disabled: 'disabled'
+                                                            }){}%>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                     <div class="col-lg-12">
+                                         <label>备注</label>
+                                         <textarea class="form-control" rows="4" id="remark">${order.remark!''}</textarea>
+                                     </div>
+                                 </div>
+                                </form>
                                 <br>
-                                <%include("/eeda/component/form/detailTable.html", 
-                                    {
-                                        id:'eeda_table', 
-                                        headers:[
-                                            '',
-                                            '工作单号',
-                                            '创建时间',
-                                            '状态',
-                                            'DEBIT_NO',
-                                            '类型',
-                                            '客户',
-                                            '结算公司',
-                                            '合计支出(RMB)'
-                                        ],
-                                        field_list:[
-                                            'ID', 
-                                            'ORDER_NO', 
-                                            'CREATE_STAMP', 
-                                            'BILL_FLAG', 
-                                            '', 
-                                            'TYPE', 
-                                            'CUSTOMER_NAME', 
-                                            'SP_NAME', 
-                                            'TOTAL_COSTRMB'
-                                        ],
-                                        value_list: order.item_list![]
-                                    }){} %>
+                                
+                                <div class="group-form" style="margin-top: 15px;">
+									<ul id="orderTabs" class="nav nav-tabs">
+										<li class="active"><a href="#itemDetail" data-toggle="tab"
+											id="costCheckOrderItem">明细信息</a></li>
+									</ul>
+									<br>
+	                               <div class="group-form"  id="currencyDiv">
+									<ul>
+										<% for(currency in order.currencyList!''){ %>
+											<li>
+												<div class="row">
+													<div class="col-lg-4">
+														<label  class="search-label">${currency.CURRENCY_NAME!''}</label>
+														<input name="rate" class="form-control search-control"  value="${currency.exchange_rate!''}" disabled>
+													</div>
+													<div class="col-lg-4">
+														<label  class="search-label">当前${currency.CURRENCY_NAME!''}汇率</label>
+														<input name="new_rate" rate_id="${currency.RATE_ID!''}" currency_id="${currency.ID!''}" currency_name="${currency.CURRENCY_NAME!''}" class="form-control search-control"  value="${currency.new_rate!''}" autocomplete="off" >
+													</div>
+												</div>
+											</li>
+										<% }%>
+									</ul>
+								</div>
+	                               <%include("/eeda/component/form/detailTable.html", 
+	                                   {
+	                                       id:'eeda-table', 
+	                                       headers:[
+	                                           '',
+	                                           '工作单号',
+	                                           '类型',
+	                                           '客户',
+	                                           '结算公司',
+	                                           '货币类型',
+			                                    '金额', 
+			                                    '原汇率',
+			                                    '原总金额',  
+			                                    '当前汇率',
+			                                    '现总金额', 
+	                                           '创建时间'
+	                                       ],
+	                                       field_list:[
+	                                           'ID', 
+	                                           'ORDER_NO', 
+	                                           'TYPE', 
+	                                           'CUSTOMER_NAME', 
+	                                           'SP_NAME', 
+	                                           'CURRENCY_NAME',
+	                                           'TOTAL_AMOUNT',
+	                                           'EXCHANGE_RATE', 
+	                                           'AFTER_TOTAL', 
+	                                           'NEW_RATE', 
+	                                           'AFTER_RATE_TOTAL',
+	                                           'CREATE_STAMP'
+	                                       ],
+	                                       value_list: order.item_list![]
+	                                   }){} %>
+	                               </div>
                                 
                                 <!-- /.panel-body -->
 
                                 <div>
                                     <hr/>
-                                	
                                     <button id="saveBtn" type="button" class="btn  btn-primary">保存</button> 
-                                                     
                                     <button id="confirmBtn" type="button" class="btn  btn-primary" >确认</button>
-                                   
-							         <button id="printBtn"  type="button" class="btn  btn-primary">打印</button>
-							      
+							        <button id="printBtn"  type="button" class="btn  btn-primary">打印</button>
                                     <a class="btn  btn-primary" href="/costCheckOrder">返回</a>
-                                    <!-- <button id="deleteBtn" type="button" class="btn  btn-danger" disabled>撤销</button> -->
                                 </div>
 
                 </div>
-                <!-- /.col-lg-12 -->
-
             </div>
         </div>
         <!-- /#page-wrapper -->
 
 <%}%>
 <script>
+	var itemOrder = {};
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/arap/CostCheckOrder/edit']);
     });
