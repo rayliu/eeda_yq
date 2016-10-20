@@ -26,6 +26,29 @@ $(document).ready(function() {
         return item;
     }
     
+    
+    var buildCurJson = function(){
+    	var items_array=[];
+    	$('#currencyDiv ul li').each(function(){
+    		var item={};
+    		var new_rate = $(this).find('[name=new_rate]').val();
+    		var rate = $(this).find('[name=rate]').val();
+    		var currency_id = $(this).find('[name=new_rate]').attr('currency_id');
+    		var rate_id = $(this).find('[name=new_rate]').attr('rate_id');
+    		if(new_rate==''){
+    			new_rate = rate;
+    		}
+    		
+    		item.new_rate = new_rate;
+    		item.rate = rate;
+    		item.rate_id = rate_id;
+    		item.currency_id = currency_id;
+    		item.order_type = 'charge';
+    		items_array.push(item);
+    	})
+    	return items_array;
+    }
+    
     //------------save
     $('#saveBtn').click(function(e){
         //阻止a 的默认响应行为，不需要跳转
@@ -41,6 +64,7 @@ $(document).ready(function() {
         order.have_invoice = $('input[type="radio"]:checked').val();
         order.id = $('#order_id').val();
         order.item_list = itemOrder.buildItemDetail();
+        order.currency_list = buildCurJson();
         
         //异步向后台提交数据
         $.post('/chargeCheckOrder/save', {params:JSON.stringify(order)}, function(data){
@@ -65,7 +89,7 @@ $(document).ready(function() {
         },'json').fail(function() {
             $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
             $('#saveBtn').attr('disabled', false);
-          });
+        });
     });  
 
 
@@ -121,7 +145,7 @@ $(document).ready(function() {
     		$('#invoice_flag').hide();
     	}
     });
-      
     
+   
 });
 });

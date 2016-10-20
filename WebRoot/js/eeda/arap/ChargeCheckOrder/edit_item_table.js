@@ -42,8 +42,12 @@ $(document).ready(function() {
             { "data": "ORDER_NO"},
             { "data": "CREATE_STAMP"},
             { "data": "SP_NAME"},
-            { "data": "RMB"},
-            { "data": "USD"},
+            { "data": "CURRENCY_NAME",'class':'currency_name'},
+            { "data": "TOTAL_AMOUNT",'class':'total_amount'},
+            { "data": "EXCHANGE_RATE"},
+            { "data": "AFTER_TOTAL"},
+            { "data": "NEW_RATE",'class':'new_rate'},
+            { "data": "AFTER_RATE_TOTAL",'class':'after_rate_total'},
             { "data": "FND"},
             { "data": "VGM"},
             { "data": "CONTAINER_AMOUNT"},
@@ -51,8 +55,7 @@ $(document).ready(function() {
             { "data": "CONTAINER_NO"},
             { "data": "REF_NO"},
             { "data": "MBL_NO"},
-            { "data": "HBL_NO"},
-            { "data": "TRUCK_TYPE"}
+            { "data": "HBL_NO"}
         ]
     });
 
@@ -63,5 +66,31 @@ $(document).ready(function() {
         +"&table_type=item";
     	itemTable.ajax.url(url).load();
     }
+    
+    
+    $('input[name=new_rate]').on('keyup',function(){
+    	var totalAmount = 0.00;
+    	var row = $(this).parent().parent();
+    	var rate = row.find('[name=rate]').val();
+    	var new_rate = row.find('[name=new_rate]').val();
+    	var currency_name = row.find('[name=new_rate]').attr('currency_name');
+    	var row = $('#eeda-table tr');
+    	
+    	if(new_rate == ''){
+    		new_rate = rate;
+    	}
+    	for(var i = 1;i<row.length;i++){
+    		var row_currency_name = $(row[i]).find('.currency_name').text();
+    		var total_amount = $(row[i]).find('.total_amount').text();
+    		if(currency_name == row_currency_name){
+    			$(row[i]).find('.new_rate').text(new_rate);
+    			$(row[i]).find('.after_rate_total').text(parseFloat(total_amount*new_rate).toFixed(2));
+    		}
+    		
+    		var total_amount = $(row[i]).find('.after_rate_total').text();
+    		totalAmount += parseFloat(total_amount);
+    	}
+    	$('#check_amount').val(totalAmount);
+    })
 } );    
 } );

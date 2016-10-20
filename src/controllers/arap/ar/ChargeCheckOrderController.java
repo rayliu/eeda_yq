@@ -10,6 +10,7 @@ import java.util.Map;
 
 import models.ArapChargeItem;
 import models.ArapChargeOrder;
+import models.RateContrast;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrderArap;
 
@@ -95,6 +96,39 @@ public class ChargeCheckOrderController extends Controller {
 			}
 		}
 		
+		
+		List<Map<String, String>> currencyList = (ArrayList<Map<String, String>>)dto.get("currency_list");
+		for(Map<String, String> item :currencyList){
+			String new_rate = item.get("new_rate");
+			String rate = item.get("rate");
+			String order_type = item.get("order_type");
+			String currency_id = item.get("currency_id");
+			String rate_id = item.get("rate_id");
+			String order_id = (String) dto.get("id");
+			
+			RateContrast rc = null;
+			if(StringUtils.isEmpty(rate_id) && StringUtils.isEmpty(order_id)){
+				rc = new RateContrast();
+				rc.set("order_id", id);
+				rc.set("new_rate", new_rate);
+				rc.set("rate", rate);
+				rc.set("currency_id", currency_id);
+				rc.set("order_type", order_type);
+				rc.set("create_by", LoginUserController.getLoginUserId(this));
+				rc.set("create_stamp", new Date());
+				rc.save();
+			}else{
+				rc = RateContrast.dao.findById(rate_id);
+				if(rc == null){
+					rc = RateContrast.dao.findFirst("select * from rate_contrast where order_id = ? and currency_id = ?",order_id,currency_id);
+				}
+				rc.set("new_rate", new_rate);
+				rc.set("update_by", LoginUserController.getLoginUserId(this));
+				rc.set("update_stamp", new Date());
+				rc.update();
+			}	
+		}
+		
 		long create_by = order.getLong("create_by");
    		String user_name = LoginUserController.getUserNameById(create_by);
 		Record r = order.toRecord();
@@ -102,29 +136,7 @@ public class ChargeCheckOrderController extends Controller {
    		renderJson(r);
    	}
 
-    
-   
-    public void edit(){
-		String id = getPara("id");//arap_charge_order id
-		String condition = "select ref_order_id from arap_charge_item where charge_order_id ="+id;
-		
-		String sql = " select aco.*,p.company_name,p.contact_person,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from arap_charge_order aco "
-   				+ " left join party p on p.id=aco.sp_id "
-   				+ " left join user_login u on u.id=aco.create_by "
-   				+ " left join user_login u1 on u1.id=aco.confirm_by "
-   				+ " where aco.id = ? ";
-		Record rec =Db.findFirst(sql,id);
 
-		rec.set("address", rec.get("address"));
-		rec.set("customer", rec.get("contact_person"));
-		rec.set("phone", rec.get("phone"));
-		setAttr("itemList",getItemList(condition));
-		setAttr("order",rec);
-		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
-	}
-    
-
-    
     public void list() {
     	String checked = getPara("checked");
     	
@@ -226,12 +238,16 @@ public class ChargeCheckOrderController extends Controller {
     }
     
     
-    public List<Record> getItemList(String ids){
+    public List<Record> getItemList(String ids,String order_id){
     	String sql = " select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
     			+ " jo.net_weight gross_weight,"
-    			+ " ifnull(joa.currency_total_amount,0) rmb,"
-    			+ " if(cur.name='USD',joa.total_amount,0) usd,"
-    			+ " jo.total_profitTotalRMB totalrmb,jo.ref_no ref_no,"
+    			+ " cur.name currency_name,"
+    			+ " ifnull((select rc.new_rate from rate_contrast rc "
+    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),ifnull(joa.exchange_rate,1)) new_rate,"
+    			+ " (ifnull(joa.total_amount,0)*ifnull(joa.exchange_rate,1)) after_total,"
+    			+ " ifnull((select rc.new_rate from rate_contrast rc "
+    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
+    			+ " jo.ref_no ref_no,"
     			+ " p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
     			+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
     			+ " from job_order_arap joa"
@@ -251,12 +267,28 @@ public class ChargeCheckOrderController extends Controller {
     	return re;
     }
     
+    public List<Record> getCurrencyList(String ids,String order_id){
+    	String sql = "SELECT "
+    			+ " (select rc.id from rate_contrast rc "
+    	    	+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"') rate_id,"
+    			+ " cur.id ,cur.name currency_name ,group_concat(distinct cast(joa.exchange_rate as char) SEPARATOR ';') exchange_rate ,"
+    			+ " ifnull((select rc.new_rate from rate_contrast rc "
+    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),ifnull(joa.exchange_rate,1)) new_rate"
+				+ " FROM job_order_arap joa"
+				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
+				+ " WHERE joa.id in("+ ids +") and cur.name!='CNY' group by cur.id" ;
+    	List<Record> re = Db.find(sql);
+    	
+    	return re;
+    }
+    
 	public void create(){
 		String ids = getPara("idsArray");//job_order_arap ids
 		
-		String sql = "SELECT p.phone,p.contact_person,p.address,p.company_name,joa.sp_id,joa.order_id,"
+		String sql = "SELECT cur.name currency_name ,joa.exchange_rate ,p.phone,p.contact_person,p.address,p.company_name,joa.sp_id,joa.order_id,"
 				+ " sum( ifnull(joa.currency_total_amount,0) ) total_amount "
 				+ " FROM job_order_arap joa"
+				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
 				+ " left join party p on p.id = joa.sp_id "
 				+ " WHERE joa.id in("+ ids +")"
 				+ " group by joa.order_id";
@@ -266,10 +298,35 @@ public class ChargeCheckOrderController extends Controller {
 		rec.set("customer", rec.get("contact_person"));
 		rec.set("phone", rec.get("phone"));
 		rec.set("user", LoginUserController.getLoginUserName(this));
-		setAttr("itemList",getItemList(ids));
+		rec.set("itemList", getItemList(ids,""));
+		rec.set("currencyList", getCurrencyList(ids,""));
 		setAttr("order",rec);
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
 	}
+	
+	
+	 
+	   
+    public void edit(){
+		String id = getPara("id");//arap_charge_order id
+		String condition = "select ref_order_id from arap_charge_item where charge_order_id ="+id;
+		
+		String sql = " select aco.*,p.company_name,p.contact_person,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from arap_charge_order aco "
+   				+ " left join party p on p.id=aco.sp_id "
+   				+ " left join user_login u on u.id=aco.create_by "
+   				+ " left join user_login u1 on u1.id=aco.confirm_by "
+   				+ " where aco.id = ? ";
+		Record rec =Db.findFirst(sql,id);
+
+		rec.set("address", rec.get("address"));
+		rec.set("customer", rec.get("contact_person"));
+		rec.set("phone", rec.get("phone"));
+		rec.set("itemList", getItemList(condition,id));
+		rec.set("currencyList", getCurrencyList(condition,id));
+		setAttr("order",rec);
+		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
+	}
+    
 
 	
 	//异步刷新字表
@@ -277,7 +334,7 @@ public class ChargeCheckOrderController extends Controller {
     	String order_id = getPara("order_id");
     	List<Record> list = null;
     	String condition = "select ref_order_id from arap_charge_item where charge_order_id ="+order_id;
-    	list = getItemList(condition);
+    	list = getItemList(condition,order_id);
 
     	Map BillingOrderListMap = new HashMap();
         BillingOrderListMap.put("sEcho", 1);
@@ -289,7 +346,7 @@ public class ChargeCheckOrderController extends Controller {
         renderJson(BillingOrderListMap); 
     }
 
-    
+    @Before(Tx.class)
     public void confirm(){
 		String id = getPara("id");
 		ArapChargeOrder aco = ArapChargeOrder.dao.findById(id);
@@ -301,5 +358,7 @@ public class ChargeCheckOrderController extends Controller {
 		r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
 		renderJson(r);
 	}
+    
+   
 
 }
