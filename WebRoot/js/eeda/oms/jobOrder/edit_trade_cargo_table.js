@@ -181,11 +181,11 @@ $(document).ready(function() {
     });
     
     //刷新明细表
-    itemOrder.refleshTradeCostItemTable = function(order_id){
-    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=trade_cargo";
-    	cargoTable.ajax.url(url).load();
-    }
-    
+//    itemOrder.refleshTradeCostItemTable = function(order_id){
+//    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=trade_cargo";
+//    	cargoTable.ajax.url(url).load();
+//    }
+//    
 
 });
 });

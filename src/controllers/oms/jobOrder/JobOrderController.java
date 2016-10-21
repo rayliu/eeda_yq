@@ -634,6 +634,21 @@ public class JobOrderController extends Controller {
     	}
     	renderJson("{\"result\":true}");
     }
+    //删除一个陆运签收文件
+    @Before(Tx.class)
+    public void deleteOneSignDesc(){
+    	String id = getPara("id");
+    	String name = getPara("name");
+    	String path = getRequest().getServletContext().getRealPath("/")+"\\upload\\";
+    	File file = new File(path+name);
+		if (file.exists() && file.isFile()) {
+			file.delete();
+			Db.update("delete from job_order_land_doc where id = ?", id);
+		}else{
+			Db.update("delete from job_order_land_doc where id = ?", id);
+		}
+    	renderJson("{\"result\":true}");
+    }
 
     //返回对象	
     private Record getItemDetail(String id,String type){
@@ -702,7 +717,7 @@ public class JobOrderController extends Controller {
     		itemSql = "select * from job_order_air_cargodesc where order_id=? order by id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("land".equals(type)){
-    		itemSql = "select jol.*, p.abbr transport_company_name,GROUP_CONCAT(doc_name) doc_name,"
+    		itemSql = "select jol.*, p.abbr transport_company_name,CAST(GROUP_CONCAT(jold.id) as char ) job_order_land_doc_id, GROUP_CONCAT(jold.doc_name) doc_name,"
     		        + " p1.abbr consignor_name, p2.abbr consignee_name from job_order_land_item jol "
     				+ " left join party p on p.id=jol.transport_company"
     				+ " left join party p1 on p1.id=jol.consignor"

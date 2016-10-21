@@ -306,9 +306,12 @@ $(document).ready(function() {
             		}
             		else{
             			var arr = data.split(",");
+            			var idStr = full.JOB_ORDER_LAND_DOC_ID;
+            			var idArr = idStr.split(",");
             			var str = "";
 	            		for(var i=0;i<arr.length;i++){
-	            			str += '<a href="/upload/'+arr[i]+'" class="sign_desc" style="width:200px" target="_blank">'+arr[i]+'</a>&nbsp;&nbsp;'
+		            		str += '<a href="/upload/'+arr[i]+'" target="_blank">'+arr[i]+'</a>&nbsp;&nbsp;'
+		            			  +'<a id="'+idArr[i]+'" class="glyphicon glyphicon-remove delete_icon_of_sign_desc" style="margin-right:15px;" role="menuitem" tabindex="-10"></a>'
 	            		}
 	            		return str;
             		}
@@ -341,6 +344,13 @@ $(document).ready(function() {
                         data='';
                     return data;
                 }
+            },
+            { "data": "JOB_ORDER_LAND_DOC_ID", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return data;
+            	}
             }
         ]
     });
@@ -359,7 +369,7 @@ $(document).ready(function() {
     	})
     })
     
-    //删除签收文件
+    //一起删除签收文件
     $("#land_table").on('click', '.delete_sign_desc', function(){
     	var tr = $(this).parent().parent();
     	var id = tr.attr('id');
@@ -368,11 +378,24 @@ $(document).ready(function() {
 	        	 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
 	        	 itemOrder.refleshLandItemTable(order_id);
 	     },'json').fail(function() {
-	         	 $.scojs_message('删除失败!', $.scojs_message.TYPE_ERROR);
+	         	 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
 	     });
     });
+    //单个删除签收文件
+    $("#land_table").on('click', '.delete_icon_of_sign_desc', function(){
+    	var name = $(this).prev().text();
+    	var id = $(this).attr('id');
+    	debugger
+    	var order_id = $('#order_id').val();
+	     $.post('/jobOrder/deleteOneSignDesc', {id:id,name:name}, function(data){
+	        	 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+	        	 itemOrder.refleshLandItemTable(order_id);
+	     },'json').fail(function() {
+	         	 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+	     });
+    })
 	//上传签收文件
-	$("#land_table").on('click', '.upload', function(){
+    $("#land_table").on('click', '.upload', function(){
 		var id = $(this).parent().parent().parent().attr('id');
 		var order_id = $('#order_id').val();
 			$(this).fileupload({
