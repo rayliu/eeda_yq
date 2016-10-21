@@ -1,5 +1,6 @@
 package controllers.profile;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.text.SimpleDateFormat;
@@ -25,6 +26,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -245,6 +247,8 @@ public class ServiceProviderController extends Controller {
         map.put("districtLocations", districtLocations);
     	renderJson(map);
     }
+    
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchSp() {
     	
 		String input = getPara("input");
@@ -290,6 +294,7 @@ public class ServiceProviderController extends Controller {
 		renderJson(spList);
 	}
     
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchInsurance() {
 		String input = getPara("input");
 		Long parentID = pom.getParentOfficeId();
@@ -424,6 +429,7 @@ public class ServiceProviderController extends Controller {
     }
     
     //查询船公司下拉, 这里不用过滤office, 因为船公司是通用的
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchCarrier(){
         UserLogin user = LoginUserController.getLoginUser(this);
         
@@ -438,6 +444,7 @@ public class ServiceProviderController extends Controller {
     }
     
     //查询结算公司下拉,包括供应商和客户
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchCompany(){
     	String input = getPara("input");
 		
@@ -460,6 +467,7 @@ public class ServiceProviderController extends Controller {
     }
     
     //查询航空公司下拉
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchAirCompany(){
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
@@ -475,6 +483,7 @@ public class ServiceProviderController extends Controller {
     }
     
     //查询运输公司下拉
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchTruckCompany(){
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
@@ -490,6 +499,7 @@ public class ServiceProviderController extends Controller {
     }
     
     //查询单位下拉列表
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchUnit(){
     	String input = getPara("input");
     	List<Record> recs = null;
@@ -502,6 +512,7 @@ public class ServiceProviderController extends Controller {
     }
     
     //查询工作单应收应付的单位下拉列表
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchChargeUnit(){
     	String input = getPara("input");
     	List<Record> recs = null;
@@ -514,6 +525,7 @@ public class ServiceProviderController extends Controller {
     }
     
     //查询币制名下拉列表
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchCurrency(){
     	String input = getPara("input");
     	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -530,6 +542,7 @@ public class ServiceProviderController extends Controller {
     }
     
     //查询发货人下拉列表
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchTruckOut(){
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
@@ -544,6 +557,7 @@ public class ServiceProviderController extends Controller {
     }
     
     //查询收货人下拉列表
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchTruckIn(){
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
@@ -558,6 +572,7 @@ public class ServiceProviderController extends Controller {
     }
     
     //查询贸易方式下拉列表
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchSupervisionMethod(){
         String name = getPara("input");
         List<Record> rec = null;
