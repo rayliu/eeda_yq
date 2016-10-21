@@ -1,5 +1,6 @@
  package controllers.profile;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
@@ -11,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.Location;
 import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
@@ -26,6 +26,7 @@ import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
@@ -318,6 +319,7 @@ public class CustomerController extends Controller {
     }
     
     // 列出客户公司名称
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void search() {
         String customerName = getPara("customerName");
 
@@ -351,6 +353,7 @@ public class CustomerController extends Controller {
     }
     
     // 列出所有party名称，客户
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void search_party() {
         String customerName = getPara("customerName");
        

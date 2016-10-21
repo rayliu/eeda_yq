@@ -19,7 +19,7 @@ define(['app/index/todo'], function(todoController){
         if (doPrevent)
             e.preventDefault();
     });
-    //控制td 长度
+    //只要属性中使用 limit=10, 控制td长度, 超出10 显示...
     jQuery.fn.limit=function(){ 
         var self = $("td[limit]"); 
         self.each(function(){ 
@@ -34,7 +34,19 @@ define(['app/index/todo'], function(todoController){
     } ;
     //$(document.body).limit();
     
-   $(document).ready(function() {
+    //弹出下拉列表的消失控制: 当点击别的任意地方, 消除已弹出的列表
+    
+    $(document).click(function (e) {
+        var targetEl = e.srcElement || e.target;
+        if (targetEl.tagName.toUpperCase() == 'A' && $(targetEl).hasClass('popListItem')) {
+          //选中item
+        }else{
+          //没选中, 获取已弹出list 并隐藏
+          eeda.hidePopList();
+        }
+    });
+
+    $(document).ready(function() {
 
       var moudleUrl = window.location.pathname.split('/')[1];
       if(moudleUrl.length>0 && location.search.indexOf('type')>0){
@@ -59,6 +71,7 @@ define(['app/index/todo'], function(todoController){
    });
 var eeda={};
 window.eeda =eeda;
+
 //dataTables builder for 1.10
 eeda.dt = function(opt){
     var option = {
@@ -101,6 +114,15 @@ eeda.dt = function(opt){
 
     return dataTable;
 }
+
+eeda.hidePopList=function(){
+    var listArr=$(".dropdown-menu");
+    $(listArr).each(function(i, el) {
+        if($(el).is(':visible')){
+          $(el).hide();
+        }
+    });
+};
 
 var refreshUrl=function(url){
   	var state = window.history.state;
