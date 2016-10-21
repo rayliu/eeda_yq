@@ -496,20 +496,37 @@ $(document).ready(function() {
     		}
     	}
     });
-    //币制下拉列表点击触发
-//    var self;
-//   $('#charge_table input[name=CURRENCY_ID_input]').on('keyup click', function(event){
-//	   self = $(this);
-//	   $('#table_currency_input_field_list').on('click', '.fromLocationItem', function(e){
-//		   
-//		   self.val($(this).text());//名字
-//		   getTotalCharge(); 
-//       });
-//	   	   
-//   })
+    
+//    $('#table_currency_input_field_list').on('click', '.fromLocationItem', function(e){
+//		  var inputField = eeda._inputField;
+//		  var dataId = $(this).attr('dataId');
+//		  var row = inputField.parent().parent().parent();
+//		  var currency_rate = $(this).attr('currency_rate');
+//          row.find('.currency_rate input').val(currency_rate);//选择币制则填入汇率
+//          var total = row.find('[name=total_amount]').val();
+//          if(currency_rate!=''&&total!=''){
+//        	  row.find('[name=currency_total_amount]').val(currency_rate*total);//计算人民币金额
+//        	  getTotalCharge();
+//          }
+//	  });
+//	  $('#table_currency_input_field_list').on('keydown', 'li', function(e){
+//          if (e.keyCode == 13) {
+//        	  var inputField = eeda._inputField;
+//              var $a = $(this).find('a');
+//              var dataId = $a.attr('dataId');
+//              var row = inputField.parent().parent().parent();
+//              var currency_rate = $a.attr('currency_rate');
+//              row.find('.currency_rate input').val(currency_rate);
+//              var total = row.find('[name=total_amount]').val();
+//              if(currency_rate!=''&&total!=''){
+//            	  row.find('[name=currency_total_amount]').val(currency_rate*total);//计算人民币金额
+//            	  getTotalCharge();
+//              }
+//          }
+//      });
+    
 
 	//计算应收字段
-    
     var getTotalCharge= function(){
     	var totalChargeRMB = 0; 
 	    var totalChargeUSD = 0;
