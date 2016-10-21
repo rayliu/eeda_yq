@@ -125,7 +125,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="TRANSACTION_UNIT" value="'+data+'" class="form-control search-control" />';
+	                    var str = '<select name="transaction_unit" class="form-control search-control" style="width:100px" >'
+	                    	+'<option value="" '+(data=='' ? 'selected':'')+'></option>'
+	                        +'<option value="件" '+(data=='件' ? 'selected':'')+'>件</option>'
+	                        +'<option value="支" '+(data=='支' ? 'selected':'')+'>支</option>'
+	                        +'<option value="台" '+(data=='台' ? 'selected':'')+'>台</option>'
+	                        +'</select>';
+	                	return str;
 	                }
 	            },
 	            { "data": "LEGAL_AMOUNT", 
@@ -135,11 +141,17 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                	return '<input type="text" name="LEGAL_AMOUNT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "LEGAL_UNIT","width": "180px",
+	            { "data": "LEGAL_UNIT","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="LEGAL_UNIT" value="'+data+'" class="form-control search-control" />';
+	                    var str = '<select name="legal_unit" class="form-control search-control" style="width:100px" >'
+	                    	+'<option value="" '+(data=='' ? 'selected':'')+'></option>'
+	                        +'<option value="件" '+(data=='件' ? 'selected':'')+'>件</option>'
+	                        +'<option value="支" '+(data=='支' ? 'selected':'')+'>支</option>'
+	                        +'<option value="台" '+(data=='台' ? 'selected':'')+'>台</option>'
+	                        +'</select>';
+	                	return str;
 	                }
 	            },
 	            { "data": "PRICE","width": "180px",
