@@ -98,6 +98,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var order = {};
         	order['id'] = $('#order_id').val();
         	order['note'] = $('#note').val();
+        	order['ref_job_order_id'] = $('#ref_job_order_id').val();
         	order['status'] = $('#status').val()==""?"新建":$('#status').val();
         	var customForm = $('#customForm input,#customForm select,#customForm textarea');
         	for(var i = 0; i < customForm.length; i++){

@@ -11,10 +11,12 @@
                                 <br>
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
-                                        id:'custom_table',
-                                        headers:['', '报关申请单号码','报关行', '报关单号码','海关状态','提交人', '提交时间', '填报人', '填报时间'],
-                                        field_list:['id','','id', 'unload_type', 'transport_company', 'trans_no', 'driver','driver_tel','truck_type'],
-                                        value_list: landList![]
+                                        id:'custom_item_table',
+                                        style:'width:1000px;',
+                                        headers:[ '','报关申请单号码','报关行', '报关单号码','海关状态', '填报人', '填报时间','提交人', '提交时间'],
+                                        field_list:['id','custom_plan_no','custom_bank', 'custom_order_no', 'status', 
+                                        'creator', 'create_stamp','fill_name','fill_stamp'],
+                                        value_list: customItemList![]
                                     }){} %>
                             </div>
                         </div>

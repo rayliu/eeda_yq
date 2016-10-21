@@ -7,7 +7,7 @@
                 </div>
             </div>
             <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
-            <input id="ref_job_order_id" type="hidden" name="ref_job_order_id" value="${order.ref_job_order_id!''}"/>
+            <input id="ref_job_order_id" type="hidden" name="ref_job_order_id" value="${jobOrder.id!''}"/>
             <div class="form-group">
                 <form id="customForm">
                     <div class="row"><!--  第1行  --> 
@@ -24,7 +24,6 @@
                                                {   id:'ref_no', 
                                                    label:'关联单号', 
                                                    value:order.ref_no!jobOrder.order_no!''
-
                                                }){}%>
                         </div>
                         <div class="col-lg-4">

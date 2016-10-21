@@ -787,6 +787,14 @@ public class JobOrderController extends Controller {
     	setAttr("trade_charge_sale_list", getItems(id,"trade_sale"));
     	
     	//报关
+    	setAttr("customItemList",Db.find("SELECT"
+    			+ " cjo.id, cjo.order_no custom_plan_no, '瑞龙报关行' custom_bank,"
+    			+ " cjo.ref_no custom_order_no, '' status, ul.c_name creator,"
+    			+ " cjo.create_stamp, ul.c_name bill_name, cjo.fill_stamp"
+    			+ " FROM custom_plan_order cjo"
+    			+ " LEFT JOIN user_login ul ON ul.id = cjo.creator"
+    			+ " LEFT JOIN user_login ul2 ON ul2.id = cjo.fill_by"
+    			+ " WHERE cjo.ref_job_order_id = ? ",id));
     	setAttr("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
    		setAttr("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
    		setAttr("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));

@@ -3,10 +3,12 @@ $(document).ready(function() {
 
 	$('#createCustomPlanOrderBtn').click(function(event) {
         var id = $('#order_id').val();
-        if(id==''){
-            $.scojs_message('请先保存单据', $.scojs_message.TYPE_ERROR);
+        if(id!='' && custom_type.split(',')[0]=='china'){
+        	custom_type = 'china,,'
+        	window.open("/customPlanOrder/create?jobOrderId="+id, '_blank');
+           
         }else{
-            window.open("/customPlanOrder/create?jobOrderId="+id, '_blank');
+        	 $.scojs_message('请先保存单据', $.scojs_message.TYPE_ERROR);
         }
     });
 
@@ -255,6 +257,29 @@ $(document).ready(function() {
     		}
     	}
     })
+    
+    
+    var customTable = eeda.dt({
+        id: 'custom_item_table',
+        autoWidth: false,
+        columns:[
+                 { "data": "ID",'visible':false},
+                 { "data": "CUSTOM_PLAN_NO",
+                	"render": function ( data, type, full, meta ) {
+                		return "<a href='/customPlanOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+               	  	}
+                 },
+                 { "data": "CUSTOM_BANK"},
+                 { "data": "CUSTOM_ORDER_NO"},
+                 { "data": "STATUS"},
+                 { "data": "CREATOR"},
+                 { "data": "CREATE_STAMP"},
+                 { "data": "FILL_NAME"},
+                 { "data": "FILL_STAMP"}
+                 ]
+        })
+        
+    
     
 });
 });
