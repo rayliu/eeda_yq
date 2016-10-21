@@ -385,7 +385,6 @@ $(document).ready(function() {
     $("#land_table").on('click', '.delete_icon_of_sign_desc', function(){
     	var name = $(this).prev().text();
     	var id = $(this).attr('id');
-    	debugger
     	var order_id = $('#order_id').val();
 	     $.post('/jobOrder/deleteOneSignDesc', {id:id,name:name}, function(data){
 	        	 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
