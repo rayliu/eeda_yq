@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -34,7 +34,10 @@
 		ul.user_phone,
 		ul.user_tel,
 		ul.user_fax,
-		oe.office_name
+		oe.office_name,
+ifnull(p.company_name_eng,p.company_name) MBLshipper_name,
+ifnull(p1.company_name_eng,p1.company_name) MBLconsignee_name, ifnull(p2.company_name_eng,p2.company_name) MBLnotify_party_name
+
 FROM job_order jo
 
 LEFT JOIN job_order_shipment jos on jos.order_id = jo.id
@@ -46,6 +49,9 @@ left join location lo2 on lo2.id=jos.pod
 left join location lo3 on lo3.id=jos.fnd
 LEFT JOIN user_login ul on ul.id = jo.creator
 LEFT JOIN office oe on oe.id = jo.office_id
+left join party p on p.id = jos.MBLshipper
+left join party p1 on p1.id = jos.MBLconsignee
+left join party p2 on p2.id = jos.MBLnotify_party
 where jos.order_id=$P{order_id}]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
@@ -274,6 +280,9 @@ where jos.order_id=$P{order_id}]]>
 	<field name="office_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="MBLshipper_name" class="java.lang.String"/>
+	<field name="MBLconsignee_name" class="java.lang.String"/>
+	<field name="MBLnotify_party_name" class="java.lang.String"/>
 	<variable name="id_1" class="java.lang.Long" resetType="Page" calculation="Sum">
 		<variableExpression><![CDATA[$F{id}]]></variableExpression>
 	</variable>
@@ -405,21 +414,21 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[ PORT OF DELIVERY:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="8" y="45" width="219" height="49" uuid="2cf7f620-c7e8-4b39-837e-d17351079ac7"/>
+				<reportElement x="8" y="54" width="220" height="40" uuid="2cf7f620-c7e8-4b39-837e-d17351079ac7"/>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{MBLshipper_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="8" y="104" width="220" height="50" uuid="1cdee3b1-2b77-41e7-8ccb-303f5e043348"/>
+				<reportElement x="8" y="114" width="220" height="40" uuid="1cdee3b1-2b77-41e7-8ccb-303f5e043348"/>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{MBLconsignee_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="9" y="165" width="214" height="49" uuid="e62cd012-c33f-4a68-8182-01d1cbdd37b2"/>
+				<reportElement x="8" y="174" width="220" height="40" uuid="e62cd012-c33f-4a68-8182-01d1cbdd37b2"/>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -575,6 +584,27 @@ where jos.order_id=$P{order_id}]]>
 				</textElement>
 				<text><![CDATA[MARKS & NO. ：]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="8" y="44" width="219" height="10" uuid="aec2241f-9737-4a0d-b0e4-b70d39954ed9"/>
+				<textElement>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MBLshipper_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="8" y="105" width="220" height="10" uuid="23c9ff95-9f62-47bf-91bd-a64f1bc4eeb6"/>
+				<textElement>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MBLconsignee_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="8" y="164" width="220" height="10" uuid="5c685347-55a0-478d-8001-2dff48fe364f"/>
+				<textElement>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MBLnotify_party_name}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
