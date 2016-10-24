@@ -31,7 +31,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                "render": function ( data, type, full, meta ) {
 	                		if(data){
 	      	            		if(data != 'Y')
-	      				    		    return '未创建对账单';
+	      				    		  return '未创建对账单';
 	      				    	   else 
 	      				    		  return '已创建对账单';
 	                  	}else{
@@ -116,7 +116,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            	}
 	            },
 	            { "data": "NET_WEIGHT", "width": "60px"},
-	            { "data": "REF_NO", "width": "60px"},
+	            { "data": "REF_NO", "width": "200px"},
 	            { "data": "MBL_NO", "width": "60px"},
 	            { "data": "HBL_NO", "width": "60px"},
 	            { "data": "CONTAINER_NO", "width": "100px"},

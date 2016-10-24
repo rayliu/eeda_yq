@@ -55,6 +55,8 @@ public class CustomerController extends Controller {
     }
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_LIST})
     public void list() {
+    	String ADD = getPara();
+    	setAttr("add",ADD);
         Long parentID = pom.getParentOfficeId();
         
         String sLimit = "";
