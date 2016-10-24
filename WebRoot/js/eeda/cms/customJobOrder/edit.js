@@ -7,12 +7,8 @@ $(document).ready(function() {
 	document.title = order_no + ' | ' + document.title;
 	$('#menu_order').addClass('active').find('ul').addClass('in');
 	
-	$('#confirmCustomDetailBtn').click(function(e){
-		$('#returnCustomOrderExportModal').click()
-	})
-	
 	$('#customDetailExportForm input[name="type"]').click(function(){
-		if($(this).val()=="export"){
+		if($(this).val()=="出口"){
 			$($('#export_port').parent().find("label")).text("出口口岸");
 			$($('#custom_export_date').parent().find("label")).text("出口日期");
 		}else{
@@ -86,6 +82,7 @@ $(document).ready(function() {
         //陆运
         order.load_item = itemOrder.buildLoadItem();
         //报关
+        order.custom_list = itemOrder.buildCustom();
         order.custom_detail = itemOrder.buildCustomDetail();
         order.custom_item = itemOrder.buildCustomItem();
         //费用明细，应收，应付

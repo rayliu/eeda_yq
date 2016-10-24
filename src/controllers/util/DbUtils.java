@@ -281,22 +281,23 @@ public class DbUtils {
 		String column_name = re.getStr("column_name");
 		for (Entry<String, ?> entry : dto.entrySet()) { 
 			String key = entry.getKey().toLowerCase();
-			
-			if(column_name.indexOf(key) > -1){
-				String value = String.valueOf(entry.getValue()).trim();
-				//忽略  action 字段
-				if(!"action".equals(key)){
-					logger.debug(key+":"+value);
-					if(StringUtils.isEmpty(value)){
-						value=null;
+			if(!key.endsWith("_list")&&!key.endsWith("_detail")&&!key.endsWith("_item")){
+				if(column_name.indexOf(key) > -1){
+					String value = String.valueOf(entry.getValue()).trim();
+					//忽略  action 字段
+					if(!"action".equals(key)){
+						logger.debug(key+":"+value);
+						if(StringUtils.isEmpty(value)){
+							value=null;
+						}
+						try{
+							r.set(key, value);
+						} catch (Exception e) {
+	                        logger.error(e.getMessage());
+	                    }
 					}
-					try{
-						r.set(key, value);
-					} catch (Exception e) {
-                        logger.error(e.getMessage());
-                    }
-				}
-			} 
+				} 
+			}
 		}
 	}
 	

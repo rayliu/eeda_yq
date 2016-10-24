@@ -10,7 +10,7 @@ $(document).ready(function() {
         dataTable.row(tr).remove().draw();
     }); 
 
-    itemOrder.buildCustomItem=function(){
+    itemOrder.buildCustom=function(){
         var cargo_table_rows = $("#custom_table tr");
         var cargo_items_array=[];
         for(var index=0; index<cargo_table_rows.length; index++){
@@ -29,7 +29,6 @@ $(document).ready(function() {
             
             var item={}
             item.id = id;
-            item.order_type = "cost";//应付
             for(var i = 1; i < row.childNodes.length; i++){
             	var el = $(row.childNodes[i]).find('input,select');
             	var name = el.attr('name'); 
@@ -58,17 +57,18 @@ $(document).ready(function() {
     
     var dataTable = eeda.dt({
         id: 'custom_table',
+        autoWidth: false,
         columns: [
             {
                 "render": function ( data, type, full, meta ) {
-                    return '<button type="button" class="delete btn btn-default btn-xs">删除</button>';
+                    return '<button type="button" class="delete btn btn-default btn-xs" style="width:40px">删除</button>';
                 }
             },
             { "data": "TYPE", 
                 "render": function ( data, type, full, meta ) {
-                	var str = '<select name="type" class="form-control search-control">'
-                        +'<option value="import" '+(data=='import' ? 'selected':'')+'>进口</option>'
-                        +'<option value="export" '+(data=='export' ? 'selected':'')+'>出口</option>'
+                	var str = '<select name="type" class="form-control search-control" style="width:80px">'
+                        +'<option value="进口" '+(data=='进口' ? 'selected':'')+'>进口</option>'
+                        +'<option value="出口" '+(data=='出口' ? 'selected':'')+'>出口</option>'
                         +'</select>';
                 	return str;
                 }
@@ -77,17 +77,16 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
 	            	if(!data)
 	                    data='';
-	                return '<input type="text" name="item_no"  value="'+data+'" class="form-control" />';
+	                return '<input type="text" name="custom_no"  value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             }, 
             { "data": "CUSTOM_STATE",
             	"render": function ( data, type, full, meta ) {
-            		var str = '<select name="type" class="form-control search-control">'
-                        +'<option value="import" '+(data=='import' ? 'selected':'')+'>海关状态</option>'
-                        +'<option value="export" '+(data=='export' ? 'selected':'')+'>海关状态</option>'
-                        +'<option value="export" '+(data=='export' ? 'selected':'')+'>海关状态</option>'
-                        +'<option value="export" '+(data=='export' ? 'selected':'')+'>海关状态</option>'
-                        +'<option value="export" '+(data=='export' ? 'selected':'')+'>海关状态</option>'
+            		var str = '<select name="custom_state" class="form-control search-control" style="width:80px">'
+                        +'<option value="审单" '+(data=='审单' ? 'selected':'')+'>审单</option>'
+                        +'<option value="查验" '+(data=='查验' ? 'selected':'')+'>查验</option>'
+                        +'<option value="征税" '+(data=='征税' ? 'selected':'')+'>征税</option>'
+                        +'<option value="放行" '+(data=='放行' ? 'selected':'')+'>放行</option>'
                         +'</select>';
                 	return str;
             	}
@@ -96,14 +95,14 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
 	            	if(!data)
 	                    data='';
-	                return '<input type="text" name="item_no"  value="'+data+'" class="form-control" />';
+	                return '<input type="text" name="order_info"  value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
             { "data": "CARGO_INFO",
             	"render": function ( data, type, full, meta ) {
 	            	if(!data)
 	                    data='';
-	                return '<input type="text" name="item_no"  value="'+data+'" class="form-control" />';
+	                return '<input type="text" name="cargo_info"  value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             }
           ]
@@ -113,7 +112,19 @@ $(document).ready(function() {
 		var url = "/customJobOrder/tableList?order_id="+order_id+"&type=custom";
 		dataTable.ajax.url(url).load();
 	}
+	
+	//添加一行
+	$('#confirmCustomDetailBtn').click(function(e){
+		$('#returnCustomOrderExportModal').click()
+		var type = $('#customDetailExportForm input[name="type"]:checked').val();
+		var item={};
+		item.TYPE = type;
+		item.CUSTOM_NO = "";
+		item.ORDER_INFO = "";
+		item.CARGO_INFO = "";
 
+		dataTable.row.add(item).draw(true);
+	})
 
 
 });

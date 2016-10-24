@@ -150,6 +150,8 @@ public class CustomJobOrderController extends Controller {
 		DbUtils.handleList(custom_detail, "custom_job_order_custom", id, "order_id");
 		List<Map<String, String>> custom_item = (ArrayList<Map<String, String>>)dto.get("custom_item");
 		DbUtils.handleList(custom_item, "custom_job_order_custom_item", id, "order_id");
+		List<Map<String, String>> custom = (ArrayList<Map<String, String>>)dto.get("custom_list");
+		DbUtils.handleList(custom, "custom_job_order_addcustom_item", id, "order_id");
 		
 		long creator = r.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
