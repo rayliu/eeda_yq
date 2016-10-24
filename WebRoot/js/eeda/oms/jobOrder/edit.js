@@ -98,11 +98,11 @@ $(document).ready(function() {
         var transport_type_str = transport_type.toString();
         
         //报关类型遍历取值
-        var custom_type = [];
+        var  this_custom_type = [];
         $('#custom_type input[type="checkbox"]:checked').each(function(){
-        	custom_type.push($(this).val()); 
+        	this_custom_type.push($(this).val()); 
         });
-        var custom_type_str = custom_type.toString();
+        var custom_type_str = this_custom_type.toString();
         
         //海运
         var shipment_detail = itemOrder.buildShipmentDetail();
@@ -187,6 +187,11 @@ $(document).ready(function() {
         $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
             if(order.ID){
+            	//控制报关申请单按钮
+            	
+            	if(custom_type_str.includes("china")){
+            		custom_type.push('china') ;
+                }
             	eeda.contactUrl("edit?id",order.ID);
             	$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
             	$('#saveBtn').attr('disabled', false);

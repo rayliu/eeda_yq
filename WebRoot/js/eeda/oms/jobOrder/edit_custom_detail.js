@@ -4,9 +4,7 @@ $(document).ready(function() {
 	$('#createCustomPlanOrderBtn').click(function(event) {
         var id = $('#order_id').val();
         if(id!='' && custom_type.split(',')[0]=='china'){
-        	custom_type = 'china,,'
         	window.open("/customPlanOrder/create?jobOrderId="+id, '_blank');
-           
         }else{
         	 $.scojs_message('请先保存单据', $.scojs_message.TYPE_ERROR);
         }
