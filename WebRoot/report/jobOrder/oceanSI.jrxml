@@ -442,11 +442,11 @@ where jos.order_id=$P{order_id}]]>
 				<textFieldExpression><![CDATA[$F{SONO}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="287" y="130" width="266" height="20" uuid="2901dd2b-e118-4770-baea-1ac1e76be9f5"/>
+				<reportElement x="287" y="132" width="266" height="20" uuid="2901dd2b-e118-4770-baea-1ac1e76be9f5"/>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{release_type}.equals("tlx")?"电放提单":($F{release_type}.equals("swb"))?"电放提单":($F{release_type}.equals("obl"))?"正本提单":"")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{release_type}.equals("tlx")?"电放提单":($F{release_type}.equals("swb"))?"SeaWayBill":($F{release_type}.equals("obl"))?"正本提单":"")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="6" y="254" width="97" height="20" uuid="a4ade5f7-3e8a-45b0-9f54-dfb60df3f15c"/>
