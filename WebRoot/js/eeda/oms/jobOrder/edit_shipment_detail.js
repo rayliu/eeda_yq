@@ -103,6 +103,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $('#oversea_agent').val(li.attr('oversea_agent'));
             $('#oversea_agent_input').val(li.attr('oversea_agent_name'));
             $('#oversea_agent_info').val(li.attr('oversea_agent_info'));
+            $('#ocean_shipping_mark').val(li.attr('shipping_mark'));
+            $('#ocean_cargo_desc').val(li.attr('cargo_desc'));
             
             var release_type = li.attr('release_type');
             $('#shipmentForm input[type="radio"]').each(function(){
