@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="624"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="order_no" class="java.lang.String">
 		<property name="order_no" value="$P{order_no}"/>
 	</parameter>
@@ -46,7 +46,9 @@
 	GROUP BY
 		CN_no) A
 	GROUP BY
-		A.flag) CN_NO
+		A.flag) CN_NO,
+ifnull(p3.company_name_eng,p3.company_name) HBLshipper_name,
+ifnull(p1.company_name_eng,p1.company_name) HBLconsignee_name, ifnull(p2.company_name_eng,p2.company_name) HBLnotify_party_name
 FROM
           job_order_shipment jos
 LEFT JOIN job_order jo ON jo.id = jos.order_id
@@ -57,6 +59,9 @@ LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo2 ON lo2.id = jos.pod
 LEFT JOIN location lo3 ON lo3.id = jos.fnd
 LEFT JOIN party p on jos.head_carrier = p.id
+left join party p3 on p3.id = jos.HBLshipper
+left join party p1 on p1.id = jos.HBLconsignee
+left join party p2 on p2.id = jos.HBLnotify_party
 WHERE
 	jo.order_no = $P{order_no}]]>
 	</queryString>
@@ -88,10 +93,16 @@ WHERE
 	<field name="creator" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="transport_type" class="java.lang.String">
+	<field name="create_stamp" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="create_stamp" class="java.sql.Timestamp">
+	<field name="updator" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="update_stamp" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="transport_type" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="remark" class="java.lang.String">
@@ -154,6 +165,18 @@ WHERE
 	<field name="total_profitTotalRMB" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="trans_clause" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trade_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="land_export_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="office_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="order_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -190,22 +213,40 @@ WHERE
 	<field name="vgm" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="shipper" class="java.lang.Integer">
+	<field name="MBLshipper" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="shipper_info" class="java.lang.String">
+	<field name="MBLshipper_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="consignee" class="java.lang.Integer">
+	<field name="MBLconsignee" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="consignee_info" class="java.lang.String">
+	<field name="MBLconsignee_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="notify_party" class="java.lang.Integer">
+	<field name="MBLnotify_party" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="notify_party_info" class="java.lang.String">
+	<field name="MBLnotify_party_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HBLshipper" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HBLshipper_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HBLconsignee" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HBLconsignee_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HBLnotify_party" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HBLnotify_party_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="booking_agent" class="java.lang.String">
@@ -230,9 +271,6 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="mbl_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="trans_clause" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="vessel" class="java.lang.String">
@@ -280,9 +318,6 @@ WHERE
 	<field name="hub" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="trade_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="prepaid" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -321,6 +356,9 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="CN_NO" class="java.lang.String"/>
+	<field name="HBLshipper_name" class="java.lang.String"/>
+	<field name="HBLconsignee_name" class="java.lang.String"/>
+	<field name="HBLnotify_party_name" class="java.lang.String"/>
 	<variable name="pieces_sum" class="java.lang.Long" incrementType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{pieces}]]></variableExpression>
 	</variable>
@@ -645,25 +683,25 @@ WHERE
 ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="8" y="39" width="269" height="51" uuid="90f35b86-a508-42bb-8344-37f364cee09b"/>
+				<reportElement x="10" y="47" width="269" height="42" uuid="90f35b86-a508-42bb-8344-37f364cee09b"/>
 				<textElement>
-					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{shipper_info}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{HBLshipper_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="8" y="108" width="272" height="62" uuid="5988049a-ad69-4a95-b44f-d8bbeb1f267b"/>
+				<reportElement x="8" y="118" width="272" height="52" uuid="5988049a-ad69-4a95-b44f-d8bbeb1f267b"/>
 				<textElement>
-					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{consignee_info}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{HBLconsignee_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="8" y="198" width="272" height="47" uuid="7639877a-e0ad-4ec8-a33e-d4e9f6d255d6"/>
+				<reportElement x="8" y="206" width="272" height="38" uuid="7639877a-e0ad-4ec8-a33e-d4e9f6d255d6"/>
 				<textElement>
-					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{notify_party_info}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{HBLnotify_party_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="143" y="260" width="136" height="20" uuid="9d46cd8f-195a-41d5-84c1-c8c802e3953c"/>
@@ -1056,6 +1094,34 @@ WHERE
 				<text><![CDATA[Consignee(Complete name and address)收货人(名称和地址)
 ]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="38" width="269" height="10" uuid="e8ee2102-530f-4059-90d1-75195c04d2ec"/>
+				<textElement>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HBLshipper_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="21" y="59" width="269" height="0" uuid="7205862b-6cdd-4ca0-9896-bc875805ac96"/>
+				<textElement>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HBLshipper_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="8" y="108" width="271" height="10" uuid="b2473b20-2549-4c1f-9455-633364f7f11b"/>
+				<textElement>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HBLconsignee_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="8" y="197" width="271" height="10" uuid="beae980e-3ee8-4e60-b1c0-6517dbd748ee"/>
+				<textElement>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HBLnotify_party_name}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
