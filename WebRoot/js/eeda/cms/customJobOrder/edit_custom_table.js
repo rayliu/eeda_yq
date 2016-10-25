@@ -62,10 +62,17 @@ $(document).ready(function() {
         return cargo_items_array;
     };
     
+    var bindFieldEvent=function(){
+        eeda.bindTableFieldCurrencyId('custom_item_table','CURRENCY','/serviceProvider/searchCurrency','');
+    };
+    
     //------------事件处理
 	 var cargoTable = eeda.dt({
 	        id: 'custom_item_table',
 	        autoWidth: false,
+	        drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
+	            bindFieldEvent();
+	        },
 	        columns:[
 	         {"data": "ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
@@ -136,12 +143,19 @@ $(document).ready(function() {
             		return '<input type="text" name="total" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "CURRENCY","width": "180px",
+            { "data": "CURRENCY","width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
-            			data='';
-            		return '<input type="text" name="currency"  value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
+                        data='';
+                    var field_html = template('table_dropdown_template',
+                        {
+                            id: 'CURRENCY',
+                            value: data,
+                            display_value: full.CURRENCY_NAME
+                        }
+                    );
+                    return field_html;
+               }
             },
             { "data": "EXEMPTION","width": "180px",
             	"render": function ( data, type, full, meta ) {
@@ -149,6 +163,13 @@ $(document).ready(function() {
             			data='';
             		return '<input type="text" name="exemption"  value="'+data+'" class="form-control" style="width:200px"/>';
             	}
+            },
+            { "data": "CURRENCY_NAME", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+	                if(!data)
+	                    data='';
+	                return data;
+	            } 
             }
            
         ]

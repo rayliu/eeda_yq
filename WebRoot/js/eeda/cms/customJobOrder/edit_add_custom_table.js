@@ -83,6 +83,7 @@ $(document).ready(function() {
             { "data": "CUSTOM_STATE",
             	"render": function ( data, type, full, meta ) {
             		var str = '<select name="custom_state" class="form-control search-control" style="width:80px">'
+            			+'<option value="" '+(data=='' ? 'selected':'')+'></option>'
                         +'<option value="审单" '+(data=='审单' ? 'selected':'')+'>审单</option>'
                         +'<option value="查验" '+(data=='查验' ? 'selected':'')+'>查验</option>'
                         +'<option value="征税" '+(data=='征税' ? 'selected':'')+'>征税</option>'

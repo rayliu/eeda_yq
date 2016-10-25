@@ -299,9 +299,9 @@
                                 {
                                     id:'custom_item_table',
                                     style:'width:2400px',
-                                    headers:['<input id="allCheckOfCustomItem" style="width:30px" type="checkbox">','', '项号', '商品编号', '商品名称', '规格型号','数量及单位', '最终目的国(地区)','单价', '总价', '币制', '征免'],
+                                    headers:['<input id="allCheckOfCustomItem" style="width:30px" type="checkbox">','', '项号', '商品编号', '商品名称', '规格型号','数量及单位', '最终目的国(地区)','单价', '总价', '币制', '征免','currency_name'],
                                     field_list:['id','','item_no', 'commodity_no', 'commodity_name', 'specification_model','quantity_and_unit', 'destination_country', 'price', 'total',
-                                     'currency', 'exemption'],
+                                     'currency', 'exemption','currency_name'],
                                     value_list: customItemList![]
                                 }){} %>
                         </div>
@@ -313,6 +313,7 @@
         <button type="button" id="returnCustomOrderExportModal"  class="btn btn-default" data-dismiss="modal">返回</button>
         <button type="button" id="confirmCustomDetailBtn" class="btn btn-primary">确定</button>
       </div>
+<%include("/eeda/component/jsTemplate/tableInputFieldCurrencyId.js",{}){} %>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

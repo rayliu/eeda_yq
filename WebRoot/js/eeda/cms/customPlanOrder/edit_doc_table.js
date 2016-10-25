@@ -89,14 +89,15 @@ $(document).ready(function() {
         id: 'doc_table',
         autoWidth: false,
         columns:[
-			{ "data":"ID","width": "10px",
-			    "render": function ( data, type, full, meta ) {
-			    	if(data)
-			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
-			    	else 
-			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
-			    }
-			},
+//			{ "data":"ID","width": "10px",
+//			    "render": function ( data, type, full, meta ) {
+//			    	if(data)
+//			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
+//			    	else 
+//			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
+//			    }
+//			},
+//          '<input id="allCheckOfDoc" type="checkbox" style="width:30px">',
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
                 	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
