@@ -577,12 +577,33 @@ public class JobOrderController extends Controller {
     	renderJson(resultMap);
     }
     
+    //报关的文档上传
+    @Before(Tx.class)
+    public void uploadCustomDoc(){
+    	String order_id = getPara("order_id");
+    	List<UploadFile> fileList = getFiles("doc");
+    	
+    	for (int i = 0; i < fileList.size(); i++) {
+    		File file = fileList.get(i).getFile();
+    		String fileName = file.getName();
+    		
+    		Record r = new Record();
+    		r.set("order_id", order_id);
+    		r.set("uploader", LoginUserController.getLoginUserId(this));
+    		r.set("doc_name", fileName);
+    		r.set("upload_time", new Date());
+    		Db.save("job_order_custom_doc",r);
+    	}
+    	Map<String,Object> resultMap = new HashMap<String,Object>();
+    	resultMap.put("result", true);
+    	renderJson(resultMap);
+    }
+    
     //上传陆运签收文件描述
     @Before(Tx.class)
     public void uploadSignDesc(){
 		String id = getPara("id");
-		
-		List<UploadFile> fileList = getFiles("\\");
+		List<UploadFile> fileList = getFiles("doc");
 		File file = fileList.get(0).getFile();
 		String fileName = file.getName();
 		
@@ -617,12 +638,34 @@ public class JobOrderController extends Controller {
         }
         renderJson(resultMap);
     }
+    //删除报关文档
+    @Before(Tx.class)
+    public void deleteCustomDoc(){
+    	String id = getPara("id");
+    	Record r = Db.findById("job_order_custom_doc",id);
+    	String fileName = r.getStr("doc_name");
+    	Map<String,Object> resultMap = new HashMap<String,Object>();
+    	
+    	String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\doc\\"+fileName;
+    	
+    	File file = new File(filePath);
+    	if (file.exists() && file.isFile()) {
+    		boolean result = file.delete();
+    		Db.delete("job_order_custom_doc",r);
+    		resultMap.put("result", result);
+    	}else{
+    		Db.delete("job_order_custom_doc", r);
+    		resultMap.put("result", "文件不存在可能已被删除!");
+    	}
+    	renderJson(resultMap);
+    }
     
     //删除陆运签收文件
     @Before(Tx.class)
     public void deleteSignDesc(){
     	String id = getPara("id");
-    	String path = getRequest().getServletContext().getRealPath("/")+"\\upload\\";
+    	String path = getRequest().getServletContext().getRealPath("/")+"\\upload\\doc\\";
     	
     	String sql = "select GROUP_CONCAT(doc_name) doc_name from job_order_land_doc where land_id=?";
     	Record r = Db.findFirst(sql, id);
@@ -644,7 +687,7 @@ public class JobOrderController extends Controller {
     public void deleteOneSignDesc(){
     	String id = getPara("id");
     	String name = getPara("name");
-    	String path = getRequest().getServletContext().getRealPath("/")+"\\upload\\";
+    	String path = getRequest().getServletContext().getRealPath("/")+"\\upload\\doc\\";
     	File file = new File(path+name);
 		if (file.exists() && file.isFile()) {
 			file.delete();
@@ -768,6 +811,10 @@ public class JobOrderController extends Controller {
 	    	itemSql = "select * from job_order_custom_china_self_item"
 	    			+ " where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
+	    }else if("custom_doc".equals(type)){
+	    	itemSql = "select jod.*,u.c_name from job_order_custom_doc jod left join user_login u on jod.uploader=u.id "
+	    			+ " where order_id=? order by jod.id";
+	    	itemList = Db.find(itemSql, orderId);
 	    }
 		return itemList;
 	}
@@ -809,6 +856,7 @@ public class JobOrderController extends Controller {
    		setAttr("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
    		setAttr("customSelf", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china_self"));
    		setAttr("customSelfItemList", getItems(id,"china_self"));
+   		setAttr("customDocList", getItems(id,"custom_doc"));
     	//保险
     	setAttr("insurance", getItemDetail(id,"insure"));
     	//获取费用明细

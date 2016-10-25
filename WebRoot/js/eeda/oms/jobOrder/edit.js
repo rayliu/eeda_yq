@@ -3,7 +3,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     './edit_air_table', './edit_air_cargoDesc_table', './edit_air_detail','./edit_custom_detail',
     './edit_insurance_detail','./edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report',
     './edit_trade_cost_table', './edit_trade_charge_sale_table', './edit_trade_charge_service_table','./edit_trade_detail',
-    './edit_trade_cargo_table', './edit_custom_china_self_table'], function ($, metisMenu) {
+    './edit_trade_cargo_table', './edit_custom_china_self_table', './edit_custom_doc_table'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;

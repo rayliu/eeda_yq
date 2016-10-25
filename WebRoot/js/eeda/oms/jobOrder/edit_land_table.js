@@ -310,7 +310,7 @@ $(document).ready(function() {
             			var idArr = idStr.split(",");
             			var str = "";
 	            		for(var i=0;i<arr.length;i++){
-		            		str += '<a href="/upload/'+arr[i]+'" target="_blank">'+arr[i]+'</a>&nbsp;&nbsp;'
+		            		str += '<a href="/upload/doc/'+arr[i]+'" target="_blank">'+arr[i]+'</a>&nbsp;&nbsp;'
 		            			  +'<a id="'+idArr[i]+'" class="glyphicon glyphicon-remove delete_icon_of_sign_desc" style="margin-right:15px;" role="menuitem" tabindex="-10"></a>'
 	            		}
 	            		return str;
