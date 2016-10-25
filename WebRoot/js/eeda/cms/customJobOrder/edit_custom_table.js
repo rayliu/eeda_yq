@@ -147,15 +147,14 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                         data='';
-                    var field_html = template('table_dropdown_template',
-                        {
-                            id: 'CURRENCY',
-                            value: data,
-                            style:'width:100px',
-                            display_value: full.CURRENCY_NAME
-                        }
-                    );
-                    return field_html;
+                    var str = '<select name="currency" class="form-control search-control" style="width:100px" >'
+                    	+'<option value="" '+(data=='' ? 'selected':'')+'></option>'
+                        +'<option value="CNY" '+(data=='CNY' ? 'selected':'')+'>CNY</option>'
+                        +'<option value="USD" '+(data=='USD' ? 'selected':'')+'>USD</option>'
+                        +'<option value="JPY" '+(data=='JPY' ? 'selected':'')+'>JPY</option>'
+                        +'<option value="HKD" '+(data=='HKD' ? 'selected':'')+'>HKD</option>'
+                        +'</select>';
+                	return str;
                }
             },
             { "data": "EXEMPTION","width": "180px",
