@@ -322,9 +322,8 @@ public class CustomJobOrderController extends Controller {
 	    	itemSql = "select * from custom_job_order_addcustom_item where order_id=? order by id";
             itemList = Db.find(itemSql, orderId);
         }else if("customItem".equals(type)){
-	    	itemSql = " select cur.id CURRENCY,cur.name currency_name, cjoci.* from custom_job_order_custom_item cjoci"
-	    			+ "	LEFT JOIN currency cur on cur.id = cjoci.currency"
-	    			+ "	where cjoci.order_id=? order by cjoci.id";
+	    	itemSql = " select * from custom_job_order_custom_item "
+	    			+ "	where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
         }
 		return itemList;
