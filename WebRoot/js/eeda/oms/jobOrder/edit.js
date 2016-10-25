@@ -31,6 +31,7 @@ $(document).ready(function() {
 		$.post('/jobOrder/confirmCompleted', {id:id}, function(data){
 	            $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
 	            $('#saveBtn').attr('disabled', true);
+	            $.unblockUI();
 	    },'json').fail(function() {
 	        $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
 	        $('#confirmCompleted').attr('disabled', false);

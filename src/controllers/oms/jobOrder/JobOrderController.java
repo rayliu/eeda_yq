@@ -1145,6 +1145,7 @@ public class JobOrderController extends Controller {
     	String id = getPara("id");
     	JobOrder order = JobOrder.dao.findById(id);
     	order.set("status", "已完成");
+    	order.update();
     	renderJson("{\"result\":true}");
     }
     
