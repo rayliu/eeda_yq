@@ -137,6 +137,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     $('#confirmCompleted').attr('disabled', false);
                     //异步刷新明细表
                     salesOrder.refleshTable(order.ID);
+                    $("#fileuploadSpan").show();
                 }else{
                     $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                     $('#saveBtn').attr('disabled', false);
