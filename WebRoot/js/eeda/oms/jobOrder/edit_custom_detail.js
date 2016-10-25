@@ -79,33 +79,62 @@ $(document).ready(function() {
 	    })
     }
 	
-    //报关类型,国内
-    itemOrder.buildCustomDetail=function(){
+    //报关类型,国内,自理报关
+    itemOrder.buildCustomSelfDetail=function(){
 		var arrays = [];
     	var item = {};
     	
     	//报关状态checkbox遍历取值
         var statusVal = [];
-        $('#customForm input[type="checkbox"]:checked').each(function(){
+        $('#custom_china_self_form input[type="checkbox"]:checked').each(function(){
         	statusVal.push($(this).val()); 
         });
         item.status = statusVal.toString();
         
-        item['id'] = $('#custom_id').val();
+        item['id'] = $('#customSelf_id').val();
+    	item['custom_type'] = "china_self";
+    	
+    	var customForm = $('#custom_china_self_form input,#custom_china_self_form select');
+    	for(var i = 0; i < customForm.length; i++){
+    		var name = customForm[i].id;
+        	var value =customForm[i].value;
+        	if(name){
+        		if( name.indexOf('self_')>-1 ){
+    				name = name.replace('self_','');
+    			}
+        		item[name] = value;
+        	}
+    	}
+    	arrays.push(item);
+    	return arrays;
+	}
+    //报关类型,国内
+    itemOrder.buildCustomDetail=function(){
+    	var arrays = [];
+    	var item = {};
+    	
+    	//报关状态checkbox遍历取值
+    	var statusVal = [];
+    	$('#customForm input[type="checkbox"]:checked').each(function(){
+    		statusVal.push($(this).val()); 
+    	});
+    	item.status = statusVal.toString();
+    	
+    	item['id'] = $('#custom_id').val();
     	item['custom_type'] = "china";
     	
     	var customForm = $('#customForm input,#customForm select');
     	for(var i = 0; i < customForm.length; i++){
     		var name = customForm[i].id;
-        	var value =customForm[i].value;
-        	if(name){
-        		item[name] = value;
-        	}
+    		var value =customForm[i].value;
+    		if(name){
+    			item[name] = value;
+    		}
     	}
     	
-	    	arrays.push(item);
-	    	return arrays;
-	}
+    	arrays.push(item);
+    	return arrays;
+    }
     
     //报关类型,国外
     itemOrder.buildAbroadCustomDetail=function(){
@@ -164,6 +193,17 @@ $(document).ready(function() {
 	    })
     }
     
+    //报关状态checkbox回显
+    var checkArray = custom_self_status_hidden.split(",");
+    for(var i=0;i<checkArray.length;i++){
+	    $('#custom_china_self_form input[type="checkbox"]').each(function(){
+	        var checkValue=$(this).val();
+	        if(checkArray[i]==checkValue){
+	        	$(this).attr("checked",true);
+	        }
+	    })
+    }
+    
     //国内报关状态更新人更新时间处理
     var declareSuccess_time = $('#declareSuccess_time').val();
 	var declareSuccess_updater = $('#declareSuccess_updater').val();
@@ -178,7 +218,7 @@ $(document).ready(function() {
 	var conclusion_time = $('#conclusion_time').val();
 	var conclusion_updater = $('#conclusion_updater').val();
 
-	$('.checkbox input[type="checkbox"]').click(function(){
+	$('#customForm input[type="checkbox"]').click(function(){
     	if($(this).prop('checked')){
     		var updater = loginUserName;
     		var time = eeda.getDate();
@@ -257,6 +297,100 @@ $(document).ready(function() {
     		}
     	}
     })
+    
+    //国内 , 自理报关， 状态，更新人，更新时间处理
+    var self_declareSuccess_time = $('#self_declareSuccess_time').val();
+	var self_declareSuccess_updater = $('#self_declareSuccess_updater').val();
+	var self_onDataBaseRoad_time = $('#self_onDataBaseRoad_time').val();
+	var self_onDataBaseRoad_updater = $('#self_onDataBaseRoad_updater').val();
+	var self_gateInSuccess_time = $('#self_gateInSuccess_time').val();
+	var self_gateInSuccess_updater = $('#self_gateInSuccess_updater').val();
+	var self_customOrderCheck_time = $('#self_customOrderCheck_time').val();
+	var self_customOrderCheck_updater = $('#self_customOrderCheck_updater').val();
+	var self_release_time = $('#self_release_time').val();
+	var self_release_updater = $('#self_release_updater').val();
+	var self_conclusion_time = $('#self_conclusion_time').val();
+	var self_conclusion_updater = $('#self_conclusion_updater').val();
+	
+	$('#custom_china_self_form input[type="checkbox"]').click(function(){
+		if($(this).prop('checked')){
+			var updater = loginUserName;
+			var time = eeda.getDate();
+			if($(this).val()=='declareSuccess'){
+				$('#self_declareSuccess_time_span').html(time);
+				$('#self_declareSuccess_updater_span').html(updater);
+				$('#self_declareSuccess_time').val(time);
+				$('#self_declareSuccess_updater').val(updater);
+			}
+			if($(this).val()=='onDataBaseRoad'){
+				$('#self_onDataBaseRoad_time_span').html(time);
+				$('#self_onDataBaseRoad_updater_span').html(updater);
+				$('#self_onDataBaseRoad_time').val(time);
+				$('#self_onDataBaseRoad_updater').val(updater);
+			}
+			if($(this).val()=='gateInSuccess'){
+				$('#self_gateInSuccess_time_span').html(time);
+				$('#self_gateInSuccess_updater_span').html(updater);
+				$('#self_gateInSuccess_time').val(time);
+				$('#self_gateInSuccess_updater').val(updater);
+			}
+			if($(this).val()=='customOrderCheck'){
+				$('#self_customOrderCheck_time_span').html(time);
+				$('#self_customOrderCheck_updater_span').html(updater);
+				$('#self_customOrderCheck_time').val(time);
+				$('#self_customOrderCheck_updater').val(updater);
+			}
+			if($(this).val()=='release'){
+				$('#self_release_time_span').html(time);
+				$('#self_release_updater_span').html(updater);
+				$('#self_release_time').val(time);
+				$('#self_release_updater').val(updater);
+			}
+			if($(this).val()=='conclusion'){
+				$('#self_conclusion_time_span').html(time);
+				$('#self_conclusion_updater_span').html(updater);
+				$('#self_conclusion_time').val(time);
+				$('#self_conclusion_updater').val(updater);
+			}
+		}else{
+			if($(this).val()=='declareSuccess'){
+				$('#self_declareSuccess_time_span').html(self_declareSuccess_time);
+				$('#self_declareSuccess_updater_span').html(self_declareSuccess_updater);
+				$('#self_declareSuccess_time').val(self_declareSuccess_time);
+				$('#self_declareSuccess_updater').val(self_declareSuccess_updater);
+			}
+			if($(this).val()=='onDataBaseRoad'){
+				$('#self_onDataBaseRoad_time_span').html(self_onDataBaseRoad_time);
+				$('#self_onDataBaseRoad_updater_span').html(self_onDataBaseRoad_updater);
+				$('#self_onDataBaseRoad_time').val(self_onDataBaseRoad_time);
+				$('#self_onDataBaseRoad_updater').val(self_onDataBaseRoad_updater);
+			}
+			if($(this).val()=='gateInSuccess'){
+				$('#self_gateInSuccess_time_span').html(self_gateInSuccess_time);
+				$('#self_gateInSuccess_updater_span').html(self_gateInSuccess_updater);
+				$('#self_gateInSuccess_time').val(self_gateInSuccess_time);
+				$('#self_gateInSuccess_updater').val(self_gateInSuccess_updater);
+			}
+			if($(this).val()=='customOrderCheck'){
+				$('#self_customOrderCheck_time_span').html(self_customOrderCheck_time);
+				$('#self_customOrderCheck_updater_span').html(self_customOrderCheck_updater);
+				$('#self_customOrderCheck_time').val(self_customOrderCheck_time);
+				$('#self_customOrderCheck_updater').val(self_customOrderCheck_updater);
+			}
+			if($(this).val()=='release'){
+				$('#self_release_time_span').html(self_release_time);
+				$('#self_release_updater_span').html(self_release_updater);
+				$('#self_release_time').val(self_release_time);
+				$('#self_release_updater').val(self_release_updater);
+			}
+			if($(this).val()=='conclusion'){
+				$('#self_conclusion_time_span').html(self_conclusion_time);
+				$('#self_conclusion_updater_span').html(self_conclusion_updater);
+				$('#self_conclusion_time').val(self_conclusion_time);
+				$('#self_conclusion_updater').val(self_conclusion_updater);
+			}
+		}
+	})
     
     
     var customTable = eeda.dt({

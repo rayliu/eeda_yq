@@ -264,6 +264,10 @@ public class JobOrderController extends Controller {
 			DbUtils.handleList(hkCustom, id, JobOrderCustom.class, "order_id");
 		}
 		
+		List<Map<String, String>> chinaCustom_self_detail = (ArrayList<Map<String, String>>)dto.get("chinaCustom_self_detail");
+		DbUtils.handleList(chinaCustom_self_detail, id, JobOrderCustom.class, "order_id");
+		List<Map<String, String>> chinaCustom_self_item = (ArrayList<Map<String, String>>)dto.get("chinaCustom_self_item");
+		DbUtils.handleList(chinaCustom_self_item, "job_order_custom_china_self_item", id, "order_id");
 		//保险
 		List<Map<String, String>> insurance_detail = (ArrayList<Map<String, String>>)dto.get("insurance_detail");
 		DbUtils.handleList(insurance_detail, id, JobOrderInsurance.class, "order_id");
@@ -296,6 +300,7 @@ public class JobOrderController extends Controller {
    		r.set("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
    		r.set("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
    		r.set("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
+   		r.set("customSelf", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china_self"));
    		r.set("shipment", getItemDetail(id,"shipment"));
    		r.set("trade", getItemDetail(id,"trade"));
     	r.set("air", getItemDetail(id,"air"));
@@ -759,6 +764,10 @@ public class JobOrderController extends Controller {
 	    			+ " left join fin_item f on f.id=jotc.charge_id"
 	    			+ " where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
+	    }else if("china_self".equals(type)){
+	    	itemSql = "select * from job_order_custom_china_self_item"
+	    			+ " where order_id=? order by id";
+	    	itemList = Db.find(itemSql, orderId);
 	    }
 		return itemList;
 	}
@@ -798,6 +807,8 @@ public class JobOrderController extends Controller {
     	setAttr("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
    		setAttr("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
    		setAttr("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
+   		setAttr("customSelf", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china_self"));
+   		setAttr("customSelfItemList", getItems(id,"china_self"));
     	//保险
     	setAttr("insurance", getItemDetail(id,"insure"));
     	//获取费用明细

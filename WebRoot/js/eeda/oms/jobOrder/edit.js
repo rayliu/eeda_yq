@@ -3,7 +3,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     './edit_air_table', './edit_air_cargoDesc_table', './edit_air_detail','./edit_custom_detail',
     './edit_insurance_detail','./edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report',
     './edit_trade_cost_table', './edit_trade_charge_sale_table', './edit_trade_charge_service_table','./edit_trade_detail',
-    './edit_trade_cargo_table'], function ($, metisMenu) {
+    './edit_trade_cargo_table', './edit_custom_china_self_table'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
@@ -164,6 +164,8 @@ $(document).ready(function() {
         order.land_list = load_detail;
         
         //报关
+        order.chinaCustom_self_detail = itemOrder.buildCustomSelfDetail();
+        order.chinaCustom_self_item = itemOrder.buildCustomSelfItem();
         order.chinaCustom = chinaCustom;
         order.hkCustom = hkCustom;
         order.abroadCustom = abroadCustom;
@@ -202,6 +204,7 @@ $(document).ready(function() {
                 if(order.HKCUSTOM){
                 	$("#hk_custom_id").val(order.HKCUSTOM.ID);
                 }
+                $("#customSelf_id").val(order.CUSTOMSELF.ID);
                 $("#shipment_id").val(order.SHIPMENT.ID);
                 $("#insurance_id").val(order.INSURANCE.ID);
                 $("#air_id").val(order.AIR.ID);
@@ -223,6 +226,7 @@ $(document).ready(function() {
                 itemOrder.refleshTradeCostItemTable(order.ID);
                 itemOrder.refleshTradeServiceItemTable(order.ID);
                 itemOrder.refleshTradeSaleItemTable(order.ID);
+                itemOrder.refleshCustomChinaSelfItemTable(order.ID);
                 $.unblockUI();
             }else{
                 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
