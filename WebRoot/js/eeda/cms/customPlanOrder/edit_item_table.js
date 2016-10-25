@@ -221,7 +221,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return data;
 	                }
 	            } ,
-	            { "data": "CURRENCY_NAME", "visible": false }
+	            { "data": "CURRENCY_NAME", "visible": false,
+	            	"render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
+	            }
 	        ]
 	    });
 	    

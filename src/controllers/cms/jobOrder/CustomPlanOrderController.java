@@ -121,11 +121,12 @@ public class CustomPlanOrderController extends Controller {
     
     public void edit() {
     	String id = getPara("id");
-    	String sql = "select cpo.*,l.name export_country_name,l1.name import_country_name,l2.name trade_country_name"
+    	String sql = "select cpo.*,l.name export_country_name,l1.name import_country_name,l2.name trade_country_name,sm.name supervise_mode_name"
     			+ " from custom_plan_order cpo "
     			+ " left join location l on l.id=cpo.export_country"
     			+ " left join location l1 on l1.id=cpo.import_country"
     			+ " left join location l2 on l2.id=cpo.trade_country"
+    			+ " left join supervision_method sm on sm.id = cpo.supervise_mode"
     			+ " where cpo.id = ?";
     	Record r = Db.findFirst(sql,id);
     	setAttr("order", r);
