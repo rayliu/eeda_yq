@@ -151,6 +151,7 @@ $(document).ready(function() {
                         {
                             id: 'CURRENCY',
                             value: data,
+                            style:'width:100px',
                             display_value: full.CURRENCY_NAME
                         }
                     );
@@ -171,7 +172,6 @@ $(document).ready(function() {
 	                return data;
 	            } 
             }
-           
         ]
     });
 
