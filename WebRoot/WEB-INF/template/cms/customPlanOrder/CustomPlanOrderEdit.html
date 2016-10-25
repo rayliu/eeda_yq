@@ -279,7 +279,7 @@
 			                            headers:['','商品编号', '商品名称', '规格', '申报要素', '成交数量', '成交单位','法定数量', 
                                                   '法定单位','单价', '总价', '币制', '征免','IS_GEN_JOB'],
 			                            field_list:['id','commodity_code','commodity_name', 'standard', 'declare_element', 'transaction_amount',  'transaction_unit',
-			                            'legal_amount','legal_unit', 'price','total_price', 'currency', 'exemption','IS_GEN_JOB'],
+			                            'legal_amount','legal_unit', 'price','total_price', 'currency', 'exemption','IS_GEN_JOB','currency_name'],
 			                            value_list: itemList![]
 			                        }){} %> 
 			                </div>
@@ -307,6 +307,26 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <a id='a_btn' data-target='#msg' data-toggle='modal' style='display:none'></a>
+                    <div class="modal fade" id="msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">申报要素 </div>
+					      	<div class="modal-body">
+					      		<div class="form-group">
+				                    <textarea id='showNote' class="form-control" rows="5" ></textarea>
+				            	</div>
+					    	</div>
+					    	<div class="modal-footer">
+					    		<button type="button" id="btnConfirm" class="btn  btn-primary" data-dismiss="modal">确认</button>
+					            <button type="button" class="btn  btn-default" data-dismiss="modal">返回</button>
+					        </div>
+					  </div>
+					</div>
+				  </div>
+                    
+                    
 	            </div>
             </div>
             <br>
@@ -324,6 +344,7 @@
 <%include("/eeda/component/jsTemplate/tableInputDateField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputFieldCurrencyId.js",{}){} %>
 
 <script>
     var order_no = '${order.order_no!'订单编辑'}'; 

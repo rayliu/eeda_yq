@@ -71,7 +71,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	eeda.bindTableField('cargo_table','POL','/location/searchPort','');
 	    	eeda.bindTableField('cargo_table','POD','/location/searchPort','');
 	    	eeda.bindTableField('cargo_table','CARRIER','/serviceProvider/searchCarrier','');
+	    	eeda.bindTableFieldCurrencyId('cargo_table','CURRENCY','/serviceProvider/searchCurrency','');
 	    };
+
 
 	    //------------事件处理
 	    var cargoTable = eeda.dt({
@@ -130,6 +132,22 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                        +'<option value="件" '+(data=='件' ? 'selected':'')+'>件</option>'
 	                        +'<option value="支" '+(data=='支' ? 'selected':'')+'>支</option>'
 	                        +'<option value="台" '+(data=='台' ? 'selected':'')+'>台</option>'
+	                        +'<option value="个" '+(data=='个' ? 'selected':'')+'>个</option>'
+	                        +'<option value="只" '+(data=='只' ? 'selected':'')+'>只</option>'
+	                        +'<option value="块" '+(data=='块' ? 'selected':'')+'>块</option>'
+	                        +'<option value="片" '+(data=='片' ? 'selected':'')+'>片</option>'
+	                        +'<option value="千升" '+(data=='千升' ? 'selected':'')+'>千升</option>'
+	                        +'<option value="吨" '+(data=='吨' ? 'selected':'')+'>吨</option>'
+	                        +'<option value="长吨" '+(data=='长吨' ? 'selected':'')+'>长吨</option>'
+	                        +'<option value="短吨" '+(data=='短吨' ? 'selected':'')+'>短吨</option>'
+	                        +'<option value="司马担" '+(data=='司马担' ? 'selected':'')+'>司马担</option>'
+	                        +'<option value="司马斤" '+(data=='司马斤' ? 'selected':'')+'>司马斤</option>'
+	                        +'<option value="斤" '+(data=='斤' ? 'selected':'')+'>斤</option>'
+	                        +'<option value="磅" '+(data=='磅' ? 'selected':'')+'>磅</option>'
+	                        +'<option value="担" '+(data=='担' ? 'selected':'')+'>担</option>'
+	                        +'<option value="英担" '+(data=='英担' ? 'selected':'')+'>英担</option>'
+	                        +'<option value="两" '+(data=='两' ? 'selected':'')+'>两</option>'
+	                        +'<option value="市担" '+(data=='市担' ? 'selected':'')+'>市担</option>'
 	                        +'</select>';
 	                	return str;
 	                }
@@ -147,9 +165,15 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                        data='';
 	                    var str = '<select name="legal_unit" class="form-control search-control" style="width:100px" >'
 	                    	+'<option value="" '+(data=='' ? 'selected':'')+'></option>'
-	                        +'<option value="件" '+(data=='件' ? 'selected':'')+'>件</option>'
-	                        +'<option value="支" '+(data=='支' ? 'selected':'')+'>支</option>'
-	                        +'<option value="台" '+(data=='台' ? 'selected':'')+'>台</option>'
+	                        +'<option value="千克" '+(data=='千克' ? 'selected':'')+'>千克</option>'
+	                        +'<option value="克" '+(data=='克' ? 'selected':'')+'>克</option>'
+	                        +'<option value="毫克" '+(data=='毫克' ? 'selected':'')+'>毫克</option>'
+	                        +'<option value="吨" '+(data=='吨' ? 'selected':'')+'>吨</option>'
+	                        +'<option value="原子质量单位" '+(data=='原子质量单位' ? 'selected':'')+'>原子质量单位</option>'
+	                        +'<option value="平方米" '+(data=='平方米' ? 'selected':'')+'>平方米</option>'
+	                        +'<option value="厘米" '+(data=='厘米' ? 'selected':'')+'>厘米</option>'
+	                        +'<option value="公顷" '+(data=='公顷' ? 'selected':'')+'>公顷</option>'
+	                        +'<option value="立方米" '+(data=='立方米' ? 'selected':'')+'>立方米</option>'
 	                        +'</select>';
 	                	return str;
 	                }
@@ -169,11 +193,19 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                }
 	            },
 	            { "data": "CURRENCY" ,"width": "180px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                    return '<input type="text" name="CURRENCY" value="'+data+'" class="form-control search-control" />';
-	                }
+	            	 "render": function ( data, type, full, meta ) {
+	 	                	if(!data)
+	 	                        data='';
+	 	                    var field_html = template('table_dropdown_template',
+	 	                        {
+	 	                            id: 'CURRENCY',
+	 	                            value: data,
+	 	                            display_value: full.CURRENCY_NAME,
+	 	                            style:'width:80px'
+	 	                        }
+	 	                    );
+	 	                    return field_html;
+	                 }
 	            },
 	            { "data": "EXEMPTION","width": "80px",
 	                "render": function ( data, type, full, meta ) {
@@ -188,9 +220,22 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                        data='';
 	                    return data;
 	                }
-	            }
+	            } ,
+	            { "data": "CURRENCY_NAME", "visible": false }
 	        ]
 	    });
+	    
+	    var self ;
+	    $('#cargo_table').on('click','input[name=DECLARE_ELEMENT]',function(){
+	    	self = $(this);
+	    	$('#showNote').val(self.val())
+	    	$('#a_btn').click();
+	    	$('#btnConfirm').click(function(){
+	    		var showNote = $('#showNote').val();
+	    		self.val(showNote);
+	    	})
+	    });
+	    
 
 	    $('#add_cargo').on('click', function(){
 	        var item={};

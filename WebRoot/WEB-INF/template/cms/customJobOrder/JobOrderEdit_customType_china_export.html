@@ -21,16 +21,17 @@
                     </div>
                     <hr/>
                     <div class="row">
-                      <div class="col-lg-4">
-                         <%include("/eeda/component/form/inputField.html", 
-                                  {   id:'consigner', 
-                                      label:'收发货人',
-                                      inline: false,
-                                      value:custom.consigner!'',
-                                      required:'required'
-                                  }){}%>
+                    	<div class="col-lg-6">
+                       		<%include("/eeda/component/form/inputSelectArea.html", 
+			                                 {   id:'consigner', 
+			                                     label:'收发货人', 
+                                                 required:'required',
+			                                     display_value:order.consigner_input!'',
+							                     value:order.consigner!'',
+							                     textarea_value:order.consigner_info!'' 
+			                                  }){}%>
                         </div>
-                        <div class="col-lg-2"> 
+                        <div class="col-lg-6"> 
                           <%include("/eeda/component/form/inputField.html", 
                                 {   id:'export_port', 
                                     label:'出口口岸',
@@ -39,6 +40,8 @@
                                     required:'required'
                                 }){}%>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-3"> 
                           <%include("/eeda/component/form/dateInputField.html", 
                                 {   id:'custom_export_date', 
@@ -69,13 +72,31 @@
                                 }){}%>
                         </div>
                         <div class="col-lg-2"> 
-                          <%include("/eeda/component/form/inputField.html", 
-                                {   id:'transport_type', 
-                                    label:'运输方式',
-                                    inline: false,
-                                    value:custom.transport_type!'',
-                                    required:'required'
-                                }){}%>
+                            <%include("/eeda/component/form/selectField.html", 
+				                                 {   id:'transport_type', 
+				                                     label:'运输方式', 
+				                                     class:'form-control', 
+				                                     required:'required',
+				                                     value:order.transport_type!'',
+				                                     value_list:[
+                                                        {code:'', value:''},
+				                                        {code:'非保税区', value:'非保税区'},
+				                                        {code:'监管仓库', value:'监管仓库'},
+                                                        {code:'水路运输', value:'水路运输'},
+                                                        {code:'铁路运输', value:'铁路运输'},
+                                                        {code:'公路运输', value:'公路运输'},
+                                                        {code:'航空运输', value:'航空运输'},
+                                                        {code:'邮件运输', value:'邮件运输'},
+                                                        {code:'保税区', value:'保税区'},
+                                                        {code:'保税仓库', value:'保税仓库'},
+                                                        {code:'其它运输', value:'其它运输'},
+                                                        {code:'边境特殊海关作业区', value:'边境特殊海关作业区'},
+                                                        {code:'物流中心', value:'物流中心'},
+                                                        {code:'物流园区', value:'物流园区'},
+                                                        {code:'保税港区', value:'保税港区'},
+                                                        {code:'出口加工区', value:'出口加工区'}
+				                                    ] 
+				                                 }){}%>
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
@@ -107,22 +128,42 @@
                                 }){}%>
                         </div>
                         <div class="col-lg-2"> 
-                          <%include("/eeda/component/form/inputField.html", 
+                            <%include("/eeda/component/form/inputDropListField.html", 
                                 {   id:'supervision_mode', 
                                     label:'监管方式',
-                                    inline: false,
-                                    value:custom.supervision_mode!'',
+                                    class:'form-control', 
+                                    url: '/serviceProvider/searchSupervisionMethod',
+                                    value:order.supervision_mode!'',
+                                    display_value:order.supervision_mode_name!'',
                                     required:'required'
                                 }){}%>
                         </div>
                         <div class="col-lg-2"> 
-                          <%include("/eeda/component/form/inputField.html", 
-                                {   id:'nature_of_exemption', 
-                                    label:'征免性质',
-                                    inline: false,
-                                    value:custom.nature_of_exemption!'',
-                                    required:'required'
-                                }){}%>
+                            <%include("/eeda/component/form/selectField.html", 
+				                                 {   id:'nature_of_exemption', 
+				                                     label:'征免性质', 
+				                                     class:'form-control', 
+				                                     required:'required',
+				                                     value:order.nature_of_exemption!'',
+				                                     value_list:[
+                                                        {code:'', value:''},
+				                                        {code:'0110 ', value:'一般贸易'},
+				                                        {code:'0130', value:'易货贸易'},
+                                                        {code:'0200', value:'来料余料结转'},
+                                                        {code:'0214', value:'来料加工'},
+                                                        {code:'0220', value:'来料加工设备'},
+                                                        {code:'0245', value:'来料料件内销'},
+                                                        {code:'0255 ', value:'来料深加工'},
+                                                        {code:'0345', value:'来料成品内销'},
+                                                        {code:'0513', value:'补偿贸易'},
+                                                        {code:'0600', value:'进料余料结转'},
+                                                        {code:'0615', value:'进料对口'},
+                                                        {code:'0644', value:'进料料件内销'},
+                                                        {code:'0645', value:'进料深加工'},
+                                                        {code:'0715', value:'进料非对口'},
+                                                        {code:'0744', value:'进料成品内销'}
+				                                    ] 
+				                                 }){}%>
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 
@@ -136,26 +177,31 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6"> 
-                          <%include("/eeda/component/form/inputField.html", 
-                                {   id:'trading_country', 
-                                    label:'贸易国',
-                                    inline: false,
-                                    value:custom.trading_country!'',
+                        	<%include("/eeda/component/form/inputDropListField.html", 
+		                        {   id:'trading_country', 
+		                            class:'form-control',
+		                            label:'贸易国', 
+		                            value:order.trading_country!'',
+                                    display_value:order.trading_country_name!'',
+                                    url: '/location/searchCountry',
                                     required:'required'
-                                }){}%>
+		                        }){}%>
                         </div>
                         <div class="col-lg-2"> 
-                          <%include("/eeda/component/form/inputField.html", 
-                                {   id:'destination_country', 
-                                    label:'运抵国',
-                                    inline: false,
-                                    value:custom.destination_country!'',
+                        	<%include("/eeda/component/form/inputDropListField.html", 
+		                        {   id:'destination_country', 
+		                            class:'form-control',
+		                            label:'抵运国', 
+		                            value:order.destination_country!'',
+                                    display_value:order.destination_country_name!'',
+                                    url: '/location/searchCountry',
                                     required:'required'
-                                }){}%>
+		                        }){}%>
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputPortField.html", 
                                 {   id:'destination_port', 
+                                	class:'form-control', 
                                     label:'指运港',
                                     inline: false,
                                     value:custom.destination_port!'',
@@ -173,7 +219,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-4"> 
+                        <div class="col-lg-3"> 
                           <%include("/eeda/component/form/inputField.html", 
                                 {   id:'license_no', 
                                     label:'许可证号',
@@ -182,13 +228,21 @@
                                     required:'required'
                                 }){}%>
                         </div>
-                        <div class="col-lg-2"> 
-                          <%include("/eeda/component/form/inputField.html", 
-                                {   id:'transaction_mode', 
-                                    label:'成交方式',
-                                    inline: false,
-                                    value:custom.transaction_mode!'',
-                                    required:'required'
+                        <div class="col-lg-3"> 
+                             <%include("/eeda/component/form/selectField.html", 
+                                {   id:'transaction_mode',
+                                    class:'form-control', 
+                                    label:'成交方式', 
+                                    value:order.transaction_mode!'',
+                                    required:'required',
+                                    value_list:[
+                                        {code:'FOB', value:'FOB'},
+                                        {code:'CIF', value:'CIF'},
+                                        {code:'CFR', value:'CFR'},
+                                        {code:'DDU', value:'DDU'},
+                                        {code:'DDP', value:'DDP'},
+                                        {code:'OTHER', value:'OTHER'}
+                                    ]
                                 }){}%>
                         </div>
                         <div class="col-lg-2"> 
@@ -236,13 +290,35 @@
                                 }){}%>
                         </div>
                         <div class="col-lg-2"> 
-                          <%include("/eeda/component/form/inputField.html", 
-                                {   id:'package_type', 
-                                    label:'包装种类',
-                                    inline: false,
-                                    value:custom.package_type!'',
-                                    required:'required'
-                                }){}%>
+                            <%include("/eeda/component/form/selectField.html", 
+				                                 {   id:'package_type', 
+				                                     label:'包装种类', 
+				                                     class:'form-control', 
+				                                     value:order.package_type!'',
+				                                     value_list:[
+                                                        {code:'', value:''},
+				                                        {code:'裸装', value:'裸装'},
+				                                        {code:'散装', value:'散装'},
+                                                        {code:'集装箱', value:'集装箱'},
+                                                        {code:'托盘', value:'托盘'},
+                                                        {code:'集装包', value:'集装包'},
+                                                        {code:'集装袋', value:'集装袋'},
+                                                        {code:'箱', value:'箱'},
+                                                        {code:'桶', value:'桶'},
+                                                        {code:'袋', value:'袋'},
+                                                        {code:'包', value:'包'},
+                                                        {code:'木箱', value:'木箱'},
+                                                        {code:'纸箱', value:'纸箱'},
+                                                        {code:'木桶', value:'木桶'},
+                                                        {code:'铁桶', value:'铁桶'},
+                                                        {code:'塑料桶', value:'塑料桶'},
+                                                        {code:'麻袋', value:'麻袋'},
+                                                        {code:'纸袋', value:'纸袋'},
+                                                        {code:'塑料袋', value:'塑料袋'},
+                                                        {code:'卷', value:'卷'},
+                                                        {code:'其他', value:'其他'}
+				                                    ] 
+				                                 }){}%>
                         </div>
                         <div class="col-lg-2"> 
                           <%include("/eeda/component/form/inputField.html", 

@@ -47,7 +47,7 @@ public class CustomJobOrderController extends Controller {
 	}
 	
     public void create() {
-        render("/cms/customJobOrder/JobOrderEdit.html");
+        render("/cms/customJobOrder/joborderedit.html");
     }
     
     
