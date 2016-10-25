@@ -114,15 +114,9 @@ $(document).ready(function() {
         //陆运
         var load_detail = itemOrder.buildLoadItem();
         //报关
-        if(custom_type_str.includes("china")){
-        	var chinaCustom = itemOrder.buildCustomDetail();
-        }
-        if(custom_type_str.includes("HK/MAC")){
-        	var hkCustom = itemOrder.buildHkCustomDetail();
-        }
-        if(custom_type_str.includes("abroad")){
-        	var abroadCustom = itemOrder.buildAbroadCustomDetail();
-        }
+    	var chinaCustom = itemOrder.buildCustomDetail();
+    	var hkCustom = itemOrder.buildHkCustomDetail();
+    	var abroadCustom = itemOrder.buildAbroadCustomDetail();
         //保险
         var insurance_detail=itemOrder.buildInsuranceDetail();
         //费用明细，应收，应付
