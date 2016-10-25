@@ -117,8 +117,7 @@ LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo ON lo.id = jos.fnd
 WHERE
 	jor.order_type = 'charge'
-AND  $X{IN,jor.id,order_id}
-]]>
+AND  $X{IN,jor.id,order_id}]]>
 	</queryString>
 	<field name="sp_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[供应商id]]></fieldDescription>
@@ -252,7 +251,7 @@ AND  $X{IN,jor.id,order_id}
 				<text><![CDATA[TO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="346" y="0" width="58" height="20" uuid="9082e3cf-5ef5-4b25-8b51-e42961ddf7d3"/>
+				<reportElement x="328" y="0" width="58" height="20" uuid="9082e3cf-5ef5-4b25-8b51-e42961ddf7d3"/>
 				<text><![CDATA[JOB NO:]]></text>
 			</staticText>
 			<staticText>
@@ -284,31 +283,31 @@ AND  $X{IN,jor.id,order_id}
 				<text><![CDATA[CTR NO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="346" y="24" width="70" height="15" uuid="23f495eb-c93a-4723-84e1-43a17b9b528c"/>
+				<reportElement x="328" y="25" width="70" height="15" uuid="23f495eb-c93a-4723-84e1-43a17b9b528c"/>
 				<text><![CDATA[Invoice No.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="346" y="45" width="68" height="15" uuid="f20a6ee2-3adf-4528-9617-5d930f1c3124"/>
+				<reportElement x="329" y="62" width="68" height="15" uuid="f20a6ee2-3adf-4528-9617-5d930f1c3124"/>
 				<text><![CDATA[DATE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="346" y="65" width="70" height="17" uuid="9ac6b0fe-4779-40dd-ba21-535c01b136fc"/>
+				<reportElement x="329" y="79" width="68" height="17" uuid="9ac6b0fe-4779-40dd-ba21-535c01b136fc"/>
 				<text><![CDATA[HBL No.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="346" y="89" width="70" height="15" uuid="d6ace1e7-ef42-40ac-b4e9-16493ade8207"/>
+				<reportElement x="328" y="97" width="70" height="15" uuid="d6ace1e7-ef42-40ac-b4e9-16493ade8207"/>
 				<text><![CDATA[ETD:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="345" y="110" width="69" height="15" uuid="2e3665ad-a673-465f-a640-85676c1e3074"/>
+				<reportElement x="328" y="113" width="69" height="15" uuid="2e3665ad-a673-465f-a640-85676c1e3074"/>
 				<text><![CDATA[ETA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="344" y="129" width="32" height="15" uuid="429f4745-f61a-43a1-aba5-ec01c0cf8d00"/>
+				<reportElement x="328" y="130" width="32" height="15" uuid="429f4745-f61a-43a1-aba5-ec01c0cf8d00"/>
 				<text><![CDATA[POD：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="345" y="149" width="69" height="15" uuid="1ef1c68b-1f7e-4b65-8feb-91d5a3c07129"/>
+				<reportElement x="329" y="148" width="69" height="15" uuid="1ef1c68b-1f7e-4b65-8feb-91d5a3c07129"/>
 				<text><![CDATA[Qty:]]></text>
 			</staticText>
 			<staticText>
@@ -372,7 +371,7 @@ AND  $X{IN,jor.id,order_id}
 				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="74" y="130" width="270" height="14" uuid="233fbb37-7715-446b-a4ee-5cd20d0a8821"/>
+				<reportElement x="74" y="130" width="254" height="14" uuid="233fbb37-7715-446b-a4ee-5cd20d0a8821"/>
 				<textFieldExpression><![CDATA[$F{pol}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -380,80 +379,59 @@ AND  $X{IN,jor.id,order_id}
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="74" y="170" width="270" height="15" uuid="b9064271-0dcc-45d0-945b-bc2e4d818741"/>
+				<reportElement x="74" y="170" width="254" height="15" uuid="b9064271-0dcc-45d0-945b-bc2e4d818741"/>
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="414" y="45" width="115" height="15" uuid="fe80cc78-973f-488c-84b7-7fe43c5732dd"/>
+				<reportElement x="398" y="62" width="157" height="15" uuid="fe80cc78-973f-488c-84b7-7fe43c5732dd"/>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="416" y="65" width="114" height="17" uuid="27502a39-69d8-427a-a4dd-9d270889bd80"/>
+				<reportElement x="396" y="79" width="159" height="17" uuid="27502a39-69d8-427a-a4dd-9d270889bd80"/>
 				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="416" y="89" width="115" height="15" uuid="01b48f23-9a69-4e9e-ba26-98f48207a25f"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
+				<reportElement x="397" y="97" width="158" height="15" uuid="01b48f23-9a69-4e9e-ba26-98f48207a25f"/>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="416" y="110" width="114" height="15" uuid="be92611a-c302-41a7-91e6-b8ba5c48afa0"/>
+				<reportElement x="396" y="113" width="159" height="15" uuid="be92611a-c302-41a7-91e6-b8ba5c48afa0"/>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="416" y="149" width="19" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
+				<reportElement x="398" y="149" width="19" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="436" y="149" width="118" height="14" uuid="031deb20-ad6a-4dd0-a3fb-54e016073a88"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
+				<reportElement x="416" y="149" width="139" height="14" uuid="031deb20-ad6a-4dd0-a3fb-54e016073a88"/>
 				<textFieldExpression><![CDATA[$F{ocean_unit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="43" y="0" width="301" height="24" uuid="c706ac6c-9eab-42a2-8ea0-83bb9932e437"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
+				<reportElement x="43" y="0" width="285" height="24" uuid="c706ac6c-9eab-42a2-8ea0-83bb9932e437"/>
 				<textFieldExpression><![CDATA[$F{companyName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="43" y="39" width="301" height="15" uuid="84f0a969-bfd6-4f4d-9a12-ec14a167a8f9"/>
-				<textFieldExpression><![CDATA[$F{company_name}]]></textFieldExpression>
+				<reportElement x="43" y="39" width="285" height="15" uuid="84f0a969-bfd6-4f4d-9a12-ec14a167a8f9"/>
+				<textFieldExpression><![CDATA[$F{personEng}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="43" y="55" width="301" height="17" uuid="bec3e378-28f2-49ef-a6de-acb1d3f6580d"/>
+				<reportElement x="43" y="55" width="285" height="17" uuid="bec3e378-28f2-49ef-a6de-acb1d3f6580d"/>
 				<textFieldExpression><![CDATA[$F{phone}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="376" y="130" width="179" height="14" uuid="0e5373a5-76a5-42d4-a375-d5882fbd0388"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
+				<reportElement x="398" y="130" width="157" height="14" uuid="0e5373a5-76a5-42d4-a375-d5882fbd0388"/>
 				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="345" y="170" width="69" height="15" uuid="5a6bff12-40a8-44c6-b037-d689b0a5ec46"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
+				<reportElement x="329" y="170" width="69" height="15" uuid="5a6bff12-40a8-44c6-b037-d689b0a5ec46"/>
 				<text><![CDATA[A/C NO:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="414" y="1" width="140" height="20" uuid="f76ed8ed-6975-46a3-b6c7-05a39de3bc8d"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
+				<reportElement x="397" y="1" width="158" height="20" uuid="f76ed8ed-6975-46a3-b6c7-05a39de3bc8d"/>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="416" y="25" width="138" height="14" uuid="838f806e-871d-43b2-b605-a3562590f472"/>
+				<reportElement x="397" y="25" width="158" height="37" uuid="838f806e-871d-43b2-b605-a3562590f472"/>
 				<textFieldExpression><![CDATA[$F{invoice_no}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -462,23 +440,14 @@ AND  $X{IN,jor.id,order_id}
 		<band height="20">
 			<textField isBlankWhenNull="true">
 				<reportElement x="13" y="0" width="127" height="20" uuid="0c54d94f-85db-45a2-984e-ef543fe7d121"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
 				<textFieldExpression><![CDATA[$F{charge_name_eng}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="140" y="0" width="68" height="20" uuid="43672bca-27de-4633-b106-507d58822e0e"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
 				<textFieldExpression><![CDATA[($F{currency_name}.equals("CNY")?"RMB":$F{currency_name})]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.000" isBlankWhenNull="true">
 				<reportElement x="208" y="0" width="54" height="20" uuid="e277945f-55f4-4bf9-a963-4139f33381f1"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
 				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -488,9 +457,6 @@ AND  $X{IN,jor.id,order_id}
 			</staticText>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="487" y="0" width="68" height="20" uuid="1f9c03f7-862e-464e-8349-51535fe382be"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
 				<textFieldExpression><![CDATA[$F{currency_total_amount}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -508,16 +474,11 @@ AND  $X{IN,jor.id,order_id}
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="423" y="0" width="45" height="20" uuid="d8eeb484-f0aa-4a29-9d3d-c6e2837a2f64"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
 				<textFieldExpression><![CDATA[$F{exchange_rate}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.000" isBlankWhenNull="true">
 				<reportElement x="294" y="1" width="34" height="19" uuid="68b39a5f-6f5f-4fb4-a0ed-81d9b21c7bab"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
+				
 				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -535,49 +496,49 @@ AND  $X{IN,jor.id,order_id}
 			<staticText>
 				<reportElement x="349" y="214" width="159" height="16" uuid="42d6b9e9-dc8a-4907-a285-2d626777ce83"/>
 				<textElement>
-					<font isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[AUTHORISED SIGNATURE:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="328" y="195" width="197" height="15" uuid="b1fff306-2524-4525-afad-9bb102cbd4d0"/>
 				<textElement>
-					<font isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[ENKYO SCM (H.K.) CO., LIMITED]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="349" y="176" width="134" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
 				<textElement>
-					<font isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[FOR AND ON BEHALF OF]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="14" y="171" width="154" height="20" uuid="c2745b55-21a5-4968-87df-d544ce9de735"/>
 				<textElement>
-					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BANK NAME:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="14" y="148" width="153" height="20" uuid="b49158ea-f904-46f7-93af-29aef9333601"/>
 				<textElement>
-					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ACCOUT NO.:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="14" y="123" width="153" height="20" uuid="f77458ed-3298-4aae-8acc-ceaeaf327496"/>
 				<textElement>
-					<font size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ACCOUT NAME:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="15" y="97" width="153" height="20" uuid="f143d8af-bc0f-4b0f-943f-704902dd8950"/>
 				<textElement>
-					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ACCOUNT INFORMATION]]></text>
 			</staticText>
@@ -587,22 +548,6 @@ AND  $X{IN,jor.id,order_id}
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[SAY JPY TEN THOUSAND ONLY]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="276" y="20" width="30" height="20" uuid="94122a65-e516-492c-97fe-148c7080311e"/>
-				<text><![CDATA[USD:]]></text>
-			</staticText>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="306" y="1" width="54" height="20" uuid="0adfc3f0-f32c-4d6a-9685-e249339077ef"/>
-				<textFieldExpression><![CDATA[$F{total_RMB}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="305" y="20" width="55" height="20" uuid="94a790a8-2459-4c2b-b5af-69631f29e2b8"/>
-				<textFieldExpression><![CDATA[$F{total_USD}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="276" y="0" width="30" height="20" uuid="6931c2de-7c92-4905-a754-f0efb7a51a43"/>
-				<text><![CDATA[CNY:]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" uuid="0c33aa57-8270-4dd5-941f-6afdcefe4f0b"/>
@@ -617,20 +562,12 @@ AND  $X{IN,jor.id,order_id}
 				<textFieldExpression><![CDATA[$V{totoa_amountRMB}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="276" y="40" width="30" height="20" uuid="5e63f9e1-1036-4838-88bf-5d73094baff5"/>
+				<reportElement x="275" y="3" width="30" height="20" uuid="5e63f9e1-1036-4838-88bf-5d73094baff5"/>
 				<text><![CDATA[JPY:]]></text>
 			</staticText>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="305" y="40" width="55" height="20" uuid="9ec383c7-9d10-4030-85bb-e4433e8b3c70"/>
+				<reportElement x="305" y="3" width="55" height="20" uuid="9ec383c7-9d10-4030-85bb-e4433e8b3c70"/>
 				<textFieldExpression><![CDATA[$F{total_JPY}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="276" y="60" width="29" height="20" uuid="b74c3156-bece-41dc-a846-53e185cc4ce5"/>
-				<text><![CDATA[HKD:]]></text>
-			</staticText>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="305" y="60" width="55" height="20" uuid="4273e22a-05ae-417c-9725-af7d8367d62d"/>
-				<textFieldExpression><![CDATA[$F{total_HKD}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

@@ -96,7 +96,7 @@ public class TodoController extends Controller {
 		String sql = " select count(1) total from job_order jor "
 				+ " LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
 				+ " where jor.transport_type LIKE '%custom%'"
-				+ " and ifnull(joc.custom_type,'') = '' and jor.office_id="+office_id;
+				+ " and ifnull(joc.customs_broker,'') = '' and jor.office_id="+office_id;
 
 		Record planOrder = Db.findFirst(sql);
 		String total = planOrder.getLong("TOTAL").toString();
