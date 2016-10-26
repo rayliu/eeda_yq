@@ -153,13 +153,13 @@ public class JobOrderController extends Controller {
     //根据工作单类型生成不同前缀
     public String generateJobPrefix(String type){
     		String prefix = "";
-			if(type.equals("出口柜货")||type.equals("进口柜货")||type.equals("出口散货")||type.equals("进口散货")||type.equals("内贸海运")){
+			if(type.equals("出口柜货")||type.equals("进口柜货")||type.equals("进口散货")||type.equals("内贸海运")){
 				prefix+="EKO";
 			}
 			else if(type.equals("出口空运")||type.equals("进口空运")){
 				prefix+="EKA";
 			}
-			else if(type.equals("香港头程")||type.equals("香港游")){
+			else if(type.equals("香港头程")||type.equals("香港游")||type.equals("出口散货")){
 				prefix+="EKL";
 			}
 			else if(type.equals("加贸")||type.equals("园区游")){
