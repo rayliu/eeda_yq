@@ -188,10 +188,12 @@ $(document).ready(function() {
             var order = data;
             if(order.ID){
             	//控制报关申请单按钮
+//            	 $('#custom_type input[type="checkbox"]:checked').each(function(){
+//                 	if($(this).val()=='china'){
+//                 		custom_type[0]='china' ;
+//                 	}; 
+//                 });
             	
-            	if(custom_type_str.includes("china")){
-            		custom_type.push('china') ;
-                }
             	eeda.contactUrl("edit?id",order.ID);
             	$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
             	$('#saveBtn').attr('disabled', false);
