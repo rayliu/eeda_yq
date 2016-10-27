@@ -36,6 +36,8 @@ $(document).ready(function() {
         $('#notify_party').val(li.attr('notify_id'));
         $('#booking_agent_input').val(li.attr('booking_agent_name'));
         $('#booking_agent').val(li.attr('booking_agent'));
+        $('#goods_mark').val(li.attr('goods_mark'));
+        $('#shipping_mark').val(li.attr('shipping_mark'));
     });
     $('#collapseAirInfo').on('show.bs.collapse', function () {
       $('#collapseAirIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');

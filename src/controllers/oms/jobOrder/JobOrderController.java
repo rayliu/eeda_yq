@@ -46,7 +46,6 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
-import config.EedaConfig;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
@@ -396,12 +395,10 @@ public class JobOrderController extends Controller {
         if(fnd!=null&&!"".equals(fnd)){
         	 savePortQueryHistory(fnd);
         }
-        
-        if(MBLshipper == null &&MBLconsignee==null &&MBLnotify_party == null&&
-        		HBLshipper == null &&HBLconsignee==null &&HBLnotify_party == null
-        		&&por == null &&pol == null &&pod == null
-        		&&fnd == null &&booking_agent==null&&carrier==null&&head_carrier==null&&oversea_agent==null)
-               return;
+        String content = MBLshipper+MBLconsignee+MBLnotify_party+HBLshipper+HBLconsignee+HBLnotify_party+por+pol+pod+fnd+booking_agent+carrier+head_carrier+oversea_agent;
+        if("".equals(content)){
+        	return;
+        }
         
         String sql = "select 1 from job_order_ocean_template where"
                 + " creator_id = "+creator_id;
@@ -450,10 +447,10 @@ public class JobOrderController extends Controller {
         if(StringUtils.isNotEmpty(release_type)){
         	sql+=" and release_type='"+release_type+"'";
         }
-        if(StringUtils.isNotEmpty(release_type)){
+        if(StringUtils.isNotEmpty(cargo_desc)){
         	sql+=" and cargo_desc='"+cargo_desc+"'";
         }
-        if(StringUtils.isNotEmpty(release_type)){
+        if(StringUtils.isNotEmpty(shipping_mark)){
         	sql+=" and shipping_mark='"+shipping_mark+"'";
         }
       
@@ -521,14 +518,17 @@ public class JobOrderController extends Controller {
     	Map<String, String> recMap=detail.get(0);
     	Long creator_id = LoginUserController.getLoginUserId(this);
     	
-    	 String shipper = recMap.get("shipper")==""?null:recMap.get("shipper");
-         String consignee = recMap.get("consignee")==""?null:recMap.get("consignee");
-         String notify_party = recMap.get("notify_party")==""?null:recMap.get("notify_party");
+    	String shipper = recMap.get("shipper");
+    	String consignee = recMap.get("consignee");
+    	String notify_party = recMap.get("notify_party");
     	String booking_agent = recMap.get("booking_agent");
+    	String goods_mark = recMap.get("goods_mark");
+    	String shipping_mark = recMap.get("shipping_mark");
     	
-    	if(shipper == null &&consignee==null &&notify_party == null &&booking_agent == null)
-    		return;
-    	
+    	String content = shipper+consignee+notify_party+booking_agent+shipping_mark+goods_mark;
+        if("".equals(content)){
+        	return;
+        }
     	String sql = "select 1 from job_order_air_template where"
                 + " creator_id = "+creator_id;
         if(StringUtils.isNotEmpty(shipper)){
@@ -543,6 +543,12 @@ public class JobOrderController extends Controller {
         if(StringUtils.isNotEmpty(booking_agent)){
         	sql+=" and booking_agent="+booking_agent;
         }
+        if(StringUtils.isNotEmpty(goods_mark)){
+        	sql+=" and goods_mark="+goods_mark;
+        }
+        if(StringUtils.isNotEmpty(shipping_mark)){
+        	sql+=" and shipping_mark="+shipping_mark;
+        }
     	Record checkRec = Db.findFirst(sql);
     	if(checkRec==null){
     		Record r= new Record();
@@ -551,6 +557,8 @@ public class JobOrderController extends Controller {
     		r.set("consignee", consignee);
     		r.set("notify_party", notify_party);
     		r.set("booking_agent", booking_agent);
+    		r.set("shipping_mark", shipping_mark);
+    		r.set("goods_mark", goods_mark);
     		Db.save("job_order_air_template", r);
     	}
     }
