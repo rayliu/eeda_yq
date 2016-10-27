@@ -57,62 +57,105 @@ $(document).ready(function() {
     };
 
     //------------事件处理
+    var bindFieldEvent=function(){	
+    	eeda.bindTableField('trade_sale_table','CHARGE_ID','/finItem/search','');
+	    eeda.bindTableField('trade_sale_table','SP','/serviceProvider/searchCompany','');
+	    eeda.bindTableFieldCurrencyId('trade_sale_table','CURRENCY','/serviceProvider/searchCurrency','');
+    };
     var cargoTable = eeda.dt({
 	    id: 'trade_sale_table',
 	    autoWidth: false,
-	    columns:[
-			{ "width": "30px",
-			    "render": function ( data, type, full, meta ) {
-			    	if(full.AUDIT_FLAG == 'Y'){
-			    		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button> ';
-			    	}else{
-			    		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
-			    	}
-			    }
-			},
-            { "data": "COMMODITY_NAME", "width": "180px",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="commodity_name" value="'+data+'" class="form-control" style="width:200px"/>';
-                }
-            },
-            { "data": "SPECIFICATION_MODEL", "width": "280px",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="specification_model" value="'+data+'" class="form-control" style="width:300px"/>';
-                }
-            },
-            { "data": "NUMBER", "width": "180px",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="number" value="'+data+'" class="form-control" style="width:200px"/>';
-                }
-            },
-            { "data": "PRICE", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="price" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            },
-            { "data": "EXPORT_AMOUT", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="export_amout" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            },
-            { "data": "REMARK", "width": "200px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:220px"/>';
-            	}
-            }
-        ]
+	    drawCallback: function( settings ) {
+            bindFieldEvent();
+            $.unblockUI();
+        },
+        columns:[
+     			{ "width": "30px",
+     			    "render": function ( data, type, full, meta ) {
+     			    		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
+     			    }
+     			},
+     			{ "data": "SP", "width": "180px",
+     				"render": function ( data, type, full, meta ) {
+                     		if(!data)
+                                 data='';
+                             var field_html = template('table_dropdown_template',
+                                 {
+                                     id: 'SP',
+                                     value: data,
+                                     display_value: full.SP_NAME,
+                                     style:'width:200px'
+                                 }
+                             );
+                             return field_html;
+     				}
+     			},
+     			{ "data": "CHARGE_ID","width": "180px",
+                     "render": function ( data, type, full, meta ) {
+                         if(!data)
+                             data='';
+                         var field_html = template('table_dropdown_template',
+                             {
+                                 id: 'CHARGE_ID',
+                                 value: data,
+                                 display_value: full.CHARGE_NAME,
+                                 style:'width:200px'
+                             }
+                         );
+                         return field_html;
+                   }
+                 },
+     			{ "data": "CURRENCY", "width": "60px",
+                 	"render": function ( data, type, full, meta ) {
+     	                	if(!data)
+     	                        data='';
+     	                    var field_html = template('table_dropdown_template',
+     	                        {
+     	                            id: 'CURRENCY',
+     	                            value: data,
+     	                            display_value: full.CURRENCY_NAME,
+     	                            style:'width:80px'
+     	                        }
+     	                    );
+     	                    return field_html;
+                 	}
+                 },
+     			{ "data": "RATE", "width": "180px","className":"currency_rate",
+     	        	"render": function ( data, type, full, meta ) {
+     	        		if(!data)
+     	        			data='';
+     	        		return '<input type="text" name="rate" value="'+data+'" class="form-control" style="width:200px"/>';
+     	        	}
+                 },
+                 { "data": "FEE_AMOUNT", "width": "180px",
+                     "render": function ( data, type, full, meta ) {
+                         if(!data)
+                             data='';
+                         return '<input type="text" name="fee_amount" value="'+data+'" class="form-control" style="width:200px"/>';
+                     }
+                 },
+                 { "data": "CHARGE_NAME", "visible": false,
+                     "render": function ( data, type, full, meta ) {
+                         if(!data)
+                             data='';
+                         return data;
+                     }
+                 },
+                 { "data": "CURRENCY_NAME", "visible": false,
+                     "render": function ( data, type, full, meta ) {
+                         if(!data)
+                             data='';
+                         return data;
+                     }
+                 },
+                 { "data": "SP_NAME", "visible": false,
+                     "render": function ( data, type, full, meta ) {
+                         if(!data)
+                             data='';
+                         return data;
+                     }
+                 }
+             ]
     });
 
     $('#add_trade_sale_table').on('click', function(){

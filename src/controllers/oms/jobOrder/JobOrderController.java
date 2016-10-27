@@ -797,14 +797,23 @@ public class JobOrderController extends Controller {
 	    	itemSql = "select * from job_order_sendMail where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("trade_cost".equals(type)){
-	    	itemSql = "select * from job_order_trade_cost where order_id=? order by id";
+	    	itemSql = "select jotc.*,p.abbr sp_name,c.name currency_name from job_order_trade_cost jotc"
+	    			+ " left join party p on p.id = jotc.sp"
+	    			+ " left join currency c on c.id = jotc.custom_currency"
+	    			+ " where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("trade_sale".equals(type)){
-	    	itemSql = "select * from job_order_trade_charge_sale where order_id=? order by id";
+	    	itemSql = "select jotc.*, f.name charge_name, p.abbr sp_name,c.name currency_name from job_order_trade_charge_sale jotc"
+	    			+ " left join fin_item f on f.id=jotc.charge_id"
+	    			+ " left join party p on p.id = jotc.sp"
+	    			+ " left join currency c on c.id = jotc.currency"
+	    			+ " where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("trade_service".equals(type)){
-	    	itemSql = "select jotc.*, f.name charge_name from job_order_trade_charge_service jotc"
+	    	itemSql = "select jotc.*, f.name charge_name, p.abbr sp_name,c.name currency_name from job_order_trade_charge_service jotc"
 	    			+ " left join fin_item f on f.id=jotc.charge_id"
+	    			+ " left join party p on p.id = jotc.sp"
+	    			+ " left join currency c on c.id = jotc.currency"
 	    			+ " where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("china_self".equals(type)){

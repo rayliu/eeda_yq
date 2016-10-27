@@ -17,15 +17,5 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             return arrays;
         };
         
-        $('#cost_currency_list').on('mousedown','.fromLocationItem',function(){
-        	$('#cost_rate').val($(this).attr('rate'));
-        })
-        $('#charge_service_currency_list').on('mousedown','.fromLocationItem',function(){
-        	$('#charge_service_rate').val($(this).attr('rate'));
-        })
-        $('#charge_sale_currency_list').on('mousedown','.fromLocationItem',function(){
-        	$('#charge_sale_rate').val($(this).attr('rate'));
-        })
-        
     });
 });

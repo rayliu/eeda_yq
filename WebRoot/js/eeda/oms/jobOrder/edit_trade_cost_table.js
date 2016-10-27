@@ -58,18 +58,37 @@ $(document).ready(function() {
 
 
     //------------事件处理
+    var bindFieldEvent=function(){	
+    	eeda.bindTableField('trade_cost_table','SP','/serviceProvider/searchCompany','');
+        eeda.bindTableFieldCurrencyId('trade_cost_table','CUSTOM_CURRENCY','/serviceProvider/searchCurrency','');
+    };
     var cargoTable = eeda.dt({
 	    id: 'trade_cost_table',
 	    autoWidth: false,
+	    drawCallback: function( settings ) {
+            bindFieldEvent();
+            $.unblockUI();
+        },
 	    columns:[
 			{ "width": "30px",
 			    "render": function ( data, type, full, meta ) {
-			    	if(full.AUDIT_FLAG == 'Y'){
-			    		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button> ';
-			    	}else{
 			    		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
-			    	}
 			    }
+			},
+			{ "data": "SP", "width": "180px",
+				"render": function ( data, type, full, meta ) {
+                		if(!data)
+                            data='';
+                        var field_html = template('table_dropdown_template',
+                            {
+                                id: 'SP',
+                                value: data,
+                                display_value: full.SP_NAME,
+                                style:'width:200px'
+                            }
+                        );
+                        return field_html;
+				}
 			},
             { "data": "COMMODITY_NAME", "width": "180px",
                 "render": function ( data, type, full, meta ) {
@@ -91,6 +110,13 @@ $(document).ready(function() {
                         data='';
                     return '<input type="text" name="number" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
+            },
+            { "data": "UNIT", "width": "180px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="unit" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
             },
             { "data": "PRICE", "width": "180px",
             	"render": function ( data, type, full, meta ) {
@@ -132,11 +158,6 @@ $(document).ready(function() {
             		return '' ;
             	}
             },
-            { "data": "", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		return '' ;
-            	}
-            },
             { "data": "ADJUSTED_TAX_REFUND_AMOUNT", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
@@ -156,6 +177,56 @@ $(document).ready(function() {
             		if(!data)
             			data='';
             		return '<input type="text" name="adjusted_total_price" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
+            { "data": "CUSTOM_PRICE", "width": "180px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="custom_price" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
+            { "data": "CUSTOM_AMOUNT", "width": "180px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="custom_amount" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
+            { "data": "CUSTOM_CURRENCY", "width": "60px",
+            	"render": function ( data, type, full, meta ) {
+	                	if(!data)
+	                        data='';
+	                    var field_html = template('table_dropdown_template',
+	                        {
+	                            id: 'CUSTOM_CURRENCY',
+	                            value: data,
+	                            display_value: full.CURRENCY_NAME,
+	                            style:'width:80px'
+	                        }
+	                    );
+	                    return field_html;
+            	}
+            },
+            { "data": "CUSTOM_RATE", "width": "180px","className":"currency_rate",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="custom_rate" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
+            { "data": "CURRENCY_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },
+            { "data": "SP_NAME", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return data;
             	}
             }
         ]
