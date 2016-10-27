@@ -199,7 +199,7 @@ public class JobOrderController extends Controller {
    			jobOrder = JobOrder.dao.findById(id);
 
    			if(!type.equals(jobOrder.get("type"))){
-	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type));
+	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
 	            jobOrder.set("order_no", order_no);
    			}
             
@@ -213,7 +213,7 @@ public class JobOrderController extends Controller {
    			DbUtils.setModelValues(dto, jobOrder);
    			
    			//需后台处理的字段
-   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type));
+   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
             jobOrder.set("order_no", order_no);
    			jobOrder.set("creator", user.getLong("id"));
    			jobOrder.set("create_stamp", new Date());

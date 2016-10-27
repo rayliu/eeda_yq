@@ -74,15 +74,15 @@ public class CostReimbursementOrder extends Controller {
 		String invoicePayment = getPara("invoice_payment");
 		String payment_type = getPara("payment_type");
 		String orderNo = null;
+		
+		UserLogin user = LoginUserController.getLoginUser(this);
+        long officeId= user.getLong("office_id");
+        
 		ReimbursementOrder rei = null;
 		if (id == null || "".equals(id)) {
 			// 单号
-			orderNo = OrderNoGenerator.getNextOrderNo("YFBX");
-			
-			String name = (String) currentUser.getPrincipal();
-			UserLogin users = UserLogin.dao
-					.findFirst("select * from user_login where user_name='" + name + "'");
-			Long userId = LoginUserController.getLoginUserId(this);
+			orderNo = OrderNoGenerator.getNextOrderNo("YFBX", officeId);
+			Long userId = user.getLong("id");
 			rei = new ReimbursementOrder();
 			String a =accId.replaceAll(" ", "");
 			if(accId!=null){

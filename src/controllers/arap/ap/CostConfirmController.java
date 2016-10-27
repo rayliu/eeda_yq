@@ -19,6 +19,7 @@ import models.ArapCostPayConfirmOrderLog;
 import models.CostApplicationOrderRel;
 import models.DepartOrder;
 import models.InsuranceOrder;
+import models.UserLogin;
 import models.eeda.profile.Account;
 import models.yh.arap.ArapAccountAuditSummary;
 import models.yh.arap.ArapMiscCostOrder;
@@ -167,10 +168,12 @@ public class CostConfirmController extends Controller {
 		} else {
 			Contact contact = Contact.dao.findFirst("select * from contact where company_name = '"+sp_filter+"'");
 			String name = (String) currentUser.getPrincipal();
-	        Long userId =  LoginUserController.getLoginUserId(this);
+			UserLogin user = LoginUserController.getLoginUser(this);
+	        Long userId =  user.getLong("id");
+	        long officeId= user.getLong("office_id");
 	      //创建主表
 			arapCostPayConfirmOrder = new ArapCostPayConfirmOrder();
-			arapCostPayConfirmOrder.set("order_no", OrderNoGenerator.getNextOrderNo("YFQR"));
+			arapCostPayConfirmOrder.set("order_no", OrderNoGenerator.getNextOrderNo("YFQR", officeId));
 			if(sp_filter!=null&&!sp_filter.equals("")){
 				arapCostPayConfirmOrder.set("sp_id",contact.getLong("id"));
 			}

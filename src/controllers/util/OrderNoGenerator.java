@@ -10,6 +10,8 @@ import org.apache.commons.lang.StringUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.profile.LoginUserController;
+
 /**
  * generate Order number
  * 
@@ -19,14 +21,14 @@ public class OrderNoGenerator {
 	//如果服务器重启了，当前的序列号就从数据库找到最后的号码，然后接着计数
 	//TODO：如果需要按每张单的前缀来生成序列号，可以多加一个Map来记录
 	
-	public synchronized static String getNextOrderNo(String orderPrefix) {
+	public synchronized static String getNextOrderNo(String orderPrefix, long officeId) {
 	    String orderNo = "";
 	    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
         String nowdate = sdf.format(new Date());
         
 		//1. 从数据库获取orderPrefix的最后号码, 没有该orderPrefix则新增一行记录
         //2. 判断是否日期相同, 相同就累加, 不同就重新计数
-	    Record orderSeq = Db.findFirst("select * from order_no_seq where prefix=?", orderPrefix);
+	    Record orderSeq = Db.findFirst("select * from order_no_seq where prefix=? and office_id=?", orderPrefix, officeId);
         if(orderSeq!=null){
             String seq = "000";
             String lastOrderNo = orderSeq.get("last_order_no");
@@ -43,6 +45,7 @@ public class OrderNoGenerator {
             orderNo = orderPrefix +nowdate+ getNo("000");
             orderSeq.set("prefix", orderPrefix);
             orderSeq.set("last_order_no", orderNo);
+            orderSeq.set("office_id", officeId);
             Db.save("order_no_seq", orderSeq);
         }
 		

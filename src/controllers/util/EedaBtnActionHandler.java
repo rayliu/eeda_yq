@@ -62,7 +62,7 @@ public class EedaBtnActionHandler {
                         Record rec = Db.findFirst("select " + fieldName + " from t_" + structureId + " where id="+orderId);
                         if(rec != null && rec.getStr(fieldName) == null){
                             Db.update("update t_" + structureId + " set " + fieldName + " = " + 
-                                    OrderNoGenerator.getNextOrderNo("") + " where id=" + orderId);
+                                    OrderNoGenerator.getNextOrderNo("", 0) + " where id=" + orderId);
                         }
                     }else{
                         Db.update("update t_"+structureId+" set "+fieldName+"='" + value + "' where id="+orderId);

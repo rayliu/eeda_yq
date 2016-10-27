@@ -161,7 +161,7 @@ public class ChargeInvoiceOrderController extends Controller {
    			DbUtils.setModelValues(dto, order);
    			
    			//需后台处理的字段
-   			order.set("order_no", OrderNoGenerator.getNextOrderNo("YSKP"));
+   			order.set("order_no", OrderNoGenerator.getNextOrderNo("YSKP", user.getLong("office_id")));
    			order.set("create_by", user.getLong("id"));
    			order.set("create_stamp", new Date());
    			order.save();

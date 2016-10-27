@@ -803,10 +803,10 @@ public class ChargePreInvoiceOrderController extends Controller {
 		String bank_name = getPara("deposit_bank");   //开户行
 		String total_amount = getPara("total_amount")==""?"0.00":getPara("total_amount");   //申请总金额
 
-		
+		UserLogin user = LoginUserController.getLoginUser(this);
 		if (!"".equals(application_id) && application_id != null) {
 			arapAuditInvoiceApplication = ArapChargeApplication.dao.findById(application_id);
-			arapAuditInvoiceApplication.set("last_modified_by",LoginUserController.getLoginUserId(this));
+			arapAuditInvoiceApplication.set("last_modified_by", user.getLong("id"));
 			arapAuditInvoiceApplication.set("last_modified_stamp", new Date());
 			arapAuditInvoiceApplication.set("payee_name", payee_name);
 			arapAuditInvoiceApplication.set("payment_method", paymentMethod);
@@ -840,9 +840,9 @@ public class ChargePreInvoiceOrderController extends Controller {
 		} else {
 			arapAuditInvoiceApplication = new ArapChargeApplication();
 			arapAuditInvoiceApplication.set("order_no",
-					OrderNoGenerator.getNextOrderNo("YSSQ"));
+					OrderNoGenerator.getNextOrderNo("YSSQ", user.getLong("office_id")));
 			arapAuditInvoiceApplication.set("status", "新建");
-			arapAuditInvoiceApplication.set("create_by", LoginUserController.getLoginUserId(this));
+			arapAuditInvoiceApplication.set("create_by", user.getLong("id"));
 			arapAuditInvoiceApplication.set("create_stamp", new Date());
 			arapAuditInvoiceApplication.set("payee_name", payee_name);
 			arapAuditInvoiceApplication.set("payment_method", paymentMethod);

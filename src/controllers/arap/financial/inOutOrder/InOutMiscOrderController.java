@@ -189,7 +189,7 @@ public class InOutMiscOrderController extends Controller {
 			String charge_amount, String charge_unit, String charge_person,
 			String pay_amount, String remark, UserLogin user) {
 		ArapInOutMiscOrder order = new ArapInOutMiscOrder();
-		order.set("order_no", OrderNoGenerator.getNextOrderNo("WLPJ"));
+		order.set("order_no", OrderNoGenerator.getNextOrderNo("WLPJ", Long.valueOf(issue_office)));
 		order.set("issue_date", issue_date);
 		order.set("issue_office_id", issue_office);
 		order.set("order_type", order_type);

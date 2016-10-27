@@ -81,7 +81,7 @@ public class CustomPlanOrderController extends Controller {
    			DbUtils.setModelValues(dto, customPlanOrder);
    			
    			//需后台处理的字段
-   			customPlanOrder.set("order_no", OrderNoGenerator.getNextOrderNo("BGSQ"));
+   			customPlanOrder.set("order_no", OrderNoGenerator.getNextOrderNo("BGSQ", office_id));
    			customPlanOrder.set("creator", user.getLong("id"));
    			customPlanOrder.set("create_stamp", new Date());
    			customPlanOrder.set("office_id", office_id);
@@ -223,7 +223,7 @@ public class CustomPlanOrderController extends Controller {
        		r.set("creator", user.getLong("id"));
    			r.set("create_stamp", new Date());
    			r.set("office_id", office_id);
-    		r.set("order_no", OrderNoGenerator.getNextOrderNo("BGGZD"));
+    		r.set("order_no", OrderNoGenerator.getNextOrderNo("BGGZD", office_id));
     		Db.save("custom_job_order", r);
     		id = r.getLong("id").toString();
     		

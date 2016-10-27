@@ -275,7 +275,7 @@ public class CostCheckOrderController extends Controller {
    		} else {
    			//create 
    			DbUtils.setModelValues(dto, aco);
-	   		String orderPrefix = OrderNoGenerator.getNextOrderNo("YFDZ");
+	   		String orderPrefix = OrderNoGenerator.getNextOrderNo("YFDZ", office_id);
 	        aco.set("order_no", orderPrefix);
 	        aco.set("order_type", "应付对账单");
 			aco.set("create_by", user.getLong("id"));

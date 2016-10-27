@@ -253,12 +253,10 @@ public class TransferAccountsController extends Controller {
 				transfer_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 	   		}
 			
-			String name = (String) currentUser.getPrincipal();
-			List<UserLogin> users = UserLogin.dao
-					.find("select * from user_login where user_name='" + name + "'");
+			UserLogin user = LoginUserController.getLoginUser(this);
 			if(!"".equals(transferOrderId) && transferOrderId != null){
 			    transferaccounts =TransferAccountsOrder.dao.findById(transferOrderId);
-				transferaccounts.set("create_id",users.get(0).get("id"));
+				transferaccounts.set("create_id",user.get("id"));
 				transferaccounts.set("create_stamp",new Date());
 				transferaccounts.set("transfer_method",method);
 				transferaccounts.set("bank_in",in_filter);
@@ -270,9 +268,9 @@ public class TransferAccountsController extends Controller {
 			}
 			else{
 			    transferaccounts= new TransferAccountsOrder();
-				transferaccounts.set("order_no", OrderNoGenerator.getNextOrderNo("ZZSQ"));
+				transferaccounts.set("order_no", OrderNoGenerator.getNextOrderNo("ZZSQ", user.getLong("office_id")));
 				transferaccounts.set("STATUS","新建");
-				transferaccounts.set("create_id",users.get(0).get("id"));
+				transferaccounts.set("create_id",user.get("id"));
 				transferaccounts.set("create_stamp",new Date());
 				transferaccounts.set("transfer_method",method);
 				transferaccounts.set("bank_in",in_filter);

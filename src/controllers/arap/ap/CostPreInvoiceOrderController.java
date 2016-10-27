@@ -114,7 +114,7 @@ public class CostPreInvoiceOrderController extends Controller {
 			}
 		} else {
 			aca = new ArapCostApplication();
-			aca.set("order_no",OrderNoGenerator.getNextOrderNo("YFSQ"));
+			aca.set("order_no",OrderNoGenerator.getNextOrderNo("YFSQ", office_id));
 			aca.set("status", "新建");
 			aca.set("create_by", LoginUserController.getLoginUserId(this));
 			aca.set("create_stamp", new Date());

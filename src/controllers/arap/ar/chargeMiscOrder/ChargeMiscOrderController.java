@@ -220,7 +220,7 @@ public class ChargeMiscOrderController extends Controller {
 			}
 
 			arapMiscChargeOrder.set("order_no",
-					OrderNoGenerator.getNextOrderNo("SGSK"));
+					OrderNoGenerator.getNextOrderNo("SGSK", user.getLong("office_id")));
 			if (getPara("chargeCheckOrderIds") != null
 					&& !"".equals(getPara("chargeCheckOrderIds"))) {
 				arapMiscChargeOrder.set("charge_order_id",

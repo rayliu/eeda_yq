@@ -255,7 +255,7 @@ public class CostMiscOrderController extends Controller {
 			arapMiscCostOrder.set("office_id", user.getLong("office_id"));
 			arapMiscCostOrder.set("create_by", user.getLong("id"));
 			arapMiscCostOrder.set("create_stamp", new Date());
-			arapMiscCostOrder.set("order_no", OrderNoGenerator.getNextOrderNo("SGFK"));
+			arapMiscCostOrder.set("order_no", OrderNoGenerator.getNextOrderNo("SGFK", user.getLong("office_id")));
 			
 			if (amount != null && !"".equals(amount)) {
 				arapMiscCostOrder.set("total_amount", amount);

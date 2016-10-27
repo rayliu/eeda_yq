@@ -99,7 +99,7 @@ public class CustomJobOrderController extends Controller {
    			r = Db.findById("custom_job_order", id);
    			
    			if(type!=r.get("type")){
-	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type));
+	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
 	            r.set("order_no", order_no);
    			}
             
@@ -113,7 +113,7 @@ public class CustomJobOrderController extends Controller {
    			DbUtils.setModelValues(dto, r, "custom_job_order");
    			
    			//需后台处理的字段
-   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type));
+   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
             r.set("order_no", order_no);
    			r.set("creator", user.getLong("id"));
    			r.set("create_stamp", new Date());

@@ -170,7 +170,7 @@ public class PrePayOrderController extends Controller {
 			destOrder.set("remark", originOrder.getStr("remark"));
 			destOrder.set("creator", user.getLong("id"));
 			destOrder.set("create_date", new Date());
-			destOrder.set("order_no", OrderNoGenerator.getNextOrderNo("YF"));
+			destOrder.set("order_no", OrderNoGenerator.getNextOrderNo("YF",  user.getLong("office_id")));
 			if (originOrder.getDouble("total_amount") != null
 					&& !"".equals(originOrder.getDouble("total_amount"))) {
 				destOrder.set("total_amount",
@@ -280,7 +280,7 @@ public class PrePayOrderController extends Controller {
 			arapPrePayOrder.set("create_date", new Date());
 			arapPrePayOrder.set("type", "origin");
 			arapPrePayOrder.set("order_no",
-					OrderNoGenerator.getNextOrderNo("YF"));
+					OrderNoGenerator.getNextOrderNo("YF", user.getLong("office_id")));
 
 			if (amount != null && !"".equals(amount)) {
 				arapPrePayOrder.set("total_amount", amount);

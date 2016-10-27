@@ -75,7 +75,7 @@ public class PlanOrderController extends Controller {
    			DbUtils.setModelValues(dto, planOrder);
    			
    			//需后台处理的字段
-   			planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("JH"));
+   			planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("JH", office_id));
    			planOrder.set("creator", user.getLong("id"));
    			planOrder.set("create_stamp", new Date());
    			planOrder.set("office_id", office_id);

@@ -72,14 +72,13 @@ public class PaymentCheckOrderController extends Controller {
         }
         
         setAttr("saveOK", false);
-        String name = (String) currentUser.getPrincipal();
-        List<UserLogin> users = UserLogin.dao.find("select * from user_login where user_name='" + name + "'");
-        setAttr("create_by", users.get(0).get("id"));
+        UserLogin user = LoginUserController.getLoginUser(this);
+        setAttr("create_by", user.get("id"));
 
         String sql = "select * from arap_audit_order order by id desc limit 0,1";
-        setAttr("order_no", OrderNoGenerator.getNextOrderNo("DZ"));
+        setAttr("order_no", OrderNoGenerator.getNextOrderNo("DZ", user.getLong("office_id")));
 
-        UserLogin userLogin = UserLogin.dao.findById(users.get(0).get("id"));
+        UserLogin userLogin = UserLogin.dao.findById(user.get("id"));
         setAttr("userLogin", userLogin);
             render("/yh/arap/PaymentCheckOrder/PaymentCheckOrderEdit.html");
     }
