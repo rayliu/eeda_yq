@@ -326,13 +326,36 @@ eeda.refreshUrl = refreshUrl;
 		  });
 
       tableFieldList.on('keydown', 'li', function(e){
-        if (e.keyCode == 13) {
+        if (e.keyCode == 13) {//enter
           var inputField = eeda._inputField;
           var hiddenField = eeda._hiddenField;
           inputField.val($(this).text());//名字
           tableFieldList.hide();
           var dataId = $(this).attr('dataId');
           hiddenField.val(dataId);//id
+
+          var td = inputField.parent().parent();
+          var row = td.parent();
+          var colCount = row.find('td').length;
+
+          var nextTdInput, nextTd=td;
+          var index = 0;
+          while(!nextTdInput && index<colCount){
+              nextTd = nextTd.next();
+              index = nextTd.index();
+              nextTdInput = nextTd.find('input:last');
+              if(nextTdInput && !nextTdInput.prop('disabled')){
+                  nextTdInput.focus();
+                  break;
+              }else{
+                  nextTdInput=null;
+              }
+          }
+
+          //sandbox 禁止模拟按键触发
+          // var event = $.Event("keydown", {keyCode: 9});// key 'tab'
+          // inputField.focus().trigger(event);
+
         }
       });
 
