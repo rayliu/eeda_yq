@@ -956,18 +956,14 @@ public class JobOrderController extends Controller {
     	
         MultiPartEmail email = new MultiPartEmail();  
         /*smtp.exmail.qq.com*/
-        email.setHostName("smtp.exmail.qq.com");
-        email.setSmtpPort(465);
+        email.setHostName("smtp.mxhichina.com");
+        email.setSmtpPort(25);
         
         /*输入公司的邮箱和密码*/
-        /*EedaConfig.mailUser, EedaConfig.mailPwd*/
-        email.setAuthenticator(new DefaultAuthenticator(EedaConfig.mailUser, EedaConfig.mailPwd));        
+        email.setAuthenticator(new DefaultAuthenticator("info@yq-scm.com", "Enkyo123"));        
         email.setSSLOnConnect(true);
-        
-        /*EedaConfig.mailUser*/
-        email.setFrom(EedaConfig.mailUser);//设置发信人
-        
-        //设置收件人，邮件标题，邮件内�
+        email.setFrom("info@yq-scm.com","Enkyo珠海远桥");//设置发信人
+        //设置收件人，邮件标题，邮件内容
         if(StringUtils.isNotEmpty(userEmail)){
         	String[] arr = userEmail.split(regex);
         	for(int i=0;i<arr.length;i++){
