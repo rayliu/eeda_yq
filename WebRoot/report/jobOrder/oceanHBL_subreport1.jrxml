@@ -10,8 +10,8 @@
 		<![CDATA[SELECT
 	CONCAT(container_no, '/', container_type,'/', seal_no) CN_no,
 	CONCAT(
-		CAST(FORMAT(pieces,2) AS CHAR),
-		' CARTONS'
+		CAST(FORMAT(pieces,2) AS CHAR),' ',
+		u.name_eng
 	) pieces,
 	CONCAT(
 		CAST(FORMAT(gross_weight,2) AS CHAR),
@@ -20,9 +20,10 @@
 	CONCAT(
 		CAST(FORMAT(volume,2) AS CHAR),
 		' CBM'
-	) volume
+	) volume,u.name_eng
 FROM
-	job_order_shipment_item
+	job_order_shipment_item josi
+LEFT JOIN unit u on u.id=josi.unit_id
 
 WHERE
 	order_id = $P{order_id}]]>
@@ -35,6 +36,9 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="volume" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="name_eng" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<detail>

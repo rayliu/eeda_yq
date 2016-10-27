@@ -397,7 +397,11 @@ li{
 
 #release_radio_div .radio-inline{
     padding-left: 0px;
-    padding-right: 5px;
+    padding-right: 13px;
+}
+#release_radio_div .radio-costominline{
+    padding-left: 0px;
+    padding-right: 15px;
 }
 #release_radio_div .radio-inline input[type=radio] {
     margin-left: -15px;

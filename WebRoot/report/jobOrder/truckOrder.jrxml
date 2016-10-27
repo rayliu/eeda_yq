@@ -2,12 +2,13 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="truckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6e032343-152e-4328-9fc1-a87e482c2444">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="127"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="itemId" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
 	<queryString>
 		<![CDATA[select
+p2.company_name transportCompanyName,
 p.company_name consignor_name,
 p1.company_name consignee_name,
 joli.consignor,
@@ -35,8 +36,10 @@ LEFT JOIN user_login ul on ul.id = jo.creator
 LEFT JOIN office oe on oe.id = jo.office_id
 LEFT JOIN party p on p.id =  joli.consignor
 LEFT JOIN party p1 on p1.id =  joli.consignee
+LEFT JOIN party p2 on p2.id = joli.transport_company
 where joli.id=$P{itemId}]]>
 	</queryString>
+	<field name="transportCompanyName" class="java.lang.String"/>
 	<field name="consignor_name" class="java.lang.String"/>
 	<field name="consignee_name" class="java.lang.String"/>
 	<field name="consignor" class="java.lang.String">
@@ -197,13 +200,6 @@ where joli.id=$P{itemId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{delivery_address}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="33" y="34" width="505" height="39" uuid="ed05c426-f0ed-46a5-aa5c-4adc01573d7f"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{delivery_address}]]></textFieldExpression>
-			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="34" y="74" width="100" height="20" uuid="04b52ed6-2d0c-45de-8676-2bacefad0d85"/>
 				<textElement>
@@ -231,13 +227,6 @@ where joli.id=$P{itemId}]]>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{required_time_remark}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="33" y="1" width="505" height="33" uuid="f278783f-f473-4117-bf51-7121fcec977e"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{take_address}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="293" y="322" width="61" height="20" uuid="8b6a8f86-8066-4bc9-8a82-88eca0b91fe2"/>
@@ -324,6 +313,20 @@ where joli.id=$P{itemId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="32" y="0" width="505" height="20" uuid="8a9ddc2f-772a-4a7d-bb58-05408e394fed"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{transportCompanyName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="33" y="34" width="502" height="20" uuid="f69521bc-7888-479b-b2b5-1117ed735a6a"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[珠海市横琴远桥供应链管理有限公司]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>

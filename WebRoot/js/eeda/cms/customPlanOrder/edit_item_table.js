@@ -95,6 +95,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return '<input type="text" name="COMMODITY_CODE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
+	            { "data": "COMMODITY_CODE","width": "80px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return '<input type="text" name="COMMODITY_CODE" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
 	            { "data": "COMMODITY_NAME","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
@@ -176,6 +183,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                        +'<option value="立方米" '+(data=='立方米' ? 'selected':'')+'>立方米</option>'
 	                        +'</select>';
 	                	return str;
+	                }
+	            },
+	            { "data": "PRICE","width": "180px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                   return '<input type="text" name="PRICE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "PRICE","width": "180px",
