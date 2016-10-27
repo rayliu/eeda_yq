@@ -1,5 +1,6 @@
 package controllers.profile;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
@@ -35,14 +37,15 @@ public class FinItemController extends Controller {
     ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
 
     //查询费用中文名称
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})
     public void search() {
         String input = getPara("input");
         
         List<Record> finItems = null;
         if (input !=null && input.trim().length() > 0) {
-            finItems = Db.find("select * from fin_item where name like '%"+input+"%'");
+            finItems = Db.find("select * from fin_item where name like '%"+input+"%' limit 10");
         }else{
-            finItems = Db.find("select * from fin_item");
+            finItems = Db.find("select * from fin_item limit 10");
         }
         renderJson(finItems);
     }

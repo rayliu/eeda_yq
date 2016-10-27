@@ -362,21 +362,34 @@ public class CustomerController extends Controller {
         if(StringUtils.isEmpty(customerName)){
             customerName = "";
         }
-        
-        List<Record> partyList = Collections.EMPTY_LIST;
-        String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-        		+ " ifnull(p.address_eng, p.address) address, p.phone ,p.fax from party p where  "
-                + " p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
-                    
-        if (customerName.trim().length() > 0) {
-            sql +=" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" + customerName.toUpperCase() + "%') ";
-        }
-        partyList = Db.find(sql);
+        long userId = LoginUserController.getLoginUserId(this); 
+        List<Record> resultList = Collections.EMPTY_LIST;
+        if(StrKit.isBlank(customerName)){//从历史记录查找
+            String sql = "select h.ref_id, p.id, p.abbr from user_query_history h, party p "
+                    + "where h.ref_id=p.id and h.type='CUSTOMER' and h.user_id=?";
+            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
+            if(resultList.size()==0){
+                sql = "select p.id, p.abbr from party p where p.type = 'CUSTOMER' "
+                        + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
+                resultList = Db.find(sql+" order by abbr limit 10");
+            }
+            renderJson(resultList);
+        }else{
+            String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax from party p where  "
+                    + " p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
+                        
+            if (customerName.trim().length() > 0) {
+                sql +=" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" + customerName.toUpperCase() + "%') ";
+            }
+            resultList = Db.find(sql+" limit 10");
 
-        renderJson(partyList);
+            renderJson(resultList);
+        }
     }
     
     // 列出所有party名称,供应商
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})
     public void searchParty() {
         String partyName = getPara("partyName");
         String type = getPara("type");

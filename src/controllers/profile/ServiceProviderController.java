@@ -457,11 +457,11 @@ public class ServiceProviderController extends Controller {
 							+ input
 							+ "%' or p.abbr like '%"
 							+ input
-							+ "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) limit 0,10",parentID,parentID);
+							+ "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) limit 10",parentID,parentID);
 		} else {
 		    spList = Db
 					.find("select p.id,p.abbr name from party p, office o where o.id = p.office_id "
-							+ " and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?)", parentID, parentID);
+							+ " and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?) limit 10", parentID, parentID);
 		}
 		renderJson(spList);
     }
