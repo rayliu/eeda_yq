@@ -272,12 +272,24 @@ eeda.refreshUrl = refreshUrl;
    //dataTable里的下拉列表，查询参数为input,url,添加的参数para,下拉显示的数据库字段
    eeda.bindTableField = function(table_id, el_name,url,para) {
 		  var tableFieldList = $('#table_input_field_list');
+
+      //处理中文输入法, 没完成前不触发查询
+      var cpLock = false;
+      $('#'+table_id+' input[name='+el_name+'_input]').on('compositionstart', function () {
+          cpLock = true;
+      }).on('compositionend', function () {
+          cpLock = false;
+      });
+
 		  $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
 
 			  var me = this;
 			  var inputField = $(this);
 			  var hiddenField = $(this).parent().find('input[name='+el_name+']');
 			  var inputStr = inputField.val();
+
+        if(cpLock)
+            return;
 
         if (event.keyCode == 40) {
             tableFieldList.find('li').first().focus();

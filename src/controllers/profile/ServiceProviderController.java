@@ -109,7 +109,7 @@ public class ServiceProviderController extends Controller {
         party.update();
         redirect("/serviceProvider");
     }
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_CREATE, PermissionConstant.PERMSSION_P_UPDATE}, logical=Logical.OR)
+//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_CREATE, PermissionConstant.PERMSSION_P_UPDATE}, logical=Logical.OR)
     public void save() {
         String id = getPara("party_id");
         Party party = null;
@@ -131,13 +131,13 @@ public class ServiceProviderController extends Controller {
             party.update();
         } else {
             //判断供应商简称
-            contact1 = Party.dao.findFirst("select * from party where abbr=?",getPara("abbr"));
+            contact1 = Party.dao.findFirst("select * from party where abbr=? and office_id=?", getPara("abbr"), pom.getCurrentOfficeId());
             if(contact1!=null){
             	renderText("abbrError");
             	return ;
             }
           //判断供应商全称
-            contact2 = Party.dao.findFirst("select * from party where company_name=?",getPara("company_name")); 
+            contact2 = Party.dao.findFirst("select * from party where company_name=? and office_id=?", getPara("company_name"), pom.getCurrentOfficeId()); 
             if(contact2!=null){
             	renderText("companyError");
             	return ;
@@ -476,7 +476,7 @@ public class ServiceProviderController extends Controller {
     	List<Record> recs = null;
     	String sql = "select p.id,p.abbr name from party p where office_id="+office_id+" and p.type = 'SP' and p.sp_type like '%"+sp_type+"%' ";
     	if(!StringUtils.isBlank(name)){
-    		sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
+    		sql+=" and (p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%') ";
     	}
     	recs = Db.find(sql);
     	renderJson(recs);
