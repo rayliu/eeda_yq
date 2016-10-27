@@ -7,9 +7,9 @@ $(document).ready(function() {
 	}
 	
 	//上传
-	$('#fileupload').click(function(){
+	$('#fileuploadOfCustom').click(function(){
 		var order_id = $('#order_id').val();
-		$('#fileupload').fileupload({
+		$('#fileuploadOfCustom').fileupload({
 				autoUpload: true, 
 			    url: '/jobOrder/uploadCustomDoc?order_id='+order_id,
 			    dataType: 'json',
