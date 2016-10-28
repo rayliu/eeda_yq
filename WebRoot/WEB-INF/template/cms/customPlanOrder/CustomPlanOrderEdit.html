@@ -72,24 +72,23 @@
                                               }){}%>
                         </div><!-- /.col-lg-4 -->
                         <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputSelectArea.html", 
-							                  {   id:'application_company',
-							                      label:'申请企业',
-							                      required:'required', 
-							                      display_value:order.application_company_input!'',
-							                      value:order.application_company!'',
-							                      textarea_value:order.application_company_info!''
-							                  }){}%>
+                            <%include("/eeda/component/form/selectField.html", 
+				                                 {   id:'custom_state', 
+				                                     label:'海关状态', 
+				                                     required:'required',
+				                                     value:order.custom_state!'',
+				                                     value_list:[
+                                                        {code:'', value:''}
+				                                    ] 
+				                                 }){}%>
                         </div>
                         <div class="col-lg-4">
-                       		<%include("/eeda/component/form/inputSelectArea.html", 
-			                                 {   id:'export_consignee', 
-			                                     label:'收货人', 
-                                                 required:'required',
-			                                     display_value:order.export_consignee_input!'',
-							                     value:order.export_consignee!'',
-							                     textarea_value:order.export_consignee_info!'' 
-			                                  }){}%>
+                       		<%include("/eeda/component/form/inputField.html", 
+				                                {   id:'costom_code', 
+				                                    label:'海关编码',
+				                                    value:custom.costom_code!'',
+				                                    required:'required'
+				                                }){}%>
                         </div>
                         
                     </div>

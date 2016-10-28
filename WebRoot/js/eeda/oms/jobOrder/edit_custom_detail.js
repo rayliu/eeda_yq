@@ -402,6 +402,7 @@ $(document).ready(function() {
                	  	}
                  },
                  { "data": "CUSTOM_BANK"},
+                 { "data": "null"},
                  { "data": "CUSTOM_ORDER_NO"},
                  { "data": "STATUS"},
                  { "data": "CREATOR"},
