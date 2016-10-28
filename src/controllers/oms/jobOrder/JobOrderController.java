@@ -403,22 +403,22 @@ public class JobOrderController extends Controller {
         String sql = "select 1 from job_order_ocean_template where"
                 + " creator_id = "+creator_id;
         if(StringUtils.isNotEmpty(MBLshipper)){
-        	sql+=" and MBLshipper="+MBLshipper;
+        	sql+=" and MBLshipper='"+MBLshipper+"'";
         }
         if(StringUtils.isNotEmpty(MBLconsignee)){
-        	sql+=" and MBLconsignee="+MBLconsignee;
+        	sql+=" and MBLconsignee= '"+MBLconsignee+"'";
         }
         if(StringUtils.isNotEmpty(MBLnotify_party)){
-        	sql+=" and MBLnotify_party="+MBLnotify_party;
+        	sql+=" and MBLnotify_party= '"+MBLnotify_party+"'";
         }
         if(StringUtils.isNotEmpty(HBLshipper)){
-        	sql+=" and HBLshipper="+HBLshipper;
+        	sql+=" and HBLshipper= '"+HBLshipper+"'";
         }
         if(StringUtils.isNotEmpty(HBLconsignee)){
-        	sql+=" and HBLconsignee="+HBLconsignee;
+        	sql+=" and HBLconsignee= '"+HBLconsignee+"'";
         }
         if(StringUtils.isNotEmpty(HBLnotify_party)){
-        	sql+=" and HBLnotify_party="+HBLnotify_party;
+        	sql+=" and HBLnotify_party= '"+HBLnotify_party+"'";
         }
         if(StringUtils.isNotEmpty(por)){
         	sql+=" and por="+por;
@@ -532,22 +532,22 @@ public class JobOrderController extends Controller {
     	String sql = "select 1 from job_order_air_template where"
                 + " creator_id = "+creator_id;
         if(StringUtils.isNotEmpty(shipper)){
-        	sql+=" and shipper="+shipper;
+        	sql+=" and shipper= '"+shipper+"'";
         }
         if(StringUtils.isNotEmpty(consignee)){
-        	sql+=" and consignee="+consignee;
+        	sql+=" and consignee= '"+consignee+"'";
         }
         if(StringUtils.isNotEmpty(notify_party)){
-        	sql+=" and notify_party="+notify_party;
+        	sql+=" and notify_party= '"+notify_party+"'";
         }
         if(StringUtils.isNotEmpty(booking_agent)){
-        	sql+=" and booking_agent="+booking_agent;
+        	sql+=" and booking_agent= '"+booking_agent+"'";
         }
         if(StringUtils.isNotEmpty(goods_mark)){
-        	sql+=" and goods_mark="+goods_mark;
+        	sql+=" and goods_mark= '"+goods_mark+"'";
         }
         if(StringUtils.isNotEmpty(shipping_mark)){
-        	sql+=" and shipping_mark="+shipping_mark;
+        	sql+=" and shipping_mark= '"+shipping_mark+"'";
         }
     	Record checkRec = Db.findFirst(sql);
     	if(checkRec==null){
