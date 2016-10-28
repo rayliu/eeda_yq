@@ -974,7 +974,7 @@ public class JobOrderController extends Controller {
         MultiPartEmail email = new MultiPartEmail();  
         /*smtp.exmail.qq.com*/
         email.setHostName("smtp.mxhichina.com");
-        email.setSmtpPort(25);
+        email.setSmtpPort(465);
         
         /*输入公司的邮箱和密码*/
         email.setAuthenticator(new DefaultAuthenticator("info@yq-scm.com", "Enkyo123"));        
