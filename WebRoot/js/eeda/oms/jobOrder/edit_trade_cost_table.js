@@ -231,7 +231,25 @@ $(document).ready(function() {
             }
         ]
     });
-
+    
+    if($('#trade_cost_table td').length>1){
+    	var col = [4, 7, 10, 12, 16];
+    	for (var i=0;i<col.length;i++){
+	    	var arr = cargoTable.column(col[i]).data();
+	    	if(arr.length!=0){
+	    		$('#trade_cost_table tfoot').find('th').eq(col[i]).html(
+		    		arr.reduce(function (a, b) {
+			    		a = parseInt(a, 10);
+			    		if(isNaN(a)){ a = 0; }                   
+			    		b = parseInt(b, 10);
+			    		if(isNaN(b)){ b = 0; }
+			    		return a + b;
+			    	})
+		    	);
+	    	}
+    	}
+    }
+    
     $('#add_trade_cost_table').on('click', function(){
         var item={};
         cargoTable.row.add(item).draw(true);
