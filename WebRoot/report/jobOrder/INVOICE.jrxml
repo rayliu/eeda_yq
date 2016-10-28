@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="184"/>
+	<property name="ireport.y" value="140"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -388,11 +388,11 @@ AND  $X{IN,jor.id,order_id}]]>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="398" y="149" width="19" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
+				<reportElement x="398" y="149" width="30" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="416" y="149" width="139" height="14" uuid="031deb20-ad6a-4dd0-a3fb-54e016073a88"/>
+				<reportElement x="426" y="149" width="107" height="14" uuid="031deb20-ad6a-4dd0-a3fb-54e016073a88"/>
 				<textFieldExpression><![CDATA[$F{ocean_unit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -415,7 +415,7 @@ AND  $X{IN,jor.id,order_id}]]>
 				<reportElement x="397" y="1" width="158" height="20" uuid="f76ed8ed-6975-46a3-b6c7-05a39de3bc8d"/>
 				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="397" y="25" width="158" height="37" uuid="838f806e-871d-43b2-b605-a3562590f472"/>
 				<textFieldExpression><![CDATA[$F{invoice_no}]]></textFieldExpression>
 			</textField>
