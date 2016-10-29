@@ -1,5 +1,6 @@
 package controllers.profile;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.HashMap;
@@ -39,16 +40,16 @@ public class CountryController extends Controller {
         renderJson(countrys);
     }
 
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_LIST })
+    @Before(EedaMenuInterceptor.class)
     public void index() {
         render("/profile/country/countryList.html");
     }
     
+    @Before(EedaMenuInterceptor.class)
     public void create() {
         render("/profile/country/countryEdit.html");
     }
     
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_LIST })
     public void list() {
         String sLimit = "";
         String pageIndex = getPara("sEcho");
@@ -76,8 +77,7 @@ public class CountryController extends Controller {
     }
 
     // 编辑条目按钮
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_CREATE,
-            PermissionConstant.PERMSSION_T_UPDATE }, logical = Logical.OR)
+    @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
         Country u = Country.dao.findById(id);
@@ -88,7 +88,6 @@ public class CountryController extends Controller {
     }
 
     // 删除条目
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_DELETE })
     public void delete() {
         String id = getPara("id");
         if (id != null) {

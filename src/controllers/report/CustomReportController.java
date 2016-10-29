@@ -1,5 +1,6 @@
 package controllers.report;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class CustomReportController extends Controller {
     private Log logger = Log.getLog(CustomReportController.class);
     Subject currentUser = SecurityUtils.getSubject();
     
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_PCO_LIST})
+    @Before(EedaMenuInterceptor.class)
     public void index() {
     	render("eeda/statusReport/customReport.html");
     }

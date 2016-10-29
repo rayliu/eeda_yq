@@ -1,5 +1,6 @@
 package controllers.profile;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class UserRoleController extends Controller {
 
 	
 	
-//	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_LIST})
+	@Before(EedaMenuInterceptor.class)
 	public void index(){
 		render("/eeda/profile/userRole/userRoleList.html");
 	}
@@ -84,7 +85,7 @@ public class UserRoleController extends Controller {
         renderJson(map);
 	}
 	/*编辑*/
-//	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_UPDATE})
+	@Before(EedaMenuInterceptor.class)
 	public void edit(){
 		String user_name = getPara("username");
 		setAttr("user_name", user_name);		
@@ -92,10 +93,12 @@ public class UserRoleController extends Controller {
 	}
 	
 	/*给新用户分配角色*/
-//	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_CREATE})
+	@Before(EedaMenuInterceptor.class)
 	public void add(){
 		render("/eeda/profile/userRole/addRole.html");
 	}
+	
+	@Before(EedaMenuInterceptor.class)
 	public void addOrUpdate(){
 		String id = getPara("id");
 		UserLogin user = UserLogin.dao.findFirst("select * from user_login where id = ?",id);
@@ -109,7 +112,6 @@ public class UserRoleController extends Controller {
 		
 	}
 	/*列出没有角色的用户*/
-//	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_CREATE})
 	public void userList(){
 		String sql = "";
 		Long parentID = pom.getBelongOffice();
@@ -123,7 +125,6 @@ public class UserRoleController extends Controller {
 		List<Record> orders = Db.find(sql);
         renderJson(orders);
 	}
-//	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_CREATE})
 	public void saveUserRole(){
 		String name = getPara("name");
 		String r = getPara("roles");
@@ -136,7 +137,6 @@ public class UserRoleController extends Controller {
 		}
 		renderJson();
 	}
-//	@RequiresPermissions(value = {PermissionConstant.PERMSSION_UR_UPDATE})
 	public void updateRole(){
 		String name = getPara("name");
 		String r = getPara("roles");
@@ -212,6 +212,8 @@ public class UserRoleController extends Controller {
 		renderJson(orderMap);
 
 	}
+	
+	@Before(EedaMenuInterceptor.class)
 	public void userPermissionRender(){
 		String username = getPara("username");
 		setAttr("username", username);

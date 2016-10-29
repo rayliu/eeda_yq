@@ -1,5 +1,6 @@
 package controllers.arap;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class ArapReportController extends Controller {
 	private Log logger = Log.getLog(ArapReportController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
-	@RequiresPermissions(value = { PermissionConstant.PERMSSION_CCOI_LIST })
+	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		render("/eeda/arap/ArapReport/ArapReport.html");
 	}

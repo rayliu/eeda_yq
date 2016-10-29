@@ -1,5 +1,6 @@
 package controllers.profile;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.text.SimpleDateFormat;
@@ -35,16 +36,19 @@ public class CurrencyRateController extends Controller {
     private Log logger = Log.getLog(CurrencyRateController.class);
     Subject currentUser = SecurityUtils.getSubject();
     ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_A_LIST})
+    
+    @Before(EedaMenuInterceptor.class)
     public void index() {
         render("/profile/currencyRate/list.html");
     }
     
+    @Before(EedaMenuInterceptor.class)
     public void create() {
         render("/profile/currencyRate/edit.html");
     }
 
     // 编辑
+    @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
         if (id != null) {

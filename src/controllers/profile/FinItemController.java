@@ -37,7 +37,6 @@ public class FinItemController extends Controller {
     ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
 
     //查询费用中文名称
-    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})
     public void search() {
         String input = getPara("input");
         
@@ -62,12 +61,13 @@ public class FinItemController extends Controller {
     	}
     	renderJson(finItems);
     }
-
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_LIST })
+    
+    @Before(EedaMenuInterceptor.class)
     public void index() {
         render("/profile/finItem/finItemList.html");
     }
     
+    @Before(EedaMenuInterceptor.class)
     public void create() {
         render("/profile/finItem/finItemEdit.html");
     }
@@ -111,8 +111,7 @@ public class FinItemController extends Controller {
     }
 
     // 编辑条目按钮
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_CREATE,
-            PermissionConstant.PERMSSION_T_UPDATE }, logical = Logical.OR)
+    @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
         FinItem u = FinItem.dao.findById(id);
@@ -123,7 +122,6 @@ public class FinItemController extends Controller {
     }
 
     // 删除条目
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_DELETE })
     public void delete() {
         String id = getPara();
         if (id != null) {

@@ -1,5 +1,6 @@
 package controllers.arap.ar;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
@@ -53,12 +54,13 @@ import controllers.util.PermissionConstant;
 public class ChargeAcceptOrderController extends Controller {
     private Log logger = Log.getLog(ChargeAcceptOrderController.class);
     Subject currentUser = SecurityUtils.getSubject();
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_COLLECTIONCONFIRM_LIST})
+    
+    @Before(EedaMenuInterceptor.class)
     public void index() {
     	render("/eeda/arap/ChargeAcceptOrder/ChargeAcceptOrderList.html");
     }
     
-    
+    @Before(EedaMenuInterceptor.class) 
     public void create() {
 		String idsArray = getPara("idsArray");
 		setAttr("idsArray", idsArray);
@@ -352,6 +354,7 @@ public class ChargeAcceptOrderController extends Controller {
    		renderJson(r);
 	}
   	
+  	@Before(EedaMenuInterceptor.class)
   	public void edit() throws ParseException {
 		String id = getPara("id");
 		ArapChargeApplication order = ArapChargeApplication.dao.findById(id);

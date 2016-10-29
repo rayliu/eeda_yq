@@ -1,5 +1,6 @@
 package controllers.arap.ar;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.ArrayList;
@@ -38,9 +39,8 @@ public class ChargeCheckOrderController extends Controller {
 	private Logger logger = Logger.getLogger(ChargeCheckOrderController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
-//	@RequiresPermissions(value = { PermissionConstant.PERMISSION_TO_LIST })
+	@Before(EedaMenuInterceptor.class)
 	public void index() {
-		
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderList.html");
 	}
 	
@@ -291,6 +291,7 @@ public class ChargeCheckOrderController extends Controller {
     	return re;
     }
     
+    @Before(EedaMenuInterceptor.class)
 	public void create(){
 		String ids = getPara("idsArray");//job_order_arap ids
 		
@@ -314,8 +315,7 @@ public class ChargeCheckOrderController extends Controller {
 	}
 	
 	
-	 
-	   
+    @Before(EedaMenuInterceptor.class)
     public void edit(){
 		String id = getPara("id");//arap_charge_order id
 		String condition = "select ref_order_id from arap_charge_item where charge_order_id ="+id;

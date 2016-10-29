@@ -1,5 +1,6 @@
 package controllers.eeda;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.text.SimpleDateFormat;
@@ -40,7 +41,6 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import controllers.profile.LoginUserController;
 import controllers.util.EedaCommonHandler;
 import controllers.util.MD5Util;
-import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
 import controllers.util.getCurrentPermission;
 
@@ -78,7 +78,7 @@ public class MainController extends Controller {
     	
         return true;
     }
-
+    @Before(EedaMenuInterceptor.class)
     public void index() {
     	setSysTitle();
         if (isAuthenticated()) {

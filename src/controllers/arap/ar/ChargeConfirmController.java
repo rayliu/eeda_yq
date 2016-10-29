@@ -1,5 +1,6 @@
 package controllers.arap.ar;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.Date;
@@ -30,7 +31,7 @@ public class ChargeConfirmController extends Controller {
 	private Logger logger = Logger.getLogger(ChargeConfirmController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
-//	@RequiresPermissions(value = { PermissionConstant.PERMISSION_TO_LIST })
+	@Before(EedaMenuInterceptor.class)
 	public void index() {		
 		render("/eeda/arap/ChargeConfirm/ChargeConfirmList.html");
 	}

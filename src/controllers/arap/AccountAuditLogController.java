@@ -1,5 +1,6 @@
 package controllers.arap;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class AccountAuditLogController extends Controller {
     private Log logger = Log.getLog(AccountAuditLogController.class);
     Subject currentUser = SecurityUtils.getSubject();
     
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_PCO_LIST})
+    @Before(EedaMenuInterceptor.class)
     public void index() {
     	List<ArapAccountAuditLog> list = ArapAccountAuditLog.dao.find("SELECT DISTINCT source_order FROM arap_account_audit_log");
     	setAttr("List", list);

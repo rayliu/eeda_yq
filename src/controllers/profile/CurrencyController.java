@@ -1,5 +1,6 @@
 package controllers.profile;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.Date;
@@ -35,18 +36,19 @@ public class CurrencyController extends Controller {
     private Log logger = Log.getLog(LoginUserController.class);
     Subject currentUser = SecurityUtils.getSubject();
     ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_A_LIST})
+    
+    @Before(EedaMenuInterceptor.class)
     public void index() {
         render("/profile/currency/list.html");
     }
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_A_CREATE})
     // 链接到添加金融账户页面
+    @Before(EedaMenuInterceptor.class)
     public void create() {
         render("/profile/currency/edit.html");
     }
 
     // 编辑金融账户信息
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_A_UPDATE})
+    @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
         if (id != null) {
@@ -58,7 +60,6 @@ public class CurrencyController extends Controller {
     }
 
     // 添加金融账户
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_A_CREATE, PermissionConstant.PERMSSION_A_UPDATE}, logical=Logical.OR)
     @Before(Tx.class)
     public void save() {
         String jsonStr=getPara("params");

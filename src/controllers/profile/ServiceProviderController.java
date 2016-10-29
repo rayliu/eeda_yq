@@ -44,11 +44,11 @@ public class ServiceProviderController extends Controller {
     
     ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
     
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_LIST})
+    @Before(EedaMenuInterceptor.class)
     public void index() {
         render("/eeda/profile/serviceProvider/serviceProviderList.html");
     }
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_LIST})
+    
     public void list() {
     	Long parentID = pom.getParentOfficeId();
         
@@ -74,12 +74,14 @@ public class ServiceProviderController extends Controller {
         map.put("data", orderList);
         renderJson(map);
     }
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_CREATE})
+    
+    @Before(EedaMenuInterceptor.class)
     public void add() {
         setAttr("saveOK", false);
             render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
     }
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_UPDATE})
+    
+    @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
         Party party = Party.dao.findById(id);
@@ -93,7 +95,7 @@ public class ServiceProviderController extends Controller {
      
         render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
     }
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_DELETE})
+    
     public void delete() {
        
         String id = getPara();

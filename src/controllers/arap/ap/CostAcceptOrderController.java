@@ -1,5 +1,6 @@
 package controllers.arap.ap;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
@@ -38,7 +39,8 @@ import controllers.util.PermissionConstant;
 public class CostAcceptOrderController extends Controller {
     private Log logger = Log.getLog(CostAcceptOrderController.class);
     Subject currentUser = SecurityUtils.getSubject();
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_COSTCONFIRM_LIST})
+    
+    @Before(EedaMenuInterceptor.class)
     public void index() {   
     	render("/eeda/arap/CostAcceptOrder/CostAcceptOrderList.html");
     }
@@ -111,7 +113,7 @@ public class CostAcceptOrderController extends Controller {
         renderJson(map); 
     }
     
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_CREATE})
+    @Before(EedaMenuInterceptor.class)
     public void create() {
         String ids = getPara("itemIds");
         String[] idArr=ids.split(",");
@@ -153,8 +155,7 @@ public class CostAcceptOrderController extends Controller {
         render("/eeda/arap/CostAcceptOrder/payEdit.html");
     } 
     
-    
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_CPO_UPDATE})
+    @Before(EedaMenuInterceptor.class) 
 	public void edit() throws ParseException {
 		String id = getPara("id");
 		ArapCostApplication aca = ArapCostApplication.dao.findById(id);

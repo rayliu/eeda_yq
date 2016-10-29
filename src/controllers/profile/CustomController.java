@@ -1,5 +1,6 @@
 package controllers.profile;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.HashMap;
@@ -39,10 +40,12 @@ public class CustomController extends Controller {
         renderJson(customs);
     }
 
+    @Before(EedaMenuInterceptor.class)
     public void index() {
         render("/profile/custom/customList.html");
     }
     
+    @Before(EedaMenuInterceptor.class)
     public void create() {
         render("/profile/custom/customEdit.html");
     }
@@ -74,8 +77,7 @@ public class CustomController extends Controller {
     }
 
     // 编辑条目按钮
-//    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_CREATE,
-//            PermissionConstant.PERMSSION_T_UPDATE }, logical = Logical.OR)
+    @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
         Custom u = Custom.dao.findById(id);

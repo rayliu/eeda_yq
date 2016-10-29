@@ -1,5 +1,6 @@
 package controllers.msg;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.Date;
@@ -30,7 +31,7 @@ public class MsgBoardController extends Controller {
 	private Logger logger = Logger.getLogger(MsgBoardController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
-//	@RequiresPermissions(value = { PermissionConstant.PERMISSION_TO_LIST })
+	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		render("/eeda/msgBoard/msgBoardList.html");
 	}

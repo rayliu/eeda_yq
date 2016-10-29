@@ -1,5 +1,6 @@
 package controllers.oms.jobOrder;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
@@ -59,13 +60,14 @@ public class JobOrderController extends Controller {
 	Subject currentUser = SecurityUtils.getSubject();
 	private Object type;
 
-//	@RequiresPermissions(value = { PermissionConstant.PERMISSION_TO_LIST })
+	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		String type = getPara("type");
 		setAttr("type",type);
 		render("/oms/JobOrder/JobOrderList.html");
 	}
 	
+	@Before(EedaMenuInterceptor.class)
     public void create() {
     	
     	String order_id=getPara("order_id");
@@ -835,8 +837,8 @@ public class JobOrderController extends Controller {
 	    }
 		return itemList;
 	}
-    
-    @Before(Tx.class)
+
+    @Before({EedaMenuInterceptor.class, Tx.class})
     public void edit() {
     	String id = getPara("id");
     	JobOrder jobOrder = JobOrder.dao.findById(id);

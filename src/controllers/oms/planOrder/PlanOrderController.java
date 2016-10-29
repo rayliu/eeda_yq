@@ -1,5 +1,6 @@
 package controllers.oms.planOrder;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class PlanOrderController extends Controller {
 	private Logger logger = Logger.getLogger(PlanOrderController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
-//	@RequiresPermissions(value = { PermissionConstant.PERMISSION_TO_LIST })
+	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		String type=getPara("type");
 		setAttr("type", type);
@@ -45,6 +46,7 @@ public class PlanOrderController extends Controller {
 		render("/oms/PlanOrder/PlanOrderList.html");
 	}
 	
+	@Before(EedaMenuInterceptor.class)
     public void create() {
         render("/oms/PlanOrder/PlanOrderEdit.html");
     }
@@ -110,8 +112,7 @@ public class PlanOrderController extends Controller {
 		return itemList;
 	}
     
-    
-    @Before(Tx.class)
+    @Before({EedaMenuInterceptor.class, Tx.class})
     public void edit() {
     	String id = getPara("id");
     	PlanOrder planOrder = PlanOrder.dao.findById(id);

@@ -47,13 +47,11 @@ public class CustomerController extends Controller {
     
     ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
     
-    
-  
-//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_LIST})
+    @Before(EedaMenuInterceptor.class) 
     public void index() {
             render("/eeda/profile/customer/CustomerList.html");
     }
-//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_LIST})
+    
     public void list() {
     	String ADD = getPara();
     	setAttr("add",ADD);
@@ -83,12 +81,13 @@ public class CustomerController extends Controller {
     }
     
     
-//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_CREATE})
+    @Before(EedaMenuInterceptor.class)
     public void add() {
         setAttr("saveOK", false);
             render("/eeda/profile/customer/CustomerEdit.html");
     }
-//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_UPDATE})
+    
+    @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
         Party party = Party.dao.findById(id);

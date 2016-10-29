@@ -1,5 +1,6 @@
 package controllers.arap.ap;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.ArrayList;
@@ -39,11 +40,12 @@ public class CostCheckOrderController extends Controller {
 	private Log logger = Log.getLog(CostCheckOrderController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
-	@RequiresPermissions(value = { PermissionConstant.PERMSSION_CCOI_LIST })
+	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		render("/eeda/arap/CostCheckOrder/CostCheckOrder.html");
 	}
 	
+	@Before(EedaMenuInterceptor.class)
 	public void create(){
 		
 		String ids = getPara("itemId");//job_order_arap ids
@@ -340,6 +342,7 @@ public class CostCheckOrderController extends Controller {
    		renderJson(r);
 	}
 	
+	@Before(EedaMenuInterceptor.class)
 	public void edit(){
 		String id = getPara("id");//arap_cost_order id
 		String sql = " select aco.*,p.abbr sp_name,u.c_name creator_name,u1.c_name confirm_by_name from arap_cost_order aco "

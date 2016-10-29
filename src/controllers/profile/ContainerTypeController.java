@@ -1,5 +1,6 @@
 package controllers.profile;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.HashMap;
@@ -45,16 +46,16 @@ public class ContainerTypeController extends Controller {
         renderJson(units);
     }
 
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_LIST })
+    @Before(EedaMenuInterceptor.class)
     public void index() {
         render("/profile/containerType/list.html");
     }
     
+    @Before(EedaMenuInterceptor.class)
     public void create() {
         render("/profile/containerType/edit.html");
     }
     
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_LIST })
     public void list() {
         String sLimit = "";
         String pageIndex = getPara("sEcho");
@@ -82,8 +83,7 @@ public class ContainerTypeController extends Controller {
     }
 
     // 编辑条目按钮
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_CREATE,
-            PermissionConstant.PERMSSION_T_UPDATE }, logical = Logical.OR)
+    @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
         ContainerType u = ContainerType.dao.findById(id);
@@ -94,7 +94,6 @@ public class ContainerTypeController extends Controller {
     }
 
     // 删除条目
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_DELETE })
     public void delete() {
         String id = getPara();
         if (id != null) {

@@ -1,5 +1,6 @@
 package controllers.arap.ap;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class CostItemConfirmController extends Controller {
 	Subject currentUser = SecurityUtils.getSubject();
 	private Object type;
 
-//	@RequiresPermissions(value = { PermissionConstant.PERMISSION_TO_LIST })
+	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		render("/eeda/arap/CostItemConfirm/CostItemConfirm.html");
 	}

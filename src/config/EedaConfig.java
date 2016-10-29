@@ -413,7 +413,7 @@ public class EedaConfig extends JFinalConfig {
     	}
     	// 添加控制层全局拦截器, 每次进入页面时构造菜单项
         //me.addGlobalActionInterceptor(new EedaMenuInterceptor());
-        me.add(new EedaMenuInterceptor());
+//        me.add(new EedaMenuInterceptor());
     }
 
     @Override
