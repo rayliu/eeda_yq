@@ -10,7 +10,7 @@ requirejs.config({
         bootstrap:'bootstrap/bootstrap',
         metisMenu:'metisMenu/jquery.metisMenu',
         sb_admin: 'sb-admin/sb-admin',
-        dataTables: 'datatables/js/jquery.dataTables',
+        dataTables: 'datatables/js/jquery.dataTables.min',
         dataTablesBootstrap: 'datatables/js/dataTables.bootstrap',
         dt: 'dt/datatables',
         zTree: 'zTree_v3/js/jquery.ztree.all-3.5.min',
