@@ -1,4 +1,4 @@
-define(['app/index/todo'], function(todoController){
+define(['jquery'], function($){
 
     //防止退格键返回上一页
     $(document).keydown(function (e) {
@@ -47,27 +47,30 @@ define(['app/index/todo'], function(todoController){
     });
 
     $(document).ready(function() {
-
+      //需要TODO时才加载TODO.js
       var moudleUrl = window.location.pathname.split('/')[1];
       if(moudleUrl.length>0 && location.search.indexOf('type')>0){
-          todoController.updateTodo();
-      }
+        require(['app/index/todo'], function (todoController) {
+            if(moudleUrl.length>0 && location.search.indexOf('type')>0){
+                todoController.updateTodo();
+            }
 
-      $('#menu_todo_list').click(function(){
-        if($(".planOrderWait").html()==""){
-          todoController.updateTodo();
-        }
-      });
+            $('#menu_todo_list').click(function(){
+              if($(".planOrderWait").html()==""){
+                todoController.updateTodo();
+              }
+            });
 
-      var pathname = window.location.pathname;
-      if(pathname == '/')
-          return;
-      if(window.location.search.indexOf('type=')==-1){
-          pathname = pathname.split('/')[1];
-          var folder_li = $('#left_side_bar').find('[href="/'+pathname+'"]').parent().parent().parent();
-          folder_li.addClass('active').find('ul').addClass('in');
+            var pathname = window.location.pathname;
+            if(pathname == '/')
+                return;
+            if(window.location.search.indexOf('type=')==-1){
+                pathname = pathname.split('/')[1];
+                var folder_li = $('#left_side_bar').find('[href="/'+pathname+'"]').parent().parent().parent();
+                folder_li.addClass('active').find('ul').addClass('in');
+            }
+        });
       }
-      
    });
 var eeda={};
 window.eeda =eeda;
