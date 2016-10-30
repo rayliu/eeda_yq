@@ -1,5 +1,6 @@
 package controllers.cms.jobOrder;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
@@ -39,7 +40,7 @@ public class CustomPlanOrderController extends Controller {
 	private Logger logger = Logger.getLogger(CustomPlanOrderController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
-//	@RequiresPermissions(value = { PermissionConstant.PERMISSION_TO_LIST })
+	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		String type=getPara("type");
 		setAttr("type", type);
@@ -47,6 +48,7 @@ public class CustomPlanOrderController extends Controller {
 		render("/cms/customPlanOrder/CustomPlanOrderlist.html");
 	}
 	
+	@Before(EedaMenuInterceptor.class)
     public void create() {
         String jobId = getPara("jobOrderId");
         JobOrder jo = JobOrder.dao.findById(jobId);
@@ -118,7 +120,7 @@ public class CustomPlanOrderController extends Controller {
     	return itemList;
     }
     
-    
+    @Before(EedaMenuInterceptor.class)
     public void edit() {
     	String id = getPara("id");
     	String sql = "select cpo.*,l.name export_country_name,l1.name import_country_name,l2.name trade_country_name,sm.name supervise_mode_name"

@@ -1,5 +1,6 @@
 package controllers.cms.jobOrder;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
@@ -42,10 +43,12 @@ public class CustomJobOrderController extends Controller {
 	private Logger logger = Logger.getLogger(CustomJobOrderController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
+	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		render("/cms/customJobOrder/JobOrderList.html");
 	}
 	
+	@Before(EedaMenuInterceptor.class)
     public void create() {
         render("/cms/customJobOrder/joborderedit.html");
     }
@@ -329,7 +332,7 @@ public class CustomJobOrderController extends Controller {
 		return itemList;
 	}
     
-    @Before(Tx.class)
+    @Before(EedaMenuInterceptor.class)
     public void edit() {
     	String id = getPara("id");
     	String sql = "select c.*,u.c_name,p.abbr from custom_job_order c "
