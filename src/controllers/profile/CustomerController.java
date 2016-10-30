@@ -364,7 +364,8 @@ public class CustomerController extends Controller {
         long userId = LoginUserController.getLoginUserId(this); 
         List<Record> resultList = Collections.EMPTY_LIST;
         if(StrKit.isBlank(customerName)){//从历史记录查找
-            String sql = "select h.ref_id, p.id, p.abbr from user_query_history h, party p "
+            String sql = "select h.ref_id, p.id, p.abbr,ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax from user_query_history h, party p "
                     + "where h.ref_id=p.id and h.type='CUSTOMER' and h.user_id=?";
             resultList = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
             if(resultList.size()==0){

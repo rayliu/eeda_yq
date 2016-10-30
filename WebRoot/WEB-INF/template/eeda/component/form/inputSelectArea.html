@@ -27,7 +27,7 @@ $(document).ready(function() {
     var hiddenField = $('#${id}');
     var infoField = $('#${id}_info');
     
-    inputField.on('keyup click', function(event){
+    inputField.on('keyup click ', function(event){
         var me = this;
         var inputStr = inputField.val();
         
@@ -38,7 +38,6 @@ $(document).ready(function() {
             companyList.empty();
             for(var i = 0; i < data.length; i++)
                 companyList.append("<li><a class='fromLocationItem popListItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' contact_person_eng='"+data[i].CONTACT_PERSON_ENG+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' fax='"+data[i].FAX+"' partyId='"+data[i].ID+"' address='"+data[i].ADDRESS+"' address_eng='"+data[i].ADDRESS_ENG+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].ABBR+"</a></li>");
-                
             companyList.css({ 
                 left:$(me).position().left+"px", 
                 top:$(me).position().top+28+"px" 

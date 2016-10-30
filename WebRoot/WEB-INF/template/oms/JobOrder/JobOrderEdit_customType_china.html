@@ -10,7 +10,8 @@
                                 <a id='createCustomPlanOrderBtn' href='javascript:void(0);' class="btn btn-success btn-xs" target="_blank">添加报关申请单</a>
                                 <%include("/eeda/component/form/selectField.html", 
                                 {   id:'custom_broker', 
-                                    label:'请选择报关行', 
+                                    label:'请选择报关行',
+                                    required:'required', 
                                     value:order.custom_broker!'',
                                     value_list:[
                                    		{code:'', value:''},

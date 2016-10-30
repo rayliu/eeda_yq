@@ -36,6 +36,34 @@
                                             }){}%>
                         </div>
                      </div>
+                     
+                     <div class="row"><!--  第2行  -->
+	                   <div class="col-lg-4">
+	                        <%include("/eeda/component/form/inputField.html", 
+	                                            {   id:'status', 
+	                                                label:'状态',
+	                                                disabled: 'disabled', 
+	                                                value:order.status!''
+	                                            }){}%>
+	                    </div>
+	                    <div class="col-lg-4">
+	                        <%include("/eeda/component/form/inputField.html", 
+	                                           {   id:'creator_name', 
+	                                               label:'创建人', 
+	                                               value:user.c_name!'', 
+	                                               disabled: 'disabled'
+	                                            }){}%>
+	                    </div>
+	                    <div class="col-lg-4">
+	                        <%include("/eeda/component/form/inputField.html", 
+	                                           {   id:'create_stamp', 
+	                                               label:'创建时间', 
+	                                               value:order.create_stamp!'', 
+	                                               disabled: 'disabled'
+	                                           }){}%>
+	                    </div>
+	                </div>
+                     
                      <div class="row"><!--  第2行  --> <!--         	  required:'required',-->
                         <div class="col-lg-4">
                              <%include("/eeda/component/form/selectField.html", 
@@ -49,36 +77,48 @@
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
-                            <%include("/eeda/component/form/selectField.html", 
-                                {   id:'deal_mode', 
-                                    label:'成交方式', 
-                                    value:order.deal_mode!'',
+                           	<%include("/eeda/component/form/selectField.html", 
+                                {   id:'drawback', 
+                                    label:'是否退税', 
+                                    value:order.drawback!'',
                                     value_list:[
-                                        {code:'FOB', value:'FOB'},
-                                        {code:'CIF', value:'CIF'},
-                                        {code:'CFR', value:'CFR'},
-                                        {code:'DDU', value:'DDU'},
-                                        {code:'DDP', value:'DDP'},
-                                        {code:'OTHER', value:'OTHER'}
+                                        {code:'N', value:'否'},
+                                        {code:'Y', value:'是'}
                                     ]
-                                }){}%>
+                                }){}%> 
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/dateInputField.html", 
                                              {   id:'date_custom', 
                                                  label:'报关日期', 
-                                                 value:order.date_custom!'',
-                                                 required:'required'
+                                                 value:order.date_custom!''
                                               }){}%>
                         </div><!-- /.col-lg-4 -->
+                    </div>
+                    <div class="row">
+	                    <div class="col-lg-4">
+	                       		<%include("/eeda/component/form/selectField.html", 
+	                                {   id:'wharf_fee', 
+	                                    label:'代垫码头杂费', 
+	                                    value:order.wharf_fee!'',
+	                                    value_list:[
+	                                        {code:'N', value:'否'},
+	                                        {code:'Y', value:'是'}
+	                                    ]
+	                                }){}%>
+	                    </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/selectField.html", 
 				                                 {   id:'custom_state', 
-				                                     label:'海关状态', 
-				                                     required:'required',
+				                                     label:'海关状态',
 				                                     value:order.custom_state!'',
 				                                     value_list:[
-                                                        {code:'', value:''}
+                                                        {code:'', value:''},
+                                                        {code:'接单', value:'接单'},
+                                                        {code:'审单', value:'审单'},
+                                                        {code:'查验', value:'查验'},
+                                                        {code:'征税', value:'征税'},
+                                                        {code:'放行', value:'放行'}
 				                                    ] 
 				                                 }){}%>
                         </div>
@@ -86,24 +126,21 @@
                        		<%include("/eeda/component/form/inputField.html", 
 				                                {   id:'costom_code', 
 				                                    label:'海关编码',
-				                                    value:custom.costom_code!'',
-				                                    required:'required'
+				                                    value:custom.costom_code!''
 				                                }){}%>
                         </div>
                         
                     </div>
+                    
                     <br><br><br>
 	               <div class="col-lg-12">
 	                <div class="form-group" id="release_radio_div" style="text-align:center;">
-	                	<input type="hidden" id="hidden_release_type" value="${shipment.release_type!''}">
+	                	<input type="hidden" id="hidden_costom_bill" value="${order.costom_bill!''}">
 	                    <label class="radio-costominline">
-	                       <h4> <input type="radio" name='costomBill' value='export_costom' checked>出口货物报关单</h4>
+	                       <h4> <input type="radio" id="export_costom" name='costom_bill' value='export_costom' checked >海关出口货物报关单</h4>
 	                    </label><nbsp>
 	                    <label class="radio-costominline">
-	                      <h4>  <input type="radio" name='costomBill' value='import_costom'>海关进口货物报关单</h4>
-	                    </label>
-	                    <label class="radio-costominline">
-	                      <h4>  <input type="radio" name='costomBill' value='process_costom'>海关进口货物报关单(进料加工)</h4>
+	                      <h4>  <input type="radio" id="import_costom" name='costom_bill' value='import_costom'>海关进口货物报关单</h4>
 	                    </label>
 	                    
 	                </div>
@@ -112,29 +149,28 @@
                         <div class="col-lg-4">
                        		<%include("/eeda/component/form/inputSelectArea.html", 
                                  {   id:'receive_sent_consignee', 
-                                     label:'收发货人(退税企业)', 
-                                     required:'required',
-                                     display_value:order.receive_sent_consignee!'',
+                                     label:'收发货人(退税企业)',
+                                     display_value:order.receive_sent_consignee_input!'',
 				                     value:order.receive_sent_consignee!'',
-				                     textarea_value:order.receive_sent_consignee!'' 
+				                     textarea_value:order.receive_sent_consignee_info!'' 
                                   }){}%>
                         </div>
                         <div class="col-lg-4">
                        		<%include("/eeda/component/form/inputSelectArea.html", 
                                 {   id:'production_and_sales', 
                                     label:'生产销售单位',
-                                    display_value:order.production_and_sales!'',
+                                    display_value:order.production_and_sales_input!'',
 				                    value:order.production_and_sales!'',
-				                    textarea_value:order.production_and_sales!'' 
+				                    textarea_value:order.production_and_sales_info!'' 
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
                              <%include("/eeda/component/form/inputSelectArea.html", 
                                 {   id:'application_unit', 
                                     label:'申报单位',
-                                    display_value:order.application_unit!'',
+                                    display_value:order.application_unit_input!'',
 				                    value:order.application_unit!'',
-				                    textarea_value:order.application_unit!''
+				                    textarea_value:order.application_unit_info!''
                                 }){}%>
                         </div>
                     </div>
@@ -146,8 +182,7 @@
                                 {   id:'export_port', 
                                     label:'出口口岸',
                                     inline: false,
-                                    value:custom.export_port!'',
-                                    required:'required'
+                                    value:order.export_port!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
@@ -155,8 +190,7 @@
                                 {   id:'custom_export_date', 
                                     label:'出口日期',
                                     class:'form-control',
-                                    value:custom.export_date!'',
-                                    required:'required'
+                                    value:order.export_date!''
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
@@ -164,8 +198,7 @@
                                 {   id:'application_date', 
                                 	class:'form-control',
                                     label:'申报日期',
-                                    value:custom.application_date!'',
-                                    required:'required'
+                                    value:order.application_date!''
                                 }){}%>
                         </div>
                     </div>
@@ -177,8 +210,7 @@
                        		<%include("/eeda/component/form/selectField.html", 
 				                                 {   id:'transport_type', 
 				                                     label:'运输方式', 
-				                                     class:'form-control', 
-				                                     required:'required',
+				                                     class:'form-control',
 				                                     value:order.transport_type!'',
 				                                     value_list:[
                                                         {code:'', value:''},
@@ -205,7 +237,7 @@
 		                                {   id:'transport_tool', 
 		                                    label:'运输工具名称',
 		                                    inline: false,
-		                                    value:custom.transport_tool!''
+		                                    value:order.transport_tool!''
 		                                }){}%>
                         </div>
                         <div class="col-lg-4">
@@ -213,7 +245,7 @@
 		                                {   id:'tracking_no', 
 		                                    label:'提运单号',
 		                                    inline: false,
-		                                    value:custom.tracking_no!''
+		                                    value:order.tracking_no!''
 		                                }){}%>
                         </div>
                     </div>
@@ -263,8 +295,7 @@
 				                                {   id:'record_no', 
 				                                    label:'备案号',
 				                                    inline: false,
-				                                    value:custom.record_no!'',
-				                                    required:'required'
+				                                    value:order.record_no!''
 				                                }){}%>
                         </div>
                     </div>
@@ -276,8 +307,7 @@
 		                            label:'贸易国', 
 		                            value:order.trading_country!'',
                                     display_value:order.trading_country_name!'',
-                                    url: '/location/searchCountry',
-                                    required:'required'
+                                    url: '/location/searchCountry'
 		                        }){}%>
                         </div>
                         <div class="col-lg-4">
@@ -287,8 +317,7 @@
 		                            label:'抵运国', 
 		                            value:order.destination_country!'',
                                     display_value:order.destination_country_name!'',
-                                    url: '/location/searchCountry',
-                                    required:'required'
+                                    url: '/location/searchCountry'
 		                        }){}%>
                         </div>
                         <div class="col-lg-4">
@@ -297,9 +326,8 @@
 		                            class:'form-control',
 		                            label:'指运港', 
 		                            value:order.destination_port!'',
-                                    display_value:order.destination_port!'',
-                                    url: '/location/searchCountry',
-                                    required:'required'
+                                    display_value:order.destination_port_name!'',
+                                    url: '/location/searchCountry'
 		                        }){}%>
                         </div>
                     </div>
@@ -310,8 +338,7 @@
                                 {   id:'supply_of_goods', 
                                     label:'境内货源地',
                                     inline: false,
-                                    value:custom.supply_of_goods!'',
-                                    required:'required'
+                                    value:order.supply_of_goods!''
                                 }){}%>
                          </div>
                         <div class="col-lg-4">
@@ -319,8 +346,7 @@
                                 {   id:'license_no', 
                                     label:'许可证号',
                                     inline: false,
-                                    value:custom.license_no!'',
-                                    required:'required'
+                                    value:order.license_no!''
                                 }){}%>
                          </div>
                          <div class="col-lg-4">
@@ -329,8 +355,7 @@
 	                                {   id:'contract_agreement_no', 
 	                                    label:'合同协议号',
 	                                    inline: false,
-	                                    value:custom.contract_agreement_no!'',
-	                                    required:'required'
+	                                    value:order.contract_agreement_no!''
 	                                }){}%>
                         </div>
                     </div>
@@ -355,7 +380,7 @@
                             <%include("/eeda/component/form/inputField.html", 
 	                                {   id:'freight', 
 	                                    label:'运费',
-	                                    value:custom.freight!'',
+	                                    value:order.freight!'',
 	                                    inline: false
 	                                }){}%>
                          </div>
@@ -363,7 +388,7 @@
                             <%include("/eeda/component/form/inputField.html", 
 	                                {   id:'insurance_premium', 
 	                                    label:'保费',
-	                                    value:custom.insurance_premium!'',
+	                                    value:order.insurance_premium!'',
 	                                    inline: false
 	                                }){}%>
                         </div>
@@ -373,7 +398,7 @@
                             <%include("/eeda/component/form/inputField.html", 
 	                                {   id:'incidental', 
 	                                    label:'杂费',
-	                                    value:custom.incidental!'',
+	                                    value:order.incidental!'',
 	                                    inline: false
 	                                }){}%>
                          </div>
@@ -382,8 +407,7 @@
 	                                {   id:'number', 
 	                                    label:'件数',
 	                                    inline: false,
-	                                    value:custom.number!'',
-	                                    required:'required'
+	                                    value:order.number!''
 	                                }){}%>
                          </div>
                          <div class="col-lg-4">
@@ -424,8 +448,7 @@
                                 {   id:'custom_gross_weight', 
                                     label:'毛重(KG)',
                                     inline: false,
-                                    value:custom.gross_weight!'',
-                                    required:'required'
+                                    value:order.custom_gross_weight!''
                                 }){}%>
                          </div>
                         <div class="col-lg-4">
@@ -433,8 +456,7 @@
                                 {   id:'custom_net_weight', 
                                     label:'净重(KG)',
                                     inline: false,
-                                    value:custom.net_weight!'',
-                                    required:'required'
+                                    value:order.custom_net_weight!''
                                 }){}%>
                          </div>
                          <div class="col-lg-4">
@@ -442,8 +464,7 @@
                                 {   id:'container_no', 
                                     label:'集装箱号',
                                     inline: false,
-                                    value:custom.container_no!'',
-                                    required:'required'
+                                    value:order.container_no!''
                                 }){}%>
                         </div>
                     </div>
@@ -453,44 +474,17 @@
                                 {   id:'documents_attached', 
                                     label:'随附单证',
                                     inline: false,
-                                    value:custom.documents_attached!'',
-                                    required:'required'
+                                    value:order.documents_attached!''
                                 }){}%>
                          </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-8">
                             <div class="form-group">
-		                    <label>备注</label>
+		                    <label>标记唛马及备注</label>
 		                    <textarea id='note' class="form-control" rows="3" name="note">${order.note!''}</textarea>
 		                    </div>
 		            	</div>
                     </div>
                 </form>
-                <div class="row"><!--  第1行  -->
-                   <div class="col-lg-4">
-                        <%include("/eeda/component/form/inputField.html", 
-                                            {   id:'status', 
-                                                label:'状态', 
-                                                value:order.status!'', 
-                                                disabled: 'disabled'
-                                            }){}%>
-                    </div>
-                    <div class="col-lg-4">
-                        <%include("/eeda/component/form/inputField.html", 
-                                           {   id:'creator_name', 
-                                               label:'创建人', 
-                                               value:user.c_name!'', 
-                                               disabled: 'disabled'
-                                            }){}%>
-                    </div>
-                    <div class="col-lg-4">
-                        <%include("/eeda/component/form/inputField.html", 
-                                           {   id:'create_stamp', 
-                                               label:'创建时间', 
-                                               value:order.create_stamp!'', 
-                                               disabled: 'disabled'
-                                           }){}%>
-                    </div>
-                </div>
             </div>
 
 			<div class="row" style="margin-top:15px">

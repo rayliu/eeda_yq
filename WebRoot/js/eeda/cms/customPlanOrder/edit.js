@@ -97,15 +97,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             var items_array = salesOrder.buildCargoDetail();
         	var order = {};
         	order['id'] = $('#order_id').val();
-        	order['note'] = $('#note').val();
+        	order['costom_bill'] = $('#customForm input[type="radio"]:checked').val();
         	order['ref_job_order_id'] = $('#ref_job_order_id').val();
-        	order['status'] = $('#status').val()==""?"新建":$('#status').val();
+//        	order['status'] = $('#status').val()==""?"新建":$('#status').val();
         	var customForm = $('#customForm input,#customForm select,#customForm textarea');
         	for(var i = 0; i < customForm.length; i++){
         		var name = customForm[i].id;
             	var value =customForm[i].value;
             if(name){
-            		order[name] = value;
+            	
+            	order[name] = value;
+            	if(name="status"){
+            		order[name] = $('#status').val()==""?"新建":$('#status').val();
+            	}            	
         	  }
         	}
         	order['item_list'] = items_array;
@@ -148,21 +152,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               });
         });  
         
+      //报关单类型的回显
+        var radioVal = $('#hidden_costom_bill').val();
+        $('#customForm input[type="radio"]').each(function(){
+        	var checkValue = $(this).val();
+        	if(radioVal==checkValue){
+        		$(this).attr("checked",true);
+        	}
+        });
         
-        //计划单跳转到工作单
-        $('#create_jobOrder').click(function(){
-        	var order_id = $('#order_id').val();
-        	var itemIds=[];
-        	$('#cargo_table input[type="checkbox"]').each(function(){
-        		var checkbox = $(this).prop('checked');
-        		if(checkbox){
-        			var itemId = $(this).parent().parent().attr('id');
-        			itemIds.push(itemId);
-        		}
-        	});
-        	location.href ="/jobOrder/create?order_id="+order_id+"&itemIds="+itemIds;
-        })
-        
-
      });
 });

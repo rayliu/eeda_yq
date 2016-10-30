@@ -123,12 +123,12 @@ public class CustomPlanOrderController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
     	String id = getPara("id");
-    	String sql = "select cpo.*,l.name export_country_name,l1.name import_country_name,l2.name trade_country_name,sm.name supervise_mode_name"
-    			+ " from custom_plan_order cpo "
-    			+ " left join location l on l.id=cpo.export_country"
-    			+ " left join location l1 on l1.id=cpo.import_country"
-    			+ " left join location l2 on l2.id=cpo.trade_country"
-    			+ " left join supervision_method sm on sm.id = cpo.supervise_mode"
+    	String sql = "select cpo.*,l.name trading_country_name,l1.name destination_country_name,l2.name destination_port_name,sm.name supervision_mode_name"
+    			+ " from custom_plan_order cpo"
+    			+ " left join location l on l.id=cpo.trading_country"
+    			+ " left join location l1 on l1.id=cpo.destination_country"
+    			+ " eft join location l2 on l2.id=cpo.destination_port"
+    			+ " left join supervision_method sm on sm.id = cpo.supervision_mode"
     			+ " where cpo.id = ?";
     	Record r = Db.findFirst(sql,id);
     	setAttr("order", r);
@@ -161,7 +161,7 @@ public class CustomPlanOrderController extends Controller {
         String sql = "";
         String condition="";
         
-        	sql = "SELECT * from (SELECT cpo.id,cpo.order_no,cpo.type,cpo.application_company_input application_company_name,ul.c_name creator_name,"
+        	sql = "SELECT * from (SELECT cpo.id,cpo.order_no,cpo.type,cpo.production_and_sales_input application_company_name,ul.c_name creator_name,"
         			+ " cpo.create_stamp,cpo.status"
         			+ " FROM custom_plan_order cpo"
         			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
