@@ -1,4 +1,4 @@
-define(['jquery'], function($){
+define([], function(){
 
     //防止退格键返回上一页
     $(document).keydown(function (e) {
