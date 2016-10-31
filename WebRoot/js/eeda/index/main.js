@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin', './todo', './index_weekly_charts', './index_profit_charts'], 
+define(['jquery', 'metisMenu', 'sb_admin', './todo', './index_weekly_charts'], 
 	function ($, metisMenu, sb, todoController) {
 
     $(document).ready(function () {

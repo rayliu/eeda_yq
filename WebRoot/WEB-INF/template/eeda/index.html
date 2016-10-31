@@ -311,7 +311,11 @@
 		                                    </div>
 		                                    <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
 						                    <div id="profit_chart" style="height:400px"></div>
-						                    
+						                    <script>
+                                                requirejs(['js/common'], function (common) {
+                                                    requirejs(['app/index/index_profit_charts']);
+                                                });
+                                            </script>
 				                        <!-- /.panel-body -->
 				                    	</div>
 				                    </div>
