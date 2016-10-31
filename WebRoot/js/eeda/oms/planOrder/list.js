@@ -17,11 +17,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             serverSide: true, //不打开会出现排序不对
             ajax: "/planOrder/list?type="+type,
             columns:[
-                  {"data": "ORDER_NO", 
-                	  "render": function ( data, type, full, meta ) {
-                		  return "<a href='/planOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
-                	  }
-                  },
+                { "width": "30px",
+                    "render": function ( data, type, full, meta ) {
+                      return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
+                    }
+                },
+                {"data": "ORDER_NO", 
+              	  "render": function ( data, type, full, meta ) {
+              		  return "<a href='/planOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+              	  }
+                },
 	              { "data": "TYPE",
                     "render": function ( data, type, full, meta ) {
                       var str = '';
