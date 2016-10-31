@@ -30,6 +30,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	                      return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
 	                  }
 	            },
+	            { "data": "CREATE_STAMP", "width": "100px"},
 	            { "data": "TYPE", "width": "60px"},
 	            { "data": "CUSTOMER_NAME", "width": "100px"},
 	            { "data": "SP_NAME", "width": "100px","sClass":"SP_NAME"},
@@ -111,7 +112,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            { "data": "HBL_NO", "width": "60px"},
 	            { "data": "CONTAINER_NO", "width": "100px"},
 	            { "data": "TRUCK_TYPE", "width": "100px"},
-	            { "data": "CREATE_STAMP", "width": "100px"},
 	            { "data": "BILL_FLAG", "width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                		if(data){

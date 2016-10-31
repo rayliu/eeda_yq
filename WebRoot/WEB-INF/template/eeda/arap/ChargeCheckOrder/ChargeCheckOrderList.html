@@ -45,7 +45,7 @@
                                         <div class="col-lg-4">
                                          <%include("/eeda/component/form/inputDateQueryField.html", 
                                          {   id:'create_stamp', 
-                                             label:'创建时间', 
+                                             label:'出货日期', 
                                              value:''
                                          }){} %>
                                      
@@ -70,8 +70,8 @@
                                         {
                                             id:'eeda-table', 
                                             style: 'width:2500px',
-                                            headers:['','工作单号','类型','客户','结算公司','合计支出(RMB)','合计支出(USD)','合计支出(HKD)','合计支出(JPY)',
-                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','箱号','车型','创建时间','状态','DEBIT_NO'
+                                            headers:['','工作单号','出货时间','类型','客户','结算公司','合计支出(RMB)','合计支出(USD)','合计支出(HKD)','合计支出(JPY)',
+                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','箱号','车型','状态','DEBIT_NO'
                                             ]
                                         }){} %>
                             </div>
@@ -98,7 +98,7 @@
                                     <div class="col-lg-4">
                                         <%include("/eeda/component/form/inputDateQueryField.html", 
                                         {    id:'create_stamp1', 
-                                             label:'创建时间', 
+                                             label:'出货时间', 
                                              value:''
                                            }){} %>
                                        </div>  
@@ -115,7 +115,7 @@
 	                                  style:'width:1500px',
 	                                  headers:[
 	                                      '对账单号',
-	                                      '创建时间',			                                       
+	                                      '出货时间',			                                       
 	                                      '结算公司',
 	                                      '状态',
 	                                      '合计收入(RMB)',
