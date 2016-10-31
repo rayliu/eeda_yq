@@ -161,5 +161,67 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	}
         });
         
+        
+      //常用海运信息模版
+        $('#usedAirInfo').on('click', '.selectAirTemplate', function(){
+        	var li = $(this).parent().parent();
+            $('#receive_sent_consignee').val(li.attr('receive_sent_consignee'));
+            $('#receive_sent_consignee_input').val(li.attr('receive_sent_consignee_abbr'));
+            $('#receive_sent_consignee_info').val(li.attr('receive_sent_consignee_info'));
+            $('#production_and_sales').val(li.attr('production_and_sales'));
+            $('#production_and_sales_input').val(li.attr('production_and_sales_abbr'));
+            $('#production_and_sales_info').val(li.attr('production_and_sales_info'));
+            $('#application_unit').val(li.attr('application_unit'));
+            $('#application_unit_input').val(li.attr('application_unit_abbr'));
+            $('#application_unit_info').val(li.attr('application_unit_info'));
+            $('#export_port').val(li.attr('export_port'));
+            
+            $('#transport_type').val(li.attr('transport_type'))
+            
+            $('#supervision_mode').val(li.attr('supervision_mode'));
+            $('#supervision_mode_input').val(li.attr('supervision_mode_name'));
+            
+            $('#nature_of_exemption').val(li.attr('nature_of_exemption'))
+            	
+            
+            $('#record_no').val(li.attr('record_no'));
+            $('#trading_country').val(li.attr('trading_country'));
+            $('#trading_country_input').val(li.attr('trading_country_name'));
+            $('#destination_country').val(li.attr('destination_country'));
+            $('#destination_country_input').val(li.attr('destination_country_name'));
+            $('#destination_port').val(li.attr('destination_port'));
+            $('#destination_port_input').val(li.attr('destination_port_name'));
+            $('#supply_of_goods').val(li.attr('supply_of_goods'));
+            $('#license_no').val(li.attr('license_no'));
+            $('#contract_agreement_no').val(li.attr('contract_agreement_no'));
+            
+            $('#deal_mode').val(li.attr('deal_mode'))
+            
+            $('#note').val(li.attr('note'));
+            
+        });
+        $('#collapseAirInfo').on('show.bs.collapse', function () {
+          $('#collapseAirIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+        });
+        $('#collapseAirInfo').on('hide.bs.collapse', function () {
+          $('#collapseAirIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
+        });
+        
+        $('.deleteAirTemplate').click(function(e) {
+        	$(this).attr('disabled', true);
+        	e.preventDefault();
+        	var li = $(this).parent().parent();
+        	var id = li.attr('id');
+        	$.post('/customPlanOrder/deleteCustomTemplate', {id:id}, function(data){
+        		$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+        		$(this).attr('disabled', false);
+        		li.css("display","none");
+        	},'json').fail(function() {
+        		$(this).attr('disabled', false);
+                $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+            });
+        })
+        
+        
      });
 });

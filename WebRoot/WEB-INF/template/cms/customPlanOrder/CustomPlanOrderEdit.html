@@ -216,6 +216,75 @@
                         </div>
                      </div>
                     <br><br><br>
+                    
+			      <div class="panel panel-default">
+					    <div class="panel-heading">
+					        <h4 class="panel-title">
+					            <a data-toggle="collapse" data-parent="#accordion" href="#collapseAirInfo" aria-expanded="false" class="collapsed">
+					            <i id='collapseAirIcon' class="fa 
+					            <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用模版
+					            </a>
+					        </h4>
+					    </div>
+					    <div id="collapseAirInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+					        <div class="panel-body">
+					            <ul id="usedAirInfo" class="usedAirInfo">
+					              <%for(userInfo in customTemplateInfo![]){%>
+					                    <li id="${userInfo.id}"
+					                        receive_sent_consignee="${userInfo.receive_sent_consignee}"
+					                        receive_sent_consignee_abbr="${userInfo.receive_sent_consignee_abbr}"
+					                        receive_sent_consignee_info="${userInfo.receive_sent_consignee_info}"
+					                        
+					                        production_and_sales="${userInfo.production_and_sales}"
+					                        production_and_sales_abbr="${userInfo.production_and_sales_abbr}"
+					                        production_and_sales_info="${userInfo.production_and_sales_info}"
+					                        
+					                        application_unit="${userInfo.application_unit}"
+					                        application_unit_abbr="${userInfo.application_unit_abbr}"
+					                        application_unit_info="${userInfo.application_unit_info}"
+					                        
+					                        export_port="${userInfo.export_port}"
+					                        transport_type="${userInfo.transport_type}"
+					                        
+					                        supervision_mode="${userInfo.supervision_mode}" 
+					                        supervision_mode_name="${userInfo.supervision_mode_name}" 
+					                        
+					                        nature_of_exemption="${userInfo.nature_of_exemption}" 
+					                        nature_of_exemption_name="${userInfo.nature_of_exemption_name}" 
+					                        record_no="${userInfo.record_no}" 
+					                        
+					                        trading_country="${userInfo.trading_country}" 
+					                        trading_country_name="${userInfo.trading_country_name}" 
+					                        
+					                        destination_country="${userInfo.destination_country}" 
+					                        destination_country_name="${userInfo.destination_country_name}" 
+					                        
+					                        destination_port="${userInfo.destination_port}" 
+					                        destination_port_name="${userInfo.destination_port_name}" 
+					                        
+					                        supply_of_goods="${userInfo.supply_of_goods}" 
+					                        license_no="${userInfo.license_no}" 
+					                        contract_agreement_no="${userInfo.contract_agreement_no}" 
+					                        deal_mode="${userInfo.deal_mode}" 
+					                        note="${userInfo.note}" 
+					                        >
+					                      <div class="radio">
+					                        <a class="deleteAirTemplate" href="#" style="margin-right: 10px;padding-top: 6px;float: left;">删除</a>
+					                        <label class="selectAirTemplate">
+					                            <input type="radio" value="1" name="usedAirInfo" style="margin-top: 0px;">
+					                            <span>收发货人:${userInfo.receive_sent_consignee_abbr}, 生产销售单位:${userInfo.production_and_sales_abbr}, 申报单位: ${userInfo.application_unit_abbr}</span><br>
+					                            <span class="port">监管方式 ：${userInfo.supervision_mode_name}, 征免性质：${userInfo.nature_of_exemption_name}, 备案号：${userInfo.record_no}
+					                                                                                                                                              贸易国 ：${userInfo.trading_country_name}, 抵运国：${userInfo.destination_country_name}, 指运港：${userInfo.destination_port_name}
+					                            </span>
+					                        </label>
+					                      </div>
+					                    </li>
+					              <%}%>
+					            </ul>
+					        </div>
+					    </div>
+					</div>
+                    
 	               <div class="col-lg-12">
 	                <div class="form-group" id="release_radio_div" style="text-align:center;">
 	                	<input type="hidden" id="hidden_costom_bill" value="${order.costom_bill!''}">
@@ -357,13 +426,13 @@
 				                                     value:order.nature_of_exemption!'',
 				                                     value_list:[
                                                         {code:'', value:''},
-				                                        {code:'0110 ', value:'一般贸易'},
+				                                        {code:'0110', value:'一般贸易'},
 				                                        {code:'0130', value:'易货贸易'},
                                                         {code:'0200', value:'来料余料结转'},
                                                         {code:'0214', value:'来料加工'},
                                                         {code:'0220', value:'来料加工设备'},
                                                         {code:'0245', value:'来料料件内销'},
-                                                        {code:'0255 ', value:'来料深加工'},
+                                                        {code:'0255', value:'来料深加工'},
                                                         {code:'0345', value:'来料成品内销'},
                                                         {code:'0513', value:'补偿贸易'},
                                                         {code:'0600', value:'进料余料结转'},

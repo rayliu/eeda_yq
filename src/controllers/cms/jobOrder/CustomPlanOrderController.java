@@ -53,7 +53,7 @@ public class CustomPlanOrderController extends Controller {
         String jobId = getPara("jobOrderId");
         JobOrder jo = JobOrder.dao.findById(jobId);
         setAttr("jobOrder", jo);
-
+        setAttr("customTemplateInfo", getCustomTemplateInfo());
         render("/cms/customPlanOrder/CustomPlanOrderEdit.html");
     }
     
@@ -78,6 +78,7 @@ public class CustomPlanOrderController extends Controller {
    			customPlanOrder.set("updator", user.getLong("id"));
    			customPlanOrder.set("update_stamp", new Date());
    			customPlanOrder.update();
+   			saveCustomTemplate(dto);
    		} else {
    			//create 
    			DbUtils.setModelValues(dto, customPlanOrder);
@@ -88,8 +89,8 @@ public class CustomPlanOrderController extends Controller {
    			customPlanOrder.set("create_stamp", new Date());
    			customPlanOrder.set("office_id", office_id);
    			customPlanOrder.save();
-   			
    			id = customPlanOrder.getLong("id").toString();
+   			saveCustomTemplate(dto);
    		}
    		
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
@@ -104,7 +105,103 @@ public class CustomPlanOrderController extends Controller {
    		renderJson(r);
    	}
    
-    //返回list
+    private void saveCustomTemplate(Map<String, ?> dto) {
+    	Long creator_id = LoginUserController.getLoginUserId(this);
+    	
+    	String receive_sent_consignee = (String) dto.get("receive_sent_consignee");
+    	String production_and_sales = (String) dto.get("production_and_sales");
+    	String application_unit = (String) dto.get("application_unit");
+    	String export_port = (String) dto.get("export_port");
+    	String transport_type = (String) dto.get("transport_type");
+    	String supervision_mode = (String) dto.get("supervision_mode");
+    	String nature_of_exemption = (String) dto.get("nature_of_exemption");
+    	String record_no = (String) dto.get("record_no");
+    	String trading_country = (String) dto.get("trading_country");
+    	String destination_country = (String) dto.get("destination_country");
+    	String destination_port = (String) dto.get("destination_port");
+    	String supply_of_goods = (String) dto.get("supply_of_goods");
+    	String license_no = (String) dto.get("license_no");
+    	String contract_agreement_no = (String) dto.get("contract_agreement_no");
+    	String deal_mode = (String) dto.get("deal_mode");
+    	String note = (String) dto.get("note");
+    	
+    	String sql = "select 1 from custom_plan_order_template where"
+                + " creator_id = "+creator_id;
+      
+        if(StringUtils.isNotEmpty(receive_sent_consignee)){
+        	sql+=" and receive_sent_consignee= '"+receive_sent_consignee+"'";
+        }
+        if(StringUtils.isNotEmpty(production_and_sales)){
+        	sql+=" and production_and_sales= '"+production_and_sales+"'";
+        }
+        if(StringUtils.isNotEmpty(application_unit)){
+        	sql+=" and application_unit= '"+application_unit+"'";
+        }
+        if(StringUtils.isNotEmpty(export_port)){
+        	sql+=" and export_port= '"+export_port+"'";
+        }
+        if(StringUtils.isNotEmpty(transport_type)){
+        	sql+=" and transport_type= '"+transport_type+"'";
+        }
+        if(StringUtils.isNotEmpty(supervision_mode)){
+        	sql+=" and supervision_mode= '"+supervision_mode+"'";
+        }
+        if(StringUtils.isNotEmpty(nature_of_exemption)){
+        	sql+=" and nature_of_exemption= '"+nature_of_exemption+"'";
+        }
+        if(StringUtils.isNotEmpty(record_no)){
+        	sql+=" and record_no= '"+record_no+"'";
+        }
+        if(StringUtils.isNotEmpty(trading_country)){
+        	sql+=" and trading_country= '"+trading_country+"'";
+        }
+        if(StringUtils.isNotEmpty(destination_country)){
+        	sql+=" and destination_country= '"+destination_country+"'";
+        }
+        if(StringUtils.isNotEmpty(destination_port)){
+        	sql+=" and destination_port= '"+destination_port+"'";
+        }
+        if(StringUtils.isNotEmpty(supply_of_goods)){
+        	sql+=" and supply_of_goods= '"+supply_of_goods+"'";
+        }
+        if(StringUtils.isNotEmpty(license_no)){
+        	sql+=" and license_no= '"+license_no+"'";
+        }
+        if(StringUtils.isNotEmpty(contract_agreement_no)){
+        	sql+=" and contract_agreement_no= '"+contract_agreement_no+"'";
+        }
+        if(StringUtils.isNotEmpty(deal_mode)){
+        	sql+=" and deal_mode= '"+deal_mode+"'";
+        }
+        if(StringUtils.isNotEmpty(note)){
+        	sql+=" and note= '"+note+"'";
+        }
+  
+        Record checkRec = Db.findFirst(sql);
+    	if(checkRec==null){
+    		Record r= new Record();
+    		r.set("creator_id", creator_id);
+    		r.set("receive_sent_consignee", receive_sent_consignee);
+    		r.set("production_and_sales", production_and_sales);
+    		r.set("application_unit", application_unit);
+    		r.set("export_port", export_port);
+    		r.set("transport_type", transport_type);
+    		r.set("supervision_mode", supervision_mode);
+    		r.set("nature_of_exemption", nature_of_exemption);
+    		r.set("record_no", record_no);
+    		r.set("trading_country", trading_country);
+    		r.set("destination_country", destination_country);
+    		r.set("destination_port", destination_port);
+    		r.set("supply_of_goods", supply_of_goods);
+    		r.set("license_no", license_no);
+    		r.set("contract_agreement_no", contract_agreement_no);
+    		r.set("deal_mode", deal_mode);
+    		r.set("note", note);
+    		Db.save("custom_plan_order_template", r);
+    	}
+	}
+
+	//返回list
     private List<Record> getItems(String orderId,String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
@@ -141,6 +238,7 @@ public class CustomPlanOrderController extends Controller {
     	setAttr("order", r);
     	setAttr("itemList", getItems(id,"cargo"));
     	setAttr("docList", getItems(id,"doc"));
+    	setAttr("customTemplateInfo", getCustomTemplateInfo());
     	
     	//用户信息
     	long creator = r.getLong("creator");
@@ -150,9 +248,28 @@ public class CustomPlanOrderController extends Controller {
         render("/cms/customPlanOrder/CustomPlanOrderEdit.html");
     }
     
-
     
-    public void list() {
+    private Object getCustomTemplateInfo() {
+    	String sql = "select t.*, p.abbr receive_sent_consignee_abbr, concat(ifnull(p.address_eng, p.address), '\r', ifnull(p.contact_person_eng, p.contact_person), '\r', ifnull(p.phone,'')) receive_sent_consignee_info,"
+    			+ " p1.abbr production_and_sales_abbr, concat(ifnull(p1.address_eng, p1.address), '\r', ifnull(p1.contact_person_eng, p1.contact_person), '\r', ifnull(p1.phone,'')) production_and_sales_info,"
+    			+ " p2.abbr application_unit_abbr, concat(ifnull(p2.address_eng, p2.address), '\r', ifnull(p2.contact_person_eng, p2.contact_person), '\r', ifnull(p2.phone,'')) application_unit_info,"
+    			+ " s.name supervision_mode_name, l.name trading_country_name, l1.name destination_country_name, l2.name destination_port_name,"
+    			+ " s1.name nature_of_exemption_name "
+    			+ " from custom_plan_order_template t "
+    			+ " left join party p on p.id = t.receive_sent_consignee"
+    			+ " left join party p1 on p1.id = t.production_and_sales"
+    			+ " left join party p2 on p2.id = t.application_unit"
+    			+ " left join supervision_method s on s.id = t.supervision_mode"
+    			+ " left join supervision_method s1 on s1.code = t.nature_of_exemption"
+    			+ " left join location l on l.id = t.trading_country"
+    			+ " left join location l1 on l1.id = t.destination_country"
+    			+ " left join location l2 on l2.id = t.destination_port"
+    			+ " where t.creator_id=? order by t.id";
+    	List<Record> t = Db.find(sql, LoginUserController.getLoginUserId(this));
+		return t;
+	}
+
+	public void list() {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         
@@ -293,5 +410,12 @@ public class CustomPlanOrderController extends Controller {
         renderJson(resultMap);
     }
     
+    //删除常用模版
+    @Before(Tx.class)
+    public void deleteCustomTemplate(){
+    	String id = getPara("id");
+    	Db.update("delete from custom_plan_order_template where id = ?",id);
+    	renderJson("{\"result\":true}");
+    }
 
 }
