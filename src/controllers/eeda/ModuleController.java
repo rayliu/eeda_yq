@@ -46,6 +46,7 @@ public class ModuleController extends Controller {
 
     // ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
     @RequiresRoles("admin")
+    @Before(EedaMenuInterceptor.class)
     public void index() {
         render("/profile/module/moduleList.html");
     }
