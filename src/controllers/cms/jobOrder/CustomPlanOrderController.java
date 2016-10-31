@@ -123,12 +123,17 @@ public class CustomPlanOrderController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
     	String id = getPara("id");
-    	String sql = "select cpo.*,l.name trading_country_name,l1.name destination_country_name,l2.name destination_port_name,sm.name supervision_mode_name"
+    	String sql = "select cpo.*,l.name trading_country_name,l1.name destination_country_name,l2.name destination_port_name,sm.name supervision_mode_name,p.abbr hongkong_consignee_input"
+    			+ "	,p1.abbr head_carrier_name,l3.name aim_port_name,l4.name shipment_port_name"
     			+ " from custom_plan_order cpo"
     			+ " left join location l on l.id=cpo.trading_country"
     			+ " left join location l1 on l1.id=cpo.destination_country"
     			+ " left join location l2 on l2.id=cpo.destination_port"
     			+ " left join supervision_method sm on sm.id = cpo.supervision_mode"
+    			+ "	LEFT JOIN party p on p.id = cpo.hongkong_consignee"
+    			+ "	LEFT JOIN party p1 on p1.id = cpo.head_carrier"
+    			+ "	LEFT JOIN location l3 on l3.id = cpo.aim_port"
+    			+ "	LEFT JOIN location l4 on l4.id = cpo.shipment_port"
     			+ " where cpo.id = ?";
     	Record r = Db.findFirst(sql,id);
     	setAttr("order", r);
