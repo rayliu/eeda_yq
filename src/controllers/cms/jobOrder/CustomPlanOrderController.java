@@ -127,7 +127,7 @@ public class CustomPlanOrderController extends Controller {
     			+ " from custom_plan_order cpo"
     			+ " left join location l on l.id=cpo.trading_country"
     			+ " left join location l1 on l1.id=cpo.destination_country"
-    			+ " eft join location l2 on l2.id=cpo.destination_port"
+    			+ " left join location l2 on l2.id=cpo.destination_port"
     			+ " left join supervision_method sm on sm.id = cpo.supervision_mode"
     			+ " where cpo.id = ?";
     	Record r = Db.findFirst(sql,id);

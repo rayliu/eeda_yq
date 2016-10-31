@@ -369,8 +369,9 @@ public class CustomerController extends Controller {
                     + "where h.ref_id=p.id and h.type='CUSTOMER' and h.user_id=?";
             resultList = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
             if(resultList.size()==0){
-                sql = "select p.id, p.abbr from party p where p.type = 'CUSTOMER' "
-                        + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
+                sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax from party p where p.type = 'CUSTOMER' "
+                    + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
                 resultList = Db.find(sql+" order by abbr limit 10");
             }
             renderJson(resultList);
