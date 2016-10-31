@@ -9,11 +9,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             serverSide: true, //不打开会出现排序不对
             ajax: "/msgBoard/list",
             columns:[
-                  {"data": "TITLE", "width":"20%",
-                	  "render": function ( data, type, full, meta ) {
-                		  return "<a href='#' class='edit' >"+data+"</a>";
-                	  }
-                  },
+                { "width": "30px",
+                    "render": function ( data, type, full, meta ) {
+                      return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
+                    }
+                },
+                {"data": "TITLE", "width":"20%",
+              	  "render": function ( data, type, full, meta ) {
+              		  return "<a href='#' class='edit' >"+data+"</a>";
+              	  }
+                },
 	              { "data": "CONTENT", "width":"40%", "className":"content"}, 
 	              { "data": "CREATE_NAME"}, 
 	              { "data": "CREATE_STAMP"}, 
