@@ -169,6 +169,17 @@ $(document).ready(function() {
     	cargoTable.ajax.url(url).load();
     }
     
+    if($('#trade_sale_table td').length>1){
+		$('#trade_sale_table tfoot').find('th').eq(5).html(
+				cargoTable.column(5).data().reduce(function (a, b) {
+	    		a = parseFloat(a);
+	    		if(isNaN(a)){ a = 0; }                   
+	    		b = parseFloat(b);
+	    		if(isNaN(b)){ b = 0; }
+	    		return a + b;
+	    	})
+    	);
+    }
 
 });
 });

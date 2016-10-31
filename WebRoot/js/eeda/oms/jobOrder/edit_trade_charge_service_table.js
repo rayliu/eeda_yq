@@ -169,6 +169,7 @@ $(document).ready(function() {
     	cargoTable.ajax.url(url).load();
     }
     
+ 
 
 });
 });

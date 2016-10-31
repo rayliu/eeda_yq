@@ -37,8 +37,8 @@
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
                                         id:'trade_cost_table',
-                                        style:'width:4000px',
-                                        headers:['','供应商','商品名称','规格型号','数量','单位','单价(CNY)','国内货值(CNY)','增值税率','退税率','退税金额','单价差异','调整后退税金额','调整后单价','调整后总价','报关单价','报关金额','报关币制','报关汇率','CURRENCY_NAME','SP_NAME'],
+                                        style:'width:3800px',
+                                        headers:['','供应商','商品名称','规格型号','数量','单位','单价(CNY)','国内货值(CNY)','增值税率','退税率','退税金额','调整后退税金额','调整后单价','调整后总价','报关单价','报关金额','报关币制','报关汇率','CURRENCY_NAME','SP_NAME'],
                                         field_list:[
                                         '',
                                         'sp',
@@ -51,7 +51,6 @@
 										'value_added_tax',
 										'tax_refund_rate',
 										'tax_refund_amount',
-										'',
 										'adjusted_tax_refund_amount',
 										'adjusted_unit_price',
 										'adjusted_total_price',
@@ -65,7 +64,9 @@
                                         value_list: trade_cost_list![]
                                     }){} %>
                             </div>
-                        </div>
+                        </div><br>
+                        <font size="3px">总价差异：<span id="total_difference"></span></font>&nbsp&nbsp，
+                        <font size="3px">单价差异：<span id="price_difference"></span></font>
                         <div class="row">
                             <div class="col-lg-12">
                                 <h3>应收服务费用</h3>
@@ -76,7 +77,7 @@
                             <div class="col-lg-12">
                                 <button class="btn btn-success btn-xs" type="button" id="add_charge_service_table">添加明细</button>
                                 <br>
-                                <%include("/eeda/component/form/detailTable.html", 
+                                <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
                                         id:'charge_service_table',
                                         style:'width:1100px',
@@ -96,7 +97,7 @@
                             <div class="col-lg-12">
                                 <button class="btn btn-success btn-xs" type="button" id="add_trade_sale_table">添加明细</button>
                                 <br>
-                                <%include("/eeda/component/form/detailTable.html", 
+                                <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
                                         id:'trade_sale_table',
                                         style:'width:1100px',
