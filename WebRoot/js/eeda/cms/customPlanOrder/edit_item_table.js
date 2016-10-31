@@ -72,6 +72,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	eeda.bindTableField('cargo_table','POD','/location/searchPort','');
 	    	eeda.bindTableField('cargo_table','CARRIER','/serviceProvider/searchCarrier','');
 	    	eeda.bindTableFieldCurrencyId('cargo_table','CURRENCY','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('cargo_table','DESTINATION_COUNTRY_ITEM','/location/searchCountry','');
 	    };
 
 
@@ -88,11 +89,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                		return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
 	                }
 	            },
-	            { "data": "COMMODITY_CODE","width": "80px",
+	            { "data": "ITEM_NO","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="COMMODITY_CODE" value="'+data+'" class="form-control search-control" />';
+	                    return '<input type="text" name="ITEM_NO" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "COMMODITY_CODE","width": "80px",
@@ -185,11 +186,18 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                	return str;
 	                }
 	            },
-	            { "data": "PRICE","width": "180px",
-	                "render": function ( data, type, full, meta ) {
+	            { "data": "DESTINATION_COUNTRY_ITEM","width": "180px",
+	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="PRICE" value="'+data+'" class="form-control search-control" />';
+	                    var field_html = template('table_dropdown_template',
+	                            {
+	                                id: 'DESTINATION_COUNTRY_ITEM',
+	                                value: data,
+	                                display_value: full.DESTINATION_COUNTRY_ITEM_NAME
+	                            }
+	                        );
+	                    return field_html;
 	                }
 	            },
 	            { "data": "PRICE","width": "180px",
@@ -236,6 +244,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                }
 	            } ,
 	            { "data": "CURRENCY_NAME", "visible": false,
+	            	"render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
+	            },
+	            { "data": "DESTINATION_COUNTRY_ITEM_NAME", "visible": false,
 	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';

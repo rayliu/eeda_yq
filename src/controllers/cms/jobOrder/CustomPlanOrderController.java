@@ -109,8 +109,10 @@ public class CustomPlanOrderController extends Controller {
     	String itemSql = "";
     	List<Record> itemList = null;
     	if("cargo".equals(type)){
-    		itemSql = " SELECT cpo.*,cur.name currency_name FROM custom_plan_order_item cpo"
-    				+ " left join currency cur on cur.id =cpo.currency where cpo.order_id=?";
+    		itemSql = " SELECT cpo.*,cur.name currency_name,l.name destination_country_item_name FROM custom_plan_order_item cpo"
+    				+ " left join currency cur on cur.id =cpo.currency"
+    				+ "	LEFT JOIN location l on l.id = cpo.destination_country_item"
+    				+ " where cpo.order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("doc".equals(type)){
     		itemSql = "select jod.*,u.c_name from custom_plan_order_doc jod left join user_login u on jod.uploader=u.id "
