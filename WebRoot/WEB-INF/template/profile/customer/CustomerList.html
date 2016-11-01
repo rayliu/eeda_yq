@@ -57,7 +57,7 @@
 	                           <div class="form-group button-bar" >
 	                                <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
 	                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
-	                                <% if(shiro.hasPermission("Customer.create")){%>
+	                                <% if(shiro.hasPermission("customer.create")){%>
 	                                <a class="btn btn-success btn-sm" href="/customer/add">新增客户</a>
 	                                <%}%>
 	                            </div> 
@@ -95,8 +95,8 @@
 <%}%>
 <script>
 	<%
-		var customer_update_permission = shiro.hasPermission("Customer.update");
-		var customer_del_permission = shiro.hasPermission("Customer.delete");
+		var customer_update_permission = shiro.hasPermission("customer.update");
+		var customer_del_permission = shiro.hasPermission("customer.delete");
 	%>
 	var Customer={};
 	Customer.updatePermission = ${customer_update_permission};
