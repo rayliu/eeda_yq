@@ -18,6 +18,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对
           ajax: "/jobOrder/list?type="+type,
           columns: [
+              { "width": "30px",
+                  "render": function ( data, type, full, meta ) {
+                    return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
+                  }
+              },
               { "data": "ORDER_NO", 
                   "render": function ( data, type, full, meta ) {
                       return "<a href='/jobOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
