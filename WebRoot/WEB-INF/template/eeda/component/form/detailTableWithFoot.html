@@ -1,18 +1,11 @@
 <table id="${id}" class="table table-striped table-bordered table-hover display" cellspacing="0" style="${style!'width:100%;'}">
-    <thead class="eeda">
+    <thead class="head">
         <tr>
         	<%for(name in headers){%>
         		<th>${name}</th>
         	<%}%>
         </tr>
     </thead>
-    <tfoot class="eeda">
-        <tr>
-        	<%for(name in headers){%>
-        		<th>${name}</th>
-        	<%}%>
-        </tr>
-    </tfoot>
     <tbody>
     	<%for(record in value_list![]){
     		 var map = @record.getColumns();
@@ -30,4 +23,11 @@
     		</tr>
     	<%}%>
     </tbody>
+    <tfoot>
+        <tr  class="foot">
+            <%for(name in headers){%>
+                <th></th>
+            <%}%>
+        </tr>
+    </tfoot>
 </table>

@@ -14,10 +14,7 @@ $(document).ready(function() {
     itemOrder.buildTradeServiceItem=function(){
         var cargo_table_rows = $("#charge_service_table tr");
         var cargo_items_array=[];
-        for(var index=0; index<cargo_table_rows.length; index++){
-            if(index==0)
-                continue;
-
+        for(var index=2; index<cargo_table_rows.length; index++){
             var row = cargo_table_rows[index];
             var empty = $(row).find('.dataTables_empty').text();
             if(empty)
@@ -170,6 +167,23 @@ $(document).ready(function() {
     }
     
  
+    if($('#charge_service_table td').length>1){
+    	var total_service = cargoTable.column(5).data().reduce(function (a, b) {
+    		a = parseFloat(a);
+    		if(isNaN(a)){ a = 0; }                   
+    		b = parseFloat(b);
+    		if(isNaN(b)){ b = 0; }
+    		return a + b;
+    	})
+		$('#charge_service_table tfoot').find('th').eq(5).html(total_service);
+		var total_count = $('#trade_cost_table tfoot').find('th').eq(4).text();
+	    var total_tax_refund = $('#trade_cost_table tfoot').find('th').eq(10).text();
+	    var total_difference = parseFloat(total_tax_refund)-parseFloat(total_service);
+	    var price_difference = total_difference/parseFloat(total_count);
+	    $('#total_difference').text(total_difference);
+	    $('#price_difference').text(price_difference);
+    }
+
 
 });
 });

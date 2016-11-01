@@ -14,9 +14,7 @@ $(document).ready(function() {
     itemOrder.buildTradeSaleItem=function(){
         var cargo_table_rows = $("#trade_sale_table tr");
         var cargo_items_array=[];
-        for(var index=0; index<cargo_table_rows.length; index++){
-            if(index==0)
-                continue;
+        for(var index=2; index<cargo_table_rows.length; index++){
 
             var row = cargo_table_rows[index];
             var empty = $(row).find('.dataTables_empty').text();
