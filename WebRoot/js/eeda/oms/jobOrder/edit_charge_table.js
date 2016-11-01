@@ -165,13 +165,18 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
 			    }
 			},
-            { "width": "30px",
+            { "width": "80px",
                 "render": function ( data, type, full, meta ) {
+                	var str="<nobr>";
                 	if(full.AUDIT_FLAG == 'Y'){
-                		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button> ';
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button><&nbsp>';
+                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px" disabled>确认</button> ';
                 	}else{
-                		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button><nobr>';
+                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px" >确认</button> ';
                 	}
+                	str +="</nobr>";
+                    return str;
                 }
             },
             { "data": "TYPE", "width": "80px", 
