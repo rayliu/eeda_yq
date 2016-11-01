@@ -160,7 +160,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                	return str;
 	                }
 	            },
-	            { "data": "LEGAL_AMOUNT", 
+	            { "data": "LEGAL_AMOUNT","width": "80px", 
 	                "render": function ( data, type, full, meta ) {
 	                	if(!data)
 	                        data='';
