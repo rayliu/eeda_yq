@@ -84,8 +84,8 @@ $(document).ready(function() {
     //删除一行
     $("#charge_table").on('click', '.delete', function(e){
         e.preventDefault();
-        var tr = $(this).parent().parent();
-        deletedTableIds.push(tr.attr('id'))
+        var tr = $(this).parent().parent().parent();
+        deletedTableIds.push(tr.attr('id'));
         
         chargeTable.row(tr).remove().draw();
     }); 
@@ -94,7 +94,22 @@ $(document).ready(function() {
         var item={};
         chargeTable.row.add(item).draw(true);
     });
-
+    
+    //费用明细确认按钮动作
+    $("#charge_table").on('click', '#chargeConfirm', function(e){
+    	e.preventDefault();
+    	var id = $(this).val();
+    	$.post('/jobOrder/feeConfirm',{id:id},function(joa){
+    		var order_id = joa.ORDER_ID;
+	    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=charge";
+	    	chargeTable.ajax.url(url).load();    		
+    		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+    	},'json').fail(function() {
+            $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+       });
+    });
+    	
+    
     itemOrder.buildChargeDetail=function(){
         var cargo_table_rows = $("#charge_table tr");
         var cargo_items_array=[];
@@ -165,15 +180,19 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
 			    }
 			},
-            { "width": "80px",
+            { "width": "110px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
-                	if(full.AUDIT_FLAG == 'Y'){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button><&nbsp>';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px" disabled>确认</button> ';
+                	if(full&&full.AUDIT_FLAG == 'Y'){
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button>&nbsp';
+                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> '; 
+                		}
+                	else if(full.ID){
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" >删除</button>&nbsp';
+                		str+= '<button type="button" id="chargeConfirm" class=" btn btn-success btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
                 	}else{
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button><nobr>';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px" >确认</button> ';
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>&nbsp';
+                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;

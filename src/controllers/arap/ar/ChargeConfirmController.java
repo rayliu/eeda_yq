@@ -3,7 +3,6 @@ package controllers.arap.ar;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,16 +74,23 @@ public class ChargeConfirmController extends Controller {
         renderJson(orderListMap); 
     }   
     
-    public void chargeConfirm(){
-		String ids = getPara("itemIds");
-		String idAttr[] = ids.split(",");
-		for(int i=0 ; i<idAttr.length ; i++){
-			JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",idAttr[i]);
-			joa.set("audit_flag", "Y");
-			joa.update();
+//    public void chargeConfirm(){
+//		String ids = getPara("itemIds");
+//		String idAttr[] = ids.split(",");
+//		for(int i=0 ; i<idAttr.length ; i++){
+//			JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",idAttr[i]);
+//			joa.set("audit_flag", "Y");
+//			joa.update();
+//		}
+//		renderJson("{\"result\":true}");
+//	}
+	  public void chargeConfirm(){
+			String id = getPara();
+				JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",id);
+				joa.set("audit_flag", "Y");
+				joa.update();
+				redirect("jobOrder/edit?id="+id);
 		}
-		renderJson("{\"result\":true}");
-	}
 
 
 }
