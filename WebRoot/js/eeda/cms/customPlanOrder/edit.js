@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN', './edit_doc_table'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN', './edit_doc_table', './edit_cost_table', './edit_charge_table'], function ($, metisMenu) { 
     $(document).ready(function() {
              	
     	//已报关行按钮状态
@@ -115,6 +115,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	}
         	order['item_list'] = items_array;
         	order.doc_list = salesOrder.buildDocItem();
+        	order.charge_list = salesOrder.buildChargeDetail();
+        	order.cost_list = salesOrder.buildCostDetail();
 
 //            var order = {
 //            		    id: $('#order_id').val(),
@@ -143,6 +145,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     //异步刷新明细表
                     salesOrder.refleshTable(order.ID);
                     salesOrder.refleshDocTable(order.ID);
+                    salesOrder.refleshCostTable(order.ID);
+                    salesOrder.refleshChargeTable(order.ID);
                     $("#fileuploadSpan").show();
                 }else{
                     $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);

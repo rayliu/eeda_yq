@@ -104,8 +104,15 @@ public class CustomPlanOrderController extends Controller {
    		
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
 		DbUtils.handleList(itemList, id, CustomPlanOrderItem.class, "order_id");
+		
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
 		DbUtils.handleList(doc_list, "custom_plan_order_doc", id, "order_id");
+		
+		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");
+		DbUtils.handleList(charge_list, "custom_plan_order_arap", id, "order_id");
+		
+		List<Map<String, String>> cost_list = (ArrayList<Map<String, String>>)dto.get("cost_list");
+		DbUtils.handleList(cost_list, "custom_plan_order_arap", id, "order_id");
 
 		long creator = customPlanOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
@@ -231,6 +238,22 @@ public class CustomPlanOrderController extends Controller {
     				+ " left join user_login u on jod.uploader=u.id "
 	    			+ " where order_id=?";
     		itemList = Db.find(itemSql, orderId,orderId);
+    	}else if("charge".equals(type)){
+    		itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name from custom_plan_order_arap jor "
+    		        + " left join party pr on pr.id=jor.sp_id"
+    		        + " left join fin_item f on f.id=jor.charge_id"
+    		        + " left join unit u on u.id=jor.unit_id"
+    		        + " left join currency c on c.id=jor.currency_id"
+    		        + " where order_id=? and order_type=? order by jor.id";
+    		itemList = Db.find(itemSql, orderId,"charge");
+    	}else if("cost".equals(type)){
+	    	itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name from custom_plan_order_arap jor"
+	    	        + " left join party pr on pr.id=jor.sp_id"
+	    	        + " left join fin_item f on f.id=jor.charge_id"
+	    	        + " left join unit u on u.id=jor.unit_id"
+    		        + " left join currency c on c.id=jor.currency_id"
+	    	        + " where order_id=? and order_type=? order by jor.id";
+	    	itemList = Db.find(itemSql, orderId,"cost");
     	}
     	return itemList;
     }
@@ -254,6 +277,8 @@ public class CustomPlanOrderController extends Controller {
     	setAttr("order", r);
     	setAttr("itemList", getItems(id,"cargo"));
     	setAttr("docList", getItems(id,"doc"));
+    	setAttr("chargeList", getItems(id,"charge"));
+    	setAttr("costList", getItems(id,"cost"));
     	setAttr("customTemplateInfo", getCustomTemplateInfo());
     	
     	//用户信息
