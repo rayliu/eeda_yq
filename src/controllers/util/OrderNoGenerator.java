@@ -23,7 +23,7 @@ public class OrderNoGenerator {
 	
 	public synchronized static String getNextOrderNo(String orderPrefix, long officeId) {
 	    String orderNo = "";
-	    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyMM");
         String nowdate = sdf.format(new Date());
         
 		//1. 从数据库获取orderPrefix的最后号码, 没有该orderPrefix则新增一行记录
