@@ -32,8 +32,8 @@ public class OrderNoGenerator {
         if(orderSeq!=null){
             String seq = "000";
             String lastOrderNo = orderSeq.get("last_order_no");
-            //不管前缀长度，后面的数字长度是 13， 201101001
-            String ym = StringUtils.right(lastOrderNo, 9).substring(0, 6); // 获取年月字符串
+            //不管前缀长度，后面的数字长度是 11， 1101001
+            String ym = StringUtils.right(lastOrderNo, 7).substring(0, 4); // 获取年月字符串
             if(ym.equals(nowdate)){//如果年月 =今天， 获取流水号
                 seq = StringUtils.right(lastOrderNo, 3); // 获取流水号
             }
