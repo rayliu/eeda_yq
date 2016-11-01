@@ -89,7 +89,7 @@ public class JobOrderController extends Controller {
 	    	PlanOrderItem plan_order_item = PlanOrderItem.dao.findById(id);
 	    	setAttr("planOrderItem", plan_order_item);
 	    	
-	    	//返回海运的港口名�加多一个船公司
+	    	//返回海运的港口名称,加多一个船公司
 	    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name,p.abbr carrier_name from plan_order_item joi"
 				    			+" LEFT JOIN location lo on lo.id = joi.por"
 				    			+" LEFT JOIN location lo1 on lo1.id = joi.pol"
@@ -106,7 +106,7 @@ public class JobOrderController extends Controller {
         render("/oms/JobOrder/JobOrderEdit.html");
     }
     
-    //插入动作MBL标识�
+    //插入动作MBL标识符
     public void mblflag(){
     	String jsonStr = getPara("order_id");
     	JobOrderShipment jos = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
@@ -124,7 +124,7 @@ public class JobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
 
-    //插入打印动作SI标识�
+    //插入打印动作SI标识符
     public void siflag(){
     	String jsonStr = getPara("order_id");
     	JobOrderShipment jos = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
@@ -133,7 +133,7 @@ public class JobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
-    //插入派车单打印动作标�
+    //插入派车单打印动作标记
     public void truckOrderflag(){
     	String jsonStr = getPara("itemId");
     	JobOrderLandItem joli = JobOrderLandItem.dao.findFirst("select id from job_order_land_item where id = ?",jsonStr);
@@ -142,7 +142,7 @@ public class JobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
-    //插入打印动作AFR/AMS标识�
+    //插入打印动作AFR/AMS标识符
     public void aframsflag(){
     	String jsonStr = getPara("order_id");
     	JobOrderShipment jos = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
@@ -160,10 +160,10 @@ public class JobOrderController extends Controller {
 			else if(type.equals("出口空运")||type.equals("进口空运")){
 				prefix+="EKA";
 			}
-			else if(type.equals("香港头程")||type.equals("香港�)||type.equals("出口散货")){
+			else if(type.equals("香港头程")||type.equals("香港游")||type.equals("出口散货")){
 				prefix+="EKL";
 			}
-			else if(type.equals("加贸")||type.equals("园区�)){
+			else if(type.equals("加贸")||type.equals("园区游")){
 				prefix+="EKP";
 			}
 			else if(type.equals("陆运")){
@@ -172,7 +172,7 @@ public class JobOrderController extends Controller {
 			else if(type.equals("报关")){
 				prefix+="EKC";
 			}
-			else if(type.equals("快�)){
+			else if(type.equals("快递")){
 				prefix+="EKE";
 			}
 			else if(type.equals("贸易")){
@@ -213,7 +213,7 @@ public class JobOrderController extends Controller {
    			//create 
    			DbUtils.setModelValues(dto, jobOrder);
    			
-   			//需后台处理的字�
+   			//需后台处理的字段
    			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
             jobOrder.set("order_no", order_no);
    			jobOrder.set("creator", user.getLong("id"));
@@ -222,7 +222,7 @@ public class JobOrderController extends Controller {
    			jobOrder.save();
    			id = jobOrder.getLong("id").toString();
    			
-   			//创建过工作单，设置plan_order_item的字�
+   			//创建过工作单，设置plan_order_item的字段
    			PlanOrderItem planOrderItem = PlanOrderItem.dao.findById(planOrderItemID);
    			if(planOrderItem!=null){
                    planOrderItem.set("is_gen_job", "Y");
@@ -273,7 +273,7 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> insurance_detail = (ArrayList<Map<String, String>>)dto.get("insurance_detail");
 		DbUtils.handleList(insurance_detail, id, JobOrderInsurance.class, "order_id");
 		
-		//费用明细，应收应�
+		//费用明细，应收应付
 		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");
 		DbUtils.handleList(charge_list, id, JobOrderArap.class, "order_id");
 		List<Map<String, String>> chargeCost_list = (ArrayList<Map<String, String>>)dto.get("chargeCost_list");
@@ -320,9 +320,9 @@ public class JobOrderController extends Controller {
     	String ccEmail = getPara("ccEmail");
     	String bccEmail = getPara("bccEmail");
     	String remark = getPara("remark");
-    	String regex = "\\s+|,|，|;|�;//以空格或 �,�分割
+    	String regex = "\\s+|,|，|;|；";//以空格或 ， ,；;分割
     	
-    	//验证邮箱合法�
+    	//验证邮箱合法性
     	String[] arr = email.split(regex);
     	String reg = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
     	for(int i=0;i<arr.length;i++){
@@ -587,7 +587,7 @@ public class JobOrderController extends Controller {
     	renderJson(resultMap);
     }
     
-    //报关的文档上�
+    //报关的文档上传
     @Before(Tx.class)
     public void uploadCustomDoc(){
     	String order_id = getPara("order_id");
@@ -644,7 +644,7 @@ public class JobOrderController extends Controller {
             resultMap.put("result", result);
         }else{
         	jobOrderDoc.delete();
-        	resultMap.put("result", "文件不存在可能已被删�");
+        	resultMap.put("result", "文件不存在可能已被删除!");
         }
         renderJson(resultMap);
     }
@@ -666,7 +666,7 @@ public class JobOrderController extends Controller {
     		resultMap.put("result", result);
     	}else{
     		Db.delete("job_order_custom_doc", r);
-    		resultMap.put("result", "文件不存在可能已被删�");
+    		resultMap.put("result", "文件不存在可能已被删除!");
     	}
     	renderJson(resultMap);
     }
@@ -692,7 +692,7 @@ public class JobOrderController extends Controller {
     	}
     	renderJson("{\"result\":true}");
     }
-    //删除一个陆运签收文�
+    //删除一个陆运签收文件
     @Before(Tx.class)
     public void deleteOneSignDesc(){
     	String id = getPara("id");
@@ -854,7 +854,7 @@ public class JobOrderController extends Controller {
     	JobOrder jobOrder = JobOrder.dao.findById(id);
     	setAttr("order", jobOrder);
 
-    	//获取海运明细表信�
+    	//获取海运明细表信息
     	setAttr("usedOceanInfo", getUsedOceanInfo());
     	setAttr("shipmentList", getItems(id,"shipment"));
     	setAttr("shipment", getItemDetail(id,"shipment"));
@@ -863,7 +863,7 @@ public class JobOrderController extends Controller {
     	setAttr("airList", getItems(id,"air"));
     	setAttr("cargoDescList", getItems(id,"cargoDesc"));
     	setAttr("air", getItemDetail(id,"air"));
-    	//获取陆运明细表信�
+    	//获取陆运明细表信息
     	setAttr("landList", getItems(id,"land"));
     	//贸易
     	setAttr("trade", getItemDetail(id,"trade"));
@@ -974,7 +974,7 @@ public class JobOrderController extends Controller {
     	String mailTitle = getPara("mailTitle");
     	String mailContent = getPara("mailContent");
     	String docs = getPara("docs");
-    	String regex = "\\s+|,|，|;|�;//以空格或 �,�分割
+    	String regex = "\\s+|,|，|;|；";//以空格或 ， ,；;分割
     	
         MultiPartEmail email = new MultiPartEmail();  
         /*smtp.exmail.qq.com*/
@@ -984,8 +984,8 @@ public class JobOrderController extends Controller {
         /*输入公司的邮箱和密码*/
         email.setAuthenticator(new DefaultAuthenticator("info@yq-scm.com", "Enkyo123"));        
         email.setSSLOnConnect(true);
-        email.setFrom("info@yq-scm.com","Enkyo珠海远桥");//设置发信�
-        //设置收件人，邮件标题，邮件内�
+        email.setFrom("info@yq-scm.com","Enkyo珠海远桥");//设置发信人
+        //设置收件人，邮件标题，邮件内容
         if(StringUtils.isNotEmpty(userEmail)){
         	String[] arr = userEmail.split(regex);
         	for(int i=0;i<arr.length;i++){
@@ -999,14 +999,14 @@ public class JobOrderController extends Controller {
 	        email.setMsg(mailContent);
         }
         
-        //抄�
+        //抄送
         if(StringUtils.isNotEmpty(ccEmail)){
         	String[] arr = ccEmail.split(regex);
         	for(int i=0;i<arr.length;i++){
         		email.addCc(arr[i]);
         	}
         }
-       //密�
+       //密送
         if(StringUtils.isNotEmpty(bccEmail)){
         	String[] arr = bccEmail.split(regex);
         	for(int i=0;i<arr.length;i++){
@@ -1203,7 +1203,7 @@ public class JobOrderController extends Controller {
    			//create 
    			DbUtils.setModelValues(dto, order);
    			
-   			//需后台处理的字�
+   			//需后台处理的字段
    			order.set("creator", user.getLong("id"));
    			order.set("create_date", new Date());
    			order.set("office_id", pom.getCurrentOfficeId());
@@ -1223,19 +1223,19 @@ public class JobOrderController extends Controller {
     public void confirmCompleted(){
     	String id = getPara("id");
     	JobOrder order = JobOrder.dao.findById(id);
-    	order.set("status", "已完�);
+    	order.set("status", "已完成");
     	order.update();
     	renderJson("{\"result\":true}");
     }
     
-    //费用应收打印PDF前保�
+    //费用应收打印PDF前保存
     @Before(Tx.class)
     public void saveDebitNote(){
     	String ids = getPara("itemIds");
     	String[] idArr = ids.split(",");
     	String invoiceNo = getPara("invoiceNo");
     	JobOrderArap order = null;
-    	//checkbox选中的几条发票号一�
+    	//checkbox选中的几条发票号一样
     	for(int i=0;i<idArr.length;i++){
     		order = JobOrderArap.dao.findById(idArr[i]);
     		order.set("invoice_no", invoiceNo);
@@ -1258,7 +1258,9 @@ public class JobOrderController extends Controller {
     	Db.update("delete from job_order_air_template where id = ?",id);
     	renderJson("{\"result\":true}");
     }
+    
     //费用明细确认
+    @Before(Tx.class)
     public void feeConfirm(){
 		String id = getPara("id");
 			JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",id);
@@ -1266,15 +1268,16 @@ public class JobOrderController extends Controller {
 			joa.update();
 			renderJson(joa);
 	 }
+    
     @Before(Tx.class)
     public void updateShare(){
     	String item_id = getPara("item_id");
     	String check = getPara("check");
     	String order_id = getPara("order_id");
     	
-    	if(StringUtils.isEmpty(item_id)){//全�
+    	if(StringUtils.isEmpty(item_id)){//全选
     		Db.update("update job_order_custom_doc set share_flag =? where order_id = ?",check,order_id);
-    	}else{//单�
+    	}else{//单选
     		Db.update("update job_order_custom_doc set share_flag =? where id = ?",check,item_id);
 //    		
 //    		List<Record> CPOList = Db.find("select cpod.* from custom_plan_order cpo where cpo.ref_job_order_id = ?",order_id);
