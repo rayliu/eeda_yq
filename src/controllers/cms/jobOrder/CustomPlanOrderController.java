@@ -51,9 +51,18 @@ public class CustomPlanOrderController extends Controller {
 	@Before(EedaMenuInterceptor.class)
     public void create() {
         String jobId = getPara("jobOrderId");
+        String to_office_id = getPara("to_office_id");
         JobOrder jo = JobOrder.dao.findById(jobId);
         setAttr("jobOrder", jo);
         setAttr("customTemplateInfo", getCustomTemplateInfo());
+        setAttr("to_office_id", to_office_id);
+
+        
+        List<Record> re = Db.find("select null id ,joc.doc_name,joc.upload_time,joc.remark,ul.c_name c_name,joc.uploader from job_order_custom_doc joc"
+        		+ " left join user_login ul on joc.uploader = ul.id"
+        		+ " where joc.order_id = ? and joc.share_flag = 'Y'",jobId);
+        setAttr("docList", re);
+        
         render("/cms/customPlanOrder/CustomPlanOrderEdit.html");
     }
     
@@ -212,9 +221,16 @@ public class CustomPlanOrderController extends Controller {
     				+ " where cpo.order_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("doc".equals(type)){
-    		itemSql = "select jod.*,u.c_name from custom_plan_order_doc jod left join user_login u on jod.uploader=u.id "
-	    			+ " where order_id=? order by jod.id";
-    		itemList = Db.find(itemSql, orderId);
+    		itemSql = "select null id ,jocd.doc_name,jocd.upload_time,jocd.remark,ul.c_name c_name,jocd.uploader from job_order_custom_doc jocd"
+    				+ " LEFT JOIN user_login ul on ul.id = jocd.uploader"
+    				+ " LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id and jocd.share_flag = 'Y'"
+    				+ " where cpo.id =?"
+    				+ " union all"
+    				+ " select  jod.id ,jod.doc_name,jod.upload_time,jod.remark,u.c_name c_name,jod.uploader "
+    				+ " from custom_plan_order_doc jod "
+    				+ " left join user_login u on jod.uploader=u.id "
+	    			+ " where order_id=?";
+    		itemList = Db.find(itemSql, orderId,orderId);
     	}
     	return itemList;
     }
@@ -336,6 +352,8 @@ public class CustomPlanOrderController extends Controller {
     	CustomPlanOrder order = CustomPlanOrder.dao.findById(id);
     	if("confirmCompleted".equals(btnId)){
     		order.set("status","处理中");
+    		order.set("fill_by",LoginUserController.getLoginUserId(this));
+    		order.set("fill_stamp",new Date());
     	}
     	if("passBtn".equals(btnId)){
     		order.set("status","审核通过");

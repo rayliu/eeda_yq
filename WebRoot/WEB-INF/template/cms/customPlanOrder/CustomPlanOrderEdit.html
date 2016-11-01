@@ -7,7 +7,8 @@
                 </div>
             </div>
             <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
-            <input id="ref_job_order_id" type="hidden" name="ref_job_order_id" value="${jobOrder.id!''}"/>
+            <input id="to_office_id" type="hidden" name="order_id" value="${order.to_office_id!to_office_id!''}"/>
+            <input id="ref_job_order_id" type="hidden" name="ref_job_order_id" value="${order.ref_job_order_id!jobOrder.id!''}"/>
             <div class="form-group">
                 <form id="customForm">
                     <div class="row"><!--  第1行  --> 
@@ -687,7 +688,7 @@
                                         id:'doc_table',
                                         style:'width:1400px',
                                         headers:['', '文档名称', '上传人', '上传时间', '备注'],
-                                        field_list:['', 'doc_name','c_name','upload_time', 'remark'],
+                                        field_list:['', 'doc_name','c_name','upload_time', 'remark','uploader'],
                                         value_list: docList![]
                                     }){} %>
                             </div>

@@ -54,12 +54,12 @@ $(document).ready(function() {
         id: 'custom_doc_table',
         autoWidth: false,
         columns:[
-			{ "data":"ID","width": "10px",
+			{ "data":"ID","width": "50px",
 			    "render": function ( data, type, full, meta ) {
-			    	if(data)
-			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
+			    	if(full.SHARE_FLAG=='Y')
+			    		return '<input type="checkbox" class="checkBox" checked style="width:30px">';
 			    	else 
-			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
+			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
 			    }
 			},
             { "width": "30px",
@@ -94,16 +94,46 @@ $(document).ready(function() {
                         data='';
                     return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
                 }
-            }
+            },
+            { "data": "SHARE_FLAG", "visible": false }
         ]
     });
+    
+    $('#custom_doc_table').on('change','.checkBox',function(){
+    	var check = $(this).prop('checked');
+    	var item_id = $(this).parent().parent().attr('id');
+    	var msg = "";
+    	if(check){
+    		msg = '共享';
+    		check = 'Y';
+    	}else{
+    		msg = '取消';
+    		check = 'N';
+    	}
+    	
+    	$.blockUI({ 
+            message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在'+msg+'...</h4>' 
+        });
+    	
+    	$.post('/jobOrder/updateShare', {order_id:$('#order_id').val(),item_id:item_id,check:check}, function(data){
+    		if(data){
+    			$.scojs_message(msg+'成功', $.scojs_message.TYPE_OK);
+    			$.unblockUI();
+    		}
+    	}).fail(function() {
+            $.scojs_message(msg+'失败', $.scojs_message.TYPE_ERROR);
+            $.unblockUI();
+        });
+    	
+    });
+    
   
   
     //刷新明细表
     itemOrder.refleshCustomDocTable = function(order_id){
     	var url = "/jobOrder/tableList?order_id="+order_id+"&type=custom_doc";
     	docTable.ajax.url(url).load();
-    }
+    };
 
     
     //全选
@@ -111,8 +141,32 @@ $(document).ready(function() {
     	var ischeck = this.checked;
     	$('.checkBox').each(function(){
     		this.checked = ischeck;
-    	})
-    })
+    	});
+    	
+    	var msg = "";
+		if(this.checked){
+			ischeck = 'Y';
+			msg = '共享';
+    	}else{
+    		ischeck = 'N';
+    		msg = '取消';
+    	}
+		$.blockUI({ 
+            message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在'+msg+'...</h4>' 
+        });
+    	
+    	$.post('/jobOrder/updateShare', {order_id:$('#order_id').val(),check:ischeck}, function(data){
+    		if(data){
+    			$.scojs_message(msg+'成功', $.scojs_message.TYPE_OK);
+    			$.unblockUI();
+    		}
+    	}).fail(function() {
+            $.scojs_message(msg+'失败', $.scojs_message.TYPE_ERROR);
+            $.unblockUI();
+        });
+    	
+    });
     
+  
 });
 });

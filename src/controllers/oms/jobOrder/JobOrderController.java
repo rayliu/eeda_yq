@@ -834,6 +834,16 @@ public class JobOrderController extends Controller {
 	    	itemSql = "select jod.*,u.c_name from job_order_custom_doc jod left join user_login u on jod.uploader=u.id "
 	    			+ " where order_id=? order by jod.id";
 	    	itemList = Db.find(itemSql, orderId);
+	    }else if("custom_app".equals(type)){
+	    	itemList = Db.find("SELECT"
+	    			+ " cjo.id, cjo.order_no custom_plan_no, o.office_name custom_bank,cjo.status applybill_status,"
+	    			+ " cjo.ref_no custom_order_no, cjo.custom_state status, ul.c_name creator,"
+	    			+ " cjo.create_stamp, ul2.c_name fill_name, cjo.fill_stamp"
+	    			+ " FROM custom_plan_order cjo"
+	    			+ " LEFT JOIN user_login ul ON ul.id = cjo.creator"
+	    			+ " LEFT JOIN user_login ul2 ON ul2.id = cjo.fill_by"
+	    			+ " left join office o on o.id = cjo.to_office_id"
+	    			+ " WHERE cjo.ref_job_order_id = ? ",orderId);
 	    }
 		return itemList;
 	}
@@ -860,16 +870,9 @@ public class JobOrderController extends Controller {
     	setAttr("trade_cost_list", getItems(id,"trade_cost"));
     	setAttr("trade_charge_service_list", getItems(id,"trade_service"));
     	setAttr("trade_charge_sale_list", getItems(id,"trade_sale"));
-    	
+
     	//报关
-    	setAttr("customItemList",Db.find("SELECT"
-    			+ " cjo.id, cjo.order_no custom_plan_no, '瑞龙报关行' custom_bank,"
-    			+ " cjo.ref_no custom_order_no, '' status, ul.c_name creator,"
-    			+ " cjo.create_stamp, ul.c_name bill_name, cjo.fill_stamp"
-    			+ " FROM custom_plan_order cjo"
-    			+ " LEFT JOIN user_login ul ON ul.id = cjo.creator"
-    			+ " LEFT JOIN user_login ul2 ON ul2.id = cjo.fill_by"
-    			+ " WHERE cjo.ref_job_order_id = ? ",id));
+    	setAttr("customItemList",getItems(id, "custom_app"));
     	setAttr("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
    		setAttr("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
    		setAttr("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
@@ -1186,6 +1189,7 @@ public class JobOrderController extends Controller {
         renderJson(map); 
     }
     
+    @Before(Tx.class)
     public void saveParty(){
     	String jsonStr=getPara("params");
        	String id = null;
@@ -1215,6 +1219,7 @@ public class JobOrderController extends Controller {
     }
    
     //确认已完成工作单
+    @Before(Tx.class)
     public void confirmCompleted(){
     	String id = getPara("id");
     	JobOrder order = JobOrder.dao.findById(id);
@@ -1224,6 +1229,7 @@ public class JobOrderController extends Controller {
     }
     
     //费用应收打印PDF前保存
+    @Before(Tx.class)
     public void saveDebitNote(){
     	String ids = getPara("itemIds");
     	String[] idArr = ids.split(",");
@@ -1239,18 +1245,43 @@ public class JobOrderController extends Controller {
     }
     
     //删除海运常用信息模版
+    @Before(Tx.class)
     public void deleteOceanTemplate(){
     	String id = getPara("id");
     	Db.update("delete from job_order_ocean_template where id = ?",id);
     	renderJson("{\"result\":true}");
     }
     //删除空运常用信息模版
+    @Before(Tx.class)
     public void deleteAirTemplate(){
     	String id = getPara("id");
     	Db.update("delete from job_order_air_template where id = ?",id);
     	renderJson("{\"result\":true}");
     }
     
+    @Before(Tx.class)
+    public void updateShare(){
+    	String item_id = getPara("item_id");
+    	String check = getPara("check");
+    	String order_id = getPara("order_id");
+    	
+    	if(StringUtils.isEmpty(item_id)){//全选
+    		Db.update("update job_order_custom_doc set share_flag =? where order_id = ?",check,order_id);
+    	}else{//单选
+    		Db.update("update job_order_custom_doc set share_flag =? where id = ?",check,item_id);
+//    		
+//    		List<Record> CPOList = Db.find("select cpod.* from custom_plan_order cpo where cpo.ref_job_order_id = ?",order_id);
+//    		for(Record re :CPOList){
+//    			List<Record> reList = Db.find("select cpod.* from custom_plan_order cpo where cpo.ref_job_order_id = ?",order_id);
+//    			
+//    			long docId = re.getLong("id");
+//    			Db.update("insert into custom_plan_order_doc(order_id,uploader,doc_name,upload_time,remark) "
+//    					+ " values",docId,order_id,);
+//    		}
+    	}
+    	
+    	renderJson("{\"result\":true}");
+    }
     
    
 }

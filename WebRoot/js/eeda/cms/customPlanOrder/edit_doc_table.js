@@ -67,6 +67,9 @@ $(document).ready(function() {
                 id='';
             }
             
+            if(id == '' || id == null)
+            	continue;
+            
             var item={}
             item.id = id;
             for(var i = 1; i < row.childNodes.length; i++){
@@ -100,35 +103,48 @@ $(document).ready(function() {
 //          '<input id="allCheckOfDoc" type="checkbox" style="width:30px">',
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
+                	if(full.ID)
+                		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
+                	else 
+                		return '';
                 }
             },
             { "data": "DOC_NAME","width": "280px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                    return '<input type="hidden" name="doc_name" value="'+data+'"><a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
                 }
             },
             { "data": "C_NAME","width": "180px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
-                	return data;
+                	return '<input type="hidden" name="uploader" value="'+full.UPLOADER+'">'+data;
                 }
             },
             { "data": "UPLOAD_TIME", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return data;
+                    return '<input type="hidden" name="upload_time" value="'+data+'">'+data;
                 }
             },
             { "data": "REMARK","width": "280px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
+                    if(full.ID)
+                    	return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
+                    else 
+                    	return data;
+                }
+            },
+            { "data": "UPLOADER", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="uploader" value="'+data+'">'
                 }
             }
         ]

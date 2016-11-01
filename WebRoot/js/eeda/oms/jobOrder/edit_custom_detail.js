@@ -3,10 +3,16 @@ $(document).ready(function() {
 
 	$('#createCustomPlanOrderBtn').click(function(event) {
         var id = $('#order_id').val();
-        if(id!='' && custom_type.split(',')[0]=='china'){
-        	window.open("/customPlanOrder/create?jobOrderId="+id, '_blank');
+        var custom_broker = $('#custom_broker').val();
+        
+        if(custom_broker.trim()==''){
+        	$.scojs_message('请先选中报关行', $.scojs_message.TYPE_ERROR);
         }else{
-        	 $.scojs_message('请先保存单据', $.scojs_message.TYPE_ERROR);
+        	if(id!='' && custom_type.split(',')[0]=='china'){
+            	window.open("/customPlanOrder/create?jobOrderId="+id+"&to_office_id="+custom_broker, '_blank');
+            }else{
+            	 $.scojs_message('请先保存单据', $.scojs_message.TYPE_ERROR);
+            }
         }
     });
 
@@ -402,7 +408,7 @@ $(document).ready(function() {
                	  	}
                  },
                  { "data": "CUSTOM_BANK"},
-                 { "data": "null"},
+                 { "data": "APPLYBILL_STATUS"},
                  { "data": "CUSTOM_ORDER_NO"},
                  { "data": "STATUS"},
                  { "data": "CREATOR"},
@@ -412,7 +418,15 @@ $(document).ready(function() {
                  ]
         })
         
-    
+     itemOrder.refleshCustomAPPTable = function(order_id){
+    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=custom_app";
+    	customTable.ajax.url(url).load();
+    };
+        
+    $('#reflesh').on('click',function(){
+    	itemOrder.refleshCustomAPPTable($('#order_id').val());
+    });
+        
     
 });
 });

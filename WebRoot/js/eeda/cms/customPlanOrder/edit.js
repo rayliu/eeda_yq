@@ -99,6 +99,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	order['id'] = $('#order_id').val();
         	order['costom_bill'] = $('#customForm input[type="radio"]:checked').val();
         	order['ref_job_order_id'] = $('#ref_job_order_id').val();
+        	order['to_office_id'] = $('#to_office_id').val();
 //        	order['status'] = $('#status').val()==""?"新建":$('#status').val();
         	var customForm = $('#customForm input,#customForm select,#customForm textarea');
         	for(var i = 0; i < customForm.length; i++){
@@ -141,6 +142,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     $('#confirmCompleted').attr('disabled', false);
                     //异步刷新明细表
                     salesOrder.refleshTable(order.ID);
+                    salesOrder.refleshDocTable(order.ID);
                     $("#fileuploadSpan").show();
                 }else{
                     $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);

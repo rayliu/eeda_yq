@@ -6,19 +6,29 @@
                     
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-lg-4">
-                                <a id='createCustomPlanOrderBtn' href='javascript:void(0);' class="btn btn-success btn-xs" target="_blank">添加报关申请单</a>
-                                <%include("/eeda/component/form/selectField.html", 
-                                {   id:'custom_broker', 
-                                    label:'请选择报关行',
-                                    required:'required', 
-                                    value:order.custom_broker!'',
-                                    value_list:[
-                                   		{code:'', value:''},
-                                        {code:'珠海瑞龙报关代理有限公司', value:'珠海瑞龙报关代理有限公司'}
-                                    ]
-                                }){}%> 
-                             </div>                               
+                        	<div class="row">
+                        		<div class="col-lg-4">
+	                                <%include("/eeda/component/form/selectField.html", 
+	                                {   id:'custom_broker', 
+	                                    label:'请选择报关行',
+	                                    required:'required', 
+	                                    value:order.custom_broker!'',
+	                                    value_list:[
+	                                   		{code:'', value:''},
+	                                        {code:'3', value:'珠海瑞龙报关代理有限公司'}
+	                                    ]
+	                                }){}%> 
+                                </div>  
+                            </div>
+                        	<div class="row">
+                        		<div class="col-lg-1">
+                        			<button id='createCustomPlanOrderBtn' type="button" class="btn btn-success btn-xs" >添加报关申请单</button>
+                        		</div>
+                        		<div class="col-lg-1">
+                             		<button id="reflesh" type="button" class="btn btn-success btn-xs" >刷新</button>
+                                </div> 
+                        	</div>
+                                                        
                                 <br>
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
@@ -102,8 +112,8 @@
 	                 {
 	                     id:'custom_doc_table',
 	                     style:'width:1400px',
-	                     headers:['<input id="allCheckOfCustomDoc" type="checkbox" style="width:30px">','', '文档名称', '上传人', '上传时间', '备注'],
-	                     field_list:['id','', 'doc_name','c_name','upload_time', 'remark'],
+	                     headers:['是否共享<input id="allCheckOfCustomDoc" type="checkbox" style="width:30px">','', '文档名称', '上传人', '上传时间', '备注'],
+	                     field_list:['id','', 'doc_name','c_name','upload_time', 'remark','share_flag'],
 	                     value_list: customDocList![]
 	                 }){} %>
 	              <br>
