@@ -305,7 +305,7 @@ public class CustomPlanOrderController extends Controller {
         			+ " cpo.create_stamp,cpo.status"
         			+ " FROM custom_plan_order cpo"
         			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
-        			+ " where cpo.office_id="+office_id+")A"
+        			+ " where cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")A"
     		        + " where 1 =1 ";
 
         condition = DbUtils.buildConditions(getParaMap());
