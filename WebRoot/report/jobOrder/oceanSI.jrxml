@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="160"/>
+	<property name="ireport.y" value="106"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -28,7 +28,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-    jos.*,josi.*,concat(jos.vessel,'/',jos.voyage) vessel_voyage,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
+    jos.*,josi.container_no josi_container_no,josi.container_type josi_container_type,josi.seal_no josi_seal_no,josi.pieces josi_pieces,josi.volume josi_volume,josi.gross_weight josi_gross_weight,concat(jos.vessel,'/',jos.voyage) vessel_voyage,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
 		ul.c_name,
 		ul.user_name,
 		ul.user_phone,
@@ -221,42 +221,12 @@ where jos.order_id=$P{order_id}]]>
 	<field name="closing_date" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="type" class="java.lang.String">
-		<fieldDescription><![CDATA[进出口]]></fieldDescription>
-	</field>
-	<field name="plan_order_item_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="load_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="container_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="container_amount" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="container_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="seal_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="cargo_name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="pieces" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="unit_id" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="pallet_desc" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="remark" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="josi_container_no" class="java.lang.String"/>
+	<field name="josi_container_type" class="java.lang.String"/>
+	<field name="josi_seal_no" class="java.lang.String"/>
+	<field name="josi_pieces" class="java.lang.Integer"/>
+	<field name="josi_volume" class="java.lang.Double"/>
+	<field name="josi_gross_weight" class="java.lang.Double"/>
 	<field name="vessel_voyage" class="java.lang.String"/>
 	<field name="por_name" class="java.lang.String"/>
 	<field name="pol_name" class="java.lang.String"/>
@@ -615,42 +585,42 @@ where jos.order_id=$P{order_id}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{volume}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{josi_volume}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement style="table" x="377" y="0" width="94" height="21" uuid="7cd237ca-8911-48d8-94ae-b6ca08d0808a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{josi_gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement style="table" x="1" y="0" width="94" height="21" uuid="d650f0cf-a090-493f-a419-922ce83b474d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{josi_container_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement style="table" x="95" y="0" width="94" height="21" uuid="178c37bd-b243-4c40-a605-ddd4ae7fafdd"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{container_type}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{josi_container_type}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement style="table" x="189" y="0" width="94" height="21" uuid="236e73de-7d33-4c01-b96b-5ad33ade9643"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{seal_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{josi_seal_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement style="table" x="283" y="0" width="94" height="21" uuid="905b98fd-8b39-408f-a3d4-ba289cf9d856"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{pieces_unit}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{josi_pieces}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
