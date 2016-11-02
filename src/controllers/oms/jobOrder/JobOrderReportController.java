@@ -164,7 +164,6 @@ public class JobOrderReportController extends Controller {
 	
 	//打印debitNote中文
 	public void printDebitNotePDF() {
-		
 		String debit_note = getPara("debit_note");
 		String order_id = getPara("itemIds");
 		String [] orderIdArr= order_id.split(",");
@@ -182,20 +181,6 @@ public class JobOrderReportController extends Controller {
 		}
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", orderIdArr);		
-		fileName = getContextPath() + fileName;
-		outFileName = getContextPath() + outFileName + order_id;
-		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
-		renderText(file.substring(file.indexOf("download")-1));
-	}
-	
-	//打印Invoice英文
-	public void printInvoicePDF() {
-		String order_id = getPara("itemIds");
-		String [] orderIdArr= order_id.split(",");
-		String fileName = "/report/jobOrder/INVOICE.jasper";
-		String outFileName = "/download/Invoice英文";
-		HashMap<String, Object> hm = new HashMap<String, Object>();
-		hm.put("order_id", orderIdArr);
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
