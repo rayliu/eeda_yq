@@ -169,10 +169,10 @@ public class JobOrderReportController extends Controller {
 		String [] orderIdArr= order_id.split(",");
 		String fileName;
 		String outFileName;
-		if(debit_note=="debitNote"){
+		if("debitNote".equals(debit_note)){
 			fileName = "/report/jobOrder/debitNote.jasper";
 			outFileName = "/download/debitNote中文";
-		}else if (debit_note=="debit_note_eng"){
+		}else if ("debit_note_eng".equals(debit_note)){
 			fileName = "/report/jobOrder/debitNote_eng.jasper";
 			outFileName = "/download/debitNote英文";
 		}else {
