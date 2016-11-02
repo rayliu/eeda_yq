@@ -184,6 +184,22 @@ $(document).ready(function() {
 	    $('#price_difference').text(price_difference);
     }
 
+    $('#charge_service_table').on('keyup', '[name=fee_amount]', function(){
+    	var a = this.value;
+		if(a!=''&&!isNaN(a)){
+			$("#trade_cost_table [name=number]").each(function(){
+				$(this).keyup();
+			});
+		}
+		var total = 0;
+		$('#charge_service_table [name=fee_amount]').each(function(){
+			var a = this.value;
+			if(a!=''&&!isNaN(a)){
+				total+=parseFloat(a);
+			}
+		})
+		$($('.dataTables_scrollFoot tr')[1]).find('th').last().html(total.toFixed(3));
+    })
 
 });
 });

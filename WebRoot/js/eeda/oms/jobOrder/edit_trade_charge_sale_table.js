@@ -178,6 +178,17 @@ $(document).ready(function() {
 	    	})
     	);
     }
+    
+    $('#trade_sale_table').on('keyup', '[name=fee_amount]', function(){
+    	var total = 0;
+		$('#trade_sale_table [name=fee_amount]').each(function(){
+			var a = this.value;
+			if(a!=''&&!isNaN(a)){
+				total+=parseFloat(a);
+			}
+		})
+		$($('.dataTables_scrollFoot tr')[2]).find('th').last().html(total.toFixed(3));
+    })
 
 });
 });
