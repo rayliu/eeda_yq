@@ -102,7 +102,7 @@ $(document).ready(function() {
                     return '<input type="text" name="specification_model" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "NUMBER", "width": "180px",
+            { "data": "NUMBER", "width": "180px","className":"number",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -179,6 +179,13 @@ $(document).ready(function() {
             		return '<input type="text" name="custom_price" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
+            { "data": "NUMBER", "width": "180px","className":"customNumber",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="number" value="'+data+'" class="form-control" style="width:200px"/>';
+                }
+            },
             { "data": "CUSTOM_CURRENCY", "width": "60px",
             	"render": function ( data, type, full, meta ) {
 	                	if(!data)
@@ -254,9 +261,10 @@ $(document).ready(function() {
     
     $('#trade_cost_table').on('keyup', '[name=number],[name=custom_price]', function(){
     	var row = $(this).parent().parent();
-    	var custom_price = $(row.find('[name=custom_price]')).val()
-    	var count = $(row.find('[name=number]')).val()
-    	
+    	var custom_price = $(row.find('[name=custom_price]')).val();
+    	var count = $(row.find('[name=number]')).val();
+        $(row.find('#customNumber')).val(count);
+    	$(row.find('#Number')).val(count);
     	if(custom_price==''||count==''){
     		$(row.find('[name=custom_amount]')).val('');
     	}else if(!isNaN(custom_price)&&!isNaN(count)){
