@@ -46,7 +46,7 @@ $(document).ready(function() {
             $('#hkDetail').removeClass('active in');
         }
     };
-
+    
     var hideServiceTab=function(service){
     	switch (service){
         case 'china':
@@ -58,9 +58,33 @@ $(document).ready(function() {
         case 'abroad':
           $('#abroadTab').hide();
           break;
+        case 'entrust_custom':
+        	$('#entrust_tab').hide();
+        	break;
+        case 'self_custom':
+        	$('#self_tab').hide();
+        	break;
       }
     };
 
+    var showCustomTab=function(service){
+        if(service=='entrust_custom'){
+            $('#entrust_tab').show();
+            $('#entrust_tab').parent().addClass('active in');
+            $('#entrustDetail').addClass('active in');
+            
+            $('#self_tab').parent().removeClass('active in');
+            $('#selfDetail').removeClass('active in');
+        }else if(service=='self_custom'){
+        	$('#self_tab').show();
+        	$('#self_tab').parent().addClass('active in');
+            $('#selfDetail').addClass('active in');
+            
+            $('#entrust_tab').parent().removeClass('active in');
+            $('#entrustDetail').removeClass('active in');
+        }
+    }
+    
     $('#custom_type input[type="checkbox"]').click(function(){
         var checkValue=$(this).val();
         if($(this).prop('checked')){
@@ -70,17 +94,37 @@ $(document).ready(function() {
         }
     });
     
+    $('#entrust_or_self_custom input[type="checkbox"]').click(function(){
+    	var checkValue=$(this).val();
+    	if($(this).prop('checked')){
+    		showCustomTab(checkValue);
+    	}else{
+    		hideServiceTab(checkValue);
+    	}
+    });
+    
     //报关类型checkbox回显
-    var checkArray =custom_type.split(",");
+    var checkArray = custom_type.split(",");
     for(var i=0;i<checkArray.length;i++){
 	    $('#custom_type input[type="checkbox"]').each(function(){
-	        var checkValue=$(this).val();
+	    	var checkValue = this.value;
 	        if(checkArray[i]==checkValue){
-	        	$(this).attr("checked",true);
-
+	        	this.checked = true;
                 showServiceTab(checkValue);
 	        }
 	    })
+    }
+    
+    console.log(entrust_or_self_custom_str)
+    var entrust_or_self_custom_arr = entrust_or_self_custom_str.split(",");
+    for(var i=0;i<entrust_or_self_custom_arr.length;i++){
+    	$('#entrust_or_self_custom input[type="checkbox"]').each(function(){
+    		var checkValue = this.value;
+    		if(entrust_or_self_custom_arr[i]==checkValue){
+    			this.checked = true;
+    			showCustomTab(checkValue);
+    		}
+    	})
     }
 	
     //报关类型,国内,自理报关

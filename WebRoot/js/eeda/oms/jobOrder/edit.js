@@ -104,6 +104,13 @@ $(document).ready(function() {
         });
         var custom_type_str = this_custom_type.toString();
         
+        //自理报关还是委托报关
+        var  entrust_or_self_custom = [];
+        $('#entrust_or_self_custom input[type="checkbox"]:checked').each(function(){
+        	entrust_or_self_custom.push($(this).val()); 
+        });
+        var entrust_or_self_custom_str = entrust_or_self_custom.toString();
+        
         //海运
         var shipment_detail = itemOrder.buildShipmentDetail();
         var shipment_item = itemOrder.buildOceanItem();
@@ -113,10 +120,6 @@ $(document).ready(function() {
         var air_cargoDesc = itemOrder.buildCargoDescDetail();
         //陆运
         var load_detail = itemOrder.buildLoadItem();
-        //报关
-    	var chinaCustom = itemOrder.buildCustomDetail();
-    	var hkCustom = itemOrder.buildHkCustomDetail();
-    	var abroadCustom = itemOrder.buildAbroadCustomDetail();
         //保险
         var insurance_detail=itemOrder.buildInsuranceDetail();
         //费用明细，应收，应付
@@ -142,16 +145,8 @@ $(document).ready(function() {
         order.trans_clause = $("#trans_clause").val();
         order.trade_type = $("#trade_type").val();
         order.land_export_date =$('#land_export_date').val();
-        
-//        order.total_chargeRMB = chargeRMB;
-//        order.total_chargeUSD = chargeUSD;
-//        order.total_profitTotalCharge = profitTotalCharge;
-//        order.total_costRMB = costRMB;
-//        order.total_costUSD = costUSD;
-//        order.total_profitTotalCost = profitTotalCost;
-//        order.total_profitRMB = profitRMB;
-//        order.total_profitUSD = profitUSD;
-//        order.total_profitTotalRMB = profitTotalRMB;
+        //自理报关还是委托报关
+        order.entrust_or_self_custom = entrust_or_self_custom_str;
 
         //海运
         order.shipment_detail = shipment_detail;
@@ -164,11 +159,17 @@ $(document).ready(function() {
         order.land_list = load_detail;
         
         //报关
-        order.chinaCustom_self_detail = itemOrder.buildCustomSelfDetail();
-        order.chinaCustom_self_item = itemOrder.buildCustomSelfItem();
-        order.chinaCustom = chinaCustom;
-        order.hkCustom = hkCustom;
-        order.abroadCustom = abroadCustom;
+        if(custom_type_str.includes("china")){
+	        order.chinaCustom_self_detail = itemOrder.buildCustomSelfDetail();
+	        order.chinaCustom_self_item = itemOrder.buildCustomSelfItem();
+	        order.chinaCustom = itemOrder.buildCustomDetail();
+        }
+        if(custom_type_str.includes("HK/MAC")){
+        	order.hkCustom = itemOrder.buildHkCustomDetail();
+        }
+        if(custom_type_str.includes("abroad")){
+        	order.abroadCustom = itemOrder.buildAbroadCustomDetail();
+        }
         //保险
         order.insurance_detail=insurance_detail;
        //费用明细，应收，应付
