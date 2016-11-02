@@ -617,8 +617,6 @@ $(document).ready(function() {
 	$('#printDebitNoteBtn').click(function(){
 		$('#printDebitNoteBtn').attr('disabled', true);
 		//数据不足提示
-//		if(sp_name!=""){
-
 			var debit_note = $('input[name=debit_note]:checked').val();
 	    	var invoiceNo = $('#invoiceNo').val();
 	      	var itemIds=[];
@@ -631,25 +629,13 @@ $(document).ready(function() {
 	      	 });
 	    	 $.post('/jobOrder/saveDebitNote', {itemIds:itemIds.toString(),invoiceNo:invoiceNo}, function(data){
 	    		 if(data.result==true){
-	    			 if(debit_note=='debitNote'){
-	    			    	$.post('/jobOrderReport/printDebitNotePDF', {itemIds:itemIds.toString()}, function(data){
-	    			                window.open(data);
-		    			            $('#printDebitNoteBtn').attr('disabled', false);
-	    			    	}).fail(function() { 
-	    		                $.scojs_message('生成DebitNote PDF失败', $.scojs_message.TYPE_ERROR);
-	    		                $('#printDebitNoteBtn').attr('disabled', false);
-	    		              });
-	    		    	}     
-	    		    	
-    		    	if(debit_note=='Invoice'){
-    		    		$.post('/jobOrderReport/printInvoicePDF',{itemIds:itemIds.toString()},function(data){
-    		    				window.open(data);
-    				    		$('#printDebitNoteBtn').attr('disabled', false);
-    		    		}).fail(function() { 
-    		                $.scojs_message('生成Invoice PDF失败', $.scojs_message.TYPE_ERROR);
-    		                $('#printDebitNoteBtn').attr('disabled', false);
-    		              });
-    		    	}
+			    	$.post('/jobOrderReport/printDebitNotePDF', {debit_note:debit_note, itemIds:itemIds.toString()}, function(data){
+			    		   $('#printDebitNoteBtn').attr('disabled', false);
+			                window.open(data);
+			    	}).fail(function() { 
+		                $.scojs_message('生成DebitNote PDF失败', $.scojs_message.TYPE_ERROR);
+		                $('#printDebitNoteBtn').attr('disabled', false);
+		              });
 	    		 }
 	    	 },'json').fail(function() { 
 	                $.scojs_message('生成PDF失败', $.scojs_message.TYPE_ERROR);
@@ -657,5 +643,8 @@ $(document).ready(function() {
 	              });
       
 	});   
+	
+	
+	
 });
 });
