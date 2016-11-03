@@ -252,14 +252,12 @@ $(document).ready(function() {
             },
             { "data": "AMOUNT","width": "60px",
                 "render": function ( data, type, full, meta ) {
-                	if(data)
-                        var str =  parseFloat(data).toFixed(2);
-                    else
-                    	str = '';
+                	if(!data)
+                        data='';
                 	if(full.AUDIT_FLAG == 'Y'){
-                        	return '<input type="text" name="amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
+                        	return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control" disabled />';
                      }else{
-                         	return '<input type="text" name="amount" style="width:80px" value="'+str+'" class="form-control" />';
+                         	return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control" />';
 	                 }
               }
             },
