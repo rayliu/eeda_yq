@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN', './edit_doc_table', './edit_cost_table', './edit_charge_table','/plan_order_report'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN', './edit_doc_table', './edit_cost_table', './edit_charge_table'], function ($, metisMenu) { 
     $(document).ready(function() {
              	
     	//已报关行按钮状态
@@ -229,15 +229,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         })
         
         $('#printBtn').click(function(){
+        	$(this).attr('disabled', true);
         	var id = $('#order_id').val();
 	    	$.post('/jobOrderReport/printConsignmentBill', {id:id}, function(data){
-	    		if(data){
+	    			$('#printBtn').prop('disabled', false);
 	                window.open(data);
-	                
-	    		  }else{
-	               $.scojs_message('生成托运申报单海运PDF失败', $.scojs_message.TYPE_ERROR);
-	               }
-	    	}); 
+	    	},'json').fail(function() {
+	    			$('#printBtn').prop('disabled', false);
+	        		$.scojs_message('生成托运申报单PDF失败', $.scojs_message.TYPE_ERROR);
+            });
         });
         
         
