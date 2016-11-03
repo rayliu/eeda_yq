@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="海运国内合同" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="629"/>
+	<parameter name="order_id" class="java.lang.String">
+		<property name="order_id" value="$P{order_id}"/>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from job_order_trade jot where order_id = $P{order_id}]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cost_company" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cost_company_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cost_contract_number" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cost_set_out_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cost_currency" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cost_rate" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_service_company" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_service_currency" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_service_rate" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_sale_company" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_sale_currency" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_sale_rate" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_sale_set_out_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<columnHeader>
+		<band height="200" splitType="Stretch">
+			<staticText>
+				<reportElement x="228" y="53" width="50" height="20" uuid="e452a263-53cd-4ba8-9ed3-0f4f48da7125"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[合同号：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="76" width="48" height="20" uuid="ccc77593-ac6d-43b0-987f-b6737e515234"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[甲方：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="377" y="53" width="45" height="20" uuid="aad7df20-6de7-4418-b4ac-d51894e80d6d"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[日 期：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="555" height="32" uuid="63809dcb-18eb-4c70-b182-cd050a522bcb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="18" isBold="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[购  销  合  同]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="76" width="48" height="20" uuid="4db476f1-65c2-4075-84ec-c06f7e7677e2"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[乙方：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="95" width="48" height="20" uuid="cb0dba4b-695b-416f-aa5f-adf33e3112a5"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[地址：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="95" width="48" height="20" uuid="4a702177-b6a2-4dd6-9c65-0e0da52a3a46"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[地址：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="76" width="156" height="20" uuid="6695227f-4343-42c4-b60a-ba9600777157"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[珠海横琴远桥供应链管理有限公司]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="95" width="156" height="30" uuid="db20e475-9429-4eec-930b-8a0b3ee3e648"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[广东省珠海市横琴红旗村天河街30号西楼316室]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="48" y="96" width="180" height="30" uuid="72f7a808-c8f7-47bf-bf06-45acfb2add79"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[浙江省宁波市鄞州区潘火街道富强路577号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="48" y="76" width="180" height="20" uuid="c0db0905-f234-470e-9ed8-0d0d1e5f8575"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[宁波市鄞州如丰金属配件有限公司]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="125" width="30" height="20" uuid="85b2e532-7795-4918-a717-bcfb92e90e2a"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Tel：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="125" width="30" height="20" uuid="7627d9a0-84ec-485b-b958-6a16ec75e8f1"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Fax：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="125" width="72" height="20" uuid="f907916b-4552-4e9d-bc29-7cf14ca03718"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[0574-89251635]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="131" y="125" width="95" height="20" uuid="d47b8945-c4d7-4f1d-af34-d5a3a07677c7"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[0574-89251634]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="483" y="113" width="72" height="20" uuid="f44122c5-e247-490a-ad12-1daa6f4964e5"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[0756-3225900]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="382" y="125" width="70" height="20" uuid="e519fc62-cbbf-4bee-b957-668b660c4091"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[0756-3225991]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="125" width="28" height="20" uuid="c5ef53c3-1809-42aa-9a40-bb0f159f4da9"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Tel：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="454" y="125" width="28" height="20" uuid="635e5e96-cd17-46b2-8b0a-14884347cf15"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Fax：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="145" width="555" height="32" uuid="53b630d3-5bd8-4c4d-9d89-bf1808f87026"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="黑体" size="10" isBold="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[根据《中华人民共和国合同法》的规定，为明确双方的权利与义务，经双方友好协商，现达成以下条款：
+一、乙方向甲方购买以下产品:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="180" width="555" height="20" uuid="3149fc29-4d32-4485-93af-e9c1ed9b7189"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[序号	  商品名称          规格型号     单位	    数量	 单价(RMB/个)	      总金额(RMB)
+]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="176" width="555" height="1" uuid="00188bdf-8bb6-4b94-a4ae-353f17493231"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="178" width="555" height="1" uuid="05470dd3-2a98-4afa-aa84-88d8128ea875"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="402"/>
+	</detail>
+	<columnFooter>
+		<band height="200">
+			<staticText>
+				<reportElement x="0" y="6" width="555" height="20" uuid="e36ce9a9-8a19-4d03-9a25-837838b9dfdf"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[注：具体发货时间、数量凭乙方电话为准，需附本合同复印件。]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="31" width="555" height="140" uuid="387b2c83-575a-4bc4-8f86-901eb5dd450f"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[二、甲方应保证产品质量符合乙方要求，若甲方产品质量不合格应在一个月内免费调换货物。
+三、交货地点/运输费用：珠海集散点交货，运输费用乙方方承担。
+四、付结算方式及期限：每批次产品验收合格后，乙方于甲方开具该批次货物增值税发票后60天内付款。
+五、产品价格：产品价格若发生变化，甲方应在价格调整的30天前书面通知乙方，经双方经行协商一致后签订《调价协议》
+              后按调整后单价交易。
+六、违约责任：1.除不可抗力外，任何一方不得违反本合同条款。
+              2.如发生交货日期延迟，乙方按延误天数向甲方收取该批货款千分之五的违约金；乙方不得拖欠甲方货款，
+	      如乙方未按期支付货款，按延误天数向甲方支付该批货款千分之五的违约金。
+七、争议的解决：凡因执行本合同所发生的争议，或与本合同有关的一切争议，双方应通过友好协商解决。如果双方协商
+		不能解决，依照《中华人民共和 国合同法》，由双方认可的仲裁部门解决或向人民法院起诉。
+本合同一式两份，双方各执一份，具有同等法律效力。合同附件与本合同具有同等法律效力。]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="178" width="236" height="20" uuid="35382747-b0fb-4798-b594-d610161afc97"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[宁波市鄞州如丰金属配件有限公司]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="331" y="178" width="224" height="20" uuid="ab93efb8-fd12-4fb9-8347-37c283f8f4c4"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[珠海横琴远桥供应链管理有限公司]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="555" height="1" uuid="42ba4572-0767-478b-a479-a6b1e3a694b5"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="3" width="555" height="1" uuid="e4cbe086-a726-44f3-b6e8-1fe362d7fc76"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="26" width="555" height="1" uuid="8d01561b-f6b0-4bb9-9133-06e0813e6608"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="28" width="555" height="1" uuid="92064dd2-e996-4f52-a8aa-0697622d3571"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+</jasperReport>
