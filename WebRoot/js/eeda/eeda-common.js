@@ -346,7 +346,7 @@ eeda.refreshUrl = refreshUrl;
           var hiddenField = eeda._hiddenField;
           inputField.val($(this).text());//名字
           tableFieldList.hide();
-          var dataId = $(this).attr('dataId');
+          var dataId = $(this).find('a').attr('dataId');
           hiddenField.val(dataId);//id
 
           var td = inputField.parent().parent();
