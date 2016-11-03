@@ -213,5 +213,19 @@ public class JobOrderReportController extends Controller {
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	
+    //打印托运申报单printConsignmentBill
+	public void printConsignmentBill(){
+		String order_id = getPara("order_id");
+		String fileName = "/report/joborder/consignmentBill.jasper";
+		String outFileName = "/download/托运申报单 PDF";
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_id;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
+	
+	
 	
 }
