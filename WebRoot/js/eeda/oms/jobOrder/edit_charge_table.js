@@ -175,9 +175,9 @@ $(document).ready(function() {
 			{"data": "ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
 			    	if(data)
-			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
+			    		return '<input type="checkbox" class="checkBoxOfChargeTable" style="width:30px">';
 			    	else 
-			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
+			    		return '<input type="checkbox" style="width:30px" disabled>';
 			    }
 			},
             { "width": "110px",
@@ -672,6 +672,14 @@ $(document).ready(function() {
 		 }
 	 });
 	
+	
+	//全选
+    $('#AllCheckOfChargeTable').click(function(){
+	    $(".checkBoxOfChargeTable").prop("checked",this.checked);
+    });
+    $("#charge_table").on('click','.checkBoxOfChargeTable',function(){
+		  $("#AllCheckOfChargeTable").prop("checked",$(".checkBoxOfChargeTable").length == $(".checkBoxOfChargeTable:checked").length ? true : false);
+    });
 	
 	
   });

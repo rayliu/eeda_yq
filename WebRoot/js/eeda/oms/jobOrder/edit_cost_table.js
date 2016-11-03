@@ -100,7 +100,7 @@ $(document).ready(function() {
 			{"data": "ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
 			    	if(data)
-			    		return '<input type="checkbox" style="width:30px">';
+			    		return '<input type="checkbox" style="width:30px" class="checkBoxOfCostTable" >';
 			    	else 
 			    		return '<input type="checkbox" style="width:30px" disabled>';
 			    }
@@ -514,7 +514,16 @@ $(document).ready(function() {
 //          totalChargeUSD=0;
 //         }
 //    
-//    var costRMB = $('[name=costRMB]').text();    		        
+//    var costRMB = $('[name=costRMB]').text();    		
+    
+    
+    //全选
+    $('#AllCheckOfCostTable').click(function(){
+	    $(".checkBoxOfCostTable").prop("checked",this.checked);
+    });
+    $("#cost_table").on('click','.checkBoxOfCostTable',function(){
+		  $("#AllCheckOfCostTable").prop("checked",$(".checkBoxOfCostTable").length == $(".checkBoxOfCostTable:checked").length ? true : false);
+    });
 
   });
 });
