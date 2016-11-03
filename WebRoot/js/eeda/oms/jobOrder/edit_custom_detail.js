@@ -115,7 +115,6 @@ $(document).ready(function() {
 	    })
     }
     
-    console.log(entrust_or_self_custom_str)
     var entrust_or_self_custom_arr = entrust_or_self_custom_str.split(",");
     for(var i=0;i<entrust_or_self_custom_arr.length;i++){
     	$('#entrust_or_self_custom input[type="checkbox"]').each(function(){

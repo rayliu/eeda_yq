@@ -179,12 +179,19 @@ $(document).ready(function() {
             		return '<input type="text" name="custom_price" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "customNumber", "width": "180px",
+            { "data": "number", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="customNumber" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="custom_number" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
+            },
+            { "data": "CUSTOM_AMOUNT", "width": "180px","className":"currency_total_amount",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="custom_amount" value="'+data+'" class="form-control" style="width:200px" disabled/>';
+            	}
             },
             { "data": "CUSTOM_CURRENCY", "width": "60px",
             	"render": function ( data, type, full, meta ) {
@@ -208,11 +215,11 @@ $(document).ready(function() {
             		return '<input type="text" name="custom_rate" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "CUSTOM_AMOUNT", "width": "180px",
+            { "data": "CUSTOM_AMOUNT_CNY", "width": "180px","className":"cny_total_amount",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="custom_amount" value="'+data+'" class="form-control" style="width:200px" disabled/>';
+            		return '<input type="text" name="custom_amount_cny" value="'+data+'" class="form-control" style="width:200px" disabled/>';
             	}
             },
             { "data": "CURRENCY_NAME", "visible": false,
@@ -244,7 +251,7 @@ $(document).ready(function() {
     }
     
     if($('#trade_cost_table td').length>1){
-    	var col = [4, 7, 10, 11, 13, 18];
+    	var col = [4, 7, 10, 11, 13, 16, 19];
     	for (var i=0;i<col.length;i++){
 	    	var arr = cargoTable.column(col[i]).data();
     		$('#trade_cost_table tfoot').find('th').eq(col[i]).html(
@@ -263,9 +270,9 @@ $(document).ready(function() {
     	var row = $(this).parent().parent();
     	var count = $(row.find('[name=number]')).val();
     	if(count==''){
-    		$(row.find('[name=customNumber]')).val('');
+    		$(row.find('[name=custom_number]')).val('');
     	}else if(!isNaN(count)){
-    		$(row.find('[name=customNumber]')).val(count);
+    		$(row.find('[name=custom_number]')).val(count);
     	}
     	
     	var total = 0;
@@ -278,9 +285,9 @@ $(document).ready(function() {
 		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html(total);
     })
     
-    $('#trade_cost_table').on('keyup', '[name=customNumber]', function(){
+    $('#trade_cost_table').on('keyup', '[name=custom_number]', function(){
     	var row = $(this).parent().parent();
-    	var customNumber = $(row.find('[name=customNumber]')).val();
+    	var customNumber = $(row.find('[name=custom_number]')).val();
     	if(customNumber==''){
     		$(row.find('[name=number]')).val('');
     	}else if(!isNaN(customNumber)){
@@ -291,12 +298,15 @@ $(document).ready(function() {
     $('#trade_cost_table').on('keyup', '[name=number],[name=custom_price]', function(){
     	var row = $(this).parent().parent();
     	var custom_price = $(row.find('[name=custom_price]')).val();
+    	var custom_rate = $(row.find('[name=custom_rate]')).val();
     	var count = $(row.find('[name=number]')).val();
     	if(custom_price==''||count==''){
     		$(row.find('[name=custom_amount]')).val('');
+    		$(row.find('[name=custom_amount_cny]')).val('');
     	}else if(!isNaN(custom_price)&&!isNaN(count)){
     		var custom_amount = parseFloat(custom_price*count);
     		$(row.find('[name=custom_amount]')).val(custom_amount.toFixed(4));
+    		
     		var total = 0;
     		$('#trade_cost_table [name=custom_amount]').each(function(){
     			var a = this.value;
@@ -304,7 +314,7 @@ $(document).ready(function() {
     				total+=parseFloat(a);
     			}
     		})
-    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(18).html(total);
+    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(16).html(total);
     	}
     })
 

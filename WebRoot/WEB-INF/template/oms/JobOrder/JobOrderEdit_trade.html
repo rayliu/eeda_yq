@@ -39,8 +39,8 @@
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
                                         id:'trade_cost_table',
-                                        style:'width:4000px',
-                                        headers:['','供应商','商品名称','规格型号','数量','单位','单价(CNY)','国内货值(CNY)','增值税率','退税率','退税金额','调整后退税金额','调整后单价','调整后总价','报关单价','数量','报关币制','报关汇率','报关金额','CURRENCY_NAME','SP_NAME'],
+                                        style:'width:4200px',
+                                        headers:['','供应商','商品名称','规格型号','数量','单位','单价(CNY)','国内货值(CNY)','增值税率','退税率','退税金额','调整后退税金额','调整后单价','调整后总价','报关单价','数量','报关金额','报关币制','报关汇率','报关金额(CNY)','CURRENCY_NAME','SP_NAME'],
                                         field_list:[
                                         '',
                                         'sp',
@@ -58,9 +58,10 @@
 										'adjusted_total_price',
 										'custom_price',
 										'number',
+										'custom_amount',
 										'custom_currency',
 										'custom_rate',
-										'custom_amount',
+										'custom_amount_cny',
 										'CURRENCY_NAME',
 										'SP_NAME'
                                             ],
