@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="30"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -31,14 +31,13 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	jo.id,jor.sp_id,jor.currency_total_amount currency_total_amount,jor.invoice_no invoice_no,jo.pieces jo_price,jo.gross_weight jo_gross_weight,jor.total_amount total_amount,
+	jo.id,jor.sp_id,jor.currency_total_amount currency_total_amount,jor.invoice_no invoice_no,jo.gross_weight jo_gross_weight,jor.total_amount total_amount,jor.price jor_price,
   jor.exchange_rate exchange_rate,jor.amount amount, IFNULL(pr.company_name_eng,pr.company_name) companyName,IFNULL(pr.contact_person_eng,pr.contact_person) personEng,
 	f.name_eng charge_name_eng,
 	u. NAME unit_name,
 	c. NAME currency_name,
 	josi.gross_weight,
-	josi.pieces,
-
+	CONCAT(CAST(jo.pieces AS CHAR),' ','CARTONS') jo_pieces,
 	josi.container_no,
 	jos.order_id,
 	jos.hbl_no,
@@ -132,11 +131,11 @@ AND  $X{IN,jor.id,order_id}]]>
 	<field name="invoice_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="jo_price" class="java.lang.Integer"/>
 	<field name="jo_gross_weight" class="java.lang.Double"/>
 	<field name="total_amount" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="jor_price" class="java.lang.Double"/>
 	<field name="exchange_rate" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -151,9 +150,7 @@ AND  $X{IN,jor.id,order_id}]]>
 	<field name="gross_weight" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pieces" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="jo_pieces" class="java.lang.String"/>
 	<field name="container_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -221,13 +218,20 @@ AND  $X{IN,jor.id,order_id}]]>
 				<reportElement x="8" y="-12" width="130" height="42" uuid="95678e8d-70ad-4f35-89c4-5191d5be53d6"/>
 				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
 			</image>
-			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="20" y="41" width="520" height="24" uuid="3004c742-469c-42b2-8587-82f32c8abe72"/>
+			<staticText>
+				<reportElement x="20" y="33" width="520" height="22" uuid="6ecdfc2f-53aa-420f-8295-d340b20a5413"/>
 				<textElement textAlignment="Center">
 					<font size="16"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{companyName}]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[遠橋供應鏈（香港）有限公司]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="55" width="520" height="24" uuid="f2a0b3ca-84a8-4f44-b12a-530799ddcead"/>
+				<textElement textAlignment="Center">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[ENKYO SCM (H.K.) CO., LIMITED]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -294,7 +298,7 @@ AND  $X{IN,jor.id,order_id}]]>
 			</staticText>
 			<staticText>
 				<reportElement x="329" y="148" width="69" height="15" uuid="1ef1c68b-1f7e-4b65-8feb-91d5a3c07129"/>
-				<text><![CDATA[Qty(件):]]></text>
+				<text><![CDATA[Qty:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="13" y="197" width="127" height="17" uuid="7aa6e948-64ac-4ce6-8313-135e39595e01"/>
@@ -381,8 +385,8 @@ AND  $X{IN,jor.id,order_id}]]>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="396" y="149" width="30" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
-				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
+				<reportElement x="396" y="149" width="157" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
+				<textFieldExpression><![CDATA[$F{jo_pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="0" width="285" height="24" uuid="c706ac6c-9eab-42a2-8ea0-83bb9932e437"/>
@@ -431,7 +435,7 @@ AND  $X{IN,jor.id,order_id}]]>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{jo_price}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jor_price}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="262" y="2" width="15" height="18" uuid="3a5eba6e-4507-4b1b-9722-1623735a3c75"/>
@@ -532,7 +536,7 @@ AND  $X{IN,jor.id,order_id}]]>
 				<text><![CDATA[账户名称：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="97" width="153" height="20" uuid="f143d8af-bc0f-4b0f-943f-704902dd8950"/>
+				<reportElement x="13" y="95" width="153" height="20" uuid="f143d8af-bc0f-4b0f-943f-704902dd8950"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -565,13 +569,16 @@ AND  $X{IN,jor.id,order_id}]]>
 				<reportElement x="305" y="3" width="55" height="20" uuid="9ec383c7-9d10-4030-85bb-e4433e8b3c70"/>
 				<textFieldExpression><![CDATA[$F{total_HKD}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="339" y="194" width="214" height="20" uuid="d1bb7d22-324e-4989-ae7e-8e387d9bc9fa"/>
+			<staticText>
+				<reportElement x="329" y="194" width="224" height="20" uuid="5b9627c8-f98a-49c2-88c5-aa22ebf1f6ba"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{companyName}]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[ENKYO SCM (H.K.) CO., LIMITED]]></text>
+			</staticText>
+			<line>
+				<reportElement x="14" y="112" width="57" height="1" uuid="1dff45dc-9d1f-4654-ba6a-a5b8e74634ea"/>
+			</line>
 		</band>
 	</summary>
 </jasperReport>
