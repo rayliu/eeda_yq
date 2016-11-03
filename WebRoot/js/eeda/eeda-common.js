@@ -451,9 +451,9 @@ eeda.refreshUrl = refreshUrl;
 			  var row = inputField.parent().parent().parent();
 			  var currency_rate = $(this).attr('currency_rate');
               row.find('.currency_rate input').val(currency_rate);//选择币制则填入汇率
-              var total = row.find('[name=total_amount]').val();
-              if(currency_rate!=''&&total!=''){
-            	  row.find('[name=currency_total_amount]').val(currency_rate*total);//计算人民币金额
+              var total = row.find('.currency_total_amount input').val();//此币种的金额
+              if(currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
+            	  row.find('.cny_total_amount input').val(currency_rate*total);//转为人民币后的金额
               }
 		  });
 		  
@@ -469,10 +469,10 @@ eeda.refreshUrl = refreshUrl;
 
                   var row = inputField.parent().parent().parent();
                   var currency_rate = $a.attr('currency_rate');
-                  row.find('.currency_rate input').val(currency_rate);
-                  var total = row.find('[name=total_amount]').val();
-                  if(currency_rate!=''&&total!=''){
-                	  row.find('[name=currency_total_amount]').val(currency_rate*total);//计算人民币金额
+                  row.find('.currency_rate input').val(currency_rate);//选择币制则填入汇率
+                  var total = row.find('.currency_total_amount input').val();//此币种的金额
+                  if(currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
+                	  row.find('.cny_total_amount input').val(currency_rate*total);//转为人民币后的金额
                   }
               }
           });

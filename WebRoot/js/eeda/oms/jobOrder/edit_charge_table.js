@@ -398,7 +398,7 @@ $(document).ready(function() {
                   }
                 }
             },
-            { "data": "TOTAL_AMOUNT", "width": "60px",
+            { "data": "TOTAL_AMOUNT", "width": "60px","className":"currency_total_amount",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -424,7 +424,7 @@ $(document).ready(function() {
 	                }
                 }
             },
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px",
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px","className":"cny_total_amount",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
