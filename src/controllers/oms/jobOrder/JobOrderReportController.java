@@ -215,7 +215,7 @@ public class JobOrderReportController extends Controller {
 	
     //打印托运申报单printConsignmentBill
 	public void printConsignmentBill(){
-		String order_id = getPara("order_id");
+		String order_id = getPara("id");
 		String fileName = "/report/joborder/consignmentBill.jasper";
 		String outFileName = "/download/托运申报单 PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();

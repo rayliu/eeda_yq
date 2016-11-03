@@ -230,8 +230,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         
         $('#printBtn').click(function(){
         	var id = $('#order_id').val();
-        	var order_id = $("#order_id").val();
-	    	$.post('/jobOrderReport/printConsignmentBill', {order_id:order_id}, function(data){
+	    	$.post('/jobOrderReport/printConsignmentBill', {id:id}, function(data){
 	    		if(data){
 	                window.open(data);
 	                

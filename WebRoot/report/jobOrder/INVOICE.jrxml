@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="30"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -221,7 +221,7 @@ AND  $X{IN,jor.id,order_id}]]>
 			<staticText>
 				<reportElement x="20" y="33" width="520" height="22" uuid="6ecdfc2f-53aa-420f-8295-d340b20a5413"/>
 				<textElement textAlignment="Center">
-					<font size="16"/>
+					<font fontName="黑体" size="16" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[遠橋供應鏈（香港）有限公司]]></text>
 			</staticText>
@@ -517,28 +517,28 @@ AND  $X{IN,jor.id,order_id}]]>
 			<staticText>
 				<reportElement x="14" y="171" width="154" height="20" uuid="c2745b55-21a5-4968-87df-d544ce9de735"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[开户银行：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="14" y="148" width="153" height="20" uuid="b49158ea-f904-46f7-93af-29aef9333601"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[账    号：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="14" y="123" width="153" height="20" uuid="f77458ed-3298-4aae-8acc-ceaeaf327496"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[账户名称：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="13" y="95" width="153" height="20" uuid="f143d8af-bc0f-4b0f-943f-704902dd8950"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[银行信息]]></text>
 			</staticText>
