@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="出口货物托运申报单" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="order_id" class="java.lang.String">
+		<property name="order_id" value="$P{order_id}"/>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from job_order_trade jot where order_id = $P{order_id}]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cost_company" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cost_company_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cost_contract_number" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cost_set_out_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cost_currency" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cost_rate" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_service_company" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_service_currency" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_service_rate" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_sale_company" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_sale_currency" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_sale_rate" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="charge_sale_set_out_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<columnHeader>
+		<band height="262" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="82" width="45" height="20" uuid="ccc77593-ac6d-43b0-987f-b6737e515234"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[托运日期]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="82" width="62" height="20" uuid="aad7df20-6de7-4418-b4ac-d51894e80d6d"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[托运单位编号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="12" width="555" height="55" uuid="63809dcb-18eb-4c70-b182-cd050a522bcb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="18" isBold="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[中国珠海外轮代理有限公司
+  出口货物托运申报单]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="110" width="45" height="20" uuid="4db476f1-65c2-4075-84ec-c06f7e7677e2"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[运往地点]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="184" y="110" width="25" height="20" uuid="cb0dba4b-695b-416f-aa5f-adf33e3112a5"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[船名]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="110" width="35" height="20" uuid="c0db0905-f234-470e-9ed8-0d0d1e5f8575"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[船公司]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="169" width="35" height="20" uuid="85b2e532-7795-4918-a717-bcfb92e90e2a"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[收货人]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="199" width="35" height="20" uuid="7627d9a0-84ec-485b-b958-6a16ec75e8f1"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[通知人]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="221" width="555" height="40" uuid="3149fc29-4d32-4485-93af-e9c1ed9b7189"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[   唛头/箱号	   包装    件数          货     名          净重      毛重         尺码
+                                                        (公斤)    (公斤)        (CBM)
+]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="221" width="555" height="1" uuid="05470dd3-2a98-4afa-aa84-88d8128ea875"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="158" y="64" width="237" height="1" uuid="0a4e50a3-c109-4ddf-8310-10a12c007ae4"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="399" y="94" width="156" height="1" uuid="65d6b771-14a2-4239-822d-a5f299643ff1"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="38" y="121" width="140" height="1" uuid="a0af5ba0-50b7-4889-8c4a-6c8dcc39d638"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="209" y="122" width="140" height="1" uuid="efdd6be8-1c55-41ee-81d5-19454eefd952"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="399" y="123" width="156" height="1" uuid="f98606e5-700b-477e-9d0f-2a03bc5a6364"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="138" width="35" height="20" uuid="98970e3a-d9c0-4748-8323-31d432bcd715"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[托运人]]></text>
+			</staticText>
+			<line>
+				<reportElement x="34" y="150" width="315" height="1" uuid="53051ef1-9050-41ca-9c4a-862b4716c6ce"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="399" y="152" width="156" height="1" uuid="298b0ade-640f-42bb-b4b7-190309bf69ad"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="395" y="212" width="160" height="1" uuid="e25d1c38-96b4-4c03-8bca-99cf56aa1d30"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="398" y="182" width="157" height="1" uuid="ad62c85a-e049-474b-b500-8eca4ff2ca6a"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="373" y="171" width="22" height="20" uuid="3d528e50-f4d6-4fc9-b12b-e9b802f76c8b"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[电话]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="373" y="200" width="22" height="20" uuid="87c03649-1cf8-4db2-a1f3-e986d0c2242c"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[电话]]></text>
+			</staticText>
+			<line>
+				<reportElement x="34" y="181" width="315" height="1" uuid="d1de3d27-8b7d-4701-85b0-8ece3227d037"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="34" y="211" width="315" height="1" uuid="2e4c7809-fd9d-4416-89cd-89e26035d4d6"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="373" y="140" width="22" height="20" uuid="25ae2102-2756-4467-b2cb-bf5dcc29406a"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[电话]]></text>
+			</staticText>
+			<line>
+				<reportElement x="86" y="221" width="1" height="40" uuid="0f678b04-4514-4b62-9f0b-54e22e50fee5"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="261" width="555" height="1" uuid="c0508e38-9a0a-4ec7-b6c3-360505901855"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="134" y="221" width="1" height="40" uuid="b2795378-054d-4c87-a569-b6735db4d773"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="185" y="221" width="1" height="40" uuid="9f9098ad-0356-4b3d-a0d4-bb4a28ebecb6"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="334" y="221" width="1" height="40" uuid="f4175b73-c11b-4838-b8c8-cf287aeea39a"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="394" y="221" width="1" height="40" uuid="11db5e96-c100-4f9e-94ed-cdb7f274a51f"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="450" y="221" width="1" height="40" uuid="3aba4902-97b5-4d30-9c83-2d23cbbe8242"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="410"/>
+	</detail>
+	<columnFooter>
+		<band height="130">
+			<staticText>
+				<reportElement x="0" y="1" width="555" height="20" uuid="e36ce9a9-8a19-4d03-9a25-837838b9dfdf"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[            合计                 件                             公斤        公斤]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="104" height="20" uuid="35382747-b0fb-4798-b594-d610161afc97"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[  运费付款方式]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="427" y="78" width="128" height="20" uuid="ab93efb8-fd12-4fb9-8347-37c283f8f4c4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ (申请单位盖章/签名)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="e4cbe086-a726-44f3-b6e8-1fe362d7fc76"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="20" width="555" height="1" uuid="92064dd2-e996-4f52-a8aa-0697622d3571"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="22" y="21" width="1" height="59" uuid="c16c1833-6b1e-4080-9bb9-0996c3cc0a21"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="21" width="555" height="59" uuid="387b2c83-575a-4bc4-8f86-901eb5dd450f"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ 特
+ 约
+ 事
+ 项]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="78" width="555" height="1" uuid="f2406c81-c24d-4930-83c6-2f832433204e"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="426" y="21" width="1" height="80" uuid="f1e50634-23b9-4b37-bca0-deff53aa0f5f"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="233" y="80" width="1" height="21" uuid="66207f52-68a8-4619-aa53-bb53140e1afe"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="104" y="78" width="1" height="23" uuid="96126019-6a0e-41e6-98a8-2a4b4646f3c6"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="100" width="555" height="1" uuid="3d080ad0-dba6-431a-bcf8-55680f249632"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="104" y="80" width="129" height="20" uuid="957156fa-a82c-4813-ad4d-2cba9e5d1805"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[  到付、预付、月结]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="233" y="80" width="60" height="20" uuid="63c19fd6-44b7-40c8-bd25-7b19c6aeafdf"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[ 提单正本]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="80" width="14" height="20" uuid="38ac95d4-d4f6-47e1-b91b-930d47ad2e99"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[份]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="412" y="80" width="14" height="20" uuid="8b1ad695-45c4-4fe5-b820-496b8a0d0b61"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[份]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="332" y="80" width="50" height="20" uuid="d0ef5956-a7d6-4cb7-8f13-be880ef7ceaa"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[，副本]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="178" y="110" width="195" height="20" uuid="32443cd7-cbd7-4efb-8dce-11a38f4a909e"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[(凡有危险物品，请先向港监申报)]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+</jasperReport>
