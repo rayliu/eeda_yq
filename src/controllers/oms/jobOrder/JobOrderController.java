@@ -38,6 +38,7 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
+import org.eclipse.jetty.util.log.Log;
 
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
@@ -1020,10 +1021,9 @@ public class JobOrderController extends Controller {
     		String strAry[] = docs.split(",");
 	        for(int i=0;i<strAry.length;i++){
 	        	
-	        	String filePath = getRequest().getServletContext().getRealPath("/")+"\\upload\\doc\\"+strAry[i];
+	        	String filePath = getRequest().getServletContext().getRealPath("/")+"/upload/doc/"+strAry[i];
 	            File file = new File(filePath);
 	            if (file.exists() && file.isFile()) {
-	            	
 	            	EmailAttachment attachment = new EmailAttachment();
 	            	attachment.setPath(filePath);  
 	            	attachment.setDisposition(EmailAttachment.ATTACHMENT); 

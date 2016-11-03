@@ -103,8 +103,15 @@ $(document).ready(function() {
         var bccEmail =  $('#bccEmail').val().trim();
     	var title = $('#emailTitle').val().trim();
     	var content = $('#emailContent').val().trim();
+
+        $.blockUI({
+            baseZ: 10000,
+            message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在发送...</h4>' 
+        });
+
     	$.post('/jobOrder/sendMail', {order_id:order_id,mailTitle:title,email:email,ccEmail:ccEmail,bccEmail:bccEmail,mailContent:content,docs:docs.toString()}, function(data){
     		$('#confirmSendBtn').attr("disabled",false);
+            $.unblockUI();
     		if(data.result==true){
 	        	 $.scojs_message('发送邮件成功', $.scojs_message.TYPE_OK);
 	        	 itemOrder.refleshEmailTable(order_id);
@@ -114,6 +121,7 @@ $(document).ready(function() {
     	},'json').fail(function() {
     		 $('#confirmSendBtn').attr("disabled",false);
         	 $.scojs_message('发送邮件时出现未知错误，请查看邮箱是否填错!', $.scojs_message.TYPE_ERROR);
+             $.unblockUI();
         });
     })
     //------------事件处理,email_table
