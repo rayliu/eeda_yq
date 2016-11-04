@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="104"/>
-	<property name="ireport.y" value="355"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="47"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -438,7 +438,7 @@ where jos.order_id=$P{order_id}]]>
 				<textFieldExpression><![CDATA[$F{SONO}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="287" y="132" width="266" height="20" uuid="2901dd2b-e118-4770-baea-1ac1e76be9f5"/>
+				<reportElement x="287" y="133" width="266" height="20" uuid="2901dd2b-e118-4770-baea-1ac1e76be9f5"/>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -535,22 +535,8 @@ where jos.order_id=$P{order_id}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{booking_mark}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="287" y="96" width="100" height="20" uuid="6a0d42a0-367b-4429-8b83-1d96ae4bfa3d"/>
-				<textElement>
-					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{mbl_no}?$F{mbl_no}:$F{hbl_no}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="228" y="96" width="60" height="20" uuid="11a900b1-fa12-497c-8785-46208cd2db34"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[  提单类型：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="228" y="130" width="60" height="20" uuid="f1c58269-faae-4a40-b148-2a2c322441b2"/>
+				<reportElement x="227" y="132" width="61" height="20" uuid="f1c58269-faae-4a40-b148-2a2c322441b2"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
