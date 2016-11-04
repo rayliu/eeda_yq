@@ -83,29 +83,31 @@ public class DbUtils {
 	        String master_order_id, Class<?> clazz,
 	        String master_col_name) 
 			throws InstantiationException, IllegalAccessException {
-    	for (Map<String, String> rowMap : itemList) {//获取每一行
-    		Model<?> model = (Model<?>) clazz.newInstance();
-    		
-    		String rowId = rowMap.get("id");
-    		String action = rowMap.get("action");
-    		if(StringUtils.isEmpty(rowId)){
-    			if(!"DELETE".equals(action)){
-					setModelValues(rowMap, model);
-	    			model.set(master_col_name, master_order_id);
-	    			model.save();	
-    			}
-    		}else{
-    				if("DELETE".equals(action)  ){//delete
-        				Model<?> deleteModel = model.findById(rowId);
-            			deleteModel.delete();
-            		}else{//UPDATE
-            			Model<?> updateModel = model.findById(rowId);
-            			setModelValues(rowMap, updateModel);
-            			updateModel.update();
-            		}
-    		}
-    			
+		if(itemList!=null){
+	    	for (Map<String, String> rowMap : itemList) {//获取每一行
+	    		Model<?> model = (Model<?>) clazz.newInstance();
+	    		
+	    		String rowId = rowMap.get("id");
+	    		String action = rowMap.get("action");
+	    		if(StringUtils.isEmpty(rowId)){
+	    			if(!"DELETE".equals(action)){
+						setModelValues(rowMap, model);
+		    			model.set(master_col_name, master_order_id);
+		    			model.save();	
+	    			}
+	    		}else{
+	    				if("DELETE".equals(action)  ){//delete
+	        				Model<?> deleteModel = model.findById(rowId);
+	            			deleteModel.delete();
+	            		}else{//UPDATE
+	            			Model<?> updateModel = model.findById(rowId);
+	            			setModelValues(rowMap, updateModel);
+	            			updateModel.update();
+	            		}
+	    		}
+			}
 		}
+    	
 	}
 	
 	
@@ -249,28 +251,28 @@ public class DbUtils {
 	//无model,db方式增删改
 	public static void handleList(List<Map<String, String>> itemList,String table,
 			String master_order_id,String master_col_name){
-		for (Map<String, String> rowMap : itemList) {//获取每一行
-			
-			String rowId = rowMap.get("id");
-			String action = rowMap.get("action");
-			if(StringUtils.isEmpty(rowId)){
-				if(!"DELETE".equals(action)){
-					Record r = new Record();
-					r.set(master_col_name, master_order_id);
-					setModelValues(rowMap, r, table);
-					Db.save(table, r);	
-				}
-			}else{
-				if("DELETE".equals(action)  ){//delete
-					Record r1 = Db.findById(table,rowId);
-					Db.delete(table, r1);
-				}else{//UPDATE
-					Record r2 = Db.findById(table,rowId);
-					setModelValues(rowMap, r2, table);
-					Db.update(table,r2);
+		if(itemList!=null){
+			for (Map<String, String> rowMap : itemList) {//获取每一行
+				String rowId = rowMap.get("id");
+				String action = rowMap.get("action");
+				if(StringUtils.isEmpty(rowId)){
+					if(!"DELETE".equals(action)){
+						Record r = new Record();
+						r.set(master_col_name, master_order_id);
+						setModelValues(rowMap, r, table);
+						Db.save(table, r);	
+					}
+				}else{
+					if("DELETE".equals(action)  ){//delete
+						Record r1 = Db.findById(table,rowId);
+						Db.delete(table, r1);
+					}else{//UPDATE
+						Record r2 = Db.findById(table,rowId);
+						setModelValues(rowMap, r2, table);
+						Db.update(table,r2);
+					}
 				}
 			}
-			
 		}
 	}
 	

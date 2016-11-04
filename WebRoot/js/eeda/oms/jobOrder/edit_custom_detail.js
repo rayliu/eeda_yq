@@ -23,7 +23,7 @@ $(document).ready(function() {
             $('#chinaDetail').addClass('active in');
             
             $('#hkTab').parent().removeClass('active in');
-            $('#hkTab').parent().removeClass('active in');
+            $('#abroadTab').parent().removeClass('active in');
             $('#hkDetail').removeClass('active in');
             $('#abroadDetail').removeClass('active in');
         }else if(service=='HK/MAC'){
@@ -90,7 +90,7 @@ $(document).ready(function() {
         if($(this).prop('checked')){
             showServiceTab(checkValue);
         }else{
-            hideServiceTab(checkValue);
+		   	hideServiceTab(checkValue);
         }
     });
     

@@ -90,7 +90,7 @@ $(document).ready(function() {
         var profitTotalRMB =$('#profit_table').find('[name=profitTotalRMB]').text().replace('CNY ','');
         
         
-        //运输方式checkbox遍历取值
+        //服务项目checkbox遍历取值
         var transport_type = [];
         $('#transport_type input[type="checkbox"]:checked').each(function(){
         	transport_type.push($(this).val()); 
@@ -111,21 +111,6 @@ $(document).ready(function() {
         });
         var entrust_or_self_custom_str = entrust_or_self_custom.toString();
         
-        //海运
-        var shipment_detail = itemOrder.buildShipmentDetail();
-        var shipment_item = itemOrder.buildOceanItem();
-        //空运
-        var air_detail = itemOrder.buildAirDetail();
-        var air_item = itemOrder.buildAirItem();
-        var air_cargoDesc = itemOrder.buildCargoDescDetail();
-        //陆运
-        var load_detail = itemOrder.buildLoadItem();
-        //保险
-        var insurance_detail=itemOrder.buildInsuranceDetail();
-        //费用明细，应收，应付
-        var charge_list = itemOrder.buildChargeDetail();
-        var chargeCost_list = itemOrder.buildChargeCostDetail();
-        
         var order={}
         order.id = $('#order_id').val();
         order.plan_order_id = $('#plan_order_id').val();
@@ -145,44 +130,62 @@ $(document).ready(function() {
         order.trans_clause = $("#trans_clause").val();
         order.trade_type = $("#trade_type").val();
         order.land_export_date =$('#land_export_date').val();
+        //报关类型
+        order.custom_type = custom_type_str;
         //自理报关还是委托报关
         order.entrust_or_self_custom = entrust_or_self_custom_str;
 
-        //海运
-        order.shipment_detail = shipment_detail;
-        order.shipment_list = shipment_item;
-        //空运
-        order.air_detail = air_detail;
-        order.air_list = air_item;
-        order.air_cargoDesc = air_cargoDesc;
-        //陆运
-        order.land_list = load_detail;
+        if(transport_type_str.includes("ocean")){
+	        //海运
+	        order.shipment_detail = itemOrder.buildShipmentDetail();
+	        order.shipment_list = itemOrder.buildOceanItem();
+        }
+        if(transport_type_str.includes("air")){
+	        //空运
+	        order.air_detail = itemOrder.buildAirDetail();
+	        order.air_list = itemOrder.buildAirItem();
+	        order.air_cargoDesc = itemOrder.buildCargoDescDetail();
+        }
+        if(transport_type_str.includes("land")){
+	        //陆运
+	        order.land_list = itemOrder.buildLoadItem();
+        }
+        if(transport_type_str.includes("custom")){
+	        //报关
+	        if(custom_type_str.includes("china")){
+	        	if(entrust_or_self_custom_str.includes("self_custom")){
+			        order.chinaCustom_self_detail = itemOrder.buildCustomSelfDetail();
+			        order.chinaCustom_self_item = itemOrder.buildCustomSelfItem();
+	        	}
+	        	if(entrust_or_self_custom_str.includes("entrust_custom")){
+	        		order.chinaCustom = itemOrder.buildCustomDetail();
+	        	}
+	        }
+	        if(custom_type_str.includes("HK/MAC")){
+	        	order.hkCustom = itemOrder.buildHkCustomDetail();
+	        }
+	        if(custom_type_str.includes("abroad")){
+	        	order.abroadCustom = itemOrder.buildAbroadCustomDetail();
+	        }
+        }
+        if(transport_type_str.includes("insurance")){
+	        //保险
+	        order.insurance_detail = itemOrder.buildInsuranceDetail();
+        }
         
-        //报关
-        if(custom_type_str.includes("china")){
-	        order.chinaCustom_self_detail = itemOrder.buildCustomSelfDetail();
-	        order.chinaCustom_self_item = itemOrder.buildCustomSelfItem();
-	        order.chinaCustom = itemOrder.buildCustomDetail();
+        if(transport_type_str.includes("trade")){
+	        //贸易
+	        order.trade_detail = itemOrder.buildTradeDetail();
+	        order.trade_cost = itemOrder.buildTradeCostItem();
+	        order.trade_service = itemOrder.buildTradeServiceItem();
+	        order.trade_sale = itemOrder.buildTradeSaleItem();
         }
-        if(custom_type_str.includes("HK/MAC")){
-        	order.hkCustom = itemOrder.buildHkCustomDetail();
-        }
-        if(custom_type_str.includes("abroad")){
-        	order.abroadCustom = itemOrder.buildAbroadCustomDetail();
-        }
-        //保险
-        order.insurance_detail=insurance_detail;
-       //费用明细，应收，应付
-        order.charge_list = charge_list;
-        order.chargeCost_list = chargeCost_list;
+        
+        //费用明细，应收，应付
+        order.charge_list = itemOrder.buildChargeDetail();
+        order.chargeCost_list = itemOrder.buildChargeCostDetail();
         //相关文档
         order.doc_list = eeda.buildTableDetail("doc_table","");
-        
-        //贸易
-        order.trade_detail = itemOrder.buildTradeDetail();
-        order.trade_cost = itemOrder.buildTradeCostItem();
-        order.trade_service = itemOrder.buildTradeServiceItem();
-        order.trade_sale = itemOrder.buildTradeSaleItem();
        
         //异步向后台提交数据
         $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
