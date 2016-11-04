@@ -197,11 +197,17 @@ public class UserRoleController extends Controller {
 		if(parentID == null || "".equals(parentID)){
 			parentID = pom.getParentOfficeId();
 		}
-		Record rec = Db.findFirst("select count(1) total from role r left join  (select u.user_name,u.role_code from user_role u where u.user_name =?) ur on ur.role_code = r.code where r.code != 'admin' and(r.office_id is null or r.office_id = ?)" ,username,parentID);
+		Record rec = Db.findFirst("select count(1) total from user_role ur"
+                + " left join role r on (ur.role_id=r.id or ur.role_code=r.code)"
+                + " where ifnull(r.code,'')!='admin' and ur.user_name =? "
+                + " and (r.office_id is null or r.office_id =? ) " ,username,parentID);
 		logger.debug("total records:" + rec.getLong("total"));
 
 		// 获取当前页的数据
-		List<Record> orders = Db.find("select r.id , r.code,r.name,ur.user_name ,ur.role_code from role r left join  (select u.user_name,u.role_code from user_role u where u.user_name =?) ur on ur.role_code = r.code where r.code != 'admin' and (r.office_id is null or r.office_id = ?)",username,parentID);
+		List<Record> orders = Db.find("select ur.*, r.code,r.name from user_role ur"
+		        + " left join role r on (ur.role_id=r.id or ur.role_code=r.code)"
+		        + " where ifnull(r.code,'')!='admin' and ur.user_name =? "
+		        + " and (r.office_id is null or r.office_id =? ) ",username,parentID);
 		Map orderMap = new HashMap();
 		orderMap.put("sEcho", pageIndex);
 		orderMap.put("iTotalRecords", rec.getLong("total"));
