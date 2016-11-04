@@ -39,6 +39,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
+import sun.misc.BASE64Encoder;
+
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
@@ -1026,13 +1028,17 @@ public class JobOrderController extends Controller {
 	            	EmailAttachment attachment = new EmailAttachment();
 	            	attachment.setPath(filePath);  
 	            	attachment.setDisposition(EmailAttachment.ATTACHMENT); 
-	            	attachment.setName(strAry[i]); 
+	            	 
+	                //设置附件的中文乱码问题，解决附件的中文名称 乱码问题
+	                BASE64Encoder enc = new BASE64Encoder();
+	                String fileName= strAry[i];
+	            	attachment.setName("=?GBK?B?"+enc.encode(fileName.getBytes())+"?="); 
 	            	email.attach(attachment);
 	            }
 	        }
         }
         try{
-        	email.setCharset("gbk"); 
+        	email.setCharset("UTF-8"); 
         	email.send();
         	JobOrderSendMail jsm = new JobOrderSendMail();
         	jsm.set("order_id", order_id);
