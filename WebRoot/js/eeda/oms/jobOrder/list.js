@@ -109,5 +109,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       })
       
       
+       $("#eeda-table").on('click', '.delete', function(){
+    	   var tr = $(this).parent().parent();
+           var id = tr.attr('id');
+          $.post('/jobOrder/deleteOrder', {id:id}, function(data){
+        	  tr.hide();
+        	  $.scojs_message('删除成功', $.scojs_message.TYPE_ERROR);
+          },'json').fail(function() {
+              $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+          });
+      });
+      
   });
 });

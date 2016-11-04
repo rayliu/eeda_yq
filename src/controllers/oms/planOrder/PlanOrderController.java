@@ -155,7 +155,8 @@ public class PlanOrderController extends Controller {
         			+ " left join party p on p.id = po.customer_id "
         			+ " left join user_login u on u.id = po.creator "
         			+ " WHERE po.office_id="+office_id+" and is_gen_job='N' AND factory_loading_time is not NULL "
-        			+ " AND datediff(factory_loading_time, now())<=5";
+        			+ " AND datediff(factory_loading_time, now())<=5"
+        			+ " and po.delete_flag = 'N'";
         }else if ("customwaitPlan".equals(type)){
         	sql =" SELECT po.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p. CODE"
         			+ " FROM"
@@ -166,6 +167,7 @@ public class PlanOrderController extends Controller {
         			+ " WHERE"
         			+ " po.office_id="+office_id+" and poi.customs_type = '自理报关'"
         			+ " AND poi.is_gen_job = 'N'"
+        			+ " and po.delete_flag = 'N'"
         			+ " GROUP BY poi.id ";
         }else{
         	sql = "SELECT * from (select po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name,p.code customer_code"
@@ -173,6 +175,7 @@ public class PlanOrderController extends Controller {
     			+ " left join party p on p.id = po.customer_id "
     			+ " left join user_login u on u.id = po.creator"
     			+ " where po.office_id="+office_id
+    			+ " and po.delete_flag = 'N'"
     			+ " ) A where 1=1 ";
         }
         condition = DbUtils.buildConditions(getParaMap());
@@ -218,5 +221,12 @@ public class PlanOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
+    //删除单据，设置为已删
+    @Before(Tx.class)
+    public void deleteOrder(){
+    	String id = getPara("id");
+    	Db.update("update plan_order set delete_flag = 'Y' where id = ?",id);
+    	renderJson("{\"result\":true}");
+    }
 
 }
