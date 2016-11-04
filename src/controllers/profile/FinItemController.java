@@ -3,6 +3,7 @@ package controllers.profile;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -39,14 +41,28 @@ public class FinItemController extends Controller {
     //查询费用中文名称
     public void search() {
         String input = getPara("input");
+        long userId = LoginUserController.getLoginUserId(this);
+        Long parentID = pom.getParentOfficeId();
         
-        List<Record> finItems = null;
-        if (input !=null && input.trim().length() > 0) {
-            finItems = Db.find("select * from fin_item where name like '%"+input+"%' limit 10");
+        List<Record> finItems = Collections.EMPTY_LIST;
+        if(StrKit.isBlank(input)){//从历史记录查找
+            String sql = "select h.ref_id, f.id, f.name from user_query_history h, fin_item f "
+                    + "where h.ref_id=f.id and h.type='ARAP_FIN' and h.user_id=?";
+            finItems = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
+            if(finItems.size()==0){
+                finItems = Db.find("select * from fin_item where name like '%"+input+"%' "
+                        + " order by convert(name using gb2312) asc limit 10");
+            }
+            renderJson(finItems);
         }else{
-            finItems = Db.find("select * from fin_item limit 10");
+            if (input !=null && input.trim().length() > 0) {
+                finItems = Db.find("select * from fin_item where name like '%"+input+"%' "
+                        + " order by convert(name using gb2312) asc limit 10");
+            }else{
+                finItems = Db.find("select * from fin_item order by convert(name using gb2312) asc limit 10");
+            }
+            renderJson(finItems);
         }
-        renderJson(finItems);
     }
     
     //查询费用英文名称

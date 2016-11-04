@@ -285,6 +285,10 @@ public class JobOrderController extends Controller {
 		//记录结算公司使用历史	
 		saveAccoutCompanyQueryHistory(charge_list);
 		saveAccoutCompanyQueryHistory(chargeCost_list);
+		//记录结算费用使用历史  
+		saveFinItemQueryHistory(charge_list);
+		saveFinItemQueryHistory(chargeCost_list);
+		
 		//相关文档
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
 		DbUtils.handleList(doc_list, id, JobOrderDoc.class, "order_id");
@@ -500,6 +504,18 @@ public class JobOrderController extends Controller {
         }else{
             rec.set("query_stamp", new Date());
             Db.update("user_query_history", rec);
+        }
+    }
+    
+    //记录费用使用历史
+    private void saveFinItemQueryHistory(List<Map<String, String>> list) throws InstantiationException, IllegalAccessException{
+        Long userId = LoginUserController.getLoginUserId(this);
+        
+        for (Map<String, String> rowMap : list) {//获取每一行
+            String accComId = rowMap.get("CHARGE_ID");
+            if(StringUtils.isNotEmpty(accComId)){
+                addHistoryRecord(userId, accComId, "ARAP_FIN");
+            }
         }
     }
     
