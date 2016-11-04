@@ -16,6 +16,7 @@
                                 <button class="btn btn-success btn-xs" id="add_land">添加陆运</button> 
                                 <a href='#' data-toggle="modal" data-target="#partyModal" class="btn btn-success btn-xs">添加收发货人</a>
                                 <button class="btn btn-success btn-xs" id="truckOrderPDF">生成派车单PDF</button> 
+                                <a id="cabinet_truck" href='#' data-toggle="modal" data-target="#cabinet_truck_detail" class="btn btn-success btn-xs">柜货派车单PDF</a>
                                 <br><br>
                             	
                                 <%include("/eeda/component/form/detailTable.html", 
@@ -86,3 +87,117 @@
                         </div>
                     </div>
             </div><!-- /.row -->
+            
+    <div class="modal fade" id="cabinet_truck_detail">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">生成柜货派车单PDF详情</div>
+            <div class="modal-body">
+            <input type="hidden" value="${truckHead.id!truckHeadId!''}" id="truckHeadId">
+            <form id = "truckHeadForm">
+                <div class="form-group">
+                        <div class="row">
+                           <div class="col-lg-6">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_endPlace', 
+                                       label:'TO',
+                                       value:truckHead.head_endPlace!''
+                                   }){}%>
+                           </div>
+                           <div class="col-lg-6">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_startPlace', 
+                                       label:'FROM',
+                                       value:truckHead.head_startPlace!''
+                                   }){}%>
+                           </div>
+                       </div>
+                        <div class="row">
+                           <div class="col-lg-6">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_attn', 
+                                       label:'ATTN',
+                                       value:truckHead.head_attn!''
+                                   }){}%>
+                           </div>
+                           <div class="col-lg-6">
+                                 <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_tel', 
+                                       label:'TEL',
+                                       value:truckHead.head_tel!'3225992'
+                                   }){}%>
+                           </div>
+                       </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_customerTel', 
+                                       label:'TEL',
+                                       value:truckHead.head_customerTel!''
+                                   }){}%>
+                           </div>
+                           <div class="col-lg-6">
+                                    <%include("/eeda/component/form/inputField.html", 
+                                       {   id:'truck_head_date',
+                                           label:'DATE',
+                                           disabled:'disabled',
+                                           value:truckHead.head_date!''
+                                       }){}%>
+                           </div>
+                       </div>
+                        <div class="row">
+                           <div class="col-lg-6">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_fax', 
+                                       label:'FAX',
+                                       value:truckHead.head_fax!''
+                                   }){}%>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-lg-12">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_title', 
+                                       label:'标题',
+                                       value:truckHead.head_title!'1X40HQ FM ZHUHAI TO OSAKA'
+                                   }){}%>
+                           </div>
+                       </div>
+                       <div class="row">
+                           <div class="col-lg-12">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_remark',
+                                       label:'备注',
+                                       value:truckHead.head_remark!'请安排10/AUG 西域港报关出口'
+                                   }){}%>
+                           </div>
+                       </div>
+                       <div class="row">
+                            <div class="col-lg-6">
+                               <%include("/eeda/component/form/dateInputField.html", 
+                               {   id:'cabinet_arrive_date', 
+                                   label:'预约柜货到达时间', 
+                                   inline:false,
+                                   value:truckHead.cabinet_arrive_date!''
+                               }){}%>
+                           </div>
+                       </div>
+                       <div class="row">
+	                       <div class="col-lg-12"> 
+	                          <div class="form-group">
+	                               <label>柜货到达备注</label>
+	                               <textarea id='cabinet_arrive_remark' class="form-control" rows="3" name="cabinet_arrive_remark">${truckHead.cabinet_arrive_remark!''}</textarea>
+	                          </div>
+	                      </div>
+                       </div>
+                    
+                </div>   
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="printCabinetTruck" class="btn btn-primary" >确认打印PDF</button>
+                <button class="btn  btn-default" data-dismiss="modal" >返回</button>
+            </div>
+        </div>
+      </div>
+    </div>

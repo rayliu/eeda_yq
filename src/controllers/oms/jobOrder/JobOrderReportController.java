@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
@@ -131,6 +132,43 @@ public class JobOrderReportController extends Controller {
 		rec.set("oceanHeadId", jsh.get("id"));
 		rec.set("down_url", file.substring(file.indexOf("download")-1));
 		renderJson(rec);
+	}
+	
+	@Before(Tx.class)
+	public void printCabinetTruck() {
+		String jsonStr=getPara("params");
+		
+		Gson gson = new Gson();  
+		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+		
+		String id = (String) dto.get("id");
+		String order_id = (String) dto.get("order_id");
+		
+		
+		Record r =new Record();
+		if (StringUtils.isNotEmpty(id)) {
+			//update
+		    r = Db.findById("job_order_land_cabinet_truck", id);
+			DbUtils.setModelValues(dto, r, "job_order_land_cabinet_truck");
+			Db.update("job_order_land_cabinet_truck", r);
+		} else {
+			//create 
+			DbUtils.setModelValues(dto, r, "job_order_land_cabinet_truck");
+			Db.save("job_order_land_cabinet_truck", r);
+			id = r.getLong("id").toString();
+		}
+		
+		String fileName = "/report/jobOrder/cabinetTruckOrder.jasper";
+		String outFileName = "/download/工作单陆运柜货派车单";
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_id;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		
+		r.set("truckHeadId", id);
+		r.set("down_url", file.substring(file.indexOf("download")-1));
+		renderJson(r);
 	}
 	
 	

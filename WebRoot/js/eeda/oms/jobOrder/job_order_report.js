@@ -645,6 +645,47 @@ $(document).ready(function() {
 	});   
 	
 	
+	//生成陆运的柜货派车单PDF
+	$('#cabinet_truck').click(function(){
+		var arrStr = $('#ocean_HBLshipper_info').val();
+		var arry = arrStr.split("\n");
+		$('#truck_head_attn').val(arry[0]);
+		$('#truck_head_customerTel').val(arry[1]);
+		$('#truck_head_endPlace').val($('#ocean_HBLshipper_input').val());
+		$('#truck_head_startPlace').val(loginUserName);
+		$('#truck_head_date').val(eeda.getDate());
+	})
+    $('#printCabinetTruck').click(function(){
+    	var truckHead = {}
+    	var form = $('#truckHeadForm input');
+    	for(var i = 0; i < form.length; i++){
+    		var name = form[i].id;
+        	var value =form[i].value;
+        	
+        	if(name.indexOf("truck_")==0){
+    			var rName = name.replace("truck_","");
+    			truckHead[rName] = value;
+    		}else{
+    			truckHead[name] = value;
+    		}
+    	}
+    	truckHead.id = $('#truckHeadId').val();
+    	truckHead.order_id = $('#order_id').val();
+    	
+		$.post('/jobOrderReport/printCabinetTruck', {params:JSON.stringify(truckHead)}, function(data){
+				$("#truckHeadId").val(data.TRUCKHEADID);
+				if(data){
+	                window.open(data.DOWN_URL);
+	             }else{
+	               $.scojs_message('生成海运头程资料失败', $.scojs_message.TYPE_ERROR);
+	             }
+				
+		},'json').fail(function(){
+		    	$.scojs_message('生成海运头程资料失败', $.scojs_message.TYPE_ERROR);
+		  });
+		
+    });
+    
 	
 });
 });
