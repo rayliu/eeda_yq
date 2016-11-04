@@ -1304,6 +1304,13 @@ public class JobOrderController extends Controller {
     	Db.update("delete from job_order_air_template where id = ?",id);
     	renderJson("{\"result\":true}");
     }
+    //删除邮箱常用模版
+    @Before(Tx.class)
+    public void deleteEmailTemplate(){
+    	String id = getPara("id");
+    	Db.update("delete from job_order_sendmail_template where id = ?",id);
+    	renderJson("{\"result\":true}");
+    }
     
     //费用明细确认
     @Before(Tx.class)

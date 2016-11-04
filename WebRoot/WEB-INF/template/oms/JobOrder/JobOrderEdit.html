@@ -490,7 +490,8 @@
 				        <div class="panel-body">
 				            <ul id="useEmailTemplate" class="useEmailTemplate">
 				              <%for(Info in emailTemplateInfo![]){%>
-				                    <li email="${Info.receive_mail}"
+				                    <li id="${Info.id}"
+				                        email="${Info.receive_mail}"
 				                        ccEmail="${Info.cc_mail}"
 				                        bccEmail="${Info.bcc_mail}" >
 				                      <div class="radio">
@@ -499,6 +500,7 @@
 				                            <font size="3px"><span>名称:${Info.remark}</span></font><br> 
 				                            <span>收件人:${Info.receive_mail}<br>抄送人:${Info.cc_mail}<br>密送人: ${Info.bcc_mail}</span><br>
 				                        </label>
+				                        <a class="deleteEmailTemplate" href="#" style="margin-right: 10px;padding-top: 6px;float: left;">删除</a>
 				                      </div>
 				                    </li>
 				              <%}%>

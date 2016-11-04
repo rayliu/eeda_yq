@@ -178,30 +178,6 @@ $(document).ready(function() {
         var ccEmail =  $('#ccEmail').val().trim();
         var bccEmail =  $('#bccEmail').val().trim();
     	var remark = $('#emailTemplateRemark').val().trim();
-    	
-//    	var arr = email.split(",");
-//    	var arr1 = ccEmail.split(",");
-//    	var arr2 = bccEmail.split(",");
-//     	//验证邮箱合法性
-//    	 var reg = /\w+[@]{1}\w+[.]\w+/;
-//    	 for(var i=0;i<arr.length;i++){
-//    	   if(!reg.test(arr[i])){
-//    		   $.scojs_message('收件人含有不合法邮箱', $.scojs_message.TYPE_ERROR);
-//    		   return false;
-//    	   }
-//    	 }
-//    	 for(var i=0;i<arr1.length;i++){
-//    		 if(!reg.test(arr1[i])){
-//    			 $.scojs_message('抄送人含有不合法邮箱', $.scojs_message.TYPE_ERROR);
-//    			 return;
-//    		 }
-//    	 }
-//    	 for(var i=0;i<arr2.length;i++){
-//    		 if(!reg.test(arr2[i])){
-//    			 $.scojs_message('密送人含有不合法邮箱', $.scojs_message.TYPE_ERROR);
-//    			 return;
-//    		 }
-//    	 }
     	$.post('/jobOrder/saveEmailTemplate', {email:email,ccEmail:ccEmail,bccEmail:bccEmail,remark:remark}, function(data){
     		if(data.result==true){
 	        	 $.scojs_message('添加成功', $.scojs_message.TYPE_OK);
@@ -211,6 +187,22 @@ $(document).ready(function() {
 	       	 }
     	},'json').fail(function() {
         	 $.scojs_message('添加失败!', $.scojs_message.TYPE_ERROR);
+        });
+    })
+    
+    //删除常用邮箱模版
+    $('.deleteEmailTemplate').click(function(e) {
+    	$(this).attr('disabled', true);
+    	e.preventDefault();
+    	var li = $(this).parent().parent();
+    	var id = li.attr('id');
+    	$.post('/jobOrder/deleteEmailTemplate', {id:id}, function(data){
+    		$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+    		$(this).attr('disabled', false);
+    		li.css("display","none");
+    	},'json').fail(function() {
+    		$(this).attr('disabled', false);
+            $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
         });
     })
     
