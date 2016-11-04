@@ -54,6 +54,11 @@ public class BalanceReportController extends Controller {
         
         String condition = "";
         String group_condition=""; 
+        
+        if(!"total".equals(balance)){
+        	condition += " and joa.order_type = '"+balance+"'";
+        }
+        
         if("year".equals(date_type)){
         	if(StringUtils.isNotEmpty(begin_date)){
             	begin_date = begin_date+"-01-01 00:00:00";
@@ -145,6 +150,7 @@ public class BalanceReportController extends Controller {
     			+ " LEFT JOIN job_order jor ON jor.id = joa.order_id "
     			+ " LEFT JOIN party p ON p.id = joa.sp_id"
     			+ " WHERE p.abbr IN ("+ sp_name_con +") and jor.office_id="+office_id
+    			+ condition
     			+ "  group by "
     			+ group_condition
     			+ " , joa.type"
