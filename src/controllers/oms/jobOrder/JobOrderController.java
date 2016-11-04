@@ -45,6 +45,7 @@ import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
@@ -281,7 +282,9 @@ public class JobOrderController extends Controller {
 		DbUtils.handleList(charge_list, id, JobOrderArap.class, "order_id");
 		List<Map<String, String>> chargeCost_list = (ArrayList<Map<String, String>>)dto.get("chargeCost_list");
 		DbUtils.handleList(chargeCost_list, id, JobOrderArap.class, "order_id");
-		
+		//记录结算公司使用历史	
+		saveAccoutCompanyQueryHistory(charge_list);
+		saveAccoutCompanyQueryHistory(chargeCost_list);
 		//相关文档
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
 		DbUtils.handleList(doc_list, id, JobOrderDoc.class, "order_id");
@@ -491,6 +494,33 @@ public class JobOrderController extends Controller {
             rec = new Record();
             rec.set("ref_id", portId);
             rec.set("type", "port");
+            rec.set("user_id", userId);
+            rec.set("query_stamp", new Date());
+            Db.save("user_query_history", rec);
+        }else{
+            rec.set("query_stamp", new Date());
+            Db.update("user_query_history", rec);
+        }
+    }
+    
+    //记录结算公司使用历史
+    private void saveAccoutCompanyQueryHistory(List<Map<String, String>> list) throws InstantiationException, IllegalAccessException{
+        Long userId = LoginUserController.getLoginUserId(this);
+        
+        for (Map<String, String> rowMap : list) {//获取每一行
+            String accComId = rowMap.get("SP_ID");
+            if(StringUtils.isNotEmpty(accComId)){
+                addHistoryRecord(userId, accComId, "ARAP_COM");
+            }
+        }
+    }
+
+    private void addHistoryRecord(long userId, String partyId, String type) {
+        Record rec = Db.findFirst("select * from user_query_history where type='"+type+"' and ref_id=? and user_id=?", partyId, userId);
+        if(rec==null){
+            rec = new Record();
+            rec.set("ref_id", partyId);
+            rec.set("type", type);
             rec.set("user_id", userId);
             rec.set("query_stamp", new Date());
             Db.save("user_query_history", rec);
