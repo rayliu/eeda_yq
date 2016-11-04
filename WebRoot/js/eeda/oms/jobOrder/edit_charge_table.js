@@ -628,7 +628,7 @@ $(document).ready(function() {
     }
     
     //checkbox选中则button可点击
-    $('#charge_table').on('click','.checkBox',function(){
+    $('#charge_table').on('click','.checkBoxOfChargeTable',function(){
     	var hava_check = 0;
     	$('#charge_table input[type="checkbox"]').each(function(){	
     		var checkbox = $(this).prop('checked');
