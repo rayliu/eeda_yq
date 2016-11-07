@@ -364,7 +364,7 @@ public class JobOrderController extends Controller {
     
     //保存海运填写模板
     public void saveOceanTemplate(List<Map<String, String>> shipment_detail){
-        if(shipment_detail.size()<=0)
+        if(shipment_detail==null||shipment_detail.size()<=0)
             return;
         
         Map<String, String> recMap=shipment_detail.get(0);
@@ -556,7 +556,7 @@ public class JobOrderController extends Controller {
     }
     //保存空运填写模板
     public void saveAirTemplate(List<Map<String, String>> detail){
-    	if(detail.size()<=0)
+    	if(detail==null||detail.size()<=0)
     		return;
     	
     	Map<String, String> recMap=detail.get(0);

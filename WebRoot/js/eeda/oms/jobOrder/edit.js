@@ -218,10 +218,18 @@ $(document).ready(function() {
                 if(order.CUSTOMSELF){
                 	$("#customSelf_id").val(order.CUSTOMSELF.ID);
                 }
-                $("#shipment_id").val(order.SHIPMENT.ID);
-                $("#insurance_id").val(order.INSURANCE.ID);
-                $("#air_id").val(order.AIR.ID);
-                $("#trade_id").val(order.TRADE.ID);
+                if(order.SHIPMENT){
+                	$("#shipment_id").val(order.SHIPMENT.ID);
+                }
+                if(order.INSURANCE){
+                	$("#insurance_id").val(order.INSURANCE.ID);
+                }
+                if(order.AIR){
+                	$("#air_id").val(order.AIR.ID);
+                }
+                if(order.TRADE){
+                	$("#trade_id").val(order.TRADE.ID);
+                }
                 
                 $("#fileuploadSpan").show();
                 $("#sendEmail").show();

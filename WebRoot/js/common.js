@@ -1,6 +1,6 @@
 
 requirejs.config({
-    urlArgs: 'v=161102.1201',
+    urlArgs: 'v=161107.1000',
     baseUrl: '/js/lib',
     paths: {
         app: '../eeda',
