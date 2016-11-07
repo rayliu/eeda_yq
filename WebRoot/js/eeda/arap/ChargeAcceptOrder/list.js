@@ -20,7 +20,7 @@ $(document).ready(function() {
         		}
             },
             {"data":"ORDER_TYPE", "class":"order_type"},   
-            {"data":"PAYEE_NAME",  "width":"150px"},
+            {"data":"PAYEE_NAME",  "width":"150px",'class':'payee_name'},
             {"data":"TOTAL_AMOUNT", "width":"70px"},  
             {"data":"RECEIVE_AMOUNT", "width":"70px" },
             {"width":"70px",
@@ -116,18 +116,30 @@ $(document).ready(function() {
 	};
     	
   	//checkbox选中则button可点击
+	
 	$('#costAccept_table').on('click','.checkBox',function(){
 		var hava_check = 0;
+		var payee_names = '';
+		var self = this;
 		$('#costAccept_table input[type="checkbox"]').each(function(){	
 			var checkbox = $(this).prop('checked');
+			var payee_name = $(this).parent().parent().find('.payee_name').text();
     		if(checkbox){
-    			hava_check++;
+    			if(payee_name != payee_names && payee_names != ''){
+    				$.scojs_message('请选择同一个收款对象', $.scojs_message.TYPE_ERROR);
+    				$(self).attr('checked',false);
+    				return false;
+    			}else{
+    				payee_names = payee_name;
+    				hava_check++;
+    			}
     		}	
 		})
 		if(hava_check>0){
 			$('#createBtn').attr('disabled',false);
 		}else{
 			$('#createBtn').attr('disabled',true);
+			var payee_names = '';
 		}
 	});
 	
