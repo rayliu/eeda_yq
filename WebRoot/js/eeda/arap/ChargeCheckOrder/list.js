@@ -34,31 +34,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            { "data": "TYPE", "width": "60px"},
 	            { "data": "CUSTOMER_NAME", "width": "100px"},
 	            { "data": "SP_NAME", "width": "100px","sClass":"SP_NAME"},
-	            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px","sClass":"rmb"},
-	            { "data": "CURRENCY_NAME", "width": "60px","sClass":"usd",
-	            	"render": function ( data, type, full, meta ) {
-		            	if(data == 'USD')
-		            		return full.TOTAL_AMOUNT;
-		            	else 
-		            		return '';
-	            	}
-	            },
-	            { "data": "CURRENCY_NAME", "width": "60px",
-	            	"render": function ( data, type, full, meta ) {
-		            	if(data == 'HKD')
-		            		return full.TOTAL_AMOUNT;
-		            	else 
-		            		return '';
-	            	}
-	            },
-	            { "data": "CURRENCY_NAME", "width": "60px",
-	            	"render": function ( data, type, full, meta ) {
-		            	if(data == 'JPY')
-		            		return full.TOTAL_AMOUNT;
-		            	else 
-		            		return '';
-	            	}
-	            },
+	            { "data": "CURRENCY_NAME", "width": "60px"},
+	            { "data": "TOTAL_AMOUNT", "width": "60px"},
+	            { "data": "EXCHANGE_RATE", "width": "60px" },
+	            { "data": "AFTER_RATE_TOTAL", "width": "60px" ,'class':'total_amount'},
 	            { "data": "FND", "width": "60px",
 	            	"render": function ( data, type, full, meta ) {
 	            		if(data)
@@ -134,18 +113,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
         
 		//选择是否是同一个客户
 		var cnames = [];
-        var totalrmb = 0.0;
-        var totalusd = 0.0;
+        var totalAmount = 0.0;
 		$('#eeda-table').on('click',"input[name='order_check_box']",function () {
 				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
-				var rbm_amount = $(this).parent().siblings('.rmb')[0].textContent;
-				var usd_amount = $(this).parent().siblings('.usd')[0].textContent;
-
+				var total_amount = $(this).parent().siblings('.total_amount')[0].textContent;
 				if($(this).prop('checked')==true){	
 					if(cnames.length > 0 ){
 						if(cnames[0]==cname){
-							totalrmb += parseFloat(rbm_amount);
-							totalusd += parseFloat(usd_amount);
+							totalAmount += parseFloat(total_amount);
 							cnames.push(cname);
 						}else{
 							$.scojs_message('请选择同一个结算公司', $.scojs_message.TYPE_ERROR);
@@ -153,18 +128,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 							return false;
 						}
 					}else{
-						totalrmb += parseFloat(rbm_amount);
-						totalusd += parseFloat(usd_amount);
+						totalAmount += parseFloat(total_amount);
 						cnames.push(cname);	
 					}
 				}else{
-					totalrmb -= parseFloat(rbm_amount);
-					totalusd -= parseFloat(usd_amount);
+					totalAmount -= parseFloat(total_amount);
 					cnames.pop(cname);
 			 }
 				
-			 $('#totalAmountSpan').html(totalrmb);
-	    	 $('#totalAmountUSDSpan').html(totalusd);
+			 $('#totalAmountSpan').html(totalAmount);
+			 $('#totalAmount').val(totalAmount);
     	 });
 		
 		//查看应收应付对账结果

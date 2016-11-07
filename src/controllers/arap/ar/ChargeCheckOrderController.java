@@ -158,7 +158,12 @@ public class ChargeCheckOrderController extends Controller {
             		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
             		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
             		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
-            		+ " cur.name currency_name,joli.truck_type "
+            		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
+                    + " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"
+                    + " ) after_total,"
+                    + " ifnull( ( SELECT rc.new_rate FROM rate_contrast rc "
+                    + " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
+                    + " after_rate_total"
     				+ " from job_order_arap joa "
     				+ " left join job_order jo on jo.id=joa.order_id "
     				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -178,7 +183,12 @@ public class ChargeCheckOrderController extends Controller {
                  		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
                  		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
                  		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
-                 		+ " cur.name currency_name,joli.truck_type "
+                 		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
+             		  + " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"
+                      + " ) after_total,"
+                      + " ifnull( ( SELECT rc.new_rate FROM rate_contrast rc "
+                      + " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
+                      + " after_rate_total"
          				+ " from job_order_arap joa "
          				+ " left join job_order jo on jo.id=joa.order_id "
          				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -294,15 +304,16 @@ public class ChargeCheckOrderController extends Controller {
     @Before(EedaMenuInterceptor.class)
 	public void create(){
 		String ids = getPara("idsArray");//job_order_arap ids
+		String total_amount = getPara("totalAmount");//job_order_arap ids
 		
-		String sql = "SELECT cur.name currency_name ,joa.exchange_rate ,p.phone,p.contact_person,p.address,p.company_name,joa.sp_id,joa.order_id,"
-				+ " sum( ifnull(joa.currency_total_amount,0) ) total_amount "
+		String sql = "SELECT cur.name currency_name ,joa.exchange_rate ,p.phone,p.contact_person,p.address,p.company_name,joa.sp_id,joa.order_id"
 				+ " FROM job_order_arap joa"
 				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
 				+ " left join party p on p.id = joa.sp_id "
 				+ " WHERE joa.id in("+ ids +")"
 				+ " group by joa.order_id";
 		Record rec =Db.findFirst(sql);
+		rec.set("total_amount", total_amount);
 
 		rec.set("address", rec.get("address"));
 		rec.set("customer", rec.get("contact_person"));
