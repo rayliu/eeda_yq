@@ -77,42 +77,35 @@ $(document).ready(function() {
                 	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
                 }
             },
-            { "data": "CUSTOM_PLAN_NO", "width": "180px",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="custom_plan_no" value="'+data+'" class="form-control" style="width:200px"/>';
-                }
-            },
-            { "data": "CUSTOM_BANK", "width": "180px",
+            { "data": "CUSTOM_BANK", "width": "120px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="custom_bank" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "CUSTOM_ORDER_NO", "width": "180px",
+            { "data": "CUSTOM_ORDER_NO", "width": "120px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="custom_order_no" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "STATUS", "width": "180px",
+            { "data": "STATUS", "width": "120px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
             		return '<input type="text" name="status" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "CREATOR", "width": "180px",
+            { "data": "CREATOR", "width": "120px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
             		return '<input type="text" name="creator" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "CREATE_STAMP", "width": "180px",
+            { "data": "CREATE_STAMP", "width": "120px",
             	"render": function ( data, type, full, meta ) {
            		 		if(!data)
 	                        data='';
@@ -125,28 +118,7 @@ $(document).ready(function() {
 		                );
 	                    return field_html;
             	}
-            },
-            { "data": "FILL_NAME", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="fill_name" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            },
-            { "data": "FILL_STAMP", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-       		 		if(!data)
-                        data='';
-                    var field_html = template('table_date_field_template',
-	                    {
-	                        id: 'fill_stamp',
-	                        value: data.substr(0,19),
-	                        style:'width:180px'
-	                    }
-	                );
-                    return field_html;
-            	}
-            },
+            }
         ]
     });
 
