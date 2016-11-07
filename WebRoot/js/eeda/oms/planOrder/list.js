@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 
     $(document).ready(function() {
     	document.title = '计划订单查询 | '+document.title;
@@ -19,7 +19,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             columns:[
                 { "width": "30px",
                     "render": function ( data, type, full, meta ) {
-                      return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
+                      return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button>';
                     }
                 },
                 {"data": "ORDER_NO", 
@@ -106,17 +106,30 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           dataTable.ajax.url(url).load();
       };
       
-      
       $("#eeda-table").on('click', '.delete', function(){
-   	   	  var tr = $(this).parent().parent();
+    	  var tr = $(this).parent().parent();
           var id = tr.attr('id');
-         $.post('/planOrder/deleteOrder', {id:id}, function(data){
-       	  dataTable.row(tr).remove().draw();
-       	  $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
-         },'json').fail(function() {
-             $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
-         });
-     });
+    	  $('#delete_id').val(id);
+    	  $('#deleteReasonDetailAlert').click();
+      })
+      $("#deleteReasonDetail").on('click', '.deleteReason', function(){
+    	  $('#deleteReason').val($(this).val());
+      })
+       $("#deleteReasonDetail").on('click', '.confirm', function(){
+    	   if(!$("#deleteReasonDetailForm").valid()){
+               return;
+           }
+    	   var id = $('#delete_id').val();
+           var deleteReason = $('#deleteReason').val();
+           var tr = $('#'+id+'');
+          $.post('/planOrder/deleteOrder', {id:id,delete_reason:deleteReason}, function(data){
+        	  $('#deleteReasonDetail .return').click();
+        	  tr.hide();
+        	  $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+          },'json').fail(function() {
+              $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+          });
+      });
       
     	
     });

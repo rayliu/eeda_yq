@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -1355,14 +1356,17 @@ public class JobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
-    //删除单据，设置为已删
+  //删除单据，设置为已删
     @Before(Tx.class)
     public void deleteOrder(){
     	String id = getPara("id");
-    	Record r = Db.findById("job_order", id);
-    	r.set("deletor", LoginUserController.getLoginUserId(this));
-    	r.set("delete_stamp", new Date());
-    	Db.update("job_order",r);
+    	String delete_reason = getPara("delete_reason");
+    	Long deletor = LoginUserController.getLoginUserId(this);
+    	Date date = new Date();
+    	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	String delete_stamp = sf.format(date);
+    	Db.update("update job_order set delete_flag='Y', deletor='"+deletor+"', delete_stamp='"+delete_stamp+"',"
+    			+ " delete_reason='"+delete_reason+"' where id = ?  ",id);
     	renderJson("{\"result\":true}");
     }
     
