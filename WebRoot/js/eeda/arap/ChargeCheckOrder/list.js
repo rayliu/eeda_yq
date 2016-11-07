@@ -37,7 +37,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            { "data": "CURRENCY_NAME", "width": "60px"},
 	            { "data": "TOTAL_AMOUNT", "width": "60px"},
 	            { "data": "EXCHANGE_RATE", "width": "60px" },
-	            { "data": "AFTER_RATE_TOTAL", "width": "60px" ,'class':'total_amount'},
+	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'total_amount'},
 	            { "data": "FND", "width": "60px",
 	            	"render": function ( data, type, full, meta ) {
 	            		if(data)
