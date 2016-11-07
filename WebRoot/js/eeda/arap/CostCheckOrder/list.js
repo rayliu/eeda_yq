@@ -139,7 +139,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       var sum = 0;
       $('#eeda_table').on('click','.checkBox',function(){
     	  var id = $(this).parent().parent().attr('id');
-    	  var amountStr = $($('#'+id+' td')[8]).text();
+    	  var amountStr = $($('#'+id+' td')[11]).text();
     	  if(amountStr!=''){
 	    	  amount = parseFloat( amountStr );
 	    	  if(this.checked==true){
