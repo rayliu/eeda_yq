@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="106"/>
+	<property name="ireport.y" value="144"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -268,7 +268,7 @@ where jos.order_id=$P{order_id}]]>
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="366" splitType="Stretch">
+		<band height="400" splitType="Stretch">
 			<staticText>
 				<reportElement style="table" x="1" y="34" width="227" height="60" uuid="61a11752-ebc8-41ea-b3a1-6147220fdd74"/>
 				<textElement>
@@ -329,35 +329,35 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[  PORT OF DISCHARGE 卸货港：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="228" y="306" width="326" height="44" uuid="5745ef5a-5d84-4205-8ee1-0b919de7f6d0"/>
+				<reportElement style="table" x="228" y="307" width="326" height="77" uuid="5745ef5a-5d84-4205-8ee1-0b919de7f6d0"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="283" y="350" width="94" height="16" uuid="f45453b4-0d1c-450b-99e0-8446a3997620"/>
+				<reportElement style="table" x="283" y="384" width="94" height="16" uuid="f45453b4-0d1c-450b-99e0-8446a3997620"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[ PKGS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="1" y="306" width="227" height="44" uuid="d465902e-d5f4-490e-8dfe-98cd22d81fa0"/>
+				<reportElement style="table" x="1" y="307" width="227" height="77" uuid="d465902e-d5f4-490e-8dfe-98cd22d81fa0"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[  DESCRIPTION货品名称]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="377" y="350" width="94" height="16" uuid="7c08b679-d1e2-44f7-83a9-c859f437ff6f"/>
+				<reportElement style="table" x="377" y="384" width="94" height="16" uuid="7c08b679-d1e2-44f7-83a9-c859f437ff6f"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[G.W(KG)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="471" y="350" width="83" height="16" uuid="ebed2a47-01af-4d18-a2b7-08cbdbd1cecb"/>
+				<reportElement style="table" x="471" y="384" width="83" height="16" uuid="ebed2a47-01af-4d18-a2b7-08cbdbd1cecb"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -462,21 +462,21 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[SHIPPING INSTRUCTIONS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="1" y="350" width="94" height="16" uuid="458e92bd-96ae-4caf-9df6-04c8747b0a7d"/>
+				<reportElement style="table" x="1" y="384" width="94" height="16" uuid="458e92bd-96ae-4caf-9df6-04c8747b0a7d"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[柜号]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="95" y="350" width="94" height="16" uuid="38664e9b-a8ec-43e8-ac33-c3adb775267c"/>
+				<reportElement style="table" x="95" y="384" width="94" height="16" uuid="38664e9b-a8ec-43e8-ac33-c3adb775267c"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[柜型]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="189" y="350" width="94" height="16" uuid="05bec73a-9dff-42b3-b657-bb3a2e9d9dc5"/>
+				<reportElement style="table" x="189" y="384" width="94" height="16" uuid="05bec73a-9dff-42b3-b657-bb3a2e9d9dc5"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -490,14 +490,14 @@ where jos.order_id=$P{order_id}]]>
 				<textFieldExpression><![CDATA[$F{fnd_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="309" y="307" width="244" height="43" uuid="270210a8-9ffb-4580-9ca6-666e356825b4"/>
+				<reportElement x="304" y="307" width="249" height="77" uuid="270210a8-9ffb-4580-9ca6-666e356825b4"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="黑体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{shipping_mark}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="6" y="320" width="221" height="30" uuid="1bb5a49c-fa73-4833-9d62-55e6ceb9e825"/>
+				<reportElement x="6" y="321" width="221" height="63" uuid="1bb5a49c-fa73-4833-9d62-55e6ceb9e825"/>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -535,7 +535,7 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[PORT OF LOADING付运港：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="230" y="305" width="80" height="20" uuid="1c8aba64-b946-4cea-9545-f441c1919143"/>
+				<reportElement x="230" y="305" width="75" height="20" uuid="1c8aba64-b946-4cea-9545-f441c1919143"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
