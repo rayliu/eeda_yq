@@ -48,8 +48,28 @@
                                              label:'出货日期', 
                                              value:''
                                          }){} %>
-                                     
                                          </div>
+                                         <div class="col-lg-4">
+                                                <%include("/eeda/component/form/inputCustomerField.html", 
+                                                         {   id: 'customer', 
+                                                             label: '客户', 
+                                                             value: ''
+                                                         }){}%>
+                                         </div>
+                                         <div class="col-lg-4">
+                                           <%include("/eeda/component/form/selectField.html", 
+                                               {   id:'type', 
+                                                   label:'类型', 
+                                                   value_list:[
+                                                       {code:'', value:''},
+                                                       {code:'海运', value:'海运'},
+                                                       {code:'空运', value:'空运'},
+                                                       {code:'陆运', value:'陆运'},
+                                                       {code:'报关', value:'报关'},
+                                                       {code:'保险', value:'保险'}
+                                                   ]
+                                               }){}%>
+                                        </div>
                                     </div> 
                                 </form>
 

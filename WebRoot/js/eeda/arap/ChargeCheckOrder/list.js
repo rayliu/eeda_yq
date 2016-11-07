@@ -223,6 +223,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
      var searchData=function(){
           var order_no = $("#order_no").val(); 
           var sp_name = $('#sp_input').val();
+          var customer_name = $('#customer_input').val();
+          var type = $('#type').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           
@@ -235,6 +237,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           */
           var url = "/chargeCheckOrder/list?order_no="+order_no
                +"&sp_name="+sp_name
+               +"&customer_name="+customer_name
+               +"&type_equals="+type
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 
