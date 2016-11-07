@@ -86,7 +86,7 @@
                                 	<div class="col-lg-4">
                                         <%include("/eeda/component/form/inputField.html", 
                                                             {   id:'total_amount', 
-                                                                label:'应收总金额', 
+                                                                label:'应收总金额(CNY)', 
                                                                 value: order.total_amount!'0.00',
                                                                 disabled: 'disabled'
                                                             }){}%>
@@ -94,7 +94,7 @@
                                 	<div class="col-lg-4">
                                         <%include("/eeda/component/form/inputField.html", 
                                                             {   id:'cost_amount', 
-                                                                label:'对账总金额', 
+                                                                label:'对账总金额(CNY)', 
                                                                 value: order.cost_amount!order.total_amount!'0.00',
                                                                 disabled: 'disabled'
                                                             }){}%>
@@ -129,6 +129,7 @@
 														<input name="new_rate" rate_id="${currency.RATE_ID!''}" currency_id="${currency.ID!''}" currency_name="${currency.CURRENCY_NAME!''}" class="form-control search-control"  value="${currency.new_rate!''}" autocomplete="off" >
 													</div>
 												</div>
+												<br>
 											</li>
 										<% }%>
 									</ul>
@@ -145,9 +146,9 @@
 	                                           '货币类型',
 			                                    '金额', 
 			                                    '原汇率',
-			                                    '原总金额',  
+			                                    '原总金额(CNY)',  
 			                                    '当前汇率',
-			                                    '现总金额', 
+			                                    '当前总金额(CNY)', 
 	                                           '创建时间'
 	                                       ],
 	                                       field_list:[

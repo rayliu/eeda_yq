@@ -44,12 +44,12 @@
 				</div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", { id:'total_amount',
-					label:'应收总金额', value:order.total_amount!'',disabled:'disabled'
+					label:'应收总金额(CNY)', value:order.total_amount!'',disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", { id:'check_amount',
-					label:'对账总金额', value:order.check_amount!order.total_amount!'',disabled:'disabled'
+					label:'对账总金额(CNY)', value:order.check_amount!order.total_amount!'',disabled:'disabled'
 					}){}%>
 				</div>
 			</div>
@@ -154,9 +154,9 @@
                                     '货币类型',
                                     '收入金额', 
                                     '原汇率',
-                                    '原总金额',
+                                    '原总金额(CNY)',
                                     '当前汇率',  
-                                    '现总金额',                                     
+                                    '当前总金额(CNY)',                                     
                                     'FND',
                                     '体积',
                                     '箱量',

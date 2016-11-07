@@ -90,7 +90,7 @@ $(document).ready(function() {
     		var total_amount = $(row[i]).find('.after_rate_total').text();
     		totalAmount += parseFloat(total_amount);
     	}
-    	$('#check_amount').val(totalAmount);
+    	$('#check_amount').val(totalAmount.toFixed(2));
     })
 } );    
 } );

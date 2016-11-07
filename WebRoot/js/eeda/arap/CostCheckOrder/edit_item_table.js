@@ -76,7 +76,7 @@ $(document).ready(function() {
     		var total_amount = $(row[i]).find('.after_rate_total').text();
     		totalAmount += parseFloat(total_amount);
     	}
-    	$('#cost_amount').val(totalAmount);
+    	$('#cost_amount').val(totalAmount.toFixed(2));
     	
     })
 

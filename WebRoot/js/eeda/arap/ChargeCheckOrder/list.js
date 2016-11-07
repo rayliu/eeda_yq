@@ -136,8 +136,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 					cnames.pop(cname);
 			 }
 				
-			 $('#totalAmountSpan').html(totalAmount);
-			 $('#totalAmount').val(totalAmount);
+			 $('#totalAmountSpan').html(totalAmount.toFixed(2));
+			 $('#totalAmount').val(totalAmount.toFixed(2));
     	 });
 		
 		//查看应收应付对账结果
