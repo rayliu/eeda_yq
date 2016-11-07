@@ -1359,7 +1359,10 @@ public class JobOrderController extends Controller {
     @Before(Tx.class)
     public void deleteOrder(){
     	String id = getPara("id");
-    	Db.update("update job_order set delete_flag = 'Y' where id = ?",id);
+    	Record r = Db.findById("job_order", id);
+    	r.set("deletor", LoginUserController.getLoginUserId(this));
+    	r.set("delete_stamp", new Date());
+    	Db.update("job_order",r);
     	renderJson("{\"result\":true}");
     }
     
