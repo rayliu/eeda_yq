@@ -2,13 +2,14 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cabinetTruckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="205"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      jos.*,josi.*,josh.*,p.company_name head_company,p1.company_name carrier_company,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
+ifnull(
 (select GROUP_CONCAT(CN_no SEPARATOR '  ;  ') from
 (SELECT
 	CONCAT(josi.container_no,'/',container_type,'/',josi.seal_no) CN_no
@@ -18,7 +19,7 @@ where josi.order_id=$P{order_id}
 GROUP BY
 	CN_no
 ) A
-) CN_SN,(SELECT CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage from job_order_shipment jos WHERE jos.order_id=$P{order_id}) Vessel_voyage
+),'码头自动配柜') CN_SN,(SELECT CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage from job_order_shipment jos WHERE jos.order_id=$P{order_id}) Vessel_voyage
 
 FROM job_order_shipment jos
 left join job_order_shipment_item josi on josi.order_id=jos.order_id
@@ -236,10 +237,10 @@ where jos.order_id=$P{order_id}]]>
 	<field name="remark" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="head_endPlace" class="java.lang.String">
+	<field name="head_end_place" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="head_startPlace" class="java.lang.String">
+	<field name="head_start_place" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="head_attn" class="java.lang.String">
@@ -493,7 +494,7 @@ where jos.order_id=$P{order_id}]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="116" y="117" width="163" height="34" uuid="9bbb998a-9606-4776-bcc8-0fb64af65bf7"/>
 				<textElement>
-					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{head_attn}]]></textFieldExpression>
 			</textField>
@@ -523,14 +524,14 @@ where jos.order_id=$P{order_id}]]>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{head_endPlace}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_end_place}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="379" y="86" width="149" height="30" uuid="2007e9ec-c4f3-4feb-a821-d9e5aad93aca"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{head_startPlace}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_start_place}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="27" y="608" width="498" height="45" uuid="a700f889-2aea-4018-9bef-ba4d64d25170"/>
@@ -603,25 +604,25 @@ where jos.order_id=$P{order_id}]]>
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="230" y="689" width="140" height="20" uuid="cef7875b-2560-459a-8cb1-156a4f47997e"/>
+				<reportElement x="180" y="689" width="140" height="20" uuid="cef7875b-2560-459a-8cb1-156a4f47997e"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[吉柜到厂，待通知收柜。]]></text>
 			</staticText>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="116" y="689" width="114" height="20" uuid="f3f7d41b-92cf-4f72-a3e4-c08ab99f74e7"/>
+				<reportElement x="116" y="689" width="65" height="20" uuid="f3f7d41b-92cf-4f72-a3e4-c08ab99f74e7"/>
 				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cabinet_arrive_date}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="43" y="710" width="467" height="39" uuid="02a98bcb-57a9-489f-a93c-0628d61cedfc"/>
 				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cabinet_arrive_date}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cabinet_arrive_remark}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="28" y="710" width="15" height="20" uuid="97048e9e-14de-4119-84b7-d0de4e3abf9e"/>

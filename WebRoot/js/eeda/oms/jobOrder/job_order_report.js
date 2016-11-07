@@ -657,7 +657,7 @@ $(document).ready(function() {
 	})
     $('#printCabinetTruck').click(function(){
     	var truckHead = {}
-    	var form = $('#truckHeadForm input');
+    	var form = $('#truckHeadForm input,#truckHeadForm textarea');
     	for(var i = 0; i < form.length; i++){
     		var name = form[i].id;
         	var value =form[i].value;
