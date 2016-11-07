@@ -22,14 +22,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		        	}
     				if(status=="审核通过"){
 		        		$('#confirmCompleted').attr('disabled', true);
-						$('#saveBtn').attr('disabled', true);
+						$('#saveBtn').attr('disabled', false);
 						//审核按钮状态
 						$('#passBtn').attr('disabled',true);
 			        	$('#refuseBtn').attr('disabled',true);
 			        	$.scojs_message('审核成功', $.scojs_message.TYPE_OK);
-			        	if(confirm('确定要前往工作单？')){
-			        		location.href="/customJobOrder/edit?id="+order.JOB_ORDER_ID;
-			        	}
+//			        	if(confirm('确定要前往工作单？')){
+//			        		location.href="/customJobOrder/edit?id="+order.JOB_ORDER_ID;
+//			        	}
 			        	
 		        	}
     				if(status=="审核不通过"){
@@ -77,7 +77,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		if(status=="审核通过"||status=="审核不通过"){
 			//提交报关行按钮状态
 			$('#confirmCompleted').attr('disabled', true);
-			$('#saveBtn').attr('disabled',true);
+			$('#saveBtn').attr('disabled',false);
 			//审核按钮状态
 			$('#passBtn').attr('disabled',true);
         	$('#refuseBtn').attr('disabled',true);
