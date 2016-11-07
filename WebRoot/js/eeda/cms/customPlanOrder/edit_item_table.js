@@ -89,11 +89,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                		return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
 	                }
 	            },
-	            { "data": "ITEM_NO","width": "80px",
+	            { "data": "ITEM_NO","width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="ITEM_NO" value="'+data+'" class="form-control search-control" />';
+	                    return '<input style="width:60px"  type="text" name="ITEM_NO" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "COMMODITY_CODE","width": "80px",
@@ -128,7 +128,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="TRANSACTION_AMOUNT" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:100px" type="text" name="TRANSACTION_AMOUNT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "TRANSACTION_UNIT" ,"width": "180px",
@@ -164,7 +164,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                	if(!data)
 	                        data='';
-	                	return '<input type="text" name="LEGAL_AMOUNT" value="'+data+'" class="form-control search-control" />';
+	                	return '<input style="width:100px" type="text" name="LEGAL_AMOUNT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "LEGAL_UNIT","width": "80px",
@@ -173,6 +173,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                        data='';
 	                    var str = '<select name="legal_unit" class="form-control search-control" style="width:100px" >'
 	                    	+'<option value="" '+(data=='' ? 'selected':'')+'></option>'
+	                    	+'<option value="个" '+(data=='个' ? 'selected':'')+'>个</option>'
 	                        +'<option value="千克" '+(data=='千克' ? 'selected':'')+'>千克</option>'
 	                        +'<option value="克" '+(data=='克' ? 'selected':'')+'>克</option>'
 	                        +'<option value="毫克" '+(data=='毫克' ? 'selected':'')+'>毫克</option>'
@@ -211,7 +212,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="TOTAL_PRICE" value="'+data+'" class="form-control search-control" />';
+	                   return '<input type="text" name="TOTAL_PRICE" value="'+data+'" class="form-control search-control " disabled />';
 	                }
 	            },
 	            { "data": "CURRENCY" ,"width": "180px",
@@ -259,6 +260,22 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            }
 	        ]
 	    });
+	    
+	    
+	    //输入 申报数量*单价的时候，计算金额
+	    $('#cargo_table').on('keyup','[name=TRANSACTION_AMOUNT],[name=PRICE],[name=TOTAL_PRICE]',function(){
+	    	var row = $(this).parent().parent();
+	    	var transaction_amount = $(row.find('[name=TRANSACTION_AMOUNT]')).val();
+	    	var price = $(row.find('[name=PRICE]')).val();
+	    	if(transaction_amount==''||price==''){
+	    		$(row.find('[name=TOTAL_PRICE]')).val('');
+	    	}
+	    	if(transaction_amount!=''&&price!=''&&!isNaN(transaction_amount)&&!isNaN(price)){
+	    		var total_price = parseFloat(transaction_amount)*parseFloat(price);
+	    		$(row.find('[name=TOTAL_PRICE]')).val(total_price);
+	    	}
+	    });
+	    
 	    
 	    var self ;
 	    $('#cargo_table').on('click','input[name=DECLARE_ELEMENT]',function(){
