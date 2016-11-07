@@ -37,7 +37,7 @@ $(document).ready(function() {
             }
             companyList.empty();
             for(var i = 0; i < data.length; i++)
-                companyList.append("<li><a class='fromLocationItem popListItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' contact_person_eng='"+data[i].CONTACT_PERSON_ENG+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' fax='"+data[i].FAX+"' partyId='"+data[i].ID+"' address='"+data[i].ADDRESS+"' address_eng='"+data[i].ADDRESS_ENG+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].ABBR+"</a></li>");
+                companyList.append("<li><a class='fromLocationItem popListItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' phone='"+data[i].PHONE+"' fax='"+data[i].FAX+"' partyId='"+data[i].ID+"' address='"+data[i].ADDRESS+"' >"+data[i].ABBR+"</a></li>");
             companyList.css({ 
                 left:$(me).position().left+"px", 
                 top:$(me).position().top+28+"px" 
@@ -53,16 +53,34 @@ $(document).ready(function() {
         companyList.hide();
         var companyId = $(this).attr('partyId');
         hiddenField.val(companyId);
+        var address = $(this).attr('address');
+        var contact_person = $(this).attr('contact_person');
+        var phone = $(this).attr('phone');
+        var fax = $(this).attr('fax');
+        var info = '';
         if(companyId=='35333'){
-            var info = $(this).attr('address')+'\r'+$(this).attr('phone')+'\r'+$(this).attr('fax');
+        	if(address!=''&&address!='undefined'&&address!='null'){
+        		info +=address;
+        	}
+        	if(phone!=''&&phone!='undefined'&&phone!='null'){
+                info += '\r'+'TEL:'+phone;
+            }
+            if(fax!=''&&fax!='undefined'&&fax!='null'){
+                info += ' FAX:'+fax;
+            }
             infoField.val(info);
         }else{
-            var info = $(this).attr('address')+'\r'+$(this).attr('contact_person');
-            if($(this).attr('phone')!=''){
-            	info += '\r'+'TEL:'+$(this).attr('phone');
+        	if(address!=''&&address!='undefined'&&address!="null"){
+                info +=address;
             }
-            if($(this).attr('fax')!=''){
-            	info += ' FAX:'+$(this).attr('fax');
+        	if(contact_person!=''&&contact_person!='undefined'&&contact_person!="null"){
+                info +='\r'+contact_person;
+            }
+        	if(phone!=''&&phone!='undefined'&&phone!="null"){
+                info += '\r'+'TEL:'+phone;
+            }
+            if(fax!=''&&fax!='undefined'&&fax!="null"){
+                info += ' FAX:'+fax;
             }
             infoField.val(info);
         }
