@@ -135,45 +135,45 @@ $(document).ready(function() {
         //自理报关还是委托报关
         order.entrust_or_self_custom = entrust_or_self_custom_str;
 
-        if(transport_type_str.includes("ocean")){
+        if(transport_type_str.indexOf('ocean')>-1){
 	        //海运
 	        order.shipment_detail = itemOrder.buildShipmentDetail();
 	        order.shipment_list = itemOrder.buildOceanItem();
         }
-        if(transport_type_str.includes("air")){
+        if(transport_type_str.indexOf('air')>-1){
 	        //空运
 	        order.air_detail = itemOrder.buildAirDetail();
 	        order.air_list = itemOrder.buildAirItem();
 	        order.air_cargoDesc = itemOrder.buildCargoDescDetail();
         }
-        if(transport_type_str.includes("land")){
+        if(transport_type_str.indexOf('land')>-1){
 	        //陆运
 	        order.land_list = itemOrder.buildLoadItem();
         }
-        if(transport_type_str.includes("custom")){
+        if(transport_type_str.indexOf('custom')>-1){
 	        //报关
-	        if(custom_type_str.includes("china")){
-	        	if(entrust_or_self_custom_str.includes("self_custom")){
+	        if(custom_type_str.indexOf('china')>-1){
+	        	if(entrust_or_self_custom_str.indexOf('self_custom')>-1){
 			        order.chinaCustom_self_detail = itemOrder.buildCustomSelfDetail();
 			        order.chinaCustom_self_item = itemOrder.buildCustomSelfItem();
 	        	}
-	        	if(entrust_or_self_custom_str.includes("entrust_custom")){
+	        	if(entrust_or_self_custom_str.indexOf('entrust_custom')>-1){
 	        		order.chinaCustom = itemOrder.buildCustomDetail();
 	        	}
 	        }
-	        if(custom_type_str.includes("HK/MAC")){
+	        if(custom_type_str.indexOf('HK/MAC')>-1){
 	        	order.hkCustom = itemOrder.buildHkCustomDetail();
 	        }
-	        if(custom_type_str.includes("abroad")){
+	        if(custom_type_str.indexOf('abroad')>-1){
 	        	order.abroadCustom = itemOrder.buildAbroadCustomDetail();
 	        }
         }
-        if(transport_type_str.includes("insurance")){
+        if(transport_type_str.indexOf('insurance')>-1){
 	        //保险
 	        order.insurance_detail = itemOrder.buildInsuranceDetail();
         }
         
-        if(transport_type_str.includes("trade")){
+        if(transport_type_str.indexOf('trade')>-1){
 	        //贸易
 	        order.trade_detail = itemOrder.buildTradeDetail();
 	        order.trade_cost = itemOrder.buildTradeCostItem();
