@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="229"/>
+	<property name="ireport.y" value="98"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -37,7 +37,7 @@
 		oe.office_name,
 ifnull(p.company_name_eng,p.company_name) MBLshipper_name,
 ifnull(p1.company_name_eng,p1.company_name) MBLconsignee_name, ifnull(p2.company_name_eng,p2.company_name) MBLnotify_party_name,
-cast( concat(josi.pieces,ifnull(u.name,u.name_eng)) AS char ) pieces_unit
+cast( concat(josi.pieces,ifnull(u.name_eng,u.name)) AS char ) pieces_unit
 FROM job_order jo
 LEFT JOIN job_order_shipment jos on jos.order_id = jo.id
 left join job_order_shipment_item josi on josi.order_id=jo.id
