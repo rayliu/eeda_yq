@@ -38,31 +38,29 @@ public class EedaMenuInterceptor implements Interceptor {
         // 查询当前用户菜单
         String sql = "select distinct module.* from eeda_modules module"
                 + " where exists ("
-                + "     select sub.*, rp.permission_code, rp.is_authorize, rp.role_code from eeda_modules sub "
-                + "         left join module_role mr on mr.module_id = sub.id"
-                + "         left join role r on mr.role_id=r.id"
-                + "        left join role_permission rp on rp.module_role_id=mr.id"
-                + "    where sub.parent_id = module.id and sub.office_id=? "
-                + "        and rp.permission_code like '%list' and rp.is_authorize=1 "
-                + "        and rp.role_id in ("
-                + "             select r.id from role r, user_role ur "
-                + "             where ur.role_id=r.id and ur.user_name=?)"
+                + "     select u.office_id, u.user_name, r.name role_name, ur.role_id, m.module_name, m.id module_id, "
+                    + " p.code permission_code, p.name permission_name, rp.id rp_id, rp.is_authorize, p.url, m.seq"
+                    + " from user_login u, user_role ur, role r, eeda_modules m, permission p, role_permission rp"
+                    + " where u.user_name=ur.user_name and ur.role_id=r.id"
+                    + " and u.office_id=m.office_id and m.id=p.module_id "
+                    + " and rp.role_id=r.id and rp.permission_id=p.id and rp.module_id=m.id and rp.is_authorize=1"
+                    + " and rp.permission_code like '%list' "
+                    + " and m.parent_id=module.id and m.office_id=? and u.user_name=?"
                 + " ) order by seq";
         List<Record> modules = Db.find(sql, office_id, username);
         for (Record module : modules) {
-            sql = "select sub.id, sub.module_name, p.url, rp.permission_code, rp.is_authorize, rp.role_code from eeda_modules sub "
-                    + "      left join module_role mr on mr.module_id = sub.id "
-                    + "      left join role r on mr.role_id=r.id "
-                    + "     left join role_permission rp on rp.module_role_id=mr.id "
-                    + "     left join permission p on p.id = rp.permission_id"
-                    + "  where sub.parent_id =? and sub.office_id=? "
-                    + "     and rp.permission_code like '%list' and rp.is_authorize=1 "
-                    + "     and rp.role_id in ( "
-                    + "       select r.id from role r, user_role ur  "
-                    + "     where ur.role_id=r.id and ur.user_name=?) "
-                    + "  order by sub.seq";
+            sql = "select u.office_id, u.user_name, r.name role_name, ur.role_id, m.module_name, m.id module_id, "
+                    + " p.code permission_code, p.name permission_name, rp.id rp_id, rp.is_authorize, p.url, m.seq"
+                    + " from user_login u, user_role ur, role r, eeda_modules m, permission p, role_permission rp"
+                    + " where u.user_name=ur.user_name and ur.role_id=r.id"
+                    + " and u.office_id=m.office_id and m.id=p.module_id "
+                    + " and rp.role_id=r.id and rp.permission_id=p.id and rp.module_id=m.id and rp.is_authorize=1"
+                    + " and rp.permission_code like '%list' "
+                    + " and m.parent_id=? and m.office_id=? and u.user_name=?"
+                    + " order by m.seq";
 
-            List<Record> orders = Db.find(sql, module.get("id"), office_id, username);
+            List<Record> orders = Db.find(sql, module.get("id"), office_id,
+                    username);
             module.set("orders", orders);
         }
 
