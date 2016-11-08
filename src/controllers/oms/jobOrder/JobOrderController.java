@@ -1164,10 +1164,12 @@ public class JobOrderController extends Controller {
         			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
+        			+ " left join job_order_custom_china_self_item jocc on jocc.order_id = jor.id"
         			+ " where jor.office_id="+office_id
-                    + "  and  jor.transport_type LIKE '%custom%'"
-        			+ "  and ifnull(joc.customs_broker,'') = ''"
-        			+ " and jor.delete_flag = 'N'";
+                    + " and  jor.transport_type LIKE '%custom%'"
+        			+ " and (isnull(joc.customs_broker) or isnull(jocc.custom_bank))"
+        			+ " and jor.delete_flag = 'N'"
+        			+ " GROUP BY jor.id";
         	
         } else if("insurancewait".equals(type)){
         	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, ifnull(jos.export_date,joa.export_date) sent_out_time"

@@ -95,14 +95,16 @@ public class TodoController extends Controller {
 	}
 	
 	public void getWaitCustomTodoCount() {
-		String sql = " select count(1) total from job_order jor "
+		String sql = " select count(total_count) total from ( "
+				+ " select count(1) total_count from job_order jor "
 				+ " LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
+				+ " left join job_order_custom_china_self_item jocc on jocc.order_id = jor.id"
 				+ " where jor.transport_type LIKE '%custom%'"
-				+ " and ifnull(joc.customs_broker,'') = '' and jor.office_id="+office_id;
+				+ " and (isnull(joc.customs_broker) or isnull(jocc.custom_bank)) and jor.office_id="+office_id
+				+ " group by jor.id) A";
 
 		Record planOrder = Db.findFirst(sql);
 		String total = planOrder.getLong("TOTAL").toString();
-
 		renderText(total);
 	}
 
