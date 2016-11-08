@@ -116,11 +116,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       
       
       var sp_names = [];
-	  $("#customer_id_list").on('click', '.fromLocationItem', function(e){
+	  $("#sp_id_list").on('mousedown', '.fromLocationItem', function(e){
 		  var sp_name = $(this).text();
 		  for(num in sp_names){//重复校验
     		  if(sp_names[num]==sp_name){
-    			  $("#customer_id_input").val('');//清空文本框
+    			  $("#sp_id_input").val('');//清空文本框
     			  return false;
     		  }
     	  }
@@ -129,7 +129,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		  $('#sp_names').val(sp_names);
 		  $('#spName_list').append('<li class="search-control">'+sp_name+'<a name="delete_icon" class="glyphicon glyphicon-remove" style="margin-right:15px;" role="menuitem" tabindex="-10"></a></li>')
   	  
-		  $("#customer_id_input").val('');//清空文本框
+		  $("#sp_id_input").val('');//清空文本框
 	  });
       
       $('#spName_list').on('click', 'a', function(e){
