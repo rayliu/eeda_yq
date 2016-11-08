@@ -52,7 +52,7 @@ $(document).ready(function() {
           columns: [
             {"data":"APPLICATION_ORDER_NO",
             	 "render": function(data, type, full, meta) {
-            			return "<a href='/costPreInvoiceOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+            			return "<a href='/costAcceptOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
             	 }
             },
             {"data":"ORDER_TYPE"},

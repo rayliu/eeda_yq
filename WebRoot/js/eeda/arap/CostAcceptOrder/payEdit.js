@@ -13,7 +13,7 @@ $(document).ready(function() {
 		    id: 'CostOrder-table',
 		    paging: true,
 		    serverSide: true, //不打开会出现排序不对
-		    ajax: "/costPreInvoiceOrder/costOrderList?ids="+ids+"&application_id="+$("#application_id").val(),
+		    ajax: "/costAcceptOrder/costOrderList?ids="+ids+"&application_id="+$("#application_id").val(),
             createdRow: function ( row, data, index ) {
                 $(row).attr('id', data.ID);
                 $(row).attr('item_ids', data.ITEM_IDS);
@@ -99,7 +99,7 @@ $(document).ready(function() {
 		
 		
 		$('#docJson').val(JSON.stringify(itemOrder.buildDocItem()));
-		$.post('/costPreInvoiceOrder/save',$("#checkForm").serialize(), function(data){
+		$.post('/costAcceptOrder/save',$("#checkForm").serialize(), function(data){
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 				$("#application_id").val(data.ID);
@@ -132,7 +132,7 @@ $(document).ready(function() {
 		  	
 		  	orderjson();
 		  	
-			$.get("/costPreInvoiceOrder/checkStatus", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val()}, function(data){
+			$.get("/costAcceptOrder/checkStatus", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val()}, function(data){
 				if(data.ID>0){
 					$("#check_name").val(data.CHECK_NAME);
 					$("#check_stamp").val(data.CHECK_STAMP);
@@ -153,7 +153,7 @@ $(document).ready(function() {
 		  	$("#returnBtn").attr("disabled", true);
 		  	if(confirm("确定撤回未复核状态？")){
 		  		orderjson();
-				$.get("/costPreInvoiceOrder/returnOrder", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val()}, function(data){
+				$.get("/costAcceptOrder/returnOrder", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val()}, function(data){
 					if(data.success){
 						$.scojs_message('退回成功', $.scojs_message.TYPE_OK);
 						$("#checkBtn").attr("disabled", false);
@@ -174,11 +174,11 @@ $(document).ready(function() {
 	  $("#confirmBtn").on('click',function(){
 		  	$("#confirmBtn").attr("disabled", true);
 		  	orderjson();
-			$.get("/costPreInvoiceOrder/confirmOrder", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val(),pay_time:$('#pay_date').val(),pay_type:$('#pay_type').val(),pay_bank:$('#pay_bank').val()}, function(data){
+			$.get("/costAcceptOrder/confirmOrder", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val(),pay_time:$('#pay_date').val(),pay_type:$('#pay_type').val(),pay_bank:$('#pay_bank').val()}, function(data){
 				if(data.success){
 					$("#returnBtn").attr("disabled", true);
 					$("#deleteBtn").attr("disabled", true);
-					$("#status").val(data.STATUS);
+					$("#status").val('已付款');
 					$("#returnConfirmBtn").attr("disabled", false);
 					$.scojs_message('付款成功', $.scojs_message.TYPE_OK);
 				}else{
@@ -193,7 +193,7 @@ $(document).ready(function() {
 		  	$("#returnConfirmBtn").attr("disabled", true);
 		  	if(confirm("确定撤回未付款确认状态？")){
 		  		orderjson();
-				$.get("/costPreInvoiceOrder/returnConfirmOrder", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val()}, function(data){
+				$.get("/costAcceptOrder/returnConfirmOrder", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val()}, function(data){
 					if(data.success){
 						$.scojs_message('撤回成功', $.scojs_message.TYPE_OK);
 					  	$("#confirmBtn").attr("disabled", false);
@@ -217,7 +217,7 @@ $(document).ready(function() {
 		  	$("#deleteBtn").attr("disabled", true);
 		  	if(confirm("确定撤撤销此单据？返回到上一步重新做单？")){
 		  		orderjson();
-				$.get("/costPreInvoiceOrder/deleteOrder", {application_id:$('#application_id').val()}, function(data){
+				$.get("/costAcceptOrder/deleteOrder", {application_id:$('#application_id').val()}, function(data){
 					if(data.success){
 						$.scojs_message('撤销成功', $.scojs_message.TYPE_OK);
 						setTimeout(function(){
