@@ -57,35 +57,23 @@ $(document).ready(function() {
         var contact_person = $(this).attr('contact_person');
         var phone = $(this).attr('phone');
         var fax = $(this).attr('fax');
-        var info = '';
-        if(companyId=='35333'){
-        	if(address!=''&&address!='undefined'&&address!='null'){
-        		info +=address;
-        	}
-        	if(phone!=''&&phone!='undefined'&&phone!='null'){
-                info += '\r'+'TEL:'+phone;
-            }
-            if(fax!=''&&fax!='undefined'&&fax!='null'){
-                info += ' FAX:'+fax;
-            }
-            infoField.val(info);
-        }else{
-        	if(address!=''&&address!='undefined'&&address!="null"){
-                info +=address;
-            }
-        	if(contact_person!=''&&contact_person!='undefined'&&contact_person!="null"){
-                info +='\r'+contact_person;
-            }
-        	if(phone!=''&&phone!='undefined'&&phone!="null"){
-                info += '\r'+'TEL:'+phone;
-            }
-            if(fax!=''&&fax!='undefined'&&fax!="null"){
-                info += ' FAX:'+fax;
-            }
-            infoField.val(info);
+       	if(address=='undefined'||address=="null"){
+               address='';
         }
-        	
-        
+       	if(contact_person=='undefined'||contact_person=="null"){
+               contact_person='';
+        }
+       	if(phone=='undefined'||phone=="null"){
+               phone='';
+        }else{
+        	phone = 'TEL:'+phone;
+        }
+        if(fax=='undefined'||fax=="null"){
+            fax='';
+        }else{
+        	fax = ' FAX:'+fax;
+        }
+        infoField.val(address+'\r'+contact_person+'\r'+phone+fax);
     });
 
     // 1 没选中客户，焦点离开，隐藏列表

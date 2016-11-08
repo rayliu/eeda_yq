@@ -332,8 +332,14 @@ $(document).ready(function() {
 		}else{
 			var arrStr = $('#ocean_HBLshipper_info').val();
 			var arry = arrStr.split("\n");
+			var arr = arry[2].split(" ");
 			$('#head_attn').val(arry[0]);
-			$('#head_customerTel').val(arry[1]);
+			if(arr.length>=1){
+				$('#head_customerTel').val(arr[0].replace("TEL:",""));
+			}
+			if(arr.length>=2){
+				$('#head_fax').val(arr[1].replace("FAX:",""));
+			}
 			$('#head_endPlace').val($('#ocean_HBLshipper_input').val());
 			$('#head_startPlace').val(loginUserName);
 			$('#head_date').val(eeda.getDate());
@@ -650,7 +656,13 @@ $(document).ready(function() {
 		var arrStr = $('#ocean_HBLshipper_info').val();
 		var arry = arrStr.split("\n");
 		$('#truck_head_attn').val(arry[0]);
-		$('#truck_head_customerTel').val(arry[1]);
+		var arr = arry[2].split(" "); 
+		if(arr.length>=1){
+			$('#truck_head_customerTel').val(arr[0].replace("TEL:",""));
+		}
+		if(arr.length>=2){
+			$('#truck_head_fax').val(arr[1].replace("FAX:",""));
+		}
 		$('#truck_head_endPlace').val($('#ocean_HBLshipper_input').val());
 		$('#truck_head_startPlace').val(loginUserName);
 		$('#truck_head_date').val(eeda.getDate());
@@ -677,11 +689,11 @@ $(document).ready(function() {
 				if(data){
 	                window.open(data.DOWN_URL);
 	             }else{
-	               $.scojs_message('生成海运头程资料失败', $.scojs_message.TYPE_ERROR);
+	               $.scojs_message('生成柜货派车单PDF失败', $.scojs_message.TYPE_ERROR);
 	             }
 				
 		},'json').fail(function(){
-		    	$.scojs_message('生成海运头程资料失败', $.scojs_message.TYPE_ERROR);
+		    	$.scojs_message('生成柜货派车单PDF失败', $.scojs_message.TYPE_ERROR);
 		  });
 		
     });
