@@ -20,9 +20,7 @@ import models.yh.profile.ProviderChargeType;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Before;
@@ -34,7 +32,6 @@ import com.jfinal.plugin.activerecord.Record;
 
 import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
-import controllers.util.PermissionConstant;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -269,9 +266,7 @@ public class ServiceProviderController extends Controller {
 		if (input !=null && input.trim().length() > 0) {
 		    spList = Db
 					.find(" select p.*, p.id as pid, p.payment from party p, office o where o.id = p.office_id and"
-					        + " ("+spCon+") and p.type = '"
-							+ Party.PARTY_TYPE_SERVICE_PROVIDER
-							+ "' and (p.company_name like '%"
+					        + " (p.company_name like '%"
 							+ input
 							+ "%' or p.abbr like '%"
 							+ input
@@ -291,8 +286,7 @@ public class ServiceProviderController extends Controller {
 		} else {
 		    spList = Db
 					.find("select p.*, p.id as pid from party p, office o where o.id = p.office_id and "
-					        + " ("+spCon+") and p.type = '"
-							+ Party.PARTY_TYPE_SERVICE_PROVIDER + "'  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?)", parentID, parentID);
+					        + " (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?)", parentID, parentID);
 		}
 		renderJson(spList);
 	}
