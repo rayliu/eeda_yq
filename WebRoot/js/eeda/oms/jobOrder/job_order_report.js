@@ -681,22 +681,46 @@ $(document).ready(function() {
     			truckHead[name] = value;
     		}
     	}
-    	truckHead.id = $('#truckHeadId').val();
-    	truckHead.order_id = $('#order_id').val();
-    	
-		$.post('/jobOrderReport/printCabinetTruck', {params:JSON.stringify(truckHead)}, function(data){
-				$("#truckHeadId").val(data.TRUCKHEADID);
-				if(data){
-	                window.open(data.DOWN_URL);
-	             }else{
-	               $.scojs_message('生成柜货派车单PDF失败', $.scojs_message.TYPE_ERROR);
-	             }
-				
-		},'json').fail(function(){
-		    	$.scojs_message('生成柜货派车单PDF失败', $.scojs_message.TYPE_ERROR);
-		  });
+    	 	
+    	var k = 0;
+		$('#land_table input[type="checkbox"]').each(function(){
+			var checkbox = $(this).prop('checked');
+			if(checkbox){
+				truckHead.item_id = $(this).parent().parent().attr('id');
+				truckHead.id = $('#truckHeadId').val();
+		    	truckHead.order_id = $('#order_id').val(); 
+				k++;
+				$.post('/jobOrderReport/printCabinetTruck', {params:JSON.stringify(truckHead)}, function(data){
+					$("#truckHeadId").val(data.TRUCKHEADID);
+					if(data){
+		                window.open(data.DOWN_URL);
+		             }else{
+		            	 $.scojs_message('所选中的里面第'+k+'条生成柜货派车单 PDF失败', $.scojs_message.TYPE_ERROR);
+		             }
+				},'json').fail(function(){
+			    	$.scojs_message('生成柜货派车单PDF失败', $.scojs_message.TYPE_ERROR);
+			  }); 
+				itemIds.push(itemId);
+			}
+		});
 		
     });
+    	
+    	
+//    	
+//		$.post('/jobOrderReport/printCabinetTruck', {params:JSON.stringify(truckHead)}, function(data){
+//				$("#truckHeadId").val(data.TRUCKHEADID);
+//				if(data){
+//	                window.open(data.DOWN_URL);
+//	             }else{
+//	               $.scojs_message('生成柜货派车单PDF失败', $.scojs_message.TYPE_ERROR);
+//	             }
+//				
+//		},'json').fail(function(){
+//		    	$.scojs_message('生成柜货派车单PDF失败', $.scojs_message.TYPE_ERROR);
+//		  });
+//		
+//    });
     
 	
 });

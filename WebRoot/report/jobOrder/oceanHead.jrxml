@@ -2,13 +2,13 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHead" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="290"/>
+	<property name="ireport.y" value="35"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     jos.*,josi.*,josh.*,p.company_name head_company,p1.company_name carrier_company,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
+     jos.*,josi.*,josh.*,p.company_name head_company,p1.company_name carrier_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
 ifnull(
 (select GROUP_CONCAT(CN_no SEPARATOR '  ;  ') from
 (SELECT
@@ -266,6 +266,7 @@ where jos.order_id=$P{order_id}]]>
 	</field>
 	<field name="head_company" class="java.lang.String"/>
 	<field name="carrier_company" class="java.lang.String"/>
+	<field name="carrier_abbr" class="java.lang.String"/>
 	<field name="shipper_phone" class="java.lang.String"/>
 	<field name="por_name" class="java.lang.String"/>
 	<field name="pol_name" class="java.lang.String"/>
@@ -480,7 +481,7 @@ where jos.order_id=$P{order_id}]]>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{carrier_company}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{carrier_abbr}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="154" y="282" width="401" height="20" uuid="39e34637-910d-404d-9c54-3c80eb72419a"/>
@@ -541,7 +542,7 @@ where jos.order_id=$P{order_id}]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="22" y="231" width="505" height="33" uuid="bd876b8f-6da4-4d76-96df-c981cb7cddd5"/>
 				<textElement verticalAlignment="Middle">
-					<font size="16" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="16" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{head_title}]]></textFieldExpression>
 			</textField>

@@ -143,7 +143,7 @@ public class JobOrderReportController extends Controller {
 		
 		String id = (String) dto.get("id");
 		String order_id = (String) dto.get("order_id");
-		
+		String item_id = (String) dto.get("item_id");
 		
 		Record r =new Record();
 		if (StringUtils.isNotEmpty(id)) {
@@ -162,10 +162,10 @@ public class JobOrderReportController extends Controller {
 		String outFileName = "/download/工作单陆运柜货派车单";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
+		hm.put("item_id", item_id);
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
-		
 		r.set("truckHeadId", id);
 		r.set("down_url", file.substring(file.indexOf("download")-1));
 		renderJson(r);
