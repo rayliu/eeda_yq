@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.ArapAccountAuditLog;
+import models.UserLogin;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -21,6 +22,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PermissionConstant;
 
@@ -41,6 +43,9 @@ public class OrderStatusController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
         
     	String sql = ""
     			+ " select * from(SELECT jor.id,p.abbr customer_name,jor.customer_id,"
@@ -94,7 +99,9 @@ public class OrderStatusController extends Controller {
     			+ " WHERE joa.id = jor.id"
     			+ " ) cost_app_no"
     			+ " from job_order jor"
-    			+ " LEFT JOIN party p on p.id = jor.customer_id) A where 1 = 1";
+    			+ " LEFT JOIN party p on p.id = jor.customer_id"
+    			+ " where jor.office_id = "+ office_id
+    			+ ") A where 1 = 1";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
         
