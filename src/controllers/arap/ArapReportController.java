@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.UserLogin;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -18,6 +20,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PermissionConstant;
 
@@ -38,9 +41,11 @@ public class ArapReportController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = "select * from(  "
-         		+ " select joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+         		+ " select joa.id,joa.type,joa.bill_flag,joa.sp_id,ifnull(joa.total_amount,0) total_amount,joa.exchange_rate,ifnull(joa.currency_total_amount,0) currency_total_amount,"
          		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
          		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
          		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
@@ -56,6 +61,7 @@ public class ArapReportController extends Controller {
  				+ " left join currency cur on cur.id=joa.currency_id "
  				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
  				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' "
+ 				+ " and jo.office_id = "+office_id
  				+ " GROUP BY joa.id "
  				+ " ) B where 1=1 ";
 		
