@@ -333,7 +333,7 @@ $(document).ready(function() {
 			var arrStr = $('#ocean_HBLshipper_info').val();
 			var arry = arrStr.split("\n");
 			var arr = arry[2].split(" ");
-			$('#head_attn').val(arry[0]);
+			$('#head_attn').val(arry[1]);
 			if(arr.length>=1){
 				$('#head_customerTel').val(arr[0].replace("TEL:",""));
 			}
@@ -655,7 +655,7 @@ $(document).ready(function() {
 	$('#cabinet_truck').click(function(){
 		var arrStr = $('#ocean_HBLshipper_info').val();
 		var arry = arrStr.split("\n");
-		$('#truck_head_attn').val(arry[0]);
+		$('#truck_head_attn').val(arry[1]);
 		var arr = arry[2].split(" "); 
 		if(arr.length>=1){
 			$('#truck_head_customerTel').val(arr[0].replace("TEL:",""));
