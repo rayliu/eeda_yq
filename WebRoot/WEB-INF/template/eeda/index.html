@@ -22,7 +22,26 @@
 			                    show = 'block';
 			                }
 			            %>
-			           
+                         <% 
+                            if(shiro.hasRole('admin')){
+                        %>
+			            <div class="row">
+                            <div class="col-lg-4">
+                                <div id="cpu_chart" style="height:200px"></div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div id="mem_chart" style="height:200px"></div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div id="disk_chart" style="height:200px"></div>
+                            </div>
+                            <script>
+                                requirejs(['js/common'], function (common) {
+                                    requirejs(['app/index/index_cpu_chart', 'app/index/index_mem_chart']);
+                                });
+                            </script>
+                        </div>
+                        <%}%>
                                         <div class="col-lg-6">
     			                            <div class="row">
     						                    <div class="col-lg-6 col-md-6">

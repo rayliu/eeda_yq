@@ -183,7 +183,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/", controllers.eeda.MainController.class, contentPath);
         me.add("/module", ModuleController.class, contentPath);
        // me.add("/apidoc", controllers.eeda.DocController.class);
-//        me.add("/debug", controllers.profile.LogController.class, contentPath);
+        me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
         me.add("/loginUser", controllers.profile.LoginUserController.class, contentPath);
         me.add("/unit", UnitController.class, contentPath);
