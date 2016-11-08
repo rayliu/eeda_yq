@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL_subreport1" language="groovy" pageWidth="535" pageHeight="56" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="399932f8-ff88-4f8f-8185-9c7854753024">
 	<property name="ireport.zoom" value="1.771561000000001"/>
-	<property name="ireport.x" value="32"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
@@ -11,7 +11,7 @@
 	CONCAT(container_no, '/', container_type,'/', seal_no) CN_no,
 	CONCAT(
 		CAST(FORMAT(pieces,0) AS CHAR),' ',
-		u.name_eng
+		u.name_eng,'\r',ifnull(pallet_desc,'')
 	) pieces,
 	CONCAT(
 		CAST(FORMAT(gross_weight,2) AS CHAR),
@@ -42,30 +42,30 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<detail>
-		<band height="15">
+		<band height="20">
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="153" height="15" uuid="89d8254b-b3a6-4a3c-98ac-9cd9e0a3426e"/>
+				<reportElement x="0" y="0" width="153" height="20" uuid="89d8254b-b3a6-4a3c-98ac-9cd9e0a3426e"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CN_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="377" y="0" width="88" height="15" uuid="164e8956-d15c-46bf-a09e-2ddbfd4fed72"/>
+				<reportElement x="377" y="0" width="88" height="20" uuid="164e8956-d15c-46bf-a09e-2ddbfd4fed72"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="153" y="0" width="106" height="15" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
+				<reportElement x="152" y="0" width="88" height="20" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="8"/>
+					<font fontName="SansSerif" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="463" y="0" width="72" height="15" uuid="c408bb39-3bf9-4e1a-9515-ec416b4c03bb"/>
+				<reportElement x="465" y="0" width="70" height="20" uuid="c408bb39-3bf9-4e1a-9515-ec416b4c03bb"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>

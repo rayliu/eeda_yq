@@ -2,35 +2,14 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="288"/>
+	<property name="ireport.y" value="264"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	(
-		SELECT
-			GROUP_CONCAT(abc SEPARATOR ' ; ')
-		FROM
-			(
-				SELECT
-					CONCAT('SHIPPER\'S LOAD,COUNT & SEAL (',
-						count(josi.container_type),
-						'x',
-						josi.container_type,') CONTAINER S.T.C.'
-					) abc,
-					'abc' flag
-				FROM
-					job_order_shipment_item josi
-				LEFT JOIN job_order jo ON jo.id = 360
-				WHERE
-					jo.id = $P{order_id}
-				GROUP BY
-					josi.container_type
-			) A
-		GROUP BY
-			A.flag
-	) container_type_count_Des,
+cast(
+ifnull(
 	(
 		SELECT
 			GROUP_CONCAT(abc SEPARATOR ' ; ')
@@ -41,8 +20,7 @@
 						count(josi.container_type),
 						'x',
 						josi.container_type,') CONTAINER ONLY'
-					) abc,
-					'abc' flag
+					) abc
 				FROM
 					job_order_shipment_item josi
 				LEFT JOIN job_order jo ON jo.id = josi.order_id
@@ -51,9 +29,7 @@
 				GROUP BY
 					josi.container_type
 			) A
-		GROUP BY
-			A.flag
-	) container_type_count,
+	),concat('SAY ',josi.pieces,' ',un.name_eng,' ONLY')) as char ) container_type_count,
 	jo.*,josi.*, jos.*, Upper(lo. NAME) por_name,p.abbr,ifnull(p1.company_name_eng,p1.company_name) oversea_agentName,
 	Upper(lo1. NAME) pol_name,
 	Upper(lo2. NAME) pod_name,
@@ -105,9 +81,9 @@ left join party p on p.id=jos.HBLconsignee
 left join party p2 on p2.id=jos.HBLshipper
 left join party p3 on p3.id=jos.HBLnotify_party
 left join party p1 on p1.id=jos.oversea_agent
+left join unit un on un.id = josi.unit_id
 where jos.order_id=$P{order_id}]]>
 	</queryString>
-	<field name="container_type_count_Des" class="java.lang.String"/>
 	<field name="container_type_count" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -215,6 +191,24 @@ where jos.order_id=$P{order_id}]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="office_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="entrust_or_self_custom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="deletor" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="delete_stamp" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="delete_reason" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="delete_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="custom_type" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="order_id" class="java.lang.Long">
@@ -891,7 +885,7 @@ NON-NEGOTIABLE]]></text>
 				<text><![CDATA[ZHUHAI HENGQIN ENKYO SCM CO., LTD.]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="199" y="496" width="353" height="20" uuid="634292dd-8936-4422-8941-af87cecfcda1"/>
+				<reportElement x="193" y="496" width="362" height="28" uuid="634292dd-8936-4422-8941-af87cecfcda1"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
@@ -939,7 +933,7 @@ NON-NEGOTIABLE]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{oversea_agentName}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="280" y="343" width="112" height="23" uuid="640a5a17-8cd8-4cd9-916a-e1f6e2975e60"/>
 				<textElement>
 					<font size="8"/>
