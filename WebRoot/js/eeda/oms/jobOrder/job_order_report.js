@@ -633,9 +633,18 @@ $(document).ready(function() {
 	      			itemIds.push(itemId);
 	      		}
 	      	 });
+	      	var landIds=[];
+	      	$('#invoice_land_table input[type="checkbox"]').each(function(){
+	      		var checkbox = $(this).prop('checked');
+	      		if(checkbox){
+	      			var itemId = $(this).parent().parent().attr('id');
+	      			landIds.push(itemId);
+	      		}
+	      	});
+	      	console.log(landIds);
 	    	 $.post('/jobOrder/saveDebitNote', {itemIds:itemIds.toString(),invoiceNo:invoiceNo}, function(data){
 	    		 if(data.result==true){
-			    	$.post('/jobOrderReport/printDebitNotePDF', {debit_note:debit_note, itemIds:itemIds.toString()}, function(data){
+			    	$.post('/jobOrderReport/printDebitNotePDF', {debit_note:debit_note, itemIds:itemIds.toString(), landIds:landIds.toString()}, function(data){
 			    		   $('#printDebitNoteBtn').attr('disabled', false);
 			                window.open(data);
 			    	}).fail(function() { 

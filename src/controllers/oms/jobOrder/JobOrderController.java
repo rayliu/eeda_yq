@@ -1290,15 +1290,8 @@ public class JobOrderController extends Controller {
     @Before(Tx.class)
     public void saveDebitNote(){
     	String ids = getPara("itemIds");
-    	String[] idArr = ids.split(",");
     	String invoiceNo = getPara("invoiceNo");
-    	JobOrderArap order = null;
-    	//checkbox选中的几条发票号一样
-    	for(int i=0;i<idArr.length;i++){
-    		order = JobOrderArap.dao.findById(idArr[i]);
-    		order.set("invoice_no", invoiceNo);
-    		order.update();
-    	}
+    	Db.update("update job_order_arap set invoice_no ='"+invoiceNo+"' where id in ("+ids+")");
     	renderJson("{\"result\":true}");
     }
     

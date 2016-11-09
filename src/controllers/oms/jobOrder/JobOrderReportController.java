@@ -204,20 +204,25 @@ public class JobOrderReportController extends Controller {
 	public void printDebitNotePDF() {
 		String debit_note = getPara("debit_note");
 		String order_id = getPara("itemIds");
+		String landIds = getPara("landIds");
 		String [] orderIdArr= order_id.split(",");
 		String fileName;
 		String outFileName;
+		HashMap<String, Object> hm = new HashMap<String, Object>();
 		if("debitNote".equals(debit_note)){
 			fileName = "/report/jobOrder/debitNote.jasper";
 			outFileName = "/download/debitNote中文";
 		}else if ("debit_note_eng".equals(debit_note)){
 			fileName = "/report/jobOrder/debitNote_eng.jasper";
 			outFileName = "/download/debitNote英文";
-		}else {
+		}else if ("invoice".equals(debit_note)){
 			fileName = "/report/jobOrder/INVOICE.jasper";
 			outFileName = "/download/Invoice英文";
+		}else {
+			fileName = "/report/jobOrder/land_invoice.jasper";
+			outFileName = "/download/Invoice分单";
+			hm.put("landIds", landIds);		
 		}
-		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", orderIdArr);		
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;

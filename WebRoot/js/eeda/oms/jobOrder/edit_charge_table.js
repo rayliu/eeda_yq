@@ -628,7 +628,7 @@ $(document).ready(function() {
     }
     
     //checkbox选中则button可点击
-    $('#chargeDiv').on('click','.checkBoxOfChargeTable',function(){
+    $('#charge_table').on('click','.checkBoxOfChargeTable',function(){
     	var hava_check = 0;
     	$('#charge_table input[type="checkbox"]').each(function(){	
     		var checkbox = $(this).prop('checked');
@@ -674,11 +674,49 @@ $(document).ready(function() {
 	//全选
     $('#AllCheckOfChargeTable').click(function(){
 	    $(".checkBoxOfChargeTable").prop("checked",this.checked);
+	    if(this.checked==true&&$('#charge_table td').length>1){
+	    	$('#print_debit_note').attr('disabled',false);
+	    }else{
+	    	$('#print_debit_note').attr('disabled',true);
+	    }
     });
     $("#charge_table").on('click','.checkBoxOfChargeTable',function(){
 		  $("#AllCheckOfChargeTable").prop("checked",$(".checkBoxOfChargeTable").length == $(".checkBoxOfChargeTable:checked").length ? true : false);
     });
+    
+    //打印境外，分单
+    var dataTable = eeda.dt({
+        id: 'invoice_land_table',
+        columns: [
+            { "data":"ID",
+			    "render": function ( data, type, full, meta ) {
+			    	if(data)
+			    		return '<input type="checkbox" class="checkBox" >';
+			    	else 
+			    		return '<input type="checkbox" disabled>';
+			    }
+			},
+            { "data": "TRANSPORT_COMPANY_NAME"}, 
+            { "data": "CONSIGNOR_NAME"}, 
+            { "data": "CONSIGNEE_NAME"}, 
+            { "data": "PIECES"},
+            { "data": "GROSS_WEIGHT"},
+            { "data": "VOLUME"}
+            
+        ]
+    });
 	
+    $('#printDebit [name=debit_note]').click(function(){
+    	if($(this).val() == "invoice_land"){
+    		var order_id = $('#order_id').val();
+    		var url = "/jobOrder/tableList?order_id="+order_id+"&type=land";
+        	dataTable.ajax.url(url).load();
+        	$('#printDebit .modal-dialog').width(1000);
+    		$('#land_table_div').show();
+    	}else{
+    		$('#land_table_div').hide();
+    	}
+    })
 	
   });
 });
