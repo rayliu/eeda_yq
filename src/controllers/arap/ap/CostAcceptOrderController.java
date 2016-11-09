@@ -158,7 +158,7 @@ public class CostAcceptOrderController extends Controller {
 				
                 if(order_type.equals("应付对账单")){
 					ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
-					arapCostOrder.set("status", "付款申请中").update();
+					arapCostOrder.set("audit_status", "付款申请中").update();
 				}else if(order_type.equals("成本单")){
 					ArapMiscCostOrder arapMiscCostOrder = ArapMiscCostOrder.dao.findById(id);
 					arapMiscCostOrder.set("audit_status", "付款申请中").update();
@@ -206,9 +206,9 @@ public class CostAcceptOrderController extends Controller {
 				Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '应付对账单'",id);
 				Double paid_amount = re.getDouble("total");
 				if(!total_amount.equals(paid_amount)){
-					arapCostOrder.set("status", "部分已复核").update();
+					arapCostOrder.set("audit_status", "部分已复核").update();
 				}else
-					arapCostOrder.set("status", "已复核").update();
+					arapCostOrder.set("audit_status", "已复核").update();
 			}		
 		}
 		Record r = arapCostInvoiceApplication.toRecord();
@@ -327,9 +327,9 @@ public class CostAcceptOrderController extends Controller {
 				Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '应付对账单'",id);
 				Double paid_amount = re.getDouble("total");
 				if(total_amount!=paid_amount){
-					arapCostOrder.set("status", "部分已付款").update();
+					arapCostOrder.set("audit_status", "部分已付款").update();
 				}else
-					arapCostOrder.set("status", "已付款").update();
+					arapCostOrder.set("audit_status", "已付款").update();
 			}
 		}
         
@@ -410,7 +410,8 @@ public class CostAcceptOrderController extends Controller {
    		long office_id=user.getLong("office_id");
         String sql = " select * from ("
         		+ " select  aco.id, aco.order_no, aco.order_type, aco.status, aco.create_stamp, aco.total_amount totalCostAmount, aco.sp_id, p.company_name sp_name, "
-        		+ " sum(ifnull(c.pay_amount,0)) paid_amount"
+        		+ " sum(ifnull(c.pay_amount,0)) paid_amount,"
+        		+ " group_concat((select concat(order_no,'-',status) from arap_cost_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
 				+ " from arap_cost_order aco "
 				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id"
 				+ " left join party p on p.id=aco.sp_id "

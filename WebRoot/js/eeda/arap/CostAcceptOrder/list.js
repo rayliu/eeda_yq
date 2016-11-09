@@ -25,6 +25,7 @@ $(document).ready(function() {
             },
             {"data":"ORDER_TYPE"},   
             {"data":"STATUS"},   
+            {"data":"APP_MSG"},   
             {"data":"TOTALCOSTAMOUNT"},  
             {"data":"PAID_AMOUNT",
             	"render": function(data, type, full, meta) {
