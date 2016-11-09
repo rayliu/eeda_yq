@@ -19,7 +19,7 @@ $(document).ready(function() {
             		return "<a href='/chargeCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
         		}
             },
-            {"data":"ORDER_TYPE", "class":"order_type"},   
+            {"data":"ORDER_TYPE", "class":"order_type","width":"80px"},   
             {"data":"PAYEE_NAME",  "width":"150px",'class':'payee_name'},
             {"data":"TOTAL_AMOUNT", "width":"70px"},  
             {"data":"RECEIVE_AMOUNT", "width":"70px" },
@@ -28,8 +28,8 @@ $(document).ready(function() {
             		return full.TOTAL_AMOUNT - full.RECEIVE_AMOUNT;	
             	}
             },
-            {"data":"INVOICE_NO",  "width":"150px"},
             {"data":"STATUS", "width":"70px"},   
+            {"data":"APP_MSG", "width":"120px"},   
             {"data":"REMARK",  "width":"150px"},
         ]      
     });
