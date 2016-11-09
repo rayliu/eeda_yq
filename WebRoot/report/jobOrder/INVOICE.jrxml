@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="215"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -362,7 +362,7 @@ AND  $X{IN,jor.id,order_id}]]>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="74" y="149" width="100" height="15" uuid="d27820b1-a0c0-40eb-ba6a-8bc241b6f65e"/>
-				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{jo_gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="74" y="170" width="254" height="15" uuid="b9064271-0dcc-45d0-945b-bc2e4d818741"/>
@@ -576,9 +576,6 @@ AND  $X{IN,jor.id,order_id}]]>
 				</textElement>
 				<text><![CDATA[ENKYO SCM (H.K.) CO., LIMITED]]></text>
 			</staticText>
-			<line>
-				<reportElement x="14" y="112" width="57" height="1" uuid="1dff45dc-9d1f-4654-ba6a-a5b8e74634ea"/>
-			</line>
 		</band>
 	</summary>
 </jasperReport>
