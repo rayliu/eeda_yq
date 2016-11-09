@@ -3,7 +3,7 @@ $(document).ready(function() {
 
 	$('#createCustomPlanOrderBtn').click(function(event) {
         var id = $('#order_id').val();
-        var custom_broker = $('#custom_broker').val();
+        var custom_broker = $('#customs_broker').val();
         
         if(custom_broker.trim()==''){
         	$.scojs_message('请先选中报关行', $.scojs_message.TYPE_ERROR);
