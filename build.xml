@@ -56,9 +56,10 @@
     </target>
     
 	<target name="generate_js_version" >
-		<copy tofile="WebRoot/js/common.js" file="WebRoot/js/common.js.template" overwrite="true"/>
+		<copy tofile="WebRoot/WEB-INF/template/eeda/component/form/commonJs.html"
+			file="WebRoot/WEB-INF/template/eeda/component/form/commonJs.html.template" overwrite="true"/>
 		<echo>生成的js version：${touch.time}</echo>
-		<replace file ="WebRoot/js/common.js"
+		<replace file ="WebRoot/WEB-INF/template/eeda/component/form/commonJs.html"
 			  token="urlArgs: 'v=@verion@'," 
 			  value="urlArgs: 'v=${touch.time}',"
 		/>
