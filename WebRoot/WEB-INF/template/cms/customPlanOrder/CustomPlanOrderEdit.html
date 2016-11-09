@@ -275,7 +275,7 @@
 					                            <input type="radio" value="1" name="usedAirInfo" style="margin-top: 0px;">
 					                            <span>收发货人:${userInfo.receive_sent_consignee_abbr}, 生产销售单位:${userInfo.production_and_sales_abbr}, 申报单位: ${userInfo.application_unit_abbr}</span><br>
 					                            <span class="port">监管方式 ：${userInfo.supervision_mode_name}, 征免性质：${userInfo.nature_of_exemption_name}, 备案号：${userInfo.record_no}
-					                                                                                                                                              贸易国 ：${userInfo.trading_country_name}, 抵运国：${userInfo.destination_country_name}, 指运港：${userInfo.destination_port_name}
+					                                                                                                                                              贸易国 ：${userInfo.trading_country_name}, 运抵国：${userInfo.destination_country_name}, 指运港：${userInfo.destination_port_name}
 					                            </span>
 					                        </label>
 					                      </div>
@@ -449,7 +449,7 @@
                        		<%include("/eeda/component/form/inputDropListField.html", 
 		                        {   id:'destination_country', 
 		                            class:'form-control',
-		                            label:'抵运国', 
+		                            label:'运抵国', 
 		                            value:order.destination_country!'',
                                     display_value:order.destination_country_name!'',
                                     url: '/location/searchCountry'
