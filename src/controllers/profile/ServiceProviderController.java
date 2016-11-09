@@ -612,4 +612,30 @@ public class ServiceProviderController extends Controller {
     	rec = Db.find(sql + " limit 10");
     	renderJson(rec);
     }
+    
+    //查询报关境内货源地下拉列表
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
+    public void searchGoodsSupply(){
+    	String input = getPara("input");
+    	List<Record> rec = null;
+    	String sql = "select id,concat(code,' ',name) name from custom_goods_supply where 1=1 ";
+    	if(!StringUtils.isBlank(input)){
+    		sql+=" and (code like '%" + input + "%' or name like '%" + input + "%') ";
+    	}
+    	rec = Db.find(sql + " limit 10");
+    	renderJson(rec);
+    }
+    
+    //查询报关境内货源地下拉列表
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
+    public void searchExportPort(){
+    	String input = getPara("input");
+    	List<Record> rec = null;
+    	String sql = "select id,concat(under_code,' ',under_port) name from custom_port where 1=1 ";
+    	if(!StringUtils.isBlank(input)){
+    		sql+=" and (code like '%" + input + "%' or under_port like '%" + input + "%' or under_code like '%" + input + "%') ";
+    	}
+    	rec = Db.find(sql + " limit 10");
+    	renderJson(rec);
+    }
 }

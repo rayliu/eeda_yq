@@ -262,7 +262,8 @@ public class CustomPlanOrderController extends Controller {
     public void edit() {
     	String id = getPara("id");
     	String sql = "select cpo.*,l.name trading_country_name,l1.name destination_country_name,l2.name destination_port_name,sm.name supervision_mode_name,p.abbr hongkong_consignee_input"
-    			+ "	,p1.abbr head_carrier_name,l3.name aim_port_name,l4.name shipment_port_name,concat(ce.code,' ',ce.name) nature_of_exemption_name"
+    			+ "	,p1.abbr head_carrier_name,l3.name aim_port_name,l4.name shipment_port_name,concat(ce.code,' ',ce.name) nature_of_exemption_name,"
+    			+ " concat(cp.under_code,' ',cp.under_port) export_port_name, concat(cgs.code,' ',cgs.name) supply_of_goods_name"
     			+ " from custom_plan_order cpo"
     			+ " left join location l on l.id=cpo.trading_country"
     			+ " left join location l1 on l1.id=cpo.destination_country"
@@ -273,6 +274,8 @@ public class CustomPlanOrderController extends Controller {
     			+ "	LEFT JOIN location l3 on l3.id = cpo.aim_port"
     			+ "	LEFT JOIN location l4 on l4.id = cpo.shipment_port"
     			+ " left join custom_exemption_nature ce on ce.id = cpo.nature_of_exemption"
+    			+ " left join custom_goods_supply cgs on cgs.id = cpo.supply_of_goods"
+    			+ " left join custom_port cp on cp.id = cpo.export_port"
     			+ " where cpo.id = ?";
     	Record r = Db.findFirst(sql,id);
     	setAttr("order", r);
