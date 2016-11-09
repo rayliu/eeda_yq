@@ -32,7 +32,7 @@
                                 <div id="disk_chart" style="height:200px"></div>
                             </div>
                             <script>
-                                requirejs(['js/common'], function (common) {
+                                requirejs([], function () {
                                     requirejs(['app/index/index_cpu_chart', 'app/index/index_mem_chart']);
                                 });
                             </script>
@@ -327,7 +327,7 @@
 		                                    <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
 						                    <div id="profit_chart" style="height:400px"></div>
 						                    <script>
-                                                requirejs(['js/common'], function (common) {
+                                                requirejs([], function () {
                                                     requirejs(['app/index/index_profit_charts']);
                                                 });
                                             </script>
@@ -353,7 +353,6 @@
 
 <%}%>
 <script>
-    requirejs(['js/common'], function (common) {
-        requirejs(['app/index/main']);
+    requirejs(['app/index/main'], function () {
     });
 </script>
