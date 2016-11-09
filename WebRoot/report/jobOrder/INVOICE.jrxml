@@ -117,7 +117,8 @@ LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo ON lo.id = jos.fnd
 WHERE
 	jor.order_type = 'charge'
-AND  $X{IN,jor.id,order_id}]]>
+AND  $X{IN,jor.id,order_id}
+group by jor.id]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>

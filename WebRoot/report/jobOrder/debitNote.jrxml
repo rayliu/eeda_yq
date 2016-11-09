@@ -46,7 +46,7 @@ from job_order_arap jor
  left join currency c on c.id=jor.currency_id
  LEFT JOIN location lo1 ON lo1.id = jos.pol
  LEFT JOIN location lo ON lo.id = jos.fnd
-where jor.order_type ='charge' and $X{IN,jor.id,order_id}]]>
+where jor.order_type ='charge' and $X{IN,jor.id,order_id} group by jor.id]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -105,10 +105,16 @@ where jor.order_type ='charge' and $X{IN,jor.id,order_id}]]>
 	<field name="remark" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="audit_flag_stamp" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="audit_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="bill_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bill_flag_stamp" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="sp_name" class="java.lang.String"/>
