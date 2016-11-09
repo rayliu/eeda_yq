@@ -91,7 +91,7 @@ $(document).ready(function() {
 			    	if(data)
 			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
 			    	else 
-			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
+			    		return '<input type="checkbox" style="width:30px" disabled>';
 			    }
 			},
             { "width": "30px",
@@ -363,11 +363,11 @@ $(document).ready(function() {
     
     //全选
     $('#allCheckOfLand').click(function(){
-    	var ischeck = this.checked;
-    	$('.checkBox').each(function(){
-    		this.checked = ischeck;
-    	})
-    })
+	    $("#land_table .checkBox").prop("checked",this.checked);
+    });
+    $("#land_table").on('click','.checkBox',function(){
+		  $("#allCheckOfLand").prop("checked",$("#land_table .checkBox").length == $("#land_table .checkBox:checked").length ? true : false);
+    });
     
     //一起删除签收文件
     $("#land_table").on('click', '.delete_sign_desc', function(){
