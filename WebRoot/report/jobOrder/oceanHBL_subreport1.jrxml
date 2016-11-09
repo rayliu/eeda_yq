@@ -11,7 +11,7 @@
 	CONCAT(container_no, '/', container_type,'/', seal_no) CN_no,
 	CONCAT(
 		CAST(FORMAT(pieces,0) AS CHAR),' ',
-		u.name_eng,'\r',ifnull(pallet_desc,'')
+		u.name_eng,'',ifnull(josi.pallet_desc,'')
 	) pieces,
 	CONCAT(
 		CAST(FORMAT(gross_weight,2) AS CHAR),
@@ -58,9 +58,9 @@ WHERE
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="152" y="0" width="88" height="20" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
+				<reportElement x="152" y="0" width="108" height="20" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="6"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
