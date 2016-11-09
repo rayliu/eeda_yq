@@ -58,15 +58,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    };
 	    
 	    var bindFieldEvent=function(){
-	    	$('table .date').datetimepicker({  
-	    	    format: 'yyyy-MM-dd hh:mm:ss',  
-	    	    language: 'zh-CN'
-	    	}).on('changeDate', function(el){
-	    	    $(".bootstrap-datetimepicker-widget").hide();   
-	    	    $(el).trigger('keyup');
-	    	});
-
-	    	eeda.bindTableField('cargo_table','UNIT_ID','/serviceProvider/searchUnit','');
+ 	    	eeda.bindTableField('cargo_table','UNIT_ID','/serviceProvider/searchUnit','');
 	    	eeda.bindTableField('cargo_table','POR','/location/searchPort','');
 	    	eeda.bindTableField('cargo_table','POL','/location/searchPort','');
 	    	eeda.bindTableField('cargo_table','POD','/location/searchPort','');

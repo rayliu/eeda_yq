@@ -97,7 +97,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             var items_array = salesOrder.buildCargoDetail();
         	var order = {};
         	order['id'] = $('#order_id').val();
-        	order['costom_bill'] = $('#customForm input[type="radio"]:checked').val();
+        	order['custom_bill'] = $('#customForm input[type="radio"]:checked').val();
         	order['ref_job_order_id'] = $('#ref_job_order_id').val();
         	order['to_office_id'] = $('#to_office_id').val();
 //        	order['status'] = $('#status').val()==""?"新建":$('#status').val();
@@ -239,7 +239,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	        		$.scojs_message('生成托运申报单PDF失败', $.scojs_message.TYPE_ERROR);
             });
         });
-        
         
         
      });
