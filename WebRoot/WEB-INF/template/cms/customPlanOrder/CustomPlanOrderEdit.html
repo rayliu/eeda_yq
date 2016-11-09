@@ -420,30 +420,14 @@
                                 }){}%>
                         </div>
                         <div class="col-lg-4">
-                       		 <%include("/eeda/component/form/selectField.html", 
-				                                 {   id:'nature_of_exemption', 
-				                                     label:'征免性质', 
-				                                     class:'form-control', 
-				                                     value:order.nature_of_exemption!'',
-				                                     value_list:[
-                                                        {code:'', value:''},
-				                                        {code:'0110', value:'一般贸易'},
-				                                        {code:'0130', value:'易货贸易'},
-                                                        {code:'0200', value:'来料余料结转'},
-                                                        {code:'0214', value:'来料加工'},
-                                                        {code:'0220', value:'来料加工设备'},
-                                                        {code:'0245', value:'来料料件内销'},
-                                                        {code:'0255', value:'来料深加工'},
-                                                        {code:'0345', value:'来料成品内销'},
-                                                        {code:'0513', value:'补偿贸易'},
-                                                        {code:'0600', value:'进料余料结转'},
-                                                        {code:'0615', value:'进料对口'},
-                                                        {code:'0644', value:'进料料件内销'},
-                                                        {code:'0645', value:'进料深加工'},
-                                                        {code:'0715', value:'进料非对口'},
-                                                        {code:'0744', value:'进料成品内销'}
-				                                    ] 
-				                                 }){}%>
+                                <%include("/eeda/component/form/inputDropListField.html", 
+                                {   id:'nature_of_exemption', 
+                                    label:'征免性质',
+                                    class:'form-control', 
+                                    url: '/serviceProvider/searchCustomExemptionNature',
+                                    value:order.nature_of_exemption!'',
+                                    display_value:order.nature_of_exemption_name!''
+                                }){}%>
                         </div>
                         <div class="col-lg-4">
                              <%include("/eeda/component/form/inputField.html", 

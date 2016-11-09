@@ -599,4 +599,17 @@ public class ServiceProviderController extends Controller {
         rec = Db.find(sql + " limit 10");
         renderJson(rec);
     }
+    
+    //查询报关征免性质下拉列表
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
+    public void searchCustomExemptionNature(){
+    	String input = getPara("input");
+    	List<Record> rec = null;
+    	String sql = "select id,concat(code,' ',name) name from custom_exemption_nature where 1=1 ";
+    	if(!StringUtils.isBlank(input)){
+    		sql+=" and (code like '%" + input + "%' or name like '%" + input + "%') ";
+    	}
+    	rec = Db.find(sql + " limit 10");
+    	renderJson(rec);
+    }
 }
