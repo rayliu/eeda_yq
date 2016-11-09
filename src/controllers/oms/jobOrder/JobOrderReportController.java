@@ -144,7 +144,6 @@ public class JobOrderReportController extends Controller {
 		String id = (String) dto.get("id");
 		String order_id = (String) dto.get("order_id");
 		String item_id = (String) dto.get("item_id");
-		
 		Record r =new Record();
 		if (StringUtils.isNotEmpty(id)) {
 			//update
@@ -159,10 +158,10 @@ public class JobOrderReportController extends Controller {
 		}
 		
 		String fileName = "/report/jobOrder/cabinetTruckOrder.jasper";
-		String outFileName = "/download/工作单陆运柜货派车单";
+		String outFileName = "/download/工作单陆运柜货派车单"+item_id+",";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
-		hm.put("order_id", order_id);
 		hm.put("item_id", item_id);
+		hm.put("order_id", order_id);
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
