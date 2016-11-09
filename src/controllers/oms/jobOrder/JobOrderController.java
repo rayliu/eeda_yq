@@ -1291,7 +1291,8 @@ public class JobOrderController extends Controller {
     public void saveDebitNote(){
     	String ids = getPara("itemIds");
     	String invoiceNo = getPara("invoiceNo");
-    	Db.update("update job_order_arap set invoice_no ='"+invoiceNo+"' where id in ("+ids+")");
+    	String invoice_land_hbl_no = getPara("invoice_land_hbl_no");
+    	Db.update("update job_order_arap set invoice_no ='"+invoiceNo+"', invoice_land_hbl_no='"+invoice_land_hbl_no+"' where id in ("+ids+")");
     	renderJson("{\"result\":true}");
     }
     

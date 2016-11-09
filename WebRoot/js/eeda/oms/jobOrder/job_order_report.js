@@ -625,6 +625,7 @@ $(document).ready(function() {
 		//数据不足提示
 			var debit_note = $('input[name=debit_note]:checked').val();
 	    	var invoiceNo = $('#invoiceNo').val();
+	    	var invoice_land_hbl_no = $('#invoice_land_hbl_no').val();
 	      	var itemIds=[];
 	      	$('#charge_table input[type="checkbox"]').each(function(){
 	      		var checkbox = $(this).prop('checked');
@@ -642,7 +643,7 @@ $(document).ready(function() {
 	      		}
 	      	});
 	      	console.log(landIds);
-	    	 $.post('/jobOrder/saveDebitNote', {itemIds:itemIds.toString(),invoiceNo:invoiceNo}, function(data){
+	    	 $.post('/jobOrder/saveDebitNote', {itemIds:itemIds.toString(),invoiceNo:invoiceNo, invoice_land_hbl_no:invoice_land_hbl_no}, function(data){
 	    		 if(data.result==true){
 			    	$.post('/jobOrderReport/printDebitNotePDF', {debit_note:debit_note, itemIds:itemIds.toString(), landIds:landIds.toString()}, function(data){
 			    		   $('#printDebitNoteBtn').attr('disabled', false);
@@ -672,8 +673,8 @@ $(document).ready(function() {
 		if(arr.length>=2){
 			$('#truck_head_fax').val(arr[1].replace("FAX:",""));
 		}
-		$('#truck_head_endPlace').val($('#ocean_HBLshipper_input').val());
-		$('#truck_head_startPlace').val(loginUserName);
+		$('#truck_head_end_place').val($('#ocean_HBLshipper_input').val());
+		$('#truck_head_start_place').val(loginUserName);
 		$('#truck_head_date').val(eeda.getDate());
 	})
     $('#printCabinetTruck').click(function(){

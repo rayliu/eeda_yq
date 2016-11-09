@@ -29,7 +29,7 @@
 	<parameter name="order_id" class="java.util.List">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="landIds" class="java.lang.String"/>
+	<parameter name="landIds" class="java.util.List"/>
 	<queryString>
 		<![CDATA[SELECT
 	joli.pieces land_pieces, joli.gross_weight land_gross_weight,jo.id,jor.sp_id,jor.currency_total_amount currency_total_amount,jor.invoice_no invoice_no,jo.gross_weight jo_gross_weight,jor.total_amount total_amount,jor.price jor_price,
@@ -41,7 +41,7 @@
 	CONCAT(CAST(jo.pieces AS CHAR),' ','CARTONS') jo_pieces,
 	josi.container_no,
 	jos.order_id,
-	jos.hbl_no,
+	jor.invoice_land_hbl_no hbl_no,
 	jos.mbl_no,
 	jos.etd,
 	jos.eta,
@@ -162,9 +162,7 @@ GROUP BY jor.id]]>
 	<field name="order_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="hbl_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="hbl_no" class="java.lang.String"/>
 	<field name="mbl_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>

@@ -711,6 +711,7 @@ $(document).ready(function() {
     		var order_id = $('#order_id').val();
     		var url = "/jobOrder/tableList?order_id="+order_id+"&type=land";
         	dataTable.ajax.url(url).load();
+        	$('#invoice_land_hbl_no').val($('#hbl_no').val());
         	$('#printDebit .modal-dialog').width(1000);
     		$('#land_table_div').show();
     	}else{
