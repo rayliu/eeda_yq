@@ -49,6 +49,7 @@ $(document).ready(function() {
             }
         })
         if(formRequired>0){
+        	$.scojs_message('客户为必填字段', $.scojs_message.TYPE_ERROR);
         	return;
         }
         //费用的结算公司必填
@@ -59,7 +60,7 @@ $(document).ready(function() {
         	}
         })
         if(sp>0){
-        	$.scojs_message('费用明细里的结算公司为必填', $.scojs_message.TYPE_ERROR);
+        	$.scojs_message('费用明细里，新增的条目中，第'+sp+'行的结算公司未填好', $.scojs_message.TYPE_ERROR);
     		return;
         }
         var CURRENCY_ID = 0;
@@ -188,7 +189,7 @@ $(document).ready(function() {
         order.doc_list = eeda.buildTableDetail("doc_table","");
        
         //异步向后台提交数据
-        $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
+        $.post('/transJobOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
             if(order.ID){
             	//控制报关申请单按钮

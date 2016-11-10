@@ -1,7 +1,6 @@
 package config;
 
 import handler.UrlHanlder;
-import interceptor.EedaMenuInterceptor;
 
 import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
@@ -65,6 +64,8 @@ import models.eeda.profile.ModuleRole;
 import models.eeda.profile.OrderNoSeq;
 import models.eeda.profile.Unit;
 import models.eeda.profile.Warehouse;
+import models.eeda.tms.TransJobOrder;
+import models.eeda.tms.TransJobOrderLandItem;
 import models.yh.profile.CustomizeField;
 import models.yh.profile.OfficeCofig;
 import models.yh.profile.Route;
@@ -108,6 +109,8 @@ import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.UnitController;
 import controllers.report.OrderStatusController;
+import controllers.tms.jobOrder.TransJobOrderController;
+import controllers.tms.planOrder.TransPlanOrderController;
 
 public class EedaConfig extends JFinalConfig {
     private Logger logger = Logger.getLogger(EedaConfig.class);
@@ -219,6 +222,10 @@ public class EedaConfig extends JFinalConfig {
 		//cms 报关管理
 		me.add("/customJobOrder", CustomJobOrderController.class, contentPath);
 		me.add("/customPlanOrder", CustomPlanOrderController.class, contentPath);
+		
+		//tms 车队系统
+		me.add("/transJobOrder", TransJobOrderController.class, contentPath);
+		me.add("/transPlanOrder", TransPlanOrderController.class, contentPath);		
 		
 		//ar= account revenue  应收条目处理
         me.add("/chargeConfirmList", controllers.arap.ar.ChargeItemConfirmController.class, contentPath);
@@ -367,6 +374,10 @@ public class EedaConfig extends JFinalConfig {
         //cms 报关管理
         arp.addMapping("custom_plan_order", CustomPlanOrder.class);
         arp.addMapping("custom_plan_order_item", CustomPlanOrderItem.class);
+        
+        //tms 车队管理
+        arp.addMapping("trans_job_order", TransJobOrder.class);
+        arp.addMapping("trans_job_order_land_item", TransJobOrderLandItem.class);
         
         
     }

@@ -531,7 +531,7 @@ NON-NEGOTIABLE]]></text>
 				<text><![CDATA[  Container No.& Seal No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="16" y="342" width="65" height="15" uuid="05205eff-e5f4-455a-8643-5b40f31b035f"/>
+				<reportElement x="16" y="342" width="137" height="15" uuid="05205eff-e5f4-455a-8643-5b40f31b035f"/>
 				<textElement textAlignment="Left">
 					<font size="9" isStrikeThrough="false"/>
 				</textElement>
@@ -826,7 +826,7 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="20" y="366" width="535" height="62" uuid="4c693fdb-2ca0-4a70-9c4e-70776935a829"/>
+				<reportElement x="20" y="366" width="535" height="42" uuid="4c693fdb-2ca0-4a70-9c4e-70776935a829"/>
 				<subreportParameter name="order_id">
 					<subreportParameterExpression><![CDATA[$F{order_id}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -838,7 +838,7 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="428" width="111" height="67" uuid="1bafa8fb-827f-4962-a29e-c34446288817"/>
+				<reportElement x="20" y="408" width="111" height="87" uuid="1bafa8fb-827f-4962-a29e-c34446288817"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
