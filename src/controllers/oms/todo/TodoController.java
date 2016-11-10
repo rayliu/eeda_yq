@@ -100,7 +100,7 @@ public class TodoController extends Controller {
 				+ " LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
 				+ " left join job_order_custom_china_self_item jocc on jocc.order_id = jor.id"
 				+ " where jor.transport_type LIKE '%custom%'"
-				+ " and (isnull(joc.customs_broker) or isnull(jocc.custom_bank)) and jor.office_id="+office_id
+				+ " and isnull(joc.customs_broker) and isnull(jocc.custom_bank) and jor.office_id="+office_id
 				+ " group by jor.id) A";
 
 		Record planOrder = Db.findFirst(sql);
