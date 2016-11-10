@@ -197,7 +197,7 @@ public class CostCheckOrderController extends Controller {
          		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
          		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type,ifnull(joa.exchange_rate, 1) exchange_rate,"
          		+ " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"
-         		+ " ) after_total"
+         		+ " ) after_total ,concat(f.name,' ',f.name_eng) fee_name"
  				+ " from job_order_arap joa "
  				+ " left join job_order jo on jo.id=joa.order_id "
  				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -208,6 +208,7 @@ public class CostCheckOrderController extends Controller {
  				+ " left join location l on l.id=jos.fnd "
  				+ " left join currency cur on cur.id=joa.currency_id "
  				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
+ 				+ " left join fin_item f on f.id = joa.charge_id"
  				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' and jo.office_id = "+office_id
  				+ " GROUP BY joa.id "
  				+ " ) B where 1=1 ";

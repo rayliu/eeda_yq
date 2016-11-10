@@ -45,6 +45,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                }
 	            },
 	            { "data": "TYPE", "width": "60px"},
+	            { "data": "FEE_NAME", "width": "60px"},
 	            { "data": "CUSTOMER_NAME", "width": "100px"},
 	            { "data": "SP_NAME", "width": "100px","sClass":"SP_NAME"},
 	            { "data": "CURRENCY_NAME", "width": "60px"},

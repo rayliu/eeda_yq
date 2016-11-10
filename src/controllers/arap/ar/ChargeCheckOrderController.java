@@ -154,7 +154,7 @@ public class ChargeCheckOrderController extends Controller {
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
         	
         	 sql = "select * from(  "
-            		+ " select joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+            		+ " select concat(f.name,' ',f.name_eng) fee_name, joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
             		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
             		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
             		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
@@ -174,12 +174,13 @@ public class ChargeCheckOrderController extends Controller {
     				+ " left join location l on l.id=jos.fnd "
     				+ " left join currency cur on cur.id=joa.currency_id "
     				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
+    				+ " left join fin_item f on f.id = joa.charge_id"
     				+ " where joa.order_type='charge' and joa.audit_flag='Y' and jo.office_id = "+office_id
     				+ " GROUP BY joa.id "
     				+ " ) B where 1=1 ";
         	}else{
         		 sql = "select * from(  "
-                 		+ " select joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+                 		+ " select concat(f.name,' ',f.name_eng) fee_name, joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
                  		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
                  		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
                  		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
@@ -199,6 +200,7 @@ public class ChargeCheckOrderController extends Controller {
          				+ " left join location l on l.id=jos.fnd "
          				+ " left join currency cur on cur.id=joa.currency_id "
          				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
+         				+ " left join fin_item f on f.id = joa.charge_id"
          				+ " where joa.order_type='charge' and joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
          				+ " GROUP BY joa.id "
          				+ " ) B where 1=1 ";
