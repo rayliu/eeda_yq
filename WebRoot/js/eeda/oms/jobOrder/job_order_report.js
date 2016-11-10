@@ -666,12 +666,14 @@ $(document).ready(function() {
 		var arrStr = $('#ocean_HBLshipper_info').val();
 		var arry = arrStr.split("\n");
 		$('#truck_head_attn').val(arry[1]);
-		var arr = arry[2].split(" "); 
-		if(arr.length>=1){
-			$('#truck_head_customerTel').val(arr[0].replace("TEL:",""));
-		}
-		if(arr.length>=2){
-			$('#truck_head_fax').val(arr[1].replace("FAX:",""));
+		if(arry.length>=2){
+			var arr = arry[2].split(" "); 
+			if(arr.length>=1){
+				$('#truck_head_customerTel').val(arr[0].replace("TEL:",""));
+			}
+			if(arr.length>=2){
+				$('#truck_head_fax').val(arr[1].replace("FAX:",""));
+			}
 		}
 		$('#truck_head_end_place').val($('#ocean_HBLshipper_input').val());
 		$('#truck_head_start_place').val(loginUserName);
