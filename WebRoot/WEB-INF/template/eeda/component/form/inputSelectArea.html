@@ -29,7 +29,7 @@ $(document).ready(function() {
     
     inputField.on('keyup click ', function(event){
         var me = this;
-        var inputStr = inputField.val();
+        var inputStr = inputField.val().trim();
         
          $.get("/customer/search_party", {customerName:inputStr}, function(data){
             if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
@@ -57,21 +57,21 @@ $(document).ready(function() {
         var contact_person = $(this).attr('contact_person');
         var phone = $(this).attr('phone');
         var fax = $(this).attr('fax');
-       	if(address=='undefined'||address=="null"){
+       	if(address==''||address=='undefined'||address=="null"){
                address='';
         }
-       	if(contact_person=='undefined'||contact_person=="null"){
+       	if(contact_person==''||contact_person=='undefined'||contact_person=="null"){
                contact_person='';
         }
-       	if(phone=='undefined'||phone=="null"){
+       	if(phone==''||phone=='undefined'||phone=="null"){
                phone='';
         }else{
-        	phone = 'TEL:'+phone;
+        	phone = 'TEL:'+phone+' ';
         }
-        if(fax=='undefined'||fax=="null"){
+        if(fax==''||fax=='undefined'||fax=="null"){
             fax='';
         }else{
-        	fax = ' FAX:'+fax;
+        	fax = 'FAX:'+fax;
         }
         infoField.val(address+'\r'+contact_person+'\r'+phone+fax);
     });
