@@ -109,11 +109,23 @@ $(document).ready(function() {
                     return '<input type="text" name="number" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "UNIT", "width": "180px",
+            { "data": "UNIT", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
-            			data='';
-            		return '<input type="text" name="unit" value="'+data+'" class="form-control" style="width:200px"/>';
+                        data='';
+                    var str = '<select name="legal_unit" class="form-control search-control" style="width:100px" >'
+                    	+'<option value="" '+(data=='' ? 'selected':'')+'></option>'
+                    	+'<option value="个" '+(data=='个' ? 'selected':'')+'>个</option>'
+                        +'<option value="千克" '+(data=='千克' ? 'selected':'')+'>千克</option>'
+                        +'<option value="克" '+(data=='克' ? 'selected':'')+'>克</option>'
+                        +'<option value="毫克" '+(data=='毫克' ? 'selected':'')+'>毫克</option>'
+                        +'<option value="吨" '+(data=='吨' ? 'selected':'')+'>吨</option>'
+                        +'<option value="平方米" '+(data=='平方米' ? 'selected':'')+'>平方米</option>'
+                        +'<option value="厘米" '+(data=='厘米' ? 'selected':'')+'>厘米</option>'
+                        +'<option value="公顷" '+(data=='公顷' ? 'selected':'')+'>公顷</option>'
+                        +'<option value="立方米" '+(data=='立方米' ? 'selected':'')+'>立方米</option>'
+                        +'</select>';
+                	return str;
             	}
             },
             { "data": "PRICE", "width": "180px",
