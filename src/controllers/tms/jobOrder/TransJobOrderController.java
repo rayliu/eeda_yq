@@ -29,6 +29,10 @@ import models.eeda.oms.jobOrder.JobOrderLandItem;
 import models.eeda.oms.jobOrder.JobOrderSendMail;
 import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
 import models.eeda.oms.jobOrder.JobOrderShipment;
+import models.eeda.tms.TransJobOrder;
+import models.eeda.tms.TransJobOrderArap;
+import models.eeda.tms.TransJobOrderDoc;
+import models.eeda.tms.TransJobOrderLandItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -191,45 +195,45 @@ public class TransJobOrderController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
         String id = (String) dto.get("id");
-        String planOrderItemID = (String) dto.get("plan_order_item_id");
+//      String planOrderItemID = (String) dto.get("plan_order_item_id");
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
         
-        JobOrder jobOrder = new JobOrder();
+        TransJobOrder transJobOrder = new TransJobOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
    		if (StringUtils.isNotEmpty(id)) {
    			//update
-   			jobOrder = JobOrder.dao.findById(id);
+   			transJobOrder = TransJobOrder.dao.findById(id);
 
-   			if(!type.equals(jobOrder.get("type"))){
+   			if(!type.equals(transJobOrder.get("type"))){
 	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
-	            jobOrder.set("order_no", order_no);
+	   			transJobOrder.set("order_no", order_no);
    			}
             
-   			jobOrder.set("updator", user.getLong("id"));
-   			jobOrder.set("update_stamp", new Date());
-   			DbUtils.setModelValues(dto, jobOrder);
+   			transJobOrder.set("updator", user.getLong("id"));
+   			transJobOrder.set("update_stamp", new Date());
+   			DbUtils.setModelValues(dto, transJobOrder);
    			
-   			jobOrder.update();
+   			transJobOrder.update();
    		} else {
    			//create 
-   			DbUtils.setModelValues(dto, jobOrder);
+   			DbUtils.setModelValues(dto, transJobOrder);
    			
    			//需后台处理的字段
    			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
-            jobOrder.set("order_no", order_no);
-   			jobOrder.set("creator", user.getLong("id"));
-   			jobOrder.set("create_stamp", new Date());
-   			jobOrder.set("office_id", office_id);
-   			jobOrder.save();
-   			id = jobOrder.getLong("id").toString();
+   			transJobOrder.set("order_no", order_no);
+   			transJobOrder.set("creator", user.getLong("id"));
+   			transJobOrder.set("create_stamp", new Date());
+   			transJobOrder.set("office_id", office_id);
+   			transJobOrder.save();
+   			id = transJobOrder.getLong("id").toString();
    			
    			//创建过工作单，设置plan_order_item的字段
-   			PlanOrderItem planOrderItem = PlanOrderItem.dao.findById(planOrderItemID);
-   			if(planOrderItem!=null){
-                   planOrderItem.set("is_gen_job", "Y");
-                   planOrderItem.update();
-   			}
+//   			PlanOrderItem planOrderItem = PlanOrderItem.dao.findById(planOrderItemID);
+//   			if(planOrderItem!=null){
+//                   planOrderItem.set("is_gen_job", "Y");
+//                   planOrderItem.update();
+//   			}
    		}
    		long customerId = Long.valueOf(dto.get("customer_id").toString());
    		saveCustomerQueryHistory(customerId);
@@ -247,7 +251,7 @@ public class TransJobOrderController extends Controller {
 		
 		//陆运
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
-		DbUtils.handleList(land_item, id, JobOrderLandItem.class, "order_id");
+		DbUtils.handleList(land_item, id, TransJobOrderLandItem.class, "order_id");
 		
 		//报关
 		List<Map<String, String>> chinaCustom = (ArrayList<Map<String, String>>)dto.get("chinaCustom");
@@ -267,9 +271,9 @@ public class TransJobOrderController extends Controller {
 		
 		//费用明细，应收应付
 		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");
-		DbUtils.handleList(charge_list, id, JobOrderArap.class, "order_id");
+		DbUtils.handleList(charge_list, id, TransJobOrderArap.class, "order_id");
 		List<Map<String, String>> chargeCost_list = (ArrayList<Map<String, String>>)dto.get("chargeCost_list");
-		DbUtils.handleList(chargeCost_list, id, JobOrderArap.class, "order_id");
+		DbUtils.handleList(chargeCost_list, id, TransJobOrderArap.class, "order_id");
 		//记录结算公司使用历史	
 		saveAccoutCompanyQueryHistory(charge_list);
 		saveAccoutCompanyQueryHistory(chargeCost_list);
@@ -279,7 +283,7 @@ public class TransJobOrderController extends Controller {
 		
 		//相关文档
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
-		DbUtils.handleList(doc_list, id, JobOrderDoc.class, "order_id");
+		DbUtils.handleList(doc_list, id, TransJobOrderDoc.class, "order_id");
 
 		//贸易
 		List<Map<String, String>> trade_detail = (ArrayList<Map<String, String>>)dto.get("trade_detail");
@@ -291,10 +295,10 @@ public class TransJobOrderController extends Controller {
 		List<Map<String, String>> trade_sale_list = (ArrayList<Map<String, String>>)dto.get("trade_sale");
 		DbUtils.handleList(trade_sale_list,"job_order_trade_charge_sale",id,"order_id");
 
-		long creator = jobOrder.getLong("creator");
+		long creator = transJobOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
    		
-		Record r = jobOrder.toRecord();
+		Record r = transJobOrder.toRecord();
    		r.set("creator_name", user_name);
    		r.set("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
    		r.set("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));

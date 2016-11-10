@@ -66,6 +66,7 @@ import models.eeda.profile.OrderNoSeq;
 import models.eeda.profile.Unit;
 import models.eeda.profile.Warehouse;
 import models.eeda.tms.TransJobOrder;
+import models.eeda.tms.TransJobOrderArap;
 import models.eeda.tms.TransJobOrderLandItem;
 import models.yh.profile.CustomizeField;
 import models.yh.profile.OfficeCofig;
@@ -380,6 +381,8 @@ public class EedaConfig extends JFinalConfig {
         //tms 车队管理
         arp.addMapping("trans_job_order", TransJobOrder.class);
         arp.addMapping("trans_job_order_land_item", TransJobOrderLandItem.class);
+        arp.addMapping("trans_job_order_arap", TransJobOrderArap.class);
+        
         
         
     }
