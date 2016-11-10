@@ -242,19 +242,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         
         $('#custom_bill_radio_div [name=custom_bill]').click(function(){
         	if(this.value=="export_custom"){
+        		$('#receive_sent_consignee_input').prev().text("收发货人(退税企业)");
         		$('#production_and_sales_input').prev().text("生产销售单位");
-        		$('#export_port').prev().text("出口口岸");
+        		$('#export_port_input').prev().text("出口口岸");
         		$('#custom_export_date').prev().prev().text("出口日期");
         		$('#destination_country_input').prev().text("运抵国");
         		$('#destination_port_input').prev().text("指运港");
-        		$('#supply_of_goods').prev().text("境内货源地");
+        		$('#supply_of_goods_input').prev().text("境内货源地");
         	}else{
+        		$('#receive_sent_consignee_input').prev().text("收发货人");
         		$('#production_and_sales_input').prev().text("销售使用单位");
-        		$('#export_port').prev().text("进口口岸");
+        		$('#export_port_input').prev().text("进口口岸");
         		$('#custom_export_date').prev().prev().text("进口日期");
         		$('#destination_country_input').prev().text("启运国");
         		$('#destination_port_input').prev().text("装货港");
-        		$('#supply_of_goods').prev().text("境内目的地");
+        		$('#supply_of_goods_input').prev().text("境内目的地");
         	}
         })
         
