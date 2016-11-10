@@ -91,11 +91,19 @@ $(document).ready(function() {
                     return '<input type="text" name="custom_order_no" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "STATUS", "width": "120px",
+            { "data": "STATUS", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
-            			data='';
-            		return '<input type="text" name="status" value="'+data+'" class="form-control" style="width:200px"/>';
+                 	   data='';
+                    var str= '<select name="status" class="form-control search-control" style="width:100px">'
+                 	   	 	+'<option></option>'
+ 		                   +'<option value="接单" '+ (data=='接单'?'selected':'') +'>接单</option>'
+ 		                   +'<option value="审单" '+ (data=='审单'?'selected':'') +'>审单</option>'
+ 		                   +'<option value="查验" '+ (data=='查验'?'selected':'') +'>查验</option>'
+ 		                   +'<option value="征税" '+ (data=='征税'?'selected':'') +'>征税</option>'
+ 		                   +'<option value="放行" '+ (data=='放行'?'selected':'') +'>放行</option>'
+ 		                   +'</select>';
+ 		           return str;
             	}
             },
             { "data": "CREATOR", "width": "120px",
