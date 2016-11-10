@@ -1,175 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.4641000000000013"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="company_name" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
 	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT
-  u.c_name,
-  u.user_phone,
-	joa.order_id,
-  aco.invoice_no,
-	jo.create_stamp,
-	jo.customer_id,
-	jo.volume vgm,
-	jo.type,
-	jos.etd,
-  jos.mbl_no,
-  jos.hbl_no,
-	joa.total_amount,
-	joa.charge_id,
-	fi. NAME fy_name,
-	cur. NAME cur_name,
-	jo.net_weight gross_weight,
-	ifnull(
-		joa.currency_total_amount,
-		0
-	) rmb,
+		<![CDATA[SELECT aco.begin_time,aco.end_time,p.company_name,p.contact_person,p.phone,p.fax, u.c_name,u.user_phone,
+jo.order_export_date,
+(
+CASE WHEN ISNULL(l.name) THEN GROUP_CONCAT(joai.destination)
+WHEN ISNULL(GROUP_CONCAT(joai.destination)) THEN GROUP_CONCAT(p1.abbr) ELSE l.name END
+) fnd,
+SUM(josi.volume) CBM, SUM(josi.pieces) CTNS, SUM(josi.gross_weight) KGS, jos.mbl_no MBL, jos.hbl_no HBL, josi.container_no,
 
-IF (
-	cur. NAME = 'USD',
-	joa.total_amount,
-	0
-) usd,
+joa.currency_total_amount CNY,
+IF(joa.charge_id=6,joa.total_amount,0) USD,
+IF(joa.charge_id=9,joa.total_amount,0) HKD,
+IF(joa.charge_id=8,joa.total_amount,0) JPY
 
-IF (
-	cur. NAME = 'CNY',
-	joa.total_amount,
-	0
-) cny,
 
-IF (
-	cur. NAME = 'JPY',
-	joa.total_amount,
-	0
-) jpy,
-
-IF (
-	cur. NAME = 'HKD',
-	joa.total_amount,
-	0
-) HKD,
- jo.ref_no ref_no,
- p1.company_name sp_name,
- p1.address address,
- p1.phone phone,
- p1.contact_person,
- aco.begin_time,
- aco.end_time,
- aco.create_stamp,
- l. NAME fnd,
- GROUP_CONCAT(josi.container_no) container_no,
- GROUP_CONCAT(josi.container_type) container_amount
-FROM
-	job_order_arap joa
-LEFT JOIN currency cur ON cur.id = joa.currency_id
-LEFT JOIN job_order jo ON jo.id = joa.order_id
-LEFT JOIN job_order_shipment jos ON jos.order_id = joa.order_id
-LEFT JOIN job_order_shipment_item josi ON josi.order_id = joa.order_id
-LEFT JOIN party p1 ON p1.id = joa.sp_id
-LEFT JOIN location l ON l.id = jos.fnd
-LEFT JOIN fin_item fi ON fi.id = joa.charge_id
-LEFT JOIN arap_charge_item aci on aci.ref_order_id = joa.id
-LEFT JOIN arap_charge_order aco on aco.id = aci.charge_order_id
-LEFT JOIN user_login u on u.id = jo.creator
-WHERE
-     joa.order_type = 'charge'
-AND joa.audit_flag = 'Y'
-AND p1.company_name ='佳祥'
-AND joa.order_id = 238
-GROUP BY
-	joa.id]]>
+from arap_charge_order aco
+left join party p on p.id=aco.sp_id
+left join user_login u on u.id = aco.create_by
+left join arap_charge_item aci on aci.charge_order_id = aco.id
+left join job_order_arap joa on joa.id = aci.ref_order_id
+left join job_order jo on jo.id = joa.order_id
+left join job_order_shipment jos on jos.order_id = jo.id
+left join job_order_shipment_item josi on josi.order_id = jo.id
+left join job_order_air_item joai on joai.order_id = jo.id
+left join job_order_land_item joli on joli.order_id = jo.id
+left join location l on l.id = jos.fnd
+left join party p1 on p1.id = joli.consignee
+where aco.id = $P{order_id}
+GROUP BY aci.id]]>
 	</queryString>
-	<field name="c_name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="user_phone" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="order_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="invoice_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="create_stamp" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="customer_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="vgm" class="java.lang.Double"/>
-	<field name="type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="etd" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="mbl_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="hbl_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="total_amount" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="charge_id" class="java.lang.String">
-		<fieldDescription><![CDATA[费用id]]></fieldDescription>
-	</field>
-	<field name="fy_name" class="java.lang.String"/>
-	<field name="cur_name" class="java.lang.String"/>
-	<field name="gross_weight" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="rmb" class="java.lang.Double"/>
-	<field name="usd" class="java.lang.Double"/>
-	<field name="cny" class="java.lang.Double"/>
-	<field name="jpy" class="java.lang.Double"/>
-	<field name="HKD" class="java.lang.Double"/>
-	<field name="ref_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="sp_name" class="java.lang.String"/>
-	<field name="address" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="phone" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="contact_person" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="begin_time" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="end_time" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="fnd" class="java.lang.String"/>
+	<field name="company_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contact_person" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="phone" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fax" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="c_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_phone" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_export_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fnd" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CBM" class="java.lang.Double"/>
+	<field name="CTNS" class="java.math.BigDecimal"/>
+	<field name="KGS" class="java.lang.Double"/>
+	<field name="MBL" class="java.lang.String"/>
+	<field name="HBL" class="java.lang.String"/>
 	<field name="container_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="container_amount" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="CNY" class="java.lang.Double"/>
+	<field name="USD" class="java.lang.Double"/>
+	<field name="HKD" class="java.lang.Double"/>
+	<field name="JPY" class="java.lang.Double"/>
 	<variable name="SUM_RMB" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{cny}]]></variableExpression>
+		<variableExpression><![CDATA[$F{CNY}]]></variableExpression>
 	</variable>
 	<variable name="SUM_USD" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{usd}]]></variableExpression>
+		<variableExpression><![CDATA[$F{USD}]]></variableExpression>
 	</variable>
 	<variable name="SUM_HKD" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{HKD}]]></variableExpression>
 	</variable>
 	<variable name="SUM_JPY" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{jpy}]]></variableExpression>
+		<variableExpression><![CDATA[$F{JPY}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -329,30 +248,32 @@ GROUP BY
 				<text><![CDATA[HBL NO]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="61" y="1" width="68" height="20" uuid="48374145-65f9-4907-9eb1-e60eb741d90a"/>
+				<reportElement x="61" y="1" width="50" height="20" uuid="48374145-65f9-4907-9eb1-e60eb741d90a"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{begin_time}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="129" y="1" width="11" height="20" uuid="e720b22a-5c31-4727-9b09-bcb39a4fadcd"/>
-				<text><![CDATA[--]]></text>
-			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="152" y="1" width="100" height="20" uuid="6a3692e1-bd15-495d-962f-7ce234bf4708"/>
-				<textFieldExpression><![CDATA[$F{end_time}]]></textFieldExpression>
+				<reportElement x="110" y="1" width="50" height="20" uuid="6a3692e1-bd15-495d-962f-7ce234bf4708"/>
+				<textFieldExpression><![CDATA[--$F{end_time}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="61" y="21" width="100" height="20" uuid="8a4c37c2-aba7-4d10-aa4d-3a3918ec6101"/>
-				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+				<reportElement x="61" y="21" width="339" height="20" uuid="8a4c37c2-aba7-4d10-aa4d-3a3918ec6101"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{company_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="61" y="40" width="100" height="20" uuid="209a763c-2f6b-46a0-a887-54972ea3d44e"/>
+				<reportElement x="61" y="40" width="122" height="20" uuid="209a763c-2f6b-46a0-a887-54972ea3d44e"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{contact_person}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="242" y="41" width="100" height="20" uuid="f48450bb-b275-4661-8330-0259ab5755d1"/>
+				<reportElement x="242" y="41" width="122" height="20" uuid="f48450bb-b275-4661-8330-0259ab5755d1"/>
 				<textFieldExpression><![CDATA[$F{phone}]]></textFieldExpression>
 			</textField>
 			<line>
@@ -361,6 +282,10 @@ GROUP BY
 			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
 				<reportElement x="464" y="20" width="90" height="20" uuid="daf6f9b9-91ca-4155-9d07-8161acb33b7e"/>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="394" y="41" width="136" height="20" uuid="840da095-4e50-4162-9b73-3941a7998184"/>
+				<textFieldExpression><![CDATA[$F{fax}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -377,7 +302,7 @@ GROUP BY
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{vgm}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{CBM}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="112" y="0" width="71" height="20" uuid="b47f4b0c-359f-4d35-b125-b37107c4ef04"/>
@@ -391,35 +316,35 @@ GROUP BY
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{HBL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="315" y="0" width="44" height="20" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{MBL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="242" y="0" width="25" height="20" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{KGS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="476" y="0" width="27" height="20" uuid="1573c8f3-5e65-409b-be9c-a02fc6ce86a8"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{usd}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{USD}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="450" y="0" width="26" height="20" uuid="16b5d67b-1dca-41f6-a562-1d3e3f709591"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cny}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{CNY}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="503" y="0" width="27" height="20" uuid="6b4dde9d-0df0-46aa-afd7-15992b05fb6b"/>
@@ -433,9 +358,9 @@ GROUP BY
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{jpy}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{JPY}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="400" y="1" width="50" height="20" uuid="d3d45fa5-a3d7-444d-aa12-85feab34e35a"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
@@ -447,7 +372,14 @@ GROUP BY
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{create_stamp}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="213" y="0" width="29" height="20" uuid="d5258315-b054-4136-95fd-daa20c7daecd"/>
+				<textElement textAlignment="Center">
+					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CTNS}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -492,38 +424,28 @@ GROUP BY
 				<textFieldExpression><![CDATA[$V{SUM_JPY}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="11" y="71" width="40" height="20" uuid="2b02069f-de35-4f4c-8da5-7028a9ca8904"/>
+				<reportElement x="11" y="69" width="50" height="20" uuid="2b02069f-de35-4f4c-8da5-7028a9ca8904"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[制表人：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="198" y="71" width="54" height="20" uuid="c76427bc-6822-4bdd-899b-e29de225bac6"/>
+				<reportElement x="198" y="69" width="54" height="20" uuid="c76427bc-6822-4bdd-899b-e29de225bac6"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[联系电话：]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="359" y="71" width="66" height="20" uuid="f037bd64-da97-467a-a19e-9815a2e5da65"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[制单人TEL：]]></text>
-			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="51" y="71" width="100" height="20" uuid="ddd79685-90d2-44c2-b746-6b91957f8f52"/>
+				<reportElement x="59" y="69" width="110" height="20" uuid="ddd79685-90d2-44c2-b746-6b91957f8f52"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="252" y="71" width="107" height="20" uuid="db9cb502-931d-4ced-b242-a4061f94921c"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
+				<reportElement x="251" y="69" width="122" height="20" uuid="6162a954-c5d3-45d9-9ef7-eb28efdba2f8"/>
 				<textFieldExpression><![CDATA[$F{user_phone}]]></textFieldExpression>
 			</textField>
 		</band>

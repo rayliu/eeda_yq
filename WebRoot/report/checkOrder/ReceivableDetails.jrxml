@@ -1,157 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="842" pageHeight="595" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="159"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT
-	joa.id,
-	joa.type,
-	joa.sp_id,
-	joa.total_amount,
-ifnull(
-		joa.currency_total_amount,
-		0
-	) rmb,
+		<![CDATA[SELECT aco.begin_time,aco.end_time,p.company_name,p.contact_person,p.phone,p.fax, u.c_name,u.user_phone,
+jo.order_export_date,jo.order_no,
+(
+CASE WHEN ISNULL(l.name) THEN GROUP_CONCAT(joai.destination)
+WHEN ISNULL(GROUP_CONCAT(joai.destination)) THEN GROUP_CONCAT(p1.abbr) ELSE l.name END
+) fnd,
+SUM(josi.volume) CBM, SUM(josi.pieces) CTNS, SUM(josi.gross_weight) KGS, jos.mbl_no MBL, jos.hbl_no HBL, josi.container_no,
 
-IF (
-	cur. NAME = 'USD',
-	joa.total_amount,
-	0
-) usd,
+joa.currency_total_amount cny,
+IF(joa.charge_id=6,joa.total_amount,0) usd,
+IF(joa.charge_id=9,joa.total_amount,0) hkd,
+IF(joa.charge_id=8,joa.total_amount,0) jpy
 
-IF (
-	cur. NAME = 'CNY',
-	joa.total_amount,
-	0
-) cny,
 
-IF (
-	cur. NAME = 'JPY',
-	joa.total_amount,
-	0
-) jpy,
-
-IF (
-	cur. NAME = 'HKD',
-	joa.total_amount,
-	0
-) HKD,
-	fi. NAME fy_name,
-	jo.order_no,
-	jo.create_stamp,
-	jo.customer_id,
-	jo.volume vgm,
-	jo.net_weight gross_weight,
-  IFNULL(p1.company_name_eng,p1.company_name) sp_name,
-  IFNULL(p1.address_eng,p1.address) address,
-  p1.phone phone,
-  IFNULL(p1.contact_person_eng,p1.contact_person) contact_person,
-  p1.fax,
-	jos.mbl_no,
-  jos.hbl_no,
-	jos.etd,
-	l. NAME fnd,
-	joai.destination,
-  aco.begin_time,
-  aco.end_time,
-	cur. NAME cur_name,
-	GROUP_CONCAT(josi.container_no) container_no,
-	GROUP_CONCAT(josi.container_type) container_amount
-
-FROM
-	job_order_arap joa
-LEFT JOIN job_order jo ON jo.id = joa.order_id
-LEFT JOIN job_order_shipment jos ON jos.order_id = joa.order_id
-LEFT JOIN job_order_shipment_item josi ON josi.order_id = joa.order_id
-LEFT JOIN job_order_air_item joai ON joai.order_id = joa.order_id
-LEFT JOIN party p1 ON p1.id = joa.sp_id
-LEFT JOIN location l ON l.id = jos.fnd
-LEFT JOIN fin_item fi ON fi.id = joa.charge_id
-LEFT JOIN currency cur ON cur.id = joa.currency_id
-LEFT JOIN arap_charge_item aci ON aci.ref_order_id = joa.id
-LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
-WHERE
-	joa.id = aci.ref_order_id
-AND aco.id = $P{order_id}
-GROUP BY
-	joa.id]]>
+from arap_charge_order aco
+left join party p on p.id=aco.sp_id
+left join user_login u on u.id = aco.create_by
+left join arap_charge_item aci on aci.charge_order_id = aco.id
+left join job_order_arap joa on joa.id = aci.ref_order_id
+left join job_order jo on jo.id = joa.order_id
+left join job_order_shipment jos on jos.order_id = jo.id
+left join job_order_shipment_item josi on josi.order_id = jo.id
+left join job_order_air_item joai on joai.order_id = jo.id
+left join job_order_land_item joli on joli.order_id = jo.id
+left join location l on l.id = jos.fnd
+left join party p1 on p1.id = joli.consignee
+where aco.id = $P{order_id}
+GROUP BY aci.id]]>
 	</queryString>
-	<field name="id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="sp_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[供应商id]]></fieldDescription>
-	</field>
-	<field name="total_amount" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="rmb" class="java.lang.Double"/>
-	<field name="usd" class="java.lang.Double"/>
-	<field name="cny" class="java.lang.Double"/>
-	<field name="jpy" class="java.lang.Double"/>
-	<field name="HKD" class="java.lang.Double"/>
-	<field name="fy_name" class="java.lang.String"/>
-	<field name="order_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="create_stamp" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="customer_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="vgm" class="java.lang.Double"/>
-	<field name="gross_weight" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="sp_name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="address" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="phone" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="contact_person" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="fax" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="mbl_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="hbl_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="etd" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="fnd" class="java.lang.String"/>
-	<field name="destination" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="begin_time" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="end_time" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="cur_name" class="java.lang.String"/>
+	<field name="company_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contact_person" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="phone" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fax" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="c_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_phone" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_export_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fnd" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CBM" class="java.lang.Double"/>
+	<field name="CTNS" class="java.math.BigDecimal"/>
+	<field name="KGS" class="java.lang.Double"/>
+	<field name="MBL" class="java.lang.String"/>
+	<field name="HBL" class="java.lang.String"/>
 	<field name="container_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="container_amount" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="cny" class="java.lang.Double"/>
+	<field name="usd" class="java.lang.Double"/>
+	<field name="hkd" class="java.lang.Double"/>
+	<field name="jpy" class="java.lang.Double"/>
 	<variable name="SUM_RMB" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{cny}]]></variableExpression>
 	</variable>
@@ -159,7 +88,7 @@ GROUP BY
 		<variableExpression><![CDATA[$F{usd}]]></variableExpression>
 	</variable>
 	<variable name="SUM_HKD" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{HKD}]]></variableExpression>
+		<variableExpression><![CDATA[$F{hkd}]]></variableExpression>
 	</variable>
 	<variable name="SUM_JPY" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{jpy}]]></variableExpression>
@@ -322,26 +251,32 @@ GROUP BY
 				<text><![CDATA[HBL NO]]></text>
 			</staticText>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="591" y="1" width="69" height="20" uuid="48374145-65f9-4907-9eb1-e60eb741d90a"/>
+				<reportElement x="590" y="0" width="60" height="20" uuid="48374145-65f9-4907-9eb1-e60eb741d90a"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{begin_time}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="660" y="0" width="11" height="20" uuid="e720b22a-5c31-4727-9b09-bcb39a4fadcd"/>
-				<text><![CDATA[--]]></text>
+				<reportElement x="651" y="0" width="10" height="20" uuid="e720b22a-5c31-4727-9b09-bcb39a4fadcd"/>
+				<text><![CDATA[~]]></text>
 			</staticText>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="681" y="1" width="121" height="20" uuid="6a3692e1-bd15-495d-962f-7ce234bf4708"/>
+				<reportElement x="662" y="0" width="60" height="20" uuid="6a3692e1-bd15-495d-962f-7ce234bf4708"/>
 				<textFieldExpression><![CDATA[$F{end_time}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="61" y="21" width="572" height="20" uuid="8a4c37c2-aba7-4d10-aa4d-3a3918ec6101"/>
-				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{company_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="61" y="40" width="310" height="20" uuid="209a763c-2f6b-46a0-a887-54972ea3d44e"/>
+				<textElement>
+					<font fontName="黑体" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{contact_person}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -391,7 +326,7 @@ GROUP BY
 				<textElement textAlignment="Center">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{HKD}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{hkd}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="765" y="3" width="37" height="20" uuid="b7f89dc5-0c04-487f-b03c-f3340e2792fa"/>
@@ -405,7 +340,7 @@ GROUP BY
 				<textElement textAlignment="Center">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{create_stamp}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="63" y="2" width="87" height="20" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
@@ -432,35 +367,35 @@ GROUP BY
 				<textElement textAlignment="Center">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{HBL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="438" y="3" width="66" height="20" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
 				<textElement textAlignment="Center">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{MBL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="370" y="2" width="29" height="20" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
 				<textElement textAlignment="Center">
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{KGS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="335" y="1" width="36" height="20" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
 				<textElement textAlignment="Center">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{container_amount}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{CTNS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="302" y="2" width="34" height="20" uuid="031ec9cc-8b73-404c-94d7-8695bbeabf86"/>
 				<textElement textAlignment="Center">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{vgm}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{CBM}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="150" y="2" width="152" height="30" uuid="b47f4b0c-359f-4d35-b125-b37107c4ef04"/>
