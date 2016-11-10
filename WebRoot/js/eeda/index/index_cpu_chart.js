@@ -5,7 +5,7 @@ define(['echarts'], function (echarts) {
             var now = new Date();
             var value = Math.random() * 50+50;
             // console.log(now.toString());
-            $.post('/sys/getLinuxCpuUsage').done(function(backData){
+            $.post('/sys/cpuUsage').done(function(backData){
                 var obj={
                     name: now.toString(),
                     value: [
@@ -43,7 +43,7 @@ define(['echarts'], function (echarts) {
                 trigger: 'axis',
                 formatter: function (params) {
                     params = params[0];
-                    console.log(params);
+                    //console.log(params);
                     var date = new Date(params.name);
                     return params.value[1]+'%';
                 },
