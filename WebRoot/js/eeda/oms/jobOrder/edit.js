@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'jq_blockui',
     './edit_shipment_table','./edit_shipment_detail','./edit_land_table', './edit_charge_table','./edit_cost_table',
     './edit_air_table', './edit_air_cargoDesc_table', './edit_air_detail','./edit_custom_detail',
-    './edit_insurance_detail','./edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report',
+    './edit_express_detail','./edit_insurance_detail','./edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report',
     './edit_trade_cost_table', './edit_trade_charge_sale_table', './edit_trade_charge_service_table','./edit_trade_detail',
     './edit_custom_china_self_table', './edit_custom_doc_table'], function ($, metisMenu) {
 $(document).ready(function() {
@@ -141,6 +141,10 @@ $(document).ready(function() {
 	        order.shipment_detail = itemOrder.buildShipmentDetail();
 	        order.shipment_list = itemOrder.buildOceanItem();
         }
+        if(transport_type_str.indexOf('express')>-1){
+	        //海运
+	        order.express_detail = itemOrder.buildExpressDetail();
+        }
         if(transport_type_str.indexOf('air')>-1){
 	        //空运
 	        order.air_detail = itemOrder.buildAirDetail();
@@ -230,6 +234,9 @@ $(document).ready(function() {
                 if(order.TRADE){
                 	$("#trade_id").val(order.TRADE.ID);
                 }
+                if(order.EXPRESS){
+                	$("#express_id").val(order.EXPRESS.ID);
+                }
                 
                 $("#fileuploadSpan").show();
                 $("#sendEmail").show();
@@ -282,6 +289,9 @@ $(document).ready(function() {
             case 'trade':
                 $('#tradeDetailTab').show();
                 break;
+            case 'express':
+                $('#expressDetailTab').show();
+                break;
         }
     };
 
@@ -304,6 +314,9 @@ $(document).ready(function() {
                 break;
             case 'trade':
                 $('#tradeDetailTab').hide();
+                break;
+            case 'express':
+                $('#expressDetailTab').hide();
                 break;
         }
     };

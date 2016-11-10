@@ -24,6 +24,7 @@ import models.eeda.oms.jobOrder.JobOrderAirItem;
 import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.oms.jobOrder.JobOrderCustom;
 import models.eeda.oms.jobOrder.JobOrderDoc;
+import models.eeda.oms.jobOrder.JobOrderExpress;
 import models.eeda.oms.jobOrder.JobOrderInsurance;
 import models.eeda.oms.jobOrder.JobOrderLandItem;
 import models.eeda.oms.jobOrder.JobOrderSendMail;
@@ -255,6 +256,10 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
 		DbUtils.handleList(land_item, id, JobOrderLandItem.class, "order_id");
 		
+		//快递
+		List<Map<String, String>> express_detail = (ArrayList<Map<String, String>>)dto.get("express_detail");
+		DbUtils.handleList(express_detail, id, JobOrderExpress.class, "order_id");
+		
 		//报关
 		List<Map<String, String>> chinaCustom = (ArrayList<Map<String, String>>)dto.get("chinaCustom");
 		List<Map<String, String>> abroadCustom = (ArrayList<Map<String, String>>)dto.get("abroadCustom");
@@ -309,6 +314,7 @@ public class JobOrderController extends Controller {
    		r.set("shipment", getItemDetail(id,"shipment"));
    		r.set("trade", getItemDetail(id,"trade"));
     	r.set("air", getItemDetail(id,"air"));
+    	r.set("express", getItemDetail(id,"express"));
    		r.set("insurance", getItemDetail(id,"insure"));
    		
    		//保存海运填写模板
@@ -778,6 +784,8 @@ public class JobOrderController extends Controller {
     				+ " where order_id = ?",id);
     	}else if("insure".equals(type)){
     		re = Db.findFirst("select * from job_order_insurance joi where order_id = ?",id);
+    	}else if("express".equals(type)){
+    		re = Db.findFirst("select * from job_order_express joi where order_id = ?",id);
     	}else if("air".equals(type)){
     		re = Db.findFirst("select joa.* ,p1.abbr shipperAbbr,p2.abbr consigneeAbbr,p3.abbr notify_partyAbbr,p4.abbr booking_agent_name from job_order_air joa"
     				+ " left join party p1 on p1.id=joa.shipper"
@@ -924,6 +932,8 @@ public class JobOrderController extends Controller {
    		setAttr("customDocList", getItems(id,"custom_doc"));
     	//保险
     	setAttr("insurance", getItemDetail(id,"insure"));
+    	//快递
+    	setAttr("express", getItemDetail(id,"express"));
     	//获取费用明细
     	setAttr("chargeList", getItems(id,"charge"));
     	setAttr("costList", getItems(id,"cost"));
