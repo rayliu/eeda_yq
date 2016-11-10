@@ -424,6 +424,28 @@ $(document).ready(function() {
     	costTable.ajax.url(url).load();
     }
    
+    $('#cost_table').on('blur','[name=amount]',function(){
+    	var amount = $(this).val();
+    	if(amount!=''&&!isNaN(amount)){
+    		$(this).val(itemOrder.returnFloat(amount));
+    	}
+    })
+    
+    //整数自动补零
+    itemOrder.returnFloat = function(value){
+    	 var xsd=value.toString().split(".");
+    	 if(xsd.length==1){
+    	 value=value.toString()+".00";
+    	 return value;
+    	 }
+    	 if(xsd.length>1){
+    	 if(xsd[1].length<2){
+    	 value=value.toString()+"0";
+    	 }
+    	 return value;
+    	 }
+    	}
+    
     //输入 数量*单价的时候，计算金额
     $('#cost_table ').on('keyup', ' [name=price],[name=amount], [name=exchange_rate]', function(){
     	var row = $(this).parent().parent();

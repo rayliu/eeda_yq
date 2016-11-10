@@ -498,6 +498,13 @@ $(document).ready(function() {
     	chargeTable.ajax.url(url).load();
     }
     
+    $('#charge_table').on('blur','[name=amount]',function(){
+    	var amount = $(this).val();
+    	if(amount!=''&&!isNaN(amount)){
+    		$(this).val(itemOrder.returnFloat(amount));
+    	}
+    })
+    
     //输入 数量*单价的时候，计算金额
     $('#charge_table').on('keyup','[name=price],[name=amount],[name=exchange_rate]',function(){
     	var row = $(this).parent().parent();
