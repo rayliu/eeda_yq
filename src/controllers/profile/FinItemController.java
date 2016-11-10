@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.ParentOfficeModel;
+import models.UserLogin;
 import models.eeda.profile.FinItem;
 
 import org.apache.commons.lang.StringUtils;
@@ -35,14 +36,13 @@ import controllers.util.PermissionConstant;
 @Before(SetAttrLoginUserInterceptor.class)
 public class FinItemController extends Controller {
     private Log logger = Log.getLog(FinItemController.class);
-    Subject currentUser = SecurityUtils.getSubject();
-    ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
-
+    
     //查询费用中文名称
     public void search() {
         String input = getPara("input");
-        long userId = LoginUserController.getLoginUserId(this);
-        Long parentID = pom.getParentOfficeId();
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long userId = user.getLong("id");
+        Long officeId = user.getLong("office_id");
         
         List<Record> finItems = Collections.EMPTY_LIST;
         if(StrKit.isBlank(input)){//从历史记录查找
@@ -50,16 +50,17 @@ public class FinItemController extends Controller {
                     + "where h.ref_id=f.id and h.type='ARAP_FIN' and h.user_id=?";
             finItems = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
             if(finItems.size()==0){
-                finItems = Db.find("select * from fin_item where name like '%"+input+"%' "
-                        + " order by convert(name using gb2312) asc limit 10");
+                finItems = Db.find("select * from fin_item f where f.office_id=? and f.name like '%"+input+"%' "
+                        + " order by convert(f.name using gb2312) asc limit 10", officeId);
             }
             renderJson(finItems);
         }else{
             if (input !=null && input.trim().length() > 0) {
-                finItems = Db.find("select * from fin_item where name like '%"+input+"%' "
-                        + " order by convert(name using gb2312) asc limit 10");
+                finItems = Db.find("select * from fin_item f where f.office_id=? and f.name like '%"+input+"%' "
+                        + " order by convert(name using gb2312) asc limit 10", officeId);
             }else{
-                finItems = Db.find("select * from fin_item order by convert(name using gb2312) asc limit 10");
+                finItems = Db.find("select * from fin_item f where f.office_id=? "
+                        + "order by convert(name using gb2312) asc limit 10", officeId);
             }
             renderJson(finItems);
         }
@@ -68,24 +69,28 @@ public class FinItemController extends Controller {
     //查询费用英文名称
     public void search_eng() {
     	String input = getPara("input");
-    	
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long userId = user.getLong("id");
+        Long officeId = user.getLong("office_id");
+        
     	List<Record> finItems = null;
     	if (input !=null && input.trim().length() > 0) {
-    		finItems = Db.find("select f.id,ifnull(f.name_eng,f.name) name from fin_item f where f.name_eng like '%"+input+"%'");
+    		finItems = Db.find("select f.id,ifnull(f.name_eng,f.name) name from fin_item f"
+    		        + " where f.office_id=? and f.name_eng like '%"+input+"%'", officeId);
     	}else{
-    		finItems = Db.find("select f.id,ifnull(f.name_eng,f.name) name from fin_item f");
+    		finItems = Db.find("select f.id,ifnull(f.name_eng,f.name) name from fin_item f where f.office_id=? ", officeId);
     	}
     	renderJson(finItems);
     }
     
     @Before(EedaMenuInterceptor.class)
     public void index() {
-        render("/profile/finItem/finItemList.html");
+        render("/eeda/profile/finItem/finItemList.html");
     }
     
     @Before(EedaMenuInterceptor.class)
     public void create() {
-        render("/profile/finItem/finItemEdit.html");
+        render("/eeda/profile/finItem/finItemEdit.html");
     }
     
 
@@ -94,6 +99,9 @@ public class FinItemController extends Controller {
         String code = getPara("code");
         String name = getPara("name");
         String name_eng = getPara("name_eng");
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long userId = user.getLong("id");
+        Long officeId = user.getLong("office_id");
         
         String sLimit = "";
         String pageIndex = getPara("sEcho");
@@ -103,9 +111,9 @@ public class FinItemController extends Controller {
         
         String sql = "";
         if(code==null&&name==null&&name_eng==null){
-        	sql = "SELECT id,code,name_eng,name,remark from fin_item where 1 =1 ";
+        	sql = "SELECT id,code,name_eng,name,remark from fin_item f where 1 =1 and f.office_id="+officeId;
         }else{
-        	sql = "SELECT id,code,name_eng,name,remark from fin_item where 1 =1 "
+        	sql = "SELECT id,code,name_eng,name,remark from fin_item f where 1 =1 and f.office_id="+officeId
         			+ " and code like '%"+code
         			+"%' and name like '%"+name
         			+"%' and name_eng like '%"+name_eng+"%'";
@@ -133,7 +141,7 @@ public class FinItemController extends Controller {
         FinItem u = FinItem.dao.findById(id);
         setAttr("order", u);
         
-        render("/profile/finItem/finItemEdit.html");
+        render("/eeda/profile/finItem/finItemEdit.html");
         
     }
 
@@ -155,11 +163,13 @@ public class FinItemController extends Controller {
     }
 
     // 添加编辑保存
-    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_CREATE,
-            PermissionConstant.PERMSSION_T_UPDATE }, logical = Logical.OR)
+//    @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_CREATE,
+//            PermissionConstant.PERMSSION_T_UPDATE }, logical = Logical.OR)
     public void save() {
         String jsonStr=getPara("params");
-        
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long userId = user.getLong("id");
+        Long officeId = user.getLong("office_id");
         Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
         
@@ -176,7 +186,8 @@ public class FinItemController extends Controller {
         	r.set("code", code);
         	r.set("name", name);
             r.set("name_eng", name_eng);
-            r.set("remark", remark);            
+            r.set("remark", remark);
+            r.set("office_id", officeId);
             r.save();
         } else {
         	r = FinItem.dao.findById(id);
@@ -192,9 +203,13 @@ public class FinItemController extends Controller {
     //校验是否存在此费用
     public void checkCodeExist(){
     	String para= getPara("code");
-    	String sql = "select * from fin_item where code = ?";
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long userId = user.getLong("id");
+        Long officeId = user.getLong("office_id");
+        
+    	String sql = "select * from fin_item where code = ? and office_id=?";
     	boolean ifExist;
-    	Record r = Db.findFirst(sql,para);
+    	Record r = Db.findFirst(sql,para, officeId);
     	if(r==null){
     		ifExist = true;
     	}else{
@@ -206,9 +221,11 @@ public class FinItemController extends Controller {
     //校验是否存在此费用
     public void checkNameExist(){
     	String para= getPara("name");
-    	String sql = "select * from fin_item where name = ?";
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        Long officeId = user.getLong("office_id");
+    	String sql = "select * from fin_item where name = ? and office_id=?";
     	boolean ifExist;
-    	Record r = Db.findFirst(sql,para);
+    	Record r = Db.findFirst(sql, para, officeId);
     	if(r==null){
     		ifExist = true;
     	}else{
@@ -220,9 +237,11 @@ public class FinItemController extends Controller {
     //校验是否存在此费用
     public void checkNameEngExist(){
     	String para= getPara("name_eng");
-    	String sql = "select * from fin_item where name_eng = ?";
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        Long officeId = user.getLong("office_id");
+    	String sql = "select * from fin_item where name_eng =? and office_id=?";
     	boolean ifExist;
-    	Record r = Db.findFirst(sql,para);
+    	Record r = Db.findFirst(sql, para, officeId);
     	if(r==null){
     		ifExist = true;
     	}else{
