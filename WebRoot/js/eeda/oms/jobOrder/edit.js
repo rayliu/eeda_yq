@@ -189,7 +189,7 @@ $(document).ready(function() {
         order.doc_list = eeda.buildTableDetail("doc_table","");
        
         //异步向后台提交数据
-        $.post('/transJobOrder/save', {params:JSON.stringify(order)}, function(data){
+        $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
             if(order.ID){
             	//控制报关申请单按钮

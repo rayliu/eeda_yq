@@ -123,7 +123,7 @@ $(document).ready(function() {
                 		return '';
                 }
             },
-            { "data": "UNLOAD_TYPE", "width": "80px",
+            { "data": "UNLOAD_TYPE", "width": "100px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
