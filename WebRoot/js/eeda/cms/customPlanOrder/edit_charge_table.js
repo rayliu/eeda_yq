@@ -130,14 +130,21 @@ $(document).ready(function() {
             var item={}
             item.id = id;
             item.order_type = "charge";//应收
-            for(var i = 1; i < row.childNodes.length; i++){
+            for(var i = 0; i < row.childNodes.length; i++){
             	var el = $(row.childNodes[i]).find('input,select');
-            	var name = el.attr('name'); 
-            	
-            	if(el && name){
-                	var value = el.val();//元素的值
-                	item[name] = value;
-            	}
+            	var name = el.attr('name');
+                var type = el.attr('type');
+
+            	if(type=='checkbox'){
+                    if(el.prop('checked')){
+                        item[name] = 'Y';
+                    }else{
+                        item[name] = 'N';
+                    }
+                }else if(el && name){
+                    var value = el.val();//元素的值
+                    item[name] = value;
+                }
             }
             item.action = id.length > 0?'UPDATE':'CREATE';
             cargo_items_array.push(item);
@@ -167,18 +174,18 @@ $(document).ready(function() {
     //------------事件处理
     var chargeTable = eeda.dt({
         id: 'charge_table',
-        autoWidth: false,
+        //autoWidth: false,
         drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
             bindFieldEvent();
         },
         columns:[
-			{"data": "ID","width": "10px",
-			    "render": function ( data, type, full, meta ) {
-			    	if(data)
-			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
-			    	else 
-			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
-			    }
+			{"data": "HIDE_FLAG", "width": "30px", visible: is_show_hide_charge_col,
+		    	"render": function ( data, type, full, meta ) {
+                    if(full.HIDE_FLAG=='N')
+                        return '<input type="checkbox" class="checkBox" name="hide_flag">';
+                    else
+                        return '<input type="checkbox" class="checkBox" name="hide_flag" checked>';
+                }
 			},
             { "width": "110px",
                 "render": function ( data, type, full, meta ) {

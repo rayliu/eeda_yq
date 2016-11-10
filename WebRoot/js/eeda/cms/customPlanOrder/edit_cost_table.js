@@ -55,11 +55,18 @@ $(document).ready(function() {
             for(var i = 1; i < row.childNodes.length; i++){
             	var el = $(row.childNodes[i]).find('input,select');
             	var name = el.attr('name'); 
-            	
-            	if(el && name){
-                	var value = el.val();//元素的值
-                	item[name] = value;
-            	}
+            	var type = el.attr('type');
+                
+                if(type=='checkbox'){
+                    if(el.prop('checked')){
+                        item[name] = 'Y';
+                    }else{
+                        item[name] = 'N';
+                    }
+                }else if(el && name){
+                    var value = el.val();//元素的值
+                    item[name] = value;
+                }
             }
             item.action = id.length > 0?'UPDATE':'CREATE';
             cargo_items_array.push(item);
@@ -97,12 +104,12 @@ $(document).ready(function() {
             $.unblockUI();
         },
         columns:[
-			{"data": "ID","width": "10px",
+			{"data": "HIDE_FLAG", "width": "30px", visible: is_show_hide_charge_col,
 			    "render": function ( data, type, full, meta ) {
-			    	if(data)
-			    		return '<input type="checkbox" style="width:30px">';
-			    	else 
-			    		return '<input type="checkbox" style="width:30px" disabled>';
+                    if(full.HIDE_FLAG=='N')
+			    	    return '<input type="checkbox" class="checkBox">';
+                    else
+                        return '<input type="checkbox" class="checkBox" checked>';
 			    }
 			},
 			{ "width": "110px",

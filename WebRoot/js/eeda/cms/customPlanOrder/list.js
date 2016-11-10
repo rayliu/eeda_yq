@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '计划订单查询 | '+document.title;
+    	document.title = '报关申请单查询 | '+document.title;
     	if(type != ""){
     		$('#menu_order').removeClass('active').find('ul').removeClass('in');
             $('#menu_todo_list').addClass('active').find('ul').addClass('in');

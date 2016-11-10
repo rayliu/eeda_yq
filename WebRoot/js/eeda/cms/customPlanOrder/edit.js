@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN', './edit_doc_table', './edit_cost_table', './edit_charge_table'], function ($, metisMenu) { 
     $(document).ready(function() {
-             	
+        var order_no=$('#order_no').val();
+        if(order_no.length>0)
+            document.title = order_no + ' | ' + document.title;
     	//已报关行按钮状态
     	$('#confirmCompleted,#passBtn,#refuseBtn').click(function(){
     		var btnId = $(this).attr("id");
