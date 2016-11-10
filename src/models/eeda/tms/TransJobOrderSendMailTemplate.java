@@ -1,0 +1,1 @@
+package models.eeda.tms;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class TransJobOrderSendMailTemplate extends Model<TransJobOrderSendMailTemplate> {	public static final TransJobOrderSendMailTemplate dao = new TransJobOrderSendMailTemplate();}
