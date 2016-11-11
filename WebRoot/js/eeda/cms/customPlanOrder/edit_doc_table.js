@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 $(document).ready(function() {
 	
 	//未保存不能上传文件
-	if($('#order_id').val()==''){
+	if($('#order_id').val()==''||$('#ref_job_order_id').val()!=''){
 		$("#fileuploadSpan").hide();
 		$("#sendEmail").hide();
 	}
@@ -103,10 +103,11 @@ $(document).ready(function() {
 //          '<input id="allCheckOfDoc" type="checkbox" style="width:30px">',
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	if(full.ID)
+                	if(full.ID || full.REF_JOB_ORDER_ID==''){
                 		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
-                	else 
+                	}else {
                 		return '';
+                	}
                 }
             },
             { "data": "DOC_NAME","width": "280px",
@@ -146,6 +147,13 @@ $(document).ready(function() {
                         data='';
                     return '<input type="text" name="uploader" value="'+data+'">'
                 }
+            },
+            { "data": "REF_JOB_ORDER_ID", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return data;
+            	}
             }
         ]
     });
