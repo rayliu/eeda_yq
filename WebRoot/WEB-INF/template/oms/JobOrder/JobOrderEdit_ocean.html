@@ -275,7 +275,6 @@
               <%}%>
             </div>
             <div class="col-lg-4">
-              <% if(boolOcean){ %>
                 <div class="form-group" id="release_radio_div">
                 	<input type="hidden" id="hidden_release_type" value="${shipment.release_type!''}">
                     <label class="search-label">放货方式</label>
@@ -289,11 +288,6 @@
                         <input type="radio" name='release_radio' value='obl'>OBL
                     </label>
                 </div>
-             <%}else{%>
-              		<label class="search-label">放货方式</label> <span class='search-control'><% if(shipment.release_type=='tlx'){
-              		    %>电放<%}else if(（shipment=""?"":shipment.release_type)=='swb'){%>SeaWayBill<%}else if(shipment.release_type=='obl'){%>OBL
-              		    <%}%></span>
-             <%}%>
             </div>
         </div>
         <div class="row">
