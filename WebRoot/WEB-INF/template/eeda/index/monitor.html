@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>${SYS_CONFIG.system_title!''}</title>
+    <% var logoPath=SYS_CONFIG.logo!'';
+    if(logoPath==""){%>
+    <link rel="shortcut icon" href="/yh/img/eeda_logo.ico">
+    <%}else{%>
+    <link rel="shortcut icon" href="${SYS_CONFIG.logo!''}">
+    <%}%>
+     <!-- Core CSS - Include with every page -->
+    <link href="/css/bootstrap/bootstrap.min.3.3.6.css" rel="stylesheet">
+    <link href="/css/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/js/lib/sco/css/sco.message.css" rel="stylesheet"> 
+    <!-- <link href="/js/lib/datatables/css/jquery.dataTables.css" rel="stylesheet"> -->
+    <link href="/js/lib/datatables/css/dataTables.bootstrap.css" rel="stylesheet">
+    
+
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet"> -->
+    
+    <!-- Page-Level Plugin CSS - Dashboard -->
+    <link href="/css/morris/morris-0.4.3.min.css"  rel="stylesheet">
+    <link href="/css/timeline/timeline.css" rel="stylesheet">
+
+    <!-- SB Admin CSS - Include with every page fdsafdsafdsa-->
+    <link href="/js/lib/sb-admin/css/sb-admin.css" rel="stylesheet">
+    
+    <link href="/css/eeda.css" rel="stylesheet">  
+    
+    <script src="/js/lib/jquery/jquery-1.10.2.js" type="text/javascript"></script>
+
+    <script src="/js/lib/require2.3.2.min.js"></script>
+    <%include("/eeda/component/form/commonJs.html",{}){} %>
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <div class="row">
+            <div class="btn-header"></div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                  管理看板
+                </div>
+                <div class="panel-body">
+                    <div class="col-lg-4">
+                        <div id="cpu_chart" style="height:200px"></div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div id="mem_chart" style="height:200px"></div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div id="disk_chart" style="height:200px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            requirejs([], function () {
+                requirejs(['app/index/index_cpu_chart', 'app/index/index_mem_chart', 'app/index/index_disk_chart']);
+            });
+        </script>
+    </div>
+    <!-- /#wrapper 11-->
+
+  
+</body>
+
+</html>

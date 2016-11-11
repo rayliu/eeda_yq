@@ -90,7 +90,7 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="side-menu">
                     <%  
-                        var map = permissionMap;
+                        var map = permissionMap!'';
                     %>
                     <%if(!shiro.hasRole("outuser")){%>
 	                   <li>
@@ -131,7 +131,7 @@
                             </ul>
                         </li-->
                         <%
-                        for(module in modules){
+                        for(module in modules![]){
                         %>
                             <li id="${module.id!}">
                                 <a href="#"><i class="fa fa-file-text fa-fw"></i>${module.module_name!}<span class="fa arrow"></span></a>
