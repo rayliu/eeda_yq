@@ -133,6 +133,17 @@ $(document).ready(function() {
     		}
     	});
     });
+    //打印应收对账明细
+    $('#printTotaledBtn').click(function(){
+    	var order_id = $('#order_id').val();
+    	$.post('/jobOrderReport/printTotaledReceiveDetailPDF',{order_id:order_id},function(data){
+    		if(data){
+    			window.open(data);
+    		}else{
+    			$.scojs_message('生成应收对账单PDF失败',$.scojs_message.TYPE_ERROR);
+    		}
+    	});
+    });
     
 
     
