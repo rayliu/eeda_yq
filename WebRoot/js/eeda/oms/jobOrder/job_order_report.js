@@ -695,9 +695,7 @@ $(document).ready(function() {
     	}
     	 	
     	var k = 0;
-		$('#land_table input[type="checkbox"]').each(function(){
-			var checkbox = $(this).prop('checked');
-			if(checkbox){
+		$('#land_table input[type="checkbox"]:checked').each(function(){
 				truckHead.item_id = $(this).parent().parent().attr('id');
 				truckHead.id = $('#truckHeadId').val();
 		    	truckHead.order_id = $('#order_id').val(); 
@@ -712,8 +710,6 @@ $(document).ready(function() {
 				},'json').fail(function(){
 			    	$.scojs_message('生成柜货派车单PDF失败', $.scojs_message.TYPE_ERROR);
 			  }); 
-				itemIds.push(itemId);
-			}
 		});
 		
     });
