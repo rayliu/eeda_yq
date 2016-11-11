@@ -291,7 +291,7 @@
                 </div>
              <%}else{%>
               		<label class="search-label">放货方式</label> <span class='search-control'><% if(shipment.release_type=='tlx'){
-              		    %>电放<%}else if(shipment.release_type=='swb'){%>SeaWayBill<%}else if(shipment.release_type=='obl'){%>OBL
+              		    %>电放<%}else if(（shipment=""?"":shipment.release_type)=='swb'){%>SeaWayBill<%}else if(shipment.release_type=='obl'){%>OBL
               		    <%}%></span>
              <%}%>
             </div>
