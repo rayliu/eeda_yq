@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="71"/>
+	<property name="ireport.y" value="252"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -29,7 +29,7 @@
 	<parameter name="order_id" class="java.util.List">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="landIds" class="java.util.List"/>
+	<parameter name="landIds" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
 	joli.pieces land_pieces, joli.gross_weight land_gross_weight,jo.id,jor.sp_id,jor.currency_total_amount currency_total_amount,jor.invoice_no invoice_no,jo.gross_weight jo_gross_weight,jor.total_amount total_amount,jor.price jor_price,
@@ -119,7 +119,7 @@ LEFT JOIN location lo ON lo.id = jos.fnd
 left join job_order_land_item joli on joli.order_id = jo.id
 WHERE
 	jor.order_type = 'charge'
-AND  $X{IN,jor.id,order_id} AND  $X{IN,joli.id,landIds}
+AND  $X{IN,jor.id,order_id} AND  joli.id in ($P{landIds})
 GROUP BY jor.id]]>
 	</queryString>
 	<field name="land_pieces" class="java.lang.String"/>
