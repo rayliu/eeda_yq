@@ -498,7 +498,7 @@ $(document).ready(function() {
     	chargeTable.ajax.url(url).load();
     }
     
-    $('#charge_table').on('blur','[name=amount]',function(){
+    $('#charge_table').on('blur','[name=price],[name=amount]',function(){
     	var amount = $(this).val();
     	if(amount!=''&&!isNaN(amount)){
     		$(this).val(itemOrder.returnFloat(amount));

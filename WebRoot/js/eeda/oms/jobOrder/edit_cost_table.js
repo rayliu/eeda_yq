@@ -424,7 +424,7 @@ $(document).ready(function() {
     	costTable.ajax.url(url).load();
     }
    
-    $('#cost_table').on('blur','[name=amount]',function(){
+    $('#cost_table').on('blur','[name=price],[name=amount]',function(){
     	var amount = $(this).val();
     	if(amount!=''&&!isNaN(amount)){
     		$(this).val(itemOrder.returnFloat(amount));
