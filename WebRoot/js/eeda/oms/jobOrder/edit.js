@@ -143,7 +143,7 @@ $(document).ready(function() {
 	        order.shipment_list = itemOrder.buildOceanItem();
         }
         if(transport_type_str.indexOf('express')>-1){
-	        //海运
+	        //快递
 	        order.express_detail = itemOrder.buildExpressDetail();
         }
         if(transport_type_str.indexOf('air')>-1){
