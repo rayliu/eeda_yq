@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="842" pageHeight="595" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="159"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -16,10 +16,10 @@ WHEN ISNULL(GROUP_CONCAT(joai.destination)) THEN GROUP_CONCAT(p1.abbr) ELSE l.na
 ) fnd,
 SUM(josi.volume) CBM, SUM(josi.pieces) CTNS, SUM(josi.gross_weight) KGS, jos.mbl_no MBL, jos.hbl_no HBL, josi.container_no,
 
-IF(joa.charge_id=3,joa.total_amount,0) cny,
-IF(joa.charge_id=6,joa.total_amount,0) usd,
-IF(joa.charge_id=9,joa.total_amount,0) hkd,
-IF(joa.charge_id=8,joa.total_amount,0) jpy
+IF(joa.currency_id=3,joa.total_amount,0) cny,
+IF(joa.currency_id=6,joa.total_amount,0) usd,
+IF(joa.currency_id=9,joa.total_amount,0) hkd,
+IF(joa.currency_id=8,joa.total_amount,0) jpy
 
 
 from arap_charge_order aco
