@@ -4,6 +4,11 @@
 <%layout("/eeda/layout.html"){%>
 
 <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
+	<%
+      //如果只有edit, 没指定特定的, 默认都有编辑权限
+      var orderPermission = shiro.hasPermission("jobOrder.order");
+      var boolOrder= orderPermission;
+    %>
         <div id="page-wrapper">
         <a data-target='#pdfAlertDetail' data-toggle='modal'>
         	<button id="pdfAlert" style="display:none"></button>
@@ -582,7 +587,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <button id='saveBtn' class="btn  btn-primary">保存</button>
-                <button id="confirmCompleted" class="btn btn-primary">工作单锁单</button>
+                <%if(boolOrder){%>
+                	<button id="confirmCompleted" class="btn btn-primary">工作单锁单</button>
+                <%}%>
                 <a class="btn  btn-default" href="/jobOrder">返回</a>
             </div>
         </div>
