@@ -15,6 +15,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
+import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PrintPatterns;
 
@@ -65,6 +66,7 @@ public class JobOrderReportController extends Controller {
 		String outFileName = "/download/工作单海运booking";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_no", order_no);
+		hm.put("login_user_id", LoginUserController.getLoginUserId(this));
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_no;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
@@ -236,6 +238,7 @@ public class JobOrderReportController extends Controller {
 		String outFileName = "/download/应收对账单PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
+		hm.put("login_user_id", LoginUserController.getLoginUserId(this));
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
@@ -248,6 +251,7 @@ public class JobOrderReportController extends Controller {
 		String outFileName = "/download/应收对账单(合计版)PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
+		hm.put("login_user_id", LoginUserController.getLoginUserId(this));
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);

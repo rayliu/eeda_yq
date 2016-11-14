@@ -6,6 +6,7 @@
 	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="login_user_id" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT aco.begin_time,aco.end_time,p.company_name,p.contact_person,p.phone,p.fax, u.c_name,u.user_phone,
 jo.order_export_date,jo.order_no,
@@ -15,7 +16,7 @@ WHEN ISNULL(GROUP_CONCAT(joai.destination)) THEN GROUP_CONCAT(p1.abbr) ELSE l.na
 ) fnd,
 SUM(josi.volume) CBM, SUM(josi.pieces) CTNS, SUM(josi.gross_weight) KGS, jos.mbl_no MBL, jos.hbl_no HBL, josi.container_no,
 
-joa.currency_total_amount cny,
+IF(joa.charge_id=3,joa.total_amount,0) cny,
 IF(joa.charge_id=6,joa.total_amount,0) usd,
 IF(joa.charge_id=9,joa.total_amount,0) hkd,
 IF(joa.charge_id=8,joa.total_amount,0) jpy
@@ -23,7 +24,7 @@ IF(joa.charge_id=8,joa.total_amount,0) jpy
 
 from arap_charge_order aco
 left join party p on p.id=aco.sp_id
-left join user_login u on u.id = aco.create_by
+left join user_login u on u.id = $P{login_user_id}
 left join arap_charge_item aci on aci.charge_order_id = aco.id
 left join job_order_arap joa on joa.id = aci.ref_order_id
 left join job_order jo on jo.id = joa.order_id
@@ -445,6 +446,28 @@ GROUP BY aci.id]]>
 			<staticText>
 				<reportElement x="586" y="0" width="62" height="20" uuid="fe64103a-065a-4549-95d3-b03d0d465b88"/>
 				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="311" y="15" width="122" height="20" uuid="2098dc0c-0c6a-44e8-92bc-94a4bc2f3cf6"/>
+				<textFieldExpression><![CDATA[$F{user_phone}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="152" y="15" width="106" height="20" uuid="1f251fe5-b14f-40d3-8fd7-b559d37e6f9b"/>
+				<textElement textAlignment="Center">
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="258" y="15" width="54" height="20" uuid="c5f0020d-77f1-4c2b-a7ff-9a4c4679eccc"/>
+				<textElement>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[联系电话：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="112" y="15" width="40" height="20" uuid="4ac5e223-9685-491c-8662-7164e97244dd"/>
+				<text><![CDATA[制表人：]]></text>
 			</staticText>
 		</band>
 	</summary>

@@ -6,13 +6,11 @@
 	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="login_user_id" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT aco.begin_time,aco.end_time,p.company_name,p.contact_person,p.phone,p.fax, u.c_name,u.user_phone,
 jo.order_export_date,jo.order_no,
-(
-CASE WHEN ISNULL(l.name) THEN joai.destination
-WHEN ISNULL(joai.destination) THEN p1.abbr ELSE l.name END
-) fnd,
+ifnull(l.name,joai.destination)  fnd,
 (SELECT SUM(josi.volume) from job_order_shipment_item josi
 where josi.order_id = joa.order_id) CBM,
 (SELECT SUM(josi.pieces) from job_order_shipment_item josi
@@ -21,15 +19,56 @@ where josi.order_id = joa.order_id) CTNS,
 where josi.order_id = joa.order_id) KGS,
 (SELECT GROUP_CONCAT(josi.container_no) from job_order_shipment_item josi
 where josi.order_id = joa.order_id) container_no,
-
 jos.mbl_no MBL, jos.hbl_no HBL,
 
-SUM(joa.currency_total_amount) cny,
+(
+		SELECT
+			sum(joa.total_amount)
+		FROM
+			job_order_arap joa
+		LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id
+		LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
+		WHERE
+			aco.id = $P{order_id}
+		AND joa.currency_id = 6 AND joa.order_id = jo.id
 
-SUM(joa.currency_total_amount)/(SELECT rate from currency_rate WHERE currency_id = 6) usd,
-SUM(joa.currency_total_amount)/(SELECT rate from currency_rate WHERE currency_id = 8) jpy,
-SUM(joa.currency_total_amount)/(SELECT rate from currency_rate WHERE currency_id = 9) hkd
+	) usd,
+(
+		SELECT
+			sum(joa.total_amount)
+		FROM
+			job_order_arap joa
+		LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id
+		LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
+		WHERE
+			aco.id = $P{order_id}
+		AND joa.currency_id = 3 AND joa.order_id = jo.id
 
+	) cny,
+(
+		SELECT
+			sum(joa.total_amount)
+		FROM
+			job_order_arap joa
+		LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id
+		LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
+		WHERE
+			aco.id = $P{order_id}
+		AND joa.currency_id = 8 AND joa.order_id = jo.id
+
+	) jpy,
+(
+		SELECT
+			sum(joa.total_amount)
+		FROM
+			job_order_arap joa
+		LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id
+		LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
+		WHERE
+			aco.id = $P{order_id}
+		AND joa.currency_id = 9 AND joa.order_id = jo.id
+
+	) hkd
 
 from job_order_arap joa
 left join job_order jo on jo.id = joa.order_id
@@ -40,13 +79,11 @@ left join job_order_shipment_item josi on josi.order_id = jo.id
 left join job_order_air_item joai on joai.order_id = jo.id
 left join job_order_land_item joli on joli.order_id = jo.id
 left join location l on l.id = jos.fnd
-left join party p1 on p1.id = joli.consignee
 left join party p on p.id=aco.sp_id
-left join user_login u on u.id = aco.create_by
+left join user_login u on u.id = $P{login_user_id}
 left join currency_rate cr on cr.currency_id = joa.currency_id
-where aco.id = 304
-GROUP BY jo.id
-]]>
+where aco.id = $P{order_id}
+GROUP BY jo.id]]>
 	</queryString>
 	<field name="begin_time" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -89,8 +126,8 @@ GROUP BY jo.id
 	</field>
 	<field name="MBL" class="java.lang.String"/>
 	<field name="HBL" class="java.lang.String"/>
-	<field name="cny" class="java.lang.Double"/>
 	<field name="usd" class="java.lang.Double"/>
+	<field name="cny" class="java.lang.Double"/>
 	<field name="jpy" class="java.lang.Double"/>
 	<field name="hkd" class="java.lang.Double"/>
 	<variable name="SUM_RMB" class="java.lang.Double" calculation="Sum">
@@ -458,6 +495,28 @@ GROUP BY jo.id
 				<reportElement x="586" y="0" width="62" height="20" uuid="fe64103a-065a-4549-95d3-b03d0d465b88"/>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="26" y="15" width="40" height="20" uuid="85797879-e05f-4b04-9d4d-1f8e52129aec"/>
+				<text><![CDATA[制表人：]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="66" y="15" width="106" height="20" uuid="16a9e8d8-d9b7-4fe2-9ba0-4ebe1ad2a3b4"/>
+				<textElement textAlignment="Center">
+					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="172" y="15" width="54" height="20" uuid="7bf2d8c7-c7d8-46e4-9585-858c152f80d2"/>
+				<textElement>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[联系电话：]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="225" y="15" width="122" height="20" uuid="bd0daaf6-8b4c-4544-9f5d-b3150e74ced1"/>
+				<textFieldExpression><![CDATA[$F{user_phone}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>
