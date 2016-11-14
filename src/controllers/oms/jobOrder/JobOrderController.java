@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,6 +47,7 @@ import sun.misc.BASE64Encoder;
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
@@ -200,12 +202,31 @@ public class JobOrderController extends Controller {
         JobOrder jobOrder = new JobOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
+   		
+   		String export_date = (String)dto.get("order_export_date");
+        String dateStr = "";
+        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMM");//转换后的格式
+        try {
+            Date date=parseFormat.parse(export_date);
+            dateStr=sdf.format(date);
+        } catch (ParseException ex) {
+            logger.debug("处理工作单出货日期出错："+ex.getMessage());
+        }
+        logger.debug("工作单出货日期："+dateStr);
+        
+        
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			jobOrder = JobOrder.dao.findById(id);
-
-   			if(!type.equals(jobOrder.get("type"))){
-	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
+   			Date old_export_date=jobOrder.get("order_export_date");
+   			String oldDateStr="";
+   			if(old_export_date != null){
+   			    oldDateStr=sdf.format(old_export_date);
+   			}
+   			logger.debug("工作单出货 旧日期："+oldDateStr);
+   			if(!type.equals(jobOrder.get("type")) || ( StrKit.notBlank(oldDateStr) && !dateStr.equals(oldDateStr))){
+	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), dateStr, office_id);
 	            jobOrder.set("order_no", order_no);
    			}
             
@@ -219,7 +240,7 @@ public class JobOrderController extends Controller {
    			DbUtils.setModelValues(dto, jobOrder);
    			
    			//需后台处理的字段
-   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
+   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), dateStr, office_id);
             jobOrder.set("order_no", order_no);
    			jobOrder.set("creator", user.getLong("id"));
    			jobOrder.set("create_stamp", new Date());
