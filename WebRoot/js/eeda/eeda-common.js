@@ -573,9 +573,9 @@ eeda.refreshUrl = refreshUrl;
       	else
       		curDateTime = curDateTime +"-0"+month;
       	if(date>9)
-      		curDateTime = curDateTime +"-"+date;
+      		curDateTime = curDateTime +"-"+date+" ";
       	else
-      		curDateTime = curDateTime +"-0"+date;
+      		curDateTime = curDateTime +"-0"+date+" ";
       	if(hours>9)
       		curDateTime = curDateTime +" "+hours;
       	else
