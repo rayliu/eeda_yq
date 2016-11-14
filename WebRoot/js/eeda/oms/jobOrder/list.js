@@ -35,7 +35,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                    return data;
                   }
               }, 
-              { "data": "SENT_OUT_TIME", 
+              { "data": "SENT_OUT_TIME_STR", 
             	  render: function(data){
             		  if(data)
             			  return data;

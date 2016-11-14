@@ -1244,7 +1244,8 @@ public class JobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         }
         else{
-		         sql = "SELECT * from (select jo.*, cast( CONCAT(IFNULL(jo.order_export_date,''),' ',IFNULL(jo.land_export_date,''),' ',IFNULL(jos.export_date,''),' ',IFNULL(joa.export_date,'')) as char)  sent_out_time,"
+		         sql = "SELECT * from (select jo.*, ifnull(jos.export_date,joa.export_date) sent_out_time,"
+		         		+ " cast( CONCAT(IFNULL(jo.order_export_date,''),' ',IFNULL(jo.land_export_date,''),' ',IFNULL(jos.export_date,''),' ',IFNULL(joa.export_date,'')) as char)  sent_out_time_str,"
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code"
 		         		+ "	from job_order jo"
 		         		+ "	left join job_order_shipment jos on jos.order_id = jo.id"
