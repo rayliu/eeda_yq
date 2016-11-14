@@ -99,11 +99,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             var items_array = salesOrder.buildCargoDetail();
         	var order = {};
         	order['id'] = $('#order_id').val();
-        	order['custom_bill'] = $('#customForm input[type="radio"]:checked').val();
+        	order['custom_bill'] = $('#customDetail input[type="radio"]:checked').val();
         	order['ref_job_order_id'] = $('#ref_job_order_id').val();
         	order['to_office_id'] = $('#to_office_id').val();
 //        	order['status'] = $('#status').val()==""?"新建":$('#status').val();
-        	var customForm = $('#customForm input,#customForm select,#customForm textarea');
+        	var customForm = $('#customForm :input,#customDetail :input,#headDetail :input');
         	for(var i = 0; i < customForm.length; i++){
         		var name = customForm[i].id;
             	var value =customForm[i].value;
