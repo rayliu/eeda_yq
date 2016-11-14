@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="264"/>
+	<property name="ireport.y" value="31"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -38,9 +38,9 @@ ifnull(
 	SUM(josi.gross_weight),
 	SUM(josi.volume),
 	u.c_name,
-  ifnull(p.company_name_eng,p.company_name) HBLconsigneeName,
-	ifnull(p2.company_name_eng,p2.company_name) HBLshipperName,
-	ifnull(p3.company_name_eng,p3.company_name) HBLnotify_partyName,
+  	UPPER(ifnull(p.company_name_eng,p.company_name)) HBLconsigneeName,
+	UPPER(ifnull(p2.company_name_eng,p2.company_name)) HBLshipperName,
+	UPPER(ifnull(p3.company_name_eng,p3.company_name)) HBLnotify_partyName,
 	jos.oversea_agent versea_agent,
 	(
 		SELECT
@@ -209,6 +209,9 @@ where jos.order_id=$P{order_id}]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="custom_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_export_date" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="order_id" class="java.lang.Long">
@@ -941,14 +944,14 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{container_type_count}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="184" width="245" height="20" uuid="4c8a17fe-7af1-41d0-a7bf-f566edb8a990"/>
+				<reportElement x="20" y="183" width="245" height="15" uuid="4c8a17fe-7af1-41d0-a7bf-f566edb8a990"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{HBLnotify_partyName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="204" width="245" height="36" uuid="4fb4a45a-82e7-4ce2-b31f-11e30aa4344b"/>
+				<reportElement x="20" y="198" width="245" height="42" uuid="4fb4a45a-82e7-4ce2-b31f-11e30aa4344b"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
