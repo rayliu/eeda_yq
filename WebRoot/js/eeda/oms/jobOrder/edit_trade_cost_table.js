@@ -95,13 +95,6 @@ $(document).ready(function() {
                     return '<input type="text" name="commodity_name" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "SPECIFICATION_MODEL", "width": "180px",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="specification_model" value="'+data+'" class="form-control" style="width:200px"/>';
-                }
-            },
             { "data": "NUMBER", "width": "180px","className":"number",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
