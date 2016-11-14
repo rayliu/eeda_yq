@@ -165,6 +165,7 @@ public class ServiceProviderController extends Controller {
 
     private void setContact(Party contact) {
     	contact.set("code", getPara("code"));
+    	contact.set("quick_search_code", getPara("quick_search_code"));
     	contact.set("fax", getPara("fax"));
     	contact.set("company_name", getPara("company_name"));
         contact.set("company_name_eng", getPara("company_name_eng"));

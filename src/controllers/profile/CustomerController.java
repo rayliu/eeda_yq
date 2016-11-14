@@ -345,7 +345,8 @@ public class CustomerController extends Controller {
                     + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
                         
             if (customerName.trim().length() > 0) {
-                sql +=" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" + customerName.toUpperCase() + "%') ";
+                sql +=" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" +customerName.toLowerCase()+ "%'"
+                	+ " or p.quick_search_code like '%" + customerName.toUpperCase() + "%') ";
             }
             resultList = Db.find(sql+" order by abbr limit 10");
 
@@ -381,7 +382,8 @@ public class CustomerController extends Controller {
                     + " p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
                         
             if (customerName.trim().length() > 0) {
-                sql +=" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" + customerName.toUpperCase() + "%') ";
+                sql +=" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" + customerName.toLowerCase() +"%'"
+                	+ " or p.quick_search_code like '%" + customerName.toUpperCase() + "%') ";
             }
             resultList = Db.find(sql+" limit 10");
 

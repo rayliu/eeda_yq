@@ -200,6 +200,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             var order ={}
             order.id = $("#partyId").val();
             order.code = $("#code").val();
+            order.quick_search_code = $("#quick_search_code").val();
             order.abbr = $("#abbr").val();
             order.company_name = $("#company_name").val();
             order.company_name_eng = $("#company_name_eng").val();

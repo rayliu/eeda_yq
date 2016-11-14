@@ -33,7 +33,14 @@
                                     <div class="col-lg-6">
                                         <fieldset>
                                             <div class="form-group">
-
+                                                <label>助记码(拼音首字母)</label>
+                                                <input  class="form-control" id="quick_search_code" name="quick_search_code" type="text" value="${party.quick_search_code!''}" required>
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
                                                 <label>公司简称(必填)</label>
                                                 <input  class="form-control" id="abbr" name="abbr" type="text" value="${party.abbr!''}" required>
                                             </div>                                     
@@ -42,23 +49,21 @@
                                     <div class="col-lg-6">
                                         <fieldset>
                                             <div class="form-group">
-                                                
                                                 <label>公司中文名称(必填)</label>
                                                 <input  class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}" required>
                                             </div>                                     
                                         </fieldset>
                                     </div>
+                              </div>
+                           <div class="row"> 
                                     <div class="col-lg-6">
                                         <fieldset>
                                             <div class="form-group">
-                                                
                                                 <label>公司英文名称</label>
                                                 <input  class="form-control" id="company_name_eng" name="company_name_eng" type="text" value="${party.company_name_eng!''}">
                                             </div>                                     
                                         </fieldset>
                                     </div>
-                              </div>
-                           <div class="row"> 
                                     <div class="col-lg-6">
                                         <fieldset>
                                             <div class="form-group">
