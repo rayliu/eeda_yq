@@ -1144,10 +1144,8 @@ public class JobOrderController extends Controller {
         String sql = "";
         if("sowait".equals(type)){
         	sql=" SELECT jor.*,ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
-        			+ " cast( CONCAT(IFNULL(jor.order_export_date,''),' ',IFNULL(jor.land_export_date,''),' ',IFNULL(jos.export_date,''),' ',IFNULL(joa.export_date,'')) as char) sent_out_time"
         			+ " FROM job_order jor "
         			+ " LEFT JOIN job_order_shipment jos on jor.id = jos.order_id "
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator "
         			+ " WHERE jor.office_id="+office_id
@@ -1155,11 +1153,8 @@ public class JobOrderController extends Controller {
         			+ " and jor.delete_flag = 'N'";        	
         }else if("truckorderwait".equals(type)){
         	 sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
-        			+ " cast( CONCAT(IFNULL(jor.order_export_date,''),' ',IFNULL(jor.land_export_date,''),' ',IFNULL(jos.export_date,''),' ',IFNULL(joa.export_date,'')) as char) sent_out_time"
         			+ " FROM job_order_land_item joli"
         			+ " left join job_order jor on jor.id = joli.order_id"
-        			+ " left join job_order_shipment jos on jos.order_id = jor.id"
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " WHERE jor.office_id="+office_id
@@ -1170,10 +1165,8 @@ public class JobOrderController extends Controller {
         	
         } else if("siwait".equals(type)){
         	 sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
-        			+ " cast( CONCAT(IFNULL(jor.order_export_date,''),' ',IFNULL(jor.land_export_date,''),' ',IFNULL(jos.export_date,''),' ',IFNULL(joa.export_date,'')) as char) sent_out_time"
         	 		+ " FROM job_order_shipment jos"
         	 		+ " left join job_order jor on jos.order_id = jor.id"
-        	 		+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
         	 		+ " left join party p on p.id = jor.customer_id"
         	 		+ " left join user_login u on u.id = jor.creator "
         	 		+ " WHERE jor.office_id="+office_id
@@ -1182,10 +1175,8 @@ public class JobOrderController extends Controller {
         	
         } else if("mblwait".equals(type)){
         	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
-        			+ " cast( CONCAT(IFNULL(jor.order_export_date,''),' ',IFNULL(jor.land_export_date,''),' ',IFNULL(jos.export_date,''),' ',IFNULL(joa.export_date,'')) as char) sent_out_time"
         			+ " FROM job_order_shipment jos "
         			+ " left join job_order jor on jos.order_id = jor.id"
-        			+ " left join job_order_air joa on joa.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " WHERE jor.office_id="+office_id
@@ -1194,11 +1185,8 @@ public class JobOrderController extends Controller {
         	
         } else if("customwait".equals(type)){
         	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
-        			+ " cast( CONCAT(IFNULL(jor.order_export_date,''),' ',IFNULL(jor.land_export_date,''),' ',IFNULL(jos.export_date,''),' ',IFNULL(joa.export_date,'')) as char) sent_out_time"
         			+ " from job_order jor "
         			+ " LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
-        			+ " left join job_order_shipment jos on jos.order_id = jor.id"
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " left join job_order_custom_china_self_item jocc on jocc.order_id = jor.id"
@@ -1210,10 +1198,7 @@ public class JobOrderController extends Controller {
         	
         } else if("insurancewait".equals(type)){
         	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
-        			+ " cast( CONCAT(IFNULL(jor.order_export_date,''),' ',IFNULL(jor.land_export_date,''),' ',IFNULL(jos.export_date,''),' ',IFNULL(joa.export_date,'')) as char) sent_out_time"
         			+ " FROM job_order jor LEFT JOIN job_order_insurance joi ON jor.id = joi.order_id"
-        			+ " left join job_order_shipment jos on jos.order_id = jor.id"
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " WHERE jor.office_id="+office_id
@@ -1221,10 +1206,8 @@ public class JobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         } else if("overseacustomwait".equals(type)){
         	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
-        			+ " cast( CONCAT(IFNULL(jor.order_export_date,''),' ',IFNULL(jor.land_export_date,''),' ',IFNULL(jos.export_date,''),' ',IFNULL(joa.export_date,'')) as char)  sent_out_time"
         			+ " FROM job_order_shipment jos "
         			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " WHERE jor.office_id="+office_id
@@ -1233,10 +1216,8 @@ public class JobOrderController extends Controller {
         			+ " and jor.delete_flag = 'N'";
         } else if("tlxOrderwait".equals(type)){
         	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
-        			+ " cast( CONCAT(IFNULL(jor.order_export_date,''),' ',IFNULL(jor.land_export_date,''),' ',IFNULL(jos.export_date,''),' ',IFNULL(joa.export_date,'')) as char) sent_out_time"
         			+ " FROM job_order_shipment jos"
         			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " WHERE jor.office_id="+office_id
@@ -1244,12 +1225,9 @@ public class JobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         }
         else{
-		         sql = "SELECT * from (select jo.*, ifnull(jos.export_date,joa.export_date) sent_out_time,"
-		         		+ " cast( CONCAT(IFNULL(jo.order_export_date,''),' ',IFNULL(jo.land_export_date,''),' ',IFNULL(jos.export_date,''),' ',IFNULL(joa.export_date,'')) as char)  sent_out_time_str,"
+		         sql = "SELECT * from (select jo.*,"
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code"
 		         		+ "	from job_order jo"
-		         		+ "	left join job_order_shipment jos on jos.order_id = jo.id"
-		         		+ "	LEFT JOIN job_order_air joa on joa.order_id = jo.id"
 		         		+ "	left join party p on p.id = jo.customer_id"
 		         		+ "	left join user_login u on u.id = jo.creator"
 		         		+ "	where jo.office_id="+office_id

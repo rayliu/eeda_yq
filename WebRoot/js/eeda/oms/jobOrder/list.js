@@ -35,7 +35,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                    return data;
                   }
               }, 
-              { "data": "SENT_OUT_TIME_STR", 
+              { "data": "ORDER_EXPORT_DATE", 
             	  render: function(data){
             		  if(data)
             			  return data;
@@ -75,8 +75,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                +"&customer_name_like="+customer_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
-          	   +"&sent_out_time_begin_time="+sent_out_time_begin_time
-          	   +"&sent_out_time_end_time="+sent_out_time_end_time;
+          	   +"&order_export_date_begin_time="+sent_out_time_begin_time
+          	   +"&order_export_date_end_time="+sent_out_time_end_time;
 
           dataTable.ajax.url(url).load();
       };
