@@ -242,7 +242,7 @@ public class JobOrderReportController extends Controller {
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	//打印应收对账单
-	public void printReceiveTotaledDetailPDF(){
+	public void printTotaledReceiveDetailPDF(){
 		String order_id = getPara("order_id");
 		String fileName = "/report/checkOrder/TotaledReceivableDetails.jasper";
 		String outFileName = "/download/应收对账单(合计版)PDF";

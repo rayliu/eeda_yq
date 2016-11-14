@@ -186,7 +186,8 @@
 		                   <%include("/eeda/component/form/dateInputField.html", 
 		                       {   id:'order_export_date', 
 		                           label:'出货日期', 
-		                           value:order.order_export_date!''
+		                           value:order.order_export_date!'',
+		                           required:'required'
 		                       }){}%>
 		                </div>
 			        </div>
@@ -276,15 +277,16 @@
                     <li>
                         <a id='tradeDetailTab' href="#tradeDetail" data-toggle="tab" style="display: none;">贸易信息</a>
                     </li>
+                    <li>
+                        <a id='expressDetailTab' href="#expressDetail" data-toggle="tab" style="display: none;">快递</a>
+                    </li>
                     <li class="active">
                         <a id='chargeTab' href="#chargeDetail" data-toggle="tab">费用明细</a>
                     </li>
                     <li>
                         <a id='docTab' href="#docDetail" data-toggle="tab">相关文档</a>
                     </li>
-                    <li>
-                        <a id='expressDetailTab' href="#expressDetail" data-toggle="tab" style="display: none;">快递</a>
-                    </li>
+                    
 				</ul>
 				<div class="tab-content">
                     <div class="tab-pane fade in" id="oceanDetail">
