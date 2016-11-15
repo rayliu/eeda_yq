@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="842" pageHeight="595" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="62"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -416,35 +416,35 @@ GROUP BY aci.id]]>
 	<summary>
 		<band height="35" splitType="Stretch">
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="686" y="0" width="40" height="20" uuid="9d492093-0cd2-4ca4-95d6-3f5a0db9d529"/>
+				<reportElement x="687" y="0" width="40" height="20" uuid="9d492093-0cd2-4ca4-95d6-3f5a0db9d529"/>
 				<textElement textAlignment="Center">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_USD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="725" y="0" width="40" height="20" uuid="637f854b-f301-411d-bbf2-4887855d655c"/>
+				<reportElement x="726" y="0" width="40" height="20" uuid="637f854b-f301-411d-bbf2-4887855d655c"/>
 				<textElement textAlignment="Center">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_HKD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="764" y="0" width="38" height="20" uuid="23bcd840-a1dc-44c0-9009-a895a50a90fd"/>
+				<reportElement x="765" y="0" width="38" height="20" uuid="23bcd840-a1dc-44c0-9009-a895a50a90fd"/>
 				<textElement textAlignment="Center">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_JPY}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="647" y="0" width="40" height="20" uuid="d438846b-7740-4512-9d7e-9bde9b2483c0"/>
+				<reportElement x="648" y="0" width="40" height="20" uuid="d438846b-7740-4512-9d7e-9bde9b2483c0"/>
 				<textElement textAlignment="Center">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_RMB}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="586" y="0" width="62" height="20" uuid="fe64103a-065a-4549-95d3-b03d0d465b88"/>
+				<reportElement x="587" y="0" width="62" height="20" uuid="fe64103a-065a-4549-95d3-b03d0d465b88"/>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
@@ -467,6 +467,9 @@ GROUP BY aci.id]]>
 			</staticText>
 			<staticText>
 				<reportElement x="112" y="15" width="40" height="20" uuid="4ac5e223-9685-491c-8662-7164e97244dd"/>
+				<textElement>
+					<font fontName="宋体" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<text><![CDATA[制表人：]]></text>
 			</staticText>
 		</band>
