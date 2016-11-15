@@ -386,14 +386,14 @@ public class CustomPlanOrderController extends Controller {
         renderJson(orderListMap); 
     }
     
-  //异步刷新字表
+  //异步刷新子表
     public void tableList(){
     	String order_id = getPara("order_id");
     	String type = getPara("type");
     	Boolean showHide = Boolean.valueOf(getPara("showHide"));
     	
     	List<Record> list = null;
-    	list = getItems(order_id, type, showHide);
+    	list = getItems(order_id, type);
     	
     	Map map = new HashMap();
         map.put("sEcho", 1);
