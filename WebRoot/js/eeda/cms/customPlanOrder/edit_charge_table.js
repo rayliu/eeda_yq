@@ -99,9 +99,9 @@ $(document).ready(function() {
     $("#charge_table").on('click', '#chargeConfirm', function(e){
     	e.preventDefault();
     	var id = $(this).val();
-    	$.post('/jobOrder/feeConfirm',{id:id},function(joa){
+    	$.post('/CustomJobOrder/feeConfirm',{id:id},function(joa){
     		var order_id = joa.ORDER_ID;
-	    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=charge&showHide="+is_show_hide_charge_col;
+	    	var url = "/CustomJobOrder/tableList?order_id="+order_id+"&type=charge";
 	    	chargeTable.ajax.url(url).load();    		
     		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
     	},'json').fail(function() {
@@ -181,10 +181,10 @@ $(document).ready(function() {
         columns:[
 			{"data": "HIDE_FLAG", "width": "30px", visible: is_show_hide_charge_col,
 		    	"render": function ( data, type, full, meta ) {
-                    if(full.HIDE_FLAG=='Y')
-                        return '<input type="checkbox" class="checkBox" name="hide_flag" checked>';
-                    else
+                    if(full.HIDE_FLAG=='N')
                         return '<input type="checkbox" class="checkBox" name="hide_flag">';
+                    else
+                        return '<input type="checkbox" class="checkBox" name="hide_flag" checked>';
                 }
 			},
             { "width": "110px",
@@ -209,14 +209,20 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		var str = '<select name="type" class="form-control search-control" style="width:100px" disabled>'
-	                        +'<option value="海关" '+(data=='海运' ? 'selected':'')+'>海关</option>'
-	                        +'<option value="码头" '+(data=='码头' ? 'selected':'')+'>码头</option>'
+	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
+	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
+	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
+	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
+	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
 	                        +'</select>';
 	                	return str;
                 	}else{
                     var str = '<select name="type" class="form-control search-control" style="width:100px">'
-                               +'<option value="海关" '+(data=='海关' ? 'selected':'')+'>海关</option>'
-                               +'<option value="码头" '+(data=='码头' ? 'selected':'')+'>码头</option>'
+                               +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
+                               +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
+                               +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
+                               +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
+                               +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
                                +'</select>';
                     return str;
                   }
@@ -497,7 +503,7 @@ $(document).ready(function() {
 
     //刷新明细表
     salesOrder.refleshChargeTable = function(order_id){
-    	var url = "/customPlanOrder/tableList?order_id="+order_id+"&type=charge&showHide="+is_show_hide_charge_col;
+    	var url = "/customPlanOrder/tableList?order_id="+order_id+"&type=charge";
     	chargeTable.ajax.url(url).load();
     }
     

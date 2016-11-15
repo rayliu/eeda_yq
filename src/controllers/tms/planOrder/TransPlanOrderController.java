@@ -44,7 +44,7 @@ public class TransPlanOrderController extends Controller {
 		String type=getPara("type");
 		setAttr("type", type);
 		
-		render("/oms/PlanOrder/PlanOrderList.html");
+		render("/tms/TransPlanOrder/PlanOrderList.html");
 	}
 	
 	@Before(EedaMenuInterceptor.class)

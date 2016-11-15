@@ -23,7 +23,6 @@ import models.eeda.oms.jobOrder.JobOrderAirCargoDesc;
 import models.eeda.oms.jobOrder.JobOrderAirItem;
 import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.oms.jobOrder.JobOrderCustom;
-import models.eeda.oms.jobOrder.JobOrderDoc;
 import models.eeda.oms.jobOrder.JobOrderInsurance;
 import models.eeda.oms.jobOrder.JobOrderLandItem;
 import models.eeda.oms.jobOrder.JobOrderSendMail;
@@ -607,19 +606,19 @@ public class TransJobOrderController extends Controller {
     //上传相关文档
     @Before(Tx.class)
     public void saveDocFile(){
-    	String order_id = getPara("order_id");
-    	List<UploadFile> fileList = getFiles("doc");
-    	
-		for (int i = 0; i < fileList.size(); i++) {
-    		File file = fileList.get(i).getFile();
-    		String fileName = file.getName();
-    		
-			JobOrderDoc jobOrderDoc = new JobOrderDoc();
-			jobOrderDoc.set("order_id", order_id);
-			jobOrderDoc.set("uploader", LoginUserController.getLoginUserId(this));
-			jobOrderDoc.set("doc_name", fileName);
-			jobOrderDoc.set("upload_time", new Date());
-			jobOrderDoc.save();
+			String order_id = getPara("order_id");
+	    	List<UploadFile> fileList = getFiles("doc");
+	    	
+			for (int i = 0; i < fileList.size(); i++) {
+	    		File file = fileList.get(i).getFile();
+	    		String fileName = file.getName();
+	    		
+				Record r = new Record();
+				r.set("order_id", order_id);
+				r.set("uploader", LoginUserController.getLoginUserId(this));
+				r.set("doc_name", fileName);
+				r.set("upload_time", new Date());
+				Db.save("trans_job_order_doc",r);
 		}
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 		resultMap.put("result", true);
@@ -661,7 +660,7 @@ public class TransJobOrderController extends Controller {
 		r.set("doc_name", fileName);
 		r.set("uploader", LoginUserController.getLoginUserId(this));
 		r.set("upload_time", new Date());
-		Db.save("job_order_land_doc",r);
+		Db.save("trans_job_order_land_doc",r);
 		renderJson("{\"result\":true}");
     }
     
@@ -669,20 +668,21 @@ public class TransJobOrderController extends Controller {
     @Before(Tx.class)
     public void deleteDoc(){
     	String id = getPara("docId");
-    	JobOrderDoc jobOrderDoc = JobOrderDoc.dao.findById(id);
-    	String fileName = jobOrderDoc.getStr("doc_name");
+    	Record r = Db.findById("trans_job_order_doc",id);
+    	String fileName = r.getStr("doc_name");
     	Map<String,Object> resultMap = new HashMap<String,Object>();
     	
     	String path = getRequest().getServletContext().getRealPath("/");
     	String filePath = path+"\\upload\\doc\\"+fileName;
     	
-        File file = new File(filePath);
+    	
+    	File file = new File(filePath);
         if (file.exists() && file.isFile()) {
             boolean result = file.delete();
-            jobOrderDoc.delete();
+            Db.delete("trans_job_order_doc",r);
             resultMap.put("result", result);
         }else{
-        	jobOrderDoc.delete();
+        	Db.delete("trans_job_order_doc",r);
         	resultMap.put("result", "文件不存在可能已被删除!");
         }
         renderJson(resultMap);
@@ -716,7 +716,7 @@ public class TransJobOrderController extends Controller {
     	String id = getPara("id");
     	String path = getRequest().getServletContext().getRealPath("/")+"\\upload\\doc\\";
     	
-    	String sql = "select GROUP_CONCAT(doc_name) doc_name from job_order_land_doc where land_id=?";
+    	String sql = "select GROUP_CONCAT(doc_name) doc_name from trans_job_order_land_doc where land_id=?";
     	Record r = Db.findFirst(sql, id);
     	String fileName = r.getStr("doc_name");
     	String[] arr = fileName.split(",");
@@ -814,33 +814,33 @@ public class TransJobOrderController extends Controller {
     		itemSql = "select * from job_order_air_cargodesc where order_id=? order by id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("land".equals(type)){
-    		itemSql = "select jol.*, p.abbr transport_company_name,CAST(GROUP_CONCAT(jold.id) as char ) job_order_land_doc_id, GROUP_CONCAT(jold.doc_name) doc_name,"
-    		        + " p1.abbr consignor_name, p2.abbr consignee_name from job_order_land_item jol "
-    				+ " left join party p on p.id=jol.transport_company"
-    				+ " left join party p1 on p1.id=jol.consignor"
-    				+ " left join party p2 on p2.id=jol.consignee"
-    				+ " left join job_order_land_doc jold on jold.land_id=jol.id"
-    				+ " where order_id=? GROUP BY jol.id order by jol.id";
+    		itemSql = " select tjol.*, p.abbr transport_company_name,CAST(GROUP_CONCAT(tjold.id) as char ) trans_job_order_land_doc_id, GROUP_CONCAT(tjold.doc_name) doc_name,"
+    				+ " p1.abbr consignor_name, p2.abbr consignee_name from trans_job_order_land_item tjol"
+    				+ " left join party p on p.id=tjol.transport_company"
+    				+ " left join party p1 on p1.id=tjol.consignor"
+    				+ " left join party p2 on p2.id=tjol.consignee"
+    				+ " left join trans_job_order_land_doc tjold on tjold.land_id=tjol.id"
+    				+ " where tjol.order_id=? GROUP BY tjol.id order by tjol.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
-    		itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name from job_order_arap jor "
-    		        + " left join party pr on pr.id=jor.sp_id"
-    		        + " left join fin_item f on f.id=jor.charge_id"
-    		        + " left join unit u on u.id=jor.unit_id"
-    		        + " left join currency c on c.id=jor.currency_id"
-    		        + " where order_id=? and order_type=? order by jor.id";
+    		itemSql = " select tjor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name from trans_job_order_arap tjor"
+    				+ " left join party pr on pr.id=tjor.sp_id"
+    				+ " left join fin_item f on f.id=tjor.charge_id"
+    				+ " left join unit u on u.id=tjor.unit_id"
+    				+ " left join currency c on c.id=tjor.currency_id"
+    				+ " where tjor.order_id=? and order_type=? order by tjor.id";
     		itemList = Db.find(itemSql, orderId,"charge");
     	}else if("cost".equals(type)){
-	    	itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name from job_order_arap jor"
-	    	        + " left join party pr on pr.id=jor.sp_id"
-	    	        + " left join fin_item f on f.id=jor.charge_id"
-	    	        + " left join unit u on u.id=jor.unit_id"
-    		        + " left join currency c on c.id=jor.currency_id"
-	    	        + " where order_id=? and order_type=? order by jor.id";
+	    	itemSql = " select tjor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name from trans_job_order_arap tjor"
+	    			+ "	left join party pr on pr.id=tjor.sp_id"
+	    			+ "	left join fin_item f on f.id=tjor.charge_id"
+	    			+ "	left join unit u on u.id=tjor.unit_id"
+	    			+ " left join currency c on c.id=tjor.currency_id"
+	    			+ "	where tjor.order_id=? and order_type=? order by tjor.id";
 	    	itemList = Db.find(itemSql, orderId,"cost");
     	}else if("doc".equals(type)){
-	    	itemSql = "select jod.*,u.c_name from job_order_doc jod left join user_login u on jod.uploader=u.id "
-	    			+ " where order_id=? order by jod.id";
+	    	itemSql = " select tjod.*,u.c_name from trans_job_order_doc tjod left join user_login u on tjod.uploader=u.id "
+	    			+ "	where tjod.order_id=? order by tjod.id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("mail".equals(type)){
 	    	itemSql = "select * from job_order_sendMail where order_id=? order by id";
@@ -890,8 +890,8 @@ public class TransJobOrderController extends Controller {
     @Before({EedaMenuInterceptor.class, Tx.class})
     public void edit() {
     	String id = getPara("id");
-    	JobOrder jobOrder = JobOrder.dao.findById(id);
-    	setAttr("order", jobOrder);
+    	TransJobOrder transJobOrder = TransJobOrder.dao.findById(id);
+    	setAttr("order", transJobOrder);
 
 
     	//获取空运运明细表信息
@@ -926,10 +926,13 @@ public class TransJobOrderController extends Controller {
     	setAttr("mailList", getItems(id,"mail"));
     	setAttr("emailTemplateInfo", getEmailTemplateInfo());
     	//客户回显
-    	Party party = Party.dao.findById(jobOrder.get("customer_id"));
+    	Party party = Party.dao.findById(transJobOrder.get("customer_id"));
     	setAttr("party", party);
+    	//头程船公司回显
+    	Party head_carrier = Party.dao.findById(transJobOrder.get("head_carrier"));
+    	setAttr("head", head_carrier);
     	//工作单创建人
-    	long creator = jobOrder.getLong("creator");
+    	long creator = transJobOrder.getLong("creator");
     	UserLogin user = UserLogin.dao.findById(creator);
     	setAttr("user", user);
     	//当前登陆用户
@@ -1195,16 +1198,14 @@ public class TransJobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         }
         else{
-		         sql = "SELECT * from (select jo.*,(case when jos.export_date !='' then jos.export_date when joa.export_date !='' then joa.export_date when jo.land_export_date!='' then jo.land_export_date end) AS sent_out_time,"
+		         sql = "SELECT * from (select tjo.*,tjo.land_export_date sent_out_time,"
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code"
-		         		+ "	from job_order jo"
-		         		+ "	left join job_order_shipment jos on jos.order_id = jo.id"
-		         		+ "	LEFT JOIN job_order_air joa on joa.order_id = jo.id"
-		         		+ "	left join party p on p.id = jo.customer_id"
-		         		+ "	left join user_login u on u.id = jo.creator"
-		         		+ "	where jo.office_id="+office_id
-		         	    + " and jo.delete_flag = 'N'"
-		         	    + " ) A where 1 = 1 ";
+		         		+ "	from trans_job_order tjo"
+		         		+ "	left join party p on p.id = tjo.customer_id"
+		         		+ "	left join user_login u on u.id = tjo.creator"
+		         		+ "	where tjo.office_id="+office_id
+		         		+ "	and tjo.delete_flag = 'N'"
+		         		+ "	) A where 1 = 1 ";
          }
         
         String condition = DbUtils.buildConditions(getParaMap());
@@ -1319,10 +1320,10 @@ public class TransJobOrderController extends Controller {
     @Before(Tx.class)
     public void feeConfirm(){
 		String id = getPara("id");
-			JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",id);
-			joa.set("audit_flag", "Y");
-			joa.update();
-			renderJson(joa);
+			TransJobOrderArap tjoa = TransJobOrderArap.dao.findFirst("select * from trans_job_order_arap where id = ?",id);
+			tjoa.set("audit_flag", "Y");
+			tjoa.update();
+			renderJson(tjoa);
 	 }
     
     @Before(Tx.class)
