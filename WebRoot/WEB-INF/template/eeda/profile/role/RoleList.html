@@ -27,8 +27,8 @@
                         </div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
-							<div class="table-responsive">
-								<table class="table table-striped table-bordered table-hover" id="example" style="width: 100%;">
+							
+								<table class="table table-striped table-bordered table-hover" id="example">
 									<thead>
 										<tr>
 											<th>岗位名称</th>
@@ -40,7 +40,7 @@
 
 									</tbody>
 								</table>
-							</div>
+							
 
 
 						</div>
@@ -118,7 +118,7 @@
 </script>
 <script>
 	//app根目录在WebRoot/js/
-    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+    requirejs(['app/eeda-common'], function () {
         requirejs(['app/profile/role/list']);
     });
 </script>

@@ -18,7 +18,7 @@
                         
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div class="table-responsive">
+                            
                                 <table class="table table-striped table-bordered table-hover" id="table" style="width: 100%;">
                                     <thead>
                                         <tr>
@@ -33,7 +33,6 @@
                                                                                                                                             
                                     </tbody>
                                 </table>
-                            </div>   
                             
                         </div>
                        
@@ -49,28 +48,11 @@
     </div>
  
  <%}%>
-    <!-- /#wrapper -->
-
-    <script src="/yh/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <!-- SB Admin Scripts - Include with every page -->
-    <script src="/yh/js/sb-admin.js"></script>
-    <!-- Page-Level Plugin Scripts - Tables -->
-    <script src="/yh/js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="/yh/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-    <script>
-
-	    <% 
-		   	var updatePermission = shiro.hasPermission("UserRole.update");
-		   	var selectPermission = shiro.hasPermission("UserRole.permission_list");
-	   %>
-	   var userRole ={};
-	   userRole.update = ${updatePermission};
-	   userRole.query = ${selectPermission};
+<script>
+  //app根目录在WebRoot/js/
+    requirejs([ 'app/eeda-common'], function () {
+        requirejs(['app/profile/userRole/list']);
+    });
 </script>
-<script >
-requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
-	requirejs(['app/role/userRole/list']);
-});
 
-</script>
+   
