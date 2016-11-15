@@ -637,11 +637,8 @@ $(document).ready(function() {
     //checkbox选中则button可点击
     $('#charge_table').on('click','.checkBoxOfChargeTable',function(){
     	var hava_check = 0;
-    	$('#charge_table input[type="checkbox"]').each(function(){	
-    		var checkbox = $(this).prop('checked');
-    		if(checkbox){
-    			hava_check=1;
-    		}	
+    	$('#charge_table input[type="checkbox"]:checked').each(function(){	
+    		hava_check++;
     	})
     	if(hava_check>0){
     		$('#print_debit_note').attr('disabled',false);
@@ -681,7 +678,12 @@ $(document).ready(function() {
 	//全选
     $('#AllCheckOfChargeTable').click(function(){
 	    $(".checkBoxOfChargeTable").prop("checked",this.checked);
-	    if(this.checked==true&&$('#charge_table td').length>1){
+	    
+	    var hava_check = 0;
+    	$('#charge_table input[type="checkbox"]:checked').each(function(){	
+    		hava_check++;
+    	})
+	    if(this.checked==true&&$('#charge_table td').length>1&&hava_check>0){
 	    	$('#print_debit_note').attr('disabled',false);
 	    }else{
 	    	$('#print_debit_note').attr('disabled',true);
