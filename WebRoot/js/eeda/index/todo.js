@@ -5,16 +5,16 @@ define(['jquery'], function ($) {
         //查询系统单据数量合计
         $.get('/todo/getYqTodoList', function(data){
         	if(bIndex){
-            	$("#planOrderTodoCount").empty().text(data.planOrderTodoCount);
-                $("#SOTodoCount").empty().text(data.SOTodoCount);
-                $("#truckOrderTodoCount").empty().text(data.truckOrderTodoCount);
-                $("#SITodoCount").empty().text(data.SITodoCount);
-                $("#MBLTodoCount").empty().text(data.MBLTodoCount);
-                $("#waitCustomTodoCountPlan").empty().text(data.waitCustomTodoCountPlan);
-                $("#waitCustomTodoCount").empty().text(data.waitCustomTodoCount);
-                $("#waitOverseaCustomTodoCount").empty().text(data.waitOverseaCustomTodoCount);
-                $("#TlxOrderTodoCount").empty().text(data.TlxOrderTodoCount);
-                $("#waitBuyInsuranceTodoCount").empty().text(data.waitBuyInsuranceTodoCount);
+            	$("#planOrderTodoCount").empty().text(data.PLANORDERTODOCOUNT);
+                $("#SOTodoCount").empty().text(data.SOTODOCOUNT);
+                $("#truckOrderTodoCount").empty().text(data.TRUCKORDERTODOCOUNT);
+                $("#SITodoCount").empty().text(data.SITODOCOUNT);
+                $("#MBLTodoCount").empty().text(data.MBLTODOCOUNT);
+                $("#waitCustomTodoCountPlan").empty().text(data.WAITCUSTOMTODOCOUNTPLAN);
+                $("#waitCustomTodoCount").empty().text(data.WAITCUSTOMTODOCOUNT);
+                $("#waitOverseaCustomTodoCount").empty().text(data.WAITOVERSEACUSTOMTODOCOUNT);
+                $("#TlxOrderTodoCount").empty().text(data.TLXORDERTODOCOUNT);
+                $("#waitBuyInsuranceTodoCount").empty().text(data.WAITBUYINSURANCETODOCOUNT);
         	}
             // $(".planOrderWait").empty().text(data);
             // $(".soWait").empty().text(data);
