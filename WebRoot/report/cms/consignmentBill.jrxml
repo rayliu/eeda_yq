@@ -162,7 +162,7 @@
 	<field name="tracking_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="costom_bill" class="java.lang.String">
+	<field name="custom_bill" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="supervision_mode" class="java.lang.String">
