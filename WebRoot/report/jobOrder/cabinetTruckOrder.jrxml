@@ -574,7 +574,7 @@ where joli.id=$P{item_id}]]>
 				<textElement verticalAlignment="Middle">
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{shipper_phone}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_customerTel}]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement x="23" y="9" width="250" height="52" uuid="af90243c-bdac-4045-b78d-4dd4e6cfe5f3"/>
