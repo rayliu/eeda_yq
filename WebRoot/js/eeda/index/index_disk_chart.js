@@ -5,7 +5,7 @@ define(['echarts'], function (echarts) {
             var now = new Date();
             var value = Math.random() * 50+50;
             // console.log(now.toString());
-            $.post('/sys/cpuUsage').done(function(backData){
+            $.post('/sys/getDisk').done(function(backData){
                 var obj={
                     name: now.toString(),
                     value: [
@@ -19,7 +19,10 @@ define(['echarts'], function (echarts) {
                 data.push(obj);
                 myChart.setOption({
                     series: [{
-                        data: data
+                        data: [
+                            {value:backData.USED, name:'已使用'},
+                            {value:backData.UN_USED, name:'未使用'},
+                        ]
                     }]
                 });
             });
@@ -33,7 +36,7 @@ define(['echarts'], function (echarts) {
             },
             tooltip : {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                formatter: "{a} <br/>{b} : {c}M ({d}%)"
             },
             series : [
                 {
@@ -42,8 +45,8 @@ define(['echarts'], function (echarts) {
                     radius : '55%',
                     center: ['50%', '60%'],
                     data:[
-                        {value:335, name:'已使用'},
-                        {value:310, name:'未使用'},
+                        {value:0, name:'已使用'},
+                        {value:0, name:'未使用'},
                     ],
                     itemStyle: {
                         emphasis: {
@@ -57,7 +60,7 @@ define(['echarts'], function (echarts) {
         };
 
         // setInterval(function () {
-        //     randomData();
+            randomData();
         // }, 1000);
 
         // 基于准备好的dom，初始化echarts实例
