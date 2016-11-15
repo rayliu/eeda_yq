@@ -20,12 +20,11 @@
                              value:express.send_phone!''
                          }){}%>
                  </div>
-                 <div class="col-lg-4">
-                     <%include("/eeda/component/form/inputField.html", 
-                         {   id:'send_address', 
-                             label:'详细地址', 
-                             value:express.send_address!''
-                         }){}%>
+             </div>
+             <div class="row">
+                 <div class="col-lg-8">
+                 <label>详细地址</label>
+	                 <textarea id='send_address' class="form-control"  rows="3" name="send_address">${express.send_address!''}</textarea>
                  </div>
              </div>
              
@@ -47,12 +46,11 @@
                              value:express.receive_phone!''
                          }){}%>
                  </div>
-                 <div class="col-lg-4">
-                     <%include("/eeda/component/form/inputField.html", 
-                         {   id:'receive_address', 
-                             label:'详细地址', 
-                             value:express.receive_address!''
-                         }){}%>
+             </div>
+             <div class="row">
+                 <div class="col-lg-8">
+                 <label>详细地址</label>
+	                 <textarea id='receive_address' class="form-control"  rows="3" name="receive_address">${express.receive_address!''}</textarea>
                  </div>
              </div>
              

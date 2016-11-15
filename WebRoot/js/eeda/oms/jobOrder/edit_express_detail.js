@@ -4,7 +4,7 @@ $(document).ready(function() {
 		var arrays = [];
     	var item = {};
     	item['id'] = $('#express_id').val();
-    	var expressForm = $('#expressForm input,#expressForm select');
+    	var expressForm = $('#expressForm input,#expressForm select,#expressForm textarea');
     	for(var i = 0; i < expressForm.length; i++){
     		var name = expressForm[i].id;
         	var value =expressForm[i].value;

@@ -49,7 +49,6 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
@@ -806,7 +805,7 @@ public class JobOrderController extends Controller {
     	}else if("insure".equals(type)){
     		re = Db.findFirst("select * from job_order_insurance joi where order_id = ?",id);
     	}else if("express".equals(type)){
-    		re = Db.findFirst("select * from job_order_express joi where order_id = ?",id);
+    		re = Db.findFirst("select * from job_order_express joe where order_id = ?",id);
     	}else if("air".equals(type)){
     		re = Db.findFirst("select joa.* ,p1.abbr shipperAbbr,p2.abbr consigneeAbbr,p3.abbr notify_partyAbbr,p4.abbr booking_agent_name from job_order_air joa"
     				+ " left join party p1 on p1.id=joa.shipper"
