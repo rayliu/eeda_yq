@@ -113,6 +113,9 @@ public class CustomPlanOrderController extends Controller {
 		
 		List<Map<String, String>> cost_list = (ArrayList<Map<String, String>>)dto.get("cost_list");
 		DbUtils.handleList(cost_list, "custom_plan_order_arap", id, "order_id");
+		
+		List<Map<String, String>> shipping_item = (ArrayList<Map<String, String>>)dto.get("shipping_item");
+		DbUtils.handleList(shipping_item, "custom_plan_order_shipping_item", id, "order_id");
 
 		long creator = customPlanOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
@@ -222,10 +225,12 @@ public class CustomPlanOrderController extends Controller {
     	String itemSql = "";
     	List<Record> itemList = null;
     	if("cargo".equals(type)){
-    		itemSql = " SELECT cpo.*,cur.name currency_name,l.name destination_country_item_name FROM custom_plan_order_item cpo"
+    		itemSql = " SELECT cpo.*,cur.name currency_name,l.name destination_country_item_name, concat(cen.code,' ',cen.name) exemption_name"
+    				+ " FROM custom_plan_order_item cpo"
     				+ " left join currency cur on cur.id =cpo.currency"
     				+ "	LEFT JOIN location l on l.id = cpo.destination_country_item"
-    				+ " where cpo.order_id=?";
+    				+ " left join custom_exemption_nature cen on cen.id = cpo.exemption"
+    				+ " where cpo.order_id=? order by cpo.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("doc".equals(type)){
     		itemSql = "select cpo.ref_job_order_id, null id ,jocd.doc_name,jocd.upload_time,jocd.remark,ul.c_name c_name,jocd.uploader from job_order_custom_doc jocd"
@@ -255,6 +260,10 @@ public class CustomPlanOrderController extends Controller {
     		        + " left join currency c on c.id=jor.currency_id"
 	    	        + " where order_id=? and order_type=? order by jor.id";
 	    	itemList = Db.find(itemSql, orderId,"cost");
+    	}else if("shipping".equals(type)){
+	    	itemSql = "select * from custom_plan_order_shipping_item "
+	    	        + " where order_id=? order by id";
+	    	itemList = Db.find(itemSql, orderId);
     	}
     	return itemList;
     }
@@ -264,22 +273,29 @@ public class CustomPlanOrderController extends Controller {
     	String id = getPara("id");
     	String sql = "select cpo.*,l.name trading_country_name,l1.name destination_country_name,l2.name destination_port_name,sm.name supervision_mode_name,p.abbr hongkong_consignee_input"
     			+ "	,p1.abbr head_carrier_name,l3.name aim_port_name,l4.name shipment_port_name,concat(ce.code,' ',ce.name) nature_of_exemption_name,"
-    			+ " concat(cp.under_code,' ',cp.under_port) export_port_name, concat(cgs.code,' ',cgs.name) supply_of_goods_name"
+    			+ " concat(cp.under_code,' ',cp.under_port) export_port_name, concat(cgs.code,' ',cgs.name) supply_of_goods_name,"
+    			+ " l5.name appointed_port_name, p2.abbr boat_company_name, p3.abbr shipping_men_name, p4.abbr consignee_name, p5.abbr notice_man_name"
     			+ " from custom_plan_order cpo"
     			+ " left join location l on l.id=cpo.trading_country"
     			+ " left join location l1 on l1.id=cpo.destination_country"
     			+ " left join location l2 on l2.id=cpo.destination_port"
-    			+ " left join supervision_method sm on sm.id = cpo.supervision_mode"
-    			+ "	LEFT JOIN party p on p.id = cpo.hongkong_consignee"
-    			+ "	LEFT JOIN party p1 on p1.id = cpo.head_carrier"
     			+ "	LEFT JOIN location l3 on l3.id = cpo.aim_port"
     			+ "	LEFT JOIN location l4 on l4.id = cpo.shipment_port"
+    			+ " left join location l5 on l5.id=cpo.appointed_port"
+    			+ "	LEFT JOIN party p on p.id = cpo.hongkong_consignee"
+    			+ "	LEFT JOIN party p1 on p1.id = cpo.head_carrier"
+    			+ "	LEFT JOIN party p2 on p2.id = cpo.boat_company"
+    			+ "	LEFT JOIN party p3 on p3.id = cpo.shipping_men"
+    			+ "	LEFT JOIN party p4 on p4.id = cpo.consignee"
+    			+ "	LEFT JOIN party p5 on p5.id = cpo.notice_man"
+    			+ " left join supervision_method sm on sm.id = cpo.supervision_mode"
     			+ " left join custom_exemption_nature ce on ce.id = cpo.nature_of_exemption"
     			+ " left join custom_goods_supply cgs on cgs.id = cpo.supply_of_goods"
     			+ " left join custom_port cp on cp.id = cpo.export_port"
     			+ " where cpo.id = ?";
     	Record r = Db.findFirst(sql,id);
     	setAttr("order", r);
+    	setAttr("shippingItemList", getItems(id,"shipping"));
     	setAttr("itemList", getItems(id,"cargo"));
     	setAttr("docList", getItems(id,"doc"));
     	setAttr("chargeList", getItems(id,"charge"));

@@ -138,6 +138,9 @@
 			<div class="row" style="margin-top:15px">
 				<ul id="orderTabs" class="nav nav-tabs">
 				    <li class="active">
+                        <a href="#shippingOrderDetail" data-toggle="tab">托运单</a>
+                    </li>
+				    <li>
                         <a href="#headDetail" data-toggle="tab">头程资料</a>
                     </li>
                     <li>
@@ -155,10 +158,122 @@
 				</ul>
 				
 				<div class="tab-content">
-		            <div class="tab-pane fade active in" id="headDetail">
+		            <div class="tab-pane fade active in" id="shippingOrderDetail">
+			            <div class="form-group">
+			                 <div class="col-lg-12">
+                                <div class="row"><!--  第1行  --> 
+                                    <div class="col-lg-4">
+                                        <%include("/eeda/component/form/dateInputField.html", 
+                                        {   id:'shipping_date', 
+                                            label:'托运日期',
+                                            class:'form-control',
+                                            value:order.shipping_date!''
+                                        }){}%>
+                                     </div>
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+	                                        {   id:'customs_number', 
+	                                            label:'海关编号',
+	                                            value:order.customs_number!''
+	                                        }){}%>
+                                    </div>
+                                </div>
+                                <div class="row"><!--  第1行  --> 
+                                     <div class="col-lg-4">
+	                                        <%include("/eeda/component/form/inputPartyField.html", 
+						                    {   id:'boat_company',
+						                        type:  'carrier',
+						                        label: '船公司', 
+						                        value: order.boat_company!'',
+						                        display_value: order.boat_company_name!''
+						                    }){}%>
+                                    </div>
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+	                                        {   id:'boat_name', 
+	                                            label:'船名',
+	                                            value:order.boat_name!''
+	                                        }){}%>
+                                    </div>
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputPortField.html", 
+                                             {   id:'appointed_port', 
+                                                 label:'指定港',
+                                                 value:order.appointed_port!'',
+                                                 display_value:order.appointed_port_name!''
+                                             }){}%>
+                                    </div>
+                                </div>
+                                <div class="row"><!--  第1行  --> 
+                                     <div class="col-lg-8">
+                                        <%include("/eeda/component/form/inputSpField.html", 
+	                                        {   id:'shipping_men', 
+	                                            label:'收发货人',
+	                                            value:order.shipping_men!'',
+	                                            display_value:order.shipping_men_name!''
+	                                        }){}%>
+                                    </div>
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+	                                        {   id:'shipping_men_phone', 
+	                                            label:'收发货人电话',
+	                                            value:order.shipping_men_phone!''
+	                                        }){}%>
+                                    </div>
+                                </div>
+                                <div class="row"><!--  第1行  --> 
+                                     <div class="col-lg-8">
+                                        <%include("/eeda/component/form/inputSpField.html", 
+	                                        {   id:'consignee', 
+	                                            label:'收货人',
+	                                            value:order.consignee!'',
+	                                            display_value:order.consignee_name!''
+	                                        }){}%>
+                                    </div>
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+	                                        {   id:'consignee_phone', 
+	                                            label:'收货人电话',
+	                                            value:order.consignee_phone!''
+	                                        }){}%>
+                                    </div>
+                                </div>
+                                <div class="row"><!--  第1行  --> 
+                                     <div class="col-lg-8">
+                                        <%include("/eeda/component/form/inputSpField.html", 
+	                                        {   id:'notice_man', 
+	                                            label:'通知人',
+	                                            value:order.notice_man!'',
+	                                            display_value:order.notice_man_name!''
+	                                        }){}%>
+                                    </div>
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+	                                        {   id:'notice_man_phone', 
+	                                            label:'通知人电话',
+	                                            value:order.notice_man_phone!''
+	                                        }){}%>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-success btn-xs" id="add_shipping_item">添加货品</button> 
+                                <br>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'shipping_item_table',
+                                        style:'width:1400px',
+                                        headers:['','唛头/箱号','包装', '件数', '货名', '净重(公斤)', '毛重(公斤)','尺码(CBM)'],
+                                        field_list:['','container_number','pack','number', 'cargo_name', 'net_weight', 'gross_weight','volume'],
+                                        value_list: shippingItemList![]
+                                    }){} %> 
+                                
+                            </div>
+			            </div>
+			        </div>
+			        
+		            <div class="tab-pane fade in" id="headDetail">
 			            <div class="form-group">
 			                <div class="col-lg-12">
-			                    <h3>头程资料</h3>
 			                    <div class="row"><!--  第1行  --> 
 			                        <div class="col-lg-4">
 			                            <%include("/eeda/component/form/inputSelectArea.html", 
@@ -322,12 +437,11 @@
 		                    
 		                   <div class="col-lg-12">
 		                    <div class="form-group" id="custom_bill_radio_div" align="center">
-		                        <input type="hidden" id="hidden_custom_bill" value="${order.custom_bill!''}">
 		                        <label>
-		                           <h4> <input type="radio" name='custom_bill' value="export_custom" ${order.id!''==''?'checked':} ${order.custom_bill!''=='export_custom'?'checked':}>海关出口货物报关单</h4>
+		                           <h4> <input type="radio" name='custom_bill' value="export_custom" ${order.id!''==''?'checked':} ${order.custom_bill!''=='export_custom'?'checked':}>出口</h4>
 		                        </label>&nbsp
 		                        <label>
-		                          <h4>  <input type="radio" name='custom_bill' value='import_custom' ${order.custom_bill!''=='import_custom'?'checked':}>海关进口货物报关单</h4>
+		                          <h4>  <input type="radio" name='custom_bill' value='import_custom' ${order.custom_bill!''=='import_custom'?'checked':}>进口</h4>
 		                        </label>
 		                    </div>
 		                   </div><br><br>
@@ -662,11 +776,11 @@
 			                    <%include("/eeda/component/form/detailTable.html", 
 			                        {
 			                            id:'cargo_table',
-			                            style:'width:2500px',
+			                            style:'width:2200px',
 			                            headers:['','项号','商品编号', '商品名称', '规格型号', '申报要素', '申报数量', '申报单位','法定数量', 
-                                                  '法定单位','最终目的国（地区）','单价', '总价', '币制', '征免','IS_GEN_JOB'],
+                                                  '法定单位','最终目的国（地区）','单价', '总价', '币制', '征免','is_gen_job','currency_name','destination_country_item_name','exemption_name'],
 			                            field_list:['id','item_no','commodity_code','commodity_name', 'standard', 'declare_element', 'transaction_amount',  'transaction_unit',
-			                            'legal_amount','legal_unit','destination_country_item','price','total_price', 'currency', 'exemption','IS_GEN_JOB','currency_name','destination_country_item_name'],
+			                            'legal_amount','legal_unit','destination_country_item','price','total_price', 'currency', 'exemption','is_gen_job','currency_name','destination_country_item_name','exemption_name'],
 			                            value_list: itemList![]
 			                        }){} %> 
 			                </div>
@@ -765,6 +879,7 @@
                     <button id="refuseBtn" class="btn btn-danger" disabled>审核不通过</button>
                     <a class="btn  btn-default" href="/customPlanOrder">返回</a>
                     <button id="printBtn" class="btn  btn-primary" >打印托运单</button>
+                    <button id="printCustomOrderBtn" class="btn  btn-primary" >打印报关单</button>
                 </div>
             </div>
         </div>

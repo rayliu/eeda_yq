@@ -65,6 +65,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	eeda.bindTableField('cargo_table','CARRIER','/serviceProvider/searchCarrier','');
 	    	eeda.bindTableFieldCurrencyId('cargo_table','CURRENCY','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('cargo_table','DESTINATION_COUNTRY_ITEM','/location/searchCountry','');
+	    	eeda.bindTableField('cargo_table','EXEMPTION','/serviceProvider/searchCustomExemptionNature','');
 	    };
 
 
@@ -78,52 +79,52 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             columns:[
 	            {"width": "10px",
 	                "render": function ( data, type, full, meta ) {
-	                		return '<button type="button" class="delete btn btn-default btn-xs">删除</button> ';
+	                		return '<button type="button" class="delete btn btn-default btn-xs" style="width:40px" >删除</button> ';
 	                }
 	            },
 	            { "data": "ITEM_NO","width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    return '<input style="width:60px"  type="text" name="ITEM_NO" value="'+data+'" class="form-control search-control" />';
+	                    return '<input style="width:80px"  type="text" name="ITEM_NO" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "COMMODITY_CODE","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="COMMODITY_CODE" value="'+data+'" class="form-control search-control" />';
+	                    return '<input type="text" name="COMMODITY_CODE" value="'+data+'" class="form-control search-control" style="width:100px"/>';
 	                }
 	            },
 	            { "data": "COMMODITY_NAME","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
 	                	   data='';
-	                   return '<input type="text" name="COMMODITY_NAME" value="'+data+'" class="form-control search-control" />';
+	                   return '<input type="text" name="COMMODITY_NAME" value="'+data+'" class="form-control search-control" style="width:100px"/>';
 	                }
 	            },
 	            { "data": "STANDARD","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="STANDARD" value="'+data+'" class="form-control search-control" />';
+	                    return '<input type="text" name="STANDARD" value="'+data+'" class="form-control search-control" style="width:100px"/>';
 	                }
 	            },
 	            { "data": "DECLARE_ELEMENT","width": "180px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="DECLARE_ELEMENT" value="'+data+'" class="form-control search-control" />';
+	                   return '<input type="text" name="DECLARE_ELEMENT" value="'+data+'" class="form-control search-control" style="width:200px"/>';
 	                }
 	            },
-	            { "data": "TRANSACTION_AMOUNT","width": "180px",
+	            { "data": "TRANSACTION_AMOUNT","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                   return '<input style="width:100px" type="text" name="TRANSACTION_AMOUNT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "TRANSACTION_UNIT" ,"width": "180px",
+	            { "data": "TRANSACTION_UNIT" ,"width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
@@ -187,27 +188,28 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                            {
 	                                id: 'DESTINATION_COUNTRY_ITEM',
 	                                value: data,
-	                                display_value: full.DESTINATION_COUNTRY_ITEM_NAME
+	                                display_value: full.DESTINATION_COUNTRY_ITEM_NAME,
+	                                style:'width:200px'
 	                            }
 	                        );
 	                    return field_html;
 	                }
 	            },
-	            { "data": "PRICE","width": "180px",
+	            { "data": "PRICE","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="PRICE" value="'+data+'" class="form-control search-control" />';
+	                   return '<input type="text" name="PRICE" value="'+data+'" class="form-control search-control" style="width:100px"/>';
 	                }
 	            },
-	            { "data": "TOTAL_PRICE","width": "180px",
+	            { "data": "TOTAL_PRICE","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="TOTAL_PRICE" value="'+data+'" class="form-control search-control " disabled />';
+	                   return '<input type="text" name="TOTAL_PRICE" value="'+data+'" class="form-control search-control " style="width:120px" disabled />';
 	                }
 	            },
-	            { "data": "CURRENCY" ,"width": "180px",
+	            { "data": "CURRENCY" ,"width": "80px",
 	            	 "render": function ( data, type, full, meta ) {
 	 	                	if(!data)
 	 	                        data='';
@@ -216,17 +218,25 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	 	                            id: 'CURRENCY',
 	 	                            value: data,
 	 	                            display_value: full.CURRENCY_NAME,
-	 	                            style:'width:80px'
+	 	                            style:'width:100px'
 	 	                        }
 	 	                    );
 	 	                    return field_html;
 	                 }
 	            },
-	            { "data": "EXEMPTION","width": "80px",
-	                "render": function ( data, type, full, meta ) {
+	            { "data": "EXEMPTION","width": "180px",
+	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="EXEMPTION" value="'+data+'" class="form-control search-control" />';
+	                    var field_html = template('table_dropdown_template',
+	                            {
+	                                id: 'EXEMPTION',
+	                                value: data,
+	                                display_value: full.EXEMPTION_NAME,
+	                                style:'width:200px'
+	                            }
+	                        );
+	                    return field_html;
 	                }
 	            },
 	            { "data": "IS_GEN_JOB", "visible": false,
@@ -249,6 +259,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                        data='';
 	                    return data;
 	                }
+	            },
+	            { "data": "EXEMPTION_NAME", "visible": false,
+	            	"render": function ( data, type, full, meta ) {
+	            		if(!data)
+	            			data='';
+	            		return data;
+	            	}
 	            }
 	        ]
 	    });

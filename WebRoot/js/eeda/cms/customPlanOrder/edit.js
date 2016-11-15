@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN', './edit_doc_table', './edit_cost_table', './edit_charge_table'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN', './edit_doc_table', './edit_cost_table', './edit_charge_table', './edit_shipping_item_table'], function ($, metisMenu) { 
     $(document).ready(function() {
         var order_no=$('#order_no').val();
         if(order_no.length>0)
@@ -103,7 +103,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	order['ref_job_order_id'] = $('#ref_job_order_id').val();
         	order['to_office_id'] = $('#to_office_id').val();
 //        	order['status'] = $('#status').val()==""?"新建":$('#status').val();
-        	var customForm = $('#customForm :input,#customDetail :input,#headDetail :input');
+        	var customForm = $('#customForm :input,#customDetail :input,#headDetail :input,#shippingOrderDetail :input');
         	for(var i = 0; i < customForm.length; i++){
         		var name = customForm[i].id;
             	var value =customForm[i].value;
@@ -119,6 +119,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	order.doc_list = salesOrder.buildDocItem();
         	order.charge_list = salesOrder.buildChargeDetail();
         	order.cost_list = salesOrder.buildCostDetail();
+        	order.shipping_item = salesOrder.buildShippingItem();
 
 //            var order = {
 //            		    id: $('#order_id').val(),
@@ -149,6 +150,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     salesOrder.refleshDocTable(order.ID);
                     salesOrder.refleshCostTable(order.ID);
                     salesOrder.refleshChargeTable(order.ID);
+                    salesOrder.refleshShippingItemTable(order.ID);
                     $("#fileuploadSpan").show();
                 }else{
                     $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
@@ -159,15 +161,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $('#saveBtn').attr('disabled', false);
               });
         });  
-        
-      //报关单类型的回显
-        var radioVal = $('#hidden_costom_bill').val();
-        $('#customForm input[type="radio"]').each(function(){
-        	var checkValue = $(this).val();
-        	if(radioVal==checkValue){
-        		$(this).attr("checked",true);
-        	}
-        });
         
         
       //常用海运信息模版
