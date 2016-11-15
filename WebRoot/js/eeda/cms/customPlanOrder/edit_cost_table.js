@@ -23,7 +23,7 @@ $(document).ready(function() {
     	var id = $(this).val();
     	$.post('/jobOrder/feeConfirm',{id:id},function(joa){
     		var order_id = joa.ORDER_ID;
-	    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=cost";
+	    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=cost&showHide="+is_show_hide_charge_col;
 	    	costTable.ajax.url(url).load();    		
     		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
     	},'json').fail(function() {
@@ -52,7 +52,7 @@ $(document).ready(function() {
             var item={}
             item.id = id;
             item.order_type = "cost";//应付
-            for(var i = 1; i < row.childNodes.length; i++){
+            for(var i = 0; i < row.childNodes.length; i++){
             	var el = $(row.childNodes[i]).find('input,select');
             	var name = el.attr('name'); 
             	var type = el.attr('type');
@@ -106,10 +106,10 @@ $(document).ready(function() {
         columns:[
 			{"data": "HIDE_FLAG", "width": "30px", visible: is_show_hide_charge_col,
 			    "render": function ( data, type, full, meta ) {
-                    if(full.HIDE_FLAG=='N')
-			    	    return '<input type="checkbox" class="checkBox">';
+                    if(full.HIDE_FLAG=='Y')
+			    	    return '<input type="checkbox" class="checkBox" name="hide_flag" checked>';
                     else
-                        return '<input type="checkbox" class="checkBox" checked>';
+                        return '<input type="checkbox" class="checkBox" name="hide_flag">';
 			    }
 			},
 			{ "width": "110px",
@@ -134,20 +134,14 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		var str = '<select name="type" class="form-control search-control" style="width:100px" disabled>'
-	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
-	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
-	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
-	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
-	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
+	                        +'<option value="海关" '+(data=='海关' ? 'selected':'')+'>海关</option>'
+	                        +'<option value="码头" '+(data=='码头' ? 'selected':'')+'>码头</option>'
 	                        +'</select>';
 	                	return str;
                 	}else{
 	                	var str = '<select name="type" class="form-control search-control" style="width:100px">'
-	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
-	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
-	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
-	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
-	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
+	                        +'<option value="海关" '+(data=='海关' ? 'selected':'')+'>海关</option>'
+	                        +'<option value="码头" '+(data=='码头' ? 'selected':'')+'>码头</option>'
 	                        +'</select>';
 	                	return str;
                 	}
@@ -429,7 +423,7 @@ $(document).ready(function() {
 
     //刷新明细表
     salesOrder.refleshCostTable = function(order_id){
-    	var url = "/customPlanOrder/tableList?order_id="+order_id+"&type=cost";
+    	var url = "/customPlanOrder/tableList?order_id="+order_id+"&type=cost&showHide="+is_show_hide_charge_col;
     	costTable.ajax.url(url).load();
     }
    

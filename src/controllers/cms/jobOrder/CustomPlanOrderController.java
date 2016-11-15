@@ -24,11 +24,13 @@ import org.apache.shiro.subject.Subject;
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.ext.plugin.shiro.ShiroKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
+import config.ShiroExt;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
@@ -221,7 +223,7 @@ public class CustomPlanOrderController extends Controller {
 	}
 
 	//返回list
-    private List<Record> getItems(String orderId,String type) {
+    private List<Record> getItems(String orderId, String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
     	if("cargo".equals(type)){
@@ -245,21 +247,32 @@ public class CustomPlanOrderController extends Controller {
 	    			+ " where order_id=?";
     		itemList = Db.find(itemSql, orderId,orderId);
     	}else if("charge".equals(type)){
+    	  //shiroExt 去判断权限
+            ShiroExt shiro = new ShiroExt();
+            boolean isShowHideRow = shiro.hasPermission("customPlanOrder.fin_item_hide");
     		itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name from custom_plan_order_arap jor "
     		        + " left join party pr on pr.id=jor.sp_id"
     		        + " left join fin_item f on f.id=jor.charge_id"
     		        + " left join unit u on u.id=jor.unit_id"
     		        + " left join currency c on c.id=jor.currency_id"
-    		        + " where order_id=? and order_type=? order by jor.id";
-    		itemList = Db.find(itemSql, orderId,"charge");
+    		        + " where order_id=? and order_type=? ";
+            if(!isShowHideRow){
+                itemSql += " and jor.hide_flag='N'";
+            }
+    		itemList = Db.find(itemSql +" order by jor.id", orderId, "charge");
     	}else if("cost".equals(type)){
+    	    ShiroExt shiro = new ShiroExt();
+            boolean isShowHideRow = shiro.hasPermission("customPlanOrder.fin_item_hide");
 	    	itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name from custom_plan_order_arap jor"
 	    	        + " left join party pr on pr.id=jor.sp_id"
 	    	        + " left join fin_item f on f.id=jor.charge_id"
 	    	        + " left join unit u on u.id=jor.unit_id"
     		        + " left join currency c on c.id=jor.currency_id"
-	    	        + " where order_id=? and order_type=? order by jor.id";
-	    	itemList = Db.find(itemSql, orderId,"cost");
+	    	        + " where order_id=? and order_type=?";
+	    	if(!isShowHideRow){
+                itemSql += " and jor.hide_flag='N'";
+            }
+	    	itemList = Db.find(itemSql + " order by jor.id", orderId, "cost");
     	}else if("shipping".equals(type)){
 	    	itemSql = "select * from custom_plan_order_shipping_item "
 	    	        + " where order_id=? order by id";
@@ -298,6 +311,7 @@ public class CustomPlanOrderController extends Controller {
     	setAttr("shippingItemList", getItems(id,"shipping"));
     	setAttr("itemList", getItems(id,"cargo"));
     	setAttr("docList", getItems(id,"doc"));
+    	
     	setAttr("chargeList", getItems(id,"charge"));
     	setAttr("costList", getItems(id,"cost"));
     	setAttr("customTemplateInfo", getCustomTemplateInfo());
@@ -376,9 +390,10 @@ public class CustomPlanOrderController extends Controller {
     public void tableList(){
     	String order_id = getPara("order_id");
     	String type = getPara("type");
+    	Boolean showHide = Boolean.valueOf(getPara("showHide"));
     	
     	List<Record> list = null;
-    	list = getItems(order_id,type);
+    	list = getItems(order_id, type, showHide);
     	
     	Map map = new HashMap();
         map.put("sEcho", 1);
