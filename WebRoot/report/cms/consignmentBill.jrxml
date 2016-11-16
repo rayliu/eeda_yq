@@ -2,255 +2,48 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="consignmentBill" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.4641000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="116"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\jamWork\\eeda_yq\\WebRoot\\report\\cms\\"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select * from custom_plan_order]]>
+		<![CDATA[select cpo.shipping_date, cpo.customs_number,cpo.boat_name,cpo.shipping_men_phone, cpo.consignee_phone,cpo.notice_man_phone,p.abbr boat_company_name, p1.abbr shipping_men_name, p2.abbr consignee_name, p3.abbr notice_man_name,l.name appointed_port_name
+from custom_plan_order cpo
+left join party p on p.id = cpo.boat_company
+left join party p1 on p1.id = cpo.shipping_men
+left join party p2 on p2.id = cpo.consignee
+left join party p3 on p3.id = cpo.notice_man
+left join location l on l.id = cpo.appointed_port
+where cpo.id = $P{order_id}]]>
 	</queryString>
-	<field name="id" class="java.lang.Long">
+	<field name="shipping_date" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="order_no" class="java.lang.String">
+	<field name="customs_number" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="creator" class="java.lang.Long">
+	<field name="boat_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="create_stamp" class="java.lang.String">
+	<field name="shipping_men_phone" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="ref_job_order_id" class="java.lang.Long">
+	<field name="consignee_phone" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="ref_no" class="java.lang.String">
+	<field name="notice_man_phone" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="production_and_sales" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="production_and_sales_input" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="production_and_sales_info" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="date_custom" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="carrier_input" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="carrier" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="deal_mode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="receive_sent_consignee" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="receive_sent_consignee_input" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="receive_sent_consignee_info" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="application_unit" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="application_unit_input" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="application_unit_info" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="status" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="supervise_mode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="package_number" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="package_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="export_country" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="export_port_input" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="export_port" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="so_number" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="import_country" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="import_port_input" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="import_port" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="trade_country" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="transport_fee" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="protect_fee" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="sundry_fee" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="note" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="update_stamp" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="updator" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="office_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="to_office_id" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="fill_by" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="fill_stamp" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="drawback" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="wharf_fee" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="custom_state" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="costom_code" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="custom_export_date" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="application_date" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="transport_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="transport_tool" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="tracking_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="custom_bill" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="supervision_mode" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="nature_of_exemption" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="record_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="trading_country" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="destination_country" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="destination_port" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="supply_of_goods" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="license_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="contract_agreement_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="freight" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="insurance_premium" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="incidental" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="number" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="custom_gross_weight" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="custom_net_weight" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="container_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="documents_attached" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="hongkong_consignee" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="hongkong_consignee_info" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="head_carrier" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="booking_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="container_nov" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="seal_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="vessel" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="voyage" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="shipment_port" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="aim_port" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="remark" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="boat_company_name" class="java.lang.String"/>
+	<field name="shipping_men_name" class="java.lang.String"/>
+	<field name="consignee_name" class="java.lang.String"/>
+	<field name="notice_man_name" class="java.lang.String"/>
+	<field name="appointed_port_name" class="java.lang.String"/>
 	<columnHeader>
-		<band height="262" splitType="Stretch">
+		<band height="672" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="82" width="45" height="20" uuid="ccc77593-ac6d-43b0-987f-b6737e515234"/>
 				<textElement>
@@ -361,13 +154,13 @@
 				<text><![CDATA[托运人]]></text>
 			</staticText>
 			<line>
-				<reportElement x="34" y="150" width="315" height="1" uuid="53051ef1-9050-41ca-9c4a-862b4716c6ce"/>
+				<reportElement x="399" y="152" width="156" height="1" uuid="298b0ade-640f-42bb-b4b7-190309bf69ad"/>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="399" y="152" width="156" height="1" uuid="298b0ade-640f-42bb-b4b7-190309bf69ad"/>
+				<reportElement x="34" y="150" width="315" height="1" uuid="53051ef1-9050-41ca-9c4a-862b4716c6ce"/>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
@@ -418,7 +211,7 @@
 				<text><![CDATA[电话]]></text>
 			</staticText>
 			<line>
-				<reportElement x="86" y="221" width="1" height="40" uuid="0f678b04-4514-4b62-9f0b-54e22e50fee5"/>
+				<reportElement x="86" y="221" width="1" height="451" uuid="0f678b04-4514-4b62-9f0b-54e22e50fee5"/>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
@@ -430,40 +223,98 @@
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="134" y="221" width="1" height="40" uuid="b2795378-054d-4c87-a569-b6735db4d773"/>
+				<reportElement x="134" y="222" width="1" height="450" uuid="b2795378-054d-4c87-a569-b6735db4d773"/>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="185" y="221" width="1" height="40" uuid="9f9098ad-0356-4b3d-a0d4-bb4a28ebecb6"/>
+				<reportElement x="185" y="221" width="1" height="451" uuid="9f9098ad-0356-4b3d-a0d4-bb4a28ebecb6"/>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="334" y="221" width="1" height="40" uuid="f4175b73-c11b-4838-b8c8-cf287aeea39a"/>
+				<reportElement x="334" y="221" width="1" height="451" uuid="f4175b73-c11b-4838-b8c8-cf287aeea39a"/>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="394" y="221" width="1" height="40" uuid="11db5e96-c100-4f9e-94ed-cdb7f274a51f"/>
+				<reportElement x="394" y="221" width="1" height="451" uuid="11db5e96-c100-4f9e-94ed-cdb7f274a51f"/>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="450" y="221" width="1" height="40" uuid="3aba4902-97b5-4d30-9c83-2d23cbbe8242"/>
+				<reportElement x="450" y="221" width="1" height="451" uuid="3aba4902-97b5-4d30-9c83-2d23cbbe8242"/>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</line>
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="45" y="82" width="100" height="20" uuid="60bb636f-042d-496c-8e15-e56c0a651e4a"/>
+				<textFieldExpression><![CDATA[$F{shipping_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="399" y="74" width="156" height="20" uuid="5e96462b-e441-4d32-a80c-44d34df63631"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{customs_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="44" y="100" width="140" height="20" uuid="2fb80ea7-e23c-4670-95ae-25ddd6830237"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{boat_company_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="214" y="102" width="137" height="20" uuid="159547fe-e9b0-4c27-83db-8ae50f470b03"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{boat_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="399" y="103" width="156" height="20" uuid="b7be3891-e5b0-497d-8a42-d0ae97212e0c"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{appointed_port_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="45" y="129" width="311" height="20" uuid="d1f4a588-2da3-4fd4-93a2-02c97f820c5d"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{shipping_men_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="45" y="159" width="314" height="20" uuid="a4be965e-8d6f-4418-a218-9057ae31022e"/>
+				<textFieldExpression><![CDATA[$F{consignee_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="44" y="190" width="311" height="20" uuid="5490c036-1b13-4ad5-91b9-d64d4ac5589b"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{notice_man_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="399" y="132" width="156" height="20" uuid="465971f3-a103-4e5f-9b70-5b5cceb85537"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{shipping_men_phone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="399" y="163" width="156" height="20" uuid="43b7c478-644c-4e20-b84e-dd587d1ec4a2"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{consignee_phone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="399" y="193" width="156" height="20" uuid="b31f8e03-1ebf-4371-8db4-26f806cb10fe"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{notice_man_phone}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="262" width="555" height="410" uuid="f8d52200-ce08-4a0d-9571-b54e2b0cbb1e"/>
+				<subreportParameter name="order_id">
+					<subreportParameterExpression><![CDATA[$P{order_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "consignmentBill_subreport.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</columnHeader>
-	<detail>
-		<band height="410"/>
-	</detail>
 	<columnFooter>
 		<band height="130">
 			<staticText>
