@@ -235,8 +235,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             });
         });
         
-        $('#custom_bill_radio_div [name=custom_bill]').click(function(){
-        	if(this.value=="export_custom"){
+        $('#printCustomOrderBtn').click(function(){
+        	$(this).attr('disabled', true);
+        	var id = $('#order_id').val();
+        	var type = $('#type').val();
+        	$.post('/jobOrderReport/printCargoCustomOrder', {id:id,type:type}, function(data){
+        		$('#printCustomOrderBtn').prop('disabled', false);
+        		window.open(data);
+        	},'json').fail(function() {
+        		$('#printCustomOrderBtn').prop('disabled', false);
+        		$.scojs_message('生成货物报关单PDF失败', $.scojs_message.TYPE_ERROR);
+        	});
+        });
+        
+        $("#type").click(function(){
+        	if(this.value=="出口"){
         		$('#receive_sent_consignee_input').prev().text("收发货人(退税企业)");
         		$('#production_and_sales_input').prev().text("生产销售单位");
         		$('#export_port_input').prev().text("出口口岸");

@@ -441,16 +441,6 @@
 		                        </div>
 		                    </div>
 		                    
-		                   <div class="col-lg-12">
-		                    <div class="form-group" id="custom_bill_radio_div" align="center">
-		                        <label>
-		                           <h4> <input type="radio" name='custom_bill' value="export_custom" ${order.id!''==''?'checked':} ${order.custom_bill!''=='export_custom'?'checked':}>出口</h4>
-		                        </label>&nbsp
-		                        <label>
-		                          <h4>  <input type="radio" name='custom_bill' value='import_custom' ${order.custom_bill!''=='import_custom'?'checked':}>进口</h4>
-		                        </label>
-		                    </div>
-		                   </div><br><br>
 		                   <div class="row"><!--  第1行  --> 
 		                        <div class="col-lg-4">
 		                            <%include("/eeda/component/form/inputSelectArea.html", 

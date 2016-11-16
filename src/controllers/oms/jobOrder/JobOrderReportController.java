@@ -271,11 +271,31 @@ public class JobOrderReportController extends Controller {
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	
-    //打印托运申报单printConsignmentBill
+    //报关申请单页面中，打印托运申报单
 	public void printConsignmentBill(){
 		String order_id = getPara("id");
 		String fileName = "/report/cms/consignmentBill.jasper";
 		String outFileName = "/download/托运申报单 PDF";
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_id;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
+	//报关申请单页面中，打印货物报关单PDF
+	public void printCargoCustomOrder(){
+		String order_id = getPara("id");
+		String type = getPara("type");
+		String fileName = "";
+		String outFileName = "";
+		if("出口".equals(type)){
+			outFileName = "/download/出口货物报关单 PDF";
+			fileName = "/report/cms/cargo_custom_export.jasper";
+		}else{
+			outFileName = "/download/进口货物报关单 PDF";
+			fileName = "/report/cms/cargo_custom_import.jasper";
+		}
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
 		fileName = getContextPath() + fileName;
