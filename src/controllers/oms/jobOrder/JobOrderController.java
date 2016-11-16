@@ -203,16 +203,16 @@ public class JobOrderController extends Controller {
    		long office_id = user.getLong("office_id");
    		
    		String export_date = (String)dto.get("order_export_date");
-        String dateStr = "";
+        String newDateStr = "";
         SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
         SimpleDateFormat sdf = new SimpleDateFormat("yyMM");//转换后的格式
         try {
             Date date=parseFormat.parse(export_date);
-            dateStr=sdf.format(date);
+            newDateStr=sdf.format(date);
         } catch (ParseException ex) {
             logger.debug("处理工作单出货日期出错："+ex.getMessage());
         }
-        logger.debug("工作单出货日期："+dateStr);
+        logger.debug("工作单出货日期："+newDateStr);
         
         
    		if (StringUtils.isNotEmpty(id)) {
@@ -224,8 +224,17 @@ public class JobOrderController extends Controller {
    			    oldDateStr=sdf.format(old_export_date);
    			}
    			logger.debug("工作单出货 旧日期："+oldDateStr);
-   			if(!type.equals(jobOrder.get("type")) || ( StrKit.notBlank(oldDateStr) && !dateStr.equals(oldDateStr))){
-	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), dateStr, office_id);
+   			String oldOrderNo=jobOrder.get("order_no");
+   			String oldOrderNoDate = oldOrderNo.substring(3, 7);
+   			logger.debug("工作单号 旧日期："+oldOrderNoDate);
+   			if(!type.equals(jobOrder.get("type")) || 
+   			        ( 
+   			             StrKit.notBlank(oldDateStr) && 
+   			             !newDateStr.equals(oldDateStr) && 
+   			             !newDateStr.equals(oldOrderNoDate)
+   			        ) 
+   			  ){
+	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), newDateStr, office_id);
 	            jobOrder.set("order_no", order_no);
    			}
             
@@ -239,7 +248,7 @@ public class JobOrderController extends Controller {
    			DbUtils.setModelValues(dto, jobOrder);
    			
    			//需后台处理的字段
-   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), dateStr, office_id);
+   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), newDateStr, office_id);
             jobOrder.set("order_no", order_no);
    			jobOrder.set("creator", user.getLong("id"));
    			jobOrder.set("create_stamp", new Date());
