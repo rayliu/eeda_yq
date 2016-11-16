@@ -1,0 +1,965 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cargo_custom_bill" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="406"/>
+	<parameter name="order_id" class="java.lang.String">
+		<property name="order_id" value="$P{order_id}"/>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Administrator\\Desktop\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select cpo.*, cpoi.*, p.abbr receive_sent_consignee_name, p1.abbr production_and_sales_name, p2.abbr application_unit_name, cp.under_port export_port_name,
+sm.name supervision_mode_name,ce.name nature_of_exemption_name,l.name trading_country_name,l1.name destination_country_name,l2.name destination_port_name,
+cgs.name supply_of_goods_name,l3.name destination_country_item_name, c.name currency_name,ce1.name exemption_name
+
+from custom_plan_order cpo
+left join custom_plan_order_item cpoi on cpoi.order_id = cpo.id
+left join party p on p.id = cpo.receive_sent_consignee
+left join party p1 on p1.id = cpo.production_and_sales
+left join party p2 on p2.id = cpo.application_unit
+left join custom_port cp on cp.id = cpo.export_port
+left join supervision_method sm on sm.id = cpo.supervision_mode
+left join custom_exemption_nature ce on ce.id = cpo.nature_of_exemption
+left join custom_exemption_nature ce1 on ce1.id = cpoi.exemption
+left join location l on l.id=cpo.trading_country
+left join location l1 on l1.id=cpo.destination_country
+left join location l2 on l2.id=cpo.destination_port
+left join location l3 on l3.id=cpoi.destination_country_item
+left join custom_goods_supply cgs on cgs.id = cpo.supply_of_goods
+left join currency c on c.id = cpoi.currency
+where cpo.id = $P{order_id}]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="creator" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="create_stamp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ref_job_order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ref_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="production_and_sales" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="production_and_sales_input" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="production_and_sales_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="date_custom" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="carrier_input" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="carrier" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="deal_mode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="receive_sent_consignee" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="receive_sent_consignee_input" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="receive_sent_consignee_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="application_unit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="application_unit_input" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="application_unit_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="status" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="supervise_mode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="package_number" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="package_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="export_country" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="export_port_input" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="export_port" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="so_number" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="import_country" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="import_port_input" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="import_port" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trade_country" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="transport_fee" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="protect_fee" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sundry_fee" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="note" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="update_stamp" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="updator" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="office_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="to_office_id" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fill_by" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="drawback" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="wharf_fee" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="custom_state" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="costom_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="custom_export_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="application_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="transport_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="transport_tool" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tracking_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="custom_bill" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="supervision_mode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nature_of_exemption" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="record_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trading_country" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="destination_country" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="destination_port" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="supply_of_goods" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="license_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contract_agreement_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="freight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="insurance_premium" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="incidental" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="number" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="custom_gross_weight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="custom_net_weight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="container_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="documents_attached" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hongkong_consignee" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hongkong_consignee_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="head_carrier" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="booking_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="container_nov" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="seal_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vessel" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="voyage" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="shipment_port" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="aim_port" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="remark" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="shipping_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="customs_number" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="boat_company" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="boat_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="appointed_port" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="shipping_men" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="shipping_men_phone" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="consignee" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="consignee_phone" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="notice_man" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="notice_man_phone" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="commodity_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="commodity_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="standard" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="declare_element" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="transaction_amount" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="transaction_unit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="legal_amount" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="legal_unit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="price" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_price" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="currency" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="exemption" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="item_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="destination_country_item" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="receive_sent_consignee_name" class="java.lang.String"/>
+	<field name="production_and_sales_name" class="java.lang.String"/>
+	<field name="application_unit_name" class="java.lang.String"/>
+	<field name="export_port_name" class="java.lang.String"/>
+	<field name="supervision_mode_name" class="java.lang.String"/>
+	<field name="nature_of_exemption_name" class="java.lang.String"/>
+	<field name="trading_country_name" class="java.lang.String"/>
+	<field name="destination_country_name" class="java.lang.String"/>
+	<field name="destination_port_name" class="java.lang.String"/>
+	<field name="supply_of_goods_name" class="java.lang.String"/>
+	<field name="destination_country_item_name" class="java.lang.String"/>
+	<field name="currency_name" class="java.lang.String"/>
+	<field name="exemption_name" class="java.lang.String"/>
+	<columnHeader>
+		<band height="673" splitType="Stretch">
+			<staticText>
+				<reportElement x="45" y="56" width="59" height="15" uuid="ccc77593-ac6d-43b0-987f-b6737e515234"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[预录入编号：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="1" width="555" height="55" uuid="63809dcb-18eb-4c70-b182-cd050a522bcb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="黑体" size="18" isBold="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[中华人民共和国海关出口货物报关单]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="204" width="555" height="1" uuid="05470dd3-2a98-4afa-aa84-88d8128ea875"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="71" width="555" height="1" uuid="0a4e50a3-c109-4ddf-8310-10a12c007ae4"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="96" width="555" height="1" uuid="65d6b771-14a2-4239-822d-a5f299643ff1"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="233" y="72" width="1" height="78" uuid="a0af5ba0-50b7-4889-8c4a-6c8dcc39d638"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="-1" y="122" width="556" height="1" uuid="efdd6be8-1c55-41ee-81d5-19454eefd952"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="150" width="555" height="1" uuid="53051ef1-9050-41ca-9c4a-862b4716c6ce"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="265" y="56" width="59" height="15" uuid="74968815-71bb-441b-b1a7-00704c256f85"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[海关编号：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="71" width="45" height="15" uuid="69f33042-6755-4558-8fe8-5be9bfeb0db1"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[收发货人]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-1" y="343" width="555" height="1" uuid="298b0ade-640f-42bb-b4b7-190309bf69ad"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="236" y="72" width="45" height="15" uuid="6902f4e2-c57b-47ed-a614-19b1f8f63511"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[出口口岸]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="434" y="97" width="45" height="12" uuid="8293276f-7c32-4699-a2a5-d8f013031bc4"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[提运单号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="123" width="45" height="15" uuid="68533474-6a9a-45c4-bb94-ad311d20e5ac"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[申报单位]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="97" width="55" height="15" uuid="d0f376b5-7148-4207-8468-dff30af3b6b7"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[生产销售单位]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="97" width="55" height="12" uuid="d46d4413-7644-4038-9e90-78739ea30973"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[运输工具名称]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="97" width="45" height="12" uuid="b1c64ed8-7bb5-4fc0-93d7-aacbbfe166cc"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[运输方式]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="325" width="554" height="1" uuid="f98606e5-700b-477e-9d0f-2a03bc5a6364"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="257" width="556" height="1" uuid="ad62c85a-e049-474b-b500-8eca4ff2ca6a"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="-1" y="177" width="556" height="1" uuid="d1de3d27-8b7d-4701-85b0-8ece3227d037"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="-1" y="71" width="1" height="602" uuid="2e4c7809-fd9d-4416-89cd-89e26035d4d6"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="445" y="72" width="45" height="15" uuid="bbacbf1d-6a59-4d98-b1d6-4117e8325486"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[申报日期]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="343" y="72" width="45" height="15" uuid="4af4a63c-9f70-4389-9eee-56ab50ee630e"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[出口日期]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="123" width="45" height="12" uuid="20272408-e18e-4ad0-87e6-be58ff164ba9"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[监管方式]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="343" y="122" width="45" height="12" uuid="f769da80-ebd1-4bcc-8d5c-553e41734a35"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[征免性质]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="445" y="122" width="45" height="12" uuid="e60952d3-a96c-4aad-9487-a4780b6a515c"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[备案号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="151" width="57" height="12" uuid="1abfab88-a0e3-4d2f-b88f-891c97cf787b"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[贸易国(地区)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="341" y="71" width="1" height="25" uuid="c80d8409-50bf-48a0-be48-4e479003c7eb"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="443" y="72" width="1" height="25" uuid="1b251120-7ced-45fe-98fc-5f055bbe421a"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="312" y="97" width="1" height="25" uuid="9699003f-1037-4f96-bece-296f53c03339"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="443" y="122" width="1" height="29" uuid="23aa077c-a90e-46e3-8265-b430e744bc13"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="340" y="122" width="1" height="28" uuid="9027577d-c97f-4d5b-a44f-cec28d95e3fa"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="432" y="97" width="1" height="25" uuid="c6a8d9c3-4930-4ab8-b772-ba505d09db23"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="135" y="151" width="1" height="106" uuid="e923be4c-1b76-469d-95a0-1372880bd78e"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="-1" y="231" width="556" height="1" uuid="724518ca-cc12-4289-be67-886b78a339bc"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="281" y="150" width="1" height="27" uuid="9b987321-6306-48a3-9332-f9602f0a9478"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="414" y="150" width="1" height="28" uuid="981ba324-f2be-45a2-a751-1356d17d3200"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="324" y="177" width="1" height="54" uuid="e9a64a37-8e1f-4f54-a144-4e921d631942"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="210" y="177" width="1" height="55" uuid="9951f596-46f8-4769-8b3f-e26b6a3ff0e7"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="434" y="177" width="1" height="55" uuid="ac04b239-2b0b-4699-9cbe-f0e0801c46d6"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="554" y="72" width="1" height="601" uuid="585f14cd-f17f-4da9-b766-46a69618f9dd"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="4" y="178" width="38" height="12" uuid="fd24d524-59ab-4a50-985f-720a3b7e169f"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[许可证号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="151" width="57" height="12" uuid="398c721f-d9ce-4af9-9a68-249f57800a26"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[运抵国(地区)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="151" width="57" height="12" uuid="b84dddb2-a37b-4eef-8bb4-16bf6216464f"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[指运港]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="151" width="57" height="12" uuid="cbcdb407-356d-4ff8-a94b-58b3ae82c1a9"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[境内货源地]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="178" width="38" height="12" uuid="cda40452-675e-4374-802d-7b52beaa3874"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[成交方式]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="327" y="178" width="57" height="12" uuid="b54355ed-eb39-4bac-9bd1-3da050db8622"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[保费]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="178" width="57" height="12" uuid="3c254910-c38e-4a0f-beeb-451636d6ab93"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[运费]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="438" y="178" width="57" height="12" uuid="c4e7b1b6-0ca2-4172-a640-adfdb45f7f4a"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[杂费]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="204" width="50" height="12" uuid="9ca6a899-e629-4225-8bb5-0469d159c507"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[合同协议号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="232" width="38" height="12" uuid="5b48a1d0-097a-4ceb-9c38-bb70b477e3b4"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[集装箱号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="258" width="71" height="15" uuid="582a1900-d131-4eb3-8daa-89249490e0e6"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[标记唛码及备注]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="232" width="38" height="12" uuid="79787ac9-850e-49b3-8289-9a360c17c9e7"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[随附单证]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="205" width="57" height="12" uuid="7f958ca6-c2ec-4653-8b5f-6a2164f95ae2"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[件数]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="204" width="57" height="12" uuid="dc9bcf10-f0a1-49ba-845f-ee9b40d7e4e0"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[包装种类]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="327" y="205" width="57" height="12" uuid="63ff6841-0954-4144-b178-6b16f7e3bce0"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[毛重(千克)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="438" y="205" width="57" height="12" uuid="72042586-e28e-4aa3-956a-61bb49be1f1c"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[净重(千克)]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="59" y="72" width="174" height="24" uuid="660ee196-de02-4246-af75-11f3f372e3a3"/>
+				<textFieldExpression><![CDATA[$F{receive_sent_consignee_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="59" y="97" width="174" height="24" uuid="1c87578c-4b6a-404e-a78d-e0514e5b0a74"/>
+				<textFieldExpression><![CDATA[$F{production_and_sales_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="59" y="123" width="174" height="27" uuid="0fdf6238-3e3d-4535-8fe2-835caee78a6f"/>
+				<textFieldExpression><![CDATA[$F{application_unit_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="282" y="72" width="58" height="24" uuid="a3633e5e-6232-439f-9def-5ecc93b4515e"/>
+				<textFieldExpression><![CDATA[$F{export_port_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="388" y="72" width="55" height="24" uuid="8fcbff63-dc61-4dd8-85ea-0dc7f1f00367"/>
+				<textFieldExpression><![CDATA[$F{custom_export_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="490" y="73" width="64" height="24" uuid="c871db45-f824-43ed-acaf-7896374a3ced"/>
+				<textFieldExpression><![CDATA[$F{application_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="237" y="109" width="76" height="14" uuid="5f700649-c4d5-41d7-9038-2c006d8f539d"/>
+				<textFieldExpression><![CDATA[$F{transport_type}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="317" y="108" width="115" height="14" uuid="a6548cf0-c905-439d-85cb-224bb7eb6469"/>
+				<textFieldExpression><![CDATA[$F{transport_tool}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="438" y="108" width="115" height="14" uuid="46983176-523c-4c3f-a4ad-f5a5331c9933"/>
+				<textFieldExpression><![CDATA[$F{tracking_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="237" y="135" width="104" height="14" uuid="9efbe711-2c39-49c5-9e0e-e28e070bc414"/>
+				<textFieldExpression><![CDATA[$F{supervision_mode_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="343" y="134" width="100" height="15" uuid="89952dcf-5dc3-4df6-a9a8-3c801ee283fc"/>
+				<textFieldExpression><![CDATA[$F{nature_of_exemption_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="448" y="134" width="105" height="17" uuid="615715cf-7086-4919-8223-e09a5198845f"/>
+				<textFieldExpression><![CDATA[$F{record_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="164" width="131" height="14" uuid="71b3d93a-d214-4da2-a23b-b19f934f6b41"/>
+				<textFieldExpression><![CDATA[$F{trading_country_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="138" y="162" width="143" height="14" uuid="bfe3c4b5-47b8-4c4b-a632-18b208999561"/>
+				<textFieldExpression><![CDATA[$F{destination_country_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="286" y="162" width="128" height="14" uuid="228a0c93-3f0a-420f-84c6-83bfe65f61d0"/>
+				<textFieldExpression><![CDATA[$F{destination_port_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="422" y="162" width="131" height="15" uuid="c5380308-80c3-4713-b8cb-7a7a0cacbd97"/>
+				<textFieldExpression><![CDATA[$F{supply_of_goods_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="190" width="131" height="14" uuid="4af8363d-7513-4cdc-9c88-e1ae46500b31"/>
+				<textFieldExpression><![CDATA[$F{license_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="138" y="190" width="72" height="14" uuid="b6686010-c7fc-43e4-b0bb-14a621b19114"/>
+				<textFieldExpression><![CDATA[$F{deal_mode}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="213" y="190" width="111" height="14" uuid="160d1bc4-4c55-4cd3-af22-d5baa15fa13e"/>
+				<textFieldExpression><![CDATA[$F{freight}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="327" y="190" width="108" height="15" uuid="b14e3400-0b22-41d5-84ee-552d5215f3af"/>
+				<textFieldExpression><![CDATA[$F{insurance_premium}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="438" y="190" width="115" height="14" uuid="5c6d1768-fe79-4589-8557-c8d859c6bd02"/>
+				<textFieldExpression><![CDATA[$F{incidental}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="216" width="131" height="15" uuid="48c2d47a-7ba8-415f-bab6-cf871fa7f75f"/>
+				<textFieldExpression><![CDATA[$F{contract_agreement_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="137" y="216" width="73" height="15" uuid="5512dbc4-b547-4d4f-9855-d7076acb0086"/>
+				<textFieldExpression><![CDATA[$F{number}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="214" y="216" width="111" height="15" uuid="625befca-6ff1-4148-ac6d-df6db69e4cca"/>
+				<textFieldExpression><![CDATA[$F{package_type}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="327" y="216" width="108" height="15" uuid="cca431a8-a9da-439a-a9c5-bb6d9f86e770"/>
+				<textFieldExpression><![CDATA[$F{custom_gross_weight}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="438" y="216" width="115" height="14" uuid="63c40ef0-2844-4d67-91eb-17c37a872dd4"/>
+				<textFieldExpression><![CDATA[$F{custom_net_weight}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="4" y="243" width="131" height="15" uuid="2bc759a8-34af-494e-9b37-e7fab6d4752d"/>
+				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="176" y="232" width="378" height="25" uuid="6d592213-2a0e-4ba6-bff6-7418a20e79f5"/>
+				<textFieldExpression><![CDATA[$F{documents_attached}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="7" y="273" width="546" height="52" uuid="37fc3b06-bf11-4d80-aae9-fc05e6e342fb"/>
+				<textFieldExpression><![CDATA[$F{note}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-1" y="326" width="555" height="17" uuid="810856ba-dbe8-479b-967e-7be2efa49275"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[ 项号 商品编号      商品名称、规格型号         数量及单位  最终目的国(地区)  单价          总价           币制    征免]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="1" y="344" width="552" height="329" uuid="b2f22d5e-43fd-4808-8aa0-a72e68275a7b"/>
+				<subreportParameter name="order_id">
+					<subreportParameterExpression><![CDATA[$P{order_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "cargo_custom_export_subreport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</columnHeader>
+	<columnFooter>
+		<band height="129">
+			<line>
+				<reportElement x="0" y="20" width="555" height="1" uuid="92064dd2-e996-4f52-a8aa-0697622d3571"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="556" height="1" uuid="e4cbe086-a726-44f3-b6e8-1fe362d7fc76"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="169" y="21" width="1" height="41" uuid="c16c1833-6b1e-4080-9bb9-0996c3cc0a21"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="-1" y="61" width="170" height="1" uuid="f2406c81-c24d-4930-83c6-2f832433204e"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="383" y="20" width="1" height="109" uuid="96126019-6a0e-41e6-98a8-2a4b4646f3c6"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="-1" y="128" width="555" height="1" uuid="3d080ad0-dba6-431a-bcf8-55680f249632"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="-1" y="0" width="1" height="129" uuid="65b430fe-8efa-493f-8005-cce6199a0196"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="554" y="1" width="1" height="127" uuid="a8c4efe0-fb65-46de-8ae6-d4bb76e96aa9"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="4" y="23" width="35" height="15" uuid="0128682d-01a5-46dc-8147-98ba47dab95e"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[录入员]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="98" y="23" width="40" height="15" uuid="1857d6ec-5a9b-4fdf-97ff-be0472dab7d6"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[录入单位]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="95" width="40" height="15" uuid="03b252a5-f211-47b0-b43d-9f2792e02d14"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[报关人员]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="398" y="29" width="75" height="15" uuid="1374143a-1e49-4f17-ada6-c9a879578416"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[海关批注及签章]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="29" width="202" height="32" uuid="4c6be566-9916-4d3f-86ff-66a3559a9872"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[兹申明对以上内容承担如实申报、依法纳税之法律责任]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="95" width="75" height="15" uuid="ea7beab6-5361-4c13-8b99-6c9a49d4c782"/>
+				<textElement>
+					<font fontName="宋体" size="9" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[申报单位(签章)]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+</jasperReport>

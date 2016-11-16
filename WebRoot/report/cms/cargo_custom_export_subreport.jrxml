@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cargo_custom_export_subreport" language="groovy" pageWidth="555" pageHeight="330" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b9bd52bd-197d-4d30-8414-60ea619035fd">
+	<property name="ireport.zoom" value="1.610510000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="order_id" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+cpoi.item_no,cpoi.commodity_code,concat(cpoi.commodity_name,cpoi.standard) aaa,cast(concat(cpoi.transaction_amount,cpoi.transaction_unit) as char) bbb,cpoi.price,cpoi.total_price,
+l.name destination_country_item_name,c.name currency_name,ce.name exemption_name
+from custom_plan_order_item cpoi
+left join custom_exemption_nature ce on ce.id = cpoi.exemption
+left join location l on l.id=cpoi.destination_country_item
+left join currency c on c.id = cpoi.currency
+where cpoi.order_id = $P{order_id}]]>
+	</queryString>
+	<field name="item_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="commodity_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="aaa" class="java.lang.String"/>
+	<field name="bbb" class="java.lang.String"/>
+	<field name="price" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_price" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="destination_country_item_name" class="java.lang.String"/>
+	<field name="currency_name" class="java.lang.String"/>
+	<field name="exemption_name" class="java.lang.String"/>
+	<detail>
+		<band height="20">
+			<textField>
+				<reportElement x="0" y="0" width="24" height="20" uuid="bcc8849e-e1e9-4ae0-a813-a2c7aab90acf"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{item_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="0" width="22" height="20" uuid="ffb50c3f-e16b-4103-a37c-e806c1852ecf"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{currency_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="138" height="20" uuid="2a68f28a-01a7-49ef-a154-b8253f1a166c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aaa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="281" y="0" width="50" height="20" uuid="fdcf34b7-c8a6-4936-a8ad-e97691b2d688"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{destination_country_item_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="24" y="0" width="51" height="20" uuid="33bfbcc9-31a8-48fc-910d-43eb9a9437dc"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{commodity_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="407" y="-1" width="65" height="20" uuid="470f3920-04f0-4512-a8d1-ac50c5701058"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_price}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="503" y="-1" width="50" height="20" uuid="6cace647-58b8-4323-9486-2ea797ebd526"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exemption_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="222" y="0" width="58" height="20" uuid="fe5ae25c-048c-4c4c-aae0-4777d33b5864"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bbb}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-2" y="19" width="555" height="1" uuid="620a0c52-7caf-4464-89a0-2f5f059d2f99"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="343" y="0" width="65" height="20" uuid="1a336a2c-616b-4ede-b291-7a710e8bccda"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
