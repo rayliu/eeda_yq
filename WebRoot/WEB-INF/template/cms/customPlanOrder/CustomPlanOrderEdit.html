@@ -42,7 +42,7 @@
 	                   <div class="col-lg-4">
 	                        <%include("/eeda/component/form/inputField.html", 
 	                                            {   id:'status', 
-	                                                label:'状态',
+	                                                label:'单据状态',
 	                                                disabled: 'disabled', 
 	                                                value:order.status!''
 	                                            }){}%>
@@ -115,10 +115,16 @@
 				                                     value:order.custom_state!'',
 				                                     value_list:[
                                                         {code:'', value:''},
-                                                        {code:'接单', value:'接单'},
-                                                        {code:'审单', value:'审单'},
+                                                        {code:'改单', value:'改单'},
+                                                        {code:'复查', value:'复查'},
+                                                        {code:'过磅', value:'过磅'},
                                                         {code:'查验', value:'查验'},
-                                                        {code:'征税', value:'征税'},
+                                                        {code:'异常', value:'异常'},
+                                                        {code:'异常待处理', value:'异常待处理'},
+                                                        {code:'询价', value:'询价'},
+                                                        {code:'商检', value:'商检'},
+                                                        {code:'抽样', value:'抽样'},
+                                                        {code:'补税', value:'补税'},
                                                         {code:'放行', value:'放行'}
 				                                    ] 
 				                                 }){}%>

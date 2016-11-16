@@ -31,12 +31,11 @@
                                         <div class="col-lg-4"> 
                                             <%include("/eeda/component/form/selectField.html", 
 			                                                   {   id:'status', 
-			                                                       label:'状态', 
-			                                                       value: '',
+			                                                       label:'单据状态', 
 			                                                       value_list:[
 			                                                           {code:'', value:''},
 			                                                           {code:'新建', value:'新建'},
-			                                                           {code:'处理中', value:'处理中'},
+			                                                           {code:'已提交报关行', value:'已提交报关行'},
 			                                                           {code:'审核通过', value:'审核通过'},
 			                                                           {code:'审核不通过', value:'审核不通过'}
 			                                                       ]
@@ -55,27 +54,61 @@
                                                                   value: ''
                                                               }){}%>
                                         </div>
+                                        <div class="col-lg-4">
+				                            <%include("/eeda/component/form/selectField.html", 
+                                                 {   id:'custom_state', 
+                                                     label:'海关状态',
+                                                     value_list:[
+                                                        {code:'', value:''},
+                                                        {code:'改单', value:'改单'},
+                                                        {code:'复查', value:'复查'},
+                                                        {code:'过磅', value:'过磅'},
+                                                        {code:'查验', value:'查验'},
+                                                        {code:'异常', value:'异常'},
+                                                        {code:'异常待处理', value:'异常待处理'},
+                                                        {code:'询价', value:'询价'},
+                                                        {code:'商检', value:'商检'},
+                                                        {code:'抽样', value:'抽样'},
+                                                        {code:'补税', value:'补税'},
+                                                        {code:'放行', value:'放行'}
+                                                    ] 
+                                                 }){}%>
+				                        </div>
                                   </div>
 
                                     
                                 </form>
                             </div><!-- /.row -->
-
+                            
                             <div class="form-group button-bar" >
                                 <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
                                 <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
                                 <a class="btn btn-success btn-sm" href="/customPlanOrder/create">新增报关申请单</a>
                             </div> 
-
+                            <ul id="orderTabs" class="nav nav-tabs" >
+                                <li class="active">
+                                    <a href="#" data-toggle="tab">全部</a>
+                                </li>
+                                <li>
+                                    <a href="#" data-toggle="tab">放行</a>
+                                </li>
+                                <li>
+                                    <a href="#" data-toggle="tab" >异常</a>
+                                </li>
+                                <li>
+                                    <a href="#" data-toggle="tab">异常待处理</a>
+                                </li>
+                                <li>
+                                    <a href="#" data-toggle="tab">查验</a>
+                                </li>
+                            </ul>
                             <%include("/eeda/component/form/detailTable.html", 
 							                                {
 							                                    id:'eeda-table', 
-							                                    headers:['报关申请单号',
-							                                    	'类型',
+							                                    headers:['报关申请单号','状态','海关状态','类型',
 							                                        '申请企业',
 							                                        '创建人',
-							                                        '创建时间',
-							                                        '状态']
+							                                        '创建时间']
 							                                }){} %>
                             
                         </div>

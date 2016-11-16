@@ -22,6 +22,28 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 		  return "<a href='/customPlanOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
                 	  }
                   },
+                  { "data": "STATUS", 
+  	            	"render": function(data, type, full, meta){
+  	            		if(data=="审核不通过"){
+  	            			return "<span style='color:red'>"+data+"</span>";
+  	            		}else{
+  	            			return data;
+  	            		}	            		
+  	            	}  
+  	              },
+  	              { "data": "CUSTOM_STATE", 
+  	            	"render": function(data, type, full, meta){
+  	            		if(data=="异常"){
+  	            			return "<span style='color:red'>"+data+"</span>";
+  	            		}else if(data=="异常待处理"){
+  	            			return "<font style='background-color:#FF0; color:#000'>"+data+"</font>";
+  	            		}else if(data=="放行"){
+  	            			return "<span style='color:green'>"+data+"</span>";
+  	            		}else{
+  	            			return data;
+  	            		}	            		
+  	            	}  
+  	              },
 	              { "data": "TYPE"}, 
 	              { "data": "APPLICATION_COMPANY_NAME"}, 
 	              { "data": "CREATOR_NAME"}, 
@@ -32,15 +54,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 	            		  else
 	            			  return '';
                 	  }
-	              }, 
-	              { "data": "STATUS", 
-	            	"render": function(data, type, full, meta){
-	            		if(data=="审核不通过"){
-	            			return "<span style='color:red'>"+data+"</span>";
-	            		}else{
-	            			return data;
-	            		}	            		
-	            	}  
 	              }
             ]
         });
@@ -56,7 +69,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
      var searchData=function(){
           var order_no = $.trim($("#order_no").val());
           var customer_name = $('#customer_name').val().trim();
-          var status = $('#status').val().trim();
+          var status = $('#status').val();
+          var custom_state = $('#custom_state').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           
@@ -69,12 +83,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           */
           var url = "/customPlanOrder/list?order_no="+order_no
                +"&status="+status
+               +"&custom_state_equals="+custom_state
                +"&application_company_name="+customer_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 
           dataTable.ajax.url(url).load();
       };
+      
+      
+      $('#orderTabs a').click(function(){
+    	  var custom_state = $(this).text();
+    	  var url = "/customPlanOrder/list?custom_state_equals="+custom_state;
+    	  dataTable.ajax.url(url).load();
+      })
+      
     	
     });
 });

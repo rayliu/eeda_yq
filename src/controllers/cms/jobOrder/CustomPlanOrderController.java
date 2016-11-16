@@ -348,10 +348,6 @@ public class CustomPlanOrderController extends Controller {
 	public void list() {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
-        
-    	
-    	String customer_code=getPara("customer_code")==null?"":getPara("customer_code");
-    	String customer_name=getPara("customer")==null?"":getPara("customer");
     	
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -361,15 +357,14 @@ public class CustomPlanOrderController extends Controller {
         String sql = "";
         String condition="";
         
-        	sql = "SELECT * from (SELECT cpo.id,cpo.order_no,cpo.type,cpo.production_and_sales_input application_company_name,ul.c_name creator_name,"
-        			+ " cpo.create_stamp,cpo.status"
-        			+ " FROM custom_plan_order cpo"
-        			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
-        			+ " where cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")A"
-    		        + " where 1 =1 ";
+    	sql = "SELECT * from (SELECT cpo.id,cpo.order_no,cpo.type,cpo.production_and_sales_input application_company_name,ul.c_name creator_name,"
+    			+ " cpo.create_stamp,cpo.status,cpo.custom_state"
+    			+ " FROM custom_plan_order cpo"
+    			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
+    			+ " where cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")A"
+		        + " where 1 =1 ";
 
         condition = DbUtils.buildConditions(getParaMap());
-        
         
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
@@ -380,9 +375,7 @@ public class CustomPlanOrderController extends Controller {
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
-
         orderListMap.put("data", orderList);
-
         renderJson(orderListMap); 
     }
     
