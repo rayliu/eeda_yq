@@ -253,15 +253,7 @@ public class ServiceProviderController extends Controller {
     public void searchSp() {
     	
 		String input = getPara("input");
-		String sp_type = getPara("sp_type")==null?"":getPara("sp_type");
-		String[] spArr = sp_type.split(";");
-		String spCon = "";
-		if(spArr.length>0){
-		    for (String spType : spArr) {
-		        spCon += " or p.sp_type like '%"+spType+"%'";
-            }
-		    spCon = spCon.substring(4);
-		}
+	
 		Long parentID = pom.getParentOfficeId();
 		List<Record> spList = Collections.EMPTY_LIST;
 		if (input !=null && input.trim().length() > 0) {
@@ -275,7 +267,7 @@ public class ServiceProviderController extends Controller {
 							+ input
 							+ "%' or p.email like '%"
 							+ input
-							+ "%' or p.mobile like '%"
+							+ "%' or p.mobile like '%"       
 							+ input
 							+ "%' or p.phone like '%"
 							+ input
@@ -291,6 +283,30 @@ public class ServiceProviderController extends Controller {
 		}
 		renderJson(spList);
 	}
+    
+    //只查询供应商
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
+    public void search_sp() {
+    	
+    	String input = getPara("input");
+    	
+    	Long parentID = pom.getParentOfficeId();
+    	List<Record> spList = Collections.EMPTY_LIST;
+    	if (input !=null && input.trim().length() > 0) {
+    		spList = Db
+    				.find(" select p.* from party p, office o where o.id = p.office_id and p.type='SP' and"
+    						+ " (p.company_name like '%"
+    						+ input
+    						+ "%' or p.abbr like '%"
+    						+ input
+    						+ "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) limit 0,10",parentID,parentID);
+    	} else {
+    		spList = Db
+    				.find("select p.* from party p, office o where o.id = p.office_id and p.type='SP' and "
+    						+ " (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?)", parentID, parentID);
+    	}
+    	renderJson(spList);
+    }
     
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchInsurance() {

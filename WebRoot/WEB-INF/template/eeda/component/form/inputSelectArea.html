@@ -30,8 +30,12 @@ $(document).ready(function() {
     inputField.on('keyup click ', function(event){
         var me = this;
         var inputStr = inputField.val().trim();
-        
-         $.get("/customer/search_party", {customerName:inputStr}, function(data){
+        var url = "/customer/search_party";
+        if('${url!''}'!=""){
+        	url = '${url!''}';
+        }
+        console.log(url)
+         $.get(url, {customerName:inputStr}, function(data){
             if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
                 return;
             }
