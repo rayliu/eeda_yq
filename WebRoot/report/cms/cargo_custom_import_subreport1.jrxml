@@ -36,63 +36,63 @@ where cpoi.order_id = $P{order_id}]]>
 	</background>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="2" y="0" width="24" height="20" uuid="014fe40b-2f35-48fa-9952-d42e78f818c0"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{item_no}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="26" y="0" width="51" height="20" uuid="181814f7-3380-46c8-a207-03d122921729"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{commodity_code}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="82" y="0" width="138" height="20" uuid="1dc2f783-09a2-4b1a-9116-987ba12f1334"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{aaa}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="224" y="0" width="58" height="20" uuid="0fba404e-9038-451c-933c-0d618a10dd3a"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bbb}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="283" y="0" width="50" height="20" uuid="ae399291-4a42-400c-9a8e-e9e399c4363b"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{destination_country_item_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="348" y="0" width="62" height="20" uuid="94652c6e-3ac5-4773-9df1-1c2c3d833ef4"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="409" y="-1" width="65" height="20" uuid="c9abb489-4b11-47bc-8e41-30b76d9a90dc"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total_price}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="477" y="0" width="22" height="20" uuid="4d312386-531d-4439-9aa0-186a9adc878d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{currency_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="505" y="-1" width="50" height="20" uuid="72bb2735-34ab-4edb-9695-ce25641930c6"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
