@@ -81,29 +81,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           dataTable.ajax.url(url).load();
       };
       
-      
-      $('#oceanDetailTab').click(function(e){
-    	  var transport_type = "ocean";
-    	  	var url = "/jobOrder/list?transport_type_like="+transport_type;
-    	  	dataTable.ajax.url(url).load();
-      })
-      $('#airDetailTab').click(function(e){
-    	  var transport_type = "air";
-    	  var url = "/jobOrder/list?transport_type_like="+transport_type;
-    	  dataTable.ajax.url(url).load();
-      })
-      $('#landDetailTab').click(function(e){
-    	  var transport_type = "land";
-    	  var url = "/jobOrder/list?transport_type_like="+transport_type;
-    	  dataTable.ajax.url(url).load();
-      })
-      $('#customDetailTab').click(function(e){
-    	  var transport_type = "custom";
-    	  var url = "/jobOrder/list?transport_type_like="+transport_type;
-    	  dataTable.ajax.url(url).load();
-      })
-      $('#allTab').click(function(e){
+      $('#orderTabs a').click(function(){
+    	  var value = $(this).text();
     	  var transport_type = "";
+    	  if(value=="报关"){
+    		  transport_type = "custom";
+    	  }else if(value=="陆运"){
+    		  transport_type = "land";
+    	  }else if(value=="空运"){
+    		  transport_type = "air";
+    	  }else if(value=="海运"){
+    		  transport_type = "ocean";
+    	  }
     	  var url = "/jobOrder/list?transport_type_like="+transport_type;
     	  dataTable.ajax.url(url).load();
       })
