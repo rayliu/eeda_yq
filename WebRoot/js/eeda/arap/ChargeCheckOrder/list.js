@@ -7,8 +7,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 
     	
     	//datatable, 动态处理
+		var cnames = [];
+		var itemIds=[];
+        var totalAmount = 0.0;
+        
         var dataTable = eeda.dt({
-            id: 'eeda-table',
+            id: 'uncheckedEeda-table',
+//            pageLength: 25,
             paging: true,
             serverSide: true, //不打开会出现排序不对
             ajax: "/chargeCheckOrder/list?checked="+checked,
@@ -16,8 +21,122 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			      { "width": "10px",
 				    "render": function ( data, type, full, meta ) {
 				    	if(full.BILL_FLAG != ''){
+				    		var strcheck = '';
+					        if(full.BILL_FLAG != 'Y'){
+					            strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
+					        	for(var i=0;i<itemIds.length;i++){
+			                         if(itemIds[i]==full.ID){
+			                        	 return strcheck= '<input type="checkbox" class="checkBox" checked="checked"  name="order_check_box" value="'+full.ID+'">';
+			                         }
+			                     }
+					        }else{
+					        	strcheck = '<input type="checkbox" class="checkBox" disabled>';
+					    		}
+				    	}else{
+				    		strcheck = '';
+				    	}
+				    	return strcheck;
+				    }
+			      },
+	            { "data": "ORDER_NO", "width": "100px",
+			    	  "render": function ( data, type, full, meta ) {
+	                      return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+	                  }
+	            },
+	            { "data": "CREATE_STAMP", "width": "100px"},
+	            { "data": "TYPE", "width": "60px"},
+	            { "data": "FEE_NAME", "width": "60px"},
+	            { "data": "CUSTOMER_NAME", "width": "100px"},
+	            { "data": "SP_NAME", "width": "100px","sClass":"SP_NAME"},
+	            { "data": "CURRENCY_NAME", "width": "60px"},
+	            { "data": "TOTAL_AMOUNT", "width": "60px"},
+	            { "data": "EXCHANGE_RATE", "width": "60px" },
+	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'total_amount'},
+	            { "data": "FND", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(data)
+				    		     return data;
+	            		else
+				    		     return full.DESTINATION;
+	            	}
+	            },
+	            { "data": "VOLUME", "width": "60px",
+	                "render": function ( data, type, full, meta ) {
+	                    return "";
+	                }
+	            },
+	            { "data": "CONTAINER_AMOUNT","width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+		            	if(data){
+		            		var dataArr = data.split(",");
+		            		var a = 0;
+		            		var b = 0;
+		            		var c = 0;
+		            		var dataStr = "";
+		            		for(var i=0;i<dataArr.length;i++){
+		            			if(dataArr[i]=="20GP"){
+		            				a++;
+		            			}
+		            			if(dataArr[i]=="40GP"){
+		            				b++;
+		            			}
+		            			if(dataArr[i]=="45GP"){
+		            				c++;
+		            			}
+		            		}
+		            		if(a>0){
+		            			dataStr+="20GPx"+a+";"
+		            		}
+		            		if(b>0){
+		            			dataStr+="40GPx"+b+";"
+		            		}
+		            		if(c>0){
+		            			dataStr+="45GPx"+c+";"
+		            		}
+		            		return dataStr;
+		            	}else{
+		            		return '';
+		            	}
+	            	}
+	            },
+	            { "data": "NET_WEIGHT", "width": "60px"},
+	            { "data": "REF_NO", "width": "60px"},
+	            { "data": "MBL_NO", "width": "60px"},
+	            { "data": "HBL_NO", "width": "60px"},
+	            { "data": "CONTAINER_NO", "width": "100px"},
+	            { "data": "TRUCK_TYPE", "width": "100px"},
+	            { "data": "BILL_FLAG", "width": "60px",
+	                "render": function ( data, type, full, meta ) {
+	                		if(data){
+	      	            		if(data != 'Y')
+	      				    		    return '未创建对账单';
+	      				    	   else 
+	      				    		  return '已创建对账单';
+	                  	}else{
+	                			return '';
+	                		}
+	    			       }
+	            },
+	            { "data": null, "width": "60px",
+	                "render": function ( data, type, full, meta ) {
+	                    return "";
+	                }
+	            }
+	          ]
+	      });
+        
+        var checkedDataTable = eeda.dt({
+            id: 'checkedEeda-table',
+//            pageLength: 25,
+            paging: true,
+            serverSide: true, //不打开会出现排序不对
+            ajax: "/chargeCheckOrder/list2",
+            columns:[
+			      { "width": "10px",
+				    "render": function ( data, type, full, meta ) {
+				    	if(full.BILL_FLAG != ''){
 					        if(full.BILL_FLAG != 'Y')
-					    		return '<input type="checkbox" class="checkBox" name="order_check_box">';
+					    		return '<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'" >';
 					    	else
 					    		return '<input type="checkbox" class="checkBox" disabled>';
 				    	}else{
@@ -111,11 +230,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            }
 	          ]
 	      });
-        
+
 		//选择是否是同一个客户
-		var cnames = [];
-        var totalAmount = 0.0;
-		$('#eeda-table').on('click',"input[name='order_check_box']",function () {
+
+		$('#uncheckedEeda-table').on('click',"input[name='order_check_box']",function () {
 				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
 				var total_amount = $(this).parent().siblings('.total_amount')[0].textContent;
 				if($(this).prop('checked')==true){	
@@ -123,6 +241,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 						if(cnames[0]==cname){
 							totalAmount += parseFloat(total_amount);
 							cnames.push(cname);
+							$(this).parent().parent().clone().appendTo($("#checkedEeda-table"));
+							if($(this).val() != ''){
+								itemIds.push($(this).val());
+							}
+							$('#checkedEeda-table input[name="order_check_box"]').css("display","none");
 						}else{
 							$.scojs_message('请选择同一个结算公司', $.scojs_message.TYPE_ERROR);
 							$(this).attr('checked',false);
@@ -130,9 +253,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 						}
 					}else{
 						totalAmount += parseFloat(total_amount);
-						cnames.push(cname);	
+						cnames.push(cname);
+						$(this).parent().parent().clone().appendTo($("#checkedEeda-table"));
+						if($(this).val() != ''){
+							itemIds.push($(this).val());
+						}
+						$('#checkedEeda-table input[name="order_check_box"]').css("display","none");
 					}
+
 				}else{
+					itemIds.splice($.inArray($(this).val(), itemIds), 1);
+					var id=$(this)[0].value;
+					var rows = $("#checkedEeda-table").children().children();
+					for(var i=0; i<rows.length ;i++){
+						var row = rows[i];
+						if(id==$(row).find('input').attr('value')){
+							row.remove();
+							//$("#checkedCostCheckList").children().splice(i,1);
+						}
+					}
+
 					totalAmount -= parseFloat(total_amount);
 					cnames.pop(cname);
 			 }
@@ -152,7 +292,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	         dataTable.ajax.url(url).load();
     	   });
 		
-		
+
+    	
 		 
 //	      var totalRMB_USD=function(){
 //	    	  var id = $("input[name='order_check_box']").parent().parent().attr('id');
@@ -180,7 +321,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
         
         
       	//checkbox选中则button可点击   创建对账单
-		$('#eeda-table').on('click',"input[name='order_check_box']",function () {
+		$('#uncheckedEeda-table').on('click',"input[name='order_check_box']",function () {
 			
 			var hava_check = 0;
 			$('.checkBox').each(function(){	
@@ -199,14 +340,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 		$('#createBtn').click(function(){
 			$('#createBtn').attr('disabled',true);
 			
-        	var itemIds=[];
-        	$('.checkBox').each(function(){
-        		var checkbox = $(this).prop('checked');
-        		if(checkbox){
-        			var itemId = $(this).parent().parent().attr('id');
-        			itemIds.push(itemId);
-        		}
-        	});
         	
         	$('#idsArray').val(itemIds);
         	$('#billForm').submit();

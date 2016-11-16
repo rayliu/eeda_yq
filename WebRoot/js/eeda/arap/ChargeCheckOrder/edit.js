@@ -79,7 +79,8 @@ $(document).ready(function() {
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $('#saveBtn').attr('disabled', false);
                 $('#confrimBtn').attr('disabled', false);
-                
+                $('#printTotaledBtn').attr('disabled', false);
+                $('#printBtn').attr('disabled', false);                 
                 //异步刷新明细表
                 itemOrder.refleshTable(order.ID);
             }else{
@@ -98,10 +99,13 @@ $(document).ready(function() {
     var status = $("#status").val()
     if(order_id==""){
     	$('#saveBtn').attr('disabled', false);
+    	
     }else{
     	if(status=='新建'){
     		$('#saveBtn').attr('disabled', false);
     		$('#confrimBtn').attr('disabled', false);
+    		$('#printTotaledBtn').attr('disabled', false);
+    		$('#printBtn').attr('disabled', false);    		
     	}
     }
     

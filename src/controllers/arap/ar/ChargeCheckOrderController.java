@@ -223,6 +223,23 @@ public class ChargeCheckOrderController extends Controller {
         renderJson(orderListMap); 
     }
     
+	public void list2() {
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+
+		List<Record> BillingOrders = null;
+
+		Map BillingOrderListMap = new HashMap();
+		BillingOrderListMap.put("draw", pageIndex);
+		BillingOrderListMap.put("data", BillingOrders);
+
+		renderJson(BillingOrderListMap);
+	}
+    
+    
     public void checkedList(){
     	String sLimit = "";
         String pageIndex = getPara("draw");

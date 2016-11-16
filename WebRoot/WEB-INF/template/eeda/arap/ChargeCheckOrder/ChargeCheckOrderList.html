@@ -86,15 +86,37 @@
                                     
 									<span class="badge" style='margin-top:12px;'> 总额RMB: <span id="totalAmountSpan">0</span></span> &nbsp;&nbsp;
 								</div>
-                               <%include("/eeda/component/form/detailTable.html", 
-                                        {
-                                            id:'eeda-table', 
-                                            style: 'width:2500px',
-                                            headers:['','工作单号','出货时间','类型','费用名称','客户','结算公司','货币类型','金额','汇率','总金额（CNY）',
-                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','箱号','车型','状态','DEBIT_NO'
-                                            ]
-                                        }){} %>
+								<div class="form-group">
+		                            <ul id="orderTabs" class="nav nav-tabs">
+		                                <li class="active"><a href="#unchecked" data-toggle="tab" data-src="unchecked" id ="uncheckedChargeCheckOrder">未选中明细</a>
+		                                </li>
+		                                <li class=""><a href="#checked" data-toggle="tab" id="checkedChargeCheckOrder" style="display:none">已选中明细</a>
+		                                </li>                               
+		                            </ul>
+                               </div>
+	                       <div class="tab-content">
+		                      <div class="tab-pane fade active in" id="unchecked">
+	                               <%include("/eeda/component/form/detailTable.html", 
+	                                        {
+	                                            id:'uncheckedEeda-table', 
+	                                            style: 'width:2500px',
+	                                            headers:['','工作单号','出货时间','类型','费用名称','客户','结算公司','货币类型','金额','汇率','总金额（CNY）',
+	                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','箱号','车型','状态','DEBIT_NO'
+	                                            ]
+	                                        }){} %>
+                               </div>
+                               <div role="tabpanel" class="tab-pane fade in" id="checked" style="display:none">
+                               	   <%include("/eeda/component/form/detailTable.html", 
+	                                        {
+	                                            id:'checkedEeda-table', 
+	                                            style: 'width:2500px',
+	                                            headers:['','工作单号','出货时间','类型','费用名称','客户','结算公司','货币类型','金额','汇率','总金额（CNY）',
+	                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','箱号','车型','状态','DEBIT_NO'
+	                                            ]
+	                                        }){} %>
+                               </div>
                             </div>
+                          </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade in" id="charge_check_order">
                             <div class="panel-body">
