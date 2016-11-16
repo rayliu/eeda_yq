@@ -1,5 +1,27 @@
-define([], function(){
-
+define(['jquery', 'dataTablesBootstrap'], function($){
+    //全局的ajax访问，处理ajax请求时sesion超时, 跳转到登录页面
+    $.ajaxSetup({
+        //contentType:"application/x-www-form-urlencoded;charset=utf-8",
+        error: function (xhr, e) {
+            if(xhr.responseText.indexOf('忘记密码')>0){
+              alert( '您未登录, 请重新登录.' );
+            }
+            // if (x.status == 403) {
+            //     window.location.reload(); 
+            // }
+        },
+        complete:function(XMLHttpRequest, textStatus){
+           console.log("ajaxSetup textStatus:"+textStatus);
+           if(XMLHttpRequest.responseText.indexOf('忘记密码')>0){
+              alert( '您未登录, 请重新登录.' );
+            }
+           // var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus"); //通过XMLHttpRequest取得响应头，sessionstatus，  
+           // if(sessionstatus=="timeout"){
+           //     //如果超时就处理 ，指定要跳转的页面
+           //             window.location.replace("${path}/common/login.do");
+           //     }
+          }
+    });
     //防止退格键返回上一页
     $(document).keydown(function (e) {
         var doPrevent;
@@ -75,6 +97,9 @@ define([], function(){
 var eeda={};
 window.eeda =eeda;
 
+$.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) { 
+    console.log(message);
+};
 //dataTables builder for 1.10
 eeda.dt = function(opt){
     var option = {
@@ -101,13 +126,16 @@ eeda.dt = function(opt){
         ajax: opt.ajax || '',
         // ajax: {
         //   url: opt.ajax || '',
-        //   error: function (xhr, error, thrown) {
-        //     if(xhr.responseText.indexOf('忘记密码')>0){
-        //       alert( '您未登录, 请重新登录.' );
-        //     }else{
-        //       console.log(thrown);
-        //       alert('表格处理出错了, 请联系技术人员查看.' );
-        //     }
+          // success:     function(data,status,xhr){
+          //   console.log(status);
+          // },
+          // error: function (xhr, error, thrown) {
+            // if(xhr.responseText.indexOf('忘记密码')>0){
+            //   alert( '您未登录, 请重新登录.' );
+            // }else{
+            //   throw error;
+            // }
+            //alert(error);
         //   }
         // } || '',
         columns: opt.columns || []
