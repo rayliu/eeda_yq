@@ -577,12 +577,8 @@ where joli.id=$P{item_id}]]>
 				<textFieldExpression><![CDATA[$F{head_customerTel}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="23" y="9" width="250" height="52" uuid="af90243c-bdac-4045-b78d-4dd4e6cfe5f3"/>
-				<imageExpression><![CDATA["yqlogo1.png"]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="277" y="26" width="265" height="35" uuid="d57b2223-ddaf-4f2e-8909-3eca6eda31e2"/>
-				<imageExpression><![CDATA["yqname.png"]]></imageExpression>
+				<reportElement x="0" y="-10" width="249" height="68" uuid="af90243c-bdac-4045-b78d-4dd4e6cfe5f3"/>
+				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="28" y="668" width="26" height="20" uuid="27f2325d-24d2-40d2-9926-af316121d649"/>
@@ -597,16 +593,6 @@ where joli.id=$P{item_id}]]>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[1.请安排吉柜于]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="55" y="761" width="406" height="41" uuid="479de888-6199-4ecd-945b-85ca2125d653"/>
-				<textElement textAlignment="Center">
-					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[电话:(0756)3225 991/92/93 传真:3225900
-地址: 珠海市石花路56号山海一品居2栋2单元7楼
-7th fl.,ShanHaiYiPing,No.56 Shihua Rd,Jida,Zhuhai,Guangdong,China
-]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="180" y="689" width="140" height="20" uuid="cef7875b-2560-459a-8cb1-156a4f47997e"/>

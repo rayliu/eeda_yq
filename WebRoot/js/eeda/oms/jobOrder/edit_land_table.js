@@ -123,7 +123,7 @@ $(document).ready(function() {
                 		return '';
                 }
             },
-            { "data": "UNLOAD_TYPE", "width": "100px",
+            { "data": "UNLOAD_TYPE", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -179,7 +179,8 @@ $(document).ready(function() {
                    var field_html = template('table_truck_type_field_template',
 	                    {
 	                        id: 'TRUCK_TYPE',
-	                        value: data
+	                        value: data,
+                            style:'width:100px'
 	                    }
 	                );
                     return field_html;
@@ -271,6 +272,34 @@ $(document).ready(function() {
             		return '<input type="text" name="cargo_desc" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
+            { "data": "LAND_CONTAINER_TYPE","width": "80px", 
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    var str = '<select name="land_container_type" class="form-control search-control" style="width:100px">'
+                    			+'<option></option>'
+			                   +'<option value="20\'GP" '+(data=='20\'GP' ? 'selected':'')+'>20GP</option>'
+			                   +'<option value="40\'GP" '+(data=='40\'GP' ? 'selected':'')+'>40GP</option>'
+                               +'<option value="40\'HQ" '+(data=='40\'HQ' ? 'selected':'')+'>40HQ</option>'
+			                   +'<option value="45\'GP" '+(data=='45\'GP' ? 'selected':'')+'>45GP</option>'
+			                   +'</select>';
+                    return str;
+                }
+            },
+            { "data": "LAND_CONTAINER_NO","width": "180px",  
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="land_container_no" value="'+data+'" class="form-control" style="width:200px"/>';
+                }
+            },
+            { "data": "LAND_SEAL_NO","width": "180px",  
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="land_seal_no" value="'+data+'" class="form-control" style="width:200px"/>';
+                }
+            },
             { "data": "PIECES", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
@@ -302,7 +331,7 @@ $(document).ready(function() {
             { "data": "DOC_NAME", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data){
-            			return '';
+            			return '<span style="width:200px" />';
             		}
             		else{
             			var arr = data.split(",");
@@ -313,7 +342,7 @@ $(document).ready(function() {
 		            		str += '<a href="/upload/doc/'+arr[i]+'" target="_blank">'+arr[i]+'</a>&nbsp;&nbsp;'
 		            			  +'<a id="'+idArr[i]+'" class="glyphicon glyphicon-remove delete_icon_of_sign_desc" style="margin-right:15px;" role="menuitem" tabindex="-10"></a>'
 	            		}
-	            		return str;
+	            		return '<span style="width:200px" >'+str+'</span>';
             		}
             	}
             },
