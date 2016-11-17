@@ -823,15 +823,7 @@ public class JobOrderController extends Controller {
     				+ " left join party p4 on p4.id=joa.booking_agent"
     				+ " where order_id=?", id);
     	}else if("trade".equals(type)){
-	    	re = Db.findFirst("select jot.*,p.abbr cost_company_abbr,p1.abbr charge_service_company_abbr,p2.abbr charge_sale_company_abbr,"
-	    			+ " c.name cost_currency_name, c1.name charge_service_currency_name, c2.name charge_sale_currency_name"
-	    			+ " from job_order_trade jot"
-	    			+ " left join party p on p.id=jot.cost_company "
-	    			+ " left join party p1 on p1.id=jot.charge_service_company "
-	    			+ " left join party p2 on p2.id=jot.charge_sale_company "
-	    			+ " left join currency c on c.id=jot.cost_currency"
-	    			+ " left join currency c1 on c1.id=jot.charge_service_currency"
-	    			+ " left join currency c2 on c2.id=jot.charge_sale_currency"
+	    	re = Db.findFirst("select * from job_order_trade"
 	    			+ " where order_id=?", id);
     	}
 		return re;
