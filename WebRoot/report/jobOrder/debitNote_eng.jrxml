@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="240"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -57,50 +57,16 @@
 	) company_name,
 	IFNULL(pr.address_eng, pr.address) address,
 	pr.phone,
-	(
-		SELECT
-			sum(total_amount)
+	(select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
+			CONCAT(c.name,' :\t ',sum(total_amount)) total
 		FROM
 			job_order_arap jor
 		LEFT JOIN currency c ON c.id = jor.currency_id
 		WHERE
 			jor.order_type = 'charge'
-		AND c. NAME = 'CNY'
-		AND $X{IN,jor.id,order_id}
-	) total_RMB,
-	(
-		SELECT
-			sum(total_amount)
-		FROM
-			job_order_arap jor
-		LEFT JOIN currency c ON c.id = jor.currency_id
-		WHERE
-			jor.order_type = 'charge'
-		AND c. NAME = 'USD'
-		AND $X{IN,jor.id,order_id}
-	) total_USD,
-	(
-		SELECT
-			sum(total_amount)
-		FROM
-			job_order_arap jor
-		LEFT JOIN currency c ON c.id = jor.currency_id
-		WHERE
-			jor.order_type = 'charge'
-		AND c. NAME = 'JPY'
-		AND $X{IN,jor.id,order_id}
-	) total_JPY,
-	(
-		SELECT
-			sum(total_amount)
-		FROM
-			job_order_arap jor
-		LEFT JOIN currency c ON c.id = jor.currency_id
-		WHERE
-			jor.order_type = 'charge'
-		AND c. NAME = 'HKD'
-		AND $X{IN,jor.id,order_id}
-	) total_HKD,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage
+AND $X{IN,jor.id,order_id}
+GROUP BY c.id) a
+	) total,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage
 FROM
 	 job_order jo
 LEFT JOIN job_order_arap jor ON jo.id = jor.order_id
@@ -189,10 +155,9 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 	<field name="phone" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="total_RMB" class="java.lang.Double"/>
-	<field name="total_USD" class="java.lang.Double"/>
-	<field name="total_JPY" class="java.lang.Double"/>
-	<field name="total_HKD" class="java.lang.Double"/>
+	<field name="total" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="vessel_voyage" class="java.lang.String"/>
 	<variable name="totoa_amountRMB" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{currency_total_amount}]]></variableExpression>
@@ -557,7 +522,7 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 				<text><![CDATA[ACCOUNT INFORMATION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="13" y="3" width="179" height="19" uuid="549213a8-9cde-41b4-9e2a-8f767ed59adc"/>
+				<reportElement x="13" y="4" width="179" height="19" uuid="549213a8-9cde-41b4-9e2a-8f767ed59adc"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
@@ -575,13 +540,9 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 				<textElement textAlignment="Left"/>
 				<textFieldExpression><![CDATA[$V{totoa_amountRMB}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="275" y="3" width="30" height="20" uuid="5e63f9e1-1036-4838-88bf-5d73094baff5"/>
-				<text><![CDATA[JPY:]]></text>
-			</staticText>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="305" y="3" width="55" height="20" uuid="9ec383c7-9d10-4030-85bb-e4433e8b3c70"/>
-				<textFieldExpression><![CDATA[$F{total_JPY}]]></textFieldExpression>
+			<textField>
+				<reportElement x="249" y="4" width="126" height="164" uuid="e90f71b5-6961-40db-b29c-2e5374ffee52"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
