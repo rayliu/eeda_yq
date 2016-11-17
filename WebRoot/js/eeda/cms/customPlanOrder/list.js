@@ -94,6 +94,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       
       $('#orderTabs a').click(function(){
     	  var custom_state = $(this).text();
+    	  if(custom_state=='全部'){
+    		  custom_state = '';
+    	  }
     	  var url = "/customPlanOrder/list?custom_state_equals="+custom_state;
     	  dataTable.ajax.url(url).load();
       })
