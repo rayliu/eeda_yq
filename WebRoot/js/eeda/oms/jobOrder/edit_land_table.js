@@ -464,6 +464,17 @@ $(document).ready(function() {
 		        }
 			});
 	});
+    
+    var self;
+    $('#land_table').on('click','[name=required_time_remark]',function(){
+    	self = $(this);
+    	$('#land_showNote').val(self.val());
+    	$('#land_showNote_btn').click();
+    });
+    $('#land_btnConfirm').click(function(){
+		var showNote = $('#land_showNote').val();
+		self.val(showNote);
+	})
 
 });
 });
