@@ -406,7 +406,7 @@ public class CustomPlanOrderController extends Controller {
     	String btnId = getPara("btnId");
     	CustomPlanOrder order = CustomPlanOrder.dao.findById(id);
     	if("confirmCompleted".equals(btnId)){
-    		order.set("status","已提交报关行");
+    		order.set("status","已提交");
     		order.set("fill_by",LoginUserController.getLoginUserId(this));
     		order.set("fill_stamp",new Date());
     	}
