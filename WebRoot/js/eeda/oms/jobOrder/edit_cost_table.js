@@ -18,11 +18,10 @@ $(document).ready(function() {
     });
     
     //费用明细确认按钮动作
-    $("#cost_table").on('click', '#costConfirm', function(e){
-    	e.preventDefault();
-    	var id = $(this).val();
-    	$.post('/jobOrder/feeConfirm',{id:id},function(joa){
-    		var order_id = joa.ORDER_ID;
+    $("#cost_table").on('click', '.costConfirm', function(){
+    	var id = $(this).parent().parent().parent().attr('id');
+    	$.post('/jobOrder/feeConfirm',{id:id},function(data){
+    		var order_id = $('#order_id').val();
 	    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=cost";
 	    	costTable.ajax.url(url).load();    		
     		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
@@ -108,13 +107,13 @@ $(document).ready(function() {
 			{ "width": "110px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
-                	if(full&&full.AUDIT_FLAG == 'Y'){
+                	if(full.ID&&full.AUDIT_FLAG == 'Y'){
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button>&nbsp';
                 		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> '; 
                 		}
                 	else if(full.ID){
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" id="costConfirm" class=" btn btn-success btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" class="costConfirm btn btn-success btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
                 	}else{
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>&nbsp';
                 		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> ';

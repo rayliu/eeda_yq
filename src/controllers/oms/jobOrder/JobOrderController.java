@@ -1349,10 +1349,8 @@ public class JobOrderController extends Controller {
     @Before(Tx.class)
     public void feeConfirm(){
 		String id = getPara("id");
-			JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",id);
-			joa.set("audit_flag", "Y");
-			joa.update();
-			renderJson(joa);
+		Db.update("update job_order_arap set audit_flag = 'Y' where id = ?", id);
+		renderJson("{\"result\":true}");
 	 }
     
     @Before(Tx.class)
