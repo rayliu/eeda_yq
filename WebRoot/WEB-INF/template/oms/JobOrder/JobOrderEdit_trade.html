@@ -30,6 +30,32 @@
                                 }){}%>
                         </div>
                      </div>
+                     <div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputSpField.html", 
+                                {   id:'cost_company', 
+                                    label:'供应商', 
+                                    value:trade.cost_company!'',
+                                    display_value:trade.cost_company_name!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputCurrencyField.html", 
+                                {   id:'cost_currency', 
+                                    label:'币制', 
+                                    value:trade.cost_currency!'',
+                                    display_value:trade.cost_currency_name!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'cost_currency_rate', 
+                                    label:'汇率', 
+                                    value:trade.cost_currency_rate!''
+                                }){}%>
+                        </div>
+                     </div>
+                     
                        <div class="row">
                             <div class="col-lg-12">
                                 <button class="btn btn-success btn-xs" type="button" id="add_trade_cost_table">添加明细</button><br><br>
@@ -39,11 +65,10 @@
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
                                         id:'trade_cost_table',
-                                        style:'width:2550px',
-                                        headers:['','供应商','商品名称','数量','单位','单价(CNY)','国内货值(CNY)','增值税率','退税率','退税金额','调整后退税金额','调整后单价','调整后总价','报关单价','数量','报关金额','报关币制','报关汇率','报关金额(CNY)','CURRENCY_NAME','SP_NAME'],
+                                        style:'width:2450px',
+                                        headers:['','商品名称','数量','单位','单价(CNY)','国内货值(CNY)','增值税率','退税率','退税金额','调整后退税金额','调整后单价','调整后总价','报关单价','数量','报关金额','报关币制','报关汇率','报关金额(CNY)','CURRENCY_NAME'],
                                         field_list:[
                                         '',
-                                        'sp',
                                         'commodity_name',
 										'number',
 										'unit',
@@ -61,8 +86,7 @@
 										'custom_currency',
 										'custom_rate',
 										'custom_amount_cny',
-										'CURRENCY_NAME',
-										'SP_NAME'
+										'CURRENCY_NAME'
                                             ],
                                         value_list: trade_cost_list![]
                                     }){} %>
@@ -81,9 +105,9 @@
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
                                         id:'charge_service_table',
-                                        style:'width:1100px',
-                                        headers:['','结算公司','费用名称','结算币制','结算汇率','金额','charge_name','currency_name','sp_name'],
-                                        field_list:['','sp','charge_id','currency','rate','fee_amount','charge_name','currency_name','sp_name'],
+                                        style:'width:1300px',
+                                        headers:['','结算公司','费用名称','金额','结算币制','结算汇率','金额(CNY)','charge_name','currency_name','sp_name'],
+                                        field_list:['','sp','charge_id','fee_amount','currency','rate','fee_amount_cny','charge_name','currency_name','sp_name'],
                                         value_list: trade_charge_service_list![]
                                     }){} %>
                             </div>
@@ -101,9 +125,9 @@
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
                                         id:'trade_sale_table',
-                                        style:'width:1100px',
-                                        headers:['','结算公司','费用名称','结算币制','结算汇率','金额','charge_name','currency_name','sp_name'],
-                                        field_list:['','sp','charge_id','currency','rate','fee_amount','charge_name','currency_name','sp_name'],
+                                        style:'width:1300px',
+                                        headers:['','结算公司','费用名称','金额','结算币制','结算汇率','金额(CNY)','charge_name','currency_name','sp_name'],
+                                        field_list:['','sp','charge_id','fee_amount','currency','rate','fee_amount_cny','charge_name','currency_name','sp_name'],
                                         value_list: trade_charge_sale_list![]
                                     }){} %>
                             </div>

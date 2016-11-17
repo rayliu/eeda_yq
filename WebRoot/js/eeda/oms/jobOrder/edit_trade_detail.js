@@ -17,5 +17,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             return arrays;
         };
         
+       $('#cost_currency_list').on('mousedown','a',function(){
+    	   $('#cost_currency_rate').val( $(this).attr('rate'));
+       })
+        
     });
 });

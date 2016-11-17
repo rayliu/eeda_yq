@@ -102,6 +102,13 @@ $(document).ready(function() {
                     return field_html;
               }
             },
+            { "data": "FEE_AMOUNT", "width": "180px","className":"currency_total_amount",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="fee_amount" value="'+data+'" class="form-control" style="width:200px"/>';
+                }
+            },
 			{ "data": "CURRENCY", "width": "60px",
             	"render": function ( data, type, full, meta ) {
 	                	if(!data)
@@ -124,11 +131,11 @@ $(document).ready(function() {
 	        		return '<input type="text" name="rate" value="'+data+'" class="form-control" style="width:200px"/>';
 	        	}
             },
-            { "data": "FEE_AMOUNT", "width": "180px",
+            { "data": "FEE_AMOUNT_CNY", "width": "180px","className":"cny_total_amount",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="fee_amount" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="fee_amount_cny" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
             { "data": "CHARGE_NAME", "visible": false,
@@ -166,31 +173,71 @@ $(document).ready(function() {
     	cargoTable.ajax.url(url).load();
     }
     
- 
     if($('#charge_service_table td').length>1){
-    	var total_service = cargoTable.column(5).data().reduce(function (a, b) {
+    	var total_fee_amount = cargoTable.column(3).data().reduce(function (a, b) {
     		a = parseFloat(a);
     		if(isNaN(a)){ a = 0; }                   
     		b = parseFloat(b);
     		if(isNaN(b)){ b = 0; }
-    		return a + b;
+    		return (a + b).toFixed(3);
     	})
-		$('#charge_service_table tfoot').find('th').eq(5).html(total_service);
-		var total_count = $('#trade_cost_table tfoot').find('th').eq(4).text();
-	    var total_tax_refund = $('#trade_cost_table tfoot').find('th').eq(10).text();
+    	$('#charge_service_table tfoot').find('th').eq(3).html(total_fee_amount);
+    	
+    	var total_service = cargoTable.column(6).data().reduce(function (a, b) {
+    		a = parseFloat(a);
+    		if(isNaN(a)){ a = 0; }                   
+    		b = parseFloat(b);
+    		if(isNaN(b)){ b = 0; }
+    		return (a + b).toFixed(3);
+    	})
+		$('#charge_service_table tfoot').find('th').eq(6).html(total_service);
+    	
+		var total_count = $('#trade_cost_table tfoot').find('th').eq(2).text();
+	    var total_tax_refund = $('#trade_cost_table tfoot').find('th').eq(8).text();
 	    var total_difference = parseFloat(total_tax_refund)-parseFloat(total_service);
 	    var price_difference = total_difference/parseFloat(total_count);
-	    $('#total_difference').text(total_difference);
-	    $('#price_difference').text(price_difference);
+	    $('#total_difference').text(total_difference.toFixed(3));
+	    $('#price_difference').text(price_difference.toFixed(3));
     }
 
-    $('#charge_service_table').on('keyup', '[name=fee_amount]', function(){
-    	var a = this.value;
-		if(a!=''&&!isNaN(a)){
-			$("#trade_cost_table [name=number]").each(function(){
-				$(this).keyup();
-			});
-		}
+    $('#charge_service_table').on('keyup', '[name=fee_amount],[name=fee_amount_cny],[name=rate]', function(){
+    	var name = $(this).attr('name');
+    	var row = $(this).parent().parent();
+    	var fee_amount_cny = $(row.find('[name=fee_amount_cny]')).val();
+    	var fee_amount = $(row.find('[name=fee_amount]')).val();
+    	var rate = $(row.find('[name=rate]')).val();
+    	
+    	if(name=='fee_amount_cny'){
+        	if(fee_amount_cny==''||rate==''){
+        		$(row.find('[name=fee_amount]')).val('');
+        	}else if(!isNaN(fee_amount_cny)&&!isNaN(rate)){
+        		$(row.find('[name=fee_amount]')).val((fee_amount_cny/rate).toFixed(3));
+        	}
+    	}
+    	if(name=='rate'){
+    		if(fee_amount!=''&&!isNaN(fee_amount)){
+	    		$(row.find('[name=fee_amount_cny]')).val((fee_amount*rate).toFixed(3));
+	    	}else if(fee_amount_cny!=''&&!isNaN(fee_amount_cny)){
+	    		$(row.find('[name=fee_amount]')).val((fee_amount_cny/rate).toFixed(3));
+	    	}
+    	}
+    	if(name=='fee_amount'){
+	    	if(fee_amount==''||rate==''){
+	    		$(row.find('[name=fee_amount_cny]')).val('');
+	    	}else if(!isNaN(fee_amount)&&!isNaN(rate)){
+	    		$(row.find('[name=fee_amount_cny]')).val((fee_amount*rate).toFixed(3));
+	    	}
+    	}
+    	
+    	var total_fee_amount_cny = 0;
+		$('#charge_service_table [name=fee_amount_cny]').each(function(){
+			var a = this.value;
+			if(a!=''&&!isNaN(a)){
+				total_fee_amount_cny+=parseFloat(a);
+			}
+		})
+		$($('.dataTables_scrollFoot tr')[1]).find('th').eq(6).html(total_fee_amount_cny.toFixed(3));
+		
 		var total = 0;
 		$('#charge_service_table [name=fee_amount]').each(function(){
 			var a = this.value;
@@ -198,8 +245,14 @@ $(document).ready(function() {
 				total+=parseFloat(a);
 			}
 		})
-		$($('.dataTables_scrollFoot tr')[1]).find('th').last().html(total.toFixed(3));
+		$($('.dataTables_scrollFoot tr')[1]).find('th').eq(3).html(total.toFixed(3));
+		
+    	$("#trade_cost_table [name=number]").each(function(){
+			$(this).keyup();
+		});
     })
+   
+
 
 });
 });

@@ -103,6 +103,13 @@ $(document).ready(function() {
                          return field_html;
                    }
                  },
+                 { "data": "FEE_AMOUNT", "width": "180px","className":"currency_total_amount",
+                     "render": function ( data, type, full, meta ) {
+                         if(!data)
+                             data='';
+                         return '<input type="text" name="fee_amount" value="'+data+'" class="form-control" style="width:200px"/>';
+                     }
+                 },
      			{ "data": "CURRENCY", "width": "60px",
                  	"render": function ( data, type, full, meta ) {
      	                	if(!data)
@@ -125,11 +132,11 @@ $(document).ready(function() {
      	        		return '<input type="text" name="rate" value="'+data+'" class="form-control" style="width:200px"/>';
      	        	}
                  },
-                 { "data": "FEE_AMOUNT", "width": "180px",
+                 { "data": "FEE_AMOUNT_CNY", "width": "180px","className":"cny_total_amount",
                      "render": function ( data, type, full, meta ) {
                          if(!data)
                              data='';
-                         return '<input type="text" name="fee_amount" value="'+data+'" class="form-control" style="width:200px"/>';
+                         return '<input type="text" name="fee_amount_cny" value="'+data+'" class="form-control" style="width:200px"/>';
                      }
                  },
                  { "data": "CHARGE_NAME", "visible": false,
@@ -168,18 +175,59 @@ $(document).ready(function() {
     }
     
     if($('#trade_sale_table td').length>1){
-		$('#trade_sale_table tfoot').find('th').eq(5).html(
-				cargoTable.column(5).data().reduce(function (a, b) {
-	    		a = parseFloat(a);
-	    		if(isNaN(a)){ a = 0; }                   
-	    		b = parseFloat(b);
-	    		if(isNaN(b)){ b = 0; }
-	    		return a + b;
-	    	})
-    	);
+    	var col = [3,6];
+    	for (var i=0;i<col.length;i++){
+	    	var arr = cargoTable.column(col[i]).data();
+    		$('#trade_sale_table tfoot').find('th').eq(col[i]).html(
+	    		arr.reduce(function (a, b) {
+		    		a = parseFloat(a);
+		    		if(isNaN(a)){ a = 0; }                   
+		    		b = parseFloat(b);
+		    		if(isNaN(b)){ b = 0; }
+		    		return (a + b).toFixed(3);
+		    	})
+	    	);
+    	}
     }
     
-    $('#trade_sale_table').on('keyup', '[name=fee_amount]', function(){
+    $('#trade_sale_table').on('keyup', '[name=fee_amount],[name=fee_amount_cny],[name=rate]', function(){
+    	var name = $(this).attr('name');
+    	var row = $(this).parent().parent();
+    	var fee_amount_cny = $(row.find('[name=fee_amount_cny]')).val();
+    	var fee_amount = $(row.find('[name=fee_amount]')).val();
+    	var rate = $(row.find('[name=rate]')).val();
+    	
+    	if(name=='fee_amount_cny'){
+        	if(fee_amount_cny==''||rate==''){
+        		$(row.find('[name=fee_amount]')).val('');
+        	}else if(!isNaN(fee_amount_cny)&&!isNaN(rate)){
+        		$(row.find('[name=fee_amount]')).val((fee_amount_cny/rate).toFixed(3));
+        	}
+    	}
+    	if(name=='rate'){
+    		if(fee_amount!=''&&!isNaN(fee_amount)){
+	    		$(row.find('[name=fee_amount_cny]')).val((fee_amount*rate).toFixed(3));
+	    	}else if(fee_amount_cny!=''&&!isNaN(fee_amount_cny)){
+	    		$(row.find('[name=fee_amount]')).val((fee_amount_cny/rate).toFixed(3));
+	    	}
+    	}
+    	if(name=='fee_amount'){
+	    	if(fee_amount==''||rate==''){
+	    		$(row.find('[name=fee_amount_cny]')).val('');
+	    	}else if(!isNaN(fee_amount)&&!isNaN(rate)){
+	    		$(row.find('[name=fee_amount_cny]')).val((fee_amount*rate).toFixed(3));
+	    	}
+    	}
+    	
+    	var total_fee_amount_cny = 0;
+		$('#trade_sale_table [name=fee_amount_cny]').each(function(){
+			var a = this.value;
+			if(a!=''&&!isNaN(a)){
+				total_fee_amount_cny+=parseFloat(a);
+			}
+		})
+		$($('.dataTables_scrollFoot tr')[2]).find('th').eq(6).html(total_fee_amount_cny.toFixed(3));
+		
     	var total = 0;
 		$('#trade_sale_table [name=fee_amount]').each(function(){
 			var a = this.value;
@@ -187,7 +235,7 @@ $(document).ready(function() {
 				total+=parseFloat(a);
 			}
 		})
-		$($('.dataTables_scrollFoot tr')[2]).find('th').last().html(total.toFixed(3));
+		$($('.dataTables_scrollFoot tr')[2]).find('th').eq(3).html(total.toFixed(3));
     })
 
 });

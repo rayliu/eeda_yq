@@ -821,7 +821,9 @@ public class JobOrderController extends Controller {
     				+ " left join party p4 on p4.id=joa.booking_agent"
     				+ " where order_id=?", id);
     	}else if("trade".equals(type)){
-	    	re = Db.findFirst("select * from job_order_trade"
+	    	re = Db.findFirst("select j.*,p.abbr cost_company_name, c.name cost_currency_name from job_order_trade j "
+	    			+ " left join party p on p.id = j.cost_company"
+	    			+ " left join currency c on c.id = j.cost_currency"
 	    			+ " where order_id=?", id);
     	}
 		return re;
