@@ -897,8 +897,9 @@ public class JobOrderController extends Controller {
 	    			+ " where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("china_self".equals(type)){
-	    	itemSql = "select * from job_order_custom_china_self_item"
-	    			+ " where order_id=? order by id";
+	    	itemSql = "select j.*,p.abbr custom_bank_name from job_order_custom_china_self_item j"
+	    			+ " left join party p on p.id = j.custom_bank"
+	    			+ " where j.order_id=? order by j.id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("custom_doc".equals(type)){
 	    	itemSql = "select jod.*,u.c_name from job_order_custom_doc jod left join user_login u on jod.uploader=u.id "

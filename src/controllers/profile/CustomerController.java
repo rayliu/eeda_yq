@@ -394,13 +394,13 @@ public class CustomerController extends Controller {
     // 列出所有party名称,供应商
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})
     public void searchParty() {
-        String partyName = getPara("partyName");
-        String type = getPara("type");
+        String partyName = getPara("input")==null?getPara("partyName"):getPara("input");
+        String type = getPara("type")==null?getPara("para"):getPara("type");
         UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
         
         List<Record> partyList = Collections.EMPTY_LIST;
-        String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+        String sql = "select p.id, p.abbr,p.abbr name, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
                 + " ifnull(p.address_eng, p.address) address, p.phone from party p where sp_type like '%"+type+"%' ";
         if(!"carrier".equals(type)){
             sql += "and office_id="+office_id;

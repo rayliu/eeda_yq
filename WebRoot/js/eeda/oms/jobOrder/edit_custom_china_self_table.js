@@ -63,6 +63,7 @@ $(document).ready(function() {
             $(".bootstrap-datetimepicker-widget").hide();   
             $(el).trigger('keyup');
         });
+        eeda.bindTableField('custom_self_item_table','CUSTOM_BANK','/customer/searchParty','broker');
    };
     //------------事件处理
     var cargoTable = eeda.dt({
@@ -79,9 +80,17 @@ $(document).ready(function() {
             },
             { "data": "CUSTOM_BANK", "width": "180px",
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
+                	if(!data)
                         data='';
-                    return '<input type="text" name="custom_bank" value="'+data+'" class="form-control" style="width:200px"/>';
+                    var field_html = template('table_dropdown_template',
+                        {
+                            id: 'CUSTOM_BANK',
+                            value: data,
+                            display_value: full.CUSTOM_BANK_NAME,
+                            style:'width:200px'
+                        }
+                    );
+                    return field_html;
                 }
             },
             { "data": "CUSTOM_ORDER_NO", "width": "180px",
@@ -126,6 +135,13 @@ $(document).ready(function() {
 		                );
 	                    return field_html;
             	}
+            },
+            { "data": "CUSTOM_BANK_NAME", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
             }
         ]
     });
