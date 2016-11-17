@@ -14,6 +14,7 @@ import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
 import models.eeda.cms.CustomPlanOrderItem;
 import models.eeda.oms.jobOrder.JobOrder;
+import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -489,5 +490,14 @@ public class CustomPlanOrderController extends Controller {
     	Db.update("delete from custom_plan_order_template where id = ?",id);
     	renderJson("{\"result\":true}");
     }
+    
+    //费用明细确认
+    @Before(Tx.class)
+    public void feeConfirm(){
+		String id = getPara("id");
+		Db.update("update custom_plan_order_arap set audit_flag = 'Y' where id = ?", id);
+		renderJson("{\"result\":true}");
+	 }
+    
 
 }

@@ -18,12 +18,11 @@ $(document).ready(function() {
     });
     
     //费用明细确认按钮动作
-    $("#cost_table").on('click', '#costConfirm', function(e){
-    	e.preventDefault();
-    	var id = $(this).val();
-    	$.post('/jobOrder/feeConfirm',{id:id},function(joa){
-    		var order_id = joa.ORDER_ID;
-	    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=cost&showHide="+is_show_hide_charge_col;
+    $("#cost_table").on('click', '.costConfirm', function(){
+    	var id = $(this).parent().parent().parent().attr('id');
+    	$.post('/customPlanOrder/feeConfirm',{id:id},function(joa){
+    		var order_id = $('#order_id').val();
+	    	var url = "/customPlanOrder/tableList?order_id="+order_id+"&type=cost&showHide="+is_show_hide_charge_col;
 	    	costTable.ajax.url(url).load();    		
     		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
     	},'json').fail(function() {
@@ -112,16 +111,16 @@ $(document).ready(function() {
                         return '<input type="checkbox" class="checkBox" name="hide_flag">';
 			    }
 			},
-			{ "width": "110px",
+			{ "data": "ID","width": "110px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
-                	if(full&&full.AUDIT_FLAG == 'Y'){
+                	if(data&&full.AUDIT_FLAG == 'Y'){
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button>&nbsp';
                 		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> '; 
                 		}
-                	else if(full.ID){
+                	else if(data){
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" id="costConfirm" class=" btn btn-success btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" class=" btn btn-success btn-xs costConfirm" style="width:50px" value="'+data+'" >确认</button> ';		
                 	}else{
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>&nbsp';
                 		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> ';
