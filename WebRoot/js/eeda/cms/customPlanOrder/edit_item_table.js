@@ -58,11 +58,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    };
 	    
 	    var bindFieldEvent=function(){
- 	    	eeda.bindTableField('cargo_table','UNIT_ID','/serviceProvider/searchUnit','');
-	    	eeda.bindTableField('cargo_table','POR','/location/searchPort','');
-	    	eeda.bindTableField('cargo_table','POL','/location/searchPort','');
-	    	eeda.bindTableField('cargo_table','POD','/location/searchPort','');
-	    	eeda.bindTableField('cargo_table','CARRIER','/serviceProvider/searchCarrier','');
 	    	eeda.bindTableFieldCurrencyId('cargo_table','CURRENCY','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('cargo_table','DESTINATION_COUNTRY_ITEM','/location/searchCountry','');
 	    	eeda.bindTableField('cargo_table','EXEMPTION','/serviceProvider/searchCustomExemptionNature','');
@@ -77,7 +72,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		        bindFieldEvent();
 		    },
             columns:[
-	            {"width": "10px",
+	            {"width": "20px",
 	                "render": function ( data, type, full, meta ) {
 	                		return '<button type="button" class="delete btn btn-default btn-xs" style="width:40px" >删除</button> ';
 	                }
@@ -103,11 +98,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                   return '<input type="text" name="COMMODITY_NAME" value="'+data+'" class="form-control search-control" style="width:100px"/>';
 	                }
 	            },
-	            { "data": "STANDARD","width": "80px",
+	            { "data": "STANDARD","width": "200px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="STANDARD" value="'+data+'" class="form-control search-control" style="width:100px"/>';
+	                    return '<input type="text" name="STANDARD" value="'+data+'" class="form-control search-control" style="width:220px"/>';
 	                }
 	            },
 	            { "data": "DECLARE_ELEMENT","width": "180px",
@@ -239,13 +234,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return field_html;
 	                }
 	            },
-	            { "data": "IS_GEN_JOB", "visible": false,
-	            	"render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                    return data;
-	                }
-	            } ,
 	            { "data": "CURRENCY_NAME", "visible": false,
 	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
@@ -284,19 +272,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    		$(row.find('[name=TOTAL_PRICE]')).val(total_price);
 	    	}
 	    });
+	   
 	    
-	    
-	    var self ;
-	    $('#cargo_table').on('click','input[name=DECLARE_ELEMENT]',function(){
+	    var self;
+	    $('#cargo_table').on('click','[name=DECLARE_ELEMENT],[name=STANDARD]',function(){
 	    	self = $(this);
-	    	$('#showNote').val(self.val())
+	    	$('#showNote').val(self.val());
+	    	if(self.attr('name')=="STANDARD"){
+	    		$('#msg .modal-header').text("规格型号");
+	    	}
 	    	$('#a_btn').click();
-	    	$('#btnConfirm').click(function(){
-	    		var showNote = $('#showNote').val();
-	    		self.val(showNote);
-	    	})
 	    });
-	    
+	    $('#btnConfirm').click(function(){
+    		var showNote = $('#showNote').val();
+    		self.val(showNote);
+    	})
 
 	    $('#add_cargo').on('click', function(){
 	        var item={};
