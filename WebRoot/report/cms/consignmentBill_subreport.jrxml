@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="consignmentBill_subreport" language="groovy" pageWidth="555" pageHeight="410" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5b0c1b6f-05da-4e4f-be2a-010092813244">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="order_id" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from custom_plan_order_shipping_item where order_id = $P{order_id}]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="container_number" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pack" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="number" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cargo_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="net_weight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gross_weight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="volume" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="-3" y="0" width="94" height="20" uuid="846bed7a-7a9e-4f59-937a-c9efcb920416"/>
+				<textFieldExpression><![CDATA[$F{container_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="0" width="43" height="20" uuid="49fc0e1c-d89c-4932-8385-acefc296d2a9"/>
+				<textFieldExpression><![CDATA[$F{pack}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="158" y="0" width="50" height="20" uuid="d45f3d2c-1202-473c-a3f2-e1bfe5417db3"/>
+				<textFieldExpression><![CDATA[$F{number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="211" y="0" width="144" height="20" uuid="2746963c-470f-4420-9209-75f844aea400"/>
+				<textFieldExpression><![CDATA[$F{cargo_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="355" y="0" width="50" height="20" uuid="1295a973-5149-404d-9cba-acd0f3460767"/>
+				<textFieldExpression><![CDATA[$F{net_weight}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="408" y="0" width="50" height="20" uuid="750e2fb2-32b0-4502-92c2-9b6098b2add1"/>
+				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="481" y="0" width="50" height="20" uuid="dd8a08f0-91da-47f8-b50a-c6920a290078"/>
+				<textFieldExpression><![CDATA[$F{volume}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
