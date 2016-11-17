@@ -106,11 +106,7 @@ $(document).ready(function() {
         var custom_type_str = this_custom_type.toString();
         
         //自理报关还是委托报关
-        var  entrust_or_self_custom = [];
-        $('#entrust_or_self_custom input[type="checkbox"]:checked').each(function(){
-        	entrust_or_self_custom.push($(this).val()); 
-        });
-        var entrust_or_self_custom_str = entrust_or_self_custom.toString();
+        var entrust_or_self_custom_str = $('#entrust_or_self_custom input[type="radio"]:checked').val();
         
         var order={}
         order.id = $('#order_id').val();
@@ -160,7 +156,6 @@ $(document).ready(function() {
 	        //报关
 	        if(custom_type_str.indexOf('china')>-1){
 	        	if(entrust_or_self_custom_str.indexOf('self_custom')>-1){
-			        order.chinaCustom_self_detail = itemOrder.buildCustomSelfDetail();
 			        order.chinaCustom_self_item = itemOrder.buildCustomSelfItem();
 	        	}
 	        	if(entrust_or_self_custom_str.indexOf('entrust_custom')>-1){

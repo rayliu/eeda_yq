@@ -77,14 +77,14 @@ $(document).ready(function() {
                 	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
                 }
             },
-            { "data": "CUSTOM_BANK", "width": "120px",
+            { "data": "CUSTOM_BANK", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="custom_bank" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "CUSTOM_ORDER_NO", "width": "120px",
+            { "data": "CUSTOM_ORDER_NO", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -106,14 +106,14 @@ $(document).ready(function() {
  		           return str;
             	}
             },
-            { "data": "CREATOR", "width": "120px",
+            { "data": "CREATOR", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
             		return '<input type="text" name="creator" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "CREATE_STAMP", "width": "120px",
+            { "data": "CREATE_STAMP", "width": "180px",
             	"render": function ( data, type, full, meta ) {
            		 		if(!data)
 	                        data='';

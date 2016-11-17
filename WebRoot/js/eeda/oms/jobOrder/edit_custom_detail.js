@@ -94,7 +94,7 @@ $(document).ready(function() {
         }
     });
     
-    $('#entrust_or_self_custom input[type="checkbox"]').click(function(){
+    $('#entrust_or_self_custom input[type="radio"]').click(function(){
     	var checkValue=$(this).val();
     	if($(this).prop('checked')){
     		showCustomTab(checkValue);
@@ -117,7 +117,7 @@ $(document).ready(function() {
     
     var entrust_or_self_custom_arr = entrust_or_self_custom_str.split(",");
     for(var i=0;i<entrust_or_self_custom_arr.length;i++){
-    	$('#entrust_or_self_custom input[type="checkbox"]').each(function(){
+    	$('#entrust_or_self_custom input[type="radio"]').each(function(){
     		var checkValue = this.value;
     		if(entrust_or_self_custom_arr[i]==checkValue){
     			this.checked = true;
@@ -126,46 +126,10 @@ $(document).ready(function() {
     	})
     }
 	
-    //报关类型,国内,自理报关
-    itemOrder.buildCustomSelfDetail=function(){
-		var arrays = [];
-    	var item = {};
-    	
-    	//报关状态checkbox遍历取值
-        var statusVal = [];
-        $('#custom_china_self_form input[type="checkbox"]:checked').each(function(){
-        	statusVal.push($(this).val()); 
-        });
-        item.status = statusVal.toString();
-        
-        item['id'] = $('#customSelf_id').val();
-    	item['custom_type'] = "china_self";
-    	
-    	var customForm = $('#custom_china_self_form input,#custom_china_self_form select');
-    	for(var i = 0; i < customForm.length; i++){
-    		var name = customForm[i].id;
-        	var value =customForm[i].value;
-        	if(name){
-        		if( name.indexOf('self_')>-1 ){
-    				name = name.replace('self_','');
-    			}
-        		item[name] = value;
-        	}
-    	}
-    	arrays.push(item);
-    	return arrays;
-	}
     //报关类型,国内
     itemOrder.buildCustomDetail=function(){
     	var arrays = [];
     	var item = {};
-    	
-    	//报关状态checkbox遍历取值
-    	var statusVal = [];
-    	$('#customForm input[type="checkbox"]:checked').each(function(){
-    		statusVal.push($(this).val()); 
-    	});
-    	item.status = statusVal.toString();
     	
     	item['id'] = $('#custom_id').val();
     	item['custom_type'] = "china";

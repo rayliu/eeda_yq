@@ -54,12 +54,12 @@ $(document).ready(function() {
         id: 'custom_doc_table',
         autoWidth: false,
         columns:[
-			{ "data":"ID","width": "50px",
+			{ "data":"ID","width": "30px",
 			    "render": function ( data, type, full, meta ) {
 			    	if(full.SHARE_FLAG=='Y')
-			    		return '<input type="checkbox" class="checkBox" checked style="width:30px">';
+			    		return '<input type="checkbox" class="checkBox" checked style="width:50px">';
 			    	else 
-			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
+			    		return '<input type="checkbox" class="checkBox" style="width:50px">';
 			    }
 			},
             { "width": "30px",
@@ -67,32 +67,20 @@ $(document).ready(function() {
                 	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
                 }
             },
-            { "data": "DOC_NAME","width": "280px",
+            { "data": "DOC_NAME","width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                    return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:200px" target="_blank">'+data+'</a>';
                 }
             },
-            { "data": "C_NAME","width": "180px",
-                "render": function ( data, type, full, meta ) {
-                	if(!data)
-                        data='';
-                	return data;
-                }
-            },
-            { "data": "UPLOAD_TIME", "width": "180px",
+            { "data": "C_NAME","width": "180px"},
+            { "data": "UPLOAD_TIME", "width": "180px"},
+            { "data": "REMARK","width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return data;
-                }
-            },
-            { "data": "REMARK","width": "280px",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
+                    return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
             { "data": "SHARE_FLAG", "visible": false }

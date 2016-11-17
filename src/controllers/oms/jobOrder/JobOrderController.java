@@ -293,10 +293,8 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> chinaCustom = (ArrayList<Map<String, String>>)dto.get("chinaCustom");
 		List<Map<String, String>> abroadCustom = (ArrayList<Map<String, String>>)dto.get("abroadCustom");
 		List<Map<String, String>> hkCustom = (ArrayList<Map<String, String>>)dto.get("hkCustom");
-		List<Map<String, String>> chinaCustom_self_detail = (ArrayList<Map<String, String>>)dto.get("chinaCustom_self_detail");
 		List<Map<String, String>> chinaCustom_self_item = (ArrayList<Map<String, String>>)dto.get("chinaCustom_self_item");
 		DbUtils.handleList(chinaCustom, id, JobOrderCustom.class, "order_id");
-		DbUtils.handleList(chinaCustom_self_detail, id, JobOrderCustom.class, "order_id");
 		DbUtils.handleList(chinaCustom_self_item, "job_order_custom_china_self_item", id, "order_id");
 		DbUtils.handleList(abroadCustom, id, JobOrderCustom.class, "order_id");
 		DbUtils.handleList(hkCustom, id, JobOrderCustom.class, "order_id");
