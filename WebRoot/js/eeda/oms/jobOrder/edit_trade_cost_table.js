@@ -88,18 +88,18 @@ $(document).ready(function() {
                         return field_html;
 				}
 			},
-            { "data": "COMMODITY_NAME", "width": "180px",
+            { "data": "COMMODITY_NAME", "width": "130px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="commodity_name" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="commodity_name" value="'+data+'" class="form-control" style="width:150px"/>';
                 }
             },
-            { "data": "NUMBER", "width": "180px","className":"number",
+            { "data": "NUMBER", "width": "100px","className":"number",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="number" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="number" value="'+data+'" class="form-control" style="width:120px"/>';
                 }
             },
             { "data": "UNIT", "width": "80px",
@@ -121,81 +121,81 @@ $(document).ready(function() {
                 	return str;
             	}
             },
-            { "data": "PRICE", "width": "180px",
+            { "data": "PRICE", "width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="price" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="price" value="'+data+'" class="form-control" style="width:120px"/>';
             	}
             },
-            { "data": "DOMESTIC_PRICE", "width": "180px",
+            { "data": "DOMESTIC_PRICE", "width": "130px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="domestic_price" value="'+data+'" class="form-control" style="width:200px" disabled/>';
+            		return '<input type="text" name="domestic_price" value="'+data+'" class="form-control" style="width:150px" disabled/>';
             	}
             },
-            { "data": "VALUE_ADDED_TAX", "width": "180px",
+            { "data": "VALUE_ADDED_TAX", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="value_added_tax" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="value_added_tax" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
-            { "data": "TAX_REFUND_RATE", "width": "180px",
+            { "data": "TAX_REFUND_RATE", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="tax_refund_rate" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="tax_refund_rate" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
-            { "data": "TAX_REFUND_AMOUNT", "width": "180px",
+            { "data": "TAX_REFUND_AMOUNT", "width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="tax_refund_amount" value="'+data+'" class="form-control" style="width:200px" disabled/>';
+            		return '<input type="text" name="tax_refund_amount" value="'+data+'" class="form-control" style="width:120px" disabled/>';
             	}
             },
-            { "data": "ADJUSTED_TAX_REFUND_AMOUNT", "width": "180px",
+            { "data": "ADJUSTED_TAX_REFUND_AMOUNT", "width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="adjusted_tax_refund_amount" value="'+data+'" class="form-control" style="width:200px" disabled/>';
+            		return '<input type="text" name="adjusted_tax_refund_amount" value="'+data+'" class="form-control" style="width:120px" disabled/>';
             	}
             },
-            { "data": "ADJUSTED_UNIT_PRICE", "width": "180px",
+            { "data": "ADJUSTED_UNIT_PRICE", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="adjusted_unit_price" value="'+data+'" class="form-control" style="width:200px" disabled/>';
+            		return '<input type="text" name="adjusted_unit_price" value="'+data+'" class="form-control" style="width:100px" disabled/>';
             	}
             },
-            { "data": "ADJUSTED_TOTAL_PRICE", "width": "180px",
+            { "data": "ADJUSTED_TOTAL_PRICE", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="adjusted_total_price" value="'+data+'" class="form-control" style="width:200px" disabled/>';
+            		return '<input type="text" name="adjusted_total_price" value="'+data+'" class="form-control" style="width:100px" disabled/>';
             	}
             },
-            { "data": "CUSTOM_PRICE", "width": "180px",
+            { "data": "CUSTOM_PRICE", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="custom_price" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="custom_price" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
-            { "data": "number", "width": "180px",
+            { "data": "number", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="custom_number" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="custom_number" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
-            { "data": "CUSTOM_AMOUNT", "width": "180px","className":"currency_total_amount",
+            { "data": "CUSTOM_AMOUNT", "width": "100px","className":"currency_total_amount",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="custom_amount" value="'+data+'" class="form-control" style="width:200px" disabled/>';
+            		return '<input type="text" name="custom_amount" value="'+data+'" class="form-control" style="width:120px" disabled/>';
             	}
             },
             { "data": "CUSTOM_CURRENCY", "width": "60px",
@@ -213,18 +213,18 @@ $(document).ready(function() {
 	                    return field_html;
             	}
             },
-            { "data": "CUSTOM_RATE", "width": "180px","className":"currency_rate",
+            { "data": "CUSTOM_RATE", "width": "80px","className":"currency_rate",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="custom_rate" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="custom_rate" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
-            { "data": "CUSTOM_AMOUNT_CNY", "width": "180px","className":"cny_total_amount",
+            { "data": "CUSTOM_AMOUNT_CNY", "width": "100px","className":"cny_total_amount",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="custom_amount_cny" value="'+data+'" class="form-control" style="width:200px" disabled/>';
+            		return '<input type="text" name="custom_amount_cny" value="'+data+'" class="form-control" style="width:120px" disabled/>';
             	}
             },
             { "data": "CURRENCY_NAME", "visible": false,
@@ -256,7 +256,7 @@ $(document).ready(function() {
     }
     
     if($('#trade_cost_table td').length>1){
-    	var col = [4, 7, 10, 11, 13, 16, 19];
+    	var col = [3, 6, 9, 10, 12, 15, 18];
     	for (var i=0;i<col.length;i++){
 	    	var arr = cargoTable.column(col[i]).data();
     		$('#trade_cost_table tfoot').find('th').eq(col[i]).html(
@@ -287,7 +287,7 @@ $(document).ready(function() {
 				total+=parseInt(a);
 			}
 		})
-		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html(total);
+		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html(total);
     })
     
     $('#trade_cost_table').on('keyup', '[name=custom_number]', function(){
@@ -319,7 +319,7 @@ $(document).ready(function() {
     				total+=parseFloat(a);
     			}
     		})
-    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(16).html(total);
+    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(15).html(total);
     	}
     })
 
@@ -342,7 +342,7 @@ $(document).ready(function() {
     				total+=parseFloat(a);
     			}
     		})
-    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(7).html(total);
+    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html(total);
     		if(tax_refund_rate==''){
         		$(row.find('[name=tax_refund_amount]')).val('');
         	}else if(!isNaN(tax_refund_rate)){
@@ -355,7 +355,7 @@ $(document).ready(function() {
         				total+=parseFloat(a);
         			}
         		})
-        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html(total);
+        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(9).html(total);
         	}
     	}
     
@@ -403,7 +403,7 @@ $(document).ready(function() {
         				total+=parseFloat(a);
         			}
         		})
-        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(13).html(total);
+        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(12).html(total);
         		if(tax_refund_rate==''){
             		$(row.find('[name=adjusted_tax_refund_amount]')).val('');
             	}else if(!isNaN(tax_refund_rate)){
@@ -416,7 +416,7 @@ $(document).ready(function() {
             				total+=parseFloat(a);
             			}
             		})
-            		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(11).html(total);
+            		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html(total);
             	}
         	}
     	}
