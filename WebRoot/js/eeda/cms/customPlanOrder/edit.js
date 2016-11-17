@@ -229,7 +229,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	$.post('/jobOrderReport/printConsignmentBill', {id:id}, function(data){
 	    			$('#printBtn').prop('disabled', false);
 	                window.open(data);
-	    	},'json').fail(function() {
+	    	}).fail(function(data) {
 	    			$('#printBtn').prop('disabled', false);
 	        		$.scojs_message('生成托运申报单PDF失败', $.scojs_message.TYPE_ERROR);
             });
@@ -242,7 +242,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	$.post('/jobOrderReport/printCargoCustomOrder', {id:id,type:type}, function(data){
         		$('#printCustomOrderBtn').prop('disabled', false);
         		window.open(data);
-        	},'json').fail(function() {
+        	}).fail(function() {
         		$('#printCustomOrderBtn').prop('disabled', false);
         		$.scojs_message('生成货物报关单PDF失败', $.scojs_message.TYPE_ERROR);
         	});
