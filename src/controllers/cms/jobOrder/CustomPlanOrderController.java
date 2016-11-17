@@ -14,7 +14,6 @@ import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
 import models.eeda.cms.CustomPlanOrderItem;
 import models.eeda.oms.jobOrder.JobOrder;
-import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -25,7 +24,6 @@ import org.apache.shiro.subject.Subject;
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.ext.plugin.shiro.ShiroKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
@@ -359,7 +357,10 @@ public class CustomPlanOrderController extends Controller {
         String condition="";
         
     	sql = "SELECT * from (SELECT cpo.id,cpo.order_no,cpo.type,cpo.production_and_sales_input application_company_name,ul.c_name creator_name,"
-    			+ " cpo.create_stamp,cpo.status,cpo.custom_state"
+    			+ " cpo.create_stamp,cpo.status,cpo.custom_state,(SELECT COUNT(0) from custom_plan_order WHERE custom_state = '放行') pass,"
+    			+ " (SELECT COUNT(1) from custom_plan_order WHERE custom_state = '查验') checked,"
+    			+ "	(SELECT COUNT(2) from custom_plan_order WHERE custom_state = '异常待处理') handling,"
+    			+ " (SELECT COUNT(3) from custom_plan_order WHERE custom_state = '异常') abnormal"
     			+ " FROM custom_plan_order cpo"
     			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
     			+ " where cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")A"

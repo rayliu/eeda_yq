@@ -33,10 +33,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
   	              },
   	              { "data": "CUSTOM_STATE", 
   	            	"render": function(data, type, full, meta){
+  	            		$("#release").text(full.PASS);
+  	            		$("#checked").text(full.CHECKED);
+  	            		$("#handing").text(full.HANDLING);
+  	            		$("#abnormal").text(full.ABNORMAL);
   	            		if(data=="异常"){
   	            			return "<span style='color:red'>"+data+"</span>";
-  	            		}else if(data=="异常待处理"){
-  	            			return "<font style='background-color:#FF0; color:#000'>"+data+"</font>";
+  	            		}else if(data=="异常待处理"||data=="查验"){
+  	            			return "<span style='color:#f7b314'>"+data+"</span>";
   	            		}else if(data=="放行"){
   	            			return "<span style='color:green'>"+data+"</span>";
   	            		}else{
