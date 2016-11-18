@@ -130,6 +130,15 @@
 				                                 }){}%>
                         </div>
                         
+                        <div class="col-lg-4">
+                           <%include("/eeda/component/form/inputDropListField.html", 
+                                    {   id:'customs_code', 
+                                        label:'企业海关代码',
+                                        url: '/serviceProvider/searchCompanyCustomCode',
+                                        value:order.customs_code!'',
+                                        display_value:order.customs_code_name!''
+                                    }){}%>
+                       </div>
                     </div><br>
                 </form>
              </div>  

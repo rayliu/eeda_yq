@@ -54,7 +54,7 @@ $(document).ready(function() {
 				if(portName == null) 
 					portName = '';
 				
-				spList.append("<li tabindex='"+i+"'><a class='fromLocationItem' portId='"+data[i].ID+"'   >"+portName+"</a></li>");
+				spList.append("<li tabindex='"+i+"'><a class='fromLocationItem' portId='"+data[i].ID+"' str='"+data[i].STR+"'   >"+portName+"</a></li>");
 			}
 			spList.css({ 
 	        	left:$(me).position().left+"px", 

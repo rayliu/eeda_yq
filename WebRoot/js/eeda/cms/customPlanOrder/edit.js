@@ -268,5 +268,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	}
         })
         
+        $('#customs_code_list').on('mousedown','a', function () {
+        	var id = $(this).attr('portId');
+        	var info = $(this).attr('str');
+        	$('#shipping_men').val(id);
+        	$('#receive_sent_consignee').val(id);
+        	var str = $(this).text();
+        	var arr = str.split(' ');
+        	if(arr!=undefined&&arr.length>=0){
+        		$('#shipping_men_input').val(arr[0]);
+        		$('#receive_sent_consignee_input').val(arr[0]);
+        	}
+            if(arr!=undefined&&arr.length>=1){
+        		$('#customs_number').val(arr[1]);
+        	}
+            if(info!='undefined'){
+            	$('#receive_sent_consignee_info').val(info);
+            }
+        })
+        
+        
+        
      });
 });
