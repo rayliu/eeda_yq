@@ -338,10 +338,10 @@ $(document).ready(function() {
 			if(arry.length>=2){
 				var arr = arry[2].split(" ");
 			}
-			if(arr.length>=1){
+			if(arr!=undefined&&arr.length>=1){
 				$('#head_customerTel').val(arr[0].replace("TEL:",""));
 			}
-			if(arr.length>=2){
+			if(arr!=undefined&&arr.length>=2){
 				$('#head_fax').val(arr[1].replace("FAX:",""));
 			}
 			$('#head_endPlace').val($('#ocean_HBLshipper_input').val());
