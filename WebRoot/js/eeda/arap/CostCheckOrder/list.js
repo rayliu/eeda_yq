@@ -140,44 +140,38 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       //计算创建对账单的总额
       var amount = 0;
       var sum = 0;
-      $('#eeda_table').on('click','.checkBox',function(){
-    	  var id = $(this).parent().parent().attr('id');
-    	  var amountStr = $($('#'+id+' td')[11]).text();
-    	  if(amountStr!=''){
-	    	  amount = parseFloat( amountStr );
-	    	  if(this.checked==true){
-	    		  sum+=amount;
-	    	  }else{
-	    		  sum-=amount;
-	    	  }
-	    	  $("#totalAmountSpan").text(parseFloat(sum).toFixed(2));
-    	  }
-      })
-      
       	//选择是否是同一个客户
       	var itemIds=[];
 		var cnames = [];
 		$('#eeda_table').on('click','input[type="checkbox"]',function () {
 				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
 				var id = $(this).parent().parent().attr('id');
-				console.log(id);
+				
+				var amountStr = $($('#'+id+' td')[10]).text();
+		    	  if(amountStr!=''){
+			    	  amount = parseFloat(amountStr);
+		    	  }
 				if($(this).prop('checked')==true){	
-					if(cnames.length > 0 ){
-						if(cnames[0]!=cname){
-							$.scojs_message('请选择同一个结算公司', $.scojs_message.TYPE_ERROR);
-							$(this).attr('checked',false);
-							return false;
+						if(cnames.length > 0 ){
+							if(cnames[0]!=cname){
+								$.scojs_message('请选择同一个结算公司', $.scojs_message.TYPE_ERROR);
+								$(this).attr('checked',false);
+								return false;
+							}else{
+								sum+=amount;
+								cnames.push(cname);
+							}
 						}else{
-							cnames.push(cname);
+							sum+=amount;
+							cnames.push(cname);	
 						}
-					}else{
-						cnames.push(cname);	
-					}
-					itemIds.push(id);
+						itemIds.push(id);
 				}else{
 					cnames.pop(cname);
 					itemIds.pop(id);
-			 }
+					sum-=amount;
+				}
+				$("#totalAmountSpan").text(parseFloat(sum).toFixed(2));
     	 });
 		
       	//checkbox选中则button可点击
