@@ -124,14 +124,14 @@ $(document).ready(function() {
 	                    return field_html;
             	}
             },
-			{ "data": "RATE", "width": "180px","className":"currency_rate",
+			{ "data": "RATE", "width": "180px",
 	        	"render": function ( data, type, full, meta ) {
 	        		if(!data)
 	        			data='';
 	        		return '<input type="text" name="rate" value="'+data+'" class="form-control" style="width:200px"/>';
 	        	}
             },
-            { "data": "FEE_AMOUNT_CNY", "width": "180px","className":"cny_total_amount",
+            { "data": "FEE_AMOUNT_CNY", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';

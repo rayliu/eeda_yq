@@ -856,19 +856,25 @@ public class JobOrderController extends Controller {
     				+ " where order_id=? GROUP BY jol.id order by jol.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
-    		itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name from job_order_arap jor "
+    		itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
+    				+ " c1.name exchange_currency_id_name"
+    				+ " from job_order_arap jor "
     		        + " left join party pr on pr.id=jor.sp_id"
     		        + " left join fin_item f on f.id=jor.charge_id"
     		        + " left join unit u on u.id=jor.unit_id"
     		        + " left join currency c on c.id=jor.currency_id"
+    		        + " left join currency c1 on c1.id=jor.exchange_currency_id"
     		        + " where order_id=? and order_type=? order by jor.id";
     		itemList = Db.find(itemSql, orderId,"charge");
     	}else if("cost".equals(type)){
-	    	itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name from job_order_arap jor"
+	    	itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
+	    			+ " c1.name exchange_currency_id_name"
+	    			+ " from job_order_arap jor"
 	    	        + " left join party pr on pr.id=jor.sp_id"
 	    	        + " left join fin_item f on f.id=jor.charge_id"
 	    	        + " left join unit u on u.id=jor.unit_id"
     		        + " left join currency c on c.id=jor.currency_id"
+    		        + " left join currency c1 on c1.id=jor.exchange_currency_id"
 	    	        + " where order_id=? and order_type=? order by jor.id";
 	    	itemList = Db.find(itemSql, orderId,"cost");
     	}else if("doc".equals(type)){

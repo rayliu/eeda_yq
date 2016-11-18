@@ -197,14 +197,14 @@ $(document).ready(function() {
 	                    return field_html;
             	}
             },
-            { "data": "CUSTOM_RATE", "width": "80px","className":"currency_rate",
+            { "data": "CUSTOM_RATE", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
             		return '<input type="text" name="custom_rate" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
-            { "data": "CUSTOM_AMOUNT_CNY", "width": "100px","className":"cny_total_amount",
+            { "data": "CUSTOM_AMOUNT_CNY", "width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';

@@ -477,12 +477,22 @@ eeda.refreshUrl = refreshUrl;
 			  var dataId = $(this).attr('dataId');
 			  hiddenField.val(dataId);//id
 			  
-			  var row = inputField.parent().parent().parent();
+			  //datatable里按照   币制，汇率，转换后金额 相邻排列
+			  var td = inputField.parent().parent();
+			  var class_name = td.attr('class');
 			  var currency_rate = $(this).attr('currency_rate');
-              row.find('.currency_rate input').val(currency_rate);//选择币制则填入汇率
-              var total = row.find('.currency_total_amount input').val();//此币种的金额
+              td.next().children().val(currency_rate);//选择币制则填入汇率
+              if(class_name==' cny_to_other'){
+            	  var total = td.parent().find('.cny_total_amount input').val();
+              }else{
+            	  var total = td.parent().find('.currency_total_amount input').val();//此币种的金额
+              }
               if(currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
-            	  row.find('.cny_total_amount input').val(currency_rate*total);//转为人民币后的金额
+            	  if(class_name==' cny_to_other'){
+            		  td.next().next().children().val(total/currency_rate);//转换后的金额
+            	  }else{
+            		  td.next().next().children().val(currency_rate*total);//转换后的金额
+            	  }
               }
 		  });
 		  
@@ -496,12 +506,22 @@ eeda.refreshUrl = refreshUrl;
                   var dataId = $a.attr('dataId');
                   hiddenField.val(dataId);//id
 
-                  var row = inputField.parent().parent().parent();
+                  //datatable里按照   币制，汇率，转换后金额 相邻排列
+                  var td = inputField.parent().parent();
+                  var class_name = td.attr('class');
                   var currency_rate = $a.attr('currency_rate');
-                  row.find('.currency_rate input').val(currency_rate);//选择币制则填入汇率
-                  var total = row.find('.currency_total_amount input').val();//此币种的金额
+                  td.next().children().val(currency_rate);//选择币制则填入汇率
+                  if(class_name=='cny_to_other'){
+                	  var total = td.parent().find('.cny_total_amount input').val();
+                  }else{
+                	  var total = td.parent().find('.currency_total_amount input').val();//此币种的金额
+                  }
                   if(currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
-                	  row.find('.cny_total_amount input').val(currency_rate*total);//转为人民币后的金额
+                	  if(class_name==' cny_to_other'){
+                		  td.next().next().children().val(total/currency_rate);//转换后的金额
+                	  }else{
+                		  td.next().next().children().val(currency_rate*total);//转换后的金额
+                	  }
                   }
               }
           });
