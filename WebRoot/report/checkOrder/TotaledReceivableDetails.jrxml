@@ -10,15 +10,40 @@
 	<queryString>
 		<![CDATA[SELECT aco.begin_time,aco.end_time,p.company_name,p.contact_person,p.phone,p.fax, u.c_name,u.user_phone,
 jo.order_export_date,jo.order_no,
-ifnull(l.name,joai.destination)  fnd,
-(SELECT SUM(josi.volume) from job_order_shipment_item josi
-where josi.order_id = joa.order_id) CBM,
+
+CASE when l.name !='' then l.name when joai.destination!='' then joai.destination
+else p1.abbr end fnd,
+joli.truck_type,
+
+case when (SELECT SUM(josi.volume) from job_order_shipment_item josi where josi.order_id = joa.order_id)!=''
+then (SELECT SUM(josi.volume) from job_order_shipment_item josi where josi.order_id = joa.order_id)
+when (SELECT j.volume from job_order_air j WHERE j.order_id=joa.order_id)!=''
+then (SELECT j.volume from job_order_air j WHERE j.order_id=joa.order_id)
+ ELSE (SELECT SUM(joli.volume) from job_order_land_item joli WHERE joli.order_id=joa.order_id)!='' end CBM,
+
+case when
 (SELECT SUM(josi.pieces) from job_order_shipment_item josi
-where josi.order_id = joa.order_id) CTNS,
+where josi.order_id = joa.order_id)!='' then (SELECT SUM(josi.pieces) from job_order_shipment_item josi
+where josi.order_id = joa.order_id) when
+(SELECT SUM(j.amount) from job_order_air_cargodesc j WHERE j.order_id=joa.order_id)!='' then (SELECT SUM(j.amount) from job_order_air_cargodesc j WHERE j.order_id=joa.order_id)
+else
+(SELECT SUM(j.pieces) from job_order_land_item j WHERE j.order_id = joa.order_id) end
+CTNS,
+
+case when
 (SELECT SUM(josi.gross_weight) from job_order_shipment_item josi
-where josi.order_id = joa.order_id) KGS,
+where josi.order_id = joa.order_id)!='' then (SELECT SUM(josi.gross_weight) from job_order_shipment_item josi
+where josi.order_id = joa.order_id) when
+(SELECT SUM(j.gross_weight) from job_order_air_cargodesc j WHERE j.order_id=joa.order_id)!='' then (SELECT SUM(j.gross_weight) from job_order_air_cargodesc j WHERE j.order_id=joa.order_id)
+ else (SELECT SUM(j.gross_weight) from job_order_land_item j WHERE j.order_id = joa.order_id) end
+ KGS,
+
+
+ifnull(
 (SELECT GROUP_CONCAT(josi.container_no) from job_order_shipment_item josi
-where josi.order_id = joa.order_id) container_no,
+where josi.order_id = joa.order_id),
+(SELECT GROUP_CONCAT(j.land_container_no) from job_order_land_item j WHERE j.order_id = joa.order_id))
+ container_no,
 jos.mbl_no MBL, jos.hbl_no HBL,
 
 (
@@ -80,6 +105,7 @@ left join job_order_air_item joai on joai.order_id = jo.id
 left join job_order_land_item joli on joli.order_id = jo.id
 left join location l on l.id = jos.fnd
 left join party p on p.id=aco.sp_id
+left join party p1 on p1.id=joli.consignee
 left join user_login u on u.id = $P{login_user_id}
 left join currency_rate cr on cr.currency_id = joa.currency_id
 where aco.id = $P{order_id}
@@ -118,8 +144,11 @@ GROUP BY jo.id]]>
 	<field name="fnd" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="truck_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="CBM" class="java.lang.Double"/>
-	<field name="CTNS" class="java.math.BigDecimal"/>
+	<field name="CTNS" class="java.lang.Double"/>
 	<field name="KGS" class="java.lang.Double"/>
 	<field name="container_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -403,6 +432,7 @@ GROUP BY jo.id]]>
 				<textElement textAlignment="Center">
 					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{truck_type}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="534" y="2" width="70" height="20" uuid="d3d45fa5-a3d7-444d-aa12-85feab34e35a"/>
