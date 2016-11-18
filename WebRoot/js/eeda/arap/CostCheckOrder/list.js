@@ -155,10 +155,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       })
       
       	//选择是否是同一个客户
+      	var itemIds=[];
 		var cnames = [];
 		$('#eeda_table').on('click','input[type="checkbox"]',function () {
 				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
-				
+				var id = $(this).parent().parent().attr('id');
+				console.log(id);
 				if($(this).prop('checked')==true){	
 					if(cnames.length > 0 ){
 						if(cnames[0]!=cname){
@@ -171,8 +173,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					}else{
 						cnames.push(cname);	
 					}
+					itemIds.push(id);
 				}else{
 					cnames.pop(cname);
+					itemIds.pop(id);
 			 }
     	 });
 		
@@ -195,11 +199,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       
 		$('#createBtn').click(function(){
 			$('#createBtn').attr('disabled',true);
-        	var itemIds=[];
-        	$('#eeda_table input[type="checkbox"]:checked').each(function(){ 
-        			var itemId = $(this).parent().parent().attr('id');
-        			itemIds.push(itemId);
-        	});
+        	
         	var total = parseFloat($('#totalAmountSpan').text());
         	$('#itemId').val(itemIds);
         	$('#totalAmount').val(total);
