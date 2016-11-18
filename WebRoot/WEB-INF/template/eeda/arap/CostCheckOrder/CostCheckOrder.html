@@ -69,6 +69,61 @@
 					                                }){}%>
                                             </div>
                                         </div>
+                                        <div class="row">  
+                                        <div class="col-lg-4">
+                                         <%include("/eeda/component/form/inputField.html", 
+                                         {   id:'cabinet_no', 
+                                             label:'柜号', 
+                                             value:''
+                                         }){} %>
+                                         </div>
+                                         <div class="col-lg-4">
+                                                <%include("/eeda/component/form/inputField.html", 
+                                                         {   id: 'cabinet_type', 
+                                                             label: '柜型', 
+                                                             value: ''
+                                                         }){}%>
+                                         </div>
+                                         <div class="col-lg-4">
+                                           <%include("/eeda/component/form/inputField.html", 
+                                               {   id:'mbl_no', 
+                                                   label:'MBL号码', 
+                                                   value:''
+                                               }){}%>
+                                        </div>
+                                    </div>
+                                    <div class="row">  
+                                        <div class="col-lg-4">
+                                         <%include("/eeda/component/form/inputField.html", 
+                                         {   id:'declare_no', 
+                                             label:'报关单号', 
+                                             value:''
+                                         }){} %>
+                                         </div>
+                                         <div class="col-lg-4">
+                                                <%include("/eeda/component/form/inputField.html", 
+                                                         {   id: 'creator', 
+                                                             label: '创建人', 
+                                                             value: ''
+                                                         }){}%>
+                                         </div>
+                                         <div class="col-lg-4">
+		                                         <%include("/eeda/component/form/inputPortField.html", 
+								                       {   id:'pol', 
+								                           label:'启运港 POL', 
+								                           value:shipment.pol!''
+								                       }){}%>
+								         </div>
+                                       </div>
+                                       <div class="row">                                          
+	                                         <div class="col-lg-4">
+			                                        <%include("/eeda/component/form/inputPortField.html", 
+									                       {   id:'pod', 
+									                           label:'目的港 POD', 
+									                           value:shipment.pod!''									                          
+									                       }){}%>
+									         </div>
+                                       </div>
                                     </form>
 
                                     <div class="form-group button-bar" >
