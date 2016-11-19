@@ -116,7 +116,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
           var customer = $("#customer").val(); 
+          var customer_input = $("#customer_input").val(); 
           var sp = $("#sp").val(); 
+          var sp_input = $("#sp_input").val(); 
           var type = $("#type").val(); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
@@ -129,7 +131,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           */
           var url = "/costCheckOrder/list?order_no="+order_no
 			           +"&customer_id="+customer
+			           +"&customer_name_like="+customer_input
 			           +"&sp_id="+sp
+			           +"&sp_name_like="+sp_input
 			           +"&type_equals="+type
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date;
