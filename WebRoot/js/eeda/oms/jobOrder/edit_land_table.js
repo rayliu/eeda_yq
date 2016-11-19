@@ -99,6 +99,11 @@ $(document).ready(function() {
                 	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
                 }
             },
+            { "width": "30px",
+            	"render": function ( data, type, full, meta ) {
+            		return '<button type="button" class="land_charge btn btn-success btn-xs" style="width:50px">费用</button>';
+            	}
+            },
             { "data":"ID","width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(data)
@@ -475,6 +480,9 @@ $(document).ready(function() {
 		var showNote = $('#land_showNote').val();
 		self.val(showNote);
 	})
+	
+	 
+	
 
 });
 });
