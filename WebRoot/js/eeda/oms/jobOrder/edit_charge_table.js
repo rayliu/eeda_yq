@@ -205,6 +205,7 @@ $(document).ready(function() {
 	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
 	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
 	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
+	                        +'<option value="贸易" '+(data=='贸易' ? 'selected':'')+'>贸易</option>'
 	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
 	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
 	                        +'</select>';
@@ -214,6 +215,7 @@ $(document).ready(function() {
                                +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
                                +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
                                +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
+                               +'<option value="贸易" '+(data=='贸易' ? 'selected':'')+'>贸易</option>'
                                +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
                                +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
                                +'</select>';
@@ -534,6 +536,7 @@ $(document).ready(function() {
     	chargeTable.ajax.url(url).load();
     }
     
+  //数量和单价自动补零
     $('#charge_table').on('blur','[name=price],[name=amount]',function(){
     	var amount = $(this).val();
     	if(amount!=''&&!isNaN(amount)){
@@ -744,40 +747,6 @@ $(document).ready(function() {
 		  $("#AllCheckOfChargeTable").prop("checked",$(".checkBoxOfChargeTable").length == $(".checkBoxOfChargeTable:checked").length ? true : false);
     });
     
-    //打印境外，分单
-    var dataTable = eeda.dt({
-        id: 'invoice_land_table',
-        columns: [
-            { "data":"ID",
-			    "render": function ( data, type, full, meta ) {
-			    	if(data)
-			    		return '<input type="checkbox" class="checkBox" >';
-			    	else 
-			    		return '<input type="checkbox" disabled>';
-			    }
-			},
-            { "data": "TRANSPORT_COMPANY_NAME"}, 
-            { "data": "CONSIGNOR_NAME"}, 
-            { "data": "CONSIGNEE_NAME"}, 
-            { "data": "PIECES"},
-            { "data": "GROSS_WEIGHT"},
-            { "data": "VOLUME"}
-            
-        ]
-    });
-	
-    $('#printDebit [name=debit_note]').click(function(){
-    	if($(this).val() == "invoice_land"){
-    		var order_id = $('#order_id').val();
-    		var url = "/jobOrder/tableList?order_id="+order_id+"&type=land";
-        	dataTable.ajax.url(url).load();
-        	$('#invoice_land_hbl_no').val($('#hbl_no').val());
-        	$('#printDebit .modal-dialog').width(1000);
-    		$('#land_table_div').show();
-    	}else{
-    		$('#land_table_div').hide();
-    	}
-    })
 	
   });
 });

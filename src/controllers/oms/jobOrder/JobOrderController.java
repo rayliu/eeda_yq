@@ -49,6 +49,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
@@ -324,10 +325,38 @@ public class JobOrderController extends Controller {
 		DbUtils.handleList(trade_detail,"job_order_trade",id,"order_id");
 		List<Map<String, String>> trade_cost_list = (ArrayList<Map<String, String>>)dto.get("trade_cost");
 		DbUtils.handleList(trade_cost_list,"job_order_trade_cost",id,"order_id");
+		
+		Model<?> model = (Model<?>) JobOrderArap.class.newInstance();
 		List<Map<String, String>> trade_service_list = (ArrayList<Map<String, String>>)dto.get("trade_service");
-		DbUtils.handleList(trade_service_list,"job_order_trade_charge_service",id,"order_id");
+		
 		List<Map<String, String>> trade_sale_list = (ArrayList<Map<String, String>>)dto.get("trade_sale");
-		DbUtils.handleList(trade_sale_list,"job_order_trade_charge_sale",id,"order_id");
+		
+        for(int i=0;i<trade_service_list.size();i++){
+        	Map<String, String> map=trade_service_list.get(i);
+        	DbUtils.setModelValues(map,model);
+        	model.set("order_id", id);
+        	model.set("type", "贸易");
+        	model.set("order_type", "charge");
+        	model.set("trade_fee_flag", "trade_service_fee");
+        	if("UPDATE".equals(map.get("action"))){
+        		model.update();
+        	}else{
+        		model.save();
+        	}
+        }
+        for(int i=0;i<trade_sale_list.size();i++){
+        	Map<String, String> map=trade_sale_list.get(i);
+        	DbUtils.setModelValues(map,model);
+        	model.set("order_id", id);
+        	model.set("order_type", "charge");
+        	model.set("type", "贸易");
+        	model.set("trade_fee_flag", "trade_sale_fee");
+        	if("UPDATE".equals(map.get("action"))){
+        		model.update();
+        	}else{
+        		model.save();
+        	}
+        }
 
 		long creator = jobOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
@@ -891,19 +920,27 @@ public class JobOrderController extends Controller {
 	    			+ " where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("trade_sale".equals(type)){
-	    	itemSql = "select jotc.*, f.name charge_name, p.abbr sp_name,c.name currency_name from job_order_trade_charge_sale jotc"
-	    			+ " left join fin_item f on f.id=jotc.charge_id"
-	    			+ " left join party p on p.id = jotc.sp"
-	    			+ " left join currency c on c.id = jotc.currency"
-	    			+ " where order_id=? order by id";
-	    	itemList = Db.find(itemSql, orderId);
+	    	itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
+    				+ " c1.name exchange_currency_id_name"
+    				+ " from job_order_arap jor "
+    		        + " left join party pr on pr.id=jor.sp_id"
+    		        + " left join fin_item f on f.id=jor.charge_id"
+    		        + " left join unit u on u.id=jor.unit_id"
+    		        + " left join currency c on c.id=jor.currency_id"
+    		        + " left join currency c1 on c1.id=jor.exchange_currency_id"
+    		        + " where jor.order_id=? and jor.order_type=? and jor.trade_fee_flag=? order by jor.id";
+    		itemList = Db.find(itemSql, orderId,"charge","trade_sale_fee");
 	    }else if("trade_service".equals(type)){
-	    	itemSql = "select jotc.*, f.name charge_name, p.abbr sp_name,c.name currency_name from job_order_trade_charge_service jotc"
-	    			+ " left join fin_item f on f.id=jotc.charge_id"
-	    			+ " left join party p on p.id = jotc.sp"
-	    			+ " left join currency c on c.id = jotc.currency"
-	    			+ " where order_id=? order by id";
-	    	itemList = Db.find(itemSql, orderId);
+	    	itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
+    				+ " c1.name exchange_currency_id_name"
+    				+ " from job_order_arap jor "
+    		        + " left join party pr on pr.id=jor.sp_id"
+    		        + " left join fin_item f on f.id=jor.charge_id"
+    		        + " left join unit u on u.id=jor.unit_id"
+    		        + " left join currency c on c.id=jor.currency_id"
+    		        + " left join currency c1 on c1.id=jor.exchange_currency_id"
+    		        + " where jor.order_id=? and jor.order_type=? and jor.trade_fee_flag=? order by jor.id";
+    		itemList = Db.find(itemSql, orderId,"charge","trade_service_fee");
 	    }else if("china_self".equals(type)){
 	    	itemSql = "select j.*,p.abbr custom_bank_name from job_order_custom_china_self_item j"
 	    			+ " left join party p on p.id = j.custom_bank"
@@ -1273,6 +1310,32 @@ public class JobOrderController extends Controller {
         renderJson(map); 
     }
     
+    //异步刷新字表
+    public void tableListOfLandCharge(){
+    	
+    	//搜索此陆运相关的应收费用，用来打印debit_note
+    	String order_id = getPara("order_id");
+    	String land_item_id = getPara("land_item_id");
+	    String itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
+    				+ " c1.name exchange_currency_id_name"
+    				+ " from job_order_arap jor "
+    		        + " left join party pr on pr.id=jor.sp_id"
+    		        + " left join fin_item f on f.id=jor.charge_id"
+    		        + " left join unit u on u.id=jor.unit_id"
+    		        + " left join currency c on c.id=jor.currency_id"
+    		        + " left join currency c1 on c1.id=jor.exchange_currency_id"
+    		        + " where order_id=? and order_type=? and land_item_id=? order by jor.id";
+	    List<Record> list = Db.find(itemSql, order_id,"charge",land_item_id);
+	    
+    	
+    	Map map = new HashMap();
+    	map.put("sEcho", 1);
+    	map.put("iTotalRecords", list.size());
+    	map.put("iTotalDisplayRecords", list.size());
+    	map.put("aaData", list);
+    	renderJson(map); 
+    }
+    
     @Before(Tx.class)
     public void saveParty(){
     	String jsonStr=getPara("params");
@@ -1390,5 +1453,33 @@ public class JobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
+    
+    //保存陆运相关的应收费用
+    @Before(Tx.class)
+    public void saveLandCharge() throws InstantiationException, IllegalAccessException{
+    	
+    	String jsonStr=getPara("params");
+       	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+        String order_id = (String) dto.get("order_id");
+        String land_item_id = (String) dto.get("land_item_id");
+    	
+        List<Map<String, String>> land_charge_item = (ArrayList<Map<String, String>>)dto.get("land_charge_item");
+        Model<?> model = (Model<?>) JobOrderArap.class.newInstance();
+        for(int i=0;i<land_charge_item.size();i++){
+        	Map<String, String> map=land_charge_item.get(i);
+        	
+        	DbUtils.setModelValues(map,model);
+        	model.set("land_item_id", land_item_id);
+        	model.set("order_id", order_id);
+        	if("UPDATE".equals(map.get("action"))){
+        		model.update();
+        	}else{
+        		model.save();
+        	}
+        }
+        renderJson("{\"result\":true}");
+    }
+
 
 }

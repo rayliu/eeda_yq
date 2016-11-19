@@ -56,8 +56,8 @@ $(document).ready(function() {
     //------------事件处理
 	var bindFieldEvent=function(){	
 	    eeda.bindTableField('charge_service_table','CHARGE_ID','/finItem/search','');
-	    eeda.bindTableField('charge_service_table','SP','/serviceProvider/searchCompany','');
-	    eeda.bindTableFieldCurrencyId('charge_service_table','CURRENCY','/serviceProvider/searchCurrency','');
+	    eeda.bindTableField('charge_service_table','SP_ID','/serviceProvider/searchCompany','');
+	    eeda.bindTableFieldCurrencyId('charge_service_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
 	};
 	var cargoTable = eeda.dt({
 	    id: 'charge_service_table',
@@ -72,13 +72,13 @@ $(document).ready(function() {
 			    	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
 			    }
 			},
-			{ "data": "SP", "width": "180px",
+			{ "data": "SP_ID", "width": "180px",
 				"render": function ( data, type, full, meta ) {
                 		if(!data)
                             data='';
                         var field_html = template('table_dropdown_template',
                             {
-                                id: 'SP',
+                                id: 'SP_ID',
                                 value: data,
                                 display_value: full.SP_NAME,
                                 style:'width:200px'
@@ -102,20 +102,20 @@ $(document).ready(function() {
                     return field_html;
               }
             },
-            { "data": "FEE_AMOUNT", "width": "180px","className":"currency_total_amount",
+            { "data": "TOTAL_AMOUNT", "width": "180px","className":"currency_total_amount",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="fee_amount" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="total_amount" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-			{ "data": "CURRENCY", "width": "60px",
+			{ "data": "CURRENCY_ID", "width": "60px",
             	"render": function ( data, type, full, meta ) {
 	                	if(!data)
 	                        data='';
 	                    var field_html = template('table_dropdown_template',
 	                        {
-	                            id: 'CURRENCY',
+	                            id: 'CURRENCY_ID',
 	                            value: data,
 	                            display_value: full.CURRENCY_NAME,
 	                            style:'width:80px'
@@ -124,18 +124,18 @@ $(document).ready(function() {
 	                    return field_html;
             	}
             },
-			{ "data": "RATE", "width": "180px",
+			{ "data": "EXCHANGE_RATE", "width": "180px",
 	        	"render": function ( data, type, full, meta ) {
 	        		if(!data)
 	        			data='';
-	        		return '<input type="text" name="rate" value="'+data+'" class="form-control" style="width:200px"/>';
+	        		return '<input type="text" name="exchange_rate" value="'+data+'" class="form-control" style="width:200px"/>';
 	        	}
             },
-            { "data": "FEE_AMOUNT_CNY", "width": "180px",
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="fee_amount_cny" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="currency_total_amount" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
             { "data": "CHARGE_NAME", "visible": false,
@@ -200,37 +200,37 @@ $(document).ready(function() {
 	    $('#price_difference').text(price_difference.toFixed(3));
     }
 
-    $('#charge_service_table').on('keyup', '[name=fee_amount],[name=fee_amount_cny],[name=rate]', function(){
+    $('#charge_service_table').on('keyup', '[name=total_amount],[name=currency_total_amount],[name=exchange_rate]', function(){
     	var name = $(this).attr('name');
     	var row = $(this).parent().parent();
-    	var fee_amount_cny = $(row.find('[name=fee_amount_cny]')).val();
-    	var fee_amount = $(row.find('[name=fee_amount]')).val();
-    	var rate = $(row.find('[name=rate]')).val();
+    	var currency_total_amount = $(row.find('[name=currency_total_amount]')).val();
+    	var total_amount = $(row.find('[name=total_amount]')).val();
+    	var exchange_rate = $(row.find('[name=exchange_rate]')).val();
     	
-    	if(name=='fee_amount_cny'){
-        	if(fee_amount_cny==''||rate==''){
-        		$(row.find('[name=fee_amount]')).val('');
-        	}else if(!isNaN(fee_amount_cny)&&!isNaN(rate)){
-        		$(row.find('[name=fee_amount]')).val((fee_amount_cny/rate).toFixed(3));
+    	if(name=='currency_total_amount'){
+        	if(currency_total_amount==''||exchange_rate==''){
+        		$(row.find('[name=total_amount]')).val('');
+        	}else if(!isNaN(currency_total_amount)&&!isNaN(exchange_rate)){
+        		$(row.find('[name=total_amount]')).val((currency_total_amount/exchange_rate).toFixed(3));
         	}
     	}
-    	if(name=='rate'){
-    		if(fee_amount!=''&&!isNaN(fee_amount)){
-	    		$(row.find('[name=fee_amount_cny]')).val((fee_amount*rate).toFixed(3));
-	    	}else if(fee_amount_cny!=''&&!isNaN(fee_amount_cny)){
-	    		$(row.find('[name=fee_amount]')).val((fee_amount_cny/rate).toFixed(3));
+    	if(name=='exchange_rate'){
+    		if(total_amount!=''&&!isNaN(total_amount)){
+	    		$(row.find('[name=currency_total_amount]')).val((total_amount*exchange_rate).toFixed(3));
+	    	}else if(currency_total_amount!=''&&!isNaN(currency_total_amount)){
+	    		$(row.find('[name=total_amount]')).val((currency_total_amount/exchange_rate).toFixed(3));
 	    	}
     	}
-    	if(name=='fee_amount'){
-	    	if(fee_amount==''||rate==''){
-	    		$(row.find('[name=fee_amount_cny]')).val('');
-	    	}else if(!isNaN(fee_amount)&&!isNaN(rate)){
-	    		$(row.find('[name=fee_amount_cny]')).val((fee_amount*rate).toFixed(3));
+    	if(name=='total_amount'){
+	    	if(total_amount==''||exchange_rate==''){
+	    		$(row.find('[name=currency_total_amount]')).val('');
+	    	}else if(!isNaN(total_amount)&&!isNaN(exchange_rate)){
+	    		$(row.find('[name=currency_total_amount]')).val((total_amount*exchange_rate).toFixed(3));
 	    	}
     	}
     	
     	var total_fee_amount_cny = 0;
-		$('#charge_service_table [name=fee_amount_cny]').each(function(){
+		$('#charge_service_table [name=currency_total_amount]').each(function(){
 			var a = this.value;
 			if(a!=''&&!isNaN(a)){
 				total_fee_amount_cny+=parseFloat(a);
@@ -239,7 +239,7 @@ $(document).ready(function() {
 		$($('.dataTables_scrollFoot tr')[1]).find('th').eq(6).html(total_fee_amount_cny.toFixed(3));
 		
 		var total = 0;
-		$('#charge_service_table [name=fee_amount]').each(function(){
+		$('#charge_service_table [name=total_amount]').each(function(){
 			var a = this.value;
 			if(a!=''&&!isNaN(a)){
 				total+=parseFloat(a);

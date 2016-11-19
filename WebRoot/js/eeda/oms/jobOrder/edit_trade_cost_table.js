@@ -382,7 +382,7 @@ $(document).ready(function() {
     				total_tax_refund_amount+=parseFloat(a);
     			}
     		})
-    		$('#charge_service_table [name=fee_amount_cny]').each(function(){
+    		$('#charge_service_table [name=currency_total_amount]').each(function(){
     			var a = this.value;
     			if(a!=''&&!isNaN(a)){
     				total_service_fee+=parseFloat(a);
