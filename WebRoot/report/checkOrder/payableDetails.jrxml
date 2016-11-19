@@ -91,8 +91,8 @@ IF (
 	jo.customer_id,
 	jo.volume,
 	jo.net_weight,
+ifnull(p.company_name,p.company_name_eng) sp_name1,
   p1.company_name sp_name,
-  p1.address address,
   p1.phone phone,
   p1.contact_person,
   p1.fax,
@@ -118,6 +118,7 @@ LEFT JOIN fin_item fi ON fi.id = joa.charge_id
 LEFT JOIN currency cur ON cur.id = joa.currency_id
 LEFT JOIN arap_cost_item aci ON aci.ref_order_id = joa.id
 LEFT JOIN arap_cost_order aco ON aco.id = aci.cost_order_id
+left join party p on p.id = aco.sp_id
 WHERE
 	joa.id = aci.ref_order_id
 AND aco.id =$P{order_id}
@@ -157,10 +158,8 @@ GROUP BY
 	<field name="net_weight" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="sp_name1" class="java.lang.String"/>
 	<field name="sp_name" class="java.lang.String"/>
-	<field name="address" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="phone" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -273,14 +272,14 @@ GROUP BY
 				<text><![CDATA[电子信箱：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="365" y="61" width="100" height="20" uuid="22c185b9-ad44-4694-9ffc-1505f13c4e1c"/>
+				<reportElement x="365" y="62" width="100" height="18" uuid="22c185b9-ad44-4694-9ffc-1505f13c4e1c"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[86-756-3225991]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="365" y="76" width="100" height="20" uuid="41430ddd-5424-48d9-8721-90a238258e4d"/>
+				<reportElement x="365" y="79" width="100" height="18" uuid="41430ddd-5424-48d9-8721-90a238258e4d"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -290,6 +289,30 @@ GROUP BY
 				<reportElement x="0" y="-11" width="109" height="34" uuid="d7c0123f-4c00-4bb2-b117-c27a6b980223"/>
 				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="61" y="62" width="240" height="17" uuid="e649dff3-3baa-4977-adf8-212ae3953cd7"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[珠海市石花路56号山海一品居2栋2单元701
+
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="79" width="240" height="17" uuid="92b5b21b-a216-4ab6-8b6c-948047108f4c"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[519015
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="96" width="240" height="17" uuid="e3b84697-2a4e-4ef2-8429-f9be6c440da3"/>
+				<textElement>
+					<font pdfEncoding="Cp1252"/>
+				</textElement>
+				<text><![CDATA[www.yq-scm.com]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -424,7 +447,7 @@ GROUP BY
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sp_name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="40" y="51" width="263" height="20" uuid="90816537-5d64-4b94-b4d2-49bdb0f017ed"/>
@@ -486,7 +509,7 @@ GROUP BY
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="77" height="20" uuid="8b1b394d-1950-4880-b90d-02c2224060a7"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfEncoding="Cp1252"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
@@ -507,7 +530,7 @@ GROUP BY
 			<textField isBlankWhenNull="true">
 				<reportElement x="262" y="0" width="71" height="20" uuid="495bbab4-8cdd-4b37-8124-1a1aaa0fc521"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfEncoding="Cp1252"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
 			</textField>
@@ -535,11 +558,11 @@ GROUP BY
 			<textField isBlankWhenNull="true">
 				<reportElement x="485" y="1" width="31" height="20" uuid="96f1ab88-c295-4b92-9008-3e46616260c0"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfEncoding="Cp1252"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cur_name}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="518" y="1" width="37" height="20" uuid="b730d503-4974-4250-80ae-f1370c5fe04e"/>
 				<textElement>
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
@@ -601,28 +624,28 @@ GROUP BY
 				</textElement>
 				<text><![CDATA[HKD:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="352" y="0" width="74" height="20" uuid="49885abc-19d6-472e-ad6c-9b52dd0cca2d"/>
+			<textField pattern="###0.00">
+				<reportElement x="352" y="1" width="74" height="20" uuid="49885abc-19d6-472e-ad6c-9b52dd0cca2d"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_JPR}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="456" y="0" width="81" height="20" uuid="c2f111d9-6872-44e2-b434-6c3900db9f0c"/>
+			<textField pattern="###0.00">
+				<reportElement x="456" y="1" width="81" height="20" uuid="c2f111d9-6872-44e2-b434-6c3900db9f0c"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_HKD}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="262" y="0" width="60" height="20" uuid="ba0079c1-bba4-4e40-aa7e-3f210461de6f"/>
+			<textField pattern="###0.00">
+				<reportElement x="262" y="1" width="60" height="20" uuid="ba0079c1-bba4-4e40-aa7e-3f210461de6f"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_USD}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00">
 				<reportElement x="167" y="0" width="65" height="20" uuid="98394662-caa3-4f32-a945-25583ba0b11b"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
