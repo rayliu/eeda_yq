@@ -17,7 +17,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
            		  return "<a href='/costCheckOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
            	  }
             },
-            { "data": "ORDER_EXPORT_DATE"},
             { "data": "CREATE_STAMP"},
             { "data": "STATUS"},
             { "data": "SP_NAME"},

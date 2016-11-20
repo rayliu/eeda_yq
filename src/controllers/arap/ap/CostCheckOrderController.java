@@ -288,17 +288,14 @@ public class CostCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select aco.id,aco.order_no,aco.create_stamp,aco.status,aco.total_amount,c.pay_amount paid_amount,p.abbr sp_name,"
-        		+ " jo.order_export_date"
+        		+ " select aco.id,aco.order_no,aco.create_stamp,aco.status,aco.total_amount,c.pay_amount paid_amount,p.abbr sp_name"
 				+ " from arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id"
-				+ " left join arap_cost_item aci on aci.cost_order_id = aco.id"
-				+ " left join job_order_arap joa on joa.id = aci.ref_order_id"
-				+ " left join job_order jo on jo.id = joa.order_id"
 				+ " where aco.office_id = "+ office_id
 				+ " order by aco.id desc"
 				+ " ) B where 1=1 ";
+      
 		
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
