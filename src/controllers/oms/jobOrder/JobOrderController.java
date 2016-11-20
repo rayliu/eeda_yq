@@ -330,33 +330,36 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> trade_service_list = (ArrayList<Map<String, String>>)dto.get("trade_service");
 		
 		List<Map<String, String>> trade_sale_list = (ArrayList<Map<String, String>>)dto.get("trade_sale");
-		
-        for(int i=0;i<trade_service_list.size();i++){
-        	Map<String, String> map=trade_service_list.get(i);
-        	DbUtils.setModelValues(map,model);
-        	model.set("order_id", id);
-        	model.set("type", "贸易");
-        	model.set("order_type", "charge");
-        	model.set("trade_fee_flag", "trade_service_fee");
-        	if("UPDATE".equals(map.get("action"))){
-        		model.update();
-        	}else{
-        		model.save();
-        	}
-        }
-        for(int i=0;i<trade_sale_list.size();i++){
-        	Map<String, String> map=trade_sale_list.get(i);
-        	DbUtils.setModelValues(map,model);
-        	model.set("order_id", id);
-        	model.set("order_type", "charge");
-        	model.set("type", "贸易");
-        	model.set("trade_fee_flag", "trade_sale_fee");
-        	if("UPDATE".equals(map.get("action"))){
-        		model.update();
-        	}else{
-        		model.save();
-        	}
-        }
+		if(trade_service_list!=null){
+	        for(int i=0;i<trade_service_list.size();i++){
+	        	Map<String, String> map=trade_service_list.get(i);
+	        	DbUtils.setModelValues(map,model);
+	        	model.set("order_id", id);
+	        	model.set("type", "贸易");
+	        	model.set("order_type", "charge");
+	        	model.set("trade_fee_flag", "trade_service_fee");
+	        	if("UPDATE".equals(map.get("action"))){
+	        		model.update();
+	        	}else{
+	        		model.save();
+	        	}
+	        }
+		}
+		if(trade_sale_list!=null){
+	        for(int i=0;i<trade_sale_list.size();i++){
+	        	Map<String, String> map=trade_sale_list.get(i);
+	        	DbUtils.setModelValues(map,model);
+	        	model.set("order_id", id);
+	        	model.set("order_type", "charge");
+	        	model.set("type", "贸易");
+	        	model.set("trade_fee_flag", "trade_sale_fee");
+	        	if("UPDATE".equals(map.get("action"))){
+	        		model.update();
+	        	}else{
+	        		model.save();
+	        	}
+	        }
+		}
 
 		long creator = jobOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
