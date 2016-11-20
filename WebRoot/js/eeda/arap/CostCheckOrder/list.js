@@ -59,9 +59,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "CUSTOMER_NAME", "width": "100px"},
 	            { "data": "SP_NAME", "width": "100px","sClass":"SP_NAME"},
 	            { "data": "CURRENCY_NAME", "width": "60px"},
-	            { "data": "TOTAL_AMOUNT", "width": "60px"},
+	            { "data": "TOTAL_AMOUNT", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.SQL_TYPE=='cost'){
+		            		return '<span style="color:red;">'+'-'+data+'</span>';
+		            	}
+	                    return data;
+	                  }
+	            },
 	            { "data": "EXCHANGE_RATE", "width": "60px" },
-	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'total_amount'},
+	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'total_amount',
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.SQL_TYPE=='cost'){
+		            		return '<span style="color:red;">'+'-'+data+'</span>';
+		            	}
+	                    return data;
+	                  }
+	            },
 	            { "data": "FND", "width": "60px",
 	            	"render": function ( data, type, full, meta ) {
 	            		if(data)
@@ -122,8 +136,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#searchBtn').click(function(){
           searchData(); 
       })
+      
+      //查看应收应付对账结果
+    	$('#checkOrderAll').click(function(){
+    		searchData(); 
+    	 });
 
      var searchData=function(){
+    	  var checked = '';
+	     	 if($('#checkOrderAll').prop('checked')==true){
+	     		 checked = 'Y';
+	     	 }
+    	  
           var order_no = $.trim($("#order_no").val()); 
           var customer = $("#customer").val(); 
           var customer_input = $("#customer_input").val(); 
@@ -142,6 +166,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               时间字段需成双定义  *_begin_time *_end_time   between
           */
           var url = "/costCheckOrder/list?order_no="+order_no
+          			   +"&checked="+checked
+          			   +"&customer_id="+customer
 			           +"&customer_id="+customer
 			           +"&customer_name_like="+customer_input
 			           +"&sp_id="+sp

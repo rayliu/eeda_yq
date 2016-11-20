@@ -16,7 +16,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 //            pageLength: 25,
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/chargeCheckOrder/list?checked="+checked,
+            ajax: "/chargeCheckOrder/list",
             columns:[
 			      { "width": "10px",
 				    "render": function ( data, type, full, meta ) {
@@ -46,13 +46,31 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            { "data": "ORDER_EXPORT_DATE", "width": "100px"},
 	            { "data": "CREATE_STAMP", "width": "100px"},
 	            { "data": "TYPE", "width": "60px"},
-	            { "data": "FEE_NAME", "width": "60px"},
+	            { "data": "FEE_NAME", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+	            		return data;
+	            	}
+	            },
 	            { "data": "CUSTOMER_NAME", "width": "100px"},
 	            { "data": "SP_NAME", "width": "100px","sClass":"SP_NAME"},
 	            { "data": "CURRENCY_NAME", "width": "60px"},
-	            { "data": "TOTAL_AMOUNT", "width": "60px"},
+	            { "data": "TOTAL_AMOUNT", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.SQL_TYPE=='cost'){
+		            		return '<span style="color:red;">'+'-'+data+'</span>';
+		            	}
+	                    return data;
+	                  }
+	            },
 	            { "data": "EXCHANGE_RATE", "width": "60px" },
-	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'total_amount'},
+	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'total_amount',
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.SQL_TYPE=='cost'){
+	            			return '<span style="color:red;">'+'-'+data+'</span>';
+		            	}
+	                    return data;
+	                  }
+	            },
 	            { "data": "FND", "width": "60px",
 	            	"render": function ( data, type, full, meta ) {
 	            		if(data)
@@ -283,14 +301,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
     	 });
 		
 		//查看应收应付对账结果
-		var checked = '';
     	$('#checkOrderAll').click(function(){
-    		 checked = '';
-	         if($('#checkOrderAll').prop('checked')==true){
-	        	 checked = $('#checkOrderAll').val();	        	
-	            }
-	         var url = "/chargeCheckOrder/list?checked="+checked;	         
-	         dataTable.ajax.url(url).load();
+    		searchData(); 
     	   });
 		
 
@@ -356,6 +368,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
       });
 
      var searchData=function(){
+    	 var checked = '';
+    	 if($('#checkOrderAll').prop('checked')==true){
+    		 checked = 'Y';
+    	 }
+    	 
           var order_no = $("#order_no").val(); 
           var sp_name = $('#sp_input').val();
           var customer_name = $('#customer_input').val();
@@ -372,14 +389,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/chargeCheckOrder/list?order_no="+order_no
+          var url = "/chargeCheckOrder/list?checked="+checked
+          	   +"&order_no="+order_no
                +"&sp_name="+sp_name
                +"&customer_name="+customer_name
                +"&type_equals="+type
                +"&order_export_date_end_time="+order_export_date_end_time
                +"&order_export_date_begin_time="+order_export_date_begin_time
-	          +"&create_stamp_begin_time="+start_date
-	          +"&create_stamp_end_time="+end_date;
+	           +"&create_stamp_begin_time="+start_date
+	           +"&create_stamp_end_time="+end_date;
 
           dataTable.ajax.url(url).load();
         }
