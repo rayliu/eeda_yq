@@ -18,7 +18,6 @@ import models.eeda.oms.jobOrder.JobOrderArap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
@@ -32,7 +31,6 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
-import controllers.util.PermissionConstant;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -288,7 +286,7 @@ public class CostCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select aco.id,aco.order_no,aco.create_stamp,aco.status,aco.total_amount,c.pay_amount paid_amount,p.abbr sp_name"
+        		+ " select aco.id,aco.sp_id,aco.order_no,aco.create_stamp,aco.status,aco.total_amount,c.pay_amount paid_amount,p.abbr sp_name"
 				+ " from arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id"

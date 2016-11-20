@@ -187,7 +187,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
 				var id = $(this).parent().parent().attr('id');
 				
-				var amountStr = $($('#'+id+' td')[12]).text();
+				var amountStr = $($('#'+id+' td')[13]).text();
 		    	  if(amountStr!=''){
 			    	  amount = parseFloat(amountStr);
 		    	  }
