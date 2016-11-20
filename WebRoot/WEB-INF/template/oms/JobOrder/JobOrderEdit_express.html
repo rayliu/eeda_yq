@@ -72,12 +72,11 @@
                              value:express.carrier_company!''
                          }){}%>
                  </div>
-                 <div class="col-lg-4">
-                     <%include("/eeda/component/form/dateInputField.html", 
-                         {   id:'shipping_date', 
-                             label:'出货日期', 
-                             value:express.shipping_date!''
-                         }){}%>
+             </div>
+             <div class="row">
+             	<div class="col-lg-8">
+                 <label>备注</label>
+	                 <textarea id='express_remark' class="form-control"  rows="3" name="express_remark">${express.express_remark!''}</textarea>
                  </div>
              </div>
      </div>
