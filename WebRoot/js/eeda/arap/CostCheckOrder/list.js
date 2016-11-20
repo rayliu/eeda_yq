@@ -12,13 +12,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       			{ "width": "10px",
       				    "render": function ( data, type, full, meta ) {
       				    	if(full.BILL_FLAG != ''){
-      					        if(full.BILL_FLAG != 'Y')
-      					    		return '<input type="checkbox" class="checkBox">';
-      					    	else
-      					    		return '<input type="checkbox" class="checkBox" disabled>';
-      				    	}else{
-      				    		return '';
-      				    	}
+    				    		var strcheck = '';
+    					        if(full.BILL_FLAG != 'Y'){
+    					            strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
+    					        	for(var i=0;i<itemIds.length;i++){
+    			                         if(itemIds[i]==full.ID){
+    			                        	 return strcheck= '<input type="checkbox" class="checkBox" checked="checked"  name="order_check_box" value="'+full.ID+'">';
+    			                         }
+    			                     }
+    					        }else{
+    					        	strcheck = '<input type="checkbox" class="checkBox" disabled>';
+    					    		}
+    				    	}else{
+    				    		strcheck = '';
+    				    	}
+    				    	return strcheck;
+    				    	
       				    }
       			},
       			{ "data": "ORDER_NO", "width": "100px",
