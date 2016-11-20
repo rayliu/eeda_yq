@@ -155,7 +155,7 @@ public class ChargeCheckOrderController extends Controller {
         	
         	 sql = "select * from(  "
             		+ " select concat(f.name,' ',f.name_eng) fee_name, joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
-            		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
+            		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
             		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
             		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
             		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
@@ -181,7 +181,7 @@ public class ChargeCheckOrderController extends Controller {
         	}else{
         		 sql = "select * from(  "
                  		+ " select concat(f.name,' ',f.name_eng) fee_name, joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
-                 		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
+                 		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
                  		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
                  		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
                  		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"

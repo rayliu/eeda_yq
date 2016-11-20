@@ -43,6 +43,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	                      return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
 	                  }
 	            },
+	            { "data": "ORDER_EXPORT_DATE", "width": "100px"},
 	            { "data": "CREATE_STAMP", "width": "100px"},
 	            { "data": "TYPE", "width": "60px"},
 	            { "data": "FEE_NAME", "width": "60px"},
@@ -149,6 +150,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	                      return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
 	                  }
 	            },
+	            { "data": "ORDER_EXPORT_DATE", "width": "100px"},
 	            { "data": "CREATE_STAMP", "width": "100px"},
 	            { "data": "TYPE", "width": "60px"},
 	            { "data": "FEE_NAME", "width": "60px"},
@@ -232,7 +234,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	      });
 
 		//选择是否是同一个客户
-
 		$('#uncheckedEeda-table').on('click',"input[name='order_check_box']",function () {
 				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
 				var total_amount = $(this).parent().siblings('.total_amount')[0].textContent;
@@ -361,6 +362,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           var type = $('#type').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
+          var order_export_date_begin_time = $("#order_export_date_begin_time").val();
+          var order_export_date_end_time = $("#order_export_date_end_time").val();
           
           /*  
               查询规则：参数对应DB字段名
@@ -373,8 +376,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
                +"&sp_name="+sp_name
                +"&customer_name="+customer_name
                +"&type_equals="+type
-               +"&create_stamp_begin_time="+start_date
-               +"&create_stamp_end_time="+end_date;
+               +"&order_export_date_end_time="+order_export_date_end_time
+               +"&order_export_date_begin_time="+order_export_date_begin_time
+	          +"&create_stamp_begin_time="+start_date
+	          +"&create_stamp_end_time="+end_date;
 
           dataTable.ajax.url(url).load();
         }
