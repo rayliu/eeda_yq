@@ -6,6 +6,6 @@
         </div> 
 </script>
 <ul id='table_input_field_list' tabindex="-1" 
-    class="pull-right dropdown-menu default dropdown-scroll" 
-    style="top: 22%; left: 33%; width: 20%;">
+    class="pull-right dropdown-menu dropdown-scroll datatable_dropdown_menu" 
+    style="left: 33%; width: 20%;">
 </ul>

@@ -6,6 +6,6 @@
         </div> 
 </script>
 <ul id='table_carrier_field_list' tabindex="-1" 
-    class="pull-right dropdown-menu default dropdown-scroll" 
+    class="pull-right dropdown-menu default dropdown-scroll datatable_dropdown_menu" 
     style="top: 22%; left: 33%;">
 </ul>
