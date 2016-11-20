@@ -580,7 +580,7 @@ GROUP BY
 			<textField isBlankWhenNull="true">
 				<reportElement x="167" y="1" width="59" height="20" uuid="ab4a71a0-795f-4f93-875e-454b64d097b6"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" />
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
 			</textField>

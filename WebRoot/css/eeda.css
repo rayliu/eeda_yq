@@ -407,4 +407,8 @@ li{
     margin-left: -15px;
 }
 
+.datatable_dropdown_menu {
+    z-index: 9999;
+}
+
 /* ray added */

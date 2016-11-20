@@ -346,11 +346,11 @@ eeda.refreshUrl = refreshUrl;
               tableFieldList.append('<span style="font-size: 10px;color: gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
             }
 
-  				  for(var i = 0; i < data.length; i++)
-  					  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID
-  							  +"' dataName='"+data[i].NAME+"' >"+data[i].NAME+"</a></li>");
-  				  tableFieldList.css({ 
-  					  left:$(me).offset().left+"px", 
+		    for(var i = 0; i < data.length; i++)
+			  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID
+					  +"' dataName='"+data[i].NAME+"' >"+data[i].NAME+"</a></li>");
+		    tableFieldList.css({ 
+			  left:$(me).offset().left+"px", 
               top:$(me).offset().top+28+"px" 
             });
             tableFieldList.show();
