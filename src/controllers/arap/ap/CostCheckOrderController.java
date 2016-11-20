@@ -192,7 +192,7 @@ public class CostCheckOrderController extends Controller {
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = "select * from(  "
          		+ " select joa.id,joa.bill_flag,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
-         		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
+         		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
          		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
          		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
          		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type,ifnull(joa.exchange_rate, 1) exchange_rate,"
@@ -236,10 +236,14 @@ public class CostCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select aco.id,aco.order_no,aco.create_stamp,aco.status,aco.total_amount,c.pay_amount paid_amount,p.abbr sp_name "
+        		+ " select aco.id,aco.order_no,aco.create_stamp,aco.status,aco.total_amount,c.pay_amount paid_amount,p.abbr sp_name,"
+        		+ " jo.order_export_date"
 				+ " from arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id"
+				+ " left join arap_cost_item aci on aci.cost_order_id = aco.id"
+				+ " left join job_order_arap joa on joa.id = aci.ref_order_id"
+				+ " left join job_order jo on jo.id = joa.order_id"
 				+ " where aco.office_id = "+ office_id
 				+ " order by aco.id desc"
 				+ " ) B where 1=1 ";

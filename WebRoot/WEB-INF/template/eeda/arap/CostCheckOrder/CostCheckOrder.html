@@ -50,8 +50,14 @@
                                             <div class="col-lg-4">
                                                 <%include("/eeda/component/form/inputDateQueryField.html", 
                                                 {   id:'create_stamp', 
-                                                    label:'出货时间', 
+                                                    label:'创建时间', 
                                                     value:''
+                                                }){} %>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <%include("/eeda/component/form/inputDateQueryField.html", 
+                                                {   id:'order_export_date', 
+                                                    label:'出货时间'
                                                 }){} %>
                                             </div>
                                             <div class="col-lg-4">
@@ -142,7 +148,7 @@
                                         {
                                             id:'eeda_table', 
                                             style: 'width:2000px',
-                                            headers:['','工作单号','出货时间','状态','DEBIT_NO','类型','费用名称','客户','结算公司','货币类型','金额','汇率','总金额（CNY）',
+                                            headers:['','工作单号','出货时间','创建时间','状态','DEBIT_NO','类型','费用名称','客户','结算公司','货币类型','金额','汇率','总金额（CNY）',
                                              'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','箱号','车型'
                                             ]
                                         }){} %>
@@ -186,8 +192,13 @@
                                             <div class="col-lg-4">
                                                 <%include("/eeda/component/form/inputDateQueryField.html", 
                                                 {   id:'create_stamp1', 
-                                                    label:'出货时间', 
-                                                    value:''
+                                                    label:'创建时间'
+                                                }){} %>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <%include("/eeda/component/form/inputDateQueryField.html", 
+                                                {   id:'order_export_date1', 
+                                                    label:'出货时间'
                                                 }){} %>
                                             </div>
                                         </div>
@@ -201,7 +212,7 @@
                                         {
                                             id:'order_table',
                                             style:'width:1800px',
-                                            headers:['对账单号','出货时间','状态','结算公司','合计支出(RMB)','合计支出(USD)','合计支出(HKD)','合计支出(JPY)','已付款(RMB)'
+                                            headers:['对账单号','出货时间','创建时间','状态','结算公司','合计支出(RMB)','合计支出(USD)','合计支出(HKD)','合计支出(JPY)','已付款(RMB)'
                                             ]
                                         }){} %>
                                 </div>

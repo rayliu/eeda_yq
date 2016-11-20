@@ -17,6 +17,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
            		  return "<a href='/costCheckOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
            	  }
             },
+            { "data": "ORDER_EXPORT_DATE"},
             { "data": "CREATE_STAMP"},
             { "data": "STATUS"},
             { "data": "SP_NAME"},
@@ -54,6 +55,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var sp1_input = $("#sp1_input").val(); 
           var start_date = $("#create_stamp1_begin_time").val();
           var end_date = $("#create_stamp1_end_time").val();
+          var order_export_date_begin_time = $("#order_export_date1_begin_time").val();
+          var order_export_date_end_time = $("#order_export_date1_end_time").val();
           var status = $("#status").val();
           /*  
               查询规则：参数对应DB字段名
@@ -67,6 +70,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			           +"&sp_name_like="+sp1_input
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date
+		               +"&order_export_date_begin_time="+order_export_date_begin_time
+		               +"&order_export_date_end_time="+order_export_date_end_time
           			   +"&status="+status;
 
           dataTable.ajax.url(url).load();

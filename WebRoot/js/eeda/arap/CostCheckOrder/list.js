@@ -35,6 +35,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                      return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
 	                  }
 	            },
+	            { "data": "ORDER_EXPORT_DATE", "width": "100px"},
 	            { "data": "CREATE_STAMP", "width": "100px"},
 	            { "data": "BILL_FLAG", "width": "60px",
 	                "render": function ( data, type, full, meta ) {
@@ -131,6 +132,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var type = $("#type").val(); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
+          var order_export_date_begin_time = $("#order_export_date_begin_time").val();
+          var order_export_date_end_time = $("#order_export_date_end_time").val();
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -144,6 +147,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			           +"&sp_id="+sp
 			           +"&sp_name_like="+sp_input
 			           +"&type_equals="+type
+			           +"&order_export_date_begin_time="+order_export_date_begin_time
+			           +"&order_export_date_end_time="+order_export_date_end_time
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date;
 
