@@ -49,7 +49,7 @@ $(document).ready(function() {
             }
         })
         if(formRequired>0){
-        	$.scojs_message('客户为必填字段', $.scojs_message.TYPE_ERROR);
+        	$.scojs_message('客户和出货时间为必填字段', $.scojs_message.TYPE_ERROR);
         	return;
         }
         //费用的结算公司必填
