@@ -36,7 +36,7 @@
                                             	label:'创建时间', 
                                             	value:''
                                             }){} %>
-                                        </div><!-- /.col-lg-4 -->
+                                        </div><!-- /.col-lg-2 -->
                                     </div><!-- /.row-->
                                     <div class="row">
                                     	<div class="col-lg-4">
@@ -67,6 +67,28 @@
                                                               }){}%>
                                         </div>
                                   </div>
+                                  <div class="row">
+                                    	<div class="col-lg-4">
+                                             <%include("/eeda/component/form/selectField.html", 
+                                                    {   id:'service_item', 
+                                                        label:'服务项目', 
+                                                        value: '',
+                                                        value_list:[
+                                                            {code:'', value:''},
+                                                            {code:'ocean', value:'海运'},
+                                                            {code:'air', value:'陆运'},
+                                                            {code:'air', value:'空运'},
+                                                            {code:'land', value:'空运'},
+                                                            {code:'custom', value:'报关'},
+                                                            {code:'insurance', value:'保险'},
+                                                            {code:'trade', value:'贸易'},
+                                                            {code:'express', value:'快递'}
+                                                        ]
+                                                    }
+                                                 ){} %>
+                                        </div>
+                                        
+                                  </div>
                                 </form>
 
                             <div class="form-group button-bar" >
@@ -96,6 +118,7 @@
                                     id:'eeda-table', 
                                     headers:['','工作单号',
                                         '类型',
+                                        '服务项目',
                                         '出货时间',
                                         '客户名称',
                                         '创建人',
