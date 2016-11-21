@@ -75,11 +75,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		            	}
 	                    return data;
 	                  }
-	            },
-	            { "data": "结算币制", "width": "60px"},
-	            { "data": "结算汇率", "width": "60px"},
-	            { "data": "结算金额", "width": "100px"},
-	            
+	            },	            
 	            { "data": "FND", "width": "60px",
 	            	"render": function ( data, type, full, meta ) {
 	            		if(data)
