@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="842" pageHeight="595" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="95"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -15,28 +15,11 @@ CASE when l.name !='' then l.name when joai.destination!='' then joai.destinatio
 else p1.abbr end fnd,
 joli.truck_type,
 
-case when (SELECT SUM(josi.volume) from job_order_shipment_item josi where josi.order_id = joa.order_id)!=''
-then (SELECT SUM(josi.volume) from job_order_shipment_item josi where josi.order_id = joa.order_id)
-when (SELECT j.volume from job_order_air j WHERE j.order_id=joa.order_id)!=''
-then (SELECT j.volume from job_order_air j WHERE j.order_id=joa.order_id)
- ELSE (SELECT SUM(joli.volume) from job_order_land_item joli WHERE joli.order_id=joa.order_id)!='' end CBM,
+(SELECT j.volume from job_order j where j.id = joa.order_id) CBM,
 
-case when
-(SELECT SUM(josi.pieces) from job_order_shipment_item josi
-where josi.order_id = joa.order_id)!='' then (SELECT SUM(josi.pieces) from job_order_shipment_item josi
-where josi.order_id = joa.order_id) when
-(SELECT SUM(j.amount) from job_order_air_cargodesc j WHERE j.order_id=joa.order_id)!='' then (SELECT SUM(j.amount) from job_order_air_cargodesc j WHERE j.order_id=joa.order_id)
-else
-(SELECT SUM(j.pieces) from job_order_land_item j WHERE j.order_id = joa.order_id) end
-CTNS,
+(SELECT j.pieces from job_order j where j.id = joa.order_id) CTNS,
 
-case when
-(SELECT SUM(josi.gross_weight) from job_order_shipment_item josi
-where josi.order_id = joa.order_id)!='' then (SELECT SUM(josi.gross_weight) from job_order_shipment_item josi
-where josi.order_id = joa.order_id) when
-(SELECT SUM(j.gross_weight) from job_order_air_cargodesc j WHERE j.order_id=joa.order_id)!='' then (SELECT SUM(j.gross_weight) from job_order_air_cargodesc j WHERE j.order_id=joa.order_id)
- else (SELECT SUM(j.gross_weight) from job_order_land_item j WHERE j.order_id = joa.order_id) end
- KGS,
+(SELECT j.gross_weight from job_order j where j.id = joa.order_id) KGS,
 
 
 ifnull(
@@ -148,7 +131,7 @@ GROUP BY jo.id]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="CBM" class="java.lang.Double"/>
-	<field name="CTNS" class="java.lang.Double"/>
+	<field name="CTNS" class="java.lang.Integer"/>
 	<field name="KGS" class="java.lang.Double"/>
 	<field name="container_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -277,7 +260,7 @@ GROUP BY jo.id]]>
 				<text><![CDATA[REF NO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="398" y="65" width="66" height="17" uuid="4fd3f61d-328b-45e8-9969-2e2b98ffdb9c"/>
+				<reportElement x="398" y="65" width="70" height="17" uuid="4fd3f61d-328b-45e8-9969-2e2b98ffdb9c"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
@@ -322,7 +305,7 @@ GROUP BY jo.id]]>
 				<reportElement x="1" y="81" width="801" height="1" uuid="2b11b7f3-6ece-4e5c-a0c2-cb7875047478"/>
 			</line>
 			<staticText>
-				<reportElement x="463" y="65" width="72" height="16" uuid="86997206-8c3d-456b-a5be-b745215e11cd"/>
+				<reportElement x="467" y="65" width="68" height="16" uuid="86997206-8c3d-456b-a5be-b745215e11cd"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
@@ -442,16 +425,16 @@ GROUP BY jo.id]]>
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="463" y="2" width="72" height="20" uuid="f24a4c1a-3f07-4b8e-b200-0e77e85d92f3"/>
+				<reportElement x="468" y="2" width="66" height="20" uuid="f24a4c1a-3f07-4b8e-b200-0e77e85d92f3"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfEncoding="Cp1252"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{HBL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="398" y="2" width="66" height="20" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
+				<reportElement x="398" y="2" width="70" height="20" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
 				<textElement textAlignment="Center">
-					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfEncoding="Cp1252"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{MBL}]]></textFieldExpression>
 			</textField>
