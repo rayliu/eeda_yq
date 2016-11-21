@@ -61,7 +61,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "CURRENCY_NAME", "width": "60px"},
 	            { "data": "TOTAL_AMOUNT", "width": "60px",
 	            	"render": function ( data, type, full, meta ) {
-	            		if(full.SQL_TYPE=='cost'){
+	            		if(full.SQL_TYPE=='charge'){
 		            		return '<span style="color:red;">'+'-'+data+'</span>';
 		            	}
 	                    return data;
@@ -70,7 +70,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "EXCHANGE_RATE", "width": "60px" },
 	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'total_amount',
 	            	"render": function ( data, type, full, meta ) {
-	            		if(full.SQL_TYPE=='cost'){
+	            		if(full.SQL_TYPE=='charge'){
 		            		return '<span style="color:red;">'+'-'+data+'</span>';
 		            	}
 	                    return data;
