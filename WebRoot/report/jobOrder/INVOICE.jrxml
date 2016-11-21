@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="215"/>
+	<property name="ireport.y" value="325"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -26,18 +26,20 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<parameter name="order_id" class="java.util.List">
+	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	jo.id,jor.sp_id,jor.currency_total_amount currency_total_amount,jor.invoice_no invoice_no,jo.gross_weight jo_gross_weight,jor.total_amount total_amount,jor.price jor_price,
-  jor.exchange_rate exchange_rate,jor.amount amount, IFNULL(pr.company_name_eng,pr.company_name) companyName,IFNULL(pr.contact_person_eng,pr.contact_person) personEng,
-	f.name_eng charge_name_eng,
+	jor.sp_id,jor.exchange_total_amount exchange_total_amount,jor.invoice_no invoice_no,jor.price price,jor.total_amount total_amount,
+  jor.exchange_currency_rate exchange_rate,jor.amount amount, ifnull(pr.company_name,pr.company_name_eng) companyName,
+ifnull(pr.contact_person,pr.contact_person_eng) personEng,
+	ifnull(f.name,f.name_eng) charge_name,
 	u. NAME unit_name,
 	c. NAME currency_name,
 	josi.gross_weight,
-	CONCAT(CAST(jo.pieces AS CHAR),' ','CARTONS') jo_pieces,
+	josi.pieces,
+
 	josi.container_no,
 	jos.order_id,
 	jos.hbl_no,
@@ -56,53 +58,26 @@
 	) company_name,
 	IFNULL(pr.address_eng, pr.address) address,
 	pr.phone,
-	(
-		SELECT
-			sum(total_amount)
+	(select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
+			CONCAT(c.name,' :\t ',sum(total_amount)) total
 		FROM
 			job_order_arap jor
 		LEFT JOIN currency c ON c.id = jor.currency_id
 		WHERE
 			jor.order_type = 'charge'
-		AND c. NAME = 'CNY'
-		AND $X{IN,jor.id,order_id}
+AND jor.id in ($P{order_id})
+GROUP BY c.id) a
+	) total,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage,
 
-	) total_RMB,
-	(
-		SELECT
-			sum(total_amount)
+(select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
+			CONCAT(c.name,' :\t ',sum(exchange_total_amount)) total
 		FROM
-			job_order_arap jor
-		LEFT JOIN currency c ON c.id = jor.currency_id
+			job_order_arap joa
+		LEFT JOIN currency c ON c.id = joa.exchange_currency_id
 		WHERE
-			jor.order_type = 'charge'
-		AND c. NAME = 'USD'
-		AND $X{IN,jor.id,order_id}
-
-	) total_USD,
-	(
-		SELECT
-			sum(total_amount)
-		FROM
-			job_order_arap jor
-		LEFT JOIN currency c ON c.id = jor.currency_id
-		WHERE
-			jor.order_type = 'charge'
-		AND c. NAME = 'JPY'
-		AND $X{IN,jor.id,order_id}
-	) total_JPY,
-	(
-		SELECT
-			sum(total_amount)
-		FROM
-			job_order_arap jor
-		LEFT JOIN currency c ON c.id = jor.currency_id
-		WHERE
-			jor.order_type = 'charge'
-		AND c. NAME = 'HKD'
-		AND $X{IN,jor.id,order_id}
-
-	) total_HKD,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage
+			joa.order_type = 'charge'
+			AND joa.id in ($P{order_id}) GROUP BY c.id) a
+	) ex_total
 FROM
 	 job_order jo
 LEFT JOIN job_order_arap jor ON jo.id = jor.order_id
@@ -117,26 +92,23 @@ LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo ON lo.id = jos.fnd
 WHERE
 	jor.order_type = 'charge'
-AND  $X{IN,jor.id,order_id}
-group by jor.id]]>
+AND  jor.id in ($P{order_id}) group by jor.id]]>
 	</queryString>
-	<field name="id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="sp_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[供应商id]]></fieldDescription>
 	</field>
-	<field name="currency_total_amount" class="java.lang.Double">
+	<field name="exchange_total_amount" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="invoice_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="jo_gross_weight" class="java.lang.Double"/>
+	<field name="price" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="total_amount" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="jor_price" class="java.lang.Double"/>
 	<field name="exchange_rate" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -145,13 +117,15 @@ group by jor.id]]>
 	</field>
 	<field name="companyName" class="java.lang.String"/>
 	<field name="personEng" class="java.lang.String"/>
-	<field name="charge_name_eng" class="java.lang.String"/>
+	<field name="charge_name" class="java.lang.String"/>
 	<field name="unit_name" class="java.lang.String"/>
 	<field name="currency_name" class="java.lang.String"/>
 	<field name="gross_weight" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="jo_pieces" class="java.lang.String"/>
+	<field name="pieces" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="container_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -192,14 +166,11 @@ group by jor.id]]>
 	<field name="phone" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="total_RMB" class="java.lang.Double"/>
-	<field name="total_USD" class="java.lang.Double"/>
-	<field name="total_JPY" class="java.lang.Double"/>
-	<field name="total_HKD" class="java.lang.Double"/>
+	<field name="total" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="vessel_voyage" class="java.lang.String"/>
-	<variable name="totoa_amountRMB" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{currency_total_amount}]]></variableExpression>
-	</variable>
+	<field name="ex_total" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -298,7 +269,7 @@ group by jor.id]]>
 				<text><![CDATA[POD：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="329" y="148" width="69" height="15" uuid="1ef1c68b-1f7e-4b65-8feb-91d5a3c07129"/>
+				<reportElement x="329" y="148" width="40" height="15" uuid="1ef1c68b-1f7e-4b65-8feb-91d5a3c07129"/>
 				<text><![CDATA[Qty:]]></text>
 			</staticText>
 			<staticText>
@@ -363,7 +334,7 @@ group by jor.id]]>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="74" y="149" width="100" height="15" uuid="d27820b1-a0c0-40eb-ba6a-8bc241b6f65e"/>
-				<textFieldExpression><![CDATA[$F{jo_gross_weight}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="74" y="170" width="254" height="15" uuid="b9064271-0dcc-45d0-945b-bc2e4d818741"/>
@@ -384,10 +355,6 @@ group by jor.id]]>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="396" y="113" width="159" height="15" uuid="be92611a-c302-41a7-91e6-b8ba5c48afa0"/>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="396" y="149" width="157" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
-				<textFieldExpression><![CDATA[$F{jo_pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="0" width="285" height="24" uuid="c706ac6c-9eab-42a2-8ea0-83bb9932e437"/>
@@ -413,6 +380,14 @@ group by jor.id]]>
 				<reportElement x="397" y="25" width="158" height="37" uuid="838f806e-871d-43b2-b605-a3562590f472"/>
 				<textFieldExpression><![CDATA[$F{invoice_no}]]></textFieldExpression>
 			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="390" y="149" width="35" height="14" uuid="1cb53100-0f47-4992-8858-035abbafbddd"/>
+				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="425" y="149" width="130" height="14" uuid="4c8ff7d9-6ff2-4646-af63-58dfeb2346e8"/>
+				<textFieldExpression><![CDATA[$F{ocean_unit}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
@@ -422,7 +397,7 @@ group by jor.id]]>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{charge_name_eng}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{charge_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="140" y="2" width="68" height="18" uuid="43672bca-27de-4633-b106-507d58822e0e"/>
@@ -436,7 +411,7 @@ group by jor.id]]>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{jor_price}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="262" y="2" width="15" height="18" uuid="3a5eba6e-4507-4b1b-9722-1623735a3c75"/>
@@ -450,7 +425,7 @@ group by jor.id]]>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{currency_total_amount}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{exchange_total_amount}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="328" y="2" width="30" height="18" uuid="defe1bad-5e7a-4372-8c16-9a947da617f9"/>
@@ -554,22 +529,9 @@ group by jor.id]]>
 				<reportElement x="0" y="0" width="555" height="1" uuid="0c33aa57-8270-4dd5-941f-6afdcefe4f0b"/>
 			</line>
 			<staticText>
-				<reportElement x="385" y="3" width="90" height="20" uuid="d8b01e86-6463-4378-8cfe-079af2125484"/>
+				<reportElement x="363" y="3" width="90" height="20" uuid="d8b01e86-6463-4378-8cfe-079af2125484"/>
 				<text><![CDATA[TOTAOL Amount:]]></text>
 			</staticText>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="483" y="3" width="72" height="20" uuid="e193b6bf-a94a-40e4-8057-983b4ffffd37"/>
-				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA[$V{totoa_amountRMB}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="275" y="3" width="30" height="20" uuid="5e63f9e1-1036-4838-88bf-5d73094baff5"/>
-				<text><![CDATA[HKD:]]></text>
-			</staticText>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="305" y="3" width="55" height="20" uuid="9ec383c7-9d10-4030-85bb-e4433e8b3c70"/>
-				<textFieldExpression><![CDATA[$F{total_HKD}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="329" y="194" width="224" height="20" uuid="5b9627c8-f98a-49c2-88c5-aa22ebf1f6ba"/>
 				<textElement>
@@ -577,6 +539,14 @@ group by jor.id]]>
 				</textElement>
 				<text><![CDATA[ENKYO SCM (H.K.) CO., LIMITED]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="235" y="3" width="126" height="164" uuid="b8e9c42d-756c-4955-a45b-b4ed9d7965ac"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="453" y="3" width="99" height="164" uuid="2e54476d-257d-463c-94bd-6d1f8d97f825"/>
+				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

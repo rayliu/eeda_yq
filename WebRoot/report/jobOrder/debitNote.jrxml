@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="debitNote" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
-	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="152"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -23,62 +23,84 @@
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<parameter name="order_id" class="java.util.List">
+	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select jor.*, pr.abbr sp_name, f.name charge_name,u.name unit_name,c.name currency_name,josi.gross_weight,
-   josi.pieces,josi.container_no,jos.order_id,jos.hbl_no,jos.vessel,jos.voyage,jos.mbl_no,jos.etd,jos.eta,jo.ref_no,jo.order_no,
-   lo.name fnd,lo1.name pol,u1.name unit_name,IFNULL(pr.company_name,pr.company_name_eng) company_name,
-   IFNULL(pr.address,pr.address_eng) address,pr.phone,(SELECT sum(total_amount) FROM job_order_arap jor
-   left join currency c on c.id=jor.currency_id
-   WHERE jor.order_type ='charge' and c.name='CNY' and $X{IN,jor.id,order_id}) total_RMB,(SELECT sum(total_amount) FROM job_order_arap jor
-   left join currency c on c.id=jor.currency_id
-   WHERE jor.order_type ='charge' and c.name='USD'  and $X{IN,jor.id,order_id}) total_USD
-from job_order_arap jor
- left join party pr on pr.id=jor.sp_id
- LEFT JOIN job_order jo on jo.id = jor.order_id
- LEFT JOIN job_order_shipment jos on jos.order_id = jor.order_id
- LEFT JOIN job_order_shipment_item josi on josi.order_id = jor.order_id
- LEFT JOIN unit u1 on josi.unit_id = u1.id
- left join unit u on u.id=jor.unit_id
- left join fin_item f on f.id=jor.charge_id
- left join currency c on c.id=jor.currency_id
- LEFT JOIN location lo1 ON lo1.id = jos.pol
- LEFT JOIN location lo ON lo.id = jos.fnd
-where jor.order_type ='charge' and $X{IN,jor.id,order_id} group by jor.id]]>
+		<![CDATA[SELECT
+	jor.sp_id,jor.exchange_total_amount exchange_total_amount,jor.invoice_no invoice_no,jor.price price,jor.total_amount total_amount,
+  jor.exchange_currency_rate exchange_rate,jor.amount amount, ifnull(pr.company_name,pr.company_name_eng) companyName,
+ifnull(pr.contact_person,pr.contact_person_eng) personEng,
+	ifnull(f.name,f.name_eng) charge_name,
+	u. NAME unit_name,
+	c. NAME currency_name,
+	josi.gross_weight,
+	josi.pieces,
+
+	josi.container_no,
+	jos.order_id,
+	jos.hbl_no,
+	jos.mbl_no,
+	jos.etd,
+	jos.eta,
+	jo.ref_no,
+	jo.order_no,
+	Upper(lo. NAME) fnd,
+	Upper(lo1. NAME) pol,
+	u1.name_eng ocean_unit,
+  u. NAME unit_name,
+	IFNULL(
+		pr.company_name_eng,
+		pr.company_name
+	) company_name,
+	IFNULL(pr.address_eng, pr.address) address,
+	pr.phone,
+	(select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
+			CONCAT(c.name,' :\t ',sum(total_amount)) total
+		FROM
+			job_order_arap jor
+		LEFT JOIN currency c ON c.id = jor.currency_id
+		WHERE
+			jor.order_type = 'charge'
+AND jor.id in ($P{order_id})
+GROUP BY c.id) a
+	) total,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage,
+
+(select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
+			CONCAT(c.name,' :\t ',sum(exchange_total_amount)) total
+		FROM
+			job_order_arap joa
+		LEFT JOIN currency c ON c.id = joa.exchange_currency_id
+		WHERE
+			joa.order_type = 'charge'
+			AND joa.id in ($P{order_id}) GROUP BY c.id) a
+	) ex_total
+FROM
+	 job_order jo
+LEFT JOIN job_order_arap jor ON jo.id = jor.order_id
+LEFT JOIN party pr ON pr.id = jor.sp_id
+LEFT JOIN job_order_shipment jos ON jos.order_id = jor.order_id
+LEFT JOIN job_order_shipment_item josi ON josi.order_id = jo.id
+LEFT JOIN unit u1 ON josi.unit_id = u1.id
+LEFT JOIN unit u ON u.id = jor.unit_id
+LEFT JOIN fin_item f ON f.id = jor.charge_id
+LEFT JOIN currency c ON c.id = jor.currency_id
+LEFT JOIN location lo1 ON lo1.id = jos.pol
+LEFT JOIN location lo ON lo.id = jos.fnd
+WHERE
+	jor.order_type = 'charge'
+AND  jor.id in ($P{order_id}) group by jor.id]]>
 	</queryString>
-	<field name="id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="order_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="order_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="sp_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[供应商id]]></fieldDescription>
 	</field>
-	<field name="charge_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[费用id]]></fieldDescription>
+	<field name="exchange_total_amount" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="charge_eng_id" class="java.lang.Long">
+	<field name="invoice_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="price" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="amount" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="unit_id" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="currency_id" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="total_amount" class="java.lang.Double">
@@ -87,37 +109,11 @@ where jor.order_type ='charge' and $X{IN,jor.id,order_id} group by jor.id]]>
 	<field name="exchange_rate" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="currency_total_amount" class="java.lang.Double">
+	<field name="amount" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="receipt_type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="receipt_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="invoice_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="create_time" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="remark" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="audit_flag_stamp" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="audit_flag" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="bill_flag" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="bill_flag_stamp" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="sp_name" class="java.lang.String"/>
+	<field name="companyName" class="java.lang.String"/>
+	<field name="personEng" class="java.lang.String"/>
 	<field name="charge_name" class="java.lang.String"/>
 	<field name="unit_name" class="java.lang.String"/>
 	<field name="currency_name" class="java.lang.String"/>
@@ -130,14 +126,11 @@ where jor.order_type ='charge' and $X{IN,jor.id,order_id} group by jor.id]]>
 	<field name="container_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="hbl_no" class="java.lang.String">
+	<field name="order_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="vessel" class="java.lang.String">
-		<fieldDescription><![CDATA[船名]]></fieldDescription>
-	</field>
-	<field name="voyage" class="java.lang.String">
-		<fieldDescription><![CDATA[船次]]></fieldDescription>
+	<field name="hbl_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="mbl_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -154,8 +147,13 @@ where jor.order_type ='charge' and $X{IN,jor.id,order_id} group by jor.id]]>
 	<field name="order_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="fnd" class="java.lang.String"/>
-	<field name="pol" class="java.lang.String"/>
+	<field name="fnd" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pol" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ocean_unit" class="java.lang.String"/>
 	<field name="company_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -165,11 +163,11 @@ where jor.order_type ='charge' and $X{IN,jor.id,order_id} group by jor.id]]>
 	<field name="phone" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="total_RMB" class="java.lang.Double"/>
-	<field name="total_USD" class="java.lang.Double"/>
-	<variable name="totoa_amountRMB" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{currency_total_amount}]]></variableExpression>
-	</variable>
+	<field name="total" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vessel_voyage" class="java.lang.String"/>
+	<field name="ex_total" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -333,7 +331,7 @@ where jor.order_type ='charge' and $X{IN,jor.id,order_id} group by jor.id]]>
 				<text><![CDATA[POD:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="351" y="150" width="65" height="15" uuid="1ef1c68b-1f7e-4b65-8feb-91d5a3c07129"/>
+				<reportElement x="351" y="150" width="25" height="15" uuid="1ef1c68b-1f7e-4b65-8feb-91d5a3c07129"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -387,20 +385,6 @@ where jor.order_type ='charge' and $X{IN,jor.id,order_id} group by jor.id]]>
 			<line>
 				<reportElement x="0" y="214" width="555" height="1" uuid="92ec3e54-b78d-4dd2-833b-994d18652e10"/>
 			</line>
-			<textField isBlankWhenNull="true">
-				<reportElement x="74" y="89" width="92" height="15" uuid="bba3c900-6b7e-4404-b98e-38e22f312d91"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{vessel}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="167" y="89" width="68" height="15" uuid="6a264388-6268-45fe-af46-61ccb5a52836"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{voyage}]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="74" y="110" width="254" height="15" uuid="12467054-823e-4a70-8005-7ed958f4f86e"/>
 				<textElement>
@@ -465,20 +449,6 @@ where jor.order_type ='charge' and $X{IN,jor.id,order_id} group by jor.id]]>
 				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="419" y="150" width="32" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="450" y="151" width="72" height="14" uuid="031deb20-ad6a-4dd0-a3fb-54e016073a88"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{unit_name}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="16" width="303" height="36" uuid="1d53aa30-90fc-490b-acf5-b4488a9a9499"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
@@ -511,7 +481,7 @@ where jor.order_type ='charge' and $X{IN,jor.id,order_id} group by jor.id]]>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="416" y="25" width="139" height="15" uuid="1d6729a1-29b4-4a71-bc3e-2b75d5c07d45"/>
@@ -519,6 +489,18 @@ where jor.order_type ='charge' and $X{IN,jor.id,order_id} group by jor.id]]>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{invoice_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="424" y="151" width="130" height="14" uuid="f767dc31-f567-472f-bd98-a5a8cae14d9d"/>
+				<textFieldExpression><![CDATA[$F{ocean_unit}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="389" y="151" width="35" height="14" uuid="31236f61-a729-4647-8bb9-eb28f224d252"/>
+				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="73" y="89" width="254" height="15" uuid="055efe25-6aa2-4356-89ed-f3c08f26ac5a"/>
+				<textFieldExpression><![CDATA[$F{vessel_voyage}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -592,37 +574,37 @@ where jor.order_type ='charge' and $X{IN,jor.id,order_id} group by jor.id]]>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{currency_total_amount}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{exchange_total_amount}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<summary>
-		<band height="235" splitType="Stretch">
+		<band height="280" splitType="Stretch">
 			<staticText>
-				<reportElement x="344" y="217" width="166" height="16" uuid="42d6b9e9-dc8a-4907-a285-2d626777ce83"/>
+				<reportElement x="344" y="257" width="166" height="16" uuid="42d6b9e9-dc8a-4907-a285-2d626777ce83"/>
 				<textElement>
-					<font fontName="黑体" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="SansSerif" isBold="true" pdfFontName="" pdfEncoding="Cp1252"/>
 				</textElement>
 				<text><![CDATA[AUTHORISED SIGNATURE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="354" y="195" width="149" height="17" uuid="44bb40d6-e337-488e-8f8e-ddc6db2bbd00"/>
+				<reportElement x="354" y="235" width="149" height="17" uuid="44bb40d6-e337-488e-8f8e-ddc6db2bbd00"/>
 				<textElement>
-					<font fontName="黑体" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="SansSerif" isBold="true" pdfFontName="" pdfEncoding="Cp1252"/>
 				</textElement>
 				<text><![CDATA[Management Co.,Ltd.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="334" y="176" width="220" height="15" uuid="b1fff306-2524-4525-afad-9bb102cbd4d0"/>
+				<reportElement x="334" y="216" width="220" height="15" uuid="b1fff306-2524-4525-afad-9bb102cbd4d0"/>
 				<textElement>
-					<font fontName="黑体" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="SansSerif" isBold="true" pdfEncoding="Cp1252"/>
 				</textElement>
 				<text><![CDATA[Zhuhai Hengqin Enkyo Supply Chain]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="354" y="158" width="149" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
+				<reportElement x="354" y="198" width="149" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
 				<textElement>
-					<font fontName="黑体" size="10" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="SansSerif" size="10" isBold="true" pdfEncoding="Cp1252"/>
 				</textElement>
 				<text><![CDATA[FOR AND ON BEHALF OF]]></text>
 			</staticText>
@@ -662,50 +644,23 @@ where jor.order_type ='charge' and $X{IN,jor.id,order_id} group by jor.id]]>
 				<text><![CDATA[大写金额：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="312" y="2" width="30" height="20" uuid="e9d74dd6-b186-47c5-b9a7-93ab8f947d11"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[RMB:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="312" y="22" width="30" height="20" uuid="8e538073-085e-4640-affb-d64ff6017ee0"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[USD:]]></text>
-			</staticText>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="344" y="3" width="40" height="20" uuid="94430653-2374-406c-b2d8-fb704eae0631"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{total_RMB}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="344" y="23" width="40" height="20" uuid="7006bb1b-db18-4f61-a282-a2a8749216f3"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{total_USD}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="398" y="3" width="93" height="20" uuid="14c45892-c9f5-4b31-8c07-115cd3edc7c4"/>
+				<reportElement x="362" y="3" width="93" height="20" uuid="14c45892-c9f5-4b31-8c07-115cd3edc7c4"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[TOTAOL Amount:]]></text>
 			</staticText>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="491" y="3" width="64" height="20" uuid="1e4d6b1a-a3cd-40e0-8a5d-ad9b9f23d657"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{totoa_amountRMB}]]></textFieldExpression>
-			</textField>
 			<line>
 				<reportElement x="0" y="1" width="555" height="1" uuid="1308d29b-2c0c-4385-b6af-dd03271b8ef0"/>
 			</line>
+			<textField>
+				<reportElement x="455" y="2" width="99" height="164" uuid="0a0be80c-adb8-4d7c-a78c-f3dca602d3bd"/>
+				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="236" y="2" width="126" height="164" uuid="5fed97fb-141a-4a56-85b4-f9f41b375264"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

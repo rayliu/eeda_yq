@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="240"/>
+	<property name="ireport.y" value="181"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -26,13 +26,13 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<parameter name="order_id" class="java.util.List">
+	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	jor.sp_id,jor.currency_total_amount currency_total_amount,jor.invoice_no invoice_no,jor.price price,jor.total_amount total_amount,
-  jor.exchange_rate exchange_rate,jor.amount amount, pr.company_name_eng companyName,pr.contact_person_eng personEng,
+	jor.sp_id,jor.exchange_total_amount exchange_total_amount,jor.invoice_no invoice_no,jor.price price,jor.total_amount total_amount,
+  jor.exchange_currency_rate exchange_rate,jor.amount amount, pr.company_name_eng companyName,pr.contact_person_eng personEng,
 	f.name_eng charge_name_eng,
 	u. NAME unit_name,
 	c. NAME currency_name,
@@ -64,9 +64,19 @@
 		LEFT JOIN currency c ON c.id = jor.currency_id
 		WHERE
 			jor.order_type = 'charge'
-AND $X{IN,jor.id,order_id}
+AND jor.id in ($P{order_id})
 GROUP BY c.id) a
-	) total,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage
+	) total,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage,
+
+(select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
+			CONCAT(c.name,' :\t ',sum(exchange_total_amount)) total
+		FROM
+			job_order_arap joa
+		LEFT JOIN currency c ON c.id = joa.exchange_currency_id
+		WHERE
+			joa.order_type = 'charge'
+			AND joa.id in ($P{order_id}) GROUP BY c.id) a
+	) ex_total
 FROM
 	 job_order jo
 LEFT JOIN job_order_arap jor ON jo.id = jor.order_id
@@ -81,12 +91,12 @@ LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo ON lo.id = jos.fnd
 WHERE
 	jor.order_type = 'charge'
-AND  $X{IN,jor.id,order_id} group by jor.id]]>
+AND  jor.id in ($P{order_id}) group by jor.id]]>
 	</queryString>
 	<field name="sp_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[供应商id]]></fieldDescription>
 	</field>
-	<field name="currency_total_amount" class="java.lang.Double">
+	<field name="exchange_total_amount" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="invoice_no" class="java.lang.String">
@@ -159,9 +169,7 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="vessel_voyage" class="java.lang.String"/>
-	<variable name="totoa_amountRMB" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{currency_total_amount}]]></variableExpression>
-	</variable>
+	<field name="ex_total" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -421,7 +429,7 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{currency_total_amount}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{exchange_total_amount}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="328" y="2" width="30" height="18" uuid="defe1bad-5e7a-4372-8c16-9a947da617f9"/>
@@ -532,17 +540,16 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 				<reportElement x="0" y="0" width="555" height="1" uuid="0c33aa57-8270-4dd5-941f-6afdcefe4f0b"/>
 			</line>
 			<staticText>
-				<reportElement x="385" y="3" width="90" height="20" uuid="d8b01e86-6463-4378-8cfe-079af2125484"/>
+				<reportElement x="372" y="3" width="82" height="20" uuid="d8b01e86-6463-4378-8cfe-079af2125484"/>
 				<text><![CDATA[TOTAOL Amount:]]></text>
 			</staticText>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="483" y="3" width="72" height="20" uuid="e193b6bf-a94a-40e4-8057-983b4ffffd37"/>
-				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA[$V{totoa_amountRMB}]]></textFieldExpression>
+			<textField>
+				<reportElement x="245" y="3" width="126" height="164" uuid="e90f71b5-6961-40db-b29c-2e5374ffee52"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="249" y="4" width="126" height="164" uuid="e90f71b5-6961-40db-b29c-2e5374ffee52"/>
-				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+				<reportElement x="454" y="3" width="99" height="164" uuid="17bd275a-e9e1-444e-b881-b77e14f5cffc"/>
+				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
