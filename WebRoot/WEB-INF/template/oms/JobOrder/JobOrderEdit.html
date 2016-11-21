@@ -399,7 +399,7 @@
                                               <br>
 				                              <div class="row">
 					                              <div class="form-group">
-													 <div class="col-lg-10">
+													 <div class="col-lg-12">
 													 	<label class="search-label">发票号</label>
 													 	<input class="form-control search-control" name="invoiceNo" id="invoiceNo" >
 		                                             </div>
@@ -409,22 +409,18 @@
 								   			 <div class="row">
 	                                             <div class="form-group">
 									                    <label class="checkbox-inline">
-									                        <input type="radio" id="debit_note" name='debit_note' value='debitNote' checked>Debit note(中文版)
+									                        <input type="radio" name='debit_note' value='debitNote' checked>Debit note(中文版)
 									                    </label><br />
 									                    <label class="checkbox-inline">
-									                        <input type="radio" id="debit_note_eng" name='debit_note' value='debit_note_eng'>Debit note(英文版)
+									                        <input type="radio" name='debit_note' value='debit_note_eng'>Debit note(英文版)
 									                    </label><br>
 									                    <label class="checkbox-inline">
-									                        <input type="radio" id="invoice" name='debit_note' value='invoice'>Invoice(境外)
-									                    </label><br>
-									                    <label class="checkbox-inline">
-									                        <input type="radio" id="invoice_land" name='debit_note' value='invoice_land'>Invoice(分单)
+									                        <input type="radio" name='debit_note' value='invoice'>Invoice(境外)
 									                    </label>
 						                         </div>
 					                         </div>
 					                         <br>
-					                       </div>
-								       
+					                    </div>
 								        <div class="modal-footer">
 								        	<button type="button" id="printDebitNoteBtn" class="btn btn-primary">打印</button>
 								        	<button type="button" id="returnBtn" class="btn  btn-default" data-dismiss="modal">返回</button>         

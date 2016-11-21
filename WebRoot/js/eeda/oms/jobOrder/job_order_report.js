@@ -625,31 +625,19 @@ $(document).ready(function() {
     
     //打印Debit_note
 	$('#printDebitNoteBtn').click(function(){
-		$('#printDebitNoteBtn').attr('disabled', true);
-		//数据不足提示
+		$(this).attr('disabled', true);
+		
 			var debit_note = $('input[name=debit_note]:checked').val();
 	    	var invoiceNo = $('#invoiceNo').val();
-	    	var invoice_land_hbl_no = $('#invoice_land_hbl_no').val();
 	      	var itemIds=[];
-	      	$('#charge_table input[type="checkbox"]').each(function(){
-	      		var checkbox = $(this).prop('checked');
-	      		if(checkbox){
-	      			var itemId = $(this).parent().parent().attr('id');
-	      			itemIds.push(itemId);
-	      		}
+	      	$('#charge_table input[type="checkbox"]:checked').each(function(){
+      			var itemId = $(this).parent().parent().attr('id');
+      			itemIds.push(itemId);
 	      	 });
-	      	var landIds=[];
-	      	$('#invoice_land_table input[type="checkbox"]').each(function(){
-	      		var checkbox = $(this).prop('checked');
-	      		if(checkbox){
-	      			var itemId = $(this).parent().parent().attr('id');
-	      			landIds.push(itemId);
-	      		}
-	      	});
-	      	console.log(landIds);
-	    	 $.post('/jobOrder/saveDebitNote', {itemIds:itemIds.toString(),invoiceNo:invoiceNo, invoice_land_hbl_no:invoice_land_hbl_no}, function(data){
+	      	var itemIdsStr = itemIds.toString();
+	    	 $.post('/jobOrder/saveDebitNote', {itemIds:itemIdsStr,invoiceNo:invoiceNo}, function(data){
 	    		 if(data.result==true){
-			    	$.post('/jobOrderReport/printDebitNotePDF', {debit_note:debit_note, itemIds:itemIds.toString(), landIds:landIds.toString()}, function(data){
+			    	$.post('/jobOrderReport/printDebitNotePDF', {debit_note:debit_note, itemIds:itemIdsStr}, function(data){
 			    		   $('#printDebitNoteBtn').attr('disabled', false);
 			                window.open(data);
 			    	}).fail(function() { 
@@ -660,10 +648,41 @@ $(document).ready(function() {
 	    	 },'json').fail(function() { 
 	                $.scojs_message('生成PDF失败', $.scojs_message.TYPE_ERROR);
 	                $('#printDebitNoteBtn').attr('disabled', false);
-	              });
+	         });
       
 	});   
 	
+	//打印Invoice(分单)
+	$('#land_printDebit .btn-primary').click(function(){
+		$(this).attr('disabled', true);
+		
+		var invoice_land_hbl_no = $('#invoice_land_hbl_no').val();
+		var landIds=[];
+		$('#land_table input[type="checkbox"]:checked').each(function(){
+			var itemId = $(this).parent().parent().attr('id');
+			landIds.push(itemId);
+		});
+		var landIdsStr = landIds.toString();
+		$.post('/jobOrder/saveDebitNoteOfLand', {landIds:landIdsStr,invoice_land_hbl_no:invoice_land_hbl_no}, function(data){
+			if(data.result==true){
+				$.post('/jobOrderReport/printDebitNotePDF', {debit_note:'land_invoice', landIds:landIdsStr}, function(data){
+					if(data.result==false){
+						$.scojs_message('生成Invoice(分单)PDF失败,没有已选陆运的费用', $.scojs_message.TYPE_ERROR);
+					}else{
+						window.open(data);
+					}
+					$('#land_printDebit .btn-primary').attr('disabled', false);
+				}).fail(function() { 
+					$.scojs_message('生成Invoice(分单)PDF失败', $.scojs_message.TYPE_ERROR);
+					$('#land_printDebit .btn-primary').attr('disabled', false);
+				});
+			}
+		},'json').fail(function() { 
+			$.scojs_message('生成PDF失败', $.scojs_message.TYPE_ERROR);
+			$('#land_printDebit .btn-primary').attr('disabled', false);
+		});
+		
+	});   
 	
 	//生成陆运的柜货派车单PDF
 	$('#cabinet_truck').click(function(){

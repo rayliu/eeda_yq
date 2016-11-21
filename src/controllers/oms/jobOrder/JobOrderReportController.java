@@ -1,6 +1,7 @@
 package controllers.oms.jobOrder;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import models.eeda.oms.jobOrder.JobOrderShipmentHead;
@@ -206,7 +207,7 @@ public class JobOrderReportController extends Controller {
 		String debit_note = getPara("debit_note");
 		String order_id = getPara("itemIds");
 		String landIds = getPara("landIds");
-		String [] orderIdArr= order_id.split(",");
+		
 		String fileName;
 		String outFileName;
 		HashMap<String, Object> hm = new HashMap<String, Object>();
@@ -222,9 +223,15 @@ public class JobOrderReportController extends Controller {
 		}else {
 			fileName = "/report/jobOrder/land_invoice.jasper";
 			outFileName = "/download/Invoice分单";
-			hm.put("landIds", landIds);		
+			hm.put("landIds", landIds);
+			Record list = Db.findFirst("select id from job_order_arap where land_item_id in (?)  ", landIds);
+			if(list==null){
+				renderJson("{\"result\":false}");
+				return;
+			}
+		
 		}
-		hm.put("order_id", orderIdArr);		
+		hm.put("order_id", order_id);		
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);

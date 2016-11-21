@@ -404,11 +404,14 @@ $(document).ready(function() {
     	if(hava_check>0){
     		$('#truckOrderPDF').attr('disabled',false);
 	    	$('#cabinet_truck').attr('disabled',false);
+	    	$('#land_print_debit_note').attr('disabled',false);
     	}else{
     		$('#truckOrderPDF').attr('disabled',true);
 	    	$('#cabinet_truck').attr('disabled',true);
+	    	$('#land_print_debit_note').attr('disabled',true);
     	}
     });
+    
     //全选
     $('#allCheckOfLand').click(function(){
 	    $("#land_table .checkBox").prop("checked",this.checked);
@@ -419,11 +422,14 @@ $(document).ready(function() {
 	    if(this.checked==true&&$('#land_table td').length>1&&hava_check>0){
 	    	$('#truckOrderPDF').attr('disabled',false);
 	    	$('#cabinet_truck').attr('disabled',false);
+	    	$('#land_print_debit_note').attr('disabled',false);
 	    }else{
 	    	$('#truckOrderPDF').attr('disabled',true);
 	    	$('#cabinet_truck').attr('disabled',true);
+	    	$('#land_print_debit_note').attr('disabled',true);
 	    }
     });
+    
     $("#land_table").on('click','.checkBox',function(){
 		  $("#allCheckOfLand").prop("checked",$("#land_table .checkBox").length == $("#land_table .checkBox:checked").length ? true : false);
     });
@@ -480,9 +486,6 @@ $(document).ready(function() {
 		var showNote = $('#land_showNote').val();
 		self.val(showNote);
 	})
-	
-	 
-	
 
 });
 });
