@@ -24,8 +24,12 @@ $(document).ready(function() {
         		}
             },
             {"data":"ORDER_TYPE"},   
-            {"data":"STATUS"},   
-            {"data":"APP_MSG"},   
+            {"data":"STATUS"},
+            {"data":"APP_MSG"},  
+            
+            {"data":"结算币制"},   
+            {"data":"结算汇率"}, 
+            
             {"data":"TOTALCOSTAMOUNT"},  
             {"data":"PAID_AMOUNT",
             	"render": function(data, type, full, meta) {
