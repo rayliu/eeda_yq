@@ -530,7 +530,7 @@ AND  jor.id in ($P{order_id}) group by jor.id]]>
 			</line>
 			<staticText>
 				<reportElement x="363" y="3" width="90" height="20" uuid="d8b01e86-6463-4378-8cfe-079af2125484"/>
-				<text><![CDATA[TOTAOL Amount:]]></text>
+				<text><![CDATA[TOTAL Amount:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="329" y="194" width="224" height="20" uuid="5b9627c8-f98a-49c2-88c5-aa22ebf1f6ba"/>
@@ -539,11 +539,11 @@ AND  jor.id in ($P{order_id}) group by jor.id]]>
 				</textElement>
 				<text><![CDATA[ENKYO SCM (H.K.) CO., LIMITED]]></text>
 			</staticText>
-			<textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="235" y="3" width="126" height="164" uuid="b8e9c42d-756c-4955-a45b-b4ed9d7965ac"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="453" y="3" width="99" height="164" uuid="2e54476d-257d-463c-94bd-6d1f8d97f825"/>
 				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
 			</textField>

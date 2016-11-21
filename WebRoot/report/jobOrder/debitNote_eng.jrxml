@@ -541,13 +541,13 @@ AND  jor.id in ($P{order_id}) group by jor.id]]>
 			</line>
 			<staticText>
 				<reportElement x="372" y="3" width="82" height="20" uuid="d8b01e86-6463-4378-8cfe-079af2125484"/>
-				<text><![CDATA[TOTAOL Amount:]]></text>
+				<text><![CDATA[TOTAL Amount:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="245" y="3" width="126" height="164" uuid="e90f71b5-6961-40db-b29c-2e5374ffee52"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="454" y="3" width="99" height="164" uuid="17bd275a-e9e1-444e-b881-b77e14f5cffc"/>
 				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
 			</textField>

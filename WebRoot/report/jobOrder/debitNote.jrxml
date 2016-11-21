@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="debitNote" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="385"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -583,14 +583,14 @@ AND  jor.id in ($P{order_id}) group by jor.id]]>
 			<staticText>
 				<reportElement x="344" y="257" width="166" height="16" uuid="42d6b9e9-dc8a-4907-a285-2d626777ce83"/>
 				<textElement>
-					<font fontName="SansSerif" isBold="true" pdfFontName="" pdfEncoding="Cp1252"/>
+					<font fontName="SansSerif" isBold="true" pdfEncoding="Cp1252"/>
 				</textElement>
 				<text><![CDATA[AUTHORISED SIGNATURE:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="354" y="235" width="149" height="17" uuid="44bb40d6-e337-488e-8f8e-ddc6db2bbd00"/>
 				<textElement>
-					<font fontName="SansSerif" isBold="true" pdfFontName="" pdfEncoding="Cp1252"/>
+					<font fontName="SansSerif" isBold="true" pdfEncoding="Cp1252"/>
 				</textElement>
 				<text><![CDATA[Management Co.,Ltd.]]></text>
 			</staticText>
@@ -648,16 +648,16 @@ AND  jor.id in ($P{order_id}) group by jor.id]]>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[TOTAOL Amount:]]></text>
+				<text><![CDATA[TOTAL Amount:]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="1" width="555" height="1" uuid="1308d29b-2c0c-4385-b6af-dd03271b8ef0"/>
 			</line>
-			<textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="455" y="2" width="99" height="164" uuid="0a0be80c-adb8-4d7c-a78c-f3dca602d3bd"/>
 				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="236" y="2" width="126" height="164" uuid="5fed97fb-141a-4a56-85b4-f9f41b375264"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
