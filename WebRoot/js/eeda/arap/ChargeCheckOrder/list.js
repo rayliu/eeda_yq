@@ -144,112 +144,112 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	          ]
 	      });
         
-        var checkedDataTable = eeda.dt({
-            id: 'checkedEeda-table',
-//            pageLength: 25,
-            paging: true,
-            serverSide: true, //不打开会出现排序不对
-            ajax: "/chargeCheckOrder/list2",
-            columns:[
-			      { "width": "10px",
-				    "render": function ( data, type, full, meta ) {
-				    	if(full.BILL_FLAG != ''){
-					        if(full.BILL_FLAG != 'Y')
-					    		return '<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'" >';
-					    	else
-					    		return '<input type="checkbox" class="checkBox" disabled>';
-				    	}else{
-				    		return '';
-				    	}
-				    }
-			      },
-	            { "data": "ORDER_NO", "width": "100px",
-			    	  "render": function ( data, type, full, meta ) {
-	                      return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
-	                  }
-	            },
-	            { "data": "ORDER_EXPORT_DATE", "width": "100px"},
-	            { "data": "CREATE_STAMP", "width": "100px"},
-	            { "data": "TYPE", "width": "60px"},
-	            { "data": "FEE_NAME", "width": "60px"},
-	            { "data": "CUSTOMER_NAME", "width": "100px"},
-	            { "data": "SP_NAME", "width": "100px","sClass":"SP_NAME"},
-	            { "data": "CURRENCY_NAME", "width": "60px"},
-	            { "data": "TOTAL_AMOUNT", "width": "60px"},
-	            { "data": "EXCHANGE_RATE", "width": "60px" },
-	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'total_amount'},
-	            { "data": "FND", "width": "60px",
-	            	"render": function ( data, type, full, meta ) {
-	            		if(data)
-				    		     return data;
-	            		else
-				    		     return full.DESTINATION;
-	            	}
-	            },
-	            { "data": "VOLUME", "width": "60px",
-	                "render": function ( data, type, full, meta ) {
-	                    return "";
-	                }
-	            },
-	            { "data": "CONTAINER_AMOUNT","width": "60px",
-	            	"render": function ( data, type, full, meta ) {
-		            	if(data){
-		            		var dataArr = data.split(",");
-		            		var a = 0;
-		            		var b = 0;
-		            		var c = 0;
-		            		var dataStr = "";
-		            		for(var i=0;i<dataArr.length;i++){
-		            			if(dataArr[i]=="20GP"){
-		            				a++;
-		            			}
-		            			if(dataArr[i]=="40GP"){
-		            				b++;
-		            			}
-		            			if(dataArr[i]=="45GP"){
-		            				c++;
-		            			}
-		            		}
-		            		if(a>0){
-		            			dataStr+="20GPx"+a+";"
-		            		}
-		            		if(b>0){
-		            			dataStr+="40GPx"+b+";"
-		            		}
-		            		if(c>0){
-		            			dataStr+="45GPx"+c+";"
-		            		}
-		            		return dataStr;
-		            	}else{
-		            		return '';
-		            	}
-	            	}
-	            },
-	            { "data": "NET_WEIGHT", "width": "60px"},
-	            { "data": "REF_NO", "width": "60px"},
-	            { "data": "MBL_NO", "width": "60px"},
-	            { "data": "HBL_NO", "width": "60px"},
-	            { "data": "CONTAINER_NO", "width": "100px"},
-	            { "data": "TRUCK_TYPE", "width": "100px"},
-	            { "data": "BILL_FLAG", "width": "60px",
-	                "render": function ( data, type, full, meta ) {
-	                		if(data){
-	      	            		if(data != 'Y')
-	      				    		    return '未创建对账单';
-	      				    	   else 
-	      				    		  return '已创建对账单';
-	                  	}else{
-	                			return '';
-	                		}
-	    			       }
-	            },
-	            { "data": null, "width": "60px",
-	                "render": function ( data, type, full, meta ) {
-	                    return "";
-	                }
-	            }
-	          ]
-	      });
+//        var checkedDataTable = eeda.dt({
+//            id: 'checkedEeda-table',
+////            pageLength: 25,
+//            paging: true,
+//            serverSide: true, //不打开会出现排序不对
+//            ajax: "/chargeCheckOrder/list2",
+//            columns:[
+//			      { "width": "10px",
+//				    "render": function ( data, type, full, meta ) {
+//				    	if(full.BILL_FLAG != ''){
+//					        if(full.BILL_FLAG != 'Y')
+//					    		return '<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'" >';
+//					    	else
+//					    		return '<input type="checkbox" class="checkBox" disabled>';
+//				    	}else{
+//				    		return '';
+//				    	}
+//				    }
+//			      },
+//	            { "data": "ORDER_NO", "width": "100px",
+//			    	  "render": function ( data, type, full, meta ) {
+//	                      return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+//	                  }
+//	            },
+//	            { "data": "ORDER_EXPORT_DATE", "width": "100px"},
+//	            { "data": "CREATE_STAMP", "width": "100px"},
+//	            { "data": "TYPE", "width": "60px"},
+//	            { "data": "FEE_NAME", "width": "60px"},
+//	            { "data": "CUSTOMER_NAME", "width": "100px"},
+//	            { "data": "SP_NAME", "width": "100px","sClass":"SP_NAME"},
+//	            { "data": "CURRENCY_NAME", "width": "60px"},
+//	            { "data": "TOTAL_AMOUNT", "width": "60px"},
+//	            { "data": "EXCHANGE_RATE", "width": "60px" },
+//	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'total_amount'},
+//	            { "data": "FND", "width": "60px",
+//	            	"render": function ( data, type, full, meta ) {
+//	            		if(data)
+//				    		     return data;
+//	            		else
+//				    		     return full.DESTINATION;
+//	            	}
+//	            },
+//	            { "data": "VOLUME", "width": "60px",
+//	                "render": function ( data, type, full, meta ) {
+//	                    return "";
+//	                }
+//	            },
+//	            { "data": "CONTAINER_AMOUNT","width": "60px",
+//	            	"render": function ( data, type, full, meta ) {
+//		            	if(data){
+//		            		var dataArr = data.split(",");
+//		            		var a = 0;
+//		            		var b = 0;
+//		            		var c = 0;
+//		            		var dataStr = "";
+//		            		for(var i=0;i<dataArr.length;i++){
+//		            			if(dataArr[i]=="20GP"){
+//		            				a++;
+//		            			}
+//		            			if(dataArr[i]=="40GP"){
+//		            				b++;
+//		            			}
+//		            			if(dataArr[i]=="45GP"){
+//		            				c++;
+//		            			}
+//		            		}
+//		            		if(a>0){
+//		            			dataStr+="20GPx"+a+";"
+//		            		}
+//		            		if(b>0){
+//		            			dataStr+="40GPx"+b+";"
+//		            		}
+//		            		if(c>0){
+//		            			dataStr+="45GPx"+c+";"
+//		            		}
+//		            		return dataStr;
+//		            	}else{
+//		            		return '';
+//		            	}
+//	            	}
+//	            },
+//	            { "data": "NET_WEIGHT", "width": "60px"},
+//	            { "data": "REF_NO", "width": "60px"},
+//	            { "data": "MBL_NO", "width": "60px"},
+//	            { "data": "HBL_NO", "width": "60px"},
+//	            { "data": "CONTAINER_NO", "width": "100px"},
+//	            { "data": "TRUCK_TYPE", "width": "100px"},
+//	            { "data": "BILL_FLAG", "width": "60px",
+//	                "render": function ( data, type, full, meta ) {
+//	                		if(data){
+//	      	            		if(data != 'Y')
+//	      				    		    return '未创建对账单';
+//	      				    	   else 
+//	      				    		  return '已创建对账单';
+//	                  	}else{
+//	                			return '';
+//	                		}
+//	    			       }
+//	            },
+//	            { "data": null, "width": "60px",
+//	                "render": function ( data, type, full, meta ) {
+//	                    return "";
+//	                }
+//	            }
+//	          ]
+//	      });
 
 		//选择是否是同一个客户
 		$('#uncheckedEeda-table').on('click',"input[name='order_check_box']",function () {

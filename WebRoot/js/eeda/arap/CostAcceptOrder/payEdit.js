@@ -27,11 +27,7 @@ $(document).ready(function() {
         		}
              },
         	{"data":"CNAME","width": "250px"},
-        	
-        	{"data":"结算币制","width": "250px"},
-        	{"data":"结算汇率","width": "250px"},
-        	
-    		{"data":"TOTAL_AMOUNT","width": "100px",//结算金额
+    		{"data":"TOTAL_AMOUNT","width": "100px",
     			"render": function(data, type, full, meta) {
 					var str = parseFloat(data).toFixed(2);
 					total = total + parseFloat(data);
