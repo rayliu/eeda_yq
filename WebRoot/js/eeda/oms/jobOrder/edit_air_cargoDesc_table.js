@@ -143,6 +143,18 @@ $(document).ready(function() {
     	}
     })
     
+    //计算总毛重
+    $('#cargoDesc_table').on('keyup','[name=gross_weight]',function(){
+    	var gross_weight = 0;
+		$('#cargoDesc_table [name=gross_weight]').each(function(){
+			var val = this.value;
+			if(val!=''&&!isNaN(val)){
+				gross_weight += parseFloat(val);
+			}
+		})
+		$('#air_gross_weight').val(gross_weight.toFixed(3));
+    })
+    
     
 });
 });
