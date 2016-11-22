@@ -35,8 +35,8 @@ ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 	ifnull(f.name,f.name_eng) charge_name,
 	u. NAME unit_name,
 	c. NAME currency_name,
-	(SELECT sum(joli.gross_weight) from job_order_land_item joli WHERE joli.id in ($P{landIds}) )land_gross_weight,
-	(SELECT sum(joli.pieces) from job_order_land_item joli WHERE joli.id in ($P{landIds}) ) land_pieces,
+	(SELECT sum(joli.gross_weight) from job_order_land_item joli WHERE $X{IN,joli.id,landIds} )land_gross_weight,
+	(SELECT sum(joli.pieces) from job_order_land_item joli WHERE $X{IN,joli.id,landIds} ) land_pieces,
 	josi.container_no,
 	jos.order_id,
 	jos.hbl_no,
@@ -63,7 +63,7 @@ ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 		left join job_order_land_item joli on joli.id = joa.land_item_id
 		WHERE
 			joa.order_type = 'charge'
-AND joli.id in ($P{landIds})
+AND $X{IN,joli.id,landIds}
 GROUP BY c.id) a
 	) total,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage,
 
@@ -75,7 +75,7 @@ GROUP BY c.id) a
 		left join job_order_land_item joli on joli.id = joa.land_item_id
 		WHERE
 			joa.order_type = 'charge'
-			AND joli.id in ($P{landIds}) GROUP BY c.id) a
+			AND $X{IN,joli.id,landIds} GROUP BY c.id) a
 	) ex_total
 FROM
 	 job_order jo
@@ -92,7 +92,7 @@ LEFT JOIN location lo ON lo.id = jos.fnd
 left join job_order_land_item joli on joli.id = jor.land_item_id
 WHERE
 	jor.order_type = 'charge'
-AND  joli.id in ($P{landIds}) group by jor.id]]>
+AND  $X{IN,joli.id,landIds} group by jor.id]]>
 	</queryString>
 	<field name="sp_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[供应商id]]></fieldDescription>

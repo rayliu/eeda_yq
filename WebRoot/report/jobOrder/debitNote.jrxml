@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="debitNote" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="385"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -23,7 +23,7 @@
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<parameter name="order_id" class="java.lang.String">
+	<parameter name="order_id" class="java.util.List">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -62,7 +62,7 @@ ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 		LEFT JOIN currency c ON c.id = jor.currency_id
 		WHERE
 			jor.order_type = 'charge'
-AND jor.id in ($P{order_id})
+AND  $X{IN,jor.id,order_id}
 GROUP BY c.id) a
 	) total,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage,
 
@@ -73,7 +73,7 @@ GROUP BY c.id) a
 		LEFT JOIN currency c ON c.id = joa.exchange_currency_id
 		WHERE
 			joa.order_type = 'charge'
-			AND joa.id in ($P{order_id}) GROUP BY c.id) a
+			AND  $X{IN,joa.id,order_id} GROUP BY c.id) a
 	) ex_total
 FROM
 	 job_order jo
@@ -89,7 +89,7 @@ LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo ON lo.id = jos.fnd
 WHERE
 	jor.order_type = 'charge'
-AND  jor.id in ($P{order_id}) group by jor.id]]>
+AND   $X{IN,jor.id,order_id} group by jor.id]]>
 	</queryString>
 	<field name="sp_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[供应商id]]></fieldDescription>

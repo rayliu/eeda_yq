@@ -26,7 +26,7 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<parameter name="order_id" class="java.lang.String">
+	<parameter name="order_id" class="java.util.List">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -64,7 +64,7 @@
 		LEFT JOIN currency c ON c.id = jor.currency_id
 		WHERE
 			jor.order_type = 'charge'
-AND jor.id in ($P{order_id})
+AND $X{IN,jor.id,order_id}
 GROUP BY c.id) a
 	) total,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage,
 
@@ -75,7 +75,7 @@ GROUP BY c.id) a
 		LEFT JOIN currency c ON c.id = joa.exchange_currency_id
 		WHERE
 			joa.order_type = 'charge'
-			AND joa.id in ($P{order_id}) GROUP BY c.id) a
+			AND $X{IN,joa.id,order_id} GROUP BY c.id) a
 	) ex_total
 FROM
 	 job_order jo
@@ -91,7 +91,7 @@ LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo ON lo.id = jos.fnd
 WHERE
 	jor.order_type = 'charge'
-AND  jor.id in ($P{order_id}) group by jor.id]]>
+AND   $X{IN,jor.id,order_id} group by jor.id]]>
 	</queryString>
 	<field name="sp_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[供应商id]]></fieldDescription>
@@ -395,7 +395,7 @@ AND  jor.id in ($P{order_id}) group by jor.id]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20">
+		<band height="21">
 			<textField isBlankWhenNull="true">
 				<reportElement x="13" y="2" width="127" height="18" uuid="0c54d94f-85db-45a2-984e-ef543fe7d121"/>
 				<textElement>
