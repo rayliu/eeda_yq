@@ -438,8 +438,10 @@ $(document).ready(function() {
     	order.land_charge_item = itemOrder.buildLandChargeDetail();
     	$.post('/jobOrder/saveLandCharge', {params:JSON.stringify(order)}, function(data){
     		 
-    		var url = "/jobOrder/tableListOfLandCharge?order_id="+order_id+"&land_item_id="+land_item_id;
-        	chargeTable.ajax.url(url).load();
+    		 var url = "/jobOrder/tableListOfLandCharge?order_id="+order_id+"&land_item_id="+land_item_id;
+        	 chargeTable.ajax.url(url).load();
+        	 itemOrder.refleshChargeTable(order.ID);
+             itemOrder.refleshCostTable(order.ID);
     		$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
     		$('#land_charge_table_msg .save').attr('disabled', false);
     	 },'json').fail(function() {
@@ -485,7 +487,7 @@ $(document).ready(function() {
     			$(row.find('[name=exchange_total_amount]')).val('');
     		}
     		if(exchange_rate!=''&&!isNaN(exchange_rate)){
-    			$(row.find('[name=currency_total_amount]')).val(total_amount*parseFloat(exchange_rate));
+    			$(row.find('[name=currency_total_amount]')).val((total_amount*parseFloat(exchange_rate)).toFixed(3));
     			if(exchange_currency_rate==''){
         			$(row.find('[name=exchange_total_amount]')).val('');
         		}
@@ -493,7 +495,7 @@ $(document).ready(function() {
     				if(exchange_currency_rate==0){
     					exchange_currency_rate=1;
     				}
-    				$(row.find('[name=exchange_total_amount]')).val(total_amount*parseFloat(exchange_rate)/exchange_currency_rate);
+    				$(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_rate)/exchange_currency_rate).toFixed(3));
         		}
     		}
     	}

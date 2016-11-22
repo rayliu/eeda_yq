@@ -489,9 +489,9 @@ eeda.refreshUrl = refreshUrl;
               }
               if(currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
             	  if(class_name==' cny_to_other'){
-            		  td.next().next().children().val(total/currency_rate);//转换后的金额
+            		  td.next().next().children().val((total/currency_rate).toFixed(3));//转换后的金额
             	  }else{
-            		  td.next().next().children().val(currency_rate*total);//转换后的金额
+            		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
             	  }
               }
 		  });
@@ -518,9 +518,9 @@ eeda.refreshUrl = refreshUrl;
                   }
                   if(currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
                 	  if(class_name==' cny_to_other'){
-                		  td.next().next().children().val(total/currency_rate);//转换后的金额
+                		  td.next().next().children().val((total/currency_rate).toFixed(3));//转换后的金额
                 	  }else{
-                		  td.next().next().children().val(currency_rate*total);//转换后的金额
+                		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
                 	  }
                   }
               }

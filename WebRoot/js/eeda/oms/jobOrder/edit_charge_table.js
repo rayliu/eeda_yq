@@ -100,7 +100,6 @@ $(document).ready(function() {
     	var id = $(this).parent().parent().parent().attr('id');
     	$.post('/jobOrder/feeConfirm',{id:id},function(data){
     		var order_id = $('#order_id').val();
-    		debugger
     		itemOrder.refleshChargeTable(order_id);   		
     		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
     	},'json').fail(function() {
@@ -564,7 +563,7 @@ $(document).ready(function() {
     			$(row.find('[name=exchange_total_amount]')).val('');
     		}
     		if(exchange_rate!=''&&!isNaN(exchange_rate)){
-    			$(row.find('[name=currency_total_amount]')).val(total_amount*parseFloat(exchange_rate));
+    			$(row.find('[name=currency_total_amount]')).val((total_amount*parseFloat(exchange_rate)).toFixed(3));
     			getTotalCharge();
     			if(exchange_currency_rate==''){
         			$(row.find('[name=exchange_total_amount]')).val('');
@@ -573,8 +572,7 @@ $(document).ready(function() {
     				if(exchange_currency_rate==0){
     					exchange_currency_rate=1;
     				}
-    				debugger
-    				$(row.find('[name=exchange_total_amount]')).val(total_amount*parseFloat(exchange_rate)/exchange_currency_rate);
+    				$(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_rate)/exchange_currency_rate).toFixed(3));
         		}
     		}
     	}
@@ -746,6 +744,7 @@ $(document).ready(function() {
     $("#charge_table").on('click','.checkBoxOfChargeTable',function(){
 		  $("#AllCheckOfChargeTable").prop("checked",$(".checkBoxOfChargeTable").length == $(".checkBoxOfChargeTable:checked").length ? true : false);
     });
+    
     
 	
   });
