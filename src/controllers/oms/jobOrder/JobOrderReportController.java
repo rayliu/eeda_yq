@@ -202,11 +202,15 @@ public class JobOrderReportController extends Controller {
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	
-	//打印debitNote中文
+	//打印debitNote
 	public void printDebitNotePDF() {
 		String debit_note = getPara("debit_note");
 		String order_id = getPara("itemIds");
 		String landIds = getPara("landIds");
+		String [] order_id_arr = null;
+		if(order_id!=null){
+			order_id_arr = order_id.split(",");
+		}
 		
 		String fileName;
 		String outFileName;
@@ -231,7 +235,7 @@ public class JobOrderReportController extends Controller {
 			}
 		
 		}
-		hm.put("order_id", order_id);		
+		hm.put("order_id", order_id_arr);		
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
