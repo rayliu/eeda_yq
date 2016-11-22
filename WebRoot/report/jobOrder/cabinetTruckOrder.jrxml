@@ -253,7 +253,7 @@ where joli.id=$P{item_id}]]>
 	<field name="head_tel" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="head_customerTel" class="java.lang.String">
+	<field name="head_customer_tel" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="head_fax" class="java.lang.String">
@@ -574,7 +574,7 @@ where joli.id=$P{item_id}]]>
 				<textElement verticalAlignment="Middle">
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{head_customerTel}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_customer_tel}]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement x="0" y="-10" width="249" height="68" uuid="af90243c-bdac-4045-b78d-4dd4e6cfe5f3"/>
