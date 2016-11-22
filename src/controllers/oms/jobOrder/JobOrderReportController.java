@@ -227,13 +227,13 @@ public class JobOrderReportController extends Controller {
 		}else {
 			fileName = "/report/jobOrder/land_invoice.jasper";
 			outFileName = "/download/Invoice分单";
-			hm.put("landIds", landIds);
-			Record list = Db.findFirst("select id from job_order_arap where land_item_id in (?)  ", landIds);
-			if(list==null){
+			List<Record> list = Db.find("select id from job_order_arap where land_item_id in (?)", landIds);
+			if(list.size()<0){
 				renderJson("{\"result\":false}");
 				return;
 			}
-		
+			String[] landIds_arr = landIds.split(",");
+			hm.put("landIds", landIds_arr);
 		}
 		hm.put("order_id", order_id_arr);		
 		fileName = getContextPath() + fileName;

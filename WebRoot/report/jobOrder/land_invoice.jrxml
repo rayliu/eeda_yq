@@ -26,7 +26,7 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<parameter name="landIds" class="java.lang.String"/>
+	<parameter name="landIds" class="java.util.List"/>
 	<queryString>
 		<![CDATA[SELECT
 	jor.sp_id,jor.exchange_total_amount exchange_total_amount,jor.invoice_no invoice_no,jor.price price,jor.total_amount total_amount,
@@ -56,7 +56,7 @@ ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 	IFNULL(pr.address_eng, pr.address) address,
 	pr.phone,
 	(select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
-			CONCAT(c.name,' :\t ',sum(total_amount)) total
+			CONCAT(c.name,': ',sum(total_amount)) total
 		FROM
 			job_order_arap joa
 		LEFT JOIN currency c ON c.id = joa.currency_id
@@ -68,7 +68,7 @@ GROUP BY c.id) a
 	) total,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage,
 
 (select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
-			CONCAT(c.name,' :\t ',sum(exchange_total_amount)) total
+			CONCAT(c.name,': ',sum(exchange_total_amount)) total
 		FROM
 			job_order_arap joa
 		LEFT JOIN currency c ON c.id = joa.exchange_currency_id
@@ -521,7 +521,7 @@ AND  $X{IN,joli.id,landIds} group by jor.id]]>
 				<reportElement x="0" y="0" width="555" height="1" uuid="0c33aa57-8270-4dd5-941f-6afdcefe4f0b"/>
 			</line>
 			<staticText>
-				<reportElement x="367" y="3" width="85" height="20" uuid="d8b01e86-6463-4378-8cfe-079af2125484"/>
+				<reportElement x="381" y="2" width="73" height="20" uuid="d8b01e86-6463-4378-8cfe-079af2125484"/>
 				<text><![CDATA[TOTAL Amount:]]></text>
 			</staticText>
 			<staticText>

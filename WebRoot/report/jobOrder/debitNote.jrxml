@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="debitNote" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="144"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -56,7 +56,7 @@ ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 	IFNULL(pr.address_eng, pr.address) address,
 	pr.phone,
 	(select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
-			CONCAT(c.name,' :\t ',sum(total_amount)) total
+			CONCAT(c.name,': ',sum(total_amount)) total
 		FROM
 			job_order_arap jor
 		LEFT JOIN currency c ON c.id = jor.currency_id
@@ -67,7 +67,7 @@ GROUP BY c.id) a
 	) total,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage,
 
 (select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
-			CONCAT(c.name,' :\t ',sum(exchange_total_amount)) total
+			CONCAT(c.name,': ',sum(exchange_total_amount)) total
 		FROM
 			job_order_arap joa
 		LEFT JOIN currency c ON c.id = joa.exchange_currency_id
@@ -516,7 +516,7 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="140" y="0" width="40" height="20" uuid="d913eb74-670f-475d-bc48-f729bf47095b"/>
 				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="SansSerif" size="10" pdfEncoding="Cp1252"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{currency_name}.equals("CNY")?"RMB":$F{currency_name})]]></textFieldExpression>
 			</textField>
@@ -544,7 +544,7 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="344" y="0" width="39" height="20" uuid="a98e9f81-16fb-462c-a77e-65ad2b0f1425"/>
 				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="SansSerif" pdfEncoding="Cp1252"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{unit_name}]]></textFieldExpression>
 			</textField>
@@ -644,7 +644,7 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 				<text><![CDATA[大写金额：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="362" y="3" width="93" height="20" uuid="14c45892-c9f5-4b31-8c07-115cd3edc7c4"/>
+				<reportElement x="383" y="5" width="73" height="20" uuid="14c45892-c9f5-4b31-8c07-115cd3edc7c4"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -654,11 +654,11 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 				<reportElement x="0" y="1" width="555" height="1" uuid="1308d29b-2c0c-4385-b6af-dd03271b8ef0"/>
 			</line>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="455" y="2" width="99" height="164" uuid="0a0be80c-adb8-4d7c-a78c-f3dca602d3bd"/>
+				<reportElement x="455" y="5" width="99" height="164" uuid="0a0be80c-adb8-4d7c-a78c-f3dca602d3bd"/>
 				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="236" y="2" width="126" height="164" uuid="5fed97fb-141a-4a56-85b4-f9f41b375264"/>
+				<reportElement x="236" y="5" width="126" height="164" uuid="5fed97fb-141a-4a56-85b4-f9f41b375264"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 		</band>
