@@ -9,25 +9,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对 
           ajax: "/costCheckOrder/list",
           columns: [
-      			{ "width": "10px",
+      			{ "width": "10px","orderable": false,
       				    "render": function ( data, type, full, meta ) {
-      				    	if(full.BILL_FLAG != ''){
-    				    		var strcheck = '';
-    					        if(full.BILL_FLAG != 'Y'){
-    					            strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
-    					        	for(var i=0;i<itemIds.length;i++){
-    			                         if(itemIds[i]==full.ID){
-    			                        	 return strcheck= '<input type="checkbox" class="checkBox" checked="checked"  name="order_check_box" value="'+full.ID+'">';
-    			                         }
-    			                     }
-    					        }else{
-    					        	strcheck = '<input type="checkbox" class="checkBox" disabled>';
-    					    		}
-    				    	}else{
-    				    		strcheck = '';
-    				    	}
-    				    	return strcheck;
-    				    	
+      				    	var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
+    			        	for(var i=0;i<itemIds.length;i++){
+    	                         if(itemIds[i]==full.ID){
+    	                        	 strcheck= '<input type="checkbox" class="checkBox" checked="checked"  name="order_check_box" value="'+full.ID+'">';
+    	                         }
+    	                     }
+    			        	return strcheck;
       				    }
       			},
       			{ "data": "ORDER_NO", "width": "100px",
@@ -57,7 +47,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "TYPE", "width": "60px"},
 	            { "data": "FEE_NAME", "width": "60px"},
 	            { "data": "CUSTOMER_NAME", "width": "100px"},
-	            { "data": "SP_NAME", "width": "100px","sClass":"SP_NAME"},
+	            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
 	            { "data": "CURRENCY_NAME", "width": "60px"},
 	            { "data": "TOTAL_AMOUNT", "width": "60px",
 	            	"render": function ( data, type, full, meta ) {
@@ -150,9 +140,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  
           var order_no = $.trim($("#order_no").val()); 
           var customer = $("#customer").val(); 
-          var customer_input = $("#customer_input").val(); 
+          var customer_input = $("#customer_input").val().trim(); 
           var sp = $("#sp").val(); 
-          var sp_input = $("#sp_input").val(); 
+          var sp_input = $("#sp_input").val().trim(); 
           var type = $("#type").val(); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
@@ -186,8 +176,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		$('#eeda_table').on('click','input[type="checkbox"]',function () {
 				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
 				var id = $(this).parent().parent().attr('id');
-				
-				var amountStr = $($('#'+id+' td')[13]).text();
+				var amountStr = $(this).parent().siblings('.total_amount')[0].textContent;
 		    	  if(amountStr!=''){
 			    	  amount = parseFloat(amountStr);
 		    	  }
@@ -239,6 +228,62 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	$('#totalAmount').val(total);
         	$('#createForm').submit();
         })
+        
+        
+        //全选
+        $('#allCheck').click(function(){
+       	 var f = false;
+     	   	 var flag = 0;
+   	 	   $("#eeda_table .checkBox").each(function(){
+   	 		  var sp_name = $(this).parent().siblings('.SP_NAME')[0].textContent;
+   	 		  if(cnames[0]==undefined){
+   	 			 cnames.push(sp_name);
+   	 			 f = true;
+   	 		  }
+   	 		  if(cnames[0]!=sp_name){
+   	 			  flag++;
+   	 		  }
+   	 	    })
+       	 if(this.checked==true){
+   		 	    if(flag>0){
+   		 	    	$.scojs_message('不能全选，包含不同结算公司', $.scojs_message.TYPE_ERROR);
+   		 	    	$(this).prop('checked',false);
+   		 	    	if(f==true){
+   		 	    		cnames[0]=undefined;
+   		 	    	}
+   		 	    }else{
+   		 	    	 $("#eeda_table .checkBox").prop('checked',true);
+   		 	    	 $("#eeda_table .checkBox").each(function(){
+   		 	    		 var id = $(this).parent().parent().attr('id');
+   		 	    		 var sp_name = $(this).parent().siblings('.SP_NAME')[0].textContent;
+   		 	    		 itemIds.push(id);
+   		 	    		 cnames.push(sp_name);
+   		 	    	 })
+   		 	    }
+       	 }else{
+       		 $("#eeda_table .checkBox").prop('checked',false);
+       		 if(flag==0){
+   	 	    	 $("#eeda_table .checkBox").each(function(){
+   	 	    		 var id = $(this).parent().parent().attr('id');
+   	 	    		 var sp_name = $(this).parent().siblings('.SP_NAME')[0].textContent;
+   	 	    		 itemIds.pop(id);
+   	 	    		cnames.pop(sp_name);
+   	 	    	 })
+       		 }
+       	 }
+   	 	   if(cnames.length>0){
+   	 		  $("#createBtn").prop('disabled',false);
+   	 	   }else{
+   	 		  $("#createBtn").prop('disabled',true);
+   	 	   }
+        })
+        $("#eeda_table").on('click','.checkBox',function(){
+   		   $("#allCheck").prop("checked",$("#eeda_table .checkBox").length == $("#eeda_table .checkBox:checked").length ? true : false);
+        });
+		$("body").on('click',function(){
+			$("#allCheck").prop("checked",$("#eeda_table .checkBox").length == $("#eeda_table .checkBox:checked").length ? true : false);
+		});
+        
       
   });
 });

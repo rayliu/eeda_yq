@@ -106,7 +106,7 @@ public class CostCheckOrderController extends Controller {
 	                + " left join party p1 on p1.id=jo.customer_id "
 	                + " left join location l on l.id=jos.fnd "
 	                + " left join currency cur on cur.id=joa.currency_id "
-	                + " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' and joa.id in("+ids+") "
+	                + " where joa.audit_flag='Y' and joa.bill_flag='N' and joa.id in("+ids+") "
 	                + " GROUP BY joa.id";	
 		}else{
 			sql = " select joa.id,joa.type,joa.sp_id,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
@@ -193,7 +193,7 @@ public class CostCheckOrderController extends Controller {
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
         	sql = "select * from(  "
-        			+ " select 'charge' sql_type, joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+        			+ " select joa.order_type sql_type, joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
               		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
               		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
               		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
@@ -214,31 +214,8 @@ public class CostCheckOrderController extends Controller {
       				+ " left join currency cur on cur.id=joa.currency_id "
       				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
       				+ " left join fin_item f on f.id = joa.charge_id"
-      				+ " where joa.order_type='charge' and joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
+      				+ " where joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
       				+ " GROUP BY joa.id "
-    				+ " union "
-    				+ " select 'cost' sql_type, joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
-             		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
-             		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
-             		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
-             		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type,ifnull(joa.exchange_rate, 1) exchange_rate,"
-             		+ " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1) ) after_total,"
-             		+ " ifnull( ( SELECT rc.new_rate FROM rate_contrast rc "
-              		+ " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
-              		+ " after_rate_total,ifnull(f.name,f.name_eng) fee_name,joa.bill_flag"
-     				+ " from job_order_arap joa "
-     				+ " left join job_order jo on jo.id=joa.order_id "
-     				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
-     				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
-     				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
-     				+ " left join party p on p.id=joa.sp_id "
-     				+ " left join party p1 on p1.id=jo.customer_id "
-     				+ " left join location l on l.id=jos.fnd "
-     				+ " left join currency cur on cur.id=joa.currency_id "
-     				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
-     				+ " left join fin_item f on f.id = joa.charge_id"
-     				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' and jo.office_id = "+office_id
-     				+ " GROUP BY joa.id "
     				+ " ) B where 1=1 ";
        	 
        	}else{

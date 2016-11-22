@@ -135,7 +135,7 @@
                                     <div class="form-group button-bar" >
                                         <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
                                         <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
-                                        &nbsp&nbsp<input type="checkbox" name="checkOrderAll" id="checkOrderAll" value="Y">查看应收应付<span style="color:red"></span>
+                                        &nbsp&nbsp<input type="checkbox" name="checkOrderAll" id="checkOrderAll" value="Y">查看应收应付<span style="color:red">(红色为应收)</span>
                                     </div>
                                     <div class="form-group">
                                             <button id="createBtn" disabled type="button" class="btn  btn-success" >创建对账单</button>
@@ -149,7 +149,7 @@
                                         {
                                             id:'eeda_table', 
                                             style: 'width:2000px',
-                                            headers:['','工作单号','出货时间','创建时间','状态','DEBIT_NO','类型','费用名称','客户','结算公司','货币类型','金额','汇率','总金额（CNY）',
+                                            headers:['<input type="checkbox" id="allCheck">','工作单号','出货时间','创建时间','状态','DEBIT_NO','类型','费用名称','客户','结算公司','货币类型','金额','汇率','总金额（CNY）',
                                              'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','箱号','车型'
                                             ]
                                         }){} %>

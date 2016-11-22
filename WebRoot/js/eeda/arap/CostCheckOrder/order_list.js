@@ -51,7 +51,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      var searchData=function(){
     	  var order_no = $("#order_no1").val().trim(); 
           var sp = $("#sp1").val(); 
-          var sp1_input = $("#sp1_input").val(); 
+          var sp1_input = $("#sp1_input").val().trim(); 
           var start_date = $("#create_stamp1_begin_time").val();
           var end_date = $("#create_stamp1_end_time").val();
           var order_export_date_begin_time = $("#order_export_date1_begin_time").val();
