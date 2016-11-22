@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="229"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -39,7 +39,7 @@ ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 	(SELECT sum(joli.pieces) from job_order_land_item joli WHERE $X{IN,joli.id,landIds} ) land_pieces,
 	josi.container_no,
 	jos.order_id,
-	jos.hbl_no,
+	joa.invoice_land_hbl_no hbl_no,
 	jos.mbl_no,
 	jos.etd,
 	jos.eta,
@@ -131,9 +131,7 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 	<field name="order_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="hbl_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="hbl_no" class="java.lang.String"/>
 	<field name="mbl_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
