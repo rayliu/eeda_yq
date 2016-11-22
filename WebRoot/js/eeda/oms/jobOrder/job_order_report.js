@@ -657,13 +657,14 @@ $(document).ready(function() {
 		$(this).attr('disabled', true);
 		
 		var invoice_land_hbl_no = $('#invoice_land_hbl_no').val();
+		var land_ref_no = $('#land_ref_no').val();
 		var landIds=[];
 		$('#land_table input[type="checkbox"]:checked').each(function(){
 			var itemId = $(this).parent().parent().attr('id');
 			landIds.push(itemId);
 		});
 		var landIdsStr = landIds.toString();
-		$.post('/jobOrder/saveDebitNoteOfLand', {landIds:landIdsStr,invoice_land_hbl_no:invoice_land_hbl_no}, function(data){
+		$.post('/jobOrder/saveDebitNoteOfLand', {landIds:landIdsStr,invoice_land_hbl_no:invoice_land_hbl_no,land_ref_no:land_ref_no}, function(data){
 			if(data.result==true){
 				$.post('/jobOrderReport/printDebitNotePDF', {debit_note:'land_invoice', landIds:landIdsStr}, function(data){
 					if(data.result==false){

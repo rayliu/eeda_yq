@@ -101,7 +101,11 @@ $(document).ready(function() {
             },
             { "width": "30px",
             	"render": function ( data, type, full, meta ) {
-            		return '<button type="button" class="land_charge btn btn-success btn-xs" style="width:50px">费用</button>';
+            		if(full.ID){
+            			return '<button type="button" class="land_charge btn btn-success btn-xs" style="width:50px">费用</button>';	
+            		}else{
+            			return '<button type="button" class="land_charge btn btn-success btn-xs" style="width:50px" disabled>费用</button>';
+            		}
             	}
             },
             { "data":"ID","width": "80px",

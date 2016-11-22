@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="229"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -29,8 +29,8 @@
 	<parameter name="landIds" class="java.util.List"/>
 	<queryString>
 		<![CDATA[SELECT
-	jor.sp_id,jor.exchange_total_amount exchange_total_amount,jor.invoice_no invoice_no,jor.price price,jor.total_amount total_amount,
-  jor.exchange_currency_rate exchange_rate,jor.amount amount, ifnull(pr.company_name,pr.company_name_eng) companyName,
+	joa.sp_id,joa.exchange_total_amount exchange_total_amount,joa.invoice_no invoice_no,joa.price price,joa.total_amount total_amount,
+  joa.exchange_currency_rate exchange_rate,joa.amount amount, ifnull(pr.company_name,pr.company_name_eng) companyName,joa.land_ref_no land_ref_no,
 ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 	ifnull(f.name,f.name_eng) charge_name,
 	u. NAME unit_name,
@@ -79,20 +79,20 @@ GROUP BY c.id) a
 	) ex_total
 FROM
 	 job_order jo
-LEFT JOIN job_order_arap jor ON jo.id = jor.order_id
-LEFT JOIN party pr ON pr.id = jor.sp_id
-LEFT JOIN job_order_shipment jos ON jos.order_id = jor.order_id
+LEFT JOIN job_order_arap joa ON jo.id = joa.order_id
+LEFT JOIN party pr ON pr.id = joa.sp_id
+LEFT JOIN job_order_shipment jos ON jos.order_id = joa.order_id
 LEFT JOIN job_order_shipment_item josi ON josi.order_id = jo.id
 LEFT JOIN unit u1 ON josi.unit_id = u1.id
-LEFT JOIN unit u ON u.id = jor.unit_id
-LEFT JOIN fin_item f ON f.id = jor.charge_id
-LEFT JOIN currency c ON c.id = jor.currency_id
+LEFT JOIN unit u ON u.id = joa.unit_id
+LEFT JOIN fin_item f ON f.id = joa.charge_id
+LEFT JOIN currency c ON c.id = joa.currency_id
 LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo ON lo.id = jos.fnd
-left join job_order_land_item joli on joli.id = jor.land_item_id
+left join job_order_land_item joli on joli.id = joa.land_item_id
 WHERE
-	jor.order_type = 'charge'
-AND  $X{IN,joli.id,landIds} group by jor.id]]>
+	joa.order_type = 'charge'
+AND  $X{IN,joli.id,landIds} group by joa.id]]>
 	</queryString>
 	<field name="sp_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[供应商id]]></fieldDescription>
@@ -116,6 +116,9 @@ AND  $X{IN,joli.id,landIds} group by jor.id]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="companyName" class="java.lang.String"/>
+	<field name="land_ref_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="personEng" class="java.lang.String"/>
 	<field name="charge_name" class="java.lang.String"/>
 	<field name="unit_name" class="java.lang.String"/>
@@ -378,7 +381,7 @@ AND  $X{IN,joli.id,landIds} group by jor.id]]>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="397" y="25" width="158" height="37" uuid="838f806e-871d-43b2-b605-a3562590f472"/>
-				<textFieldExpression><![CDATA[$F{invoice_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{land_ref_no}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -396,7 +399,7 @@ AND  $X{IN,joli.id,landIds} group by jor.id]]>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{currency_name}.equals("CNY")?"RMB":$F{currency_name})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{currency_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.000" isBlankWhenNull="true">
 				<reportElement x="208" y="2" width="54" height="18" uuid="e277945f-55f4-4bf9-a963-4139f33381f1"/>
@@ -522,7 +525,7 @@ AND  $X{IN,joli.id,landIds} group by jor.id]]>
 			</line>
 			<staticText>
 				<reportElement x="381" y="2" width="73" height="20" uuid="d8b01e86-6463-4378-8cfe-079af2125484"/>
-				<text><![CDATA[TOTAL Amount:]]></text>
+				<text><![CDATA[Total Amount:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="329" y="194" width="224" height="20" uuid="5b9627c8-f98a-49c2-88c5-aa22ebf1f6ba"/>

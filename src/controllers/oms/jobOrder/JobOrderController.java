@@ -1390,9 +1390,11 @@ public class JobOrderController extends Controller {
     //陆运打印Invoice(分单)前保存hbl_no
     @Before(Tx.class)
     public void saveDebitNoteOfLand(){
-    	String ids = getPara("itemIds");
+    	String ids = getPara("landIds");
     	String invoice_land_hbl_no = getPara("invoice_land_hbl_no");
-    	Db.update("update job_order_arap set invoice_land_hbl_no='"+invoice_land_hbl_no+"' where land_item_id in ("+ids+")");
+    	String land_ref_no = getPara("land_ref_no");
+    	Db.update("update job_order_arap set invoice_land_hbl_no='"+invoice_land_hbl_no+"',land_ref_no='"+land_ref_no+"'  where land_item_id in ("+ids+")");
+    	
     	renderJson("{\"result\":true}");
     }
     
