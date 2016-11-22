@@ -57,6 +57,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
       $('#searchBtn').click(function(){
           searchData(); 
+          var transport_type = $("#transport_type option:selected").text();
+          $('#orderTabs .active').removeClass('active');
+          $('#orderTabs a').each(function(){
+        	  var value = $(this).text();
+        	  if(value==transport_type){
+        		  $(this).parent().addClass('active');
+        	  }
+          })
       })
 
      var searchData=function(){
@@ -68,9 +76,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var status = $('#status').val();
           var customer_code = $("#customer_code").val().trim();
           var customer_name = $("#customer_name").val().trim();
+          var transport_type = $("#transport_type").val();
           //增加出口日期查询
           var url = "/jobOrder/list?order_no="+order_no
           	   +"&status="+status
+          	   +"&transport_type_like="+transport_type
           	   +"&customer_code_like="+customer_code
                +"&customer_name_like="+customer_name
                +"&create_stamp_begin_time="+start_date
@@ -92,6 +102,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		  transport_type = "air";
     	  }else if(value=="海运"){
     		  transport_type = "ocean";
+    	  }else if(value=="保险"){
+    		  transport_type = "insurance";
+    	  }else if(value=="贸易"){
+    		  transport_type = "trade";
+    	  }else if(value=="快递"){
+    		  transport_type = "express";
     	  }
     	  var url = "/jobOrder/list?transport_type_like="+transport_type;
     	  dataTable.ajax.url(url).load();

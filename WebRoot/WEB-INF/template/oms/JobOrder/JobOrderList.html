@@ -67,6 +67,26 @@
                                                               }){}%>
                                         </div>
                                   </div>
+                                  <div class="row">
+                                        <div class="col-lg-4">
+                                             <%include("/eeda/component/form/selectField.html", 
+                                                    {   id:'transport_type', 
+                                                        label:'服务项目', 
+                                                        value: '',
+                                                        value_list:[
+                                                            {code:'', value:'全部'},
+                                                            {code:'ocean', value:'海运'},
+                                                            {code:'air', value:'空运'},
+                                                            {code:'land', value:'陆运'},
+                                                            {code:'custom', value:'报关'},
+                                                            {code:'insurance', value:'保险'},
+                                                            {code:'trade', value:'贸易'},
+                                                            {code:'express', value:'快递'}
+                                                        ]
+                                                    }
+                                                 ){} %>
+                                        </div>
+                                   </div>
                                 </form>
 
                             <div class="form-group button-bar" >
@@ -89,6 +109,15 @@
                                 </li>
                                 <li>
                                     <a href="#" data-toggle="tab">报关</a>
+                                </li>
+                                <li>
+                                    <a href="#" data-toggle="tab">保险</a>
+                                </li>
+                                <li>
+                                    <a href="#" data-toggle="tab">贸易</a>
+                                </li>
+                                <li>
+                                    <a href="#" data-toggle="tab">快递</a>
                                 </li>
                             </ul>
                             <%include("/eeda/component/form/detailTable.html", 
