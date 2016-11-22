@@ -2,12 +2,12 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cargo_custom_bill" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.4641000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="399"/>
+	<property name="ireport.y" value="336"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\Users\\Administrator\\Desktop\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select cpo.*, p.abbr receive_sent_consignee_name, p1.abbr production_and_sales_name, p2.abbr application_unit_name, cp.under_port export_port_name,
@@ -812,7 +812,7 @@ where cpo.id = $P{order_id}]]>
 					<subreportParameterExpression><![CDATA[$P{order_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "cargo_custom_import_subreport1.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["cargo_custom_import_subreport1.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</columnHeader>

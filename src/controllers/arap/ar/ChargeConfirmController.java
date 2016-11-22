@@ -85,11 +85,14 @@ public class ChargeConfirmController extends Controller {
 //		renderJson("{\"result\":true}");
 //	}
 	  public void chargeConfirm(){
-			String id = getPara();
-				JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",id);
+		  String ids = getPara("itemIds");
+			String idAttr[] = ids.split(",");
+			for(int i=0 ; i<idAttr.length ; i++){
+				JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap joa where id = ?",idAttr[i]);
 				joa.set("audit_flag", "Y");
 				joa.update();
-				redirect("jobOrder/edit?id="+id);
+			}
+			renderJson("{\"result\":true}");
 		}
 
 

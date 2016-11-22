@@ -7,7 +7,7 @@
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\Users\\Administrator\\Desktop\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select cpo.*, cpoi.*, p.abbr receive_sent_consignee_name, p1.abbr production_and_sales_name, p2.abbr application_unit_name, cp.under_port export_port_name,
@@ -864,7 +864,7 @@ where cpo.id = $P{order_id}]]>
 					<subreportParameterExpression><![CDATA[$P{order_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "cargo_custom_export_subreport.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[ "cargo_custom_export_subreport.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</columnHeader>
