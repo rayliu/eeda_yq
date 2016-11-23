@@ -77,6 +77,7 @@ $(document).ready(function() {
     	eeda.bindTableField('land_table','TRANSPORT_COMPANY','/serviceProvider/searchTruckCompany','truck');
         eeda.bindTableFieldTruckOut('land_table', 'CONSIGNOR');
         eeda.bindTableFieldTruckIn('land_table', 'CONSIGNEE');
+        eeda.bindTableField('land_table','UNIT_ID','/serviceProvider/searchUnit','');
     };
     //------------事件处理
 	 var cargoTable = eeda.dt({
@@ -315,6 +316,21 @@ $(document).ready(function() {
             			data='';
             		return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
+            },
+            { "data": "UNIT_ID", "width": "180px",
+                "render": function ( data, type, full, meta ) {
+                	if(!data)
+                        data='';
+                    var field_html = template('table_dropdown_template',
+                        {
+                            id: 'UNIT_ID',
+                            value: data,
+                            display_value: full.UNIT_NAME,
+                            style:'width:200px'
+                        }
+                    );
+                    return field_html;
+                }
             },
             { "data": "GROSS_WEIGHT", "width": "180px",
             	"render": function ( data, type, full, meta ) {

@@ -880,11 +880,13 @@ public class JobOrderController extends Controller {
     		itemList = Db.find(itemSql, orderId);
     	}else if("land".equals(type)){
     		itemSql = "select jol.*, p.abbr transport_company_name,CAST(GROUP_CONCAT(jold.id) as char ) job_order_land_doc_id, GROUP_CONCAT(jold.doc_name) doc_name,"
-    		        + " p1.abbr consignor_name, p2.abbr consignee_name from job_order_land_item jol "
+    		        + " p1.abbr consignor_name, p2.abbr consignee_name, CONCAT(u.name,u.name_eng) unit_name "
+    		        + " from job_order_land_item jol "
     				+ " left join party p on p.id=jol.transport_company"
     				+ " left join party p1 on p1.id=jol.consignor"
     				+ " left join party p2 on p2.id=jol.consignee"
     				+ " left join job_order_land_doc jold on jold.land_id=jol.id"
+    				+ " left join unit u on u.id=jol.unit_id"
     				+ " where order_id=? GROUP BY jol.id order by jol.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
