@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="229"/>
+	<property name="ireport.y" value="133"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -47,7 +47,7 @@ ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 	jo.order_no,
 	Upper(lo. NAME) fnd,
 	Upper(lo1. NAME) pol,
-	u1.name_eng ocean_unit,
+	u1.name_eng land_unit,
   u. NAME unit_name,
 	IFNULL(
 		pr.company_name_eng,
@@ -83,13 +83,13 @@ LEFT JOIN job_order_arap joa ON jo.id = joa.order_id
 LEFT JOIN party pr ON pr.id = joa.sp_id
 LEFT JOIN job_order_shipment jos ON jos.order_id = joa.order_id
 LEFT JOIN job_order_shipment_item josi ON josi.order_id = jo.id
-LEFT JOIN unit u1 ON josi.unit_id = u1.id
 LEFT JOIN unit u ON u.id = joa.unit_id
 LEFT JOIN fin_item f ON f.id = joa.charge_id
 LEFT JOIN currency c ON c.id = joa.currency_id
 LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo ON lo.id = jos.fnd
 left join job_order_land_item joli on joli.id = joa.land_item_id
+LEFT JOIN unit u1 ON joli.unit_id = u1.id
 WHERE
 	joa.order_type = 'charge'
 AND  $X{IN,joli.id,landIds} group by joa.id]]>
@@ -153,7 +153,7 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 	<field name="pol" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="ocean_unit" class="java.lang.String"/>
+	<field name="land_unit" class="java.lang.String"/>
 	<field name="company_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -354,7 +354,7 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="396" y="149" width="157" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
+				<reportElement x="398" y="148" width="35" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
 				<textFieldExpression><![CDATA[$F{land_pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -363,6 +363,9 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="39" width="285" height="15" uuid="84f0a969-bfd6-4f4d-9a12-ec14a167a8f9"/>
+				<textElement>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{personEng}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -381,6 +384,10 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 				<reportElement x="397" y="25" width="158" height="37" uuid="838f806e-871d-43b2-b605-a3562590f472"/>
 				<textFieldExpression><![CDATA[$F{land_ref_no}]]></textFieldExpression>
 			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="433" y="148" width="120" height="14" uuid="62711474-c636-4b02-9ee3-0cc050d66c48"/>
+				<textFieldExpression><![CDATA[$F{land_unit}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
@@ -388,7 +395,7 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="13" y="2" width="127" height="18" uuid="0c54d94f-85db-45a2-984e-ef543fe7d121"/>
 				<textElement>
-					<font size="8"/>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{charge_name}]]></textFieldExpression>
 			</textField>
@@ -511,13 +518,6 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 				</textElement>
 				<text><![CDATA[银行信息]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="13" y="3" width="179" height="19" uuid="549213a8-9cde-41b4-9e2a-8f767ed59adc"/>
-				<textElement>
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[SAY HKD TEN THOUSAND ONLY]]></text>
-			</staticText>
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" uuid="0c33aa57-8270-4dd5-941f-6afdcefe4f0b"/>
 			</line>
@@ -540,6 +540,13 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 				<reportElement x="454" y="2" width="99" height="164" uuid="ec3c3e78-54d2-4233-9dad-44dfdb837db7"/>
 				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="10" y="2" width="77" height="21" uuid="8fe3b643-5f45-404d-b5ab-45fc36daf0e0"/>
+				<textElement>
+					<font fontName="宋体" size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[大写金额：]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>
