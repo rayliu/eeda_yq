@@ -53,6 +53,28 @@
 					}){}%>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", { id:'cny',
+					label:'应收CNY', value:order.cny!'',disabled:'disabled'
+					}){}%>
+				</div>
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", { id:'usd',
+					label:'应收USD', value:order.usd!'',disabled:'disabled'
+					}){}%>
+				</div>
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", { id:'hkd',
+					label:'应收HKD', value:order.hkd!'',disabled:'disabled'
+					}){}%>
+				</div>
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", { id:'jpy',
+					label:'应收JPY', value:order.jpy!'',disabled:'disabled'
+					}){}%>
+				</div>
+			</div>
 
 			
 			<div class="row">
@@ -137,8 +159,32 @@
 					</li>
 				<% }%>
 			</ul>
+			<ul>
+			   <li>
+			         <div class="row">
+		                <div class="col-lg-4">
+		                    <%include("/eeda/component/form/selectField.html", 
+		                                {   id:'exchange_currency',
+		                                    label:'兑换操作', 
+		                                    value:'',
+		                                    value_list:[
+		                                        {code:'兑换成CNY', value:'兑换成CNY'},
+		                                        {code:'兑换成USD', value:'兑换成USD'},
+		                                        {code:'兑换成HKD', value:'兑换成HKD'},
+		                                        {code:'兑换成JPY', value:'兑换成JPY'}
+		                                    ]
+		                                }){}%>
+		                </div>
+		                <div class="col-lg-4">
+		                    <%include("/eeda/component/form/inputField.html", { id:'exchange_rate',
+		                    label:'兑换汇率'
+		                    }){}%>
+		                </div>
+		                <button id='exchange' class="btn  btn-primary">兑换</button>
+		            </div>
+			   </li>
+			</ul>
 		</div>
-		
 		<div class="tab-content">
 			<div class="tab-pane fade active in" id="itemDetail">
 				<div class="form-group">

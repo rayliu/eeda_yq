@@ -323,7 +323,11 @@ public class ChargeCheckOrderController extends Controller {
     @Before(EedaMenuInterceptor.class)
 	public void create(){
 		String ids = getPara("idsArray");//job_order_arap ids
-		String total_amount = getPara("totalAmount");//job_order_arap ids
+		String total_amount = getPara("totalAmount");
+		String cny_totalAmount = getPara("cny_totalAmount");
+		String usd_totalAmount = getPara("usd_totalAmount");
+		String hkd_totalAmount = getPara("hkd_totalAmount");
+		String jpy_totalAmount = getPara("jpy_totalAmount");
 		
 		String sql = "SELECT cur.name currency_name ,joa.exchange_rate ,p.phone,p.contact_person,p.address,p.company_name,joa.sp_id,joa.order_id"
 				+ " FROM job_order_arap joa"
@@ -333,6 +337,10 @@ public class ChargeCheckOrderController extends Controller {
 				+ " group by joa.order_id";
 		Record rec =Db.findFirst(sql);
 		rec.set("total_amount", total_amount);
+		rec.set("jpy", jpy_totalAmount);
+		rec.set("cny", cny_totalAmount);
+		rec.set("usd", usd_totalAmount);
+		rec.set("hkd", hkd_totalAmount);
 
 		rec.set("address", rec.get("address"));
 		rec.set("customer", rec.get("contact_person"));
