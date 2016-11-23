@@ -383,7 +383,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 		$('#createBtn').click(function(){
 			$('#createBtn').attr('disabled',true);
 			
-        	
         	$('#idsArray').val(itemIds);
         	$('#billForm').submit();
         });

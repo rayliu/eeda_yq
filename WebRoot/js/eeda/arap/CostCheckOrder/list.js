@@ -3,6 +3,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	document.title = '应付对账单查询  | '+document.title;
   	  $('#menu_cost').addClass('active').find('ul').removeClass('in');
   	  
+  	  
+	  	var cnames = [];
+		var itemIds=[];
+	    var totalAmount = 0.0;
+	    var cny_totalAmount = 0.0;
+	    var usd_totalAmount = 0.0;
+	    var hkd_totalAmount = 0.0;
+	    var jpy_totalAmount = 0.0;
+	    
       var dataTable = eeda.dt({
           id: 'eeda_table',
           paging: true,
@@ -48,8 +57,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "FEE_NAME", "width": "60px"},
 	            { "data": "CUSTOMER_NAME", "width": "100px"},
 	            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
-	            { "data": "CURRENCY_NAME", "width": "60px"},
-	            { "data": "TOTAL_AMOUNT", "width": "60px",
+	            { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
+	            { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
 		            		return '<span style="color:red;">'+'-'+data+'</span>';
@@ -58,7 +67,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                  }
 	            },
 	            { "data": "EXCHANGE_RATE", "width": "60px" },
-	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'total_amount',
+	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'AFTER_TOTAL',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
 		            		return '<span style="color:red;">'+'-'+data+'</span>';
@@ -167,41 +176,94 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           dataTable.ajax.url(url).load();
       };
       
-      //计算创建对账单的总额
-      var amount = 0;
-      var sum = 0;
-      	//选择是否是同一个客户
-      	var itemIds=[];
-		var cnames = [];
-		$('#eeda_table').on('click','input[type="checkbox"]',function () {
+     
+    //选择是否是同一个客户
+		$('#eeda_table').on('click',"input[name='order_check_box']",function () {
 				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
-				var id = $(this).parent().parent().attr('id');
-				var amountStr = $(this).parent().siblings('.total_amount')[0].textContent;
-		    	  if(amountStr!=''){
-			    	  amount = parseFloat(amountStr);
-		    	  }
+				var after_total = $(this).parent().siblings('.AFTER_TOTAL')[0].textContent;
+				var total_amount = $(this).parent().siblings('.TOTAL_AMOUNT')[0].textContent;
+				var currency_name = $(this).parent().siblings('.CURRENCY_NAME')[0].textContent;
 				if($(this).prop('checked')==true){	
-						if(cnames.length > 0 ){
-							if(cnames[0]!=cname){
-								$.scojs_message('请选择同一个结算公司', $.scojs_message.TYPE_ERROR);
-								$(this).attr('checked',false);
-								return false;
-							}else{
-								sum+=amount;
-								cnames.push(cname);
+					if(cnames.length > 0 ){
+						if(cnames[0]==cname){
+							if(currency_name=='CNY'){
+								cny_totalAmount += parseFloat(total_amount);
+							}else if(currency_name=='USD'){
+								usd_totalAmount += parseFloat(total_amount);
+							}else if(currency_name=='HKD'){
+								hkd_totalAmount += parseFloat(total_amount);
+							}else if(currency_name=='JPY'){
+								jpy_totalAmount += parseFloat(total_amount);
 							}
+							totalAmount += parseFloat(after_total);
+							cnames.push(cname);
+							
+//							$(this).parent().parent().clone().appendTo($("#checkedEeda-table"));
+							
+							if($(this).val() != ''){
+								itemIds.push($(this).val());
+							}
+//							$('#eeda_table input[name="order_check_box"]').css("display","none");
 						}else{
-							sum+=amount;
-							cnames.push(cname);	
+							$.scojs_message('请选择同一个结算公司', $.scojs_message.TYPE_ERROR);
+							$(this).attr('checked',false);
+							return false;
 						}
-						itemIds.push(id);
+					}else{
+						if(currency_name=='CNY'){
+							cny_totalAmount += parseFloat(total_amount);
+						}else if(currency_name=='USD'){
+							usd_totalAmount += parseFloat(total_amount);
+						}else if(currency_name=='HKD'){
+							hkd_totalAmount += parseFloat(total_amount);
+						}else if(currency_name=='JPY'){
+							jpy_totalAmount += parseFloat(total_amount);
+						}
+						totalAmount += parseFloat(after_total);
+						cnames.push(cname);
+//						$(this).parent().parent().clone().appendTo($("#checkedEeda-table"));
+						if($(this).val() != ''){
+							itemIds.push($(this).val());
+						}
+//						$('#eeda_table input[name="order_check_box"]').css("display","none");
+					}
+
 				}else{
+					itemIds.splice($.inArray($(this).val(), itemIds), 1);
+					var id=$(this)[0].value;
+					var rows = $("#eeda_table").children().children();
+					for(var i=0; i<rows.length ;i++){
+						var row = rows[i];
+						if(id==$(row).find('input').attr('value')){
+							row.remove();
+							//$("#checkedCostCheckList").children().splice(i,1);
+						}
+					}
+					
+					if(currency_name=='CNY'){
+						cny_totalAmount += parseFloat(total_amount);
+					}else if(currency_name=='USD'){
+						usd_totalAmount += parseFloat(total_amount);
+					}else if(currency_name=='HKD'){
+						hkd_totalAmount += parseFloat(total_amount);
+					}else if(currency_name=='JPY'){
+						jpy_totalAmount += parseFloat(total_amount);
+					}
+					totalAmount -= parseFloat(after_total);
 					cnames.pop(cname);
-					itemIds.pop(id);
-					sum-=amount;
-				}
-				$("#totalAmountSpan").text(parseFloat(sum).toFixed(2));
-    	 });
+			 }
+				
+			 $('#cny_totalAmountSpan').html(cny_totalAmount.toFixed(2));
+			 $('#usd_totalAmountSpan').html(usd_totalAmount.toFixed(2));
+			 $('#hkd_totalAmountSpan').html(hkd_totalAmount.toFixed(2));
+			 $('#jpy_totalAmountSpan').html(jpy_totalAmount.toFixed(2));
+			 $('#totalAmount').val(totalAmount.toFixed(2));
+			 $('#cny_totalAmount').val(cny_totalAmount.toFixed(2));
+			 $('#usd_totalAmount').val(usd_totalAmount.toFixed(2));
+			 $('#hkd_totalAmount').val(hkd_totalAmount.toFixed(2));
+			 $('#jpy_totalAmount').val(jpy_totalAmount.toFixed(2));
+  	 });
+		
 		
       	//checkbox选中则button可点击
 		$('#eeda_table').on('click','.checkBox',function(){
@@ -223,9 +285,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		$('#createBtn').click(function(){
 			$('#createBtn').attr('disabled',true);
         	
-        	var total = parseFloat($('#totalAmountSpan').text());
         	$('#itemId').val(itemIds);
-        	$('#totalAmount').val(total);
         	$('#createForm').submit();
         })
         
@@ -249,7 +309,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
    		 	    	$.scojs_message('不能全选，包含不同结算公司', $.scojs_message.TYPE_ERROR);
    		 	    	$(this).prop('checked',false);
    		 	    	if(f==true){
-   		 	    		cnames[0]=undefined;
+   		 	    		cnames=[];
    		 	    	}
    		 	    }else{
    		 	    	 $("#eeda_table .checkBox").prop('checked',true);

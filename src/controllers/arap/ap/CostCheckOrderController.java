@@ -48,6 +48,10 @@ public class CostCheckOrderController extends Controller {
 		
 		String ids = getPara("itemId");//job_order_arap ids
 		String totalAmount = getPara("totalAmount");
+		String cny_totalAmount = getPara("cny_totalAmount");
+		String usd_totalAmount = getPara("usd_totalAmount");
+		String hkd_totalAmount = getPara("hkd_totalAmount");
+		String jpy_totalAmount = getPara("jpy_totalAmount");
 		
 		String strAry[] = ids.split(",");
 		String id = strAry[0];
@@ -59,6 +63,11 @@ public class CostCheckOrderController extends Controller {
 		order.set("sp_id", spRec.get("sp_id"));
 		order.set("sp_name", spRec.get("sp_name"));
 		order.set("total_amount",totalAmount);
+		order.set("jpy", jpy_totalAmount);
+		order.set("cny", cny_totalAmount);
+		order.set("usd", usd_totalAmount);
+		order.set("hkd", hkd_totalAmount);
+		
 		order.set("ids",ids);
 		order.set("creator_name", LoginUserController.getLoginUserName(this));
 		order.set("item_list", getItemList(ids,""));
