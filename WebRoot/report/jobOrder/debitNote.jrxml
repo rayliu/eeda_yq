@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="debitNote" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="debitNote" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -45,6 +45,7 @@ ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 	jos.eta,
 	jo.ref_no,
 	jo.order_no,
+	jo.order_export_date order_export_date,
 	Upper(lo. NAME) fnd,
 	Upper(lo1. NAME) pol,
 	u1.name_eng ocean_unit,
@@ -147,6 +148,9 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 	<field name="order_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="order_export_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="fnd" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -179,15 +183,12 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 			<staticText>
 				<reportElement x="146" y="41" width="364" height="22" uuid="1f17ff0a-6c4f-4e21-a8f0-17f61bc37be6"/>
 				<textElement>
-					<font fontName="黑体" size="16" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ZHUHAI HENGQIN ENKYO SCM CO.,LTD.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="126" y="63" width="384" height="15" uuid="05510db4-0f2e-4cd4-8c3c-be1339f553d3"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
 				<text><![CDATA[7th FI. Shanhaiyipin,56# of Shihua Road, Jida,Zhuhai, Guangding,Chian]]></text>
 			</staticText>
 			<staticText>
@@ -215,7 +216,7 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 				<imageExpression><![CDATA["yqlogo1.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="180" y="111" width="271" height="36" uuid="ac92119a-3fdc-4f7d-9f2c-a5f2c23c930c"/>
+				<reportElement x="198" y="111" width="271" height="36" uuid="ac92119a-3fdc-4f7d-9f2c-a5f2c23c930c"/>
 				<textElement>
 					<font fontName="黑体" size="24" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -418,7 +419,7 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="416" y="65" width="114" height="17" uuid="27502a39-69d8-427a-a4dd-9d270889bd80"/>
@@ -449,11 +450,11 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="43" y="16" width="303" height="36" uuid="1d53aa30-90fc-490b-acf5-b4488a9a9499"/>
+				<reportElement x="43" y="40" width="303" height="12" uuid="1d53aa30-90fc-490b-acf5-b4488a9a9499"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{personEng}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="1" width="301" height="15" uuid="5da3f075-434d-4e64-bfb9-459dddc561e4"/>
@@ -491,11 +492,11 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 				<textFieldExpression><![CDATA[$F{invoice_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="424" y="151" width="130" height="14" uuid="f767dc31-f567-472f-bd98-a5a8cae14d9d"/>
+				<reportElement x="451" y="151" width="104" height="14" uuid="f767dc31-f567-472f-bd98-a5a8cae14d9d"/>
 				<textFieldExpression><![CDATA[$F{ocean_unit}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="389" y="151" width="35" height="14" uuid="31236f61-a729-4647-8bb9-eb28f224d252"/>
+				<reportElement x="416" y="151" width="35" height="14" uuid="31236f61-a729-4647-8bb9-eb28f224d252"/>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -637,7 +638,7 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 				<text><![CDATA[银行信息]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="3" width="77" height="21" uuid="11ec1e14-7372-4ac3-8645-696f26e4138c"/>
+				<reportElement x="11" y="5" width="77" height="21" uuid="11ec1e14-7372-4ac3-8645-696f26e4138c"/>
 				<textElement>
 					<font fontName="宋体" size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -660,6 +661,10 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="236" y="5" width="126" height="164" uuid="5fed97fb-141a-4a56-85b4-f9f41b375264"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="88" y="6" width="148" height="20" uuid="7ac0b8f0-aaaf-49a4-9cbc-e27dcda2313a"/>
+				<textFieldExpression><![CDATA[((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{price})]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
