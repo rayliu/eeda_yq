@@ -484,7 +484,6 @@ $(document).ready(function() {
     		$(row.find('[name=total_amount]')).val(total_amount);
     		if(exchange_rate==''){
     			$(row.find('[name=currency_total_amount]')).val('');
-    			$(row.find('[name=exchange_total_amount]')).val('');
     		}
     		if(exchange_rate!=''&&!isNaN(exchange_rate)){
     			$(row.find('[name=currency_total_amount]')).val((total_amount*parseFloat(exchange_rate)).toFixed(3));
@@ -492,10 +491,7 @@ $(document).ready(function() {
         			$(row.find('[name=exchange_total_amount]')).val('');
         		}
     			if(exchange_currency_rate!=''&&!isNaN(exchange_currency_rate)){
-    				if(exchange_currency_rate==0){
-    					exchange_currency_rate=1;
-    				}
-    				$(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_rate)/exchange_currency_rate).toFixed(3));
+    				$(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_currency_rate).toFixed(3)));
         		}
     		}
     	}

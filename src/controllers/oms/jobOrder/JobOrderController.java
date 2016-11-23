@@ -1397,7 +1397,7 @@ public class JobOrderController extends Controller {
     	String land_ref_no = getPara("land_ref_no");
     	Db.update("update job_order_arap set invoice_land_hbl_no='"+invoice_land_hbl_no+"',land_ref_no='"+land_ref_no+"'  where land_item_id in ("+ids+")");
     	
-    	renderJson("{\"result\":true}");
+     	renderJson("{\"result\":true}");
     }
     
     //删除海运常用信息模版
