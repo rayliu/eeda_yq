@@ -125,7 +125,8 @@ WHERE
 	joa.id = aci.ref_order_id
 AND aco.id =$P{order_id}
 GROUP BY
-	joa.id]]>
+	joa.id
+ORDER BY jo.order_no ]]>
 	</queryString>
 	<field name="c_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -143,10 +144,18 @@ GROUP BY
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="rmb" class="java.lang.Double"/>
-	<field name="usd" class="java.lang.Double"/>
-	<field name="cny" class="java.lang.Double"/>
-	<field name="jpy" class="java.lang.Double"/>
-	<field name="HKD" class="java.lang.Double"/>
+	<field name="usd" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cny" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="jpy" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HKD" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="fy_name" class="java.lang.String"/>
 	<field name="order_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -580,7 +589,7 @@ GROUP BY
 			<textField isBlankWhenNull="true">
 				<reportElement x="167" y="1" width="59" height="20" uuid="ab4a71a0-795f-4f93-875e-454b64d097b6"/>
 				<textElement>
-					<font size="8" />
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
 			</textField>
