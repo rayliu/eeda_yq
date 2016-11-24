@@ -105,7 +105,7 @@ public class CostCheckOrderController extends Controller {
 	    			+ " ifnull((select rc.new_rate from rate_contrast rc "
 	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
 	                + " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
-	                + " cur.name currency_name "
+	                + " cur.name currency_name, cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount "
 	                + " from job_order_arap joa "
 	                + " left join job_order jo on jo.id=joa.order_id "
 	                + " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -115,6 +115,7 @@ public class CostCheckOrderController extends Controller {
 	                + " left join party p1 on p1.id=jo.customer_id "
 	                + " left join location l on l.id=jos.fnd "
 	                + " left join currency cur on cur.id=joa.currency_id "
+	                + " left join currency cur1 on cur1.id=joa.exchange_currency_id "
 	                + " where joa.audit_flag='Y' and joa.bill_flag='N' and joa.id in("+ids+") "
 	                + " GROUP BY joa.id";	
 		}else{
@@ -126,7 +127,7 @@ public class CostCheckOrderController extends Controller {
 	    			+ " ifnull((select rc.new_rate from rate_contrast rc "
 	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = aco.id),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
 	                + " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
-	                + " cur.name currency_name "
+	                + " cur.name currency_name, cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount "
 	                + " from job_order_arap joa "
 	                + " left join job_order jo on jo.id=joa.order_id "
 	                + " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -136,6 +137,7 @@ public class CostCheckOrderController extends Controller {
 	                + " left join party p1 on p1.id=jo.customer_id "
 	                + " left join location l on l.id=jos.fnd "
 	                + " left join currency cur on cur.id=joa.currency_id "
+	                + " left join currency cur1 on cur1.id=joa.exchange_currency_id "
 	                + " left join arap_cost_item aci on aci.ref_order_id = joa.id"
 					+ " left join arap_cost_order aco on aco.id = aci.cost_order_id "
 					+ " where joa.id = aci.ref_order_id and aco.id =  '"+order_id+"'"
@@ -211,7 +213,7 @@ public class CostCheckOrderController extends Controller {
               		+ " ) after_total,"
               		+ " ifnull( ( SELECT rc.new_rate FROM rate_contrast rc "
               		+ " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
-              		+ " after_rate_total,ifnull(f.name,f.name_eng) fee_name,joa.bill_flag"
+              		+ " after_rate_total,ifnull(f.name,f.name_eng) fee_name,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
       				+ " from job_order_arap joa "
       				+ " left join job_order jo on jo.id=joa.order_id "
       				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -221,6 +223,7 @@ public class CostCheckOrderController extends Controller {
       				+ " left join party p1 on p1.id=jo.customer_id "
       				+ " left join location l on l.id=jos.fnd "
       				+ " left join currency cur on cur.id=joa.currency_id "
+      				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
       				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
       				+ " left join fin_item f on f.id = joa.charge_id"
       				+ " where joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
@@ -229,13 +232,13 @@ public class CostCheckOrderController extends Controller {
        	 
        	}else{
 	         sql = "select * from(  "
-	         		+ " select joa.id,joa.bill_flag,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+	         		+ " select joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
 	         		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
 	         		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
 	         		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
 	         		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type,ifnull(joa.exchange_rate, 1) exchange_rate,"
 	         		+ " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"
-	         		+ " ) after_total ,ifnull(f.name,f.name_eng) fee_name"
+	         		+ " ) after_total ,ifnull(f.name,f.name_eng) fee_name,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
 	 				+ " from job_order_arap joa "
 	 				+ " left join job_order jo on jo.id=joa.order_id "
 	 				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -245,6 +248,7 @@ public class CostCheckOrderController extends Controller {
 	 				+ " left join party p1 on p1.id=jo.customer_id "
 	 				+ " left join location l on l.id=jos.fnd "
 	 				+ " left join currency cur on cur.id=joa.currency_id "
+	 				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
 	 				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
 	 				+ " left join fin_item f on f.id = joa.charge_id"
 	 				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' and jo.office_id = "+office_id
@@ -275,10 +279,9 @@ public class CostCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select aco.id,aco.sp_id,aco.order_no,aco.create_stamp,aco.status,aco.total_amount,c.pay_amount paid_amount,p.abbr sp_name"
+        		+ " select aco.*,p.abbr sp_name"
 				+ " from arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
-				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id"
 				+ " where aco.office_id = "+ office_id
 				+ " order by aco.id desc"
 				+ " ) B where 1=1 ";

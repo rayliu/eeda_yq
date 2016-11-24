@@ -188,6 +188,7 @@
 	                                           '',
 	                                           '工作单号',
 	                                           '类型',
+	                                           '创建时间',
 	                                           '客户',
 	                                           '结算公司',
 	                                           '货币类型',
@@ -196,12 +197,15 @@
 			                                    '原总金额(CNY)',  
 			                                    '当前汇率',
 			                                    '当前总金额(CNY)', 
-	                                           '创建时间'
+			                                    '结算币制', 
+			                                    '结算汇率', 
+			                                    '结算金额'
 	                                       ],
 	                                       field_list:[
 	                                           'ID', 
 	                                           'ORDER_NO', 
 	                                           'TYPE', 
+	                                           'CREATE_STAMP',
 	                                           'CUSTOMER_NAME', 
 	                                           'SP_NAME', 
 	                                           'CURRENCY_NAME',
@@ -210,7 +214,9 @@
 	                                           'AFTER_TOTAL', 
 	                                           'NEW_RATE', 
 	                                           'AFTER_RATE_TOTAL',
-	                                           'CREATE_STAMP'
+	                                           'EXCHANGE_CURRENCY_NAME',
+	                                           'EXCHANGE_CURRENCY_RATE',
+	                                           'EXCHANGE_TOTAL_AMOUNT'
 	                                       ],
 	                                       value_list: order.item_list![]
 	                                   }){} %>

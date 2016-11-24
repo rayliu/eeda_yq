@@ -21,22 +21,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "STATUS"},
             { "data": "SP_NAME"},
             { "data": "TOTAL_AMOUNT"},
-            { "data": null,
-                "render": function ( data, type, full, meta ) {
-                    return "";
-                }
-            },
-            { "data": null,
-                "render": function ( data, type, full, meta ) {
-                    return "";
-                }
-            },
-            { "data": null,
-                "render": function ( data, type, full, meta ) {
-                    return "";
-                }
-            },
-            { "data": "PAID_AMOUNT"},
+            { "data": "USD"},
+            { "data": "HKD"},
+            { "data": "JPY"},
+            { "data": "CNY"},
           ]
       });
 

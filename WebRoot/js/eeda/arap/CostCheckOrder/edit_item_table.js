@@ -41,6 +41,7 @@ $(document).ready(function() {
             { "data": "ID","visible":false},
             { "data": "ORDER_NO"},
             { "data": "TYPE"},
+            { "data": "CREATE_STAMP"},
             { "data": "CUSTOMER_NAME"},
             { "data": "SP_NAME"},
             { "data": "CURRENCY_NAME","class":"currency_name"},
@@ -49,7 +50,9 @@ $(document).ready(function() {
             { "data": "AFTER_TOTAL"},
             { "data": "NEW_RATE","class":"new_rate"},
             { "data": "AFTER_RATE_TOTAL","class":"after_rate_total"},
-            { "data": "CREATE_STAMP"}
+            { "data": "EXCHANGE_CURRENCY_NAME"},
+            { "data": "EXCHANGE_CURRENCY_RATE"},
+            { "data": "EXCHANGE_TOTAL_AMOUNT"}
         ]
     });
         
