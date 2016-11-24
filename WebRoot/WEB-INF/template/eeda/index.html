@@ -18,7 +18,7 @@
 			                    show = 'block';
 			                }
 			            %>
-                                        <div class="col-lg-6">
+                                        <!--div class="col-lg-6">
     			                            <div class="row">
     						                    <div class="col-lg-6 col-md-6">
     						                        <div class="panel panel-primary">
@@ -247,11 +247,15 @@
                                                     </div>
                                                 </div>
     						                </div>
-    						             </div>
-                                        <div class="col-lg-6">
-                                            <%include("/eeda/index/msgPanel.html",{}){} %>
-                                        </div>
+    						             </div-->
+                                        
                         <div class="row">
+                            <div class="col-lg-3">
+                                            <%include("/eeda/index/fmsAlertPanel.html",{}){} %>
+                            </div>
+                            <div class="col-lg-9">
+                                <%include("/eeda/index/msgPanel.html",{}){} %>
+                            </div>
                             <div class="col-lg-12">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
