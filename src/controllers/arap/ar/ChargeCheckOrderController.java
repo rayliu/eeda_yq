@@ -163,7 +163,7 @@ public class ChargeCheckOrderController extends Controller {
               		+ " ) after_total,"
               		+ " ifnull( ( SELECT rc.new_rate FROM rate_contrast rc "
               		+ " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
-              		+ " after_rate_total,ifnull(f.name,f.name_eng) fee_name,joa.bill_flag"
+              		+ " after_rate_total,ifnull(f.name,f.name_eng) fee_name,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
       				+ " from job_order_arap joa "
       				+ " left join job_order jo on jo.id=joa.order_id "
       				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -173,6 +173,7 @@ public class ChargeCheckOrderController extends Controller {
       				+ " left join party p1 on p1.id=jo.customer_id "
       				+ " left join location l on l.id=jos.fnd "
       				+ " left join currency cur on cur.id=joa.currency_id "
+      				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
       				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
       				+ " left join fin_item f on f.id = joa.charge_id"
       				+ " where joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
@@ -189,7 +190,7 @@ public class ChargeCheckOrderController extends Controller {
                  		+ " ) after_total,"
                  		+ " ifnull( ( SELECT rc.new_rate FROM rate_contrast rc "
                  		+ " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
-                 		+ " after_rate_total"
+                 		+ " after_rate_total,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
          				+ " from job_order_arap joa "
          				+ " left join job_order jo on jo.id=joa.order_id "
          				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -199,6 +200,7 @@ public class ChargeCheckOrderController extends Controller {
          				+ " left join party p1 on p1.id=jo.customer_id "
          				+ " left join location l on l.id=jos.fnd "
          				+ " left join currency cur on cur.id=joa.currency_id "
+         				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
          				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
          				+ " left join fin_item f on f.id = joa.charge_id"
          				+ " where joa.order_type='charge' and joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id

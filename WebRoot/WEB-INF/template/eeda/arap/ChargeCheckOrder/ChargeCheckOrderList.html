@@ -168,12 +168,13 @@
 	                                        {
 	                                            id:'uncheckedEeda-table', 
 	                                            style: 'width:2500px',
-	                                            headers:['<input type="checkbox" id="allCheck">','工作单号','出货时间','创建时间','类型','费用名称','客户','结算公司','货币类型','金额','汇率','总金额（CNY）',
-	                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','柜号','车型','状态','DEBIT_NO'
+	                                            headers:['<input type="checkbox" id="allCheck">','工作单号','出货时间','创建时间','类型','费用名称','客户','结算公司',
+	                                             '金额','货币类型','汇率','总金额（CNY）','结算币制','结算汇率','结算金额',
+	                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','柜号','车型'
 	                                            ]
 	                                        }){} %>
                                </div>
-                               <div role="tabpanel" class="tab-pane fade in" id="checked">
+                             <!--   <div role="tabpanel" class="tab-pane fade in" id="checked">
                                	   <%include("/eeda/component/form/detailTable.html", 
 	                                        {
 	                                            id:'checkedEeda-table', 
@@ -182,7 +183,7 @@
 	                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','柜号','车型','状态','DEBIT_NO'
 	                                            ]
 	                                        }){} %>
-                               </div>
+                               </div> -->
                             </div>
                           </div>
                         </div>
@@ -226,10 +227,13 @@
 	                                  headers:[
 	                                      '对账单号',
 	                                      '创建时间',			                                       
-	                                      '结算公司',
 	                                      '状态',
-	                                      '合计收入(RMB)',
-	                                      '已付款(RMB)'	
+	                                      '结算公司',
+	                                      '总收入(CNY)',
+	                                      '收入(USD)',
+	                                      '收入(HKD)',
+	                                      '收入(JPY)',
+	                                      '收入(CNY)'
 	                                  ]
 	                              }){} %>   
                             </div>

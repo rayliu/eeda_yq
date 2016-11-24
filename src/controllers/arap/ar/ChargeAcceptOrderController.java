@@ -99,7 +99,8 @@ public class ChargeAcceptOrderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String sql = " select * from (SELECT "
-        		+ " aco.id, aco.order_no, '应收对账单' order_type, aco.check_amount total_amount, "
+        		+ " aco.id, aco.order_no, '应收对账单' order_type, aco.check_amount total_amount,"
+        		+ " aco.cny,aco.usd,aco.hkd,aco.jpy, "
         		+ " sum(ifnull(caor.receive_amount,0)) receive_amount, aco.status,"
         		+ " aco.invoice_no, p.abbr payee_name, aco.remark ,"
         		+ " group_concat((select concat(order_no,'-',status) from arap_charge_application_order where id = caor.application_order_id) SEPARATOR '<br/>') app_msg"
