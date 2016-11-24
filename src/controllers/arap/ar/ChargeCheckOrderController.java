@@ -253,10 +253,9 @@ public class ChargeCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select aco.id,aco.order_no,aco.create_stamp,aco.status,aco.total_amount,c.pay_amount paid_amount,p.abbr sp_name "
+        		+ " select aco.*, p.abbr sp_name "
 				+ " from arap_charge_order aco "
 				+ " left join party p on p.id=aco.sp_id "
-				+ " left join charge_application_order_rel c on c.charge_order_id=aco.id "
 				+ " where aco.office_id = "+office_id
 				+ " ) B where 1=1 ";
         String condition = DbUtils.buildConditions(getParaMap());
