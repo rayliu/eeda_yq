@@ -4,7 +4,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         if(order_no.length>0)
             document.title = order_no + ' | ' + document.title;
     	//已报关行按钮状态
-    	$('#confirmCompleted,#passBtn,#refuseBtn').click(function(){
+    	$('#confirmCompleted,#passBtn,#refuseBtn,#cancelAuditBtn').click(function(){
     		var btnId = $(this).attr("id");
     		$(this).attr('disabled', true);
     		id = $('#order_id').val();
@@ -19,30 +19,32 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 						$('#saveBtn').attr('disabled', true);
 						//审核按钮状态
 						$('#passBtn').attr('disabled',false);
+                        $('#cancelAuditBtn').attr('disabled', false);
 			        	$('#refuseBtn').attr('disabled',false);
 			        	$.scojs_message('申请单提交成功', $.scojs_message.TYPE_OK);
 		        	}
     				if(status=="审核通过"){
 		        		$('#confirmCompleted').attr('disabled', true);
 						$('#saveBtn').attr('disabled', false);
+                        $('#cancelAuditBtn').show().attr('disabled', false);
 						//审核按钮状态
 						$('#passBtn').attr('disabled',true);
-			        	$('#refuseBtn').attr('disabled',true);
+			        	$('#refuseBtn').attr('disabled',true).hide();
 			        	$.scojs_message('审核成功', $.scojs_message.TYPE_OK);
 //			        	if(confirm('确定要前往工作单？')){
 //			        		location.href="/customJobOrder/edit?id="+order.JOB_ORDER_ID;
 //			        	}
-			        	
 		        	}
     				if(status=="审核不通过"){
     					$('#confirmCompleted').attr('disabled', true);
-						$('#saveBtn').attr('disabled', true);
+						$('#saveBtn').attr('disabled', false);
 						//审核按钮状态
+                        $('#cancelAuditBtn').hide();
 						$('#passBtn').attr('disabled',true);
-			        	$('#refuseBtn').attr('disabled',true);
+			        	$('#refuseBtn').attr('disabled',true).show();
 			        	$.scojs_message('审核成功', $.scojs_message.TYPE_OK);
     				}
-		    	    },'json').fail(function() {
+		    	},'json').fail(function() {
 		    	    	if(status=="新建"){
 			    	        $.scojs_message('申请单提交失败', $.scojs_message.TYPE_ERROR);
 			    	        $('#confirmCompleted').attr('disabled', false);
@@ -57,9 +59,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				        	$('#refuseBtn').attr('disabled',false);
 		    	    	}
 		    	      });
-    	})
-    	
-    	
+    	});
     	
     	 //提交报关行按钮状态
     	var id = $('#order_id').val();
@@ -75,7 +75,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			$('#passBtn').attr('disabled',false);
         	$('#refuseBtn').attr('disabled',false);
         }
-		
+		if(status=="审核通过"){
+            $('#cancelAuditBtn').show().attr('disabled',false);
+            $('#refuseBtn').hide();
+        }
 		if(status=="审核通过"||status=="审核不通过"){
 			//提交报关行按钮状态
 			$('#confirmCompleted').attr('disabled', true);
@@ -84,6 +87,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			$('#passBtn').attr('disabled',true);
         	$('#refuseBtn').attr('disabled',true);
 		}
+
     	
         //------------save保存
         $('#saveBtn').click(function(e){

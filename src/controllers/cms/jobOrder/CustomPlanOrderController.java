@@ -431,7 +431,7 @@ public class CustomPlanOrderController extends Controller {
     		
     		
     	}
-    	if("refuseBtn".equals(btnId)){
+    	if("refuseBtn".equals(btnId) || "cancelAuditBtn".equals(btnId)){
     		order.set("status","审核不通过");
     	}
     	order.update();

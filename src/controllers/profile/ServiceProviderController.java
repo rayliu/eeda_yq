@@ -659,11 +659,14 @@ public class ServiceProviderController extends Controller {
     //查询企业海关代码
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchCompanyCustomCode(){
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
+        
     	String input = getPara("input");
     	List<Record> rec = null;
     	String sql = "select id,concat(abbr,' ',ifnull(custom_registration,'')) name,"
     			+ " concat(ifnull(ifnull(address_eng, address),''),'\n',ifnull(ifnull(contact_person_eng, contact_person),''),'\n',ifnull(phone,''),ifnull(fax,'')) str"
-    			+ " from party where 1=1 ";
+    			+ " from party where office_id="+office_id + " and type in('CUSTOMER', 'SP')";
     	if(!StringUtils.isBlank(input)){
     		sql+=" and (custom_registration like '%" + input + "%' or abbr like '%" + input + "%' or company_name like '%" + input + "%') ";
     	}

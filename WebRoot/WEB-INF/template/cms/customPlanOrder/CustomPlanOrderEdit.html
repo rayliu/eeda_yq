@@ -876,6 +876,7 @@
                     <button id="confirmCompleted" class="btn btn-primary" disabled>提交</button>
                     <% if(shiro.hasPermission("customPlanOrder.audit")){%>
                     <button id="passBtn" class="btn btn-success" disabled>审核通过</button>
+                    <button id="cancelAuditBtn" class="btn btn-danger" style="display: none;">取消审核</button>
                     <button id="refuseBtn" class="btn btn-danger" disabled>审核不通过</button>
                     <%}%>
                     <a class="btn  btn-default" href="/customPlanOrder">返回</a>
