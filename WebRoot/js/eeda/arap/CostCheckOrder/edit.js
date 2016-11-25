@@ -47,7 +47,11 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                 cost_amount: $('#cost_amount').val(),
                 sp_id: $('#sp_id').val(),
                 begin_time:$('#audit_begin_time').val(),
-                end_time:$('#audit_end_time').val()
+                end_time:$('#audit_end_time').val(),
+                usd:$('#usd').val(),
+                cny:$('#cny').val(),
+                hkd:$('#hkd').val(),
+                jpy:$('#jpy').val()
             };
             order.currency_list = buildCurJson();
 

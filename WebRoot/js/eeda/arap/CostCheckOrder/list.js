@@ -40,7 +40,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "FEE_NAME", "width": "60px"},
 	            { "data": "CUSTOMER_NAME", "width": "100px"},
 	            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
-	            { "data": "TOTAL_AMOUNT", "width": "60px",
+	            { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
 		            		return '<span style="color:red;">'+'-'+data+'</span>';
@@ -48,7 +48,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                    return data;
 	                  }
 	            },
-	            { "data": "CURRENCY_NAME", "width": "60px"},
+	            { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
 	            { "data": "EXCHANGE_RATE", "width": "60px" },
 	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'AFTER_TOTAL',
 	            	"render": function ( data, type, full, meta ) {
@@ -58,9 +58,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                    return data;
 	                  }
 	            },	            
-	            { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
+	            { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px"},
 	            { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px" },
-	            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px" ,'class':'TOTAL_AMOUNT',
+	            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px" ,
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
 	            			return '<span style="color:red;">'+'-'+data+'</span>';
