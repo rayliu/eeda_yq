@@ -15,10 +15,10 @@
 		<div class="col-lg-12">
 			<ul id="orderTabs" class="nav nav-tabs">
 				<li class="active">
-					<a href="#audit" data-toggle="tab" id="costCheckOrderItem">待付款对账单</a>
+					<a href="#audit" data-toggle="tab" id="costCheckOrderItem">待申请单据</a>
 				</li>
 				<li >
-					<a href="#unpay" data-toggle="tab" data-src="create" id="costCheckOrderbasic">付款申请单列表</a>
+					<a href="#unpay" data-toggle="tab" data-src="create" id="costCheckOrderbasic">付款申请单</a>
 				</li>
 			</ul>
 			<div class="tab-content">
@@ -84,11 +84,20 @@
                                     '业务单号',
 									'单据类型',
 									'状态',
+									'付款对象',
 									'已申请单据',
-									'应付总金额',
-									'已付金额',
-									'待付金额',
-									'付款对象'
+									'应付(USD)',
+									'应付(HKD)',
+									'应付(JPY)',
+									'应付(CNY)',
+									'已付(USD)',
+									'已付(HKD)',
+									'已付(JPY)',
+									'已付(CNY)',
+									'待付(USD)',
+									'待付(HKD)',
+									'待付(JPY)',
+									'待付(CNY)'
                                     ]
                                 }){} %>
 				</div>
@@ -142,9 +151,12 @@
                                     headers:[
                                     '申请单号',
 									'单据类型',
-									'业务单号',
 									'状态',
-									'申请付款金额',
+									'业务单号',
+									'申请付款(USD)',
+									'申请付款(HKD)',
+									'申请付款(CNY)',
+									'申请付款(JPY)',
 									'付款对象',
 									'收款人',
 									'付款方式',

@@ -75,7 +75,12 @@ public class CostAcceptOrderController extends Controller {
 		String billtype = getPara("invoice_type");   //开票类型
 		String bank_name= getPara("deposit_bank");   //开户行
 		String invoice_no= getPara("invoice_no"); 
-		String total_amount = getPara("total_amount")==""?"0.00":getPara("total_amount");   //申请总金额
+		
+		String total_app_usd = getPara("total_app_usd")==""?"0.00":getPara("total_app_usd");   //申请总金额
+		String total_app_cny = getPara("total_app_cny")==""?"0.00":getPara("total_app_cny");   //申请总金额
+		String total_app_hkd = getPara("total_app_hkd")==""?"0.00":getPara("total_app_hkd");   //申请总金额
+		String total_app_jpy = getPara("total_app_jpy")==""?"0.00":getPara("total_app_jpy");   //申请总金额
+		
 		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id=user.getLong("office_id");
 		
@@ -92,9 +97,19 @@ public class CostAcceptOrderController extends Controller {
 			aca.set("invoice_no", invoice_no);
 			aca.set("bank_name", bank_name);
 			aca.set("num_name", numname);
-			if (total_amount != null && !"".equals(total_amount)) {
-				aca.set("total_amount",total_amount);
+			if (total_app_usd != null && !"".equals(total_app_usd)) {
+				aca.set("app_usd",total_app_usd);
 			}
+			if (total_app_hkd != null && !"".equals(total_app_hkd)) {
+				aca.set("app_hkd",total_app_hkd);
+			}
+			if (total_app_cny != null && !"".equals(total_app_cny)) {
+				aca.set("app_cny",total_app_cny);
+			}
+			if (total_app_jpy != null && !"".equals(total_app_jpy)) {
+				aca.set("app_jpy",total_app_jpy);
+			}
+			
 			aca.update();
 			
 			String strJson = getPara("detailJson");
@@ -131,8 +146,17 @@ public class CostAcceptOrderController extends Controller {
 			aca.set("num_name", numname);
 			aca.set("payee_id", payee_id);
 		
-			if (total_amount != null && !"".equals(total_amount)) {
-				aca.set("total_amount",total_amount);
+			if (total_app_usd != null && !"".equals(total_app_usd)) {
+				aca.set("app_usd",total_app_usd);
+			}
+			if (total_app_hkd != null && !"".equals(total_app_hkd)) {
+				aca.set("app_hkd",total_app_hkd);
+			}
+			if (total_app_cny != null && !"".equals(total_app_cny)) {
+				aca.set("app_cny",total_app_cny);
+			}
+			if (total_app_jpy != null && !"".equals(total_app_jpy)) {
+				aca.set("app_jpy",total_app_jpy);
 			}
 			aca.save();
 			
@@ -202,13 +226,22 @@ public class CostAcceptOrderController extends Controller {
 			
 			if(order_type.equals("应付对账单")){
 				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
-				Double total_amount = arapCostOrder.getDouble("total_amount");
-				Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '应付对账单'",id);
-				Double paid_amount = re.getDouble("total");
-				if(!total_amount.equals(paid_amount)){
+				Double usd = arapCostOrder.getDouble("usd");
+				Double cny = arapCostOrder.getDouble("cny");
+				Double hkd = arapCostOrder.getDouble("hkd");
+				Double jpy = arapCostOrder.getDouble("jpy");
+				Record re = Db.findFirst("select sum(ifnull(c.paid_usd, 0)) paid_usd,sum(ifnull(c.paid_cny, 0)) paid_cny,sum(ifnull(c.paid_hkd, 0)) paid_hkd,sum(ifnull(c.paid_jpy, 0)) paid_jpy"
+						+ " from cost_application_order_rel where cost_order_id =? and order_type = '应付对账单'",id);
+				Double paid_usd = re.getDouble("paid_usd");
+				Double paid_cny = re.getDouble("paid_cny");
+				Double paid_hkd = re.getDouble("paid_hkd");
+				Double paid_jpy = re.getDouble("paid_jpy");
+				
+				if(usd>paid_usd||cny>paid_cny||hkd>paid_hkd||jpy>paid_jpy){
 					arapCostOrder.set("audit_status", "部分已复核").update();
-				}else
+				}else{
 					arapCostOrder.set("audit_status", "已复核").update();
+				}
 			}		
 		}
 		Record r = arapCostInvoiceApplication.toRecord();
@@ -323,13 +356,23 @@ public class CostAcceptOrderController extends Controller {
 
 			if(order_type.equals("应付对账单")){
 				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
-				Double total_amount = arapCostOrder.getDouble("cost_amount");
-				Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '应付对账单'",id);
-				Double paid_amount = re.getDouble("total");
-				if(total_amount!=paid_amount){
+                Double usd = arapCostOrder.getDouble("usd");
+                Double cny = arapCostOrder.getDouble("cny");
+                Double hkd = arapCostOrder.getDouble("hkd");
+                Double jpy = arapCostOrder.getDouble("jpy");
+
+				Record re = Db.findFirst("select sum(ifnull(c.paid_usd, 0)) paid_usd,sum(ifnull(c.paid_cny, 0)) paid_cny,sum(ifnull(c.paid_hkd, 0)) paid_hkd,sum(ifnull(c.paid_jpy, 0)) paid_jpy"
+						+ " from cost_application_order_rel where cost_order_id =? and order_type = '应付对账单'",id);
+				Double paid_usd = re.getDouble("paid_usd");
+				Double paid_cny = re.getDouble("paid_cny");
+				Double paid_hkd = re.getDouble("paid_hkd");
+				Double paid_jpy = re.getDouble("paid_jpy");
+				
+				if(usd>paid_usd||cny>paid_cny||hkd>paid_hkd||jpy>paid_jpy){
 					arapCostOrder.set("audit_status", "部分已付款").update();
-				}else
+				}else{
 					arapCostOrder.set("audit_status", "已付款").update();
+				}
 			}
 		}
         
@@ -409,8 +452,12 @@ public class CostAcceptOrderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id=user.getLong("office_id");
         String sql = " select * from ("
-        		+ " select  aco.id, aco.order_no, aco.order_type, aco.status, aco.create_stamp, aco.total_amount totalCostAmount, aco.sp_id, p.company_name sp_name, "
+        		+ " select  aco.*, aco.total_amount totalCostAmount, p.company_name sp_name, "
         		+ " sum(ifnull(c.pay_amount,0)) paid_amount,"
+        		+ " sum(ifnull(c.paid_usd,0)) paid_usd,"
+        		+ " sum(ifnull(c.paid_cny,0)) paid_cny,"
+        		+ " sum(ifnull(c.paid_hkd,0)) paid_hkd,"
+        		+ " sum(ifnull(c.paid_jpy,0)) paid_jpy,"
         		+ " group_concat((select concat(order_no,'-',status) from arap_cost_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
 				+ " from arap_cost_order aco "
 				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id"
@@ -443,9 +490,8 @@ public class CostAcceptOrderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id=user.getLong("office_id");
         String sql = "select * from(  "
-        		+ " select acao.id,acao.order_no application_order_no,acao.status,acao.payment_method,acao.create_stamp,acao.check_stamp,acao.pay_time, "
-        		+ " acao.remark,acao.payee_unit,acao.payee_name, "
-        		+ " '申请单' order_type,acao.total_amount,aco.order_no cost_order_no,u.c_name "
+        		+ " select acao.*, acao.order_no application_order_no, "
+        		+ " '申请单' order_type,aco.order_no cost_order_no,u.c_name "
 				+ " from arap_cost_application_order acao "
 				+ " left join cost_application_order_rel caor on caor.application_order_id = acao.id "
 				+ " left join arap_cost_order aco on aco.id = caor.cost_order_id"
@@ -475,10 +521,13 @@ public class CostAcceptOrderController extends Controller {
         String sql = "";
         if("".equals(application_id)||application_id==null){
 		
-			sql = " SELECT aco.id,aco.sp_id, p.company_name payee_name,aco.order_no, '应付对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
-					+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name, aco.total_amount, "
+			sql = " SELECT aco.*, p.company_name payee_name, '应付对账单' order_type,"
+					+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
 					+ " sum(ifnull(c.pay_amount,0)) paid_amount,"
-					+ " null item_ids,null payee_unit "
+					+ " sum(ifnull(c.paid_usd,0)) paid_usd,"
+					+ " sum(ifnull(c.paid_cny,0)) paid_cny,"
+					+ " sum(ifnull(c.paid_jpy,0)) paid_jpy,"
+					+ " sum(ifnull(c.paid_hkd,0)) paid_hkd"
 					+ " FROM arap_cost_order aco "
 					+ " LEFT JOIN cost_application_order_rel c on c.cost_order_id = aco.id"
 					+ " LEFT JOIN party p ON p.id = aco.sp_id"
@@ -487,10 +536,14 @@ public class CostAcceptOrderController extends Controller {
 					+ " group by aco.id ";
 		}else{
 			
-			sql = " SELECT aco.id,aco.sp_id, p.company_name payee_name,aco.order_no, '应付对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
-					+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name, aco.total_amount,"
+			sql = " SELECT aco.*, p.company_name payee_name, '应付对账单' order_type,"
+					+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
 					+ " (select sum(ifnull(c.pay_amount, 0)) from  cost_application_order_rel c where c.cost_order_id = aco.id) paid_amount,"
-					+ " caor.pay_amount application_amount, acao.id app_id "
+					+ " (select sum(ifnull(c.paid_usd, 0)) from  cost_application_order_rel c where c.cost_order_id = aco.id) paid_usd,"
+					+ " (select sum(ifnull(c.paid_cny, 0)) from  cost_application_order_rel c where c.cost_order_id = aco.id) paid_cny,"
+					+ " (select sum(ifnull(c.paid_jpy, 0)) from  cost_application_order_rel c where c.cost_order_id = aco.id) paid_jpy,"
+					+ " (select sum(ifnull(c.paid_hkd, 0)) from  cost_application_order_rel c where c.cost_order_id = aco.id) paid_hkd,"
+					+ " acao.app_usd, acao.app_cny, acao.app_hkd, acao.app_jpy, acao.id app_id "
 					+ " FROM arap_cost_order aco "
 					+ " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = aco.id"
 					+ " LEFT JOIN arap_cost_application_order acao on acao.id = caor.application_order_id"

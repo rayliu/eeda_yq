@@ -5,9 +5,18 @@ $(document).ready(function() {
 	$('#menu_finance').addClass('active').find('ul').addClass('in');
 		//datatable, 动态处理
 	    var ids = $("#ids").val();
-        var total = 0.00;
-        var nopay = 0.00;
-        var pay = 0.00;
+        var total_usd = 0.00;
+        var total_cny = 0.00;
+        var total_hkd = 0.00;
+        var total_jpy = 0.00;
+        var nopay_usd = 0.00;
+        var nopay_jpy = 0.00;
+        var nopay_hkd = 0.00;
+        var nopay_cny = 0.00;
+        var pay_usd = 0.00;
+        var pay_cny = 0.00;
+        var pay_hkd = 0.00;
+        var pay_jpy = 0.00;
 
 		var dataTable = eeda.dt({
 		    id: 'CostOrder-table',
@@ -16,7 +25,6 @@ $(document).ready(function() {
 		    ajax: "/costAcceptOrder/costOrderList?ids="+ids+"&application_id="+$("#application_id").val(),
             createdRow: function ( row, data, index ) {
                 $(row).attr('id', data.ID);
-                $(row).attr('item_ids', data.ITEM_IDS);
                 $(row).attr('payee_unit', data.SP_ID);//收款单位
             },
 		    columns:[
@@ -27,34 +35,173 @@ $(document).ready(function() {
         		}
              },
         	{"data":"CNAME","width": "250px"},
-    		{"data":"TOTAL_AMOUNT","width": "100px",
+    		{"data":"USD","width": "100px",
     			"render": function(data, type, full, meta) {
-					var str = parseFloat(data).toFixed(2);
-					total = total + parseFloat(data);
-					$("#total").html(total.toFixed(2));
-					return str;
+    				if(data!=''&&!isNaN(data)&&data!=null){
+						data = parseFloat(data).toFixed(2);
+						total_usd = total_usd + parseFloat(data);
+						$("#total_usd").html(total_usd.toFixed(2));
+    				}
+					return data;
     			}
     		},
-    		{"data":"PAID_AMOUNT","width": "100px",
+    		{"data":"PAID_USD","width": "100px","class":"to_pay_usd",
     			"render": function(data, type, full, meta) {
-					var str = parseFloat(full.TOTAL_AMOUNT-data).toFixed(2);
-					nopay = nopay + parseFloat(full.TOTAL_AMOUNT-data);
-					$("#nopay").html(nopay.toFixed(2));
-					return str;
+    				if(data!=''&&!isNaN(data)&&full.USD!=''&&!isNaN(full.USD)&&data!=null){
+						data = parseFloat(full.USD-data).toFixed(2);
+						nopay_usd = nopay_usd + parseFloat(full.USD-data);
+						$("#nopay_usd").html(nopay_usd.toFixed(2));
+    				}
+					return data;
     			}
     		},
-    		{"data":"PAID_AMOUNT","width": "100px",
+    		{"data":"PAID_USD","width": "100px",
     			"render": function(data, type, full, meta) {
     				if($('#application_id').val()==''){
-    					var str = parseFloat(full.TOTAL_AMOUNT-data).toFixed(2);
-    					pay = pay + parseFloat(full.TOTAL_AMOUNT-data);
+    					if(data!=''&&!isNaN(data)&&full.USD!=''&&!isNaN(full.USD)&&data!=null){
+    						data = parseFloat(full.USD-data).toFixed(2);
+    						pay_usd = pay_usd + parseFloat(full.USD-data);
+    					}
     				}else{
-    					var str = parseFloat(full.APPLICATION_AMOUNT).toFixed(2);
-    					pay = pay + parseFloat(full.APPLICATION_AMOUNT);
+    					if(full.APP_USD==''||full.APP_USD==null||isNaN(full.APP_USD)){
+    						data = 0;
+    					}else if(!isNaN(full.APP_USD)){
+    						data = parseFloat(full.APP_USD).toFixed(2);
+    						pay_usd = pay_usd + parseFloat(full.APP_USD);
+    					}
     				}
-    				$("#pay").html(pay.toFixed(2));
-					$("#pay_amount").val(pay.toFixed(2));
-					return "<input type ='text' name='amount' style='width:80px' id ='amount' value='"+str+"'>";
+    				$("#pay_usd").html(pay_usd.toFixed(2));
+    				$("#app_usd").val(pay_usd.toFixed(2));
+					return "<input type ='text' name='app_usd' style='width:80px' value='"+data+"'>";
+    			}
+    		},
+    		
+    		
+    		
+    		
+    		
+    		{"data":"HKD","width": "100px",
+    			"render": function(data, type, full, meta) {
+    				if(data!=''&&!isNaN(data)&&data!=null){
+	    				data = parseFloat(data).toFixed(2);
+	    				total_hkd = total_hkd + parseFloat(data);
+	    				$("#total_hkd").html(total_hkd.toFixed(2));
+    				}
+    				return data;
+    			}
+    		},
+    		{"data":"PAID_HKD","width": "100px","class":"to_pay_hkd",
+    			"render": function(data, type, full, meta) {
+    				if(data!=''&&!isNaN(data)&&full.HKD!=''&&!isNaN(full.HKD)&&data!=null){
+	    				data = parseFloat(full.HKD-data).toFixed(2);
+	    				nopay_hkd = nopay_hkd + parseFloat(full.HKD-data);
+	    				$("#nopay_hkd").html(nopay_hkd.toFixed(2));
+    				}
+    				return data;
+    			}
+    		},
+    		{"data":"PAID_HKD","width": "100px",
+    			"render": function(data, type, full, meta) {
+    				if($('#application_id').val()==''){
+    					if(data!=''&&!isNaN(data)&&full.HKD!=''&&!isNaN(full.HKD)&&data!=null){
+    						data = parseFloat(full.HKD-data).toFixed(2);
+    						pay_hkd = pay_hkd + parseFloat(full.HKD-data);
+    					}
+    				}else{
+    					if(full.APP_HKD==''||full.APP_HKD==null||isNaN(full.APP_HKD)){
+    						data = 0;
+    					}else if(!isNaN(full.APP_HKD)){
+    						data = parseFloat(full.APP_HKD).toFixed(2);
+    						pay_hkd = pay_hkd + parseFloat(full.APP_HKD);
+    					}
+    				}
+    				$("#pay_hkd").html(pay_hkd.toFixed(2));
+    				$("#app_hkd").val(pay_hkd.toFixed(2));
+					return "<input type ='text' name='app_hkd' style='width:80px' value='"+data+"'>";
+    			}
+    		},
+    		
+    		
+    		{"data":"CNY","width": "100px",
+    			"render": function(data, type, full, meta) {
+    				if(data!=''&&!isNaN(data)&&data!=null){
+	    				data = parseFloat(data).toFixed(2);
+	    				total_cny = total_cny + parseFloat(data);
+	    				$("#total_cny").html(total_cny.toFixed(2));
+    				}
+    				return data;
+    			}
+    		},
+    		{"data":"PAID_CNY","width": "100px","class":"to_pay_cny",
+    			"render": function(data, type, full, meta) {
+    				if(data!=''&&!isNaN(data)&&full.CNY!=''&&!isNaN(full.CNY)&&data!=null){
+	    				data = parseFloat(full.CNY-data).toFixed(2);
+	    				nopay_cny = nopay_cny + parseFloat(full.CNY-data);
+	    				$("#nopay_cny").html(nopay_cny.toFixed(2));
+    				}
+    				return data;
+    			}
+    		},
+    		{"data":"PAID_CNY","width": "100px",
+    			"render": function(data, type, full, meta) {
+    				if($('#application_id').val()==''){
+    					if(data!=''&&!isNaN(data)&&full.CNY!=''&&!isNaN(full.CNY)&&data!=null){
+    						data = parseFloat(full.CNY-data).toFixed(2);
+    						pay_cny = pay_cny + parseFloat(full.CNY-data);
+    					}
+    				}else{
+    					if(full.APP_CNY==''||full.APP_CNY==null||isNaN(full.APP_CNY)){
+    						data = 0;
+    					}else if(!isNaN(full.APP_CNY)){
+    						data = parseFloat(full.APP_CNY).toFixed(2);
+    						pay_cny = pay_cny + parseFloat(full.APP_CNY);
+    					}
+    				}
+    				$("#pay_cny").html(pay_cny.toFixed(2));
+    				$("#app_cny").val(pay_cny.toFixed(2));
+					return "<input type ='text' name='app_cny' style='width:80px' value='"+data+"'>";
+    			}
+    		},
+    		
+    		
+    		{"data":"JPY","width": "100px",
+    			"render": function(data, type, full, meta) {
+    				if(data!=''&&!isNaN(data)&&data!=null){
+	    				data = parseFloat(data).toFixed(2);
+	    				total_jpy = total_jpy + parseFloat(data);
+	    				$("#total_jpy").html(total_jpy.toFixed(2));
+    				}
+    				return data;
+    			}
+    		},
+    		{"data":"PAID_JPY","width": "100px","class":"to_pay_jpy",
+    			"render": function(data, type, full, meta) {
+    				if(data!=''&&!isNaN(data)&&full.JPY!=''&&!isNaN(full.JPY)&&data!=null){
+	    				data = parseFloat(full.JPY-data).toFixed(2);
+	    				nopay_jpy = nopay_jpy + parseFloat(full.JPY-data);
+	    				$("#nopay_jpy").html(nopay_jpy.toFixed(2));
+    				}
+    				return data;
+    			}
+    		},
+    		{"data":"PAID_JPY","width": "100px",
+    			"render": function(data, type, full, meta) {
+    				if($('#application_id').val()==''){
+    					if(data!=''&&!isNaN(data)&&full.JPY!=''&&!isNaN(full.JPY)&&data!=null){
+    						data = parseFloat(full.JPY-data).toFixed(2);
+    						pay_jpy = pay_jpy + parseFloat(full.JPY-data);
+    					}
+    				}else{
+    					if(full.APP_JPY==''||full.APP_JPY==null||isNaN(full.APP_JPY)){
+    						data = 0;
+    					}else if(!isNaN(full.APP_JPY)){
+    						data = parseFloat(full.APP_JPY).toFixed(2);
+    						pay_jpy = pay_jpy + parseFloat(full.APP_JPY);
+    					}
+    				}
+    				$("#pay_jpy").html(pay_jpy.toFixed(2));
+    				$("#app_jpy").val(pay_jpy.toFixed(2));
+					return "<input type ='text' name='app_jpy' style='width:80px' value='"+data+"'>";
     			}
     		},
     		{"data":"CREATOR_NAME","width": "120px"},
@@ -65,19 +212,32 @@ $(document).ready(function() {
     
     var orderjson = function(){
     	var array=[];
-    	var sum=0.0;
-    	$("#CostOrder-table input[name='amount']").each(function(){
+    	var sum_usd=0.0;
+    	var sum_cny=0.0;
+    	var sum_hkd=0.0;
+    	var sum_jpy=0.0;
+    	$("#CostOrder-table input[name='app_usd']").each(function(){
     		var obj={};
     		obj.id = $(this).parent().parent().attr('id');
     		obj.order_type = $(this).parent().parent().find('.order_type').text();
-    		obj.value = $(this).val();
-    		obj.item_ids = $(this).parent().parent().attr('item_ids');
     		obj.payee_unit = $(this).parent().parent().attr('payee_unit');
-    		sum+=parseFloat(obj.value);
+    		
+    		obj.app_usd = $(this).val();
+    		obj.app_cny = $(this).parent().parent().find('[name=app_cny]').val();
+    		obj.app_hkd = $(this).parent().parent().find('[name=app_hkd]').val();
+    		obj.app_jpy = $(this).parent().parent().find('[name=app_jpy]').val();
+    		
+    		sum_usd +=parseFloat(obj.app_usd);
+    		sum_cny +=parseFloat(obj.app_cny);
+    		sum_hkd +=parseFloat(obj.app_hkd);
+    		sum_jpy +=parseFloat(obj.app_jpy);
     		array.push(obj);
     	});
     	
-    	$("#total_amount").val(sum);
+    	$("#total_app_jpy").val(sum_jpy);
+    	$("#total_app_usd").val(sum_usd);
+    	$("#total_app_hkd").val(sum_hkd);
+    	$("#total_app_jpy").val(sum_jpy);
     	var str_JSON = JSON.stringify(array);
     	$("#detailJson").val(str_JSON);
     };
@@ -236,27 +396,40 @@ $(document).ready(function() {
 	
 	  
 	 //异步显示总金额
-    $("#CostOrder-table").on('input', 'input', function(e){
-		e.preventDefault();
+    $("#CostOrder-table").on('keyup', 'input', function(){
 		var value = 0.00;
 		var currentValue = $(this).val();
-		var $totalAmount = $(this).parent().parent().find('.yufu_amount').text();
-		if(parseFloat($totalAmount)-parseFloat(currentValue)<0){
+		if(currentValue==''||isNaN(currentValue)){
+			$(this).val('');
+			$(this).val(0);
+			$.scojs_message('支付金额不能输入非法字符', $.scojs_message.TYPE_FALSE);
+			return;
+		}
+		var name = $(this).attr('name');
+		if(name=='app_usd'){
+			var totalAmount = $(this).parent().parent().find('.to_pay_usd').text();
+		}else if(name == 'app_cny'){
+			var totalAmount = $(this).parent().parent().find('.to_pay_cny').text();
+		}else if(name == 'app_hkd'){
+			var totalAmount = $(this).parent().parent().find('.to_pay_hkd').text();
+		}else{
+			var totalAmount = $(this).parent().parent().find('.to_pay_jpy').text();
+		}
+		if(parseFloat(totalAmount)-parseFloat(currentValue)<0){
+			$(this).val('');
 			$(this).val(0);
 			$.scojs_message('支付金额不能大于待付金额', $.scojs_message.TYPE_FALSE);
 			return false;
 		}
-		$("input[name='amount']").each(function(){
+		$("input[name='"+name+"']").each(function(){
 			if($(this).val()!=null&&$(this).val()!=''){
 				value = value + parseFloat($(this).val());
-			}else{
-				$("#InvorceApplication-table").on('blur', 'input', function(e){
-					$(this).val(0);
-				});
 			}
 	    });		
-		$("#pay").html(value);
-		$("#pay_amount").val(value);
+		
+		var name1 = name.replace("app","pay");
+		$('#'+name+'').val(value);
+		$('#'+name1+'').html(value);
 	});	
     
    

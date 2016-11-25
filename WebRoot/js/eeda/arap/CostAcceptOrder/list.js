@@ -25,22 +25,64 @@ $(document).ready(function() {
             },
             {"data":"ORDER_TYPE"},   
             {"data":"STATUS"},
+            {"data":"SP_NAME","sClass":"SP_NAME"},
             {"data":"APP_MSG"},  
-            {"data":"TOTALCOSTAMOUNT"},  
-            {"data":"PAID_AMOUNT",
+            {"data":"USD"},  
+            {"data":"HKD"},  
+            {"data":"JPY"},  
+            {"data":"CNY"},  
+            {"data":"PAID_USD",
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);	
             		else 
-            			return '0.00';
+            			return '';
+            	}
+            },
+            {"data":"PAID_HKD",
+            	"render": function(data, type, full, meta) {
+            		if(data)
+            			return parseFloat(data).toFixed(2);	
+            		else 
+            			return '';
+            	}
+            },
+            {"data":"PAID_JPY",
+            	"render": function(data, type, full, meta) {
+            		if(data)
+            			return parseFloat(data).toFixed(2);	
+            		else 
+            			return '';
+            	}
+            },
+            {"data":"PAID_CNY",
+            	"render": function(data, type, full, meta) {
+            		if(data)
+            			return parseFloat(data).toFixed(2);	
+            		else 
+            			return '';
             	}
             },
             {
             	"render": function(data, type, full, meta) {
-            		return full.TOTALCOSTAMOUNT - full.PAID_AMOUNT;	
+            		return full.USD - full.PAID_USD;	
             	}
             },
-            {"data":"SP_NAME","sClass":"SP_NAME"}
+            {
+            	"render": function(data, type, full, meta) {
+            		return full.HKD - full.PAID_HKD;	
+            	}
+            },
+            {
+            	"render": function(data, type, full, meta) {
+            		return full.JPY - full.PAID_JPY;	
+            	}
+            },
+            {
+            	"render": function(data, type, full, meta) {
+            		return full.CNY - full.PAID_CNY;	
+            	}
+            },
         ]      
     });
                       
@@ -57,14 +99,38 @@ $(document).ready(function() {
             	 }
             },
             {"data":"ORDER_TYPE"},
-            {"data":"COST_ORDER_NO"},
             {"data":"STATUS"},    
-            {"data":"TOTAL_AMOUNT",
+            {"data":"COST_ORDER_NO"},
+            {"data":"APP_USD",
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);
             		else
-            			return '0.00';
+            			return '';
+            	}
+            },
+            {"data":"APP_HKD",
+            	"render": function(data, type, full, meta) {
+            		if(data)
+            			return parseFloat(data).toFixed(2);
+            		else
+            			return '';
+            	}
+            },
+            {"data":"APP_CNY",
+            	"render": function(data, type, full, meta) {
+            		if(data)
+            			return parseFloat(data).toFixed(2);
+            		else
+            			return '';
+            	}
+            },
+            {"data":"APP_JPY",
+            	"render": function(data, type, full, meta) {
+            		if(data)
+            			return parseFloat(data).toFixed(2);
+            		else
+            			return '';
             	}
             },
             {"data":"PAYEE_UNIT"},  
