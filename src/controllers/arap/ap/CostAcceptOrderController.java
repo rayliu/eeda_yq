@@ -119,13 +119,19 @@ public class CostAcceptOrderController extends Controller {
 			for (Map map : idList) {
 				String id = (String)map.get("id");
 				String order_type = (String)map.get("order_type");
-				String value = (String)map.get("value");
+				String app_usd = (String)map.get("app_usd");
+				String app_hkd = (String)map.get("app_hkd");
+				String app_cny = (String)map.get("app_cny");
+				String app_jpy = (String)map.get("app_jpy");
 
 				CostApplicationOrderRel costApplicationOrderRel = CostApplicationOrderRel.dao.findFirst("select * from cost_application_order_rel where cost_order_id =? and application_order_id = ?",id,application_id);
 				costApplicationOrderRel.set("application_order_id", aca.getLong("id"));
 				costApplicationOrderRel.set("cost_order_id", id);
 				costApplicationOrderRel.set("order_type", order_type);
-				costApplicationOrderRel.set("pay_amount", value);
+				costApplicationOrderRel.set("paid_usd", app_usd);
+				costApplicationOrderRel.set("paid_hkd", app_hkd);
+				costApplicationOrderRel.set("paid_cny", app_cny);
+				costApplicationOrderRel.set("paid_jpy", app_jpy);
 				costApplicationOrderRel.update();
 			}
 		} else {
@@ -167,14 +173,20 @@ public class CostAcceptOrderController extends Controller {
 			for (Map map : idList) {
 				String id = (String)map.get("id");
 				String order_type = (String)map.get("order_type");
-				String value = (String)map.get("value");
 				String cname = (String)map.get("payee_unit");
+				String app_usd = (String)map.get("app_usd");
+				String app_hkd = (String)map.get("app_hkd");
+				String app_cny = (String)map.get("app_cny");
+				String app_jpy = (String)map.get("app_jpy");
 
 				CostApplicationOrderRel costApplicationOrderRel = new CostApplicationOrderRel();
 				costApplicationOrderRel.set("application_order_id", aca.getLong("id"));
 				costApplicationOrderRel.set("cost_order_id", id);
 				costApplicationOrderRel.set("order_type", order_type);
-				costApplicationOrderRel.set("pay_amount", value);
+				costApplicationOrderRel.set("paid_usd", app_usd);
+				costApplicationOrderRel.set("paid_hkd", app_hkd);
+				costApplicationOrderRel.set("paid_cny", app_cny);
+				costApplicationOrderRel.set("paid_jpy", app_jpy);
 				
 				if(cname!=null)
 					costApplicationOrderRel.set("payee_unit", cname);

@@ -5,18 +5,18 @@ $(document).ready(function() {
 	$('#menu_finance').addClass('active').find('ul').addClass('in');
 		//datatable, 动态处理
 	    var ids = $("#ids").val();
-        var total_usd = 0.00;
-        var total_cny = 0.00;
-        var total_hkd = 0.00;
-        var total_jpy = 0.00;
-        var nopay_usd = 0.00;
-        var nopay_jpy = 0.00;
-        var nopay_hkd = 0.00;
-        var nopay_cny = 0.00;
-        var pay_usd = 0.00;
-        var pay_cny = 0.00;
-        var pay_hkd = 0.00;
-        var pay_jpy = 0.00;
+        var total_usd = 0;
+        var total_cny = 0;
+        var total_hkd = 0;
+        var total_jpy = 0;
+        var nopay_usd = 0;
+        var nopay_jpy = 0;
+        var nopay_hkd = 0;
+        var nopay_cny = 0;
+        var pay_usd = 0;
+        var pay_cny = 0;
+        var pay_hkd = 0;
+        var pay_jpy = 0;
 
 		var dataTable = eeda.dt({
 		    id: 'CostOrder-table',
@@ -70,8 +70,6 @@ $(document).ready(function() {
     				if(data!=null&&!isNaN(data)&&full.USD!=null&&!isNaN(full.USD)){
     					nopay_usd = nopay_usd + parseFloat(full.USD-data);
 						data = parseFloat(full.USD-data).toFixed(2);
-    				}else{
-    					data='';
     				}
 					return data;
     			}
@@ -82,19 +80,14 @@ $(document).ready(function() {
     					if(data!=null&&full.USD!=null&&!isNaN(data)&&!isNaN(full.USD)){
     						pay_usd = pay_usd + parseFloat(full.USD-data);
     						data = parseFloat(full.USD-data).toFixed(2);
-    						return "<input type ='text' name='app_usd' style='width:80px' value='"+data+"'>";
-    					}else{
-    						return '';
     					}
     				}else{
     					if(full.APP_USD!=null&&!isNaN(full.APP_USD)){
     						pay_usd = pay_usd + parseFloat(full.APP_USD);
     						data = parseFloat(full.APP_USD).toFixed(2);
-    						return "<input type ='text' name='app_usd' style='width:80px' value='"+data+"'>";
-    					}else{
-    						return '';
     					}
     				}
+    				return "<input type ='text' name='app_usd' style='width:80px' value='"+data+"'>";
     			}
     		},
     		{"data":"HKD","width": "100px",
@@ -121,19 +114,14 @@ $(document).ready(function() {
     					if(!isNaN(data)&&full.HKD!=null&&!isNaN(full.HKD)&&data!=null){
     						pay_hkd = pay_hkd + parseFloat(full.HKD-data);
     						data = parseFloat(full.HKD-data).toFixed(2);
-    						return "<input type ='text' name='app_hkd' style='width:80px' value='"+data+"'>";
-    					}else{
-    						return '';
     					}
     				}else{
     					if(full.APP_HKD!=null&&!isNaN(full.APP_HKD)){
     						pay_hkd = pay_hkd + parseFloat(full.APP_HKD);
     						data = parseFloat(full.APP_HKD).toFixed(2);
-    						return "<input type ='text' name='app_hkd' style='width:80px' value='"+data+"'>";
-    					}else{
-    						return '';
     					}
     				}
+    				return "<input type ='text' name='app_hkd' style='width:80px' value='"+data+"'>";
     			}
     		},
     		{"data":"CNY","width": "100px",
@@ -150,8 +138,6 @@ $(document).ready(function() {
     				if(data!=null&&!isNaN(data)&&full.CNY!=null&&!isNaN(full.CNY)){
     					nopay_cny = nopay_cny + parseFloat(full.CNY-data);
 	    				data = parseFloat(full.CNY-data).toFixed(2);
-    				}else{
-    					data = '';
     				}
     				return data;
     			}
@@ -162,19 +148,14 @@ $(document).ready(function() {
     					if(data!=null&&!isNaN(data)&&full.CNY!=null&&!isNaN(full.CNY)){
     						pay_cny = pay_cny + parseFloat(full.CNY-data);
     						data = parseFloat(full.CNY-data).toFixed(2);
-    						return "<input type ='text' name='app_cny' style='width:80px' value='"+data+"'>";
-    					}else{
-    						return '';
     					}
     				}else{
     					if(full.APP_CNY!=null&&!isNaN(full.APP_CNY)){
     						pay_cny = pay_cny + parseFloat(full.APP_CNY);
     						data = parseFloat(full.APP_CNY).toFixed(2);
-    						return "<input type ='text' name='app_cny' style='width:80px' value='"+data+"'>";
-    					}else{
-    						return '';
     					}
     				}
+    				return "<input type ='text' name='app_cny' style='width:80px' value='"+data+"'>";
     			}
     		},
     		{"data":"JPY","width": "100px",
@@ -201,19 +182,14 @@ $(document).ready(function() {
     					if(data!=null&&!isNaN(data)&&full.JPY!=null&&!isNaN(full.JPY)){
     						pay_jpy = pay_jpy + parseFloat(full.JPY-data);
     						data = parseFloat(full.JPY-data).toFixed(2);
-    						return "<input type ='text' name='app_jpy' style='width:80px' value='"+data+"'>";
-    					}else{
-    						return '';
     					}
     				}else{
     					if(full.APP_JPY!=null&&!isNaN(full.APP_JPY)){
     						pay_jpy = pay_jpy + parseFloat(full.APP_JPY);
     						data = parseFloat(full.APP_JPY).toFixed(2);
-    						return "<input type ='text' name='app_jpy' style='width:80px' value='"+data+"'>";
-    					}else{
-    						return '';
     					}
     				}
+    				return "<input type ='text' name='app_jpy' style='width:80px' value='"+data+"'>";
     			}
     		},
     		{"data":"CREATOR_NAME","width": "120px"},
