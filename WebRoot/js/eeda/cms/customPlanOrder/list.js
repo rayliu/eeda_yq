@@ -97,7 +97,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       
       
       $('#orderTabs a').click(function(){
-    	  var custom_state = $(this).text();
+    	  var custom_state = $(this).attr("name");
     	  if(custom_state=='全部'){
     		  custom_state = '';
     	  }
