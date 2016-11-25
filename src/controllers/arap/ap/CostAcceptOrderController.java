@@ -452,7 +452,7 @@ public class CostAcceptOrderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id=user.getLong("office_id");
         String sql = " select * from ("
-        		+ " select  aco.*, aco.total_amount totalCostAmount, p.company_name sp_name, "
+        		+ " select  aco.*, p.company_name sp_name, "
         		+ " sum(ifnull(c.pay_amount,0)) paid_amount,"
         		+ " sum(ifnull(c.paid_usd,0)) paid_usd,"
         		+ " sum(ifnull(c.paid_cny,0)) paid_cny,"
@@ -464,7 +464,7 @@ public class CostAcceptOrderController extends Controller {
 				+ " left join party p on p.id=aco.sp_id "
 				+ " where aco.status!='新建' and aco.office_id = "+office_id
 				+ " group by aco.id"
-				+ " ) A where totalCostAmount>paid_amount";
+				+ " ) A where (ifnull(usd,0)>paid_usd or ifnull(cny,0)>paid_cny or ifnull(hkd,0)>paid_hkd or ifnull(jpy,0)>paid_jpy)";
 
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";

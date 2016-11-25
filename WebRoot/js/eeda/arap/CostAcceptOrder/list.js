@@ -10,7 +10,7 @@ $(document).ready(function() {
 	    id: 'costAccept_table',
 	    autoWidth: true,
 	    paging: true,
-	    serverSide: false, //不打开会出现排序不对 
+	    serverSide: true, //不打开会出现排序不对 
 	    ajax: "/costAcceptOrder/list",
 	    columns: [
 			{ 

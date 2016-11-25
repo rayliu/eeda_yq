@@ -124,6 +124,7 @@ eeda.dt = function(opt){
             }
         },
         drawCallback: opt.drawCallback || function ( settings ) {},
+        initComplete: opt.initComplete || function ( settings ) {},
         ajax: opt.ajax || '',
         // ajax: {
         //   url: opt.ajax || '',
