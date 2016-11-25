@@ -26,8 +26,6 @@
                              		<button id="reflesh" type="button" class="btn btn-success btn-xs" >刷新</button>
                                 </div> 
                         	</div>
-                                                        
-                                <br>
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'custom_item_table',
@@ -42,23 +40,22 @@
                     </div>
             
                 <div class="row" >
-	             <h4>报关文档</h4>
-	             <span class="btn btn-success btn-xs fileinput-button" id="fileuploadSpanOfCustom"> 
-	                 <i class="glyphicon glyphicon-plus"></i> 
-	                 <span>选择文件</span> 
-	                 <input id="fileuploadOfCustom" type="file" name="files[]" multiple> 
-	             </span> 
-	             <%include("/eeda/component/form/detailTable.html", 
-	                 {
-	                     id:'custom_doc_table',
-	                     style:'width:1400px',
-	                     headers:['是否共享<input id="allCheckOfCustomDoc" type="checkbox" style="width:30px">','', '文档名称', '上传人', '上传时间', '备注','share_flag'],
-	                     field_list:['id','', 'doc_name','c_name','upload_time', 'remark','share_flag'],
-	                     value_list: customDocList![]
-	                 }){} %>
-	              <br>
-                            
-                </div>           
-                
+    	             <h4>报关文档</h4>
+    	             <span class="btn btn-success btn-xs fileinput-button" id="fileuploadSpanOfCustom"> 
+    	                 <i class="glyphicon glyphicon-plus"></i> 
+    	                 <span>选择文件</span> 
+    	                 <input id="fileuploadOfCustom" type="file" name="files[]" multiple> 
+    	             </span> 
+    	             <%include("/eeda/component/form/detailTable.html", 
+    	                 {
+    	                     id:'custom_doc_table',
+    	                     style:'width:1400px',
+    	                     headers:['是否共享<input id="allCheckOfCustomDoc" type="checkbox" style="width:30px">','', '文档名称', '上传人', '上传时间', '备注','share_flag'],
+    	                     field_list:['id','', 'doc_name','c_name','upload_time', 'remark','share_flag'],
+    	                     value_list: customDocList![]
+    	                 }){} %>
+    	              <br>
+                </div>
+
          </div><!-- /.row -->
 </form>
