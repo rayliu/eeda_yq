@@ -124,15 +124,16 @@ $(document).ready(function() {
 			},
 			{"data":"PAID_USD","width": "100px",
 				"render": function(data, type, full, meta) {
+					debugger
 					if($('#order_id').val()==''){
 						if(data!=null&&full.USD!=null&&!isNaN(data)&&!isNaN(full.USD)){
 							pay_usd = pay_usd + parseFloat(full.USD-data);
 							data = parseFloat(full.USD-data).toFixed(2);
 						}
 					}else{
-						if(full.APP_USD!=null&&!isNaN(full.APP_USD)){
-							pay_usd = pay_usd + parseFloat(full.APP_USD);
-							data = parseFloat(full.APP_USD).toFixed(2);
+						if(data!=null&&!isNaN(data)){
+							pay_usd = pay_usd + parseFloat(data);
+							data = parseFloat(data).toFixed(2);
 						}
 					}
 					return "<input type ='text' name='app_usd' style='width:80px' value='"+data+"'>";
@@ -164,9 +165,9 @@ $(document).ready(function() {
 							data = parseFloat(full.HKD-data).toFixed(2);
 						}
 					}else{
-						if(full.APP_HKD!=null&&!isNaN(full.APP_HKD)){
-							pay_hkd = pay_hkd + parseFloat(full.APP_HKD);
-							data = parseFloat(full.APP_HKD).toFixed(2);
+						if(data!=null&&!isNaN(data)){
+							pay_hkd = pay_hkd + parseFloat(data);
+							data = parseFloat(data).toFixed(2);
 						}
 					}
 					return "<input type ='text' name='app_hkd' style='width:80px' value='"+data+"'>";
@@ -198,9 +199,9 @@ $(document).ready(function() {
 							data = parseFloat(full.CNY-data).toFixed(2);
 						}
 					}else{
-						if(full.APP_CNY!=null&&!isNaN(full.APP_CNY)){
-							pay_cny = pay_cny + parseFloat(full.APP_CNY);
-							data = parseFloat(full.APP_CNY).toFixed(2);
+						if(data!=null&&!isNaN(data)){
+							pay_cny = pay_cny + parseFloat(data);
+							data = parseFloat(data).toFixed(2);
 						}
 					}
 					return "<input type ='text' name='app_cny' style='width:80px' value='"+data+"'>";
@@ -232,9 +233,9 @@ $(document).ready(function() {
 							data = parseFloat(full.JPY-data).toFixed(2);
 						}
 					}else{
-						if(full.APP_JPY!=null&&!isNaN(full.APP_JPY)){
-							pay_jpy = pay_jpy + parseFloat(full.APP_JPY);
-							data = parseFloat(full.APP_JPY).toFixed(2);
+						if(data!=null&&!isNaN(data)){
+							pay_jpy = pay_jpy + parseFloat(data);
+							data = parseFloat(data).toFixed(2);
 						}
 					}
 					return "<input type ='text' name='app_jpy' style='width:80px' value='"+data+"'>";
@@ -461,24 +462,24 @@ $(document).ready(function() {
 	
 	  
 	//异步显示总金额
-	    $("#eeda-table").on('keyup', 'input', function(){
+	    $("#eeda-table").on('change', 'input', function(){
+	    	var tr =$(this).parent().parent();
 			var value = 0.00;
 			var currentValue = $(this).val();
 			if(currentValue==''||isNaN(currentValue)){
 				$(this).val('');
 				$(this).val(0);
-				$.scojs_message('支付金额不能输入非法字符', $.scojs_message.TYPE_FALSE);
 				return;
 			}
 			var name = $(this).attr('name');
 			if(name=='app_usd'){
-				var totalAmount = $(this).parent().parent().find('.to_pay_usd').text();
+				var totalAmount = tr.find('.to_pay_usd').text();
 			}else if(name == 'app_cny'){
-				var totalAmount = $(this).parent().parent().find('.to_pay_cny').text();
+				var totalAmount = tr.find('.to_pay_cny').text();
 			}else if(name == 'app_hkd'){
-				var totalAmount = $(this).parent().parent().find('.to_pay_hkd').text();
+				var totalAmount = tr.find('.to_pay_hkd').text();
 			}else{
-				var totalAmount = $(this).parent().parent().find('.to_pay_jpy').text();
+				var totalAmount = tr.find('.to_pay_jpy').text();
 			}
 			if(parseFloat(totalAmount)-parseFloat(currentValue)<0){
 				$(this).val('');

@@ -69,7 +69,6 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                 	$('#cost_amount').text(order.COST_AMOUNT);
                 	$('#audit_begin_time').val(order.BEGIN_TIME);
                 	$('#audit_end_time').val(order.END_TIME);
-                	$('#remark').text(order.REMARK);
                     
                     eeda.contactUrl("edit?id",order.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);

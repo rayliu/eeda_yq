@@ -532,11 +532,10 @@ public class CostAcceptOrderController extends Controller {
 		
 			sql = " SELECT aco.*, p.company_name payee_name, '应付对账单' order_type,"
 					+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
-					+ " sum(ifnull(c.pay_amount,0)) paid_amount,"
-					+ " sum(ifnull(c.paid_usd,0)) paid_usd,"
-					+ " sum(ifnull(c.paid_cny,0)) paid_cny,"
-					+ " sum(ifnull(c.paid_jpy,0)) paid_jpy,"
-					+ " sum(ifnull(c.paid_hkd,0)) paid_hkd"
+					+ " ifnull(c.paid_usd,0) paid_usd,"
+					+ " ifnull(c.paid_cny,0) paid_cny,"
+					+ " ifnull(c.paid_jpy,0) paid_jpy,"
+					+ " ifnull(c.paid_hkd,0) paid_hkd"
 					+ " FROM arap_cost_order aco "
 					+ " LEFT JOIN cost_application_order_rel c on c.cost_order_id = aco.id"
 					+ " LEFT JOIN party p ON p.id = aco.sp_id"
@@ -547,12 +546,10 @@ public class CostAcceptOrderController extends Controller {
 			
 			sql = " SELECT aco.*, p.company_name payee_name, '应付对账单' order_type,"
 					+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
-					+ " (select sum(ifnull(c.pay_amount, 0)) from  cost_application_order_rel c where c.cost_order_id = aco.id) paid_amount,"
-					+ " (select sum(ifnull(c.paid_usd, 0)) from  cost_application_order_rel c where c.cost_order_id = aco.id) paid_usd,"
-					+ " (select sum(ifnull(c.paid_cny, 0)) from  cost_application_order_rel c where c.cost_order_id = aco.id) paid_cny,"
-					+ " (select sum(ifnull(c.paid_jpy, 0)) from  cost_application_order_rel c where c.cost_order_id = aco.id) paid_jpy,"
-					+ " (select sum(ifnull(c.paid_hkd, 0)) from  cost_application_order_rel c where c.cost_order_id = aco.id) paid_hkd,"
-					+ " acao.app_usd, acao.app_cny, acao.app_hkd, acao.app_jpy, acao.id app_id "
+					+ " ifnull(caor.paid_usd,0) paid_usd,"
+					+ " ifnull(caor.paid_cny,0) paid_cny,"
+					+ " ifnull(caor.paid_jpy,0) paid_jpy,"
+					+ " ifnull(caor.paid_hkd,0) paid_hkd"
 					+ " FROM arap_cost_order aco "
 					+ " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = aco.id"
 					+ " LEFT JOIN arap_cost_application_order acao on acao.id = caor.application_order_id"
@@ -560,6 +557,7 @@ public class CostAcceptOrderController extends Controller {
 					+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
 					+ " where acao.id="+application_id
 				    + " GROUP BY aco.id ";
+
 		}
 		
 		Map BillingOrderListMap = new HashMap();
