@@ -207,6 +207,7 @@ public class JobOrderReportController extends Controller {
 		String debit_note = getPara("debit_note");
 		String order_id = getPara("itemIds");
 		String landIds = getPara("landIds");
+		String order_no = getPara("order_no");
 		String [] order_id_arr = null;
 		if(order_id!=null){
 			order_id_arr = order_id.split(",");
@@ -222,8 +223,14 @@ public class JobOrderReportController extends Controller {
 			fileName = "/report/jobOrder/debitNote_eng.jasper";
 			outFileName = "/download/debitNote英文";
 		}else if ("invoice".equals(debit_note)){
-			fileName = "/report/jobOrder/INVOICE.jasper";
-			outFileName = "/download/Invoice英文";
+			if("EKA".equals(order_no.substring(0,3))){
+				fileName = "/report/jobOrder/AIR_INVOICE.jasper";
+				outFileName = "/download/AIR_Invoice英文";
+			}else{
+				fileName = "/report/jobOrder/INVOICE.jasper";
+				outFileName = "/download/Invoice英文";				
+			}
+
 		}else {
 			fileName = "/report/jobOrder/land_invoice.jasper";
 			outFileName = "/download/Invoice分单";

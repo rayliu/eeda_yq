@@ -634,10 +634,11 @@ $(document).ready(function() {
       			var itemId = $(this).parent().parent().attr('id');
       			itemIds.push(itemId);
 	      	 });
+	      	var order_no=$('#order_no').val();
 	      	var itemIdsStr = itemIds.toString();
 	    	 $.post('/jobOrder/saveDebitNote', {itemIds:itemIdsStr,invoiceNo:invoiceNo}, function(data){
 	    		 if(data.result==true){
-			    	$.post('/jobOrderReport/printDebitNotePDF', {debit_note:debit_note, itemIds:itemIdsStr}, function(data){
+			    	$.post('/jobOrderReport/printDebitNotePDF', {debit_note:debit_note, itemIds:itemIdsStr,order_no:order_no}, function(data){
 			    		   $('#printDebitNoteBtn').attr('disabled', false);
 			                window.open(data);
 			    	}).fail(function() { 
