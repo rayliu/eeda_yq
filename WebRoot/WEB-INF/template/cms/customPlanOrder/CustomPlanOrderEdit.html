@@ -880,8 +880,10 @@
                     <button id="refuseBtn" class="btn btn-danger" disabled>审核不通过</button>
                     <%}%>
                     <a class="btn  btn-default" href="/customPlanOrder">返回</a>
+                    <% if(shiro.hasPermission("customPlanOrder.audit")){%>
                     <button id="printBtn" class="btn  btn-primary" >打印托运单</button>
                     <button id="printCustomOrderBtn" class="btn  btn-primary" >打印报关单</button>
+                     <%}%>
                 </div>
             </div>
         </div>
