@@ -38,7 +38,11 @@ $(document).ready(function() {
         var itemTable = eeda.dt({
             id: 'eeda-table',
             columns:[
-            { "data": "ID","visible":false},
+            {
+            	"render": function ( data, type, full, meta ) {
+            		return '<input type="checkbox" style="width:30px">';
+			    }
+            },
             { "data": "ORDER_NO"},
             { "data": "TYPE"},
             { "data": "CREATE_STAMP"},
@@ -56,6 +60,27 @@ $(document).ready(function() {
         ]
     });
         
+        
+        //选择是否是同一币种
+        var cnames = [];
+		$('#eeda-table').on('click',"input[type=checkbox]",function () {
+				var cname = $(this).parent().siblings('.currency_name')[0].textContent;
+				if($(this).prop('checked')==true){	
+					if(cnames.length > 0 ){
+						if(cnames[0]==cname){
+							cnames.push(cname);
+						}else{
+							$.scojs_message('请选择同一币种进行兑换', $.scojs_message.TYPE_ERROR);
+							$(this).attr('checked',false);
+							return false;
+						}
+					}else{
+						cnames.push(cname);
+					}
+				}else{
+					cnames.pop(cname);
+			 }
+		});
     
     $('input[name=new_rate]').on('keyup',function(){
     	var totalAmount = 0.00;

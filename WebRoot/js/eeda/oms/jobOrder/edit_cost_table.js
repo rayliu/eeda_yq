@@ -97,7 +97,7 @@ $(document).ready(function() {
             $.unblockUI();
         },
         columns:[
-			{"data": "ID","width": "10px",
+			{
 			    "render": function ( data, type, full, meta ) {
 			    	if(data)
 			    		return '<input type="checkbox" style="width:30px" class="checkBoxOfCostTable" >';
