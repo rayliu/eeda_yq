@@ -72,6 +72,7 @@ public class ChargeCheckOrderController extends Controller {
    			
    			//需后台处理的字段
    			order.set("order_no", OrderNoGenerator.getNextOrderNo("YSDZ", user.getLong("office_id")));
+   			order.set("order_type", "应收对账单");
    			order.set("create_by", user.getLong("id"));
    			order.set("create_stamp", new Date());
    			order.set("office_id", office_id);

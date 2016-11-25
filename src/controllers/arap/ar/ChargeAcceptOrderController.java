@@ -98,19 +98,20 @@ public class ChargeAcceptOrderController extends Controller {
         
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
-        String sql = " select * from (SELECT "
-        		+ " aco.id, aco.order_no, '应收对账单' order_type, aco.check_amount total_amount,"
-        		+ " aco.cny,aco.usd,aco.hkd,aco.jpy, "
-        		+ " sum(ifnull(caor.receive_amount,0)) receive_amount, aco.status,"
-        		+ " aco.invoice_no, p.abbr payee_name, aco.remark ,"
-        		+ " group_concat((select concat(order_no,'-',status) from arap_charge_application_order where id = caor.application_order_id) SEPARATOR '<br/>') app_msg"
-        		+ " FROM"
-        		+ " arap_charge_order aco"
-        		+ " LEFT JOIN party p ON p.id = aco.sp_id"
-        		+ " LEFT JOIN charge_application_order_rel caor ON caor.charge_order_id = aco.id and caor.order_type = '应收对账单'"
-        		+ " where aco.have_invoice = 'N' and aco.status != '新建' and aco.office_id = "+office_id
-        		+ " GROUP BY aco.id"
-        		+ " ) A where total_amount>receive_amount ";
+        String sql = " select * from ("
+        		+ " select  aco.*, p.company_name sp_name, "
+        		+ " sum(ifnull(c.pay_amount,0)) paid_amount,"
+        		+ " sum(ifnull(c.paid_usd,0)) paid_usd,"
+        		+ " sum(ifnull(c.paid_cny,0)) paid_cny,"
+        		+ " sum(ifnull(c.paid_hkd,0)) paid_hkd,"
+        		+ " sum(ifnull(c.paid_jpy,0)) paid_jpy,"
+        		+ " group_concat((select concat(order_no,'-',status) from arap_charge_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
+				+ " from arap_charge_order aco "
+				+ " left join charge_application_order_rel c on c.charge_order_id=aco.id"
+				+ " left join party p on p.id=aco.sp_id "
+				+ " where aco.status!='新建' and aco.office_id = "+office_id
+				+ " group by aco.id"
+				+ " ) A where (ifnull(usd,0)>paid_usd or ifnull(cny,0)>paid_cny or ifnull(hkd,0)>paid_hkd or ifnull(jpy,0)>paid_jpy)";
 		
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition +") B";
@@ -138,13 +139,15 @@ public class ChargeAcceptOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select acao.id,acao.order_no,acao.status,'申请单' order_type,acao.total_amount,acao.create_stamp, "
-        		+ " acao.remark,p.abbr payee_name,ul.c_name create_name "
+        		+ " select acao.*, acao.order_no application_order_no, "
+        		+ " '申请单' order_type,aco.order_no cost_order_no,u.c_name "
 				+ " from arap_charge_application_order acao "
-				+ " left join user_login ul on ul.id = acao.create_by "
-				+ " left join party p on p.id = acao.sp_id "
+				+ " left join charge_application_order_rel caor on caor.application_order_id = acao.id "
+				+ " left join arap_charge_order aco on aco.id = caor.charge_order_id"
+				+ " left join user_login u on u.id = acao.create_by"
 				+ "	where acao.office_id = "+office_id
-				+ " ) A where 1=1 ";
+				+ " group by acao.id"
+				+ " ) B where 1=1 ";
 		
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";

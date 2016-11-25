@@ -5,52 +5,169 @@ $(document).ready(function() {
     
 	var costAccept_table = eeda.dt({
 	    id: 'costAccept_table',
+	    autoWidth: true,
 	    paging: true,
-	    serverSide: false, //不打开会出现排序不对 
+	    serverSide: true, //不打开会出现排序不对 
 	    ajax: "/chargeAcceptOrder/list",
 	    columns: [
-			{ "width":"10px", 
-			    "render": function(data, type, full, meta) {
-			        return '<input type="checkbox" class="checkBox" >';
-			    }
-			},
-            {"data":"ORDER_NO","width":"70px",
-            	"render": function(data, type, full, meta) {
-            		return "<a href='/chargeCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
-        		}
-            },
-            {"data":"ORDER_TYPE", "class":"order_type","width":"80px"},   
-            {"data":"PAYEE_NAME",  "width":"150px",'class':'payee_name'},
-            {"data":"TOTAL_AMOUNT", "width":"70px"},  
-            {"data":"RECEIVE_AMOUNT", "width":"70px" },
-            {"width":"70px",
-            	"render": function(data, type, full, meta) {
-            		return full.TOTAL_AMOUNT - full.RECEIVE_AMOUNT;	
-            	}
-            },
-            {"data":"STATUS", "width":"70px"},   
-            {"data":"APP_MSG", "width":"120px"},   
-            {"data":"REMARK",  "width":"150px"},
+				{ 
+				    "render": function(data, type, full, meta) {
+				        return '<input type="checkbox" class="checkBox" >';
+				    }
+				},
+				{"data":"ORDER_NO",
+					"render": function(data, type, full, meta) {
+						return "<a href='/costCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
+					}
+				},
+				{"data":"ORDER_TYPE","class":"order_type"},   
+				{"data":"STATUS"},
+				{"data":"SP_NAME","sClass":"SP_NAME"},
+				{"data":"APP_MSG"},  
+				{"data":"USD"},  
+				{"data":"HKD"},  
+				{"data":"JPY"},  
+				{"data":"CNY"},  
+				{"data":"PAID_USD",
+					"render": function(data, type, full, meta) {
+						if(data)
+							return parseFloat(data).toFixed(2);	
+						else 
+							return '';
+					}
+				},
+				{"data":"PAID_HKD",
+					"render": function(data, type, full, meta) {
+						if(data)
+							return parseFloat(data).toFixed(2);	
+						else 
+							return '';
+					}
+				},
+				{"data":"PAID_JPY",
+					"render": function(data, type, full, meta) {
+						if(data)
+							return parseFloat(data).toFixed(2);	
+						else 
+							return '';
+					}
+				},
+				{"data":"PAID_CNY",
+					"render": function(data, type, full, meta) {
+						if(data)
+							return parseFloat(data).toFixed(2);	
+						else 
+							return '';
+					}
+				},
+				{
+					"render": function(data, type, full, meta) {
+						return full.USD - full.PAID_USD;	
+					}
+				},
+				{
+					"render": function(data, type, full, meta) {
+						return full.HKD - full.PAID_HKD;	
+					}
+				},
+				{
+					"render": function(data, type, full, meta) {
+						return full.JPY - full.PAID_JPY;	
+					}
+				},
+				{
+					"render": function(data, type, full, meta) {
+						return full.CNY - full.PAID_CNY;	
+					}
+				},
         ]      
     });
                       
     var application_table = eeda.dt({
     	id: 'application_table',
-    	paging: true,
-    	serverSide: false, //不打开会出现排序不对 
+    	autoWidth: true,
+        paging: true,
+        serverSide: true, 
     	ajax: "/chargeAcceptOrder/applicationList",
 		  columns: [
-		    {"data":"ORDER_NO","width":"120px",
-				"render": function(data, type, full, meta) {
-					return "<a href='/chargeAcceptOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
-				}
-			},
-			{"data":"ORDER_TYPE", "width":"70px"},
-			{"data":"STATUS", "width":"50px"},    
-			{"data":"TOTAL_AMOUNT", "width":"70px" },
-			{"data":"CREATE_NAME", "width":"60px"},
-			{"data":"CREATE_STAMP", "width":"60px"},
-			{"data":"REMARK", "width":"200px"}
+		    {"data":"APPLICATION_ORDER_NO",
+            	 "render": function(data, type, full, meta) {
+            			return "<a href='/costAcceptOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+            	 }
+            },
+            {"data":"ORDER_TYPE"},
+            {"data":"STATUS"},    
+            {"data":"COST_ORDER_NO"},
+            {"data":"APP_USD",
+            	"render": function(data, type, full, meta) {
+            		if(data)
+            			return parseFloat(data).toFixed(2);
+            		else
+            			return '';
+            	}
+            },
+            {"data":"APP_HKD",
+            	"render": function(data, type, full, meta) {
+            		if(data)
+            			return parseFloat(data).toFixed(2);
+            		else
+            			return '';
+            	}
+            },
+            {"data":"APP_CNY",
+            	"render": function(data, type, full, meta) {
+            		if(data)
+            			return parseFloat(data).toFixed(2);
+            		else
+            			return '';
+            	}
+            },
+            {"data":"APP_JPY",
+            	"render": function(data, type, full, meta) {
+            		if(data)
+            			return parseFloat(data).toFixed(2);
+            		else
+            			return '';
+            	}
+            },
+            {"data":"PAYEE_UNIT"},  
+            {"data":"PAYEE_NAME"},
+            {"data":"PAYMENT_METHOD",
+                "render": function(data, type, full, meta) {
+                    if(data == 'cash')
+                        return '现金';
+                    else if(data == 'transfers')
+                        return '转账';
+                    else
+                    	return data;
+                }
+            },
+            {"data":"C_NAME"},
+            {"data":"CREATE_STAMP",
+        		"render":function(data, type, full, meta){
+        			if(data)
+        				return data.substr(0,10);
+        			else 
+        				return '';
+    			}
+    		},
+        	{"data":"CHECK_STAMP",
+        		"render":function(data, type, full, meta){
+        			if(data)
+        				return data.substr(0,10);
+        			else 
+        				return '';
+    			}
+        	},
+        	{"data":"PAY_TIME",
+        		"render":function(data, type, full, meta){
+        			if(data)
+        				return data.substr(0,10);
+        			else 
+        				return '';
+    			}
+        	},
+            {"data":"REMARK"}
 		]      
     });
       
@@ -147,13 +264,11 @@ $(document).ready(function() {
 	$('#createBtn').click(function(){
 		$('#createBtn').attr('disabled',true);
       	var idsArray=[];
-      	$('#costAccept_table input[type="checkbox"]').each(function(){
-      		var checkbox = $(this).prop('checked');
-      		if(checkbox){
+      	debugger
+      	$('#costAccept_table input[type="checkbox"]:checked').each(function(){
       			var itemId = $(this).parent().parent().attr('id');
       			var order_type = $(this).parent().parent().find(".order_type").text();
       			idsArray.push(itemId+":"+order_type);
-      		}
       	});
       	$('#idsArray').val(idsArray);
       	
