@@ -65,22 +65,13 @@ public class ChargeAcceptOrderController extends Controller {
 		String idsArray = getPara("idsArray");
 		setAttr("idsArray", idsArray);
 		
-		String sp_id = "";
 		String[] orderArrId=idsArray.split(",");
-		for (int i=0;i<orderArrId.length;i++) {
-			String[] array = orderArrId[0].split(":");
-			String id = array[0];
-			String order_type = array[1];
-			if("应收对账单".equals(order_type)){
-				ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(id);
-				//sp_id = arapChargeOrder.getLong("sp_id").toString();
-			}else if("应收开票单".equals(order_type)){
-				ArapChargeInvoice arapChargeInvoice = ArapChargeInvoice.dao.findById(id);
-				//sp_id = arapChargeInvoice.getLong("sp_id").toString();
-			}
-		}
+		Record r = Db.findFirst("select aco.sp_id,ifnull(company_name,company_name_eng) payee_unit,ifnull(contact_person,contact_person_eng) payee_name"
+				+ " from arap_charge_order aco left join party p on p.id = aco.sp_id where aco.id = ?",orderArrId[0]);
 
-		setAttr("sp_id", sp_id);
+		setAttr("sp_id", r.get("SP_ID"));
+		setAttr("payee_unit", r.getStr("PAYEE_UNIT"));
+		setAttr("payee_name", r.getStr("PAYEE_NAME"));
 			
 		List<Record> Account = null;
 		Account = Db.find("select * from fin_account where bank_name != '现金'");
@@ -167,97 +158,40 @@ public class ChargeAcceptOrderController extends Controller {
   	public void chargeOrderList() {
           String ids = getPara("idsArray");
           String application_id = getPara("application_id");
-          String dz_id ="" ;//应收对账单
-          String kpjl_id = "";//应收开票单
           String sql = "";
           
-          if(application_id.equals("")){
-          	if(!application_id.equals(ids)){
-          		String[] orderArrId=ids.split(",");
-   				for (int i=0;i<orderArrId.length;i++) {
-   					String[] one=orderArrId[i].split(":");
-   					String id = one[0];
-   					String orderType = one[1];
-   					
-   					
-   					if("应收对账单".equals(orderType)){
-   						dz_id += id+",";
-   					}else if("应收开票单".equals(orderType)){
-   						kpjl_id += id+",";
-   					}
-   				}
-   				if(!dz_id.equals(""))
-   					dz_id = dz_id.substring(0, dz_id.length()-1);
-   				else
-   					dz_id = "''";
-   				if(!kpjl_id.equals(""))
-   					kpjl_id = kpjl_id.substring(0, kpjl_id.length()-1);
-   				else
-   					kpjl_id = "''";
-          	}
+          if("".equals(application_id)||application_id==null){
   	       
-  			
-  		
-  			sql = " SELECT aco.id,aco.sp_id,aco.order_no, '应收对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
-  					+ " p.abbr sp_name, ifnull(ul.c_name, ul.user_name) creator_name, aco.check_amount total_amount,"
-  					+ " ( SELECT ifnull(sum(caor.receive_amount),0) FROM charge_application_order_rel caor "
-  					+ " WHERE caor.charge_order_id = aco.id AND caor.order_type = '应收对账单' "
-  					+ " ) receive_amount,"
-  					+ " (aco.check_amount - (SELECT ifnull(sum(caor.receive_amount), 0) "
-  					+ " FROM charge_application_order_rel caor "
-  					+ " WHERE caor.charge_order_id = aco.id AND caor.order_type = '应收对账单'"
-  					+ " )) noreceive_amount"
-  					+ " FROM arap_charge_order aco "
-  					+ " LEFT JOIN party p ON p.id = aco.sp_id"
-  					+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
-  					+ " WHERE "
-  					+ " aco.id in(" + dz_id +")"
-  					+ " union "
-  					+ " SELECT aci.id, aci.sp_id sp_id,aci.order_no, '应收开票单' order_type, aci. STATUS, aci.remark, "
-  					+ " aci.create_stamp create_stamp, p.abbr sp_name, ifnull(ul.c_name, ul.user_name) creator_name, aci.total_amount, "
-  					+ " ( SELECT ifnull(sum(caor.receive_amount), 0)"
-  					+ "  FROM charge_application_order_rel caor "
-  					+ " WHERE caor.charge_order_id = aci.id AND caor.order_type = '应收开票单' ) receive_amount, "
-  					+ " ( aci.total_amount - ( SELECT ifnull(sum(caor.receive_amount), 0) FROM "
-  					+ " charge_application_order_rel caor"
-  					+ " WHERE caor.charge_order_id = aci.id AND caor.order_type = '应收开票单' ) ) noreceive_amount"
-  					+ " FROM arap_charge_invoice aci "
-  					+ " LEFT OUTER JOIN party p ON aci.sp_id = p.id "
-  					+ " LEFT OUTER JOIN contact c ON c.id = p.contact_id "
-  					+ " LEFT OUTER JOIN user_login ul ON aci.create_by = ul.id"
-  					+ " LEFT OUTER JOIN office o ON ul.office_id = o.id "
-  					+ " WHERE aci.id in(" + kpjl_id +")";
+          	sql = " SELECT aco.*, p.company_name payee_name, '应收对账单' order_type,"
+					+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
+					+ " sum(ifnull(c.pay_amount,0)) paid_amount,"
+					+ " sum(ifnull(c.paid_usd,0)) paid_usd,"
+					+ " sum(ifnull(c.paid_cny,0)) paid_cny,"
+					+ " sum(ifnull(c.paid_jpy,0)) paid_jpy,"
+					+ " sum(ifnull(c.paid_hkd,0)) paid_hkd"
+					+ " FROM arap_charge_order aco "
+					+ " LEFT JOIN charge_application_order_rel c on c.charge_order_id = aco.id"
+					+ " LEFT JOIN party p ON p.id = aco.sp_id"
+					+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
+					+ " WHERE aco.id in(" + ids +") "
+					+ " group by aco.id ";
 
   		}else{
-  			sql = " select *  from (SELECT caor.id,aco.sp_id,aco.order_no, '应收对账单' order_type, aco.STATUS, aco.remark, aco.create_stamp,"
-  					+ " p.abbr sp_name, ifnull(ul.c_name, ul.user_name) creator_name, aco.check_amount total_amount,"
-  					+ " ( SELECT ifnull(sum(caor.receive_amount),0) FROM charge_application_order_rel caor "
-  					+ " WHERE caor.charge_order_id = aco.id and caor.application_order_id = aciao.id AND caor.order_type = '应收对账单' ) receive_amount,"
-  					+ " (aco.check_amount - (SELECT ifnull(sum(caor.receive_amount), 0) "
-  					+ " FROM charge_application_order_rel caor "
-  					+ " WHERE caor.charge_order_id = aco.id AND caor.order_type = '应收对账单'  )) noreceive_amount, aciao.id app_id "
-  					+ " FROM arap_charge_order aco "
-  					+ " LEFT JOIN charge_application_order_rel caor on caor.charge_order_id = aco.id"
-  					+ " LEFT JOIN arap_charge_application_order aciao on aciao.id = caor.application_order_id"
-  					+ " LEFT JOIN party p ON p.id = aco.sp_id"
-  					+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
-  					+ " where caor.order_type = '应收对账单'"
-  					+ " union "
-  					+ " SELECT caor.id, aci.sp_id sp_id,  aci.order_no, '应收开票单' order_type, aci. STATUS, aci.remark, "
-  					+ " aci.create_stamp create_stamp, p.abbr sp_name, ifnull(ul.c_name, ul.user_name) creator_name, aci.total_amount total_amount, "
-  					+ " ( SELECT ifnull(sum(caor.receive_amount), 0)"
-  					+ "  FROM charge_application_order_rel caor "
-  					+ " WHERE caor.charge_order_id = aci.id and caor.application_order_id = aciao.id AND caor.order_type = '应收开票单' ) receive_amount, "
-  					+ " ( aci.total_amount - ( SELECT ifnull(sum(caor.receive_amount), 0) FROM "
-  					+ " charge_application_order_rel caor"
-  					+ " WHERE caor.charge_order_id = aci.id AND caor.order_type = '应收开票单' ) ) noreceive_amount, aciao.id app_id  "
-  					+ " FROM arap_charge_invoice aci "
-  					+ " LEFT JOIN charge_application_order_rel caor on caor.charge_order_id = aci.id"
-  					+ " LEFT JOIN arap_charge_application_order aciao on aciao.id = caor.application_order_id"
-  					+ " LEFT OUTER JOIN party p ON aci.sp_id = p.id "
-  					+ " LEFT OUTER JOIN user_login ul ON aci.create_by = ul.id"
-  					+ " where caor.order_type = '应收开票单'"
-  					+ " ) A where app_id ="+application_id ;	    
+  			sql = " SELECT aco.*, p.company_name payee_name, '应收对账单' order_type,"
+					+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
+					+ " (select sum(ifnull(c.pay_amount, 0)) from  charge_application_order_rel c where c.charge_order_id = aco.id) paid_amount,"
+					+ " (select sum(ifnull(c.paid_usd, 0)) from  charge_application_order_rel c where c.charge_order_id = aco.id) paid_usd,"
+					+ " (select sum(ifnull(c.paid_cny, 0)) from  charge_application_order_rel c where c.charge_order_id = aco.id) paid_cny,"
+					+ " (select sum(ifnull(c.paid_jpy, 0)) from  charge_application_order_rel c where c.charge_order_id = aco.id) paid_jpy,"
+					+ " (select sum(ifnull(c.paid_hkd, 0)) from  charge_application_order_rel c where c.charge_order_id = aco.id) paid_hkd,"
+					+ " acao.app_usd, acao.app_cny, acao.app_hkd, acao.app_jpy, acao.id app_id "
+					+ " FROM arap_charge_order aco "
+					+ " LEFT JOIN charge_application_order_rel caor on caor.charge_order_id = aco.id"
+					+ " LEFT JOIN arap_charge_application_order acao on acao.id = caor.application_order_id"
+					+ " LEFT JOIN party p ON p.id = aco.sp_id"
+					+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
+					+ " where acao.id="+application_id
+				    + " GROUP BY aco.id ";    
   		}
   		
   		Map BillingOrderListMap = new HashMap();
@@ -317,14 +251,21 @@ public class ChargeAcceptOrderController extends Controller {
 		for(Map<String, String> item :itemList){
 			String action = item.get("action");
 			String itemId = item.get("id");
-			String amount = item.get("amount");
+			String app_usd = item.get("app_usd");
+			String app_hkd = item.get("app_hkd");
+			String app_cny = item.get("app_cny");
+			String app_jpy = item.get("app_jpy");
 			String order_type = item.get("order_type");
 			if("CREATE".equals(action)){
 				caor = new ChargeApplicationOrderRel();
 				caor.set("application_order_id", id);
 				caor.set("charge_order_id", itemId);
 				caor.set("order_type", order_type);
-				caor.set("receive_amount", amount);
+				
+				caor.set("paid_usd", app_usd);
+				caor.set("paid_hkd", app_hkd);
+				caor.set("paid_cny", app_cny);
+				caor.set("paid_jpy", app_jpy);
 				caor.save();
 				
                 if("应收对账单".equals(order_type)){
@@ -332,8 +273,11 @@ public class ChargeAcceptOrderController extends Controller {
 					arapChargeOrder.set("audit_status", "收款申请中").update();
 				}
 			}else{
-				caor = ChargeApplicationOrderRel.dao.findById(itemId);
-				caor.set("receive_amount", amount);
+				caor = ChargeApplicationOrderRel.dao.findFirst("select * from charge_application_order_rel where charge_order_id =? and application_order_id = ?",itemId,id);
+				caor.set("paid_usd", app_usd);
+				caor.set("paid_hkd", app_hkd);
+				caor.set("paid_cny", app_cny);
+				caor.set("paid_jpy", app_jpy);
 				caor.update();
 			}
 		}

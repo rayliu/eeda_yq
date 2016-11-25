@@ -13,7 +13,12 @@
             			<input id='idsArray' name='idsArray' type="hidden" value="${idsArray!''}">
             			<input id='sp_id' name='sp_id' type="hidden" value="${order.sp_id!''}" >
             			<input id='order_id' name='order_id' type="hidden" value="${order.id!''}">
-            			<input id='total_amount' name='total_amount' type="hidden">
+            			
+            			<input id='detailJson' name='detailJson' type="hidden">
+            			<input id='total_app_usd' name='total_app_usd' type="hidden">
+                        <input id='total_app_cny' name='total_app_cny' type="hidden">
+                        <input id='total_app_hkd' name='total_app_hkd' type="hidden">
+                        <input id='total_app_jpy' name='total_app_jpy' type="hidden">
                             <div class="col-lg-4">
                             	<%include("/eeda/component/form/inputField.html", { id:'order_no',
 								label:'申请单号', value:order.order_no!'',disabled:'disabled'
@@ -92,13 +97,28 @@
 		                                <thead>
 		                                    <tr>
 		                                        <th>应收类别</th>
-		                                        <th>业务单号</th>
-		                                        <th>结算公司</th>
-		                                        <th>应收金额</th>
-		                                        <th>待收金额</th>
-		                                        <th>本次收款</th>
-		                                        <th>创建人</th>
-		                                        <th>创建时间</th>
+                                                <th>对账单号</th>
+                                                <th>结算单位</th>
+                                                
+                                                <th>应收USD</th>
+                                                <th>待收USD</th>
+                                                <th>本次收款USD</th>
+                                                
+                                                <th>应收HKD</th>
+                                                <th>待收HKD</th>
+                                                <th>本次收款HKD</th>
+                                                
+                                                <th>应收CNY</th>
+                                                <th>待收CNY</th>
+                                                <th>本次收款CNY</th>
+                                                
+                                                <th>应收JPY</th>
+                                                <th>待收JPY</th>
+                                                <th>本次收款JPY</th>
+                                                
+                                                <th>创建人</th>
+                                                <th>创建时间</th>
+                                                <th>备注</th>
 		                                    </tr>
 		                                </thead>
 		                                <tbody>
@@ -106,10 +126,22 @@
 		                                <tfoot>
 		                                	<tr>
 		                                        <th colspan="3"><div align="center">合计</div></th>
-		                                        <th><span id="total"></span></th>
-		                                        <th><span id="nopay"></span></th>
-		                                        <th><span id="pay"></span></th>
-		                                        <th colspan="2"><div align="center"></div></th>
+		                                        <th><span id="total_usd"></span></th>
+                                                <th><span id="nopay_usd"></span></th>
+                                                <th><span id="pay_usd"></span></th>
+                                                
+                                                <th><span id="total_hkd"></span></th>
+                                                <th><span id="nopay_hkd"></span></th>
+                                                <th><span id="pay_hkd"></span></th>
+                                                
+                                                <th><span id="total_cny"></span></th>
+                                                <th><span id="nopay_cny"></span></th>
+                                                <th><span id="pay_cny"></span></th>
+                                                
+                                                <th><span id="total_jpy"></span></th>
+                                                <th><span id="nopay_jpy"></span></th>
+                                                <th><span id="pay_jpy"></span></th>
+		                                        <th colspan="3"><div align="center"></div></th>
 		                                	</tr>
 		                                </tfoot>
 		                            </table>
@@ -151,10 +183,38 @@
                         
                        <label class="" style="font-size:18px" >收款信息</label><hr/>
                        <div class="row search_panel">
+                       
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="search-label">申请收款USD</label>
+                                    <input type="text" class="form-control search-control pay_amount" readonly="readonly" id="app_usd">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="search-label">申请收款CNY</label>
+                                    <input type="text" class="form-control search-control pay_amount" readonly="readonly" id="app_cny">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="search-label">申请收款HKD</label>
+                                    <input type="text" class="form-control search-control pay_amount" readonly="readonly" id="app_hkd" >
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="search-label">申请收款JPY</label>
+                                    <input type="text" class="form-control search-control pay_amount" readonly="readonly" id="app_jpy">
+                                </div>
+                            </div>
+                        
                            <div class="col-lg-4">
                            		<%include("/eeda/component/form/inputField.html", { id:'check_name',
 								label:'复核人', value:order.check_name!'',disabled:'disabled'
 								}){}%>
+					       </div>
+					        <div class="col-lg-4">
 								<%include("/eeda/component/form/inputField.html", { id:'check_stamp',
 								label:'复核时间', value:order.check_stamp!'',disabled:'disabled'
 								}){}%>
@@ -182,9 +242,6 @@
 	                        	</div>
 	                       </div>
 	                       <div class="col-lg-4">
-	                       		<%include("/eeda/component/form/inputField.html", { id:'receive_amount',
-								label:'复申请收款金额', value:order.receive_amount!'',disabled:'disabled'
-								}){}%>
 	                            <%include("/eeda/component/form/dateInputField.html", {id:'receive_time', label:'收款时间', value:invoiceApplication.receive_time!''}){} %>
 	                        </div>
 	                    </div>

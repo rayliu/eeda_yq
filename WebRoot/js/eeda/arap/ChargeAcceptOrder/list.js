@@ -17,7 +17,7 @@ $(document).ready(function() {
 				},
 				{"data":"ORDER_NO",
 					"render": function(data, type, full, meta) {
-						return "<a href='/costCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
+						return "<a href='/chargeCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
 					}
 				},
 				{"data":"ORDER_TYPE","class":"order_type"},   
@@ -92,7 +92,7 @@ $(document).ready(function() {
 		  columns: [
 		    {"data":"APPLICATION_ORDER_NO",
             	 "render": function(data, type, full, meta) {
-            			return "<a href='/costAcceptOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+            			return "<a href='/chargeAcceptOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
             	 }
             },
             {"data":"ORDER_TYPE"},
@@ -264,11 +264,10 @@ $(document).ready(function() {
 	$('#createBtn').click(function(){
 		$('#createBtn').attr('disabled',true);
       	var idsArray=[];
-      	debugger
       	$('#costAccept_table input[type="checkbox"]:checked').each(function(){
       			var itemId = $(this).parent().parent().attr('id');
-      			var order_type = $(this).parent().parent().find(".order_type").text();
-      			idsArray.push(itemId+":"+order_type);
+//      			var order_type = $(this).parent().parent().find(".order_type").text();
+      			idsArray.push(itemId);
       	});
       	$('#idsArray').val(idsArray);
       	
