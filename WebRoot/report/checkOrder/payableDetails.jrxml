@@ -53,39 +53,35 @@
 	joa.id,
 	joa.type,
 	joa.sp_id,
-	joa.total_amount,
+	if(joa.order_type='charge',
+	(0-joa.total_amount),
+	joa.total_amount
+	) total_amount,
 	ifnull(
 		joa.currency_total_amount,
 		0
 	) rmb,
-ifnull(
-		joa.currency_total_amount,
-		0
-	) rmb,
-
-IF (
-	cur. NAME = 'USD',
+joa.order_type,
+(SELECT IF (
+  joa.order_type='cost',
 	joa.total_amount,
-	0
-) usd,
-
-IF (
-	cur. NAME = 'CNY',
+	(0 - joa.total_amount)
+) from job_order_arap joa WHERE joa.currency_id = 6 and joa.id = aci.ref_order_id ) usd,
+(SELECT IF (
+  joa.order_type='cost',
 	joa.total_amount,
-	0
-) cny,
-
-IF (
-	cur. NAME = 'JPY',
+	(0 - joa.total_amount)
+) from job_order_arap joa WHERE joa.currency_id = 3 and joa.id = aci.ref_order_id ) cny,
+(SELECT IF (
+  joa.order_type='cost',
 	joa.total_amount,
-	0
-) jpy,
-
-IF (
-	cur. NAME = 'HKD',
+	(0 - joa.total_amount)
+) from job_order_arap joa WHERE joa.currency_id = 8 and joa.id = aci.ref_order_id ) jpy,
+(SELECT IF (
+  joa.order_type='cost',
 	joa.total_amount,
-	0
-) HKD,
+	(0 - joa.total_amount)
+) from job_order_arap joa WHERE joa.currency_id = 9 and joa.id = aci.ref_order_id ) hkd,
 	fi. NAME fy_name,
 	jo.order_no,
 	jo.create_stamp,
@@ -126,7 +122,7 @@ WHERE
 AND aco.id =$P{order_id}
 GROUP BY
 	joa.id
-ORDER BY jo.order_no ]]>
+ORDER BY jo.order_no]]>
 	</queryString>
 	<field name="c_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -144,6 +140,9 @@ ORDER BY jo.order_no ]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="rmb" class="java.lang.Double"/>
+	<field name="order_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="usd" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -153,7 +152,7 @@ ORDER BY jo.order_no ]]>
 	<field name="jpy" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="HKD" class="java.lang.Double">
+	<field name="hkd" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="fy_name" class="java.lang.String"/>
@@ -216,7 +215,7 @@ ORDER BY jo.order_no ]]>
 		<variableExpression><![CDATA[$F{jpy}]]></variableExpression>
 	</variable>
 	<variable name="SUM_HKD" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{HKD}]]></variableExpression>
+		<variableExpression><![CDATA[$F{hkd}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -635,28 +634,28 @@ ORDER BY jo.order_no ]]>
 				</textElement>
 				<text><![CDATA[HKD:]]></text>
 			</staticText>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="352" y="1" width="74" height="20" uuid="49885abc-19d6-472e-ad6c-9b52dd0cca2d"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_JPR}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="456" y="1" width="81" height="20" uuid="c2f111d9-6872-44e2-b434-6c3900db9f0c"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_HKD}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="262" y="1" width="60" height="20" uuid="ba0079c1-bba4-4e40-aa7e-3f210461de6f"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_USD}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="167" y="0" width="65" height="20" uuid="98394662-caa3-4f32-a945-25583ba0b11b"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="debitNote" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="319"/>
+	<property name="ireport.y" value="382"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -253,8 +253,8 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				</graphicElement>
 			</line>
 			<image>
-				<reportElement x="2" y="3" width="140" height="38" uuid="44b39cc7-80f7-43ee-beb3-35f96e91d3ca"/>
-				<imageExpression><![CDATA["yqlogo1.png"]]></imageExpression>
+				<reportElement x="2" y="-10" width="140" height="38" uuid="44b39cc7-80f7-43ee-beb3-35f96e91d3ca"/>
+				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="198" y="111" width="271" height="36" uuid="ac92119a-3fdc-4f7d-9f2c-a5f2c23c930c"/>
@@ -380,42 +380,42 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				<text><![CDATA[Qty:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="13" y="195" width="127" height="20" uuid="7aa6e948-64ac-4ce6-8313-135e39595e01"/>
+				<reportElement x="13" y="196" width="127" height="19" uuid="7aa6e948-64ac-4ce6-8313-135e39595e01"/>
 				<textElement>
 					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[费用项目]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="140" y="195" width="40" height="20" uuid="0c832077-31b2-40be-9b6b-47f6c7c62ea3"/>
+				<reportElement x="140" y="196" width="40" height="19" uuid="0c832077-31b2-40be-9b6b-47f6c7c62ea3"/>
 				<textElement>
 					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[币制]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="204" y="195" width="69" height="20" uuid="c3ba15f8-7281-4b62-bc5d-6eb94500f02f"/>
+				<reportElement x="204" y="196" width="69" height="19" uuid="c3ba15f8-7281-4b62-bc5d-6eb94500f02f"/>
 				<textElement>
 					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[单价]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="302" y="195" width="66" height="20" uuid="cdd36543-5977-49d5-9d3b-ba5cd05d5a0b"/>
+				<reportElement x="302" y="196" width="66" height="19" uuid="cdd36543-5977-49d5-9d3b-ba5cd05d5a0b"/>
 				<textElement>
 					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[数量]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="438" y="194" width="50" height="20" uuid="40a30709-5493-4ca4-81bf-4851a03a4a26"/>
+				<reportElement x="438" y="196" width="50" height="18" uuid="40a30709-5493-4ca4-81bf-4851a03a4a26"/>
 				<textElement>
 					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[汇率]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="491" y="195" width="64" height="20" uuid="bc8a67e4-7eb6-43be-9c03-e5534890e96a"/>
+				<reportElement x="491" y="196" width="64" height="19" uuid="bc8a67e4-7eb6-43be-9c03-e5534890e96a"/>
 				<textElement>
 					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
@@ -551,7 +551,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="12" y="0" width="128" height="20" uuid="11cc8e47-bc23-4d97-9d1b-26e67740d42c"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{charge_name}]]></textFieldExpression>
 			</textField>
@@ -701,32 +701,28 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				<textElement>
 					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{sum_CNY}.equals(null)?"":"人民币"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_CNY}))
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{sum_CNY}.equals(null)?"":"人民币"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_CNY}))]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="4" y="24" width="232" height="20" uuid="8ba62630-c2a0-4718-9fc8-888e28d00bb0"/>
 				<textElement>
 					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{sum_USD}.equals(null)?"":"美金"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_USD}))
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{sum_USD}.equals(null)?"":"美金"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_USD}))]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="4" y="43" width="232" height="20" uuid="b8d3f961-7903-437b-b604-ddacdf11708a"/>
 				<textElement>
 					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{sum_JPY}.equals(null)?"":"日元"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_JPY}))
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{sum_JPY}.equals(null)?"":"日元"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_JPY}))]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="5" y="63" width="231" height="20" uuid="0d83a4d9-2b62-4271-ba4e-543c2949adaf"/>
 				<textElement>
 					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{sum_HKD}.equals(null)?"":"港币"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_HKD}))
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{sum_HKD}.equals(null)?"":"港币"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_HKD}))]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

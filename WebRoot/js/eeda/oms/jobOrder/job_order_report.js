@@ -332,10 +332,10 @@ $(document).ready(function() {
 		}else{
 			var arrStr = $('#ocean_HBLshipper_info').val();
 			var arry = arrStr.split("\n");
-			if(arry.length>=1){
+			if(arry.length>=2){
 				$('#head_attn').val(arry[1]);
 			}
-			if(arry.length>=2){
+			if(arry.length>=3){
 				var arr = arry[2].split(" ");
 			}
 			if(arr!=undefined&&arr.length>=1){
