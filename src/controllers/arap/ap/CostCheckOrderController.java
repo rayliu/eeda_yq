@@ -97,7 +97,7 @@ public class CostCheckOrderController extends Controller {
 	public List<Record> getItemList(String ids,String order_id){
 		String sql = null;
 		if(StringUtils.isEmpty(order_id)){
-			sql = " select joa.id,joa.type,joa.sp_id,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
+			sql = " select joa.id,joa.type,joa.sp_id,if(joa.order_type='charge',(0-joa.total_amount),joa.total_amount) total_amount,joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
 	                + " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
 	                + " ifnull((select rc.new_rate from rate_contrast rc "
 	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),cast(joa.exchange_rate as char)) new_rate,"
@@ -117,9 +117,10 @@ public class CostCheckOrderController extends Controller {
 	                + " left join currency cur on cur.id=joa.currency_id "
 	                + " left join currency cur1 on cur1.id=joa.exchange_currency_id "
 	                + " where joa.audit_flag='Y' and joa.bill_flag='N' and joa.id in("+ids+") "
-	                + " GROUP BY joa.id";	
+	                + " GROUP BY joa.id"
+	                + " ORDER BY jo.order_no";	
 		}else{
-			sql = " select joa.id,joa.type,joa.sp_id,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
+			sql = " select joa.id,joa.type,joa.sp_id,if(joa.order_type='charge',(0-joa.total_amount),joa.total_amount) total_amount,joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
 	                + " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
 	                + " ifnull((select rc.new_rate from rate_contrast rc "
 	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
@@ -141,7 +142,8 @@ public class CostCheckOrderController extends Controller {
 	                + " left join arap_cost_item aci on aci.ref_order_id = joa.id"
 					+ " left join arap_cost_order aco on aco.id = aci.cost_order_id "
 					+ " where joa.id = aci.ref_order_id and aco.id =  '"+order_id+"'"
-	                + " GROUP BY joa.id ";
+	                + " GROUP BY joa.id "
+	                + " ORDER BY jo.order_no";
 		}
     	
     	List<Record> re = Db.find(sql);
