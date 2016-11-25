@@ -269,7 +269,10 @@ $(document).ready(function() {
 			}else{
 				$.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
 			}
-		},'json');
+		},'json').fail(function() {
+            $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+            $('#saveBtn').attr('disabled', false);
+        });
 		
 	});
 	
