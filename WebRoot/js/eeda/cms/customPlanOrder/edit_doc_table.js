@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 $(document).ready(function() {
 	
 	//未保存不能上传文件
-	if($('#order_id').val()==''||$('#ref_job_order_id').val()!=''){
+	if($('#order_id').val()==''){
 		$("#fileuploadSpan").hide();
 		$("#sendEmail").hide();
 	}
