@@ -72,7 +72,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           searchData(); 
       })
 
-     var searchData=function(){
+     var searchData=function(paraStr){
           var order_no = $.trim($("#order_no").val());
           var customer_name = $('#customer_name').val().trim();
           var status = $('#status').val();
@@ -80,6 +80,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var booking_no = $("#booking_no").val().trim();
+          var status="";
+          var custom_state="";
+          if(paraStr=="待审核"){
+        	  status = paraStr;
+          }else{
+        	  
+	    	  if(paraStr!='全部'){
+	    		  custom_state=paraStr;
+	    	  }
+          }
           
           /*  
               查询规则：参数对应DB字段名
@@ -94,6 +104,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                +"&custom_state_equals="+custom_state
                +"&application_company_name="+customer_name
                +"&create_stamp_begin_time="+start_date
+               +"&status="+status
+               +"&custom_state="+custom_state
                +"&create_stamp_end_time="+end_date;
 
           dataTable.ajax.url(url).load();
@@ -102,18 +114,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       
       $('#orderTabs a').click(function(){
     	  var custom_state = $(this).attr("name");
-    	  if(custom_state=="待审核"){
-    		  var url = "/customPlanOrder/list?status="+custom_state;
-    	  }else{
-	    	  if(custom_state=='全部'){
-	    		  custom_state = '';
-	    	  }
-	    	  var url = "/customPlanOrder/list?custom_state_equals="+custom_state;
-    	  }
-    	  
-    	  dataTable.ajax.url(url).load();
+    	  searchData(custom_state);
       })
-      
-    	
+
     });
 });

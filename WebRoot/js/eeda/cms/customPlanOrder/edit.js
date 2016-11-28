@@ -27,6 +27,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		        		$('#confirmCompleted').attr('disabled', true);
 						$('#saveBtn').attr('disabled', false);
                         $('#cancelAuditBtn').show().attr('disabled', false);
+                         if(show_passAuditing){
+                        $('#custom_state').attr('disabled', false);
+                        $('#customs_billCode').attr('disabled', false);
+                        }
 						//审核按钮状态
 						$('#passBtn').attr('disabled',true);
 			        	$('#refuseBtn').attr('disabled',true).hide();
@@ -78,6 +82,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		if(status=="审核通过"){
             $('#cancelAuditBtn').show().attr('disabled',false);
             $('#refuseBtn').hide();
+            if(show_passAuditing){
+            $('#custom_state').attr('disabled', false);
+            $('#customs_billCode').attr('disabled', false);
+            }
+            
         }
 		if(status=="审核通过"||status=="审核不通过"){
 			//提交报关行按钮状态

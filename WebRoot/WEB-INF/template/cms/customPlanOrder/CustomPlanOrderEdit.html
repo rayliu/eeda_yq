@@ -1,5 +1,7 @@
 <%layout("/eeda/layout.html"){%>
+
 <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
+
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -108,10 +110,21 @@
 	                                    ]
 	                                }){}%>
 	                    </div>
-                        <div class="col-lg-4">
+	                    <div class="col-lg-4">
+	                           <%include("/eeda/component/form/inputDropListField.html", 
+			                                    {   id:'customs_code', 
+			                                        label:'企业海关代码',
+			                                        url: '/serviceProvider/searchCompanyCustomCode',
+			                                        value:order.customs_code!'',
+			                                        display_value:order.customs_code_name!''
+			                                    }){}%>
+                       </div>
+
+                        <div class="col-lg-4" >
                             <%include("/eeda/component/form/selectField.html", 
 				                                 {   id:'custom_state', 
 				                                     label:'海关状态',
+				                                     disabled:'disabled',
 				                                     value:order.custom_state!'',
 				                                     value_list:[
                                                         {code:'', value:''},
@@ -130,21 +143,13 @@
 				                                 }){}%>
                         </div>
                         
-                        <div class="col-lg-4">
-	                           <%include("/eeda/component/form/inputDropListField.html", 
-			                                    {   id:'customs_code', 
-			                                        label:'企业海关代码',
-			                                        url: '/serviceProvider/searchCompanyCustomCode',
-			                                        value:order.customs_code!'',
-			                                        display_value:order.customs_code_name!''
-			                                    }){}%>
-                       </div>
                     </div>
-                    <div class="row">
-                    	<div class="col-lg-4">
+                    <div class="row">                     
+                    	<div class="col-lg-4"  >
                     			<%include("/eeda/component/form/inputField.html", 
 			                                    {   id:'customs_billCode', 
 			                                        label:'报关单号码',
+			                                        disabled:'disabled',
 			                                        value:order.customs_billCode!''
 			                                    }){}%>                	
                        </div>
@@ -903,13 +908,16 @@
 <%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputFieldCurrencyId.js",{}){} %>
 
-<%
-    var hide_charge_col = shiro.hasPermission("customPlanOrder.fin_item_hide");
-%>
+   <%
+	var hide_charge_col = shiro.hasPermission("customPlanOrder.fin_item_hide");
+   	var passAuditing = shiro.hasPermission("customPlanOrder.audit");
+   %>
 <script>
     var order_no = '${order.order_no!'订单编辑'}';
     var is_show_hide_charge_col = ${hide_charge_col};
     var salesOrder = {};
+    var show_passAuditing=${passAuditing};
+    
 </script>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function () {

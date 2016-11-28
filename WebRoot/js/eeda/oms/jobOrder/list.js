@@ -67,7 +67,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           })
       })
 
-     var searchData=function(){
+     var searchData=function(type){
           var order_no = $.trim($("#order_no").val()); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
@@ -76,7 +76,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var status = $('#status').val();
           var customer_code = $("#customer_code").val().trim();
           var customer_name = $("#customer_name").val().trim();
-          var transport_type = $("#transport_type").val();
+          var transport_type = type;
           //增加出口日期查询
           var url = "/jobOrder/list?order_no="+order_no
           	   +"&status="+status
@@ -109,8 +109,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  }else if(value=="快递"){
     		  transport_type = "express";
     	  }
-    	  var url = "/jobOrder/list?transport_type_like="+transport_type;
-    	  dataTable.ajax.url(url).load();
+    	  searchData(transport_type);
+
       })
       
       
