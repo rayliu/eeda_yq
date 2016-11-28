@@ -22,6 +22,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 		  return "<a href='/customPlanOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
                 	  }
                   },
+                  { "data": "BOOKING_NO"},
                   { "data": "STATUS", 
   	            	"render": function(data, type, full, meta){
   	            		$("#waitAuditing").text(full.WAITAUDITING);
@@ -78,6 +79,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           var custom_state = $('#custom_state').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
+          var booking_no = $("#booking_no").val().trim();
           
           /*  
               查询规则：参数对应DB字段名
@@ -88,6 +90,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           */
           var url = "/customPlanOrder/list?order_no="+order_no
                +"&status="+status
+               +"&booking_no="+booking_no
                +"&custom_state_equals="+custom_state
                +"&application_company_name="+customer_name
                +"&create_stamp_begin_time="+start_date
