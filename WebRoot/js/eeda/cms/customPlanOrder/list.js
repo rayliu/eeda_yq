@@ -24,6 +24,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                   },
                   { "data": "STATUS", 
   	            	"render": function(data, type, full, meta){
+  	            		$("#waitAuditing").text(full.WAITAUDITING);
   	            		if(data=="审核不通过"){
   	            			return "<span style='color:red'>"+data+"</span>";
   	            		}else{
@@ -98,10 +99,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       
       $('#orderTabs a').click(function(){
     	  var custom_state = $(this).attr("name");
-    	  if(custom_state=='全部'){
-    		  custom_state = '';
+    	  if(custom_state=="待审核"){
+    		  var url = "/customPlanOrder/list?status="+custom_state;
+    	  }else{
+	    	  if(custom_state=='全部'){
+	    		  custom_state = '';
+	    	  }
+	    	  var url = "/customPlanOrder/list?custom_state_equals="+custom_state;
     	  }
-    	  var url = "/customPlanOrder/list?custom_state_equals="+custom_state;
+    	  
     	  dataTable.ajax.url(url).load();
       })
       

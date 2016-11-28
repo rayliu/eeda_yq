@@ -359,10 +359,11 @@ public class CustomPlanOrderController extends Controller {
         String condition="";
         
     	sql = "SELECT * from (SELECT cpo.id,cpo.order_no,cpo.type,cpo.production_and_sales_input application_company_name,ul.c_name creator_name,"
-    			+ " cpo.create_stamp,cpo.status,cpo.custom_state,(SELECT COUNT(0) from custom_plan_order WHERE custom_state = '放行') pass,"
-    			+ " (SELECT COUNT(1) from custom_plan_order WHERE custom_state = '查验') checked,"
-    			+ "	(SELECT COUNT(2) from custom_plan_order WHERE custom_state = '异常待处理') handling,"
-    			+ " (SELECT COUNT(3) from custom_plan_order WHERE custom_state = '异常') abnormal"
+    			+ " cpo.create_stamp,cpo.status,cpo.custom_state,(SELECT COUNT(0) from custom_plan_order cpo WHERE cpo.custom_state = '放行' and cpo.office_id="+office_id+") pass,"
+    			+ " (SELECT COUNT(1) from custom_plan_order cpo WHERE cpo.custom_state = '查验' and cpo.office_id="+office_id+") checked,"
+    			+ "	(SELECT COUNT(2) from custom_plan_order cpo WHERE cpo.custom_state = '异常待处理' and cpo.office_id="+office_id+") handling,"
+    			+ " (SELECT COUNT(3) from custom_plan_order cpo WHERE cpo.custom_state = '异常' and cpo.office_id="+office_id+") abnormal,"
+    			+ " (SELECT COUNT(4) from custom_plan_order cpo WHERE cpo.status = '待审核' and cpo.office_id="+office_id+") waitAuditing"
     			+ " FROM custom_plan_order cpo"
     			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
     			+ " where cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")A"

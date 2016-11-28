@@ -24,7 +24,7 @@
                                         <div class="col-lg-4"><!--  三列排版  -->
                                             <%include("/eeda/component/form/inputField.html", 
                                                                 {   id: 'order_no', 
-                                                                    label: '报关申请单号', 
+                                                                    label: '申请单号', 
                                                                     value: ''
                                                                 }){}%>
                                         </div>
@@ -87,7 +87,10 @@
                             </div> 
                             <ul id="orderTabs" class="nav nav-tabs" >
                                 <li class="active">
-                                    <a href="#" data-toggle="tab">全部</a>
+                                    <a href="#" data-toggle="tab" name="全部">全部</a>
+                                </li>
+                                <li style="text-align:center;">
+                                    <a href="#" data-toggle="tab"  name="待审核">申请单待审核 <span id="waitAuditing"></span></a>
                                 </li>
                                 <li style="text-align:center;">
                                     <a href="#" data-toggle="tab" style='color:green' name="放行">放行 <span id="release"></span></a>
@@ -105,7 +108,7 @@
                             <%include("/eeda/component/form/detailTable.html", 
 							                                {
 							                                    id:'eeda-table', 
-							                                    headers:['报关申请单号','状态','海关状态','类型',
+							                                    headers:['申请单号','状态','海关状态','类型',
 							                                        '申请企业',
 							                                        '创建人',
 							                                        '创建时间']
