@@ -43,11 +43,32 @@ $(document).ready(function() {
             { "data": "CREATE_STAMP"},
             { "data": "SP_NAME"},
             { "data": "CURRENCY_NAME",'class':'currency_name'},
-            { "data": "TOTAL_AMOUNT",'class':'total_amount'},
+            { "data": "TOTAL_AMOUNT",'class':'total_amount',
+            	"render": function ( data, type, full, meta ) {
+            		if(full.ORDER_TYPE=='cost'){
+	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            	}
+                    return data;
+                  }
+            },
             { "data": "EXCHANGE_RATE"},
-            { "data": "AFTER_TOTAL"},
+            { "data": "AFTER_TOTAL",
+            	"render": function ( data, type, full, meta ) {
+            		if(full.ORDER_TYPE=='cost'){
+	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            	}
+                    return data;
+                  }
+            },
             { "data": "NEW_RATE",'class':'new_rate'},
-            { "data": "AFTER_RATE_TOTAL",'class':'after_rate_total'},
+            { "data": "AFTER_RATE_TOTAL",'class':'after_rate_total',
+            	"render": function ( data, type, full, meta ) {
+            		if(full.ORDER_TYPE=='cost'){
+	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            	}
+                    return data;
+                  }
+            },
             { "data": "FND"},
             { "data": "VGM"},
             { "data": "CONTAINER_AMOUNT"},
@@ -55,7 +76,14 @@ $(document).ready(function() {
             { "data": "CONTAINER_NO"},
             { "data": "REF_NO"},
             { "data": "MBL_NO"},
-            { "data": "HBL_NO"}
+            { "data": "HBL_NO"},
+            { "data": "ORDER_TYPE", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },
         ]
     });
 
