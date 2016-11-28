@@ -208,6 +208,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             order.address = $("#address").val();
             order.address_eng = $("#address_eng").val();
             order.contact_person = $("#contact_person").val();
+            order.contact_person_eng = $("#contact_person_eng").val();
             order.phone = $("#phone").val();
             order.email = $("#email").val();
             order.fax = $("#fax").val();

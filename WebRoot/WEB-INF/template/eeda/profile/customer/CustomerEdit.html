@@ -49,22 +49,43 @@
                                     <div class="col-lg-6">
                                         <fieldset>
                                             <div class="form-group">
-                                                <label>公司中文名称(必填)</label>
-                                                <input  class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}" required>
-                                            </div>                                     
-                                        </fieldset>
-                                    </div>
-                              </div>
-                           <div class="row"> 
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
                                                 <label>公司英文名称</label>
                                                 <input  class="form-control" id="company_name_eng" name="company_name_eng" type="text" value="${party.company_name_eng!''}">
                                             </div>                                     
                                         </fieldset>
                                     </div>
+                                    
+                              </div>
+                           <div class="row"> 
                                     <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>公司中文名称(必填)</label>
+                                                <input  class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}" required>
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>英文地址</label>
+                                                <input  class="form-control" id="address_eng" type="text" name="address_eng" value="${party.address_eng!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                    
+                              </div>
+							  <div class="row"> 
+                                    <!-- /.col-lg-6 (even) 偶数列-->                                  
+                                     <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>中文地址</label>
+                                                <input  class="form-control" id="address" type="text" name="address" value="${party.address!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>   
+									<div class="col-lg-6">
                                         <fieldset>
                                             <div class="form-group">
                                                 <%include("/eeda/component/form/selectField.html", 
@@ -81,27 +102,8 @@
                                             </div>                                     
                                         </fieldset>
                                     </div>
-                              </div>
-							  <div class="row"> 
-                                    <!-- /.col-lg-6 (even) 偶数列-->                                  
-                                     <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>中文地址</label>
-                                                <input  class="form-control" id="address" type="text" name="address" value="${party.address!''}">
-                                            </div>                                     
-                                        </fieldset>
-                                    </div>   
-
                                     <!-- /.col-lg-6 (odd) 奇数列 -->
-                                     <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>英文地址</label>
-                                                <input  class="form-control" id="address_eng" type="text" name="address_eng" value="${party.address_eng!''}">
-                                            </div>                                     
-                                        </fieldset>
-                                    </div>                                    
+                                                                         
                                     
                                     <!-- /.col-lg-6 (even) 偶数列 -->
                                     <div class="col-lg-6">
@@ -109,6 +111,14 @@
                                             <div class="form-group">
                                                 <label>联系人</label>
                                                 <input class="form-control" id="contact_person" type="text" name="contact_person" value="${party.contact_person!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>联系人(英文)</label>
+                                                <input class="form-control" id="contact_person_eng" type="text" name="contact_person_eng" value="${party.contact_person_eng!''}">
                                             </div>
                                         </fieldset>
                                     </div>
@@ -182,21 +192,11 @@
                                             </div>
                                         </fieldset>
                                     </div>
-                                    
                                     <div class="col-lg-6">
                                         <fieldset>
                                             <div class="form-group">
-                                                <label>公司简介</label>
-												<textarea class="form-control" rows="5"  id="introduction" name="introduction">${party.introduction!''}</textarea>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>备注</label>
-												<textarea class="form-control" rows="5" id="remark" name="remark">${party.remark!''}</textarea>
+                                                <label>重点客户提醒（根据一段时间内没有出现在工作单进行提醒）</label>
+                                                <input class="form-control" id="customer" type="text" name="customer" value="${party.custom_registration!''}">
                                             </div>
                                         </fieldset>
                                     </div>
@@ -219,11 +219,22 @@
                                     <div class="col-lg-6">
                                         <fieldset>
                                             <div class="form-group">
-                                                <label>重点客户提醒（根据一段时间内没有出现在工作单进行提醒）</label>
-                                                <input class="form-control" id="customer" type="text" name="customer" value="${party.custom_registration!''}">
+                                                <label>公司简介</label>
+												<textarea class="form-control" rows="5"  id="introduction" name="introduction">${party.introduction!''}</textarea>
                                             </div>
                                         </fieldset>
                                     </div>
+                                    
+                                    <div class="col-lg-6">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>备注</label>
+												<textarea class="form-control" rows="5" id="remark" name="remark">${party.remark!''}</textarea>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    
+                                    
                                     <div class="col-lg-6" style="clear:both;">
                                         <button id="saveBtn" type="button" class="btn  btn-primary">保存</button>
                                         <a class="btn  btn-primary" href="/customer">返回</a>
