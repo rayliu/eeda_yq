@@ -47,11 +47,18 @@
 
     </div>
  
- <%}%>
+ <%}%>\
+ <script>
+     var userRole={};
+	 var update = true;
+	 var query = true;
+ 
+ </script>
+ 
 <script>
   //app根目录在WebRoot/js/
     requirejs([ 'app/eeda-common'], function () {
-        requirejs(['app/profile/userRole/list']);
+        requirejs(['app/role/userRole/list']);
     });
 </script>
 
