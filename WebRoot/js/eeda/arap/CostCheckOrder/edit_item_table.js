@@ -34,13 +34,25 @@ $(document).ready(function() {
         return items_array;
     };
     
+    
+    var ids = [];
     //------------事件处理
         var itemTable = eeda.dt({
             id: 'eeda-table',
+            initComplete: function( settings ) {
+            	ids = [];
+            	cnames = [];
+            },
             columns:[
-            {
+            {"data": "ID",
             	"render": function ( data, type, full, meta ) {
-            		return '<input type="checkbox" style="width:30px">';
+            		var str = '<input type="checkbox" style="width:30px">';
+            		for(var i=0;i<ids.length;i++){
+                        if(ids[i]==data){
+                       	 str = '<input type="checkbox" style="width:30px" checked>';
+                        }
+                    }
+            		return str;
 			    }
             },
             { "data": "ORDER_NO"},
@@ -49,14 +61,42 @@ $(document).ready(function() {
             { "data": "CUSTOMER_NAME"},
             { "data": "SP_NAME"},
             { "data": "CURRENCY_NAME","class":"currency_name"},
-            { "data": "TOTAL_AMOUNT","class":"total_amount"},
+            { "data": "TOTAL_AMOUNT","class":"total_amount",
+            	"render": function ( data, type, full, meta ) {
+            		if(full.ORDER_TYPE=='charge'){
+	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            	}
+                    return data;
+                  }
+            },
             { "data": "EXCHANGE_RATE"},
-            { "data": "AFTER_TOTAL"},
+            { "data": "AFTER_TOTAL",
+            	"render": function ( data, type, full, meta ) {
+            		if(full.ORDER_TYPE=='charge'){
+	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            	}
+                    return data;
+                  }
+            },
             { "data": "NEW_RATE","class":"new_rate"},
-            { "data": "AFTER_RATE_TOTAL","class":"after_rate_total"},
+            { "data": "AFTER_RATE_TOTAL","class":"after_rate_total",
+            	"render": function ( data, type, full, meta ) {
+            		if(full.ORDER_TYPE=='charge'){
+	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            	}
+                    return data;
+                  }
+            },
             { "data": "EXCHANGE_CURRENCY_NAME"},
             { "data": "EXCHANGE_CURRENCY_RATE"},
-            { "data": "EXCHANGE_TOTAL_AMOUNT"}
+            { "data": "EXCHANGE_TOTAL_AMOUNT"},
+            { "data": "ORDER_TYPE", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },
         ]
     });
         
@@ -110,10 +150,81 @@ $(document).ready(function() {
 
     
     //刷新明细表
-    itemOrder.refleshTable = function(order_id){
-    	var url = "/costCheckOrder/tableList?order_id="+order_id
-        +"&table_type=item";
+    itemOrder.refleshTable = function(order_id,ids){
+    	var url = "/costCheckOrder/tableList?order_id="+order_id+"&ids="+ids;
     	itemTable.ajax.url(url).load();
     }
+    
+    if($('#order_id').val()==''){
+    	 $('#exchange').attr('disabled',true);
+    }
+    
+    $('#exchange').click(function(){
+    	$(this).attr('disabled',true);
+    	var rate = $('#exchange_rate').val();
+    	if(rate==''||isNaN(rate)){
+    		$.scojs_message('请输入正确的汇率进行兑换', $.scojs_message.TYPE_ERROR);
+    		$('#exchange').attr('disabled',false);
+    		return;
+    	}
+    	var currency_name = cnames[0];
+    	var ex_currency_name = $('#exchange_currency').val();
+    	var total = 0;
+	    $('#eeda-table input[type=checkbox]:checked').each(function(){
+	    	var tr = $(this).parent().parent();
+	    	var id = tr.attr('id');
+	    	ids.push(id);
+	    	
+	    	var total_amount = tr.find(".total_amount").text();
+	    	if(total_amount!=''&&!isNaN(total_amount)){
+	    		total +=parseFloat(total_amount);
+	    	}
+	    })
+	    if(ids.length==0){
+	    	$.scojs_message('请选择一条费用明细进行兑换', $.scojs_message.TYPE_ERROR);
+	    	$('#exchange').attr('disabled',false);
+	    	return;
+	    }
+	    var ex_total = total*rate;
+	    if(currency_name=='CNY'){
+	    	var val = $('#cny').val();
+	    	$('#cny').val((parseFloat(val)-total).toFixed(2));
+	    }else if(currency_name=='USD'){
+	    	var val = $('#usd').val();
+	    	$('#usd').val((parseFloat(val)-total).toFixed(2));
+	    }else if(currency_name=='HKD'){
+	    	var val = $('#hkd').val();
+	    	$('#hkd').val((parseFloat(val)-total).toFixed(2));
+	    }else if(currency_name=='JPY'){
+	    	var val = $('#jpy').val();
+	    	$('#jpy').val((parseFloat(val)-total).toFixed(2));
+	    }
+	    
+	    if(ex_currency_name=='CNY'){
+	    	var val = $('#cny').val();
+	    	$('#cny').val((parseFloat(val)+ex_total).toFixed(2));
+	    }else if(ex_currency_name=='USD'){
+	    	var val = $('#usd').val();
+	    	$('#usd').val((parseFloat(val)+ex_total).toFixed(2));
+	    }else if(ex_currency_name=='HKD'){
+	    	var val = $('#hkd').val();
+	    	$('#hkd').val((parseFloat(val)+ex_total).toFixed(2));
+	    }else if(ex_currency_name=='JPY'){
+	    	var val = $('#jpy').val();
+	    	$('#jpy').val((parseFloat(val)+ex_total).toFixed(2));
+	    }
+	    $.post('/costCheckOrder/exchange_currency', {ids:ids.toString(),rate:rate,ex_currency_name:ex_currency_name}, function(data){
+	    	$('#exchange').attr('disabled',false);
+	    	var order_id = $('#order_id').val();
+	    	itemOrder.refleshTable(order_id,ids.toString());
+	    	$.scojs_message('兑换成功', $.scojs_message.TYPE_OK);
+	    	
+	    },'json').fail(function() {
+	    	$('#exchange').attr('disabled',false);
+            $.scojs_message('发生异常，兑换失败', $.scojs_message.TYPE_ERROR);
+	    });
+    })
+    
+    
 } );    
 } );

@@ -164,10 +164,10 @@
 						                                            label:'兑换操作', 
 						                                            value:'',
 						                                            value_list:[
-						                                                {code:'兑换成CNY', value:'兑换成CNY'},
-						                                                {code:'兑换成USD', value:'兑换成USD'},
-						                                                {code:'兑换成HKD', value:'兑换成HKD'},
-						                                                {code:'兑换成JPY', value:'兑换成JPY'}
+						                                                {code:'CNY', value:'兑换成CNY'},
+						                                                {code:'USD', value:'兑换成USD'},
+						                                                {code:'HKD', value:'兑换成HKD'},
+						                                                {code:'JPY', value:'兑换成JPY'}
 						                                            ]
 						                                        }){}%>
 						                        </div>
@@ -176,7 +176,7 @@
 						                            label:'兑换汇率'
 						                            }){}%>
 						                        </div>
-						                        <button id='exchange' class="btn  btn-primary">兑换</button>
+						                        <button id='exchange' class="btn  btn-primary" disabled>兑换</button>
 						                    </div>
 						               </li>
 						            </ul>
@@ -199,10 +199,11 @@
 			                                    '当前总金额(CNY)', 
 			                                    '结算币制', 
 			                                    '结算汇率', 
-			                                    '结算金额'
+			                                    '结算金额',
+			                                    ''
 	                                       ],
 	                                       field_list:[
-	                                           '', 
+	                                           'ID', 
 	                                           'ORDER_NO', 
 	                                           'TYPE', 
 	                                           'CREATE_STAMP',
@@ -216,9 +217,10 @@
 	                                           'AFTER_RATE_TOTAL',
 	                                           'EXCHANGE_CURRENCY_NAME',
 	                                           'EXCHANGE_CURRENCY_RATE',
-	                                           'EXCHANGE_TOTAL_AMOUNT'
+	                                           'EXCHANGE_TOTAL_AMOUNT',
+	                                           'ORDER_TYPE'
 	                                       ],
-	                                       value_list: order.item_list![]
+	                                       value_list: order.item_list!item_list![]
 	                                   }){} %>
 	                               </div>
                                 

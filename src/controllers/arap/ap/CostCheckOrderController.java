@@ -14,6 +14,7 @@ import models.ArapCostOrder;
 import models.RateContrast;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrderArap;
+import models.eeda.profile.Currency;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -97,7 +98,7 @@ public class CostCheckOrderController extends Controller {
 	public List<Record> getItemList(String ids,String order_id){
 		String sql = null;
 		if(StringUtils.isEmpty(order_id)){
-			sql = " select joa.id,joa.type,joa.sp_id,if(joa.order_type='charge',(0-joa.total_amount),joa.total_amount) total_amount,joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
+			sql = " select joa.id,joa.type,joa.sp_id, joa.order_type, joa.total_amount, joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
 	                + " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
 	                + " ifnull((select rc.new_rate from rate_contrast rc "
 	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),cast(joa.exchange_rate as char)) new_rate,"
@@ -105,7 +106,7 @@ public class CostCheckOrderController extends Controller {
 	    			+ " ifnull((select rc.new_rate from rate_contrast rc "
 	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
 	                + " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
-	                + " cur.name currency_name, cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount "
+	                + " cur.name currency_name, cur1.name exchange_currency_name,joa.exchange_currency_rate, joa.exchange_total_amount "
 	                + " from job_order_arap joa "
 	                + " left join job_order jo on jo.id=joa.order_id "
 	                + " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -120,7 +121,7 @@ public class CostCheckOrderController extends Controller {
 	                + " GROUP BY joa.id"
 	                + " ORDER BY jo.order_no";	
 		}else{
-			sql = " select joa.id,joa.type,joa.sp_id,if(joa.order_type='charge',(0-joa.total_amount),joa.total_amount) total_amount,joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
+			sql = " select joa.id,joa.type,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
 	                + " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
 	                + " ifnull((select rc.new_rate from rate_contrast rc "
 	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
@@ -128,7 +129,7 @@ public class CostCheckOrderController extends Controller {
 	    			+ " ifnull((select rc.new_rate from rate_contrast rc "
 	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = aco.id),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
 	                + " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
-	                + " cur.name currency_name, cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount "
+	                + " cur.name currency_name, cur1.name exchange_currency_name,joa.exchange_currency_rate, joa.exchange_total_amount "
 	                + " from job_order_arap joa "
 	                + " left join job_order jo on jo.id=joa.order_id "
 	                + " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -408,6 +409,20 @@ public class CostCheckOrderController extends Controller {
 		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");
 	}
 	
+	@Before(Tx.class)
+	public void exchange_currency(){
+		String ids = getPara("ids");
+		String ex_currency_name = getPara("ex_currency_name");
+		Currency c = Currency.dao.findFirst("select id from currency where code = ?", ex_currency_name);
+		Long ex_currency_id = c.getLong("id");
+		String rate = getPara("rate");
+		Db.update("update job_order_arap set exchange_currency_id="+ex_currency_id+" , exchange_currency_rate="+rate+","
+				+ " exchange_total_amount=("+rate+"*total_amount)  where id in ("+ids+") and total_amount!=''");
+		
+		renderJson("{\"result\":true}");
+	}
+	
+	@Before(Tx.class)
 	public void confirm(){
 		String id = getPara("id");
 		ArapCostOrder aco = ArapCostOrder.dao.findById(id);
@@ -420,6 +435,22 @@ public class CostCheckOrderController extends Controller {
 		renderJson(r);
 	}
 	
+	
+	//异步刷新字表
+    public void tableList(){
+    	String order_id = getPara("order_id");
+    	String ids = getPara("ids");
+    	
+    	List<Record> list = null;
+    	list = getItemList(ids,order_id);
+    	
+    	Map map = new HashMap();
+        map.put("sEcho", 1);
+        map.put("iTotalRecords", list.size());
+        map.put("iTotalDisplayRecords", list.size());
+        map.put("aaData", list);
+        renderJson(map); 
+    }
 	
 	
 }
