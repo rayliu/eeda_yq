@@ -15,7 +15,7 @@
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
                                                 {   id:'order_no', 
-                                                    label:'报关申请单号', 
+                                                    label:'申请单号', 
                                                     value:order.order_no!'',
                                                     disabled: 'disabled'
                                                 }){}%>
@@ -131,15 +131,24 @@
                         </div>
                         
                         <div class="col-lg-4">
-                           <%include("/eeda/component/form/inputDropListField.html", 
-                                    {   id:'customs_code', 
-                                        label:'企业海关代码',
-                                        url: '/serviceProvider/searchCompanyCustomCode',
-                                        value:order.customs_code!'',
-                                        display_value:order.customs_code_name!''
-                                    }){}%>
+	                           <%include("/eeda/component/form/inputDropListField.html", 
+			                                    {   id:'customs_code', 
+			                                        label:'企业海关代码',
+			                                        url: '/serviceProvider/searchCompanyCustomCode',
+			                                        value:order.customs_code!'',
+			                                        display_value:order.customs_code_name!''
+			                                    }){}%>
                        </div>
-                    </div><br>
+                    </div>
+                    <div class="row">
+                    	<div class="col-lg-4">
+                    			<%include("/eeda/component/form/inputField.html", 
+			                                    {   id:'customs_billCode', 
+			                                        label:'报关单号码',
+			                                        value:order.customs_billCode!''
+			                                    }){}%>                	
+                       </div>
+                   </div><br>
                 </form>
              </div>  
 			      

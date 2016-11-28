@@ -14,7 +14,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     				$('#status').val(order.STATUS);
     				var status = order.STATUS;
 					//提交报关行按钮状态
-    				if(status=="已提交"){
+    				if(status=="待审核"){
 						$('#confirmCompleted').attr('disabled', true);
 						$('#saveBtn').attr('disabled', true);
 						//审核按钮状态
@@ -51,7 +51,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			    	        $('#passBtn').attr('disabled',true);
 				        	$('#refuseBtn').attr('disabled',true);
 		    	        }
-		    	    	if(status=="已提交"){
+		    	    	if(status=="待审核"){
 		    	    		$.scojs_message('申请单提交失败', $.scojs_message.TYPE_ERROR);
 			    	        $('#confirmCompleted').attr('disabled', true);
 			    	        $('#saveBtn').attr('disabled', true);
@@ -67,7 +67,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         if(id!=''){
         	$('#confirmCompleted').attr('disabled', false);
         }
-		if(status=='已提交'){
+		if(status=='待审核'){
 			//提交报关行按钮状态
 			$('#confirmCompleted').attr('disabled', true);
 			$('#saveBtn').attr('disabled', true);
