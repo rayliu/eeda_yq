@@ -57,11 +57,11 @@ $(document).ready(function() {
             },
             { "data": "ORDER_NO"},
             { "data": "TYPE"},
-            { "data": "CREATE_STAMP"},
+            { "data": "CREATE_STAMP", visible: false},
             { "data": "CUSTOMER_NAME"},
             { "data": "SP_NAME"},
             { "data": "CURRENCY_NAME","class":"currency_name"},
-            { "data": "TOTAL_AMOUNT","class":"total_amount",
+            { "data": "TOTAL_AMOUNT","class":"total_amount", 
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
 	            		return '<span style="color:red;">'+'-'+data+'</span>';
@@ -69,8 +69,8 @@ $(document).ready(function() {
                     return data;
                   }
             },
-            { "data": "EXCHANGE_RATE"},
-            { "data": "AFTER_TOTAL",
+            { "data": "EXCHANGE_RATE", "visible": false},
+            { "data": "AFTER_TOTAL", "visible": false, 
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
 	            		return '<span style="color:red;">'+'-'+data+'</span>';
@@ -78,8 +78,8 @@ $(document).ready(function() {
                     return data;
                   }
             },
-            { "data": "NEW_RATE","class":"new_rate"},
-            { "data": "AFTER_RATE_TOTAL","class":"after_rate_total",
+            { "data": "NEW_RATE","class":"new_rate", "visible": false },
+            { "data": "AFTER_RATE_TOTAL","class":"after_rate_total", "visible": false,
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
 	            		return '<span style="color:red;">'+'-'+data+'</span>';
@@ -89,7 +89,14 @@ $(document).ready(function() {
             },
             { "data": "EXCHANGE_CURRENCY_NAME"},
             { "data": "EXCHANGE_CURRENCY_RATE"},
-            { "data": "EXCHANGE_TOTAL_AMOUNT"},
+            { "data": "EXCHANGE_TOTAL_AMOUNT",
+                "render": function ( data, type, full, meta ) {
+                    if(full.ORDER_TYPE=='charge'){
+                        return '<span style="color:red;">'+'-'+data+'</span>';
+                    }
+                    return data;
+                  }
+            },
             { "data": "ORDER_TYPE", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
@@ -185,40 +192,20 @@ $(document).ready(function() {
 	    	$('#exchange').attr('disabled',false);
 	    	return;
 	    }
-	    var ex_total = total*rate;
-	    if(currency_name=='CNY'){
-	    	var val = $('#cny').val();
-	    	$('#cny').val((parseFloat(val)-total).toFixed(2));
-	    }else if(currency_name=='USD'){
-	    	var val = $('#usd').val();
-	    	$('#usd').val((parseFloat(val)-total).toFixed(2));
-	    }else if(currency_name=='HKD'){
-	    	var val = $('#hkd').val();
-	    	$('#hkd').val((parseFloat(val)-total).toFixed(2));
-	    }else if(currency_name=='JPY'){
-	    	var val = $('#jpy').val();
-	    	$('#jpy').val((parseFloat(val)-total).toFixed(2));
-	    }
 	    
-	    if(ex_currency_name=='CNY'){
-	    	var val = $('#cny').val();
-	    	$('#cny').val((parseFloat(val)+ex_total).toFixed(2));
-	    }else if(ex_currency_name=='USD'){
-	    	var val = $('#usd').val();
-	    	$('#usd').val((parseFloat(val)+ex_total).toFixed(2));
-	    }else if(ex_currency_name=='HKD'){
-	    	var val = $('#hkd').val();
-	    	$('#hkd').val((parseFloat(val)+ex_total).toFixed(2));
-	    }else if(ex_currency_name=='JPY'){
-	    	var val = $('#jpy').val();
-	    	$('#jpy').val((parseFloat(val)+ex_total).toFixed(2));
-	    }
-	    $.post('/costCheckOrder/exchange_currency', {ids:ids.toString(),rate:rate,ex_currency_name:ex_currency_name}, function(data){
+	    $.post('/costCheckOrder/exchange_currency', 
+            {   cost_order_id: $('#order_id').val(),
+                ids:ids.toString(), 
+                rate:rate, 
+                ex_currency_name:ex_currency_name}, function(data){
 	    	$('#exchange').attr('disabled',false);
 	    	var order_id = $('#order_id').val();
 	    	itemOrder.refleshTable(order_id,ids.toString());
 	    	$.scojs_message('兑换成功', $.scojs_message.TYPE_OK);
-	    	
+            $('#cny').val((parseFloat(data.CNY)).toFixed(2));
+            $('#usd').val((parseFloat(data.USD)).toFixed(2));
+            $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
+            $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
 	    },'json').fail(function() {
 	    	$('#exchange').attr('disabled',false);
             $.scojs_message('发生异常，兑换失败', $.scojs_message.TYPE_ERROR);

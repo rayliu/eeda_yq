@@ -6,6 +6,7 @@ import interceptor.SetAttrLoginUserInterceptor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -129,7 +130,10 @@ public class CostCheckOrderController extends Controller {
 	    			+ " ifnull((select rc.new_rate from rate_contrast rc "
 	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = aco.id),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
 	                + " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
-	                + " cur.name currency_name, cur1.name exchange_currency_name,joa.exchange_currency_rate, joa.exchange_total_amount "
+	                + " cur.name currency_name, "
+	                + " ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
+	                + " ifnull(joa.exchange_currency_rate, 1) exchange_currency_rate,"
+	                + " ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount "
 	                + " from job_order_arap joa "
 	                + " left join job_order jo on jo.id=joa.order_id "
 	                + " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -401,8 +405,8 @@ public class CostCheckOrderController extends Controller {
    				+ " where aco.id = ? ";
 		Record order = Db.findFirst(sql,id);
 		
-		String condition = "select ref_order_id from arap_cost_item where cost_order_id ="+id;
-		order.set("currencylist", getCurrencyList(condition,id));
+//		String condition = "select ref_order_id from arap_cost_item where cost_order_id ="+id;
+//		order.set("currencylist", getCurrencyList(condition,id));
 		order.set("item_list", getItemList("",id));
 		
 		setAttr("order", order);
@@ -411,6 +415,7 @@ public class CostCheckOrderController extends Controller {
 	
 	@Before(Tx.class)
 	public void exchange_currency(){
+	    String costOrderId = getPara("cost_order_id");
 		String ids = getPara("ids");
 		String ex_currency_name = getPara("ex_currency_name");
 		Currency c = Currency.dao.findFirst("select id from currency where code = ?", ex_currency_name);
@@ -419,8 +424,54 @@ public class CostCheckOrderController extends Controller {
 		Db.update("update job_order_arap set exchange_currency_id="+ex_currency_id+" , exchange_currency_rate="+rate+","
 				+ " exchange_total_amount=("+rate+"*total_amount)  where id in ("+ids+") and total_amount!=''");
 		
-		renderJson("{\"result\":true}");
+		//计算结算汇总
+		Map<String, Double> exchangeTotalMap = updateExchangeTotal(costOrderId);
+		renderJson(exchangeTotalMap);
 	}
+
+    private Map<String, Double> updateExchangeTotal(String costOrderId) {
+        String sql="select joa.order_type, ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
+        +"       sum(ifnull(joa.exchange_total_amount, joa.total_amount)) exchange_total_amount "
+        +"       from  job_order_arap joa "
+        +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
+        +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
+        +"        where joa.id in(select aci.ref_order_id from arap_cost_item aci where aci.cost_order_id="+costOrderId+")"
+        +"       group by joa.order_type";
+		
+		Map<String, Double> exchangeTotalMap = new HashMap<String, Double>();
+		exchangeTotalMap.put("CNY", 0d);
+		exchangeTotalMap.put("USD", 0d);
+		exchangeTotalMap.put("HKD", 0d);
+		exchangeTotalMap.put("JPY", 0d);
+		
+		List<Record> resultList= Db.find(sql);
+		for (Record rec : resultList) {
+            String name = rec.get("exchange_currency_name");
+            String type = rec.get("order_type");
+            if(exchangeTotalMap.get(name)==null){
+                if("cost".equals(type)){
+                    exchangeTotalMap.put(name, rec.getDouble("exchange_total_amount"));
+                }else{
+                    exchangeTotalMap.put(name, 0-rec.getDouble("exchange_total_amount"));
+                }
+            }else{
+                Double d= exchangeTotalMap.get(name);
+                if("cost".equals(type)){
+                    exchangeTotalMap.put(name, d+rec.getDouble("exchange_total_amount"));
+                }else{
+                    exchangeTotalMap.put(name, d-rec.getDouble("exchange_total_amount"));
+                }        
+            }
+        }
+		
+		Record order = Db.findById("arap_cost_order", costOrderId);
+		for (Map.Entry<String, Double> entry : exchangeTotalMap.entrySet()) {
+		    System.out.println(entry.getKey() + " : " + entry.getValue());
+		    order.set(entry.getKey(), entry.getValue());
+		}
+		Db.update("arap_cost_order", order);
+		return exchangeTotalMap;
+    }
 	
 	@Before(Tx.class)
 	public void confirm(){
