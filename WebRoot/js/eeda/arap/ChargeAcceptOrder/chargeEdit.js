@@ -124,7 +124,6 @@ $(document).ready(function() {
 			},
 			{"data":"PAID_USD","width": "100px",
 				"render": function(data, type, full, meta) {
-					debugger
 					if($('#order_id').val()==''){
 						if(data!=null&&full.USD!=null&&!isNaN(data)&&!isNaN(full.USD)){
 							pay_usd = pay_usd + parseFloat(full.USD-data);
@@ -540,6 +539,116 @@ $(document).ready(function() {
 		}else{
 			$('#receive_type_massage').show();
 		}
+	})
+	
+	var ids = [];
+	var applied_arap_id = [];
+	var itemTable = eeda.dt({
+        id: 'charge-table',
+        columns:[
+	        {"data": "ID",
+	        	"render": function ( data, type, full, meta ) {
+	        		var str = '<input type="checkbox" style="width:30px">';
+	        		for(var i=0;i<ids.length;i++){
+	                    if(ids[i]==data){
+	                   	 str = '<input type="checkbox" style="width:30px" checked>';
+	                    }
+	                }
+	        		return str;
+			    }
+	        },
+	        { "data": "ORDER_NO"},
+	        { "data": "TYPE"},
+	        { "data": "CREATE_STAMP"},
+	        { "data": "SP_NAME"},
+	        { "data": "CURRENCY_NAME","class":"currency_name"},
+	        { "data": "TOTAL_AMOUNT","class":"total_amount",
+	        	"render": function ( data, type, full, meta ) {
+	        		if(full.ORDER_TYPE=='cost'){
+	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            	}
+	                return data;
+	              }
+	        },
+	        { "data": "EXCHANGE_RATE"},
+	        { "data": "AFTER_TOTAL",
+	        	"render": function ( data, type, full, meta ) {
+	        		if(full.ORDER_TYPE=='cost'){
+	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            	}
+	                return data;
+	              }
+	        },
+	        { "data": "NEW_RATE"},
+	        { "data": "AFTER_RATE_TOTAL",
+	        	"render": function ( data, type, full, meta ) {
+	        		if(full.ORDER_TYPE=='cost'){
+	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            	}
+	                return data;
+	              }
+	        },
+	        { "data": "EXCHANGE_CURRENCY_NAME","class":"EXCHANGE_CURRENCY_NAME"},
+	        { "data": "EXCHANGE_CURRENCY_RATE"},
+	        { "data": "EXCHANGE_TOTAL_AMOUNT","class":"EXCHANGE_TOTAL_AMOUNT"},
+	        { "data": "ORDER_TYPE", "visible": false,
+	            "render": function ( data, type, full, meta ) {
+	                if(!data)
+	                    data='';
+	                return data;
+	            }
+	        },
+	      ]
+	});
+	
+	
+	$('#eeda-table').on('click','td',function(){
+		
+		$('#chargeAlert').click();
+		var order_id = $(this).parent().attr('id');
+		$('#chargeAlert').attr('name',order_id);
+		var url = "/chargeCheckOrder/tableList?order_id="+order_id;
+    	itemTable.ajax.url(url).load();
+	})
+	
+	
+	$('#alertChargeDetail').on('click','.btn-primary',function(){
+		var usd = 0 ;
+		var cny = 0 ;
+		var hkd = 0 ;
+		var jpy = 0 ;
+		$('#charge-table input[type=checkbox]:checked').each(function(){
+			var tr = $(this).parent().parent();
+			var EXCHANGE_CURRENCY_NAME = tr.find('.EXCHANGE_CURRENCY_NAME').text();
+			var EXCHANGE_TOTAL_AMOUNT = tr.find('.EXCHANGE_TOTAL_AMOUNT').text();
+			if(EXCHANGE_TOTAL_AMOUNT!=''){
+				if(EXCHANGE_CURRENCY_NAME=='CNY'){
+					cny += parseFloat(EXCHANGE_TOTAL_AMOUNT);
+				}else if(EXCHANGE_CURRENCY_NAME=='USD'){
+					usd += parseFloat(EXCHANGE_TOTAL_AMOUNT);
+				}else if(EXCHANGE_CURRENCY_NAME=='HKD'){
+					hkd += parseFloat(EXCHANGE_TOTAL_AMOUNT);
+				}else if(EXCHANGE_CURRENCY_NAME=='JPY'){
+					jpy += parseFloat(EXCHANGE_TOTAL_AMOUNT);
+				}
+			}else{
+				EXCHANGE_CURRENCY_NAME = tr.find('.currency_name').text();
+				EXCHANGE_TOTAL_AMOUNT = tr.find('.total_amount').text();
+				if(EXCHANGE_CURRENCY_NAME=='CNY'){
+					cny += parseFloat(EXCHANGE_TOTAL_AMOUNT);
+				}else if(EXCHANGE_CURRENCY_NAME=='USD'){
+					usd += parseFloat(EXCHANGE_TOTAL_AMOUNT);
+				}else if(EXCHANGE_CURRENCY_NAME=='HKD'){
+					hkd += parseFloat(EXCHANGE_TOTAL_AMOUNT);
+				}else if(EXCHANGE_CURRENCY_NAME=='JPY'){
+					jpy += parseFloat(EXCHANGE_TOTAL_AMOUNT);
+				}
+			}
+			debugger
+			var tr_id = $('#chargeAlert').attr('name');
+			$('#'+tr_id+'').find('[name=app_usd]').val(usd);
+			
+		})
 	})
 	
 

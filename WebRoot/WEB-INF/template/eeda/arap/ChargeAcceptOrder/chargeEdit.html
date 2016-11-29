@@ -258,6 +258,70 @@
 			</div>
 		</div>
 	</div>
+	
+	
+	<a data-target='#alertChargeDetail' data-toggle='modal'>
+            <button id="chargeAlert" style="display:none"></button>
+        </a>
+        <div class="modal fade" id="alertChargeDetail">
+          <div class="modal-dialog" style="width:1000px;">
+            <div class="modal-content">
+              <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                           此对账单对应的所有费用明细
+              </div>
+                <div class="modal-body">
+                    <%include("/eeda/component/form/detailTable.html", 
+                                       {
+                                           id:'charge-table', 
+                                           headers:[
+                                               '',
+                                               '工作单号',
+                                               '类型',
+                                               '创建时间',
+                                               '结算公司',
+                                               '货币类型',
+                                                '金额', 
+                                                '原汇率',
+                                                '原总金额(CNY)',  
+                                                '当前汇率',
+                                                '当前总金额(CNY)', 
+                                                '结算币制', 
+                                                '结算汇率', 
+                                                '结算金额',
+                                                ''
+                                           ],
+                                           field_list:[
+                                               'ID', 
+                                               'ORDER_NO', 
+                                               'TYPE', 
+                                               'CREATE_STAMP',
+                                               'SP_NAME', 
+                                               'CURRENCY_NAME',
+                                               'TOTAL_AMOUNT',
+                                               'EXCHANGE_RATE',
+                                               'AFTER_TOTAL', 
+                                               'NEW_RATE', 
+                                               'AFTER_RATE_TOTAL',
+                                               'EXCHANGE_CURRENCY_NAME',
+                                               'EXCHANGE_CURRENCY_RATE',
+                                               'EXCHANGE_TOTAL_AMOUNT',
+                                               'ORDER_TYPE'
+                                           ],
+                                           value_list: order.item_list!item_list![]
+                                       }){} %>
+                   
+                     
+                </div>
+              <div class="modal-footer">
+                <button class="btn  btn-primary" data-dismiss="modal">确认</button>
+                <button class="btn  btn-default" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+      </div>
+    </div>
+	
+	
 <%}%>
 <script>
     var itemOrder = {};
