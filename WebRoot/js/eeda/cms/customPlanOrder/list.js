@@ -80,13 +80,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var booking_no = $("#booking_no").val().trim();
-          var status="";
-          var custom_state="";
-          if(paraStr=="待审核"){
+          if(paraStr=="待审核"&&paraStr!=undefined){
         	  status = paraStr;
           }else{
         	  
-	    	  if(paraStr!='全部'){
+	    	  if(paraStr!='全部'&&paraStr!=undefined){
 	    		  custom_state=paraStr;
 	    	  }
           }
@@ -104,8 +102,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                +"&custom_state_equals="+custom_state
                +"&application_company_name="+customer_name
                +"&create_stamp_begin_time="+start_date
-               +"&status="+status
-               +"&custom_state="+custom_state
                +"&create_stamp_end_time="+end_date;
 
           dataTable.ajax.url(url).load();
