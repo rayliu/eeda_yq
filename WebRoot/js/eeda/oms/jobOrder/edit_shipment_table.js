@@ -11,13 +11,12 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             cargoTable.row(tr).remove().draw();
         }); 
 
-        itemOrder.buildOceanItem=function(){
+        itemOrder.buildOceanItem = function(){
             var cargo_table_rows = $("#ocean_cargo_table tr");
             var cargo_items_array=[];
             for(var index=0; index<cargo_table_rows.length; index++){
                 if(index==0)
                     continue;
-
                 var row = cargo_table_rows[index];
                 var empty = $(row).find('.dataTables_empty').text();
                 if(empty)

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="31"/>
+	<property name="ireport.y" value="44"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -435,7 +435,7 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[  Consignee]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="170" width="255" height="70" uuid="42ed5a52-b167-4ff6-9e15-9b97fe5a5038"/>
+				<reportElement x="15" y="170" width="255" height="79" uuid="42ed5a52-b167-4ff6-9e15-9b97fe5a5038"/>
 				<text><![CDATA[  Notify Party]]></text>
 			</staticText>
 			<staticText>
@@ -478,42 +478,42 @@ IN WITNESS whereof the number of original Bills of Lading stated below have been
 NON-NEGOTIABLE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="241" width="115" height="12" uuid="ee7d4839-c7be-4bfb-be67-d125b2f4310b"/>
+				<reportElement x="15" y="251" width="115" height="12" uuid="ee7d4839-c7be-4bfb-be67-d125b2f4310b"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[  Pre-carriage by]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="269" width="115" height="12" uuid="1fae731d-8596-4c60-b711-c83a0b914b5b"/>
+				<reportElement x="15" y="275" width="115" height="12" uuid="1fae731d-8596-4c60-b711-c83a0b914b5b"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[  Ocean Vessel / Voy.No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="297" width="115" height="12" uuid="0f438754-fa32-499b-b641-7fe41ba46bfb"/>
+				<reportElement x="15" y="301" width="115" height="12" uuid="0f438754-fa32-499b-b641-7fe41ba46bfb"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[  Port of Discharge]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="130" y="241" width="140" height="12" uuid="361016e2-7c92-42a9-af42-53ab441a46ee"/>
+				<reportElement x="130" y="250" width="140" height="12" uuid="361016e2-7c92-42a9-af42-53ab441a46ee"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[  Place of Receipt]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="130" y="269" width="140" height="12" uuid="10d16dc9-7550-468d-8f79-c97ae798c2c4"/>
+				<reportElement x="130" y="276" width="140" height="12" uuid="10d16dc9-7550-468d-8f79-c97ae798c2c4"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[  Port of Loading]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="130" y="297" width="140" height="12" uuid="48238110-5e45-4dd6-98ed-8030c0a70629"/>
+				<reportElement x="130" y="301" width="140" height="12" uuid="48238110-5e45-4dd6-98ed-8030c0a70629"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -757,13 +757,13 @@ NON-NEGOTIABLE]]></text>
 				<reportElement x="15" y="170" width="255" height="1" uuid="9b55fd76-fc8e-4ff1-8278-94075c76fb96"/>
 			</line>
 			<line>
-				<reportElement x="15" y="240" width="255" height="1" uuid="9c37910f-2731-418e-979c-6e406fd7afa9"/>
+				<reportElement x="15" y="250" width="255" height="1" uuid="9c37910f-2731-418e-979c-6e406fd7afa9"/>
 			</line>
 			<line>
-				<reportElement x="15" y="268" width="255" height="1" uuid="47460890-b545-442f-a49d-935a64225933"/>
+				<reportElement x="15" y="275" width="255" height="1" uuid="47460890-b545-442f-a49d-935a64225933"/>
 			</line>
 			<line>
-				<reportElement x="15" y="296" width="255" height="1" uuid="27e5be5e-1b32-4df7-9f23-11fbc317731f"/>
+				<reportElement x="15" y="300" width="255" height="1" uuid="27e5be5e-1b32-4df7-9f23-11fbc317731f"/>
 			</line>
 			<line>
 				<reportElement x="270" y="1" width="1" height="325" uuid="750eedb5-3b97-46e7-a586-878ff1e82f63"/>
@@ -787,17 +787,17 @@ NON-NEGOTIABLE]]></text>
 				<reportElement x="96" y="718" width="459" height="1" uuid="8494a119-f0fe-4802-a38d-76ae4618441e"/>
 			</line>
 			<line>
-				<reportElement x="130" y="241" width="1" height="84" uuid="37b1fabb-7196-4369-a5b9-15934cc68949"/>
+				<reportElement x="130" y="251" width="1" height="74" uuid="37b1fabb-7196-4369-a5b9-15934cc68949"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="21" y="41" width="244" height="44" uuid="d8acf056-abac-4f8d-b976-9b783e7d731e"/>
+				<reportElement x="21" y="37" width="244" height="49" uuid="d8acf056-abac-4f8d-b976-9b783e7d731e"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{HBLshipper_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="122" width="245" height="45" uuid="fe342d77-2c0d-4ee3-a255-3cfe73b9c8c5"/>
+				<reportElement x="20" y="110" width="245" height="60" uuid="fe342d77-2c0d-4ee3-a255-3cfe73b9c8c5"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -815,14 +815,14 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="134" y="252" width="137" height="16" uuid="c2b5278a-fc31-46fb-97bd-4c6af9594889"/>
+				<reportElement x="134" y="260" width="137" height="16" uuid="c2b5278a-fc31-46fb-97bd-4c6af9594889"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{por_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="134" y="280" width="137" height="16" uuid="18969407-0dbb-48f6-bf8e-121db6616839"/>
+				<reportElement x="134" y="286" width="137" height="14" uuid="18969407-0dbb-48f6-bf8e-121db6616839"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -855,14 +855,14 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{cargo_desc}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="308" width="110" height="19" uuid="a04e7ec4-d75f-4c35-910a-a64dcccc2f2a"/>
+				<reportElement x="20" y="312" width="110" height="15" uuid="a04e7ec4-d75f-4c35-910a-a64dcccc2f2a"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pod_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="134" y="308" width="136" height="17" uuid="52165661-62d1-41c4-8978-0efa4d9e2d71"/>
+				<reportElement x="134" y="312" width="136" height="15" uuid="52165661-62d1-41c4-8978-0efa4d9e2d71"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -904,7 +904,7 @@ NON-NEGOTIABLE]]></text>
 				<reportElement x="412" y="2" width="1" height="21" uuid="a83b3ec2-017c-4ee4-b614-cad0addecc36"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="18" y="280" width="112" height="16" uuid="4efec50a-c420-4e9b-868e-897a90b2d39b"/>
+				<reportElement x="18" y="285" width="112" height="14" uuid="4efec50a-c420-4e9b-868e-897a90b2d39b"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -916,14 +916,14 @@ NON-NEGOTIABLE]]></text>
 				<text><![CDATA[ZHUHAI HENGQIN ENKYO SCM CO.,LTD.]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="21" y="17" width="244" height="24" uuid="d2b5f60f-9d5b-4233-8bd6-ee6979e86776"/>
+				<reportElement x="21" y="15" width="244" height="22" uuid="d2b5f60f-9d5b-4233-8bd6-ee6979e86776"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{HBLshipperName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="98" width="245" height="24" uuid="0c3c8a07-5b45-4524-a055-71ea5373d022"/>
+				<reportElement x="20" y="98" width="245" height="12" uuid="0c3c8a07-5b45-4524-a055-71ea5373d022"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
@@ -944,14 +944,14 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{container_type_count}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="183" width="245" height="15" uuid="4c8a17fe-7af1-41d0-a7bf-f566edb8a990"/>
+				<reportElement x="20" y="183" width="245" height="12" uuid="4c8a17fe-7af1-41d0-a7bf-f566edb8a990"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{HBLnotify_partyName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="198" width="245" height="42" uuid="4fb4a45a-82e7-4ce2-b31f-11e30aa4344b"/>
+				<reportElement x="20" y="195" width="245" height="55" uuid="4fb4a45a-82e7-4ce2-b31f-11e30aa4344b"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>

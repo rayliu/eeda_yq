@@ -298,9 +298,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             if(info!='undefined'){
             	$('#receive_sent_consignee_info').val(info);
             }
-        })
-        
-        
-        
+        })  
      });
 });

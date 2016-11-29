@@ -104,6 +104,7 @@ $(document).ready(function() {
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.ID || full.REF_JOB_ORDER_ID==''){
+                		
                 		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
                 	}else {
                 		return '';
@@ -114,7 +115,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="hidden" name="doc_name" value="'+data+'"><a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                    return '<input type="hidden" name="doc_name" value="'+data+'" ><a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
                 }
             },
             { "data": "C_NAME","width": "180px",
