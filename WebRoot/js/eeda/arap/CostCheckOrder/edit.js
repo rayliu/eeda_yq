@@ -43,7 +43,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                 id: $('#id').val(),
                 ids: $('#ids').val(),
                 remark: $('#remark').val(),
-                total_amount: parseFloat($('#total_amount').val()).toFixed(2),
+//                total_amount: parseFloat($('#total_amount').val()).toFixed(2),
                 cost_amount: $('#cost_amount').val(),
                 sp_id: $('#sp_id').val(),
                 begin_time:$('#audit_begin_time').val(),

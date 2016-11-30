@@ -279,7 +279,10 @@ public class ChargeCheckOrderController extends Controller {
     
     
     public List<Record> getItemList(String ids,String order_id){
-    	String sql = " select joa.*,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
+    	String sql = " select joa.id,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
+    			+ "IFNULL(cur1.name,cur.name) exchange_currency_name,"
+    			+ "IFNULL(joa.exchange_currency_rate,1) exchange_currency_rate,IFNULL(joa.exchange_total_amount,joa.total_amount) exchange_total_amount,"
+    			+ "joa.total_amount total_amount,joa.exchange_rate exchange_rate," 
     			+ " jo.net_weight gross_weight,"
     			+ " cur.name currency_name,"
     			+ " ifnull((select rc.new_rate from rate_contrast rc "
@@ -292,6 +295,7 @@ public class ChargeCheckOrderController extends Controller {
     			+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
     			+ " from job_order_arap joa"
     			+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
+    			+ " LEFT JOIN currency cur1 on cur1.id = joa.exchange_currency_id"
     			+ "	left join job_order jo on jo.id=joa.order_id "
     			+ "	left join job_order_shipment jos on jos.order_id=joa.order_id "
     			+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "

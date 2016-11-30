@@ -6,7 +6,6 @@ import interceptor.SetAttrLoginUserInterceptor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -435,7 +434,7 @@ public class CostCheckOrderController extends Controller {
         +"       from  job_order_arap joa "
         +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
         +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
-        +"        where joa.id in(select aci.ref_order_id from arap_cost_item aci where aci.cost_order_id="+costOrderId+")"
+        +"       where joa.id in(select aci.ref_order_id from arap_cost_item aci where aci.cost_order_id="+costOrderId+")"
         +"       group by joa.order_type";
 		
 		Map<String, Double> exchangeTotalMap = new HashMap<String, Double>();

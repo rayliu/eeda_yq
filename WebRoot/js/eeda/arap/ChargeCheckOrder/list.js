@@ -342,14 +342,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
       	//checkbox选中则button可点击   创建对账单
 		$('#uncheckedEeda-table').on('click',"input[name='order_check_box']",function () {
 			
-			var hava_check = 0;
-			$('.checkBox').each(function(){	
-				var checkbox = $(this).prop('checked');
-	    		if(checkbox){
-	    			hava_check=1;
-	    		}	
-			});
-			if(hava_check>0){
+			if(itemIds.length>0){
 				$('#createBtn').attr('disabled',false);
 			}else{
 				$('#createBtn').attr('disabled',true);
@@ -363,7 +356,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
         	$('#billForm').submit();
         });
   
-      
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });

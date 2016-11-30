@@ -33,12 +33,26 @@ $(document).ready(function() {
 
         return items_array;
     };
-    
+    var ids = [];
     //------------事件处理
         var itemTable = eeda.dt({
             id: 'eeda-table',
+            initComplete: function( settings ) {
+            	ids = [];
+            	cnames = [];
+            },
             columns:[
-            { "data": "ID","visible":false},
+            {"data": "ID",
+            	"render": function ( data, type, full, meta ) {
+            		var str = '<input type="checkbox" style="width:30px">';
+            		for(var i=0;i<ids.length;i++){
+                        if(ids[i]==data){
+                       	 str = '<input type="checkbox" style="width:30px" checked>';
+                        }
+                    }
+            		return str;
+			    }
+            },
             { "data": "ORDER_NO"},
             { "data": "CREATE_STAMP"},
             { "data": "SP_NAME"},
@@ -51,8 +65,8 @@ $(document).ready(function() {
                     return data;
                   }
             },
-            { "data": "EXCHANGE_RATE"},
-            { "data": "AFTER_TOTAL",
+            { "data": "EXCHANGE_RATE","visible":false},
+            { "data": "AFTER_TOTAL","visible":false,
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='cost'){
 	            		return '<span style="color:red;">'+'-'+data+'</span>';
@@ -60,8 +74,8 @@ $(document).ready(function() {
                     return data;
                   }
             },
-            { "data": "NEW_RATE",'class':'new_rate'},
-            { "data": "AFTER_RATE_TOTAL",'class':'after_rate_total',
+            { "data": "NEW_RATE",'class':'new_rate',"visible": false},
+            { "data": "AFTER_RATE_TOTAL",'class':'after_rate_total',"visible": false,
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='cost'){
 	            		return '<span style="color:red;">'+'-'+data+'</span>';
@@ -69,7 +83,16 @@ $(document).ready(function() {
                     return data;
                   }
             },
-            { "data": "FND"},
+            { "data": "EXCHANGE_CURRENCY_NAME"}, 
+            { "data": "EXCHANGE_CURRENCY_RATE"}, 
+            { "data": "EXCHANGE_TOTAL_AMOUNT", 
+                "render": function ( data, type, full, meta ) {
+                    if(full.ORDER_TYPE=='cost'){
+                        return '<span style="color:red;">'+'-'+data+'</span>';
+                    }
+                    return data;
+                  }
+            },
             { "data": "VGM"},
             { "data": "CONTAINER_AMOUNT"},
             { "data": "GROSS_WEIGHT"},
