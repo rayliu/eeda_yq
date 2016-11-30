@@ -166,12 +166,21 @@ $(document).ready(function() {
     	 $('#exchange').attr('disabled',true);
     }
     
+    if($('#exchange_rate').val()==''){
+   	 $('#exchange').attr('disabled',true);
+   }
+    
+    
+    $('#exchange_rate').on('keyup',function(){
+    	 $('#exchange').attr('disabled',false);
+    });
+    
+    
     $('#exchange').click(function(){
     	$(this).attr('disabled',true);
     	var rate = $('#exchange_rate').val();
     	if(rate==''||isNaN(rate)){
     		$.scojs_message('请输入正确的汇率进行兑换', $.scojs_message.TYPE_ERROR);
-    		$('#exchange').attr('disabled',false);
     		return;
     	}
     	var currency_name = cnames[0];

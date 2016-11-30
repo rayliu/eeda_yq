@@ -117,9 +117,10 @@ $(document).ready(function() {
     		 if(data){
     			 $('#saveBtn').attr('disabled', true);
     			 $("#status").val('已确认');
+    			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
+    			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
     			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
-    			 $("#creator_name").val(data.CONFIRM_BY_NAME);
-    			 $("#confirm_stamp").val(data.CONFIRM_STAMP);  			 
+ 			 
     		 }
          },'json').fail(function() {
         	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
