@@ -14,6 +14,7 @@ import models.ArapChargeOrder;
 import models.RateContrast;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrderArap;
+import models.eeda.profile.Currency;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -379,9 +380,69 @@ public class ChargeCheckOrderController extends Controller {
 		setAttr("order",rec);
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
 	}
-    
 
-	
+    
+    @Before(Tx.class)
+	public void exchange_currency(){
+	    String chargeOrderId = getPara("charge_order_id");
+		String ids = getPara("ids");
+		String ex_currency_name = getPara("ex_currency_name");
+		Currency c = Currency.dao.findFirst("select id from currency where code = ?", ex_currency_name);
+		Long ex_currency_id = c.getLong("id");
+		String rate = getPara("rate");
+		Db.update("update job_order_arap set exchange_currency_id="+ex_currency_id+" , exchange_currency_rate="+rate+","
+				+ " exchange_total_amount=("+rate+"*total_amount)  where id in ("+ids+") and total_amount!=''");
+		
+		//计算结算汇总
+		Map<String, Double> exchangeTotalMap = updateExchangeTotal(chargeOrderId);
+		renderJson(exchangeTotalMap);
+	}
+    
+    private Map<String, Double> updateExchangeTotal(String chargeOrderId) {
+        String sql="select joa.order_type, ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
+        +"       ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount "
+        +"       from  job_order_arap joa "
+        +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
+        +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
+        +"       where joa.id in (select aci.ref_order_id from arap_charge_item aci where aci.charge_order_id="+chargeOrderId+")";
+		
+		Map<String, Double> exchangeTotalMap = new HashMap<String, Double>();
+		exchangeTotalMap.put("CNY", 0d);
+		exchangeTotalMap.put("USD", 0d);
+		exchangeTotalMap.put("HKD", 0d);
+		exchangeTotalMap.put("JPY", 0d);
+		
+		List<Record> resultList= Db.find(sql);
+		for (Record rec : resultList) {
+            String name = rec.get("exchange_currency_name");
+            String type = rec.get("order_type");
+            Double exchange_amount = exchangeTotalMap.get(name);
+            if(exchangeTotalMap.get(name)==null){
+                if("charge".equals(type)){
+                    exchangeTotalMap.put(name, exchange_amount+=exchange_amount);
+                }else{
+                    exchangeTotalMap.put(name, 0-rec.getDouble("exchange_total_amount"));
+                }
+            }else{
+                if("charge".equals(type)){
+                    exchangeTotalMap.put(name, exchange_amount+=rec.getDouble("exchange_total_amount"));
+                }else{
+                    exchangeTotalMap.put(name, exchange_amount-=rec.getDouble("exchange_total_amount"));
+                }        
+            }
+        }
+		
+		Record order = Db.findById("arap_charge_order", chargeOrderId);
+		for (Map.Entry<String, Double> entry : exchangeTotalMap.entrySet()) {
+		    System.out.println(entry.getKey() + " : " + entry.getValue());
+		    order.set(entry.getKey(), entry.getValue());
+		}
+		Db.update("arap_charge_order", order);
+		return exchangeTotalMap;
+    }
+    
+    
+    
 	//异步刷新字表
     public void tableList(){
     	String order_id = getPara("order_id");

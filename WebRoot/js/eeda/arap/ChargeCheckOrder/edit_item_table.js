@@ -109,9 +109,9 @@ $(document).ready(function() {
                 }
             },
         ]
-    });
-    
-    
+    }); 
+        
+           
     $('input[name=new_rate]').on('keyup',function(){
     	var totalAmount = 0.00;
     	var row = $(this).parent().parent();
@@ -159,19 +159,34 @@ $(document).ready(function() {
    	 $('#exchange').attr('disabled',false);
    });
    
-   
-   
-   $('#eeda-table').on('click',"input[type=checkbox]",function (){
-	   var id=$(this).val();
-	   if($(this).prop('checked')==true){
-		   ids.push(id);
-	   }else{
-		   ids.splice($.inArray(id, ids), 1);
-	   }
-   });
-   
-   
-   
+   //选择是否是同一币种
+   var cnames = [];
+	$('#eeda-table').on('click',"input[type=checkbox]",function () {
+			var cname = $(this).parent().siblings('.currency_name')[0].textContent;
+			var id=$(this).val();
+			if($(this).prop('checked')==true){	
+				if(cnames.length > 0 ){
+					if(cnames[0]==cname){
+						cnames.push(cname);
+						ids.push(id);
+					}else{
+						$.scojs_message('请选择同一币种进行兑换', $.scojs_message.TYPE_ERROR);
+						$(this).attr('checked',false);
+						return false;
+					}
+				}else{
+					cnames.push(cname);
+					ids.push(id);
+				}
+			}else{
+				cnames.pop(cname);
+				ids.splice($.inArray(id, ids), 1);
+		 }
+	}); 
+	
+//		   ids.splice($.inArray(id, ids), 1);
+
+     
    
    $('#exchange').click(function(){
    	$(this).attr('disabled',true);
@@ -182,23 +197,23 @@ $(document).ready(function() {
    	}
    	var currency_name = cnames[0];
    	var ex_currency_name = $('#exchange_currency').val();
-   	var total = 0;
-	    $('#eeda-table input[type=checkbox]:checked').each(function(){
-	    	var tr = $(this).parent().parent();
-	    	
-	    	var total_amount = tr.find(".total_amount").text();
-	    	if(total_amount!=''&&!isNaN(total_amount)){
-	    		total +=parseFloat(total_amount);
-	    	}
-	    })
+//   	var total = 0;
+//	    $('#eeda-table input[type=checkbox]:checked').each(function(){
+//	    	var tr = $(this).parent().parent();
+//	    	
+//	    	var total_amount = tr.find(".total_amount").text();
+//	    	if(total_amount!=''&&!isNaN(total_amount)){
+//	    		total +=parseFloat(total_amount);
+//	    	}
+//	    })
 	    if(ids.length==0){
 	    	$.scojs_message('请选择一条费用明细进行兑换', $.scojs_message.TYPE_ERROR);
 	    	$('#exchange').attr('disabled',false);
 	    	return;
 	    }
 	    
-	    $.post('/costCheckOrder/exchange_currency', 
-           {   cost_order_id: $('#order_id').val(),
+	    $.post('/chargeCheckOrder/exchange_currency', 
+           {   charge_order_id: $('#order_id').val(),
                ids:ids.toString(), 
                rate:rate, 
                ex_currency_name:ex_currency_name}, function(data){

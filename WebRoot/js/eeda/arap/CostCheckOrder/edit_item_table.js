@@ -110,24 +110,28 @@ $(document).ready(function() {
         
         //选择是否是同一币种
         var cnames = [];
-		$('#eeda-table').on('click',"input[type=checkbox]",function () {
-				var cname = $(this).parent().siblings('.currency_name')[0].textContent;
-				if($(this).prop('checked')==true){	
-					if(cnames.length > 0 ){
-						if(cnames[0]==cname){
-							cnames.push(cname);
-						}else{
-							$.scojs_message('请选择同一币种进行兑换', $.scojs_message.TYPE_ERROR);
-							$(this).attr('checked',false);
-							return false;
-						}
-					}else{
-						cnames.push(cname);
-					}
-				}else{
-					cnames.pop(cname);
-			 }
-		});
+    	$('#eeda-table').on('click',"input[type=checkbox]",function () {
+    			var cname = $(this).parent().siblings('.currency_name')[0].textContent;
+    			var id=$(this).val();
+    			if($(this).prop('checked')==true){	
+    				if(cnames.length > 0 ){
+    					if(cnames[0]==cname){
+    						cnames.push(cname);
+    						ids.push(id);
+    					}else{
+    						$.scojs_message('请选择同一币种进行兑换', $.scojs_message.TYPE_ERROR);
+    						$(this).attr('checked',false);
+    						return false;
+    					}
+    				}else{
+    					cnames.push(cname);
+    					ids.push(id);
+    				}
+    			}else{
+    				cnames.pop(cname);
+    				ids.splice($.inArray(id, ids), 1);
+    		 }
+    	}); 
     
     $('input[name=new_rate]').on('keyup',function(){
     	var totalAmount = 0.00;
@@ -185,17 +189,16 @@ $(document).ready(function() {
     	}
     	var currency_name = cnames[0];
     	var ex_currency_name = $('#exchange_currency').val();
-    	var total = 0;
-	    $('#eeda-table input[type=checkbox]:checked').each(function(){
-	    	var tr = $(this).parent().parent();
-	    	var id = tr.attr('id');
-	    	ids.push(id);
-	    	
-	    	var total_amount = tr.find(".total_amount").text();
-	    	if(total_amount!=''&&!isNaN(total_amount)){
-	    		total +=parseFloat(total_amount);
-	    	}
-	    })
+//    	var total = 0;
+//	    $('#eeda-table input[type=checkbox]:checked').each(function(){
+//	    	var tr = $(this).parent().parent();
+//	    	var id = tr.attr('id');
+//	    	
+//	    	var total_amount = tr.find(".total_amount").text();
+//	    	if(total_amount!=''&&!isNaN(total_amount)){
+//	    		total +=parseFloat(total_amount);
+//	    	}
+//	    })
 	    if(ids.length==0){
 	    	$.scojs_message('请选择一条费用明细进行兑换', $.scojs_message.TYPE_ERROR);
 	    	$('#exchange').attr('disabled',false);

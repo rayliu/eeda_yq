@@ -430,12 +430,11 @@ public class CostCheckOrderController extends Controller {
 
     private Map<String, Double> updateExchangeTotal(String costOrderId) {
         String sql="select joa.order_type, ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
-        +"       sum(ifnull(joa.exchange_total_amount, joa.total_amount)) exchange_total_amount "
+        +"       ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount "
         +"       from  job_order_arap joa "
         +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
         +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
-        +"       where joa.id in(select aci.ref_order_id from arap_cost_item aci where aci.cost_order_id="+costOrderId+")"
-        +"       group by joa.order_type";
+        +"       where joa.id in(select aci.ref_order_id from arap_cost_item aci where aci.cost_order_id="+costOrderId+")";
 		
 		Map<String, Double> exchangeTotalMap = new HashMap<String, Double>();
 		exchangeTotalMap.put("CNY", 0d);
@@ -447,18 +446,18 @@ public class CostCheckOrderController extends Controller {
 		for (Record rec : resultList) {
             String name = rec.get("exchange_currency_name");
             String type = rec.get("order_type");
+            Double exchange_amount = exchangeTotalMap.get(name);
             if(exchangeTotalMap.get(name)==null){
                 if("cost".equals(type)){
-                    exchangeTotalMap.put(name, rec.getDouble("exchange_total_amount"));
+                    exchangeTotalMap.put(name, exchange_amount+=exchange_amount);
                 }else{
                     exchangeTotalMap.put(name, 0-rec.getDouble("exchange_total_amount"));
                 }
             }else{
-                Double d= exchangeTotalMap.get(name);
                 if("cost".equals(type)){
-                    exchangeTotalMap.put(name, d+rec.getDouble("exchange_total_amount"));
+                    exchangeTotalMap.put(name, exchange_amount+=rec.getDouble("exchange_total_amount"));
                 }else{
-                    exchangeTotalMap.put(name, d-rec.getDouble("exchange_total_amount"));
+                    exchangeTotalMap.put(name, exchange_amount-=rec.getDouble("exchange_total_amount"));
                 }        
             }
         }
