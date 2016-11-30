@@ -26,36 +26,23 @@ $(document).ready(function() {
             {"data":"ORDER_TYPE"},   
             {"data":"STATUS"},
             {"data":"SP_NAME","sClass":"SP_NAME"},
-            {"data":"APP_MSG"},  
-            {"data":"USD"},  
-            {"data":"HKD"},  
-            {"data":"JPY"},  
-            {"data":"CNY"},  
-            {"data":"PAID_USD",
-            	"render": function(data, type, full, meta) {
-            		if(data)
-            			return parseFloat(data).toFixed(2);	
-            		else 
-            			return '';
-            	}
-            },
-            {"data":"PAID_HKD",
-            	"render": function(data, type, full, meta) {
-            		if(data)
-            			return parseFloat(data).toFixed(2);	
-            		else 
-            			return '';
-            	}
-            },
-            {"data":"PAID_JPY",
-            	"render": function(data, type, full, meta) {
-            		if(data)
-            			return parseFloat(data).toFixed(2);	
-            		else 
-            			return '';
-            	}
-            },
+            {"data":"APP_MSG"},
+            {"data":"CNY"},
             {"data":"PAID_CNY",
+            	"render": function(data, type, full, meta) {
+            		if(data)
+            			return parseFloat(data).toFixed(2);	
+            		else 
+            			return '';
+            	}
+            },
+            {
+            	"render": function(data, type, full, meta) {
+            		return full.CNY - full.PAID_CNY;	
+            	}
+            },
+            {"data":"USD"},
+            {"data":"PAID_USD",
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);	
@@ -68,9 +55,13 @@ $(document).ready(function() {
             		return full.USD - full.PAID_USD;	
             	}
             },
-            {
+            {"data":"JPY"},
+            {"data":"PAID_JPY",
             	"render": function(data, type, full, meta) {
-            		return full.HKD - full.PAID_HKD;	
+            		if(data)
+            			return parseFloat(data).toFixed(2);	
+            		else 
+            			return '';
             	}
             },
             {
@@ -78,11 +69,20 @@ $(document).ready(function() {
             		return full.JPY - full.PAID_JPY;	
             	}
             },
-            {
+            {"data":"HKD"},  
+            {"data":"PAID_HKD",
             	"render": function(data, type, full, meta) {
-            		return full.CNY - full.PAID_CNY;	
+            		if(data)
+            			return parseFloat(data).toFixed(2);	
+            		else 
+            			return '';
             	}
             },
+            {
+            	"render": function(data, type, full, meta) {
+            		return full.HKD - full.PAID_HKD;	
+            	}
+            }
         ]      
     });
                       
