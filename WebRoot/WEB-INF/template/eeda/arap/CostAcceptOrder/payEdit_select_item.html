@@ -1,0 +1,54 @@
+
+    <input type="hidden" id="selected_ids" name="selected_ids"
+     value="${selected_item_ids!''}${invoiceApplication.selected_item_ids!''}">
+    
+    <div class="group-form" >
+      
+       <%include("/eeda/component/form/detailTable.html", 
+           {
+               id:'select_item_table',
+               headers:[
+                   '',
+                   '',
+                   '对账单号',
+                   '工作单号',
+                   '类型',
+                   '创建时间',
+                   '客户',
+                   '结算公司',
+                   '币制',
+                    '金额', 
+                    '原汇率',
+                    '原总金额(CNY)',  
+                    '当前汇率',
+                    '当前总金额(CNY)', 
+                    '结算币制', 
+                    '结算汇率', 
+                    '结算金额',
+                    ''
+               ],
+               field_list:[
+                   'ID',
+                   'PAY_FLAG',
+                   'CHECK_ORDER_NO', 
+                   'ORDER_NO', 
+                   'TYPE', 
+                   'CREATE_STAMP',
+                   'CUSTOMER_NAME', 
+                   'SP_NAME', 
+                   'CURRENCY_NAME',
+                   'TOTAL_AMOUNT',
+                   'EXCHANGE_RATE',
+                   'AFTER_TOTAL', 
+                   'NEW_RATE', 
+                   'AFTER_RATE_TOTAL',
+                   'EXCHANGE_CURRENCY_NAME',
+                   'EXCHANGE_CURRENCY_RATE',
+                   'EXCHANGE_TOTAL_AMOUNT',
+                   'ORDER_TYPE'
+               ],
+               value_list: order.item_list!item_list![]
+           }){} %>
+      
+    </div>
+        
