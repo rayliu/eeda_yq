@@ -56,6 +56,17 @@ $(document).ready(function() {
             	var name = el.attr('name'); 
             	
             	if(el && name){
+            		
+            		if(name=='exchange_currency_id'&&el.val()==''){
+                		el.val(el.parent().parent().parent().find('[name=CURRENCY_ID]').val());
+                	}
+            		if(name=='exchange_currency_rate'&&el.val()==''){
+                		el.val(1);
+                	}
+            		if(name=='exchange_total_amount'&&el.val()==''){
+                		el.val(el.parent().parent().find('[name=total_amount]').val());
+                	}            		
+            		
                 	var value = el.val();//元素的值
                 	item[name] = value;
             	}
@@ -340,7 +351,7 @@ $(document).ready(function() {
 	                return '<input type="text" name="currency_total_amount" style="width:150px" value="'+str+'" class="form-control" disabled />';
               }
             },
-            { "data": "EXCHANGE_CURRENCY_ID", "width":"60px","className":"cny_to_other",
+            { "data": "EXCHANGE_CURRENCY_ID", "width":"60px","className":"cny_to_other","visible":false,
             	"render": function ( data, type, full, meta ) {
             		if(full.AUDIT_FLAG == 'Y'){
             			if(!data)
@@ -370,7 +381,7 @@ $(document).ready(function() {
             		}
             	}
             },
-            { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px",
+            { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px","visible":false,
             	"render": function ( data, type, full, meta ) {
             		if(data)
             			var str =  parseFloat(data).toFixed(2);
@@ -383,7 +394,7 @@ $(document).ready(function() {
             		}
             	}
             },
-            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "150px",
+            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "150px","visible":false,
             	"render": function ( data, type, full, meta ) {
             		if(data)
             			var str =  parseFloat(data).toFixed(2);
