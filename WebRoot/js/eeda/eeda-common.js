@@ -47,7 +47,7 @@ define(['jquery', 'dataTablesBootstrap'], function($){
         var tab = e.target // newly activated tab
         //e.relatedTarget // previous active tab
         var tab_div_id = $(tab).attr('href');
-        $(tab_div_id+' table').DataTable().columns.adjust();
+        $(tab_div_id+' table.table').filter(':not(.customized)').DataTable().columns.adjust();
     });
 
     //只要属性中使用 limit=10, 控制td长度, 超出10 显示...
