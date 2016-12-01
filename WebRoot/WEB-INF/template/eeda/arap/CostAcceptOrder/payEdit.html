@@ -4,14 +4,14 @@
 		<div class="row">
              <div class="col-lg-12">
               	<div class="btn-header">
-              		<div class="btn-header" style="font-size: 32px" align="left">付款申请复核</div>
+              		<div class="btn-header" style="font-size: 32px" align="left">付款申请单</div>
 				</div>
                 <div class="panel panel-default">
             		<div class="panel-body">
             		 	<form id="checkForm">
             			<div class="row search_panel">
             			<input id='ids' name='ids' type="hidden" value="${ids!''}">
-            			<input id='application_id' name='application_id' type="hidden" value="${invoiceApplication.ID!''}">
+            			<input id='application_id' name='application_id' type="hidden" value="${invoiceApplication.id!''}">
             			<input id='total_app_usd' name='total_app_usd' type="hidden">
             			<input id='total_app_cny' name='total_app_cny' type="hidden">
             			<input id='total_app_hkd' name='total_app_hkd' type="hidden">
@@ -60,7 +60,7 @@
 	                                    <label class="search-label">收款账号</label>
 	                                	<input type="text" class="form-control search-control bank_no" id="bank_no" name="bank_no" value="${bank_no!''}${invoiceApplication.bank_no!''}">
 	                                </div>
-	                                <div class="form-group">                                  
+	                                <div class="form-group">
 	                                    <label class="search-label">账户名</label> 
 	                                    <input type="text" class="form-control search-control account_name" id="account_name" name="account_name"  value="${account_name!''}${invoiceApplication.num_name!''}" >
 	                                </div>
@@ -87,20 +87,46 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="search-label">结算单位</label>
+                                    <input type="hidden" id="payee_id" name="payee_id" value="${payee_id!''}${invoiceApplication.payee_id!''}"/>
                                     <input type="text" readonly="readonly" class="form-control search-control sp_filter" id="payee_filter" name="payee_filter" value="${payee_filter!''}">
                                 </div>
                           </div>
                            
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="margin-top: 10px;">
 								<label>发票信息</label>
 								<textarea id='invoice_no' class="form-control" rows="3" name="invoice_no">${invoiceApplication.invoice_no!''}</textarea>
 							</div>
                         </div>
                         <br/><hr>
+                        <div class="row" style="margin-top: 5px;">
+                            <div class="col-lg-3">
+                                <%include("/eeda/component/form/inputField.html", { id:'modal_cny',
+                                label:'CNY', value:order.cny!'',disabled:'disabled'
+                                }){}%>
+                            </div>
+                            <div class="col-lg-3">
+                                <%include("/eeda/component/form/inputField.html", { id:'modal_hkd',
+                                label:'HKD', value:order.hkd!'',disabled:'disabled'
+                                }){}%>
+                            </div>
+                            <div class="col-lg-3">
+                                <%include("/eeda/component/form/inputField.html", { id:'modal_jpy',
+                                label:'JPY', value:order.jpy!'',disabled:'disabled'
+                                }){}%>
+                            </div>
+                            <div class="col-lg-3">
+                                <%include("/eeda/component/form/inputField.html", { id:'modal_usd',
+                                label:'USD', value:order.usd!'',disabled:'disabled'
+                                }){}%>
+                            </div>
+                        </div>
                         <ul id="orderTabs" class="nav nav-tabs">
 							<li class="active">
-								<a href="#list" data-toggle="tab" id="costCheckOrderItem">业务单据信息</a>
+								<a href="#list" data-toggle="tab" id="costCheckOrderItem">业务单据</a>
 							</li>
+                            <li>
+                                <a href="#item_list" data-toggle="tab" id="costCheckOrderSelectItem">单据明细</a>
+                            </li>
 							<li >
 								<a href="#upload" data-toggle="tab" data-src="create" id="costCheckOrderbasic">发票图片上传</a>
 							</li>
@@ -114,22 +140,22 @@
 		                                        <th>应付类别</th>
 		                                        <th>对账单号</th>
 		                                        <th>结算单位</th>
-		                                        <th>应付USD</th>
-		                                        <th>待付USD</th>
-		                                        <th>本次付款USD</th>
+                                                <th>应付CNY</th>
+                                                <th style="background-color: floralwhite;">待申请CNY</th>
+                                                <th style="background-color: bisque;">本次付款CNY</th>
 		                                        
 		                                        <th>应付HKD</th>
-		                                        <th>待付HKD</th>
-		                                        <th>本次付款HKD</th>
-		                                        
-		                                        <th>应付CNY</th>
-		                                        <th>待付CNY</th>
-		                                        <th>本次付款CNY</th>
+		                                        <th style="background-color: floralwhite;">待申请HKD</th>
+		                                        <th style="background-color: bisque;">本次付款HKD</th>
 		                                        
 		                                        <th>应付JPY</th>
-		                                        <th>待付JPY</th>
-		                                        <th>本次付款JPY</th>
-		                                        
+		                                        <th style="background-color: floralwhite;">待申请JPY</th>
+		                                        <th style="background-color: bisque;">本次付款JPY</th>
+
+		                                        <th>应付USD</th>
+                                                <th style="background-color: floralwhite;">待申请USD</th>
+                                                <th style="background-color: bisque;">本次付款USD</th>
+                                                
 		                                        <th>创建人</th>
 		                                        <th>创建时间</th>
 		                                        <th>备注</th>
@@ -140,27 +166,31 @@
 		                                <tfoot>
 		                                	<tr>
 		                                        <th colspan="3"><div align="center">合计</div></th>
-		                                        <th><span id="total_usd"></span></th>
-		                                        <th><span id="nopay_usd"></span></th>
-		                                        <th><span id="pay_usd"></span></th>
+
+                                                <th><span id="total_cny"></span></th>
+                                                <th style="background-color: floralwhite;"><span id="nopay_cny"></span></th>
+                                                <th style="background-color: bisque;"><span id="pay_cny"></span></th>
 		                                        
 		                                        <th><span id="total_hkd"></span></th>
-		                                        <th><span id="nopay_hkd"></span></th>
-		                                        <th><span id="pay_hkd"></span></th>
-		                                        
-		                                        <th><span id="total_cny"></span></th>
-		                                        <th><span id="nopay_cny"></span></th>
-		                                        <th><span id="pay_cny"></span></th>
+		                                        <th style="background-color: floralwhite;"><span id="nopay_hkd"></span></th>
+		                                        <th style="background-color: bisque;"><span id="pay_hkd"></span></th>
 		                                        
 		                                        <th><span id="total_jpy"></span></th>
-		                                        <th><span id="nopay_jpy"></span></th>
-		                                        <th><span id="pay_jpy"></span></th>
+		                                        <th style="background-color: floralwhite;"><span id="nopay_jpy"></span></th>
+		                                        <th style="background-color: bisque;"><span id="pay_jpy"></span></th>
+
+                                                <th><span id="total_usd"></span></th>
+                                                <th style="background-color: floralwhite;"><span id="nopay_usd"></span></th>
+                                                <th style="background-color: bisque;"><span id="pay_usd"></span></th>
 		                                        <th colspan="3"></th>
 		                                	</tr>
 		                                </tfoot>
 		                            </table>
 		                       </div>
 		               		</div>
+                            <div class="tab-pane fade" id="item_list">
+                                <%include("/eeda/arap/CostAcceptOrder/payEdit_select_item.html", {}){} %>
+                            </div>
 		               		<div class="tab-pane fade" id="upload">
 		                   		<div class="form-group">
 		                   			<br/>
@@ -278,6 +308,8 @@
 			</div>
 		</div>
 	</div>
+
+    
 <%}%>
 
 <script>

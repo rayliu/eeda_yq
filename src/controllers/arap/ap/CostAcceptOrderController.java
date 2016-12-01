@@ -74,7 +74,8 @@ public class CostAcceptOrderController extends Controller {
 		String billing_unit = getPara("billing_unit"); //收款单位
 		String billtype = getPara("invoice_type");   //开票类型
 		String bank_name= getPara("deposit_bank");   //开户行
-		String invoice_no= getPara("invoice_no"); 
+		String invoice_no= getPara("invoice_no");
+		String selected_item_ids= getPara("selected_ids"); 
 		
 		String total_app_usd = getPara("total_app_usd")==""?"0.00":getPara("total_app_usd");   //申请总金额
 		String total_app_cny = getPara("total_app_cny")==""?"0.00":getPara("total_app_cny");   //申请总金额
@@ -97,6 +98,7 @@ public class CostAcceptOrderController extends Controller {
 			aca.set("invoice_no", invoice_no);
 			aca.set("bank_name", bank_name);
 			aca.set("num_name", numname);
+			aca.set("selected_item_ids", selected_item_ids);
 			if (total_app_usd != null && !"".equals(total_app_usd)) {
 				aca.set("app_usd",total_app_usd);
 			}
@@ -112,12 +114,14 @@ public class CostAcceptOrderController extends Controller {
 			
 			aca.update();
 			
+			String costOrderId="";
 			String strJson = getPara("detailJson");
 			Gson gson = new Gson();
 			List<Map> idList = new Gson().fromJson(strJson, 
 					new TypeToken<List<Map>>(){}.getType());
 			for (Map map : idList) {
 				String id = (String)map.get("id");
+				costOrderId +=","+id;
 				String order_type = (String)map.get("order_type");
 				String app_usd = (String)map.get("app_usd");
 				String app_hkd = (String)map.get("app_hkd");
@@ -131,6 +135,13 @@ public class CostAcceptOrderController extends Controller {
 				costApplicationOrderRel.set("paid_jpy", app_jpy);
 				costApplicationOrderRel.update();
 			}
+			//更新勾选的job_order_arap item pay_flag
+            String sql ="update job_order_arap set pay_flag='N' where id in ("
+                    + " select ref_order_id from arap_cost_item where cost_order_id in("+costOrderId.substring(1)+"))"
+                    + " and id not in("+selected_item_ids+")";
+            Db.update(sql);
+            String ySql ="update job_order_arap set pay_flag='Y' where id in("+selected_item_ids+")";
+            Db.update(ySql);
 		} else {
 			aca = new ArapCostApplication();
 			aca.set("order_no",OrderNoGenerator.getNextOrderNo("YFSQ", office_id));
@@ -148,7 +159,7 @@ public class CostAcceptOrderController extends Controller {
 			aca.set("bank_name", bank_name);
 			aca.set("num_name", numname);
 			aca.set("payee_id", payee_id);
-		
+			aca.set("selected_item_ids", selected_item_ids);//选中的明细item
 			if (total_app_usd != null && !"".equals(total_app_usd)) {
 				aca.set("app_usd",total_app_usd);
 			}
@@ -163,12 +174,14 @@ public class CostAcceptOrderController extends Controller {
 			}
 			aca.save();
 			
+			String costOrderId="";
 			String strJson = getPara("detailJson");
 			Gson gson = new Gson();
 			List<Map> idList = new Gson().fromJson(strJson, 
 					new TypeToken<List<Map>>(){}.getType());
 			for (Map map : idList) {
 				String id = (String)map.get("id");
+				costOrderId +=","+id;
 				String order_type = (String)map.get("order_type");
 				String cname = (String)map.get("payee_unit");
 				String app_usd = (String)map.get("app_usd");
@@ -188,6 +201,14 @@ public class CostAcceptOrderController extends Controller {
 				if(cname!=null)
 					costApplicationOrderRel.set("payee_unit", cname);
 				costApplicationOrderRel.save();
+				
+				//更新勾选的job_order_arap item pay_flag
+				String sql ="update job_order_arap set pay_flag='N' where id in ("
+	                    + " select ref_order_id from arap_cost_item where cost_order_id in("+costOrderId.substring(1)+"))"
+	                    + " and id not in("+selected_item_ids+")";
+	            Db.update(sql);
+	            String ySql ="update job_order_arap set pay_flag='Y' where id in("+selected_item_ids+")";
+	            Db.update(ySql);
 				
                 if(order_type.equals("应付对账单")){
 					ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
@@ -235,18 +256,36 @@ public class CostAcceptOrderController extends Controller {
 			
 			if(order_type.equals("应付对账单")){
 				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
-				Double usd = arapCostOrder.getDouble("usd");
+				Double usd = arapCostOrder.getDouble("usd"); //结算应付的金额
 				Double cny = arapCostOrder.getDouble("cny");
 				Double hkd = arapCostOrder.getDouble("hkd");
 				Double jpy = arapCostOrder.getDouble("jpy");
-				Record re = Db.findFirst("select sum(ifnull(c.paid_usd, 0)) paid_usd,sum(ifnull(c.paid_cny, 0)) paid_cny,sum(ifnull(c.paid_hkd, 0)) paid_hkd,sum(ifnull(c.paid_jpy, 0)) paid_jpy"
-						+ " from cost_application_order_rel where cost_order_id =? and order_type = '应付对账单'",id);
-				Double paid_usd = re.getDouble("paid_usd");
-				Double paid_cny = re.getDouble("paid_cny");
-				Double paid_hkd = re.getDouble("paid_hkd");
-				Double paid_jpy = re.getDouble("paid_jpy");
 				
-				if(usd>paid_usd||cny>paid_cny||hkd>paid_hkd||jpy>paid_jpy){
+				String sql = "SELECT "
+				     +" ifnull((SELECT sum(exchange_total_amount) from job_order_arap "
+                     +"               where id in(select ref_order_id from arap_cost_item where cost_order_id = "+id+") " 
+                     +"                and exchange_currency_id = (select id from currency where code='USD') "
+                     +"               and pay_flag='Y' ),0) apply_pay_usd,"
+                     +" ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                     +"                where id in(select ref_order_id from arap_cost_item where cost_order_id = "+id+") " 
+                     +"                and exchange_currency_id = (select id from currency where code='CNY') "
+                     +"                 and pay_flag='Y'),0) apply_pay_cny,"
+                     +" ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                     +"                where id in(select ref_order_id from arap_cost_item where cost_order_id = "+id+")  "
+                     +"               and exchange_currency_id = (select id from currency where code='JPY') "
+                     +"               and pay_flag='Y'),0) apply_pay_jpy,"
+                     +" ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                     +"                 where id in(select ref_order_id from arap_cost_item where cost_order_id = "+id+")  "
+                     +"                and exchange_currency_id = (select id from currency where code='HKD') "
+                     +"                and pay_flag='Y'),0) apply_pay_hkd";
+				
+				Record re = Db.findFirst(sql);
+				Double apply_pay_usd = re.getDouble("apply_pay_usd");//打钩的arap item 汇总金额
+				Double apply_pay_cny = re.getDouble("apply_pay_cny");
+				Double apply_pay_hkd = re.getDouble("apply_pay_hkd");
+				Double apply_pay_jpy = re.getDouble("apply_pay_jpy");
+				
+				if(usd>apply_pay_usd||cny>apply_pay_cny||hkd>apply_pay_hkd||jpy>apply_pay_jpy){
 					arapCostOrder.set("audit_status", "部分已复核").update();
 				}else{
 					arapCostOrder.set("audit_status", "已复核").update();
@@ -338,7 +377,7 @@ public class CostAcceptOrderController extends Controller {
    		}
         
         ArapCostApplication arapCostInvoiceApplication = ArapCostApplication.dao.findById(application_id);
-        String pay_amount = arapCostInvoiceApplication.getDouble("total_amount").toString();
+        
         arapCostInvoiceApplication.set("status", "已付款");
         arapCostInvoiceApplication.set("pay_type", pay_type);
         if(pay_bank_id != null && !pay_bank_id.equals(""))
@@ -370,14 +409,31 @@ public class CostAcceptOrderController extends Controller {
                 Double hkd = arapCostOrder.getDouble("hkd");
                 Double jpy = arapCostOrder.getDouble("jpy");
 
-				Record re = Db.findFirst("select sum(ifnull(c.paid_usd, 0)) paid_usd,sum(ifnull(c.paid_cny, 0)) paid_cny,sum(ifnull(c.paid_hkd, 0)) paid_hkd,sum(ifnull(c.paid_jpy, 0)) paid_jpy"
-						+ " from cost_application_order_rel where cost_order_id =? and order_type = '应付对账单'",id);
-				Double paid_usd = re.getDouble("paid_usd");
-				Double paid_cny = re.getDouble("paid_cny");
-				Double paid_hkd = re.getDouble("paid_hkd");
-				Double paid_jpy = re.getDouble("paid_jpy");
+                String sql = "SELECT "
+                        +" ifnull((SELECT sum(exchange_total_amount) from job_order_arap "
+                        +"               where id in(select ref_order_id from arap_cost_item where cost_order_id = "+id+") " 
+                        +"                and exchange_currency_id = (select id from currency where code='USD') "
+                        +"               and pay_flag='Y' ),0) apply_pay_usd,"
+                        +" ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                        +"                where id in(select ref_order_id from arap_cost_item where cost_order_id = "+id+") " 
+                        +"                and exchange_currency_id = (select id from currency where code='CNY') "
+                        +"                 and pay_flag='Y'),0) apply_pay_cny,"
+                        +" ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                        +"                where id in(select ref_order_id from arap_cost_item where cost_order_id = "+id+")  "
+                        +"               and exchange_currency_id = (select id from currency where code='JPY') "
+                        +"               and pay_flag='Y'),0) apply_pay_jpy,"
+                        +" ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                        +"                 where id in(select ref_order_id from arap_cost_item where cost_order_id = "+id+")  "
+                        +"                and exchange_currency_id = (select id from currency where code='HKD') "
+                        +"                and pay_flag='Y'),0) apply_pay_hkd";
+                   
+                   Record re = Db.findFirst(sql);
+                   Double apply_pay_usd = re.getDouble("apply_pay_usd");//打钩的arap item 汇总金额
+                   Double apply_pay_cny = re.getDouble("apply_pay_cny");
+                   Double apply_pay_hkd = re.getDouble("apply_pay_hkd");
+                   Double apply_pay_jpy = re.getDouble("apply_pay_jpy");
 				
-				if(usd>paid_usd||cny>paid_cny||hkd>paid_hkd||jpy>paid_jpy){
+				if(usd>apply_pay_usd||cny>apply_pay_cny||hkd>apply_pay_hkd||jpy>apply_pay_jpy){
 					arapCostOrder.set("audit_status", "部分已付款").update();
 				}else{
 					arapCostOrder.set("audit_status", "已付款").update();
@@ -385,12 +441,29 @@ public class CostAcceptOrderController extends Controller {
 			}
 		}
         
+		String cny_pay_amount = arapCostInvoiceApplication.getDouble("app_cny").toString();
+        createAuditLog(application_id, pay_type, pay_bank_id, pay_time, cny_pay_amount, "CNY");
         
+        String hkd_pay_amount = arapCostInvoiceApplication.getDouble("app_hkd").toString();
+        createAuditLog(application_id, pay_type, pay_bank_id, pay_time, hkd_pay_amount, "HKD");
         
-       //新建日记账表数据
+        String jpy_pay_amount = arapCostInvoiceApplication.getDouble("app_jpy").toString();
+        createAuditLog(application_id, pay_type, pay_bank_id, pay_time, jpy_pay_amount, "JPY");
+        
+        String usd_pay_amount = arapCostInvoiceApplication.getDouble("app_usd").toString();
+        createAuditLog(application_id, pay_type, pay_bank_id, pay_time, usd_pay_amount, "USD");
+                
+        renderJson("{\"success\":true}");  
+    }
+
+
+    private void createAuditLog(String application_id, String pay_type,
+            String pay_bank_id, String pay_time, String pay_amount, String currency_code) {
+        //新建日记账表数据
 		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
         auditLog.set("payment_method", pay_type);
         auditLog.set("payment_type", ArapAccountAuditLog.TYPE_COST);
+        auditLog.set("currency_code", currency_code);
         auditLog.set("amount", pay_amount);
         auditLog.set("creator", LoginUserController.getLoginUserId(this));
         auditLog.set("create_date", pay_time);
@@ -401,8 +474,6 @@ public class CostAcceptOrderController extends Controller {
         auditLog.set("source_order", "应付申请单");
         auditLog.set("invoice_order_id", application_id);
         auditLog.save();
-                
-        renderJson("{\"success\":true}");  
     }
 	
 	
@@ -525,17 +596,57 @@ public class CostAcceptOrderController extends Controller {
     
 
     public void costOrderList() {
-        String ids = getPara("ids");
+        String ids = getPara("ids");//cost_order_id
         String application_id = getPara("application_id");
         String sql = "";
         if("".equals(application_id)||application_id==null){
 		
 			sql = " SELECT aco.*, p.company_name payee_name, '应付对账单' order_type,"
 					+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
-					+ " ifnull(c.paid_usd,0) paid_usd,"
-					+ " ifnull(c.paid_cny,0) paid_cny,"
-					+ " ifnull(c.paid_jpy,0) paid_jpy,"
-					+ " ifnull(c.paid_hkd,0) paid_hkd"
+					+ " (aco.usd-ifnull(c.paid_usd, 0)) wait_usd,"
+					+ " (aco.cny-ifnull(c.paid_cny, 0)) wait_cny,"
+				    + " (aco.jpy-ifnull(c.paid_jpy, 0)) wait_jpy,"
+				    + " (aco.hkd-ifnull(c.paid_hkd, 0)) wait_hkd,"
+				    +" case "
+				    +"     when c.cost_order_id is not null then"
+				    +"         ifnull("
+				    +"                 ( SELECT sum(exchange_total_amount) FROM job_order_arap"
+				    +"                             WHERE id IN(SELECT ref_order_id FROM arap_cost_item WHERE cost_order_id IN(c.cost_order_id) ) "
+				    +"                                 AND exchange_currency_id =( SELECT id FROM currency WHERE CODE = 'USD' ) "
+				    +"                                 AND pay_flag = 'Y' "
+				    +"                 ),0) "
+				    +" else aco.usd "
+				    +" end  apply_pay_usd, "
+				    +" case  "
+				    +"     when c.cost_order_id is not null then "
+				    +"         ifnull( "
+				    +"                 ( SELECT sum(exchange_total_amount) FROM job_order_arap "
+				    +"                     WHERE id IN( SELECT ref_order_id FROM arap_cost_item WHERE cost_order_id IN(c.cost_order_id) ) "
+				    +"                         AND exchange_currency_id =( SELECT id FROM currency WHERE CODE = 'CNY' ) "
+				    +"                         AND pay_flag = 'Y' "
+				    +"                 ),0) "
+				    +" else aco.cny "
+				    +" end  apply_pay_cny, "
+				    +" case  "
+				    +"     when c.cost_order_id is not null then "
+				    +"         ifnull( "
+				    +"                 ( SELECT sum(exchange_total_amount) FROM job_order_arap "
+				    +"                     WHERE id IN( SELECT ref_order_id FROM arap_cost_item WHERE cost_order_id IN(c.cost_order_id) ) "
+				    +"                         AND exchange_currency_id =( SELECT id FROM currency WHERE CODE = 'JPY' ) "
+				    +"                         AND pay_flag = 'Y' "
+				    +"                 ), 0 ) "
+				    +" else aco.jpy "
+				    +" end  apply_pay_jpy, "
+				    +" case  "
+				    +"     when c.cost_order_id is not null then "
+				    +"         ifnull( "
+				    +"                 ( SELECT sum(exchange_total_amount) FROM job_order_arap "
+				    +"                     WHERE id IN( SELECT ref_order_id FROM arap_cost_item WHERE cost_order_id IN(c.cost_order_id) ) "
+				    +"                         AND exchange_currency_id =( SELECT id FROM currency WHERE CODE = 'HKD' ) "
+				    +"                         AND pay_flag = 'Y' "
+				    +"             ), 0 ) "
+				    +" else aco.hkd "
+				    +" end  apply_pay_hkd "
 					+ " FROM arap_cost_order aco "
 					+ " LEFT JOIN cost_application_order_rel c on c.cost_order_id = aco.id"
 					+ " LEFT JOIN party p ON p.id = aco.sp_id"
@@ -546,10 +657,46 @@ public class CostAcceptOrderController extends Controller {
 			
 			sql = " SELECT aco.*, p.company_name payee_name, '应付对账单' order_type,"
 					+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
-					+ " ifnull(caor.paid_usd,0) paid_usd,"
-					+ " ifnull(caor.paid_cny,0) paid_cny,"
-					+ " ifnull(caor.paid_jpy,0) paid_jpy,"
-					+ " ifnull(caor.paid_hkd,0) paid_hkd"
+					+ " ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                    + "                 where id in(select ref_order_id from arap_cost_item where cost_order_id in ("+ids+"))  "
+                    + "                 and exchange_currency_id = (select id from currency where code='USD') "
+                    + "                 and pay_flag='Y' ),0) apply_pay_usd,"
+					+ " ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                    + "                 where id in(select ref_order_id from arap_cost_item where cost_order_id in ("+ids+"))  "
+                    + "                 and exchange_currency_id = (select id from currency where code='CNY') "
+                    + "                 and pay_flag='Y'),0) apply_pay_cny,"
+					+ " ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                    + "                 where id in(select ref_order_id from arap_cost_item where cost_order_id in ("+ids+"))  "
+                    + "                 and exchange_currency_id = (select id from currency where code='JPY') "
+                    + "                 and pay_flag='Y'),0) apply_pay_jpy,"
+					+ " ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                    + "                 where id in(select ref_order_id from arap_cost_item where cost_order_id in ("+ids+"))  "
+                    + "                 and exchange_currency_id = (select id from currency where code='HKD') "
+                    + "                 and pay_flag='Y'),0) apply_pay_hkd,"
+					+ " ( "
+					+ " aco.usd - ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                    + "                 where id in(select ref_order_id from arap_cost_item where cost_order_id in ("+ids+"))  "
+                    + "                 and exchange_currency_id = (select id from currency where code='USD') "
+                    + "                 and pay_flag='Y' ),0) "
+                    + " ) wait_usd, "
+                    + " ( "
+                    + "     aco.cny - ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                    + "                 where id in(select ref_order_id from arap_cost_item where cost_order_id in ("+ids+"))  "
+                    + "                 and exchange_currency_id = (select id from currency where code='CNY') "
+                    + "                 and pay_flag='Y'),0) "
+                    + " ) wait_cny, "
+                    + " ( "
+                    + "     aco.jpy - ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                    + "                 where id in(select ref_order_id from arap_cost_item where cost_order_id in ("+ids+"))  "
+                    + "                 and exchange_currency_id = (select id from currency where code='JPY') "
+                    + "                 and pay_flag='Y'),0) "
+                    + " ) wait_jpy, "
+                    + " ( "
+                    + "     aco.hkd - ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+                    + "                 where id in(select ref_order_id from arap_cost_item where cost_order_id in ("+ids+"))  "
+                    + "                 and exchange_currency_id = (select id from currency where code='HKD') "
+                    + "                 and pay_flag='Y'),0) " 
+                    + " ) wait_hkd"
 					+ " FROM arap_cost_order aco "
 					+ " LEFT JOIN cost_application_order_rel caor on caor.cost_order_id = aco.id"
 					+ " LEFT JOIN arap_cost_application_order acao on acao.id = caor.application_order_id"
@@ -601,7 +748,12 @@ public class CostAcceptOrderController extends Controller {
         setAttr("payee_id", payee_id);
         setAttr("payee_name", payee_name);
         
-            
+        
+        String sql="select group_concat(cast(ref_order_id as char) SEPARATOR ',') selected_item_ids"
+                + " from arap_cost_item where cost_order_id in("+ids+")";
+        String selected_item_ids = Db.findFirst(sql).getStr("selected_item_ids");
+        setAttr("selected_item_ids", selected_item_ids);
+        
         List<Record> Account = null;
         Account = Db.find("select * from fin_account where bank_name != '现金'");
         setAttr("accountList", Account);
@@ -617,6 +769,10 @@ public class CostAcceptOrderController extends Controller {
 		String id = getPara("id");
 		ArapCostApplication aca = ArapCostApplication.dao.findById(id);
 		setAttr("invoiceApplication", aca);
+		
+		String sql = "select group_concat(cast(cost_order_id as char) SEPARATOR ',') ids from cost_application_order_rel where application_order_id = ?";
+		Record rec = Db.findFirst(sql,id);
+		setAttr("ids", rec.getStr("ids"));
 		
 		Party con  = Party.dao.findFirst("select * from party  where id =?",aca.get("payee_id"));
 		if(con!=null)

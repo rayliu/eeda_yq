@@ -1,22 +1,28 @@
-﻿define(['jquery', 'metisMenu', 'sb_admin','./edit_doc_table',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+﻿define(['jquery', 'metisMenu', 'sb_admin',
+    './edit_doc_table', './payEdit_select_item', 
+ 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, sb, doc, selectContr) {
 $(document).ready(function() {
 	document.title = '付款申请单 | '+document.title;
 	$('#pay_date').val(eeda.getDate());
+
 	$('#menu_finance').addClass('active').find('ul').addClass('in');
 		//datatable, 动态处理
 	    var ids = $("#ids").val();
+        var selected_item_ids = $("#selected_item_ids").val();
         var total_usd = 0;
         var total_cny = 0;
         var total_hkd = 0;
         var total_jpy = 0;
-        var nopay_usd = 0;
-        var nopay_jpy = 0;
-        var nopay_hkd = 0;
-        var nopay_cny = 0;
-        var pay_usd = 0;
-        var pay_cny = 0;
-        var pay_hkd = 0;
-        var pay_jpy = 0;
+        //待申请
+        var wait_pay_usd = 0;
+        var wait_pay_jpy = 0;
+        var wait_pay_hkd = 0;
+        var wait_pay_cny = 0;
+        //本次应付
+        var apply_pay_usd_total = 0;
+        var apply_pay_cny_total = 0;
+        var apply_pay_hkd_total = 0;
+        var apply_pay_jpy_total = 0;
 
 		var dataTable = eeda.dt({
 		    id: 'CostOrder-table',
@@ -29,24 +35,26 @@ $(document).ready(function() {
             },
             initComplete: function( settings ) {
             	$("#total_usd").html(total_usd.toFixed(2));
-        		$("#nopay_usd").html(nopay_usd.toFixed(2));
-        		$("#pay_usd").html(pay_usd.toFixed(2));
-        		$("#app_usd").val(pay_usd.toFixed(2));
+        		$("#nopay_usd").html(wait_pay_usd.toFixed(2));
+        		$("#pay_usd").html(apply_pay_usd_total.toFixed(2));
+        		$("#app_usd").val(apply_pay_usd_total.toFixed(2));
 
         		$("#total_hkd").html(total_hkd.toFixed(2));
-        		$("#nopay_hkd").html(nopay_hkd.toFixed(2));
-        		$("#pay_hkd").html(pay_hkd.toFixed(2));
-        		$("#app_hkd").val(pay_hkd.toFixed(2));
+        		$("#nopay_hkd").html(wait_pay_hkd.toFixed(2));
+        		$("#pay_hkd").html(apply_pay_hkd_total.toFixed(2));
+        		$("#app_hkd").val(apply_pay_hkd_total.toFixed(2));
 
         		$("#total_cny").html(total_cny.toFixed(2));
-        		$("#nopay_cny").html(nopay_cny.toFixed(2));
-        		$("#pay_cny").html(pay_cny.toFixed(2));
-        		$("#app_cny").val(pay_cny.toFixed(2));
+        		$("#nopay_cny").html(wait_pay_cny.toFixed(2));
+        		$("#pay_cny").html(apply_pay_cny_total.toFixed(2));
+        		$("#app_cny").val(apply_pay_cny_total.toFixed(2));
 
         		$("#total_jpy").html(total_jpy.toFixed(2));
-        		$("#nopay_jpy").html(nopay_jpy.toFixed(2));
-        		$("#pay_jpy").html(pay_jpy.toFixed(2));
-        		$("#app_jpy").val(pay_jpy.toFixed(2));
+        		$("#nopay_jpy").html(wait_pay_jpy.toFixed(2));
+        		$("#pay_jpy").html(apply_pay_jpy_total.toFixed(2));
+        		$("#app_jpy").val(apply_pay_jpy_total.toFixed(2));
+
+                selectContr.refleshSelectTable(ids, selected_item_ids);
             },
 		    columns:[
              {"data":"ORDER_TYPE","width": "100px","sClass":"order_type"},
@@ -56,40 +64,27 @@ $(document).ready(function() {
         		}
              },
         	{"data":"CNAME","width": "250px"},
-    		{"data":"USD","width": "100px",
-    			"render": function(data, type, full, meta) {
-    				if(data!=null&&!isNaN(data)){
-						data = parseFloat(data).toFixed(2);
-						total_usd = total_usd + parseFloat(data);
-    				}
-					return data;
-    			}
-    		},
-    		{"data":"PAID_USD","width": "100px","class":"to_pay_usd",
-    			"render": function(data, type, full, meta) {
-    				if(data!=null&&!isNaN(data)&&full.USD!=null&&!isNaN(full.USD)){
-    					nopay_usd = nopay_usd + parseFloat(full.USD-data);
-						data = parseFloat(full.USD-data).toFixed(2);
-    				}
-					return data;
-    			}
-    		},
-    		{"data":"PAID_USD","width": "100px",
-    			"render": function(data, type, full, meta) {
-    				if($('#application_id').val()==''){
-    					if(data!=null&&full.USD!=null&&!isNaN(data)&&!isNaN(full.USD)){
-    						pay_usd = pay_usd + parseFloat(full.USD-data);
-    						data = parseFloat(full.USD-data).toFixed(2);
-    					}
-    				}else{
-    					if(data!=null&&!isNaN(data)){
-    						pay_usd = pay_usd + parseFloat(data);
-    						data = parseFloat(data).toFixed(2);
-    					}
-    				}
-    				return "<input type ='text' name='app_usd' style='width:80px' value='"+data+"'>";
-    			}
-    		},
+            {"data":"CNY","width": "100px",
+                "render": function(data, type, full, meta) {
+                    if(!isNaN(data)&&data!=null){
+                        data = parseFloat(data).toFixed(2);
+                        total_cny = total_cny + parseFloat(data);
+                    }
+                    return data;
+                }
+            },
+            {"data":"WAIT_CNY","width": "100px","class":"to_pay_cny",//待申请
+                "render": function(data, type, full, meta) {
+                    wait_pay_cny += data;//parseFloat(data).toFixed(2);
+                    return data;
+                }
+            },
+            {"data":"APPLY_PAY_CNY","width": "100px",
+                "render": function(data, type, full, meta) {
+                    apply_pay_cny_total += data;
+                    return '<span name="wait_cny">'+data+'</span>';
+                }
+            },
     		{"data":"HKD","width": "100px",
     			"render": function(data, type, full, meta) {
     				if(data!=null&&!isNaN(data)){
@@ -99,65 +94,19 @@ $(document).ready(function() {
     				return data;
     			}
     		},
-    		{"data":"PAID_HKD","width": "100px","class":"to_pay_hkd",
+    		{"data":"WAIT_HKD","width": "100px","class":"to_pay_hkd",
     			"render": function(data, type, full, meta) {
-    				if(data!=null&&full.HKD!=null&&!isNaN(data)&&!isNaN(full.HKD)){
-    					nopay_hkd = nopay_hkd + parseFloat(full.HKD-data);
-	    				data = parseFloat(full.HKD-data).toFixed(2);
-    				}
+    				wait_pay_hkd += data;
     				return data;
     			}
     		},
-    		{"data":"PAID_HKD","width": "100px",
-    			"render": function(data, type, full, meta) {
-    				if($('#application_id').val()==''){
-    					if(!isNaN(data)&&full.HKD!=null&&!isNaN(full.HKD)&&data!=null){
-    						pay_hkd = pay_hkd + parseFloat(full.HKD-data);
-    						data = parseFloat(full.HKD-data).toFixed(2);
-    					}
-    				}else{
-    					if(data!=null&&!isNaN(data)){
-    						pay_hkd = pay_hkd + parseFloat(data);
-    						data = parseFloat(data).toFixed(2);
-    					}
-    				}
-    				return "<input type ='text' name='app_hkd' style='width:80px' value='"+data+"'>";
-    			}
-    		},
-    		{"data":"CNY","width": "100px",
-    			"render": function(data, type, full, meta) {
-    				if(!isNaN(data)&&data!=null){
-	    				data = parseFloat(data).toFixed(2);
-	    				total_cny = total_cny + parseFloat(data);
-    				}
-    				return data;
-    			}
-    		},
-    		{"data":"PAID_CNY","width": "100px","class":"to_pay_cny",
-    			"render": function(data, type, full, meta) {
-    				if(data!=null&&!isNaN(data)&&full.CNY!=null&&!isNaN(full.CNY)){
-    					nopay_cny = nopay_cny + parseFloat(full.CNY-data);
-	    				data = parseFloat(full.CNY-data).toFixed(2);
-    				}
-    				return data;
-    			}
-    		},
-    		{"data":"PAID_CNY","width": "100px",
-    			"render": function(data, type, full, meta) {
-    				if($('#application_id').val()==''){
-    					if(data!=null&&!isNaN(data)&&full.CNY!=null&&!isNaN(full.CNY)){
-    						pay_cny = pay_cny + parseFloat(full.CNY-data);
-    						data = parseFloat(full.CNY-data).toFixed(2);
-    					}
-    				}else{
-    					if(data!=null&&!isNaN(data)){
-    						pay_cny = pay_cny + parseFloat(data);
-    						data = parseFloat(data).toFixed(2);
-    					}
-    				}
-    				return "<input type ='text' name='app_cny' style='width:80px' value='"+data+"'>";
-    			}
-    		},
+    		{"data":"APPLY_PAY_HKD","width": "100px",
+                "render": function(data, type, full, meta) {
+                    apply_pay_hkd_total += data;
+                    return '<span name="wait_hkd">'+data+'</span>';
+                }
+            },
+    		
     		{"data":"JPY","width": "100px",
     			"render": function(data, type, full, meta) {
     				if(!isNaN(data)&&data!=null){
@@ -167,31 +116,39 @@ $(document).ready(function() {
     				return data;
     			}
     		},
-    		{"data":"PAID_JPY","width": "100px","class":"to_pay_jpy",
+    		{"data":"WAIT_JPY","width": "100px","class":"to_pay_jpy",
     			"render": function(data, type, full, meta) {
-    				if(data!=null&&!isNaN(data)&&full.JPY!=null&&!isNaN(full.JPY)){
-    					nopay_jpy = nopay_jpy + parseFloat(full.JPY-data);
-	    				data = parseFloat(full.JPY-data).toFixed(2);
-    				}
+    				wait_pay_jpy += data;
     				return data;
     			}
     		},
-    		{"data":"PAID_JPY","width": "100px",
-    			"render": function(data, type, full, meta) {
-    				if($('#application_id').val()==''){
-    					if(data!=null&&!isNaN(data)&&full.JPY!=null&&!isNaN(full.JPY)){
-    						pay_jpy = pay_jpy + parseFloat(full.JPY-data);
-    						data = parseFloat(full.JPY-data).toFixed(2);
-    					}
-    				}else{
-    					if(data!=null&&!isNaN(data)){
-    						pay_jpy = pay_jpy + parseFloat(data);
-    						data = parseFloat(data).toFixed(2);
-    					}
-    				}
-    				return "<input type ='text' name='app_jpy' style='width:80px' value='"+data+"'>";
-    			}
-    		},
+    		{"data":"APPLY_PAY_JPY","width": "100px",
+                "render": function(data, type, full, meta) {
+                    apply_pay_jpy_total += data;
+                    return '<span name="wait_jpy">'+data+'</span>';
+                }
+            },
+            {"data":"USD","width": "100px",
+                "render": function(data, type, full, meta) {
+                    if(data!=null&&!isNaN(data)){
+                        data = parseFloat(data).toFixed(2);
+                        total_usd = total_usd + parseFloat(data);
+                    }
+                    return data;
+                }
+            },
+            {"data":"WAIT_USD","width": "100px","class":"to_pay_usd",
+                "render": function(data, type, full, meta) {
+                    wait_pay_usd += data;
+                    return data;
+                }
+            },
+            {"data":"APPLY_PAY_USD","width": "100px",//WAIT_USD
+                "render": function(data, type, full, meta) {
+                    apply_pay_usd_total += data;
+                    return '<span name="wait_usd">'+data+'</span>';
+                }
+            },
     		{"data":"CREATOR_NAME","width": "120px"},
     		{"data":"CREATE_STAMP","width": "150px"},
     		{"data":"REMARK","width": "150px"}
@@ -204,18 +161,19 @@ $(document).ready(function() {
     	var sum_cny=0.0;
     	var sum_hkd=0.0;
     	var sum_jpy=0.0;
-    	debugger
-    	$("#CostOrder-table input[name='app_usd']").each(function(){
+    	
+        //获取所选的对账单id
+    	$("#CostOrder-table tr[id]").each(function(index, item){
     		var obj={};
-    		obj.id = $(this).parent().parent().attr('id');
-    		obj.order_type = $(this).parent().parent().find('.order_type').text();
-    		obj.payee_unit = $(this).parent().parent().attr('payee_unit');
-    		
-    		obj.app_usd = $(this).val();
-    		obj.app_cny = $(this).parent().parent().find('[name=app_cny]').val();
-    		obj.app_hkd = $(this).parent().parent().find('[name=app_hkd]').val();
-    		obj.app_jpy = $(this).parent().parent().find('[name=app_jpy]').val();
-    		
+    		obj.id = $(item).attr('id');
+    		obj.order_type = $(item).find('.order_type').text();
+    		obj.payee_unit = $(item).attr('payee_unit');
+
+    		obj.app_usd = $(item).find('[name=wait_usd]').text();
+    		obj.app_cny = $(item).find('[name=wait_cny]').text();
+    		obj.app_hkd = $(item).find('[name=wait_hkd]').text();
+    		obj.app_jpy = $(item).find('[name=wait_jpy]').text();
+
     		sum_usd +=parseFloat(obj.app_usd);
     		sum_cny +=parseFloat(obj.app_cny);
     		sum_hkd +=parseFloat(obj.app_hkd);
@@ -223,7 +181,7 @@ $(document).ready(function() {
     		array.push(obj);
     	});
     	
-    	$("#total_app_jpy").val(sum_jpy);
+    	$("#total_app_cny").val(sum_cny);
     	$("#total_app_usd").val(sum_usd);
     	$("#total_app_hkd").val(sum_hkd);
     	$("#total_app_jpy").val(sum_jpy);
@@ -385,11 +343,71 @@ $(document).ready(function() {
 		  	}
 		});
 	
-	
-	  
+	$("#CostOrder-table").on('click', 'button', function(e){
+        e.preventDefault();
+        var row = dataTable.row($(this).parent().parent());
+        var row_index = row.index();//  td
+        $('#select_row_index').val(row_index);
+
+        var order_id = $(e.target).attr("order_id");
+        var selected_ids = row.data().SELECTED_IDS;
+
+        selectContr.refleshSelectTable(order_id, selected_ids);
+        $('#select_item_modal').modal('show');
+
+    });
+
+	$('#select_item_table').on('click',"input[type=checkbox]",function () {
+        var table = $('#select_item_table').DataTable();
+        var row = $(this).parent().parent();
+        var cell = table.cell($(this).parent());//  td
+        var pay_flag='N';
+        if($(this).prop('checked')==true){
+            pay_flag='Y';
+        }
+        //注意 - call draw() 更新table.data()中的数据
+        cell.data(pay_flag).draw();
+        selectContr.calcTotal();
+
+        var selected_ids=[];
+        table.data().each(function(item, index) {
+            if(item.PAY_FLAG == 'N')
+                return;
+            selected_ids.push(item.ID);
+        });
+        $('#selected_ids').val(selected_ids);
+
+        
+        //获取对账单号
+        var costOrderNo = row.find('td:eq(1)').text();
+        console.log(costOrderNo);
+        //更新对应对账单的汇总金额
+        calcOrderTotal(costOrderNo);
+    });
+
+    var calcOrderTotal=function(costOrderNo) {
+        //根据对账单号获取 ’业务单据‘表格的行
+        var row_index = $("#CostOrder-table td:contains("+costOrderNo+")").parent().index();
+        var row = dataTable.row(row_index);
+        var row_data = row.data();
+        console.log(row_data);
+        row_data.APPLY_PAY_CNY=parseFloat($('#modal_cny').val());
+        row_data.APPLY_PAY_HKD=parseFloat($('#modal_hkd').val());
+        row_data.APPLY_PAY_JPY=parseFloat($('#modal_jpy').val());
+        row_data.APPLY_PAY_USD=parseFloat($('#modal_usd').val());
+        row_data.SELECTED_IDS=$('#selected_ids').val();
+        row.data(row_data);
+
+        $("#pay_cny").html(parseFloat($('#modal_cny').val()).toFixed(2));
+        $("#pay_hkd").html(parseFloat($('#modal_hkd').val()).toFixed(2));
+        $("#pay_usd").html(parseFloat($('#modal_usd').val()).toFixed(2));
+        $("#pay_jpy").html(parseFloat($('#modal_jpy').val()).toFixed(2));
+        //dataTable.draw();
+        console.log(row.data());
+    };
+
 	 //异步显示总金额
-    $("#CostOrder-table").on('change', 'input', function(){
-    	debugger
+    $("#CostOrder-table").on('change', 'input', function(){x
     	var tr =$(this).parent().parent();
 		var value = 0.00;
 		var currentValue = $(this).val();

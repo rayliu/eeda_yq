@@ -41,6 +41,15 @@ define(['jquery', 'dataTablesBootstrap'], function($){
         if (doPrevent)
             e.preventDefault();
     });
+
+    //全局：切换tab时刷新其底下的 dataTable, 解决表头不齐的问题
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var tab = e.target // newly activated tab
+        //e.relatedTarget // previous active tab
+        var tab_div_id = $(tab).attr('href');
+        $(tab_div_id+' table').DataTable().columns.adjust();
+    });
+
     //只要属性中使用 limit=10, 控制td长度, 超出10 显示...
     jQuery.fn.limit=function(){ 
         var self = $("td[limit]"); 

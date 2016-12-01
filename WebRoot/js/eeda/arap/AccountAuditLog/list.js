@@ -29,7 +29,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 {"data":"CHARGE_AMOUNT",
                     "render": function(data, type, full, meta) {
                         if(data!=null)
-                            return "<p align='right'>"+eeda.numFormat(parseFloat(data).toFixed(2),3)+"</p>";
+                            return "<p align='right'>"+eeda.numFormat(parseFloat(data).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
                         else
                             return data;
                     }
@@ -37,7 +37,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 {"data":"COST_AMOUNT",
                     "render": function(data, type, full, meta) {
                         if(data!=null)
-                            return "<p align='right'>"+eeda.numFormat(parseFloat(data).toFixed(2),3)+"</p>";
+                            return "<p align='right'>"+eeda.numFormat(parseFloat(data).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
                         else
                             return data;
                     }
