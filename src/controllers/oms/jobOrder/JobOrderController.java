@@ -959,7 +959,7 @@ public class JobOrderController extends Controller {
 	    	itemList = Db.find("SELECT"
 	    			+ " cjo.id, cjo.order_no custom_plan_no, o.office_name custom_bank,cjo.status applybill_status,"
 	    			+ " cjo.ref_no custom_order_no, cjo.custom_state status, ul.c_name creator,"
-	    			+ " cjo.create_stamp, ul2.c_name fill_name, cjo.fill_stamp"
+	    			+ " cjo.create_stamp, ul2.c_name fill_name, cjo.fill_stamp,cjo.customs_billCode"
 	    			+ " FROM custom_plan_order cjo"
 	    			+ " LEFT JOIN user_login ul ON ul.id = cjo.creator"
 	    			+ " LEFT JOIN user_login ul2 ON ul2.id = cjo.fill_by"
