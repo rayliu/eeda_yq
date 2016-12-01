@@ -63,6 +63,21 @@ $(document).ready(function() {
         	$.scojs_message('费用明细里，新增的条目中，第'+sp+'行的结算公司未填好', $.scojs_message.TYPE_ERROR);
     		return;
         }
+        
+        var rate=0;
+        $('#chargeDetail [name=exchange_currency_id_input]').each(function(){
+        	if(this.value!=''&&$(this).parent().parent().parent().find('[name=exchange_currency_rate]').val()==''){
+        		rate++;
+        	}
+        })
+        if(rate>0){
+        	$.scojs_message('费用明细里，新增的条目中，第'+rate+'行的结算汇率未填好', $.scojs_message.TYPE_ERROR);
+    		return;
+        }
+        
+        
+ 
+        //币制为必填字段
         var CURRENCY_ID = 0;
         $('#chargeDetail [name=CURRENCY_ID]').each(function(){
         	if(this.value==''){

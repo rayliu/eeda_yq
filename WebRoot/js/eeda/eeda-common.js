@@ -479,20 +479,32 @@ eeda.refreshUrl = refreshUrl;
 			  hiddenField.val(dataId);//id
 			  
 			  //datatable里按照   币制，汇率，转换后金额 相邻排列
+			  
+			  
 			  var td = inputField.parent().parent();
+			  var exchange_currency_rate = 1;
+			  td.parent().find('.cny_to_other input').val($(this).text());
+			  td.parent().find('[name=exchange_currency_id]').val(dataId);
+
 			  var class_name = td.attr('class');
 			  var currency_rate = $(this).attr('currency_rate');
               td.next().children().val(currency_rate);//选择币制则填入汇率
-              if(class_name==' cny_to_other'){
-            	  var total = td.parent().find('.cny_total_amount input').val();
-              }else{
+              if(class_name==' cny_to_other'&&td.parent().find('[name=CURRENCY_ID_input]').val()!=$(this).text()){
+            	   td.parent().find('.exchange_currency_rate input').val('');
+            	   td.parent().find('.exchange_total_amount input').val('');
+            	   exchange_currency_rate='';
+            	   
+            	  }else{
+            	   td.parent().find('[name=exchange_currency_rate]').val(exchange_currency_rate); 
+            	  }
+
             	  var total = td.parent().find('.currency_total_amount input').val();//此币种的金额
-              }
-              if(currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
+              if(exchange_currency_rate!=''&&currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
             	  if(class_name==' cny_to_other'){
-            		  td.next().next().children().val((total/currency_rate).toFixed(3));//转换后的金额
+            		  td.next().next().children().val((total*exchange_currency_rate).toFixed(3));//转换后的金额
             	  }else{
             		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
+            		  td.parent().find('.exchange_total_amount input').val((total*exchange_currency_rate).toFixed(3));
             	  }
               }
 		  });
