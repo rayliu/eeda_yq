@@ -64,15 +64,15 @@ $(document).ready(function() {
     var total_hkd = 0;
     var total_jpy = 0;
     //待申请
-    var wait_charge_usd = 0;
-    var wait_charge_jpy = 0;
-    var wait_charge_hkd = 0;
-    var wait_charge_cny = 0;
+    var wait_pay_usd = 0;
+    var wait_pay_jpy = 0;
+    var wait_pay_hkd = 0;
+    var wait_pay_cny = 0;
     //本次应收
-    var apply_charge_usd_total = 0;
-    var apply_charge_cny_total = 0;
-    var apply_charge_hkd_total = 0;
-    var apply_charge_jpy_total = 0;
+    var apply_pay_usd_total = 0;
+    var apply_pay_cny_total = 0;
+    var apply_pay_hkd_total = 0;
+    var apply_pay_jpy_total = 0;
    
 	var dataTable = eeda.dt({
 	    id: 'eeda-table',
@@ -85,24 +85,24 @@ $(document).ready(function() {
         },
 	    initComplete: function( settings ) {
 	    	$("#total_usd").html(total_usd.toFixed(2));
-    		$("#nopay_usd").html(wait_charge_usd.toFixed(2));
-    		$("#pay_usd").html(apply_charge_usd_total.toFixed(2));
-    		$("#app_usd").val(apply_charge_usd_total.toFixed(2));
+    		$("#nopay_usd").html(wait_pay_usd.toFixed(2));
+    		$("#pay_usd").html(apply_pay_usd_total.toFixed(2));
+    		$("#app_usd").val(apply_pay_usd_total.toFixed(2));
 
     		$("#total_hkd").html(total_hkd.toFixed(2));
-    		$("#nopay_hkd").html(wait_charge_hkd.toFixed(2));
-    		$("#pay_hkd").html(apply_charge_hkd_total.toFixed(2));
-    		$("#app_hkd").val(apply_charge_hkd_total.toFixed(2));
+    		$("#nopay_hkd").html(wait_pay_hkd.toFixed(2));
+    		$("#pay_hkd").html(apply_pay_hkd_total.toFixed(2));
+    		$("#app_hkd").val(apply_pay_hkd_total.toFixed(2));
 
     		$("#total_cny").html(total_cny.toFixed(2));
-    		$("#nopay_cny").html(wait_charge_cny.toFixed(2));
-    		$("#pay_cny").html(apply_charge_cny_total.toFixed(2));
-    		$("#app_cny").val(apply_charge_cny_total.toFixed(2));
+    		$("#nopay_cny").html(wait_pay_cny.toFixed(2));
+    		$("#pay_cny").html(apply_pay_cny_total.toFixed(2));
+    		$("#app_cny").val(apply_pay_cny_total.toFixed(2));
 
     		$("#total_jpy").html(total_jpy.toFixed(2));
-    		$("#nopay_jpy").html(wait_charge_jpy.toFixed(2));
-    		$("#pay_jpy").html(apply_charge_jpy_total.toFixed(2));
-    		$("#app_jpy").val(apply_charge_jpy_total.toFixed(2));
+    		$("#nopay_jpy").html(wait_pay_jpy.toFixed(2));
+    		$("#pay_jpy").html(apply_pay_jpy_total.toFixed(2));
+    		$("#app_jpy").val(apply_pay_jpy_total.toFixed(2));
     		
     		selectContr.refleshSelectTable(ids, selected_item_ids);
         },
@@ -126,13 +126,13 @@ $(document).ready(function() {
 			},
 			{"data":"WAIT_CNY","width": "100px","class":"to_pay_cny",
 				"render": function(data, type, full, meta) {
-					wait_charge_cny += data;//parseFloat(data).toFixed(2);
+					wait_pay_cny += data;//parseFloat(data).toFixed(2);
                     return data;
 				}
 			},
-			{"data":"APPLY_CHARGE_CNY","width": "100px",
+			{"data":"APPLY_PAY_CNY","width": "100px",
 				"render": function(data, type, full, meta) {
-					apply_charge_cny_total += data;
+					apply_pay_cny_total += data;
                     return '<span name="wait_cny">'+data+'</span>';
 				}
 			},
@@ -148,13 +148,13 @@ $(document).ready(function() {
 			},
 			{"data":"WAIT_HKD","width": "100px","class":"to_pay_hkd",
 				"render": function(data, type, full, meta) {
-					wait_charge_hkd += data;
+					wait_pay_hkd += data;
     				return data;
 				}
 			},
-			{"data":"APPLY_CHARGE_HKD","width": "100px",
+			{"data":"APPLY_PAY_HKD","width": "100px",
 				"render": function(data, type, full, meta) {
-					apply_charge_hkd_total += data;
+					apply_pay_hkd_total += data;
                     return '<span name="wait_hkd">'+data+'</span>';
 				}
 			},
@@ -170,11 +170,11 @@ $(document).ready(function() {
 			},
 			{"data":"WAIT_JPY","width": "100px","class":"to_pay_jpy",
 				"render": function(data, type, full, meta) {
-					wait_charge_jpy += data;
+					wait_pay_jpy += data;
     				return data;
 				}
 			},
-			{"data":"APPLY_CHARGE_JPY","width": "100px",
+			{"data":"APPLY_PAY_JPY","width": "100px",
 				"render": function(data, type, full, meta) {
 					apply_pay_jpy_total += data;
                     return '<span name="wait_jpy">'+data+'</span>';
@@ -192,13 +192,13 @@ $(document).ready(function() {
 			},
 			{"data":"WAIT_USD","width": "100px","class":"to_pay_usd",
 				"render": function(data, type, full, meta) {
-					wait_charge_usd += data;
+					wait_pay_usd += data;
                     return data;
 				}
 			},
-			{"data":"APPLY_CHARGE_USD","width": "100px",
+			{"data":"APPLY_PAY_USD","width": "100px",
 				"render": function(data, type, full, meta) {
-					apply_pay_charge_total += data;
+					apply_pay_usd_total += data;
                     return '<span name="wait_usd">'+data+'</span>';
 				}
 			},

@@ -5,7 +5,6 @@ import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,27 +14,18 @@ import java.util.Map;
 import models.AppInvoiceDoc;
 import models.ArapAccountAuditLog;
 import models.ArapChargeApplication;
-import models.ArapChargeInvoice;
 import models.ArapChargeOrder;
 //import models.ChargeAppOrderRel;
 import models.ChargeApplicationOrderRel;
 import models.Party;
 import models.UserLogin;
-import models.eeda.oms.PlanOrderItem;
-import models.eeda.oms.jobOrder.JobOrderDoc;
-import models.eeda.oms.jobOrder.JobOrderLandItem;
-import models.yh.arap.chargeMiscOrder.ArapMiscChargeOrder;
-import models.yh.arap.inoutorder.ArapInOutMiscOrder;
-import models.yh.damageOrder.DamageOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.log.Log;
@@ -47,7 +37,6 @@ import com.jfinal.upload.UploadFile;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
-import controllers.util.PermissionConstant;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -62,16 +51,23 @@ public class ChargeAcceptOrderController extends Controller {
     
     @Before(EedaMenuInterceptor.class) 
     public void create() {
-		String idsArray = getPara("idsArray");
-		setAttr("idsArray", idsArray);
+		String ids = getPara("idsArray");
+		setAttr("ids", ids);
 		
-		String[] orderArrId=idsArray.split(",");
+		String[] orderArrId=ids.split(",");
 		Record r = Db.findFirst("select aco.sp_id,ifnull(company_name,company_name_eng) payee_unit,ifnull(contact_person,contact_person_eng) payee_name"
 				+ " from arap_charge_order aco left join party p on p.id = aco.sp_id where aco.id = ?",orderArrId[0]);
 
-		setAttr("sp_id", r.get("SP_ID"));
-		setAttr("payee_unit", r.getStr("PAYEE_UNIT"));
-		setAttr("payee_name", r.getStr("PAYEE_NAME"));
+		Record re = new Record();
+		re.set("sp_id", r.getLong("SP_ID"));
+		re.set("payee_unit", r.getStr("PAYEE_UNIT"));
+		re.set("payee_name", r.getStr("PAYEE_NAME"));
+		setAttr("order", re);
+		
+		String sql="select group_concat(cast(ref_order_id as char) SEPARATOR ',') selected_item_ids"
+                + " from arap_charge_item where charge_order_id in("+ids+")";
+        String selected_item_ids = Db.findFirst(sql).getStr("selected_item_ids");
+        setAttr("selected_item_ids", selected_item_ids);
 			
 		List<Record> Account = null;
 		Account = Db.find("select * from fin_account where bank_name != '现金'");
@@ -156,24 +152,64 @@ public class ChargeAcceptOrderController extends Controller {
 
   	//新逻辑
   	public void chargeOrderList() {
-          String ids = getPara("idsArray");
+          String ids = getPara("ids");
           String application_id = getPara("application_id");
           String sql = "";
           
           if("".equals(application_id)||application_id==null){
   	       
-          	sql = " SELECT aco.*, p.company_name payee_name, '应收对账单' order_type,"
-					+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
-					+ " ifnull(c.paid_usd,0) paid_usd,"
-					+ " ifnull(c.paid_cny,0) paid_cny,"
-					+ " ifnull(c.paid_jpy,0) paid_jpy,"
-					+ " ifnull(c.paid_hkd,0) paid_hkd"
-					+ " FROM arap_charge_order aco "
-					+ " LEFT JOIN charge_application_order_rel c on c.charge_order_id = aco.id"
-					+ " LEFT JOIN party p ON p.id = aco.sp_id"
-					+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
-					+ " WHERE aco.id in(" + ids +") "
-					+ " group by aco.id ";
+          	sql =  " SELECT aco.*, p.company_name payee_name, '应收对账单' order_type, "
+          			+" p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
+          			+" (aco.usd-ifnull(c.paid_usd, 0)) wait_usd,"
+          			+" (aco.cny-ifnull(c.paid_cny, 0)) wait_cny,"
+          			+"     (aco.jpy-ifnull(c.paid_jpy, 0)) wait_jpy,"
+          			+"     (aco.hkd-ifnull(c.paid_hkd, 0)) wait_hkd,"
+          			+"     case "
+          			+"         when c.charge_order_id is not null then"
+          			+"             ifnull("
+          			+"                    ( SELECT sum(exchange_total_amount) FROM job_order_arap"
+          			+"                                 WHERE id IN(SELECT ref_order_id FROM arap_charge_item aci WHERE charge_order_id IN(c.charge_order_id) ) "
+          			+"                                     AND exchange_currency_id =( SELECT id FROM currency WHERE CODE = 'USD' ) "
+          			+"                                     AND pay_flag = 'Y' "
+          			+"                     ),0) "
+          			+"     else aco.usd "
+          			+"     end  apply_pay_usd, "
+          			+"     case  "
+          			+"         when c.charge_order_id is not null then "
+          			+"             ifnull( "
+          			+"                    ( SELECT sum(exchange_total_amount) FROM job_order_arap "
+          			+"                        WHERE id IN( SELECT ref_order_id FROM arap_charge_item WHERE charge_order_id IN(c.charge_order_id) ) "
+          			+"                             AND exchange_currency_id =( SELECT id FROM currency WHERE CODE = 'CNY' ) "
+          			+"                             AND pay_flag = 'Y' "
+          			+"                     ),0) "
+          			+"     else aco.cny "
+          			+"     end  apply_pay_cny, "
+          			+"     case  "
+          			+"         when c.charge_order_id is not null then "
+          			+"             ifnull( "
+          			+"                     ( SELECT sum(exchange_total_amount) FROM job_order_arap "
+          			+"                         WHERE id IN( SELECT ref_order_id FROM arap_charge_item WHERE charge_order_id IN(c.charge_order_id) ) "
+          			+"                             AND exchange_currency_id =( SELECT id FROM currency WHERE CODE = 'JPY' ) "
+          			+"                             AND pay_flag = 'Y' "
+          			+"                     ), 0 ) "
+          			+"     else aco.jpy "
+          			+"     end  apply_pay_jpy, "
+          			+"     case  "
+          			+"         when c.charge_order_id is not null then "
+          			+"             ifnull( "
+          			+"                     ( SELECT sum(exchange_total_amount) FROM job_order_arap "
+          			+"                         WHERE id IN( SELECT ref_order_id FROM arap_charge_item WHERE charge_order_id IN(c.charge_order_id) ) "
+          			+"                             AND exchange_currency_id =( SELECT id FROM currency WHERE CODE = 'HKD' )" 
+          			+"                             AND pay_flag = 'Y' "
+          			+"                 ), 0 ) "
+          			+"     else aco.hkd "
+          			+"     end  apply_pay_hkd "
+          			+" FROM arap_charge_order aco "
+          			+" LEFT JOIN charge_application_order_rel c on c.charge_order_id = aco.id"
+          			+" LEFT JOIN party p ON p.id = aco.sp_id"
+          			+" LEFT JOIN user_login ul ON ul.id = aco.create_by"
+          			+" WHERE aco.id in(" +ids +")"
+          			+" group by aco.id ";
 
   		}else{
   			sql = " SELECT aco.*, p.company_name payee_name, '应收对账单' order_type,"

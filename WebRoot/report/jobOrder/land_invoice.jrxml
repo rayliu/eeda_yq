@@ -550,7 +550,7 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 			<textField>
 				<reportElement x="7" y="2" width="231" height="20" uuid="a8d49ba7-f522-4ca8-935a-e6c6a1a6751c"/>
 				<textElement>
-					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($V{sum_hkd}.equals(null)?"":"港币"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($V{sum_hkd}))]]></textFieldExpression>
 			</textField>
