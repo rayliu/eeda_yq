@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="133"/>
+	<property name="ireport.y" value="220"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -45,6 +45,7 @@ ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 	jos.eta,
 	jo.ref_no,
 	jo.order_no,
+            jo.order_export_date,
 	Upper(lo. NAME) fnd,
 	Upper(lo1. NAME) pol,
 	u1.name_eng land_unit,
@@ -147,6 +148,9 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 	<field name="order_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="order_export_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="fnd" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -168,6 +172,9 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 	</field>
 	<field name="vessel_voyage" class="java.lang.String"/>
 	<field name="ex_total" class="java.lang.String"/>
+	<variable name="sum_hkd" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_amount}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -339,7 +346,7 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="396" y="62" width="157" height="15" uuid="fe80cc78-973f-488c-84b7-7fe43c5732dd"/>
-				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="396" y="79" width="159" height="17" uuid="27502a39-69d8-427a-a4dd-9d270889bd80"/>
@@ -540,13 +547,13 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 				<reportElement x="454" y="2" width="99" height="164" uuid="ec3c3e78-54d2-4233-9dad-44dfdb837db7"/>
 				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="10" y="2" width="77" height="21" uuid="8fe3b643-5f45-404d-b5ab-45fc36daf0e0"/>
+			<textField>
+				<reportElement x="7" y="2" width="231" height="20" uuid="a8d49ba7-f522-4ca8-935a-e6c6a1a6751c"/>
 				<textElement>
-					<font fontName="宋体" size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[大写金额：]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[($V{sum_hkd}.equals(null)?"":"港币"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($V{sum_hkd}))]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

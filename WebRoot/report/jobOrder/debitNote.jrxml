@@ -34,8 +34,8 @@ ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 	ifnull(f.name,f.name_eng) charge_name,
 	u. NAME unit_name,
 	c. NAME currency_name,
-	josi.gross_weight,
-	josi.pieces,
+	IFNULL(jo.gross_weight,josi.gross_weight) gross_weight,
+	IFNULL(jo.pieces,josi.pieces) pieces,
 
 	josi.container_no,
 	jos.order_id,
@@ -158,7 +158,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 	<field name="gross_weight" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pieces" class="java.lang.Integer">
+	<field name="pieces" class="java.lang.Object">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="container_no" class="java.lang.String">
@@ -533,17 +533,17 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{invoice_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="451" y="151" width="104" height="14" uuid="f767dc31-f567-472f-bd98-a5a8cae14d9d"/>
-				<textFieldExpression><![CDATA[$F{ocean_unit}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="416" y="151" width="35" height="14" uuid="31236f61-a729-4647-8bb9-eb28f224d252"/>
+				<reportElement x="416" y="151" width="34" height="16" uuid="31236f61-a729-4647-8bb9-eb28f224d252"/>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="73" y="89" width="254" height="15" uuid="055efe25-6aa2-4356-89ed-f3c08f26ac5a"/>
 				<textFieldExpression><![CDATA[$F{vessel_voyage}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="450" y="151" width="104" height="16" uuid="2803dc0a-769f-46e2-a48c-d19e50b73135"/>
+				<text><![CDATA[PACKAGES]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>

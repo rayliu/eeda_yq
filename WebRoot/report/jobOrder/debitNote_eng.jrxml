@@ -32,12 +32,12 @@
 	<queryString>
 		<![CDATA[SELECT
 	jor.sp_id,jor.exchange_total_amount exchange_total_amount,jor.invoice_no invoice_no,jor.price price,jor.total_amount total_amount,
-  jor.exchange_currency_rate exchange_rate,jor.amount amount, pr.company_name_eng companyName,pr.contact_person_eng personEng,
+  jor.exchange_currency_rate exchange_rate,jor.amount amount, pr.company_name_eng companyName,IFNULL(pr.contact_person_eng,pr.contact_person) personEng,
 	f.name_eng charge_name_eng,
 	u. NAME unit_name,
 	c. NAME currency_name,
-	josi.gross_weight,
-	josi.pieces,
+	IFNULL(jo.gross_weight,josi.gross_weight) gross_weight,
+	CONCAT(CAST(IFNULL(jo.pieces,josi.pieces) AS char),' ','dfas') pieces,
 
 	josi.container_no,
 	jos.order_id,
@@ -47,6 +47,7 @@
 	jos.eta,
 	jo.ref_no,
 	jo.order_no,
+	jo.order_export_date order_export_date,
 	Upper(lo. NAME) fnd,
 	Upper(lo1. NAME) pol,
 	u1.name_eng ocean_unit,
@@ -122,7 +123,7 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 	<field name="gross_weight" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pieces" class="java.lang.Integer">
+	<field name="pieces" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="container_no" class="java.lang.String">
@@ -147,6 +148,9 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_export_date" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="fnd" class="java.lang.String">
@@ -346,7 +350,7 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="396" y="62" width="157" height="15" uuid="fe80cc78-973f-488c-84b7-7fe43c5732dd"/>
-				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="396" y="79" width="159" height="17" uuid="27502a39-69d8-427a-a4dd-9d270889bd80"/>
@@ -365,15 +369,14 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="425" y="149" width="130" height="14" uuid="031deb20-ad6a-4dd0-a3fb-54e016073a88"/>
-				<textFieldExpression><![CDATA[$F{ocean_unit}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="0" width="285" height="24" uuid="c706ac6c-9eab-42a2-8ea0-83bb9932e437"/>
 				<textFieldExpression><![CDATA[$F{companyName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="39" width="285" height="15" uuid="84f0a969-bfd6-4f4d-9a12-ec14a167a8f9"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{personEng}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -392,6 +395,10 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 				<reportElement x="397" y="25" width="158" height="37" uuid="838f806e-871d-43b2-b605-a3562590f472"/>
 				<textFieldExpression><![CDATA[$F{invoice_no}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="426" y="149" width="127" height="14" uuid="eba342a8-ca01-4a9a-9694-ac4276bb8ea5"/>
+				<text><![CDATA[PACKAGES]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -528,13 +535,6 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ACCOUNT INFORMATION]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="13" y="4" width="179" height="19" uuid="549213a8-9cde-41b4-9e2a-8f767ed59adc"/>
-				<textElement>
-					<font size="10"/>
-				</textElement>
-				<text><![CDATA[SAY JPY TEN THOUSAND ONLY]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" uuid="0c33aa57-8270-4dd5-941f-6afdcefe4f0b"/>
