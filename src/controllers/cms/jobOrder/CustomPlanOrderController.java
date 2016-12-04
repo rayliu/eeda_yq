@@ -234,12 +234,14 @@ public class CustomPlanOrderController extends Controller {
     				+ " where cpo.order_id=? order by cpo.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("doc".equals(type)){
-    		itemSql = "select cpo.ref_job_order_id, null id ,jocd.doc_name,jocd.upload_time,jocd.remark,ul.c_name c_name,jocd.uploader from job_order_custom_doc jocd"
+    		itemSql = "select cpo.ref_job_order_id, null id,jocd.doc_name,jocd.upload_time,jocd.remark,ul.c_name c_name,"
+    		        + " jocd.uploader, jocd.share_flag from job_order_custom_doc jocd"
     				+ " LEFT JOIN user_login ul on ul.id = jocd.uploader"
     				+ " LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id and jocd.share_flag = 'Y'"
     				+ " where cpo.id =?"
     				+ " union all"
-    				+ " select  cpo.ref_job_order_id, jod.id ,jod.doc_name,jod.upload_time,jod.remark,u.c_name c_name,jod.uploader "
+    				+ " select  cpo.ref_job_order_id, jod.id ,jod.doc_name,jod.upload_time,jod.remark,u.c_name c_name,"
+    				+ " jod.uploader, jod.share_flag "
     				+ " from custom_plan_order_doc jod "
     				+ " left join custom_plan_order cpo on cpo.id = jod.order_id"
     				+ " left join user_login u on jod.uploader=u.id "
@@ -503,5 +505,18 @@ public class CustomPlanOrderController extends Controller {
 		renderJson("{\"result\":true}");
 	 }
     
-
+    @Before(Tx.class)
+    public void updateShare(){
+        String item_id = getPara("item_id");
+        String check = getPara("check");
+        String order_id = getPara("order_id");
+        
+        if(StringUtils.isEmpty(item_id)){//全选
+            Db.update("update custom_plan_order_doc set share_flag =? where order_id = ?",check,order_id);
+        }else{//单选
+            Db.update("update custom_plan_order_doc set share_flag =? where id = ?",check,item_id);
+        }
+        
+        renderJson("{\"result\":true}");
+    }
 }

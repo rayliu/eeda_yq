@@ -92,19 +92,21 @@ $(document).ready(function() {
         id: 'doc_table',
         autoWidth: false,
         columns:[
-//			{ "data":"ID","width": "10px",
-//			    "render": function ( data, type, full, meta ) {
-//			    	if(data)
-//			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
-//			    	else 
-//			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
-//			    }
-//			},
-//          '<input id="allCheckOfDoc" type="checkbox" style="width:30px">',
-            { "width": "30px",
+			{ "data": "ID", "width": "10px",
+			    "render": function ( data, type, full, meta ) {
+                    if(!full.ID){//有doc id证明是自己上传的，否则是从job order 共享过来的
+                        return '';
+                    }else{
+                        if(full.SHARE_FLAG=='Y')
+                            return '<input type="checkbox" class="checkBox" checked style="width:50px">';
+                        else 
+                            return '<input type="checkbox" class="checkBox" style="width:50px">';
+                    }
+			    }
+			},
+            {"width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	if(full.ID || full.REF_JOB_ORDER_ID==''){
-                		
+                	if(full.ID){
                 		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
                 	}else {
                 		return '';
@@ -118,14 +120,14 @@ $(document).ready(function() {
                     return '<input type="hidden" name="doc_name" value="'+data+'" ><a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
                 }
             },
-            { "data": "C_NAME","width": "180px",
+            { "data": "C_NAME","width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
                 	return '<input type="hidden" name="uploader" value="'+full.UPLOADER+'">'+data;
                 }
             },
-            { "data": "UPLOAD_TIME", "width": "180px",
+            { "data": "UPLOAD_TIME", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -149,6 +151,7 @@ $(document).ready(function() {
                     return '<input type="text" name="uploader" value="'+data+'">'
                 }
             },
+            { "data": "SHARE_FLAG", "visible": false },
             { "data": "REF_JOB_ORDER_ID", "visible": false,
             	"render": function ( data, type, full, meta ) {
             		if(!data)
@@ -165,5 +168,32 @@ $(document).ready(function() {
     	docTable.ajax.url(url).load();
     }
     
+    $('#doc_table').on('change','.checkBox',function(){
+        var check = $(this).prop('checked');
+        var item_id = $(this).parent().parent().attr('id');
+        var msg = "";
+        if(check){
+            msg = '共享';
+            check = 'Y';
+        }else{
+            msg = '取消共享';
+            check = 'N';
+        }
+        
+        $.blockUI({ 
+            message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在'+msg+'...</h4>' 
+        });
+        
+        $.post('/customPlanOrder/updateShare', {order_id:$('#order_id').val(),item_id:item_id,check:check}, function(data){
+            if(data){
+                $.scojs_message(msg+'成功', $.scojs_message.TYPE_OK);
+                $.unblockUI();
+            }
+        }).fail(function() {
+            $.scojs_message(msg+'失败', $.scojs_message.TYPE_ERROR);
+            $.unblockUI();
+        });
+        
+    });
 });
 });
