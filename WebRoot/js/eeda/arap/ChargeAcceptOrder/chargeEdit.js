@@ -47,6 +47,7 @@ $(document).ready(function() {
             for(var i = 0; i < row.childNodes.length; i++){
             	var name = $(row.childNodes[i]).find('input').attr('name');
             	var value = $(row.childNodes[i]).find('input').val();
+            	
             		item[name] = value;
             }
             item.id = id;
@@ -450,17 +451,17 @@ $(document).ready(function() {
 	        var table = $('#select_item_table').DataTable();
 	        var row = $(this).parent().parent();
 	        var cell = table.cell($(this).parent());//  td
-	        var charge_flag='N';
+	        var pay_flag='N';
 	        if($(this).prop('checked')==true){
-	            charge_flag='Y';
+	            pay_flag='Y';
 	        }
 	        //注意 - call draw() 更新table.data()中的数据
-	        cell.data(charge_flag).draw();
+	        cell.data(pay_flag).draw();
 	        selectContr.calcTotal();
 
 	        var selected_ids=[];
 	        table.data().each(function(item, index) {
-	            if(item.CHARGE_FLAG == 'N')
+	            if(item.PAY_FLAG == 'N')
 	                return;
 	            selected_ids.push(item.ID);
 	        });
@@ -482,10 +483,10 @@ $(document).ready(function() {
 	        var row = dataTable.row(row_index);
 	        var row_data = row.data();
 	        console.log(row_data);
-	        row_data.APPLY_CHARGE_CNY=parseFloat($('#modal_cny').val());
-	        row_data.APPLY_CHARGE_HKD=parseFloat($('#modal_hkd').val());
-	        row_data.APPLY_CHARGE_JPY=parseFloat($('#modal_jpy').val());
-	        row_data.APPLY_CHARGE_USD=parseFloat($('#modal_usd').val());
+	        row_data.APPLY_PAY_CNY=parseFloat($('#modal_cny').val());
+	        row_data.APPLY_PAY_HKD=parseFloat($('#modal_hkd').val());
+	        row_data.APPLY_PAY_JPY=parseFloat($('#modal_jpy').val());
+	        row_data.APPLY_PAY_USD=parseFloat($('#modal_usd').val());
 	        row_data.SELECTED_IDS=$('#selected_ids').val();
 	        row.data(row_data);
 
