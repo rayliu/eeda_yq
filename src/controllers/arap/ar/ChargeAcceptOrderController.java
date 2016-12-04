@@ -212,19 +212,55 @@ public class ChargeAcceptOrderController extends Controller {
           			+" group by aco.id ";
 
   		}else{
-  			sql = " SELECT aco.*, p.company_name payee_name, '应收对账单' order_type,"
-					+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
-					+ " ifnull(caor.paid_usd,0) paid_usd,"
-					+ " ifnull(caor.paid_cny,0) paid_cny,"
-					+ " ifnull(caor.paid_jpy,0) paid_jpy,"
-					+ " ifnull(caor.paid_hkd,0) paid_hkd"
-					+ " FROM arap_charge_order aco "
-					+ " LEFT JOIN charge_application_order_rel caor on caor.charge_order_id = aco.id"
-					+ " LEFT JOIN arap_charge_application_order acao on acao.id = caor.application_order_id"
-					+ " LEFT JOIN party p ON p.id = aco.sp_id"
-					+ " LEFT JOIN user_login ul ON ul.id = aco.create_by"
-					+ " where acao.id="+application_id
-				    + " GROUP BY aco.id ";    
+  			sql = " SELECT aco.*, p.company_name payee_name, '应付对账单' order_type,"
+					+"  p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
+					+"  ifnull((SELECT sum(exchange_total_amount) from job_order_arap " 
+					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" ))"  
+					+" and exchange_currency_id = (select id from currency where code='USD')"
+					+" and pay_flag='Y' ),0) apply_pay_usd, "
+					+" ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" )) " 
+					+" and exchange_currency_id = (select id from currency where code='CNY') "
+					+" and pay_flag='Y'),0) apply_pay_cny,"
+					+"  ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" )) " 
+					+" and exchange_currency_id = (select id from currency where code='JPY') "
+					+" and pay_flag='Y'),0) apply_pay_jpy,"
+					+"  ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" ))"  
+					+" and exchange_currency_id = (select id from currency where code='HKD') "
+					+" and pay_flag='Y'),0) apply_pay_hkd,"
+					+"  ( "
+					+"  aco.usd - ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" )) " 
+					+" and exchange_currency_id = (select id from currency where code='USD')"
+					+" and pay_flag='Y' ),0) "
+					+" ) wait_usd, "
+					+" ( "
+					+" aco.cny - ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" )) " 
+					+" and exchange_currency_id = (select id from currency where code='CNY') "
+					+" and pay_flag='Y'),0) "
+					+" ) wait_cny, "
+					+" ( "
+					+" aco.jpy - ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" )) " 
+					+" and exchange_currency_id = (select id from currency where code='JPY') "
+					+" and pay_flag='Y'),0) "
+					+" ) wait_jpy, "
+					+" ( "
+					+" aco.hkd - ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
+					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" )) " 
+					+" and exchange_currency_id = (select id from currency where code='HKD') "
+					+" and pay_flag='Y'),0) "
+					+" ) wait_hkd"
+					+"  FROM arap_charge_order aco "
+					+"  LEFT JOIN charge_application_order_rel caor on caor.charge_order_id = aco.id"
+					+"  LEFT JOIN arap_charge_application_order acao on acao.id = caor.application_order_id"
+					+"  LEFT JOIN party p ON p.id = aco.sp_id"
+					+"  LEFT JOIN user_login ul ON ul.id = aco.create_by"
+					+"  where acao.id="+application_id
+					+"	GROUP BY aco.id";
   		}
   		
   		Map BillingOrderListMap = new HashMap();
@@ -331,6 +367,9 @@ public class ChargeAcceptOrderController extends Controller {
 		if(p != null){
 			setAttr("party", p);
 		}
+		String sql = "select group_concat(cast(charge_order_id as char) SEPARATOR ',') ids from charge_application_order_rel where application_order_id = ?";
+		Record rec = Db.findFirst(sql,id);
+		setAttr("ids", rec.getStr("ids"));
 		
 		UserLogin userLogin = null;
 		userLogin = UserLogin.dao .findById(order.get("create_by"));

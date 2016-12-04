@@ -280,7 +280,9 @@ public class ChargeCheckOrderController extends Controller {
     
     
     public List<Record> getItemList(String ids,String order_id){
-    	String sql = " select joa.id,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
+    	String sql = null;
+		if(StringUtils.isEmpty(order_id)){
+			sql = " select joa.id,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
     			+ "IFNULL(cur1.name,cur.name) exchange_currency_name,"
     			+ "IFNULL(joa.exchange_currency_rate,1) exchange_currency_rate,IFNULL(joa.exchange_total_amount,joa.total_amount) exchange_total_amount,"
     			+ "joa.total_amount total_amount,joa.exchange_rate exchange_rate," 
@@ -306,7 +308,39 @@ public class ChargeCheckOrderController extends Controller {
     			+ "	left join location l on l.id=jos.fnd "
     			+ "	where joa.audit_flag='Y' "
     			+ " and joa.id in("+ids+")"
-    			+ " GROUP BY joa.id";	
+    			+ " GROUP BY joa.id";
+			}else{				
+			sql = " select joa.id,joa.type,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
+					+" aco.order_no check_order_no, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight," 
+						+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
+						+" ifnull((select rc.new_rate from rate_contrast rc"
+						    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
+						    +" (ifnull(joa.total_amount,0)*ifnull(joa.exchange_rate,1)) after_total,"
+						    +"  ifnull((select rc.new_rate from rate_contrast rc"
+						    +" where rc.currency_id = joa.currency_id and rc.order_id = aco.id),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
+						+" GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount,"
+						+" cur.name currency_name,"
+						+" ifnull(cur1.NAME, cur.NAME) exchange_currency_name,"
+						+" ifnull(joa.exchange_currency_rate, 1) exchange_currency_rate,"
+						+" ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, joa.pay_flag"
+						+" from job_order_arap joa"
+						+" left join job_order jo on jo.id=joa.order_id"
+						+" left join job_order_shipment jos on jos.order_id=joa.order_id"
+						+" left join job_order_shipment_item josi on josi.order_id=joa.order_id"
+						+" left join job_order_air_item joai on joai.order_id=joa.order_id"
+						+" left join party p on p.id=joa.sp_id"
+						+" left join party p1 on p1.id=jo.customer_id"
+						+" left join location l on l.id=jos.fnd"
+						+" left join currency cur on cur.id=joa.currency_id"
+						+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
+						+" left join arap_charge_item aci on aci.ref_order_id = joa.id"
+					 +" left join arap_charge_order aco on aco.id = aci.charge_order_id"
+					 +" where joa.id = aci.ref_order_id and aco.id in ("+order_id+")"
+						+" GROUP BY joa.id"
+						+" ORDER BY aco.order_no, jo.order_no";
+				
+				
+			}	
     	List<Record> re = Db.find(sql);
     	
     	return re;
