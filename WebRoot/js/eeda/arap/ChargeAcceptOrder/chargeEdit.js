@@ -10,6 +10,7 @@ $(document).ready(function() {
     var buildOrder = function(){
     	var item = {};
     	item.id = $('#order_id').val();
+    	item.selected_ids = $('#selected_ids').val();
     	var orderForm = $('#orderForm input,select,textarea');
     	for(var i = 0; i < orderForm.length; i++){
     		var name = orderForm[i].id;
@@ -45,12 +46,13 @@ $(document).ready(function() {
             }
             var item={};
             for(var i = 0; i < row.childNodes.length; i++){
-            	var name = $(row.childNodes[i]).find('input').attr('name');
-            	var value = $(row.childNodes[i]).find('input').val();
+            	var name = $(row.childNodes[i]).find('span').attr('name');
+            	var value = $(row.childNodes[i]).text();
             	
             		item[name] = value;
             }
             item.id = id;
+            
             item.action = $('#order_id').val() != ''?'UPDATE':'CREATE';
             items_array.push(item);
         }
@@ -108,14 +110,22 @@ $(document).ready(function() {
     		selectContr.refleshSelectTable(ids, selected_item_ids);
         },
 	    columns:[
-	         {"data":"ORDER_TYPE","width": "100px","sClass":"order_type"},
+	         {"data":"ORDER_TYPE","width": "100px","sClass":"order_type",
+	        	 "render": function(data, type, full, meta) {
+		        		return '<span name="order_type">'+data+'</span>';
+		    		}
+	        	 
+	         },
 	         {"data":"ORDER_NO","width": "120px",
 	        	"render": function(data, type, full, meta) {
-	        		return '<a href="/chargeCheckOrder/edit?id='+full.ID+'">'+data+'</a>';
+	        		return '<a href="/chargeCheckOrder/edit?id='+full.ID+'"><span name="order_no">'+data+'</span></a>';
 	    		}
 	         },
-	    	{"data":"CNAME","width": "250px"},
-	    	
+	    	{"data":"CNAME","width": "250px",
+	        	 "render": function(data, type, full, meta) {
+		        		return '<span name="cname">'+data+'</span>';
+		    		}
+	         },
 	    	{"data":"CNY","width": "100px",
 				"render": function(data, type, full, meta) {
 					if(!isNaN(data)&&data!=null){
@@ -266,7 +276,6 @@ $(document).ready(function() {
 		var order = buildOrder();
 		order.item_list = buildItem();
 		order.doc_list = itemOrder.buildDocItem();
-		
 		$.get('/chargeAcceptOrder/save',{params:JSON.stringify(order)}, function(data){
 			$("#saveBtn").attr("disabled", false);
 			if(data.ID>0){
