@@ -491,7 +491,7 @@ eeda.refreshUrl = refreshUrl;
 			  
 			  
 			  var td = inputField.parent().parent();
-			  var exchange_currency_rate = 1;
+			  var exchange_currency_rate = 1.000000;
 			  td.parent().find('.cny_to_other input').val($(this).text());
 			  td.parent().find('[name=exchange_currency_id]').val(dataId);
 

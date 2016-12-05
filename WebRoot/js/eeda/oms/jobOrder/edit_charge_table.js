@@ -404,7 +404,7 @@ $(document).ready(function() {
             { "data": "EXCHANGE_RATE", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
-                        var str =  parseFloat(data).toFixed(2);
+                        var str =  parseFloat(data).toFixed(6);
                     else
                     	str = '';
                 if(full.AUDIT_FLAG == 'Y'){

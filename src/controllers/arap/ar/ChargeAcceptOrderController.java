@@ -127,7 +127,7 @@ public class ChargeAcceptOrderController extends Controller {
         
         String sql = "select * from(  "
         		+ " select acao.*, acao.order_no application_order_no, "
-        		+ " '申请单' order_type,aco.order_no cost_order_no,u.c_name "
+        		+ " '申请单' order_type,aco.order_no charge_order_no,u.c_name "
 				+ " from arap_charge_application_order acao "
 				+ " left join charge_application_order_rel caor on caor.application_order_id = acao.id "
 				+ " left join arap_charge_order aco on aco.id = caor.charge_order_id"

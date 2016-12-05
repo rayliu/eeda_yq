@@ -201,7 +201,7 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="custom_rate" value="'+data+'" class="form-control" style="width:100px"/>';
+            		return '<input type="text" name="custom_rate" value="'+parseFloat(data).toFixed(6)+'" class="form-control" style="width:100px"/>';
             	}
             },
             { "data": "CUSTOM_AMOUNT_CNY", "width": "100px",
