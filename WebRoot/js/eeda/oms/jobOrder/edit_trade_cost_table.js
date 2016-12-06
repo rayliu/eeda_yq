@@ -107,8 +107,12 @@ $(document).ready(function() {
             },
             { "data": "PRICE", "width": "100px",
             	"render": function ( data, type, full, meta ) {
+            		
             		if(!data)
             			data='';
+            		if(full.ID && data=='')
+            			data = 0.0;
+            			
             		return '<input type="text" name="price" value="'+data+'" class="form-control" style="width:120px"/>';
             	}
             },
@@ -123,6 +127,8 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
+            		if(full.ID && data=='')
+            			data = 0.0;
             		return '<input type="text" name="value_added_tax" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
@@ -130,6 +136,8 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
+            		if(full.ID && data=='')
+            			data = 0.0;
             		return '<input type="text" name="tax_refund_rate" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
