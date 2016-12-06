@@ -78,11 +78,26 @@
 				                        	<%include("/eeda/component/form/inputField.html",
 				                        			{	id:"booking_no",
 				                        				label:"订舱号",
-				                        				value:''
+				                        				value:""
 				                        			}
 				                        	){}%>
 				                        
 				                        </div>
+                                  </div>
+                                  <div class="row">
+                                  		<div class="col-lg-4">	
+                                  		<%include("/eeda/component/form/selectField.html",
+                                  					{	id:'type',
+                                  						label:'类型',
+                                  						value_list:[
+                                  							{code:'',value:''},
+                                  							{code:'出口',value:'出口'},
+                                  							{code:'进口',value:'进口'}
+                                  						]
+                                  					}
+                                  		){}%>
+                                  		</div>
+                                  
                                   </div>
 
                                     

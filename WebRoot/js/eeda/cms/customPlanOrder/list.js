@@ -80,6 +80,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var booking_no = $("#booking_no").val().trim();
+          var type = $("#type").val();
           if(paraStr=="待审核"&&paraStr!=undefined){
         	  status = paraStr;
           }else{
@@ -97,10 +98,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
               时间字段需成双定义  *_begin_time *_end_time   between
           */
           var url = "/customPlanOrder/list?order_no="+order_no
-               +"&status="+status
-               +"&booking_no="+booking_no
+               +"&status_equals="+status
+               +"&booking_no_equals="+booking_no
                +"&custom_state_equals="+custom_state
                +"&application_company_name="+customer_name
+               +"&type_equals="+type
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 
