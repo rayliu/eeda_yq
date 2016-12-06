@@ -184,23 +184,32 @@ $(document).ready(function() {
             },
             { "data": "CUSTOM_CURRENCY", "width": "60px",
             	"render": function ( data, type, full, meta ) {
-	                	if(!data)
-	                        data='';
-	                    var field_html = template('table_dropdown_template',
-	                        {
-	                            id: 'CUSTOM_CURRENCY',
-	                            value: data,
-	                            display_value: full.CURRENCY_NAME,
-	                            style:'width:80px'
-	                        }
-	                    );
+	                	if(!data){
+	                			var field_html = template('table_dropdown_template',
+	    	                        {
+	    	                            id: 'CUSTOM_CURRENCY',
+	    	                            value: $('#cost_currency').val(),
+	    	                            display_value: $('#cost_currency_input').val(),
+	    	                            style:'width:80px'
+	    	                        }
+	                		);
+	                        }else{
+			                    var field_html = template('table_dropdown_template',
+			                        {
+			                            id: 'CUSTOM_CURRENCY',
+			                            value: data,
+			                            display_value: full.CURRENCY_NAME,
+			                            style:'width:80px'
+			                        }
+			                    );
+	                    }
 	                    return field_html;
             	}
             },
             { "data": "CUSTOM_RATE", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
-            			data='';
+            			data=$('#cost_currency_rate').val();
             		return '<input type="text" name="custom_rate" value="'+parseFloat(data).toFixed(6)+'" class="form-control" style="width:100px"/>';
             	}
             },
@@ -291,7 +300,7 @@ $(document).ready(function() {
     	}
     })
     
-    $('#trade_cost_table').on('keyup', '[name=custom_rate]', function(){
+    $('#trade_cost_table').on('keyup', '[name=custom_rate],[name=custom_price],[name=custom_number]', function(){
     	var row = $(this).parent().parent();
     	var rate = $(this).val();
     	var custom_amount = $(row.find('[name=custom_amount]')).val();
