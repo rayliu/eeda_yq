@@ -208,8 +208,13 @@ $(document).ready(function() {
             },
             { "data": "CUSTOM_RATE", "width": "80px",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data=$('#cost_currency_rate').val();
+            		if(!data){
+            			if($('#cost_currency_rate').val()==''){
+            					data=0;
+            				}else{
+            					data=$('#cost_currency_rate').val();
+            				}
+            			}
             		return '<input type="text" name="custom_rate" value="'+parseFloat(data).toFixed(6)+'" class="form-control" style="width:100px"/>';
             	}
             },
