@@ -86,7 +86,7 @@ $(document).ready(function() {
                     return '<input type="text" name="number" value="'+data+'" class="form-control" style="width:120px"/>';
                 }
             },
-            { "data": "UNIT", "width": "80px",
+            { "data": "LEGAL_UNIT", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                         data='';
