@@ -1,0 +1,160 @@
+<%layout("/eeda/layout.html"){%>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-header">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-list fa-fw"></i>工作单列表
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                                <form id="orderForm">
+                                    <div class="row"><!--  第1行  -->
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'order_no', 
+                                                                    label: '工作单号', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                                                {   id: 'sent_out_time', 
+                                                                    label: '出货时间', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                            {	id:'create_stamp', 
+                                            	label:'创建时间', 
+                                            	value:''
+                                            }){} %>
+                                        </div><!-- /.col-lg-4 -->
+                                    </div><!-- /.row-->
+                                    <div class="row">
+                                    	<div class="col-lg-4">
+                                             <%include("/eeda/component/form/selectField.html", 
+                                                    {   id:'status', 
+                                                        label:'状态', 
+                                                        value: '',
+                                                        value_list:[
+                                                            {code:'', value:''},
+                                                            {code:'新建', value:'新建'},
+                                                            {code:'已完成', value:'已完成'}
+                                                        ]
+                                                    }
+                                                 ){} %>
+                                        </div>
+                                        <div class="col-lg-4">
+                                          <%include("/eeda/component/form/inputField.html", 
+                                                              {   id: 'customer_code', 
+                                                                  label: '客户代码', 
+                                                                  value: ''
+                                                              }){}%>
+                                        </div>
+                                        <div class="col-lg-4">
+                                          <%include("/eeda/component/form/inputField.html", 
+                                                              {   id: 'customer_name', 
+                                                                  label: '客户名称', 
+                                                                  value: ''
+                                                              }){}%>
+                                        </div>
+                                  </div>
+                                </form>
+
+                            <div class="form-group button-bar" >
+                                <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+                                <a href="/transJobOrder/create" class="btn btn-success btn-sm" type="button">创建工作单</a>
+                            </div>
+                            <ul id="orderTabs" class="nav nav-tabs"  style="display:none;">
+                                <li class="active">
+                                    <a id='allTab' href="#docDetail" data-toggle="tab">全部</a>
+                                </li>
+                                <li>
+                                    <a id='oceanDetailTab' href="#oceanDetail" data-toggle="tab">海运</a>
+                                </li>
+                                <li>
+                                    <a id='airDetailTab' href="#airDetail" data-toggle="tab" >空运</a>
+                                </li>
+                                <li>
+                                    <a id='landDetailTab' href="#domesticDetail" data-toggle="tab">陆运</a>
+                                </li>
+                                <li>
+                                    <a id='customDetailTab' href="#customDetail" data-toggle="tab">报关</a>
+                                </li>
+                            </ul>
+                            <%include("/eeda/component/form/detailTable.html", 
+                                {
+                                    id:'eeda-table', 
+                                    headers:['','工作单号',
+                                        '类型',
+                                        '出货时间',
+                                        '客户名称',
+                                        '创建人',
+                                        '创建时间',
+                                        '状态']
+                                }){} %>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+          
+        </div><!-- end of  .page-wrapper-->
+        
+        <!-- 删除单据的原因 -->
+        <a data-target='#deleteReasonDetail' data-toggle='modal'>
+            <button id="deleteReasonDetailAlert" style="display:none"></button>
+        </a>
+        <div class="modal fade" id="deleteReasonDetail">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">请填写删除原因</div>
+                <div class="modal-body">
+                    <input id="delete_id" type="hidden">
+                    <form id="deleteReasonDetailForm">
+                     <div class="form-group">
+                     <select class="form-control search-control deleteReason">
+                     <option>单据错误多</option>                   
+                     <option>单据作废</option>                   
+                     </select>
+                     <textarea id='deleteReason' name="deleteReason" class="form-control" rows="3" required></textarea>
+                     </div>
+                     </form>
+                </div>
+              <div class="modal-footer">
+                <button class="btn  btn-default return" data-dismiss="modal">返回</button>
+                <button class="btn btn-primary confirm" >确定删除</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+<%}%>
+
+<script>
+      var type = "${type!''}";
+ </script>
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], 
+        function (common) {
+        requirejs(['app/tms/transJobOrder/list']);
+    },
+    function(error) {
+        console.error('报错了: ',error);
+        //error.requireModules : is Array of all failed modules
+        var failedId = error.requireModules && error.requireModules[0];
+        console.error(failedId);
+        console.error(error.message);
+    });
+</script>

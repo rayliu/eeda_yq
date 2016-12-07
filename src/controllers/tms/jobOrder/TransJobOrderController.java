@@ -17,17 +17,9 @@ import models.UserCustomer;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
-import models.eeda.oms.jobOrder.JobOrder;
-import models.eeda.oms.jobOrder.JobOrderAir;
-import models.eeda.oms.jobOrder.JobOrderAirCargoDesc;
-import models.eeda.oms.jobOrder.JobOrderAirItem;
-import models.eeda.oms.jobOrder.JobOrderArap;
-import models.eeda.oms.jobOrder.JobOrderCustom;
-import models.eeda.oms.jobOrder.JobOrderInsurance;
 import models.eeda.oms.jobOrder.JobOrderLandItem;
 import models.eeda.oms.jobOrder.JobOrderSendMail;
 import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
-import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
 import models.eeda.tms.TransJobOrderDoc;
@@ -104,39 +96,16 @@ public class TransJobOrderController extends Controller {
 	    	setAttr("portCreate",Db.findFirst(port_sql,id));
 	    	
     	}
-    	setAttr("usedOceanInfo", getUsedOceanInfo());
-    	setAttr("usedAirInfo", getUsedAirInfo());
     	setAttr("emailTemplateInfo", getEmailTemplateInfo());
     	setAttr("loginUser",LoginUserController.getLoginUserName(this));
         render("/tms/TransJobOrder/JobOrderEdit.html");
     }
     
-    //插入动作MBL标识符
-    public void mblflag(){
-    	String jsonStr = getPara("order_id");
-    	JobOrderShipment jos = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
-    	jos.set("mbl_flag", "Y");
-    	jos.update();
-    	renderJson("{\"result\":true,\"mbl_flag\":\"Y\"}");
-    }
-    
-    //已电放确认表标识
-    public void alreadyInlineFlag(){
-    	String jsonStr = getPara("order_id");
-    	JobOrderShipment jos = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
-    	jos.set("in_line_flag", "Y");
-    	jos.update();
-    	renderJson("{\"result\":true}");
-    }
 
-    //插入打印动作SI标识符
-    public void siflag(){
-    	String jsonStr = getPara("order_id");
-    	JobOrderShipment jos = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
-    	jos.set("si_flag", "Y");
-    	jos.update();
-    	renderJson("{\"result\":true}");
-    }
+    
+
+
+
     
     //插入派车单打印动作标记
     public void truckOrderflag(){
@@ -147,14 +116,7 @@ public class TransJobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
-    //插入打印动作AFR/AMS标识符
-    public void aframsflag(){
-    	String jsonStr = getPara("order_id");
-    	JobOrderShipment jos = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
-    	jos.set("afr_ams_flag", "Y");
-    	jos.update();
-    	renderJson("{\"result\":true}");
-    }
+
     
     //根据工作单类型生成不同前缀
     public String generateJobPrefix(String type){
@@ -236,37 +198,10 @@ public class TransJobOrderController extends Controller {
    		}
    		long customerId = Long.valueOf(dto.get("customer_id").toString());
    		saveCustomerQueryHistory(customerId);
-
-
-		//空运
-		List<Map<String, String>> air_detail = (ArrayList<Map<String, String>>)dto.get("air_detail");
-		DbUtils.handleList(air_detail, id, JobOrderAir.class, "order_id");
-		
-		List<Map<String, String>> air_cargoDesc = (ArrayList<Map<String, String>>)dto.get("air_cargoDesc");
-		DbUtils.handleList(air_cargoDesc, id, JobOrderAirCargoDesc.class, "order_id");
-		
-		List<Map<String, String>> air_item = (ArrayList<Map<String, String>>)dto.get("air_list");
-		DbUtils.handleList(air_item, id, JobOrderAirItem.class, "order_id");
 		
 		//陆运
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
 		DbUtils.handleList(land_item, id, TransJobOrderLandItem.class, "order_id");
-		
-		//报关
-		List<Map<String, String>> chinaCustom = (ArrayList<Map<String, String>>)dto.get("chinaCustom");
-		List<Map<String, String>> abroadCustom = (ArrayList<Map<String, String>>)dto.get("abroadCustom");
-		List<Map<String, String>> hkCustom = (ArrayList<Map<String, String>>)dto.get("hkCustom");
-		List<Map<String, String>> chinaCustom_self_detail = (ArrayList<Map<String, String>>)dto.get("chinaCustom_self_detail");
-		List<Map<String, String>> chinaCustom_self_item = (ArrayList<Map<String, String>>)dto.get("chinaCustom_self_item");
-		DbUtils.handleList(chinaCustom, id, JobOrderCustom.class, "order_id");
-		DbUtils.handleList(chinaCustom_self_detail, id, JobOrderCustom.class, "order_id");
-		DbUtils.handleList(chinaCustom_self_item, "job_order_custom_china_self_item", id, "order_id");
-		DbUtils.handleList(abroadCustom, id, JobOrderCustom.class, "order_id");
-		DbUtils.handleList(hkCustom, id, JobOrderCustom.class, "order_id");
-		
-		//保险
-		List<Map<String, String>> insurance_detail = (ArrayList<Map<String, String>>)dto.get("insurance_detail");
-		DbUtils.handleList(insurance_detail, id, JobOrderInsurance.class, "order_id");
 		
 		//费用明细，应收应付
 		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");
@@ -284,32 +219,14 @@ public class TransJobOrderController extends Controller {
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
 		DbUtils.handleList(doc_list, id, TransJobOrderDoc.class, "order_id");
 
-		//贸易
-		List<Map<String, String>> trade_detail = (ArrayList<Map<String, String>>)dto.get("trade_detail");
-		DbUtils.handleList(trade_detail,"job_order_trade",id,"order_id");
-		List<Map<String, String>> trade_cost_list = (ArrayList<Map<String, String>>)dto.get("trade_cost");
-		DbUtils.handleList(trade_cost_list,"job_order_trade_cost",id,"order_id");
-		List<Map<String, String>> trade_service_list = (ArrayList<Map<String, String>>)dto.get("trade_service");
-		DbUtils.handleList(trade_service_list,"job_order_trade_charge_service",id,"order_id");
-		List<Map<String, String>> trade_sale_list = (ArrayList<Map<String, String>>)dto.get("trade_sale");
-		DbUtils.handleList(trade_sale_list,"job_order_trade_charge_sale",id,"order_id");
-
 		long creator = transJobOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
    		
 		Record r = transJobOrder.toRecord();
    		r.set("creator_name", user_name);
-   		r.set("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
-   		r.set("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
-   		r.set("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
-   		r.set("customSelf", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china_self"));
-   		r.set("shipment", getItemDetail(id,"shipment"));
-   		r.set("trade", getItemDetail(id,"trade"));
-    	r.set("air", getItemDetail(id,"air"));
-   		r.set("insurance", getItemDetail(id,"insure"));
-   		
+	
    		//保存空运填写模板
-   		saveAirTemplate(air_detail);
+
    		renderJson(r);
    	}
     
@@ -359,142 +276,6 @@ public class TransJobOrderController extends Controller {
     }
     
     //保存海运填写模板
-    public void saveOceanTemplate(List<Map<String, String>> shipment_detail){
-        if(shipment_detail==null||shipment_detail.size()<=0)
-            return;
-        
-        Map<String, String> recMap=shipment_detail.get(0);
-    	
-    	Long creator_id = LoginUserController.getLoginUserId(this);
-    	String MBLshipper = recMap.get("MBLshipper");
-    	String MBLconsignee = recMap.get("MBLconsignee");
-    	String MBLnotify_party = recMap.get("MBLnotify_party");
-    	String HBLshipper = recMap.get("HBLshipper");
-    	String HBLconsignee = recMap.get("HBLconsignee");
-    	String HBLnotify_party = recMap.get("HBLnotify_party");
-    	String por = recMap.get("por");
-    	String pol = recMap.get("pol");
-    	String pod = recMap.get("pod");
-    	String fnd = recMap.get("fnd");
-    	String booking_agent = recMap.get("booking_agent");
-    	String carrier = recMap.get("carrier");
-    	String head_carrier = recMap.get("head_carrier");
-    	String oversea_agent = recMap.get("oversea_agent");
-    	String release_type = recMap.get("release_type");
-    	String cargo_desc = recMap.get("cargo_desc");
-    	String shipping_mark = recMap.get("shipping_mark");
-        
-        if(por!=null&&!"".equals(por)){
-        	 savePortQueryHistory(por);
-        }
-        if(pol!=null&&!"".equals(pol)){
-        	 savePortQueryHistory(pol);
-        }
-        if(pod!=null&&!"".equals(pod)){
-        	 savePortQueryHistory(pod);
-        }
-        if(fnd!=null&&!"".equals(fnd)){
-        	 savePortQueryHistory(fnd);
-        }
-        String content = MBLshipper+MBLconsignee+MBLnotify_party+HBLshipper+HBLconsignee+HBLnotify_party+por+pol+pod+fnd+booking_agent+carrier+head_carrier+oversea_agent;
-        if("".equals(content)){
-        	return;
-        }
-        
-        String sql = "select 1 from job_order_ocean_template where"
-                + " creator_id = "+creator_id;
-        if(StringUtils.isNotEmpty(MBLshipper)){
-        	sql+=" and MBLshipper='"+MBLshipper+"'";
-        }
-        if(StringUtils.isNotEmpty(MBLconsignee)){
-        	sql+=" and MBLconsignee= '"+MBLconsignee+"'";
-        }
-        if(StringUtils.isNotEmpty(MBLnotify_party)){
-        	sql+=" and MBLnotify_party= '"+MBLnotify_party+"'";
-        }
-        if(StringUtils.isNotEmpty(HBLshipper)){
-        	sql+=" and HBLshipper= '"+HBLshipper+"'";
-        }
-        if(StringUtils.isNotEmpty(HBLconsignee)){
-        	sql+=" and HBLconsignee= '"+HBLconsignee+"'";
-        }
-        if(StringUtils.isNotEmpty(HBLnotify_party)){
-        	sql+=" and HBLnotify_party= '"+HBLnotify_party+"'";
-        }
-        if(StringUtils.isNotEmpty(por)){
-        	sql+=" and por="+por;
-        }
-        if(StringUtils.isNotEmpty(pol)){
-        	sql+=" and pol="+pol;
-        }
-        if(StringUtils.isNotEmpty(pod)){
-        	sql+=" and pod="+pod;
-        }
-        if(StringUtils.isNotEmpty(fnd)){
-        	sql+=" and fnd="+fnd;
-        }
-        if(StringUtils.isNotEmpty(booking_agent)){
-        	sql+=" and booking_agent="+booking_agent;
-        }
-        if(StringUtils.isNotEmpty(carrier)){
-        	sql+=" and carrier="+carrier;
-        }
-        if(StringUtils.isNotEmpty(head_carrier)){
-        	sql+=" and head_carrier="+head_carrier;
-        }
-        if(StringUtils.isNotEmpty(oversea_agent)){
-        	sql+=" and oversea_agent="+oversea_agent;
-        }
-        if(StringUtils.isNotEmpty(release_type)){
-        	sql+=" and release_type='"+release_type+"'";
-        }
-        if(StringUtils.isNotEmpty(cargo_desc)){
-        	sql+=" and cargo_desc='"+cargo_desc+"'";
-        }
-        if(StringUtils.isNotEmpty(shipping_mark)){
-        	sql+=" and shipping_mark='"+shipping_mark+"'";
-        }
-      
-        Record checkRec = Db.findFirst(sql);
-        if(checkRec==null){
-            Record r= new Record();
-            r.set("creator_id", creator_id);
-            r.set("MBLshipper", MBLshipper);
-            r.set("MBLconsignee", MBLconsignee);
-            r.set("MBLnotify_party", MBLnotify_party);
-            r.set("HBLshipper", HBLshipper);
-            r.set("HBLconsignee", HBLconsignee);
-            r.set("HBLnotify_party", HBLnotify_party);
-            r.set("por", por);
-            r.set("pol", pol);
-            r.set("pod", pod);
-            r.set("fnd", fnd);
-            r.set("booking_agent", booking_agent);
-            r.set("carrier", carrier);
-            r.set("head_carrier", head_carrier);
-            r.set("oversea_agent", oversea_agent);
-            r.set("release_type", release_type);
-            r.set("cargo_desc", cargo_desc);
-            r.set("shipping_mark", shipping_mark);
-            Db.save("job_order_ocean_template", r);
-        }
-    }
-    
-    private void savePortQueryHistory(String portId){
-        Long userId = LoginUserController.getLoginUserId(this);
-        Record rec = Db.findFirst("select * from user_query_history where type='port' and ref_id=? and user_id=?", portId, userId);
-        if(rec==null){
-            rec = new Record();
-            rec.set("ref_id", portId);
-            rec.set("type", "port");
-            rec.set("user_id", userId);
-            rec.set("query_stamp", new Date());
-            Db.save("user_query_history", rec);
-        }else{
-            rec.set("query_stamp", new Date());
-            Db.update("user_query_history", rec);
-        }
-    }
     
     //记录费用使用历史
     private void saveFinItemQueryHistory(List<Map<String, String>> list) throws InstantiationException, IllegalAccessException{
@@ -688,27 +469,7 @@ public class TransJobOrderController extends Controller {
         renderJson(resultMap);
     }
     //删除报关文档
-    @Before(Tx.class)
-    public void deleteCustomDoc(){
-    	String id = getPara("id");
-    	Record r = Db.findById("job_order_custom_doc",id);
-    	String fileName = r.getStr("doc_name");
-    	Map<String,Object> resultMap = new HashMap<String,Object>();
-    	
-    	String path = getRequest().getServletContext().getRealPath("/");
-    	String filePath = path+"\\upload\\doc\\"+fileName;
-    	
-    	File file = new File(filePath);
-    	if (file.exists() && file.isFile()) {
-    		boolean result = file.delete();
-    		Db.delete("job_order_custom_doc",r);
-    		resultMap.put("result", result);
-    	}else{
-    		Db.delete("job_order_custom_doc", r);
-    		resultMap.put("result", "文件不存在可能已被删除!");
-    	}
-    	renderJson(resultMap);
-    }
+
     
     //删除陆运签收文件
     @Before(Tx.class)
@@ -748,72 +509,13 @@ public class TransJobOrderController extends Controller {
     }
 
     //返回对象	
-    private Record getItemDetail(String id,String type){
-    	Record re = null;
-    	if("shipment".equals(type)){
-    		re = Db.findFirst("select jos.*, p1.abbr MBLshipperAbbr , p2.abbr MBLconsigneeAbbr, p3.abbr MBLnotify_partyAbbr, "
-    				+ " p8.abbr HBLshipperAbbr , p9.abbr HBLconsigneeAbbr, p10.abbr HBLnotify_partyAbbr,p4.abbr carrier_name,"
-    				+ " p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name,"
-    				+ " lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name,lo4.name hub_name"
-    				+ " from job_order_shipment jos "
-    				+ " left join party p1 on p1.id=jos.MBLshipper"
-    				+ " left join party p2 on p2.id=jos.MBLconsignee"
-    				+ " left join party p3 on p3.id=jos.MBLnotify_party"
-    				+ " left join party p8 on p8.id=jos.HBLshipper"
-    				+ " left join party p9 on p9.id=jos.HBLconsignee"
-    				+ " left join party p10 on p10.id=jos.HBLnotify_party"
-    				+ " left join party p4 on p4.id=jos.carrier"
-    				+ " left join party p5 on p5.id=jos.head_carrier"
-    				+ " left join party p6 on p6.id=jos.oversea_agent"
-    				+ " left join party p7 on p7.id=jos.booking_agent"
-    				+ " LEFT JOIN location lo on lo.id = jos.por"
-					+ " LEFT JOIN location lo1 on lo1.id = jos.pol"
-					+ " LEFT JOIN location lo2 on lo2.id = jos.pod"
-					+ " LEFT JOIN location lo3 on lo3.id = jos.fnd"
-					+ " LEFT JOIN location lo4 on lo4.id = jos.hub"
-    				+ " where order_id = ?",id);
-    	}else if("insure".equals(type)){
-    		re = Db.findFirst("select * from job_order_insurance joi where order_id = ?",id);
-    	}else if("air".equals(type)){
-    		re = Db.findFirst("select joa.* ,p1.abbr shipperAbbr,p2.abbr consigneeAbbr,p3.abbr notify_partyAbbr,p4.abbr booking_agent_name from job_order_air joa"
-    				+ " left join party p1 on p1.id=joa.shipper"
-    				+ " left join party p2 on p2.id=joa.consignee"
-    				+ " left join party p3 on p3.id=joa.notify_party"
-    				+ " left join party p4 on p4.id=joa.booking_agent"
-    				+ " where order_id=?", id);
-    	}else if("trade".equals(type)){
-	    	re = Db.findFirst("select jot.*,p.abbr cost_company_abbr,p1.abbr charge_service_company_abbr,p2.abbr charge_sale_company_abbr,"
-	    			+ " c.name cost_currency_name, c1.name charge_service_currency_name, c2.name charge_sale_currency_name"
-	    			+ " from job_order_trade jot"
-	    			+ " left join party p on p.id=jot.cost_company "
-	    			+ " left join party p1 on p1.id=jot.charge_service_company "
-	    			+ " left join party p2 on p2.id=jot.charge_sale_company "
-	    			+ " left join currency c on c.id=jot.cost_currency"
-	    			+ " left join currency c1 on c1.id=jot.charge_service_currency"
-	    			+ " left join currency c2 on c2.id=jot.charge_sale_currency"
-	    			+ " where order_id=?", id);
-    	}
-		return re;
-    }
+
     
     //返回list
     private List<Record> getItems(String orderId,String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
-    	if("shipment".equals(type)){
-    		itemSql = "select jos.*,CONCAT(u.name,u.name_eng) unit_name from job_order_shipment_item jos"
-    				+ " left join unit u on u.id=jos.unit_id"
-    				+ " where order_id=? order by jos.id";
-    		itemList = Db.find(itemSql, orderId);
-    	}else if("air".equals(type)){
-    		itemSql = "select joa.*, pa.abbr air_company_name from job_order_air_item joa"
-    		        + " left join party pa on pa.id=joa.air_company"
-    		        + " where order_id=? order by joa.id";
-    		itemList = Db.find(itemSql, orderId);
-    	}else if("cargoDesc".equals(type)){
-    		itemSql = "select * from job_order_air_cargodesc where order_id=? order by id";
-    		itemList = Db.find(itemSql, orderId);
-    	}else if("land".equals(type)){
+    	 if("land".equals(type)){
     		itemSql = " select tjol.*, p.abbr transport_company_name,CAST(GROUP_CONCAT(tjold.id) as char ) trans_job_order_land_doc_id, GROUP_CONCAT(tjold.doc_name) doc_name,"
     				+ " p1.abbr consignor_name, p2.abbr consignee_name from trans_job_order_land_item tjol"
     				+ " left join party p on p.id=tjol.transport_company"
@@ -845,44 +547,6 @@ public class TransJobOrderController extends Controller {
 	    }else if("mail".equals(type)){
 	    	itemSql = "select * from job_order_sendMail where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
-	    }else if("trade_cost".equals(type)){
-	    	itemSql = "select jotc.*,p.abbr sp_name,c.name currency_name from job_order_trade_cost jotc"
-	    			+ " left join party p on p.id = jotc.sp"
-	    			+ " left join currency c on c.id = jotc.custom_currency"
-	    			+ " where order_id=? order by id";
-	    	itemList = Db.find(itemSql, orderId);
-	    }else if("trade_sale".equals(type)){
-	    	itemSql = "select jotc.*, f.name charge_name, p.abbr sp_name,c.name currency_name from job_order_trade_charge_sale jotc"
-	    			+ " left join fin_item f on f.id=jotc.charge_id"
-	    			+ " left join party p on p.id = jotc.sp"
-	    			+ " left join currency c on c.id = jotc.currency"
-	    			+ " where order_id=? order by id";
-	    	itemList = Db.find(itemSql, orderId);
-	    }else if("trade_service".equals(type)){
-	    	itemSql = "select jotc.*, f.name charge_name, p.abbr sp_name,c.name currency_name from job_order_trade_charge_service jotc"
-	    			+ " left join fin_item f on f.id=jotc.charge_id"
-	    			+ " left join party p on p.id = jotc.sp"
-	    			+ " left join currency c on c.id = jotc.currency"
-	    			+ " where order_id=? order by id";
-	    	itemList = Db.find(itemSql, orderId);
-	    }else if("china_self".equals(type)){
-	    	itemSql = "select * from job_order_custom_china_self_item"
-	    			+ " where order_id=? order by id";
-	    	itemList = Db.find(itemSql, orderId);
-	    }else if("custom_doc".equals(type)){
-	    	itemSql = "select jod.*,u.c_name from job_order_custom_doc jod left join user_login u on jod.uploader=u.id "
-	    			+ " where order_id=? order by jod.id";
-	    	itemList = Db.find(itemSql, orderId);
-	    }else if("custom_app".equals(type)){
-	    	itemList = Db.find("SELECT"
-	    			+ " cjo.id, cjo.order_no custom_plan_no, o.office_name custom_bank,cjo.status applybill_status,"
-	    			+ " cjo.ref_no custom_order_no, cjo.custom_state status, ul.c_name creator,"
-	    			+ " cjo.create_stamp, ul2.c_name fill_name, cjo.fill_stamp"
-	    			+ " FROM custom_plan_order cjo"
-	    			+ " LEFT JOIN user_login ul ON ul.id = cjo.creator"
-	    			+ " LEFT JOIN user_login ul2 ON ul2.id = cjo.fill_by"
-	    			+ " left join office o on o.id = cjo.to_office_id"
-	    			+ " WHERE cjo.ref_job_order_id = ? ",orderId);
 	    }
 		return itemList;
 	}
@@ -895,28 +559,16 @@ public class TransJobOrderController extends Controller {
 
 
     	//获取空运运明细表信息
-    	setAttr("usedAirInfo", getUsedAirInfo());
-    	setAttr("airList", getItems(id,"air"));
-    	setAttr("cargoDescList", getItems(id,"cargoDesc"));
-    	setAttr("air", getItemDetail(id,"air"));
+
     	//获取陆运明细表信息
     	setAttr("landList", getItems(id,"land"));
     	//贸易
-    	setAttr("trade", getItemDetail(id,"trade"));
-    	setAttr("trade_cost_list", getItems(id,"trade_cost"));
-    	setAttr("trade_charge_service_list", getItems(id,"trade_service"));
-    	setAttr("trade_charge_sale_list", getItems(id,"trade_sale"));
+
 
     	//报关
-    	setAttr("customItemList",getItems(id, "custom_app"));
-    	setAttr("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
-   		setAttr("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
-   		setAttr("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
-   		setAttr("customSelf", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china_self"));
-   		setAttr("customSelfItemList", getItems(id,"china_self"));
-   		setAttr("customDocList", getItems(id,"custom_doc"));
+
     	//保险
-    	setAttr("insurance", getItemDetail(id,"insure"));
+
     	//获取费用明细
     	setAttr("chargeList", getItems(id,"charge"));
     	setAttr("costList", getItems(id,"cost"));
@@ -951,58 +603,7 @@ public class TransJobOrderController extends Controller {
         return list;
     }
     
-    //常用海运信息
-    public List<Record> getUsedOceanInfo(){
-        List<Record> list = Db.find("select t.*,"
-                + " p1.abbr MBLshipperAbbr , "
-                + " concat(ifnull(p1.address_eng, p1.address), '\r', ifnull(p1.contact_person_eng, p1.contact_person), '\r', ifnull(p1.phone,'')) MBLshipper_info,"
-                + " p2.abbr MBLconsigneeAbbr,"
-                + " concat(ifnull(p2.address_eng, p2.address), '\r', ifnull(p2.contact_person_eng, p2.contact_person), '\r', ifnull(p2.phone,'')) MBLconsignee_info,"
-                + " p3.abbr MBLnotify_partyAbbr,"
-                + " concat(ifnull(p3.address_eng, p3.address), '\r', ifnull(p3.contact_person_eng, p3.contact_person), '\r', ifnull(p3.phone,'')) MBLnotify_info,"
-                + " p8.abbr HBLshipperAbbr , "
-                + " concat(ifnull(p8.address_eng, p8.address), '\r', ifnull(p8.contact_person_eng, p8.contact_person), '\r', ifnull(p8.phone,'')) HBLshipper_info,"
-                + " p9.abbr HBLconsigneeAbbr,"
-                + " concat(ifnull(p9.address_eng, p9.address), '\r', ifnull(p9.contact_person_eng, p9.contact_person), '\r', ifnull(p9.phone,'')) HBLconsignee_info,"
-                + " p10.abbr HBLnotify_partyAbbr,"
-                + " concat(ifnull(p10.address_eng, p10.address), '\r', ifnull(p10.contact_person_eng, p10.contact_person), '\r', ifnull(p10.phone,'')) HBLnotify_info,"
-                + " p4.abbr carrier_name,p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name,"
-                + " concat(ifnull(p6.address_eng, p6.address), '\r', ifnull(p6.contact_person_eng, p6.contact_person), '\r', ifnull(p6.phone,'')) oversea_agent_info,"
-                + " lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name from job_order_ocean_template t "
-                + " left join party p1 on p1.id= t.MBLshipper"
-                + " left join party p2 on p2.id= t.MBLconsignee"
-                + " left join party p3 on p3.id= t.MBLnotify_party"
-                + " left join party p4 on p4.id=t.carrier"
-        		+ " left join party p5 on p5.id=t.head_carrier"
-        		+ " left join party p6 on p6.id=t.oversea_agent"
-        		+ " left join party p7 on p7.id=t.booking_agent"
-                + " LEFT JOIN location lo on lo.id = t.por"
-                + " LEFT JOIN location lo1 on lo1.id = t.pol"
-                + " LEFT JOIN location lo2 on lo2.id = t.pod"
-                + " LEFT JOIN location lo3 on lo3.id = t.fnd"
-                + " left join party p8 on p8.id= t.HBLshipper"
-                + " left join party p9 on p9.id= t.HBLconsignee"
-                + " left join party p10 on p10.id= t.HBLnotify_party"
-                + " where t.creator_id=? order by t.id", LoginUserController.getLoginUserId(this));
-        return list;
-    }
-    //常用空运信息
-    public List<Record> getUsedAirInfo(){
-    	List<Record> list = Db.find("select t.*,"
-    			+ " p1.abbr shipperAbbr , "
-    			+ " concat(ifnull(p1.address_eng, p1.address), '\r', ifnull(p1.contact_person_eng, p1.contact_person), '\r', ifnull(p1.phone,'')) shipper_info,"
-    			+ " p2.abbr consigneeAbbr,"
-    			+ " concat(ifnull(p2.address_eng, p2.address), '\r', ifnull(p2.contact_person_eng, p2.contact_person), '\r', ifnull(p2.phone,'')) consignee_info,"
-    			+ " p3.abbr notify_partyAbbr,"
-    			+ " concat(ifnull(p3.address_eng, p3.address), '\r', ifnull(p3.contact_person_eng, p3.contact_person), '\r', ifnull(p3.phone,'')) notify_info,"
-    			+ " p7.abbr booking_agent_name from job_order_air_template t "
-    			+ " left join party p1 on p1.id= t.shipper"
-    			+ " left join party p2 on p2.id= t.consignee"
-    			+ " left join party p3 on p3.id= t.notify_party"
-    			+ " left join party p7 on p7.id=t.booking_agent"
-    			+ " where t.creator_id=? order by t.id", LoginUserController.getLoginUserId(this));
-    	return list;
-    }
+    
     
     //使用common-email, javamail
     @Before(Tx.class)
@@ -1272,7 +873,7 @@ public class TransJobOrderController extends Controller {
     @Before(Tx.class)
     public void confirmCompleted(){
     	String id = getPara("id");
-    	JobOrder order = JobOrder.dao.findById(id);
+    	TransJobOrder order = TransJobOrder.dao.findById(id);
     	order.set("status", "已完成");
     	order.update();
     	renderJson("{\"result\":true}");
@@ -1284,10 +885,10 @@ public class TransJobOrderController extends Controller {
     	String ids = getPara("itemIds");
     	String[] idArr = ids.split(",");
     	String invoiceNo = getPara("invoiceNo");
-    	JobOrderArap order = null;
+    	TransJobOrderArap order = null;
     	//checkbox选中的几条发票号一样
     	for(int i=0;i<idArr.length;i++){
-    		order = JobOrderArap.dao.findById(idArr[i]);
+    		order = TransJobOrderArap.dao.findById(idArr[i]);
     		order.set("invoice_no", invoiceNo);
     		order.update();
     	}
@@ -1295,19 +896,9 @@ public class TransJobOrderController extends Controller {
     }
     
     //删除海运常用信息模版
-    @Before(Tx.class)
-    public void deleteOceanTemplate(){
-    	String id = getPara("id");
-    	Db.update("delete from job_order_ocean_template where id = ?",id);
-    	renderJson("{\"result\":true}");
-    }
+
     //删除空运常用信息模版
-    @Before(Tx.class)
-    public void deleteAirTemplate(){
-    	String id = getPara("id");
-    	Db.update("delete from job_order_air_template where id = ?",id);
-    	renderJson("{\"result\":true}");
-    }
+
     //删除邮箱常用模版
     @Before(Tx.class)
     public void deleteEmailTemplate(){

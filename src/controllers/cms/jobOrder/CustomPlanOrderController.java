@@ -368,7 +368,7 @@ public class CustomPlanOrderController extends Controller {
     			+ " (SELECT COUNT(4) from custom_plan_order cpo WHERE cpo.status = '待审核' and cpo.office_id="+office_id+") waitAuditing"
     			+ " FROM custom_plan_order cpo"
     			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
-    			+ " where cpo.office_id="+office_id+" or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建'))A"
+    			+ " where cpo.office_id="+office_id+" or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建')) A"
 		        + " where 1 =1 ";
 
         condition = DbUtils.buildConditions(getParaMap());
