@@ -17,7 +17,6 @@ import models.UserCustomer;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
-import models.eeda.oms.jobOrder.JobOrderLandItem;
 import models.eeda.oms.jobOrder.JobOrderSendMail;
 import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
 import models.eeda.tms.TransJobOrder;
@@ -110,9 +109,9 @@ public class TransJobOrderController extends Controller {
     //插入派车单打印动作标记
     public void truckOrderflag(){
     	String jsonStr = getPara("itemId");
-    	JobOrderLandItem joli = JobOrderLandItem.dao.findFirst("select id from job_order_land_item where id = ?",jsonStr);
-    	joli.set("truckorder_flag", "Y");
-    	joli.update();
+    	TransJobOrderLandItem tjoli = TransJobOrderLandItem.dao.findFirst("select id from trans_job_order_land_item where id = ?",jsonStr);
+    	tjoli.set("truckorder_flag", "Y");
+    	tjoli.update();
     	renderJson("{\"result\":true}");
     }
     
@@ -407,26 +406,7 @@ public class TransJobOrderController extends Controller {
     }
     
     //报关的文档上传
-    @Before(Tx.class)
-    public void uploadCustomDoc(){
-    	String order_id = getPara("order_id");
-    	List<UploadFile> fileList = getFiles("doc");
-    	
-    	for (int i = 0; i < fileList.size(); i++) {
-    		File file = fileList.get(i).getFile();
-    		String fileName = file.getName();
-    		
-    		Record r = new Record();
-    		r.set("order_id", order_id);
-    		r.set("uploader", LoginUserController.getLoginUserId(this));
-    		r.set("doc_name", fileName);
-    		r.set("upload_time", new Date());
-    		Db.save("job_order_custom_doc",r);
-    	}
-    	Map<String,Object> resultMap = new HashMap<String,Object>();
-    	resultMap.put("result", true);
-    	renderJson(resultMap);
-    }
+
     
     //上传陆运签收文件描述
     @Before(Tx.class)
@@ -485,9 +465,9 @@ public class TransJobOrderController extends Controller {
 	    	File file = new File(path+arr[i]);
 	    	if (file.exists() && file.isFile()) {
 	    		file.delete();
-	    		Db.update("delete from job_order_land_doc where land_id=?", id);
+	    		Db.update("delete from trans_job_order_land_doc where land_id=?", id);
 	    	}else{
-	    		Db.update("delete from job_order_land_doc where land_id=?", id);
+	    		Db.update("delete from trans_job_order_land_doc where land_id=?", id);
 	    	}
     	}
     	renderJson("{\"result\":true}");
@@ -501,9 +481,9 @@ public class TransJobOrderController extends Controller {
     	File file = new File(path+name);
 		if (file.exists() && file.isFile()) {
 			file.delete();
-			Db.update("delete from job_order_land_doc where id = ?", id);
+			Db.update("delete from trans_job_order_land_doc where id = ?", id);
 		}else{
-			Db.update("delete from job_order_land_doc where id = ?", id);
+			Db.update("delete from trans_job_order_land_doc where id = ?", id);
 		}
     	renderJson("{\"result\":true}");
     }
@@ -545,7 +525,7 @@ public class TransJobOrderController extends Controller {
 	    			+ "	where tjod.order_id=? order by tjod.id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("mail".equals(type)){
-	    	itemSql = "select * from job_order_sendMail where order_id=? order by id";
+	    	itemSql = "select * from trans_job_order_sendMail where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }
 		return itemList;
@@ -590,15 +570,15 @@ public class TransJobOrderController extends Controller {
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
     	//海运头程资料
-   		setAttr("oceanHead", Db.findFirst("select * from job_order_shipment_head where order_id = ?",id));
-   		setAttr("truckHead", Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",id));
+//   		setAttr("oceanHead", Db.findFirst("select * from job_order_shipment_head where order_id = ?",id));
+//   		setAttr("truckHead", Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",id));
     	  
         render("/tms/TransJobOrder/JobOrderEdit.html");
     }
     
     //常用邮箱模版
     public List<Record> getEmailTemplateInfo(){
-    	List<Record> list = Db.find("select t.* from job_order_sendmail_template t"
+    	List<Record> list = Db.find("select t.* from trans_job_order_sendmail_template t"
                 + " where t.creator=?", LoginUserController.getLoginUserId(this));
         return list;
     }
@@ -903,7 +883,7 @@ public class TransJobOrderController extends Controller {
     @Before(Tx.class)
     public void deleteEmailTemplate(){
     	String id = getPara("id");
-    	Db.update("delete from job_order_sendmail_template where id = ?",id);
+    	Db.update("delete from trans_job_order_sendmail_template where id = ?",id);
     	renderJson("{\"result\":true}");
     }
     
@@ -950,7 +930,7 @@ public class TransJobOrderController extends Controller {
     	Date date = new Date();
     	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	String delete_stamp = sf.format(date);
-    	Db.update("update job_order set delete_flag='Y', deletor='"+deletor+"', delete_stamp='"+delete_stamp+"',"
+    	Db.update("update trans_job_order set delete_flag='Y', deletor='"+deletor+"', delete_stamp='"+delete_stamp+"',"
     			+ " delete_reason='"+delete_reason+"' where id = ?  ",id);
     	renderJson("{\"result\":true}");
     }
