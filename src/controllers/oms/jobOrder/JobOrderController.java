@@ -200,6 +200,8 @@ public class JobOrderController extends Controller {
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
         
         JobOrder jobOrder = new JobOrder();
+        
+        //获取office_id
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
    		
@@ -955,13 +957,13 @@ public class JobOrderController extends Controller {
 //	    	itemSql = "select jod.*,u.c_name from job_order_custom_doc jod left join user_login u on jod.uploader=u.id "
 //	    			+ " where order_id=? order by jod.id";
 	        itemSql = "select cpo.ref_job_order_id, jocd.id,jocd.doc_name,jocd.upload_time,jocd.remark,"
-	                + " ul.c_name c_name,jocd.uploader, jocd.share_flag from job_order_custom_doc jocd"
+	                + " ul.c_name c_name,jocd.uploader, jocd.share_flag ,null share_flag from job_order_custom_doc jocd"
                     + " LEFT JOIN user_login ul on ul.id = jocd.uploader"
                     + " LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id and jocd.share_flag = 'Y'"
                     + " where jocd.order_id =?"
                     + " union all"
                     + " select cpo.ref_job_order_id, null id ,jod.doc_name,jod.upload_time,jod.remark,u.c_name c_name,"
-                    + " jod.uploader, jod.share_flag "
+                    + " jod.uploader,null share_flag, jod.cms_share_flag"
                     + " from custom_plan_order_doc jod "
                     + " left join custom_plan_order cpo on cpo.id = jod.order_id"
                     + " left join user_login u on jod.uploader=u.id "
@@ -1507,6 +1509,20 @@ public class JobOrderController extends Controller {
         }
         renderJson("{\"result\":true}");
     }
+    
+    //新文档上传标记
+    @Before(Tx.class)
+    public void newFlag(){
+        //获取office_id
+    	String id = getPara("id");
+   		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+   		if(office_id!=1&&office_id!=2){
+   			Db.update("update job_order_custom_doc set new_flag ='N' where id = ?",id);
+   		}
+    	renderJson("{\"result\":true}");
+    }
+    
 
 
 }

@@ -225,6 +225,10 @@ public class EedaConfig extends JFinalConfig {
 		//cms 报关管理
 		me.add("/customJobOrder", CustomJobOrderController.class, contentPath);
 		me.add("/customPlanOrder", CustomPlanOrderController.class, contentPath);
+		me.add("/cmsChargeConfirm", controllers.arap.cmsAr.CmsChargeConfirmController.class, contentPath);
+		me.add("/cmsChargeCheckOrder", controllers.arap.cmsAr.CmsChargeCheckOrderController.class, contentPath);
+		
+		
 		
 		//tms 车队系统
 		me.add("/transJobOrder", TransJobOrderController.class, contentPath);
@@ -240,7 +244,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/chargeMiscOrder", controllers.arap.ar.chargeMiscOrder.ChargeMiscOrderController.class, contentPath);
         me.add("/chargeAcceptOrder", controllers.arap.ar.ChargeAcceptOrderController.class, contentPath);
         me.add("/chargeConfirm", controllers.arap.ar.ChargeConfirmController.class, contentPath);
-        me.add("/cmsChargeConfirm", controllers.arap.ar.ChargeConfirmController.class, contentPath);
+        
         //ap 应付条目处理
         me.add("/costConfirmList", controllers.arap.ap.CostItemConfirmController.class, contentPath);
         me.add("/costCheckOrder", controllers.arap.ap.CostCheckOrderController.class, contentPath);

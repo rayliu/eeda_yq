@@ -32,7 +32,7 @@ public class ChargeConfirmController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {		
-		render("/eeda/cmsArap/ChargeConfirm/ChargeConfirmList.html");
+		render("/eeda/cmsArap/cmsChargeConfirm/cmsChargeConfirmList.html");
 	}
 	
     public void list() {

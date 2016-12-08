@@ -94,30 +94,37 @@ $(document).ready(function() {
         columns:[
 			{ "data": "ID", "width": "10px",
 			    "render": function ( data, type, full, meta ) {
-                    if(!full.ID){//有doc id证明是自己上传的，否则是从job order 共享过来的
+                    if(full.SHARE_FLAG=='Y'){//有doc id证明是自己上传的，否则是从job order 共享过来的
                         return '';
                     }else{
-                        if(full.SHARE_FLAG=='Y')
+                        if(full.CMS_SHARE_FLAG=='Y'){
                             return '<input type="checkbox" class="checkBox" checked style="width:50px">';
-                        else 
+                        }else {
                             return '<input type="checkbox" class="checkBox" style="width:50px">';
+                        }
                     }
 			    }
 			},
             {"width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	if(full.ID){
-                		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
-                	}else {
+                	if(full.SHARE_FLAG=='Y'){
                 		return '';
+                	}else {
+                		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
                 	}
+                	
                 }
             },
-            { "data": "DOC_NAME","width": "280px",
+            { "data": "DOC_NAME","width": "280px","name":"doc_name",
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
+                    if(!data){
                         data='';
-                    return '<input type="hidden" name="doc_name" value="'+data+'" ><a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                    }
+                    if(full.NEW_FLAG=='Y'){
+                    	return '<input type="hidden" name="doc_name" value="'+data+'" ><span class="badge" style="background-color: red;">新</span>&nbsp &nbsp<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                    }else{
+                    	return '<input type="hidden" name="doc_name" value="'+data+'" >&nbsp &nbsp<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                    }
                 }
             },
             { "data": "C_NAME","width": "80px",
@@ -152,6 +159,20 @@ $(document).ready(function() {
                 }
             },
             { "data": "SHARE_FLAG", "visible": false },
+            { "data": "CMS_SHARE_FLAG", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return data;
+            	}
+            },
+            { "data": "NEW_FLAG", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return data;
+            	}
+            },
             { "data": "REF_JOB_ORDER_ID", "visible": false,
             	"render": function ( data, type, full, meta ) {
             		if(!data)
@@ -159,6 +180,7 @@ $(document).ready(function() {
             		return data;
             	}
             }
+            
         ]
     });
     

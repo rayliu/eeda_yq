@@ -179,7 +179,7 @@
   					</li>
           <% }%>
   					<li>
-  						<a href="#docDetail" data-toggle="tab" name="文档信息">文档信息 <span class="badge" style="background-color: red;">新</span></a>
+  						<a href="#docDetail"  id="tabDocDetail" data-toggle="tab" name="文档信息">文档信息 <span class="badge" style="background-color: red; display:none;" >新</span></a>
   					</li>
 				</ul>
 				
@@ -853,8 +853,8 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'doc_table',
-                                        headers:['是否共享','', '文档名称', '上传人', '上传时间', '备注','share_flag','ref_job_order_id'],
-                                        field_list:['ID', '', 'doc_name','c_name','upload_time', 'remark','uploader','share_flag','ref_job_order_id'],
+                                        headers:['是否共享','', '文档名称', '上传人', '上传时间', '备注','uploader','share_flag','cms_share_flag','new_flag','ref_job_order_id'],
+                                        field_list:['ID', '', 'doc_name','c_name','upload_time', 'remark','uploader','share_flag','cms_share_flag','new_flag','ref_job_order_id'],
                                         value_list: docList![]
                                     }){} %>
                             </div>
