@@ -401,16 +401,16 @@ $(document).ready(function() {
                 }
               }
             },
-            { "data": "EXCHANGE_RATE", "width": "60px",
+            { "data": "EXCHANGE_RATE", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(6);
                     else
                     	str = '';
                 if(full.AUDIT_FLAG == 'Y'){
-                    	return '<input type="text" name="exchange_rate" style="width:80px" value="'+str+'" class="form-control" disabled />';
+                    	return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control" disabled />';
                 }else{
-                    	return '<input type="text" name="exchange_rate" style="width:80px" value="'+str+'" class="form-control" />';
+                    	return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control" />';
                }
               }
             },
@@ -453,16 +453,16 @@ $(document).ready(function() {
             		}
             	}
             },
-            { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px", "className":"exchange_currency_rate",
+            { "data": "EXCHANGE_CURRENCY_RATE", "width": "80px", "className":"exchange_currency_rate",
             	"render": function ( data, type, full, meta ) {
             		if(data)
             			var str =  parseFloat(data).toFixed(2);
             		else
             			str = '';
             		if(full.AUDIT_FLAG == 'Y'){
-            			return '<input type="text" name="exchange_currency_rate" style="width:80px" value="'+str+'" class="form-control" disabled />';
+            			return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control" disabled />';
             		}else{
-            			return '<input type="text" name="exchange_currency_rate" style="width:80px" value="'+str+'" class="form-control" />';
+            			return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control" />';
             		}
             	}
             },
