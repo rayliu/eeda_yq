@@ -42,7 +42,7 @@ public class ChargeCheckOrderController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
-		render("/eeda/cmsArap/cmsChargeCheckOrder/cmsChargeCheckOrderList.html");
+		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderList.html");
 	}
 	
 	@Before(Tx.class)
