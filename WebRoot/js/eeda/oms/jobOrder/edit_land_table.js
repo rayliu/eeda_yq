@@ -487,8 +487,12 @@ $(document).ready(function() {
 			    url: '/jobOrder/uploadSignDesc?id='+id,
 			    dataType: 'json',
 		        done: function (e, data) {
-		    		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
-		    		itemOrder.refleshLandItemTable(order_id);
+                    if(data.result.RESULT){
+    		    		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
+    		    		itemOrder.refleshLandItemTable(order_id);
+                    }else{
+                        $.scojs_message('上传失败:'+data.result.ERRMSG, $.scojs_message.TYPE_ERROR);
+                    }
 			     },
 		        error: function () {
 		            alert('上传的时候出现了错误！');

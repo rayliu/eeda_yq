@@ -14,12 +14,12 @@ $(document).ready(function() {
 			    url: '/jobOrder/uploadCustomDoc?order_id='+order_id,
 			    dataType: 'json',
 		        done: function (e, data) {
-	        	if(data.result){
+	        	    if(data.result.RESULT){
 			    		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
 			    		//异步刷新显示上传的文档信息
 			    		itemOrder.refleshCustomDocTable(order_id);
 			    	}else{
-			    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
+			    		$.scojs_message('上传失败:'+data.result.ERRMSG, $.scojs_message.TYPE_ERROR);
 			    	}
 			     },
 		        error: function () {

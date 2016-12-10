@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ import com.jfinal.upload.UploadFile;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.FileUploadUtil;
 import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
 
@@ -677,63 +679,74 @@ public class JobOrderController extends Controller {
     
     //上传相关文档
     @Before(Tx.class)
-    public void saveDocFile(){
-    	String order_id = getPara("order_id");
-    	List<UploadFile> fileList = getFiles("doc");
-    	
-		for (int i = 0; i < fileList.size(); i++) {
-    		File file = fileList.get(i).getFile();
-    		String fileName = file.getName();
-    		
-			JobOrderDoc jobOrderDoc = new JobOrderDoc();
-			jobOrderDoc.set("order_id", order_id);
-			jobOrderDoc.set("uploader", LoginUserController.getLoginUserId(this));
-			jobOrderDoc.set("doc_name", fileName);
-			jobOrderDoc.set("upload_time", new Date());
-			jobOrderDoc.save();
-		}
-		Map<String,Object> resultMap = new HashMap<String,Object>();
-		resultMap.put("result", true);
-    	renderJson(resultMap);
+    public void saveDocFile() throws Exception{
+    	try {
+            String order_id = getPara("order_id");
+            List<UploadFile> fileList = getFiles("doc");
+            Long userId = LoginUserController.getLoginUserId(this);
+            
+            FileUploadUtil.uploadFile(fileList, order_id, userId, "job_order_doc", false);
+            
+            renderJson("{\"result\":true}");
+        } catch (Exception e) {
+            String msg = e.getMessage();
+            Record rec = new Record();
+            rec.set("result", false);
+            if(msg.indexOf("Posted content")>0){
+                rec.set("errMsg", "文件不能大于10M.");
+            }else{
+                rec.set("errMsg", msg);
+            }
+    	    renderJson(rec);
+        }
     }
     
     //报关的文档上传
     @Before(Tx.class)
-    public void uploadCustomDoc(){
-    	String order_id = getPara("order_id");
-    	List<UploadFile> fileList = getFiles("doc");
-    	
-    	for (int i = 0; i < fileList.size(); i++) {
-    		File file = fileList.get(i).getFile();
-    		String fileName = file.getName();
-    		
-    		Record r = new Record();
-    		r.set("order_id", order_id);
-    		r.set("uploader", LoginUserController.getLoginUserId(this));
-    		r.set("doc_name", fileName);
-    		r.set("upload_time", new Date());
-    		Db.save("job_order_custom_doc",r);
-    	}
-    	Map<String,Object> resultMap = new HashMap<String,Object>();
-    	resultMap.put("result", true);
-    	renderJson(resultMap);
+    public void uploadCustomDoc() throws Exception{
+        try {
+            String order_id = getPara("order_id");
+            List<UploadFile> fileList = getFiles("doc");
+            Long userId = LoginUserController.getLoginUserId(this);
+            
+            FileUploadUtil.uploadFile(fileList, order_id, userId, "job_order_custom_doc", false);
+            
+            renderJson("{\"result\":true}");
+        } catch (Exception e) {
+            String msg = e.getMessage();
+            Record rec = new Record();
+            rec.set("result", false);
+            if(msg.indexOf("Posted content")>0){
+                rec.set("errMsg", "文件不能大于10M.");
+            }else{
+                rec.set("errMsg", msg);
+            }
+            renderJson(rec);
+        }
     }
     
     //上传陆运签收文件描述
     @Before(Tx.class)
-    public void uploadSignDesc(){
-		String id = getPara("id");
-		List<UploadFile> fileList = getFiles("doc");
-		File file = fileList.get(0).getFile();
-		String fileName = file.getName();
-		
-		Record r = new Record();
-		r.set("land_id", id);
-		r.set("doc_name", fileName);
-		r.set("uploader", LoginUserController.getLoginUserId(this));
-		r.set("upload_time", new Date());
-		Db.save("job_order_land_doc",r);
-		renderJson("{\"result\":true}");
+    public void uploadSignDesc() throws Exception{
+        try {
+            String id = getPara("id");
+            List<UploadFile> fileList = getFiles("doc");
+            Long userId = LoginUserController.getLoginUserId(this);
+            
+            FileUploadUtil.uploadFile(fileList, id, userId, "job_order_land_doc", false);
+            
+            renderJson("{\"result\":true}");
+        } catch (Exception e) {
+            String msg = e.getMessage();
+            Record rec = new Record();
+            rec.set("result", false);
+            if(msg.indexOf("Posted content")>0){
+                rec.set("errMsg", "文件不能大于10M.");
+            }else{
+                rec.set("errMsg", msg);
+            }
+            renderJson(rec);
+        }
     }
     
     //删除相关文档
