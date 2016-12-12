@@ -425,6 +425,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 		 	    	 $("#uncheckedEeda-table .checkBox").each(function(){
 		 	    		 var id = $(this).parent().parent().attr('id');
 		 	    		 var sp_name = $(this).parent().siblings('.SP_NAME')[0].textContent;
+		 	    		var total_amount = $(this).parent().siblings('.TOTAL_AMOUNT')[0].textContent;
+		 	    		var currency_name = $(this).parent().siblings('.CURRENCY_NAME')[0].textContent;
+		 	    		if(total_amount!=''&&!isNaN(total_amount)){
+							if(currency_name=='CNY'){
+								cny_totalAmount += parseFloat(total_amount);
+							}else if(currency_name=='USD'){
+								usd_totalAmount += parseFloat(total_amount);
+							}else if(currency_name=='HKD'){
+								hkd_totalAmount += parseFloat(total_amount);
+							}else if(currency_name=='JPY'){
+								jpy_totalAmount += parseFloat(total_amount);
+							}
+						}
 		 	    		 itemIds.push(id);
 		 	    		 cnames.push(sp_name);
 		 	    	 })
@@ -435,11 +448,37 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	 	    	 $("#uncheckedEeda-table .checkBox").each(function(){
 	 	    		 var id = $(this).parent().parent().attr('id');
 	 	    		 var sp_name = $(this).parent().siblings('.SP_NAME')[0].textContent;
+	 	    		var total_amount = $(this).parent().siblings('.TOTAL_AMOUNT')[0].textContent;
+	 	    		var currency_name = $(this).parent().siblings('.CURRENCY_NAME')[0].textContent;
+	 	    		if(total_amount!=''&&!isNaN(total_amount)){
+						if(currency_name=='CNY'){
+							cny_totalAmount -= parseFloat(total_amount);
+						}else if(currency_name=='USD'){
+							usd_totalAmount -= parseFloat(total_amount);
+						}else if(currency_name=='HKD'){
+							hkd_totalAmount -= parseFloat(total_amount);
+						}else if(currency_name=='JPY'){
+							jpy_totalAmount -= parseFloat(total_amount);
+						}
+					}
 	 	    		 itemIds.pop(id);
 	 	    		cnames.pop(sp_name);
 	 	    	 })
     		 }
     	 }
+	 	   
+	 	   
+	 	     $('#cny_totalAmountSpan').html(cny_totalAmount.toFixed(2));
+			 $('#usd_totalAmountSpan').html(usd_totalAmount.toFixed(2));
+			 $('#hkd_totalAmountSpan').html(hkd_totalAmount.toFixed(2));
+			 $('#jpy_totalAmountSpan').html(jpy_totalAmount.toFixed(2));
+			 $('#totalAmount').val(totalAmount.toFixed(2));
+			 $('#cny_totalAmount').val(cny_totalAmount.toFixed(2));
+			 $('#usd_totalAmount').val(usd_totalAmount.toFixed(2));
+			 $('#hkd_totalAmount').val(hkd_totalAmount.toFixed(2));
+			 $('#jpy_totalAmount').val(jpy_totalAmount.toFixed(2));
+			 
+			 
 	 	   if(cnames.length>0){
 	 		  $("#createBtn").prop('disabled',false);
 	 	   }else{

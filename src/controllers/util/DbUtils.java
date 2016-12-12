@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -268,8 +267,10 @@ public class DbUtils {
 						Db.delete(table, r1);
 					}else{//UPDATE
 						Record r2 = Db.findById(table,rowId);
-						setModelValues(rowMap, r2, table);
-						Db.update(table,r2);
+						if(r2!=null){
+							setModelValues(rowMap, r2, table);
+							Db.update(table,r2);
+						}
 					}
 				}
 			}
