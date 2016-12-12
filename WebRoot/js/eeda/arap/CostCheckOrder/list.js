@@ -314,12 +314,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
    		 	    		cnames=[];
    		 	    	}
    		 	    }else{
-   		 	    	 $("#eeda_table .checkBox").prop('checked',true);
-   		 	    	 $("#eeda_table .checkBox").each(function(){
-   		 	    		 var id = $(this).parent().parent().attr('id');
-   		 	    		 var sp_name = $(this).parent().siblings('.SP_NAME')[0].textContent;
-   		 	    		 
-   		 	    		var total_amount = $(this).parent().siblings('.TOTAL_AMOUNT')[0].textContent;
+   		 	    $("#eeda_table .checkBox").each(function(){
+	 	    		if(!$(this).prop('checked')){
+	 	    			$(this).prop('checked',true);
+	 	    			var id = $(this).parent().parent().attr('id');
+		 	    		 var sp_name = $(this).parent().siblings('.SP_NAME')[0].textContent;
+		 	    		var total_amount = $(this).parent().siblings('.TOTAL_AMOUNT')[0].textContent;
 		 	    		var currency_name = $(this).parent().siblings('.CURRENCY_NAME')[0].textContent;
 		 	    		if(total_amount!=''&&!isNaN(total_amount)){
 							if(currency_name=='CNY'){
@@ -332,10 +332,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 								jpy_totalAmount += parseFloat(total_amount);
 							}
 						}
-   		 	    		 
-   		 	    		 itemIds.push(id);
-   		 	    		 cnames.push(sp_name);
-   		 	    	 })
+		 	    		 itemIds.push(id);
+		 	    		 cnames.push(sp_name);
+	 	    		}
+	 	    	 });
    		 	    }
        	 }else{
        		 $("#eeda_table .checkBox").prop('checked',false);

@@ -15,6 +15,7 @@ $(document).ready(function() {
     $('#add_charge_cost').on('click', function(){
     	var item={};
     	costTable.row.add(item).draw(true);
+    	
     });
     
     //费用明细确认按钮动作

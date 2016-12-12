@@ -10,6 +10,7 @@ window.calcCurrency =  function (){
               $('[name=profitRMB]').html("<span style='color:red'>CNY "+eeda.numFormat(parseFloat(profitRMB).toFixed(2),3)+"</span>");
            } else{
               $('[name=profitRMB]').text("CNY "+eeda.numFormat(parseFloat(0).toFixed(2),3));
+              
            }
 
         var chargeUSD = $('[name=chargeUSD]').text().replace('USD','');
