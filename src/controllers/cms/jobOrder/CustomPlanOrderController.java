@@ -361,7 +361,7 @@ public class CustomPlanOrderController extends Controller {
         String condition="";
         
     	sql = "SELECT * from (SELECT cpo.id,cpo.order_no,cpo.type,cpo.production_and_sales_input application_company_name,ul.c_name creator_name,cpo.booking_no,"
-    			+ " cpo.create_stamp,cpo.status,cpo.custom_state,(SELECT COUNT(0) from custom_plan_order cpo WHERE cpo.custom_state = '放行' and cpo.office_id="+office_id+") pass,"
+    			+ " cpo.create_stamp,cpo.status,cpo.custom_state,(SELECT COUNT(0) from custom_plan_order cpo WHERE cpo.custom_state = '放行' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) pass,"
     			+ " (SELECT COUNT(1) from custom_plan_order cpo WHERE cpo.custom_state = '查验' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) checked,"
     			+ "	(SELECT COUNT(2) from custom_plan_order cpo WHERE cpo.custom_state = '异常待处理' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) handling,"
     			+ " (SELECT COUNT(3) from custom_plan_order cpo WHERE cpo.custom_state = '异常' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) abnormal,"
