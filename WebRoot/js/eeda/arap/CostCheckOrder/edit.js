@@ -60,6 +60,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                 var order = data;
                 if(order.ID){
                 	$('#id').val(order.ID);
+                	$('#order_id').val(order.ID);
                 	$('#sp_id').val(order.SP_ID);
                 	$('#order_no').val(order.ORDER_NO);
                 	$('#status').val(order.STATUS);
