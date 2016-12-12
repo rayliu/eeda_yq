@@ -91,6 +91,7 @@ $(document).ready(function() {
                 if($('#order_id').val()==''){//创建时默认出来两行
                     addDefaultRows();
                 }
+
             },
 	        columns:[
 			{ "data":"ID","width": "30px",
@@ -162,6 +163,13 @@ $(document).ready(function() {
             		if(!data)
             			data='';
             		return '<input type="text" name="take_address" value="'+data+'" class="form-control" style="width:200px"/>';
+            	}
+            },
+            { "data": "DELIVERY_ADDRESS", "width": "180px", "className":"consignee_addr",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="delivery_address" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
             { "data": "CAR_NO", "width": "180px",
@@ -243,13 +251,7 @@ $(document).ready(function() {
             		return '<input type="text" name="consignee_phone" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "DELIVERY_ADDRESS", "width": "180px", "className":"consignee_addr",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="delivery_address" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            },
+            
             { "data": "CARGO_DESC", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
@@ -340,6 +342,18 @@ $(document).ready(function() {
             {"UNLOAD_TYPE":"提吉柜"},
             {"UNLOAD_TYPE":"收重柜"}]).draw();
     };
+    
+    //把提柜码头和还柜码头带到table中
+   $('#take_wharf,#back_wharf').keyup(function(){
+	   if($('#take_wharf').val()!=''){
+		   $($("#land_table tr:eq(1) td:nth-child(7)").find('input')).val($('#take_wharf').val());
+	   }
+	   if($('#back_wharf').val()!=''){
+		   $($("#land_table tr:eq(2) td:nth-child(8)").find('input')).val($('#back_wharf').val());
+	   }
+   
+   });
+    
 
     //刷新明细表
     itemOrder.refleshLandItemTable = function(order_id){
@@ -396,6 +410,5 @@ $(document).ready(function() {
 		        }
 			});
 	});
-
 });
 });

@@ -536,19 +536,12 @@ public class TransJobOrderController extends Controller {
     	String id = getPara("id");
     	TransJobOrder transJobOrder = TransJobOrder.dao.findById(id);
     	setAttr("order", transJobOrder);
-
-
     	//获取空运运明细表信息
-
     	//获取陆运明细表信息
     	setAttr("landList", getItems(id,"land"));
     	//贸易
-
-
     	//报关
-
     	//保险
-
     	//获取费用明细
     	setAttr("chargeList", getItems(id,"charge"));
     	setAttr("costList", getItems(id,"cost"));
@@ -571,8 +564,7 @@ public class TransJobOrderController extends Controller {
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
     	//海运头程资料
 //   		setAttr("oceanHead", Db.findFirst("select * from job_order_shipment_head where order_id = ?",id));
-//   		setAttr("truckHead", Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",id));
-    	  
+//   		setAttr("truckHead", Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",id)); 
         render("/tms/TransJobOrder/JobOrderEdit.html");
     }
     
