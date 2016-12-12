@@ -18,7 +18,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
         var dataTable = eeda.dt({
             id: 'uncheckedEeda-table',
             paging: true,
-            serverSide: false,
+            serverSide: true, //不打开会出现排序不对 
+            drawCallback: function( settings ) {
+          	  flash();
+    	      },
             ajax: "/chargeCheckOrder/list",
             columns:[
 			      { "width": "10px", "orderable": false,
@@ -489,9 +492,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 		   $("#allCheck").prop("checked",$("#uncheckedEeda-table .checkBox").length == $("#uncheckedEeda-table .checkBox:checked").length ? true : false);
      });
      
-     $("body").on('click',function(){
+     var flash = function(){    
     	 $("#allCheck").prop("checked",$("#uncheckedEeda-table .checkBox").length == $("#uncheckedEeda-table .checkBox:checked").length ? true : false);
-     });
-
-    });
+     };
+  });
 });

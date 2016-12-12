@@ -17,6 +17,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           paging: true,
           serverSide: true, //不打开会出现排序不对 
           ajax: "/costCheckOrder/list",
+          drawCallback: function( settings ) {
+        	  flash();
+  	      },
           columns: [
       			{ "width": "10px","orderable": false,
       				    "render": function ( data, type, full, meta ) {
@@ -381,13 +384,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
    	 		  $("#createBtn").prop('disabled',true);
    	 	   }
         })
-        $("#eeda_table").on('click','.checkBox',function(){
-   		   $("#allCheck").prop("checked",$("#eeda_table .checkBox").length == $("#eeda_table .checkBox:checked").length ? true : false);
-        });
-		$("body").on('click',function(){
-			$("#allCheck").prop("checked",$("#eeda_table .checkBox").length == $("#eeda_table .checkBox:checked").length ? true : false);
-		});
-        
-      
+		
+	     $("#eeda_table").on('click','.checkBox',function(){
+			   $("#allCheck").prop("checked",$("#eeda_table .checkBox").length == $("#eeda_table .checkBox:checked").length ? true : false);
+	     });
+	     
+	     var flash = function(){    
+	    	 $("#allCheck").prop("checked",$("#eeda_table .checkBox").length == $("#eeda_table .checkBox:checked").length ? true : false);
+	     };
   });
 });
