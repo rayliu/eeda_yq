@@ -78,6 +78,8 @@ $(document).ready(function() {
         eeda.bindTableFieldTruckOut('land_table', 'CONSIGNOR');
         eeda.bindTableFieldTruckIn('land_table', 'CONSIGNEE');
     };
+
+
     //------------事件处理
 	 var cargoTable = eeda.dt({
 	        id: 'land_table',
@@ -85,6 +87,11 @@ $(document).ready(function() {
 	        drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
 	        	bindFieldEvent();
 	        },
+            initComplete: function(settings, json){
+                if($('#order_id').val()==''){//创建时默认出来两行
+                    addDefaultRows();
+                }
+            },
 	        columns:[
 			{ "data":"ID","width": "30px",
 			    "render": function ( data, type, full, meta ) {
@@ -326,6 +333,13 @@ $(document).ready(function() {
             }
         ]
     });
+
+    //默认加两行, 提空柜, 还重柜
+    var addDefaultRows=function(){
+        cargoTable.rows.add([
+            {"UNLOAD_TYPE":"提吉柜"},
+            {"UNLOAD_TYPE":"收重柜"}]).draw();
+    };
 
     //刷新明细表
     itemOrder.refleshLandItemTable = function(order_id){
