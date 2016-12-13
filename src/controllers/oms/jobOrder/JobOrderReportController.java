@@ -225,10 +225,18 @@ public class JobOrderReportController extends Controller {
 		}else if ("invoice".equals(debit_note)){
 			if("EKA".equals(order_no.substring(0,3))){
 				fileName = "/report/jobOrder/AIR_INVOICE.jasper";
-				outFileName = "/download/AIR_Invoice英文";
+				outFileName = "/download/AIR_Invoice中文";
 			}else{
 				fileName = "/report/jobOrder/INVOICE.jasper";
-				outFileName = "/download/Invoice英文";				
+				outFileName = "/download/Invoice中文";				
+			}
+		}else if ("invoice_eng".equals(debit_note)){
+			if("EKA".equals(order_no.substring(0,3))){
+				fileName = "/report/jobOrder/AIR_INVOICE_eng.jasper";
+				outFileName = "/download/AIR_Invoice_eng英文";
+			}else{
+				fileName = "/report/jobOrder/INVOICE_eng.jasper";
+				outFileName = "/download/Invoice_eng英文";				
 			}
 
 		}else {

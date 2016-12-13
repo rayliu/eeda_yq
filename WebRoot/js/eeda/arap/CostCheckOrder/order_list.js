@@ -20,7 +20,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "CREATE_STAMP"},
             { "data": "STATUS"},
             { "data": "SP_NAME"},
-            { "data": "TOTAL_AMOUNT"},
+            { "data": "TOTAL_AMOUNT","visible":false},
             { "data": "USD"},
             { "data": "HKD"},
             { "data": "JPY"},

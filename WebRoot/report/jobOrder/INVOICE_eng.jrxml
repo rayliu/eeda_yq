@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="INVOICE_ENG" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="158"/>
+	<property name="ireport.y" value="186"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -32,9 +32,9 @@
 	<queryString>
 		<![CDATA[SELECT
 	jor.sp_id,jor.exchange_total_amount exchange_total_amount,jor.invoice_no invoice_no,jor.price price,jor.total_amount total_amount,
-  jor.exchange_currency_rate exchange_rate,jor.amount amount, ifnull(pr.company_name,pr.company_name_eng) companyName,
-ifnull(pr.contact_person,pr.contact_person_eng) personEng,
-	ifnull(f.name,f.name_eng) charge_name,
+  jor.exchange_currency_rate exchange_rate,jor.amount amount, ifnull(pr.company_name_eng,pr.company_name) companyName,
+ifnull(pr.contact_person_eng,pr.contact_person) personEng,
+	ifnull(f.name_eng,f.name) charge_name,
 	u. NAME unit_name,
 	c. NAME currency_name,
 	IFNULL(jo.gross_weight,josi.gross_weight) gross_weight,
@@ -369,9 +369,6 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="39" width="285" height="15" uuid="84f0a969-bfd6-4f4d-9a12-ec14a167a8f9"/>
-				<textElement>
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
 				<textFieldExpression><![CDATA[$F{personEng}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -405,7 +402,7 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="13" y="2" width="127" height="18" uuid="0c54d94f-85db-45a2-984e-ef543fe7d121"/>
 				<textElement>
-					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{charge_name}]]></textFieldExpression>
 			</textField>
@@ -503,30 +500,30 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 			<staticText>
 				<reportElement x="14" y="171" width="154" height="20" uuid="c2745b55-21a5-4968-87df-d544ce9de735"/>
 				<textElement>
-					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[开户银行：]]></text>
+				<text><![CDATA[BANK NAME:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="14" y="148" width="153" height="20" uuid="b49158ea-f904-46f7-93af-29aef9333601"/>
 				<textElement>
-					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[账    号：]]></text>
+				<text><![CDATA[ACCOUT NO.:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="14" y="123" width="153" height="20" uuid="f77458ed-3298-4aae-8acc-ceaeaf327496"/>
 				<textElement>
-					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[账户名称：]]></text>
+				<text><![CDATA[ACCOUT NAME:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="13" y="95" width="153" height="20" uuid="f143d8af-bc0f-4b0f-943f-704902dd8950"/>
 				<textElement>
-					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[银行信息]]></text>
+				<text><![CDATA[ACCOUNT INFORMATION]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" uuid="0c33aa57-8270-4dd5-941f-6afdcefe4f0b"/>
@@ -549,13 +546,6 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="453" y="3" width="99" height="164" uuid="2e54476d-257d-463c-94bd-6d1f8d97f825"/>
 				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="8" y="3" width="227" height="20" uuid="30a9d86b-259d-43a0-b776-0bf62d10ae0b"/>
-				<textElement>
-					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($V{sum_hkd}.equals(null)?"":"港币"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($V{sum_hkd}))]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
