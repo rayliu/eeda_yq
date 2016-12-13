@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="INVOICE_ENG" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="186"/>
+	<property name="ireport.y" value="305"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -479,52 +479,60 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 		</band>
 	</detail>
 	<pageFooter>
-		<band splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="236" splitType="Stretch">
+		<band height="119" splitType="Stretch">
 			<staticText>
-				<reportElement x="349" y="214" width="159" height="16" uuid="42d6b9e9-dc8a-4907-a285-2d626777ce83"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[AUTHORISED SIGNATURE:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="349" y="176" width="134" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[FOR AND ON BEHALF OF]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="14" y="171" width="154" height="20" uuid="c2745b55-21a5-4968-87df-d544ce9de735"/>
+				<reportElement x="13" y="0" width="153" height="20" uuid="f143d8af-bc0f-4b0f-943f-704902dd8950"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[BANK NAME:]]></text>
+				<text><![CDATA[ACCOUNT INFORMATION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="14" y="148" width="153" height="20" uuid="b49158ea-f904-46f7-93af-29aef9333601"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[ACCOUT NO.:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="14" y="123" width="153" height="20" uuid="f77458ed-3298-4aae-8acc-ceaeaf327496"/>
+				<reportElement x="13" y="20" width="153" height="20" uuid="f77458ed-3298-4aae-8acc-ceaeaf327496"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ACCOUT NAME:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="13" y="95" width="153" height="20" uuid="f143d8af-bc0f-4b0f-943f-704902dd8950"/>
+				<reportElement x="13" y="40" width="153" height="20" uuid="b49158ea-f904-46f7-93af-29aef9333601"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[ACCOUNT INFORMATION]]></text>
+				<text><![CDATA[ACCOUT NO.:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="13" y="59" width="154" height="20" uuid="c2745b55-21a5-4968-87df-d544ce9de735"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BANK NAME:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="356" y="60" width="134" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FOR AND ON BEHALF OF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="74" width="202" height="20" uuid="5b9627c8-f98a-49c2-88c5-aa22ebf1f6ba"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ENKYO SCM (H.K.) CO., LIMITED]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="94" width="159" height="16" uuid="42d6b9e9-dc8a-4907-a285-2d626777ce83"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[AUTHORISED SIGNATURE:]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="80" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" uuid="0c33aa57-8270-4dd5-941f-6afdcefe4f0b"/>
 			</line>
@@ -532,19 +540,12 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 				<reportElement x="380" y="3" width="73" height="20" uuid="d8b01e86-6463-4378-8cfe-079af2125484"/>
 				<text><![CDATA[TOTAL Amount:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="329" y="194" width="224" height="20" uuid="5b9627c8-f98a-49c2-88c5-aa22ebf1f6ba"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[ENKYO SCM (H.K.) CO., LIMITED]]></text>
-			</staticText>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="235" y="3" width="126" height="164" uuid="b8e9c42d-756c-4955-a45b-b4ed9d7965ac"/>
+				<reportElement x="235" y="3" width="126" height="77" uuid="b8e9c42d-756c-4955-a45b-b4ed9d7965ac"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="453" y="3" width="99" height="164" uuid="2e54476d-257d-463c-94bd-6d1f8d97f825"/>
+				<reportElement x="453" y="3" width="99" height="77" uuid="2e54476d-257d-463c-94bd-6d1f8d97f825"/>
 				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
 			</textField>
 		</band>
