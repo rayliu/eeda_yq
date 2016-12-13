@@ -573,14 +573,14 @@ $(document).ready(function() {
     			$(row.find('[name=currency_total_amount]')).val('');
     		}
     		if(exchange_rate!=''&&!isNaN(exchange_rate)){
-    			$(row.find('[name=currency_total_amount]')).val((total_amount*parseFloat(exchange_rate)).toFixed(3));
+    			$(row.find('[name=currency_total_amount]')).val((total_amount*parseFloat(exchange_rate)).toFixed(2));
     			getTotalCharge();
     			if(exchange_currency_rate==''){
         			$(row.find('[name=exchange_total_amount]')).val('');
         		}
     			if(exchange_currency_rate!=''&&!isNaN(exchange_currency_rate)){
     				
-    				$(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_currency_rate).toFixed(3)));
+    				$(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_currency_rate)).toFixed(2));
         		}
     		}
     	}
