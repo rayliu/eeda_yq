@@ -20,7 +20,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 					  { "data": "CREATE_STAMP", "width": "100px"},  
 					  { "data": "STATUS", "width": "100px"},
 					  { "data": "SP_NAME", "width": "60px"}, 
-					  { "data": "TOTAL_AMOUNT","width": "60px",
+					  { "data": "TOTAL_AMOUNT","width": "60px","visible":false,
 				    	 "render":function(data, type, full, meta){
 				    		 if(data<0){
 				    			 return '<span style="color:red">'+data+'</span>';
