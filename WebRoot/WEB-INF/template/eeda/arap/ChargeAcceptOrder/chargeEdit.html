@@ -212,14 +212,8 @@
                       
                         
                        <label class="" style="font-size:18px" >收款信息</label><hr/>
-                       <div class="row search_panel">
-                       
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label class="search-label">收款USD</label>
-                                    <input type="text" class="form-control search-control pay_amount" readonly="readonly" id="app_usd" >
-                                </div>
-                            </div>
+                       <div class="search_panel">
+                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="search-label">收款CNY</label>
@@ -238,7 +232,16 @@
                                     <input type="text" class="form-control search-control pay_amount" readonly="readonly" id="app_jpy">
                                 </div>
                             </div>
-                        
+                       </div>
+                       <div class="row">  
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="search-label">收款USD</label>
+                                    <input type="text" class="form-control search-control pay_amount" readonly="readonly" id="app_usd" >
+                                </div>
+                            </div>
+                       </div>
+                       <div class="row">
                            <div class="col-lg-4">
                            		<%include("/eeda/component/form/inputField.html", { id:'check_name',
 								label:'复核人', value:order.check_name!'',disabled:'disabled'
@@ -249,7 +252,20 @@
 								label:'复核时间', value:order.check_stamp!'',disabled:'disabled'
 								}){}%>
                        		</div>
-                           
+                       	</div>
+                       	<div class="row">
+                       		<div class="col-lg-4">
+                           		<%include("/eeda/component/form/inputField.html", { id:'receiver_name',
+								label:'	确认收款人', value:order.receiver_name!'',disabled:'disabled'
+								}){}%>
+					       </div>
+					       <div class="col-lg-4">
+	                            <%include("/eeda/component/form/dateInputField.html",
+				                        {    id:'receive_time', 
+				                             label:'收款时间',
+				                             value:invoiceApplication.receive_time!''
+	                              }){} %>
+	                        </div>
 	                       <div class="col-lg-4">
 	                       		<div class="form-group">
 	                           	   <label class="search-label">收款方式</label> 
@@ -272,10 +288,9 @@
 		                        	</div>
 	                        	</div>
 	                       </div>
-	                       <div class="col-lg-4">
-	                            <%include("/eeda/component/form/dateInputField.html", {id:'receive_time', label:'收款时间', value:invoiceApplication.receive_time!''}){} %>
-	                        </div>
-	                    </div>
+	                       
+	                    </div>  
+	                  </div>
 	                         
                         <div class=".tooltip-demo">
                             <hr/>
