@@ -29,7 +29,6 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'custom_item_table',
-                                        style:'width:1000px;',
                                         headers:[ '','报关申请单号码','报关行', '申请单状态' ,'报关单号码','海关状态','填报人', '填报时间','提交人', '提交时间'],
                                         field_list:['id','custom_plan_no','custom_bank','applybill_status', 'customs_billCode', 'custom_status',
                                         'creator', 'create_stamp','fill_name','fill_stamp'],
@@ -49,9 +48,8 @@
     	             <%include("/eeda/component/form/detailTable.html", 
     	                 {
     	                     id:'custom_doc_table',
-    	                     style:'width:1400px',
-    	                     headers:['是否共享<input id="allCheckOfCustomDoc" type="checkbox" style="width:30px">','', '文档名称', '上传人', '上传时间', '备注','share_flag','REF_JOB_ORDER_ID'],
-    	                     field_list:['id','', 'doc_name','c_name','upload_time', 'remark','share_flag','REF_JOB_ORDER_ID'],
+    	                     headers:['是否共享<input id="allCheckOfCustomDoc" type="checkbox" style="width:30px">','', '文档名称', '备注', '上传人', '上传时间', 'share_flag','REF_JOB_ORDER_ID'],
+    	                     field_list:['id','', 'doc_name','remark','c_name','upload_time', 'share_flag','REF_JOB_ORDER_ID'],
     	                     value_list: customDocList![]
     	                 }){} %>
     	              <br>

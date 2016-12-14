@@ -54,15 +54,15 @@ $(document).ready(function() {
         id: 'custom_doc_table',
         autoWidth: false,
         columns:[
-			{ "data":"ID","width": "30px",
+			{ "data":"ID","width": "40px",
 			    "render": function ( data, type, full, meta ) {
                     if(!full.ID){//有doc id证明是自己上传的，否则是从job order 共享过来的
                         return '';
                     }else{
                         if(full.SHARE_FLAG=='Y')
-                            return '<input type="checkbox" class="checkBox" checked style="width:50px">';
+                            return '<input type="checkbox" class="checkBox" checked >';
                         else 
-                            return '<input type="checkbox" class="checkBox" style="width:50px">';
+                            return '<input type="checkbox" class="checkBox" >';
                     }
 			    }
 			},
@@ -75,22 +75,22 @@ $(document).ready(function() {
                     }
                 }
             },
-            { "data": "DOC_NAME","width": "180px",
+            { "data": "DOC_NAME",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:200px" target="_blank">'+data+'</a>';
+                    return '<a class="doc_name" href="/upload/doc/'+data+'" target="_blank">'+data+'</a>';
                 }
             },
-            { "data": "C_NAME","width": "180px"},
-            { "data": "UPLOAD_TIME", "width": "180px"},
-            { "data": "REMARK","width": "180px",
+            { "data": "REMARK",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:100%"/>';
                 }
             },
+            { "data": "C_NAME","width": "80px"},
+            { "data": "UPLOAD_TIME", "width": "80px"},
             { "data": "SHARE_FLAG", "visible": false },
             { "data": "REF_JOB_ORDER_ID", "visible": false }
         ]
