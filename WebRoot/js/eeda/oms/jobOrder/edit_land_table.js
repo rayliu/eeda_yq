@@ -1,6 +1,7 @@
 define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) {
 $(document).ready(function() {
 
+    var order_id = $('#order_id').val();
 	var deletedTableIds=[];
 	
     //删除一行
@@ -83,6 +84,7 @@ $(document).ready(function() {
 	 var cargoTable = eeda.dt({
 	        id: 'land_table',
 	        autoWidth: false,
+            
 	        drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
 	        	bindFieldEvent();
 	        },
@@ -487,7 +489,7 @@ $(document).ready(function() {
 			    url: '/jobOrder/uploadSignDesc?id='+id,
 			    dataType: 'json',
 		        done: function (e, data) {
-                    if(data.result.RESULT){
+                    if(data.result.result){
     		    		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
     		    		itemOrder.refleshLandItemTable(order_id);
                     }else{
