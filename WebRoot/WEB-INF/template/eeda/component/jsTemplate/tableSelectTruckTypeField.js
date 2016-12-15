@@ -1,5 +1,5 @@
 <script id="table_truck_type_field_template" type="text/html">
-    <select class="form-control search-control" name="truck_type" style="width:100px">
+    <select class="form-control search-control truck_type" name="truck_type" style="width:70px">
       <option {{if data == ''}}selected{{/if}}></option>
       <option {{if value == '40HQ'}}selected{{/if}}>40HQ</option>
       <option {{if value == '40GP'}}selected{{/if}}>40GP</option>

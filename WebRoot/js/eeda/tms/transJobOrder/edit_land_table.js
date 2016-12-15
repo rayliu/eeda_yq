@@ -74,9 +74,7 @@ $(document).ready(function() {
     	    $(el).trigger('keyup');
     	});
     	
-    	eeda.bindTableField('land_table','TRANSPORT_COMPANY','/serviceProvider/searchTruckCompany','truck');
-        eeda.bindTableFieldTruckOut('land_table', 'CONSIGNOR');
-        eeda.bindTableFieldTruckIn('land_table', 'CONSIGNEE');
+        eeda.bindTableFieldCarInfo('land_table', 'CAR_NO');
     };
 
 
@@ -172,14 +170,22 @@ $(document).ready(function() {
             		return '<input type="text" name="delivery_address" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "CAR_NO", "width": "180px",
+            { "data": "CAR_NO", "width": "100px",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="car_no" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
+                    if(!data)
+                        data='';
+                    var field_html = template('table_car_no_field_template',
+                        {
+                            id: 'CAR_NO',  //component_id 便于用 #id取组件
+                            value: data,
+                            display_value: full.CAR_NO,
+                            style:'width:200px'
+                        }
+                    );
+                    return field_html;
+                }
             },
-            { "data": "TRUCK_TYPE", "width": "80px",
+            { "data": "TRUCK_TYPE", "width": "70px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
@@ -192,18 +198,18 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "DRIVER", "width": "180px",
+            { "data": "DRIVER", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="driver" value="'+data+'" class="form-control" style="width:200px" />';
+                    return '<input type="text" name="driver" value="'+data+'" class="form-control driver" style="width:100px" />';
                 }
             },
-            { "data": "DRIVER_TEL", "width": "180px",
+            { "data": "DRIVER_TEL", "width": "120px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:200px" />';
+                    return '<input type="text" name="driver_tel" value="'+data+'" class="form-control phone" style="width:120px" />';
                 }
             },
             { "data": "CONSIGNOR", "width": "180px",

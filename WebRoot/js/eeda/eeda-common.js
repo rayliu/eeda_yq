@@ -857,5 +857,101 @@ eeda.refreshUrl = refreshUrl;
           }).find('li').first().focus();
       };
       
-      
+      eeda.bindTableFieldCarInfo = function(talbe_id, el_name) {
+          var tableFieldList = $('#table_car_no_field_list');
+          $('#'+talbe_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
+              var me = this;
+              var inputField = $(this);
+              var hiddenField = $(this).parent().find('input[name='+el_name+']');
+              var inputStr = inputField.val();
+
+              if (event.keyCode == 40) {
+                  tableFieldList.find('li').first().focus();
+                  return false;
+              }
+
+              $.get('/carInfo/search', {input:inputStr}, function(data){
+                  if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+                      return;
+                  }
+                  tableFieldList.empty();
+                  for(var i = 0; i < data.length; i++)
+                      tableFieldList.append("<li tabindex='"+i+"'><a class='item' dataId='"+data[i].ID
+                              +"' carType='"+data[i].CARTYPE+"' "
+                              +" phone='"+data[i].PHONE+"' "
+                              +" driver='"+data[i].DRIVER+"' >"+data[i].CAR_NO
+                              +"</a></li>");
+                  tableFieldList.css({ 
+                      left:$(me).offset().left+"px", 
+                      top:$(me).offset().top+28+"px" 
+                  });
+                  tableFieldList.show();
+                  eeda._inputField = inputField;
+                  eeda._hiddenField = hiddenField;
+              },'json');
+          });
+
+          tableFieldList.on('click', '.item', function(e){
+              var inputField = eeda._inputField;
+              var hiddenField = eeda._hiddenField;
+              inputField.val($(this).text());//名字
+              tableFieldList.hide();
+              //var dataId = $(this).attr('dataId');
+              hiddenField.val($(this).text());//不保存Id, 只保存车牌号
+
+              var row = inputField.parent().parent().parent();
+              row.find('select.truck_type').val($(this).attr('carType'));
+              row.find('input.driver ').val($(this).attr('driver'));
+              row.find('input.phone').val($(this).attr('phone'));
+          });
+
+          tableFieldList.on('keydown', 'li', function(e){
+              if (e.keyCode == 13) {
+                  var inputField = eeda._inputField;
+                  var hiddenField = eeda._hiddenField;
+                  inputField.val($(this).text());//名字
+                  tableFieldList.hide();
+                  var $a = $(this).find('a');
+                  //var dataId = $a.attr('dataId');
+                  hiddenField.val($(this).text());//不保存Id, 只保存车牌号
+
+                  var row = inputField.parent().parent().parent();
+                  row.find('select.truck_type').val($a.attr('carType'));
+                  row.find('input.driver ').val($a.attr('driver'));
+                  row.find('input.phone').val($a.attr('phone'));
+              }
+          });
+          
+          // 1 没选中item，焦点离开，隐藏列表
+          $(document).on('click', function(event){
+              if (tableFieldList.is(':visible') ){
+                  var clickedEl = $(this);
+                  var hiddenField = eeda._hiddenField;
+                  if ($(this).find('a').val().trim().length ==0) {
+                    hiddenField.val('');
+                  };
+                  tableFieldList.hide();
+              }
+          });
+          
+          // 2 当用户只点击了滚动条，没选item，再点击页面别的地方时，隐藏列表
+          tableFieldList.on('mousedown', function(){
+              return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+          });
+
+          tableFieldList.on('focus', 'li', function() {
+              $this = $(this);
+              $this.addClass('active').siblings().removeClass();
+              // $this.closest('div.container').scrollTop($this.index() * $this.outerHeight());
+          }).on('keydown', 'li', function(e) {
+              $this = $(this);
+              if (e.keyCode == 40) {
+                  $this.next().focus();
+                  return false;
+              } else if (e.keyCode == 38) {
+                  $this.prev().focus();
+                  return false;
+              }
+          }).find('li').first().focus();
+      };
 });
