@@ -372,9 +372,20 @@
 	                            </tbody>
                             </table>
                         </div>
+                                               
                         <div class="col-lg-12">
                             <h3>应收信息</h3>
                         </div>
+                    <div class="row" style="margin-left:5px">    
+                        <div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputSpField.html", 
+                                          {
+                                              id:'sp', 
+                                              label:'结算公司', 
+                                              value: ''
+                                          }){} %>
+                        </div> 
+                     </div>
                         <div class="col-lg-12">
                             <button class="btn btn-success btn-xs" id="add_charge">添加费用</button>
 	                         <a data-target='#printDebit' data-toggle='modal'>
