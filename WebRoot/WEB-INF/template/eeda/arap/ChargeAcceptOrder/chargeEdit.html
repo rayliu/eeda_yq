@@ -32,16 +32,6 @@
 								<%include("/eeda/component/form/inputField.html", { id:'status',
 								label:'状态', value:order.status!'新建',disabled:'disabled'
 								}){}%>
-								<div class="form-group">
-                                    <label class="search-label">发票类型</label>
-                                    <input id="invoice_type_show" type="hidden" value="${order.bill_type!''}">
-                                    <select id="invoice_type" class="form-control search-control invoice_type" name="invoice_type">
-                                    <option></option>
-                                    <option value="wbill" <% if(order.bill_type!'wbill'=='wbill'){%>selected<%}%>>无发票</option>
-                                    <option value="mbill" <% if(order.bill_type!''=='mbill'){%>selected<%}%>>自开发票</option>
-                                    <option value="dbill" <% if(order.bill_type!''=='dbill'){%>selected<%}%>>代开发票</option>
-                                    </select>
-                                </div>
                             </div>
                             <div class="col-lg-4">
 								<%include("/eeda/component/form/inputField.html", { id:'payee_unit',
@@ -78,13 +68,49 @@
 									}){}%>
                                 </div>
                             </div>
+                            <div class="col-lg-4">
+	                            <div class="form-group">
+	                                    <label class="search-label">发票类型</label>
+	                                    <input id="invoice_type_show" type="hidden" value="${order.bill_type!''}">
+	                                    <select id="bill_type" class="form-control search-control invoice_type" name="bill_type">
+		                                    <option></option>
+		                                    <option value="wbill" <% if(order.bill_type!'wbill'=='wbill'){%>selected<%}%>>无发票</option>
+		                                    <option value="ordinarybill" <% if(order.bill_type!''=='ordinarybill'){%>selected<%}%>>增值税普通发票</option>
+		                                    <option value="specialbill" <% if(order.bill_type!''=='specialbill'){%>selected<%}%>>增值税专用发票</option>
+		                                    <option value="dbill" <% if(order.bill_type!''=='dbill'){%>selected<%}%>>代开发票(垫付款)</option>
+		                                    <option value="HKINVbill" <% if(order.bill_type!''=='HKINVbill'){%>selected<%}%>>HK INV</option>
+	                                    </select>
+	                            </div>
+                            </div>
+                          <div id="projectFee">
+                            <div class="col-lg-4">
+	                            <div class="form-group">
+	                                    <label class="search-label">项目</label>
+	                                    <input id="fee_type_show" type="hidden" value="${order.fee_type!''}">
+	                                    <select id="fee_type" class="form-control search-control fee_type" name="fee_type">
+		                                    <option></option>
+		                                    <option value="transFee" <% if(order.fee_type!''=='transFee'){%>selected<%}%>>代理货运服务费</option>
+		                                    <option value="customFee" <% if(order.fee_type!''=='customFee'){%>selected<%}%>>代理报关服务费</option>
+		                                    <option value="consultFee" <% if(order.fee_type!''=='consultFee'){%>selected<%}%>>咨询服务费</option>
+		                                    <option value="internationalFee" <% if(order.fee_type!''=='internationalFee'){%>selected<%}%>>国际货代服务费</option>
+	                                    </select>
+	                            </div>
+                            </div>
+                            <div class="col-lg-4">
+			                            <%include("/eeda/component/form/inputField.html", 
+			                            { id:'invoice_money',
+											label:'开票金额', 
+											value:order.invoice_money!''
+											}){}%>
+                            </div>
+                          </div>
 							<div class="col-lg-12">
 								<label>发票信息</label>
 								<textarea id='invoice_no' class="form-control" rows="3" name="invoice_no">${order.invoice_no!''}</textarea>
 							</div>
                         </div>
-                        <br/><hr/>
-                        <div class="row" style="margin-top: 5px;">
+                        <br/><br/><hr/>
+                        <div class="row" style="margin-top: 250px;">
                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_cny',
                                 label:'CNY', value:order.cny!'',disabled:'disabled'
@@ -277,9 +303,12 @@
                                     	<option value="transfers" <% if(order.receive_type!''=='transfers'){%>selected<% }%>>转账</option>                                       
 	                                  </select>
 	                            </div>
-	                             <div id="receive_type_massage" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
+	                       </div>
+
+	                         <div class="col-lg-10">
+	                       		<div id="receive_type_massage" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
 		                            <div class="form-group">
-			                            <label class="search-label">收入银行</label>
+			                            <label class="search-label" style="width: 11%">收入银行</label>
 			                            <input type="hidden" id="receive_banks" placeholder="请选择支付银行" name="pay_banks" value="${invoiceApplication.confirm_bank_id!''}"> 
 			                        	   <select class="form-control search-control receive_bank" name="receive_bank" id="receive_bank" >
 			                        	   		<option></option>
@@ -288,8 +317,8 @@
 			                             		<%}%>
 			                               </select>
 		                        	</div>
-	                        	</div>
-	                       </div>
+	                        	</div>	
+	                         </div>                       
 	                       
 	                    </div>  
 	                  </div>

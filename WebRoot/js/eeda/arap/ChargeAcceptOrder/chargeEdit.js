@@ -574,16 +574,31 @@ $(document).ready(function() {
 	})
 	
 	//发票类型（1）
-	$('#invoice_type').change(function(){
+	$('#bill_type').change(function(){
 		var type = $(this).val();
 		if(type == 'wbill'||type==""){
 			$('#invoiceDiv').hide();
+			$('#projectFee').hide();
 		}else{
 			$('#invoiceDiv').show();
+			if(type=='ordinarybill'||type=='specialbill'){
+				$('#projectFee').show();
+			}else{
+				$('#projectFee').hide();
+			}
 		}
 	})
 	
-	var invoice_type = $('#invoice_type').val();
+	
+	var projectFeeType = $('#bill_type').val();
+	if(projectFeeType=='ordinarybill'||projectFeeType=='specialbill'){
+		$('#projectFee').show();
+	}else{
+		$('#projectFee').hide();
+	}
+	
+	
+	var invoice_type = $('#bill_type').val();
 	if(invoice_type == 'wbill'||invoice_type==""){
 			$('#invoiceDiv').hide();
 		}else{
