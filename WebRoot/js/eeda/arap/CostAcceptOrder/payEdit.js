@@ -198,7 +198,7 @@ $(document).ready(function() {
 		orderjson();
 	
 		if($("#payment_method").val()=='transfers'){
-			if($("#deposit_bank").val()=='' && $("#bank_no").val()==''&& $("#account_name").val()==''){
+			if($(".deposit_bank").val()=='' && $(".bank_no").val()==''&& $(".account_name").val()==''){
 				$.scojs_message('转账的信息不能为空', $.scojs_message.TYPE_FALSE);
 				return false;
 			}
@@ -285,9 +285,10 @@ $(document).ready(function() {
 		  	$("#confirmBtn").attr("disabled", true);
 		  	orderjson();
 			$.get("/costAcceptOrder/confirmOrder", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val(),pay_time:$('#pay_date').val(),pay_type:$('#pay_type').val(),pay_bank:$('#pay_bank').val()}, function(data){
-				if(data.success){
+				if(data){
 					$("#returnBtn").attr("disabled", true);
 					$("#deleteBtn").attr("disabled", true);
+					$("#confirm_name").val(data.CONFIRM_NAME);
 					$("#status").val('已付款');
 					$("#returnConfirmBtn").attr("disabled", false);
 					$.scojs_message('付款成功', $.scojs_message.TYPE_OK);
@@ -460,10 +461,16 @@ $(document).ready(function() {
 	//付款方式回显（1）
 	$('#payment_method').change(function(){
 		var type = $(this).val();
-		if(type == 'cash'){
-			$('#transfers_massage').hide();
+		if(type == 'cash'||type == ''){
+			$('#transfers_massage_cny').hide();
+			$('#transfers_massage_usd').hide();
+			$('#transfers_massage_hkd').hide();
+			$('#pay_type_massage').hide();
 		}else{
-			$('#transfers_massage').show();
+			$('#transfers_massage_cny').show();
+			$('#transfers_massage_usd').show();
+			$('#transfers_massage_hkd').show();
+			$('#pay_type_massage').show();
 		}
 	})
 	

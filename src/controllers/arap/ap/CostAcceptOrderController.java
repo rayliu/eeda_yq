@@ -19,18 +19,10 @@ import models.ArapMiscCostOrder;
 import models.CostApplicationOrderRel;
 import models.Party;
 import models.UserLogin;
-import models.eeda.profile.Account;
-import models.yh.arap.ReimbursementOrder;
-import models.yh.arap.inoutorder.ArapInOutMiscOrder;
-import models.yh.arap.prePayOrder.ArapPrePayOrder;
-import models.yh.carmanage.CarSummaryOrder;
-import models.yh.damageOrder.DamageOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
@@ -46,12 +38,12 @@ import com.jfinal.upload.UploadFile;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
-import controllers.util.PermissionConstant;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
 public class CostAcceptOrderController extends Controller {
-    private Log logger = Log.getLog(CostAcceptOrderController.class);
+    private static final Record Record = null;
+	private Log logger = Log.getLog(CostAcceptOrderController.class);
     Subject currentUser = SecurityUtils.getSubject();
     
     @Before(EedaMenuInterceptor.class)
@@ -66,14 +58,24 @@ public class CostAcceptOrderController extends Controller {
 		ArapCostApplication aca = null;
 		String application_id = getPara("application_id");
 		String paymentMethod = getPara("payment_method");//付款方式
-		String bank_no = getPara("bank_no");          //收款账号
+		
+		String bank_name_cny= getPara("deposit_bank_cny");   //开户行
+		String account_name_cny = getPara("account_name_cny");   //账户名
+		String bank_no_cny = getPara("bank_no_cny");          //收款账号
+		
+		String bank_name_usd= getPara("deposit_bank_usd");   //开户行
+		String account_name_usd = getPara("account_name_usd");   //账户名
+		String bank_no_usd = getPara("bank_no_usd");          //收款账号
+		
+		String bank_name_hkd= getPara("deposit_bank_hkd");   //开户行
+		String account_name_hkd = getPara("account_name_hkd");   //账户名
+		String bank_no_hkd = getPara("bank_no_hkd");          //收款账号
+		
 		String payee_name = getPara("payee_name");    //收款人
-		String numname = getPara("account_name");   //账户名
 		String payee_unit = getPara("payee_unit");      //收款单位
 		String payee_id = getPara("payee_id")==""?null:getPara("payee_id");         //付款给
 		String billing_unit = getPara("billing_unit"); //收款单位
 		String billtype = getPara("invoice_type");   //开票类型
-		String bank_name= getPara("deposit_bank");   //开户行
 		String invoice_no= getPara("invoice_no");
 		String selected_item_ids= getPara("selected_ids"); 
 		
@@ -94,10 +96,21 @@ public class CostAcceptOrderController extends Controller {
 			aca.set("payee_unit", payee_unit);
 			aca.set("billing_unit", billing_unit);
 			aca.set("bill_type", billtype);
-			aca.set("bank_no", bank_no);
+			
+			aca.set("bank_name_cny", bank_name_cny);
+			aca.set("account_name_cny", account_name_cny);
+			aca.set("bank_no_cny", bank_no_cny);
+			
+			aca.set("bank_name_usd", bank_name_usd);
+			aca.set("account_name_usd", account_name_usd);
+			aca.set("bank_no_usd", bank_no_usd);
+			
+			aca.set("bank_name_hkd", bank_name_hkd);
+			aca.set("account_name_hkd", account_name_hkd);
+			aca.set("bank_no_hkd", bank_no_hkd);
+			
+			
 			aca.set("invoice_no", invoice_no);
-			aca.set("bank_name", bank_name);
-			aca.set("num_name", numname);
 			aca.set("selected_item_ids", selected_item_ids);
 			if (total_app_usd != null && !"".equals(total_app_usd)) {
 				aca.set("app_usd",total_app_usd);
@@ -155,9 +168,20 @@ public class CostAcceptOrderController extends Controller {
 			aca.set("invoice_no", invoice_no);
 			aca.set("billing_unit", billing_unit);
 			aca.set("bill_type", billtype);
-			aca.set("bank_no", bank_no);
-			aca.set("bank_name", bank_name);
-			aca.set("num_name", numname);
+			
+			aca.set("bank_name_cny", bank_name_cny);
+			aca.set("account_name_cny", account_name_cny);
+			aca.set("bank_no_cny", bank_no_cny);
+			
+			aca.set("bank_name_usd", bank_name_usd);
+			aca.set("account_name_usd", account_name_usd);
+			aca.set("bank_no_usd", bank_no_usd);
+			
+			aca.set("bank_name_hkd", bank_name_hkd);
+			aca.set("account_name_hkd", account_name_hkd);
+			aca.set("bank_no_hkd", bank_no_hkd);
+			
+
 			aca.set("payee_id", payee_id);
 			aca.set("selected_item_ids", selected_item_ids);//选中的明细item
 			if (total_app_usd != null && !"".equals(total_app_usd)) {
@@ -385,10 +409,11 @@ public class CostAcceptOrderController extends Controller {
         else{
         	arapCostInvoiceApplication.set("confirm_bank_id", 4);
         }
-        if(pay_time==null || pay_time.equals(""))
-        	arapCostInvoiceApplication.set("pay_time", new Date());
-        else
-        	arapCostInvoiceApplication.set("pay_time", pay_time);
+        if(pay_time==null || pay_time.equals("")){
+        		arapCostInvoiceApplication.set("pay_time", new Date());
+        	}else{
+        		arapCostInvoiceApplication.set("pay_time", pay_time);
+        	}
 	        arapCostInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
 	        arapCostInvoiceApplication.set("confirm_stamp", new Date());
 	        arapCostInvoiceApplication.update();
@@ -452,8 +477,11 @@ public class CostAcceptOrderController extends Controller {
         
         String usd_pay_amount = arapCostInvoiceApplication.getDouble("app_usd").toString();
         createAuditLog(application_id, pay_type, pay_bank_id, pay_time, usd_pay_amount, "USD");
+        Record r = new Record();
+        String confirm_name = LoginUserController.getUserNameById(arapCostInvoiceApplication.getLong("confirm_by").toString());
+		r.set("confirm_name", confirm_name);
                 
-        renderJson("{\"success\":true}");  
+        renderJson(r);  
     }
 
 
@@ -467,10 +495,11 @@ public class CostAcceptOrderController extends Controller {
         auditLog.set("amount", pay_amount);
         auditLog.set("creator", LoginUserController.getLoginUserId(this));
         auditLog.set("create_date", pay_time);
-        if(pay_bank_id!=null && !pay_bank_id.equals("") )
-        	auditLog.set("account_id", pay_bank_id);
-        else
-        	auditLog.set("account_id", 4);
+        if(pay_bank_id!=null && !pay_bank_id.equals("") ){
+        		auditLog.set("account_id", pay_bank_id);
+        	}else{
+        		auditLog.set("account_id", 4);
+        	}
         auditLog.set("source_order", "应付申请单");
         auditLog.set("invoice_order_id", application_id);
         auditLog.save();
@@ -785,6 +814,13 @@ public class CostAcceptOrderController extends Controller {
 			userLogin = UserLogin.dao .findById(check_by);
 			String check_name = userLogin.get("c_name");
 			setAttr("check_name", check_name);
+		}
+		
+		Long confirm_by = aca.getLong("confirm_by");
+		if( confirm_by != null){
+			userLogin = UserLogin.dao .findById(confirm_by);
+			String confirm_name = userLogin.get("c_name");
+			setAttr("confirm_name", confirm_name);
 		}
 		
 		List<Record> list = null;

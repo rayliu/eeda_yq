@@ -8,7 +8,7 @@
 				</div>
                 <div class="panel panel-default">
             		<div class="panel-body">
-            		 	<form id="checkForm">
+            		   <form id="checkForm">
             			<div class="row search_panel">
             			<input id='ids' name='ids' type="hidden" value="${ids!''}">
             			<input id='application_id' name='application_id' type="hidden" value="${invoiceApplication.id!''}">
@@ -28,6 +28,31 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
+                                    <label class="search-label">状态</label>
+                                    <input type="text" class="form-control search-control status" id="status" name="status" readonly="readonly" value="${invoiceApplication.status!'新建'}">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                 <div class="form-group">
+                                    <label class="search-label">申请日期</label>
+                                    <input type="text" class="form-control search-control application_date" id="application_date" name="application_date" readonly="readonly" value="${invoiceApplication.create_stamp!''}">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="search-label">提交人</label>
+                                    <input type="text" class="form-control search-control submit_name" id="submit_name" name="submit_name" readonly="readonly" value="${submit_name!''}">
+                                </div>
+                           </div>
+                           <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label class="search-label">结算单位</label>
+                                    <input type="hidden" id="payee_id" name="payee_id" value="${payee_id!''}${invoiceApplication.payee_id!''}"/>
+                                    <input type="text" readonly="readonly" class="form-control search-control sp_filter" id="payee_filter" name="payee_filter" value="${payee_filter!''}">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
                                     <label class="search-label">发票类型</label>
                                     <select id="invoice_type" class="form-control search-control invoice_type" name="invoice_type">
                                     <option></option>
@@ -36,6 +61,8 @@
                                     <option value="dbill" <% if(invoiceApplication.bill_type!''=='dbill'){%>selected<% }%>>增值税专用发票</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="col-lg-4">
                                 <div id = "invoiceDiv" class="form-group invoice_No" <% if(invoiceApplication.bill_type!'wbill'=='wbill'){%>style="display:none"<% }%>>
                                     <label class="search-label">发票号</label>
                                     <input type="text" class="form-control search-control billing_unit" id="billing_unit" name="billing_unit"  value="${invoiceApplication.billing_unit!''}">
@@ -51,46 +78,58 @@
                                     <option value="transfers" <% if(invoiceApplication.payment_method!''=='transfers'){%>selected<% }%>>转账</option>
                                     </select>
                                 </div>
-	                            <div id="transfers_massage" <% if(invoiceApplication.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
+                             </div>
+                             <div class="col-lg-4">
+	                            <div id="transfers_massage_cny" <% if(invoiceApplication.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
 	                                <div class="form-group">    
-	                                    <label class="search-label">开户行</label> 
-	                                   <input type="text" class="form-control search-control deposit_bank" id="deposit_bank" name="deposit_bank"  value="${deposit_bank!''}${invoiceApplication.bank_name!''}">
+	                                    <label class="search-label">开户行(CNY)</label> 
+	                                   <input type="text" class="form-control search-control deposit_bank" id="deposit_bank_cny" name="deposit_bank_cny"  value="${deposit_bank_cny!''}${invoiceApplication.bank_name_cny!''}">
 	                                </div>
 	                                <div class="form-group">
-	                                    <label class="search-label">收款账号</label>
-	                                	<input type="text" class="form-control search-control bank_no" id="bank_no" name="bank_no" value="${bank_no!''}${invoiceApplication.bank_no!''}">
+	                                    <label class="search-label">账户名(CNY)</label> 
+	                                    <input type="text" class="form-control search-control account_name" id="account_name_cny" name="account_name_cny"  value="${account_name_cny!''}${invoiceApplication.account_name_cny!''}" >
 	                                </div>
 	                                <div class="form-group">
-	                                    <label class="search-label">账户名</label> 
-	                                    <input type="text" class="form-control search-control account_name" id="account_name" name="account_name"  value="${account_name!''}${invoiceApplication.num_name!''}" >
+	                                    <label class="search-label">收款账号(CNY)</label>
+	                                	<input type="text" class="form-control search-control bank_no" id="bank_no_cny" name="bank_no_cny" value="${bank_no_cny!''}${invoiceApplication.bank_no_cny!''}">
 	                                </div>
+	                                
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label class="search-label">状态</label>
-                                    <input type="text" class="form-control search-control status" id="status" name="status" readonly="readonly" value="${invoiceApplication.status!'新建'}">
+	                            <div id="transfers_massage_usd" <% if(invoiceApplication.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
+	                                <div class="form-group">    
+	                                    <label class="search-label">开户行(USD)</label> 
+	                                   <input type="text" class="form-control search-control deposit_bank" id="deposit_bank_usd" name="deposit_bank_usd"  value="${deposit_bank_usd!''}${invoiceApplication.bank_name_usd!''}">
+	                                </div>
+	                                <div class="form-group">
+	                                    <label class="search-label">账户名(USD)</label> 
+	                                    <input type="text" class="form-control search-control account_name" id="account_name_usd" name="account_name_usd"  value="${account_name_usd!''}${invoiceApplication.account_name_usd!''}" >
+	                                </div>
+	                                <div class="form-group">
+	                                    <label class="search-label" >收款账号(USD)</label>
+	                                	<input type="text" class="form-control search-control bank_no" id="bank_no_usd" name="bank_no_usd" value="${bank_no_usd!''}${invoiceApplication.bank_no_usd!''}">
+	                                </div>
+	                                
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                 <div class="form-group">
-                                    <label class="search-label">申请日期</label>
-                                    <input type="text" class="form-control search-control application_date" id="application_date" name="application_date" readonly="readonly" value="${invoiceApplication.create_stamp!''}">
+	                            <div id="transfers_massage_hkd" <% if(invoiceApplication.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
+	                                <div class="form-group">    
+	                                    <label class="search-label">开户行(HKD)</label> 
+	                                   <input type="text" class="form-control search-control deposit_bank" id="deposit_bank" name="deposit_bank_hkd"  value="${deposit_bank_hkd!''}${invoiceApplication.bank_name_hkd!''}">
+	                                </div>
+	                                <div class="form-group">
+	                                    <label class="search-label">账户名(HKD)</label> 
+	                                    <input type="text" class="form-control search-control account_name" id="account_name_hkd" name="account_name_hkd"  value="${account_name_hkd!''}${invoiceApplication.account_name_hkd!''}" >
+	                                </div>
+	                                <div class="form-group">
+	                                    <label class="search-label" style="width:31%">收款账号(HKD)</label>
+	                                	<input type="text" class="form-control search-control bank_no" id="bank_no_hkd" name="bank_no_hkd" value="${bank_no_hkd!''}${invoiceApplication.bank_no_hkd!''}">
+	                                </div>
+	                                
                                 </div>
                             </div>
-                           <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label class="search-label">提交人</label>
-                                    <input type="text" class="form-control search-control submit_name" id="submit_name" name="submit_name" readonly="readonly" value="${submit_name!''}">
-                                </div>
-                           </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label class="search-label">结算单位</label>
-                                    <input type="hidden" id="payee_id" name="payee_id" value="${payee_id!''}${invoiceApplication.payee_id!''}"/>
-                                    <input type="text" readonly="readonly" class="form-control search-control sp_filter" id="payee_filter" name="payee_filter" value="${payee_filter!''}">
-                                </div>
-                          </div>
                            
                             <div class="col-lg-12" style="margin-top: 10px;">
 								<label>发票信息</label>
@@ -232,7 +271,8 @@
                        </form>
                         
                        <label class="" style="font-size:18px" >付款信息</label><hr/>
-                       <div class="row search_panel">
+                       <div class="search_panel">
+                       <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="search-label">付款USD</label>
@@ -251,12 +291,16 @@
                                     <input type="text" class="form-control search-control pay_amount" readonly="readonly" id="app_hkd" >
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="search-label">付款JPY</label>
                                     <input type="text" class="form-control search-control pay_amount" readonly="readonly" id="app_jpy">
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                            <div class="col-lg-4">
 	                           <div class="form-group">
 	                               <label class="search-label">复核人</label>
@@ -268,10 +312,22 @@
 	                               <label class="search-label">复核时间</label>
 	                               <input type="text" class="form-control search-control check_stamp" readonly="readonly" id="check_stamp" name="check_stamp" value="${invoiceApplication.check_stamp!''}">
 	                           </div>
-                       		</div>
-                           
+                       	  </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-lg-4">
+	                           <div class="form-group">
+	                               <label class="search-label">付款确认人</label>
+	                               <input type="text" class="form-control search-control confirm_name" readonly="readonly" id="confirm_name" name="confirm_name" value="${confirm_name!''}">
+	                           </div>
+	                       </div>
 	                       <div class="col-lg-4">
-	                       		<div class="form-group">
+	                            <%include("/eeda/component/form/dateInputField.html", {id:'pay_date', label:'付款时间', value:invoiceApplication.pay_time!''}){} %>
+	                       </div>
+	                    </div>
+	                    <div class="row">  
+	                       <div class="col-lg-10">
+	                       		<div class="form-group" style="display:none">
 	                           	   <label class="search-label">付款方式</label>
 	                                  <select id="pay_type" class="form-control search-control pay_type" name="pay_type">
 	                                    <option value=""></option>
@@ -279,9 +335,9 @@
 	                                    <option value="transfers" <% if(invoiceApplication.pay_type!''=='transfers'){%>selected<% }%>>转账</option>
 	                                  </select>
 	                            </div>
-	                            <div id="pay_type_massage" <% if(invoiceApplication.pay_type!'cash'=='cash'){%>style="display:none"<% }%>>
+	                            <div id="pay_type_massage" <% if(invoiceApplication.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
 		                            <div class="form-group">
-			                            <label class="search-label">支付银行</label>
+			                            <label class="search-label" style="width: 11%">支付银行</label>
 			                            <input type="hidden" id="pay_banks" placeholder="请选择支付银行" name="pay_banks" value="${invoiceApplication.confirm_bank_id!''}"> 
 			                        	   <select class="form-control search-control pay_bank" name="pay_bank" id="pay_bank" >
 			                        	   		<option></option>
@@ -292,12 +348,11 @@
 		                        	</div>
 	                        	</div>
 	                       </div>
-	                       <div class="col-lg-4">
-	                            <%include("/eeda/component/form/dateInputField.html", {id:'pay_date', label:'付款时间', value:invoiceApplication.pay_time!''}){} %>
-	                        </div>
-	                    </div>
+	                       
+	                    </div>    
+	                  </div>
 	                         
-                        <div class=".tooltip-demo">
+                      <div class=".tooltip-demo">
                             <hr/>
                             <button id="confirmBtn" type="button" class="btn  btn-primary" disabled>付款确认</button> 
                             <a class="btn btn-default" href="/costAcceptOrder">返回</a>
