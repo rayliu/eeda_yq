@@ -69,6 +69,7 @@ import models.eeda.profile.Warehouse;
 import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
 import models.eeda.tms.TransJobOrderLandItem;
+import models.yh.profile.Carinfo;
 import models.yh.profile.CustomizeField;
 import models.yh.profile.OfficeCofig;
 import models.yh.profile.Route;
@@ -196,6 +197,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/country", CountryController.class, contentPath);
         me.add("/finItem", FinItemController.class, contentPath);
         me.add("/custom", CustomController.class, contentPath);
+        me.add("/carInfo", controllers.profile.CarinfoController.class, contentPath);
         me.add("/containerType", ContainerTypeController.class, contentPath);
         //register loginUser
 //        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
@@ -326,6 +328,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("category", Category.class);
         arp.addMapping("location", Location.class);
         arp.addMapping("order_no_seq", OrderNoSeq.class);
+        arp.addMapping("carinfo", Carinfo.class);
         //基本数据用户网点
         arp.addMapping("user_office", UserOffice.class);
         arp.addMapping("user_customer", UserCustomer.class);

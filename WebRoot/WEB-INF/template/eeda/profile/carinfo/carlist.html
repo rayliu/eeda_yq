@@ -1,0 +1,58 @@
+<%layout("/eeda/layout.html"){%>
+
+
+<div id="page-wrapper">
+	<div class="row">
+	      <div class="col-lg-12">
+	            <div class="btn-header">
+	            	<% if(shiro.hasPermission("carInfo.create")){%>
+						<a class="btn   btn-primary" href="/carInfo/add">
+						<span class="hidden-tablet">添加车辆</span></a>
+					<%}%>
+				</div>
+			<div class="panel panel-default">
+					<div class="panel-heading">
+	                 	<i class="fa fa-list fa-fw"></i>车辆列表
+	            	</div>
+	            <div class="panel-body">
+					<%include("/eeda/component/form/detailTable.html", 
+	                    {
+	                        id:'car_table',
+	                        headers:['车牌', '司机','司机电话', '车型','长度', '操作'],
+	                        field_list:[],
+	                        value_list: costList![]
+	                    }){} %>
+	      		</div>
+			</div>
+	 	</div>
+	        <!-- /.col-lg-12 -->
+	</div>
+</div>
+
+
+<%}%>
+
+<script>
+	<%
+	 	var updatePermission = shiro.hasPermission("carInfo.update");
+	 	var delPermission = shiro.hasPermission("carInfo.delete");
+	%>
+	var order={};
+	order.updatePermission=${updatePermission};
+	order.delPermission=${delPermission};
+
+    requirejs(['/js/eeda/eeda-common.js'], 
+        function (common) {
+            requirejs(['app/profile/carInfo/list']);
+        },
+        function(error) {
+            console.error('报错了: ',error);
+            //error.requireModules : is Array of all failed modules
+            var failedId = error.requireModules && error.requireModules[0];
+            console.error(failedId);
+            console.error(error.message);
+            debugger;
+            window.location.reload();
+        }
+    );
+</script>
