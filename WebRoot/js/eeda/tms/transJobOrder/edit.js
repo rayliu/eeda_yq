@@ -4,7 +4,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
-	
+	 //柜号限制输入位为11位数，
+
+	$("#orderForm").validate({
+	    rules: {
+		      container_no: {
+		    	  rangelength: [11,11]
+		      }
+	    }
+	});
 	 //按钮状态
 	var id = $('#order_id').val();
 	var status = $('#status').val();
@@ -40,16 +48,11 @@ $(document).ready(function() {
     //------------save
 	$('#saveBtn').click(function(e){
         //提交前，校验数据
-        var formRequired = 0;
-        $('form').each(function(){
-        	if(!$(this).valid()){
-        		formRequired++;
-            }
-        })
-        if(formRequired>0){
-        	$.scojs_message('客户为必填字段', $.scojs_message.TYPE_ERROR);
-        	return;
+    	if(!$('#orderForm').valid()){
+    		$.scojs_message('有必填字段未填', $.scojs_message.TYPE_ERROR);
+    		return false;
         }
+    	
         //费用的结算公司必填
         var sp = 0;
         $('#chargeDetail [name=SP_ID]').each(function(){
@@ -115,8 +118,10 @@ $(document).ready(function() {
         order.take_wharf =$('#take_wharf').val();
         order.back_wharf =$('#back_wharf').val();
         order.transport_type = transport_type_str;
-
-
+        
+       
+        
+        
         if(transport_type_str.indexOf('land')>-1){
 	        //陆运
 	        order.land_list = itemOrder.buildLoadItem();
