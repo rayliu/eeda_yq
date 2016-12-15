@@ -305,7 +305,10 @@ public class ChargeAcceptOrderController extends Controller {
    			DbUtils.setModelValues(dto, order); 
    			
    			//需后台处理的字段
-   			order.set("selected_item_ids", selected_item_ids);
+   			if(!"".equals(selected_item_ids)){
+   				order.set("selected_item_ids", selected_item_ids);
+   			}
+   			
 			if (total_app_usd != null && !"".equals(total_app_usd)) {
 				order.set("app_usd",total_app_usd);
 			}
@@ -333,7 +336,9 @@ public class ChargeAcceptOrderController extends Controller {
    			order.set("create_stamp", new Date());
    			order.set("office_id", office_id);
    			
-   			order.set("selected_item_ids", selected_item_ids);
+   			if(!"".equals(selected_item_ids)){
+   				order.set("selected_item_ids", selected_item_ids);
+   			}
    			
    			if (total_app_usd != null && !"".equals(total_app_usd)) {
 				order.set("app_usd",total_app_usd);
@@ -399,12 +404,14 @@ public class ChargeAcceptOrderController extends Controller {
 			}
 			
 			//更新勾选的job_order_arap item pay_flag
-            String sql =" update job_order_arap set pay_flag='N' where id in ("
-                    + " select ref_order_id from arap_charge_item where charge_order_id in("+itemId+"))"  //costOrderId.substring(1) 去掉第一位
-                    + " and id not in("+selected_item_ids+")";
-            Db.update(sql);
-            String ySql ="update job_order_arap set pay_flag='Y' where id in("+selected_item_ids+")";
-            Db.update(ySql);
+			if(!"".equals(selected_item_ids)){
+				String sql =" update job_order_arap set pay_flag='N' where id in ("
+	                    + " select ref_order_id from arap_charge_item where charge_order_id in("+itemId+"))"  //costOrderId.substring(1) 去掉第一位
+	                    + " and id not in("+selected_item_ids+")";
+	            Db.update(sql);
+	            String ySql ="update job_order_arap set pay_flag='Y' where id in("+selected_item_ids+")";
+	            Db.update(ySql);
+   			}
 		}
 		
 		long create_by = order.getLong("create_by");
@@ -437,6 +444,12 @@ public class ChargeAcceptOrderController extends Controller {
 			check_name = userLogin.get("c_name");
 		}
 		
+		userLogin = UserLogin.dao .findById(order.get("confirm_by"));
+		String confirm_name = null;
+		if(userLogin != null){
+			confirm_name = userLogin.get("c_name");
+		}
+		
 		List<Record> list = null;
     	list = getItems(id);
     	setAttr("docList", list);
@@ -444,6 +457,7 @@ public class ChargeAcceptOrderController extends Controller {
 		Record r = order.toRecord();
 		r.set("creator_name", creator_name);
 		r.set("check_name", check_name);
+		r.set("confirm_name", confirm_name);
 		setAttr("order", r);
 
 		List<Record> Account = Db.find("select * from fin_account where bank_name != '现金'");

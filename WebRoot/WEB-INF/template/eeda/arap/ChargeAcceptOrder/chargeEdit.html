@@ -9,7 +9,7 @@
                 <div class="panel panel-default">
                 <form id="orderForm">
             		<div class="panel-body">
-            			<div class="row search_panel">
+            			<div class="search_panel">
             			<input id='ids' name='ids' type="hidden" value="${ids!''}">
             			<input id='sp_id' name='sp_id' type="hidden" value="${order.sp_id!''}" >
             			<input id='order_id' name='order_id' type="hidden" value="${order.id!''}">
@@ -32,9 +32,7 @@
 								<%include("/eeda/component/form/inputField.html", { id:'status',
 								label:'状态', value:order.status!'新建',disabled:'disabled'
 								}){}%>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
+								<div class="form-group">
                                     <label class="search-label">发票类型</label>
                                     <input id="invoice_type_show" type="hidden" value="${order.bill_type!''}">
                                     <select id="invoice_type" class="form-control search-control invoice_type" name="invoice_type">
@@ -44,15 +42,19 @@
                                     <option value="dbill" <% if(order.bill_type!''=='dbill'){%>selected<%}%>>代开发票</option>
                                     </select>
                                 </div>
-                                <%include("/eeda/component/form/inputField.html", { id:'billing_unit',
-								label:'开票单位', value:order.billing_unit!''
-								}){}%>
+                            </div>
+                            <div class="col-lg-4">
 								<%include("/eeda/component/form/inputField.html", { id:'payee_unit',
 								label:'付款单位', value:order.payee_unit!''
 								}){}%>
 								<%include("/eeda/component/form/inputField.html", { id:'payee_name',
 								label:'付款人', value:order.payee_name!''
 								}){}%>
+								<div id="invoiceDiv">
+                                <%include("/eeda/component/form/inputField.html", { id:'billing_unit',
+								label:'开票单位', value:order.billing_unit!''
+								}){}%>
+								</div>
                             </div>
                             <div class="col-lg-4">
                             	<div class="form-group">
@@ -64,7 +66,7 @@
                                     <option value="transfers" <% if(order.payment_method!''=='transfers'){%>selected<% }%>>转账</option>
                                     </select>
                                 </div>
-	                             <div id="transfers_massage" <% if(invoiceApplication.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
+	                             <div id="transfers_massage" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
 		                            <%include("/eeda/component/form/inputField.html", { id:'deposit_bank',
 									label:'开户行', value:order.deposit_bank!''
 									}){}%>
@@ -256,7 +258,7 @@
                        	<div class="row">
                        		<div class="col-lg-4">
                            		<%include("/eeda/component/form/inputField.html", { id:'receiver_name',
-								label:'	确认收款人', value:order.receiver_name!'',disabled:'disabled'
+								label:'	确认收款人', value:order.confirm_name!'',disabled:'disabled'
 								}){}%>
 					       </div>
 					       <div class="col-lg-4">
@@ -267,7 +269,7 @@
 	                              }){} %>
 	                        </div>
 	                       <div class="col-lg-4">
-	                       		<div class="form-group">
+	                       		<div class="form-group" style="display:none">
 	                           	   <label class="search-label">收款方式</label> 
 	                                  <select id="receive_type" class="form-control search-control receive_type" name="receive_type">
 	                                  	<option value=""></option>
@@ -275,7 +277,7 @@
                                     	<option value="transfers" <% if(order.receive_type!''=='transfers'){%>selected<% }%>>转账</option>                                       
 	                                  </select>
 	                            </div>
-	                             <div id="receive_type_massage" <% if(order.receive_type!'cash'=='cash'){%>style="display:none"<% }%>>
+	                             <div id="receive_type_massage" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
 		                            <div class="form-group">
 			                            <label class="search-label">收入银行</label>
 			                            <input type="hidden" id="receive_banks" placeholder="请选择支付银行" name="pay_banks" value="${invoiceApplication.confirm_bank_id!''}"> 
@@ -298,8 +300,8 @@
                             <a class="btn  btn-default" href="/chargeAcceptOrder">返回</a>
                             <button id="returnConfirmBtn" type="button" class="btn  btn-primary" style="display:none" >撤回</button>
                         </div>
-           				</div>
-           			 </form>
+           			</div>
+           		  </form>
            		</div>	
 			</div>
 		</div>

@@ -564,32 +564,43 @@ $(document).ready(function() {
 	//付款方式回显（1）
 	$('#payment_method').change(function(){
 		var type = $(this).val();
-		if(type == 'cash'){
+		if(type == 'cash'||type==""){
 			$('#transfers_massage').hide();
+			$('#receive_type_massage').hide();
 		}else{
 			$('#transfers_massage').show();
+			$('#receive_type_massage').show();
 		}
 	})
 	
 	//发票类型（1）
 	$('#invoice_type').change(function(){
 		var type = $(this).val();
-		if(type == 'wbill'){
+		if(type == 'wbill'||type==""){
 			$('#invoiceDiv').hide();
 		}else{
 			$('#invoiceDiv').show();
 		}
 	})
 	
-	//付款方式回显（2）
-	$('#receive_type').change(function(){
-		var type = $(this).val();
-		if(type == 'cash'){
-			$('#receive_type_massage').hide();
+	var invoice_type = $('#invoice_type').val();
+	if(invoice_type == 'wbill'||invoice_type==""){
+			$('#invoiceDiv').hide();
 		}else{
-			$('#receive_type_massage').show();
+			$('#invoiceDiv').show();
 		}
-	})
+	
+	
+	
+	//付款方式回显（2）
+//	$('#receive_type').change(function(){
+//		var type = $(this).val();
+//		if(type == 'cash'){
+//			$('#receive_type_massage').hide();
+//		}else{
+//			$('#receive_type_massage').show();
+//		}
+//	})
 	
 //	var ids = [];
 //	var applied_arap_id = [];
