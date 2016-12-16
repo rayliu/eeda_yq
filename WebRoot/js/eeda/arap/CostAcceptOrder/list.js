@@ -133,8 +133,8 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"PAYEE_UNIT"},  
-            {"data":"PAYEE_NAME"},
+            {"data":"SP_NAME"},  
+            {"data":"PAYEE_NAME","visible":false},
             {"data":"PAYMENT_METHOD",
                 "render": function(data, type, full, meta) {
                     if(data == 'cash')
