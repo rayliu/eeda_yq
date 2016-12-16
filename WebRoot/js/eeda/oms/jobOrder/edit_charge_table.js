@@ -210,8 +210,8 @@ $(document).ready(function() {
             { "data": "TYPE", "width": "80px", 
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
-                		var str = '<select name="type" class="form-control search-control" style="width:100px" disabled>'
-	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
+                		var str = '<select name="type" class="form-control search-control" style="width:100px" disabled>'  +'<option value="" >空运</option>'
+                			+'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
 	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
 	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
 	                        +'<option value="贸易" '+(data=='贸易' ? 'selected':'')+'>贸易</option>'
@@ -220,8 +220,10 @@ $(document).ready(function() {
 	                        +'</select>';
 	                	return str;
                 	}else{
-                    var str = '<select name="type" class="form-control search-control" style="width:100px">'
-                               +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
+                			var tra_type=$('#trans_type').val();
+                			var str = '<select name="type" class="form-control search-control" style="width:100px">'
+                               +'<option value='+tra_type+'>'+tra_type+'</option>'
+                    		   +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
                                +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
                                +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
                                +'<option value="贸易" '+(data=='贸易' ? 'selected':'')+'>贸易</option>'
@@ -248,20 +250,30 @@ $(document).ready(function() {
                         );
                         return field_html;
                   }else{
-                    if(!data)
-                        data='';
+                    if(!data){
+                    	var field_html = template('table_dropdown_template',
+    	                        {
+    	                            id: 'SP_ID',
+    	                            value: $('#sp').val(),
+    	                            display_value: $('#sp_input').val(),
+    	                            style:'width:200px'
+    	                        }
+                    	);
+                       }else{
                     var field_html = template('table_dropdown_template',
                         {
-                            id: 'SP_ID',//对应数据库字段
-                            value: data,
+                            id: 'SP_ID',
+                            value: data,//对应数据库字段
                             display_value: full.SP_NAME,
                             style:'width:200px'
                         }
-                    );
+                     );
+                   }
                     return field_html;
                   }
                 }
             },
+           
             { "data": "CHARGE_ID", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){

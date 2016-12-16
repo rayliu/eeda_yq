@@ -377,6 +377,21 @@
                             <h3>应收信息</h3>
                         </div>
                     <div class="row" style="margin-left:5px">    
+                       <div class="col-lg-4">
+                            <%include("/eeda/component/form/selectField.html", 
+                                {   id:'trans_type',
+                                    label:'类别', 
+                                    value:'',
+                                    value_list:[
+                                        {code:'海运', value:'海运'},
+                                        {code:'空运', value:'空运'}, 
+                                        {code:'陆运', value:'陆运'},
+                                        {code:'贸易', value:'贸易'},
+                                        {code:'报关', value:'报关'},
+                                        {code:'保险', value:'保险'}
+                                    ]
+                                }){}%>
+                        </div>
                         <div class="col-lg-4">
 	                            <%include("/eeda/component/form/inputSpField.html", 
                                           {
