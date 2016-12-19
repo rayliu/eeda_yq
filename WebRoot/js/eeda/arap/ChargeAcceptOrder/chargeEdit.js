@@ -1,4 +1,4 @@
-﻿define(['jquery', 'metisMenu', 'sb_admin','./edit_doc_table', './chargeEdit_select_item', 'dataTablesBootstrap', 
+﻿define(['jquery', 'metisMenu', 'sb_admin','./chargeEdit_select_item', './edit_doc_table','dataTablesBootstrap', 
         'validate_cn', 'sco'], function ($, metisMenu, sb, doc, selectContr) {
 $(document).ready(function() {
 	document.title = '收款申请单 | '+document.title;
@@ -78,7 +78,7 @@ $(document).ready(function() {
     var apply_pay_jpy_total = 0;
    
 	var dataTable = eeda.dt({
-	    id: 'eeda-table',
+	    id: 'chargeAccept_table',
 	    paging: true,
 	    serverSide: true, //不打开会出现排序不对
 	    ajax: "/chargeAcceptOrder/chargeOrderList?ids="+ids+"&application_id="+$("#order_id").val(),
@@ -267,7 +267,7 @@ $(document).ready(function() {
 		orderjson();
 	
 		if($("#payment_method").val()=='transfers'){
-			if($("#deposit_bank").val()=='' && $("#bank_no").val()==''&& $("#account_name").val()==''){
+			if($("#deposit_bank").val()=='' && $("#account_no").val()==''&& $("#account_name").val()==''){
 				$.scojs_message('转账的信息不能为空', $.scojs_message.TYPE_FALSE);
 				return false;
 			}
