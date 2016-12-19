@@ -210,6 +210,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             order.contact_person = $("#contact_person").val();
             order.contact_person_eng = $("#contact_person_eng").val();
             order.phone = $("#phone").val();
+            order.skype = $("#skype").val();
             order.email = $("#email").val();
             order.fax = $("#fax").val();
             order.receipt = $("#receipt").val();
