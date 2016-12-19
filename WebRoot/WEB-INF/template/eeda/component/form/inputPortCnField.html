@@ -27,7 +27,7 @@ $(document).ready(function() {
     inputField.on('compositionend', function () {
         cpLock = false;
     });
-    
+
 	//供应商查询
     //获取供应商的list，选中信息在下方展示其他信息
     inputField.on('keyup click', function(event){
@@ -41,7 +41,7 @@ $(document).ready(function() {
             return false;
         }
 
-		$.get('/location/searchPort', {input:inputStr}, function(data){
+		$.get('/location/searchCnPort', {input:inputStr}, function(data){
 			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 				return;
 			}
