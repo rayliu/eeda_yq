@@ -574,6 +574,24 @@ public class ServiceProviderController extends Controller {
     	renderJson(recs);
     }
     
+    
+  //查询银行账户名下拉列表
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
+    public void searchAccount(){
+    	String input = getPara("input");
+    	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    	String d = sf.format(new Date());
+    	List<Record> recs = null;
+    	
+    	String sql = "select * from fin_account fa where fa.bank_name!='现金' ";
+    	if(!StringUtils.isBlank(input)){
+    		sql+=" and (fa.bank_name like '%" + input + "%') ";
+    	}
+    	recs = Db.find(sql);
+    	renderJson(recs);
+    }
+
+    
     //查询发货人下拉列表
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchTruckOut(){

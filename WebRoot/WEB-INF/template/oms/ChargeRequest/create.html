@@ -44,13 +44,18 @@
                                     </select>
                                 </div>
 	                             <div id="transfers_massage" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
-		                            <%include("/eeda/component/form/inputField.html", { id:'deposit_bank',
+		                            <%include("/eeda/component/form/inputAccountField.html", 
+		                            { id:'deposit_bank',
 									label:'开户行', value:order.deposit_bank!''
 									}){}%>
-									<%include("/eeda/component/form/inputField.html", { id:'bank_no',
-									label:'收款账号', value:order.bank_no!''
+									
+									<%include("/eeda/component/form/inputField.html", 
+									{ id:'account_no',
+									label:'收款账号', value:order.account_no!''
 									}){}%>
-									<%include("/eeda/component/form/inputField.html", { id:'account_name',
+									
+									<%include("/eeda/component/form/inputField.html", 
+									{ id:'account_name',
 									label:'账户名', value:order.account_name!''
 									}){}%>
                                 </div>

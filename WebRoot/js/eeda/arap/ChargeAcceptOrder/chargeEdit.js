@@ -605,6 +605,12 @@ $(document).ready(function() {
 			$('#invoiceDiv').show();
 		}
 	
+	$('#deposit_bank_list').on('mousedown','a',function(){
+	   $('#account_no').val( $(this).attr('account_no'));
+ 	   $('#account_name').val( $(this).attr('account_name'));
+ 	   
+    })
+	
 	
 	
 	//付款方式回显（2）
