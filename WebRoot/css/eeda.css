@@ -411,4 +411,10 @@ li{
     z-index: 9999;
 }
 
+/* 下拉列表的提示 */
+.search_hint{
+    font-size: 10px;
+    color: #ff6b6b;
+}
+
 /* ray added */
