@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="debitNote" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="299"/>
+	<property name="ireport.y" value="140"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -220,7 +220,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="151" splitType="Stretch">
+		<band height="147" splitType="Stretch">
 			<staticText>
 				<reportElement x="146" y="41" width="364" height="22" uuid="1f17ff0a-6c4f-4e21-a8f0-17f61bc37be6"/>
 				<textElement>
@@ -453,7 +453,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				<text><![CDATA[JOB NO:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="415" y="1" width="140" height="20" uuid="991facb4-7a53-4676-a280-5b2af336f2f5"/>
+				<reportElement x="415" y="2" width="140" height="20" uuid="991facb4-7a53-4676-a280-5b2af336f2f5"/>
 				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">

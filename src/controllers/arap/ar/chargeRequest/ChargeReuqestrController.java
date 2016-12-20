@@ -332,11 +332,10 @@ public class ChargeReuqestrController extends Controller {
    		
 		String selected_item_ids= (String) dto.get("selected_ids"); //获取申请单据的id,用于回显
 		
-		String total_app_usd = (String) dto.get("total_app_usd")==""?"0.00":(String) dto.get("total_app_usd");   //申请总金额
-		String total_app_cny = (String) dto.get("total_app_cny")==""?"0.00":(String) dto.get("total_app_cny");   //申请总金额
-		String total_app_hkd = (String) dto.get("total_app_hkd")==""?"0.00":(String) dto.get("total_app_hkd");   //申请总金额
-		String total_app_jpy = (String) dto.get("total_app_jpy")==""?"0.00":(String) dto.get("total_app_jpy");   //申请总金额
-   		
+		String total_modal_cny = (String) dto.get("modal_cny")==""?"0.00":(String) dto.get("modal_cny");   //申请总金额
+		String total_modal_usd = (String) dto.get("modal_usd")==""?"0.00":(String) dto.get("modal_usd");   //申请总金额
+		String total_modal_jpy = (String) dto.get("modal_jpy")==""?"0.00":(String) dto.get("modal_jpy");   //申请总金额
+		String total_modal_hkd = (String) dto.get("modal_hkd")==""?"0.00":(String) dto.get("modal_hkd");   //申请总金额
    		
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
@@ -352,18 +351,23 @@ public class ChargeReuqestrController extends Controller {
    				order.set("selected_item_ids", selected_item_ids);
    			}
    			
-			if (total_app_usd != null && !"".equals(total_app_usd)) {
-				order.set("app_usd",total_app_usd);
+   			if (total_modal_cny != null && !"".equals(total_modal_cny)) {
+				order.set("modal_cny",total_modal_cny);
 			}
-			if (total_app_hkd != null && !"".equals(total_app_hkd)) {
-				order.set("app_hkd",total_app_hkd);
+   			
+			if (total_modal_usd != null && !"".equals(total_modal_usd)) {
+				order.set("modal_usd",total_modal_usd);
 			}
-			if (total_app_cny != null && !"".equals(total_app_cny)) {
-				order.set("app_cny",total_app_cny);
+			
+			if (total_modal_jpy != null && !"".equals(total_modal_jpy)) {
+				order.set("modal_jpy",total_modal_jpy);
 			}
-			if (total_app_jpy != null && !"".equals(total_app_jpy)) {
-				order.set("app_jpy",total_app_jpy);
+			
+			if (total_modal_hkd != null && !"".equals(total_modal_hkd)) {
+				order.set("modal_hkd",total_modal_hkd);
 			}
+			
+			
    			order.set("update_by", user.getLong("id"));
    			order.set("update_by", user.getLong("id"));
    			order.set("update_stamp", new Date());
@@ -383,17 +387,20 @@ public class ChargeReuqestrController extends Controller {
    				order.set("selected_item_ids", selected_item_ids);
    			}
    			
-   			if (total_app_usd != null && !"".equals(total_app_usd)) {
-				order.set("app_usd",total_app_usd);
+   			if (total_modal_cny != null && !"".equals(total_modal_cny)) {
+				order.set("modal_cny",total_modal_cny);
 			}
-			if (total_app_hkd != null && !"".equals(total_app_hkd)) {
-				order.set("app_hkd",total_app_hkd);
+   			
+   			if (total_modal_usd != null && !"".equals(total_modal_usd)) {
+				order.set("modal_usd",total_modal_usd);
 			}
-			if (total_app_cny != null && !"".equals(total_app_cny)) {
-				order.set("app_cny",total_app_cny);
+   			
+			if (total_modal_hkd != null && !"".equals(total_modal_hkd)) {
+				order.set("modal_hkd",total_modal_hkd);
 			}
-			if (total_app_jpy != null && !"".equals(total_app_jpy)) {
-				order.set("app_jpy",total_app_jpy);
+			
+			if (total_modal_jpy != null && !"".equals(total_modal_jpy)) {
+				order.set("modal_jpy",total_modal_jpy);
 			}
    			
    			order.save();
@@ -401,17 +408,14 @@ public class ChargeReuqestrController extends Controller {
    			id = order.getLong("id").toString();
    			
    		}
-   		
-   		
-   		List<Map<String, String>> docList = (ArrayList<Map<String, String>>)dto.get("doc_list");
-		DbUtils.handleList(docList, id, AppInvoiceDoc.class, "order_id");
 		
 		
+		String modal_cny = order.get("modal_cny");
+		String modal_usd = order.get("modal_usd");
+		String modal_jpy = order.get("modal_jpy");
+		String modal_hkd = order.get("modal_hkd");
 		
-		String app_usd = order.get("app_usd");
-		String app_hkd = order.get("app_hkd");
-		String app_cny = order.get("app_cny");
-		String app_jpy = order.get("app_jpy");
+		
 		
 		String itemId="";
    		
@@ -427,10 +431,10 @@ public class ChargeReuqestrController extends Controller {
 				caor.set("charge_order_id", itemId);
 				
 				caor.set("order_type", order_type);
-				caor.set("paid_usd", app_usd);
-				caor.set("paid_hkd", app_hkd);
-				caor.set("paid_cny", app_cny);
-				caor.set("paid_jpy", app_jpy);
+				caor.set("paid_cny", modal_cny);
+				caor.set("paid_usd", modal_usd);
+				caor.set("paid_jpy", modal_jpy);
+				caor.set("paid_hkd", modal_hkd);
 				caor.save();
 				
                 if("应收对账单".equals(order_type)){
@@ -439,10 +443,10 @@ public class ChargeReuqestrController extends Controller {
 				}
 			}else{
 				caor = ChargeApplicationOrderRel.dao.findFirst("select * from charge_application_order_rel where charge_order_id =? and application_order_id = ?",itemId,id);
-				caor.set("paid_usd", app_usd);
-				caor.set("paid_hkd", app_hkd);
-				caor.set("paid_cny", app_cny);
-				caor.set("paid_jpy", app_jpy);
+				caor.set("paid_cny", modal_cny);
+				caor.set("paid_usd", modal_usd);
+				caor.set("paid_jpy", modal_jpy);
+				caor.set("paid_hkd", modal_hkd);
 				caor.update();
 			}
 			
@@ -452,7 +456,7 @@ public class ChargeReuqestrController extends Controller {
 	                    + " select ref_order_id from arap_charge_item where charge_order_id in("+itemId+"))"  //costOrderId.substring(1) 去掉第一位
 	                    + " and id not in("+selected_item_ids+")";
 	            Db.update(sql);
-	            String ySql ="update job_order_arap set pay_flag='Y' where id in("+selected_item_ids+")";
+	            String ySql ="update job_order_arap set pay_flag='Y',create_flag='Y' where id in("+selected_item_ids+")";
 	            Db.update(ySql);
    			}
 		}

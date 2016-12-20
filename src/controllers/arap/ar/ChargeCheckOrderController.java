@@ -379,10 +379,6 @@ public class ChargeCheckOrderController extends Controller {
     }
     
     
-    
-    
-    
-    
     public List<Record> getCurrencyList(String ids,String order_id){
     	String sql = "SELECT "
     			+ " (select rc.id from rate_contrast rc "
