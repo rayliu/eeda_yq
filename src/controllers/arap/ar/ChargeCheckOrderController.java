@@ -369,7 +369,7 @@ public class ChargeCheckOrderController extends Controller {
 						+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
 						+" left join arap_charge_item aci on aci.ref_order_id = joa.id"
 					 +" left join arap_charge_order aco on aco.id = aci.charge_order_id"
-					 +" where joa.id = aci.ref_order_id and aco.id in ("+order_ids+")"
+					 +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
 						+" GROUP BY joa.id"
 						+" ORDER BY aco.order_no, jo.order_no";
 

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AIR_Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="147"/>
+	<property name="ireport.y" value="217"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -39,7 +39,8 @@ ifnull(pr.contact_person_eng,pr.contact_person) personEng,
 	c. NAME currency_name,
 	jo.gross_weight gross_weight,
 	jo.pieces,
-	jo.order_export_date export_date,
+	jo.order_export_date,
+ 	jo.order_export_date export_date,
 	joair.hawb_no hbl_no,
 	joair.mawb_no mbl_no,
 	joai.etd etd,
@@ -156,6 +157,9 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="pieces" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_export_date" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="export_date" class="java.sql.Date"/>
@@ -363,7 +367,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="396" y="62" width="157" height="15" uuid="fe80cc78-973f-488c-84b7-7fe43c5732dd"/>
-				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="396" y="79" width="159" height="17" uuid="27502a39-69d8-427a-a4dd-9d270889bd80"/>

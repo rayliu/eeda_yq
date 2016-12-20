@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AIR_Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="459"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -32,14 +32,15 @@
 	<queryString>
 		<![CDATA[SELECT
 	joa.sp_id,joa.exchange_total_amount exchange_total_amount,joa.invoice_no invoice_no,joa.price price,joa.total_amount total_amount,
-  joa.exchange_currency_rate exchange_rate,joa.amount amount, ifnull(pr.company_name,pr.company_name_eng) companyName,
-ifnull(pr.contact_person,pr.contact_person_eng) personEng,
-	ifnull(f.name,f.name_eng) charge_name,
+  joa.exchange_currency_rate exchange_rate,joa.amount amount, ifnull(pr.company_name_eng,pr.company_name) companyName,
+ifnull(pr.contact_person_eng,pr.contact_person) personEng,
+	ifnull(f.name_eng,f.name) charge_name_eng,
 	u. NAME unit_name,
 	c. NAME currency_name,
 	jo.gross_weight gross_weight,
 	jo.pieces,
-	jo.order_export_date export_date,
+	jo.order_export_date,
+ 	jo.order_export_date export_date,
 	joair.hawb_no hbl_no,
 	joair.mawb_no mbl_no,
 	joai.etd etd,
@@ -149,13 +150,16 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 	</field>
 	<field name="companyName" class="java.lang.String"/>
 	<field name="personEng" class="java.lang.String"/>
-	<field name="charge_name" class="java.lang.String"/>
+	<field name="charge_name_eng" class="java.lang.String"/>
 	<field name="unit_name" class="java.lang.String"/>
 	<field name="currency_name" class="java.lang.String"/>
 	<field name="gross_weight" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="pieces" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_export_date" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="export_date" class="java.sql.Date"/>
@@ -193,9 +197,6 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 	</field>
 	<field name="vessel_voyage" class="java.lang.String"/>
 	<field name="ex_total" class="java.lang.String"/>
-	<variable name="sum_hkd" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{total_amount}]]></variableExpression>
-	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -205,41 +206,46 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 	<pageHeader>
 		<band height="151" splitType="Stretch">
 			<staticText>
-				<reportElement x="20" y="99" width="520" height="39" uuid="ac27dbd8-8089-47e2-a05e-8f55c64feda7"/>
-				<textElement textAlignment="Center">
+				<reportElement x="142" y="25" width="389" height="24" uuid="1f17ff0a-6c4f-4e21-a8f0-17f61bc37be6"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[ZHUHAI HENGQIN ENKYO SCM CO.,LTD.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="192" y="99" width="211" height="39" uuid="ac27dbd8-8089-47e2-a05e-8f55c64feda7"/>
+				<textElement>
 					<font size="24"/>
 				</textElement>
-				<text><![CDATA[INVOICE]]></text>
+				<text><![CDATA[DEBIT NOTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="124" y="50" width="405" height="20" uuid="0cd7b482-a1d6-4745-9aa1-9ee31b401ff3"/>
+				<text><![CDATA[7th Fl., Shanhaiyipin,56# of Shihua Road, jida,zhuhai, Guangdong, China]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="168" y="70" width="126" height="20" uuid="db00b1ff-eeab-480f-a0fc-fbcc95197894"/>
+				<text><![CDATA[TEL:86-756-3225991]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="69" width="132" height="20" uuid="6cf51b83-4aff-44d3-bf32-8e6e504463d8"/>
+				<text><![CDATA[FAX:86-756-3225900]]></text>
 			</staticText>
 			<image>
 				<reportElement x="8" y="-12" width="130" height="42" uuid="95678e8d-70ad-4f35-89c4-5191d5be53d6"/>
 				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="20" y="33" width="520" height="22" uuid="6ecdfc2f-53aa-420f-8295-d340b20a5413"/>
-				<textElement textAlignment="Center">
-					<font fontName="黑体" size="16" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[遠橋供應鏈（香港）有限公司]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="20" y="55" width="520" height="24" uuid="f2a0b3ca-84a8-4f44-b12a-530799ddcead"/>
-				<textElement textAlignment="Center">
-					<font size="16"/>
-				</textElement>
-				<text><![CDATA[ENKYO SCM (H.K.) CO., LIMITED]]></text>
-			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
 		<band height="215" splitType="Stretch">
 			<staticText>
 				<reportElement x="20" y="0" width="23" height="20" uuid="4f89be70-37e5-4655-bdc3-b017ee221000"/>
-				<text><![CDATA[To:]]></text>
+				<text><![CDATA[TO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="328" y="0" width="58" height="20" uuid="9082e3cf-5ef5-4b25-8b51-e42961ddf7d3"/>
-				<text><![CDATA[Job No:]]></text>
+				<text><![CDATA[JOB NO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="18" y="39" width="25" height="15" uuid="d33d0326-6907-4f48-941e-93e23ce94b3b"/>
@@ -255,7 +261,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 			</staticText>
 			<staticText>
 				<reportElement x="18" y="110" width="56" height="15" uuid="39eff2eb-c391-4a11-9411-9213a9a2817a"/>
-				<text><![CDATA[MBL No:]]></text>
+				<text><![CDATA[MBL NO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="18" y="129" width="56" height="16" uuid="315b9f87-d635-437b-89f7-2926d6f0efbf"/>
@@ -267,7 +273,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 			</staticText>
 			<staticText>
 				<reportElement x="18" y="170" width="56" height="15" uuid="aa3e1fcf-7f73-4ee2-a454-d43daafdafa5"/>
-				<text><![CDATA[CTR No:]]></text>
+				<text><![CDATA[CTR NO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="328" y="25" width="70" height="15" uuid="23f495eb-c93a-4723-84e1-43a17b9b528c"/>
@@ -294,32 +300,32 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<text><![CDATA[POD：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="329" y="148" width="40" height="15" uuid="1ef1c68b-1f7e-4b65-8feb-91d5a3c07129"/>
+				<reportElement x="329" y="148" width="69" height="15" uuid="1ef1c68b-1f7e-4b65-8feb-91d5a3c07129"/>
 				<text><![CDATA[Qty:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="7" y="197" width="111" height="17" uuid="7aa6e948-64ac-4ce6-8313-135e39595e01"/>
+				<reportElement x="13" y="197" width="127" height="17" uuid="7aa6e948-64ac-4ce6-8313-135e39595e01"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Description]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="127" y="197" width="65" height="17" uuid="0c832077-31b2-40be-9b6b-47f6c7c62ea3"/>
+				<reportElement x="140" y="197" width="68" height="17" uuid="0c832077-31b2-40be-9b6b-47f6c7c62ea3"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Currency]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="193" y="197" width="69" height="17" uuid="c3ba15f8-7281-4b62-bc5d-6eb94500f02f"/>
+				<reportElement x="208" y="197" width="69" height="17" uuid="c3ba15f8-7281-4b62-bc5d-6eb94500f02f"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Unit Price]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="262" y="197" width="110" height="17" uuid="cdd36543-5977-49d5-9d3b-ba5cd05d5a0b"/>
+				<reportElement x="294" y="197" width="110" height="17" uuid="cdd36543-5977-49d5-9d3b-ba5cd05d5a0b"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -347,9 +353,6 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 			</line>
 			<textField isBlankWhenNull="true">
 				<reportElement x="74" y="89" width="254" height="15" uuid="bba3c900-6b7e-4404-b98e-38e22f312d91"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
 				<textFieldExpression><![CDATA[$F{vessel_voyage}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -360,13 +363,13 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<reportElement x="74" y="130" width="254" height="14" uuid="233fbb37-7715-446b-a4ee-5cd20d0a8821"/>
 				<textFieldExpression><![CDATA[$F{pol}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00" isBlankWhenNull="true">
+			<textField isBlankWhenNull="true">
 				<reportElement x="74" y="149" width="100" height="15" uuid="d27820b1-a0c0-40eb-ba6a-8bc241b6f65e"/>
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="396" y="62" width="157" height="15" uuid="fe80cc78-973f-488c-84b7-7fe43c5732dd"/>
-				<textFieldExpression><![CDATA[$F{export_date}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="396" y="79" width="159" height="17" uuid="27502a39-69d8-427a-a4dd-9d270889bd80"/>
@@ -381,10 +384,11 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
+				<reportElement x="396" y="149" width="30" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
+				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="0" width="285" height="24" uuid="c706ac6c-9eab-42a2-8ea0-83bb9932e437"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
 				<textFieldExpression><![CDATA[$F{companyName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -410,41 +414,37 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<reportElement x="397" y="25" width="158" height="37" uuid="838f806e-871d-43b2-b605-a3562590f472"/>
 				<textFieldExpression><![CDATA[$F{invoice_no}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="396" y="149" width="31" height="14" uuid="1cb53100-0f47-4992-8858-035abbafbddd"/>
-				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="427" y="148" width="128" height="16" uuid="8ee1f3ad-d78b-4556-86bb-611743af982f"/>
+				<reportElement x="426" y="149" width="127" height="14" uuid="eba342a8-ca01-4a9a-9694-ac4276bb8ea5"/>
 				<text><![CDATA[PACKAGES]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20">
+		<band height="21">
 			<textField isBlankWhenNull="true">
-				<reportElement x="8" y="2" width="122" height="18" uuid="0c54d94f-85db-45a2-984e-ef543fe7d121"/>
+				<reportElement x="13" y="2" width="127" height="18" uuid="0c54d94f-85db-45a2-984e-ef543fe7d121"/>
 				<textElement>
-					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{charge_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{charge_name_eng}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="129" y="2" width="66" height="18" uuid="43672bca-27de-4633-b106-507d58822e0e"/>
+				<reportElement x="140" y="2" width="68" height="18" uuid="43672bca-27de-4633-b106-507d58822e0e"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{currency_name}.equals("CNY")?"RMB":$F{currency_name})]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.000" isBlankWhenNull="true">
-				<reportElement x="193" y="2" width="54" height="18" uuid="e277945f-55f4-4bf9-a963-4139f33381f1"/>
+				<reportElement x="208" y="2" width="54" height="18" uuid="e277945f-55f4-4bf9-a963-4139f33381f1"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="245" y="2" width="15" height="18" uuid="3a5eba6e-4507-4b1b-9722-1623735a3c75"/>
+				<reportElement x="262" y="2" width="15" height="18" uuid="3a5eba6e-4507-4b1b-9722-1623735a3c75"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
@@ -458,7 +458,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{exchange_total_amount}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="295" y="2" width="65" height="18" uuid="defe1bad-5e7a-4372-8c16-9a947da617f9"/>
+				<reportElement x="328" y="2" width="30" height="18" uuid="defe1bad-5e7a-4372-8c16-9a947da617f9"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -486,7 +486,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{exchange_rate}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.000" isBlankWhenNull="true">
-				<reportElement x="261" y="2" width="34" height="17" uuid="68b39a5f-6f5f-4fb4-a0ed-81d9b21c7bab"/>
+				<reportElement x="294" y="2" width="34" height="17" uuid="68b39a5f-6f5f-4fb4-a0ed-81d9b21c7bab"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -502,102 +502,73 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="119" splitType="Stretch">
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="236" splitType="Stretch">
 			<staticText>
-				<reportElement x="8" y="0" width="153" height="20" uuid="f143d8af-bc0f-4b0f-943f-704902dd8950"/>
+				<reportElement x="349" y="214" width="159" height="16" uuid="42d6b9e9-dc8a-4907-a285-2d626777ce83"/>
 				<textElement>
-					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[银行信息:]]></text>
+				<text><![CDATA[AUTHORISED SIGNATURE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="8" y="20" width="153" height="20" uuid="f77458ed-3298-4aae-8acc-ceaeaf327496"/>
+				<reportElement x="328" y="195" width="227" height="15" uuid="b1fff306-2524-4525-afad-9bb102cbd4d0"/>
 				<textElement>
-					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[账户名称：]]></text>
+				<text><![CDATA[ZHUHAI HENGQIN ENKYO SCM CO.,LTD.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="8" y="40" width="153" height="20" uuid="b49158ea-f904-46f7-93af-29aef9333601"/>
-				<textElement>
-					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[账    号：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="8" y="59" width="154" height="20" uuid="c2745b55-21a5-4968-87df-d544ce9de735"/>
-				<textElement>
-					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[开户银行：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="349" y="64" width="134" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
+				<reportElement x="349" y="176" width="134" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[FOR AND ON BEHALF OF]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="316" y="79" width="224" height="20" uuid="5b9627c8-f98a-49c2-88c5-aa22ebf1f6ba"/>
+				<reportElement x="14" y="171" width="154" height="20" uuid="c2745b55-21a5-4968-87df-d544ce9de735"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[ENKYO SCM (H.K.) CO., LIMITED]]></text>
+				<text><![CDATA[BANK NAME:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="349" y="98" width="159" height="16" uuid="42d6b9e9-dc8a-4907-a285-2d626777ce83"/>
+				<reportElement x="14" y="148" width="153" height="20" uuid="b49158ea-f904-46f7-93af-29aef9333601"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[AUTHORISED SIGNATURE:]]></text>
+				<text><![CDATA[ACCOUT NO.:]]></text>
 			</staticText>
-		</band>
-	</pageFooter>
-	<summary>
-		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="14" y="123" width="153" height="20" uuid="f77458ed-3298-4aae-8acc-ceaeaf327496"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACCOUT NAME:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="97" width="153" height="20" uuid="f143d8af-bc0f-4b0f-943f-704902dd8950"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACCOUNT INFORMATION]]></text>
+			</staticText>
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" uuid="0c33aa57-8270-4dd5-941f-6afdcefe4f0b"/>
 			</line>
 			<staticText>
-				<reportElement x="380" y="3" width="73" height="20" uuid="d8b01e86-6463-4378-8cfe-079af2125484"/>
+				<reportElement x="381" y="3" width="73" height="20" uuid="d8b01e86-6463-4378-8cfe-079af2125484"/>
 				<text><![CDATA[TOTAL Amount:]]></text>
 			</staticText>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="235" y="3" width="126" height="75" uuid="b8e9c42d-756c-4955-a45b-b4ed9d7965ac"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="245" y="3" width="126" height="140" uuid="e90f71b5-6961-40db-b29c-2e5374ffee52"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="455" y="4" width="99" height="74" uuid="2e54476d-257d-463c-94bd-6d1f8d97f825"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="454" y="3" width="99" height="140" uuid="17bd275a-e9e1-444e-b881-b77e14f5cffc"/>
 				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="3" y="21" width="232" height="20" uuid="27eb5bd3-fc5e-4459-8312-e3c97db67d55"/>
-				<textElement>
-					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{sum_USD}.equals(null)?"":"美金"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_USD}))]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="4" y="59" width="231" height="20" uuid="f25d767a-567d-4c9f-a23f-b1986667982f"/>
-				<textElement>
-					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{sum_HKD}.equals(null)?"":"港币"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_HKD}))]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="2" y="2" width="233" height="20" uuid="6576771c-6836-4289-9a15-1ff0ed94af43"/>
-				<textElement>
-					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{sum_CNY}.equals(null)?"":"人民币"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_CNY}))]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="3" y="41" width="232" height="20" uuid="2862ee0b-a8b9-4217-a65f-86f770b03680"/>
-				<textElement>
-					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{sum_JPY}.equals(null)?"":"日元"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_JPY}))]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

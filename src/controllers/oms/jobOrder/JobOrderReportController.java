@@ -225,8 +225,6 @@ public class JobOrderReportController extends Controller {
 				outFileName = "/download/debitNote中文";			
 			}
 		}else if ("debit_note_eng".equals(debit_note)){
-			
-			
 			if("EKA".equals(order_no.substring(0,3))){
 				fileName = "/report/jobOrder/AIR_debitNote_eng.jasper";
 				outFileName = "/download/AIR_debitNote_eng英文";
@@ -234,8 +232,6 @@ public class JobOrderReportController extends Controller {
 				fileName = "/report/jobOrder/debitNote_eng.jasper";
 				outFileName = "/download/debitNote英文";			
 			}
-			
-			
 		}else if ("invoice".equals(debit_note)){
 			if("EKA".equals(order_no.substring(0,3))){
 				fileName = "/report/jobOrder/AIR_INVOICE.jasper";
