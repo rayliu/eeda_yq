@@ -217,11 +217,25 @@ public class JobOrderReportController extends Controller {
 		String outFileName;
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		if("debitNote".equals(debit_note)){
-			fileName = "/report/jobOrder/debitNote.jasper";
-			outFileName = "/download/debitNote中文";
+			if("EKA".equals(order_no.substring(0,3))){
+				fileName = "/report/jobOrder/AIR_debitNote.jasper";
+				outFileName = "/download/AIR_debitNote中文";
+			}else{
+				fileName = "/report/jobOrder/debitNote.jasper";
+				outFileName = "/download/debitNote中文";			
+			}
 		}else if ("debit_note_eng".equals(debit_note)){
-			fileName = "/report/jobOrder/debitNote_eng.jasper";
-			outFileName = "/download/debitNote英文";
+			
+			
+			if("EKA".equals(order_no.substring(0,3))){
+				fileName = "/report/jobOrder/AIR_debitNote_eng.jasper";
+				outFileName = "/download/AIR_debitNote_eng英文";
+			}else{
+				fileName = "/report/jobOrder/debitNote_eng.jasper";
+				outFileName = "/download/debitNote英文";			
+			}
+			
+			
 		}else if ("invoice".equals(debit_note)){
 			if("EKA".equals(order_no.substring(0,3))){
 				fileName = "/report/jobOrder/AIR_INVOICE.jasper";
