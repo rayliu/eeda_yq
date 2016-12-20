@@ -1,4 +1,4 @@
-﻿define(['jquery', 'metisMenu', 'sb_admin','./chargeEdit_select_item', './edit_doc_table','dataTablesBootstrap', 
+﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './chargeEdit_select_item', './edit_doc_table','dataTablesBootstrap', 
         'validate_cn', 'sco'], function ($, metisMenu, sb, doc, selectContr) {
 $(document).ready(function() {
 	document.title = '收款申请单 | '+document.title;
@@ -78,7 +78,7 @@ $(document).ready(function() {
     var apply_pay_jpy_total = 0;
    
 	var dataTable = eeda.dt({
-	    id: 'chargeAccept_table',
+	    id: 'eeda-table',
 	    paging: true,
 	    serverSide: true, //不打开会出现排序不对
 	    ajax: "/chargeAcceptOrder/chargeOrderList?ids="+ids+"&application_id="+$("#order_id").val(),
@@ -610,6 +610,19 @@ $(document).ready(function() {
  	   $('#account_name').val( $(this).attr('account_name'));
  	   
     })
+    
+    
+    
+	$('#chargeAccept_table').on('click , input[type="checkbox"]',function(){
+		var idsArray=[];
+      	$('#chargeAccept_table input[type="checkbox"]:checked').each(function(){
+      			var itemId = $(this).parent().parent().attr('id');
+//      			var order_type = $(this).parent().parent().find(".order_type").text();
+      			idsArray.push(itemId);
+      	});
+
+      		selectContr.refleshSelectTable(idsArray);
+	})
 	
 	
 	

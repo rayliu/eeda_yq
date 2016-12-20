@@ -92,6 +92,71 @@ public class ChargeReuqestrController extends Controller {
         renderJson(map); 
     }
     
+    @Before(EedaMenuInterceptor.class)
+    public void OrderList() {
+    	String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+        
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        String sql = " select * from ("
+        		+ " select  aco.*, p.company_name sp_name, "
+        		+ " sum(ifnull(c.pay_amount,0)) paid_amount,"
+        		+ " sum(ifnull(c.paid_usd,0)) paid_usd,"
+        		+ " sum(ifnull(c.paid_cny,0)) paid_cny,"
+        		+ " sum(ifnull(c.paid_hkd,0)) paid_hkd,"
+        		+ " sum(ifnull(c.paid_jpy,0)) paid_jpy,"
+        		+ " group_concat((select concat(order_no,'-',status) from arap_charge_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
+				+ " from arap_charge_order aco "
+				+ " left join charge_application_order_rel c on c.charge_order_id=aco.id"
+				+ " left join party p on p.id=aco.sp_id "
+				+ " where aco.status!='新建' and aco.office_id = "+office_id
+				+ " group by aco.id"
+				+ " ) A where (ifnull(usd,0)>paid_usd or ifnull(cny,0)>paid_cny or ifnull(hkd,0)>paid_hkd or ifnull(jpy,0)>paid_jpy)";
+		
+        String condition = DbUtils.buildConditions(getParaMap());
+        String sqlTotal = "select count(1) total from ("+sql+ condition +") B";
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        
+        List<Record> orderList = Db.find(sql+ condition +sLimit);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orderList);
+        renderJson(map); 
+    }
+    
+    
+    @Before(EedaMenuInterceptor.class) 
+    public void billDetailed() {
+		String ids = getPara("idsArray");
+		setAttr("ids", ids);
+		
+		String[] orderArrId=ids.split(",");
+		Record r = Db.findFirst("select aco.sp_id,ifnull(company_name,company_name_eng) payee_unit,ifnull(contact_person,contact_person_eng) payee_name"
+				+ " from arap_charge_order aco left join party p on p.id = aco.sp_id where aco.id = ?",orderArrId[0]);
+
+		Record re = new Record();
+		re.set("sp_id", r.getLong("SP_ID"));
+		re.set("payee_unit", r.getStr("PAYEE_UNIT"));
+		re.set("payee_name", r.getStr("PAYEE_NAME"));
+		setAttr("order", re);
+		
+		String sql="select group_concat(cast(ref_order_id as char) SEPARATOR ',') selected_item_ids"
+                + " from arap_charge_item where charge_order_id in("+ids+")";
+        String selected_item_ids = Db.findFirst(sql).getStr("selected_item_ids");
+        setAttr("selected_item_ids", selected_item_ids);
+			
+		render("/oms/ChargeRequest/chargeEdit_select_item.html");
+	}
+    
+    
+    
     
     public void applicationList() {
     	String sLimit = "";

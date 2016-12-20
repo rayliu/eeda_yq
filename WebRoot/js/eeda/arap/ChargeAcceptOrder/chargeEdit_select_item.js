@@ -72,7 +72,7 @@
             ]
         });
 
-        var refleshSelectTable = function(order_id, ids){
+        var refleshSelectTable = function(order_ids, ids){
             //ids为选中的item id
             var callback=function(){
                 if(ids){
@@ -100,8 +100,8 @@
                 calcTotal();
             };
 
-            var url = "/chargeCheckOrder/tableList?order_id="+order_id;
-            itemTable.ajax.url(url).load(callback);
+            	var url = "/chargeCheckOrder/tableList?order_ids="+order_ids+"&order_id=N";
+                itemTable.ajax.url(url).load(callback);
             
         };
 

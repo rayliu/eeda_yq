@@ -134,11 +134,11 @@ eeda.dt = function(opt){
         },
         drawCallback: opt.drawCallback || function ( settings ) {},
         initComplete: opt.initComplete || function ( settings ) {},
-        ajax: opt.ajax || '',
-//        ajax: {
-//            url: opt.ajax || '',
-//            type: 'POST'
-//        },
+//        ajax: opt.ajax || '',
+        ajax: {
+            url: opt.ajax || '',
+            type: 'POST'
+        },
         // ajax: {
         //   url: opt.ajax || '',
           // success:     function(data,status,xhr){
