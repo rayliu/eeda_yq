@@ -26,23 +26,246 @@ $(document).ready(function() {
     	}
         return item;
     }
-    
-    
-    //第一步里面的单
 
 
+    var buildItem = function(){
+    	var item_table_rows = $("#eeda-table tr");
+        var items_array=[];
+        for(var index=0; index<item_table_rows.length; index++){
+            if(index<2)
+                continue;
+            
+            var row = item_table_rows[index];
+            var empty = $(row).find('.dataTables_empty').text();
+            if(empty)
+            	continue;
+            
+            var id = $(row).attr('id');
+            if(!id){
+                id='';
+            }
+            var item={};
+            for(var i = 0; i < row.childNodes.length; i++){
+            	var name = $(row.childNodes[i]).find('span').attr('name');
+            	var value = $(row.childNodes[i]).text();
+            	
+            		item[name] = value;
+            }
+            item.id = id;
+            
+            item.action = $('#order_id').val() != ''?'UPDATE':'CREATE';
+            items_array.push(item);
+        }
+        return items_array;
+    }
     
 	//datatable, 动态处理
     var ids = $("#ids").val();
-    var selected_item_ids = $("#selected_ids").val();
+    var selected_item_ids = $("#selected_item_ids").val();
+    var total_usd = 0;
+    var total_cny = 0;
+    var total_hkd = 0;
+    var total_jpy = 0;
+    //待申请
+    var wait_pay_usd = 0;
+    var wait_pay_jpy = 0;
+    var wait_pay_hkd = 0;
+    var wait_pay_cny = 0;
+    //本次应收
+    var apply_pay_usd_total = 0;
+    var apply_pay_cny_total = 0;
+    var apply_pay_hkd_total = 0;
+    var apply_pay_jpy_total = 0;
+   
+	var dataTable = eeda.dt({
+	    id: 'eeda-table',
+	    paging: true,
+	    serverSide: true, //不打开会出现排序不对
+	    ajax: "/chargeAcceptOrder/chargeOrderList?ids="+ids+"&application_id="+$("#order_id").val(),
+	    createdRow: function ( row, data, index ) {
+            $(row).attr('id', data.ID);
+            $(row).attr('payee_unit', data.SP_ID);//收款单位
+        },
+	    initComplete: function( settings ) {
+	    	$("#total_usd").html(total_usd.toFixed(2));
+    		$("#nopay_usd").html(wait_pay_usd.toFixed(2));
+    		$("#pay_usd").html(apply_pay_usd_total.toFixed(2));
+    		$("#app_usd").val(apply_pay_usd_total.toFixed(2));
 
+    		$("#total_hkd").html(total_hkd.toFixed(2));
+    		$("#nopay_hkd").html(wait_pay_hkd.toFixed(2));
+    		$("#pay_hkd").html(apply_pay_hkd_total.toFixed(2));
+    		$("#app_hkd").val(apply_pay_hkd_total.toFixed(2));
+
+    		$("#total_cny").html(total_cny.toFixed(2));
+    		$("#nopay_cny").html(wait_pay_cny.toFixed(2));
+    		$("#pay_cny").html(apply_pay_cny_total.toFixed(2));
+    		$("#app_cny").val(apply_pay_cny_total.toFixed(2));
+
+    		$("#total_jpy").html(total_jpy.toFixed(2));
+    		$("#nopay_jpy").html(wait_pay_jpy.toFixed(2));
+    		$("#pay_jpy").html(apply_pay_jpy_total.toFixed(2));
+    		$("#app_jpy").val(apply_pay_jpy_total.toFixed(2));
+    		
+    		selectContr.refleshSelectTable(ids, selected_item_ids);
+        },
+	    columns:[
+	         {"data":"ORDER_TYPE","width": "100px","sClass":"order_type",
+	        	 "render": function(data, type, full, meta) {
+		        		return '<span name="order_type">'+data+'</span>';
+		    		}
+	        	 
+	         },
+	         {"data":"ORDER_NO","width": "120px",
+	        	"render": function(data, type, full, meta) {
+	        		return '<a href="/chargeCheckOrder/edit?id='+full.ID+'"><span name="order_no">'+data+'</span></a>';
+	    		}
+	         },
+	    	{"data":"CNAME","width": "250px",
+	        	 "render": function(data, type, full, meta) {
+		        		return '<span name="cname">'+data+'</span>';
+		    		}
+	         },
+	    	{"data":"CNY","width": "100px",
+				"render": function(data, type, full, meta) {
+					if(!isNaN(data)&&data!=null){
+	    				data = parseFloat(data).toFixed(2);
+	    				total_cny = total_cny + parseFloat(data);
+					}
+					return data;
+				}
+			},
+			{"data":"WAIT_CNY","width": "100px","class":"to_pay_cny",
+				"render": function(data, type, full, meta) {
+					wait_pay_cny += data;//parseFloat(data).toFixed(2);
+                    return data;
+				}
+			},
+			{"data":"APPLY_PAY_CNY","width": "100px",
+				"render": function(data, type, full, meta) {
+					apply_pay_cny_total += data;
+                    return '<span name="wait_cny">'+data+'</span>';
+				}
+			},
+			
+			{"data":"HKD","width": "100px",
+				"render": function(data, type, full, meta) {
+					if(data!=null&&!isNaN(data)){
+	    				data = parseFloat(data).toFixed(2);
+	    				total_hkd = total_hkd + parseFloat(data);
+					}
+					return data;
+				}
+			},
+			{"data":"WAIT_HKD","width": "100px","class":"to_pay_hkd",
+				"render": function(data, type, full, meta) {
+					wait_pay_hkd += data;
+    				return data;
+				}
+			},
+			{"data":"APPLY_PAY_HKD","width": "100px",
+				"render": function(data, type, full, meta) {
+					apply_pay_hkd_total += data;
+                    return '<span name="wait_hkd">'+data+'</span>';
+				}
+			},
+			
+			{"data":"JPY","width": "100px",
+				"render": function(data, type, full, meta) {
+					if(!isNaN(data)&&data!=null){
+	    				data = parseFloat(data).toFixed(2);
+	    				total_jpy = total_jpy + parseFloat(data);
+					}
+					return data;
+				}
+			},
+			{"data":"WAIT_JPY","width": "100px","class":"to_pay_jpy",
+				"render": function(data, type, full, meta) {
+					wait_pay_jpy += data;
+    				return data;
+				}
+			},
+			{"data":"APPLY_PAY_JPY","width": "100px",
+				"render": function(data, type, full, meta) {
+					apply_pay_jpy_total += data;
+                    return '<span name="wait_jpy">'+data+'</span>';
+				}
+			},
+	    	
+			{"data":"USD","width": "100px",
+				"render": function(data, type, full, meta) {
+					if(data!=null&&!isNaN(data)){
+						data = parseFloat(data).toFixed(2);
+						total_usd = total_usd + parseFloat(data);
+					}
+					return data;
+				}
+			},
+			{"data":"WAIT_USD","width": "100px","class":"to_pay_usd",
+				"render": function(data, type, full, meta) {
+					wait_pay_usd += data;
+                    return data;
+				}
+			},
+			{"data":"APPLY_PAY_USD","width": "100px",
+				"render": function(data, type, full, meta) {
+					apply_pay_usd_total += data;
+                    return '<span name="wait_usd">'+data+'</span>';
+				}
+			},
+
+			{"data":"CREATOR_NAME","width": "120px"},
+			{"data":"CREATE_STAMP","width": "150px"},
+			{"data":"REMARK","width": "150px"}
+	    ]      
+    });	
+    
+
+	var orderjson = function(){
+    	var array=[];
+    	var sum_usd=0.0;
+    	var sum_cny=0.0;
+    	var sum_hkd=0.0;
+    	var sum_jpy=0.0;
+    	
+    	
+    	
+    	//获取所选的对账单id
+    	$("#eeda-table tr[id]").each(function(index, item){
+    		var obj={};
+    		obj.id = $(item).attr('id');
+    		obj.order_type = $(item).find('.order_type').text();
+    		obj.payee_unit = $(item).attr('payee_unit');
+
+    		obj.app_usd = $(item).find('[name=wait_usd]').text();
+    		obj.app_cny = $(item).find('[name=wait_cny]').text();
+    		obj.app_hkd = $(item).find('[name=wait_hkd]').text();
+    		obj.app_jpy = $(item).find('[name=wait_jpy]').text();
+
+    		sum_usd +=parseFloat(obj.app_usd);
+    		sum_cny +=parseFloat(obj.app_cny);
+    		sum_hkd +=parseFloat(obj.app_hkd);
+    		sum_jpy +=parseFloat(obj.app_jpy);
+    		array.push(obj);
+    	});
+    	
+    	$("#total_app_cny").val(sum_cny);
+    	$("#total_app_usd").val(sum_usd);
+    	$("#total_app_hkd").val(sum_hkd);
+    	$("#total_app_jpy").val(sum_jpy);
+    	var str_JSON = JSON.stringify(array);
+    	$("#detailJson").val(str_JSON);
+    };
+    
     
 	
     //申请保存
-	$("#createSave").on('click',function(){
+	$("#saveBtn").on('click',function(){
 		$(this).attr("disabled", true);
 		$("#printBtn").attr("disabled", true);
-
+		
+		orderjson();
+	
 		if($("#payment_method").val()=='transfers'){
 			if($("#deposit_bank").val()=='' && $("#account_no").val()==''&& $("#account_name").val()==''){
 				$.scojs_message('转账的信息不能为空', $.scojs_message.TYPE_FALSE);
@@ -52,9 +275,8 @@ $(document).ready(function() {
 		
 		var order = buildOrder();
 		order.item_list = buildItem();
-		order.selected_item_ids=$("#selected_ids").val();
-		order.ids=$('#ids').val();
-		$.get('/chargeRequest/save',{params:JSON.stringify(order)}, function(data){
+		order.doc_list = itemOrder.buildDocItem();
+		$.get('/chargeAcceptOrder/save',{params:JSON.stringify(order)}, function(data){
 			$("#saveBtn").attr("disabled", false);
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
@@ -218,6 +440,22 @@ $(document).ready(function() {
 		});
 	  
 	  
+	  
+	  $("#eeda-table").on('click', 'button', function(e){
+	        e.preventDefault();
+	        var row = dataTable.row($(this).parent().parent());
+	        var row_index = row.index();//  td
+	        $('#select_row_index').val(row_index);
+
+	        var order_id = $(e.target).attr("order_id");
+	        var selected_ids = row.data().SELECTED_IDS;
+
+	        selectContr.refleshSelectTable(order_id, selected_ids);
+	        $('#select_item_modal').modal('show');
+
+	    });
+	  
+	  
 	  $('#select_item_table').on('click',"input[type=checkbox]",function () {
 	        var table = $('#select_item_table').DataTable();
 	        var row = $(this).parent().parent();
@@ -240,9 +478,74 @@ $(document).ready(function() {
 
 	        
 	        //获取对账单号
+	        var chargeOrderNo = row.find('td:eq(1)').text();
+	        console.log(chargeOrderNo);
+	        //更新对应对账单的汇总金额
+	        calcOrderTotal(chargeOrderNo);
 	    });  
+	  
+	  
+	  
+	  var calcOrderTotal=function(chargeOrderNo) {
+	        //根据对账单号获取 ’业务单据‘表格的行
+	        var row_index = $("#eeda-table td:contains("+chargeOrderNo+")").parent().index();
+	        var row = dataTable.row(row_index);
+	        var row_data = row.data();
+	        console.log(row_data);
+	        row_data.APPLY_PAY_CNY=parseFloat($('#modal_cny').val());
+	        row_data.APPLY_PAY_HKD=parseFloat($('#modal_hkd').val());
+	        row_data.APPLY_PAY_JPY=parseFloat($('#modal_jpy').val());
+	        row_data.APPLY_PAY_USD=parseFloat($('#modal_usd').val());
+	        row_data.SELECTED_IDS=$('#selected_ids').val();
+	        row.data(row_data);
 
+	        $("#pay_cny").html(parseFloat($('#modal_cny').val()).toFixed(2));
+	        $("#pay_hkd").html(parseFloat($('#modal_hkd').val()).toFixed(2));
+	        $("#pay_usd").html(parseFloat($('#modal_usd').val()).toFixed(2));
+	        $("#pay_jpy").html(parseFloat($('#modal_jpy').val()).toFixed(2));
+	        //dataTable.draw();
+	        console.log(row.data());
+	    };
+	  
+	  
+	
+	  
 	//异步显示总金额
+	    $("#eeda-table").on('change', 'input', function(){
+	    	var tr =$(this).parent().parent();
+			var value = 0.00;
+			var currentValue = $(this).val();
+			if(currentValue==''||isNaN(currentValue)){
+				$(this).val('');
+				$(this).val(0);
+				return;
+			}
+			var name = $(this).attr('name');
+			if(name=='app_usd'){
+				var totalAmount = tr.find('.to_pay_usd').text();
+			}else if(name == 'app_cny'){
+				var totalAmount = tr.find('.to_pay_cny').text();
+			}else if(name == 'app_hkd'){
+				var totalAmount = tr.find('.to_pay_hkd').text();
+			}else{
+				var totalAmount = tr.find('.to_pay_jpy').text();
+			}
+			if(parseFloat(totalAmount)-parseFloat(currentValue)<0){
+				$(this).val('');
+				$(this).val(0);
+				$.scojs_message('支付金额不能大于待付金额', $.scojs_message.TYPE_FALSE);
+				return false;
+			}
+			$("input[name='"+name+"']").each(function(){
+				if($(this).val()!=null&&$(this).val()!=''){
+					value = value + parseFloat($(this).val());
+				}
+		    });		
+			
+			var name1 = name.replace("app","pay");
+			$('#'+name+'').val(value);
+			$('#'+name1+'').html(value);
+		});	
     
  
   //按钮控制
@@ -314,11 +617,10 @@ $(document).ready(function() {
 		var idsArray=[];
       	$('#chargeAccept_table input[type="checkbox"]:checked').each(function(){
       			var itemId = $(this).parent().parent().attr('id');
-      			
 //      			var order_type = $(this).parent().parent().find(".order_type").text();
       			idsArray.push(itemId);
       	});
-      		$('#ids').val(idsArray);
+
       		selectContr.refleshSelectTable(idsArray);
 	})
 	
