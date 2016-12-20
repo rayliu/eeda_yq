@@ -98,17 +98,11 @@
                     });
                 }
                 calcTotal();
-                
-                var selected_ids=[];
-                $('#select_item_table input[type="checkbox"]:checked').each(function(){
-          			var selectId = $(this).parent().parent().attr('id');
-          			selected_ids.push(selectId);
-                });
-          		$('#selected_ids').val(selected_ids);
-                
             };
+
             	var url = "/chargeCheckOrder/tableList?order_ids="+order_ids+"&order_id=N";
                 itemTable.ajax.url(url).load(callback);
+            
         };
 
         var calcTotal=function() {
