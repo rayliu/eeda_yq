@@ -42,13 +42,6 @@ $(document).ready(function() {
         return items_array;
     }
     
-    //刷createTable, 动态处理
-    var order_id=$('#order_id').val();
-    
-    if(order_id!=''){
-    	selectContr.refleshCreateTable(order_id);
-    }
-    
 	//datatable, 动态处理
     var ids = $("#ids").val();
     var selected_item_ids = $("#selected_ids").val();
@@ -56,7 +49,7 @@ $(document).ready(function() {
     
 	
     //申请保存
-	$("#saveBtn").on('click',function(){
+	$("#createSave").on('click',function(){
 		$("#createSave").attr("disabled", true);
 		if($("#payment_method").val()=='transfers'){
 			if($("#deposit_bank").val()=='' && $("#account_no").val()==''&& $("#account_name").val()==''){
@@ -72,12 +65,14 @@ $(document).ready(function() {
 		$.get('/chargeRequest/save',{params:JSON.stringify(order)}, function(data){
 			$("#createSave").attr("disabled", false);
 			if(data.ID>0){
-				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-				$("#order_id").val(data.ID);
+				$.scojs_message('创建新申请成功', $.scojs_message.TYPE_OK);
 				$("#order_no").val(data.ORDER_NO);
-				$("#create_stamp").val(data.CREATE_STAMP);
-				$("#creator_name").val(data.CREATOR_NAME);
+				if(confirm('刚生成的新申请单号'+data.ORDER_NO+':是否前往该申请单？')){
+					self.location='/chargeRequest/edit?id='+data.ID; 
+				 }
 
+				selectContr.refleshSelectTable(data.IDSARRAY);
+				createStep1Contr.refleshStep1Table();
 //				eeda.contactUrl("edit?id",data.ID);
 				//dataTable.ajax.url("/chargeAcceptOrder/chargeOrderList?application_id="+$("#order_id").val()).load();
 //				itemOrder.refleshDocTable(data.ID);
