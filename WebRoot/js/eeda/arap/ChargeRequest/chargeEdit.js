@@ -1,5 +1,5 @@
 ﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './chargeEdit_select_item', './edit_doc_table','dataTablesBootstrap', 
-        'validate_cn', 'sco'], function ($, metisMenu, sb, doc, selectContr) {
+        'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
 	document.title = '收款申请单 | '+document.title;
 
@@ -11,6 +11,7 @@ $(document).ready(function() {
     	var item = {};
     	item.id = $('#order_id').val();
     	item.selected_ids = $('#selected_ids').val();
+    	item.status='新建';
     	var orderForm = $('#orderForm input,select,textarea');
     	for(var i = 0; i < orderForm.length; i++){
     		var name = orderForm[i].id;
@@ -28,9 +29,25 @@ $(document).ready(function() {
     }
     
     
-    //第一步里面的单
-
-
+    //第二步里面的单
+    var buildItem = function(){
+    	var items_array=[];
+        $('#select_item_table input[type="checkbox"]:checked').each(function(){
+  			var id = $(this).parent().parent().attr('id');
+  			var item={};
+            item.id = id;
+            item.action = 'CREATE';
+            items_array.push(item);
+        });
+        return items_array;
+    }
+    
+    //刷createTable, 动态处理
+    var order_id=$('#order_id').val();
+    
+    if(order_id!=''){
+    	selectContr.refleshCreateTable(order_id);
+    }
     
 	//datatable, 动态处理
     var ids = $("#ids").val();
@@ -40,9 +57,7 @@ $(document).ready(function() {
 	
     //申请保存
 	$("#createSave").on('click',function(){
-		$(this).attr("disabled", true);
-		$("#printBtn").attr("disabled", true);
-
+		$("#createSave").attr("disabled", true);
 		if($("#payment_method").val()=='transfers'){
 			if($("#deposit_bank").val()=='' && $("#account_no").val()==''&& $("#account_name").val()==''){
 				$.scojs_message('转账的信息不能为空', $.scojs_message.TYPE_FALSE);
@@ -55,7 +70,7 @@ $(document).ready(function() {
 		order.selected_item_ids=$("#selected_ids").val();
 		order.ids=$('#ids').val();
 		$.get('/chargeRequest/save',{params:JSON.stringify(order)}, function(data){
-			$("#saveBtn").attr("disabled", false);
+			$("#createSave").attr("disabled", false);
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 				$("#order_id").val(data.ID);
@@ -66,13 +81,11 @@ $(document).ready(function() {
 				$("#printBtn").attr("disabled", false);
 				$("#checkBtn").attr('disabled',false);
 				$("#deleteBtn").attr("disabled", false);
-				eeda.contactUrl("edit?id",data.ID);
-				total = 0.00;
-				nopay = 0.00;
-				pay = 0.00;
-				
+				selectContr.refleshSelectTable(data.IDSARRAY);
+				createStep1Contr.refleshStep1Table();
+//				eeda.contactUrl("edit?id",data.ID);
 				//dataTable.ajax.url("/chargeAcceptOrder/chargeOrderList?application_id="+$("#order_id").val()).load();
-				itemOrder.refleshDocTable(data.ID);
+//				itemOrder.refleshDocTable(data.ID);
 			}else{
 				$.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
 			}
@@ -168,22 +181,25 @@ $(document).ready(function() {
 	  $("#confirmBtn").on('click',function(){
 		  	$("#confirmBtn").attr("disabled", true);
 		  	
-		  	if($("#receive_type").val()=='transfers'){
-				if($("#receive_bank").val()==''){
-					$.scojs_message('收入银行不能为空', $.scojs_message.TYPE_FALSE);
-					return false;
-				}
-			}
-			
-			var order = buildOrder();
-			order.item_list = buildItem();
-		  	
-			$.get("/chargeAcceptOrder/confirmOrder", {params:JSON.stringify(order)}, function(data){
-				if(data.success){
+//		  	if($("#receive_type").val()=='transfers'){
+//				if($("#receive_bank").val()==''){
+//					$.scojs_message('收入银行不能为空', $.scojs_message.TYPE_FALSE);
+//					return false;
+//				}
+//			}
+			var order={};
+			order.id=$('#order_id').val();
+			order.receive_time=$('#receive_time').val();
+			order.receive_bank_id＝$('#deposit_bank').val();
+			order.payment_method = $('#payment_method').val();
+			order.order_type="应收对账单";
+			$.get("/chargeRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
+				if(data){
 					$("#status").val('已收款');
 					$("#returnBtn").attr("disabled", true);
 					$("#returnConfirmBtn").attr("disabled", false);
 					$("#deleteBtn").attr("disabled", true);
+					$("#confirm_name").val(data.CONFIRM_NAME);
 					$.scojs_message('收款成功', $.scojs_message.TYPE_OK);
 				}else{
 					$("#confirmBtn").attr("disabled", false);

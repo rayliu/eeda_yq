@@ -1,5 +1,5 @@
 ﻿define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
-$(document).ready(function() {
+
 	document.title = '复核收款| '+document.title;
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     
@@ -24,60 +24,88 @@ $(document).ready(function() {
 				{"data":"STATUS"},
 				{"data":"SP_NAME","sClass":"SP_NAME"},
 				{"data":"APP_MSG"},
-				{"data":"CNY"},
+				{"data":"CNY",
+					"render":function(data,type,full,meta){
+						if(data==''){
+							data=0.00;
+						}
+						return parseFloat(data).toFixed(2);
+					}
+				},
 				{"data":"PAID_CNY",
 					"render": function(data, type, full, meta) {
-						if(data)
-							return parseFloat(data).toFixed(2);	
-						else 
-							return '';
+							if(data==''){
+								data=0.00;
+							   }
+							return parseFloat(data).toFixed(2);
 					}
 				},
 				{
 					"render": function(data, type, full, meta) {
-						return full.CNY - full.PAID_CNY;	
+						return parseFloat(full.CNY - full.PAID_CNY).toFixed(2);	
 					}
 				},
-				{"data":"USD"},
+				{"data":"USD",
+					"render": function(data, type, full, meta) {
+						if(data==''){
+							data=0.00;
+						}
+							return parseFloat(data).toFixed(2);	
+					}
+				},
 				{"data":"PAID_USD",
 					"render": function(data, type, full, meta) {
-						if(data)
+						if(data==''){
+							data=0.00;
+						}
 							return parseFloat(data).toFixed(2);	
-						else 
-							return '';
 					}
 				},
 				{
 					"render": function(data, type, full, meta) {
-						return full.USD - full.PAID_USD;	
+						return parseFloat(full.USD - full.PAID_USD).toFixed(2);	
 					}
 				},
-				{"data":"JPY"},
+				{"data":"JPY",
+					"render": function(data, type, full, meta) {
+						if(data==''){
+							data=0.00;
+						}
+							return parseFloat(data).toFixed(2);	
+					}
+				},
 				{"data":"PAID_JPY",
 					"render": function(data, type, full, meta) {
-						if(data)
+						if(data==''){
+							data=0.00;
+						}
 							return parseFloat(data).toFixed(2);	
-						else 
-							return '';
 					}
 				},
 				{
 					"render": function(data, type, full, meta) {
-						return full.JPY - full.PAID_JPY;	
+						return parseFloat(full.JPY - full.PAID_JPY).toFixed(2);	
 					}
 				},
-				{"data":"HKD"},  
+				{"data":"HKD",
+					"render": function(data, type, full, meta) {
+						if(data==''){
+							data=0.00;
+						}
+							return parseFloat(data).toFixed(2);	
+					}
+				},  
 				{"data":"PAID_HKD",
 					"render": function(data, type, full, meta) {
-						if(data)
+						if(data==''){
+							data=0.00;
+						}
 							return parseFloat(data).toFixed(2);	
-						else 
-							return '';
 					}
 				}, 
 				{
 					"render": function(data, type, full, meta) {
-						return full.HKD - full.PAID_HKD;	
+						return parseFloat(full.HKD - full.PAID_HKD).toFixed(2);	
 					}
 				} 	
         ]      
@@ -195,9 +223,13 @@ $(document).ready(function() {
            +"&create_stamp_begin_time="+start_date
            +"&create_stamp_end_time="+end_date;
 
-        costAccept_table.ajax.url(url).load();
+        chargeRequest.ajax.url(url).load();
     };
-      
+    
+
+    
+    
+
       //查询已申请单
     $('#searchBtn1').click(function(){
     		searchData1(); 
@@ -259,6 +291,17 @@ $(document).ready(function() {
 			var payee_names = '';
 		}
 	});
+	
+	
+    var refleshSelectTable = function(){
+	    var url = "/chargeRequest/OrderList";
+	    costAccept_table.ajax.url(url).load();
+    }
+	
+	
+    return {
+    	refleshStep1Table: refleshSelectTable
+    };
 	  
-});
+
 });

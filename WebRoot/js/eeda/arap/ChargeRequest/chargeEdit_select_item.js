@@ -110,7 +110,7 @@
             	var url = "/chargeCheckOrder/tableList?order_ids="+order_ids+"&order_id=N";
                 itemTable.ajax.url(url).load(callback);
         };
-
+        
         var calcTotal=function() {
             //$("#ChargeOrder-table").DataTable()
             var CNY_cost=0, CNY_charge=0;
@@ -149,9 +149,19 @@
             $('#modal_jpy').val((parseFloat(JPY_charge - JPY_cost)).toFixed(2));
 
         }
+        
+        
+        
+        var refleshCreateTable = function(appApplication_id){
+    		var url = "/chargeCheckOrder/tableList?appApplication_id="+appApplication_id+"&order_id=N&bill_flag=create";
+            itemTable.ajax.url(url).load();
+		    };
+		    
+
 
     return {
         refleshSelectTable: refleshSelectTable,
+        refleshCreateTable:refleshCreateTable,
         calcTotal: calcTotal
     };
 

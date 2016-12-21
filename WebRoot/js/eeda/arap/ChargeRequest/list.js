@@ -2,103 +2,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 $(document).ready(function() {
 	document.title = '复核收款| '+document.title;
     $('#menu_finance').addClass('active').find('ul').addClass('in');
-    
-	var costAccept_table = eeda.dt({
-	    id: 'costAccept_table',
-	    autoWidth: true,
-	    paging: true,
-	    serverSide: true, //不打开会出现排序不对 
-	    ajax: "/chargeAcceptOrder/list",
-	    columns: [
-				{ 
-				    "render": function(data, type, full, meta) {
-				        return '<input type="checkbox" class="checkBox" >';
-				    }
-				},
-				{"data":"ORDER_NO",
-					"render": function(data, type, full, meta) {
-						return "<a href='/chargeCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
-					}
-				},
-				{"data":"ORDER_TYPE","class":"order_type"},   
-				{"data":"STATUS"},
-				{"data":"SP_NAME","sClass":"SP_NAME"},
-				{"data":"APP_MSG"},
-				{"data":"CNY"},
-				{"data":"PAID_CNY",
-					"render": function(data, type, full, meta) {
-						if(data)
-							return parseFloat(data).toFixed(2);	
-						else 
-							return '';
-					}
-				},
-				{
-					"render": function(data, type, full, meta) {
-						return full.CNY - full.PAID_CNY;	
-					}
-				},
-				{"data":"USD"},
-				{"data":"PAID_USD",
-					"render": function(data, type, full, meta) {
-						if(data)
-							return parseFloat(data).toFixed(2);	
-						else 
-							return '';
-					}
-				},
-				{
-					"render": function(data, type, full, meta) {
-						return full.USD - full.PAID_USD;	
-					}
-				},
-				{"data":"JPY"},
-				{"data":"PAID_JPY",
-					"render": function(data, type, full, meta) {
-						if(data)
-							return parseFloat(data).toFixed(2);	
-						else 
-							return '';
-					}
-				},
-				{
-					"render": function(data, type, full, meta) {
-						return full.JPY - full.PAID_JPY;	
-					}
-				},
-				{"data":"HKD"},  
-				{"data":"PAID_HKD",
-					"render": function(data, type, full, meta) {
-						if(data)
-							return parseFloat(data).toFixed(2);	
-						else 
-							return '';
-					}
-				}, 
-				{
-					"render": function(data, type, full, meta) {
-						return full.HKD - full.PAID_HKD;	
-					}
-				} 	
-        ]      
-    });
-                      
+                
     var application_table = eeda.dt({
     	id: 'application_table',
     	autoWidth: true,
         paging: true,
         serverSide: true, 
-    	ajax: "/chargeAcceptOrder/applicationList",
+    	ajax: "/chargeRequest/applicationList",
 		  columns: [
 		    {"data":"APPLICATION_ORDER_NO",
             	 "render": function(data, type, full, meta) {
-            			return "<a href='/chargeAcceptOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+            			return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
             	 }
             },
             {"data":"ORDER_TYPE"},
             {"data":"STATUS"},    
             {"data":"COST_ORDER_NO"},
-            {"data":"APP_USD",
+            {"data":"MODAL_CNY",
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);
@@ -106,7 +26,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"APP_HKD",
+            {"data":"MODAL_USD",
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);
@@ -114,7 +34,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"APP_CNY",
+            {"data":"MODAL_JPY",
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);
@@ -122,7 +42,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"APP_JPY",
+            {"data":"MODAL_HKD",
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);
