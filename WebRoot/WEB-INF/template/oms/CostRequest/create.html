@@ -21,10 +21,10 @@
                            
                             <div class="col-lg-4">
 								<%include("/eeda/component/form/inputField.html", { id:'payee_unit',
-								label:'付款单位', value:order.payee_unit!''
+								label:'收款单位', value:order.payee_unit!''
 								}){}%>
 								<%include("/eeda/component/form/inputField.html", { id:'payee_name',
-								label:'付款人', value:order.payee_name!''
+								label:'收款人', value:order.payee_name!''
 								}){}%>
 								<div id="invoiceDiv">
                                 <%include("/eeda/component/form/inputField.html", { id:'billing_unit',
@@ -34,7 +34,7 @@
                             </div>
                             <div class="col-lg-4">
                             	<div class="form-group">
-                                    <label class="search-label">付款方式</label>
+                                    <label class="search-label">收款方式</label>
                                     <input type="hidden" id="payment_method_show" value="${order.payment_method!''}"/>
                                 	<select id="payment_method" class="form-control search-control payment_method" name="payment_method" >
                                     <option value=""></option>
@@ -50,7 +50,7 @@
 									
 									<%include("/eeda/component/form/inputField.html", 
 									{ id:'account_no',
-									label:'付款账号', value:order.account_no!''
+									label:'收款账号', value:order.account_no!''
 									}){}%>
 									
 									<%include("/eeda/component/form/inputField.html", 
