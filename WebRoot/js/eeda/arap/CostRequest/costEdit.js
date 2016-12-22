@@ -268,9 +268,11 @@ $(document).ready(function() {
 		if(type == 'cash'||type==""){
 			$('#transfers_massage').hide();
 			$('#receive_type_massage').hide();
+			$('#transfers_massage_pay').hide();
 		}else{
 			$('#transfers_massage').show();
 			$('#receive_type_massage').show();
+			$('#transfers_massage_pay').show();
 		}
 	})
 	

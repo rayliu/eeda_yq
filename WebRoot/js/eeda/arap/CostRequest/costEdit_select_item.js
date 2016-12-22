@@ -34,7 +34,7 @@
                 { "data": "CURRENCY_NAME","class":"currency_name"},
                 { "data": "TOTAL_AMOUNT","class":"total_amount", 
                     "render": function ( data, type, full, meta ) {
-                        if(full.ORDER_TYPE=='cost'){
+                        if(full.ORDER_TYPE=='charge'){
                             return '<span style="color:red;">'+'-'+data+'</span>';
                         }
                         return data;
@@ -43,7 +43,7 @@
                 { "data": "EXCHANGE_RATE", "visible": false},
                 { "data": "AFTER_TOTAL", "visible": false, 
                     "render": function ( data, type, full, meta ) {
-                        if(full.ORDER_TYPE=='cost'){
+                        if(full.ORDER_TYPE=='charge'){
                             return '<span style="color:red;">'+'-'+data+'</span>';
                         }
                         return data;
@@ -52,7 +52,7 @@
                 { "data": "NEW_RATE","class":"new_rate", "visible": false },
                 { "data": "AFTER_RATE_TOTAL","class":"after_rate_total", "visible": false,
                     "render": function ( data, type, full, meta ) {
-                        if(full.ORDER_TYPE=='cost'){
+                        if(full.ORDER_TYPE=='charge'){
                             return '<span style="color:red;">'+'-'+data+'</span>';
                         }
                         return data;
@@ -62,7 +62,7 @@
                 { "data": "EXCHANGE_CURRENCY_RATE"},
                 { "data": "EXCHANGE_TOTAL_AMOUNT",
                     "render": function ( data, type, full, meta ) {
-                        if(full.ORDER_TYPE=='cost'){
+                        if(full.ORDER_TYPE=='charge'){
                             return '<span style="color:red;">'+'-'+data+'</span>';
                         }
                         return data;

@@ -158,6 +158,81 @@ public class CostCheckOrderController extends Controller {
     	return re;
     }
 	
+	public List<Record> getCostItemList(String order_ids,String bill_flag){
+    	String sql = null;
+			if("create".equals(bill_flag)){
+				sql = " select joa.id,joa.create_flag,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
+						+" aco.order_no check_order_no, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
+							+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
+							+" ifnull((select rc.new_rate from rate_contrast rc"
+							    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
+							    +" (ifnull(joa.total_amount,0)*ifnull(joa.exchange_rate,1)) after_total,"
+							    +"  ifnull((select rc.new_rate from rate_contrast rc"
+							    +" where rc.currency_id = joa.currency_id and rc.order_id = aco.id),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
+							+" GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount,"
+							+" cur.name currency_name,"
+							+" ifnull(cur1.NAME, cur.NAME) exchange_currency_name,"
+							+" ifnull(joa.exchange_currency_rate, 1) exchange_currency_rate,"
+							+" ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, joa.pay_flag"
+							+" from job_order jo"
+							+" left join job_order_arap joa on jo.id=joa.order_id"
+							+" left join job_order_shipment jos on jos.order_id=joa.order_id"
+							+" left join job_order_shipment_item josi on josi.order_id=joa.order_id"
+							+" left join job_order_air_item joai on joai.order_id=joa.order_id"
+							+" left join party p on p.id=joa.sp_id"
+							+" left join party p1 on p1.id=jo.customer_id"
+							+" left join location l on l.id=jos.fnd"
+							+" left join currency cur on cur.id=joa.currency_id"
+							+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
+							+" left join cost_application_order_rel caol on caol.job_order_arap_id  = joa.id"
+							+" left join arap_cost_application_order acao on caol.application_order_id = acao.id"
+							 +" left join arap_cost_order aco on aco.id=caol.cost_order_id"
+						  +" where acao.id="+order_ids
+							+" GROUP BY joa.id"
+							+" ORDER BY aco.order_no, jo.order_no";
+				
+			}else{
+				sql = " select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
+						+" aco.order_no check_order_no, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
+							+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
+							+" ifnull((select rc.new_rate from rate_contrast rc"
+							    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
+							    +" (ifnull(joa.total_amount,0)*ifnull(joa.exchange_rate,1)) after_total,"
+							    +"  ifnull((select rc.new_rate from rate_contrast rc"
+							    +" where rc.currency_id = joa.currency_id and rc.order_id = aco.id),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
+							+" GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount,"
+							+" cur.name currency_name,"
+							+" ifnull(cur1.NAME, cur.NAME) exchange_currency_name,"
+							+" ifnull(joa.exchange_currency_rate, 1) exchange_currency_rate,"
+							+" ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, joa.pay_flag"
+							+" from job_order jo"
+							+" left join job_order_arap joa on jo.id=joa.order_id"
+							+" left join job_order_shipment jos on jos.order_id=joa.order_id"
+							+" left join job_order_shipment_item josi on josi.order_id=joa.order_id"
+							+" left join job_order_air_item joai on joai.order_id=joa.order_id"
+							+" left join party p on p.id=joa.sp_id"
+							+" left join party p1 on p1.id=jo.customer_id"
+							+" left join location l on l.id=jos.fnd"
+							+" left join currency cur on cur.id=joa.currency_id"
+							+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
+							+" left join arap_cost_item aci on aci.ref_order_id = joa.id"
+						    +" left join arap_cost_order aco on aco.id = aci.cost_order_id"
+						    +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
+							+" GROUP BY joa.id"
+							+" ORDER BY aco.order_no, jo.order_no";
+			}		
+			
+
+    	List<Record> re = Db.find(sql);
+    	
+    	return re;
+    }
+	
+	
+	
+	
+	
+	
 	
 	public void createList() {
 		String ids = getPara("itemIds");
@@ -235,7 +310,7 @@ public class CostCheckOrderController extends Controller {
       				+ " left join currency cur on cur.id=joa.currency_id "
       				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
       				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
-      				+ " left join fin_item f on f.id = joa.charge_id"
+      				+ " left join fin_item f on f.id = joa.cost_id"
       				+ " where joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
       				+ " GROUP BY joa.id "
     				+ " ) B where 1=1 ";
@@ -493,9 +568,23 @@ public class CostCheckOrderController extends Controller {
     public void tableList(){
     	String order_id = getPara("order_id");
     	String ids = getPara("ids");
+    	String order_ids = getPara("order_ids");
+    	String appliction_id = getPara("appApplication_id");
+    	String bill_flag = getPara("bill_flag");
     	
     	List<Record> list = null;
-    	list = getItemList(ids,order_id);
+    	if("N".equals(order_id)){
+    		if(StringUtils.isNotEmpty(appliction_id)){
+    			list = getCostItemList(appliction_id,bill_flag);
+        	}else{
+	    		if("".equals(order_ids)){
+	    			order_ids=null;
+	    				}
+	    		list = getCostItemList(order_ids,"");
+	    		}
+    	}else{
+    		list = getItemList(ids,order_id);
+    	}
     	
     	Map map = new HashMap();
         map.put("sEcho", 1);
