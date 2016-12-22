@@ -203,10 +203,6 @@ $(document).ready(function() {
 			},'json');
 		});
 	  
-	  
-	  
-	  
-	  
 	//收款确认撤回未确认状态
 	  $("#returnConfirmBtn").on('click',function(){
 		  	$("#returnConfirmBtn").attr("disabled", true);

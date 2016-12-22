@@ -552,7 +552,7 @@ public class ChargeCheckOrderController extends Controller {
     	List<Record> list = null;
     	String condition = "select ref_order_id from arap_charge_item where charge_order_id in ("+order_ids+")";
     	if("N".equals(order_id)){
-    		if(!"".equals(appliction_id)){
+    		if(StringUtils.isNotEmpty(appliction_id)){
     			list = getChargeItemList(appliction_id,bill_flag);
         	}else{
 	    		if("".equals(order_ids)){
