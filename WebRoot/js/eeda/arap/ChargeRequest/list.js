@@ -17,7 +17,7 @@ $(document).ready(function() {
             },
             {"data":"ORDER_TYPE"},
             {"data":"STATUS"},    
-            {"data":"COST_ORDER_NO"},
+            {"data":"CHARGE_ORDER_NO"},
             {"data":"MODAL_CNY",
             	"render": function(data, type, full, meta) {
             		if(data)

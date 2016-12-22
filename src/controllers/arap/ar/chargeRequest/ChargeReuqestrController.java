@@ -185,6 +185,7 @@ public class ChargeReuqestrController extends Controller {
 				+ " left join user_login u on u.id = acao.create_by"
 				+ "	where acao.office_id = "+office_id
 				+ " group by acao.id"
+				+ " order by acao.create_stamp desc"
 				+ " ) B where 1=1 ";
 		
         String condition = DbUtils.buildConditions(getParaMap());
