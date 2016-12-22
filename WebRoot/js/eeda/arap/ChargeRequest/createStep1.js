@@ -203,6 +203,7 @@
 	$('#searchBtn').click(function(){
   	    searchData(); 
 	})
+	
 	$('#resetBtn').click(function(e){
 	  	$("#costAcceptForm")[0].reset();
   	});
@@ -216,17 +217,16 @@
 	    var start_date = $("#create_stamp_begin_time").val();
 	    var end_date = $("#create_stamp_end_time").val();
    
-        var url = "/chargeAcceptOrder/list?sp_id="+sp
+        var url = "/chargeRequest/OrderList?sp_id="+sp
       	   +"&order_no="+order_no
            +"&status="+status
            +"&order_type="+orderType
            +"&create_stamp_begin_time="+start_date
            +"&create_stamp_end_time="+end_date;
 
-        chargeRequest.ajax.url(url).load();
+        costAccept_table.ajax.url(url).load();
     };
     
-
     
     
 
@@ -250,7 +250,7 @@
           var confirmBegin_date_begin_time = $("#confirmBegin_date_begin_time").val();
           var confirmBegin_date_end_time = $("#confirmBegin_date_end_time").val();
    
-          var url = "/chargeAcceptOrder/applicationList?sp_id="+sp_id
+          var url = "/chargeRequest/applicationList?sp_id="+sp_id
                +"&order_no="+order_no
                +"&application_order_no="+applicationOrderNo
                +"&STATUS="+status2

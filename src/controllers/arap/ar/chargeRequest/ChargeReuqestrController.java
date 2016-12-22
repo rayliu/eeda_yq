@@ -123,7 +123,7 @@ public class ChargeReuqestrController extends Controller {
         				+" left join party p on p.id=aco.sp_id "
         				+" where aco.status!='新建' and aco.office_id = "+office_id+" "
         				+" group by aco.id"
-        				+ " ) A where ifnull(usd,0)>paid_usd or ifnull(cny,0)>paid_cny or ifnull(hkd,0)>paid_hkd or ifnull(jpy,0)>paid_jpy";
+        				+ " ) A where (ifnull(usd,0)>paid_usd or ifnull(cny,0)>paid_cny or ifnull(hkd,0)>paid_hkd or ifnull(jpy,0)>paid_jpy)";
 		
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition +") B";
