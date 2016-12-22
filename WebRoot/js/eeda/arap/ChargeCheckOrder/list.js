@@ -20,9 +20,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
             paging: true,
             serverSide: true, //不打开会出现排序不对 
             drawCallback: function( settings ) {
-          	  flash();
-    	      },
-            ajax: "/chargeCheckOrder/list",
+          	    flash();
+    	    },
+            ajax:{
+                url: "/chargeCheckOrder/list",
+                type: 'POST'
+            }, 
             columns:[
 			      { "width": "10px", "orderable": false,
 				    "render": function ( data, type, full, meta ) {
