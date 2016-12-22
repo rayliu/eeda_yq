@@ -239,7 +239,7 @@
                         	<button id="saveBtn" type="button" disabled="disabled" class="btn  btn-primary" >保存</button> 
                             <button id="printBtn" type="button" disabled="disabled" class="btn  btn-primary" >打印</button>
                             <a class="btn  btn-default" href="/chargeAcceptOrder">返回</a>
-                            <button id="checkBtn" type="button" disabled="disabled" class="btn  btn-primary" style="display:none">复核</button>
+                            <button id="checkBtn" type="button" disabled="disabled" class="btn  btn-primary" >复核</button>
                             <button id="returnBtn" type="button" disabled="disabled" class="btn  btn-primary"  style="display:none" >退回</button>
                             <button id="deleteBtn" type="button" class="btn  btn-danger"  style="display:none"  >撤销</button>
                        </div><br/><br/>
@@ -316,10 +316,10 @@
 	                            </div>
 	                       </div>
 
-	                         <div class="col-lg-10" style="diaplay:none">
+	                         <div class="col-lg-10" style="display:none">
 	                       		<div id="receive_type_massage" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
 		                            <div class="form-group">
-			                            <label class="search-label" style="width: 11%">收入银行</label>
+			                            <label class="search-label" style="width: 11%" >收入银行</label>
 			                            <input type="hidden" id="receive_banks" placeholder="请选择支付银行" name="pay_banks" value="${invoiceApplication.confirm_bank_id!''}"> 
 			                        	   <select class="form-control search-control receive_bank" name="receive_bank" id="receive_bank" >
 			                        	   		<option></option>
