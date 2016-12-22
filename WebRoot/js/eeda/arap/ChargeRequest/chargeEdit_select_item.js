@@ -12,9 +12,15 @@
                 { "data": "PAY_FLAG",
                     "render": function ( data, type, full, meta ) {
                         var payFlag =  full.PAY_FLAG;
+                        var createFlag =  full.CREATE_FLAG;
+                        
                         str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px">';
                         if('Y' == payFlag){
-                            str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked>';
+                        	if(createFlag=='Y'){
+                        		str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked disabled>';
+                        	}else{
+                        		str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked>';
+                        	}
                         }
                         return str;
                     }

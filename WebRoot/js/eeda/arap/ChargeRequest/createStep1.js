@@ -12,7 +12,12 @@
 	    columns: [
 				{ 
 				    "render": function(data, type, full, meta) {
-				        return '<input type="checkbox" class="checkBox" >';
+				    	if(full.GREATE_FLAG=='Y'){
+				    		return '<input type="checkbox" class="checkBox" disabled>';
+				    	}else{
+				    		return '<input type="checkbox" class="checkBox" >';
+				    	}
+				        
 				    }
 				},
 				{"data":"ORDER_NO",

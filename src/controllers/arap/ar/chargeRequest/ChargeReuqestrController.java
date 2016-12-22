@@ -371,7 +371,7 @@ public class ChargeReuqestrController extends Controller {
    			
    			id = order.getLong("id").toString();
    			
-   		}
+   		
 
 		String itemId="";
    		ChargeApplicationOrderRel caor = null;
@@ -403,6 +403,7 @@ public class ChargeReuqestrController extends Controller {
 		          }
 			}
 		}	
+	}
 		
 		long create_by = order.getLong("create_by");
    		String user_name = LoginUserController.getUserNameById(create_by);

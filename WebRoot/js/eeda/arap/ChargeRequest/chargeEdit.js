@@ -57,7 +57,7 @@ $(document).ready(function() {
 	
     //申请保存
 	$("#saveBtn").on('click',function(){
-		$("#createSave").attr("disabled", true);
+		$("#saveBtn").attr("disabled", true);
 		if($("#payment_method").val()=='transfers'){
 			if($("#deposit_bank").val()=='' && $("#account_no").val()==''&& $("#account_name").val()==''){
 				$.scojs_message('转账的信息不能为空', $.scojs_message.TYPE_FALSE);
@@ -66,11 +66,8 @@ $(document).ready(function() {
 		}
 		
 		var order = buildOrder();
-		order.item_list = buildItem();
-		order.selected_item_ids=$("#selected_ids").val();
-		order.ids=$('#ids').val();
 		$.get('/chargeRequest/save',{params:JSON.stringify(order)}, function(data){
-			$("#createSave").attr("disabled", false);
+			$("#saveBtn").attr("disabled", false);
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 				$("#order_id").val(data.ID);

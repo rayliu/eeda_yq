@@ -344,7 +344,7 @@ public class ChargeCheckOrderController extends Controller {
     public List<Record> getChargeItemList(String order_ids,String bill_flag){
     	String sql = null;
 			if("create".equals(bill_flag)){
-				sql = " select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
+				sql = " select joa.id,joa.create_flag,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
 						+" aco.order_no check_order_no, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
 							+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
 							+" ifnull((select rc.new_rate from rate_contrast rc"
