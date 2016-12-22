@@ -107,7 +107,22 @@ $(document).ready(function() {
             $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
        });
     });
-    	
+    //费用明细取消确认按钮动作
+    $("#charge_table").on('click', '.cancelChargeConfirm', function(){
+    	var id = $(this).parent().parent().parent().attr('id');
+    	$.post('/jobOrder/feeCancelConfirm',{id:id},function(data){
+    		if(data.BILL_FLAG == 'Y'){
+    			$.scojs_message('该单据已生成对账单，不能取消确认', $.scojs_message.TYPE_ERROR);
+    		}
+    		else{
+	    		var order_id = $('#order_id').val();
+	    		itemOrder.refleshChargeTable(order_id);   		
+	    		$.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
+    		}
+    	},'json').fail(function() {
+            $.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
+       });
+    });
     
     itemOrder.buildChargeDetail=function(){
         var cargo_table_rows = $("#charge_table tr");
@@ -189,19 +204,19 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" style="width:30px" disabled>';
 			    }
 			},
-            { "width": "110px",
+            { "width": "150px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
                 	if(full.ID&&full.AUDIT_FLAG == 'Y'){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> '; 
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" disabled>删除</button>&nbsp';
+                		str+= '<button class="cancelChargeConfirm btn btn-danger btn-xs" style="width:60px">取消确认</button> '; 
                 		}
                 	else if(full.ID){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" class="chargeConfirm btn btn-success btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" >删除</button>&nbsp';
+                		str+= '<button type="button" class="chargeConfirm btn btn-success btn-xs" style="width:60px" value="'+full.ID+'" >确认</button> ';		
                 	}else{
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> ';
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px">删除</button>&nbsp';
+                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:60px"  disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;
@@ -220,9 +235,9 @@ $(document).ready(function() {
 	                        +'</select>';
 	                	return str;
                 	}else{
-                			var tra_type=$('#trans_type').val();
+                			var trans_type=$('#trans_type').val();
                 			var str = '<select name="type" class="form-control search-control" style="width:100px">'
-                               +'<option value='+tra_type+'>'+tra_type+'</option>'
+                               +'<option value='+trans_type+'>'+trans_type+'</option>'
                     		   +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
                                +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
                                +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'

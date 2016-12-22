@@ -18,20 +18,35 @@ $(document).ready(function() {
     	
     });
     
-    //费用明细确认按钮动作
+    //费用明细 应付信息 确认按钮动作
     $("#cost_table").on('click', '.costConfirm', function(){
     	var id = $(this).parent().parent().parent().attr('id');
     	$.post('/jobOrder/feeConfirm',{id:id},function(data){
     		var order_id = $('#order_id').val();
-	    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=cost";
-	    	costTable.ajax.url(url).load();    		
+    		itemOrder.refleshCostTable(order_id); 		
     		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
     	},'json').fail(function() {
             $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
        });
     });
     
-
+  //费用明细取消确认按钮动作
+    $("#cost_table").on('click', '.cancelCostConfirm', function(){
+    	var id = $(this).parent().parent().parent().attr('id');
+    	$.post('/jobOrder/feeCancelConfirm',{id:id},function(data){
+    		if(data.BILL_FLAG == 'Y'){
+    			$.scojs_message('该单据已生成对账单，不能取消确认', $.scojs_message.TYPE_ERROR);
+    		}
+    		else{
+	    		var order_id = $('#order_id').val();
+	    		itemOrder.refleshCostTable(order_id); 
+	    		$.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
+    		}
+    	},'json').fail(function() {
+            $.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
+       });
+    });
+    
     itemOrder.buildChargeCostDetail=function(){
         var cargo_table_rows = $("#cost_table tr");
         var cargo_items_array=[];
@@ -109,7 +124,7 @@ $(document).ready(function() {
             $.unblockUI();
         },
         columns:[
-			{
+			{ "data": "ID",
 			    "render": function ( data, type, full, meta ) {
 			    	if(data)
 			    		return '<input type="checkbox" style="width:30px" class="checkBoxOfCostTable" >';
@@ -117,19 +132,19 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" style="width:30px" disabled>';
 			    }
 			},
-			{ "width": "110px",
+			{ "width": "150px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
                 	if(full.ID&&full.AUDIT_FLAG == 'Y'){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> '; 
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" disabled>删除</button>&nbsp';
+                		str+= '<button type="button" class="cancelCostConfirm btn btn-danger btn-xs" style="width:60px">取消确认</button> '; 
                 		}
                 	else if(full.ID){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" class="costConfirm btn btn-success btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" >删除</button>&nbsp';
+                		str+= '<button type="button" class="costConfirm btn btn-success btn-xs" style="width:60px" value="'+full.ID+'" >确认</button> ';		
                 	}else{
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> ';
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px">删除</button>&nbsp';
+                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:60px"  disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;

@@ -1453,8 +1453,29 @@ public class JobOrderController extends Controller {
     @Before(Tx.class)
     public void feeConfirm(){
 		String id = getPara("id");
-		Db.update("update job_order_arap set audit_flag = 'Y' where id = ?", id);
-		renderJson("{\"result\":true}");
+		if (id != null) {
+        	JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",id);
+           		joa.set("audit_flag", "Y");
+        	   	joa.update();
+        }
+		//Db.update("update job_order_arap set audit_flag = 'Y' where id = ?", id);
+		Record re = Db.findFirst("select * from job_order_arap where id = ?",id);
+		renderJson(re);
+	 }
+  //费用明细取消确认，
+    @Before(Tx.class)
+    public void feeCancelConfirm(){
+		String id = getPara("id");
+		if (id != null) {
+        	JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",id);
+        	if( joa.get("audit_flag").equals("Y")&&joa.get("bill_flag").equals("N")){
+        		joa.set("audit_flag", "N");
+        	}
+        	joa.update();
+        }
+		//Db.update("update job_order_arap set audit_flag = 'Y' where id = ?", id);
+		Record re = Db.findFirst("select * from job_order_arap where id = ?",id);
+		renderJson(re);
 	 }
     
     @Before(Tx.class)
