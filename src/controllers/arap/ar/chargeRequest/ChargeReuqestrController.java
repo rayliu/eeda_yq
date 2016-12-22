@@ -399,12 +399,13 @@ public class ChargeReuqestrController extends Controller {
 		                    + " select ref_order_id from arap_charge_item where charge_order_id in("+charge_order_id+"))"  //costOrderId.substring(1) 去掉第一位
 		                    + " and id not in("+selected_item_ids+")";
 		            Db.update(sql);
-		            String ySql ="update job_order_arap set pay_flag='Y',create_flag='Y' where id in("+selected_item_ids+")";
-		            Db.update(ySql);
+		            
 		          }
 			}
-		}	
+		}
 	}
+   		String ySql ="update job_order_arap set pay_flag='Y',create_flag='Y' where id in("+selected_item_ids+")";
+        Db.update(ySql);
 		
 		long create_by = order.getLong("create_by");
    		String user_name = LoginUserController.getUserNameById(create_by);

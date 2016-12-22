@@ -180,7 +180,6 @@ $(document).ready(function() {
 			var order={};
 			order.id=$('#order_id').val();
 			order.receive_time=$('#receive_time').val();
-//			order.receive_bank_id＝$('#deposit_bank').val();
 			order.payment_method = $('#payment_method').val();
 			order.order_type="应收对账单";
 			$.get("/chargeRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){

@@ -15,7 +15,6 @@ import models.AppInvoiceDoc;
 import models.ArapAccountAuditLog;
 import models.ArapChargeApplication;
 import models.ArapChargeOrder;
-//import models.ChargeAppOrderRel;
 import models.ChargeApplicationOrderRel;
 import models.Party;
 import models.UserLogin;
@@ -37,11 +36,12 @@ import com.jfinal.upload.UploadFile;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
+//import models.ChargeAppOrderRel;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class CostReuqestrController extends Controller {
-    private Log logger = Log.getLog(CostReuqestrController.class);
+public class copyCostReuqestrController extends Controller {
+    private Log logger = Log.getLog(copyCostReuqestrController.class);
     Subject currentUser = SecurityUtils.getSubject();
     
     @Before(EedaMenuInterceptor.class)
@@ -71,9 +71,9 @@ public class CostReuqestrController extends Controller {
         		+ " sum(ifnull(c.paid_cny,0)) paid_cny,"
         		+ " sum(ifnull(c.paid_hkd,0)) paid_hkd,"
         		+ " sum(ifnull(c.paid_jpy,0)) paid_jpy,"
-        		+ " group_concat((select concat(order_no,'-',status) from arap_charge_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
-				+ " from arap_charge_order aco "
-				+ " left join charge_application_order_rel c on c.charge_order_id=aco.id"
+        		+ " group_concat((select concat(order_no,'-',status) from arap_cost_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
+				+ " from arap_cost_order aco "
+				+ " left join cost_application_order_rel c on c.cost_order_id=aco.id"
 				+ " left join party p on p.id=aco.sp_id "
 				+ " where aco.status!='新建' and aco.office_id = "+office_id
 				+ " group by aco.id"
@@ -106,10 +106,10 @@ public class CostReuqestrController extends Controller {
         
         String sql = "select * from(  "
         		+ " select acao.*, acao.order_no application_order_no, "
-        		+ " '申请单' order_type,aco.order_no charge_order_no,u.c_name "
-				+ " from arap_charge_application_order acao "
-				+ " left join charge_application_order_rel caor on caor.application_order_id = acao.id "
-				+ " left join arap_charge_order aco on aco.id = caor.charge_order_id"
+        		+ " '申请单' order_type,aco.order_no cost_order_no,u.c_name "
+				+ " from arap_cost_application_order acao "
+				+ " left join cost_application_order_rel caor on caor.application_order_id = acao.id "
+				+ " left join arap_cost_order aco on aco.id = caor.cost_order_id"
 				+ " left join user_login u on u.id = acao.create_by"
 				+ "	where acao.office_id = "+office_id
 				+ " group by acao.id"
@@ -130,7 +130,7 @@ public class CostReuqestrController extends Controller {
     }
 
   	//新逻辑
-  	public void chargeOrderList() {
+  	public void costOrderList() {
           String ids = getPara("ids");
           String application_id = getPara("application_id");
           String sql = "";
@@ -144,10 +144,10 @@ public class CostReuqestrController extends Controller {
           			+"     (aco.jpy-ifnull(c.paid_jpy, 0)) wait_jpy,"
           			+"     (aco.hkd-ifnull(c.paid_hkd, 0)) wait_hkd,"
           			+"     case "
-          			+"         when c.charge_order_id is not null then"
+          			+"         when c.cost_order_id is not null then"
           			+"             ifnull("
           			+"                    ( SELECT sum(exchange_total_amount) FROM job_order_arap"
-          			+"                                 WHERE id IN(SELECT ref_order_id FROM arap_charge_item aci WHERE charge_order_id IN(c.charge_order_id) ) "
+          			+"                                 WHERE id IN(SELECT ref_order_id FROM arap_cost_item aci WHERE cost_order_id IN(c.cost_order_id) ) "
           			+"                                     AND exchange_currency_id =( SELECT id FROM currency WHERE CODE = 'USD' ) "
           			+"                                     AND pay_flag = 'Y' "
           			+"                     ),0) "
