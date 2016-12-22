@@ -138,6 +138,7 @@ $(document).ready(function() {
 			                   +'<option value="提吉柜" '+ (data=='提吉柜'?'selected':'') +'>提吉柜</option>'
 			                   +'<option value="移柜" '+ (data=='移柜'?'selected':'') +'>移柜</option>'
 			                   +'<option value="收重柜" '+ (data=='收重柜'?'selected':'') +'>收重柜</option>'
+			                   +'<option value="全程" '+ (data=='全程'?'selected':'') +'>全程</option>'
 			                   +'</select>';
                     return str;
                 }
