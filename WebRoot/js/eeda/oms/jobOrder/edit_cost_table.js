@@ -315,7 +315,7 @@ $(document).ready(function() {
                 	
                 }
             },
-            { "data": "CURRENCY_ID", "width":"60px",
+            { "data": "CURRENCY_ID", "width":"60px","className":"currency_name",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
 	                	if(!data)
@@ -367,7 +367,7 @@ $(document).ready(function() {
 	                return '<input type="text" name="currency_total_amount" style="width:150px" value="'+str+'" class="form-control" disabled />';
               }
             },
-            { "data": "EXCHANGE_CURRENCY_ID", "width":"60px","className":"cny_to_other","visible":false,
+            { "data": "EXCHANGE_CURRENCY_ID", "width":"60px","className":"cny_to_other",
             	"render": function ( data, type, full, meta ) {
             		if(full.AUDIT_FLAG == 'Y'){
             			if(!data)
@@ -397,7 +397,7 @@ $(document).ready(function() {
             		}
             	}
             },
-            { "data": "EXCHANGE_CURRENCY_RATE", "width": "80px","visible":false,
+            { "data": "EXCHANGE_CURRENCY_RATE", "width": "80px","className":"exchange_currency_rate",
             	"render": function ( data, type, full, meta ) {
             		if(data)
             			var str =  parseFloat(data).toFixed(6);
@@ -410,7 +410,7 @@ $(document).ready(function() {
             		}
             	}
             },
-            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "150px","visible":false,
+            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "150px","className":"exchange_total_amount",
             	"render": function ( data, type, full, meta ) {
             		if(data)
             			var str =  parseFloat(data).toFixed(3);
@@ -532,7 +532,7 @@ $(document).ready(function() {
     			$(row.find('[name=currency_total_amount]')).val('');
     		}
     		if(exchange_rate!=''&&!isNaN(exchange_rate)){
-    			$(row.find('[name=currency_total_amount]')).val((total_amount*parseFloat(exchange_rate)).toFixed(3));
+    			$(row.find('[name=currency_total_amount]')).val((total_amount*parseFloat(exchange_rate)).toFixed(2));
     			getTotalCost();
     			if(exchange_currency_rate==''){
         			$(row.find('[name=exchange_total_amount]')).val('');

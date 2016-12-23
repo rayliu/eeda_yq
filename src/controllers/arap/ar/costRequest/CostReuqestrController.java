@@ -351,7 +351,6 @@ public class CostReuqestrController extends Controller {
    			
    			//需后台处理的字段
    			order.set("update_by", user.getLong("id"));
-   			order.set("update_by", user.getLong("id"));
    			order.set("update_stamp", new Date());
    			order.update();
    			
@@ -403,9 +402,10 @@ public class CostReuqestrController extends Controller {
 		          }
 			}
 		}
-	}
-   		String ySql ="update job_order_arap set pay_flag='Y',create_flag='Y' where id in("+selected_item_ids+")";
+		String ySql ="update job_order_arap set pay_flag='Y',create_flag='Y' where id in("+selected_item_ids+")";
         Db.update(ySql);
+	}
+   		
 		
 		long create_by = order.getLong("create_by");
    		String user_name = LoginUserController.getUserNameById(create_by);

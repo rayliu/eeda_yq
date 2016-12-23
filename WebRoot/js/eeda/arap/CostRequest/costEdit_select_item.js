@@ -111,7 +111,6 @@
           			selected_ids.push(selectId);
                 });
           		$('#selected_ids').val(selected_ids);
-                
             };
             	var url = "/costCheckOrder/tableList?order_ids="+order_ids+"&order_id=N";
                 itemTable.ajax.url(url).load(callback);
