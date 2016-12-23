@@ -31,6 +31,7 @@
                 { "data": "CREATE_STAMP", visible: false},
                 { "data": "CUSTOMER_NAME"},
                 { "data": "SP_NAME"},
+                { "data": "FIN_NAME"},
                 { "data": "CURRENCY_NAME","class":"currency_name"},
                 { "data": "TOTAL_AMOUNT","class":"total_amount", 
                     "render": function ( data, type, full, meta ) {
