@@ -3,6 +3,8 @@
 	document.title = '复核收款| '+document.title;
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     
+    var billIds=[];
+    
 	var costAccept_table = eeda.dt({
 	    id: 'chargeAccept_table',
 	    autoWidth: true,
@@ -13,10 +15,21 @@
 				{ 
 				    "render": function(data, type, full, meta) {
 				    	if(full.GREATE_FLAG=='Y'){
-				    		return '<input type="checkbox" class="checkBox" disabled>';
+				    		return '<input type="checkbox" class="checkBox" name="order_check_box" disabled>';
 				    	}else{
-				    		return '<input type="checkbox" class="checkBox" >';
+				    		return '<input type="checkbox" name="order_check_box" class="checkBox" >';
 				    	}
+//				    	var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
+//			        	for(var i=0;i<billIds.length;i++){
+//	                         if(billIds[i]==full.ID){
+//	                        	 if(full.GREATE_FLAG=='Y'){
+//	                        	 strcheck= '<input type="checkbox"  class="checkBox" checked="checked"  name="order_check_box" value="'+full.ID+'">';
+//	                        	 }else{
+//	                        		 strcheck= '<input type="checkbox"  class="checkBox" checked="checked"  name="order_check_box" value="'+full.ID+'">';
+//	                        	 }
+//	                         }
+//	                     }
+//			        	return strcheck;
 				        
 				    }
 				},
@@ -269,33 +282,50 @@
           application_table.ajax.url(url).load();
 	};
     	
+
+	//选择是否是同一个付款对象
+	$('#chargeAccept_table').on('click',"input[name='order_check_box']",function () {
+			var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
+			if($(this).prop('checked')==true){	
+				if(cnames.length > 0 ){
+					if(cnames[0]==cname){
+							cnames.push(cname);
+	//						$(this).parent().parent().clone().appendTo($("#checkedEeda-table"));
+							if($(this).val() != ''){
+								billIds.push($(this).val());
+							}
+	//						$('#checkedEeda-table input[name="order_check_box"]').css("display","none");
+					}else{
+						$.scojs_message('请选择同一个付款对象', $.scojs_message.TYPE_ERROR);
+						$(this).attr('checked',false);
+						return false;
+					}
+				}else{
+					cnames.push(cname);
+//					$(this).parent().parent().clone().appendTo($("#checkedEeda-table"));
+					if($(this).val() != ''){
+						billIds.push($(this).val());
+					}
+//					$('#checkedEeda-table input[name="order_check_box"]').css("display","none");
+				}
+
+			}else{
+				billIds.splice($.inArray($(this).val(), billIds), 1);
+				cnames.pop(cname);
+		 }
+			
+	 });
   	//checkbox选中则button可点击
-	
-	$('#chargeAccept_table').on('click','.checkBox',function(){
-		var hava_check = 0;
-		var payee_names = '';
-		var self = this;
-		$('#chargeAccept_table input[type="checkbox"]').each(function(){	
-			var checkbox = $(this).prop('checked');
-			var payee_name = $(this).parent().parent().find('.payee_name').text();
-    		if(checkbox){
-    			if(payee_name != payee_names && payee_names != ''){
-    				$.scojs_message('请选择同一个收款对象', $.scojs_message.TYPE_ERROR);
-    				$(self).attr('checked',false);
-    				return false;
-    			}else{
-    				payee_names = payee_name;
-    				hava_check++;
-    			}
-    		}	
-		})
-		if(hava_check>0){
-			$('#createBtn').attr('disabled',false);
+	$('#chargeAccept_table').on('click',"input[name='order_check_box']",function () {
+		
+		if(billIds.length>0){
+			$('#createSave').attr('disabled',false);
 		}else{
-			$('#createBtn').attr('disabled',true);
-			var payee_names = '';
+			$('#createSave').attr('disabled',true);
 		}
 	});
+		
+
 	
 	
     var refleshSelectTable = function(){
