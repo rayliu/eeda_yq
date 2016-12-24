@@ -4,7 +4,10 @@ $(document).ready(function() {
 	document.title = '收款申请单 | '+document.title;
 
     $('#menu_finance').addClass('active').find('ul').addClass('in');
-    $('#receive_time').val(eeda.getDate());
+    if($('#receive_time').val()==""){
+    	$('#receive_time').val(eeda.getDate());
+    }
+    
     
     //构造主表json
     var buildOrder = function(){

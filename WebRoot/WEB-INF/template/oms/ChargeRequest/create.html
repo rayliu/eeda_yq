@@ -11,7 +11,6 @@
             		<div class="panel-body">
             			<div class="search_panel">
             			<input id='ids' name='ids' type="hidden" value="${ids!''}">
-            			<input id='sp_id' name='sp_id' type="hidden" value="${order.sp_id!''}" >
             			
             			<input id='detailJson' name='detailJson' type="hidden">
             			<input id='total_app_usd' name='total_app_usd' type="hidden">
@@ -32,6 +31,10 @@
 								label:'开票单位', value:order.billing_unit!''
 								}){}%>
 								</div>
+								<%include("/eeda/component/form/dateInputField.html", { id:'service_stamp',
+									label:'业务发生月', value:order.service_stamp!''
+									}){}%>
+								
                             </div>
                             <div class="col-lg-4">
                             	<div class="form-group">

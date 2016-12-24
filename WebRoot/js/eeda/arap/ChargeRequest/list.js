@@ -50,7 +50,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"PAYEE_UNIT"},  
+            {"data":"PAYEE_COMPANY"},  
             {"data":"PAYEE_NAME"},
             {"data":"PAYMENT_METHOD",
                 "render": function(data, type, full, meta) {
@@ -128,20 +128,20 @@ $(document).ready(function() {
 	});
 	var searchData1=function(){
     	  var sp_id = $('#sp_id').val();
-          var order_no = $("#orderNo").val().trim(); 
+          var charge_order_no = $('#orderNo').val().trim(); 
           var applicationOrderNo = $('#applicationOrderNo').val();
-          var status2 = $("#status2").val();
-          var begin_date_begin_time = $("#begin_date_begin_time").val();
-          var begin_date_end_time = $("#begin_date_end_time").val();
-          var check_begin_date_begin_time = $("#check_begin_date_begin_time").val();
-          var check_begin_date_end_time = $("#check_begin_end_begin_time").val();
-          var confirmBegin_date_begin_time = $("#confirmBegin_date_begin_time").val();
-          var confirmBegin_date_end_time = $("#confirmBegin_date_end_time").val();
+          var status2 = $('#status2').val().trim();;
+          var begin_date_begin_time = $('#begin_date_begin_time').val();
+          var begin_date_end_time = $('#begin_date_end_time').val();
+          var check_begin_date_begin_time = $('#check_begin_date_begin_time').val();
+          var check_begin_date_end_time = $('#check_begin_end_begin_time').val();
+          var confirmBegin_date_begin_time = $('#confirmBegin_date_begin_time').val();
+          var confirmBegin_date_end_time = $('#confirmBegin_date_end_time').val();
    
           var url = "/chargeRequest/applicationList?sp_id="+sp_id
-               +"&order_no="+order_no
+               +"&charge_order_no="+charge_order_no
                +"&application_order_no="+applicationOrderNo
-               +"&STATUS="+status2
+               +"&status="+status2
                +"&create_stamp_begin_time="+begin_date_begin_time
                +"&create_stamp_end_time="+begin_date_end_time
                +"&check_stamp_begin_time="+check_begin_date_begin_time

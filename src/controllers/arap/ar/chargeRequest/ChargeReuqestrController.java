@@ -177,12 +177,13 @@ public class ChargeReuqestrController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select acao.*, acao.order_no application_order_no, "
+        		+ " select p.abbr payee_company,acao.*, acao.order_no application_order_no, "
         		+ " '申请单' order_type,aco.order_no charge_order_no,u.c_name "
 				+ " from arap_charge_application_order acao "
 				+ " left join charge_application_order_rel caor on caor.application_order_id = acao.id "
 				+ " left join arap_charge_order aco on aco.id = caor.charge_order_id"
 				+ " left join user_login u on u.id = acao.create_by"
+				+ " LEFT JOIN party p on p.id=acao.sp_id"
 				+ "	where acao.office_id = "+office_id
 				+ " group by acao.id"
 				+ " order by acao.create_stamp desc"
