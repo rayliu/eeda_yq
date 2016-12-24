@@ -47,7 +47,6 @@ $(document).ready(function() {
     
     //刷createTable, 动态处理
     var order_id=$('#order_id').val();
-    
     if(order_id!=''){
     	selectContr.refleshCreateTable(order_id);
     }
@@ -55,8 +54,25 @@ $(document).ready(function() {
 	//datatable, 动态处理
     var ids = $("#ids").val();
     var selected_item_ids = $("#selected_ids").val();
-
     
+	//保留两位小数
+	
+	var refleshNum = function(numValue){
+		var numbleValue = parseFloat(numValue).toFixed(2)
+		return numbleValue;
+	}
+	var currency=new Array('cny','usd','jpy','hkd')
+	var comfirm_modal=['modal_','comfirm_modal_'];
+	for(var j=0;j<comfirm_modal.length;j++ ){
+		var bianliang=comfirm_modal[j];
+		for(var i=0;i<currency.length;i++){
+			var cujh=currency[i];
+			var stringNum=bianliang+cujh;
+			var modal_cujh= $('#'+stringNum).val();
+			$('#'+stringNum).val(refleshNum(modal_cujh));
+		}
+	}
+	
 	
     //申请保存
 	$("#saveBtn").on('click',function(){

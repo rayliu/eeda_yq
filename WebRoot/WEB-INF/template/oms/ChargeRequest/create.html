@@ -117,20 +117,20 @@
                                 }){}%>
                             </div>
                             <div class="col-lg-3">
+	                            <%include("/eeda/component/form/inputField.html", { id:'modal_usd',
+	                            label:'USD', value:order.usd!'',disabled:'disabled'
+	                            }){}%>
+                       	    </div>
+	                       	 <div class="col-lg-3">
+		                         <%include("/eeda/component/form/inputField.html", { id:'modal_jpy',
+		                         label:'JPY', value:order.jpy!'',disabled:'disabled'
+		                         }){}%>
+	                     	 </div>
+                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_hkd',
                                 label:'HKD', value:order.hkd!'',disabled:'disabled'
                                 }){}%>
-                            </div>
-                            <div class="col-lg-3">
-                                <%include("/eeda/component/form/inputField.html", { id:'modal_jpy',
-                                label:'JPY', value:order.jpy!'',disabled:'disabled'
-                                }){}%>
-                            </div>
-                            <div class="col-lg-3">
-                                <%include("/eeda/component/form/inputField.html", { id:'modal_usd',
-                                label:'USD', value:order.usd!'',disabled:'disabled'
-                                }){}%>
-                            </div>
+                             </div>
                         </div>
                         <ul id="orderTabs" class="nav nav-tabs">
 							<li class="active">
