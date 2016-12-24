@@ -34,9 +34,10 @@
 								}){}%>
                             </div>
                             <div class="col-lg-4">
-								<%include("/eeda/component/form/inputField.html", { id:'payee_unit',
-								label:'付款单位', value:order.payee_unit!''
-								}){}%>
+                            	<%include("/eeda/component/form/inputSpField.html",
+									{ id:'sp_id', 
+									label:'结算公司',  
+									value: '' }){} %>
 								<%include("/eeda/component/form/inputField.html", { id:'payee_name',
 								label:'付款人', value:order.payee_name!''
 								}){}%>

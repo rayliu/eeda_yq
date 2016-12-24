@@ -138,7 +138,7 @@ $(document).ready(function() {
           var confirmBegin_date_begin_time = $("#confirmBegin_date_begin_time").val();
           var confirmBegin_date_end_time = $("#confirmBegin_date_end_time").val();
    
-          var url = "/chargeAcceptOrder/applicationList?sp_id="+sp_id
+          var url = "/chargeRequest/applicationList?sp_id="+sp_id
                +"&order_no="+order_no
                +"&application_order_no="+applicationOrderNo
                +"&STATUS="+status2
