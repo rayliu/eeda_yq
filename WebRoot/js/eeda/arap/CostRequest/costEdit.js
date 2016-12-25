@@ -1,7 +1,7 @@
 ﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './costEdit_select_item', './edit_doc_table','dataTablesBootstrap', 
         'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
-	document.title = '收款申请单 | '+document.title;
+	document.title = '付款申请单 | '+document.title;
 
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     if($('#receive_time').val()==""){
@@ -189,13 +189,13 @@ $(document).ready(function() {
 		});
 	  
 	  
-	  //收款确认
+	  //付款确认
 	  $("#confirmBtn").on('click',function(){
 		  	$("#confirmBtn").attr("disabled", true);
 		  	
 //		  	if($("#receive_type").val()=='transfers'){
 //				if($("#receive_bank").val()==''){
-//					$.scojs_message('收入银行不能为空', $.scojs_message.TYPE_FALSE);
+//					$.scojs_message('付款银行不能为空', $.scojs_message.TYPE_FALSE);
 //					return false;
 //				}
 //			}
@@ -204,26 +204,25 @@ $(document).ready(function() {
 			order.receive_time=$('#receive_time').val();
 			order.receive_bank_id=$('#deposit_bank').val();
 			order.payment_method = $('#payment_method').val();
-			order.order_type="应收对账单";
 			$.get("/costRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
 				if(data){
-					$("#status").val('已收款');
+					$("#status").val('已付款');
 					$("#returnBtn").attr("disabled", true);
 					$("#returnConfirmBtn").attr("disabled", false);
 					$("#deleteBtn").attr("disabled", true);
 					$("#confirm_name").val(data.CONFIRM_NAME);
-					$.scojs_message('收款成功', $.scojs_message.TYPE_OK);
+					$.scojs_message('确认付款成功', $.scojs_message.TYPE_OK);
 				}else{
 					$("#confirmBtn").attr("disabled", false);
-					$.scojs_message('收款失败', $.scojs_message.TYPE_FALSE);
+					$.scojs_message('确认付款失败', $.scojs_message.TYPE_FALSE);
 				}
 			},'json');
 		});
 	  
-	//收款确认撤回未确认状态
+	//付款确认撤回未确认状态
 	  $("#returnConfirmBtn").on('click',function(){
 		  	$("#returnConfirmBtn").attr("disabled", true);
-		  	if(confirm("确定撤回未收款确认状态？")){
+		  	if(confirm("确定撤回未付款确认状态？")){
 		  		orderjson();
 				$.get("/costPreInvoiceOrder/returnConfirmOrder", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val()}, function(data){
 					if(data.success){

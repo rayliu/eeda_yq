@@ -206,7 +206,7 @@ $(document).ready(function() {
 			order.receive_time=$('#receive_time').val();
 			order.receive_bank_id=$('#deposit_bank').val();
 			order.payment_method = $('#payment_method').val();
-			order.order_type="应收对账单";
+			order.payment_type="charge";
 			$.get("/chargeRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
 				if(data){
 					$("#status").val('已收款');

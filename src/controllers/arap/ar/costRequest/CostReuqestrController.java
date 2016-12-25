@@ -13,6 +13,7 @@ import java.util.Map;
 
 import models.AppInvoiceDoc;
 import models.ArapAccountAuditLog;
+import models.ArapChargeOrder;
 import models.ArapCostApplication;
 import models.ArapCostOrder;
 //import models.CostAppOrderRel;
@@ -502,16 +503,15 @@ public class CostReuqestrController extends Controller {
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
    		String id = (String) dto.get("id");
-   		String receive_bank_id = (String) dto.get("id");
+   		String receive_bank_id = (String) dto.get("receive_bank_id");
    		
    		String receive_time = (String) dto.get("receive_time");
-   		String payment_type = (String) dto.get("payment_type");
+   		String payment_method = (String) dto.get("payment_method");
 
 
    		
         ArapCostApplication arapCostInvoiceApplication = ArapCostApplication.dao.findById(id);
         arapCostInvoiceApplication.set("status", "已付款");
-        arapCostInvoiceApplication.set("receive_bank_id", receive_bank_id);
         arapCostInvoiceApplication.set("receive_time", receive_time);
         arapCostInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
         arapCostInvoiceApplication.set("confirm_stamp", new Date());
@@ -523,29 +523,79 @@ public class CostReuqestrController extends Controller {
   			Long cost_order_id = re.getLong("cost_order_id");
   			String order_type = re.getStr("order_type");
 
-  			if("应付对账单".equals(order_type)){
-			    ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
-				arapCostOrder.set("audit_status", "已付款").update();
+  			if(order_type.equals("应付对账单")){
+				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
+                Double usd = arapCostOrder.getDouble("usd");
+                Double cny = arapCostOrder.getDouble("cny");
+                Double hkd = arapCostOrder.getDouble("hkd");
+                Double jpy = arapCostOrder.getDouble("jpy");
+
+                String sql = "SELECT "
+                		+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_cost_item aci on joa.id = aci.ref_order_id"
+        				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =3 and aci.cost_order_id="+cost_order_id
+        				+" ),0) paid_cny,"
+        				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_cost_item aci on joa.id = aci.ref_order_id"
+        				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =6 and aci.cost_order_id="+cost_order_id
+        				+" ),0) paid_usd,"
+        				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_cost_item aci on joa.id = aci.ref_order_id"
+        				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =8 and aci.cost_order_id="+cost_order_id
+        				+" ),0) paid_jpy,"
+        				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_cost_item aci on joa.id = aci.ref_order_id"
+        				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =9 and aci.cost_order_id="+cost_order_id
+        				+" ),0) paid_hkd ";
+                   
+                   Record r = Db.findFirst(sql);
+                   Double paid_cny = r.getDouble("paid_cny");//greate_flay=Y的arap item 汇总金额
+                   Double paid_usd = r.getDouble("paid_usd");
+                   Double paid_jpy = r.getDouble("paid_jpy");
+                   Double paid_hkd = r.getDouble("paid_hkd");
+				
+				if(cny>paid_cny||usd>paid_usd||jpy>paid_jpy||hkd>paid_hkd){
+					arapCostOrder.set("audit_status", "部分已付款").update();
+				}else{
+					arapCostOrder.set("audit_status", "已付款").update();
+				}
 			}
   		}
           
         //新建日记账表数据
-  		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
+  		String cny_pay_amount = arapCostInvoiceApplication.getDouble("modal_cny").toString();
+        createAuditLog(id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY");
+        
+        String usd_pay_amount = arapCostInvoiceApplication.getDouble("modal_usd").toString();
+        createAuditLog(id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD");
+        
+        String jpy_pay_amount = arapCostInvoiceApplication.getDouble("modal_jpy").toString();
+        createAuditLog(id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY");
+        
+        String hkd_pay_amount = arapCostInvoiceApplication.getDouble("modal_hkd").toString();
+        createAuditLog(id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD");
+        Record r = new Record();
+        String confirm_name = LoginUserController.getUserNameById(arapCostInvoiceApplication.getLong("confirm_by").toString());
+		r.set("confirm_name", confirm_name);
+        renderJson(r);
+    }
+  	
+  	private void createAuditLog(String application_id, String payment_method,
+            String receive_bank_id, String receive_time, String pay_amount, String currency_code) {
+        //新建日记账表数据
+		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
+        auditLog.set("payment_method", payment_method);
         auditLog.set("payment_type", ArapAccountAuditLog.TYPE_COST);
-        auditLog.set("payment_method", payment_type);
-//        auditLog.set("amount", receive_amount);
+        auditLog.set("currency_code", currency_code);
+        auditLog.set("amount", pay_amount);
         auditLog.set("creator", LoginUserController.getLoginUserId(this));
         auditLog.set("create_date", receive_time);
-        auditLog.set("account_id", receive_bank_id);
+        if(receive_bank_id!=null && !("").equals(receive_bank_id)){
+        		auditLog.set("account_id", receive_bank_id);
+        	}else{
+        		auditLog.set("account_id", 4);
+        	}
         auditLog.set("source_order", "应付申请单");
-        auditLog.set("invoice_order_id", id);
+        auditLog.set("invoice_order_id", application_id);
         auditLog.save();
-        Record re = new Record();         
-        re = Db.findFirst("select confirm_by from arap_cost_application_order where id="+id);
-   		String confirm_name = LoginUserController.getUserNameById(re.getLong("confirm_by"));
-  		re.set("confirm_name",confirm_name);
-  	    renderJson(re); 
     }
+  	
   	
     //上传相关文档
     @Before(Tx.class)
