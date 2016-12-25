@@ -27,7 +27,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"MODAL_USD","class":"usd",
+            {"data":"MODAL_USD",'class':'usd',
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);
@@ -35,7 +35,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"MODAL_JPY","class":"jpy",
+            {"data":"MODAL_JPY",'class':'jpy',
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);
@@ -43,7 +43,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"MODAL_HKD","class":'hkd',
+            {"data":"MODAL_HKD",'class':'hkd',
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);

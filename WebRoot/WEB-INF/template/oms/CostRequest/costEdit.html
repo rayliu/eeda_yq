@@ -11,7 +11,6 @@
             		<div class="panel-body">
             			<div class="search_panel">
             			<input id='ids' name='ids' type="hidden" value="${ids!''}">
-            			<input id='sp_id' name='sp_id' type="hidden" value="${order.sp_id!''}" >
             			<input id='order_id' name='order_id' type="hidden" value="${order.id!''}">
             			
             			<input id='detailJson' name='detailJson' type="hidden">
@@ -21,31 +20,32 @@
                         <input id='total_app_jpy' name='total_app_jpy' type="hidden">
                             <div class="col-lg-4">
                             	<%include("/eeda/component/form/inputField.html", { id:'order_no',
-								label:'申请单号', value:order.order_no!'',disabled:'disabled'
-								}){}%>
+										label:'申请单号', value:order.order_no!'',disabled:'disabled'
+										}){}%>
 								<%include("/eeda/component/form/inputField.html", { id:'create_stamp',
-								label:'申请日期', value:order.create_stamp!'',disabled:'disabled'
-								}){}%>
+										label:'申请日期', value:order.create_stamp!'',disabled:'disabled'
+										}){}%>
 								<%include("/eeda/component/form/inputField.html", { id:'creator_name',
-								label:'提交人', value:order.creator_name!'',disabled:'disabled'
-								}){}%>
+										label:'提交人', value:order.creator_name!'',disabled:'disabled'
+										}){}%>
 								<%include("/eeda/component/form/inputField.html", { id:'status',
-								label:'状态', value:order.status!'新建',disabled:'disabled'
-								}){}%>
+										label:'状态', value:order.status!'新建',disabled:'disabled'
+										}){}%>
                             </div>
                             <div class="col-lg-4">
-
-								<%include("/eeda/component/form/inputSpField.html",
+	                            <%include("/eeda/component/form/inputSpField.html",
 										{ id:'sp_id', 
 										label:'结算公司',  
-										value:party.sp_id }){} %>
+										value:party.sp_id!'',
+										display_value:party.company_name!''
+										}){} %>
 								<%include("/eeda/component/form/inputField.html", { id:'payee_name',
-								label:'付款人', value:order.payee_name!''
-								}){}%>
+										label:'付款人', value:order.payee_name!''
+										}){}%>
 								<div id="invoiceDiv">
                                 <%include("/eeda/component/form/inputField.html", { id:'billing_unit',
-								label:'开票单位', value:order.billing_unit!''
-								}){}%>
+										label:'开票单位', value:order.billing_unit!''
+										}){}%>
 								</div>
                             </div>
                             <div class="col-lg-4">
@@ -60,21 +60,21 @@
                                 </div>
 	                             <div id="transfers_massage" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
 		                            <%include("/eeda/component/form/inputAccountField.html", 
-		                            { id:'deposit_bank',
-									label:'开户行',
-								    value:order.deposit_bank!'',
-								    display_value:order.deposit_bank_input
-									}){}%>
+			                            { id:'deposit_bank',
+										label:'开户行',
+									    value:order.deposit_bank!'',
+									    display_value:order.deposit_bank_input
+										}){}%>
 									
 									<%include("/eeda/component/form/inputField.html", 
-									{ id:'account_no',
-									label:'付款账号', value:order.account_no!''
-									}){}%>
+										{ id:'account_no',
+										label:'付款账号', value:order.account_no!''
+										}){}%>
 									
 									<%include("/eeda/component/form/inputField.html", 
-									{ id:'account_name',
-									label:'账户名', value:order.account_name!''
-									}){}%>
+										{ id:'account_name',
+										label:'账户名', value:order.account_name!''
+										}){}%>
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -140,23 +140,23 @@
                         <div class="row" style="margin-top: 250px;">
                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_cny',
-                                label:'CNY', value:order.modal_cny!'',disabled:'disabled'
-                                }){}%>
+	                                label:'CNY', value:order.modal_cny!'',disabled:'disabled'
+	                                }){}%>
                             </div>
+                            <div class="col-lg-3">
+	                            <%include("/eeda/component/form/inputField.html", { id:'modal_usd',
+	                                label:'USD', value:order.modal_usd!'',disabled:'disabled'
+	                                }){}%>
+                            </div>
+                            <div class="col-lg-3">
+	                            <%include("/eeda/component/form/inputField.html", { id:'modal_jpy',
+	                                label:'JPY', value:order.modal_jpy!'',disabled:'disabled'
+	                                }){}%>
+	                        </div>
                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_hkd',
-                                label:'HKD', value:order.modal_hkd!'',disabled:'disabled'
-                                }){}%>
-                            </div>
-                            <div class="col-lg-3">
-                                <%include("/eeda/component/form/inputField.html", { id:'modal_jpy',
-                                label:'JPY', value:order.modal_jpy!'',disabled:'disabled'
-                                }){}%>
-                            </div>
-                            <div class="col-lg-3">
-                                <%include("/eeda/component/form/inputField.html", { id:'modal_usd',
-                                label:'USD', value:order.modal_usd!'',disabled:'disabled'
-                                }){}%>
+	                                label:'HKD', value:order.modal_hkd!'',disabled:'disabled'
+	                                }){}%>
                             </div>
                         </div>
                         <ul id="orderTabs" class="nav nav-tabs">
@@ -322,13 +322,13 @@
 	                            <%include("/eeda/component/form/dateInputField.html",
 				                        {    id:'receive_time', 
 				                             label:'付款时间',
-				                             value:invoiceApplication.receive_time!''
+				                             value:order.receive_time!''
 	                              }){} %>
 	                        </div>
 	                       <div class="col-lg-4">
 	                       		<div class="form-group" style="display:none">
 	                           	   <label class="search-label">付款方式</label> 
-	                                  <select id="receive_type" class="form-control search-control receive_type" name="receive_type">
+	                                  <select id="receive_type_" class="form-control search-control receive_type" name="receive_type">
 	                                  	<option value=""></option>
                                     	<option value="cash" <% if(order.receive_type!'cash'=='cash'){%>selected<% }%>>现金</option>
                                     	<option value="transfers" <% if(order.receive_type!''=='transfers'){%>selected<% }%>>转账</option>                                       
@@ -337,14 +337,14 @@
 	                       </div>
 
 	                         <div class="col-lg-10" style="display:none">
-	                       		<div id="receive_type_massage" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
+	                       		<div id="receive_type_massage_" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
 		                            <div class="form-group">
 			                            <label class="search-label" style="width: 11%" >付入银行</label>
-			                            <input type="hidden" id="receive_banks" placeholder="请选择支付银行" name="pay_banks" value="${invoiceApplication.confirm_bank_id!''}"> 
-			                        	   <select class="form-control search-control receive_bank" name="receive_bank" id="receive_bank" >
+			                            <input type="hidden" id="receive_banks_" placeholder="请选择支付银行" name="pay_banks" value="${invoiceApplication.confirm_bank_id_!''}"> 
+			                        	   <select class="form-control search-control receive_bank" name="receive_bank" id="receive_bank_" >
 			                        	   		<option></option>
 			                             		<%for(account in accountList){ %>
-			                             		<option value="${account.ID!''}" <%if(order.receive_bank_id!'4'==account.ID!){%>selected<% }%>>${account.BANK_NAME!''}</option>
+			                             		<option value="${account.ID!''}" <%if(order.receive_bank_id_!'4'==account.ID!){%>selected<% }%>>${account.BANK_NAME!''}</option>
 			                             		<%}%>
 			                               </select>
 		                        	</div>

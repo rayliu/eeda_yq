@@ -18,7 +18,8 @@ $(document).ready(function() {
             {"data":"ORDER_TYPE"},
             {"data":"STATUS"},    
             {"data":"COST_ORDER_NO"},
-            {"data":"MODAL_CNY",
+            {"data":"SERVICE_STAMP"},
+            {"data":"MODAL_CNY",'class':'cny',
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);
@@ -26,7 +27,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"MODAL_USD",
+            {"data":"MODAL_USD",'class':'usd',
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);
@@ -34,7 +35,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"MODAL_JPY",
+            {"data":"MODAL_JPY",'class':'jpy',
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);
@@ -42,7 +43,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"MODAL_HKD",
+            {"data":"MODAL_HKD",'class':'hkd',
             	"render": function(data, type, full, meta) {
             		if(data)
             			return parseFloat(data).toFixed(2);
@@ -50,7 +51,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"PAYEE_UNIT"},  
+            {"data":"PAYEE_COMPANY"},  
             {"data":"PAYEE_NAME"},
             {"data":"PAYMENT_METHOD",
                 "render": function(data, type, full, meta) {
@@ -90,6 +91,49 @@ $(document).ready(function() {
             {"data":"REMARK"}
 		]      
     });
+
+    
+  //点击查询后金额汇总
+
+    var currenryTotalAmount = function(){
+    	var cny_totalAmount = 0.0;
+        var usd_totalAmount = 0.0;
+        var hkd_totalAmount = 0.0;
+        var jpy_totalAmount = 0.0;
+    	$("#application_table tbody tr").each(function(){
+			 	    		var currency_cny = $(this).find('.cny').text();
+			 	    		var currency_usd = $(this).find('.usd').text();
+			 	    		var currency_jpy = $(this).find('.jpy').text();
+			 	    		var currency_hkd = $(this).find('.hkd').text();
+								if(currency_cny==''){
+									currency_cny=0.00;
+								}
+								cny_totalAmount += parseFloat(currency_cny);
+								
+							    if(currency_usd==''){
+							    	currency_usd=0.00;
+							    }
+								usd_totalAmount += parseFloat(currency_usd);
+								if(currency_jpy==''){
+									currency_jpy=0.00;
+								}
+								jpy_totalAmount += parseFloat(currency_jpy);
+							    if(currency_hkd==''){
+							    	currency_hkd=0.00;
+								}
+							     hkd_totalAmount += parseFloat(currency_hkd);
+    					});
+    	 $('#cny_totalAmountSpan').html(cny_totalAmount.toFixed(2));
+		 $('#usd_totalAmountSpan').html(usd_totalAmount.toFixed(2));
+		 $('#hkd_totalAmountSpan').html(hkd_totalAmount.toFixed(2));
+		 $('#jpy_totalAmountSpan').html(jpy_totalAmount.toFixed(2));
+    	}
+    
+    
+    
+    
+    
+    
       
       //查询待申请单
 	$('#searchBtn').click(function(){
@@ -126,30 +170,42 @@ $(document).ready(function() {
 	$('#resetBtn1').click(function(e){
     	 $("#applicationForm")[0].reset();
 	});
+      
 	var searchData1=function(){
     	  var sp_id = $('#sp_id').val();
-          var order_no = $("#orderNo").val().trim(); 
+    	  var cost_order_no = $('#orderNo').val().trim();  
           var applicationOrderNo = $('#applicationOrderNo').val();
           var status2 = $("#status2").val();
-          var begin_date_begin_time = $("#begin_date_begin_time").val();
-          var begin_date_end_time = $("#begin_date_end_time").val();
-          var check_begin_date_begin_time = $("#check_begin_date_begin_time").val();
-          var check_begin_date_end_time = $("#check_begin_end_begin_time").val();
-          var confirmBegin_date_begin_time = $("#confirmBegin_date_begin_time").val();
-          var confirmBegin_date_end_time = $("#confirmBegin_date_end_time").val();
+          
+          var service_begin_stamp_begin_time = $('#service_begin_stamp_begin_time').val();
+          var service_begin_stamp_end_time = $('#service_begin_stamp_end_time').val();
+          
+          var begin_date_begin_time = $('#begin_date_begin_time').val();
+          var begin_date_end_time = $('#begin_date_end_time').val();
+          
+          var check_begin_date_begin_time = $('#check_begin_date_begin_time').val();
+          var check_begin_date_end_time = $('#check_begin_end_begin_time').val();
+          
+          var confirmBegin_date_begin_time = $('#confirmBegin_date_begin_time').val();
+          var confirmBegin_date_end_time = $('#confirmBegin_date_end_time').val();
    
-          var url = "/costAcceptOrder/applicationList?sp_id="+sp_id
-               +"&order_no="+order_no
+          var url = "/costRequest/applicationList?sp_id="+sp_id
+               +"&cost_order_no="+cost_order_no
                +"&application_order_no="+applicationOrderNo
-               +"&STATUS="+status2
+               +"&status="+status2
+               +"&service_stamp_begin_time="+service_begin_stamp_begin_time
+               +"&service_stamp_end_time="+service_begin_stamp_end_time
+               
                +"&create_stamp_begin_time="+begin_date_begin_time
                +"&create_stamp_end_time="+begin_date_end_time
+               
                +"&check_stamp_begin_time="+check_begin_date_begin_time
                +"&check_stamp_end_time="+check_begin_date_end_time
+               
                +"&pay_time_begin_time="+confirmBegin_date_begin_time
                +"&pay_time_end_time="+confirmBegin_date_end_time;
 
-          application_table.ajax.url(url).load();
+          application_table.ajax.url(url).load(currenryTotalAmount);
 	};
     	
   	//checkbox选中则button可点击

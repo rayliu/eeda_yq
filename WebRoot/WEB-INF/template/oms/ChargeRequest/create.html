@@ -24,16 +24,16 @@
 										label:'结算公司', 
 										value: '' }){} %>
 								<%include("/eeda/component/form/inputField.html", { id:'payee_name',
-								label:'付款人', value:order.payee_name!''
-								}){}%>
+										label:'付款人', value:order.payee_name!''
+										}){}%>
 								<div id="invoiceDiv">
                                 <%include("/eeda/component/form/inputField.html", { id:'billing_unit',
-								label:'开票单位', value:order.billing_unit!''
-								}){}%>
+										label:'开票单位', value:order.billing_unit!''
+										}){}%>
 								</div>
 								<%include("/eeda/component/form/dateInputField.html", { id:'service_stamp',
-									label:'业务发生月', value:order.service_stamp!''
-									}){}%>
+										label:'业务发生月', value:order.service_stamp!''
+										}){}%>
 								
                             </div>
                             <div class="col-lg-4">
@@ -91,7 +91,7 @@
     	                                    </select>
     	                            </div>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-4" style="display:none">
     			                            <%include("/eeda/component/form/inputField.html", 
     			                            { id:'invoice_money',
     											label:'开票金额', 

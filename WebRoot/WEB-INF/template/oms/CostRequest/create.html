@@ -11,7 +11,6 @@
             		<div class="panel-body">
             			<div class="search_panel">
             			<input id='ids' name='ids' type="hidden" value="${ids!''}">
-            			<input id='sp_id' name='sp_id' type="hidden" value="${order.sp_id!''}" >
             			
             			<input id='detailJson' name='detailJson' type="hidden">
             			<input id='total_app_usd' name='total_app_usd' type="hidden">
@@ -20,13 +19,13 @@
                         <input id='total_app_jpy' name='total_app_jpy' type="hidden">
                            
                             <div class="col-lg-4">
-								<%include("/eeda/component/form/inputField.html", { id:'payee_unit',
-								label:'收款单位', value:order.payee_unit!''
-								}){}%>
-								<%include("/eeda/component/form/inputField.html", { id:'payee_name',
-								label:'收款人', value:order.payee_name!''
-								}){}%>
-								
+		                            <%include("/eeda/component/form/inputSpField.html",
+											{ id:'sp_id', 
+											label:'结算公司', 
+											value: '' }){} %>
+									<%include("/eeda/component/form/inputField.html", { id:'payee_name',
+											label:'收款人', value:order.payee_name!''
+											}){}%>
                             </div>
                             
                         <div class="col-lg-4">
@@ -47,6 +46,9 @@
 									label:'开票单位', value:order.billing_unit!''
 									}){}%>
 							</div>
+							<%include("/eeda/component/form/dateInputField.html", { id:'service_stamp',
+									label:'业务发生月', value:order.service_stamp!''
+									}){}%>
                         </div>
                         <div id="projectFee">
                             <div class="col-lg-4">
@@ -62,7 +64,7 @@
 	                                    </select>
 	                            </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4" style="display:none">
 			                            <%include("/eeda/component/form/inputField.html", 
 			                            { id:'invoice_money',
 											label:'开票金额', 
@@ -131,23 +133,23 @@
                         <div class="row" >
                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_cny',
-                                label:'CNY', value:order.cny!'',disabled:'disabled'
-                                }){}%>
+	                                label:'CNY', value:order.cny!'',disabled:'disabled'
+	                                }){}%>
                             </div>
+                            <div class="col-lg-3">
+	                            <%include("/eeda/component/form/inputField.html", { id:'modal_usd',
+		                            label:'USD', value:order.usd!'',disabled:'disabled'
+		                            }){}%>
+	                        </div>
+	                        <div class="col-lg-3">
+	                            <%include("/eeda/component/form/inputField.html", { id:'modal_jpy',
+		                            label:'JPY', value:order.jpy!'',disabled:'disabled'
+		                            }){}%>
+	                        </div>
                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_hkd',
-                                label:'HKD', value:order.hkd!'',disabled:'disabled'
-                                }){}%>
-                            </div>
-                            <div class="col-lg-3">
-                                <%include("/eeda/component/form/inputField.html", { id:'modal_jpy',
-                                label:'JPY', value:order.jpy!'',disabled:'disabled'
-                                }){}%>
-                            </div>
-                            <div class="col-lg-3">
-                                <%include("/eeda/component/form/inputField.html", { id:'modal_usd',
-                                label:'USD', value:order.usd!'',disabled:'disabled'
-                                }){}%>
+	                                label:'HKD', value:order.hkd!'',disabled:'disabled'
+	                                }){}%>
                             </div>
                         </div>
                         <ul id="orderTabs" class="nav nav-tabs">
