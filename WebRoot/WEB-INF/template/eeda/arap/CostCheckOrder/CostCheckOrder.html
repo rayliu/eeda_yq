@@ -24,6 +24,15 @@
                                      <form id="orderForm">
                                         <div class="row">
                                             <div class="col-lg-4">
+                                                <%include("/eeda/component/form/inputSpField.html", 
+                                                    {
+                                                        id:'sp', 
+                                                        label:'结算公司', 
+                                                        value: '',
+                                                        required: 'required'
+                                                    }){} %>
+                                            </div>
+                                            <div class="col-lg-4">
                                                 <%include("/eeda/component/form/inputField.html", 
                                                                     {   id: 'order_no', 
                                                                         label: '工作单号', 
@@ -36,14 +45,6 @@
                                                                         label: '客户', 
                                                                         value: ''
                                                                     }){}%>
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <%include("/eeda/component/form/inputSpField.html", 
-                                                    {
-                                                        id:'sp', 
-                                                        label:'结算公司', 
-                                                        value: ''
-                                                    }){} %>
                                             </div>
                                         </div>
                                         <div class="row">

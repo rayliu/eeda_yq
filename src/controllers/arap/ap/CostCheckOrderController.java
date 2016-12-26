@@ -351,7 +351,7 @@ public class CostCheckOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by order_export_date desc " +sLimit);
+        List<Record> orderList = Db.find(sql+ condition + " order by order_export_date desc " );
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

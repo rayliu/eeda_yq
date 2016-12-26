@@ -14,9 +14,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    
       var dataTable = eeda.dt({
           id: 'eeda_table',
-          paging: true,
-          serverSide: true, //不打开会出现排序不对 
-          ajax: "/costCheckOrder/list",
+          serverSide: true, //不打开会出现排序不对
+          ajax:{
+                //url: "/costCheckOrder/list",
+                type: 'POST'
+          },
           drawCallback: function( settings ) {
         	  flash();
   	      },
@@ -146,8 +148,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var order_no = $.trim($("#order_no").val()); 
           var customer = $("#customer").val(); 
           var customer_input = $("#customer_input").val().trim(); 
-          var sp = $("#sp").val(); 
+          var sp = $("#sp").val();
+
           var sp_input = $("#sp_input").val().trim(); 
+          if(!sp_input){
+              $.scojs_message('请选择结算公司', $.scojs_message.TYPE_ERROR);
+              return;
+          }
           var type = $("#type").val(); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
