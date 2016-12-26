@@ -55,12 +55,16 @@ $(document).ready(function() {
             {"data":"PAYEE_NAME"},
             {"data":"PAYMENT_METHOD",
                 "render": function(data, type, full, meta) {
-                    if(data == 'cash')
-                        return '现金';
-                    else if(data == 'transfers')
-                        return '转账';
-                    else
-                    	return data;
+                    if(data == 'cash'){
+                    	 return '现金';
+                    }else if(data == 'transfers'){
+                    	  return '转账';
+                    }else if(data =='checkTransfers'){
+                    	  return '支票转账';
+                    }else{
+                    	  return data;
+                    }
+                    	
                 }
             },
             {"data":"C_NAME"},

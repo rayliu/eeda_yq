@@ -44,6 +44,7 @@
                                     <option value=""></option>
                                     <option value="cash" <% if(order.payment_method!'cash'=='cash'){%>selected<% }%>>现金</option>
                                     <option value="transfers" <% if(order.payment_method!''=='transfers'){%>selected<% }%>>转账</option>
+                                    <option value="checkTransfers" <% if(order.payment_method!''=='checkTransfers'){%>selected<% }%>>支票转账</option>
                                     </select>
                                 </div>
 	                             <div id="transfers_massage" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
