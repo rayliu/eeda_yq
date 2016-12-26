@@ -1,5 +1,9 @@
 <div class="form-group">
-	<label class="search-label">${label!''}</label>
+	<label class="search-label">${label!''}
+		<%if(required!'' =='required'){%>
+	        <span style='color:red; display:initial;'>*</span>
+	    <%}%>
+    </label>
 	<input type="text" class="form-control search-control" 
 	id="${id}_input" 
 	placeholder="${placeholder!'请选择'}"  value="${display_value!''}">
