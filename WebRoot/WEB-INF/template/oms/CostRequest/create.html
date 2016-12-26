@@ -87,7 +87,7 @@
 	                             <div id="transfers_massage" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
 		                            <%include("/eeda/component/form/inputAccountField.html", 
 		                            { id:'deposit_bank',
-									label:'开户行', value:order.deposit_bank!''
+									label:'付款开户行', value:order.deposit_bank!''
 									}){}%>
 									
 									<%include("/eeda/component/form/inputField.html", 
@@ -97,7 +97,7 @@
 									
 									<%include("/eeda/component/form/inputField.html", 
 									{ id:'account_name',
-									label:'账户名', value:order.account_name!''
+									label:'付款账户名', value:order.account_name!''
 									}){}%>
                                 </div>
                             </div>
@@ -105,7 +105,7 @@
 		                         <div id="transfers_massage_pay" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
 		                         <%include("/eeda/component/form/inputField.html", 
 		                            { id:'pay_bank',
-									label:'开户行', value:order.pay_bank!''
+									label:'收款开户行', value:order.pay_bank!''
 									}){}%>
 									
 									<%include("/eeda/component/form/inputField.html", 
@@ -115,7 +115,7 @@
 									
 									<%include("/eeda/component/form/inputField.html", 
 									{ id:'pay_name',
-									label:'账户名', value:order.pay_name!''
+									label:'收款账户名', value:order.pay_name!''
 									}){}%>
                         	     </div>
                             </div>
