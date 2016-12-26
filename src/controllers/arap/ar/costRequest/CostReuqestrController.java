@@ -13,7 +13,6 @@ import java.util.Map;
 
 import models.AppInvoiceDoc;
 import models.ArapAccountAuditLog;
-import models.ArapChargeOrder;
 import models.ArapCostApplication;
 import models.ArapCostOrder;
 //import models.CostAppOrderRel;
@@ -117,7 +116,7 @@ public class CostReuqestrController extends Controller {
         				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_cost_item aci on joa.id = aci.ref_order_id"
         				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =9 and aci.cost_order_id=aco.id"
         				+" ),0) paid_hkd,"
-        				+" group_concat((select concat(order_no,'-',status) from arap_cost_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
+        				+" group_concat(DISTINCT (select concat(order_no,'-',status) from arap_cost_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
         				+" from arap_cost_order aco"
 
         				+" left join cost_application_order_rel c on c.cost_order_id=aco.id"

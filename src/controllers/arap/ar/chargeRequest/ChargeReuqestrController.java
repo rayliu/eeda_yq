@@ -15,7 +15,6 @@ import models.AppInvoiceDoc;
 import models.ArapAccountAuditLog;
 import models.ArapChargeApplication;
 import models.ArapChargeOrder;
-import models.ArapCostOrder;
 //import models.ChargeAppOrderRel;
 import models.ChargeApplicationOrderRel;
 import models.Party;
@@ -104,7 +103,7 @@ public class ChargeReuqestrController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String sql = " select * from ("
-        				+"select  aco.*, p.company_name sp_name, "
+        				+" select  aco.*, p.company_name sp_name, "
         				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_charge_item aci on joa.id = aci.ref_order_id"
         				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =3 and aci.charge_order_id=aco.id"
         				+" ),0) paid_cny,"
@@ -117,7 +116,7 @@ public class ChargeReuqestrController extends Controller {
         				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_charge_item aci on joa.id = aci.ref_order_id"
         				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =9 and aci.charge_order_id=aco.id"
         				+" ),0) paid_hkd,"
-        				+" group_concat((select concat(order_no,'-',status) from arap_charge_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
+        				+" group_concat(DISTINCT (select concat(order_no,'-',status) from arap_charge_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
         				+" from arap_charge_order aco"
 
         				+" left join charge_application_order_rel c on c.charge_order_id=aco.id"
