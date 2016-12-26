@@ -27,6 +27,10 @@ $(document).ready(function() {
     	}
         return item;
     }
+    //默认填上的字段
+    if($('#billing_unit').val()==''){
+    	$('#billing_unit').val('珠海横琴远桥供应链管理有限公司')
+    }
     
     
     //第二步里面的单
