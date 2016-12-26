@@ -78,7 +78,7 @@ $(document).ready(function() {
     //申请保存
 	$("#saveBtn").on('click',function(){
 		$("#saveBtn").attr("disabled", true);
-		if($("#payment_method").val()=='transfers'){
+		if($("#payment_method").val()=='transfers'||$("#payment_method").val()=='checkTransfers'){
 			if($("#deposit_bank").val()=='' && $("#account_no").val()==''&& $("#account_name").val()==''){
 				$.scojs_message('转账的信息不能为空', $.scojs_message.TYPE_FALSE);
 				return false;
