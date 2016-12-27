@@ -149,7 +149,6 @@ public class AccountAuditLogController extends Controller {
     		month = Integer.parseInt(beginTime.substring(5));
     	}
     	
-    	
     	String sLimit = "";
     	String pageIndex = getPara("sEcho");
     	if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
@@ -164,26 +163,26 @@ public class AccountAuditLogController extends Controller {
     	String sql = " SELECT fa.office_id,fa.id,(select bank_name from fin_account where id = fa.id) bank_name,'"+ beginTime +"' date, "
     			+ " ( ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
     			+ " FROM arap_account_audit_log aa"
-    			+ " WHERE aa.account_id = fa.id AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+(month-1)+"-31 23:59:59' AND aa.payment_type = 'CHARGE' ) "
+    			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+(month-1)+"-31 23:59:59' AND aa.payment_type = 'CHARGE' ) "
     			+ " - "
     			+ " ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
     			+ " FROM arap_account_audit_log aa"
-    			+ " WHERE account_id = fa.id AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+(month-1)+"-31 23:59:59' AND aa.payment_type = 'COST'"
+    			+ " WHERE account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+(month-1)+"-31 23:59:59' AND aa.payment_type = 'COST'"
     			+ " ) ) init_amount,"
     			+ " ( ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
     			+ " FROM arap_account_audit_log aa "
-    			+ " WHERE aa.account_id = fa.id AND aa.create_date BETWEEN '"+year+"-"+month+"-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'CHARGE'"
+    			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '"+year+"-"+month+"-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'CHARGE'"
     			+ " ) ) total_charge,"
     			+ " ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
     			+ " FROM arap_account_audit_log aa"
-    			+ " WHERE aa.account_id = fa.id AND aa.create_date BETWEEN '"+year+"-"+month+"-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'COST'"
+    			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '"+year+"-"+month+"-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'COST'"
     			+ " ) total_cost,"
     			+ " ( ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
     			+ " FROM arap_account_audit_log aa"
-    			+ " WHERE aa.account_id = fa.id AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'CHARGE'  )"
+    			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'CHARGE'  )"
     			+ "  - "
     			+ " ( SELECT ROUND(ifnull(sum(amount), 0), 2) FROM arap_account_audit_log aa  "
-    			+ " WHERE aa.account_id = fa.id AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'COST'"
+    			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'COST'"
     			+ " ) ) balance_amount"
     			+ " FROM arap_account_audit_log aal"
     			+ " right JOIN fin_account fa ON fa.id = aal.account_id"
