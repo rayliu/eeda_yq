@@ -559,17 +559,26 @@ public class ChargeReuqestrController extends Controller {
   		}
   		
         //新建日记账表数据
+  		
   		String cny_pay_amount = arapChargeInvoiceApplication.getDouble("modal_cny").toString();
-        createAuditLog(id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY");
-        
+  		if(!"0.0".equals(cny_pay_amount)&&StringUtils.isNotEmpty(cny_pay_amount)){
+  			createAuditLog(id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY");
+  		}
+  		
         String usd_pay_amount = arapChargeInvoiceApplication.getDouble("modal_usd").toString();
-        createAuditLog(id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD");
+        if(!"0.0".equals(usd_pay_amount)&&StringUtils.isNotEmpty(usd_pay_amount)){
+        	createAuditLog(id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD");
+        }
         
         String jpy_pay_amount = arapChargeInvoiceApplication.getDouble("modal_jpy").toString();
-        createAuditLog(id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY");
+        if(!"0.0".equals(jpy_pay_amount)&&StringUtils.isNotEmpty(jpy_pay_amount)){
+        	createAuditLog(id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY");
+        }
         
         String hkd_pay_amount = arapChargeInvoiceApplication.getDouble("modal_hkd").toString();
-        createAuditLog(id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD");
+        if(!"0.0".equals(hkd_pay_amount)&&StringUtils.isNotEmpty(hkd_pay_amount)){
+        	createAuditLog(id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD");
+        }
         Record r = new Record();
         String confirm_name = LoginUserController.getUserNameById(arapChargeInvoiceApplication.getLong("confirm_by").toString());
 		r.set("confirm_name", confirm_name);
@@ -581,6 +590,8 @@ public class ChargeReuqestrController extends Controller {
   	private void createAuditLog(String application_id, String payment_method,
             String receive_bank_id, String receive_time, String pay_amount, String currency_code) {
         //新建日记账表数据
+  		UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
 		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
         auditLog.set("payment_method", payment_method);
         auditLog.set("payment_type", ArapAccountAuditLog.TYPE_CHARGE);
@@ -588,6 +599,7 @@ public class ChargeReuqestrController extends Controller {
         auditLog.set("amount", pay_amount);
         auditLog.set("creator", LoginUserController.getLoginUserId(this));
         auditLog.set("create_date", receive_time);
+        auditLog.set("office_id", office_id);
         if(receive_bank_id!=null && !("").equals(receive_bank_id)){
         		auditLog.set("account_id", receive_bank_id);
         	}else{

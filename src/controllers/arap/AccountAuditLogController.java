@@ -8,20 +8,19 @@ import java.util.List;
 import java.util.Map;
 
 import models.ArapAccountAuditLog;
+import models.UserLogin;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
-import controllers.util.PermissionConstant;
+import controllers.profile.LoginUserController;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -97,6 +96,8 @@ public class AccountAuditLogController extends Controller {
     		condiction += " and '" + end + "' ";
     	}
     	
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	long office_id = user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
@@ -119,7 +120,7 @@ public class AccountAuditLogController extends Controller {
 				    + " from arap_account_audit_log aaal"
         			+ " left join user_login ul on ul.id = aaal.creator"
         			+ " left join fin_account fa on aaal.account_id = fa.id "
-        			+ " ) A where 1 = 1 ";        	
+        			+ " ) A where office_id="+office_id;        	
         }
 
         Record rec = Db.findFirst("select count(*) total from ("+sql + condiction + ") B ");
@@ -154,11 +155,13 @@ public class AccountAuditLogController extends Controller {
     	if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
     		sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
     	}
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	long office_id = user.getLong("office_id");
     	
     	String sqlTotal = "select count(1) total from fin_account";
     	Record rec = Db.findFirst(sqlTotal);
     	 
-    	String sql = " SELECT fa.id,(select bank_name from fin_account where id = fa.id) bank_name,'"+ beginTime +"' date, "
+    	String sql = " SELECT fa.office_id,fa.id,(select bank_name from fin_account where id = fa.id) bank_name,'"+ beginTime +"' date, "
     			+ " ( ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
     			+ " FROM arap_account_audit_log aa"
     			+ " WHERE aa.account_id = fa.id AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+(month-1)+"-31 23:59:59' AND aa.payment_type = 'CHARGE' ) "
@@ -184,6 +187,7 @@ public class AccountAuditLogController extends Controller {
     			+ " ) ) balance_amount"
     			+ " FROM arap_account_audit_log aal"
     			+ " right JOIN fin_account fa ON fa.id = aal.account_id"
+    			+ " where fa.office_id="+office_id
     			+ " GROUP BY fa.id ";
     	
     	List<Record> BillingOrders = Db.find(sql+sLimit);
@@ -197,6 +201,4 @@ public class AccountAuditLogController extends Controller {
     	
     	renderJson(BillingOrderListMap);
     }
-    
-    
 }

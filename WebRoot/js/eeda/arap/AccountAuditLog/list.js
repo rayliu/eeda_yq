@@ -87,7 +87,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         });
         
         $('#datetimepicker').datetimepicker({  
-            format: 'yyyy-MM',  
+            format: 'yyyy-MM',
             viewMode: "months",
             language: 'zh-CN'
         }).on('changeDate', function(ev){

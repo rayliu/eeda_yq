@@ -559,16 +559,21 @@ public class CostReuqestrController extends Controller {
           
         //新建日记账表数据
   		String cny_pay_amount = arapCostInvoiceApplication.getDouble("modal_cny").toString();
-        createAuditLog(id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY");
-        
+  		if(!"0.0".equals(cny_pay_amount)&&StringUtils.isNotEmpty(cny_pay_amount)){
+  			createAuditLog(id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY");
+  		}
         String usd_pay_amount = arapCostInvoiceApplication.getDouble("modal_usd").toString();
-        createAuditLog(id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD");
-        
+        if(!"0.0".equals(cny_pay_amount)&&StringUtils.isNotEmpty(cny_pay_amount)){
+        	createAuditLog(id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD");
+        }
         String jpy_pay_amount = arapCostInvoiceApplication.getDouble("modal_jpy").toString();
-        createAuditLog(id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY");
-        
+        if(!"0.0".equals(cny_pay_amount)&&StringUtils.isNotEmpty(cny_pay_amount)){
+        	createAuditLog(id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY");
+        }
         String hkd_pay_amount = arapCostInvoiceApplication.getDouble("modal_hkd").toString();
-        createAuditLog(id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD");
+        if(!"0.0".equals(cny_pay_amount)&&StringUtils.isNotEmpty(cny_pay_amount)){
+        	createAuditLog(id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD");
+        }
         Record r = new Record();
         String confirm_name = LoginUserController.getUserNameById(arapCostInvoiceApplication.getLong("confirm_by").toString());
 		r.set("confirm_name", confirm_name);
