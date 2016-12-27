@@ -2,6 +2,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 $(document).ready(function() {
 	var tableName = 'eeda-table';
 	
+	
+	
 	itemOrder.buildItemDetail=function(){
         var item_table_rows = $("#"+tableName+" tr");
         var items_array=[];
@@ -45,16 +47,20 @@ $(document).ready(function() {
             columns:[
             {"data": "ID",
             	"render": function ( data, type, full, meta ) {
-            		var str = '<input type="checkbox" style="width:30px" value="'+data+'">';
+            		var str = '<input type="checkbox" class="checkBox" style="width:30px" value="'+data+'">';
             		for(var i=0;i<ids.length;i++){
-                        if(ids[i]==data){
-                       	 str = '<input type="checkbox" style="width:30px" value="'+data+'" checked>';
+                        if(ids[i]==full.ID){
+                       	 str = '<input type="checkbox" class="checkBox" style="width:30px" value="'+data+'" checked>';
                         }
                     }
             		return str;
 			    }
             },
-            { "data": "ORDER_NO"},
+            { "data": "ORDER_NO", "width": "100px",
+		    	  "render": function ( data, type, full, meta ) {
+                      return "<a href='/jobOrder/edit?id="+full.JOB_ORDER_ID+"'target='_blank'>"+data+"</a>";
+                  }
+            },
             { "data": "CREATE_STAMP"},
             { "data": "SP_NAME"},
             { "data": "CURRENCY_NAME",'class':'currency_name'},
@@ -108,6 +114,7 @@ $(document).ready(function() {
                     return data;
                 }
             },
+            { "data": "JOB_ORDER_ID", "visible": false}
         ]
     }); 
         
@@ -157,6 +164,52 @@ $(document).ready(function() {
    
    $('#exchange_rate').on('keyup',function(){
    	 $('#exchange').attr('disabled',false);
+   });
+   
+   //全选
+   $('#allcheck').click(function(){
+  	 var f = false;
+	   	 var flag = 0;
+	 	   $("#eeda-table .checkBox").each(function(){
+	 		  var currency_name = $(this).parent().siblings('.currency_name')[0].textContent;
+	 		  if(cnames[0]==undefined){
+	 			 cnames.push(currency_name);
+	 			 f = true;
+	 		  }
+	 		  if(cnames[0]!=currency_name){
+	 			  flag++;
+	 		  }
+	 	    })
+  	 if(this.checked==true){
+		 	    if(flag>0){
+		 	    	$.scojs_message('不能全选，包含不同对账币制', $.scojs_message.TYPE_ERROR);
+		 	    	$(this).prop('checked',false);
+		 	    	if(f==true){
+		 	    		cnames=[];
+		 	    	}
+		 	    }else{
+		 	    	 $("#eeda-table .checkBox").each(function(){
+		 	    		if(!$(this).prop('checked')){
+		 	    			$(this).prop('checked',true);
+		 	    			var id = $(this).parent().parent().attr('id');
+			 	    		 var currency_name = $(this).parent().siblings('.currency_name')[0].textContent;
+			 	    		 ids.push(id);
+			 	    		 cnames.push(currency_name);
+		 	    		}
+		 	    	 });
+		 	    }
+  	 }else{
+  		 $("#eeda-table .checkBox").prop('checked',false);
+  		 if(flag==0){
+	 	    	 $("#eeda-table .checkBox").each(function(){
+	 	    		 var id = $(this).parent().parent().attr('id');
+	 	    		 var currency_name = $(this).parent().siblings('.currency_name')[0].textContent;
+	 	    		 ids.pop(id);
+	 	    		cnames.pop(currency_name);
+	 	    	 })
+  		 }
+  	 }
+//	   $('.checkBox').prop("checked",true);
    });
    
    //选择是否是同一币种
@@ -231,11 +284,45 @@ $(document).ready(function() {
 	    });
    })
     
+ 
+//	 	 $('#allcheck').click(function(){
+//	 		 #('checkbox').attr("checked",true);
+//	 		 
+//	 	 })  
+	 	  
+			 
+//	 	   if(cnames.length>0){
+//	 		  $("#exchange").prop('disabled',false);
+//	 	   }else{
+//	 		  $("#exchange").prop('disabled',true);
+//	 	   }
+//   })
+  
     
+ //查询币制按钮
+   $('#query_listCurrency').click(function(){
+	     searchData(); 
+   });
+
+  var searchData=function(){
+       var order_id = $("#order_id").val();
+       var que_currency=$("#query_currency").val();
+     
+       /*  
+           查询规则：参数对应DB字段名
+           *_no like
+           *_id =
+           *_status =
+           时间字段需成双定义  *_begin_time *_end_time   between
+       */
+       var url = "/chargeCheckOrder/tableList?order_id="+order_id
+       +"&table_type=item"
+       +"&query_currency="+que_currency;
+       
+       itemTable.ajax.url(url).load();
+    }
     
-    
-    
-    
+  
     
 } );    
 } );

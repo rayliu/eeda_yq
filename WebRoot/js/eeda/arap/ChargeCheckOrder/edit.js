@@ -163,7 +163,7 @@ $(document).ready(function() {
     		$('#invoice_flag').hide();
     	}
     });
-    
    
+  
 });
 });

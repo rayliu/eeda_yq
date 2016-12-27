@@ -154,7 +154,6 @@ public class ChargeCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
-        	
         	 sql = "select * from(  "
         			+ " select joa.order_type sql_type, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
               		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type, "
@@ -279,8 +278,12 @@ public class ChargeCheckOrderController extends Controller {
     }
     
     
-    public List<Record> getItemList(String ids,String order_id){
+    public List<Record> getItemList(String ids,String order_id,String code){
     	String sql = null;
+    	String currenry_code="";
+    	if(!"".equals(code)){
+    		 currenry_code=" and cur. NAME="+"'"+code+"'";
+    	}
 		if(StringUtils.isEmpty(order_id)){
 			sql = " select joa.id,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
     			+ "IFNULL(cur1.name,cur.name) exchange_currency_name,"
@@ -306,7 +309,7 @@ public class ChargeCheckOrderController extends Controller {
     			+ " GROUP BY joa.id";
 			}else{				
 			sql = " select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
-					+" aco.order_no check_order_no, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
+					+" aco.order_no check_order_no, jo.id job_order_id, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
 						+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
 						+" ifnull((select rc.new_rate from rate_contrast rc"
 						    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
@@ -332,14 +335,13 @@ public class ChargeCheckOrderController extends Controller {
 						+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
 						+" left join arap_charge_item aci on aci.ref_order_id = joa.id"
 					 +" left join arap_charge_order aco on aco.id = aci.charge_order_id"
-					 +" where joa.id = aci.ref_order_id and aco.id = ("+order_id+")"
-						+" GROUP BY joa.id"
+					 +" where joa.id = aci.ref_order_id and aco.id = ("+order_id+")" +currenry_code
+					 +" GROUP BY joa.id"
 						+" ORDER BY aco.order_no, jo.order_no";
 				
 				
 			}	
     	List<Record> re = Db.find(sql);
-    	
     	return re;
     }
     
@@ -459,7 +461,7 @@ public class ChargeCheckOrderController extends Controller {
 		rec.set("customer", rec.get("contact_person"));
 		rec.set("phone", rec.get("phone"));
 		rec.set("user", LoginUserController.getLoginUserName(this));
-		rec.set("itemList", getItemList(ids,""));
+		rec.set("itemList", getItemList(ids,"",""));
 		rec.set("currencyList", getCurrencyList(ids,""));
 		setAttr("order",rec);
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
@@ -481,7 +483,7 @@ public class ChargeCheckOrderController extends Controller {
 		rec.set("address", rec.get("address"));
 		rec.set("customer", rec.get("contact_person"));
 		rec.set("phone", rec.get("phone"));
-		rec.set("itemList", getItemList(condition,id));
+		rec.set("itemList", getItemList(condition,id,""));
 		rec.set("currencyList", getCurrencyList(condition,id));
 		setAttr("order",rec);
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
@@ -555,9 +557,11 @@ public class ChargeCheckOrderController extends Controller {
     	String order_id = getPara("order_id");
     	String appliction_id = getPara("appApplication_id");
     	String bill_flag = getPara("bill_flag");
+    	String currency_code=getPara("query_currency");
     	List<Record> list = null;
-    	String condition = "select ref_order_id from arap_charge_item where charge_order_id in ("+order_ids+")";
-    	if("N".equals(order_id)){
+    	String condition = "select ref_order_id from arap_charge_item where charge_order_id in ("+order_ids+") ";
+    	
+    	if("N".equals(order_id)){//应收申请单
     		if(StringUtils.isNotEmpty(appliction_id)){
     			list = getChargeItemList(appliction_id,bill_flag);
         	}else{
@@ -566,8 +570,8 @@ public class ChargeCheckOrderController extends Controller {
 	    				}
 	    		list = getChargeItemList(order_ids,"");
 	    		}
-    	}else{
-    		list = getItemList(condition,order_id);
+    	}else{//应收对账单
+    		    list = getItemList(condition,order_id,currency_code);
     	}
 
     	Map BillingOrderListMap = new HashMap();
@@ -592,7 +596,6 @@ public class ChargeCheckOrderController extends Controller {
 		r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
 		renderJson(r);
 	}
-    
-   
+  
 
 }

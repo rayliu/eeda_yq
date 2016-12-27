@@ -177,10 +177,10 @@
                                         value:'',
                                         value_list:[
                                         	{code:'',value:''},
-                                            {code:'CNY', value:'查CNY'},
-                                            {code:'USD', value:'查USD'},
-                                            {code:'HKD', value:'查HKD'},
-                                            {code:'JPY', value:'查JPY'}
+                                            {code:'CNY', value:'CNY'},
+                                            {code:'USD', value:'USD'},
+                                            {code:'HKD', value:'HKD'},
+                                            {code:'JPY', value:'JPY'}
                                         ]
                                     }){}%>
                     </div>
@@ -214,7 +214,7 @@
                             {
                                 id:'eeda-table', 
                                 style:'width:1500px',
-                                headers:['',
+                                headers:['<input type="checkbox" id="allcheck">',
                                     '工作单号',
                                     '出货日期',			                                       
                                     '结算公司',
@@ -234,11 +234,12 @@
                                     'REF_NO',
                                     'MBL_NO',
                                     'HBL_NO',
+                                    '',
                                     ''	                                        
                                 ],
 					field_list:['id','order_no','create_stamp','sp_name','currency_name','total_amount','exchange_rate','after_total',
 					'new_rate','after_rate_total','exchange_currency_name','exchange_currency_rate','exchange_total_amount','vgm','container_amount',
-					'gross_weight','container_no','ref_no','mbl_no','hbl_no','order_type'], value_list: order.itemList!item_list![] }){} %>
+					'gross_weight','container_no','ref_no','mbl_no','hbl_no','order_type', 'job_order_id'], value_list: order.itemList!item_list![] }){} %>
 			</div>
 	</div>
 	<div class="row">
