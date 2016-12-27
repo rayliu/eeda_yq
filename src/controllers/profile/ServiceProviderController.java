@@ -249,41 +249,45 @@ public class ServiceProviderController extends Controller {
     	renderJson(map);
     }
     
+    //查询结算公司
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchSp() {
-    	
 		String input = getPara("input");
-	
-		Long parentID = pom.getParentOfficeId();
+		
+		if(StringUtils.isEmpty(input)){
+			input = "";
+        }
+		
+		long userId = LoginUserController.getLoginUserId(this);
+		UserLogin user = LoginUserController.getLoginUser(this);
+		long office_id = user.getLong("office_id");
+		
 		List<Record> spList = Collections.EMPTY_LIST;
-		if (input !=null && input.trim().length() > 0) {
-		    spList = Db
-					.find(" select p.*, p.id as pid, p.payment from party p, office o where o.id = p.office_id and"
-					        + " (p.company_name like '%"
-							+ input
-							+ "%' or p.abbr like '%"
-							+ input
-							+ "%' or p.contact_person like '%"
-							+ input
-							+ "%' or p.email like '%"
-							+ input
-							+ "%' or p.mobile like '%"       
-							+ input
-							+ "%' or p.phone like '%"
-							+ input
-							+ "%' or p.address like '%"
-							+ input
-							+ "%' or p.postal_code like '%"
-							+ input
-							+ "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) limit 0,10",parentID,parentID);
-		} else {
-		    spList = Db
-					.find("select p.*, p.id as pid from party p, office o where o.id = p.office_id and "
-					        + " (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?)", parentID, parentID);
-		}
-		renderJson(spList);
-	}
-    
+		
+		if(StrKit.isBlank(input)){//从历史记录查找
+            String sql = "select h.ref_id, p.id, p.abbr from user_query_history h, party p "
+                    + "where h.ref_id=p.id and h.type='ARAP_COM' and h.user_id=?";
+            spList = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
+            if(spList.size()==0){
+                sql = "select p.* from party p where office_id="+office_id;
+                spList = Db.find(sql+" order by abbr limit 10");
+            }
+            renderJson(spList);
+        }else{
+            String sql = "select p.* from party p where office_id="+office_id;
+                        
+            if (input.trim().length() > 0) {
+                sql +=" and (p.abbr like '%" + input + "%' or p.quick_search_code like '%" +input.toLowerCase()+ "%'"
+                	+ " or p.quick_search_code like '%" + input.toUpperCase() + "%') ";
+            }
+            spList = Db.find(sql+" order by abbr limit 10");
+
+            renderJson(spList);
+        }
+    }
+
+
+
     //只查询供应商
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void search_sp() {

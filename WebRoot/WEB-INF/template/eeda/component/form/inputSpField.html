@@ -5,7 +5,7 @@
 	    <%}%>
     </label>
 	<input type="text" class="form-control search-control" 
-	id="${id}_input" 
+	id="${id}_input" AUTOCOMPLETE="off" 
 	placeholder="${placeholder!'请选择'}"  value="${display_value!''}">
 	<ul id='${id}_list' class="pull-right dropdown-menu default dropdown-scroll" tabindex="-1" style="top: 35%; left: 2%;">
 </ul>
@@ -19,39 +19,53 @@ $(document).ready(function() {
 	var inputField = $('#${id}_input');
 	var hiddenField = $('#${id}');
 	
+	//处理中文输入法, 没完成前不触发查询
+	var cpLock = false;
+    inputField.on('compositionstart', function () {
+        cpLock = true;
+    });
+    inputField.on('compositionend', function () {
+        cpLock = false;
+    });
+    
+	
 	//供应商查询
     //获取供应商的list，选中信息在下方展示其他信息
-    inputField.on('input click', function(){
+    inputField.on('keyup click', function(){
     	var me = this;
 		var inputStr = inputField.val();
+		if(cpLock)
+	    	return;
 		
-		$.get('/serviceProvider/searchSp', {input:inputStr}, function(data){
+		if (event.keyCode == 40) {
+			spList.find('li').first().focus();
+            return false;
+        }
+		
+		$.get('/serviceProvider/searchCompany', {input:inputStr}, function(data){
 			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 				return;
 			}
 			spList.empty();
-			for(var i = 0; i < data.length; i++){
-				var abbr = data[i].ABBR;
-				var company_name = data[i].COMPANY_NAME;
-				var contact_person = data[i].CONTACT_PERSON;
-				var phone = data[i].PHONE;
-				
-				if(abbr == null) 
-					abbr = '';
-				if(company_name == null)
-					company_name = '';
-				if(contact_person == null)
-					contact_person = '';
-				if(phone == null)
-					phone = '';
-				
-				spList.append("<li><a tabindex='-1' class='fromLocationItem' chargeType='"+data[i].CHARGE_TYPE+"' partyId='"+data[i].ID+"' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' spid='"+data[i].ID+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+abbr+"</a></li>");
-			}
-			spList.css({ 
-	        	left:$(me).position().left+"px", 
-	        	top:$(me).position().top+28+"px" 
-	        }); 
 			
+			if(inputStr=='' && data.length>0){
+				if(data[0].REF_ID){
+					spList.append('<span class="search_hint">您曾经使用过的'+data.length+'行记录, 需要别的数据请输入查询条件</span>');
+				}else{
+					spList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+				}
+			}else if(data.length==0){
+				spList.append('<span class="search_hint">无记录</span>');
+			}else if(inputStr.length>0 && data.length==10){
+				spList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+			}
+	        for(var i = 0; i < data.length; i++)
+	        	spList.append("<li><a tabindex='-1' class='fromLocationItem' chargeType='"+data[i].CHARGE_TYPE+"' partyId='"+data[i].ID+"' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' spid='"+data[i].ID+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].NAME+"</a></li>");
+	            
+	        spList.css({ 
+		    	left:$(me).position().left+"px", 
+		    	top:$(me).position().top+28+"px" 
+		    });			
 			eeda.hidePopList();
 			spList.show();
 			
@@ -82,7 +96,5 @@ $(document).ready(function() {
 		hiddenField.val($(this).attr('partyId'));
 		spList.hide();
     });
-    
-	
 });
 </script>
