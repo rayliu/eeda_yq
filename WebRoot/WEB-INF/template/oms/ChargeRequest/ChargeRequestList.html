@@ -39,9 +39,6 @@
 								<!-- end of col-lg-6-->
 								<div class="col-lg-4">
 									<div class="form-group">      
-	                             			<%include("/eeda/component/form/inputDateQueryField.html", {id:'service_begin_stamp', label:'业务发生月', value:''}){} %>
-									</div>
-									<div class="form-group">      
                                          	<%include("/eeda/component/form/inputDateQueryField.html", {id:'begin_date', label:'创建时间', value:''}){} %>
 									</div>
 									<div class="form-group">      
@@ -49,6 +46,9 @@
 									</div>
 									<div class="form-group">      
                                          	<%include("/eeda/component/form/inputDateQueryField.html", {id:'confirmBegin_date', label:'付款时间', value:''}){} %>
+									</div>
+									<div class="form-group">      
+	                             			<%include("/eeda/component/form/dateInputField.html", {id:'service_begin_stamp', label:'业务发生月', value:''}){} %>
 									</div>
 								</div>
 								
@@ -68,6 +68,7 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'application_table',
+                                    style:'width:1800px',
                                     headers:[
                                     '申请单号',
                                     '单据类型',

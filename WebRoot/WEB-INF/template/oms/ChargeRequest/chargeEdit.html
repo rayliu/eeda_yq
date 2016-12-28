@@ -20,36 +20,36 @@
                         <input id='total_app_jpy' name='total_app_jpy' type="hidden">
                             <div class="col-lg-4">
                             	<%include("/eeda/component/form/inputField.html", { id:'order_no',
-								label:'申请单号', value:order.order_no!'',disabled:'disabled'
-								}){}%>
+											label:'申请单号', value:order.order_no!'',disabled:'disabled'
+											}){}%>
 								<%include("/eeda/component/form/inputField.html", { id:'create_stamp',
-								label:'申请日期', value:order.create_stamp!'',disabled:'disabled'
-								}){}%>
+											label:'申请日期', value:order.create_stamp!'',disabled:'disabled'
+											}){}%>
 								<%include("/eeda/component/form/inputField.html", { id:'creator_name',
-								label:'提交人', value:order.creator_name!'',disabled:'disabled'
-								}){}%>
+											label:'提交人', value:order.creator_name!'',disabled:'disabled'
+											}){}%>
 								<%include("/eeda/component/form/inputField.html", { id:'status',
-								label:'状态', value:order.status!'新建',disabled:'disabled'
-								}){}%>
+											label:'状态', value:order.status!'新建',disabled:'disabled'
+											}){}%>
                             </div>
                             <div class="col-lg-4">
                             	<%include("/eeda/component/form/inputSpField.html",
-									{ id:'sp_id', 
-									label:'结算公司',  
-									value:party.sp_id!'',
-									display_value:party.company_name!''
-									}){} %>
+											{ id:'sp_id', 
+											label:'结算公司',  
+											value:party.sp_id!'',
+											display_value:party.company_name!''
+											}){} %>
 								<%include("/eeda/component/form/inputField.html", { id:'payee_name',
-								label:'付款人', value:order.payee_name!''
-								}){}%>
+											label:'付款人', value:order.payee_name!''
+											}){}%>
 								<div id="invoiceDiv">
                                 <%include("/eeda/component/form/inputField.html", { id:'billing_unit',
-								label:'开票单位', value:order.billing_unit!''
-								}){}%>
+											label:'开票单位', value:order.billing_unit!''
+											}){}%>
 								</div>
-								<%include("/eeda/component/form/dateInputField.html", { id:'service_stamp',
-									label:'业务发生月', value:order.service_stamp!''
-									}){}%>
+								<%include("/eeda/component/form/inputDateQueryField.html", { id:'check_time',
+											label:'对账时间', begin_value:order.begin_time!'', end_value:order.end_time!'', disabled: 'disabled' 
+											}){}%>
                             </div>
                             <div class="col-lg-4">
                             	<div class="form-group">

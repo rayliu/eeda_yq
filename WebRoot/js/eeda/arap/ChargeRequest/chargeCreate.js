@@ -17,9 +17,9 @@ $(document).ready(function() {
     		var name = orderForm[i].id;
         	var value =orderForm[i].value;
         	if(name){
-        		if(name.indexOf("begin_time") != -1){
+        		if(name.indexOf("check_time_begin") != -1){
         			name = "begin_time";
-        		}else if(name.indexOf("end_time") != -1){
+        		}else if(name.indexOf("check_time_end") != -1){
         			name = "end_time"
         		}
         		item[name] = value;

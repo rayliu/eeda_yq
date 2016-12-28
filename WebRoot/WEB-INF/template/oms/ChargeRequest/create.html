@@ -31,9 +31,9 @@
 										label:'开票单位', value:order.billing_unit!''
 										}){}%>
 								</div>
-								<%include("/eeda/component/form/dateInputField.html", { id:'service_stamp',
-										label:'业务发生月', value:order.service_stamp!''
-										}){}%>
+								<%include("/eeda/component/form/inputDateQueryField.html", { id:'check_time',
+											label:'对账时间', begin_value:order.begin_time!'', end_value:order.end_time!'', disabled: 'disabled' 
+											}){}%>
 								
                             </div>
                             <div class="col-lg-4">

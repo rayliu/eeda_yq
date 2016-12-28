@@ -5,7 +5,7 @@ $(document).ready(function() {
                 
     var application_table = eeda.dt({
     	id: 'application_table',
-    	autoWidth: true,
+    	autoWidth: false,
         paging: true,
         serverSide: true, 
     	ajax: "/chargeRequest/applicationList",
@@ -18,7 +18,7 @@ $(document).ready(function() {
             {"data":"ORDER_TYPE"},
             {"data":"STATUS"},    
             {"data":"CHARGE_ORDER_NO"},
-            {"data":"SERVICE_STAMP"},
+            {"data":"SERVICE_STAMP","width":"80px"},
             {"data":"MODAL_CNY",'class':'cny',
             	"render": function(data, type, full, meta) {
             		if(data)

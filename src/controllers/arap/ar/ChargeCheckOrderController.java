@@ -281,7 +281,7 @@ public class ChargeCheckOrderController extends Controller {
     public List<Record> getItemList(String ids,String order_id,String code){
     	String sql = null;
     	String currenry_code="";
-    	if(!"".equals(code)){
+    	if(StringUtils.isNotEmpty(code)){
     		 currenry_code=" and cur. NAME="+"'"+code+"'";
     	}
 		if(StringUtils.isEmpty(order_id)){

@@ -103,7 +103,7 @@ public class ChargeReuqestrController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String sql = " select * from ("
-        				+" select  aco.*, p.company_name sp_name, "
+        				+" select  aco.*, p.abbr sp_name, "
         				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_charge_item aci on joa.id = aci.ref_order_id"
         				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =3 and aci.charge_order_id=aco.id"
         				+" ),0) paid_cny,"
@@ -118,7 +118,6 @@ public class ChargeReuqestrController extends Controller {
         				+" ),0) paid_hkd,"
         				+" group_concat(DISTINCT (select concat(order_no,'-',status) from arap_charge_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
         				+" from arap_charge_order aco"
-
         				+" left join charge_application_order_rel c on c.charge_order_id=aco.id"
         				+" left join party p on p.id=aco.sp_id "
         				+" where aco.status!='新建' and aco.office_id = "+office_id+" "
@@ -177,7 +176,7 @@ public class ChargeReuqestrController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select p.abbr payee_company,acao.*, acao.order_no application_order_no, "
+        		+ " select p.abbr payee_company,acao.*, acao.order_no application_order_no,CAST(CONCAT(acao.begin_time,'到',acao.end_time) AS CHAR) service_stamp, "
         		+ " '申请单' order_type,aco.order_no charge_order_no,u.c_name "
 				+ " from arap_charge_application_order acao "
 				+ " left join charge_application_order_rel caor on caor.application_order_id = acao.id "
