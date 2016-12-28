@@ -35,19 +35,21 @@
                 { "data": "CURRENCY_NAME","class":"currency_name"},
                 { "data": "TOTAL_AMOUNT","class":"total_amount", 
                     "render": function ( data, type, full, meta ) {
+                    	var str =  parseFloat(data).toFixed(2);
                         if(full.ORDER_TYPE=='cost'){
-                            return '<span style="color:red;">'+'-'+data+'</span>';
+                            return '<span style="color:red;">'+'-'+str+'</span>';
                         }
-                        return data;
+                        return str;
                       }
                 },
                 { "data": "EXCHANGE_RATE", "visible": false},
                 { "data": "AFTER_TOTAL", "visible": false, 
                     "render": function ( data, type, full, meta ) {
+                    	var after_str =  parseFloat(data).toFixed(2);
                         if(full.ORDER_TYPE=='cost'){
-                            return '<span style="color:red;">'+'-'+data+'</span>';
+                            return '<span style="color:red;">'+'-'+after_str+'</span>';
                         }
-                        return data;
+                        return after_str;
                       }
                 },
                 { "data": "NEW_RATE","class":"new_rate", "visible": false },
@@ -63,10 +65,11 @@
                 { "data": "EXCHANGE_CURRENCY_RATE"},
                 { "data": "EXCHANGE_TOTAL_AMOUNT",
                     "render": function ( data, type, full, meta ) {
+                    	var exchange_total_str = parseFloat(data).toFixed(2);
                         if(full.ORDER_TYPE=='cost'){
-                            return '<span style="color:red;">'+'-'+data+'</span>';
+                            return '<span style="color:red;">'+'-'+exchange_total_str+'</span>';
                         }
-                        return data;
+                        return exchange_total_str;
                       }
                 },
                 { "data": "ORDER_TYPE", "visible": false,
