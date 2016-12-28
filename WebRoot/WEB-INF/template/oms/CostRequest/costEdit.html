@@ -31,6 +31,21 @@
 								<%include("/eeda/component/form/inputField.html", { id:'status',
 										label:'状态', value:order.status!'新建',disabled:'disabled'
 										}){}%>
+								<div class="form-group">
+	                                    <label class="search-label">发票类型</label>
+	                                    <input id="invoice_type_show" type="hidden" value="${order.bill_type!''}">
+	                                    <select id="bill_type" class="form-control search-control invoice_type" name="bill_type">
+		                                    <option></option>
+		                                    <option value="wbill" <% if(order.bill_type!'wbill'=='wbill'){%>selected<%}%>>无发票</option>
+		                                    <option value="ordinarybill" <% if(order.bill_type!''=='ordinarybill'){%>selected<%}%>>增值税普通发票</option>
+		                                    <option value="specialbill" <% if(order.bill_type!''=='specialbill'){%>selected<%}%>>增值税专用发票</option>
+		                                    <option value="dbill" <% if(order.bill_type!''=='dbill'){%>selected<%}%>>代开发票(垫付款)</option>
+		                                    <option value="HKINVbill" <% if(order.bill_type!''=='HKINVbill'){%>selected<%}%>>HK INV</option>
+	                                    </select>
+	                            </div>
+	                            <%include("/eeda/component/form/inputDateQueryField.html", { id:'check_time',
+											label:'业务发生月', begin_value:order.begin_time!'', end_value:order.end_time!'', disabled: 'disabled' 
+											}){}%>
                             </div>
                             <div class="col-lg-4">
 	                            <%include("/eeda/component/form/inputSpField.html",
@@ -47,6 +62,19 @@
 										label:'开票单位', value:order.billing_unit!''
 										}){}%>
 								</div>
+								<div id="projectFee">
+		                            <div class="form-group">
+		                                    <label class="search-label">项目</label>
+		                                    <input id="fee_type_show" type="hidden" value="${order.fee_type!''}">
+		                                    <select id="fee_type" class="form-control search-control fee_type" name="fee_type">
+			                                    <option></option>
+			                                    <option value="transFee" <% if(order.fee_type!''=='transFee'){%>selected<%}%>>代理货运服务费</option>
+			                                    <option value="customFee" <% if(order.fee_type!''=='customFee'){%>selected<%}%>>代理报关服务费</option>
+			                                    <option value="consultFee" <% if(order.fee_type!''=='consultFee'){%>selected<%}%>>咨询服务费</option>
+			                                    <option value="internationalFee" <% if(order.fee_type!''=='internationalFee'){%>selected<%}%>>国际货代服务费</option>
+		                                    </select>
+		                            </div>
+	                            </div>
                             </div>
                             <div class="col-lg-4">
                             	<div class="form-group">
@@ -62,7 +90,7 @@
 	                             <div id="transfers_massage" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
 		                            <%include("/eeda/component/form/inputAccountField.html", 
 			                            { id:'deposit_bank',
-										label:'开户行',
+										label:'付款开户行',
 									    value:order.deposit_bank!'',
 									    display_value:order.deposit_bank_input
 										}){}%>
@@ -74,70 +102,31 @@
 									
 									<%include("/eeda/component/form/inputField.html", 
 										{ id:'account_name',
-										label:'账户名', value:order.account_name!''
+										label:'付款账户名', value:order.account_name!''
 										}){}%>
-                                </div>
+			                         <%include("/eeda/component/form/inputField.html", 
+			                            { id:'pay_bank',
+										label:'收款开户行', value:order.pay_bank!''
+										}){}%>
+										
+										<%include("/eeda/component/form/inputField.html", 
+										{ id:'pay_no',
+										label:'收款账号', value:order.pay_no!''
+										}){}%>
+										
+										<%include("/eeda/component/form/inputField.html", 
+										{ id:'pay_name',
+										label:'收款账户名', value:order.pay_name!''
+										}){}%>
+                                 </div>
                             </div>
-                            <div class="col-lg-4">
-	                            <div class="form-group">
-	                                    <label class="search-label">发票类型</label>
-	                                    <input id="invoice_type_show" type="hidden" value="${order.bill_type!''}">
-	                                    <select id="bill_type" class="form-control search-control invoice_type" name="bill_type">
-		                                    <option></option>
-		                                    <option value="wbill" <% if(order.bill_type!'wbill'=='wbill'){%>selected<%}%>>无发票</option>
-		                                    <option value="ordinarybill" <% if(order.bill_type!''=='ordinarybill'){%>selected<%}%>>增值税普通发票</option>
-		                                    <option value="specialbill" <% if(order.bill_type!''=='specialbill'){%>selected<%}%>>增值税专用发票</option>
-		                                    <option value="dbill" <% if(order.bill_type!''=='dbill'){%>selected<%}%>>代开发票(垫付款)</option>
-		                                    <option value="HKINVbill" <% if(order.bill_type!''=='HKINVbill'){%>selected<%}%>>HK INV</option>
-	                                    </select>
-	                            </div>
-                            </div>
-                          <div id="projectFee">
-                            <div class="col-lg-4">
-	                            <div class="form-group">
-	                                    <label class="search-label">项目</label>
-	                                    <input id="fee_type_show" type="hidden" value="${order.fee_type!''}">
-	                                    <select id="fee_type" class="form-control search-control fee_type" name="fee_type">
-		                                    <option></option>
-		                                    <option value="transFee" <% if(order.fee_type!''=='transFee'){%>selected<%}%>>代理货运服务费</option>
-		                                    <option value="customFee" <% if(order.fee_type!''=='customFee'){%>selected<%}%>>代理报关服务费</option>
-		                                    <option value="consultFee" <% if(order.fee_type!''=='consultFee'){%>selected<%}%>>咨询服务费</option>
-		                                    <option value="internationalFee" <% if(order.fee_type!''=='internationalFee'){%>selected<%}%>>国际货代服务费</option>
-	                                    </select>
-	                            </div>
-                            </div>
-                            <div class="col-lg-4">
-			                            <%include("/eeda/component/form/inputField.html", 
-			                            { id:'invoice_money',
-											label:'开票金额', 
-											value:order.invoice_money!''
-											}){}%>
-                            </div>
-                          </div>
-                          <div class="col-lg-4">
-	                         <div id="transfers_massage_pay" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
-	                         <%include("/eeda/component/form/inputField.html", 
-	                            { id:'pay_bank',
-								label:'开户行', value:order.pay_bank!''
-								}){}%>
-								
-								<%include("/eeda/component/form/inputField.html", 
-								{ id:'pay_no',
-								label:'收款账号', value:order.pay_no!''
-								}){}%>
-								
-								<%include("/eeda/component/form/inputField.html", 
-								{ id:'pay_name',
-								label:'账户名', value:order.pay_name!''
-								}){}%>
-                 	     </div>
-                     </div>
+                          
 							<div class="col-lg-12">
 								<label>发票信息</label>
 								<textarea id='invoice_no' class="form-control" rows="3" name="invoice_no">${order.invoice_no!''}</textarea>
 							</div>
                         </div>
-                        <br/><br/><hr/>
+                        <br/><br/><br/><br/><hr/>
                         <div class="row" style="margin-top: 250px;">
                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_cny',

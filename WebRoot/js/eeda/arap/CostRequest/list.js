@@ -5,7 +5,7 @@ $(document).ready(function() {
                 
     var application_table = eeda.dt({
     	id: 'application_table',
-    	autoWidth: true,
+    	autoWidth: false,
         paging: true,
         serverSide: true, 
     	ajax: "/costRequest/applicationList",
@@ -18,7 +18,7 @@ $(document).ready(function() {
             {"data":"ORDER_TYPE"},
             {"data":"STATUS"},    
             {"data":"COST_ORDER_NO"},
-            {"data":"SERVICE_STAMP"},
+            {"data":"SERVICE_STAMP","width":"80px"},
             {"data":"MODAL_CNY",'class':'cny',
             	"render": function(data, type, full, meta) {
             		if(data)
@@ -180,8 +180,7 @@ $(document).ready(function() {
           var applicationOrderNo = $('#applicationOrderNo').val();
           var status2 = $("#status2").val();
           
-          var service_begin_stamp_begin_time = $('#service_begin_stamp_begin_time').val();
-          var service_begin_stamp_end_time = $('#service_begin_stamp_end_time').val();
+          var service_stamp = $('#service_stamp').val();
           
           var begin_date_begin_time = $('#begin_date_begin_time').val();
           var begin_date_end_time = $('#begin_date_end_time').val();
@@ -196,8 +195,8 @@ $(document).ready(function() {
                +"&cost_order_no="+cost_order_no
                +"&application_order_no="+applicationOrderNo
                +"&status="+status2
-               +"&service_stamp_begin_time="+service_begin_stamp_begin_time
-               +"&service_stamp_end_time="+service_begin_stamp_end_time
+               
+               +"&service_stamp_between="+service_stamp
                
                +"&create_stamp_begin_time="+begin_date_begin_time
                +"&create_stamp_end_time="+begin_date_end_time
