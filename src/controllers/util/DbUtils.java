@@ -50,6 +50,10 @@ public class DbUtils {
             		valueMap.put("_end_time", filterValue);
             		dateFieldMap.put(key, valueMap);
             		continue;
+            	}else if(key.endsWith("_between")){
+            		key = key.replaceAll("_between", "");
+            		condition += "and ('"+filterValue+"'>=begin_time and '"+filterValue+"' <=end_time)";
+            		continue;
             	}
             }	
         }

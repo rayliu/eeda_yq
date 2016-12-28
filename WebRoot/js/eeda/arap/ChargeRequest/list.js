@@ -175,8 +175,7 @@ $(document).ready(function() {
           var applicationOrderNo = $('#applicationOrderNo').val();
           var status2 = $('#status2').val().trim();
           
-          var service_begin_stamp_begin_time = $('#service_begin_stamp_begin_time').val();
-          var service_begin_stamp_end_time = $('#service_begin_stamp_end_time').val();
+          var service_stamp = $('#service_stamp').val();
           
           var begin_date_begin_time = $('#begin_date_begin_time').val();
           var begin_date_end_time = $('#begin_date_end_time').val();
@@ -191,9 +190,9 @@ $(document).ready(function() {
                +"&charge_order_no="+charge_order_no
                +"&application_order_no="+applicationOrderNo
                +"&status="+status2
-               +"&service_stamp_begin_time="+service_begin_stamp_begin_time
-               +"&service_stamp_end_time="+service_begin_stamp_end_time
                
+               +"&service_stamp_between="+service_stamp
+
                +"&create_stamp_begin_time="+begin_date_begin_time
                +"&create_stamp_end_time="+begin_date_end_time
                
