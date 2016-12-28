@@ -7,24 +7,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.ArapAccountAuditLog;
 import models.UserLogin;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
-import controllers.util.PermissionConstant;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -64,14 +60,14 @@ public class OrderStatusController extends Controller {
     			+ " WHERE joa.id = jor.id"
     			+ " ) charge_check_no,"
     			+ " ("
-    			+ " SELECT GROUP_CONCAT(CONCAT(cast(ach.id as char),':',ach.order_no,'-',ach.status) SEPARATOR '<br/>')"
+    			+ " SELECT GROUP_CONCAT(distinct CONCAT(cast(ach.id as char),':',ach.order_no,'-',ach.status) SEPARATOR '<br/>')"
     			+ " FROM arap_cost_order ach"
     			+ " LEFT JOIN arap_cost_item aci on aci.cost_order_id = ach.id"
     			+ " LEFT JOIN job_order_arap joa on joa.id = aci.ref_order_id"
     			+ " WHERE joa.id = jor.id"
     			+ " ) cost_check_no,"
     			+ " ("
-    			+ " SELECT GROUP_CONCAT(CONCAT(cast(chin.id as char),':',chin.order_no,'-',chin.status) SEPARATOR '<br/>')"
+    			+ " SELECT GROUP_CONCAT(distinct CONCAT(cast(chin.id as char),':',chin.order_no,'-',chin.status) SEPARATOR '<br/>')"
     			+ " FROM arap_charge_invoice chin"
     			+ " LEFT JOIN arap_charge_order ach on ach.invoice_order_id = chin.id"
     			+ " LEFT JOIN arap_charge_item aci on aci.charge_order_id = ach.id"
@@ -79,7 +75,7 @@ public class OrderStatusController extends Controller {
     			+ " WHERE joa.id = jor.id"
     			+ " ) charge_nvoice_no,"
     			+ " ("
-    			+ " SELECT GROUP_CONCAT(CONCAT(cast(app.id as char),':',app.order_no,'-',app.status) SEPARATOR '<br/>')"
+    			+ " SELECT GROUP_CONCAT(distinct CONCAT(cast(app.id as char),':',app.order_no,'-',app.status) SEPARATOR '<br/>')"
     			+ " FROM arap_charge_application_order app"
     			+ " LEFT JOIN charge_application_order_rel relf on relf.application_order_id = app.id"
     			+ " LEFT JOIN arap_charge_invoice acin on acin.id = relf.charge_order_id and relf.order_type = '应收开票单'"
@@ -90,7 +86,7 @@ public class OrderStatusController extends Controller {
     			+ " WHERE joa.id = jor.id"
     			+ " ) charge_app_no,"
     			+ " ("
-    			+ " SELECT GROUP_CONCAT(CONCAT(cast(app.id as char),':',app.order_no,'-',app.status) SEPARATOR '<br/>')"
+    			+ " SELECT GROUP_CONCAT(distinct CONCAT(cast(app.id as char),':',app.order_no,'-',app.status) SEPARATOR '<br/>')"
     			+ " FROM arap_cost_application_order app"
     			+ " LEFT JOIN cost_application_order_rel relf on relf.application_order_id = app.id"
     			+ " LEFT JOIN arap_cost_order ach on ach.id = relf.cost_order_id"
