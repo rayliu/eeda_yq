@@ -66,10 +66,11 @@ $(document).ready(function() {
             { "data": "CURRENCY_NAME",'class':'currency_name'},
             { "data": "TOTAL_AMOUNT",'class':'total_amount',
             	"render": function ( data, type, full, meta ) {
+            		var total_str=parseFloat(data).toFixed(2);
             		if(full.ORDER_TYPE=='cost'){
-	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            		return '<span style="color:red;">'+'-'+total_str+'</span>';
 	            	}
-                    return data;
+                    return total_str;
                   }
             },
             { "data": "EXCHANGE_RATE","visible":false},
@@ -91,13 +92,19 @@ $(document).ready(function() {
                   }
             },
             { "data": "EXCHANGE_CURRENCY_NAME"}, 
-            { "data": "EXCHANGE_CURRENCY_RATE"}, 
+            { "data": "EXCHANGE_CURRENCY_RATE",
+            	 "render": function ( data, type, full, meta ) {
+            		 var exchange_currency_str=parseFloat(data).toFixed(2);
+            		 return exchange_currency_str;
+            	 }
+            	 },
             { "data": "EXCHANGE_TOTAL_AMOUNT", 
                 "render": function ( data, type, full, meta ) {
+                	var exchange_tota_str=parseFloat(data).toFixed(2);
                     if(full.ORDER_TYPE=='cost'){
-                        return '<span style="color:red;">'+'-'+data+'</span>';
+                        return '<span style="color:red;">'+'-'+exchange_tota_str+'</span>';
                     }
-                    return data;
+                    return exchange_tota_str;
                   }
             },
             { "data": "VGM"},
@@ -244,6 +251,7 @@ $(document).ready(function() {
    $('#exchange').click(function(){
    	$(this).attr('disabled',true);
    	var rate = $('#exchange_rate').val();
+    var que_currency=$("#query_currency").val();
    	if(rate==''||isNaN(rate)){
    		$.scojs_message('请输入正确的汇率进行兑换', $.scojs_message.TYPE_ERROR);
    		return;
@@ -272,7 +280,12 @@ $(document).ready(function() {
                ex_currency_name:ex_currency_name}, function(data){
 	    	$('#exchange').attr('disabled',false);
 	    	var order_id = $('#order_id').val();
-	    	itemOrder.refleshTable(order_id,ids.toString());
+	    	 var url = "/chargeCheckOrder/tableList?order_id="+order_id
+	         +"&table_type=item"
+	         +"&query_currency="+que_currency;
+	         
+	         itemTable.ajax.url(url).load();
+//	    	itemOrder.refleshTable(order_id,ids.toString());
 	    	$.scojs_message('兑换成功', $.scojs_message.TYPE_OK);
            $('#cny').val((parseFloat(data.CNY)).toFixed(2));
            $('#usd').val((parseFloat(data.USD)).toFixed(2));
