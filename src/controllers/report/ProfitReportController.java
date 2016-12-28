@@ -7,25 +7,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.ArapAccountAuditLog;
 import models.UserLogin;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.profile.LoginUserController;
-import controllers.util.DbUtils;
-import controllers.util.PermissionConstant;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -70,7 +65,7 @@ public class ProfitReportController extends Controller {
             	end_date = "2037-12-31 23:59:59";
             }
             
-            group_condition = " cast(year(jo.create_stamp) as char)";
+            group_condition = " cast(year(jo.order_export_date) as char)";
         }else {
         	if(StringUtils.isNotEmpty(begin_date)){
             	begin_date = begin_date+"-01 00:00:00";
@@ -86,29 +81,29 @@ public class ProfitReportController extends Controller {
             
             if("season".equals(date_type)){
             	group_condition = " (case"
-            			+ " when cast(month(jo.create_stamp) as char)"
+            			+ " when cast(month(jo.order_export_date) as char)"
             			+ " between 1 and 3 "
-            			+ " then cast(CONCAT(year(jo.create_stamp),'-','第一季') as char)"
-            			+ " when cast(month(jo.create_stamp) as char)"
+            			+ " then cast(CONCAT(year(jo.order_export_date),'-','第一季') as char)"
+            			+ " when cast(month(jo.order_export_date) as char)"
             			+ " between 4 and 6 "
-            			+ " then cast(CONCAT(year(jo.create_stamp),'-','第二季') as char)"
-            			+ " when cast(month(jo.create_stamp) as char)"
+            			+ " then cast(CONCAT(year(jo.order_export_date),'-','第二季') as char)"
+            			+ " when cast(month(jo.order_export_date) as char)"
             			+ " between 7 and 9 "
-            			+ " then cast(CONCAT(year(jo.create_stamp),'-','第三季') as char)"
-            			+ " when cast(month(jo.create_stamp) as char)"
+            			+ " then cast(CONCAT(year(jo.order_export_date),'-','第三季') as char)"
+            			+ " when cast(month(jo.order_export_date) as char)"
             			+ " between 10 and 12 "
-            			+ " then cast(CONCAT(year(jo.create_stamp),'-','第四季') as char)"
+            			+ " then cast(CONCAT(year(jo.order_export_date),'-','第四季') as char)"
             			+ " end)";
             }else{
-            	group_condition = " cast(CONCAT(year(jo.create_stamp),'-',month(jo.create_stamp)) as char)";
+            	group_condition = " cast(CONCAT(year(jo.order_export_date),'-',month(jo.order_export_date)) as char)";
             }
             
         }
         
-        condition += " and jo.create_stamp between '"+begin_date+"' and '"+end_date+"' "; 
+        condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
         
         
-    	String sql = "select create_stamp,customer_id,"
+    	String sql = "select order_export_date,customer_id,"
     			+ " sum(ifnull(pieces,0)) pieces,"
     			+ " sum(ifnull(gross_weight,0)) gross_weight, "
     			+ " sum(ifnull(volume,0)) volume, "
@@ -126,7 +121,7 @@ public class ProfitReportController extends Controller {
     			+ " sum(ifnull(insurance_charge,0)) insurance_charge, "
     			+ " sum(ifnull(total_charge,0)) total_charge"
     			+ " from ("
-    			+ " select "+group_condition+" create_stamp, jo.customer_id, jo.pieces,"
+    			+ " select "+group_condition+" order_export_date, jo.customer_id, jo.pieces,"
     			+ " jo.gross_weight, jo.volume,p.abbr customer_name,"
     			+ " ( SELECT sum( ifnull( joa.currency_total_amount, 0 ) ) FROM job_order_arap joa"
     			+ " WHERE joa.order_type = 'cost' and joa.type = '海运'"
@@ -180,8 +175,8 @@ public class ProfitReportController extends Controller {
     			+ " WHERE jo.office_id="+office_id
     			+ condition
     			+ " )A where 1=1"
-    			+ " GROUP BY A.create_stamp,A.customer_id"
-    			+ " ORDER BY A.customer_id,A.create_stamp"
+    			+ " GROUP BY A.order_export_date,A.customer_id"
+    			+ " ORDER BY A.customer_id,A.order_export_date"
     			+ "  ";
     	
     	//String condition = DbUtils.buildConditions(getParaMap());

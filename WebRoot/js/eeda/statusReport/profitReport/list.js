@@ -9,7 +9,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对
           ajax: "/profitReport/list",
           columns: [
-              { "data": "CREATE_STAMP" },
+              { "data": "ORDER_EXPORT_DATE" },
               { "data": "CUSTOMER_NAME"},
               { "data": "PIECES"}, 
               { "data": "GROSS_WEIGHT"}, 
