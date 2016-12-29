@@ -15,9 +15,9 @@ $(document).ready(function() {
             			return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
             	 }
             },
-            {"data":"ORDER_TYPE"},
-            {"data":"STATUS"},    
-            {"data":"CHARGE_ORDER_NO"},
+            {"data":"STATUS"},
+            {"data":"PAYEE_COMPANY"}, 
+            {"data":"PAYEE_NAME"},
             {"data":"SERVICE_STAMP","width":"80px"},
             {"data":"MODAL_CNY",'class':'cny',
             	"render": function(data, type, full, meta) {
@@ -51,8 +51,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"PAYEE_COMPANY"},  
-            {"data":"PAYEE_NAME"},
+            {"data":"CHARGE_ORDER_NO"},
             {"data":"PAYMENT_METHOD",
                 "render": function(data, type, full, meta) {
                     if(data == 'cash'){
@@ -92,6 +91,7 @@ $(document).ready(function() {
         				return '';
     			}
         	},
+        	{"data":"ORDER_TYPE"},
             {"data":"REMARK"}
 		]      
     });

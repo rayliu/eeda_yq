@@ -9,28 +9,28 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对 
           ajax: "/chargeBalanceReport/list",
           columns: [
-      			{ "data": "ORDER_NO", "width": "100px",
-			    	  "render": function ( data, type, full, meta ) {
-	                      return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
-	                  }
+      			{ "data": "ABBR_NAME", "width": "100px"},
+	            { "data": "CURRENCY", "width": "100px"},
+	            {
+					"render": function(data, type, full, meta) {
+						return parseFloat(full.CHARGE_TOTAL - full.CHARGE_CONFIRM).toFixed(2);
+					}
+				},
+	            { "data": "CHARGE_CONFIRM", "width": "100px",
+					"render": function(data, type, full, meta) {
+						return parseFloat(data).toFixed(2);
+					}
 	            },
-	            { "data": "CREATE_STAMP", "width": "100px"},
-	            { "data": "CUSTOMER_NAME", "width": "100px"},
-	            { "data": "BILL_FLAG", "width": "60px",
-	                "render": function ( data, type, full, meta ) {
-	                		if(data){
-	      	            		if(data != 'Y')
-	      				    		    return '未创建对账单';
-	      				    	   else 
-	      				    		  return '已创建对账单';
-	                  	}else{
-	                			return '';
-	                	}
-	    			}
+	            { "data": "CHARGE_TOTAL", "width": "100px",
+	            	"render": function(data, type, full, meta) {
+						return parseFloat(data).toFixed(2);;
+					}
 	            },
-	            { "data": "TYPE", "width": "60px"},
-	            { "data": "CURRENCY_NAME", "width": "60px" },
-	            
+	            {
+					"render": function(data, type, full, meta) {
+						return ((parseFloat(full.CHARGE_CONFIRM / full.CHARGE_TOTAL).toFixed(4))*100).toFixed(2);
+					}
+				}
 	          ]
 	      });
 
