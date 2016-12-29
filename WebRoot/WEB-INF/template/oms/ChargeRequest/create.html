@@ -32,7 +32,11 @@
 										}){}%>
 								</div>
 								<%include("/eeda/component/form/inputDateQueryField.html", { id:'check_time',
-											label:'业务发生月', begin_value:order.begin_time!'', end_value:order.end_time!'', disabled: 'disabled' 
+											label:'业务发生月', 
+												begin_value:order.begin_time!'', 
+												end_value:order.end_time!'', 
+												disabled: 'disabled',
+												required:'required'
 											}){}%>
 								
                             </div>
