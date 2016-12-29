@@ -54,11 +54,21 @@ $(document).ready(function() {
 	
     //申请保存
 	$("#createSave").on('click',function(){
+	
 		$("#createSave").attr("disabled", true);
+		if($('#check_time_begin_time').val()==""||$('#check_time_end_time').val()==""){
+				$.scojs_message('业务发生月不能为空', $.scojs_message.TYPE_FALSE);
+				$("#createSave").attr("disabled", false);
+				return false;
+				
+		}
+		
 		if($("#payment_method").val()=='transfers'||$("#payment_method").val()=='checkTransfers'){
 			if($("#deposit_bank").val()=='' && $("#account_no").val()==''&& $("#account_name").val()==''){
 				$.scojs_message('转账的信息不能为空', $.scojs_message.TYPE_FALSE);
+				$("#createSave").attr("disabled", false);
 				return false;
+				
 			}
 		}
 		
@@ -84,7 +94,7 @@ $(document).ready(function() {
 				$.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
 			}
 		 },'json').fail(function() {
-	            $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+	            $.scojs_message('创建新申请失败', $.scojs_message.TYPE_ERROR);
 	            $('#saveBtn').attr('disabled', false);
 	        });
 	});
