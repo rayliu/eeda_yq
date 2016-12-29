@@ -310,6 +310,7 @@ public class ChargeCheckOrderController extends Controller {
 			}else{				
 			sql = " select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
 					+" aco.order_no check_order_no, jo.id job_order_id, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
+					+ " jo.ref_no ref_no,"
 						+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
 						+" ifnull((select rc.new_rate from rate_contrast rc"
 						    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
