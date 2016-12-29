@@ -64,7 +64,7 @@ public class CostReuqestrController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String sql = " select * from ("
-        		+ " select  aco.*, p.company_name sp_name, "
+        		+ " select  aco.*, p.abbr sp_name, "
         		+ " sum(ifnull(c.pay_amount,0)) paid_amount,"
         		+ " sum(ifnull(c.paid_usd,0)) paid_usd,"
         		+ " sum(ifnull(c.paid_cny,0)) paid_cny,"
@@ -103,7 +103,7 @@ public class CostReuqestrController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String sql = " select * from ("
-        				+"select  aco.*, p.company_name sp_name, "
+        				+"select  aco.*, p.abbr sp_name, "
         				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_cost_item aci on joa.id = aci.ref_order_id"
         				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =3 and aci.cost_order_id=aco.id"
         				+" ),0) paid_cny,"
