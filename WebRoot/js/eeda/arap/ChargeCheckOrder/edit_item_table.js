@@ -176,7 +176,7 @@ $(document).ready(function() {
    //全选
    $('#allcheck').click(function(){
   	 var f = false;
-	   	 var flag = 0;
+	 var flag = 0;//当第一个币制名与下个币制名不同时，flag
 	 	   $("#eeda-table .checkBox").each(function(){
 	 		  var currency_name = $(this).parent().siblings('.currency_name')[0].textContent;
 	 		  if(cnames[0]==undefined){
@@ -211,8 +211,9 @@ $(document).ready(function() {
 	 	    	 $("#eeda-table .checkBox").each(function(){
 	 	    		 var id = $(this).parent().parent().attr('id');
 	 	    		 var currency_name = $(this).parent().siblings('.currency_name')[0].textContent;
-	 	    		 ids.pop(id);
-	 	    		cnames.pop(currency_name);
+	 	    		 ids.splice(0,ids.length);
+	 	    		cnames.splice(0,cnames.length);
+	 	    		//cnames.pop(currency_name);
 	 	    	 })
   		 }
   	 }
