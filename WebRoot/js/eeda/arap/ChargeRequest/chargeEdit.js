@@ -97,7 +97,7 @@ $(document).ready(function() {
 		order.item_list = buildItem();
 		order.selected_item_ids=$("#selected_ids").val();
 		order.ids=$('#ids').val();
-		$.get('/chargeRequest/save',{params:JSON.stringify(order)}, function(data){
+		$.post('/chargeRequest/save',{params:JSON.stringify(order)}, function(data){
 			$("#saveBtn").attr("disabled", false);
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
