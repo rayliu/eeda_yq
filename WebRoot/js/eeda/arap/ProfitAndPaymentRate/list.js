@@ -30,6 +30,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					"render": function(data, type, full, meta) {
 						return ((parseFloat(full.CHARGE_CONFIRM / full.CHARGE_TOTAL).toFixed(4))*100).toFixed(2);
 					}
+				},
+				{
+					"render": function(data, type, full, meta) {
+						return (0*100).toFixed(2);
+					}
+				},
+				{
+					"render": function(data, type, full, meta) {
+						return (0*100).toFixed(2);
+					}
+				},
+				{
+					"render": function(data, type, full, meta) {
+						return (0*100).toFixed(2);
+					}
+				},
+				{
+					"render": function(data, type, full, meta) {
+						return (0*100).toFixed(2);
+					}
 				}
 	          ]
 	      });
@@ -44,8 +64,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       })
 
      var searchData=function(){
-          var sp = $("#customer").val();
-          var abbr_name=$('#customer_input').val();
+          var customer = $("#customer").val(); 
           var service_stamp_between = $("#service_stamp").val();
           /*  
               查询规则：参数对应DB字段名
@@ -54,9 +73,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/chargeBalanceReport/list?sp="+customer
-          				+"&abbr_name="+abbr_name
-		                +"&service_stamp_between="+service_stamp_between;
+          var url = "/chargeBalanceReport/list?abbr_name="+customer
+		               +"&service_stamp_between="+service_stamp_between;
           dataTable.ajax.url(url).load();
       };
   });
