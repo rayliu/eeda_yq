@@ -15,9 +15,41 @@ $(document).ready(function() {
             			return "<a href='/costRequest/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
             	 }
             },
-            {"data":"ORDER_TYPE"},
+            
             {"data":"STATUS"},    
-            {"data":"COST_ORDER_NO"},
+            {"data":"PAYEE_COMPANY"},
+            {"data":"BILL_TYPE",
+            	"render": function(data,type,full,mate){
+            		var strBillType = "无发票";
+	        		if(data=="ordinarybill"){
+	        			strBillType="增值税普通发票";
+	        		}else if(data=="specialbill"){
+	        			strBillType="增值税专用发票";
+	        		}else if(data=="dbill"){
+	        			strBillType="代开发票(垫付款)";
+	        		}else if(data=="HKINVbill"){
+	        			strBillType="HK INV";
+	        		}
+	        			
+	        		return strBillType;
+        		}	
+            },
+            {"data":"FEE_TYPE",
+            	"render": function(data,type,full,mate){
+        		var strFeeType = "";
+        		if(data=="transFee"){
+        			strFeeType="代理货运服务费";
+        		}else if(data=="customFee"){
+        			strFeeType="代理报关服务费";
+        		}else if(data=="consultFee"){
+        			strFeeType="咨询服务费";
+        		}else if(data=="internationalFee"){
+        			strFeeType="国际货代服务费";
+        		}
+        			
+        		return strFeeType;
+    			}	
+            },
             {"data":"SERVICE_STAMP","width":"80px"},
             {"data":"MODAL_CNY",'class':'cny',
             	"render": function(data, type, full, meta) {
@@ -51,8 +83,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
-            {"data":"PAYEE_COMPANY"},  
-            {"data":"PAYEE_NAME"},
+            {"data":"COST_ORDER_NO"},
             {"data":"PAYMENT_METHOD",
             	"render": function(data, type, full, meta) {
                     if(data == 'cash'){
@@ -91,7 +122,8 @@ $(document).ready(function() {
         				return '';
     			}
         	},
-            {"data":"REMARK"}
+        	{"data":"ORDER_TYPE"},
+            {"data":"INVOICE_NO"}
 		]      
     });
 
@@ -138,32 +170,6 @@ $(document).ready(function() {
     
     
       
-      //查询待申请单
-	$('#searchBtn').click(function(){
-  	    searchData(); 
-	})
-	$('#resetBtn').click(function(e){
-	  	$("#costAcceptForm")[0].reset();
-  	});
-	
-	
-	var searchData=function(){
-		var sp = $("#sp").val(); 
-	    var order_no = $("#orderNo_filter1").val().trim(); 
-	    var status = $('#status_filter1').val();
-	    var orderType = $('#orderType').val();
-	    var start_date = $("#create_stamp_begin_time").val();
-	    var end_date = $("#create_stamp_end_time").val();
-   
-        var url = "/costAcceptOrder/list?sp_id="+sp
-      	   +"&order_no="+order_no
-           +"&status="+status
-           +"&order_type="+orderType
-           +"&create_stamp_begin_time="+start_date
-           +"&create_stamp_end_time="+end_date;
-
-        costAccept_table.ajax.url(url).load();
-    };
       
       //查询已申请单
     $('#searchBtn1').click(function(){
@@ -176,6 +182,7 @@ $(document).ready(function() {
       
 	var searchData1=function(){
     	  var sp_id = $('#sp_id').val();
+    	  var payee_company = $('#sp_id_input').val().trim();
     	  var cost_order_no = $('#orderNo').val().trim();  
           var applicationOrderNo = $('#applicationOrderNo').val();
           var status2 = $("#status2").val();
@@ -192,7 +199,9 @@ $(document).ready(function() {
           var confirmBegin_date_end_time = $('#confirmBegin_date_end_time').val();
    
           var url = "/costRequest/applicationList?sp_id="+sp_id
+        	   +"&payee_company_equals="+payee_company
                +"&cost_order_no="+cost_order_no
+               
                +"&application_order_no="+applicationOrderNo
                +"&status="+status2
                

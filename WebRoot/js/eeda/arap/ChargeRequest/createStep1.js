@@ -33,7 +33,7 @@
 				        
 				    }
 				},
-				{"data":"ORDER_NO",
+				{"data":"ORDER_NO","width":"90px",
 					"render": function(data, type, full, meta) {
 						return "<a href='/chargeCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
 					}
@@ -41,7 +41,7 @@
 				{"data":"ORDER_TYPE","class":"order_type","width":"60px"},   
 				{"data":"STATUS","width":"30px"},
 				{"data":"SP_NAME","sClass":"SP_NAME","width":"60px"},
-				{"data":"APP_MSG"},
+				{"data":"APP_MSG","width":"120px"},
 				{"data":"CNY","width":"70px",
 					"render":function(data,type,full,meta){
 						if(data==''){

@@ -47,7 +47,8 @@ $(document).ready(function() {
         		}
         			
         		return strFeeType;
-    		}	},
+    			}	
+            },
             {"data":"SERVICE_STAMP","width":"80px"},
             {"data":"MODAL_CNY",'class':'cny',
             	"render": function(data, type, full, meta) {
@@ -122,7 +123,7 @@ $(document).ready(function() {
     			}
         	},
         	{"data":"ORDER_TYPE"},
-            {"data":"REMARK"}
+            {"data":"INVOICE_NO"}
 		]      
     });
     

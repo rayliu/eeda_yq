@@ -29,10 +29,10 @@
 									<div class="form-group">
 										<label class="search-label">状态</label>
 										<select id="status2" class="form-control search-control status2">
-											<option value=""></option>
 											<option value="新建">新建</option>
 											<option value="已复核">已复核</option>
 											<option value="已付款">已付款</option>
+											<option value=""></option>
 										</select>
 									</div>
 								</div>
@@ -68,25 +68,26 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'application_table',
-                                    style:'width:1800px',
+                                    style:'width:2000px',
                                     headers:[
                                     '申请单号',
-                                    '单据类型',
                                     '状态',
-                                    '业务单号',
+                                    '付款对象',
+                                    '发票类型',
+                                    '项目',
                                     '业务发生月',
                                     '申请付款(CNY)',
                                     '申请付款(USD)',
                                     '申请付款(JPY)',
                                     '申请付款(HKD)',
-                                    '付款对象',
-                                    '付款人',
+                                    '业务单号',
                                     '付款方式',
                                     '创建人',
                                     '创建时间',
                                     '复核时间',
                                     '付款时间',
-                                    '备注'
+                                    '单据类型',
+                                    '发票信息'
                                     ]
                                 }){} %>
 				

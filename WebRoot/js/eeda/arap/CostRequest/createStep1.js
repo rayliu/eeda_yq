@@ -20,16 +20,16 @@
 				        
 				    }
 				},
-				{"data":"ORDER_NO",
+				{"data":"ORDER_NO","width":"90px",
 					"render": function(data, type, full, meta) {
 						return "<a href='/costCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
 					}
 				},
-				{"data":"ORDER_TYPE","class":"order_type"},   
-				{"data":"STATUS"},
-				{"data":"SP_NAME","sClass":"SP_NAME"},
-				{"data":"APP_MSG"},
-				{"data":"CNY",
+				{"data":"ORDER_TYPE","class":"order_type","width":"60px"},   
+				{"data":"STATUS","width":"30px"},
+				{"data":"SP_NAME","sClass":"SP_NAME","width":"60px"},
+				{"data":"APP_MSG","width":"120px"},
+				{"data":"CNY","width":"70px",
 					"render":function(data,type,full,meta){
 						if(data==''){
 							data=0.00;
@@ -37,7 +37,7 @@
 						return parseFloat(data).toFixed(2);
 					}
 				},
-				{"data":"PAID_CNY",
+				{"data":"PAID_CNY","width":"70px",
 					"render": function(data, type, full, meta) {
 							if(data==''){
 								data=0.00;
@@ -45,12 +45,12 @@
 							return parseFloat(data).toFixed(2);
 					}
 				},
-				{
+				{	"width":"70px",
 					"render": function(data, type, full, meta) {
 						return parseFloat(full.CNY - full.PAID_CNY).toFixed(2);	
 					}
 				},
-				{"data":"USD",
+				{"data":"USD","width":"70px",
 					"render": function(data, type, full, meta) {
 						if(data==''){
 							data=0.00;
@@ -58,7 +58,7 @@
 							return parseFloat(data).toFixed(2);	
 					}
 				},
-				{"data":"PAID_USD",
+				{"data":"PAID_USD","width":"70px",
 					"render": function(data, type, full, meta) {
 						if(data==''){
 							data=0.00;
@@ -66,12 +66,12 @@
 							return parseFloat(data).toFixed(2);	
 					}
 				},
-				{
+				{	"width":"70px",
 					"render": function(data, type, full, meta) {
 						return parseFloat(full.USD - full.PAID_USD).toFixed(2);	
 					}
 				},
-				{"data":"JPY",
+				{"data":"JPY","width":"70px",
 					"render": function(data, type, full, meta) {
 						if(data==''){
 							data=0.00;
@@ -79,7 +79,7 @@
 							return parseFloat(data).toFixed(2);	
 					}
 				},
-				{"data":"PAID_JPY",
+				{"data":"PAID_JPY","width":"70px",
 					"render": function(data, type, full, meta) {
 						if(data==''){
 							data=0.00;
@@ -87,12 +87,12 @@
 							return parseFloat(data).toFixed(2);	
 					}
 				},
-				{
+				{	"width":"70px",
 					"render": function(data, type, full, meta) {
 						return parseFloat(full.JPY - full.PAID_JPY).toFixed(2);	
 					}
 				},
-				{"data":"HKD",
+				{"data":"HKD","width":"70px",
 					"render": function(data, type, full, meta) {
 						if(data==''){
 							data=0.00;
@@ -100,7 +100,7 @@
 							return parseFloat(data).toFixed(2);	
 					}
 				},  
-				{"data":"PAID_HKD",
+				{"data":"PAID_HKD","width":"70px",
 					"render": function(data, type, full, meta) {
 						if(data==''){
 							data=0.00;
@@ -108,7 +108,7 @@
 							return parseFloat(data).toFixed(2);	
 					}
 				}, 
-				{
+				{	"width":"70px",
 					"render": function(data, type, full, meta) {
 						return parseFloat(full.HKD - full.PAID_HKD).toFixed(2);	
 					}
