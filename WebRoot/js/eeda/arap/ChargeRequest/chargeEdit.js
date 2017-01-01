@@ -345,6 +345,13 @@ $(document).ready(function() {
     
     
     
+    if($('#order_id')!=""){
+    	var itemTable = $('#select_item_table').dataTable();
+    	itemTable.fnSetColumnVis(1, false);
+    	itemTable.fnSetColumnVis(2, false);
+    }
+    
+
 	$('#chargeAccept_table').on('click , input[type="checkbox"]',function(){
 		var idsArray=[];
       	$('#chargeAccept_table input[type="checkbox"]:checked').each(function(){

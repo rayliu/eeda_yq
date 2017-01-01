@@ -1,4 +1,4 @@
-﻿define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+﻿define(['jquery','metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
     
 
         var itemTable = eeda.dt({

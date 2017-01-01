@@ -23,9 +23,7 @@
 											{ id:'sp_id', 
 											label:'结算公司', 
 											value: '' }){} %>
-									<%include("/eeda/component/form/inputField.html", { id:'payee_name',
-											label:'收款人', value:order.payee_name!''
-											}){}%>
+									
                             </div>
                             
                         <div class="col-lg-4">
@@ -41,11 +39,6 @@
 	                                    <option value="HKINVbill" <% if(order.bill_type!''=='HKINVbill'){%>selected<%}%>>HK INV</option>
                                     </select>
                             </div>
-                            <div id="invoiceDiv">
-			                        <%include("/eeda/component/form/inputField.html", { id:'billing_unit',
-									label:'开票单位', value:order.billing_unit!''
-									}){}%>
-							</div>
 							<%include("/eeda/component/form/inputDateQueryField.html", { id:'check_time',
 											label:'业务发生月', 
 											begin_value:order.begin_time!'', 
