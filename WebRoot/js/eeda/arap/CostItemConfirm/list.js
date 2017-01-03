@@ -62,6 +62,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
+          
+          var order_export_date_begin_time = $("#order_export_date_begin_time").val();
+          var order_export_date_end_time = $("#order_export_date_end_time").val();
+          
           var customer = $("#customer").val(); 
           var sp = $("#sp").val(); 
           var start_date = $("#create_stamp_begin_time").val();
@@ -75,6 +79,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               时间字段需成双定义  *_begin_time *_end_time   between
           */
           var url = "/costConfirmList/list?order_no="+order_no
+          			   +"&order_export_date_begin_time="+order_export_date_begin_time
+          			   +"&order_export_date_end_time="+order_export_date_end_time
 			           +"&customer_id="+customer
 			           +"&sp_id="+sp
 		               +"&create_stamp_begin_time="+start_date
