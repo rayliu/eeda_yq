@@ -5,7 +5,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	
       var dataTable = eeda.dt({
           id: 'eeda_table',
-          paging: true,
           serverSide: false, //不打开会出现排序不对 
           ajax: "/costConfirmList/list?audit_flag="+$("#audit_flag").val(),
           columns: [
@@ -81,6 +80,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       };
       
       
+      
+      
+      
+      
+      
+      
       //全选
       $('#AllCheck').click(function(){
 	      	$(".checkBox").prop("checked",this.checked);
@@ -93,6 +98,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $("#eeda_table").on('click','.checkBox',function(){
 		  $("#AllCheck").prop("checked",$(".checkBox").length == $(".checkBox:checked").length ? true : false);
       });
+      
+      
+      
 
       	//checkbox选中则button可点击
 		$('#eeda_table').on('click','.checkBox',function(){
@@ -110,6 +118,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				$('#confirmBtn').attr('disabled',true);
 			}
 		});
+		//确认费用
 		$('#confirmBtn').click(function(){
 			$('#confirmBtn').attr('disabled',true);
         	var itemIds=[];
