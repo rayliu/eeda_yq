@@ -1,0 +1,47 @@
+html, body,.container {height: 100%; }
+
+.login_back_half_up{
+    height: 40%;
+    background-color: #fff;
+}
+
+.login_back_half_down{
+    height: 54%;
+    background-color: #DAE000;
+}
+
+.login_back_footer{
+    height: 35px;
+    background-color: #005BAC;
+}
+
+.login_form{
+    width: 280px;
+    height: 280px;
+    background-color: #fff;
+    box-shadow: 0px 0px 20px 3px #898989;
+    border-radius: 15px;
+    margin-right: 90px;
+    float: right;
+    margin-top: -110px;
+}
+
+.login_form_eng_title{
+    margin-top: 40px;
+    margin-left: 15px;
+    color: #005BAC;
+    font-size: 15px;
+}
+
+.login_form_cn_title{
+    margin-top: 7px;
+    margin-left: 15px;
+    color: #005BAC;
+    font-size: 15px;
+}
+.login_form form{
+    margin-top: 34px;
+}
+.login_form .btn{
+    background-color: #DAE000;
+}

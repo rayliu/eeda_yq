@@ -21,10 +21,47 @@
     <link href="/yh/css/bootstrap.min.css" rel="stylesheet">
     <link href="/yh/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="/yh/css/sb-admin.css" rel="stylesheet">
-
+    <link href="/css/simple.css" rel="stylesheet">
 </head>
 
-<body style="background-image:url(<% if(SYS_CONFIG.login_bg=="")%>/upload/bg-1.jpg<%else%>${SYS_CONFIG.login_bg!''});background-repeat : no-repeat;background-size: 100%;">
+<body>
+    <section class="login_back_half_up">
+        <div>
+            
+        </div>
+    </section>
+    <section class="login_back_half_down">
+        <div class="login_form">
+            <div class="login_form_eng_title">
+                Esimplev Supply Management
+            </div>
+            <div class="login_form_cn_title">
+                检单供应链管理平台
+            </div>
+            <form>
+                <fieldset>
+                    <div class="form-group" >
+                        <input class="form-control" placeholder="用户名" id="username" name="username" type="text" autofocus value="" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="用户密码" id="password" name="password" type="password" value="">
+                    </div>
+                    <br/><br/>
+                    <!--div class="checkbox">
+                        <label>
+                            <input name="remember" type="checkbox" value="Y">下次自动登录
+                        </label>
+                         <span id="qqLoginBtn"></span>
+                    </div-->
+                    <button type="submit" class="btn btn-lg btn-success btn-block">登录</button>
+                   
+                </fieldset>
+            </form>
+        </div>
+    </section>
+    <section class="login_back_footer">
+        
+    </section>
 
     <div class="container" >
         <div class="row">
