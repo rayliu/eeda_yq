@@ -21,6 +21,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
                 }
 			},
+			{ "data": "ORDER_EXPORT_DATE", "width": "100px"},
             { "data": "CREATE_STAMP", "width": "100px"},
             { "data": "AUDIT_FLAG", "width": "60px",
             	"render": function ( data, type, full, meta ) {
@@ -41,7 +42,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "CURRENCY_NAME", "width": "60px"},
             { "data": "EXCHANGE_RATE", "width": "60px"},
             { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
+            { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px"},
+            { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px" },
+            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px",
+            		
+            },
             { "data": "REMARK", "width": "180px"},
           ]
       });
@@ -78,11 +83,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
           dataTable.ajax.url(url).load();
       };
-      
-      
-      
-      
-      
       
       
       
