@@ -1,18 +1,91 @@
-html, body,.container {height: 100%; }
+html, body,.container {height: 100%; background-color: #fff;}
 
 .login_back_half_up{
     height: 40%;
     background-color: #fff;
 }
 
-.login_back_half_down{
-    height: 54%;
+.login_logo{
+    margin-top: 55px;
+    margin-left: 90px;
+    height: 50px;
+    width: 250px;
+    background: url(/images/simple/logo_50.png) no-repeat;
+    background-color: #fff;
+    display: inline-block;
+    //border: solid 1px red;
+}
+
+.login_slogan{
+    margin-left: 23%;
+    margin-top: 55px;
+    height: 25px;
+    width: 220px;
+    background: url(/images/simple/slogan_13px.png) no-repeat;
+    background-color: #fff;
+    display: inline-block;
+    //border: solid 1px red;
+}
+.login_langs{
+    margin-top: 75px;
+    display: inline-block;
+    float: right;
+    height: 13px;
+    padding-right: 90px;
+}
+.login_langs{
+    margin-top: 75px;
+    display: inline-block;
+    float: right;
+    height: 13px;
+    padding-right: 90px;
+}
+
+.simple_btn{
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 2px 15px;
+    border-radius: 15px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.simple_btn.active{
     background-color: #DAE000;
 }
 
+.login_back_half_down{
+    height: 60%;
+    background-color: #DAE000;
+}
+.login_half_down_icons{
+    padding-top: 50px;
+    margin-left: 90px;
+    z-index: 2;
+}
+.login_half_down_icons img{
+    height: 50px;
+    padding-right: 50px;
+}
+
 .login_back_footer{
+    position:relative;
     height: 35px;
+    margin-top: -35px;
     background-color: #005BAC;
+    text-align:center;
+    padding: 10px;
+    color: white;
 }
 
 .login_form{
@@ -23,7 +96,8 @@ html, body,.container {height: 100%; }
     border-radius: 15px;
     margin-right: 90px;
     float: right;
-    margin-top: -110px;
+    margin-top: -200px;
+    z-index: 200;
 }
 
 .login_form_eng_title{
@@ -40,8 +114,30 @@ html, body,.container {height: 100%; }
     font-size: 15px;
 }
 .login_form form{
-    margin-top: 34px;
+    margin-top: 30px;
+
 }
+
+.login_form form .form-group{
+    margin: 0 15px 10px 15px;
+}
+
+.login_form form .form-control{
+    border-radius: 0px;
+    height: 25px;
+    font-size: 10px;
+    padding: 6px 8px;
+}
+
 .login_form .btn{
     background-color: #DAE000;
+    border-radius: 0px;
+    height: 25px;
+    width: 100%;
+    color: #005BAC;
+    padding: 0 0;
+}
+
+.login_form form a{
+    padding-right: 15px;
 }
