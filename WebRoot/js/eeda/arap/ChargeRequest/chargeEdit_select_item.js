@@ -9,19 +9,9 @@
             },
             columns:[
                 { "data": "ID", visible: false},
-                { "data": "PAY_FLAG",
+                { "data": null,
                     "render": function ( data, type, full, meta ) {
-                        var payFlag =  full.PAY_FLAG;
-                        var createFlag =  full.CREATE_FLAG;
-                        
-                        str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px">';
-                        if('Y' == payFlag){
-                        	if(createFlag=='Y'){
-                        		str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked disabled>';
-                        	}else{
-                        		str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked>';
-                        	}
-                        }
+                        var str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked>';
                         return str;
                     }
                 },
@@ -127,10 +117,15 @@
             var USD_cost=0, USD_charge=0;
             var HKD_cost=0, HKD_charge=0;
             var JPY_cost=0, JPY_charge=0;
+
+            //data table data 对象
             itemTable.data().each(function(item, index) {
-                if(item.PAY_FLAG == 'N')
+                //dom 对象的checkbox 是否勾上了？
+                var id = item.ID;
+
+                if(!$('#checkbox_'+id).prop('checked'))
                     return;
-                
+
                 if(item.ORDER_TYPE == 'cost'){
                     if(item.EXCHANGE_CURRENCY_NAME=='CNY'){
                         CNY_cost+=item.EXCHANGE_TOTAL_AMOUNT;

@@ -1,4 +1,4 @@
-﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './chargeEdit_select_item', './edit_doc_table','dataTablesBootstrap', 
+﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './chargeEdit_select_item','dataTablesBootstrap', 
         'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
 	document.title = '收款申请单 | '+document.title;
@@ -241,17 +241,13 @@ $(document).ready(function() {
 	        var table = $('#select_item_table').DataTable();
 	        var row = $(this).parent().parent();
 	        var cell = table.cell($(this).parent());//  td
-	        var pay_flag='N';
-	        if($(this).prop('checked')==true){
-	            pay_flag='Y';
-	        }
-	        //注意 - call draw() 更新table.data()中的数据
-	        cell.data(pay_flag).draw();
+	        
 	        selectContr.calcTotal();
 
 	        var selected_ids=[];
 	        table.data().each(function(item, index) {
-	            if(item.PAY_FLAG == 'N')
+				var id=item.ID;
+	            if(!$('#checkbox_'+id).prop('checked'))
 	                return;
 	            selected_ids.push(item.ID);
 	        });
