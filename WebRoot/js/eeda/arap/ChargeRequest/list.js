@@ -310,7 +310,5 @@ $(document).ready(function() {
       	
       	$('#billForm').submit();
 	})
-      
-	refreshData();
 });
 });
