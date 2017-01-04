@@ -9,7 +9,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对 
           ajax: "/chargeBalanceReport/list",
           columns: [
-      			{ "data": "ABBR_NAME", "width": "100px"},
+      			{ "data": "ABBR", "width": "100px"},
 	            { "data": "CURRENCY", "width": "100px"},
 	            {
 					"render": function(data, type, full, meta) {
@@ -55,7 +55,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               时间字段需成双定义  *_begin_time *_end_time   between
           */
           var url = "/chargeBalanceReport/list?sp="+customer
-          				+"&abbr_name="+abbr_name
+          				+"&abbr_equals="+abbr_name
 		                +"&service_stamp_between="+service_stamp_between;
           dataTable.ajax.url(url).load();
       };

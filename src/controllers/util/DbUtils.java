@@ -52,7 +52,7 @@ public class DbUtils {
             		continue;
             	}else if(key.endsWith("_between")){
             		key = key.replaceAll("_between", "");
-            		condition += "and ('"+filterValue+"'>=begin_time and '"+filterValue+"' <=end_time)";
+            		condition += " and ('"+filterValue+"'>=begin_time and '"+filterValue+"' <=end_time)";
             		logger.debug("condition: "+condition);
             		continue;
             	}
