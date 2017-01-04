@@ -457,6 +457,20 @@ $(document).ready(function() {
     		var url = "/jobOrder/tableListOfLandCharge?order_id="+order_id+"&land_item_id="+land_item_id;
         	chargeTable.ajax.url(url).load();
         	$('#land_charge_table_msg_btn').click();
+        	
+        	//费用明细确认按钮动作
+            $("#land_charge_table").on('click', '.chargeConfirm', function(){
+            	var id = $(this).parent().parent().parent().attr('id');
+            	$.post('/jobOrder/feeConfirm',{id:id},function(data){
+            		var url = "/jobOrder/tableListOfLandCharge?order_id="+order_id+"&land_item_id="+land_item_id;
+                	chargeTable.ajax.url(url).load();
+            		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+            		itemOrder.refleshChargeTable(order_id);
+            	},'json').fail(function() {
+                    $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+               });
+               
+            });
     })
     
   //数量和单价自动补零
@@ -518,6 +532,7 @@ $(document).ready(function() {
 				cnames.pop(cname);
 		 }
 	 });
+
 	
 	
 	//全选
