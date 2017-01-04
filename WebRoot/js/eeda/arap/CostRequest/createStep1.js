@@ -27,7 +27,7 @@
 				},
 				{"data":"ORDER_TYPE","class":"order_type","width":"60px"},   
 				{"data":"STATUS","width":"30px"},
-				{"data":"SP_NAME","sClass":"SP_NAME","width":"60px"},
+				{"data":"SP_NAME","class":"sp_name","width":"60px"},
 				{"data":"APP_MSG","width":"120px"},
 				{"data":"CNY","width":"70px",
 					"render":function(data,type,full,meta){
@@ -273,18 +273,17 @@
 	
 	$('#costAccept_table').on('click','.checkBox',function(){
 		var hava_check = 0;
-		var payee_names = '';
+		var sp_names = '';
 		var self = this;
 		$('#costAccept_table input[type="checkbox"]').each(function(){	
-			var checkbox = $(this).prop('checked');
-			var payee_name = $(this).parent().parent().find('.payee_name').text();
-    		if(checkbox){
-    			if(payee_name != payee_names && payee_names != ''){
-    				$.scojs_message('请选择同一个收款对象', $.scojs_message.TYPE_ERROR);
+			var sp_name = $(this).parent().parent().find('.sp_name').text();
+    		if($(this).prop('checked')){
+    			if(sp_name != sp_names && sp_names != ''){
+    				$.scojs_message('请选择同一个付款对象', $.scojs_message.TYPE_ERROR);
     				$(self).attr('checked',false);
     				return false;
     			}else{
-    				payee_names = payee_name;
+    				sp_names = sp_name;
     				hava_check++;
     			}
     		}	
@@ -293,7 +292,7 @@
 			$('#createBtn').attr('disabled',false);
 		}else{
 			$('#createBtn').attr('disabled',true);
-			var payee_names = '';
+			var sp_names = '';
 		}
 	});
 	
