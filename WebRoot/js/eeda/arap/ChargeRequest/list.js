@@ -12,7 +12,7 @@ $(document).ready(function() {
 		  columns: [
 		    {"data":"APPLICATION_ORDER_NO",
             	 "render": function(data, type, full, meta) {
-            			return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+            			return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
             	 }
             },
             {"data":"STATUS"},
@@ -165,15 +165,42 @@ $(document).ready(function() {
     
       
       //查询已申请单
-    $('#searchBtn1').click(function(){
-    		searchData1(); 
-    })
-       
-	$('#resetBtn1').click(function(e){
-    	 $("#applicationForm")[0].reset();
-	});
-	var searchData1=function(){
-    	  var sp_id = $('#sp_id').val();
+    $("#searchBtn1").click(function(){
+        refreshData();
+    });
+
+    $("#resetBtn1").click(function(){
+        $('#applicationForm')[0].reset();
+        saveConditions();
+    });
+
+    var saveConditions=function(){
+        var conditions={
+        		sp_id:$('#sp_id').val(),
+        		
+        		payee_company:$('#sp_id_input').val().trim(),
+        	  	  
+				charge_order_no : $('#orderNo').val().trim(), 
+                applicationOrderNo : $('#applicationOrderNo').val(),
+                status2 : $('#status2').val().trim(),
+                
+                service_stamp : $('#service_stamp').val(),
+                
+                begin_date_begin_time : $('#begin_date_begin_time').val(),
+                begin_date_end_time : $('#begin_date_end_time').val(),
+                
+                check_begin_date_begin_time : $('#check_begin_date_begin_time').val(),
+                check_begin_date_end_time : $('#check_begin_end_begin_time').val(),
+                
+                confirmBegin_date_begin_time : $('#confirmBegin_date_begin_time').val(),
+                confirmBegin_date_end_time : $('#confirmBegin_date_end_time').val()
+        };
+        if(!!window.localStorage){//查询条件处理
+            localStorage.setItem("query_to", JSON.stringify(conditions));
+        }
+    };
+    var refreshData=function(){
+    	var sp_id = $('#sp_id').val();
     	  var payee_company = $('#sp_id_input').val().trim();
     	  
           var charge_order_no = $('#orderNo').val().trim(); 
@@ -190,26 +217,58 @@ $(document).ready(function() {
           
           var confirmBegin_date_begin_time = $('#confirmBegin_date_begin_time').val();
           var confirmBegin_date_end_time = $('#confirmBegin_date_end_time').val();
-   
-          var url = "/chargeRequest/applicationList?sp_id="+sp_id
-        	   +"&payee_company_equals="+payee_company  
-               +"&charge_order_no="+charge_order_no
-               +"&application_order_no="+applicationOrderNo
-               +"&status="+status2
-               
-               +"&service_stamp_between="+service_stamp
 
-               +"&create_stamp_begin_time="+begin_date_begin_time
-               +"&create_stamp_end_time="+begin_date_end_time
-               
-               +"&check_stamp_begin_time="+check_begin_date_begin_time
-               +"&check_stamp_end_time="+check_begin_date_end_time
-               
-               +"&pay_time_begin_time="+confirmBegin_date_begin_time
-               +"&pay_time_end_time="+confirmBegin_date_end_time;
-          application_table.ajax.url(url).load(currenryTotalAmount);
-	};
-    	
+          var url = "/chargeRequest/applicationList?sp_id="+sp_id
+     	   +"&payee_company_equals="+payee_company  
+            +"&charge_order_no="+charge_order_no
+            +"&application_order_no="+applicationOrderNo
+            +"&status="+status2
+            
+            +"&service_stamp_between="+service_stamp
+
+            +"&create_stamp_begin_time="+begin_date_begin_time
+            +"&create_stamp_end_time="+begin_date_end_time
+            
+            +"&check_stamp_begin_time="+check_begin_date_begin_time
+            +"&check_stamp_end_time="+check_begin_date_end_time
+            
+            +"&pay_time_begin_time="+confirmBegin_date_begin_time
+            +"&pay_time_end_time="+confirmBegin_date_end_time;
+       application_table.ajax.url(url).load(currenryTotalAmount);
+       saveConditions();
+    };
+
+    var loadConditions=function(){
+        if(!!window.localStorage){//查询条件处理
+            var query_to = localStorage.getItem('query_to');
+            if(!query_to)
+                return;
+
+            var conditions = JSON.parse(query_to);
+            $("#sp_id").val(conditions.sp_id);
+            $("#sp_id_input").val(conditions.payee_company);
+            $("#orderNo").val(conditions.charge_order_no);
+            $("#applicationOrderNo").val(conditions.applicationOrderNo);
+            $("#status2").val(conditions.status2);
+            $("#service_stamp").val(conditions.service_stamp);
+            $("#begin_date_begin_time").val(conditions.begin_date_begin_time);
+            $("#begin_date_end_time").val(conditions.begin_date_end_time);
+            $("#check_begin_date_begin_time").val(conditions.check_begin_date_begin_time);
+            $("#check_begin_date_end_begin_time").val(conditions.check_begin_date_end_begin_time);
+            $("#confirmBegin_date_begin_time").val(conditions.confirmBegin_date_begin_time);
+            $("#confirmBegin_date_end_time").val(conditions.confirmBegin_date_end_time);
+        }
+    };
+
+    loadConditions();
+    
+    //浏览器回退按钮,加载页面
+    $(window).on('beforeunload', function(e) {
+    	$.load(function(){
+    		refreshData();
+    	})
+    });
+    
   	//checkbox选中则button可点击
 	
 	$('#costAccept_table').on('click','.checkBox',function(){
@@ -252,5 +311,6 @@ $(document).ready(function() {
       	$('#billForm').submit();
 	})
       
+	refreshData();
 });
 });
