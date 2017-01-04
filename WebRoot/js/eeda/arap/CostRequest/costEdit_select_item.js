@@ -9,19 +9,9 @@
             },
             columns:[
                 { "data": "ID", visible: false},
-                { "data": "PAY_FLAG",
+                { "data": null,
                     "render": function ( data, type, full, meta ) {
-                        var payFlag =  full.PAY_FLAG;
-                        var createFlag =  full.CREATE_FLAG;
-                        
-                        str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px">';
-                        if('Y' == payFlag){
-                        	if(createFlag=='Y'){
-                        		str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked disabled>';
-                        	}else{
-                        		str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked>';
-                        	}
-                        }
+                        str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked>';
                         return str;
                     }
                 },
@@ -107,8 +97,7 @@
                         });
                     });
                 }
-                calcTotal();
-                
+                 calcTotal();
                 var selected_ids=[];
                 $('#select_item_table input[type="checkbox"]:checked').each(function(){
           			var selectId = $(this).parent().parent().attr('id');
@@ -127,7 +116,7 @@
             var HKD_cost=0, HKD_charge=0;
             var JPY_cost=0, JPY_charge=0;
             itemTable.data().each(function(item, index) {
-                if(item.PAY_FLAG == 'N')
+                if(!$('#checkbox_'+item.ID).prop('checked'))
                     return;
                 
                 if(item.ORDER_TYPE == 'cost'){
