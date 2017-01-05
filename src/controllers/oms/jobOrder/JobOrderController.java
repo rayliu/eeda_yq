@@ -4,7 +4,6 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -344,6 +343,8 @@ public class JobOrderController extends Controller {
 	        	model.set("trade_fee_flag", "trade_service_fee");
 	        	if("UPDATE".equals(map.get("action"))){
 	        		model.update();
+	        	}else if("DELETE".equals(map.get("action"))){
+	        		model.delete();
 	        	}else{
 	        		model.save();
 	        	}
@@ -359,6 +360,8 @@ public class JobOrderController extends Controller {
 	        	model.set("trade_fee_flag", "trade_sale_fee");
 	        	if("UPDATE".equals(map.get("action"))){
 	        		model.update();
+	        	}else if("DELETE".equals(map.get("action"))){
+	        		model.delete();
 	        	}else{
 	        		model.save();
 	        	}
