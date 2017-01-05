@@ -28,7 +28,7 @@ public class JobOrderControllerForMobile extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }else{
-            sLimit = " LIMIT 10 ";
+            sLimit = " LIMIT 50 ";
         }
         
         String sql = "";
