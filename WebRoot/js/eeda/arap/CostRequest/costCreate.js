@@ -329,18 +329,35 @@ $(document).ready(function() {
 		var idsArray=[];
       	$('#costAccept_table input[type="checkbox"]:checked').each(function(){
       			var itemId = $(this).parent().parent().attr('id');
-      			
-//      		var order_type = $(this).parent().parent().find(".order_type").text();
       			idsArray.push(itemId);
 
-
       	});
+      	
       		$('#ids').val(idsArray);
       		selectContr.refleshSelectTable(idsArray);
 	})
 	
 	
-	
+	//全选
+        $('#coR_allcheck').on('click',function(){
+             var table = $('#select_item_table').DataTable();
+            
+           
+            var selected_ids=[];
+            if($('#coR_allcheck').prop("checked")){
+                  table.data().each(function(item, index) {
+
+                  	  selected_ids.push(item.ID);
+                	});
+                 $('#select_item_table input[type="checkbox"]').prop('checked',true);   
+            }else{
+                selected_ids=[];
+                $('#select_item_table input[type="checkbox"]').prop('checked',false);
+            }
+             // selectContr.calcTotal();
+
+             $('#selected_ids').val(selected_ids);
+        });
 
 	
 	
