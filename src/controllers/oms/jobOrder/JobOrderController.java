@@ -32,6 +32,7 @@ import models.eeda.oms.jobOrder.JobOrderSendMail;
 import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
+import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -387,6 +388,8 @@ public class JobOrderController extends Controller {
    		saveOceanTemplate(shipment_detail);
    		//保存空运填写模板
    		saveAirTemplate(air_detail);
+   		//
+   		saveArapTemplate(type,charge_list,chargeCost_list);
    		renderJson(r);
    	}
     
@@ -395,126 +398,45 @@ public class JobOrderController extends Controller {
      * 保存费用模板
      * @param shipment_detail
      */
-    public void saveArapTemplate(List<Map<String, String>> shipment_detail){
-        if(shipment_detail==null||shipment_detail.size()<=0)
+    public void saveArapTemplate(String order_type,List<Map<String, String>> charge_list,List<Map<String, String>> cost_list){
+        if((charge_list==null||charge_list.size()<=0) && (cost_list==null||cost_list.size()<=0) )
             return;
         
-        Map<String, String> recMap=shipment_detail.get(0);
-    	
+//        List chargeli = new ArrayList();
+//        for(Map<String, String> charge :charge_list){
+//        	chargeli.add(JSONObject.fromObject((HashMap)charge).toString());
+//        }
+//        
+//        List costli = new ArrayList();
+//        for(Map<String, String> cost :cost_list){
+//        	costli.add(JSONObject.fromObject(cost).toString());
+//        }
+        
+        Map mapRe = new HashMap();
+        mapRe.put("charge", charge_list);
+        mapRe.put("cost", cost_list);
+
+        JSONObject jsonObject = JSONObject.fromObject(mapRe);
+        
     	Long creator_id = LoginUserController.getLoginUserId(this);
-    	String MBLshipper = recMap.get("MBLshipper");
-    	String MBLconsignee = recMap.get("MBLconsignee");
-    	String MBLnotify_party = recMap.get("MBLnotify_party");
-    	String HBLshipper = recMap.get("HBLshipper");
-    	String HBLconsignee = recMap.get("HBLconsignee");
-    	String HBLnotify_party = recMap.get("HBLnotify_party");
-    	String por = recMap.get("por");
-    	String pol = recMap.get("pol");
-    	String pod = recMap.get("pod");
-    	String fnd = recMap.get("fnd");
-    	String booking_agent = recMap.get("booking_agent");
-    	String carrier = recMap.get("carrier");
-    	String head_carrier = recMap.get("head_carrier");
-    	String oversea_agent = recMap.get("oversea_agent");
-    	String release_type = recMap.get("release_type");
-    	String cargo_desc = recMap.get("cargo_desc");
-    	String shipping_mark = recMap.get("shipping_mark");
-        
-        if(por!=null&&!"".equals(por)){
-        	 savePortQueryHistory(por);
-        }
-        if(pol!=null&&!"".equals(pol)){
-        	 savePortQueryHistory(pol);
-        }
-        if(pod!=null&&!"".equals(pod)){
-        	 savePortQueryHistory(pod);
-        }
-        if(fnd!=null&&!"".equals(fnd)){
-        	 savePortQueryHistory(fnd);
-        }
-        String content = MBLshipper+MBLconsignee+MBLnotify_party+HBLshipper+HBLconsignee+HBLnotify_party+por+pol+pod+fnd+booking_agent+carrier+head_carrier+oversea_agent;
-        if("".equals(content)){
-        	return;
-        }
-        
-        String sql = "select 1 from job_order_ocean_template where"
-                + " creator_id = "+creator_id;
-        if(StringUtils.isNotEmpty(MBLshipper)){
-        	sql+=" and MBLshipper='"+MBLshipper+"'";
-        }
-        if(StringUtils.isNotEmpty(MBLconsignee)){
-        	sql+=" and MBLconsignee= '"+MBLconsignee+"'";
-        }
-        if(StringUtils.isNotEmpty(MBLnotify_party)){
-        	sql+=" and MBLnotify_party= '"+MBLnotify_party+"'";
-        }
-        if(StringUtils.isNotEmpty(HBLshipper)){
-        	sql+=" and HBLshipper= '"+HBLshipper+"'";
-        }
-        if(StringUtils.isNotEmpty(HBLconsignee)){
-        	sql+=" and HBLconsignee= '"+HBLconsignee+"'";
-        }
-        if(StringUtils.isNotEmpty(HBLnotify_party)){
-        	sql+=" and HBLnotify_party= '"+HBLnotify_party+"'";
-        }
-        if(StringUtils.isNotEmpty(por)){
-        	sql+=" and por="+por;
-        }
-        if(StringUtils.isNotEmpty(pol)){
-        	sql+=" and pol="+pol;
-        }
-        if(StringUtils.isNotEmpty(pod)){
-        	sql+=" and pod="+pod;
-        }
-        if(StringUtils.isNotEmpty(fnd)){
-        	sql+=" and fnd="+fnd;
-        }
-        if(StringUtils.isNotEmpty(booking_agent)){
-        	sql+=" and booking_agent="+booking_agent;
-        }
-        if(StringUtils.isNotEmpty(carrier)){
-        	sql+=" and carrier="+carrier;
-        }
-        if(StringUtils.isNotEmpty(head_carrier)){
-        	sql+=" and head_carrier="+head_carrier;
-        }
-        if(StringUtils.isNotEmpty(oversea_agent)){
-        	sql+=" and oversea_agent="+oversea_agent;
-        }
-        if(StringUtils.isNotEmpty(release_type)){
-        	sql+=" and release_type='"+release_type+"'";
-        }
-        if(StringUtils.isNotEmpty(cargo_desc)){
-        	sql+=" and cargo_desc='"+cargo_desc+"'";
-        }
-        if(StringUtils.isNotEmpty(shipping_mark)){
-        	sql+=" and shipping_mark='"+shipping_mark+"'";
-        }
-      
+    	
+    	String sql = "select 1 from job_order_arap_template where"
+                + " creator_id = "+creator_id+" and order_type = '"+order_type+"' "
+                + " and  json_value = '"+jsonObject.toString()+"' ";
+
         Record checkRec = Db.findFirst(sql);
-        if(checkRec==null){
-            Record r= new Record();
-            r.set("creator_id", creator_id);
-            r.set("MBLshipper", MBLshipper);
-            r.set("MBLconsignee", MBLconsignee);
-            r.set("MBLnotify_party", MBLnotify_party);
-            r.set("HBLshipper", HBLshipper);
-            r.set("HBLconsignee", HBLconsignee);
-            r.set("HBLnotify_party", HBLnotify_party);
-            r.set("por", por);
-            r.set("pol", pol);
-            r.set("pod", pod);
-            r.set("fnd", fnd);
-            r.set("booking_agent", booking_agent);
-            r.set("carrier", carrier);
-            r.set("head_carrier", head_carrier);
-            r.set("oversea_agent", oversea_agent);
-            r.set("release_type", release_type);
-            r.set("cargo_desc", cargo_desc);
-            r.set("shipping_mark", shipping_mark);
-            Db.save("job_order_ocean_template", r);
+
+        if(checkRec == null){
+        	if(!(cost_list==null||cost_list.size()<=0)){
+        		Record r= new Record();
+                r.set("creator_id", creator_id);
+                r.set("order_type", order_type);
+                r.set("json_value", jsonObject.toString());
+                Db.save("job_order_arap_template", r);  
+       		}
         }
     }
+    
     
     //保存常用邮箱模版
     public void saveEmailTemplate(){
@@ -1189,6 +1111,15 @@ public class JobOrderController extends Controller {
     	List<Record> list = Db.find("select t.* from job_order_sendmail_template t"
                 + " where t.creator=?", LoginUserController.getLoginUserId(this));
         return list;
+    }
+    
+    
+    
+    public void getArapTemplate(){
+    	String order_type = getPara("order_type");
+    	List<Record> list = Db.find("select * from job_order_arap_template where creator_id =? and order_type = ?",LoginUserController.getLoginUserId(this),order_type);
+    	
+    	renderJson(list);
     }
     
     //常用海运信息
