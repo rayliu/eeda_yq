@@ -46,10 +46,10 @@ $(document).ready(function() {
             columns:[
             {"data": "ID",
             	"render": function ( data, type, full, meta ) {
-            		var str = '<input type="checkbox" style="width:30px">';
+            		var str = '<input type="checkbox" class="checkBox" style="width:30px">';
             		for(var i=0;i<ids.length;i++){
                         if(ids[i]==data){
-                       	 str = '<input type="checkbox" style="width:30px" checked>';
+                       	 str = '<input type="checkbox" class="checkBox" style="width:30px" checked>';
                         }
                     }
             		return str;
@@ -112,7 +112,7 @@ $(document).ready(function() {
         var cnames = [];
     	$('#eeda-table').on('click',"input[type=checkbox]",function () {
     			var cname = $(this).parent().siblings('.currency_name')[0].textContent;
-    			var id=$(this).val();
+    			var id=$(this).parent().parent().attr('id')
     			if($(this).prop('checked')==true){	
     				if(cnames.length > 0 ){
     					if(cnames[0]==cname){
@@ -183,12 +183,13 @@ $(document).ready(function() {
     $('#exchange').click(function(){
     	$(this).attr('disabled',true);
     	var rate = $('#exchange_rate').val();
+        var que_currency= $('#exchange_currency').val();
+
+        var currency_name = cnames[0];
     	if(rate==''||isNaN(rate)){
     		$.scojs_message('请输入正确的汇率进行兑换', $.scojs_message.TYPE_ERROR);
     		return;
     	}
-    	var currency_name = cnames[0];
-    	var ex_currency_name = $('#exchange_currency').val();
 //    	var total = 0;
 //	    $('#eeda-table input[type=checkbox]:checked').each(function(){
 //	    	var tr = $(this).parent().parent();
@@ -209,10 +210,15 @@ $(document).ready(function() {
             {   cost_order_id: $('#order_id').val(),
                 ids:ids.toString(), 
                 rate:rate, 
-                ex_currency_name:ex_currency_name}, function(data){
+                ex_currency_name: $('#exchange_currency').val()}, function(data){
 	    	$('#exchange').attr('disabled',false);
-	    	var order_id = $('#order_id').val();
-	    	itemOrder.refleshTable(order_id,ids.toString());
+            var order_id = $('#order_id').val();
+             var url = "/costCheckOrder/tableList?order_id="+order_id
+             +"&table_type=item"
+             +"&query_currency="+que_currency;
+             
+             itemTable.ajax.url(url).load();
+	    	// itemOrder.refleshTable(order_id,ids.toString());
 	    	$.scojs_message('兑换成功', $.scojs_message.TYPE_OK);
             $('#cny').val((parseFloat(data.CNY)).toFixed(2));
             $('#usd').val((parseFloat(data.USD)).toFixed(2));
@@ -223,7 +229,72 @@ $(document).ready(function() {
             $.scojs_message('发生异常，兑换失败', $.scojs_message.TYPE_ERROR);
 	    });
     })
+    //全选
+    $('#allcheck').click(function(){
+       var f = false;
+     var flag = 0;//当第一个币制名与下个币制名不同时，flag
+           $("#eeda-table .checkBox").each(function(){
+              var currency_name = $(this).parent().siblings('.currency_name')[0].textContent;
+              if(cnames[0]==undefined){
+                 cnames.push(currency_name);
+                 f = true;
+              }
+              if(cnames[0]!=currency_name){
+                  flag++;
+              }
+            })
+     if(this.checked==true){
+                if(flag>0){
+                    $.scojs_message('不能全选，包含不同对账币制', $.scojs_message.TYPE_ERROR);
+                    $(this).prop('checked',false);
+                    if(f==true){
+                        cnames=[];
+                    }
+                }else{
+                     $("#eeda-table .checkBox").each(function(){
+                        if(!$(this).prop('checked')){
+                            $(this).prop('checked',true);
+                            var id = $(this).parent().parent().attr('id');
+                             var currency_name = $(this).parent().siblings('.currency_name')[0].textContent;
+                             ids.push(id);
+                             cnames.push(currency_name);
+                        }
+                     });
+                }
+     }else{
+         $("#eeda-table .checkBox").prop('checked',false);
+         if(flag==0){
+                 $("#eeda-table .checkBox").each(function(){
+                     var id = $(this).parent().parent().attr('id');
+                     var currency_name = $(this).parent().siblings('.currency_name')[0].textContent;
+                     ids.splice(0,ids.length);
+                    cnames.splice(0,cnames.length);
+                    //cnames.pop(currency_name);
+                 })
+         }
+     }
+    });
     
-    
+    $('#query_listCurrency').click(function(){
+        searchData();
+    });
+    var searchData=function(){
+         var order_id = $("#order_id").val();
+       var que_currency=$("#query_currency").val();
+     
+       /*  
+           查询规则：参数对应DB字段名
+           *_no like
+           *_id =
+           *_status =
+           时间字段需成双定义  *_begin_time *_end_time   between
+       */
+       var url = "/costCheckOrder/tableList?order_id="+order_id
+       +"&table_type=item"
+       +"&query_currency="+que_currency;
+       
+       itemTable.ajax.url(url).load();
+    }
+
 } );    
 } );

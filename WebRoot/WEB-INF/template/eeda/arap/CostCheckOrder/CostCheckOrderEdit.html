@@ -141,6 +141,23 @@
 											id="costCheckOrderItem">明细信息</a></li>
 									</ul>
 									<br>
+                                <div class="row">
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/selectField.html", 
+                                                    {   id:'query_currency',
+                                                        label:'选中查询币种', 
+                                                        value:'',
+                                                        value_list:[
+                                                            {code:'',value:''},
+                                                            {code:'CNY', value:'CNY'},
+                                                            {code:'USD', value:'USD'},
+                                                            {code:'HKD', value:'HKD'},
+                                                            {code:'JPY', value:'JPY'}
+                                                        ]
+                                                    }){}%>
+                                    </div>
+                                    <button id='query_listCurrency' class="btn btn-primary btn-sm">查询</button>
+                                </div>
 	                                <div class="group-form"  id="currencyDiv">
 					                    <div class="row">
 					                        <div class="col-lg-4">
@@ -168,7 +185,7 @@
 	                                   {
 	                                       id:'eeda-table', 
 	                                       headers:[
-	                                           '',
+	                                           '<input type="checkbox" id="allcheck" >',
 	                                           '工作单号',
 	                                           '类型',
 	                                           '创建时间',

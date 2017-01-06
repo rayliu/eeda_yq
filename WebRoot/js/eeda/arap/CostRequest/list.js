@@ -12,7 +12,7 @@ $(document).ready(function() {
 		  columns: [
 		    {"data":"APPLICATION_ORDER_NO",
             	 "render": function(data, type, full, meta) {
-            			return "<a href='/costRequest/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+            			return "<a href='/costRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
             	 }
             },
             

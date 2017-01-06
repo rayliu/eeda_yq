@@ -258,7 +258,7 @@ $(document).ready(function() {
    		return;
    	}
    	var currency_name = cnames[0];
-   	var ex_currency_name = $('#exchange_currency').val();
+   	
 //   	var total = 0;
 //	    $('#eeda-table input[type=checkbox]:checked').each(function(){
 //	    	var tr = $(this).parent().parent();
@@ -278,7 +278,7 @@ $(document).ready(function() {
            {   charge_order_id: $('#order_id').val(),
                ids:ids.toString(), 
                rate:rate, 
-               ex_currency_name:ex_currency_name}, function(data){
+               ex_currency_name: $('#exchange_currency').val()}, function(data){
 	    	$('#exchange').attr('disabled',false);
 	    	var order_id = $('#order_id').val();
 	    	 var url = "/chargeCheckOrder/tableList?order_id="+order_id
