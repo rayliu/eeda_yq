@@ -390,6 +390,132 @@ public class JobOrderController extends Controller {
    		renderJson(r);
    	}
     
+    
+    /**
+     * 保存费用模板
+     * @param shipment_detail
+     */
+    public void saveArapTemplate(List<Map<String, String>> shipment_detail){
+        if(shipment_detail==null||shipment_detail.size()<=0)
+            return;
+        
+        Map<String, String> recMap=shipment_detail.get(0);
+    	
+    	Long creator_id = LoginUserController.getLoginUserId(this);
+    	String MBLshipper = recMap.get("MBLshipper");
+    	String MBLconsignee = recMap.get("MBLconsignee");
+    	String MBLnotify_party = recMap.get("MBLnotify_party");
+    	String HBLshipper = recMap.get("HBLshipper");
+    	String HBLconsignee = recMap.get("HBLconsignee");
+    	String HBLnotify_party = recMap.get("HBLnotify_party");
+    	String por = recMap.get("por");
+    	String pol = recMap.get("pol");
+    	String pod = recMap.get("pod");
+    	String fnd = recMap.get("fnd");
+    	String booking_agent = recMap.get("booking_agent");
+    	String carrier = recMap.get("carrier");
+    	String head_carrier = recMap.get("head_carrier");
+    	String oversea_agent = recMap.get("oversea_agent");
+    	String release_type = recMap.get("release_type");
+    	String cargo_desc = recMap.get("cargo_desc");
+    	String shipping_mark = recMap.get("shipping_mark");
+        
+        if(por!=null&&!"".equals(por)){
+        	 savePortQueryHistory(por);
+        }
+        if(pol!=null&&!"".equals(pol)){
+        	 savePortQueryHistory(pol);
+        }
+        if(pod!=null&&!"".equals(pod)){
+        	 savePortQueryHistory(pod);
+        }
+        if(fnd!=null&&!"".equals(fnd)){
+        	 savePortQueryHistory(fnd);
+        }
+        String content = MBLshipper+MBLconsignee+MBLnotify_party+HBLshipper+HBLconsignee+HBLnotify_party+por+pol+pod+fnd+booking_agent+carrier+head_carrier+oversea_agent;
+        if("".equals(content)){
+        	return;
+        }
+        
+        String sql = "select 1 from job_order_ocean_template where"
+                + " creator_id = "+creator_id;
+        if(StringUtils.isNotEmpty(MBLshipper)){
+        	sql+=" and MBLshipper='"+MBLshipper+"'";
+        }
+        if(StringUtils.isNotEmpty(MBLconsignee)){
+        	sql+=" and MBLconsignee= '"+MBLconsignee+"'";
+        }
+        if(StringUtils.isNotEmpty(MBLnotify_party)){
+        	sql+=" and MBLnotify_party= '"+MBLnotify_party+"'";
+        }
+        if(StringUtils.isNotEmpty(HBLshipper)){
+        	sql+=" and HBLshipper= '"+HBLshipper+"'";
+        }
+        if(StringUtils.isNotEmpty(HBLconsignee)){
+        	sql+=" and HBLconsignee= '"+HBLconsignee+"'";
+        }
+        if(StringUtils.isNotEmpty(HBLnotify_party)){
+        	sql+=" and HBLnotify_party= '"+HBLnotify_party+"'";
+        }
+        if(StringUtils.isNotEmpty(por)){
+        	sql+=" and por="+por;
+        }
+        if(StringUtils.isNotEmpty(pol)){
+        	sql+=" and pol="+pol;
+        }
+        if(StringUtils.isNotEmpty(pod)){
+        	sql+=" and pod="+pod;
+        }
+        if(StringUtils.isNotEmpty(fnd)){
+        	sql+=" and fnd="+fnd;
+        }
+        if(StringUtils.isNotEmpty(booking_agent)){
+        	sql+=" and booking_agent="+booking_agent;
+        }
+        if(StringUtils.isNotEmpty(carrier)){
+        	sql+=" and carrier="+carrier;
+        }
+        if(StringUtils.isNotEmpty(head_carrier)){
+        	sql+=" and head_carrier="+head_carrier;
+        }
+        if(StringUtils.isNotEmpty(oversea_agent)){
+        	sql+=" and oversea_agent="+oversea_agent;
+        }
+        if(StringUtils.isNotEmpty(release_type)){
+        	sql+=" and release_type='"+release_type+"'";
+        }
+        if(StringUtils.isNotEmpty(cargo_desc)){
+        	sql+=" and cargo_desc='"+cargo_desc+"'";
+        }
+        if(StringUtils.isNotEmpty(shipping_mark)){
+        	sql+=" and shipping_mark='"+shipping_mark+"'";
+        }
+      
+        Record checkRec = Db.findFirst(sql);
+        if(checkRec==null){
+            Record r= new Record();
+            r.set("creator_id", creator_id);
+            r.set("MBLshipper", MBLshipper);
+            r.set("MBLconsignee", MBLconsignee);
+            r.set("MBLnotify_party", MBLnotify_party);
+            r.set("HBLshipper", HBLshipper);
+            r.set("HBLconsignee", HBLconsignee);
+            r.set("HBLnotify_party", HBLnotify_party);
+            r.set("por", por);
+            r.set("pol", pol);
+            r.set("pod", pod);
+            r.set("fnd", fnd);
+            r.set("booking_agent", booking_agent);
+            r.set("carrier", carrier);
+            r.set("head_carrier", head_carrier);
+            r.set("oversea_agent", oversea_agent);
+            r.set("release_type", release_type);
+            r.set("cargo_desc", cargo_desc);
+            r.set("shipping_mark", shipping_mark);
+            Db.save("job_order_ocean_template", r);
+        }
+    }
+    
     //保存常用邮箱模版
     public void saveEmailTemplate(){
     	String email = getPara("email");

@@ -362,5 +362,30 @@ $(document).ready(function() {
     	}
     });
     
+    //------------------费用明细
+    $('#collapseArapInfo').on('show.bs.collapse', function () {
+        $('#collapseArapIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+      });
+      $('#collapseArapInfo').on('hide.bs.collapse', function () {
+        $('#collapseArapIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
+      });
+      
+      $('.deleteArapTemplate').click(function(e) {
+      	$(this).attr('disabled', true);
+      	e.preventDefault();
+      	var li = $(this).parent().parent();
+      	var id = li.attr('id');
+      	$.post('/jobOrder/deleteArapTemplate', {id:id}, function(data){
+      		$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+      		$(this).attr('disabled', false);
+      		li.css("display","none");
+      	},'json').fail(function() {
+      		$(this).attr('disabled', false);
+              $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+          });
+      })
+    
+    
+    
 });
 });
