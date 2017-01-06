@@ -35,21 +35,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					"render": function(data, type, full, meta) {
 						return (0*100).toFixed(2);
 					}
-				},
-				{
-					"render": function(data, type, full, meta) {
-						return (0*100).toFixed(2);
-					}
-				},
-				{
-					"render": function(data, type, full, meta) {
-						return (0*100).toFixed(2);
-					}
-				},
-				{
-					"render": function(data, type, full, meta) {
-						return (0*100).toFixed(2);
-					}
 				}
 	          ]
 	      });
