@@ -7,7 +7,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           id: 'eeda_table',
           paging: true,
           serverSide: true, //不打开会出现排序不对 
-          ajax: "/profitAndPaymentRate/list",
+          ajax: "/accountAging/list",
           columns: [
       			{ "data": "ABBR_NAME", "width": "100px"},
 	            { "data": "CURRENCY", "width": "100px"},
