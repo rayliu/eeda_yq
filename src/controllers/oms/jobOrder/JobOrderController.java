@@ -32,7 +32,6 @@ import models.eeda.oms.jobOrder.JobOrderSendMail;
 import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -401,22 +400,13 @@ public class JobOrderController extends Controller {
     public void saveArapTemplate(String order_type,List<Map<String, String>> charge_list,List<Map<String, String>> cost_list){
         if((charge_list==null||charge_list.size()<=0) && (cost_list==null||cost_list.size()<=0) )
             return;
-        
-//        List chargeli = new ArrayList();
-//        for(Map<String, String> charge :charge_list){
-//        	chargeli.add(JSONObject.fromObject((HashMap)charge).toString());
-//        }
-//        
-//        List costli = new ArrayList();
-//        for(Map<String, String> cost :cost_list){
-//        	costli.add(JSONObject.fromObject(cost).toString());
-//        }
-        
+
         Map mapRe = new HashMap();
         mapRe.put("charge", charge_list);
         mapRe.put("cost", cost_list);
 
-        JSONObject jsonObject = JSONObject.fromObject(mapRe);
+        Gson gson = new Gson();
+        String jsonObject = gson.toJson(mapRe);
         
     	Long creator_id = LoginUserController.getLoginUserId(this);
     	
