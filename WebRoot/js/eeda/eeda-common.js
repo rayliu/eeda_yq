@@ -204,9 +204,9 @@ eeda.refreshUrl = refreshUrl;
 	     }else if(orderNo.indexOf("SGSK") == 0){//手工收款
 	         str = "<a href='/chargeMiscOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
 	     }else if(orderNo.indexOf("YFSQ") == 0){//应付申请
-	         str = "<a href='/costPreInvoiceOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
+	         str = "<a href='/costRequest/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
 	     }else if(orderNo.indexOf("YSSQ") == 0){//应收申请
-	         str = "<a href='/chargeAcceptOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
+	         str = "<a href='/chargeRequest/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
 	     }else if(orderNo.indexOf("YFQR") == 0){//应付确认
 	         str = "<a href='/costConfirm/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
 	     }else if(orderNo.indexOf("YSQR") == 0){//应收确认
