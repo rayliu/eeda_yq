@@ -50,6 +50,11 @@ define(['jquery', 'dataTablesBootstrap'], function($){
         $(tab_div_id+' table.table').filter(':not(.customized)').DataTable().columns.adjust();
     });
 
+    //全局：当浏览器改变大小时刷新其底下的 dataTable, 解决表头不齐的问题
+    $(window).on('resize', function(){
+        $('table.table').filter(':not(.customized)').DataTable().columns.adjust();
+    });
+
     //只要属性中使用 limit=10, 控制td长度, 超出10 显示...
     jQuery.fn.limit=function(){ 
         var self = $("td[limit]"); 
