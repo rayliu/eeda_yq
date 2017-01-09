@@ -274,7 +274,16 @@ $(document).ready(function() {
          }
      }
     });
-    
+    // //点击td，checkbox修改checked
+    //  $('#eeda-table').on('click',"td[class=sorting_1]",function (){
+    //     if($(this).find('input').prop('checked')){
+    //       $(this).find('input').prop("checked",false);
+    //    }else{
+    //       $(this).find('input').prop("checked",true);
+    //    }
+    // });
+
+
     $('#query_listCurrency').click(function(){
         searchData();
     });
