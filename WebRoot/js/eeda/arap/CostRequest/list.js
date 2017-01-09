@@ -25,6 +25,8 @@ $(document).ready(function() {
 	        			strBillType="增值税普通发票";
 	        		}else if(data=="specialbill"){
 	        			strBillType="增值税专用发票";
+	        		}else if(data=="quotabill"){
+	        			strBillType="定额发票";
 	        		}else if(data=="dbill"){
 	        			strBillType="代开发票(垫付款)";
 	        		}else if(data=="HKINVbill"){
