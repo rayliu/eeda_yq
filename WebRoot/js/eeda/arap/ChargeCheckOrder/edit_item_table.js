@@ -151,6 +151,19 @@ $(document).ready(function() {
     	$('#check_amount').val(totalAmount.toFixed(2));
     })
     
+    //金额取两位小数
+    var refleshNum = function(numValue){
+		var numbleValue = parseFloat(numValue).toFixed(2)
+		return numbleValue;
+	}
+	var currency=new Array('cny','usd','jpy','hkd')
+		for(var i=0;i<currency.length;i++){
+			var cujh=currency[i];
+			var stringNum=cujh;
+			var cujh= $('#'+stringNum).val();
+			$('#'+stringNum).val(refleshNum(cujh));
+		}
+    
     
     //刷新明细表
     itemOrder.refleshTable = function(order_id){

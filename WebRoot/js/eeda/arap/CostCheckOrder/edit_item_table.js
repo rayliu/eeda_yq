@@ -64,37 +64,39 @@ $(document).ready(function() {
             { "data": "TOTAL_AMOUNT","class":"total_amount", 
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
-	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            		return '<span style="color:red;">'+'-'+parseFloat(data).toFixed(2)+'</span>';
 	            	}
-                    return data;
+            		return parseFloat(data).toFixed(2);
                   }
             },
             { "data": "EXCHANGE_RATE", "visible": false},
             { "data": "AFTER_TOTAL", "visible": false, 
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
-	            		return '<span style="color:red;">'+'-'+data+'</span>';
-	            	}
-                    return data;
-                  }
+	            		return '<span style="color:red;">'+'-'+parseFloat(data).toFixed(2)+'</span>';
+	            	}else{
+	            		return parseFloat(data).toFixed(2);
+	            	} 
+            	}
             },
             { "data": "NEW_RATE","class":"new_rate", "visible": false },
             { "data": "AFTER_RATE_TOTAL","class":"after_rate_total", "visible": false,
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
-	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            		return '<span style="color:red;">'+'-'+parseFloat(data).toFixed(2)+'</span>';
+	            	}else{
+	            		return parseFloat(data).toFixed(2);
 	            	}
-                    return data;
-                  }
+            	}
             },
             { "data": "EXCHANGE_CURRENCY_NAME"},
             { "data": "EXCHANGE_CURRENCY_RATE"},
             { "data": "EXCHANGE_TOTAL_AMOUNT",
                 "render": function ( data, type, full, meta ) {
                     if(full.ORDER_TYPE=='charge'){
-                        return '<span style="color:red;">'+'-'+data+'</span>';
+                        return '<span style="color:red;">'+'-'+parseFloat(data).toFixed(2)+'</span>';
                     }
-                    return data;
+                    return parseFloat(data).toFixed(2);
                   }
             },
             { "data": "ORDER_TYPE", "visible": false,
@@ -157,7 +159,20 @@ $(document).ready(function() {
     	}
     	$('#cost_amount').val(totalAmount.toFixed(2));
     	
-    })
+    });
+    
+    //金额取两位小数
+    var refleshNum = function(numValue){
+		var numbleValue = parseFloat(numValue).toFixed(2)
+		return numbleValue;
+	}
+	var currency=new Array('cny','usd','jpy','hkd')
+		for(var i=0;i<currency.length;i++){
+			var cujh=currency[i];
+			var stringNum=cujh;
+			var cujh= $('#'+stringNum).val();
+			$('#'+stringNum).val(refleshNum(cujh));
+		}
 
     
     //刷新明细表
