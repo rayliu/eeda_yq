@@ -174,7 +174,6 @@ $(document).ready(function() {
 			$('#'+stringNum).val(refleshNum(cujh));
 		}
 
-    
     //刷新明细表
     itemOrder.refleshTable = function(order_id,ids){
     	var url = "/costCheckOrder/tableList?order_id="+order_id+"&ids="+ids;

@@ -151,7 +151,7 @@ $(document).ready(function() {
     	$('#check_amount').val(totalAmount.toFixed(2));
     })
     
-    //金额取两位小数
+    //结算金额汇总取两位小数
     var refleshNum = function(numValue){
 		var numbleValue = parseFloat(numValue).toFixed(2)
 		return numbleValue;
