@@ -58,6 +58,7 @@ $(document).ready(function() {
 	    eeda.bindTableField('charge_service_table','CHARGE_ID','/finItem/search','');
 	    eeda.bindTableField('charge_service_table','SP_ID','/serviceProvider/searchCompany','');
 	    eeda.bindTableFieldCurrencyId('charge_service_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
+	    eeda.bindTableFieldCurrencyId('charge_service_table','exchange_currency_id','/serviceProvider/searchCurrency','');
 	};
 	var cargoTable = eeda.dt({
 	    id: 'charge_service_table',
