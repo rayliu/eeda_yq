@@ -95,14 +95,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       //全选
       $('#AllCheck').click(function(){
 	      	$(".checkBox").prop("checked",this.checked);
-	      	if(ischeck==true){
+	      	if($('#AllCheck').prop('checked')){
         		$('#confirmBtn').attr('disabled',false);
         	}else{
         		$('#confirmBtn').attr('disabled',true);
         	}
       });
+      
       $("#eeda_table").on('click','.checkBox',function(){
-		  $("#AllCheck").prop("checked",$(".checkBox").length == $(".checkBox:checked").length ? true : false);
+		    $("#AllCheck").prop("checked",$(".checkBox").length == $(".checkBox:checked").length ? true : false);
       });
       
       
