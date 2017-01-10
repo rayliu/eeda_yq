@@ -53,6 +53,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				          +"&order_export_date_begin_time="+order_export_date_begin_time
 				          +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load();
+          
+          $.post('/profitAndPaymentRate/listTotla',{
+        	  customer:customer,
+        	  order_export_date_begin_time:order_export_date_begin_time,
+        	  order_export_date_end_time:order_export_date_end_time
+          },function(data){
+        	  
+              
+          });
       };
   });
 });
