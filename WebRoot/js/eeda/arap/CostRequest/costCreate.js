@@ -76,7 +76,7 @@ $(document).ready(function() {
 		order.item_list = buildItem();
 		order.ids=$('#ids').val();
 		$.post('/costRequest/save',{params:JSON.stringify(order)}, function(data){
-			$("#createSave").attr("disabled", false);
+			// $("#createSave").attr("disabled", false);
 			if(data.ID>0){
 				$.scojs_message('创建新申请成功', $.scojs_message.TYPE_OK);
 				$("#order_no").val(data.ORDER_NO);
@@ -320,7 +320,7 @@ $(document).ready(function() {
 	   $('#account_no').val( $(this).attr('account_no'));
  	   $('#account_name').val( $(this).attr('account_name'));
  	   
-    })
+    });
     
     
     
@@ -331,10 +331,14 @@ $(document).ready(function() {
       			idsArray.push(itemId);
 
       	});
-      	
-      		$('#ids').val(idsArray);
-      		selectContr.refleshSelectTable(idsArray);
-	})
+  		if(idsArray.length>0){
+  			$('#createSave').prop('disabled',false);
+  		}else{
+  			$('#createSave').prop('disabled',true);
+  		}
+  		$('#ids').val(idsArray);
+  		selectContr.refleshSelectTable(idsArray);
+	});
 	
 	
 	
