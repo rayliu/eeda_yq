@@ -102,6 +102,7 @@ import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.jobOrder.JobOrderControllerForMobile;
 import controllers.oms.jobOrder.JobOrderReportController;
 import controllers.oms.planOrder.PlanOrderController;
+import controllers.oms.planOrder.PlanOrderControllerForMobile;
 import controllers.oms.todo.TodoController;
 import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
@@ -219,6 +220,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/todo", TodoController.class, contentPath);
 		me.add("/jobOrder", JobOrderController.class, contentPath);
 		me.add("/app/jobOrder", JobOrderControllerForMobile.class);
+		me.add("/app/planOrder", PlanOrderControllerForMobile.class);
 		me.add("/jobOrderReport", JobOrderReportController.class, contentPath);
 //		me.add("/report", ReportController.class, contentPath);
 		me.add("/customOrder", CustomOrderController.class, contentPath);
