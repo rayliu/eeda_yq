@@ -26,11 +26,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     	return orderUrl(data);
                     }
                 },
-              { "data": "CHARGE_NVOICE_NO",
-              	  "render": function ( data, type, full, meta ) {
-                    	return orderUrl(data);
-                    }
-                },
               { "data": "CHARGE_APP_NO",
               	  "render": function ( data, type, full, meta ) {
                     	return orderUrl(data);
