@@ -15,12 +15,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "CURRENCY", "width": "50px"},
 	            {
 					"render": function(data, type, full, meta) {
-						return parseFloat(full.CHARGE_TOTAL - full.CHARGE_CONFIRM).toFixed(2);
+						return '<span style="color:red">'+parseFloat(full.CHARGE_TOTAL - full.CHARGE_CONFIRM).toFixed(2)+'</span>';
 					}
 				},
 	            { "data": "CHARGE_CONFIRM", "width": "80px",
 					"render": function(data, type, full, meta) {
-						return parseFloat(data).toFixed(2);
+						return '<span style="color:green">'+parseFloat(data).toFixed(2)+'</span>';
 					}
 	            },
 	            { "data": "CHARGE_TOTAL", "width": "80px",

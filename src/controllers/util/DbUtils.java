@@ -77,7 +77,7 @@ public class DbUtils {
             		continue;
             	}
 			}
-        	condition += " and " + key + " between '" + beginTime + "' and '" + endTime+ "' ";
+        	condition += " and (" + key + " between '" + beginTime + "' and '" + endTime+ "' )";
         }
         logger.debug("condition: "+condition);
         return condition;

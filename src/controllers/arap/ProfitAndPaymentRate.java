@@ -43,60 +43,23 @@ public class ProfitAndPaymentRate extends Controller {
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = " SELECT * FROM ("
-        		+" SELECT acao.sp_id sp," 
-        		+"  p.abbr abbr_name,"
-        		+"   'CNY' currency,"
-        		+" 	SUM(modal_cny) charge_total,"
-        		+"   IFNULL((SELECT SUM(modal_cny)"
-        		+" 	from arap_charge_application_order aca LEFT JOIN party p on aca.sp_id = p.id "
-        		+" 	WHERE aca.status = '已收款' and aca.sp_id = sp"
-        		+" 	),0) charge_confirm "
-        		+" from arap_charge_application_order acao LEFT JOIN party p on acao.sp_id = p.id "
-        		+" WHERE acao.office_id = 1 "
-        		+" GROUP BY acao.sp_id"
-        		+" union "
-        		+" SELECT acao.sp_id sp," 
-        		+"   p.abbr abbr_name,"
-        		+"   'USD' currency,"
-        		+" 	SUM(modal_usd) charge_total,"
-        		+"   IFNULL((SELECT SUM(modal_usd)"
-        		+" 	from arap_charge_application_order aca LEFT JOIN party p on aca.sp_id = p.id "
-        		+" 	WHERE aca.status = '已收款' and aca.sp_id = sp"
-        		+" 	),0) charge_confirm"
-        		+" from arap_charge_application_order acao LEFT JOIN party p on acao.sp_id = p.id "
-        		+" WHERE acao.office_id = 1 "
-        		+" GROUP BY acao.sp_id"
-        		+" UNION"
-        		+" SELECT acao.sp_id sp," 
-        		+"   p.abbr abbr_name,"
-        		+"   'JPY' currency,"
-        		+" 	SUM(modal_jpy) charge_total,"
-        		+"   IFNULL((SELECT SUM(modal_jpy)"
-        		+" 	from arap_charge_application_order aca LEFT JOIN party p on aca.sp_id = p.id "
-        		+" 	WHERE aca.status = '已收款' and aca.sp_id = sp"
-        		+" 	),0) charge_confirm"
-        		+" from arap_charge_application_order acao LEFT JOIN party p on acao.sp_id = p.id "
-        		+" WHERE acao.office_id = 1 "
-        		+" GROUP BY acao.sp_id"
-        		+" UNION"
-        		+" SELECT acao.sp_id sp," 
-        		+"   p.abbr abbr_name,"
-        		+"   'HKD' currency,"
-        		+" 	SUM(modal_hkd) charge_total,"
-        		+"   IFNULL((SELECT SUM(modal_hkd)"
-        		+" 	from arap_charge_application_order aca LEFT JOIN party p on aca.sp_id = p.id "
-        		+" 	WHERE aca.status = '已收款' and aca.sp_id = sp"
-        		+" 	),0) charge_confirm"
-        		+" from arap_charge_application_order acao LEFT JOIN party p on acao.sp_id = p.id "
-        		+" WHERE acao.office_id ="+office_id
-        		+" GROUP BY acao.sp_id"
-        		+" ) A where charge_total!=0 " +condition+ " ORDER BY abbr_name";
+        		+" SELECT jo.id,jo.customer_id,p.abbr,SUM(currency_total_amount) charge_rmb,"
+        		+" (SELECT SUM(currency_total_amount) from  job_order_arap joa "
+        		+" LEFT JOIN job_order jor on joa.order_id = jor.id "
+        		+" WHERE joa.order_type = 'cost' and jor.customer_id = jo.customer_id "+condition
+        		+" ) cost_rmb"
+        		+"  from job_order jo "
+        		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+        		+"  LEFT JOIN party p on p.id = jo.customer_id"
+        		+"  WHERE jo.office_id = 1 and joa.order_type = 'charge' "+condition
+        		+" GROUP BY jo.customer_id"
+        		+" ) A where 1=1  ORDER BY abbr";
 		
         String sqlTotal = "select count(1) total from ("+sql+") C";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + sLimit);
+        List<Record> orderList = Db.find(sql);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

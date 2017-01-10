@@ -34,9 +34,9 @@
                                             </div>
                                             <div class="col-lg-4">
                                                  
-	                             				<%include("/eeda/component/form/dateInputField.html",
-	                             									 {   id:'service_stamp', 
-	                             									 	 label:'业务发生月',
+	                             				<%include("/eeda/component/form/inputDateQueryField.html",
+	                             									 {   id:'order_export_date', 
+	                             									 	 label:'业务发生时间',
 	                             									     value:''
 	                             									  }){} %>
                                             </div>
@@ -76,8 +76,8 @@
                                      <%include("/eeda/component/form/detailTable.html", 
                                         {
                                             id:'eeda_table', 
-                                            style: 'width:1250px',
-                                            headers:['客户','币制','未收款余额（应收余额）','已收款金额','应收金额','回款率（%）','利润率','未付金额','已付金额','应付金额'
+                                            style: 'width:900px',
+                                            headers:['客户','折合应收（RMB）','折合应付（RMB）','利润(RMB)','利润率(%)'
                                             ]
                                         }){} %>
                                 </div>
