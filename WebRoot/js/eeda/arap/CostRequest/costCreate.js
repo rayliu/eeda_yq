@@ -1,4 +1,4 @@
-﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './costEdit_select_item', 'dataTablesBootstrap', 
+define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './costEdit_select_item', 'dataTablesBootstrap', 
         'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
 	document.title = '收款申请单 | '+document.title;
@@ -63,7 +63,6 @@ $(document).ready(function() {
 				$.scojs_message('业务发生月不能为空', $.scojs_message.TYPE_FALSE);
 				$("#createSave").attr("disabled", false);
 				return false;
-				
 		}
 		
 		if($("#payment_method").val()=='transfers'||$("#payment_method").val()=='checkTransfers'){
@@ -338,27 +337,7 @@ $(document).ready(function() {
 	})
 	
 	
-	//全选
-        $('#coR_allcheck').on('click',function(){
-             var table = $('#select_item_table').DataTable();
-            
-           
-            var selected_ids=[];
-            if($('#coR_allcheck').prop("checked")){
-                  table.data().each(function(item, index) {
-
-                  	  selected_ids.push(item.ID);
-                	});
-                 $('#select_item_table input[type="checkbox"]').prop('checked',true);   
-            }else{
-                selected_ids=[];
-                $('#select_item_table input[type="checkbox"]').prop('checked',false);
-            }
-             // selectContr.calcTotal();
-
-             $('#selected_ids').val(selected_ids);
-        });
-
+	
 	
 	
 	

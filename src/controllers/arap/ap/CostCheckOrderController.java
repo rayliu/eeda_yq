@@ -163,8 +163,12 @@ public class CostCheckOrderController extends Controller {
     	return re;
     }
 	
-	public List<Record> getCostItemList(String order_ids,String bill_flag){
+	public List<Record> getCostItemList(String order_ids,String bill_flag,String code){
     	String sql = null;
+    	String currency_code="";
+		if(StringUtils.isNotEmpty(code)){
+			currency_code=" and cur. NAME="+"'"+code+"'";
+		}
 			if("create".equals(bill_flag)){
 				sql = " select joa.id,joa.create_flag,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
 						+" aco.order_no check_order_no, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
@@ -228,7 +232,7 @@ public class CostCheckOrderController extends Controller {
 							+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
 							+" left join arap_cost_item aci on aci.ref_order_id = joa.id"
 						    +" left join arap_cost_order aco on aco.id = aci.cost_order_id"
-						    +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
+						    +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"+currency_code
 							+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
 			}		
@@ -588,12 +592,12 @@ public class CostCheckOrderController extends Controller {
     	List<Record> list = null;
     	if("N".equals(order_id)){
     		if(StringUtils.isNotEmpty(appliction_id)){
-    			list = getCostItemList(appliction_id,bill_flag);
+    			list = getCostItemList(appliction_id,bill_flag,currency_code);
         	}else{
 	    		if("".equals(order_ids)){
 	    			order_ids=null;
 	    				}
-	    		list = getCostItemList(order_ids,"");
+	    		list = getCostItemList(order_ids,"",currency_code);
 	    		}
     	}else{
     		list = getItemList(ids,order_id,currency_code);

@@ -1,4 +1,4 @@
-﻿define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
     
 
         var itemTable = eeda.dt({
@@ -147,14 +147,54 @@
             $('#modal_jpy').val((parseFloat(JPY_cost - JPY_charge)).toFixed(2));
 
         }
-        
-        
+        //查询选中币种
+        $('#query_listCurrency').click(function(){
+            searchData2(); 
+        });
+
+        var searchData2=function(){
+            var ids=$('#ids').val();
+            var query_currency=$('#query_currency').val();
+            var url = "/costCheckOrder/tableList?order_ids="+ids+"&order_id=N"
+                            +"&table_type=item"
+                            +"&query_currency="+query_currency;
+           itemTable.ajax.url(url).load(function(){
+              var a=[];
+              $('#select_item_table input[type=checkbox]:checked').each(function(){
+                    var id=$(this).parent().parent().attr('id');
+                     a.push(id);
+              }); 
+              $('#selected_ids').val(a);
+           });
+         };
+
+         
         
         var refleshCreateTable = function(appApplication_id){
     		var url = "/costCheckOrder/tableList?appApplication_id="+appApplication_id+"&order_id=N&bill_flag=create";
             itemTable.ajax.url(url).load();
 		    };
-		    
+
+		  //全选
+        $('#coR_allcheck').on('click',function(){
+             var table = $('#select_item_table').DataTable();
+            
+           
+            var selected_ids=[];
+            if($('#coR_allcheck').prop("checked")){
+                  table.data().each(function(item, index) {
+
+                      selected_ids.push(item.ID);
+                    });
+                 $('#select_item_table input[type="checkbox"]').prop('checked',true);   
+            }else{
+                selected_ids=[];
+                $('#select_item_table input[type="checkbox"]').prop('checked',false);
+            }
+             // selectContr.calcTotal();
+
+             $('#selected_ids').val(selected_ids);
+        });
 
 
     return {
