@@ -32,6 +32,10 @@ import models.eeda.oms.jobOrder.JobOrderSendMail;
 import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
+import models.eeda.profile.Currency;
+import models.eeda.profile.FinItem;
+import models.eeda.profile.Unit;
+import models.yh.profile.Contact;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -41,6 +45,7 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
+import org.apache.tools.ant.taskdefs.Concat;
 
 import sun.misc.BASE64Encoder;
 
@@ -199,6 +204,7 @@ public class JobOrderController extends Controller {
         String id = (String) dto.get("id");
         String planOrderItemID = (String) dto.get("plan_order_item_id");
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
+        String customer_id = (String)dto.get("customer_id");
         
         JobOrder jobOrder = new JobOrder();
         
@@ -387,8 +393,10 @@ public class JobOrderController extends Controller {
    		saveOceanTemplate(shipment_detail);
    		//保存空运填写模板
    		saveAirTemplate(air_detail);
-   		//
-   		saveArapTemplate(type,charge_list,chargeCost_list);
+   	    //费用明细，应收应付
+		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
+		List<Map<String, String>> cost_template = (ArrayList<Map<String, String>>)dto.get("cost_template");
+   		saveArapTemplate(type,customer_id,charge_template,cost_template);
    		renderJson(r);
    	}
     
@@ -397,31 +405,45 @@ public class JobOrderController extends Controller {
      * 保存费用模板
      * @param shipment_detail
      */
-    public void saveArapTemplate(String order_type,List<Map<String, String>> charge_list,List<Map<String, String>> cost_list){
+    public void saveArapTemplate(String order_type,String customer_id,List<Map<String, String>> charge_list,List<Map<String, String>> cost_list){
         if((charge_list==null||charge_list.size()<=0) && (cost_list==null||cost_list.size()<=0) )
             return;
 
-        Map mapRe = new HashMap();
-        mapRe.put("charge", charge_list);
-        mapRe.put("cost", cost_list);
-
         Gson gson = new Gson();
-        String jsonObject = gson.toJson(mapRe);
+        String chargeObject = gson.toJson(charge_list);
+        String costObject = gson.toJson(cost_list);
         
     	Long creator_id = LoginUserController.getLoginUserId(this);
     	
-    	String sql = "select 1 from job_order_arap_template where"
-                + " creator_id = "+creator_id+" and order_type = '"+order_type+"' "
-                + " and  json_value = '"+jsonObject.toString()+"' ";
+    	String chargeSql = "select 1 from job_order_arap_template where"
+                + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
+                + " and  json_value = '"+chargeObject+"' ";
+    	String costSql = "select 1 from job_order_arap_template where"
+                + " arap_type = 'cost' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
+                + " and  json_value = '"+costObject+"' ";
 
-        Record checkRec = Db.findFirst(sql);
+        Record chargeRec = Db.findFirst(chargeSql);
+        Record costRec = Db.findFirst(costSql);
 
-        if(checkRec == null){
+        if(chargeRec == null){
+        	if(!(charge_list==null||charge_list.size()<=0)){
+        		Record r= new Record();
+                r.set("creator_id", creator_id);
+                r.set("customer_id", customer_id);
+                r.set("arap_type", "charge");
+                r.set("order_type", order_type);
+                r.set("json_value", chargeObject);
+                Db.save("job_order_arap_template", r);  
+       		}
+        }
+        if(costRec == null){
         	if(!(cost_list==null||cost_list.size()<=0)){
         		Record r= new Record();
                 r.set("creator_id", creator_id);
+                r.set("customer_id", customer_id);
+                r.set("arap_type", "cost");
                 r.set("order_type", order_type);
-                r.set("json_value", jsonObject.toString());
+                r.set("json_value", costObject);
                 Db.save("job_order_arap_template", r);  
        		}
         }
@@ -1104,13 +1126,70 @@ public class JobOrderController extends Controller {
     }
     
     
-    
+    /**
+     * 获取应收模板信息
+     */
     public void getArapTemplate(){
     	String order_type = getPara("order_type");
-    	List<Record> list = Db.find("select * from job_order_arap_template where creator_id =? and order_type = ?",LoginUserController.getLoginUserId(this),order_type);
-    	
+    	String customer_id = getPara("customer_id");
+    	String arap_type = getPara("arap_type");
+    	List<Record> list = Db.find("select * from job_order_arap_template "
+    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? "
+    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
+    	ArrayList<Map<String, String>> dto = null;
+    	for(Record re : list){
+    		String jsonValue = re.getStr("json_value");
+    		Gson gson = new Gson();  
+    		dto= gson.fromJson(jsonValue, ArrayList.class);  
+//    		for(int i = 0;i<dto.size();i++){
+//    			Map<String, String> map = dto.get(i);
+//    			String sp_id = (String)map.get("SP_ID");
+//    			String charge_id = (String)map.get("CHARGE_ID");
+//    			String charge_eng_id = (String)map.get("CHARGE_ENG_ID");
+//    			String unit_id = (String)map.get("UNIT_ID");
+//    			String currency_id = (String)map.get("CURRENCY_ID");
+//    			String exchange_currency_id = (String)map.get("exchange_currency_id");
+//    			
+//    			String sp_name = null;
+//    			String charge_name = null;
+//    			String charge_name_eng = null;
+//    			String unit_name = null;
+//    			String currency_name = null;
+//    			String exchange_currency_id_name = null;
+//    			if(StringUtils.isNotEmpty(sp_id)){
+//    				Party p = Party.dao.findById(sp_id);
+//    				sp_name = p.getStr("abbr");
+//    			}
+//				if(StringUtils.isNotEmpty(charge_id)){
+//					FinItem fi = FinItem.dao.findById(charge_id);
+//					charge_name = fi.getStr("name");
+//					charge_name_eng = fi.getStr("name_eng");
+//				}
+//				if(StringUtils.isNotEmpty(unit_id)){
+//					Unit u = Unit.dao.findById(unit_id);
+//					unit_name = u.getStr("name");
+//				}
+//				if(StringUtils.isNotEmpty(currency_id)){
+//					Currency c = Currency.dao.findById(currency_id);
+//					currency_name = c.getStr("name");
+//				}
+//				if(StringUtils.isNotEmpty(exchange_currency_id)){
+//					Currency c = Currency.dao.findById(exchange_currency_id);
+//					exchange_currency_id_name = c.getStr("name");
+//				}
+//				map.put("sp_name", sp_name==null?"":sp_name);
+//				map.put("charge_name", charge_name==null?"":charge_name);
+//				map.put("charge_name_eng", charge_name_eng==null?"":charge_name_eng);
+//				map.put("unit_name", unit_name==null?"":unit_name);
+//				map.put("currency_name", currency_name==null?"":currency_name);
+//				map.put("exchange_currency_id_name", exchange_currency_id_name==null?"":exchange_currency_id_name);
+//    		}	
+    		re.set("json_value", dto);
+    	}
     	renderJson(list);
     }
+    
+
     
     //常用海运信息
     public List<Record> getUsedOceanInfo(){
@@ -1475,6 +1554,14 @@ public class JobOrderController extends Controller {
     	Db.update("update job_order_arap set invoice_land_hbl_no='"+invoice_land_hbl_no+"',land_ref_no='"+land_ref_no+"'  where land_item_id in ("+ids+")");
     	
      	renderJson("{\"result\":true}");
+    }
+    
+    //删除费用明细常用信息模版
+    @Before(Tx.class)
+    public void deleteArapTemplate(){
+    	String id = getPara("id");
+    	Db.update("delete from job_order_arap_template where id = ?",id);
+    	renderJson("{\"result\":true}");
     }
     
     //删除海运常用信息模版

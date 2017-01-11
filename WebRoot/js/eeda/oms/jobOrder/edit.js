@@ -3,7 +3,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     './edit_air_table', './edit_air_cargoDesc_table', './edit_air_detail','./edit_custom_detail',
     './edit_express_detail','./edit_insurance_detail','./edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report',
     './edit_trade_cost_table', './edit_trade_charge_sale_table', './edit_trade_charge_service_table','./edit_trade_detail',
-    './edit_custom_china_self_table', './edit_custom_doc_table','./edit_land_charge_table'], function ($, metisMenu) {
+    './edit_custom_china_self_table', './edit_custom_doc_table','./edit_land_charge_table','./edit_arap_detail'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
@@ -200,6 +200,8 @@ $(document).ready(function() {
         //费用明细，应收，应付
         order.charge_list = itemOrder.buildChargeDetail();
         order.chargeCost_list = itemOrder.buildChargeCostDetail();
+        order.charge_template = itemOrder.buildChargeTemplate();
+        order.cost_template = itemOrder.buildCostTemplate();
         //相关文档
         order.doc_list = eeda.buildTableDetail("doc_table","");
 
@@ -341,6 +343,7 @@ $(document).ready(function() {
             hideServiceTab(checkValue);
         }
     });
+    
     //服务项目checkbox回显,transport_type是用js拿值
     var checkArray = transport_type_hidden.split(",");
     for(var i=0;i<checkArray.length;i++){
@@ -363,70 +366,7 @@ $(document).ready(function() {
     	}
     });
     
-    //------------------费用明细
-    $('#collapseArapInfo').on('show.bs.collapse', function () {
-		var	ul = $('#usedArapInfo').empty();
-        $('#collapseArapIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
-        var order_type = $('#type').val();
-        if(order_type.trim() == ''){
-        	$.scojs_message('请先选择类型', $.scojs_message.TYPE_ERROR);
-        	return
-        }else{
-        	$.post('/jobOrder/getArapTemplate', {order_type:order_type}, function(data){
-        		if(data){
-        			for(i = 0;i<data.length;i++){
-        				var str = data[i].JSON_VALUE;
-        				del_html_tags(str,'=',':')
-        				debugger;
-        				var json = strToJson();
-        				
-        				var span='id:'+data[i].ID+' ';
-        				
-        				
-        				ul.append('<li id="" ><div class="radio">'
-        						+'<a class="deleteArapTemplate" href="#" style="margin-right: 10px;padding-top: 6px;float: left;">删除</a>'
-        						+'<label class="selectArapTemplate">'
-        						+'<input type="radio" value="1" name="usedArapInfo" style="margin-top: 0px;">'
-        						+'</label>'
-        						+'</div>'
-        						+span
-        						+'</li>');
-        				
-        			}
-        		}
-        	});
-        }
-    });
-    
-    function del_html_tags(str,reallyDo,replaceWith) { 
-    	var e=new RegExp(reallyDo,"g"); 
-    	words = str.replace(e, replaceWith); 
-    	return words; 
-    	} 
-    
-    function strToJson(str){ 
-    	var json = eval('(' + str + ')'); 
-    	return json; 
-    } 
-    
-    $('#collapseArapInfo').on('hide.bs.collapse', function () {
-    	$('#collapseArapIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
-    });
-  
-    $('.deleteArapTemplate').click(function(e) {
-	  	$(this).attr('disabled', true);
-	  	e.preventDefault();
-	  	var li = $(this).parent().parent();
-	  	var id = li.attr('id');
-	  	$.post('/jobOrder/deleteArapTemplate', {id:id}, function(data){
-	  		$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
-	  		$(this).attr('disabled', false);
-	  		li.css("display","none");
-	  	},'json').fail(function() {
-	  		$(this).attr('disabled', false);
-	          $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
-	    });
-    })
+
     
     
     

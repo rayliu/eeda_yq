@@ -105,6 +105,57 @@ $(document).ready(function() {
     };
     
     
+    itemOrder.buildCostTemplate=function(){
+        var cargo_table_rows = $("#cost_table tr");
+        var cargo_items_array=[];
+        for(var index=0; index<cargo_table_rows.length; index++){
+            if(index==0)
+                continue;
+
+            var row = cargo_table_rows[index];
+            var empty = $(row).find('.dataTables_empty').text();
+            if(empty)
+            	continue;
+            
+            var id = $(row).attr('id');
+            if(!id){
+                id='';
+            }
+            
+            var item={}
+            item.order_type = "cost";//应付
+            for(var i = 1; i < row.childNodes.length; i++){
+            	var el = $(row.childNodes[i]).find('input,select');
+            	var name = el.attr('name'); 
+            	
+            	if(el && name){
+            		
+            		if(name=='exchange_currency_id'&&el.val()==''){
+                		el.val(el.parent().parent().parent().find('[name=CURRENCY_ID]').val());
+                	}
+            		if(name=='exchange_currency_rate'&&el.val()==''){
+                		el.val(1);
+                	}
+            		if(name=='exchange_total_amount'&&el.val()==''){
+                		el.val(el.parent().parent().find('[name=total_amount]').val());
+                	}            		
+            		
+                	var value = el.val();//元素的值
+                	item[name] = value;
+                	
+                	if(name.toLowerCase().indexOf("_id")>=0){
+                		var id_value = $(row.childNodes[i]).find('[name='+name+'_input]').val();
+                		var abbr = name.toLowerCase().replace('id','name')
+                		item[abbr] = id_value;
+                	}
+            	}
+            }
+            cargo_items_array.push(item);
+        }
+        return cargo_items_array;
+    };
+    
+    
     //------------事件处理
     var bindFieldEvent=function(){	
         eeda.bindTableField('cost_table','SP_ID','/serviceProvider/searchCompany','');
