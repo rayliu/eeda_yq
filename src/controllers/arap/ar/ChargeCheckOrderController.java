@@ -601,23 +601,28 @@ public class ChargeCheckOrderController extends Controller {
     public void insertChargeItem(){
     	String itemList= getPara("charge_itemlist");
     	String[] itemArray =  itemList.split(",");
-    	String order_id=getPara("order_id");
+    	String chargeOrderId=getPara("order_id");
     	ArapChargeItem aci = null;
     	
-    	if(order_id != null){
+    	if(chargeOrderId != null){
     		for(String itemId:itemArray){
     			aci = new ArapChargeItem();
 	    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
 	             jobOrderArap.set("bill_flag", "Y");
 	             jobOrderArap.update();
 				aci.set("ref_order_id", itemId);
-				aci.set("charge_order_id", order_id);
+				aci.set("charge_order_id", chargeOrderId);
 				aci.save();
 //        	String sql="INSERT into arap_charge_item (ref_order_id,charge_order_id) "
 //        				+ "VALUES ("+itemId+","+order_id+")";
     		}
+    		
     	}
-    	renderJson(aci);
+    	//计算结算汇总
+		Map<String, Double> exchangeTotalMap = updateExchangeTotal(chargeOrderId);
+		exchangeTotalMap.put("chargeOrderId", Double.parseDouble(chargeOrderId));
+		
+    	renderJson(exchangeTotalMap);
 
     }
       

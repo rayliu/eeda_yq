@@ -274,8 +274,8 @@ $(document).ready(function() {
     
     //结算金额汇总取两位小数
     var refleshNum = function(numValue){
-		var numbleValue = parseFloat(numValue).toFixed(2)
-		return numbleValue;
+  		var numbleValue = parseFloat(numValue).toFixed(2)
+  		return numbleValue;
 	}
 	var currency=new Array('cny','usd','jpy','hkd')
 		for(var i=0;i<currency.length;i++){
@@ -384,68 +384,56 @@ $(document).ready(function() {
      
    
    $('#exchange').click(function(){
-   	$(this).attr('disabled',true);
-   	var rate = $('#exchange_rate').val();
-    var que_currency=$("#query_currency").val();
-   	if(rate==''||isNaN(rate)){
-   		$.scojs_message('请输入正确的汇率进行兑换', $.scojs_message.TYPE_ERROR);
-   		return;
-   	}
-   	var currency_name = cnames[0];
-   	
-//   	var total = 0;
-//	    $('#eeda-table input[type=checkbox]:checked').each(function(){
-//	    	var tr = $(this).parent().parent();
-//	    	
-//	    	var total_amount = tr.find(".total_amount").text();
-//	    	if(total_amount!=''&&!isNaN(total_amount)){
-//	    		total +=parseFloat(total_amount);
-//	    	}
-//	    })
-	    if(ids.length==0){
-	    	$.scojs_message('请选择一条费用明细进行兑换', $.scojs_message.TYPE_ERROR);
-	    	$('#exchange').attr('disabled',false);
-	    	return;
-	    }
-	    
-	    $.post('/chargeCheckOrder/exchange_currency', 
-           {   charge_order_id: $('#order_id').val(),
-               ids:ids.toString(), 
-               rate:rate, 
-               ex_currency_name: $('#exchange_currency').val()}, function(data){
-    	    	        $('#exchange').attr('disabled',false);
-          	    	var order_id = $('#order_id').val();
-          	    	 var url = "/chargeCheckOrder/tableList?order_id="+order_id
-          	         +"&table_type=item"
-          	         +"&query_currency="+que_currency;
-          	         
-          	         itemTable.ajax.url(url).load();
-          //	    	itemOrder.refleshTable(order_id,ids.toString());
-          	    	$.scojs_message('兑换成功', $.scojs_message.TYPE_OK);
-                     $('#cny').val((parseFloat(data.CNY)).toFixed(2));
-                     $('#usd').val((parseFloat(data.USD)).toFixed(2));
-                     $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
-                     $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
-          	    },'json').fail(function() {
-    	    	$('#exchange').attr('disabled',false);
-               $.scojs_message('发生异常，兑换失败', $.scojs_message.TYPE_ERROR);
-    	    });
+       	$(this).attr('disabled',true);
+       	var rate = $('#exchange_rate').val();
+        var que_currency=$("#query_currency").val();
+       	if(rate==''||isNaN(rate)){
+       		$.scojs_message('请输入正确的汇率进行兑换', $.scojs_message.TYPE_ERROR);
+       		return;
+       	}
+       	var currency_name = cnames[0];
+     	
+  //   	var total = 0;
+  //	    $('#eeda-table input[type=checkbox]:checked').each(function(){
+  //	    	var tr = $(this).parent().parent();
+  //	    	
+  //	    	var total_amount = tr.find(".total_amount").text();
+  //	    	if(total_amount!=''&&!isNaN(total_amount)){
+  //	    		total +=parseFloat(total_amount);
+  //	    	}
+  //	    })
+  	    if(ids.length==0){
+  	    	$.scojs_message('请选择一条费用明细进行兑换', $.scojs_message.TYPE_ERROR);
+  	    	$('#exchange').attr('disabled',false);
+  	    	return;
+  	    }
+  	    
+  	    $.post('/chargeCheckOrder/exchange_currency', 
+             {   charge_order_id: $('#order_id').val(),
+                 ids:ids.toString(), 
+                 rate:rate, 
+                 ex_currency_name: $('#exchange_currency').val()}, function(data){
+      	    	        $('#exchange').attr('disabled',false);
+            	    	var order_id = $('#order_id').val();
+                    
+            	    	 var url = "/chargeCheckOrder/tableList?order_id="+order_id
+            	         +"&table_type=item"
+            	         +"&query_currency="+que_currency;
+            	         
+            	         itemTable.ajax.url(url).load();
+            //	    	itemOrder.refleshTable(order_id,ids.toString());
+            	    	$.scojs_message('兑换成功', $.scojs_message.TYPE_OK);
+                       $('#cny').val((parseFloat(data.CNY)).toFixed(2));
+                       $('#usd').val((parseFloat(data.USD)).toFixed(2));
+                       $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
+                       $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
+            	    },'json').fail(function() {
+      	    	$('#exchange').attr('disabled',false);
+                 $.scojs_message('发生异常，兑换失败', $.scojs_message.TYPE_ERROR);
+      	    });
        })
     
  
-//	 	 $('#allcheck').click(function(){
-//	 		 #('checkbox').attr("checked",true);
-//	 		 
-//	 	 })  
-	 	  
-			 
-//	 	   if(cnames.length>0){
-//	 		  $("#exchange").prop('disabled',false);
-//	 	   }else{
-//	 		  $("#exchange").prop('disabled',true);
-//	 	   }
-//   })
-  
     
  //查询币制按钮
    $('#query_listCurrency').click(function(){
@@ -473,13 +461,7 @@ $(document).ready(function() {
      $('#add_charge').click(function(){
             $('#allCharge').prop('checked',false);
             $('#add_charge_item').prop('disabled',true);
-
-            var land_item_id = $(this).parent().parent().attr('id');
-            $('#land_item_id').val(land_item_id);
-            var order_id = $('#order_id').val();
-            var url = "/jobOrder/tableListOfLandCharge?order_id="+order_id+"&land_item_id="+land_item_id;
-            dataTable.ajax.url(url).load();
-            $('#land_charge_table_msg_btn').click();
+            $('#charge_table_msg_btn').click();
          
       }) 
       $('#resetBtn').click(function(e){
@@ -526,6 +508,7 @@ $(document).ready(function() {
       //添加新的明细
       $('#add_charge_item').on('click', function(){
           insertChargeItem();
+          searchData1(); 
       });
       var insertChargeItem=function(){
 
@@ -539,7 +522,11 @@ $(document).ready(function() {
             $('#add_charge_item').attr('disabled',true);
           }
           $.post('/chargeCheckOrder/insertChargeItem',{order_id:order_id,charge_itemlist:charge_itemlist.toString()},function(data){
-                itemOrder.refleshTable(data.CHARGE_ORDER_ID);
+                itemOrder.refleshTable(data.chargeOrderId.toString());
+                 $('#cny').val((parseFloat(data.CNY)).toFixed(2));
+                 $('#usd').val((parseFloat(data.USD)).toFixed(2));
+                 $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
+                 $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
           },'json').fail(function() {
                $.scojs_message('添加失败', $.scojs_message.TYPE_ERROR);
           });
@@ -577,6 +564,8 @@ $(document).ready(function() {
                 $('#add_charge_item').attr('disabled',true);
           }
        });
+
+
     // var flash = function(){    
     //    // $("#allCharge").prop("checked",$("#eeda_charge_table .checkBox").length == $("#eeda_charge_table .checkBox:checked").length ? true : false);
     //  };
