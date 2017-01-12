@@ -8,7 +8,7 @@ $(document).ready(function() {
     	autoWidth: false,
         paging: true,
         serverSide: true, 
-    	ajax: "/costRequest/applicationList",
+    	ajax: "/costRequest/applicationList?status=新建",
 		  columns: [
 		    {"data":"APPLICATION_ORDER_NO",
             	 "render": function(data, type, full, meta) {
