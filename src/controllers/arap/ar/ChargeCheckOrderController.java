@@ -597,6 +597,29 @@ public class ChargeCheckOrderController extends Controller {
 		r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
 		renderJson(r);
 	}
-  
+    
+    public void insertChargeItem(){
+    	String itemList= getPara("charge_itemlist");
+    	String[] itemArray =  itemList.split(",");
+    	String order_id=getPara("order_id");
+    	ArapChargeItem aci = null;
+    	
+    	if(order_id != null){
+    		for(String itemId:itemArray){
+    			aci = new ArapChargeItem();
+	    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
+	             jobOrderArap.set("bill_flag", "Y");
+	             jobOrderArap.update();
+				aci.set("ref_order_id", itemId);
+				aci.set("charge_order_id", order_id);
+				aci.save();
+//        	String sql="INSERT into arap_charge_item (ref_order_id,charge_order_id) "
+//        				+ "VALUES ("+itemId+","+order_id+")";
+    		}
+    	}
+    	renderJson(aci);
+
+    }
+      
 
 }

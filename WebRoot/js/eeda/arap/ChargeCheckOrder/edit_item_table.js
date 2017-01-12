@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) { 
 $(document).ready(function() {
 	var tableName = 'eeda-table';
-	
+	var itemIds=[];
 	
 	
 	itemOrder.buildItemDetail=function(){
@@ -54,7 +54,7 @@ $(document).ready(function() {
                         }
                     }
             		return str;
-			    }
+			          }
             },
             { "data": "ORDER_NO", "width": "100px",
 		    	  "render": function ( data, type, full, meta ) {
@@ -125,6 +125,127 @@ $(document).ready(function() {
         ]
     }); 
         
+        var dataTable = eeda.dt({
+            id: 'eeda_charge_table',
+            // drawCallback: function( settings ) {
+            //     flash();
+            // },
+            ajax:{
+                //url: "/chargeCheckOrder/list",
+                type: 'POST'
+            }, 
+            columns:[
+            { "width": "10px", "orderable": false,
+            "render": function ( data, type, full, meta ) {
+                  var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
+                for(var i=0;i<itemIds.length;i++){
+                           if(itemIds[i]==full.ID){
+                             strcheck= '<input type="checkbox" class="checkBox" checked="checked"  name="order_check_box" value="'+full.ID+'">';
+                           }
+                       }
+                return strcheck;
+            }
+            },
+              { "data": "ORDER_NO", "width": "100px",
+              "render": function ( data, type, full, meta ) {
+                        return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+                    }
+              },
+              { "data": "ORDER_EXPORT_DATE", "width": "100px"},
+              { "data": "CREATE_STAMP", "width": "100px"},
+              { "data": "TYPE", "width": "60px"},
+              { "data": "FEE_NAME", "width": "60px",
+                "render": function ( data, type, full, meta ) {
+                  return data;
+                }
+              },
+              { "data": "CUSTOMER_NAME", "width": "100px"},
+              { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
+              { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
+                "render": function ( data, type, full, meta ) {
+                  if(full.SQL_TYPE=='cost'){
+                    return '<span style="color:red;">'+'-'+data+'</span>';
+                  }
+                      return data;
+                    }
+              },
+              { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
+              { "data": "EXCHANGE_RATE", "width": "60px"},
+              { "data": "AFTER_TOTAL", "width": "60px" ,'class':'AFTER_TOTAL',
+                "render": function ( data, type, full, meta ) {
+                  if(full.SQL_TYPE=='cost'){
+                    return '<span style="color:red;">'+'-'+data+'</span>';
+                  }
+                      return data;
+                    }
+              },
+              { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px"},
+              { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px"},
+              { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px",
+                "render": function ( data, type, full, meta ) {
+                  if(full.SQL_TYPE=='cost'){
+                    return '<span style="color:red;">'+'-'+data+'</span>';
+                  }
+                  return data;
+                }
+              },
+              { "data": "FND", "width": "60px",
+                "render": function ( data, type, full, meta ) {
+                  if(data)
+                return data;
+                  else
+                return full.DESTINATION;
+                }
+              },
+              { "data": "VOLUME", "width": "60px",
+                  "render": function ( data, type, full, meta ) {
+                      return "";
+                  }
+              },
+              { "data": "CONTAINER_AMOUNT","width": "60px",
+                "render": function ( data, type, full, meta ) {
+                  if(data){
+                    var dataArr = data.split(",");
+                    var a = 0;
+                    var b = 0;
+                    var c = 0;
+                    var dataStr = "";
+                    for(var i=0;i<dataArr.length;i++){
+                      if(dataArr[i]=="20GP"){
+                        a++;
+                      }
+                      if(dataArr[i]=="40GP"){
+                        b++;
+                      }
+                      if(dataArr[i]=="45GP"){
+                        c++;
+                      }
+                    }
+                    if(a>0){
+                      dataStr+="20GPx"+a+";"
+                    }
+                    if(b>0){
+                      dataStr+="40GPx"+b+";"
+                    }
+                    if(c>0){
+                      dataStr+="45GPx"+c+";"
+                    }
+                    return dataStr;
+                  }else{
+                    return '';
+                  }
+                }
+              },
+              { "data": "NET_WEIGHT", "width": "60px"},
+              { "data": "REF_NO", "width": "60px"},
+              { "data": "MBL_NO", "width": "60px"},
+              { "data": "HBL_NO", "width": "60px"},
+              { "data": "CONTAINER_NO", "width": "100px"},
+              { "data": "TRUCK_TYPE", "width": "100px"}
+            ]
+        });
+
+
            
     $('input[name=new_rate]').on('keyup',function(){
     	var totalAmount = 0.00;
@@ -292,24 +413,24 @@ $(document).ready(function() {
                ids:ids.toString(), 
                rate:rate, 
                ex_currency_name: $('#exchange_currency').val()}, function(data){
-	    	$('#exchange').attr('disabled',false);
-	    	var order_id = $('#order_id').val();
-	    	 var url = "/chargeCheckOrder/tableList?order_id="+order_id
-	         +"&table_type=item"
-	         +"&query_currency="+que_currency;
-	         
-	         itemTable.ajax.url(url).load();
-//	    	itemOrder.refleshTable(order_id,ids.toString());
-	    	$.scojs_message('兑换成功', $.scojs_message.TYPE_OK);
-           $('#cny').val((parseFloat(data.CNY)).toFixed(2));
-           $('#usd').val((parseFloat(data.USD)).toFixed(2));
-           $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
-           $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
-	    },'json').fail(function() {
-	    	$('#exchange').attr('disabled',false);
-           $.scojs_message('发生异常，兑换失败', $.scojs_message.TYPE_ERROR);
-	    });
-   })
+    	    	        $('#exchange').attr('disabled',false);
+          	    	var order_id = $('#order_id').val();
+          	    	 var url = "/chargeCheckOrder/tableList?order_id="+order_id
+          	         +"&table_type=item"
+          	         +"&query_currency="+que_currency;
+          	         
+          	         itemTable.ajax.url(url).load();
+          //	    	itemOrder.refleshTable(order_id,ids.toString());
+          	    	$.scojs_message('兑换成功', $.scojs_message.TYPE_OK);
+                     $('#cny').val((parseFloat(data.CNY)).toFixed(2));
+                     $('#usd').val((parseFloat(data.USD)).toFixed(2));
+                     $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
+                     $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
+          	    },'json').fail(function() {
+    	    	$('#exchange').attr('disabled',false);
+               $.scojs_message('发生异常，兑换失败', $.scojs_message.TYPE_ERROR);
+    	    });
+       })
     
  
 //	 	 $('#allcheck').click(function(){
@@ -348,8 +469,116 @@ $(document).ready(function() {
        
        itemTable.ajax.url(url).load();
     }
+
+     $('#add_charge').click(function(){
+            $('#allCharge').prop('checked',false);
+            $('#add_charge_item').prop('disabled',true);
+
+            var land_item_id = $(this).parent().parent().attr('id');
+            $('#land_item_id').val(land_item_id);
+            var order_id = $('#order_id').val();
+            var url = "/jobOrder/tableListOfLandCharge?order_id="+order_id+"&land_item_id="+land_item_id;
+            dataTable.ajax.url(url).load();
+            $('#land_charge_table_msg_btn').click();
+         
+      }) 
+      $('#resetBtn').click(function(e){
+          $('#que_sp_input').val('');
+          $('#que_order_no').val('');
+          $('#que_order_export_date_begin_time').val('');
+          $('#que_order_export_date_end_time').val('');
+          $('#que_customer_input').val('');
+      });
+         
+
+      $('#searchBtn').click(function(){
+          searchData(); 
+      });
+
+     var searchData=function(){
+          var order_no = $("#que_order_no").val().trim(); 
+          var sp_name = $('#que_sp_input').val().trim();
+
+          if(!sp_name){
+              $.scojs_message('请选择结算公司', $.scojs_message.TYPE_ERROR);
+              return;
+          }
+          var customer_name = $('#que_customer_input').val().trim();
+          var order_export_date_begin_time = $("#que_order_export_date_begin_time").val();
+          var order_export_date_end_time = $("#que_order_export_date_end_time").val();
+          
+          /*  
+              查询规则：参数对应DB字段名
+              *_no like
+              *_id =
+              *_status =
+              时间字段需成双定义  *_begin_time *_end_time   between
+          */
+          var url = "/chargeCheckOrder/list?order_no="+order_no
+               +"&sp_name="+sp_name
+               +"&customer_name="+customer_name
+               +"&order_export_date_end_time="+order_export_date_end_time
+               +"&order_export_date_begin_time="+order_export_date_begin_time
+
+          dataTable.ajax.url(url).load();
+        }
     
-  
-    
+      //添加新的明细
+      $('#add_charge_item').on('click', function(){
+          insertChargeItem();
+      });
+      var insertChargeItem=function(){
+
+          var order_id=$('#order_id').val();
+           var charge_itemlist=[];
+          $('#eeda_charge_table input[name=order_check_box]:checked').each(function(){
+                var id=$(this).val();
+                charge_itemlist.push(id);
+          });
+          if(charge_itemlist.length==0){
+            $('#add_charge_item').attr('disabled',true);
+          }
+          $.post('/chargeCheckOrder/insertChargeItem',{order_id:order_id,charge_itemlist:charge_itemlist.toString()},function(data){
+                itemOrder.refleshTable(data.CHARGE_ORDER_ID);
+          },'json').fail(function() {
+               $.scojs_message('添加失败', $.scojs_message.TYPE_ERROR);
+          });
+      }
+
+      //添加明细的全选
+      $('#allCharge').click(function(){
+          var itemIds=[];
+          
+          if($(this).prop('checked')){
+            $("#eeda_charge_table input[name=order_check_box]").prop('checked',true);
+          }else{
+             $("#eeda_charge_table input[name=order_check_box]").prop('checked',false);
+          }
+         if($(this).prop('checked')){
+                 $("#eeda_charge_table input[name=order_check_box]:checked").each(function(){                     
+                     itemIds.push($(this).val());
+                  });
+                 $('#add_charge_item').attr('disabled',false);
+           }else{
+                $('#add_charge_item').attr('disabled',true);
+           }
+     });
+
+      $('#eeda_charge_table').on('click',"input[name='order_check_box']",function () {
+        var  flag=0;
+          $("input[name='order_check_box']").each(function(){
+              if($(this).prop('checked')){
+                flag++;
+              }
+          });
+          if(flag>0){
+               $('#add_charge_item').attr('disabled',false);
+          }else{
+                $('#add_charge_item').attr('disabled',true);
+          }
+       });
+    // var flash = function(){    
+    //    // $("#allCharge").prop("checked",$("#eeda_charge_table .checkBox").length == $("#eeda_charge_table .checkBox:checked").length ? true : false);
+    //  };
 } );    
 } );
