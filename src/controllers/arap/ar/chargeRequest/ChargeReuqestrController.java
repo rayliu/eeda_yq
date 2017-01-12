@@ -46,6 +46,8 @@ public class ChargeReuqestrController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void index() {
+    	String back =getPara("back");
+    	setAttr("back",back);
     	render("/oms/ChargeRequest/ChargeRequestList.html");
     }
     

@@ -269,6 +269,10 @@ $(document).ready(function() {
     	})
     });
     
+    var back=$('#back').val();
+    if(back){
+    	refreshData();
+    }
   	//checkbox选中则button可点击
 	
 	$('#costAccept_table').on('click','.checkBox',function(){
@@ -296,6 +300,8 @@ $(document).ready(function() {
 			var payee_names = '';
 		}
 	});
+	
+	
 	
 	
 	$('#createBtn').click(function(){
