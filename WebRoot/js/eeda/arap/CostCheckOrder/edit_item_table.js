@@ -93,10 +93,11 @@ $(document).ready(function() {
             { "data": "EXCHANGE_CURRENCY_RATE"},
             { "data": "EXCHANGE_TOTAL_AMOUNT",
                 "render": function ( data, type, full, meta ) {
+                	var str =data;
                     if(full.ORDER_TYPE=='charge'){
-                        return '<span style="color:red;">'+'-'+parseFloat(data).toFixed(2)+'</span>';
+                        return '<span style="color:red;">'+'-'+(Math.round(str*100)/100).toFixed(2)+'</span>';
                     }
-                    return parseFloat(data).toFixed(2);
+                    return (Math.round(str*100)/100).toFixed(2);
                   }
             },
             { "data": "ORDER_TYPE", "visible": false,

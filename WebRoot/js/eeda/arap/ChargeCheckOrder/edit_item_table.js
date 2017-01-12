@@ -100,7 +100,7 @@ $(document).ready(function() {
             	 },
             { "data": "EXCHANGE_TOTAL_AMOUNT", 
                 "render": function ( data, type, full, meta ) {
-                	var exchange_tota_str=parseFloat(data).toFixed(2);
+                	var exchange_tota_str=(Math.round(data*100)/100).toFixed(2);
                     if(full.ORDER_TYPE=='cost'){
                         return '<span style="color:red;">'+'-'+exchange_tota_str+'</span>';
                     }
