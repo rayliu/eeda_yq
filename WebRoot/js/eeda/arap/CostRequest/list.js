@@ -47,6 +47,8 @@ $(document).ready(function() {
         			strFeeType="咨询服务费";
         		}else if(data=="internationalFee"){
         			strFeeType="国际货代服务费";
+        		}else if(data=="transAndInsurance"){
+        			strFeeType="货物运输保险费";
         		}
         			
         		return strFeeType;

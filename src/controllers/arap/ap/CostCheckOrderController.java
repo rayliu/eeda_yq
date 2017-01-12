@@ -325,7 +325,7 @@ public class CostCheckOrderController extends Controller {
       				+ " left join currency cur on cur.id=joa.currency_id "
       				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
       				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
-      				+ " left join fin_item f on f.id = joa.cost_id"
+      				+ " left join fin_item f on f.id = joa.charge_id"
       				+ " where joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
       				+ " GROUP BY joa.id "
     				+ " ) B where 1=1 ";
