@@ -49,12 +49,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/profitAndPaymentRate/list?customer_id="+customer
-				          +"&order_export_date_begin_time="+order_export_date_begin_time
-				          +"&order_export_date_end_time="+order_export_date_end_time;
-          dataTable.ajax.url(url).load();
-          
-          $.post('/profitAndPaymentRate/listTotla',{
+          $.post('profitAndPaymentRate/listTotal',{
         	  customer:customer,
         	  order_export_date_begin_time:order_export_date_begin_time,
         	  order_export_date_end_time:order_export_date_end_time
@@ -62,6 +57,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  
               
           });
+          
+          
+          var url = "/profitAndPaymentRate/list?customer_id="+customer
+				          +"&order_export_date_begin_time="+order_export_date_begin_time
+				          +"&order_export_date_end_time="+order_export_date_end_time;
+          dataTable.ajax.url(url).load();
+          
+          
       };
   });
 });

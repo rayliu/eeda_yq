@@ -73,76 +73,93 @@ public class ProfitAndPaymentRate extends Controller {
 		String customer_id =(String) getPara("customer");
 		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
 		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
-		String order_export_date=order_export_date_begin_time.replaceAll("_begin_time", "");
-//		String condition = 
-//				SELECT 
-//				(SELECT 
-//				IFNULL(SUM(joa.exchange_total_amount),0)
-//				  from job_order jo 
-//				  LEFT JOIN job_order_arap joa on jo.id = joa.order_id 
-//				  LEFT JOIN party p on p.id = jo.customer_id
-//				  WHERE jo.office_id = 1 and joa.exchange_currency_id = 3 and jo.customer_id = 35533 
-//				  and joa.order_type = 'charge' and (jo.order_export_date BETWEEN '2016-11-01' AND '2016-11-31' )
-//				) charge_cny,
-//				(SELECT 
-//				IFNULL(SUM(joa.exchange_total_amount),0)
-//				  from job_order jo 
-//				  LEFT JOIN job_order_arap joa on jo.id = joa.order_id 
-//				  LEFT JOIN party p on p.id = jo.customer_id
-//				  WHERE jo.office_id = 1 and joa.exchange_currency_id = 6 and jo.customer_id = 35533 
-//				  and joa.order_type = 'charge' and (jo.order_export_date BETWEEN '2016-11-01' AND '2016-11-31' )
-//				) charge_usd,
-//				(SELECT 
-//				IFNULL(SUM(joa.exchange_total_amount),0)
-//				  from job_order jo 
-//				  LEFT JOIN job_order_arap joa on jo.id = joa.order_id 
-//				  LEFT JOIN party p on p.id = jo.customer_id
-//				  WHERE jo.office_id = 1 and joa.exchange_currency_id = 8 and jo.customer_id = 35533 
-//				  and joa.order_type = 'charge' and (jo.order_export_date BETWEEN '2016-11-01' AND '2016-11-31' )
-//				) charge_jpy,
-//				(SELECT 
-//				IFNULL(SUM(joa.exchange_total_amount),0)
-//				  from job_order jo 
-//				  LEFT JOIN job_order_arap joa on jo.id = joa.order_id 
-//				  LEFT JOIN party p on p.id = jo.customer_id
-//				  WHERE jo.office_id = 1 and joa.exchange_currency_id = 9 and jo.customer_id = 35533 
-//				  and joa.order_type = 'charge' and (jo.order_export_date BETWEEN '2016-11-01' AND '2016-11-31' )
-//				) charge_hkd,
-//				(SELECT 
-//				IFNULL(SUM(joa.exchange_total_amount),0)
-//				  from job_order jo 
-//				  LEFT JOIN job_order_arap joa on jo.id = joa.order_id 
-//				  LEFT JOIN party p on p.id = jo.customer_id
-//				  WHERE jo.office_id = 1 and joa.exchange_currency_id = 3 and jo.customer_id = 35533 
-//				  and joa.order_type = 'cost' and (jo.order_export_date BETWEEN '2016-11-01' AND '2016-11-31' )
-//				) cost_cny,
-//				(SELECT 
-//				IFNULL(SUM(joa.exchange_total_amount),0)
-//				  from job_order jo 
-//				  LEFT JOIN job_order_arap joa on jo.id = joa.order_id 
-//				  LEFT JOIN party p on p.id = jo.customer_id
-//				  WHERE jo.office_id = 1 and joa.exchange_currency_id = 6 and jo.customer_id = 35533 
-//				  and joa.order_type = 'cost' and (jo.order_export_date BETWEEN '2016-11-01' AND '2016-11-31' )
-//				) cost_usd,
-//				(SELECT 
-//				IFNULL(SUM(joa.exchange_total_amount),0)
-//				  from job_order jo 
-//				  LEFT JOIN job_order_arap joa on jo.id = joa.order_id 
-//				  LEFT JOIN party p on p.id = jo.customer_id
-//				  WHERE jo.office_id = 1 and joa.exchange_currency_id = 8 and jo.customer_id = 35533 
-//				  and joa.order_type = 'cost' and (jo.order_export_date BETWEEN '2016-11-01' AND '2016-11-31' )
-//				) cost_jpy,
-//				(SELECT 
-//				IFNULL(SUM(joa.exchange_total_amount),0)
-//				  from job_order jo 
-//				  LEFT JOIN job_order_arap joa on jo.id = joa.order_id 
-//				  LEFT JOIN party p on p.id = jo.customer_id
-//				  WHERE jo.office_id = 1 and joa.exchange_currency_id = 9 and jo.customer_id = 35533 
-//				  and joa.order_type = 'cost' and (jo.order_export_date BETWEEN '2016-11-01' AND '2016-11-31' )
-//				) cost_hkd
+		
+		String sp_id ="and sp_id="+customer_id;
+		if("and sp_id=".equals(sp_id)){
+			sp_id="";
+		}
+		if(order_export_date_begin_time==null){
+			order_export_date_begin_time="";
+		}
+		if(order_export_date_end_time==null){
+			order_export_date_end_time="";
+		}
+		
+		String order_export_date =  "and (order_export_date between "+order_export_date_begin_time+" and "+order_export_date_end_time+")";
 
+		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
+			order_export_date="";
+		}
+		String condition = sp_id+order_export_date;
 		
+		String sql=" SELECT "
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 3 and jo.customer_id = 35533 "
+			+"	  and joa.order_type = 'charge' "+condition
+			+"	) charge_cny,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 6 and jo.customer_id = 35533 "
+			+"	  and joa.order_type = 'charge' "+condition
+			+"	) charge_usd,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 8 and jo.customer_id = 35533 "
+			+"	  and joa.order_type = 'charge' "+condition
+			+"	) charge_jpy,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 9 and jo.customer_id = 35533 "
+			+"	  and joa.order_type = 'charge' "+condition
+			+"	) charge_hkd,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 3 and jo.customer_id = 35533 "
+			+"	  and joa.order_type = 'cost' "+condition
+			+"	) cost_cny,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 6 and jo.customer_id = 35533 "
+			+"	  and joa.order_type = 'cost' "+condition
+			+"	) cost_usd,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 8 and jo.customer_id = 35533 "
+			+"	  and joa.order_type = 'cost' "+condition
+			+"	) cost_jpy,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 9 and jo.customer_id = 35533 "
+			+"	  and joa.order_type = 'cost' "+condition
+			+"	) cost_hkd ";
 		
+		Record re = Db.findFirst(sql);
+		renderJson(re);
 		
 	}
 	
