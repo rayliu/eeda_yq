@@ -492,10 +492,10 @@ $(document).ready(function() {
          
 
       $('#searchBtn').click(function(){
-          searchData(); 
+          searchData1(); 
       });
 
-     var searchData=function(){
+     var searchData1=function(){
           var order_no = $("#que_order_no").val().trim(); 
           var sp_name = $('#que_sp_input').val().trim();
 
