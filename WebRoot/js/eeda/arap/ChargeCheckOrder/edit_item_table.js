@@ -457,7 +457,7 @@ $(document).ready(function() {
        
        itemTable.ajax.url(url).load();
     }
-
+      //添加明细
      $('#add_charge').click(function(){
             $('#allCharge').prop('checked',false);
             $('#add_charge_item').prop('disabled',true);

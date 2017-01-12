@@ -611,5 +611,32 @@ public class CostCheckOrderController extends Controller {
         renderJson(map); 
     }
 	
-	
+    public void insertCostItem(){
+    	String itemList= getPara("cost_itemlist");
+    	String[] itemArray =  itemList.split(",");
+    	String costOrderId=getPara("order_id");
+    	ArapCostItem aci = null;
+    	
+    	if(costOrderId != null){
+    		for(String itemId:itemArray){
+    			aci = new ArapCostItem();
+	    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
+	             jobOrderArap.set("bill_flag", "Y");
+	             jobOrderArap.update();
+				aci.set("ref_order_id", itemId);
+				aci.set("cost_order_id", costOrderId);
+				aci.save();
+//        	String sql="INSERT into arap_charge_item (ref_order_id,charge_order_id) "
+//        				+ "VALUES ("+itemId+","+order_id+")";
+    		}
+    		
+    	}
+    	//计算结算汇总
+		Map<String, Double> exchangeTotalMap = updateExchangeTotal(costOrderId);
+		exchangeTotalMap.put("costOrderId", Double.parseDouble(costOrderId));
+		
+    	renderJson(exchangeTotalMap);
+
+    }
+     
 }

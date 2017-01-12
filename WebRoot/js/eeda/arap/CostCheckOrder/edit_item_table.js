@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) { 
 $(document).ready(function() {
 	var tableName = 'eeda-table';
-	
+	var itemIds=[]
 	itemOrder.buildItemDetail=function(){
         var item_table_rows = $("#"+tableName+" tr");
         var items_array=[];
@@ -108,7 +108,119 @@ $(document).ready(function() {
             },
         ]
     });
-        
+        var dataTable = eeda.dt({
+          id: 'eeda_cost_table',
+          serverSide: true, //不打开会出现排序不对
+          ajax:{
+                //url: "/costCheckOrder/list",
+                type: 'POST'
+          },
+          // drawCallback: function( settings ) {
+          //     flash();
+          // },
+          columns: [
+                { "width": "10px","orderable": false,
+                        "render": function ( data, type, full, meta ) {
+                            var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
+                            for(var i=0;i<itemIds.length;i++){
+                                 if(itemIds[i]==full.ID){
+                                     strcheck= '<input type="checkbox" class="checkBox" checked="checked"  name="order_check_box" value="'+full.ID+'">';
+                                 }
+                             }
+                            return strcheck;
+                        }
+                },
+                { "data": "ORDER_NO", "width": "100px",
+                      "render": function ( data, type, full, meta ) {
+                          return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+                      }
+                },
+                { "data": "ORDER_EXPORT_DATE", "width": "100px"},
+                { "data": "CREATE_STAMP", "width": "100px"},
+                { "data": "TYPE", "width": "60px"},
+                { "data": "FEE_NAME", "width": "60px"},
+                { "data": "CUSTOMER_NAME", "width": "100px"},
+                { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
+                { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
+                    "render": function ( data, type, full, meta ) {
+                        if(full.SQL_TYPE=='charge'){
+                            return '<span style="color:red;">'+'-'+data+'</span>';
+                        }
+                        return data;
+                      }
+                },
+                { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
+                { "data": "EXCHANGE_RATE", "width": "60px" },
+                { "data": "AFTER_TOTAL", "width": "60px" ,'class':'AFTER_TOTAL',
+                    "render": function ( data, type, full, meta ) {
+                        if(full.SQL_TYPE=='charge'){
+                            return '<span style="color:red;">'+'-'+data+'</span>';
+                        }
+                        return data;
+                      }
+                },              
+                { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px"},
+                { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px" },
+                { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px" ,
+                    "render": function ( data, type, full, meta ) {
+                        if(full.SQL_TYPE=='charge'){
+                            return '<span style="color:red;">'+'-'+data+'</span>';
+                        }
+                        return data;
+                    }
+                },              
+                { "data": "FND", "width": "60px",
+                    "render": function ( data, type, full, meta ) {
+                        if(data)
+                                 return data;
+                        else
+                                 return full.DESTINATION;
+                    }
+                },
+                { "data": "VOLUME", "width": "60px"},
+                { "data": "CONTAINER_AMOUNT","width": "60px",
+                    "render": function ( data, type, full, meta ) {
+                        if(data){
+                            var dataArr = data.split(",");
+                            var a = 0;
+                            var b = 0;
+                            var c = 0;
+                            var dataStr = "";
+                            for(var i=0;i<dataArr.length;i++){
+                                if(dataArr[i]=="20GP"){
+                                    a++;
+                                }
+                                if(dataArr[i]=="40GP"){
+                                    b++;
+                                }
+                                if(dataArr[i]=="45GP"){
+                                    c++;
+                                }
+                            }
+                            if(a>0){
+                                dataStr+="20GPx"+a+";"
+                            }
+                            if(b>0){
+                                dataStr+="40GPx"+b+";"
+                            }
+                            if(c>0){
+                                dataStr+="45GPx"+c+";"
+                            }
+                            return dataStr;
+                        }else{
+                            return '';
+                        }
+                    }
+                },
+                { "data": "NET_WEIGHT", "width": "60px"},
+                { "data": "REF_NO", "width": "200px"},
+                { "data": "MBL_NO", "width": "60px"},
+                { "data": "HBL_NO", "width": "60px"},
+                { "data": "CONTAINER_NO", "width": "100px"},
+                { "data": "TRUCK_TYPE", "width": "100px"},
+              ]
+          });
+
         
         //选择是否是同一币种
         var cnames = [];
@@ -197,7 +309,7 @@ $(document).ready(function() {
     $('#exchange').click(function(){
     	$(this).attr('disabled',true);
     	var rate = $('#exchange_rate').val();
-        var que_currency= $('#exchange_currency').val();
+        var que_currency= $('#query_currency').val();
 
         var currency_name = cnames[0];
     	if(rate==''||isNaN(rate)){
@@ -288,14 +400,6 @@ $(document).ready(function() {
          }
      }
     });
-    // //点击td，checkbox修改checked
-    //  $('#eeda-table').on('click',"td[class=sorting_1]",function (){
-    //     if($(this).find('input').prop('checked')){
-    //       $(this).find('input').prop("checked",false);
-    //    }else{
-    //       $(this).find('input').prop("checked",true);
-    //    }
-    // });
 
 
     $('#query_listCurrency').click(function(){
@@ -318,6 +422,117 @@ $(document).ready(function() {
        
        itemTable.ajax.url(url).load();
     }
+
+
+    //添加明细   
+     $('#add_cost').click(function(){
+            $('#allcost').prop('checked',false);
+            $('#add_cost_item').prop('disabled',true);
+            $('#cost_table_msg_btn').click();
+         
+      }) 
+      $('#resetBtn').click(function(e){
+          $('#que_sp_input').val('');
+          $('#que_order_no').val('');
+          $('#que_order_export_date_begin_time').val('');
+          $('#que_order_export_date_end_time').val('');
+          $('#que_customer_input').val('');
+      });
+         
+
+      $('#searchBtn').click(function(){
+          searchData1(); 
+      });
+
+     var searchData1=function(){
+          var order_no = $("#que_order_no").val().trim(); 
+          var sp_name = $('#que_sp_input').val().trim();
+
+          if(!sp_name){
+              $.scojs_message('请选择结算公司', $.scojs_message.TYPE_ERROR);
+              return;
+          }
+          var customer_name = $('#que_customer_input').val().trim();
+          var order_export_date_begin_time = $("#que_order_export_date_begin_time").val();
+          var order_export_date_end_time = $("#que_order_export_date_end_time").val();
+          
+          /*  
+              查询规则：参数对应DB字段名
+              *_no like
+              *_id =
+              *_status =
+              时间字段需成双定义  *_begin_time *_end_time   between
+          */
+          var url = "/costCheckOrder/list?order_no="+order_no
+               +"&sp_name="+sp_name
+               +"&customer_name="+customer_name
+               +"&order_export_date_end_time="+order_export_date_end_time
+               +"&order_export_date_begin_time="+order_export_date_begin_time
+
+          dataTable.ajax.url(url).load();
+        }
+    
+      //添加新的明细
+      $('#add_cost_item').on('click', function(){
+          insertCostItem();
+          searchData1(); 
+      });
+      var insertCostItem=function(){
+
+          var order_id=$('#order_id').val();
+           var cost_itemlist=[];
+          $('#eeda_cost_table input[name=order_check_box]:checked').each(function(){
+                var id=$(this).val();
+                cost_itemlist.push(id);
+          });
+          if(cost_itemlist.length==0){
+            $('#add_cost_item').attr('disabled',true);
+          }
+          $.post('/costCheckOrder/insertCostItem',{order_id:order_id,cost_itemlist:cost_itemlist.toString()},function(data){
+                itemOrder.refleshTable(data.costOrderId.toString());
+                 $('#cny').val((parseFloat(data.CNY)).toFixed(2));
+                 $('#usd').val((parseFloat(data.USD)).toFixed(2));
+                 $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
+                 $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
+          },'json').fail(function() {
+               $.scojs_message('添加失败', $.scojs_message.TYPE_ERROR);
+          });
+      }
+
+      //添加明细的全选
+      $('#allcost').click(function(){
+          var itemIds=[];
+          
+          if($(this).prop('checked')){
+            $("#eeda_cost_table input[name=order_check_box]").prop('checked',true);
+          }else{
+             $("#eeda_cost_table input[name=order_check_box]").prop('checked',false);
+          }
+         if($(this).prop('checked')){
+                 $("#eeda_cost_table input[name=order_check_box]:checked").each(function(){                     
+                     itemIds.push($(this).val());
+                  });
+                 $('#add_cost_item').attr('disabled',false);
+           }else{
+                $('#add_cost_item').attr('disabled',true);
+           }
+     });
+
+      $('#eeda_cost_table').on('click',"input[name='order_check_box']",function () {
+        var  flag=0;
+          $("input[name='order_check_box']").each(function(){
+              if($(this).prop('checked')){
+                flag++;
+              }
+          });
+          if(flag>0){
+               $('#add_cost_item').attr('disabled',false);
+          }else{
+                $('#add_cost_item').attr('disabled',true);
+          }
+       });
+
+
 
 } );    
 } );
