@@ -18,7 +18,7 @@ $(document).ready(function() {
         	$.post('/jobOrder/getArapTemplate', {order_type:order_type,customer_id:customer_id,arap_type:type}, function(data){
         		if(data){
         			for(var i = 0;i<data.length;i++){
-        				var json_obj = data[i].JSON_VALUE;
+        				var json_obj = JSON.parse(data[i].JSON_VALUE);
         				var li = '';
         				var li_val = '';
         				for(var j = 0;j<json_obj.length;j++){
@@ -55,7 +55,7 @@ $(document).ready(function() {
         						+'	<a class="delete'+type+'Template" style="margin-right: 10px;padding-top: 5px;float: left;">删除</a>'
         						+'	<div class="select'+type+'Template" style="margin-left: 60px;padding-top: 0px;">'
         						+'      <input type="radio" value="1" name="used'+type+'Info">'
-        						+li_val
+        						+		li_val
         						+'	</div>'
         						+'</div><hr/>'
         						+'</ul>');
@@ -94,6 +94,8 @@ $(document).ready(function() {
     
     //选中回显
     $('#ChargeDiv,#CostDiv').on('click', '.selectChargeTemplate,.selectCostTemplate', function(){
+    	$(this).parent().find('[type=radio]').prop('checked',true)
+    	
     	var thisType = $(this).attr('class');
     	var type = 'Charge';
     	var table = 'charge_table';
@@ -103,12 +105,7 @@ $(document).ready(function() {
     	}
     	
         var li = $(this).parent().parent().find('li');
-        //var row = $(this).parent().parent().parent().find('.used'+type+'Info').length;
-        
         var dataTable = $('#'+table).DataTable();
-//        for (var j = $('#'+table).find('tr').length - 2; j >= 0; j--) {
-//        	dataTable.row(j).remove().draw();
-//         }
         
         for(var i=0; i<li.length; i++){
         	var row = $(li[i]);
