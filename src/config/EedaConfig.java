@@ -269,7 +269,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/payableBalance",controllers.arap.PayableBalanceController.class, contentPath);
         me.add("/profitAndPaymentRate",controllers.arap.ProfitAndPaymentRateController.class, contentPath);
         me.add("/accountAging",controllers.arap.AccountAging.class, contentPath);
-        
+        me.add("/billProfitAndPayment",controllers.arap.BillProfitAndPaymentController.class, contentPath);
         
         
         //应付报销单

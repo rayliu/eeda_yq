@@ -36,48 +36,22 @@
                                                  
 	                             				<%include("/eeda/component/form/inputDateQueryField.html",
 	                             									 {   id:'order_export_date', 
-	                             									 	 label:'业务发生时间',
+	                             									 	 label:'出货日期',
 	                             									     value:''
 	                             									  }){} %>
                                             </div>
                                         </div>
                                     </form>
-
                                     <div class="form-group button-bar" >
                                         <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
                                         <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
                                     </div><br>
-                                    
-	                                    <div class="form-group" >
-		                                    <label>应收对账金额合计：<span style="color:#AAAAAA"></span></label>
-		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">USD:<span id="USD_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">JPY:<span id="JPY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">HKD:<span id="HKD_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                    
-	                                    </div><br>
-	                                
-	                                    <div class="form-group" >
-		                                   <label>应付对账金额合计：<span style="color:#AAAAAA"></span></label>
-		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">USD:<span id="USD_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">JPY:<span id="JPY_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">HKD:<span id="HKD_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
-	                                    </div><br>
-	                                    
-	                                    <div class="form-group" >
-		                                    <label>利润合计：<span style="color:#AAAAAA"></span></label>
-		                                    <label style="color:#AAAAAA">CNY:<span id="CNY_profit_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                    <label style="color:#AAAAAA">USD:<span id="USD_profit_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                    <label style="color:#AAAAAA">JPY:<span id="JPY_profit_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                    <label style="color:#AAAAAA">HKD:<span id="HKD_profit_tatol" style="color:black"></span></label><nbsp><nbsp>
-	                                    </div><br>
 	                               
                                      <%include("/eeda/component/form/detailTable.html", 
                                         {
                                             id:'eeda_table', 
-                                            style: 'width:900px',
-                                            headers:['客户','折合应收（RMB）','折合应付（RMB）','利润(RMB)','利润率(%)'
+                                            style: 'width:950px',
+                                            headers:['单号','客户','出货时间','应收折合金额(CNY)','应付折合金额(CNY)','利润(RMB)','利润率(%)'
                                             ]
                                         }){} %>
                                 </div>
@@ -92,6 +66,6 @@
 <%}%>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
-        requirejs(['app/arap/ProfitAndPaymentRate/list']);
+        requirejs(['app/arap/BillProfitAndPayment/list']);
     });
 </script>
