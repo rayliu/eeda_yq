@@ -24,8 +24,8 @@ import controllers.util.DbUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class ProfitAndPaymentRate extends Controller {
-	private Log logger = Log.getLog(ProfitAndPaymentRate.class);
+public class ProfitAndPaymentRateController extends Controller {
+	private Log logger = Log.getLog(ProfitAndPaymentRateController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
 	@Before(EedaMenuInterceptor.class)
@@ -74,8 +74,11 @@ public class ProfitAndPaymentRate extends Controller {
 		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
 		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
 		
-		String sp_id ="and sp_id="+customer_id;
-		if("and sp_id=".equals(sp_id)){
+		UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+		
+		String sp_id =" and customer_id="+customer_id;
+		if(" and customer_id=".equals(sp_id)){
 			sp_id="";
 		}
 		if(order_export_date_begin_time==null){
@@ -85,7 +88,7 @@ public class ProfitAndPaymentRate extends Controller {
 			order_export_date_end_time="";
 		}
 		
-		String order_export_date =  "and (order_export_date between "+order_export_date_begin_time+" and "+order_export_date_end_time+")";
+		String order_export_date =  " and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"')";
 
 		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
 			order_export_date="";
@@ -98,7 +101,7 @@ public class ProfitAndPaymentRate extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 3 and jo.customer_id = 35533 "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+"	) charge_cny,"
 			+"	(SELECT "
@@ -106,7 +109,7 @@ public class ProfitAndPaymentRate extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 6 and jo.customer_id = 35533 "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+"	) charge_usd,"
 			+"	(SELECT "
@@ -114,7 +117,7 @@ public class ProfitAndPaymentRate extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 8 and jo.customer_id = 35533 "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+"	) charge_jpy,"
 			+"	(SELECT "
@@ -122,7 +125,7 @@ public class ProfitAndPaymentRate extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 9 and jo.customer_id = 35533 "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+"	) charge_hkd,"
 			+"	(SELECT "
@@ -130,7 +133,7 @@ public class ProfitAndPaymentRate extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 3 and jo.customer_id = 35533 "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+"	) cost_cny,"
 			+"	(SELECT "
@@ -138,7 +141,7 @@ public class ProfitAndPaymentRate extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 6 and jo.customer_id = 35533 "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+"	) cost_usd,"
 			+"	(SELECT "
@@ -146,7 +149,7 @@ public class ProfitAndPaymentRate extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 8 and jo.customer_id = 35533 "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+"	) cost_jpy,"
 			+"	(SELECT "
@@ -154,13 +157,12 @@ public class ProfitAndPaymentRate extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = 1 and joa.exchange_currency_id = 9 and jo.customer_id = 35533 "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+"	) cost_hkd ";
 		
 		Record re = Db.findFirst(sql);
 		renderJson(re);
-		
 	}
 	
 }

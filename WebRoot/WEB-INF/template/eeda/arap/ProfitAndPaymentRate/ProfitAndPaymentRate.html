@@ -10,7 +10,7 @@
                 <div class="col-lg-12">
                      <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-list fa-fw"></i>客户应收应付利润率及回款率分析表
+                            <i class="fa fa-list fa-fw"></i>应收应付利润率
                         </div>
 
                         <div class="tab-content">
@@ -50,27 +50,28 @@
                                     </div><br>
                                     
 	                                    <div class="form-group" >
-		                                    <label>应收合计：<span style="color:#AAAAAA"></span></label>
-		                                    <span style="color:#AAAAAA">应收（RMB）:</span>
-		                                    <span style="color:#AAAAAA">应收（USD）:</span>
-		                                    <span style="color:#AAAAAA">应收（JPY）:</span>
-		                                    <span style="color:#AAAAAA">应收（HKD）:</span>
+		                                    <label>应收对账金额合计：<span style="color:#AAAAAA"></span></label>
+		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">USD:<span id="USD_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">JPY:<span id="JPY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">HKD:<span id="HKD_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                    
 	                                    </div><br>
 	                                
 	                                    <div class="form-group" >
-		                                    <label>应付合计：<span style="color:#AAAAAA"></span></label>
-		                                    <span style="color:#AAAAAA">应付（RMB）:</span>
-		                                    <span style="color:#AAAAAA">应付（USD）:</span>
-		                                    <span style="color:#AAAAAA">应付（JPY）:</span>
-		                                    <span style="color:#AAAAAA">应付（HKD）:</span>
+		                                   <label>应付对账金额合计：<span style="color:#AAAAAA"></span></label>
+		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">USD:<span id="USD_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">JPY:<span id="JPY_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">HKD:<span id="HKD_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
 	                                    </div><br>
 	                                    
 	                                    <div class="form-group" >
 		                                    <label>利润合计：<span style="color:#AAAAAA"></span></label>
-		                                    <span style="color:#AAAAAA">RMB:</span>
-		                                    <span style="color:#AAAAAA">USD:</span>
-		                                    <span style="color:#AAAAAA">JPY:</span>
-		                                    <span style="color:#AAAAAA">HKD:</span>
+		                                    <label style="color:#AAAAAA">CNY:<span id="CNY_profit_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                    <label style="color:#AAAAAA">USD:<span id="USD_profit_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                    <label style="color:#AAAAAA">JPY:<span id="JPY_profit_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                    <label style="color:#AAAAAA">HKD:<span id="HKD_profit_tatol" style="color:black"></span></label><nbsp><nbsp>
 	                                    </div><br>
 	                               
                                      <%include("/eeda/component/form/detailTable.html", 

@@ -10,6 +10,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           ajax: "/payableBalance/list",
           columns: [
       			{ "data": "ABBR", "width": "100px"},
+      			{ "data": "BEGIN_TIME", "width": "90px"},
+      			{ "data": "END_TIME", "width": "90px"},
 	            { "data": "CURRENCY", "width": "100px"},
 	            {
 					"render": function(data, type, full, meta) {
@@ -44,8 +46,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       })
 
      var searchData=function(){
-          var sp = $("#customer").val();
-          var abbr_name=$('#customer_input').val();
+          var sp = $("#sp").val();
+          var abbr_name=$('#sp_input').val();
           var service_stamp_between = $("#service_stamp").val();
           /*  
               查询规则：参数对应DB字段名
@@ -54,7 +56,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/payableBalance/list?sp="+customer
+          var url = "/payableBalance/list?sp="+sp
           				+"&abbr_equals="+abbr_name
 		                +"&service_stamp_between="+service_stamp_between;
           dataTable.ajax.url(url).load();
