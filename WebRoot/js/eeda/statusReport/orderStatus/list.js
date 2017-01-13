@@ -1,6 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '运营报表  | '+document.title;
+  	document.title = '单据状态  | '+document.title;
   	
   	//datatable, 动态处理
       var dataTable = eeda.dt({
