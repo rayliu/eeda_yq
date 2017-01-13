@@ -9,27 +9,34 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对 
           ajax: "/arapReport/list",
           columns: [
-      			{ "data": "ORDER_NO", "width": "100px",
+      			{ "data": "ORDER_NO", "width": "60px",
 			    	  "render": function ( data, type, full, meta ) {
 	                      return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
 	                  }
 	            },
 	            { "data": "CREATE_STAMP", "width": "100px"},
-	            { "data": "CUSTOMER_NAME", "width": "100px"},
+	            { "data": "CREATE_STAMP", "width": "100px"},
+	            { "data": "CUSTOMER_NAME", "width": "80px"},
+	            { "data": "CUSTOMER_NAME", "width": "80px"},
 	            { "data": "BILL_FLAG", "width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                		if(data){
-	      	            		if(data != 'Y')
-	      				    		    return '未创建对账单';
-	      				    	   else 
-	      				    		  return '已创建对账单';
+	      	            		if(data != 'Y'){
+	      	            			return '未创建对账单';
+	      	            		}else{
+	      	            			return '已创建对账单';
+	      	            		} 	  
 	                  	}else{
 	                			return '';
 	                	}
 	    			}
 	            },
-	            { "data": "TYPE", "width": "60px"},
-	            { "data": "CURRENCY_NAME", "width": "60px" },
+	            { "data": "TYPE", "width": "30px"},
+	            { "data": "FIN_NAME", "width": "60px"},
+	            { "data": "CURRENCY_NAME", "width": "40px" },
+	            { "data": "TOTAL_AMOUNT", "width": "40px"},
+	            { "data": "EXCHANGE_RATE", "width": "60px"},
+	            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "50px"},
 	            { "data": "TOTAL_AMOUNT", "width": "60px"},
 	            { "data": "EXCHANGE_RATE", "width": "60px"},
 	            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"}

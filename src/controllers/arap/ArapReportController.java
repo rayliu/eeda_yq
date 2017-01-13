@@ -11,7 +11,6 @@ import models.UserLogin;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Before;
@@ -22,7 +21,6 @@ import com.jfinal.plugin.activerecord.Record;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
-import controllers.util.PermissionConstant;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -49,6 +47,7 @@ public class ArapReportController extends Controller {
          		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
          		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
          		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
+         		+ " f.name fin_name, "
          		+ " cur.name currency_name,joli.truck_type "
  				+ " from job_order_arap joa "
  				+ " left join job_order jo on jo.id=joa.order_id "
@@ -59,9 +58,9 @@ public class ArapReportController extends Controller {
  				+ " left join party p1 on p1.id=jo.customer_id "
  				+ " left join location l on l.id=jos.fnd "
  				+ " left join currency cur on cur.id=joa.currency_id "
+ 				+ " left join fin_item f on f.id=joa.charge_id "
  				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
- 				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' "
- 				+ " and jo.office_id = "+office_id
+ 				+ " where  jo.office_id = "+office_id
  				+ " GROUP BY joa.id "
  				+ " ) B where 1=1 ";
 		
