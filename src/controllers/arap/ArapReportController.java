@@ -43,11 +43,12 @@ public class ArapReportController extends Controller {
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = "select * from(  "
-         		+ " select joa.id,joa.type,joa.bill_flag,joa.sp_id,ifnull(joa.total_amount,0) total_amount,joa.exchange_rate,ifnull(joa.currency_total_amount,0) currency_total_amount,"
-         		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
+         		+ " select joa.id,joa.type,joa.order_type,joa.bill_flag,joa.sp_id,ifnull(joa.total_amount,0) total_amount,"
+         		+ " joa.exchange_rate,joa.exchange_currency_rate,ifnull(joa.currency_total_amount,0) currency_total_amount,ifnull(joa.exchange_total_amount,0) exchange_total_amount,"
+         		+ " jo.id jobid,jo.order_no,jo.order_export_date,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
          		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
          		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
-         		+ " f.name fin_name, "
+         		+ " f.name fin_name,cur1.name exchange_currency_name, "
          		+ " cur.name currency_name,joli.truck_type "
  				+ " from job_order_arap joa "
  				+ " left join job_order jo on jo.id=joa.order_id "
@@ -58,6 +59,7 @@ public class ArapReportController extends Controller {
  				+ " left join party p1 on p1.id=jo.customer_id "
  				+ " left join location l on l.id=jos.fnd "
  				+ " left join currency cur on cur.id=joa.currency_id "
+ 				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
  				+ " left join fin_item f on f.id=joa.charge_id "
  				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
  				+ " where  jo.office_id = "+office_id
