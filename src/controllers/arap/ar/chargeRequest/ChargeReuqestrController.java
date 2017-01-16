@@ -497,33 +497,41 @@ public class ChargeReuqestrController extends Controller {
     //收款确认
   	@Before(Tx.class)
 	public void confirmOrder(){
+  		 UserLogin user = LoginUserController.getLoginUser(this);
+  	
   		String jsonStr=getPara("params");
  
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
-            
    		String id = (String) dto.get("id");
-   		String receive_bank_id = (String) dto.get("receive_bank_id");
+   		String receive_bank_id = "";
+   		if(dto.get("receive_bank_id")!=null){
+   			 receive_bank_id = (String) dto.get("receive_bank_id");
+   		}else{
+   			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
+   	        Record rec = Db.findFirst(str2);
+   	        if(rec!=null){
+   	        	receive_bank_id = rec.getLong("id").toString();
+   	        }
+   		}
    		
    		String receive_time = (String) dto.get("receive_time");
    		String payment_method = (String) dto.get("payment_method");
-
-
    		
         ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(id);
         arapChargeInvoiceApplication.set("status", "已收款");
         arapChargeInvoiceApplication.set("receive_time", receive_time);
-        arapChargeInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
+        arapChargeInvoiceApplication.set("confirm_by", user.get("id"));
         arapChargeInvoiceApplication.set("confirm_stamp", new Date());
         arapChargeInvoiceApplication.update();
           
         //更改原始单据状态
         List<Record> res = Db.find("select * from charge_application_order_rel where application_order_id = ?",id);
-  		for (Record re : res) {
+        
+        
+        for (Record re : res) {
   			Long charge_order_id = re.getLong("charge_order_id");
   			String order_type = re.getStr("order_type");
-  			
-  			
   			if(order_type.equals("应收对账单")){
 				ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(charge_order_id);
                 Double usd = arapChargeOrder.getDouble("usd");
@@ -582,7 +590,9 @@ public class ChargeReuqestrController extends Controller {
         }
         Record r = new Record();
         String confirm_name = LoginUserController.getUserNameById(arapChargeInvoiceApplication.getLong("confirm_by").toString());
+        String status=arapChargeInvoiceApplication.getStr("status");
 		r.set("confirm_name", confirm_name);
+		r.set("status", status);
         renderJson(r);
  
     }

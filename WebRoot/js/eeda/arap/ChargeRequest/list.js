@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN'], function ($, metisMenu) {
 $(document).ready(function() {
 	document.title = '复核收款| '+document.title;
     $('#menu_finance').addClass('active').find('ul').addClass('in');
@@ -10,6 +10,23 @@ $(document).ready(function() {
         serverSide: true, 
     	ajax: "/chargeRequest/applicationList?status=新建",
 		  columns: [
+          { "width": "100px",
+                "render": function ( data, type, full, meta ) {
+                    var str="<nobr>";
+                    if(full.STATUS=="新建"){
+                        str+= '<button type="button" class="checkBtn btn btn-success btn-xs" style="width:60px" >复核</button>&nbsp';
+                            str+= '<button type="button" disabled class="confirmBtn btn btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">收款确认</button> '; 
+                    }else if(full.STATUS=="已复核"){
+                             str+= '<button type="button" disabled class="checkBtn btn btn-success btn-xs" style="width:60px" >复核</button>&nbsp';
+                             str+= '<button type="button" class="confirmBtn btn btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">收款确认</button> '; 
+                         }else if(full.STATUS=="已收款"){
+                            str+= '<button type="button" disabled class="checkBtn btn btn-success btn-xs" style="width:60px" >复核</button>&nbsp';
+                            str+= '<button type="button" disabled class="confirmBtn btn btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">收款确认</button> '; 
+                                }
+                    str +="</nobr>";
+                    return str;
+                }
+            },
 		    {"data":"APPLICATION_ORDER_NO",
             	 "render": function(data, type, full, meta) {
             			return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
@@ -83,7 +100,7 @@ $(document).ready(function() {
             	}
             },
             {"data":"CHARGE_ORDER_NO"},
-            {"data":"PAYMENT_METHOD",
+            {"data":"PAYMENT_METHOD",'class':'payment_method',
                 "render": function(data, type, full, meta) {
                     if(data == 'cash'){
                     	 return '现金';
@@ -200,7 +217,7 @@ $(document).ready(function() {
         }
     };
     var refreshData=function(){
-    	var sp_id = $('#sp_id').val();
+    	 var sp_id = $('#sp_id').val();
     	  var payee_company = $('#sp_id_input').val().trim();
     	  
           var charge_order_no = $('#orderNo').val().trim(); 
@@ -316,5 +333,79 @@ $(document).ready(function() {
       	
       	$('#billForm').submit();
 	})
+
+      //复核
+      $("#application_table").on('click','.checkBtn',function(){
+            var td = $(this).parent().parent();
+            var row = td.parent();
+            var order_id=row.attr('id');
+            var this_but=$(this);
+
+            $.get("/chargeRequest/checkOrder", {order_id:order_id,}, function(data){
+                if(data.ID>0){
+                    // var url = "/chargeRequest/applicationList";
+                    // application_table.ajax.url(url).load(currenryTotalAmount);
+                    $(this_but).attr('disabled',true);
+                    $(this_but).next().attr('disabled',false);
+                    td.next().next().html(data.STATUS);
+                    
+                    $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+                }else{
+                    $.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
+                }
+            },'json');
+        });
+
+    //弹出下拉框 确认收款时间
+      $("#application_table").on('click','.confirmBtn',function(){
+            $('#chargeRe_table_msg_btn').click();
+            var rowIndex= $(this).parent().parent().parent().index();
+            $('#rowIndex').val(rowIndex);
+            $('#confirmBtn').attr('disabled',true);
+            $('#receive_time').val('');
+             
+        });
+      //收款时间不能为空
+      $('#receive_time_div').datetimepicker({
+        format: 'yyyy-MM-dd',  
+        language: 'zh-CN'
+      }).on('changeDate', function(ev){
+            $(".bootstrap-datetimepicker-widget").hide();
+             if($('#receive_time').val()!=''){
+                $('#confirmBtn').attr("disabled",false);
+            }else{
+                $('#confirmBtn').attr("disabled",true);
+            }
+        });
+
+
+    //收款确认
+     $("#confirmBtn").on('click',function(){
+        var order={};
+        var rowIndex =$('#rowIndex').val();
+        var row = application_table.row(rowIndex ).data();
+        var td1=$('tr[id$='+row.ID.toString()+'] ').children('.sorting_1');;
+
+        order.id=row.ID.toString();
+        order.receive_time=$('#receive_time').val();
+        order.receive_bank_id=row.DEPOSIT_BANK;
+        order.payment_method =row.PAYMENT_METHOD;
+        order.payment_type="charge";
+        $.post("/chargeRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
+                        if(data){
+                            td1.next().next().html(data.STATUS);
+                            td1.children().children(".confirmBtn").attr('disabled',true);
+                            $('#application_table .confirmBtn');
+                            
+                            $.scojs_message('收款成功', $.scojs_message.TYPE_OK);
+
+                        }else{
+                            $("#application_table .confirmBtn").attr("disabled", false);
+                            $.scojs_message('收款失败', $.scojs_message.TYPE_FALSE);
+                        }
+                    },'json');
+     });
+
+      
 });
 });

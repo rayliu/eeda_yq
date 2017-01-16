@@ -17,6 +17,7 @@
 						    <input id='back' name='back' type="hidden" value="${back!''}">
 							<div class="row search_panel">
 								<div class="col-lg-4">
+									<input id="rowIndex" type="text" hidden>
 									<div class="form-group">
 										<%include("/eeda/component/form/inputSpField.html", { id:'sp_id', label:'结算公司',  value: '' }){} %>
 	                                </div>     
@@ -71,6 +72,7 @@
                                     id:'application_table',
                                     style:'width:2000px',
                                     headers:[
+                                    '操作',
                                     '申请单号',
                                     '状态',
                                     '收款对象',
@@ -99,6 +101,32 @@
 
 </div>
 
+
+  <a id='chargeRe_table_msg_btn' data-target='#chargeRe_table_msg' data-toggle='modal' style='display:none'></a>
+  <div class="modal fade" id="chargeRe_table_msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:400px;">
+        <div class="modal-content">
+            <div class="modal-body">
+				 
+                   <div class="row">
+                        <div class="col-lg-6">
+                         <%include("/eeda/component/form/dateInputField.html",
+				                        {    id:'receive_time', 
+				                             label:'收款时间',
+				                             value:order.receive_time!''
+	                              }){} %>
+	                     </div>
+	                     <div class="col-lg-6">
+	                      	<button id="confirmBtn"  type="button" class="btn  btn-primary save" data-dismiss="modal">确定</button>
+            	 			<button type="button" class="btn  btn-default" data-dismiss="modal">返回</button>
+                       </div>
+                  </div>    
+				  <br>
+			</div>
+           
+        </div>
+    </div>
+</div>
 <%}%>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {

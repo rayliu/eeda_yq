@@ -236,7 +236,7 @@ $(document).ready(function() {
 		  	$("#returnConfirmBtn").attr("disabled", true);
 		  	if(confirm("确定撤回未收款确认状态？")){
 		  		orderjson();
-				$.get("/chargePreInvoiceOrder/returnConfirmOrder", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val()}, function(data){
+				$.post("/chargePreInvoiceOrder/returnConfirmOrder", {application_id:$('#application_id').val(),detailJson:$('#detailJson').val()}, function(data){
 					if(data.success){
 						$.scojs_message('撤回成功', $.scojs_message.TYPE_OK);
 					  	$("#confirmBtn").attr("disabled", false);
