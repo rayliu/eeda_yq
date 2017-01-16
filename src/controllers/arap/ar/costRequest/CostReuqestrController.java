@@ -568,13 +568,23 @@ public class CostReuqestrController extends Controller {
     //付款确认
   	@Before(Tx.class)
 	public void confirmOrder(){
+ 		UserLogin user = LoginUserController.getLoginUser(this);
   		String jsonStr=getPara("params");
  
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
    		String id = (String) dto.get("id");
-   		String receive_bank_id = (String) dto.get("receive_bank_id");
+   		String receive_bank_id = "";
+   		if(dto.get("receive_bank_id")!=null){
+   			 receive_bank_id = (String) dto.get("receive_bank_id");
+   		}else{
+   			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
+   	        Record rec = Db.findFirst(str2);
+   	        if(rec!=null){
+   	        	receive_bank_id = rec.getLong("id").toString();
+   	        }
+   		}
    		
    		String receive_time = (String) dto.get("receive_time");
    		String payment_method = (String) dto.get("payment_method");
@@ -648,7 +658,10 @@ public class CostReuqestrController extends Controller {
         }
         Record r = new Record();
         String confirm_name = LoginUserController.getUserNameById(arapCostInvoiceApplication.getLong("confirm_by").toString());
+
+		String status=arapCostInvoiceApplication.getStr("status");
 		r.set("confirm_name", confirm_name);
+		r.set("status", status);
         renderJson(r);
     }
   	
