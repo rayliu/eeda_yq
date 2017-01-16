@@ -18,8 +18,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           ajax: "/accountAging/list",
           columns: [
       			{ "data": "ABBR_NAME", "width": "100px"},
-	            { "data": "CURRENCY_NAME","class":"currency_name", "width": "100px"},
-	            { "data": "TOTAL_AMOUNT","class":"total_amount", "width": "100px"},
+	            { "data": "CURRENCY_NAME" ,"width": "100px"},
+	            { "data": "TOTAL_AMOUNT","width": "100px"},
+	            { "data": "CURRENCY_TOTAL_AMOUNT","width": "100px"},
 	            { "data": "THREE", "width": "100px"},
 	            { "data": "SIX", "width": "100px"},
 	            { "data": "NINE", "width": "100px"}
@@ -45,6 +46,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
               var currency_name = $(row.childNodes[1]).text();
               var data = $(row.childNodes[2]).text();
+              var RMB_total = $(row.childNodes[3]).text();
+              
+              total_amount += parseFloat(RMB_total);
               if(currency_name=='CNY'){
       			  cny_total += parseFloat(data);
       		  }
@@ -62,7 +66,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       		$('#usd_totalAmountSpan').html((Math.round(usd_total*100)/100).toFixed(2));
       		$('#hkd_totalAmountSpan').html((Math.round(hkd_total*100)/100).toFixed(2));
       		$('#jpy_totalAmountSpan').html((Math.round(jpy_total*100)/100).toFixed(2));
-      		$('#totalAmountSpan').html((Math.round(total_amount*100)/100).toFixed(2)); 
+      		$('#totalAmountSpan').html((Math.round(RMB_total*100)/100).toFixed(2)); 
           }
       };
 

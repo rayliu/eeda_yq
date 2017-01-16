@@ -49,10 +49,10 @@ public class AccountAging extends Controller {
         
         
         String sql = " select abbr_name,currency_name,sum(total_amount) total_amount,"
-        		+" sum(three) three,sum(six) six,sum(nine) nine "
+        		+" sum(currency_total_amount) currency_total_amount,sum(three) three,sum(six) six,sum(nine) nine "
         		+" from(SELECT"
         		+" 		acao.order_no,acao.sp_id,p.abbr abbr_name,cur.name currency_name,"
-        		+" joa.total_amount,"
+        		+" joa.total_amount,joa.currency_total_amount,"
         		+" if(datediff(curdate(),jor.order_export_date)<=30,joa.total_amount,0) three,"
         		+" if(datediff(curdate(),jor.order_export_date)<=60,joa.total_amount,0) six,"
         		+" if(datediff(curdate(),jor.order_export_date)<=90,joa.total_amount,0) nine"
