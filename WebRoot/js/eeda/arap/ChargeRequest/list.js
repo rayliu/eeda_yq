@@ -195,6 +195,7 @@ $(document).ready(function() {
     });
     
     
+    
     var saveConditions=function(){
         var conditions={
         		sp_id:$('#sp_id').val(),
@@ -290,15 +291,6 @@ $(document).ready(function() {
         }
     };
     
-    
-    if(back=="true"||back=="confirmTrue"){
-    	refreshData(back);
-    }else{
-    	$('#applicationForm')[0].reset();
-    	saveConditions();
-    }
-    
-    
 
     loadConditions();
     
@@ -309,7 +301,11 @@ $(document).ready(function() {
     	})
     });
     
-    
+    if(back=="true"||back=="confirmTrue"){
+    	refreshData(back);
+    }else{
+    	$('#applicationForm')[0].reset();
+    }
     
     
     

@@ -250,7 +250,7 @@ $(document).ready(function() {
           var confirmBegin_date_begin_time = $('#confirmBegin_date_begin_time').val();
           var confirmBegin_date_end_time = $('#confirmBegin_date_end_time').val();
 
-          var url = "/chargeRequest/applicationList?sp_id="+sp_id
+          var url = "/costRequest/applicationList?sp_id="+sp_id
      	   +"&payee_company_equals="+payee_company  
             +"&charge_order_no="+charge_order_no
             +"&application_order_no="+applicationOrderNo
@@ -292,16 +292,6 @@ $(document).ready(function() {
             $("#confirmBegin_date_end_time").val(conditions.confirmBegin_date_end_time);
         }
     };
-    
-    
-    if(back=="true"||back=="confirmTrue"){
-    	refreshData(back);
-    }else{
-    	$('#applicationForm')[0].reset();
-    	saveConditions();
-    }
-    
-    
 
     loadConditions();
     
@@ -313,7 +303,12 @@ $(document).ready(function() {
     });
     
 	
-	
+    if(back=="true"||back=="confirmTrue"){
+    	refreshData(back);
+    }else{
+    	$('#applicationForm')[0].reset();
+    	saveConditions();
+    }
 	
 	
 	
