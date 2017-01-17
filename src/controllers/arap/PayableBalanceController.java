@@ -54,7 +54,7 @@ public class PayableBalanceController extends Controller {
         		+" 	WHERE aca.status = '已付款' and aca.sp_id = sp "+ condition
         		+" 	),0) cost_confirm "
         		+" from arap_cost_application_order acao LEFT JOIN party p on acao.sp_id = p.id "
-        		+" WHERE acao.office_id = 1 "
+        		+" WHERE acao.office_id = "+ office_id + condition
         		+" GROUP BY acao.sp_id"
         		+" union "
         		+" SELECT acao.sp_id sp," 
@@ -68,7 +68,7 @@ public class PayableBalanceController extends Controller {
         		+" 	WHERE aca.status = '已付款' and aca.sp_id = sp "+ condition
         		+" 	),0) cost_confirm"
         		+" from arap_cost_application_order acao LEFT JOIN party p on acao.sp_id = p.id "
-        		+" WHERE acao.office_id = 1 "
+        		+" WHERE acao.office_id = "+ office_id + condition
         		+" GROUP BY acao.sp_id"
         		+" UNION"
         		+" SELECT acao.sp_id sp," 
@@ -82,7 +82,7 @@ public class PayableBalanceController extends Controller {
         		+" 	WHERE aca.status = '已付款' and aca.sp_id = sp "+ condition
         		+" 	),0) cost_confirm"
         		+" from arap_cost_application_order acao LEFT JOIN party p on acao.sp_id = p.id "
-        		+" WHERE acao.office_id = 1 "
+        		+" WHERE acao.office_id = "+ office_id + condition
         		+" GROUP BY acao.sp_id"
         		+" UNION"
         		+" SELECT acao.sp_id sp," 
@@ -98,13 +98,13 @@ public class PayableBalanceController extends Controller {
         		+" from arap_cost_application_order acao LEFT JOIN party p on acao.sp_id = p.id "
         		+" WHERE acao.office_id ="+ office_id + condition
         		+" GROUP BY acao.sp_id"
-        		+" ) A where cost_total!=0"+ condition +" ORDER BY abbr";
+        		+" ) A where cost_total!=0 ORDER BY abbr";
 		
         String sqlTotal = "select count(1) total from ("+sql+") C";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + sLimit);
+        List<Record> orderList = Db.find(sql+ condition );
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
