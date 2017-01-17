@@ -412,7 +412,7 @@ $(document).ready(function() {
             { "data": "CURRENCY_TOTAL_AMOUNT", "width": "150px","className":"cny_total_amount",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
-                        var str =  parseFloat(data).toFixed(3);
+                        var str =  (Math.round(data*100)/100).toFixed(2);
                     else
                     	str = '';
 	                return '<input type="text" name="currency_total_amount" style="width:150px" value="'+str+'" class="form-control" disabled />';
@@ -464,7 +464,7 @@ $(document).ready(function() {
             { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "150px","className":"exchange_total_amount",
             	"render": function ( data, type, full, meta ) {
             		if(data)
-            			var str =  parseFloat(data).toFixed(3);
+            			var str =  (Math.round(data*100)/100).toFixed(2);
             		else
             			str = '';
             		return '<input type="text" name="exchange_total_amount" style="width:150px" value="'+str+'" class="form-control" disabled />';
@@ -590,7 +590,7 @@ $(document).ready(function() {
         		}
     			if(exchange_currency_rate!=''&&!isNaN(exchange_currency_rate)){
     				
-        			$(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_currency_rate)).toFixed(3));
+        			$(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_currency_rate)).toFixed(2));
         		}
     		}
     	}
