@@ -638,5 +638,20 @@ public class CostCheckOrderController extends Controller {
     	renderJson(exchangeTotalMap);
 
     }
+    public void deleteCostItem(){
+    	String costOrderId=getPara("order_id");
+    	String itemid=getPara("cost_itemid");
+    	if(itemid !=null&& costOrderId!=null){
+    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
+    		 jobOrderArap.set("bill_flag", "N");
+             jobOrderArap.update();
+//             String sql="delete from  where ref_order_id="+itemid+"and cost_order_id="+costOrderId;
+             Db.deleteById("arap_cost_item","ref_order_id,cost_order_id",itemid,costOrderId);
+    	}
+    	//计算结算汇总
+    			Map<String, Double> exchangeTotalMap = updateExchangeTotal(costOrderId);
+    			exchangeTotalMap.put("costOrderId", Double.parseDouble(costOrderId));
+    	    	renderJson(exchangeTotalMap);
+    }
      
 }
