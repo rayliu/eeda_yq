@@ -5,7 +5,7 @@ $(document).ready(function() {
 
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     if($('#receive_time').val()==""){
-    	$('#receive_time').val(eeda.getDate());
+    	
     }
     
     

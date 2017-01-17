@@ -131,7 +131,7 @@ $(document).ready(function() {
         				return '';
     			}
         	},
-        	{"data":"PAY_TIME",
+        	{"data":"RECEIVE_TIME",
         		"render":function(data, type, full, meta){
         			if(data)
         				return data.substr(0,10);
