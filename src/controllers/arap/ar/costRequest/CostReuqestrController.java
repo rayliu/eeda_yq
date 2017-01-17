@@ -46,6 +46,8 @@ public class CostReuqestrController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void index() {
+    	String back =getPara("back");
+    	setAttr("back",back);
     	render("/oms/CostRequest/CostRequestList.html");
     }
     

@@ -183,29 +183,61 @@ $(document).ready(function() {
 		 $('#hkd_totalAmountSpan').html(hkd_totalAmount.toFixed(2));
 		 $('#jpy_totalAmountSpan').html(jpy_totalAmount.toFixed(2));
     	}
-    
-    
-    
-    
-    
-    
       
-      
+  //返回标记
+    var back=$('#back').val(); 
       //查询已申请单
-    $('#searchBtn1').click(function(){
-    		searchData1(); 
-    })
-       
-	$('#resetBtn1').click(function(e){
-    	 $("#applicationForm")[0].reset();
-	});
-      
-	var searchData1=function(){
-    	  var sp_id = $('#sp_id').val();
+    $("#searchBtn1").click(function(){
+    	back="";
+        refreshData(back);
+    });
+
+    $("#resetBtn1").click(function(){
+        $('#applicationForm')[0].reset();
+        saveConditions();
+    });
+    
+    
+    var saveConditions=function(){
+        var conditions={
+        		sp_id:$('#sp_id').val(),
+        		
+        		payee_company:$('#sp_id_input').val().trim(),
+        	  	  
+				charge_order_no : $('#orderNo').val().trim(), 
+                applicationOrderNo : $('#applicationOrderNo').val(),
+                status2 : $('#status2').val().trim(),
+                
+                service_stamp : $('#service_stamp').val(),
+                
+                begin_date_begin_time : $('#begin_date_begin_time').val(),
+                begin_date_end_time : $('#begin_date_end_time').val(),
+                
+                check_begin_date_begin_time : $('#check_begin_date_begin_time').val(),
+                check_begin_date_end_time : $('#check_begin_end_begin_time').val(),
+                
+                confirmBegin_date_begin_time : $('#confirmBegin_date_begin_time').val(),
+                confirmBegin_date_end_time : $('#confirmBegin_date_end_time').val()
+        };
+        if(!!window.localStorage){//查询条件处理
+            localStorage.setItem("query_to", JSON.stringify(conditions));
+        }
+    };   
+
+
+    var refreshData=function(back){
+    	 var sp_id = $('#sp_id').val();
     	  var payee_company = $('#sp_id_input').val().trim();
-    	  var cost_order_no = $('#orderNo').val().trim();  
+    	  
+          var charge_order_no = $('#orderNo').val().trim(); 
           var applicationOrderNo = $('#applicationOrderNo').val();
-          var status2 = $("#status2").val();
+          if(back=="true"){
+          	  $('#status2').val("新建");
+            }
+          if(back=="confirmTrue"){
+          	  $('#status2').val("已复核");
+            }
+          var status2 = $('#status2').val().trim();
           
           var service_stamp = $('#service_stamp').val();
           
@@ -217,27 +249,75 @@ $(document).ready(function() {
           
           var confirmBegin_date_begin_time = $('#confirmBegin_date_begin_time').val();
           var confirmBegin_date_end_time = $('#confirmBegin_date_end_time').val();
-   
-          var url = "/costRequest/applicationList?sp_id="+sp_id
-        	   +"&payee_company_equals="+payee_company
-               +"&cost_order_no="+cost_order_no
-               
-               +"&application_order_no="+applicationOrderNo
-               +"&status="+status2
-               
-               +"&service_stamp_between="+service_stamp
-               
-               +"&create_stamp_begin_time="+begin_date_begin_time
-               +"&create_stamp_end_time="+begin_date_end_time
-               
-               +"&check_stamp_begin_time="+check_begin_date_begin_time
-               +"&check_stamp_end_time="+check_begin_date_end_time
-               
-               +"&pay_time_begin_time="+confirmBegin_date_begin_time
-               +"&pay_time_end_time="+confirmBegin_date_end_time;
 
-          application_table.ajax.url(url).load(currenryTotalAmount);
-	};
+          var url = "/chargeRequest/applicationList?sp_id="+sp_id
+     	   +"&payee_company_equals="+payee_company  
+            +"&charge_order_no="+charge_order_no
+            +"&application_order_no="+applicationOrderNo
+            +"&status="+status2
+            
+            +"&service_stamp_between="+service_stamp
+
+            +"&create_stamp_begin_time="+begin_date_begin_time
+            +"&create_stamp_end_time="+begin_date_end_time
+            
+            +"&check_stamp_begin_time="+check_begin_date_begin_time
+            +"&check_stamp_end_time="+check_begin_date_end_time
+            
+            +"&pay_time_begin_time="+confirmBegin_date_begin_time
+            +"&pay_time_end_time="+confirmBegin_date_end_time;
+       application_table.ajax.url(url).load(currenryTotalAmount);
+       saveConditions();
+    };
+
+    var loadConditions=function(){
+        if(!!window.localStorage){//查询条件处理
+            var query_to = localStorage.getItem('query_to');
+            if(!query_to)
+                return;
+
+            var conditions = JSON.parse(query_to);
+            $("#sp_id").val(conditions.sp_id);
+            $("#sp_id_input").val(conditions.payee_company);
+            $("#orderNo").val(conditions.charge_order_no);
+            $("#applicationOrderNo").val(conditions.applicationOrderNo);
+            $("#status2").val(conditions.status2);
+            
+            $("#service_stamp").val(conditions.service_stamp);
+            $("#begin_date_begin_time").val(conditions.begin_date_begin_time);
+            $("#begin_date_end_time").val(conditions.begin_date_end_time);
+            $("#check_begin_date_begin_time").val(conditions.check_begin_date_begin_time);
+            $("#check_begin_date_end_begin_time").val(conditions.check_begin_date_end_begin_time);
+            $("#confirmBegin_date_begin_time").val(conditions.confirmBegin_date_begin_time);
+            $("#confirmBegin_date_end_time").val(conditions.confirmBegin_date_end_time);
+        }
+    };
+    
+    
+    if(back=="true"||back=="confirmTrue"){
+    	refreshData(back);
+    }else{
+    	$('#applicationForm')[0].reset();
+    	saveConditions();
+    }
+    
+    
+
+    loadConditions();
+    
+    //浏览器回退按钮,加载页面
+    $(window).on('beforeunload', function(e) {
+    	$.load(function(){
+    		refreshData();
+    	})
+    });
+    
+	
+	
+	
+	
+	
+	
     	
   	//checkbox选中则button可点击
 	

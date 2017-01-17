@@ -180,17 +180,21 @@ $(document).ready(function() {
 		 $('#jpy_totalAmountSpan').html(jpy_totalAmount.toFixed(2));
     	}
     
-      
+    
+    //返回标记
+    var back=$('#back').val(); 
       //查询已申请单
     $("#searchBtn1").click(function(){
-        refreshData();
+    	back="";
+        refreshData(back);
     });
 
     $("#resetBtn1").click(function(){
         $('#applicationForm')[0].reset();
         saveConditions();
     });
-
+    
+    
     var saveConditions=function(){
         var conditions={
         		sp_id:$('#sp_id').val(),
@@ -215,13 +219,21 @@ $(document).ready(function() {
         if(!!window.localStorage){//查询条件处理
             localStorage.setItem("query_to", JSON.stringify(conditions));
         }
-    };
-    var refreshData=function(){
+    };   
+
+
+    var refreshData=function(back){
     	 var sp_id = $('#sp_id').val();
     	  var payee_company = $('#sp_id_input').val().trim();
     	  
           var charge_order_no = $('#orderNo').val().trim(); 
           var applicationOrderNo = $('#applicationOrderNo').val();
+          if(back=="true"){
+          	  $('#status2').val("新建");
+            }
+          if(back=="confirmTrue"){
+          	  $('#status2').val("已复核");
+            }
           var status2 = $('#status2').val().trim();
           
           var service_stamp = $('#service_stamp').val();
@@ -267,6 +279,7 @@ $(document).ready(function() {
             $("#orderNo").val(conditions.charge_order_no);
             $("#applicationOrderNo").val(conditions.applicationOrderNo);
             $("#status2").val(conditions.status2);
+            
             $("#service_stamp").val(conditions.service_stamp);
             $("#begin_date_begin_time").val(conditions.begin_date_begin_time);
             $("#begin_date_end_time").val(conditions.begin_date_end_time);
@@ -276,6 +289,16 @@ $(document).ready(function() {
             $("#confirmBegin_date_end_time").val(conditions.confirmBegin_date_end_time);
         }
     };
+    
+    
+    if(back=="true"||back=="confirmTrue"){
+    	refreshData(back);
+    }else{
+    	$('#applicationForm')[0].reset();
+    	saveConditions();
+    }
+    
+    
 
     loadConditions();
     
@@ -286,10 +309,11 @@ $(document).ready(function() {
     	})
     });
     
-    var back=$('#back').val();
-    if(back){
-    	refreshData();
-    }
+    
+    
+    
+    
+
   	//checkbox选中则button可点击
 	
 	$('#costAccept_table').on('click','.checkBox',function(){
@@ -317,8 +341,7 @@ $(document).ready(function() {
 			var payee_names = '';
 		}
 	});
-	
-	
+
 	
 	
 	$('#createBtn').click(function(){
