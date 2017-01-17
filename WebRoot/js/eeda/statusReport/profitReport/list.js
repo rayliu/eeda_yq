@@ -30,29 +30,40 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               },
-              { "data": null,
+              { "data": "OCEAN_FCL_TEU",
                 "render": function ( data, type, full, meta ) {
-                    return '';
+                    if(data){
+                      return (data).toFixed(0);
+                    } else{
+                      return '';
+                  }
                 }
               },
-              { "data": null,
+              { "data": "OCEAN_LCL_CBM",
                 "render": function ( data, type, full, meta ) {
-                    return '';
-                }
-              },
-              { "data": null,
-                "render": function ( data, type, full, meta ) {
-                    return '';
-                }
-              }, 
-              { "data": null,
-                "render": function ( data, type, full, meta ) {
-                    return '';
+                    if(data){
+                      return (data).toFixed(2);
+                    } else{
+                      return '';
+                    }
                 }
               }, 
-              { "data": null,
+              { "data": "ARI_KG",
                 "render": function ( data, type, full, meta ) {
-                    return '';
+                    if(data){
+                      return (data).toFixed(2);
+                    } else{
+                      return '';
+                    }
+                }
+              }, 
+              { "data": "TRUCK_TYPE",
+                "render": function ( data, type, full, meta ) {
+                    if(data){
+                      return (data).toFixed(2);
+                    } else{
+                      return '';
+                    }
                 }
               }
           ]
