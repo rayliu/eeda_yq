@@ -57,14 +57,17 @@ $(document).ready(function() {
             },
             {"width":"50px",
               "render": function ( data, type, full, meta ) {
-                    var str = '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" >删除</button>';
+                    var str = '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:60px" >删除</button>';
                      if($("#status").val()=='已确认'){
-                        return '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" disabled>删除</button>';
+                        return '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:60px" disabled>删除</button>';
                      }
                     return str;
                 }
             },
-            { "data": "ORDER_NO"},
+            { "data": "ORDER_NO", "width": "100px",
+                  "render": function ( data, type, full, meta ) {
+                      return "<a href='/jobOrder/edit?id="+full.JOB_ORDER_ID+"'target='_blank'>"+data+"</a>";
+                  }},
             { "data": "TYPE"},
             { "data": "CREATE_STAMP", visible: false},
             { "data": "CUSTOMER_NAME"},
@@ -435,9 +438,6 @@ $(document).ready(function() {
 
 
     //添加明细   
-    if($("#status").val()=='已确认'){
-        $('#add_cost').attr('disabled',true);
-    }
      $('#add_cost').click(function(){
             $('#allcost').prop('checked',false);
             $('#add_cost_item').prop('disabled',true);

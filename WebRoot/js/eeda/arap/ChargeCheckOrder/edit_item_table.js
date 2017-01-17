@@ -58,9 +58,9 @@ $(document).ready(function() {
             },
             {"width":"50px",
               "render": function ( data, type, full, meta ) {
-                    var str = '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" >删除</button>';
+                    var str = '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:60px" >删除</button>';
                      if($("#status").val()=='已确认'){
-                        return '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" disabled>删除</button>';
+                        return '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:60px" disabled>删除</button>';
                      }
                     return str;
                 }

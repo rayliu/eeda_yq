@@ -78,7 +78,7 @@ $(document).ready(function() {
                 eeda.contactUrl("edit?id",order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $('#saveBtn').attr('disabled', false);
-                $('#confrimBtn').attr('disabled', false);
+                $('#confirmBtn').attr('disabled', false);
                 $('#printTotaledBtn').attr('disabled', false);
                 $('#printBtn').attr('disabled', false);                 
                 //异步刷新明细表
@@ -103,20 +103,27 @@ $(document).ready(function() {
     }else{
     	if(status=='新建'){
     		$('#saveBtn').attr('disabled', false);
-    		$('#confrimBtn').attr('disabled', false);
+    		$('#confirmBtn').attr('disabled', false);
     		$('#printTotaledBtn').attr('disabled', false);
     		$('#printBtn').attr('disabled', false);    		
-    	}
+    	}else if(status=='已确认'){
+            $('#printTotaledBtn').attr('disabled', false);
+        }
     }
     
     //确认单据
-    $('#confrimBtn').click(function(){
+    $('#confirmBtn').click(function(){
     	$(this).attr('disabled', true);
     	var id = $("#order_id").val();
     	 $.post('/chargeCheckOrder/confirm', {id:id}, function(data){
     		 if(data){
     			 $('#saveBtn').attr('disabled', true);
-    			 $("#status").val('已确认');
+                 $('#printBtn').attr('disabled', true);
+                 $('.delete').attr('disabled', true);
+                 $('#add_charge').attr('disabled', true);
+
+                 $("#status").val('已确认');
+                 $('#printTotaledBtn').attr('disabled', false);
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
     			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
     			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
