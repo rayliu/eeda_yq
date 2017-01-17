@@ -21,10 +21,30 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "STATUS"},
             { "data": "SP_NAME"},
             { "data": "TOTAL_AMOUNT","visible":false},
-            { "data": "USD"},
-            { "data": "HKD"},
-            { "data": "JPY"},
-            { "data": "CNY"},
+            { "data": "USD",
+              "render":function(data,type,full,meta){
+                var usd_str=parseFloat(data).toFixed(2);
+                return usd_str;
+              }
+            },
+            { "data": "HKD",
+              "render":function(data,type,full,meta){
+                var usd_str=parseFloat(data).toFixed(2);
+                return usd_str;
+              }
+            },
+            { "data": "JPY",
+              "render":function(data,type,full,meta){
+                var usd_str=parseFloat(data).toFixed(2);
+                return usd_str;
+              }
+            },
+            { "data": "CNY",
+              "render":function(data,type,full,meta){
+                var usd_str=parseFloat(data).toFixed(2);
+                return usd_str;
+              }
+            },
           ]
       });
 
