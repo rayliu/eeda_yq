@@ -474,7 +474,7 @@ public class ChargeCheckOrderController extends Controller {
 		String id = getPara("id");//arap_charge_order id
 		String condition = "select ref_order_id from arap_charge_item where charge_order_id ="+id;
 		
-		String sql = " select aco.*,p.company_name,p.contact_person,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from arap_charge_order aco "
+		String sql = " select aco.*,p.company_name,p.contact_person,p.id company_id,p.abbr company_abbr,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from arap_charge_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by "
    				+ " left join user_login u1 on u1.id=aco.confirm_by "
@@ -486,6 +486,8 @@ public class ChargeCheckOrderController extends Controller {
 		rec.set("phone", rec.get("phone"));
 		rec.set("itemList", getItemList(condition,id,""));
 		rec.set("currencyList", getCurrencyList(condition,id));
+		rec.set("company_id", rec.get("company_id"));
+		rec.set("company_abbr", rec.get("company_abbr"));
 		setAttr("order",rec);
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
 	}

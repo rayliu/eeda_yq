@@ -491,7 +491,7 @@ public class CostCheckOrderController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void edit(){
 		String id = getPara("id");//arap_cost_order id
-		String sql = " select aco.*,p.abbr sp_name,u.c_name creator_name,u1.c_name confirm_by_name from arap_cost_order aco "
+		String sql = " select aco.*,p.id company_id,p.company_name,p.abbr sp_name,u.c_name creator_name,u1.c_name confirm_by_name from arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by "
    				+ " left join user_login u1 on u1.id=aco.confirm_by "
@@ -501,7 +501,6 @@ public class CostCheckOrderController extends Controller {
 //		String condition = "select ref_order_id from arap_cost_item where cost_order_id ="+id;
 //		order.set("currencylist", getCurrencyList(condition,id));
 		order.set("item_list", getItemList("",id,""));
-		
 		setAttr("order", order);
 		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");
 	}

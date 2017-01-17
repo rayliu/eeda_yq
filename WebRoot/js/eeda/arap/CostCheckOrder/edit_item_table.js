@@ -55,11 +55,11 @@ $(document).ready(function() {
             		return str;
 			    }
             },
-            {"width":"50px",
+            {"width":"30px",
               "render": function ( data, type, full, meta ) {
-                    var str = '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:60px" >删除</button>';
+                    var str = '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" >删除</button>';
                      if($("#status").val()=='已确认'){
-                        return '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:60px" disabled>删除</button>';
+                        return '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" disabled>删除</button>';
                      }
                     return str;
                 }
@@ -442,7 +442,7 @@ $(document).ready(function() {
             $('#allcost').prop('checked',false);
             $('#add_cost_item').prop('disabled',true);
             $('#cost_table_msg_btn').click();
-         
+            $('#searchBtn').click();
       }) 
       $('#resetBtn').click(function(e){
           $('#que_sp_input').val('');
@@ -459,7 +459,9 @@ $(document).ready(function() {
 
      var searchData1=function(){
           var order_no = $("#que_order_no").val().trim(); 
-          var sp_name = $('#que_sp_input').val().trim();
+          var sp_name = $('#company_abbr').val();
+          $('#que_sp_input').val(sp_name);
+          $('#que_sp_input').attr('disabled',true);
 
           if(!sp_name){
               $.scojs_message('请选择结算公司', $.scojs_message.TYPE_ERROR);
