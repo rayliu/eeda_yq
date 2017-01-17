@@ -625,6 +625,21 @@ public class ChargeCheckOrderController extends Controller {
     	renderJson(exchangeTotalMap);
 
     }
-      
+    
+    public void deleteChargeItem(){
+    	String chargeOrderId=getPara("order_id");
+    	String itemid=getPara("charge_itemid");
+    	if(itemid !=null&& chargeOrderId!=null){
+    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
+    		 jobOrderArap.set("bill_flag", "N");
+             jobOrderArap.update();
+//             String sql="delete from  where ref_order_id="+itemid+"and charge_order_id="+chargeOrderId;
+             Db.deleteById("arap_charge_item","ref_order_id,charge_order_id",itemid,chargeOrderId);
+    	}
+    	//计算结算汇总
+    			Map<String, Double> exchangeTotalMap = updateExchangeTotal(chargeOrderId);
+    			exchangeTotalMap.put("chargeOrderId", Double.parseDouble(chargeOrderId));
+    	    	renderJson(exchangeTotalMap);
+    }  
 
 }

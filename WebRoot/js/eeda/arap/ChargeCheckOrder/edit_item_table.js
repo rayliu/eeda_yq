@@ -56,6 +56,15 @@ $(document).ready(function() {
             		return str;
 			          }
             },
+            {"width":"50px",
+              "render": function ( data, type, full, meta ) {
+                    var str = '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" >删除</button>';
+                     if($("#status").val()=='已确认'){
+                        return '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" disabled>删除</button>';
+                     }
+                    return str;
+                }
+            },
             { "data": "ORDER_NO", "width": "100px",
 		    	  "render": function ( data, type, full, meta ) {
                       return "<a href='/jobOrder/edit?id="+full.JOB_ORDER_ID+"'target='_blank'>"+data+"</a>";
@@ -458,6 +467,9 @@ $(document).ready(function() {
        itemTable.ajax.url(url).load();
     }
       //添加明细
+      if($("#status").val()=='已确认'){
+        $('#add_charge').attr('disabled',true);
+    }
      $('#add_charge').click(function(){
             $('#allCharge').prop('checked',false);
             $('#add_charge_item').prop('disabled',true);
@@ -565,7 +577,21 @@ $(document).ready(function() {
           }
        });
 
+       //删除明细
+      $('#eeda-table').on('click',".delete",function(){
+            var id=$(this).parent().parent().attr('id');
+            var order_id=$('#order_id').val();
+             $.post('/chargeCheckOrder/deleteChargeItem', {charge_itemid:id,order_id:order_id},function(data){
+                 itemOrder.refleshTable(data.chargeOrderId.toString());
+                 $('#cny').val((parseFloat(data.CNY)).toFixed(2));
+                 $('#usd').val((parseFloat(data.USD)).toFixed(2));
+                 $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
+                 $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
+             },'json').fail(function() {
+               $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+          });
 
+      });
     // var flash = function(){    
     //    // $("#allCharge").prop("checked",$("#eeda_charge_table .checkBox").length == $("#eeda_charge_table .checkBox:checked").length ? true : false);
     //  };
