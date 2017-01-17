@@ -44,33 +44,60 @@ public class AccountAging extends Controller {
         long office_id=user.getLong("office_id");
         String condition = "";
         if(StringUtils.isNotEmpty(sp_id)){
-        	condition = " and acao.sp_id = '"+sp_id+"'";
+        	condition = " and joa.sp_id = '"+sp_id+"'";
         }
         
         
-        String sql = " select abbr_name,currency_name,sum(total_amount) total_amount,"
-        		+" sum(currency_total_amount) currency_total_amount,sum(three) three,sum(six) six,sum(nine) nine "
-        		+" from(SELECT"
-        		+" 		acao.order_no,acao.sp_id,p.abbr abbr_name,cur.name currency_name,"
-        		+" joa.total_amount,joa.currency_total_amount,"
-        		+" if(datediff(curdate(),jor.order_export_date)<=30,joa.total_amount,0) three,"
-        		+" if(datediff(curdate(),jor.order_export_date)<=60,joa.total_amount,0) six,"
-        		+" if(datediff(curdate(),jor.order_export_date)<=90,joa.total_amount,0) nine"
-        		+" 		FROM"
-        		+" 			arap_charge_application_order acao"
-        		+" 		LEFT JOIN charge_application_order_rel caor on caor.application_order_id = acao.id"
-        		+" 		LEFT JOIN job_order_arap joa on joa.id = caor.job_order_arap_id"
-        		+"      LEFT JOIN job_order jor on jor.id = joa.order_id"
-        		+" 		LEFT JOIN party p ON acao.sp_id = p.id"
-        		+" 		LEFT JOIN currency cur on  cur.id = joa.currency_id"
-        		+" 		WHERE"
-        		+" 			acao.office_id = "+office_id
-        		+" 		and acao.status != '已收款'"
+        String sql =  " SELECT "
+        		+ " 	abbr_name, "
+        		+ " 	currency_name, "
+        		+ " 	sum(total_amount) total_amount, "
+        		+ " 	sum(currency_total_amount) currency_total_amount, "
+        		+ " 	sum(three) three, "
+        		+ " 	sum(six) six, "
+        		+ " 	sum(nine) nine "
+        		+ " FROM "
+        		+ " 	( "
+        		+ " 		select "
+        		+ " joa.sp_id ,joa.exchange_currency_id ,p.abbr abbr_name,cur. NAME currency_name, "
+        		+ " joa.total_amount, "
+        		+ " joa.currency_total_amount, "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 ) three,  "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 ) six, "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 ) nine "
+        		+ " from job_order_arap joa  "
+        		+ " LEFT JOIN job_order jor ON jor.id = joa.order_id "
+        		+ " LEFT JOIN party p ON  p.id = joa.sp_id "
+        		+ " LEFT JOIN currency cur ON cur.id = joa.currency_id "
+        		+ " LEFT JOIN charge_application_order_rel caor on caor.charge_order_id = job_order_arap_id and joa.create_flag = 'Y' "
+        		+ " LEFT JOIN arap_charge_application_order acao on acao.id = caor.application_order_id "
+        		+ " where joa.order_type = 'charge' and ifnull(acao.status,'') !='已收款' "
+        		+ " and jor.office_id = "+office_id+" and joa.type != '贸易' and jor.order_export_date<date_format(curdate(),'%Y-%m')"
         		+ condition
-        		+" 		GROUP BY joa.id"
-        		+"    ) a"
-        		+" GROUP BY "
-        		+" abbr_name,currency_name";
+        		+ " GROUP BY joa.id "
+        		+ " 	) a "
+        		+ " GROUP BY "
+        		+ " 	sp_id, "
+        		+ " 	exchange_currency_id ";
+        
+        String sql2 =  " select "
+        		+ " p.abbr abbr_name,cur. NAME currency_name,"
+        		+ " sum(joa.total_amount) total_amount,"
+        		+ " sum(joa.currency_total_amount) currency_total_amount,"
+        		+ " sum(IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 )) three,"
+        		+ " sum(IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 )) six,"
+        		+ " sum(IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 )) nine"
+        		+ " from job_order_arap joa "
+        		+ " LEFT JOIN job_order jor ON jor.id = joa.order_id"
+        		+ " LEFT JOIN party p ON  p.id = joa.sp_id"
+        		+ " LEFT JOIN currency cur ON cur.id = joa.currency_id"
+        		+ " LEFT JOIN charge_application_order_rel caor on caor.charge_order_id = job_order_arap_id and joa.create_flag = 'Y'"
+        		+ " LEFT JOIN arap_charge_application_order acao on acao.id = caor.application_order_id"
+        		+ " where joa.order_type = 'charge' and ifnull(acao.status,'') !='已收款' and jor.office_id = "+office_id+" and joa.type != '贸易'"
+        		+ " and jor.order_export_date < date_format(curdate(),'%Y-%m')"
+        		+ condition
+        		+ " GROUP BY"
+        		+ " joa.sp_id ,joa.exchange_currency_id ";
 		
         String sqlTotal = "select count(1) total from ("+sql+") C";
         Record rec = Db.findFirst(sqlTotal);

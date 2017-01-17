@@ -11,7 +11,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       var dataTable = eeda.dt({
           id: 'eeda_table',
           paging: true,
-          serverSide: true, //不打开会出现排序不对 
+          pageLength: 200,
+          serverSide: false, //不打开会出现排序不对 
           drawCallback: function( settings ) {
         	  calc_amount();
           },
@@ -23,7 +24,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "CURRENCY_TOTAL_AMOUNT","width": "100px"},
 	            { "data": "THREE", "width": "100px"},
 	            { "data": "SIX", "width": "100px"},
-	            { "data": "NINE", "width": "100px"}
+	            { "data": "NINE", "width": "100px"},
+	            { "data": "TOTAL_AMOUNT", "width": "100px"}
 	          ]
 	  });
       
@@ -66,7 +68,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       		$('#usd_totalAmountSpan').html((Math.round(usd_total*100)/100).toFixed(2));
       		$('#hkd_totalAmountSpan').html((Math.round(hkd_total*100)/100).toFixed(2));
       		$('#jpy_totalAmountSpan').html((Math.round(jpy_total*100)/100).toFixed(2));
-      		$('#totalAmountSpan').html((Math.round(RMB_total*100)/100).toFixed(2)); 
+      		$('#totalAmountSpan').html((Math.round(total_amount*100)/100).toFixed(2)); 
           }
       };
 
@@ -88,13 +90,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	   
           var customer = $("#customer").val(); 
           var service_stamp_between = $("#service_stamp").val();
-          /*  
-              查询规则：参数对应DB字段名
-              *_no like
-              *_id =
-              *_status =
-              时间字段需成双定义  *_begin_time *_end_time   between
-          */
+
           var url = "/accountAging/list?sp_id="+customer
 		               +"&service_stamp_between="+service_stamp_between;
           dataTable.ajax.url(url).load(false);
