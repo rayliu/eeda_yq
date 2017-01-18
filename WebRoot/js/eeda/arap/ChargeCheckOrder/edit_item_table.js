@@ -491,6 +491,10 @@ $(document).ready(function() {
       });
 
      var searchData1=function(){
+          var checked = '';
+           if($('#checkOrderAll').prop('checked')==true){
+             checked = 'Y';
+            }
           var order_no = $("#que_order_no").val().trim(); 
           var sp_name = $('#company_abbr').val();
           $('#que_sp_input').val(sp_name);
@@ -510,11 +514,13 @@ $(document).ready(function() {
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/chargeCheckOrder/list?order_no="+order_no
+          var url = "/chargeCheckOrder/list?checked="+checked
+               +"&order_no="+order_no
                +"&sp_name="+sp_name
                +"&customer_name="+customer_name
                +"&order_export_date_end_time="+order_export_date_end_time
-               +"&order_export_date_begin_time="+order_export_date_begin_time
+               +"&order_export_date_begin_time="+order_export_date_begin_time;
+
 
           dataTable.ajax.url(url).load();
         }
@@ -594,6 +600,10 @@ $(document).ready(function() {
           });
 
       });
+      //查看应收应付对账结果
+      $('#checkOrderAll').click(function(){
+        searchData1();
+         });
     // var flash = function(){    
     //    // $("#allCharge").prop("checked",$("#eeda_charge_table .checkBox").length == $("#eeda_charge_table .checkBox:checked").length ? true : false);
     //  };
