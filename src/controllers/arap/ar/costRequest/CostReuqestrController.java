@@ -197,7 +197,7 @@ public class CostReuqestrController extends Controller {
         				+" left join party p on p.id=aco.sp_id "
         				+" where aco.status!='新建' and aco.office_id = "+office_id+" "
         				+" group by aco.id"
-        				+ " ) A where (ifnull(usd,0)>paid_usd or ifnull(cny,0)>paid_cny or ifnull(hkd,0)>paid_hkd or ifnull(jpy,0)>paid_jpy)";
+        				+ " ) A where (FORMAT(ifnull(usd, 0),2) > FORMAT(paid_usd,2) or FORMAT(ifnull(cny, 0),2) > FORMAT(paid_cny,2) or FORMAT(ifnull(hkd, 0),2) > FORMAT(paid_hkd,2) or FORMAT(ifnull(jpy, 0),2) > FORMAT(paid_jpy,2))" ;
 		
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition +") B";
