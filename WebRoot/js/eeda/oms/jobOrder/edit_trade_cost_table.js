@@ -62,11 +62,18 @@ $(document).ready(function() {
     var cargoTable = eeda.dt({
 	    id: 'trade_cost_table',
 	    autoWidth: false,
+        createdRow: function ( row, data, index ) {
+            if(data.ID){
+                $(row).attr('id', data.ID);
+            }
+            $('td:eq(0)',row).append('<span style="float:right;">'+(index+1)+'</span>');
+        },
 	    drawCallback: function( settings ) {
             bindFieldEvent();
             $.unblockUI();
         },
 	    columns:[
+            { "width": "5px"},
 			{ "width": "30px",
 			    "render": function ( data, type, full, meta ) {
 			    		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
