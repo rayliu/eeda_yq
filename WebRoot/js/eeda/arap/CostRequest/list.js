@@ -471,8 +471,8 @@ $(document).ready(function() {
         order.payment_type="cost";
         $.post("/costRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
                         if(data){
-                            td1.next().next().html(data.STATUS);
-                            td1.children().children(".confirmBtn").attr('disabled',true);
+                            td1.next().next().next().html(data.STATUS);
+                            td1.children().children().children(".confirmBtn").attr('disabled',true);
                             $('#application_table .confirmBtn');
                             
                             $.scojs_message('付款成功', $.scojs_message.TYPE_OK);
