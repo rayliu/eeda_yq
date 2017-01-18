@@ -11,7 +11,7 @@
                 { "data": "ID", visible: false},
                 { "data": null,
                     "render": function ( data, type, full, meta ) {
-                        var str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked>';
+                        var str = '<input id="checkbox_'+full.ID+'" class="checkbox2" type="checkbox" style="width:30px" checked>';
                         return str;
                     }
                 },
@@ -161,8 +161,21 @@
     		var url = "/chargeCheckOrder/tableList?appApplication_id="+appApplication_id+"&order_id=N&bill_flag=create";
             itemTable.ajax.url(url).load();
 		    };
-		    
-
+		//全选  
+        $('#allcheck2') .on('click',function(){
+            var ids=[];
+            if($(this).prop('checked')==true){
+                $('.checkbox2').prop('checked',true);
+                $('#select_item_table tbody tr').each(function(){
+                    ids.push($(this).attr('id'));
+                });
+            }else{
+                $('.checkbox2').prop('checked',false);
+                // ids.splice(0,ids.length);
+            }
+            calcTotal();
+            $("#selected_ids").val(ids);
+        })
 
     return {
         refleshSelectTable: refleshSelectTable,

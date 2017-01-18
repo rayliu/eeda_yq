@@ -178,8 +178,6 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
 		  //全选
         $('#coR_allcheck').on('click',function(){
              var table = $('#select_item_table').DataTable();
-            
-           
             var selected_ids=[];
             if($('#coR_allcheck').prop("checked")){
                   table.data().each(function(item, index) {
@@ -188,11 +186,9 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
                     });
                  $('#select_item_table input[type="checkbox"]').prop('checked',true);   
             }else{
-                selected_ids=[];
                 $('#select_item_table input[type="checkbox"]').prop('checked',false);
             }
-             // selectContr.calcTotal();
-
+             calcTotal();
              $('#selected_ids').val(selected_ids);
         });
 

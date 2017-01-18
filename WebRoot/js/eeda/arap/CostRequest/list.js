@@ -473,10 +473,7 @@ $(document).ready(function() {
                         if(data){
                             td1.next().next().html(data.STATUS);
                             td1.next().children().children(".confirmBtn").attr('disabled',true);
-                            $('#application_table .confirmBtn');
-                            
                             $.scojs_message('付款成功', $.scojs_message.TYPE_OK);
-
                         }else{
                             td1.next().children().children(".confirmBtn").attr('disabled',false);
                             $.scojs_message('付款失败', $.scojs_message.TYPE_FALSE);

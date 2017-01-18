@@ -87,9 +87,6 @@ $(document).ready(function() {
 
 				selectContr.refleshSelectTable(data.IDSARRAY);
 				createStep1Contr.refleshStep1Table();
-//				eeda.contactUrl("edit?id",data.ID);
-				//dataTable.ajax.url("/chargeAcceptOrder/chargeOrderList?application_id="+$("#order_id").val()).load();
-//				itemOrder.refleshDocTable(data.ID);
 			}else{
 				$.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
 			}
@@ -251,9 +248,7 @@ $(document).ready(function() {
 	                return;
 	            selected_ids.push(item.ID);
 	        });
-	        $('#selected_ids').val(selected_ids);
-
-	        
+	        $('#selected_ids').val(selected_ids);	        
 	        //获取对账单号
 	    });  
 
