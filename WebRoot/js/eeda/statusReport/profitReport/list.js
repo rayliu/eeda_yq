@@ -11,11 +11,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           columns: [
               { "data": "ORDER_EXPORT_DATE" },
               { "data": "CUSTOMER_NAME"},
-              { "data": "PIECES"}, 
+              { "data": "PIECES",
+                "render": function ( data, type, full, meta ) {
+                  if(data){
+                    return "<span class='pull-right'>" + data + "</span>";
+                  } else {
+                    return '';
+                  }
+                }
+              }, 
               { "data": "GROSS_WEIGHT",
                 "render": function ( data, type, full, meta ) {
                   if(data){
-                    return (data).toFixed(2);
+                    return "<span class='pull-right'>" + (data).toFixed(2) + "</span>";
                   } else {
                     return '';
                   }
@@ -24,7 +32,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "data": "VOLUME",
                 "render": function ( data, type, full, meta ) {
                   if(data){
-                    return (data).toFixed(2);
+                    return "<span class='pull-right'>" + (data).toFixed(2) + "</span>";
                   } else{
                     return '';
                   }
@@ -33,7 +41,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "data": "OCEAN_FCL_TEU",
                 "render": function ( data, type, full, meta ) {
                     if(data){
-                      return (data).toFixed(0);
+                      return "<span class='pull-right'>"+(data).toFixed(0) + "</span>";
                     } else{
                       return '';
                   }
@@ -42,7 +50,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "data": "OCEAN_LCL_CBM",
                 "render": function ( data, type, full, meta ) {
                     if(data){
-                      return (data).toFixed(2);
+                      return "<span class='pull-right'>"+(data).toFixed(2) + "</span>";
                     } else{
                       return '';
                     }
@@ -51,7 +59,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "data": "ARI_KG",
                 "render": function ( data, type, full, meta ) {
                     if(data){
-                      return (data).toFixed(2);
+                      return "<span class='pull-right'>"+(data).toFixed(2) + "</span>";
                     } else{
                       return '';
                     }

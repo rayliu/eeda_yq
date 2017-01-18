@@ -43,7 +43,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "data": "OCEAN_FCL_TEU",
                 "render": function ( data, type, full, meta ) {
                     if(data){
-                      return "<span class='pull-right'>"+(data).toFixed(2) + "</span>";
+                      return "<span class='pull-right'>"+(data).toFixed(0) + "</span>";
                     } else{
                       return '';
                   }
