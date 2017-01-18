@@ -103,7 +103,8 @@ public class ProfitReportController extends Controller {
         condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
         
         
-    	String sql = "select order_export_date,customer_id,"
+    	String sql = "select B.*, get_truck_type(B.truck_order_ids) truck_type "
+    	        + " from (select order_export_date,customer_id,"
     			+ " sum(ifnull(pieces,0)) pieces,"
     			+ " sum(ifnull(gross_weight,0)) gross_weight, "
     			+ " sum(ifnull(volume,0)) volume, "
@@ -111,7 +112,7 @@ public class ProfitReportController extends Controller {
     			+ " SUM(IFNULL(ocean_fcl_teu, 0)) ocean_fcl_teu,"
     			+ " SUM(IFNULL(ocean_lcl_cbm, 0)) ocean_lcl_cbm,"
     			+ " SUM(IFNULL(ari_kg, 0)) ari_kg,"
-    			+ " SUM(IFNULL(truck_type, 0)) truck_type"
+    			+ " group_concat(CAST(id as CHAR) separator ', ' ) truck_order_ids"
     			+ " from ("
     			+ " select "+group_condition+" order_export_date, jo.customer_id, jo.pieces,"
     			+ " jo.gross_weight, jo.volume,p.abbr customer_name,"
@@ -125,14 +126,14 @@ public class ProfitReportController extends Controller {
     			+ " ) ocean_fcl_teu,"
     			+ " (select sum(volume) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口散货', '进口散货')) ocean_lcl_cbm,"
     			+ " (select sum(gross_weight) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口空运', '进口空运')) ari_kg,"
-    			+ " (0) truck_type "
+    			+ " jo.id "
     			+ " from job_order jo"
     			+ " left join party p on p.id = jo.customer_id"
     			+ " WHERE jo.office_id="+office_id
     			+ condition
     			+ " ) A where 1=1"
     			+ " GROUP BY A.order_export_date,A.customer_id"
-    			+ " ORDER BY A.customer_id,A.order_export_date"
+    			+ " )B ORDER BY B.customer_id , B.order_export_date"
     			+ "  ";
     	
     	//String condition = DbUtils.buildConditions(getParaMap());

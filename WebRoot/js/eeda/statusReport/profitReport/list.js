@@ -57,15 +57,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     }
                 }
               }, 
-              { "data": "TRUCK_TYPE",
-                "render": function ( data, type, full, meta ) {
-                    if(data){
-                      return (data).toFixed(2);
-                    } else{
-                      return '';
-                    }
-                }
-              }
+              { "data": "TRUCK_TYPE"}
           ]
       });
       
