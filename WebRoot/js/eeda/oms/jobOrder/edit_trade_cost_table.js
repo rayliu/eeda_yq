@@ -62,6 +62,9 @@ $(document).ready(function() {
     var cargoTable = eeda.dt({
 	    id: 'trade_cost_table',
 	    autoWidth: false,
+        scrollY: 530,
+        scrollCollapse: true,
+
         createdRow: function ( row, data, index ) {
             if(data.ID){
                 $(row).attr('id', data.ID);

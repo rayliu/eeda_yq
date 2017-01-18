@@ -122,10 +122,12 @@ eeda.dt = function(opt){
         paging: opt.paging || false,
         lengthChange: opt.lengthChange || false,
         serverSide: opt.serverSide || false, 
+        
         scrollX: opt.scrollX || true,
-        responsive:opt.responsive || true,
-        //scrollY: opt.scrollY || true, //"300px",
+        scrollY: opt.scrollY || true, //"300px",
         scrollCollapse: opt.scrollCollapse || true,
+
+        responsive:opt.responsive || true,
         autoWidth: opt.autoWidth || false,
         pageLength: opt.pageLength || 10,
         aLengthMenu: [ [10, 25, 50, 100, '9999999999'], [10, 25, 50, 100, "All"] ],
