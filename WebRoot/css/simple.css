@@ -67,12 +67,24 @@ html, body,.container {height: 100%; background-color: #fff;}
 .login_back_half_down{
     height: 60%;
     background-color: #DAE000;
+    background-image: url(/images/simple/login_background_lines-h50.png) ;
+    background-repeat: no-repeat;
+    background-position: 80% 10%;
 }
 .login_half_down_icons{
     padding-top: 50px;
     margin-left: 90px;
     z-index: 2;
 }
+
+.login_half_down_icons .icon{
+    float: left;
+}
+
+.login_half_down_icons .icon>p{
+    margin-top: 10px;
+}
+
 .login_half_down_icons img{
     height: 50px;
     padding-right: 50px;
@@ -96,7 +108,7 @@ html, body,.container {height: 100%; background-color: #fff;}
     border-radius: 15px;
     margin-right: 90px;
     float: right;
-    margin-top: -200px;
+    margin-top: -140px;
     z-index: 200;
 }
 
@@ -115,7 +127,7 @@ html, body,.container {height: 100%; background-color: #fff;}
 }
 .login_form form{
     margin-top: 30px;
-
+    clear: both;
 }
 
 .login_form form .form-group{
@@ -128,6 +140,15 @@ html, body,.container {height: 100%; background-color: #fff;}
     font-size: 10px;
     padding: 6px 8px;
 }
+
+.login_form form #username{
+    background: url(/images/simple/header_icon.png) no-repeat right 8px center;
+}
+
+.login_form form #password{
+    background: url(/images/simple/pwd_icon.png) no-repeat right 8px center;
+}
+
 
 .login_form .btn{
     background-color: #DAE000;
