@@ -163,11 +163,17 @@ public class CostCheckOrderController extends Controller {
     	return re;
     }
 	
-	public List<Record> getCostItemList(String order_ids,String bill_flag,String code){
+	public List<Record> getCostItemList(String order_ids,String bill_flag,String code,String exchange_currency){
     	String sql = null;
     	String currency_code="";
+    	String query_exchange_currency="";
 		if(StringUtils.isNotEmpty(code)){
 			currency_code=" and cur. NAME="+"'"+code+"'";
+		}
+		if(StringUtils.isNotEmpty(exchange_currency)){
+			String sql2="select id from currency where currency.name='"+exchange_currency+"'";
+			List<Record> re=Db.find(sql2);
+			query_exchange_currency=" and joa. exchange_currency_id="+re.get(0).get("id");
 		}
 			if("create".equals(bill_flag)){
 				sql = " select joa.id,joa.create_flag,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
@@ -232,7 +238,9 @@ public class CostCheckOrderController extends Controller {
 							+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
 							+" left join arap_cost_item aci on aci.ref_order_id = joa.id"
 						    +" left join arap_cost_order aco on aco.id = aci.cost_order_id"
-						    +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"+currency_code
+						    +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
+						    +currency_code
+						    +query_exchange_currency
 							+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
 			}		
@@ -587,16 +595,17 @@ public class CostCheckOrderController extends Controller {
     	String bill_flag = getPara("bill_flag");
     	
     	String  currency_code=getPara("query_currency");
-    	
+    	//查询结算币制
+    	String  exchange_currency=getPara("query_exchange_currency");
     	List<Record> list = null;
     	if("N".equals(order_id)){
     		if(StringUtils.isNotEmpty(appliction_id)){
-    			list = getCostItemList(appliction_id,bill_flag,currency_code);
+    			list = getCostItemList(appliction_id,bill_flag,currency_code,exchange_currency);
         	}else{
 	    		if("".equals(order_ids)){
 	    			order_ids=null;
 	    				}
-	    		list = getCostItemList(order_ids,"",currency_code);
+	    		list = getCostItemList(order_ids,"",currency_code,exchange_currency);
 	    		}
     	}else{
     		list = getItemList(ids,order_id,currency_code);
