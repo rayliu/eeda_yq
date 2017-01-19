@@ -154,10 +154,10 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
 
         var searchData2=function(){
             var ids=$('#ids').val();
-            var query_currency=$('#query_currency').val();
+            var query_exchange_currency=$('#query_currency').val();
             var url = "/costCheckOrder/tableList?order_ids="+ids+"&order_id=N"
                             +"&table_type=item"
-                            +"&query_currency="+query_currency;
+                            +"&query_exchange_currency="+query_exchange_currency;
            itemTable.ajax.url(url).load(function(){
               var a=[];
               $('#select_item_table input[type=checkbox]:checked').each(function(){
@@ -165,6 +165,7 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
                      a.push(id);
               }); 
               $('#selected_ids').val(a);
+              calcTotal();
            });
          };
 

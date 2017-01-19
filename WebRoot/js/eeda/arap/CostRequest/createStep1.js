@@ -210,7 +210,10 @@
 	})
 	
 	$('#resetBtn').click(function(e){
-	  	$("#costAcceptForm")[0].reset();
+	  	$("#sp_input").val('');
+	  	$("#orderNo_filter1").val('');
+	  	$("#create_stamp_begin_time").val('');
+	  	$("#create_stamp_end_time").val('');
   	});
 	
 	

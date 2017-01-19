@@ -155,7 +155,27 @@
 
         }
         
-        
+         //查询选中币种
+        $('#query_listCurrency').click(function(){
+            searchData2(); 
+        });
+
+        var searchData2=function(){
+            var ids=$('#ids').val();
+            var query_exchange_currency=$('#query_currency').val();
+            var url = "/chargeCheckOrder/tableList?order_ids="+ids+"&order_id=N"
+                            +"&table_type=item"
+                            +"&query_exchange_currency="+query_exchange_currency;
+           itemTable.ajax.url(url).load(function(){
+              var a=[];
+              $('#select_item_table input[type=checkbox]:checked').each(function(){
+                    var id=$(this).parent().parent().attr('id');
+                     a.push(id);
+              }); 
+              $('#selected_ids').val(a);
+              calcTotal();
+           });
+         };
         
         var refleshCreateTable = function(appApplication_id){
     		var url = "/chargeCheckOrder/tableList?appApplication_id="+appApplication_id+"&order_id=N&bill_flag=create";
