@@ -638,6 +638,7 @@ public class ChargeReuqestrController extends Controller {
    		String receive_time = (String) dto.get("receive_time");
    		String payment_method = (String) dto.get("payment_method");
    		
+   		
         ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(id);
         arapChargeInvoiceApplication.set("status", "已收款");
         arapChargeInvoiceApplication.set("receive_time", receive_time);
@@ -763,22 +764,6 @@ public class ChargeReuqestrController extends Controller {
     	renderJson(order);
     }
     
-    //异步刷新字表
-    public void tableList(){
-    	String order_id = getPara("order_id");
-    	
-    	List<Record> list = null;
-    	list = getItems(order_id);
-    	
-    	Map map = new HashMap();
-        map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
-
-        map.put("aaData", list);
-
-        renderJson(map); 
-    }
     
   //返回list
     private List<Record> getItems(String orderId) {
