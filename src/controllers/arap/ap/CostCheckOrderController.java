@@ -56,13 +56,13 @@ public class CostCheckOrderController extends Controller {
 		
 		String strAry[] = ids.split(",");
 		String id = strAry[0];
-		String sql = " select joa.sp_id,p.company_name sp_name from job_order_arap joa "
+		String sql = " select joa.sp_id,p.company_name company_name from job_order_arap joa "
 				   + " left join party p on p.id = joa.sp_id "
 				   + "  where joa.id = ? ";
 		Record spRec = Db.findFirst(sql,id);
 		Record order = new Record();
 		order.set("sp_id", spRec.get("sp_id"));
-		order.set("sp_name", spRec.get("sp_name"));
+		order.set("company_name", spRec.get("company_name"));
 		order.set("total_amount",totalAmount);
 		order.set("jpy", jpy_totalAmount);
 		order.set("cny", cny_totalAmount);
@@ -487,7 +487,7 @@ public class CostCheckOrderController extends Controller {
 			}	
 		}
    		
-   		String sql = " select aco.*, p.abbr sp_name, u.c_name creator_name from arap_cost_order aco "
+   		String sql = " select aco.*, p.company_name company_name, u.c_name creator_name from arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by"
    				+ " where aco.id = ? ";

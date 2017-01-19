@@ -466,19 +466,18 @@ public class CostReuqestrController extends Controller {
 				
 				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
 				arapCostOrder.set("audit_status", "付款申请中").update();
-				
-				//更新勾选的job_order_arap item pay_flag,改变创建标记位
-				if(!"".equals(selected_item_ids)){
-					String sql =" update job_order_arap set pay_flag='N' where id in ("
-		                    + " select ref_order_id from arap_cost_item where cost_order_id in("+cost_order_id+"))"  //costOrderId.substring(1) 去掉第一位
-		                    + " and id not in("+selected_item_ids+")";
-		            Db.update(sql);
 		            
 		          }
 			}
-		}
-		String ySql ="update job_order_arap set pay_flag='Y',create_flag='Y' where id in("+selected_item_ids+")";
-        Db.update(ySql);
+			//selected_item_ids,改变创建标记位
+//			if("".equals(selected_item_ids)){
+//				String textError="您创建的申请单中选中没有明细";
+//				renderJson(textError);
+//				return ;
+//	        }
+			//更新勾选的job_order_arap item creat_flag,改变创建标记位		
+			String ySql ="update job_order_arap set create_flag='Y' where id in("+selected_item_ids+")";
+	        Db.update(ySql);
 	}
    		
 		
@@ -599,6 +598,12 @@ public class CostReuqestrController extends Controller {
         arapCostInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
         arapCostInvoiceApplication.set("confirm_stamp", new Date());
         arapCostInvoiceApplication.update();
+        
+      //已付款的标记位
+  		String paySql ="update job_order_arap set pay_flag='Y' "
+  				+ " where id in (SELECT job_order_arap_id FROM cost_application_order_rel WHERE application_order_id ="+id+")" ; //chargeOrderId.substring(1) 去掉第一位
+                  
+          Db.update(paySql);
           
         //更改原始单据状态
         List<Record> res = Db.find("select * from cost_application_order_rel where application_order_id = ?",id);

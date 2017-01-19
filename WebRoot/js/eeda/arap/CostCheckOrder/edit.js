@@ -66,7 +66,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                 	$('#status').val(order.STATUS);
                 	$('#creator').val(order.CREATOR_NAME);
                 	$('#create_stamp').val(order.CREATE_STAMP);
-                	$('#company').text(order.SP_NAME);
+                	$('#sp_name').text(order.COMPANY_NAME);
                 	$('#cost_amount').text(order.COST_AMOUNT);
                 	$('#audit_begin_time').val(order.BEGIN_TIME);
                 	$('#audit_end_time').val(order.END_TIME);
