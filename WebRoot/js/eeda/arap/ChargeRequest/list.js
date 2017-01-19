@@ -305,11 +305,12 @@ $(document).ready(function() {
     loadConditions();
     
     //浏览器回退按钮,加载页面
-    $(window).on('beforeunload', function(e) {
-    	$.load(function(){
-    		refreshData();
-    	})
-    });
+//    $(window).on('beforeunload', function(e) {
+//    	$.load(function(){
+//    		
+//    		refreshData(this);
+//    	})
+//    });
     
     if(back=="true"||back=="confirmTrue"){
     	refreshData(back);
@@ -318,10 +319,8 @@ $(document).ready(function() {
     }
     
     
-	
-    //勾选进行金额汇总
-	$('#application_table').on('click',"input[name='order_check_box']",function () {
-
+    //金额汇总
+    var totalMoney = function(checkBox){
 		var cny_totalAmount = $('#cny_totalAmountSpan').text();
 		cny_totalAmount =parseFloat(cny_totalAmount);
         var usd_totalAmount = $('#usd_totalAmountSpan').text();
@@ -335,11 +334,11 @@ $(document).ready(function() {
         var currency_jpy=0.00;
         var currency_hkd=0.00;
         
-		if($(this).prop('checked')==true){
-			    currency_cny = $(this).parent().parent().find('.cny').text();
-	    		currency_usd = $(this).parent().parent().find('.usd').text();
-	    		currency_jpy = $(this).parent().parent().find('.jpy').text();
-	    	    currency_hkd = $(this).parent().parent().find('.hkd').text();
+		if($(checkBox).prop('checked')==true){
+			    currency_cny = $(checkBox).parent().parent().find('.cny').text();
+	    		currency_usd = $(checkBox).parent().parent().find('.usd').text();
+	    		currency_jpy = $(checkBox).parent().parent().find('.jpy').text();
+	    	    currency_hkd = $(checkBox).parent().parent().find('.hkd').text();
 				if(currency_cny==''){
 					currency_cny=0.00;
 				}
@@ -358,10 +357,10 @@ $(document).ready(function() {
 				}
 			     hkd_totalAmount += parseFloat(currency_hkd);			     
 			}else{
-				currency_cny = $(this).parent().parent().find('.cny').text();
-	    		currency_usd = $(this).parent().parent().find('.usd').text();
-	    		currency_jpy = $(this).parent().parent().find('.jpy').text();
-	    	    currency_hkd = $(this).parent().parent().find('.hkd').text();
+				currency_cny = $(checkBox).parent().parent().find('.cny').text();
+	    		currency_usd = $(checkBox).parent().parent().find('.usd').text();
+	    		currency_jpy = $(checkBox).parent().parent().find('.jpy').text();
+	    	    currency_hkd = $(checkBox).parent().parent().find('.hkd').text();
 				if(currency_cny==''){
 					currency_cny=0.00;
 				}
@@ -385,7 +384,23 @@ $(document).ready(function() {
 		 $('#usd_totalAmountSpan').html(usd_totalAmount.toFixed(2))
 		 $('#hkd_totalAmountSpan').html(hkd_totalAmount.toFixed(2))
 		 $('#jpy_totalAmountSpan').html(jpy_totalAmount.toFixed(2))
+	}
+    
+    
+	
+    //勾选进行金额汇总
+	$('#application_table').on('click',"input[name='order_check_box']",function () {
+		totalMoney(this);
 	});
+	$('#application_table').on('click',".checkBtn",function () {
+		var tr = $(this).parent().parent().parent();
+		var checkBox = tr.find('.checkBox');
+		if($(checkBox).prop('checked')==true){
+			$(checkBox).attr('checked',false);
+			totalMoney(checkBox);
+		}
+	});
+
 	
 	$('#allCheck').click(function(){
 		if(this.checked==true){
@@ -403,8 +418,18 @@ $(document).ready(function() {
 	        $('#jpy_totalAmountSpan').text(0);
 		}
 	});
+	$('#totalZero').click(function(){
+			$("#application_table .checkBox").each(function(){
+				$(this).prop('checked',false);
+			});
+			$('#cny_totalAmountSpan').text(0);
+			$('#usd_totalAmountSpan').text(0);
+	        $('#hkd_totalAmountSpan').text(0);
+	        $('#jpy_totalAmountSpan').text(0);
+	    }
+	);
 	
-	  $("#application_table").on('click','.checkBox',function(){
+	  $("#application_table").on('click','.checkBox,.checkBtn',function(){
 		   $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
 	  });
 	  
