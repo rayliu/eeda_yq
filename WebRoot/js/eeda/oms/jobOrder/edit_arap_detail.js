@@ -35,7 +35,7 @@ $(document).ready(function() {
         						+'currency_name="'+json_obj[j].currency_name+'" '
         						+'currency_total_amount="'+json_obj[j].currency_total_amount+'" '
         						+'exchange_currency_id="'+json_obj[j].exchange_currency_id+'" '
-        						+'exchange_currency_id_name="'+json_obj[j].exchange_currency_id_name+'" '
+        						+'exchange_currency_name="'+json_obj[j].exchange_currency_name+'" '
         						+'exchange_currency_rate="'+json_obj[j].exchange_currency_rate+'" '
         						+'exchange_rate="'+json_obj[j].exchange_rate+'" '
         						+'exchange_total_amount="'+json_obj[j].exchange_total_amount+'" '
@@ -131,7 +131,7 @@ $(document).ready(function() {
         	item.CHARGE_NAME_ENG=row.attr('charge_name_eng');
         	item.UNIT_NAME=row.attr('unit_name');
         	item.CURRENCY_NAME=row.attr('currency_name');
-        	item.EXCHANGE_CURRENCY_ID_NAME=row.attr('exchange_currency_id_name');
+        	item.EXCHANGE_CURRENCY_ID_NAME=row.attr('exchange_currency_name');
         	item.AUDIT_FLAG='';
         	dataTable.row.add(item).draw();
         }
