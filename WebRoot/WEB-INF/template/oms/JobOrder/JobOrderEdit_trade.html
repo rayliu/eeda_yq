@@ -185,9 +185,9 @@
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
                                         id:'trade_sale_table',
-                                        headers:['','结算公司','费用名称','对账金额','对账币制','对人民币汇率', '金额(人民币)','结算币制','结算汇率','结算金额','sp_name','charge_name','currency_name'],
-                                        field_list:['','sp_id','charge_id','total_amount','currency_id',
-                                     				'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','sp_name','charge_name','currency_name','EXCHANGE_CURRENCY_ID_NAME','audit_flag'],
+                                        headers:['','结算公司','费用名称','单价','数量','单位','对账金额','对账币制','对人民币汇率', '金额(人民币)','结算币制','结算汇率','结算金额','sp_name','charge_name','currency_name'],
+                                        field_list:['','sp_id','charge_id','price','amount','unit_id','total_amount','currency_id',
+                                     				'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','sp_name','charge_name','currency_name','EXCHANGE_CURRENCY_ID_NAME','unit_name','audit_flag'],
                                         value_list: trade_charge_sale_list![]
                                     }){} %>
                             </div>

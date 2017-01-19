@@ -60,6 +60,7 @@ $(document).ready(function() {
 	    eeda.bindTableField('trade_sale_table','SP_ID','/serviceProvider/searchCompany','');
 	    eeda.bindTableFieldCurrencyId('trade_sale_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
 	    eeda.bindTableFieldCurrencyId('trade_sale_table','exchange_currency_id','/serviceProvider/searchCurrency','');
+	    eeda.bindTableField('trade_sale_table','UNIT_ID','/serviceProvider/searchChargeUnit','');
     };
     var cargoTable = eeda.dt({
 	    id: 'trade_sale_table',
@@ -102,7 +103,39 @@ $(document).ready(function() {
                              }
                          );
                          return field_html;
-                   }
+                     }
+                 },
+                 { "data": "PRICE", "width": "120px",
+                     "render": function ( data, type, full, meta ) {
+                     	if(data)
+                             var str =  parseFloat(data).toFixed(2);
+                         else
+                         	str = '';
+                      	 return '<input type="text" name="price" style="width:120px" value="'+str+'" class="form-control" />';
+                          
+                    }
+                 },
+                 { "data": "AMOUNT","width": "60px",
+                     "render": function ( data, type, full, meta ) {
+                     	if(!data)
+                             data='';
+                        return '<input type="text" name="amount" style="width:120px" value="'+data+'" class="form-control" />'; 
+                     }
+                 },
+                 { "data": "UNIT_ID","width": "60px",
+                     "render": function ( data, type, full, meta ) {
+                 	   if(!data)
+                            data='';
+                        var field_html = template('table_dropdown_template',
+                            {
+                                id: 'UNIT_ID',
+                                value: data,
+                                display_value: full.UNIT_NAME,
+                                style:'width:80px'
+                            }
+                        );
+                        return field_html;
+                     }
                  },
                  { "data": "TOTAL_AMOUNT", "width": "150px","className":"currency_total_amount",
                      "render": function ( data, type, full, meta ) {
@@ -276,6 +309,13 @@ $(document).ready(function() {
                  		return data;
                  	}
                  },
+                 { "data": "UNIT_NAME", "visible": false,
+                  	"render": function ( data, type, full, meta ) {
+                  		if(!data)
+                  			data='';
+                  		return data;
+                  	 }
+                  },
                  { "data": "AUDIT_FLAG", "visible": false,
                  	"render": function ( data, type, full, meta ) {
                          if(!data)
@@ -312,7 +352,7 @@ $(document).ready(function() {
     }
     
     if($('#trade_sale_table td').length>1){
-    	var col = [3,6];
+    	var col = [6,9];
     	for (var i=0;i<col.length;i++){
 	    	var arr = cargoTable.column(col[i]).data();
     		$('#trade_sale_table tfoot').find('th').eq(col[i]).html(
@@ -367,7 +407,7 @@ $(document).ready(function() {
 				total_fee_amount_cny+=parseFloat(a);
 			}
 		})
-		$($('.dataTables_scrollFoot tr')[2]).find('th').eq(6).html(total_fee_amount_cny.toFixed(3));
+		$($('.dataTables_scrollFoot tr')[2]).find('th').eq(9).html(total_fee_amount_cny.toFixed(3));
 		
 		var total = 0;
 		$('#trade_sale_table [name=total_amount]').each(function(){
@@ -376,7 +416,7 @@ $(document).ready(function() {
 				total+=parseFloat(a);
 			}
 		})
-		$($('.dataTables_scrollFoot tr')[2]).find('th').eq(3).html(total.toFixed(3));
+		$($('.dataTables_scrollFoot tr')[2]).find('th').eq(6).html(total.toFixed(3));
 		
     })
    
