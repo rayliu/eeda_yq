@@ -461,7 +461,8 @@ public class ChargeReuqestrController extends Controller {
    		String id = (String) dto.get("id");
    		String ids=(String) dto.get("ids");
 		String selected_item_ids= (String) dto.get("selected_ids"); //获取申请单据的id,用于回显
-   		
+		String sp_id=(String) dto.get("sp_id");
+		String sp_name=(String) dto.get("sp_name");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id=user.getLong("office_id");
@@ -472,7 +473,6 @@ public class ChargeReuqestrController extends Controller {
    			DbUtils.setModelValues(dto, order); 
    			
    			//需后台处理的字段
-   			order.set("update_by", user.getLong("id"));
    			order.set("update_by", user.getLong("id"));
    			order.set("update_stamp", new Date());
    			order.update();
@@ -486,7 +486,7 @@ public class ChargeReuqestrController extends Controller {
    			order.set("create_by", user.getLong("id"));
    			order.set("create_stamp", new Date());
    			order.set("office_id", office_id);
-   			
+   			order.set("sp_id", sp_id);
    			if(!"".equals(selected_item_ids)){
    				order.set("selected_item_ids", selected_item_ids);
    			}
@@ -494,8 +494,6 @@ public class ChargeReuqestrController extends Controller {
    			
    			id = order.getLong("id").toString();
    			
-   		
-
 		String itemId="";
    		ChargeApplicationOrderRel caor = null;
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
@@ -536,6 +534,7 @@ public class ChargeReuqestrController extends Controller {
 		Record r = order.toRecord();
    		r.set("creator_name", user_name);
    		r.set("idsArray", ids);
+   		r.set("sp_name",sp_name);
    		renderJson(r);
 	}
   	

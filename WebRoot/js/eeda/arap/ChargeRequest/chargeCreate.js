@@ -76,11 +76,15 @@ $(document).ready(function() {
 		order.item_list = buildItem();
 		order.selected_item_ids=$("#selected_ids").val();
 		order.ids=$('#ids').val();
+		order.sp_id=$('#sp_id').val();
+		order.sp_name=$('#sp_id_input').val();
 		$.post('/chargeRequest/save',{params:JSON.stringify(order)}, function(data){
 			$("#createSave").attr("disabled", false);
 			if(data.ID>0){
 				$.scojs_message('创建新申请成功', $.scojs_message.TYPE_OK);
 				$("#order_no").val(data.ORDER_NO);
+				$("#sp_id").val(data.sp_id);
+				$("#sp_id_input").val(data.sp_name);
 				if(confirm('刚生成的新申请单号'+data.ORDER_NO+':是否前往该申请单？')){
 					self.location='/chargeRequest/edit?id='+data.ID; 
 				 }
@@ -320,18 +324,7 @@ $(document).ready(function() {
     
     
     
-	$('#chargeAccept_table').on('click , input[type="checkbox"]',function(){
-		var idsArray=[];
-      	$('#chargeAccept_table input[type="checkbox"]:checked').each(function(){
-      			var itemId = $(this).parent().parent().attr('id');
-      			
-//      			var order_type = $(this).parent().parent().find(".order_type").text();
-      			idsArray.push(itemId);
-      	});
-      		$('#ids').val(idsArray);
-      		selectContr.refleshSelectTable(idsArray);
-	})
-	
+
 	
 	
 	//付款方式回显（2）
