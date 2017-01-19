@@ -1,4 +1,14 @@
-html, body,.container {height: 100%; background-color: #fff;}
+@font-face { 
+  font-family: dinpro; /*这里是说明调用来的字体名字*/ 
+  src: url('/css/fonts/dinpro.otf'); /*这里是字体文件路径*/ 
+} 
+
+html, body,.container {
+    height: 100%; 
+    background-color: #fff;
+    font-family: dinpro, "Microsoft YaHei", Arial,sans-serif;
+    font-size: 10px;
+}
 
 .login_back_half_up{
     height: 40%;
@@ -161,4 +171,62 @@ html, body,.container {height: 100%; background-color: #fff;}
 
 .login_form form a{
     padding-right: 15px;
+}
+/* end of login page */
+
+/*   after login,  commond page  */
+.navbar {
+    min-height: 80px;
+    background-color: #DAE000;
+}
+
+.navbar-brand{
+    margin-top: 14px;
+    margin-left: 25px;
+    height: 55px;
+    width: 250px;
+    background: url(/images/simple/banner_logo.png) no-repeat;
+    display: inline-block;
+}
+
+.banner_slogan{
+    margin-top: 40px;
+    margin-left: 67px;
+    height: 15px;
+    width: 220px;
+    background: url(/images/simple/slogan_13px.png) no-repeat;
+    display: inline-block;
+}
+
+.navbar-right{
+    margin-right: 0px;
+}
+
+.person_image{
+    float: left;
+    margin-top: 20px;
+    margin-right: 45px;
+}
+
+.log_out{
+    margin-right: 25px;
+    margin-top: 32px;
+    display: inline-block;
+}
+
+.breadcrumb{
+    padding-left: 25px;
+    padding-top: 13px;
+    margin-left: 250px;
+    background-color: #005BAC;
+    height: 40px;
+    border-radius: 0px 0px 13px 13px;
+    color: white;
+    font-weight: bolder;
+    font-size: 14px;
+}
+.breadcrumb a{
+    color: white;
+    font-family: dinpro, Arial,sans-serif;
+    font-weight: bolder;
 }
