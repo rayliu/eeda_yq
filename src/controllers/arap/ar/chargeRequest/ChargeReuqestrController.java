@@ -240,10 +240,10 @@ public class ChargeReuqestrController extends Controller {
         		+" 	) A "
         		+" WHERE "
         		+" 	( "
-        		+" 		FORMAT(ifnull(usd, 0), 2) > FORMAT(paid_usd, 2) "
-        		+" 		OR FORMAT(ifnull(cny, 0), 2) > FORMAT(paid_cny, 2) "
-        		+" 		OR FORMAT(ifnull(hkd, 0), 2) > FORMAT(paid_hkd, 2) "
-        		+" 		OR FORMAT(ifnull(jpy, 0), 2) > FORMAT(paid_jpy, 2) "
+        		+" 		ifnull(usd, 0) > FORMAT(paid_usd, 2) "
+        		+" 		OR ifnull(cny, 0) > FORMAT(paid_cny, 2) "
+        		+" 		OR ifnull(hkd, 0) > FORMAT(paid_hkd, 2) "
+        		+" 		OR ifnull(jpy, 0) > FORMAT(paid_jpy, 2) "
         		+" 	) ";
 		
         String condition = DbUtils.buildConditions(getParaMap());
