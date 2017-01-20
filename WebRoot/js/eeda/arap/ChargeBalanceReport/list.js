@@ -5,7 +5,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	  
       var dataTable = eeda.dt({
           id: 'eeda_table',
-          paging: true,
+          paging: false,
           serverSide: true, //不打开会出现排序不对 
           ajax: "/chargeBalanceReport/list",
           columns: [
