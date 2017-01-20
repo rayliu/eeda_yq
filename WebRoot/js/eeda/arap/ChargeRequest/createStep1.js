@@ -216,7 +216,7 @@
             {"data":"REMARK"}
 		]      
     });
-      
+
       //查询待申请单
 	$('#searchBtn').click(function(){
   	    searchData(); 
@@ -335,11 +335,12 @@
 	    var url = "/chargeRequest/OrderList";
 	    costAccept_table.ajax.url(url).load();
     }
-	
+
+	var sp_name='';
+	var sp_id='';	
 	$('#chargeAccept_table').on('click', 'input[type="checkbox"]',function(){
 		var idsArray=[];
-		var sp_name='';
-		var sp_id='';
+		
 		var rowindex=$(this).parent().parent().index();
 		if($(this).prop('checked')){
 			 sp_id=costAccept_table.row(rowindex).data().SP_ID.toString();
@@ -351,15 +352,21 @@
 //      			var order_type = $(this).parent().parent().find(".order_type").text();
       			idsArray.push(itemId);
       	});
+      	if(idsArray==''){
+      		 $('#sp_id_input').val('');
+      		 $('#sp_id').val('');
+  		    selectContr.refleshSelectTable(idsArray);
+  		    return;
+      	}
       	 $('#sp_id_input').val(sp_name);
       	 $('#sp_id').val(sp_id);
   		$('#ids').val(idsArray);
   		selectContr.refleshSelectTable(idsArray);
 	})
-	
-	
-    return {
-    	refleshStep1Table: refleshSelectTable
+
+       
+		return {
+			refleshStep1Table: refleshSelectTable
     };
 	  
 

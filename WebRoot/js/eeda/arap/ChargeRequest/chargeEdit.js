@@ -7,7 +7,7 @@ $(document).ready(function() {
     if($('#receive_time').val()==""){
     	
     }
-    
+    $('.row.search_panel').hide();
     
     //构造主表json
     var buildOrder = function(){
@@ -203,7 +203,21 @@ $(document).ready(function() {
 	  //收款确认
 	  $("#confirmBtn").on('click',function(){
 		  	$("#confirmBtn").attr("disabled", true);
-		  	
+		  	var formRequired=0;
+		        $('form').each(function(){
+		            if(!$(this).valid()){
+		                formRequired++;
+		            }
+		        })
+		        if($('#receive_time').val()==''){
+		        	 formRequired++;
+		        }
+		        if(formRequired>0){
+		            $.scojs_message('收款时间为必填字段', $.scojs_message.TYPE_ERROR);
+		            $("#confirmBtn").attr("disabled", false);
+		            return;
+		        }
+
 //		  	if($("#receive_type").val()=='transfers'){
 //				if($("#receive_bank").val()==''){
 //					$.scojs_message('收入银行不能为空', $.scojs_message.TYPE_FALSE);
