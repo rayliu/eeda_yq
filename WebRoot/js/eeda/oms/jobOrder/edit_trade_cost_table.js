@@ -265,7 +265,7 @@ $(document).ready(function() {
     }
     
     if($('#trade_cost_table td').length>1){
-    	var col = [2, 5, 8, 9, 11, 14, 17];
+    	var col = [3, 6, 9, 10, 12, 15, 18];
     	for (var i=0;i<col.length;i++){
 	    	var arr = cargoTable.column(col[i]).data();
     		$('#trade_cost_table tfoot').find('th').eq(col[i]).html(
@@ -296,7 +296,7 @@ $(document).ready(function() {
 				total+=parseInt(a);
 			}
 		})
-		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html(total.toFixed(3));
+		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html(total.toFixed(3));
     })
     
     $('#trade_cost_table').on('keyup', '[name=custom_number]', function(){
@@ -319,7 +319,7 @@ $(document).ready(function() {
     				total+=parseFloat(a);
     			}
     		})
-    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(14).html(total.toFixed(3));
+    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(15).html(total.toFixed(3));
     	}
     })
     
@@ -339,7 +339,7 @@ $(document).ready(function() {
 				total+=parseFloat(a);
 			}
 		})
-		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(17).html(total.toFixed(3));
+		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(18).html(total.toFixed(3));
     })
     
     $('#trade_cost_table').on('keyup', '[name=number],[name=custom_price]', function(){
@@ -361,7 +361,7 @@ $(document).ready(function() {
     				total+=parseFloat(a);
     			}
     		})
-    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(14).html(total.toFixed(3));
+    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(15).html(total.toFixed(3));
     	}
     })
 
@@ -384,7 +384,7 @@ $(document).ready(function() {
     				total+=parseFloat(a);
     			}
     		})
-    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html(total.toFixed(3));
+    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html(total.toFixed(3));
     		if(tax_refund_rate==''){
         		$(row.find('[name=tax_refund_amount]')).val('');
         	}else if(!isNaN(tax_refund_rate)){
@@ -397,7 +397,7 @@ $(document).ready(function() {
         				total+=parseFloat(a);
         			}
         		})
-        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(8).html(total.toFixed(3));
+        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(9).html(total.toFixed(3));
         	}
     	}
     
@@ -445,7 +445,7 @@ $(document).ready(function() {
         				total+=parseFloat(a);
         			}
         		})
-        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(11).html(total.toFixed(3));
+        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(12).html(total.toFixed(3));
         		if(tax_refund_rate==''){
             		$(row.find('[name=adjusted_tax_refund_amount]')).val('');
             	}else if(!isNaN(tax_refund_rate)){
@@ -458,7 +458,7 @@ $(document).ready(function() {
             				total+=parseFloat(a);
             			}
             		})
-            		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(9).html(total.toFixed(3));
+            		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html(total.toFixed(3));
             	}
         	}
     	}
