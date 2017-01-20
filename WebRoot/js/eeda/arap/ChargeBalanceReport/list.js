@@ -9,16 +9,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对 
           ajax: "/chargeBalanceReport/list",
           columns: [
-      			{ "data": "ABBR", "width": "100px"},
-      			{ "data": "BEGIN_TIME", "width": "90px"},
-      			{ "data": "END_TIME", "width": "90px"},
+      			{ "data": "ABBR", "width": "120px"},
 	            { "data": "CURRENCY", "width": "50px"},
 	            {
 					"render": function(data, type, full, meta) {
 						return '<span style="color:red">'+parseFloat(full.CHARGE_TOTAL - full.CHARGE_CONFIRM).toFixed(2)+'</span>';
 					}
 				},
-	            { "data": "CHARGE_CONFIRM", "width": "80px",
+	            { "data": "CHARGE_CONFIRM", "width": "80px","visible":false,
 					"render": function(data, type, full, meta) {
 						return '<span style="color:green">'+parseFloat(data).toFixed(2)+'</span>';
 					}
@@ -48,7 +46,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      var searchData=function(){
           var sp = $("#customer").val();
           var abbr_name=$('#customer_input').val();
-          var service_stamp_between = $("#service_stamp").val();
+          var order_export_date_begin_time = $("#order_export_date_begin_time").val();
+          var order_export_date_end_time = $("#order_export_date_end_time").val();
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -58,7 +57,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           */
           var url = "/chargeBalanceReport/list?sp="+customer
           				+"&abbr_equals="+abbr_name
-		                +"&service_stamp_between="+service_stamp_between;
+          				+"&order_export_date_begin_time="+order_export_date_begin_time
+				        +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load();
       };
   });

@@ -266,7 +266,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/balanceReport", controllers.report.BalanceReportController.class, contentPath);
         me.add("/customReport", controllers.report.CustomReportController.class, contentPath);
         me.add("/chargeBalanceReport",controllers.arap.ChargeBalanceReportController.class, contentPath);
-        me.add("/payableBalance",controllers.arap.PayableBalanceController.class, contentPath);
+        me.add("/costBalanceReport",controllers.arap.CostBalanceReportController.class, contentPath);
         me.add("/profitAndPaymentRate",controllers.arap.ProfitAndPaymentRateController.class, contentPath);
         me.add("/accountAging",controllers.arap.AccountAging.class, contentPath);
         me.add("/billProfitAndPayment",controllers.arap.BillProfitAndPaymentController.class, contentPath);

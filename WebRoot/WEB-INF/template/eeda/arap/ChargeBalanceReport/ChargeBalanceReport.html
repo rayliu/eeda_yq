@@ -33,9 +33,9 @@
                                                                     }){}%>
                                             </div>
                                             <div class="col-lg-4">
-	                             				<%include("/eeda/component/form/dateInputField.html",
-	                             									 {   id:'service_stamp', 
-	                             									 	 label:'业务发生时间',
+	                             				<%include("/eeda/component/form/inputDateQueryField.html",
+	                             									 {   id:'order_export_date', 
+	                             									 	 label:'出货时间',
 	                             									     value:''
 	                             									  }){} %>
                                             </div>
@@ -50,8 +50,8 @@
                                      <%include("/eeda/component/form/detailTable.html", 
                                         {
                                             id:'eeda_table', 
-                                            style: 'width:1050px',
-                                            headers:['客户','业务开始时间','业务结束时间','币制','未收款余额（应收余额）','已收款金额','应收金额','回款率（%）'
+                                            style: 'width:850px',
+                                            headers:['客户','币制','未收款余额（应收余额）','已收款金额','应收金额','回款率（%）'
                                             ]
                                         }){} %>
                                 </div>
