@@ -797,7 +797,7 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{HBLshipper_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="110" width="245" height="60" uuid="fe342d77-2c0d-4ee3-a255-3cfe73b9c8c5"/>
+				<reportElement x="20" y="120" width="245" height="50" uuid="fe342d77-2c0d-4ee3-a255-3cfe73b9c8c5"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -923,7 +923,7 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{HBLshipperName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="98" width="245" height="12" uuid="0c3c8a07-5b45-4524-a055-71ea5373d022"/>
+				<reportElement x="20" y="98" width="245" height="22" uuid="0c3c8a07-5b45-4524-a055-71ea5373d022"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
@@ -944,14 +944,14 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{container_type_count}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="183" width="245" height="12" uuid="4c8a17fe-7af1-41d0-a7bf-f566edb8a990"/>
+				<reportElement x="20" y="183" width="245" height="23" uuid="4c8a17fe-7af1-41d0-a7bf-f566edb8a990"/>
 				<textElement verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{HBLnotify_partyName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="20" y="195" width="245" height="55" uuid="4fb4a45a-82e7-4ce2-b31f-11e30aa4344b"/>
+				<reportElement x="20" y="206" width="245" height="44" uuid="4fb4a45a-82e7-4ce2-b31f-11e30aa4344b"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
