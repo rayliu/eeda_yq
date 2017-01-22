@@ -25,7 +25,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "THREE", "width": "100px"},
 	            { "data": "SIX", "width": "100px"},
 	            { "data": "NINE", "width": "100px"},
-	            { "data": "TOTAL_AMOUNT", "width": "100px"}
+	            { "data": "AFTER_NINE", "width": "100px"}
 	          ]
 	  });
       
@@ -76,6 +76,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
+      
 
       $('#searchBtn').click(function(){
     	$('#cny_totalAmountSpan').html(0);
@@ -85,14 +86,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	$('#totalAmountSpan').html(0); 
         searchData(); 
       })
+      
+      $('#oldSearchBtn').click(function(){
+    	$('#cny_totalAmountSpan').html(0);
+    	$('#usd_totalAmountSpan').html(0);
+    	$('#hkd_totalAmountSpan').html(0);
+    	$('#jpy_totalAmountSpan').html(0);
+    	$('#totalAmountSpan').html(0); 
+        searchData("old"); 
+      })
 
-     var searchData=function(){
+     var searchData=function(type){
+    	  if(!type){
+    		  type="";
+    	  }
     	   
           var customer = $("#customer").val(); 
           var service_stamp_between = $("#service_stamp").val();
 
           var url = "/accountAging/list?sp_id="+customer
-		               +"&service_stamp_between="+service_stamp_between;
+		               +"&service_stamp_between="+service_stamp_between+"&type="+type;
           dataTable.ajax.url(url).load(false);
       };
   });

@@ -40,6 +40,7 @@ public class AccountAging extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sp_id = getPara("sp_id");
+        String type = getPara("type")==null?"new":getPara("type").trim();
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String condition = "";
@@ -55,21 +56,23 @@ public class AccountAging extends Controller {
         		+ " 	sum(currency_total_amount) currency_total_amount, "
         		+ " 	sum(three) three, "
         		+ " 	sum(six) six, "
-        		+ " 	sum(nine) nine "
+        		+ " 	sum(nine) nine,"
+        		+ "		after_nine "
         		+ " FROM "
         		+ " 	( "
         		+ " 		select "
         		+ " joa.sp_id ,joa.exchange_currency_id ,p.abbr abbr_name,cur. NAME currency_name, "
         		+ " joa.total_amount, "
         		+ " joa.currency_total_amount, "
-        		+ " IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 ) three,  "
-        		+ " IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 ) six, "
-        		+ " IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 ) nine "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 0 MONTH),'%Y-%m') , joa.total_amount, 0 ) three,  "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 ) six, "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 ) nine, "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 ) after_nine "
         		+ " from job_order_arap joa  "
         		+ " LEFT JOIN job_order jor ON jor.id = joa.order_id "
         		+ " LEFT JOIN party p ON  p.id = joa.sp_id "
         		+ " LEFT JOIN currency cur ON cur.id = joa.currency_id "
-        		+ " LEFT JOIN charge_application_order_rel caor on caor.charge_order_id = job_order_arap_id and joa.create_flag = 'Y' "
+        		+ " LEFT JOIN charge_application_order_rel caor on caor.job_order_arap_id = joa.id and joa.create_flag = 'Y' "
         		+ " LEFT JOIN arap_charge_application_order acao on acao.id = caor.application_order_id "
         		+ " where joa.order_type = 'charge' and ifnull(acao.status,'') !='已收款' "
         		+ " and jor.office_id = "+office_id+" and joa.type != '贸易' and jor.order_export_date<date_format(curdate(),'%Y-%m')"
@@ -80,28 +83,44 @@ public class AccountAging extends Controller {
         		+ " 	sp_id, "
         		+ " 	exchange_currency_id ";
         
-        String sql2 =  " select "
-        		+ " p.abbr abbr_name,cur. NAME currency_name,"
-        		+ " sum(joa.total_amount) total_amount,"
-        		+ " sum(joa.currency_total_amount) currency_total_amount,"
-        		+ " sum(IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 )) three,"
-        		+ " sum(IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 )) six,"
-        		+ " sum(IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 )) nine"
-        		+ " from job_order_arap joa "
-        		+ " LEFT JOIN job_order jor ON jor.id = joa.order_id"
-        		+ " LEFT JOIN party p ON  p.id = joa.sp_id"
-        		+ " LEFT JOIN currency cur ON cur.id = joa.currency_id"
-        		+ " LEFT JOIN charge_application_order_rel caor on caor.charge_order_id = job_order_arap_id and joa.create_flag = 'Y'"
-        		+ " LEFT JOIN arap_charge_application_order acao on acao.id = caor.application_order_id"
-        		+ " where joa.order_type = 'charge' and ifnull(acao.status,'') !='已收款' and jor.office_id = "+office_id+" and joa.type != '贸易'"
-        		+ " and jor.order_export_date < date_format(curdate(),'%Y-%m')"
+        String sql2 =  " SELECT "
+        		+ " 	abbr_name, "
+        		+ " 	currency_name, "
+        		+ " 	sum(total_amount) total_amount, "
+        		+ " 	sum(currency_total_amount) currency_total_amount, "
+        		+ " 	sum(three) three, "
+        		+ " 	sum(six) six, "
+        		+ " 	sum(nine) nine,"
+        		+ "		after_nine "
+        		+ " FROM "
+        		+ " 	( "
+        		+ " 		select "
+        		+ " joa.sp_id ,joa.exchange_currency_id ,p.abbr abbr_name,cur. NAME currency_name, "
+        		+ " joa.total_amount,joa.total_amount after_nine, "
+        		+ " joa.currency_total_amount, "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 ) three,  "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 ) six, "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 ) nine "
+        		+ " from job_order_arap joa  "
+        		+ " LEFT JOIN job_order jor ON jor.id = joa.order_id "
+        		+ " LEFT JOIN party p ON  p.id = joa.sp_id "
+        		+ " LEFT JOIN currency cur ON cur.id = joa.currency_id "
+        		+ " LEFT JOIN charge_application_order_rel caor on caor.job_order_arap_id = joa.id and joa.create_flag = 'Y' "
+        		+ " LEFT JOIN arap_charge_application_order acao on acao.id = caor.application_order_id "
+        		+ " where joa.order_type = 'charge' and ifnull(acao.status,'') !='已收款' "
+        		+ " and jor.office_id = "+office_id+" and joa.type != '贸易' and jor.order_export_date<date_format(curdate(),'%Y-%m')"
         		+ condition
-        		+ " GROUP BY"
-        		+ " joa.sp_id ,joa.exchange_currency_id ";
+        		+ " GROUP BY joa.id "
+        		+ " 	) a "
+        		+ " GROUP BY "
+        		+ " 	sp_id, "
+        		+ " 	exchange_currency_id ";
+        if("old".equals(type)){
+        	sql = sql2;
+        }
 		
         String sqlTotal = "select count(1) total from ("+sql+") C";
         Record rec = Db.findFirst(sqlTotal);
-        
         List<Record> orderList = Db.find(sql + sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
