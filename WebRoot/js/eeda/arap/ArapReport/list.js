@@ -28,19 +28,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            			return str;
 	            	}	
 	            },
-	            { "data": "BILL_FLAG", "width": "60px",
-	                "render": function ( data, type, full, meta ) {
-	                		if(data){
-	      	            		if(data != 'Y'){
-	      	            			return '未创建对账单';
-	      	            		}else{
-	      	            			return '已创建对账单';
-	      	            		} 	  
-	                  	}else{
-	                			return '';
-	                	}
-	    			}
-	            },
+	            { "data": "FLAG", "width": "60px"},
 	            { "data": "TYPE", "width": "30px"},
 	            { "data": "FIN_NAME", "width": "60px"},
 	            { "data": "CURRENCY_NAME", "width": "40px" },
@@ -77,7 +65,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
-          var customer = $("#customer").val(); 
+          var customer = $("#customer").val();
+          var fin_item_id = $("#fin_item").val();
+          var fin_name = $("#fin_item_input").val(); 
           var sp = $("#sp").val(); 
           var order_export_date_start_date = $("#order_export_date_begin_time").val();
           var order_export_date_end_date = $("#order_export_date_end_time").val();
@@ -92,6 +82,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           */
           var url = "/arapReport/list?order_no="+order_no
 			           +"&customer_id="+customer
+			           +"&fin_item_id="+fin_item_id
+			           +"&fin_name_equals="+fin_name
 			           +"&sp_id="+sp
 			           +"&order_export_date_begin_time="+order_export_date_start_date
 		               +"&order_export_date_end_time="+order_export_date_end_date;
