@@ -20,7 +20,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "COST_RMB", "width": "120px"  },
 	            {
 					"render": function(data, type, full, meta) {
-						return parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
+						var str = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
+						if(str<0){
+							return '<span style="color:red" >'+str+'</span>';
+						}
+						return str;
 					}
 				},
 	            { "data": "CHARGE_TOTAL", "width": "120px",
@@ -39,12 +43,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
+      
+      $('#checkboxNegative').click(function(){
+    	  searchData(); 
+    	  
+    	  
+      });
+      
 
       $('#searchBtn').click(function(){
           searchData(); 
       })
 
      var searchData=function(){
+    	  var checked = '';
+    	  if($('#checkboxNegative').prop('checked')==true){
+    		  checked = 'Y';
+    		  }
           var customer = $("#customer").val(); 
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
           var order_export_date_end_time = $("#order_export_date_end_time").val();
@@ -57,7 +72,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           */
           
           
-          var url = "/billProfitAndPayment/list?customer_id="+customer
+          var url = "/billProfitAndPayment/list?checked="+checked
+          				  +"&customer_id="+customer
 				          +"&order_export_date_begin_time="+order_export_date_begin_time
 				          +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load();
