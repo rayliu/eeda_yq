@@ -426,18 +426,6 @@
                <div class="col-lg-4">
                  <% if(boolOcean){ %>
                    <%include("/eeda/component/form/dateInputField.html", 
-                       {   id:'export_date', 
-                           label:'出货时间', 
-                           value:shipment.export_date!'',
-                           disabled: 'disabled'
-                       }){}%>
-                   <%}else{%>
-              		   <label class="search-label">出货时间</label> <span class='search-control'>${shipment.export_date!''}</span>
-                   <%}%>
-               </div>
-               <div class="col-lg-4">
-                 <% if(boolOcean){ %>
-                   <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'closing_date', 
                            label:'截关日期',
                            value:shipment.closing_date!planOrderItem.cls!''
