@@ -1,7 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
     $(document).ready(function() {
-    	document.title = '公告列表| '+document.title;
+    	document.title = '公告板 | '+document.title;
     	
+      $("#breadcrumb_li").text('公告板');
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda_table',
@@ -9,21 +10,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             serverSide: true, //不打开会出现排序不对
             ajax: "/msgBoard/list",
             columns:[
-                { "width": "30px",
+                { "width": "80px",
                     "render": function ( data, type, full, meta ) {
-                      return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
+                      return '<button type="button" class="delete btn table_btn btn-default btn-xs">'+
+                        '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
                 },
-                {"data": "TITLE", "width":"20%",
+                {"data": "TITLE", "width":"120px",
               	  "render": function ( data, type, full, meta ) {
               		  return "<a href='#' class='edit' >"+data+"</a>";
               	  }
                 },
-	              { "data": "CONTENT", "width":"40%", "className":"content"}, 
-	              { "data": "CREATE_NAME"}, 
-	              { "data": "CREATE_STAMP"}, 
-	              { "data": "UPDATE_NAME"},
-	              { "data": "UPDATE_STAMP"},
+	              { "data": "CONTENT", "className":"content"}, 
+	              { "data": "CREATE_NAME", "width":"60px"}, 
+	              { "data": "CREATE_STAMP", "width":"90px"}, 
+	              { "data": "UPDATE_NAME", "width":"60px"},
+	              { "data": "UPDATE_STAMP", "width":"90px"},
             ]
         });
       
