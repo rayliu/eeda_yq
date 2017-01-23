@@ -209,7 +209,8 @@ $(document).ready(function() {
 			$('#pdfAlert').click();
 		}else{
 	    	var order_id = $("#order_id").val();
-	    	$.post('/jobOrderReport/printOceanHBL', {order_id:order_id}, function(data){
+	    	var hbl_no = $("#hbl_no").val();
+	    	$.post('/jobOrderReport/printOceanHBL', {order_id:order_id,hbl_no:hbl_no}, function(data){
 	    		if(data){
 	                window.open(data);
 	             }else{
