@@ -27,6 +27,7 @@ import models.Product;
 import models.RateContrast;
 import models.Role;
 import models.RolePermission;
+import models.TradeItem;
 import models.UserCustomer;
 import models.UserLogin;
 import models.UserOffice;
@@ -113,6 +114,7 @@ import controllers.profile.CurrencyRateController;
 import controllers.profile.CustomController;
 import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
+import controllers.profile.TradeItemController;
 import controllers.profile.UnitController;
 import controllers.report.OrderStatusController;
 import controllers.tms.jobOrder.TransJobOrderController;
@@ -191,7 +193,9 @@ public class EedaConfig extends JFinalConfig {
 		// yh project controller
         me.add("/", controllers.eeda.MainController.class, contentPath);
         me.add("/module", ModuleController.class, contentPath);
-       // me.add("/apidoc", controllers.eeda.DocController.class);
+       // me.add("/apidoc", controllers.eeda.DocController.class);基础数据
+        
+        me.add("/tradeItem", TradeItemController.class, contentPath);
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
         me.add("/loginUser", controllers.profile.LoginUserController.class, contentPath);
@@ -333,6 +337,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("module_role", ModuleRole.class);
         arp.addMapping("unit", Unit.class);
         arp.addMapping("country", Country.class);
+        arp.addMapping("trade_item", TradeItem.class);
         arp.addMapping("fin_item", FinItem.class);
         arp.addMapping("custom", Custom.class);
         arp.addMapping("container_type", ContainerType.class);

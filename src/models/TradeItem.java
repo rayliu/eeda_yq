@@ -1,0 +1,1 @@
+package models;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class TradeItem extends Model<TradeItem> {	public static final TradeItem dao = new TradeItem();}
