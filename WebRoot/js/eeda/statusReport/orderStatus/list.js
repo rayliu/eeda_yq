@@ -1,6 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '运营报表  | '+document.title;
+  	document.title = '单据状态  | '+document.title;
   	
   	//datatable, 动态处理
       var dataTable = eeda.dt({
@@ -22,11 +22,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     }
                 },
               { "data": "COST_CHECK_NO",
-              	  "render": function ( data, type, full, meta ) {
-                    	return orderUrl(data);
-                    }
-                },
-              { "data": "CHARGE_NVOICE_NO",
               	  "render": function ( data, type, full, meta ) {
                     	return orderUrl(data);
                     }

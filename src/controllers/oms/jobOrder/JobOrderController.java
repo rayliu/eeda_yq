@@ -4,7 +4,6 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +32,10 @@ import models.eeda.oms.jobOrder.JobOrderSendMail;
 import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
+import models.eeda.profile.Currency;
+import models.eeda.profile.FinItem;
+import models.eeda.profile.Unit;
+import models.yh.profile.Contact;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -42,6 +45,7 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
+import org.apache.tools.ant.taskdefs.Concat;
 
 import sun.misc.BASE64Encoder;
 
@@ -200,6 +204,7 @@ public class JobOrderController extends Controller {
         String id = (String) dto.get("id");
         String planOrderItemID = (String) dto.get("plan_order_item_id");
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
+        String customer_id = (String)dto.get("customer_id");
         
         JobOrder jobOrder = new JobOrder();
         
@@ -344,6 +349,8 @@ public class JobOrderController extends Controller {
 	        	model.set("trade_fee_flag", "trade_service_fee");
 	        	if("UPDATE".equals(map.get("action"))){
 	        		model.update();
+	        	}else if("DELETE".equals(map.get("action"))){
+	        		model.delete();
 	        	}else{
 	        		model.save();
 	        	}
@@ -359,6 +366,8 @@ public class JobOrderController extends Controller {
 	        	model.set("trade_fee_flag", "trade_sale_fee");
 	        	if("UPDATE".equals(map.get("action"))){
 	        		model.update();
+	        	}else if("DELETE".equals(map.get("action"))){
+	        		model.delete();
 	        	}else{
 	        		model.save();
 	        	}
@@ -384,8 +393,62 @@ public class JobOrderController extends Controller {
    		saveOceanTemplate(shipment_detail);
    		//保存空运填写模板
    		saveAirTemplate(air_detail);
+   	    //费用明细，应收应付
+		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
+		List<Map<String, String>> cost_template = (ArrayList<Map<String, String>>)dto.get("cost_template");
+   		saveArapTemplate(type,customer_id,charge_template,cost_template);
    		renderJson(r);
    	}
+    
+    
+    /**
+     * 保存费用模板
+     * @param shipment_detail
+     */
+    public void saveArapTemplate(String order_type,String customer_id,List<Map<String, String>> charge_list,List<Map<String, String>> cost_list){
+        if((charge_list==null||charge_list.size()<=0) && (cost_list==null||cost_list.size()<=0) )
+            return;
+
+        Gson gson = new Gson();
+        String chargeObject = gson.toJson(charge_list);
+        String costObject = gson.toJson(cost_list);
+        
+    	Long creator_id = LoginUserController.getLoginUserId(this);
+    	
+    	String chargeSql = "select 1 from job_order_arap_template where"
+                + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
+                + " and  json_value = '"+chargeObject+"' ";
+    	String costSql = "select 1 from job_order_arap_template where"
+                + " arap_type = 'cost' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
+                + " and  json_value = '"+costObject+"' ";
+
+        Record chargeRec = Db.findFirst(chargeSql);
+        Record costRec = Db.findFirst(costSql);
+
+        if(chargeRec == null){
+        	if(!(charge_list==null||charge_list.size()<=0)){
+        		Record r= new Record();
+                r.set("creator_id", creator_id);
+                r.set("customer_id", customer_id);
+                r.set("arap_type", "charge");
+                r.set("order_type", order_type);
+                r.set("json_value", chargeObject);
+                Db.save("job_order_arap_template", r);  
+       		}
+        }
+        if(costRec == null){
+        	if(!(cost_list==null||cost_list.size()<=0)){
+        		Record r= new Record();
+                r.set("creator_id", creator_id);
+                r.set("customer_id", customer_id);
+                r.set("arap_type", "cost");
+                r.set("order_type", order_type);
+                r.set("json_value", costObject);
+                Db.save("job_order_arap_template", r);  
+       		}
+        }
+    }
+    
     
     //保存常用邮箱模版
     public void saveEmailTemplate(){
@@ -1062,6 +1125,22 @@ public class JobOrderController extends Controller {
         return list;
     }
     
+    
+    /**
+     * 获取应收模板信息
+     */
+    public void getArapTemplate(){
+    	String order_type = getPara("order_type");
+    	String customer_id = getPara("customer_id");
+    	String arap_type = getPara("arap_type");
+    	List<Record> list = Db.find("select * from job_order_arap_template "
+    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? "
+    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
+    	renderJson(list);
+    }
+    
+
+    
     //常用海运信息
     public List<Record> getUsedOceanInfo(){
         List<Record> list = Db.find("select t.*,"
@@ -1317,7 +1396,7 @@ public class JobOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+        List<Record> orderList = Db.find(sql+ condition + " order by order_export_date desc " +sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
@@ -1425,6 +1504,14 @@ public class JobOrderController extends Controller {
     	Db.update("update job_order_arap set invoice_land_hbl_no='"+invoice_land_hbl_no+"',land_ref_no='"+land_ref_no+"'  where land_item_id in ("+ids+")");
     	
      	renderJson("{\"result\":true}");
+    }
+    
+    //删除费用明细常用信息模版
+    @Before(Tx.class)
+    public void deleteArapTemplate(){
+    	String id = getPara("id");
+    	Db.update("delete from job_order_arap_template where id = ?",id);
+    	renderJson("{\"result\":true}");
     }
     
     //删除海运常用信息模版

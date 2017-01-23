@@ -66,7 +66,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                 	$('#status').val(order.STATUS);
                 	$('#creator').val(order.CREATOR_NAME);
                 	$('#create_stamp').val(order.CREATE_STAMP);
-                	$('#company').text(order.SP_NAME);
+                	$('#sp_name').text(order.COMPANY_NAME);
                 	$('#cost_amount').text(order.COST_AMOUNT);
                 	$('#audit_begin_time').val(order.BEGIN_TIME);
                 	$('#audit_end_time').val(order.END_TIME);
@@ -76,6 +76,8 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                     $('#saveBtn').attr('disabled', false);
                     $('#confirmBtn').attr('disabled', false);
                     $('#exchange').attr('disabled',false);
+                    //异步刷新明细表
+                    itemOrder.refleshTable(order.ID);
                 }else{
                     $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                     $('#saveBtn').attr('disabled', false);
@@ -88,31 +90,39 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
         
         //按钮状态
         var status = $('#status').val();
-        if(status=='新建'){
-        	$('#confirmBtn').attr('disabled', false);
-        }else if(status=='已确认'){
-        	$('#saveBtn').attr('disabled', true);
-        	$('#confirmBtn').attr('disabled', true);
-        	$('#deleteBtn').attr('disabled', false);
-        }
+        var order_id = $("#order_id").val();
+         if(order_id==""){
+                $('#saveBtn').attr('disabled', false);
+                
+            }else{
+                if(status=='新建'){
+                    $('#saveBtn').attr('disabled', false);
+                    $('#confirmBtn').attr('disabled', false);
+                    $('#printBtn').attr('disabled', false);         
+                }else if(status=='已确认'){
+                    $('#add_cost').attr("disabled",true);
+                    $('.delete').attr("disabled",true);
+                    }
+            }
         
         $('#confirmBtn').click(function(){
         	$(this).attr('disabled', true);
         	var id = $('#id').val();
         	 $.post('/costCheckOrder/confirm', {id:id}, function(data){
         		 if(data){
-	    			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
 	    			 $('#saveBtn').attr('disabled', true);
-	    			 $(this).attr('disabled', true);
-	    			 $('#deleteBtn').attr('disabled', false);
+                     $('#printBtn').attr('disabled', true);
+                     $('.delete').attr('disabled', true);
+                     $('#add_cost').attr('disabled', true);
+
+                     $("#status").val(data.STATUS);
 	    			 $('#confirm_name').val(data.CONFIRM_BY_NAME);
 	    			 $('#confirm_stamp').val(data.CONFIRM_STAMP);
+                     $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
         		 }
 	         },'json').fail(function() {
 	        	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
                  $(this).attr('disabled', false);
-                 $('#saveBtn').attr('disabled', false);
-                 $('#deleteBtn').attr('disabled', true);
 	           });
         })
         

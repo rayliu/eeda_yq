@@ -40,7 +40,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                         str = '进口散货';
                       }else if(data == '进口散货'){
                         str = '出口空运';
-                      }else if(data == '出口空运'){
+                      }else if(data == '进口空运'){
                         str = '进口空运'; 
                       }else if(data == '香港头程'){
                         str = '香港头程';

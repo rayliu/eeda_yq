@@ -99,8 +99,10 @@ import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.ModuleController;
 import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
+import controllers.oms.jobOrder.JobOrderControllerForMobile;
 import controllers.oms.jobOrder.JobOrderReportController;
 import controllers.oms.planOrder.PlanOrderController;
+import controllers.oms.planOrder.PlanOrderControllerForMobile;
 import controllers.oms.todo.TodoController;
 import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
@@ -217,6 +219,8 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/planOrder", PlanOrderController.class, contentPath);
 		me.add("/todo", TodoController.class, contentPath);
 		me.add("/jobOrder", JobOrderController.class, contentPath);
+		me.add("/app/jobOrder", JobOrderControllerForMobile.class);
+		me.add("/app/planOrder", PlanOrderControllerForMobile.class);
 		me.add("/jobOrderReport", JobOrderReportController.class, contentPath);
 //		me.add("/report", ReportController.class, contentPath);
 		me.add("/customOrder", CustomOrderController.class, contentPath);
@@ -261,8 +265,14 @@ public class EedaConfig extends JFinalConfig {
         me.add("/profitReport", controllers.report.ProfitReportController.class, contentPath);
         me.add("/balanceReport", controllers.report.BalanceReportController.class, contentPath);
         me.add("/customReport", controllers.report.CustomReportController.class, contentPath);
-        me.add("/chargeBalanceReport",controllers.arap.ChargeBalanceReport.class, contentPath);
-        me.add("/profitAndPaymentRate",controllers.arap.ProfitAndPaymentRate.class, contentPath);
+        me.add("/chargeBalanceReport",controllers.arap.ChargeBalanceReportController.class, contentPath);
+        me.add("/costBalanceReport",controllers.arap.CostBalanceReportController.class, contentPath);
+        me.add("/profitAndPaymentRate",controllers.arap.ProfitAndPaymentRateController.class, contentPath);
+        me.add("/accountAging",controllers.arap.AccountAging.class, contentPath);
+        me.add("/billProfitAndPayment",controllers.arap.BillProfitAndPaymentController.class, contentPath);
+        me.add("/oceanRouteReport", controllers.report.OceanRouteReportController.class, contentPath); 
+        me.add("/airRouteReport", controllers.report.AirRouteReportController.class, contentPath); 
+        
         //应付报销单
         //ßme.add("/costReimbursement", controllers.arap.ap.CostReimbursementOrder.class, contentPath);
         //财务转账单

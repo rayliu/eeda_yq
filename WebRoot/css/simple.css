@@ -250,6 +250,12 @@ html, body,.container {
     border-radius: 0px; 
 }
 
+select.form-control{
+    border: 0px;
+    outline: 1px solid rgb(204,204,204);
+
+}
+
 .simple_search_div{
     background-color: #fff;
 }

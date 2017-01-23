@@ -209,6 +209,21 @@
 	                                    value:order.order_no!''
 	                              }){}%>
                                     </div>  
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/selectField.html", 
+                                            {   id:'status', 
+                                                label:'状态', 
+                                                value_list:[
+                                                    {code:'', value:''},
+                                                    {code:'新建', value:'新建'},
+                                                    {code:'已确认', value:'已确认'},
+                                                    {code:'部分申请付款中', value:'部分申请付款中'},
+                                                    {code:'全额申请付款中', value:'全额申请付款中'}
+                                                ]
+                                            }){}%>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-lg-4">
                                         <%include("/eeda/component/form/inputDateQueryField.html", 
                                         {    id:'create_stamp1', 
@@ -216,7 +231,8 @@
                                              value:''
                                            }){} %>
                                        </div>  
-                                </div><!-- /.row-->  
+                                </div>
+                                <!-- /.row-->  
                                </form>
 
                                 <div class="form-group button-bar" >
@@ -226,7 +242,6 @@
                                 <%include("/eeda/component/form/detailTable.html", 
 	                              {   
 	                                  id:'eeda-tableChecked',
-	                                  style:'width:1500px',
 	                                  headers:[
 	                                      '对账单号',
 	                                      '创建时间',			                                       

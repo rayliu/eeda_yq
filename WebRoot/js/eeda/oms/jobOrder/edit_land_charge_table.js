@@ -90,19 +90,19 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" style="width:30px" disabled>';
 			    }
 			},
-            { "width": "110px",
+            { "width": "100px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
                 	if(full.ID&&full.AUDIT_FLAG == 'Y'){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> '; 
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" disabled>删除</button>&nbsp';
+                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:60px"  disabled>确认</button> '; 
                 		}
                 	else if(full.ID){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" class="chargeConfirm btn btn-success btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" >删除</button>&nbsp';
+                		str+= '<button type="button" class="chargeConfirm btn btn-success btn-xs" style="width:60px" value="'+full.ID+'" >确认</button> ';		
                 	}else{
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> ';
+                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px">删除</button>&nbsp';
+                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:60px"  disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;
@@ -262,7 +262,7 @@ $(document).ready(function() {
 	                return '<input type="text" name="total_amount" style="width:150px" value="'+str+'" class="form-control" disabled/>';
                 }
             },
-            { "data": "CURRENCY_ID", "width": "60px",
+            { "data": "CURRENCY_ID", "width": "60px","className":"currency_name",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
 	                	if(!data)
@@ -299,9 +299,9 @@ $(document).ready(function() {
                     else
                     	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="exchange_rate" style="width:80px" value="'+str+'" class="form-control" disabled />';
+                        return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control" disabled />';
                     } else{
-	                    return '<input type="text" name="exchange_rate" style="width:80px" value="'+str+'" class="form-control" />';
+	                    return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control" />';
 	                }
                 }
             },
@@ -314,7 +314,7 @@ $(document).ready(function() {
 	                return '<input type="text" name="currency_total_amount" style="width:150px" value="'+str+'" class="form-control" disabled/>';
                 }
             },
-            { "data": "EXCHANGE_CURRENCY_ID", "width":"60px","className":"cny_to_other",
+            { "data": "EXCHANGE_CURRENCY_ID", "width":"80px","className":"cny_to_other",
             	"render": function ( data, type, full, meta ) {
             		if(full.AUDIT_FLAG == 'Y'){
             			if(!data)
@@ -324,7 +324,7 @@ $(document).ready(function() {
 		            				id: 'exchange_currency_id',
 		            				value: data,
 		            				display_value: full.EXCHANGE_CURRENCY_ID_NAME,
-		            				style:'width:80px',
+		            				style:'width:100px',
 		            				disabled:'disabled'
             					}
             			);
@@ -337,27 +337,27 @@ $(document).ready(function() {
 		            				id: 'exchange_currency_id',
 		            				value: data,
 		            				display_value: full.EXCHANGE_CURRENCY_ID_NAME,
-		            				style:'width:80px'
+		            				style:'width:100px'
             					}
             			);
             			return field_html; 
             		}
             	}
             },
-            { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px", 
+            { "data": "EXCHANGE_CURRENCY_RATE", "width": "80px","className":"exchange_currency_rate", 
             	"render": function ( data, type, full, meta ) {
             		if(data)
             			var str =  parseFloat(data).toFixed(2);
             		else
             			str = '';
             		if(full.AUDIT_FLAG == 'Y'){
-            			return '<input type="text" name="exchange_currency_rate" style="width:80px" value="'+str+'" class="form-control" disabled />';
+            			return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control" disabled />';
             		}else{
-            			return '<input type="text" name="exchange_currency_rate" style="width:80px" value="'+str+'" class="form-control" />';
+            			return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control" />';
             		}
             	}
             },
-            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "150px",
+            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "150px","className":"exchange_total_amount",
             	"render": function ( data, type, full, meta ) {
             		if(data)
             			var str =  parseFloat(data).toFixed(2);
@@ -432,16 +432,17 @@ $(document).ready(function() {
 	
     $('#land_charge_table_msg').on('click','.save',function(){
     	$(this).attr('disabled', true);
+    	var order_id = $('#order_id').val();
     	var order = {};
-    	order.order_id = $('#order_id').val();
+    	order.order_id = order_id;
     	order.land_item_id = $('#land_item_id').val();
     	order.land_charge_item = itemOrder.buildLandChargeDetail();
     	$.post('/jobOrder/saveLandCharge', {params:JSON.stringify(order)}, function(data){
     		 
     		 var url = "/jobOrder/tableListOfLandCharge?order_id="+order_id+"&land_item_id="+land_item_id;
         	 chargeTable.ajax.url(url).load();
-        	 itemOrder.refleshChargeTable(order.ID);
-             itemOrder.refleshCostTable(order.ID);
+        	 itemOrder.refleshChargeTable(order_id);
+             itemOrder.refleshCostTable(order_id);
     		$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
     		$('#land_charge_table_msg .save').attr('disabled', false);
     	 },'json').fail(function() {
@@ -457,6 +458,20 @@ $(document).ready(function() {
     		var url = "/jobOrder/tableListOfLandCharge?order_id="+order_id+"&land_item_id="+land_item_id;
         	chargeTable.ajax.url(url).load();
         	$('#land_charge_table_msg_btn').click();
+        	
+        	//费用明细确认按钮动作
+            $("#land_charge_table").on('click', '.chargeConfirm', function(){
+            	var id = $(this).parent().parent().parent().attr('id');
+            	$.post('/jobOrder/feeConfirm',{id:id},function(data){
+            		var url = "/jobOrder/tableListOfLandCharge?order_id="+order_id+"&land_item_id="+land_item_id;
+                	chargeTable.ajax.url(url).load();
+            		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+            		itemOrder.refleshChargeTable(order_id);
+            	},'json').fail(function() {
+                    $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+               });
+               
+            });
     })
     
   //数量和单价自动补零
@@ -518,6 +533,7 @@ $(document).ready(function() {
 				cnames.pop(cname);
 		 }
 	 });
+
 	
 	
 	//全选

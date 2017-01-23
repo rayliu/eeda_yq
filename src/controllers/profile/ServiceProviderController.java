@@ -185,7 +185,9 @@ public class ServiceProviderController extends Controller {
                 + (getPara("sp_type_oversea_agent")==null?"":getPara("sp_type_oversea_agent")+";")
         		+ (getPara("sp_type_booking_agent")==null?"":getPara("sp_type_booking_agent")+";")
         		+ (getPara("sp_type_cargo_agent")==null?"":getPara("sp_type_cargo_agent")+";")
-        		+ (getPara("sp_type_truck")==null?"":getPara("sp_type_truck")+";");
+        		+ (getPara("sp_type_truck")==null?"":getPara("sp_type_truck")+";")
+		        + (getPara("sp_type_manufacturer")==null?"":getPara("sp_type_manufacturer")+";")
+				+ (getPara("sp_type_traders")==null?"":getPara("sp_type_traders")+";");
         contact.set("sp_type", sp_type);
         contact.set("mobile", getPara("mobile"));
         contact.set("phone", getPara("phone"));

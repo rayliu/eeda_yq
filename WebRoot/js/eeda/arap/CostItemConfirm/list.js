@@ -5,7 +5,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	
       var dataTable = eeda.dt({
           id: 'eeda_table',
-          paging: true,
           serverSide: false, //不打开会出现排序不对 
           ajax: "/costConfirmList/list?audit_flag="+$("#audit_flag").val(),
           columns: [
@@ -22,6 +21,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
                 }
 			},
+			{ "data": "ORDER_EXPORT_DATE", "width": "100px"},
             { "data": "CREATE_STAMP", "width": "100px"},
             { "data": "AUDIT_FLAG", "width": "60px",
             	"render": function ( data, type, full, meta ) {
@@ -42,7 +42,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "CURRENCY_NAME", "width": "60px"},
             { "data": "EXCHANGE_RATE", "width": "60px"},
             { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
+            { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px"},
+            { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px" },
+            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px",
+            		
+            },
             { "data": "REMARK", "width": "180px"},
           ]
       });
@@ -58,6 +62,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
+          
+          var order_export_date_begin_time = $("#order_export_date_begin_time").val();
+          var order_export_date_end_time = $("#order_export_date_end_time").val();
+          
           var customer = $("#customer").val(); 
           var sp = $("#sp").val(); 
           var start_date = $("#create_stamp_begin_time").val();
@@ -71,6 +79,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               时间字段需成双定义  *_begin_time *_end_time   between
           */
           var url = "/costConfirmList/list?order_no="+order_no
+          			   +"&order_export_date_begin_time="+order_export_date_begin_time
+          			   +"&order_export_date_end_time="+order_export_date_end_time
 			           +"&customer_id="+customer
 			           +"&sp_id="+sp
 		               +"&create_stamp_begin_time="+start_date
@@ -81,18 +91,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       };
       
       
+      
       //全选
       $('#AllCheck').click(function(){
 	      	$(".checkBox").prop("checked",this.checked);
-	      	if(ischeck==true){
+	      	if($('#AllCheck').prop('checked')){
         		$('#confirmBtn').attr('disabled',false);
         	}else{
         		$('#confirmBtn').attr('disabled',true);
         	}
       });
+      
       $("#eeda_table").on('click','.checkBox',function(){
-		  $("#AllCheck").prop("checked",$(".checkBox").length == $(".checkBox:checked").length ? true : false);
+		    $("#AllCheck").prop("checked",$(".checkBox").length == $(".checkBox:checked").length ? true : false);
       });
+      
+      
+      
 
       	//checkbox选中则button可点击
 		$('#eeda_table').on('click','.checkBox',function(){
@@ -110,6 +125,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				$('#confirmBtn').attr('disabled',true);
 			}
 		});
+		//确认费用
 		$('#confirmBtn').click(function(){
 			$('#confirmBtn').attr('disabled',true);
         	var itemIds=[];

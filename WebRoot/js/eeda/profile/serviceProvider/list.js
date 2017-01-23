@@ -56,6 +56,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                                  str += "运输公司<br>";
                              }else if(val == "cargo_agent"){
                                  str += "货代公司<br>";
+                             }else if(val == "manufacturer"){
+                                 str += "生产商<br>";
+                             }else if(val == "traders"){
+                                 str += "贸易商<br>";
                              }
                          });
                          

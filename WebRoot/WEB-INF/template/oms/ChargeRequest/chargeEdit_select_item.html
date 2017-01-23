@@ -3,14 +3,33 @@
      value="${selected_item_ids!''}">
     
     <div class="group-form" >
-      
+         <div class="row search_panel" style="margin: 15px 15px;">
+                <div class="row">
+                   <div class="col-lg-4">
+                       <%include("/eeda/component/form/selectField.html", 
+                                       {  id:'query_currency',
+                                          label:'选中结算币制', 
+                                          value:'',
+                                          value_list:[
+                                           {code:'',value:''},
+                                            {code:'CNY', value:'CNY'},
+                                            {code:'USD', value:'USD'},
+                                            {code:'HKD', value:'HKD'},
+                                            {code:'JPY', value:'JPY'}
+                                             ]
+                                       }){}%>
+                   </div>
+                   <button id='query_listCurrency' class="btn btn-primary btn-sm"  type="button">查询</button>
+                </div>
+        </div>
+        
        <%include("/eeda/component/form/detailTable.html", 
            {
                id:'select_item_table',
                style:'width:950px',
                headers:[
                    '',
-                   '',
+                   '<input type="checkbox" id="allcheck2">',
                    '对账单号',
                    '工作单号',
                    '类型',

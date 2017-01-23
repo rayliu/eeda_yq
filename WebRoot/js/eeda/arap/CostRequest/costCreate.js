@@ -1,4 +1,4 @@
-﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './costEdit_select_item', './edit_doc_table','dataTablesBootstrap', 
+define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './costEdit_select_item', 'dataTablesBootstrap', 
         'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
 	document.title = '收款申请单 | '+document.title;
@@ -63,7 +63,6 @@ $(document).ready(function() {
 				$.scojs_message('业务发生月不能为空', $.scojs_message.TYPE_FALSE);
 				$("#createSave").attr("disabled", false);
 				return false;
-				
 		}
 		
 		if($("#payment_method").val()=='transfers'||$("#payment_method").val()=='checkTransfers'){
@@ -77,7 +76,7 @@ $(document).ready(function() {
 		order.item_list = buildItem();
 		order.ids=$('#ids').val();
 		$.post('/costRequest/save',{params:JSON.stringify(order)}, function(data){
-			$("#createSave").attr("disabled", false);
+			// $("#createSave").attr("disabled", false);
 			if(data.ID>0){
 				$.scojs_message('创建新申请成功', $.scojs_message.TYPE_OK);
 				$("#order_no").val(data.ORDER_NO);
@@ -241,17 +240,11 @@ $(document).ready(function() {
 	        var table = $('#select_item_table').DataTable();
 	        var row = $(this).parent().parent();
 	        var cell = table.cell($(this).parent());//  td
-	        var pay_flag='N';
-	        if($(this).prop('checked')==true){
-	            pay_flag='Y';
-	        }
-	        //注意 - call draw() 更新table.data()中的数据
-	        cell.data(pay_flag).draw();
 	        selectContr.calcTotal();
-
+	        
 	        var selected_ids=[];
 	        table.data().each(function(item, index) {
-	            if(item.PAY_FLAG == 'N')
+	            if(!$('#checkbox_'+item.ID).prop("checked"))
 	                return;
 	            selected_ids.push(item.ID);
 	        });
@@ -327,7 +320,7 @@ $(document).ready(function() {
 	   $('#account_no').val( $(this).attr('account_no'));
  	   $('#account_name').val( $(this).attr('account_name'));
  	   
-    })
+    });
     
     
     
@@ -335,17 +328,20 @@ $(document).ready(function() {
 		var idsArray=[];
       	$('#costAccept_table input[type="checkbox"]:checked').each(function(){
       			var itemId = $(this).parent().parent().attr('id');
-      			
-//      		var order_type = $(this).parent().parent().find(".order_type").text();
       			idsArray.push(itemId);
-      	});
-      		$('#ids').val(idsArray);
-      		selectContr.refleshSelectTable(idsArray);
-	})
-	
-	
-	
 
+      	});
+  		if(idsArray.length>0){
+  			$('#createSave').prop('disabled',false);
+  		}else{
+  			$('#createSave').prop('disabled',true);
+  		}
+  		$('#ids').val(idsArray);
+  		selectContr.refleshSelectTable(idsArray);
+	});
+	
+	
+	
 	
 	
 	

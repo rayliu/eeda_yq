@@ -9,19 +9,9 @@
             },
             columns:[
                 { "data": "ID", visible: false},
-                { "data": "PAY_FLAG",
+                { "data": null,
                     "render": function ( data, type, full, meta ) {
-                        var payFlag =  full.PAY_FLAG;
-                        var createFlag =  full.CREATE_FLAG;
-                        
-                        str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px">';
-                        if('Y' == payFlag){
-                        	if(createFlag=='Y'){
-                        		str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked disabled>';
-                        	}else{
-                        		str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked>';
-                        	}
-                        }
+                        var str = '<input id="checkbox_'+full.ID+'" class="checkbox2" type="checkbox" style="width:30px" checked>';
                         return str;
                     }
                 },
@@ -127,10 +117,15 @@
             var USD_cost=0, USD_charge=0;
             var HKD_cost=0, HKD_charge=0;
             var JPY_cost=0, JPY_charge=0;
+
+            //data table data 对象
             itemTable.data().each(function(item, index) {
-                if(item.PAY_FLAG == 'N')
+                //dom 对象的checkbox 是否勾上了？
+                var id = item.ID;
+
+                if(!$('#checkbox_'+id).prop('checked'))
                     return;
-                
+
                 if(item.ORDER_TYPE == 'cost'){
                     if(item.EXCHANGE_CURRENCY_NAME=='CNY'){
                         CNY_cost+=item.EXCHANGE_TOTAL_AMOUNT;
@@ -160,14 +155,47 @@
 
         }
         
-        
+         //查询选中币种
+        $('#query_listCurrency').click(function(){
+            searchData2(); 
+        });
+
+        var searchData2=function(){
+            var ids=$('#ids').val();
+            var query_exchange_currency=$('#query_currency').val();
+            var url = "/chargeCheckOrder/tableList?order_ids="+ids+"&order_id=N"
+                            +"&table_type=item"
+                            +"&query_exchange_currency="+query_exchange_currency;
+           itemTable.ajax.url(url).load(function(){
+              var a=[];
+              $('#select_item_table input[type=checkbox]:checked').each(function(){
+                    var id=$(this).parent().parent().attr('id');
+                     a.push(id);
+              }); 
+              $('#selected_ids').val(a);
+              calcTotal();
+           });
+         };
         
         var refleshCreateTable = function(appApplication_id){
     		var url = "/chargeCheckOrder/tableList?appApplication_id="+appApplication_id+"&order_id=N&bill_flag=create";
             itemTable.ajax.url(url).load();
 		    };
-		    
-
+		//全选  
+        $('#allcheck2') .on('click',function(){
+            var ids=[];
+            if($(this).prop('checked')==true){
+                $('.checkbox2').prop('checked',true);
+                $('#select_item_table tbody tr').each(function(){
+                    ids.push($(this).attr('id'));
+                });
+            }else{
+                $('.checkbox2').prop('checked',false);
+                // ids.splice(0,ids.length);
+            }
+            calcTotal();
+            $("#selected_ids").val(ids);
+        })
 
     return {
         refleshSelectTable: refleshSelectTable,

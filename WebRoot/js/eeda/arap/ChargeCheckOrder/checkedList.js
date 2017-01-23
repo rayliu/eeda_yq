@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '应收对账单查询 | '+document.title;
+    	
 
 
     	//datatable, 动态处理
@@ -69,7 +69,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           var sp_name = $('#sp1_input').val().trim();
           var start_date = $("#create_stamp1_begin_time").val();
           var end_date = $("#create_stamp1_end_time").val();
-          
+          var status = $("#status").val();
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -80,7 +80,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           var url = "/chargeCheckOrder/checkedList?order_no="+order_no
                +"&sp_name="+sp_name
                +"&create_stamp_begin_time="+start_date
-               +"&create_stamp_end_time="+end_date;
+               +"&create_stamp_end_time="+end_date
+               +"&status="+status;
 
           dataTable.ajax.url(url).load();
        }

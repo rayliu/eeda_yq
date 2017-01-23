@@ -134,7 +134,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	      });
 
 
-		//选择是否是同一个客户
+		//选择是否是同一个结算公司
 		$('#uncheckedEeda-table').on('click',"input[name='order_check_box']",function () {
 				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
 				var after_total = $(this).parent().siblings('.AFTER_TOTAL')[0].textContent;
@@ -264,7 +264,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
     	 var checked = '';
     	 if($('#checkOrderAll').prop('checked')==true){
     		 checked = 'Y';
-    	 }
+    	  }
     	 
           var order_no = $("#order_no").val().trim(); 
           var sp_name = $('#sp_input').val().trim();

@@ -3,7 +3,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     './edit_air_table', './edit_air_cargoDesc_table', './edit_air_detail','./edit_custom_detail',
     './edit_express_detail','./edit_insurance_detail','./edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report',
     './edit_trade_cost_table', './edit_trade_charge_sale_table', './edit_trade_charge_service_table','./edit_trade_detail',
-    './edit_custom_china_self_table', './edit_custom_doc_table','./edit_land_charge_table'], function ($, metisMenu) {
+    './edit_custom_china_self_table', './edit_custom_doc_table','./edit_land_charge_table','./edit_arap_detail'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
@@ -200,9 +200,12 @@ $(document).ready(function() {
         //费用明细，应收，应付
         order.charge_list = itemOrder.buildChargeDetail();
         order.chargeCost_list = itemOrder.buildChargeCostDetail();
+        order.charge_template = itemOrder.buildChargeTemplate();
+        order.cost_template = itemOrder.buildCostTemplate();
         //相关文档
         order.doc_list = eeda.buildTableDetail("doc_table","");
-       
+
+        
         //异步向后台提交数据
         $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
@@ -340,6 +343,7 @@ $(document).ready(function() {
             hideServiceTab(checkValue);
         }
     });
+    
     //服务项目checkbox回显,transport_type是用js拿值
     var checkArray = transport_type_hidden.split(",");
     for(var i=0;i<checkArray.length;i++){
@@ -361,6 +365,10 @@ $(document).ready(function() {
     		$(this).attr("checked",true);
     	}
     });
+    
+
+    
+    
     
 });
 });

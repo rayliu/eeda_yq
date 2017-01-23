@@ -66,6 +66,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
         	}
         });
         
+        $("#eeda_table").on('click','.checkBox',function(){
+		    $("#AllCheck").prop("checked",$(".checkBox").length == $(".checkBox:checked").length ? true : false);
+      });
+      
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();

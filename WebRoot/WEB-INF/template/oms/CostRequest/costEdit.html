@@ -39,6 +39,7 @@
 		                                    <option value="wbill" <% if(order.bill_type!'wbill'=='wbill'){%>selected<%}%>>无发票</option>
 		                                    <option value="ordinarybill" <% if(order.bill_type!''=='ordinarybill'){%>selected<%}%>>增值税普通发票</option>
 		                                    <option value="specialbill" <% if(order.bill_type!''=='specialbill'){%>selected<%}%>>增值税专用发票</option>
+		                                    <option value="quotabill" <% if(order.bill_type!''=='quotabill'){%>selected<%}%>>定额发票</option>
 		                                    <option value="dbill" <% if(order.bill_type!''=='dbill'){%>selected<%}%>>代开发票(垫付款)</option>
 		                                    <option value="HKINVbill" <% if(order.bill_type!''=='HKINVbill'){%>selected<%}%>>HK INV</option>
 	                                    </select>
@@ -68,6 +69,7 @@
 			                                    <option value="customFee" <% if(order.fee_type!''=='customFee'){%>selected<%}%>>代理报关服务费</option>
 			                                    <option value="consultFee" <% if(order.fee_type!''=='consultFee'){%>selected<%}%>>咨询服务费</option>
 			                                    <option value="internationalFee" <% if(order.fee_type!''=='internationalFee'){%>selected<%}%>>国际货代服务费</option>
+			                                    <option value="transAndInsurance" <% if(order.fee_type!''=='transAndInsurance'){%>selected<%}%>>货物运输保险费</option>
 		                                    </select>
 		                            </div>
 	                            </div>
@@ -244,7 +246,7 @@
                         	<a style="display:none" id ="style"><i class='fa fa-check'></i></a>
                         	<button id="saveBtn" type="button" disabled="disabled" class="btn  btn-primary" >保存</button> 
                             <button id="printBtn" type="button" disabled="disabled" class="btn  btn-primary" >打印</button>
-                            <a class="btn  btn-default" href="/costRequest">返回</a>
+                            <a class="btn  btn-default" href="/costRequest?back=true">返回</a>
                             <button id="checkBtn" type="button" disabled="disabled" class="btn  btn-primary" >复核</button>
                             <button id="returnBtn" type="button" disabled="disabled" class="btn  btn-primary"  style="display:none" >退回</button>
                             <button id="deleteBtn" type="button" class="btn  btn-danger"  style="display:none"  >撤销</button>
@@ -343,7 +345,7 @@
                         <div class=".tooltip-demo">
                             <hr/>
                             <button id="confirmBtn" type="button" class="btn  btn-primary" data-toggle="modal" disabled="disabled"  data-target=".bs-example-modal-sm">付款确认</button>
-                            <a class="btn  btn-default" href="/costRequest">返回</a>
+                            <a class="btn  btn-default" href="/costRequest?back=confirmTrue">返回</a>
                             <button id="returnConfirmBtn" type="button" class="btn  btn-primary" style="display:none" >撤回</button>
                         </div>
            			</div>

@@ -50,6 +50,11 @@ define(['jquery', 'dataTablesBootstrap'], function($){
         $(tab_div_id+' table.table').filter(':not(.customized)').DataTable().columns.adjust();
     });
 
+    //全局：当浏览器改变大小时刷新其底下的 dataTable, 解决表头不齐的问题
+    $(window).on('resize', function(){
+        $('table.table').filter(':not(.customized)').DataTable().columns.adjust();
+    });
+
     //只要属性中使用 limit=10, 控制td长度, 超出10 显示...
     jQuery.fn.limit=function(){ 
         var self = $("td[limit]"); 
@@ -117,10 +122,12 @@ eeda.dt = function(opt){
         paging: opt.paging || false,
         lengthChange: opt.lengthChange || false,
         serverSide: opt.serverSide || false, 
+        
         scrollX: opt.scrollX || true,
-        responsive:opt.responsive || true,
-        //scrollY: opt.scrollY || true, //"300px",
+        scrollY: opt.scrollY || true, //"300px",
         scrollCollapse: opt.scrollCollapse || true,
+
+        responsive:opt.responsive || true,
         autoWidth: opt.autoWidth || false,
         pageLength: opt.pageLength || 10,
         aLengthMenu: [ [10, 25, 50, 100, '9999999999'], [10, 25, 50, 100, "All"] ],
@@ -204,9 +211,9 @@ eeda.refreshUrl = refreshUrl;
 	     }else if(orderNo.indexOf("SGSK") == 0){//手工收款
 	         str = "<a href='/chargeMiscOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
 	     }else if(orderNo.indexOf("YFSQ") == 0){//应付申请
-	         str = "<a href='/costPreInvoiceOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
+	         str = "<a href='/costRequest/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
 	     }else if(orderNo.indexOf("YSSQ") == 0){//应收申请
-	         str = "<a href='/chargeAcceptOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
+	         str = "<a href='/chargeRequest/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
 	     }else if(orderNo.indexOf("YFQR") == 0){//应付确认
 	         str = "<a href='/costConfirm/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
 	     }else if(orderNo.indexOf("YSQR") == 0){//应收确认

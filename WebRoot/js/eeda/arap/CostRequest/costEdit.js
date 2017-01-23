@@ -5,7 +5,7 @@ $(document).ready(function() {
 
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     if($('#receive_time').val()==""){
-    	$('#receive_time').val(eeda.getDate());
+//    	$('#receive_time').val(eeda.getDate());
     }
     
     //构造主表json
@@ -56,8 +56,7 @@ $(document).ready(function() {
     var selected_item_ids = $("#selected_ids").val();
 
     
-	//保留两位小数
-	
+    //金额取两位小数
 	var refleshNum = function(numValue){
 		var numbleValue = parseFloat(numValue).toFixed(2)
 		return numbleValue;
