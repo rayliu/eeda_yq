@@ -7,7 +7,7 @@ $(document).ready(function() {
     if($('#receive_time').val()==""){
 //    	$('#receive_time').val(eeda.getDate());
     }
-    
+     $('.row.search_panel').hide();
     //构造主表json
     var buildOrder = function(){
     	var item = {};

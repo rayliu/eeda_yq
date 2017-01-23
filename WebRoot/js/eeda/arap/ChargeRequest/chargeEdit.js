@@ -143,7 +143,7 @@ $(document).ready(function() {
 	  $("#checkBtn").on('click',function(){
 		  	$("#checkBtn").attr("disabled", true);
 		  	$("#saveBtn").attr("disabled", true);
-		  
+		  	$("#add_charge").attr("disabled", true);
 			$.get("/chargeRequest/checkOrder", {order_id:$('#order_id').val(),}, function(data){
 				if(data.ID>0){
 					$("#check_name").val(data.CHECK_NAME);

@@ -609,6 +609,13 @@ public class ChargeCheckOrderController extends Controller {
 		aco.set("confirm_stamp", new Date());
 		aco.set("confirm_by", LoginUserController.getLoginUserId(this));
 		aco.update();
+		
+		//设置y，已生成对账单o
+		String itemList=aco.get("ref_order_id");
+		String sql="UPDATE job_order_arap joa set billConfirm_flag='Y' "
+					+"where joa.id in (select aci.ref_order_id FROM arap_charge_item aci where charge_order_id="+id+" )";
+		Db.update(sql);
+		
 		Record r = aco.toRecord();
 		r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
 		renderJson(r);
