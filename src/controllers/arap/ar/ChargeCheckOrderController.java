@@ -95,8 +95,11 @@ public class ChargeCheckOrderController extends Controller {
 				aci.save();
                 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
                 jobOrderArap.set("bill_flag", "Y");
+                String hedge_order_type = jobOrderArap.getStr("order_type");
+                if("cost".equals(hedge_order_type)){
+                	jobOrderArap.set("hedge_flag", "Y");
+                }
                 jobOrderArap.update();
-
 			}
 		}
 		
@@ -631,7 +634,12 @@ public class ChargeCheckOrderController extends Controller {
     		for(String itemId:itemArray){
     			aci = new ArapChargeItem();
 	    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
+
 	             jobOrderArap.set("bill_flag", "Y");
+	             String hedge_order_type = jobOrderArap.getStr("order_type");
+	             if("cost".equals(hedge_order_type)){
+	                	jobOrderArap.set("hedge_flag", "Y");
+	               }
 	             jobOrderArap.update();
 				aci.set("ref_order_id", itemId);
 				aci.set("charge_order_id", chargeOrderId);
@@ -655,6 +663,7 @@ public class ChargeCheckOrderController extends Controller {
     	if(itemid !=null&& chargeOrderId!=null){
     		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("bill_flag", "N");
+    		 jobOrderArap.set("hedge_flag", "N");
              jobOrderArap.update();
 //             String sql="delete from  where ref_order_id="+itemid+"and charge_order_id="+chargeOrderId;
              Db.deleteById("arap_charge_item","ref_order_id,charge_order_id",itemid,chargeOrderId);
