@@ -125,6 +125,7 @@ $(document).ready(function() {
         
         var order={}
         order.id = $('#order_id').val();
+        order.update_stamp = $('#update_stamp').val();
         order.plan_order_id = $('#plan_order_id').val();
         order.plan_order_item_id = $('#plan_order_item_id').val();
         order.customer_id = $('#customer_id').val();
@@ -222,6 +223,7 @@ $(document).ready(function() {
             	$('#confirmCompleted').attr('disabled', false);
                 $("#order_id").val(order.ID);
                 $("#order_no").val(order.ORDER_NO);
+                $("#update_stamp").val(order.UPDATE_STAMP);
                 $("#creator_name").val(order.CREATOR_NAME);
                 $("#create_stamp").val(order.CREATE_STAMP);
                 if(order.CUSTOM){
@@ -271,7 +273,12 @@ $(document).ready(function() {
                 itemOrder.refleshCustomChinaSelfItemTable(order.ID);
                 $.unblockUI();
             }else{
-                $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+                if(data.ERR_MSG){
+                    $.scojs_message(data.ERR_MSG, $.scojs_message.TYPE_ERROR);
+                }else{
+                    $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+                }
+                
                 $('#saveBtn').attr('disabled', false);
                 $.unblockUI();
             }

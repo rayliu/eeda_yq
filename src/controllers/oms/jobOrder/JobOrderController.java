@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,10 +33,6 @@ import models.eeda.oms.jobOrder.JobOrderSendMail;
 import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
-import models.eeda.profile.Currency;
-import models.eeda.profile.FinItem;
-import models.eeda.profile.Unit;
-import models.yh.profile.Contact;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -45,7 +42,6 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
-import org.apache.tools.ant.taskdefs.Concat;
 
 import sun.misc.BASE64Encoder;
 
@@ -228,6 +224,17 @@ public class JobOrderController extends Controller {
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			jobOrder = JobOrder.dao.findById(id);
+   			//版本(时间戳)校验，不对的话就不让更新保存
+   			Timestamp page_update_stamp = Timestamp.valueOf(dto.get("update_stamp").toString());
+   			Timestamp order_update_stamp = jobOrder.getTimestamp("update_stamp");
+   			if(!order_update_stamp.equals(page_update_stamp)){
+   			    Record rec = new Record();
+   			    rec.set("err_code", "update_stamp_not_equal");
+   			    rec.set("err_msg", "数据已更新，请刷新页面重新操作。");
+   			    renderJson(rec);
+   			    return;
+   			}
+   			
    			Date old_export_date=jobOrder.get("order_export_date");
    			String oldDateStr="";
    			if(old_export_date != null){
@@ -247,11 +254,11 @@ public class JobOrderController extends Controller {
 	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), newDateStr, office_id);
 	            jobOrder.set("order_no", order_no);
    			}
-            
-   			jobOrder.set("updator", user.getLong("id"));
-   			jobOrder.set("update_stamp", new Date());
-   			DbUtils.setModelValues(dto, jobOrder);
    			
+   			DbUtils.setModelValues(dto, jobOrder);
+   			jobOrder.set("updator", user.getLong("id"));
+            jobOrder.set("update_stamp", new Date());
+            
    			jobOrder.update();
    		} else {
    			//create 
@@ -262,6 +269,8 @@ public class JobOrderController extends Controller {
             jobOrder.set("order_no", order_no);
    			jobOrder.set("creator", user.getLong("id"));
    			jobOrder.set("create_stamp", new Date());
+   			jobOrder.set("updator", user.getLong("id"));
+            jobOrder.set("update_stamp", new Date());
    			jobOrder.set("office_id", office_id);
    			jobOrder.save();
    			id = jobOrder.getLong("id").toString();
@@ -378,6 +387,8 @@ public class JobOrderController extends Controller {
    		String user_name = LoginUserController.getUserNameById(creator);
    		
 		Record r = jobOrder.toRecord();
+//		System.out.println(new java.sql.Timestamp(r.getDate("update_stamp").getTime()));
+		r.set("update_stamp", new java.sql.Timestamp(r.getDate("update_stamp").getTime()));
    		r.set("creator_name", user_name);
    		r.set("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
    		r.set("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
