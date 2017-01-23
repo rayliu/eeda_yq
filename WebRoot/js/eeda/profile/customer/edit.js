@@ -219,6 +219,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             order.insurance_rates = $("#insurance_rates").val();
             order.introduction = $("#introduction").val();
             order.remark = $("#remark").val();
+            order.customer_remind = $("#customer_remind").val();
             order.registration = $("#registration").val();
             order.custom_registration = $("#custom_registration").val();
             order.docItem = buildDocItem();
