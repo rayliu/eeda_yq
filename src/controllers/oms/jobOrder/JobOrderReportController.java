@@ -52,11 +52,11 @@ public class JobOrderReportController extends Controller {
 		String order_id = getPara("order_id");
 		String hbl_no = getPara("hbl_no");
 		String fileName = "/report/jobOrder/oceanHBL.jasper";
-		String outFileName = "/download/工作单海运HBL";
+		String outFileName = "/download/"+hbl_no;
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
         fileName = getContextPath() + fileName;
-        outFileName = getContextPath() +"/"+ hbl_no;
+        outFileName = getContextPath() + outFileName ;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
 		renderText(file.substring(file.indexOf("download")-1));
 	}
