@@ -974,7 +974,26 @@ public class ChargeReuqestrController extends Controller {
 		Map<String, Double> exchangeTotalMap = updateExchangeTotal(appOrderId);
 		exchangeTotalMap.put("appOrderId", Double.parseDouble(appOrderId));
     	renderJson(exchangeTotalMap);
-
+    }
+    //删除明细
+    public void deleteChargeItem(){
+    	String appOrderId=getPara("order_id");
+    	String itemid=getPara("charge_itemid");
+    	if(itemid !=null&& appOrderId!=null){
+    		 Db.deleteById("charge_application_order_rel","job_order_arap_id,application_order_id",itemid,appOrderId);
+    		 Record re = Db.findFirst("select * from arap_charge_item where ref_order_id=?",itemid);
+			 Long charge_order_id=re.getLong("charge_order_id");
+    		 ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(charge_order_id);
+    		 arapChargeOrder.set("audit_status", "新建").update();
+    		 
+    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
+    		 jobOrderArap.set("create_flag", "N");
+             jobOrderArap.update();
+    	}
+    	//计算结算汇总
+    			Map<String, Double> exchangeTotalMap = updateExchangeTotal(appOrderId);
+    			exchangeTotalMap.put("appOrderId", Double.parseDouble(appOrderId));
+    	    	renderJson(exchangeTotalMap);
     }
 
 }

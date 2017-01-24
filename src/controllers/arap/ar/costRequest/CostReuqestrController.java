@@ -934,7 +934,25 @@ public class CostReuqestrController extends Controller {
 		Map<String, Double> exchangeTotalMap = updateExchangeTotal(appOrderId);
 		exchangeTotalMap.put("appOrderId", Double.parseDouble(appOrderId));
     	renderJson(exchangeTotalMap);
-
+    }
+    public void deleteCostItem(){
+    	String appOrderId=getPara("order_id");
+    	String itemid=getPara("cost_itemid");
+    	if(itemid !=null&& appOrderId!=null){
+    		 Db.deleteById("cost_application_order_rel","job_order_arap_id,application_order_id",itemid,appOrderId);
+    		 Record re = Db.findFirst("select * from arap_cost_item where ref_order_id=?",itemid);
+			 Long cost_order_id=re.getLong("cost_order_id");
+    		 ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
+			 arapCostOrder.set("audit_status", "新建").update();
+    		 
+    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
+    		 jobOrderArap.set("create_flag", "N");
+             jobOrderArap.update();
+    	}
+    	//计算结算汇总
+    			Map<String, Double> exchangeTotalMap = updateExchangeTotal(appOrderId);
+    			exchangeTotalMap.put("appOrderId", Double.parseDouble(appOrderId));
+    	    	renderJson(exchangeTotalMap);
     }
 
 }
