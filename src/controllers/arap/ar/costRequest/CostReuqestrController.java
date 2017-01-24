@@ -438,7 +438,7 @@ public class CostReuqestrController extends Controller {
    			DbUtils.setModelValues(dto, order);
    			
    			//需后台处理的字段
-   			order.set("order_no", OrderNoGenerator.getNextOrderNo("YSSQ", user.getLong("office_id")));
+   			order.set("order_no", OrderNoGenerator.getNextOrderNo("YFSQ", user.getLong("office_id")));
    			order.set("create_by", user.getLong("id"));
    			order.set("create_stamp", new Date());
    			order.set("office_id", office_id);
