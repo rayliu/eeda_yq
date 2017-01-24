@@ -1,4 +1,4 @@
-<script id="table_dropdown_template" type="text/html">
+<script id="table_currency_dropdown_template" type="text/html">
         <div class="form-group">
             <input type="text" name="{{id}}" value="{{value}}" style="display:none;"/>
             <input type="text" {{disabled}} class="form-control search-control" 

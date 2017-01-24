@@ -2,6 +2,11 @@
 <input type="hidden" id="trade_id" value="${trade.id!''}">
 <form id="tradeForm">
 <div class="form-group">  <!--  form row  -->
+        <div id="trade_recover_div" class="alert alert-warning" style="display: none;">
+            贸易商品信息有之前保存的临时数据, 是否恢复？ 
+            <a id="trade_recover" href="" class="alert-link">恢复</a> 
+            <a id="trade_recover_no_need" href="" class="alert-link no_need">不需要了</a>
+        </div>
              <div class="row">
                     <div class="col-lg-12">
                         <h3>贸易商品信息</h3>
@@ -83,10 +88,10 @@
 										'custom_price',
 										'number',
 										'custom_amount',
-										'custom_currency',
+										'custom_currency_id',
 										'custom_rate',
 										'custom_amount_cny',
-										'CURRENCY_NAME',
+										'CURRENCY_ID_NAME'
 										'commodity_name'
                                             ],
                                         value_list: trade_cost_list![]
@@ -138,9 +143,9 @@
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
                                         id:'charge_service_table',
-                                        headers:['','结算公司','费用名称','对账金额','对账币制','对人民币汇率', '金额(人民币)','结算币制','结算汇率','结算金额','sp_name','charge_name','currency_name'],
+                                        headers:['','结算公司','费用名称','对账金额','对账币制','对人民币汇率', '金额(人民币)','结算币制','结算汇率','结算金额','sp_id_name','charge_id_name','currency_id_name'],
                                         field_list:['','sp_id','charge_id','total_amount','currency_id',
-                                     				'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','sp_name','charge_name','currency_name','EXCHANGE_CURRENCY_ID_NAME','audit_flag'],
+                                     				'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','sp_id_name','charge_id_name','currency_id_name','EXCHANGE_CURRENCY_ID_NAME','audit_flag'],
                                         value_list: trade_charge_service_list![]
                                     }){} %>
                               </div>
@@ -186,9 +191,9 @@
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
                                         id:'trade_sale_table',
-                                        headers:['','结算公司','费用名称','单价','数量','单位','对账金额','对账币制','对人民币汇率', '金额(人民币)','结算币制','结算汇率','结算金额','sp_name','charge_name','currency_name'],
+                                        headers:['','结算公司','费用名称','单价','数量','单位','对账金额','对账币制','对人民币汇率', '金额(人民币)','结算币制','结算汇率','结算金额','sp_id_name','charge_id_name','currency_id_name'],
                                         field_list:['','sp_id','charge_id','price','amount','unit_id','total_amount','currency_id',
-                                     				'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','sp_name','charge_name','currency_name','EXCHANGE_CURRENCY_ID_NAME','unit_name','audit_flag'],
+                                     				'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','sp_id_name','charge_id_name','currency_id_name','EXCHANGE_CURRENCY_ID_NAME','unit_id_name','audit_flag'],
                                         value_list: trade_charge_sale_list![]
                                     }){} %>
                             </div>

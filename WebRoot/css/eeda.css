@@ -416,5 +416,15 @@ li{
     font-size: 10px;
     color: #ff6b6b;
 }
+.alert{
+    margin-bottom: 0px;
+}
+.alert-warning a{
+    margin-left: 15px;
+}
 
+.alert-warning a.no_need{
+    color: #8a785b;
+    font-weight: 100;
+}
 /* ray added */

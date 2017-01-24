@@ -31,13 +31,18 @@ $(document).ready(function() {
             item.id = id;
             item.commodity_name = $($(row).find('[name=COMMODITY_ID_input]')).val();
             for(var i = 1; i < row.childNodes.length; i++){
-            	var el = $(row.childNodes[i]).find('input, select');
-            	var name = el.attr('name'); //name='abc'
+            	var els = $(row.childNodes[i]).find('input, select');
+
+                $.each(els, function(index, inputEl) {
+                    var el = $(inputEl);
+                    var name = el.attr('name'); //name='abc'
+                
+                    if(el && name){
+                        var value = el.val();//元素的值
+                        item[name] = value;
+                    }
+                });
             	
-            	if(el && name){
-                	var value = el.val();//元素的值
-                	item[name] = value;
-            	}
             }
             item.action = id.length > 0?'UPDATE':'CREATE';
             cargo_items_array.push(item);
@@ -211,23 +216,23 @@ $(document).ready(function() {
             		return '<input type="text" name="custom_amount" value="'+data+'" class="form-control" style="width:120px" disabled/>';
             	}
             },
-            { "data": "CUSTOM_CURRENCY", "width": "60px",
+            { "data": "CUSTOM_CURRENCY", "width": "60px", 
             	"render": function ( data, type, full, meta ) {
 	                	if(!data){
-	                			var field_html = template('table_dropdown_template',
+	                			var field_html = template('table_currency_dropdown_template',
 	    	                        {
 	    	                            id: 'CUSTOM_CURRENCY',
 	    	                            value: $('#cost_currency').val(),
 	    	                            display_value: $('#cost_currency_input').val(),
 	    	                            style:'width:80px'
 	    	                        }
-	                		);
+	                		    );
 	                        }else{
-			                    var field_html = template('table_dropdown_template',
+			                    var field_html = template('table_currency_dropdown_template',
 			                        {
 			                            id: 'CUSTOM_CURRENCY',
 			                            value: data,
-			                            display_value: full.CURRENCY_NAME,
+			                            display_value: full.CUSTOM_CURRENCY_NAME,
 			                            style:'width:80px'
 			                        }
 			                    );
