@@ -1,10 +1,16 @@
 package controllers.oms.jobOrder;
 
+import java.io.File;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import models.eeda.oms.jobOrder.JobOrderShipmentHead;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -13,6 +19,7 @@ import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
@@ -31,6 +38,30 @@ public class JobOrderReportController extends Controller {
 		}
 		return contextPath;
 	}
+	
+	public String myPrint(String fileName,String outFileName,HashMap<String, Object> hm){		
+        File file = new File("WebRoot/download");
+        if(!file.exists()){
+       	 file.mkdir();
+        }
+//        Date date = new Date();
+//        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        
+        outFileName +=  ".pdf";
+		try {
+			JasperPrint print = JasperFillManager.fillReport(fileName, hm, DbKit.getConfig().getConnection());
+			JasperExportManager.exportReportToPdfFile(print, outFileName);
+		} catch (JRException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return outFileName;
+   }
+	
+	
+	
 	
 	//海运电放保涵word
 	public void printOceanWord(){
@@ -57,7 +88,7 @@ public class JobOrderReportController extends Controller {
 		hm.put("order_id", order_id);
         fileName = getContextPath() + fileName;
         outFileName = getContextPath() + outFileName ;
-		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		String file = myPrint(fileName, outFileName,hm);
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	
