@@ -307,15 +307,15 @@ $(document).ready(function() {
     		alert+='头程船公司<br><br>';
     	}
     	if($('#carrier').val()==''){
-    		alert+='香港收货人<br><br>';
+    		alert+='船公司<br><br>';
     	}
     	if($('#vessel').val()==''){
     		alert+='船名<br><br>';
     	}
     	if($('#pol').val()==''){
-    		alert+='装货港 POL<br><br>';
+    		alert+='启运港 POL<br><br>';
     	}
-    	if($('#fnd').val()==''){
+    	if($('#pod').val()==''){
     		alert+='目的港<br><br>';
     	}
     	if($('#closing_date').val()==''){
