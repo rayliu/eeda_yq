@@ -1,4 +1,4 @@
-﻿define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+﻿define(['jquery', 'metisMenu', 'sb_admin', './costEdit_select_item', ,  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu,sb,selectContr) {
 
 	document.title = '复核收款| '+document.title;
     $('#menu_finance').addClass('active').find('ul').addClass('in');
@@ -17,7 +17,6 @@
 				    	}else{
 				    		return '<input type="checkbox" class="checkBox" >';
 				    	}
-				        
 				    }
 				},
 				{"data":"ORDER_NO","width":"90px",
@@ -203,7 +202,9 @@
             {"data":"REMARK"}
 		]      
     });
+     
       
+
       //查询待申请单
 	$('#searchBtn').click(function(){
   	    searchData(); 
@@ -299,12 +300,44 @@
 		}
 	});
 	
-	
     var refleshSelectTable = function(){
 	    var url = "/costRequest/OrderList";
 	    costAccept_table.ajax.url(url).load();
     }
+	//点击时，赋值给sp_id_input
+	var sp_name='';
+	var sp_id='';	
+	$('#costAccept_table').on('click', 'input[type="checkbox"]',function(){
+		var idsArray=[];
+		var rowindex=$(this).parent().parent().index();
+		if($(this).prop('checked')){
+			 sp_id=costAccept_table.row(rowindex).data().SP_ID.toString();
+			 sp_name=costAccept_table.row(rowindex).data().SP_NAME.toString();
+		}
+
+      	$('#costAccept_table input[type="checkbox"]:checked').each(function(){
+      			var itemId = $(this).parent().parent().attr('id');
+      			idsArray.push(itemId);
+      	});
+      	if(idsArray==''){
+      		$("#coR_allcheck").prop("checked",false);
+      		 $('#createSave').attr('disabled',true);
+      		 $('#sp_id_input').val('');
+      		 $('#sp_id').val('');
+  		    selectContr.refleshSelectTable(idsArray);
+  		    return;
+      	}
+      	 $("#coR_allcheck").prop("checked",true);
+      	 $('#createSave').attr('disabled',false);
+      	 $('#sp_id_input').val(sp_name);
+      	 $('#sp_id').val(sp_id);
+  		 $('#ids').val(idsArray);
+  		 selectContr.refleshSelectTable(idsArray);
+	});
 	
+	
+
+
 	
     return {
     	refleshStep1Table: refleshSelectTable

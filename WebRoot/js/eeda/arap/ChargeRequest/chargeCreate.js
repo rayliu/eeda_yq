@@ -5,7 +5,8 @@ $(document).ready(function() {
 
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     $('#receive_time').val(eeda.getDate());
-    
+    $('#add_charge').hide();
+
     //构造主表json
     var buildOrder = function(){
     	var item = {};

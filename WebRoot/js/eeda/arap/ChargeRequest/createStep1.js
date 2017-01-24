@@ -293,11 +293,9 @@
 				if(cnames.length > 0 ){
 					if(cnames[0]==cname){
 							cnames.push(cname);
-	//						$(this).parent().parent().clone().appendTo($("#checkedEeda-table"));
 							if($(this).val() != ''){
 								billIds.push($(this).val());
 							}
-	//						$('#checkedEeda-table input[name="order_check_box"]').css("display","none");
 					}else{
 						$.scojs_message('请选择同一个付款对象', $.scojs_message.TYPE_ERROR);
 						$(this).attr('checked',false);
@@ -305,11 +303,9 @@
 					}
 				}else{
 					cnames.push(cname);
-//					$(this).parent().parent().clone().appendTo($("#checkedEeda-table"));
 					if($(this).val() != ''){
 						billIds.push($(this).val());
 					}
-//					$('#checkedEeda-table input[name="order_check_box"]').css("display","none");
 				}
 
 			}else{
