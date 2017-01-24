@@ -406,19 +406,23 @@ var itemIds=[];
           var itemIds=[];
           
           if($(this).prop('checked')){
-            $("#eeda_charge_table input[name=order_check_box]").prop('checked',true);
+              $("#eeda_charge_table input[name=order_check_box]").prop('checked',true);
+              $("#eeda_charge_table input[name=order_check_box]:checked").each(function(){                     
+                       itemIds.push($(this).val());
+                    });
           }else{
              $("#eeda_charge_table input[name=order_check_box]").prop('checked',false);
           }
-         if($(this).prop('checked')){
-                 $("#eeda_charge_table input[name=order_check_box]:checked").each(function(){                     
-                     itemIds.push($(this).val());
-                  });
-                 $('#add_charge_item').attr('disabled',false);
+         if(itemIds!=''){
+                $('#add_charge_item').attr('disabled',false);
            }else{
                 $('#add_charge_item').attr('disabled',true);
            }
      });
+
+      $("#eeda_charge_table").on('click','input[type=checkbox]',function(){
+              $("#allCharge").prop("checked",$("#eeda_charge_table input[type=checkbox]").length-1 == $("#eeda_charge_table input[type=checkbox]:checked").length ? true : false);
+        });
 
       $('#eeda_charge_table').on('click',"input[name='order_check_box']",function () {
         var  flag=0;

@@ -297,7 +297,7 @@ var itemIds=[];
       }
 
       $('#add_cost').click(function(){
-            $('#allCost').prop('checked',false);
+            $('#allcost').prop('checked',false);
             $('#add_cost_item').prop('disabled',true);
             $('#cost_table_msg_btn').click();
              $('#searchBtn2').click();
@@ -383,19 +383,19 @@ var itemIds=[];
       }
 
       //添加明细的全选
-      $('#allCost').click(function(){
+      $('#allcost').click(function(){
           var itemIds=[];
           
           if($(this).prop('checked')){
             $("#eeda_cost_table input[name=order_check_box]").prop('checked',true);
+             $("#eeda_cost_table input[name=order_check_box]:checked").each(function(){                     
+                     itemIds.push($(this).val());
+                  });
           }else{
              $("#eeda_cost_table input[name=order_check_box]").prop('checked',false);
           }
-         if($(this).prop('checked')){
-                 $("#eeda_cost_table input[name=order_check_box]:checked").each(function(){                     
-                     itemIds.push($(this).val());
-                  });
-                 $('#add_cost_item').attr('disabled',false);
+         if(itemIds!=''){ 
+                $('#add_cost_item').attr('disabled',false);
            }else{
                 $('#add_cost_item').attr('disabled',true);
            }
@@ -436,10 +436,15 @@ var itemIds=[];
               $("#coR_allcheck").prop("checked",$("#select_item_table input[type=checkbox]").length-1 == $("#select_item_table input[type=checkbox]:checked").length ? true : false);
         });
 
+      
          //查看应收应付对账结果
       $('#checkOrderAll').click(function(){
          $('#searchBtn2').click();
         });
+      $("#eeda_cost_table").on('click','input[type=checkbox]',function(){
+              $("#allcost").prop("checked",$("#eeda_cost_table input[type=checkbox]").length-1 == $("#eeda_cost_table input[type=checkbox]:checked").length ? true : false);
+        });
+
      //删除明细
       $('#select_item_table').on('click',".delete",function(){
             var id=$(this).parent().parent().attr('id');
