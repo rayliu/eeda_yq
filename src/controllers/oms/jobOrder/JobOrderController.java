@@ -1008,8 +1008,9 @@ public class JobOrderController extends Controller {
 	    	itemSql = "select * from job_order_sendMail where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("trade_cost".equals(type)){
-	    	itemSql = "select jotc.*,p.abbr sp_name,c.name currency_name from job_order_trade_cost jotc"
+	    	itemSql = "select jotc.*,p.abbr sp_name,c.name currency_name,ifnull(ti.commodity_name,jotc.commodity_name) commodity_name from job_order_trade_cost jotc"
 	    			+ " left join party p on p.id = jotc.sp"
+	    			+ "	left join trade_item ti on ti.id = jotc.commodity_id"
 	    			+ " left join currency c on c.id = jotc.custom_currency"
 	    			+ " where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
@@ -1655,6 +1656,20 @@ public class JobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
+    
+    //商品名名称下拉列表
+    public void searchCommodity(){
+    	String input = getPara("input");
+    	List<Record> recs = null;
+    	UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+    	String sql = "select * from trade_item where 1=1 and office_id = "+office_id;
+    	if(StringUtils.isNotEmpty(input)){
+    		sql+=" and commodity_name like '%"+ input +"%' ";
+    	}
+    	recs = Db.find(sql);
+    	renderJson(recs);
+    }
 
 
 }

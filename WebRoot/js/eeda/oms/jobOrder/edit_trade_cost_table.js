@@ -27,7 +27,9 @@ $(document).ready(function() {
             }
             
             var item={}
+            
             item.id = id;
+            item.commodity_name = $($(row).find('[name=COMMODITY_ID_input]')).val();
             for(var i = 1; i < row.childNodes.length; i++){
             	var el = $(row.childNodes[i]).find('input, select');
             	var name = el.attr('name'); //name='abc'
@@ -58,6 +60,7 @@ $(document).ready(function() {
     //------------事件处理
     var bindFieldEvent=function(){	
         eeda.bindTableFieldCurrencyId('trade_cost_table','CUSTOM_CURRENCY','/serviceProvider/searchCurrency','');
+        eeda.bindTableFieldTradeItem('trade_cost_table','COMMODITY_ID','/jobOrder/searchCommodity','');
     };
     var cargoTable = eeda.dt({
 	    id: 'trade_cost_table',
@@ -82,11 +85,19 @@ $(document).ready(function() {
 			    		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
 			    }
 			},
-            { "data": "COMMODITY_NAME", "width": "130px",
+            { "data": "COMMODITY_ID", "width": "130px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="commodity_name" value="'+data+'" class="form-control" style="width:150px"/>';
+                    var field_html = template('table_trade_item_template',
+                            {
+                                id: 'COMMODITY_ID',
+                                value: data,
+                                display_value: full.COMMODITY_NAME,
+                                style:'width:120px'
+                            }
+                        );
+                    return field_html;
                 }
             },
             { "data": "NUMBER", "width": "100px","className":"number",
@@ -249,6 +260,13 @@ $(document).ready(function() {
                         data='';
                     return data;
                 }
+            },
+            { "data": "COMMODITY_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
             }
         ]
     });
@@ -372,7 +390,7 @@ $(document).ready(function() {
     	var price = parseFloat($(row.find('[name=price]')).val());
     	var number = parseFloat($(row.find('[name=number]')).val());
     	var domestic_price = parseFloat($(row.find('[name=domestic_price]')).val());
-    	var tax_refund_rate = $(row.find('[name=tax_refund_rate]')).val();
+    	var tax_refund_rate = parseFloat($(row.find('[name=tax_refund_rate]')).val());
 
 	    	var total ;
 	    	var calcPrice ;
@@ -424,7 +442,8 @@ $(document).ready(function() {
     		if(tax_refund_rate==''){
         		$(row.find('[name=tax_refund_amount]')).val('');
         	}else if(!isNaN(tax_refund_rate)){
-        		var tax_refund_amount = parseFloat(total*tax_refund_rate/1.17);
+        		var value_added_tax = parseFloat($(row.find('[name=value_added_tax]')).val());
+        		var tax_refund_amount = parseFloat(domestic_price*tax_refund_rate/(1+value_added_tax));
         		$(row.find('[name=tax_refund_amount]')).val(tax_refund_amount.toFixed(3));
         		var total = 0;
         		$('#trade_cost_table [name=tax_refund_amount]').each(function(){
