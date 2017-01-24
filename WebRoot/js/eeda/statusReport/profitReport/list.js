@@ -9,9 +9,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对
           ajax: "/profitReport/list",
           columns: [
-              { "data": "ORDER_EXPORT_DATE" },
-              { "data": "CUSTOMER_NAME"},
-              { "data": "PIECES",
+              { "data": "ORDER_EXPORT_DATE","width":"60px" },
+              { "data": "CUSTOMER_NAME","width":"60px"},
+              { "data": "PIECES","width":"50px",
                 "render": function ( data, type, full, meta ) {
                   if(data){
                     return "<span class='pull-right'>" + data + "</span>";
@@ -20,16 +20,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               }, 
-              { "data": "GROSS_WEIGHT",
+              { "data": "GROSS_WEIGHT","width":"90px",
                 "render": function ( data, type, full, meta ) {
                   if(data){
-                    return "<span class='pull-right'>" + (data).toFixed(2) + "</span>";
+                    return "<span class='pull-right' >" + (data).toFixed(2) + "</span>";
                   } else {
                     return '';
                   }
                 }
               }, 
-              { "data": "VOLUME",
+              { "data": "VOLUME","width":"90px",
                 "render": function ( data, type, full, meta ) {
                   if(data){
                     return "<span class='pull-right'>" + (data).toFixed(2) + "</span>";
@@ -38,7 +38,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               },
-              { "data": "OCEAN_FCL_TEU",
+              { "data": "OCEAN_FCL_TEU","width":"90px",
                 "render": function ( data, type, full, meta ) {
                     if(data){
                       return "<span class='pull-right'>"+(data).toFixed(0) + "</span>";
@@ -47,7 +47,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               },
-              { "data": "OCEAN_LCL_CBM",
+              { "data": "OCEAN_FCL_BILL","width":"120px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                        return "<span class='pull-right'>"+(data).toFixed(0) + "</span>";
+                      } else{
+                        return '';
+                    }
+                  }
+                },
+              { "data": "OCEAN_LCL_CBM","width":"100px",
                 "render": function ( data, type, full, meta ) {
                     if(data){
                       return "<span class='pull-right'>"+(data).toFixed(2) + "</span>";
@@ -56,7 +65,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     }
                 }
               }, 
-              { "data": "ARI_KG",
+              { "data": "OCEAN_LCL_BILL","width":"120px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                        return "<span class='pull-right'>"+(data).toFixed(2) + "</span>";
+                      } else{
+                        return '';
+                      }
+                  }
+                },
+              { "data": "ARI_KG","width":"100px",
                 "render": function ( data, type, full, meta ) {
                     if(data){
                       return "<span class='pull-right'>"+(data).toFixed(2) + "</span>";
@@ -64,7 +82,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                       return '';
                     }
                 }
-              }, 
+              },
+              { "data": "ARI_KG_BILL","width":"120px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                        return "<span class='pull-right'>"+(data).toFixed(0) + "</span>";
+                      } else{
+                        return '';
+                      }
+                  }
+                }, 
               { "data": "TRUCK_TYPE"}
           ]
       });
