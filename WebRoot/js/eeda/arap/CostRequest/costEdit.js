@@ -151,6 +151,7 @@ $(document).ready(function() {
 					$("#returnBtn").attr("disabled", false);
 					$("#confirmBtn").attr("disabled", false);
 					$("#add_cost").attr("disabled", true);
+					$('#select_item_table .delete').attr("disabled", true);
 				}else{
 					$("#checkBtn").attr("disabled", false);
 					$.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);

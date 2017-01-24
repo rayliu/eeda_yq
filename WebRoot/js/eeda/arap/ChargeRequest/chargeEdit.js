@@ -141,17 +141,19 @@ $(document).ready(function() {
 	 
 	 //复核
 	  $("#checkBtn").on('click',function(){
-		  	$("#checkBtn").attr("disabled", true);
-		  	$("#saveBtn").attr("disabled", true);
-		  	$("#add_charge").attr("disabled", true);
+		  	
 			$.get("/chargeRequest/checkOrder", {order_id:$('#order_id').val(),}, function(data){
 				if(data.ID>0){
 					$("#check_name").val(data.CHECK_NAME);
 					$("#check_stamp").val(data.CHECK_STAMP);
 					$("#status").val(data.STATUS);
 					$.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+					$("#checkBtn").attr("disabled", true);
+				  	$("#saveBtn").attr("disabled", true);
+				  	$("#add_charge").attr("disabled", true);
 					$("#returnBtn").attr("disabled", false);
 					$("#confirmBtn").attr("disabled", false);
+					$("#select_item_table .delete").attr("disabled", true);
 				}else{
 					$("#checkBtn").attr("disabled", false);
 					$.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);

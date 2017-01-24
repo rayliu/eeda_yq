@@ -6,7 +6,8 @@ $(document).ready(function() {
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     $('#receive_time').val(eeda.getDate());
     $('#add_cost').hide();
-    
+    //隐藏第4列
+	$('#select_item_table').dataTable().fnSetColumnVis(3, false);
     //构造主表json
     var buildOrder = function(){
     	var item = {};
@@ -329,5 +330,8 @@ $(document).ready(function() {
  	   
     });
 
+
+	
+    
 });
 });

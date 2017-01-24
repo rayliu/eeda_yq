@@ -6,6 +6,7 @@ $(document).ready(function() {
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     $('#receive_time').val(eeda.getDate());
     $('#add_charge').hide();
+    $('#select_item_table').dataTable().fnSetColumnVis(3, false);
 
     //构造主表json
     var buildOrder = function(){
@@ -323,7 +324,9 @@ $(document).ready(function() {
  	   
     })
     
-    
+     $("#select_item_table").on('click','input[type=checkbox]',function(){
+              $("#coR_allcheck").prop("checked",$("#select_item_table input[type=checkbox]").length-1 == $("#select_item_table input[type=checkbox]:checked").length ? true : false);
+        });
     
 
 	

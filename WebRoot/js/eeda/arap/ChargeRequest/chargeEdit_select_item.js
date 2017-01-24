@@ -17,6 +17,15 @@ var itemIds=[];
                     }
                 },
                 { "data": "CHECK_ORDER_NO"},
+                {"width":"30px",
+                    "render": function ( data, type, full, meta ) {
+                          var str = '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" >删除</button>';
+                          if($("#status").val()=='已复核'|| $("#status").val()=='已付款'){
+                              return '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" disabled>删除</button>';
+                          }
+                          return str;
+                      }
+                },
                 { "data": "ORDER_NO"},
                 { "data": "TYPE"},
                 { "data": "CREATE_STAMP", visible: false},
@@ -449,6 +458,25 @@ var itemIds=[];
          $('#searchBtn2').click();
         });
 
+      //删除明细
+      $('#select_item_table').on('click',".delete",function(){
+            var id=$(this).parent().parent().attr('id');
+            var order_id=$('#order_id').val();
+             $.post('/chargeRequest/deleteChargeItem', {charge_itemid:id,order_id:order_id},function(data){
+                 refleshCreateTable(data.appOrderId);
+                 $('#modal_cny').val((parseFloat(data.MODAL_CNY)).toFixed(2));
+                 $('#modal_usd').val((parseFloat(data.MODAL_USD)).toFixed(2));
+                 $('#modal_hkd').val((parseFloat(data.MODAL_HKD)).toFixed(2));
+                 $('#modal_jpy').val((parseFloat(data.MODAL_JPY)).toFixed(2));
+             },'json').fail(function() {
+               $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+          });
+
+      });
+       $("#select_item_table").on('click','input[type=checkbox]',function(){
+              $("#allcheck2").prop("checked",$("#select_item_table input[type=checkbox]").length-1 == $("#select_item_table input[type=checkbox]:checked").length ? true : false);
+        });
+    
     return {
         refleshSelectTable: refleshSelectTable,
         refleshCreateTable:refleshCreateTable,

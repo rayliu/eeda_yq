@@ -320,14 +320,12 @@
       			idsArray.push(itemId);
       	});
       	if(idsArray==''){
-      		$("#coR_allcheck").prop("checked",false);
       		 $('#createSave').attr('disabled',true);
       		 $('#sp_id_input').val('');
       		 $('#sp_id').val('');
   		    selectContr.refleshSelectTable(idsArray);
   		    return;
       	}
-      	 $("#coR_allcheck").prop("checked",true);
       	 $('#createSave').attr('disabled',false);
       	 $('#sp_id_input').val(sp_name);
       	 $('#sp_id').val(sp_id);
