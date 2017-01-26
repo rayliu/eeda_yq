@@ -1011,7 +1011,9 @@ eeda.refreshUrl = refreshUrl;
               row.find('[name=legal_unit]').val($(this).attr('unit_name'));
               row.find('[name=value_added_tax]').val($(this).attr('vat_rate'));
               row.find('[name=tax_refund_rate]').val($(this).attr('rebate_rate'));
-              row.find('[name=number]').focus();
+
+              //选择后跳到下一行的同一个格子
+              row.next().find('input[name='+el_name+'_input]').focus();
           });
 
           tableFieldList.on('keydown', 'li', function(e){
@@ -1028,7 +1030,9 @@ eeda.refreshUrl = refreshUrl;
                   row.find('[name=legal_unit]').val($(this).attr('unit_name'));
                   row.find('[name=value_added_tax]').val($(this).attr('vat_rate'));
                   row.find('[name=tax_refund_rate]').val($(this).attr('rebate_rate'));
-                  row.find('[name=number]').focus();
+
+                  //选择后跳到下一行的同一个格子
+                  row.next().find('input[name='+el_name+'_input]').focus();
               }
           });
           
