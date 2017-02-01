@@ -446,8 +446,11 @@ public class CostCheckOrderController extends Controller {
 			for(int i=0 ; i<idAttr.length ; i++){
 				JobOrderArap joa = JobOrderArap.dao.findById(idAttr[i]);
 				joa.set("bill_flag", "Y");
+				String hedge_order_type = joa.getStr("order_type");
+				if("charge".equals(hedge_order_type)){
+					joa.set("hedge_flag", "Y");
+                }
 				joa.update();
-				
 				ArapCostItem arapCostItem = new ArapCostItem();
 				arapCostItem.set("ref_order_id", idAttr[i]);
 				arapCostItem.set("cost_order_id", id);
@@ -580,6 +583,11 @@ public class CostCheckOrderController extends Controller {
 		aco.set("confirm_stamp", new Date());
 		aco.set("confirm_by", LoginUserController.getLoginUserId(this));
 		aco.update();
+		
+		//设置y，已生成对账单o
+		String sql="UPDATE job_order_arap joa set billConfirm_flag='Y' "
+					+"where joa.id in (select aci.ref_order_id FROM arap_cost_item aci where cost_order_id="+id+" )";
+		Db.update(sql);
 		Record r = aco.toRecord();
 		r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
 		renderJson(r);
@@ -630,12 +638,14 @@ public class CostCheckOrderController extends Controller {
     			aci = new ArapCostItem();
 	    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
 	             jobOrderArap.set("bill_flag", "Y");
+	             String hedge_order_type = jobOrderArap.getStr("order_type");
+					if("charge".equals(hedge_order_type)){
+						jobOrderArap.set("hedge_flag", "Y");
+	                }
 	             jobOrderArap.update();
 				aci.set("ref_order_id", itemId);
 				aci.set("cost_order_id", costOrderId);
 				aci.save();
-//        	String sql="INSERT into arap_charge_item (ref_order_id,charge_order_id) "
-//        				+ "VALUES ("+itemId+","+order_id+")";
     		}
     		
     	}
@@ -652,6 +662,7 @@ public class CostCheckOrderController extends Controller {
     	if(itemid !=null&& costOrderId!=null){
     		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("bill_flag", "N");
+    		 jobOrderArap.set("hedge_flag", "N");
              jobOrderArap.update();
 //             String sql="delete from  where ref_order_id="+itemid+"and cost_order_id="+costOrderId;
              Db.deleteById("arap_cost_item","ref_order_id,cost_order_id",itemid,costOrderId);

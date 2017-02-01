@@ -11,7 +11,7 @@ define(['jquery', 'dataTablesBootstrap'], function($){
             // }
         },
         complete:function(XMLHttpRequest, textStatus){
-           console.log("ajaxSetup textStatus:"+textStatus);
+           //console.log("ajaxSetup textStatus:"+textStatus);
            if(XMLHttpRequest.responseText.indexOf('忘记密码')>0){
               alert( '您未登录, 请重新登录.' );
             }
@@ -322,6 +322,31 @@ eeda.refreshUrl = refreshUrl;
   	//暂时不处理 
    };
    
+    //表格中，凡是按enter自动跳到右边下一个input
+    $(document).on('keydown', 'table input:not([name$="_input"])', function(e) {
+      if (e.keyCode == 13) {//enter
+          var inputField = $(this);
+
+          var td = inputField.parent();
+          var row = td.parent();
+          var colCount = row.find('td').length;
+
+          var nextTdInput, nextTd=td;
+          var index = 0;
+          while(!nextTdInput && index<colCount){
+              nextTd = nextTd.next();
+              index = nextTd.index();
+              nextTdInput = nextTd.find('input:last');
+              if(nextTdInput && !nextTdInput.prop('disabled')){
+                  nextTdInput.focus();
+                  break;
+              }else{
+                  nextTdInput=null;
+              }
+          }
+        }
+    });
+
    //dataTable里的下拉列表，查询参数为input,url,添加的参数para,下拉显示的数据库字段
    eeda.bindTableField = function(table_id, el_name,url,para) {
 		  var tableFieldList = $('#table_input_field_list');
@@ -391,6 +416,7 @@ eeda.refreshUrl = refreshUrl;
 		  });
 
       tableFieldList.on('keydown', 'li', function(e){
+        e.preventDefault();
         if (e.keyCode == 13) {//enter
           var inputField = eeda._inputField;
           var hiddenField = eeda._hiddenField;
@@ -543,7 +569,11 @@ eeda.refreshUrl = refreshUrl;
                   var td = inputField.parent().parent();
                   var class_name = td.attr('class');
                   var currency_rate = $a.attr('currency_rate');
-                  td.next().children().val(currency_rate);//选择币制则填入汇率
+
+                  var nextTdInput = td.next().children();
+                  nextTdInput.val(currency_rate);//选择币制则填入汇率
+                  nextTdInput.focus();
+
                   if(class_name=='cny_to_other'){
                 	  var total = td.parent().find('.cny_total_amount input').val();
                   }else{
@@ -926,6 +956,113 @@ eeda.refreshUrl = refreshUrl;
                   row.find('select.truck_type').val($a.attr('carType'));
                   row.find('input.driver ').val($a.attr('driver'));
                   row.find('input.phone').val($a.attr('phone'));
+              }
+          });
+          
+          // 1 没选中item，焦点离开，隐藏列表
+          $(document).on('click', function(event){
+              if (tableFieldList.is(':visible') ){
+                  var clickedEl = $(this);
+                  var hiddenField = eeda._hiddenField;
+                  if ($(this).find('a').val().trim().length ==0) {
+                    hiddenField.val('');
+                  };
+                  tableFieldList.hide();
+              }
+          });
+          
+          // 2 当用户只点击了滚动条，没选item，再点击页面别的地方时，隐藏列表
+          tableFieldList.on('mousedown', function(){
+              return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+          });
+
+          tableFieldList.on('focus', 'li', function() {
+              $this = $(this);
+              $this.addClass('active').siblings().removeClass();
+              // $this.closest('div.container').scrollTop($this.index() * $this.outerHeight());
+          }).on('keydown', 'li', function(e) {
+              $this = $(this);
+              if (e.keyCode == 40) {
+                  $this.next().focus();
+                  return false;
+              } else if (e.keyCode == 38) {
+                  $this.prev().focus();
+                  return false;
+              }
+          }).find('li').first().focus();
+      };
+      
+      
+      
+      eeda.bindTableFieldTradeItem = function(talbe_id, el_name,url) {
+          var tableFieldList = $('#table_trade_item_input_field_list');
+          $('#'+talbe_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
+              var me = this;
+              var inputField = $(this);
+              var hiddenField = $(this).parent().find('input[name='+el_name+']');
+              var inputStr = inputField.val();
+
+              if (event.keyCode == 40) {
+                  tableFieldList.find('li').first().focus();
+                  return false;
+              }
+
+              $.get(url, {input:inputStr}, function(data){
+                  if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+                      return;
+                  }
+                  tableFieldList.empty();
+                  for(var i = 0; i < data.length; i++)
+                      tableFieldList.append("<li tabindex='"+i+"'><a class='item' dataId='"+data[i].ID+"'"
+                              +" dataName='"+data[i].COMMODITY_NAME+"' "
+                              +" unit_name='"+data[i].UNIT_NAME+"' "
+                              +" vat_rate='"+data[i].VAT_RATE+"' "
+                              +" rebate_rate='"+data[i].REBATE_RATE+"' >"+data[i].COMMODITY_NAME
+                              +"</a></li>");
+                  tableFieldList.css({ 
+                      left:$(me).offset().left+"px", 
+                      top:$(me).offset().top+28+"px" 
+                  });
+                  tableFieldList.show();
+                  eeda._inputField = inputField;
+                  eeda._hiddenField = hiddenField;
+              },'json');
+          });
+
+          tableFieldList.on('click', '.item', function(e){
+              var inputField = eeda._inputField;
+              var hiddenField = eeda._hiddenField;
+              inputField.val($(this).text());//名字
+              tableFieldList.hide();
+              var dataId = $(this).attr('dataId');
+              hiddenField.val(dataId);//id
+
+              var row = inputField.parent().parent().parent();
+              row.find('[name=legal_unit]').val($(this).attr('unit_name'));
+              row.find('[name=value_added_tax]').val($(this).attr('vat_rate'));
+              row.find('[name=tax_refund_rate]').val($(this).attr('rebate_rate'));
+
+              //选择后跳到下一行的同一个格子
+              row.next().find('input[name='+el_name+'_input]').focus();
+          });
+
+          tableFieldList.on('keydown', 'li', function(e){
+              if (e.keyCode == 13) {
+                  var inputField = eeda._inputField;
+                  var hiddenField = eeda._hiddenField;
+                  inputField.val($(this).text());//名字
+                  tableFieldList.hide();
+                  var $a = $(this).find('a');
+                  var dataId = $a.attr('dataId');
+                  hiddenField.val(dataId);//id
+
+                  var row = inputField.parent().parent().parent();
+                  row.find('[name=legal_unit]').val($(this).attr('unit_name'));
+                  row.find('[name=value_added_tax]').val($(this).attr('vat_rate'));
+                  row.find('[name=tax_refund_rate]').val($(this).attr('rebate_rate'));
+
+                  //选择后跳到下一行的同一个格子
+                  row.next().find('input[name='+el_name+'_input]').focus();
               }
           });
           

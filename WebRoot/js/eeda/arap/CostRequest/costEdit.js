@@ -7,7 +7,7 @@ $(document).ready(function() {
     if($('#receive_time').val()==""){
 //    	$('#receive_time').val(eeda.getDate());
     }
-    
+     $('.row.search_panel').hide();
     //构造主表json
     var buildOrder = function(){
     	var item = {};
@@ -76,7 +76,7 @@ $(document).ready(function() {
 	
     //申请保存
 	$("#saveBtn").on('click',function(){
-		$("#saveBtn").attr("disabled", true);
+		
 		
 		if($('#check_time_begin_time').val()==""||$('#check_time_end_time').val()==""){
 				$.scojs_message('业务发生月不能为空', $.scojs_message.TYPE_FALSE);
@@ -97,6 +97,7 @@ $(document).ready(function() {
 			$("#saveBtn").attr("disabled", false);
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+				$("#saveBtn").attr("disabled", true);
 				$("#order_id").val(data.ID);
 				$("#order_no").val(data.ORDER_NO);
 				$("#create_stamp").val(data.CREATE_STAMP);
@@ -137,8 +138,7 @@ $(document).ready(function() {
 	 
 	 //复核
 	  $("#checkBtn").on('click',function(){
-		  	$("#checkBtn").attr("disabled", true);
-		  	$("#saveBtn").attr("disabled", true);
+		  	
 		  
 			$.get("/costRequest/checkOrder", {order_id:$('#order_id').val(),}, function(data){
 				if(data.ID>0){
@@ -146,8 +146,12 @@ $(document).ready(function() {
 					$("#check_stamp").val(data.CHECK_STAMP);
 					$("#status").val(data.STATUS);
 					$.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+					$("#checkBtn").attr("disabled", true);
+		  			$("#saveBtn").attr("disabled", true);
 					$("#returnBtn").attr("disabled", false);
 					$("#confirmBtn").attr("disabled", false);
+					$("#add_cost").attr("disabled", true);
+					$('#select_item_table .delete').attr("disabled", true);
 				}else{
 					$("#checkBtn").attr("disabled", false);
 					$.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);

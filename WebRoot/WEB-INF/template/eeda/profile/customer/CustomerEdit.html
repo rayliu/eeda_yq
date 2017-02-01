@@ -204,7 +204,16 @@
                                         <fieldset>
                                             <div class="form-group">
                                                 <label>重点客户提醒（根据一段时间内没有出现在工作单进行提醒）</label>
-                                                <input class="form-control" id="customer" type="text" name="customer" value="${party.custom_registration!''}">
+	                                           	<select class="form-control" id="customer_remind" name="customer_remind">
+	                                           		<option></option>
+	                                           		<option value="3" <% if(party.customer_remind!''=='3'){%>selected<%}%>>三天</option>
+	                                           		<option value="7" <% if(party.customer_remind!''=='7'){%>selected<%}%>>七天</option>
+	                                           		<option value="15"<% if(party.customer_remind!''=='15'){%>selected<%}%>>十五天</option>
+	                                           		<option value="30"<% if(party.customer_remind!''=='30'){%>selected<%}%>>三十天</option>
+	                                           		<option value="90"<% if(party.customer_remind!''=='90'){%>selected<%}%>>九十天</option>
+	                                           		<option value="180"<% if(party.customer_remind!''=='180'){%>selected<%}%>>一百八十天</option>
+	                                           		<option value="360"<% if(party.customer_remind!''=='360'){%>selected<%}%>>三百六十天</option>
+	                                           	</select>
                                             </div>
                                         </fieldset>
                                     </div>

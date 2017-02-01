@@ -34,6 +34,7 @@ public class BillProfitAndPaymentController extends Controller {
 	}
 	
 	public void list() {
+		String checked = getPara("checked");
 		String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
@@ -42,19 +43,35 @@ public class BillProfitAndPaymentController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
-        String sql = " SELECT * FROM ("
-        		+" SELECT jo.id,jo.customer_id,jo.order_no,jo.order_export_date,p.abbr,SUM(currency_total_amount) charge_rmb,"
-        		+" ifnull((SELECT SUM(currency_total_amount) from  job_order_arap joa "
-        		+" LEFT JOIN job_order jor on joa.order_id = jor.id "
-        		+" WHERE joa.order_type = 'cost' and jor.id = jo.id "+condition
-        		+" ),0) cost_rmb"
-        		+"  from job_order jo "
-        		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-        		+"  LEFT JOIN party p on p.id = jo.customer_id"
-        		+"  WHERE jo.office_id ="+office_id+" and joa.order_type = 'charge' "+condition
-        		+" GROUP BY jo.id"
-        		+" ) A where 1=1  ORDER BY abbr";
-		
+        
+        String sql = "";
+        if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
+        	sql = " SELECT * FROM ("
+            		+" SELECT jo.id,jo.customer_id,jo.order_no,jo.order_export_date,p.abbr,SUM(currency_total_amount) charge_rmb,"
+            		+" ifnull((SELECT SUM(currency_total_amount) from  job_order_arap joa "
+            		+" LEFT JOIN job_order jor on joa.order_id = jor.id "
+            		+" WHERE joa.order_type = 'cost' and jor.id = jo.id "+condition
+            		+" ),0) cost_rmb"
+            		+"  from job_order jo "
+            		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+            		+"  LEFT JOIN party p on p.id = jo.customer_id"
+            		+"  WHERE jo.office_id ="+office_id+" and joa.order_type = 'charge' "+condition
+            		+" GROUP BY jo.id"
+            		+" ) A where 1=1 and (charge_rmb-cost_rmb)<0 ORDER BY abbr";
+        }else{
+        	sql = " SELECT * FROM ("
+            		+" SELECT jo.id,jo.customer_id,jo.order_no,jo.order_export_date,p.abbr,SUM(currency_total_amount) charge_rmb,"
+            		+" ifnull((SELECT SUM(currency_total_amount) from  job_order_arap joa "
+            		+" LEFT JOIN job_order jor on joa.order_id = jor.id "
+            		+" WHERE joa.order_type = 'cost' and jor.id = jo.id "+condition
+            		+" ),0) cost_rmb"
+            		+"  from job_order jo "
+            		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+            		+"  LEFT JOIN party p on p.id = jo.customer_id"
+            		+"  WHERE jo.office_id ="+office_id+" and joa.order_type = 'charge' "+condition
+            		+" GROUP BY jo.id"
+            		+" ) A where 1=1  ORDER BY abbr";
+        }
         String sqlTotal = "select count(1) total from ("+sql+") C";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));

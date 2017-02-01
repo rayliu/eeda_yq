@@ -1,4 +1,4 @@
-﻿define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+﻿define(['jquery', 'metisMenu', 'sb_admin', './chargeEdit_select_item',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu,sb,selectContr) {
 
 	document.title = '复核收款| '+document.title;
     $('#menu_finance').addClass('active').find('ul').addClass('in');
@@ -216,7 +216,7 @@
             {"data":"REMARK"}
 		]      
     });
-      
+
       //查询待申请单
 	$('#searchBtn').click(function(){
   	    searchData(); 
@@ -293,11 +293,9 @@
 				if(cnames.length > 0 ){
 					if(cnames[0]==cname){
 							cnames.push(cname);
-	//						$(this).parent().parent().clone().appendTo($("#checkedEeda-table"));
 							if($(this).val() != ''){
 								billIds.push($(this).val());
 							}
-	//						$('#checkedEeda-table input[name="order_check_box"]').css("display","none");
 					}else{
 						$.scojs_message('请选择同一个付款对象', $.scojs_message.TYPE_ERROR);
 						$(this).attr('checked',false);
@@ -305,11 +303,9 @@
 					}
 				}else{
 					cnames.push(cname);
-//					$(this).parent().parent().clone().appendTo($("#checkedEeda-table"));
 					if($(this).val() != ''){
 						billIds.push($(this).val());
 					}
-//					$('#checkedEeda-table input[name="order_check_box"]').css("display","none");
 				}
 
 			}else{
@@ -335,10 +331,38 @@
 	    var url = "/chargeRequest/OrderList";
 	    costAccept_table.ajax.url(url).load();
     }
-	
-	
-    return {
-    	refleshStep1Table: refleshSelectTable
+
+	var sp_name='';
+	var sp_id='';	
+	$('#chargeAccept_table').on('click', 'input[type="checkbox"]',function(){
+		var idsArray=[];
+		
+		var rowindex=$(this).parent().parent().index();
+		if($(this).prop('checked')){
+			 sp_id=costAccept_table.row(rowindex).data().SP_ID.toString();
+			 sp_name=costAccept_table.row(rowindex).data().SP_NAME.toString();
+		}
+
+      	$('#chargeAccept_table input[type="checkbox"]:checked').each(function(){
+      			var itemId = $(this).parent().parent().attr('id');
+//      			var order_type = $(this).parent().parent().find(".order_type").text();
+      			idsArray.push(itemId);
+      	});
+      	if(idsArray==''){
+      		 $('#sp_id_input').val('');
+      		 $('#sp_id').val('');
+  		    selectContr.refleshSelectTable(idsArray);
+  		    return;
+      	}
+      	 $('#sp_id_input').val(sp_name);
+      	 $('#sp_id').val(sp_id);
+  		$('#ids').val(idsArray);
+  		selectContr.refleshSelectTable(idsArray);
+	})
+
+       
+		return {
+			refleshStep1Table: refleshSelectTable
     };
 	  
 

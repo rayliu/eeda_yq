@@ -13,12 +13,16 @@ import java.util.Map;
 
 import models.AppInvoiceDoc;
 import models.ArapAccountAuditLog;
+import models.ArapChargeApplication;
+import models.ArapChargeOrder;
 import models.ArapCostApplication;
 import models.ArapCostOrder;
+import models.ChargeApplicationOrderRel;
 //import models.CostAppOrderRel;
 import models.CostApplicationOrderRel;
 import models.Party;
 import models.UserLogin;
+import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -434,7 +438,7 @@ public class CostReuqestrController extends Controller {
    			DbUtils.setModelValues(dto, order);
    			
    			//需后台处理的字段
-   			order.set("order_no", OrderNoGenerator.getNextOrderNo("YSSQ", user.getLong("office_id")));
+   			order.set("order_no", OrderNoGenerator.getNextOrderNo("YFSQ", user.getLong("office_id")));
    			order.set("create_by", user.getLong("id"));
    			order.set("create_stamp", new Date());
    			order.set("office_id", office_id);
@@ -768,6 +772,187 @@ public class CostReuqestrController extends Controller {
         	resultMap.put("result", "文件不存在可能已被删除!");
         }
         renderJson(resultMap);
+    }
+    
+    private Map<String, Double> updateExchangeTotal(String appOrderId) {
+        String sql="select joa.order_type, ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
+        +"       ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount "
+        +"       from  job_order_arap joa "
+        +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
+        +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
+        +"       where joa.id in (select caor.job_order_arap_id from cost_application_order_rel caor where caor.application_order_id="+appOrderId+")";
+		
+		Map<String, Double> exchangeTotalMap = new HashMap<String, Double>();
+		exchangeTotalMap.put("MODAL_CNY", 0d);
+		exchangeTotalMap.put("MODAL_USD", 0d);
+		exchangeTotalMap.put("MODAL_HKD", 0d);
+		exchangeTotalMap.put("MODAL_JPY", 0d);
+		
+		List<Record> resultList= Db.find(sql);
+		for (Record rec : resultList) {
+            String name = "MODAL_"+rec.get("exchange_currency_name");
+            String type = rec.get("order_type");
+            Double exchange_amount = exchangeTotalMap.get(name);
+            if(exchangeTotalMap.get(name)==null){
+                if("cost".equals(type)){
+                    exchangeTotalMap.put(name, exchange_amount+=exchange_amount);
+                }else{
+                    exchangeTotalMap.put(name, 0-rec.getDouble("exchange_total_amount"));
+                }
+            }else{
+                if("cost".equals(type)){
+                    exchangeTotalMap.put(name, exchange_amount+=rec.getDouble("exchange_total_amount"));
+                }else{
+                    exchangeTotalMap.put(name, exchange_amount-=rec.getDouble("exchange_total_amount"));
+                }        
+            }
+        }
+		
+		Record order = Db.findById("arap_cost_application_order", appOrderId);
+		for (Map.Entry<String, Double> entry : exchangeTotalMap.entrySet()) {
+		    System.out.println(entry.getKey() + " : " + entry.getValue());
+		    order.set(entry.getKey(), entry.getValue());
+		}
+		if(order.get("return_confirm_stamp")!=null){
+			order.set("return_confirm_stamp", order.get("return_confirm_stamp"));
+		}else{
+			order.set("return_confirm_stamp", new Date());
+		}
+		Db.update("arap_cost_application_order", order);
+		return exchangeTotalMap;
+    }
+    //添加明细的查询
+    public void itemList(){
+    	String checked = getPara("checked");
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+        
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        String sql = "";
+        if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
+        	 sql = "select * from(  "
+        			+ " select joa.order_type sql_type, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+              		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type, "
+              		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
+              		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
+              		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
+              		+ " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"
+              		+ " ) after_total,"
+              		+ " ifnull( ( SELECT rc.new_rate FROM rate_contrast rc "
+              		+ " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
+              		+ " after_rate_total,ifnull(f.name,f.name_eng) fee_name,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
+      				+ " from job_order jo "
+      				+ " left join job_order_arap joa on jo.id=joa.order_id "
+      				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
+      				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
+      				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
+      				+ " left join party p on p.id=joa.sp_id "
+      				+ " left join party p1 on p1.id=jo.customer_id "
+      				+ " left join location l on l.id=jos.fnd "
+      				+ " left join currency cur on cur.id=joa.currency_id "
+      				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
+      				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
+      				+ " left join fin_item f on f.id = joa.charge_id"
+      				+ " where  joa.audit_flag='Y' and joa.billconfirm_flag = 'Y'  and joa.create_flag='N'  and jo.office_id = "+office_id
+      				+ " GROUP BY joa.id "
+    				+ " ) B where 1=1 ";
+        	}else{
+        		 sql = "select * from(  "
+                 		+ " select ifnull(f.name,f.name_eng) fee_name, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+                 		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type, "
+                 		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
+                 		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
+                 		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
+                 		+ " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"
+                 		+ " ) after_total,"
+                 		+ " ifnull( ( SELECT rc.new_rate FROM rate_contrast rc "
+                 		+ " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
+                 		+ " after_rate_total,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
+         				+ " from job_order jo "
+         				+ " left join job_order_arap joa on jo.id=joa.order_id "
+         				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
+         				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
+         				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
+         				+ " left join party p on p.id=joa.sp_id "
+         				+ " left join party p1 on p1.id=jo.customer_id "
+         				+ " left join location l on l.id=jos.fnd "
+         				+ " left join currency cur on cur.id=joa.currency_id "
+         				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
+         				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
+         				+ " left join fin_item f on f.id = joa.charge_id"
+         				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.billconfirm_flag = 'Y' and joa.create_flag='N' and jo.office_id = "+office_id
+         				+ " GROUP BY joa.id "
+         				+ " ) B where 1=1 ";
+        			}
+        
+        String condition = DbUtils.buildConditions(getParaMap());
+
+        String sqlTotal = "select count(1) total from ("+sql+ condition+") A";
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        
+        List<Record> orderList = Db.find(sql+ condition);
+        Map orderListMap = new HashMap();
+        orderListMap.put("draw", pageIndex);
+        orderListMap.put("recordsTotal", rec.getLong("total"));
+        orderListMap.put("recordsFiltered", rec.getLong("total"));
+
+        orderListMap.put("data", orderList);
+
+        renderJson(orderListMap); 
+    }
+    
+    public void insertCostItem(){
+    	String itemList= getPara("cost_itemlist");
+    	String[] itemArray =  itemList.split(",");
+    	String appOrderId=getPara("order_id");
+    	ArapCostApplication order = ArapCostApplication.dao.findById(appOrderId);
+    	
+   		CostApplicationOrderRel caor = null;
+		for(String item :itemArray){
+				caor = new CostApplicationOrderRel();
+				caor.set("application_order_id", appOrderId);
+				caor.set("job_order_arap_id", item);
+				Record re = Db.findFirst("select * from arap_cost_item where ref_order_id=?",item);
+				Long cost_order_id=re.getLong("cost_order_id");
+				caor.set("cost_order_id", cost_order_id);
+				caor.set("order_type", "应付对账单");
+				caor.save();
+				
+				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
+				arapCostOrder.set("audit_status", "收款申请中").update();
+				//更新job_order_arap的create_flag
+				JobOrderArap joa=JobOrderArap.dao.findById(item);
+				joa.set("create_flag", "Y");
+				joa.update();
+		}
+    	//计算结算汇总
+		Map<String, Double> exchangeTotalMap = updateExchangeTotal(appOrderId);
+		exchangeTotalMap.put("appOrderId", Double.parseDouble(appOrderId));
+    	renderJson(exchangeTotalMap);
+    }
+    public void deleteCostItem(){
+    	String appOrderId=getPara("order_id");
+    	String itemid=getPara("cost_itemid");
+    	if(itemid !=null&& appOrderId!=null){
+    		 Db.deleteById("cost_application_order_rel","job_order_arap_id,application_order_id",itemid,appOrderId);
+    		 Record re = Db.findFirst("select * from arap_cost_item where ref_order_id=?",itemid);
+			 Long cost_order_id=re.getLong("cost_order_id");
+    		 ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
+			 arapCostOrder.set("audit_status", "新建").update();
+    		 
+    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
+    		 jobOrderArap.set("create_flag", "N");
+             jobOrderArap.update();
+    	}
+    	//计算结算汇总
+    			Map<String, Double> exchangeTotalMap = updateExchangeTotal(appOrderId);
+    			exchangeTotalMap.put("appOrderId", Double.parseDouble(appOrderId));
+    	    	renderJson(exchangeTotalMap);
     }
 
 }

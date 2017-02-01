@@ -28,13 +28,18 @@ $(document).ready(function() {
             var item={}
             item.id = id;
             for(var i = 1; i < row.childNodes.length; i++){
-            	var el = $(row.childNodes[i]).find('input, select');
-            	var name = el.attr('name'); //name='abc'
+            	var els = $(row.childNodes[i]).find('input, select');
+
+                $.each(els, function(index, inputEl) {
+                    var el = $(inputEl);
+                    var name = el.attr('name'); //name='abc'
+                
+                    if(el && name){
+                        var value = el.val();//元素的值
+                        item[name] = value;
+                    }
+                });
             	
-            	if(el && name){
-                	var value = el.val();//元素的值
-                	item[name] = value;
-            	}
             }
             item.action = id.length > 0?'UPDATE':'CREATE';
             cargo_items_array.push(item);
@@ -81,7 +86,7 @@ $(document).ready(function() {
                             {
                                 id: 'SP_ID',
                                 value: data,
-                                display_value: full.SP_NAME,
+                                display_value: full.SP_ID_NAME, //这里是故意这样命名的，否则回显名称时有问题
                                 style:'width:200px'
                             }
                         );
@@ -96,7 +101,7 @@ $(document).ready(function() {
                         {
                             id: 'CHARGE_ID',
                             value: data,
-                            display_value: full.CHARGE_NAME,
+                            display_value: full.CHARGE_ID_NAME,//这里是故意这样命名的，否则回显名称时有问题
                             style:'width:200px'
                         }
                     );
@@ -118,11 +123,11 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
 	                	if(!data)
 	                        data='';
-	                    var field_html = template('table_dropdown_template',
+	                    var field_html = template('table_currency_dropdown_template',
 	                        {
 	                            id: 'CURRENCY_ID',
 	                            value: data,
-	                            display_value: full.CURRENCY_NAME,
+	                            display_value: full.CURRENCY_ID_NAME,
 	                            style:'width:80px',
 	                            disabled:'disabled'
 	                        }
@@ -130,7 +135,7 @@ $(document).ready(function() {
 	                    return field_html;
                 }else{
             	   if(!data){
-            		   var field_html = template('table_dropdown_template',
+            		   var field_html = template('table_currency_dropdown_template',
                                {
                                    id: 'CURRENCY_ID',
                                    value: $('#service_currency_id').val(),
@@ -139,11 +144,11 @@ $(document).ready(function() {
                                }
                            );
             	   }else{
-                       var field_html = template('table_dropdown_template',
+                       var field_html = template('table_currency_dropdown_template',
                            {
                                id: 'CURRENCY_ID',
                                value: data,
-                               display_value: full.CURRENCY_NAME,
+                               display_value: full.CURRENCY_ID_NAME,
                                style:'width:80px'
                            }
                        );
@@ -185,7 +190,7 @@ $(document).ready(function() {
             		if(full.AUDIT_FLAG == 'Y'){
             			if(!data)
             				data='';
-            			var field_html = template('table_dropdown_template',
+            			var field_html = template('table_currency_dropdown_template',
             					{
 		            				id: 'exchange_currency_id',
 		            				value: data,
@@ -197,7 +202,7 @@ $(document).ready(function() {
             			return field_html;
             		}else{
             			if(!data){
-            				var field_html = template('table_dropdown_template',
+            				var field_html = template('table_currency_dropdown_template',
                 					{
     		            				id: 'exchange_currency_id',
     		            				value: $('#service_exchange_currency').val(),
@@ -206,7 +211,7 @@ $(document).ready(function() {
                 					}
                 			);
             			}else{
-                			var field_html = template('table_dropdown_template',
+                			var field_html = template('table_currency_dropdown_template',
                 					{
     		            				id: 'exchange_currency_id',
     		            				value: data,
@@ -247,21 +252,21 @@ $(document).ready(function() {
             		return '<input type="text" name="exchange_total_amount" style="width:150px" value="'+str+'" class="form-control" disabled />';
             	}
             },
-            { "data": "SP_NAME", "visible": false,
+            { "data": "SP_ID_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return data;
                 }
             },
-            { "data": "CHARGE_NAME", "visible": false,
+            { "data": "CHARGE_ID_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return data;
                 }
             },
-            { "data": "CURRENCY_NAME", "visible": false,
+            { "data": "CURRENCY_ID_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';

@@ -41,9 +41,11 @@
 
             <div class="form-group">  <!--  form row  -->
                 <form id="orderForm">
-                    <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>                                                                                  
-                    <input id="plan_order_id" type="hidden" name="plan_order_id" value="${planOrder.id!''}"/>                                                                                    
+                    <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
+                    <input id="plan_order_id" type="hidden" name="plan_order_id" value="${planOrder.id!''}"/>
                     <input id="plan_order_item_id" type="hidden" value="${planOrderItem.id!''}"/>
+                    <input id="updator_id" type="hidden" name="updator_id" value="${order.updator!''}"/>
+                    <input id="update_stamp" type="hidden" name="update_stamp" value="${order.update_stamp!''}"/>
                     <div class="row"><!--  第1行  -->
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 
@@ -649,11 +651,13 @@
 
 <%include("/eeda/component/jsTemplate/tableInputTruckOutField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputTruckInField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputTradeItemField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputDateField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputFieldCurrencyId.js",{}){} %>
 <%include("/oms/JobOrder/party_create_modal.html", {}){} %>
+
 
 
 

@@ -27,6 +27,7 @@ import models.Product;
 import models.RateContrast;
 import models.Role;
 import models.RolePermission;
+import models.TradeItem;
 import models.UserCustomer;
 import models.UserLogin;
 import models.UserOffice;
@@ -94,6 +95,7 @@ import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
+import controllers.app.AppControllerForMobile;
 import controllers.cms.jobOrder.CustomJobOrderController;
 import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.ModuleController;
@@ -113,6 +115,7 @@ import controllers.profile.CurrencyRateController;
 import controllers.profile.CustomController;
 import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
+import controllers.profile.TradeItemController;
 import controllers.profile.UnitController;
 import controllers.report.OrderStatusController;
 import controllers.tms.jobOrder.TransJobOrderController;
@@ -181,17 +184,24 @@ public class EedaConfig extends JFinalConfig {
         //TODO: 为之后去掉 yh做准备
         String contentPath="/";//"yh";
 
-        // me.add("/fileUpload", HelloController.class);
+        setAppRoute(me, contentPath);
         setScmRoute(me, contentPath);
         
+        
     }
-    
+    private void setAppRoute(Routes me, String contentPath) {
+        me.add("/app", AppControllerForMobile.class);
+        me.add("/app/jobOrder", JobOrderControllerForMobile.class);
+        me.add("/app/planOrder", PlanOrderControllerForMobile.class);
+    }
 
 	private void setScmRoute(Routes me, String contentPath) {
 		// yh project controller
         me.add("/", controllers.eeda.MainController.class, contentPath);
         me.add("/module", ModuleController.class, contentPath);
-       // me.add("/apidoc", controllers.eeda.DocController.class);
+       // me.add("/apidoc", controllers.eeda.DocController.class);基础数据
+        
+        me.add("/tradeItem", TradeItemController.class, contentPath);
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
         me.add("/loginUser", controllers.profile.LoginUserController.class, contentPath);
@@ -219,8 +229,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/planOrder", PlanOrderController.class, contentPath);
 		me.add("/todo", TodoController.class, contentPath);
 		me.add("/jobOrder", JobOrderController.class, contentPath);
-		me.add("/app/jobOrder", JobOrderControllerForMobile.class);
-		me.add("/app/planOrder", PlanOrderControllerForMobile.class);
+		
 		me.add("/jobOrderReport", JobOrderReportController.class, contentPath);
 //		me.add("/report", ReportController.class, contentPath);
 		me.add("/customOrder", CustomOrderController.class, contentPath);
@@ -333,6 +342,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("module_role", ModuleRole.class);
         arp.addMapping("unit", Unit.class);
         arp.addMapping("country", Country.class);
+        arp.addMapping("trade_item", TradeItem.class);
         arp.addMapping("fin_item", FinItem.class);
         arp.addMapping("custom", Custom.class);
         arp.addMapping("container_type", ContainerType.class);

@@ -24,8 +24,24 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "CURRENCY_TOTAL_AMOUNT","width": "100px"},
 	            { "data": "THREE", "width": "100px"},
 	            { "data": "SIX", "width": "100px"},
-	            { "data": "NINE", "width": "100px"},
-	            { "data": "AFTER_NINE", "width": "100px"}
+	            { "data": "NINE", "width": "100px",
+	               "render":function(data,type,full,meta){
+	            	   var str = data;
+	            	   if(data>0){
+	            		   return '<span style="color:red">'+str+'</span>';
+	            	   }
+	            	   return str;
+	               }	
+	            },
+	            { "data": "AFTER_NINE", "width": "100px",
+	            	"render":function(data,type,full,meta){
+		            	   var str = data;
+		            	   if(data>0){
+		            		   return '<span style="color:red">'+str+'</span>';
+		            	   }
+		            	   return str;
+		             }
+	            }
 	          ]
 	  });
       

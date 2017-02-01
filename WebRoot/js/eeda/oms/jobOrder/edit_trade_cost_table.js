@@ -27,15 +27,22 @@ $(document).ready(function() {
             }
             
             var item={}
+            
             item.id = id;
+            item.commodity_name = $($(row).find('[name=COMMODITY_ID_input]')).val();
             for(var i = 1; i < row.childNodes.length; i++){
-            	var el = $(row.childNodes[i]).find('input, select');
-            	var name = el.attr('name'); //name='abc'
+            	var els = $(row.childNodes[i]).find('input, select');
+
+                $.each(els, function(index, inputEl) {
+                    var el = $(inputEl);
+                    var name = el.attr('name'); //name='abc'
+                
+                    if(el && name){
+                        var value = el.val();//元素的值
+                        item[name] = value;
+                    }
+                });
             	
-            	if(el && name){
-                	var value = el.val();//元素的值
-                	item[name] = value;
-            	}
             }
             item.action = id.length > 0?'UPDATE':'CREATE';
             cargo_items_array.push(item);
@@ -58,6 +65,7 @@ $(document).ready(function() {
     //------------事件处理
     var bindFieldEvent=function(){	
         eeda.bindTableFieldCurrencyId('trade_cost_table','CUSTOM_CURRENCY','/serviceProvider/searchCurrency','');
+        eeda.bindTableFieldTradeItem('trade_cost_table','COMMODITY_ID','/jobOrder/searchCommodity','');
     };
     var cargoTable = eeda.dt({
 	    id: 'trade_cost_table',
@@ -82,11 +90,19 @@ $(document).ready(function() {
 			    		return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
 			    }
 			},
-            { "data": "COMMODITY_NAME", "width": "130px",
+            { "data": "COMMODITY_ID", "width": "130px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="commodity_name" value="'+data+'" class="form-control" style="width:150px"/>';
+                    var field_html = template('table_trade_item_template',
+                            {
+                                id: 'COMMODITY_ID',
+                                value: data,
+                                display_value: full.COMMODITY_NAME,
+                                style:'width:120px'
+                            }
+                        );
+                    return field_html;
                 }
             },
             { "data": "NUMBER", "width": "100px","className":"number",
@@ -130,7 +146,7 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="domestic_price" value="'+data+'" class="form-control" style="width:150px" disabled/>';
+            		return '<input type="text" name="domestic_price" value="'+data+'" class="form-control" style="width:150px"/>';
             	}
             },
             { "data": "VALUE_ADDED_TAX", "width": "80px",
@@ -200,23 +216,23 @@ $(document).ready(function() {
             		return '<input type="text" name="custom_amount" value="'+data+'" class="form-control" style="width:120px" disabled/>';
             	}
             },
-            { "data": "CUSTOM_CURRENCY", "width": "60px",
+            { "data": "CUSTOM_CURRENCY", "width": "60px", 
             	"render": function ( data, type, full, meta ) {
 	                	if(!data){
-	                			var field_html = template('table_dropdown_template',
+	                			var field_html = template('table_currency_dropdown_template',
 	    	                        {
 	    	                            id: 'CUSTOM_CURRENCY',
 	    	                            value: $('#cost_currency').val(),
 	    	                            display_value: $('#cost_currency_input').val(),
 	    	                            style:'width:80px'
 	    	                        }
-	                		);
+	                		    );
 	                        }else{
-			                    var field_html = template('table_dropdown_template',
+			                    var field_html = template('table_currency_dropdown_template',
 			                        {
 			                            id: 'CUSTOM_CURRENCY',
 			                            value: data,
-			                            display_value: full.CURRENCY_NAME,
+			                            display_value: full.CUSTOM_CURRENCY_NAME,
 			                            style:'width:80px'
 			                        }
 			                    );
@@ -244,6 +260,13 @@ $(document).ready(function() {
             	}
             },
             { "data": "CURRENCY_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },
+            { "data": "COMMODITY_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -365,30 +388,67 @@ $(document).ready(function() {
     	}
     })
 
-    $('#trade_cost_table').on('keyup', '[name=number], [name=price], [name=tax_refund_rate]', function(){
+    $('#trade_cost_table').on('blur', '[name=number], [name=price], [name=tax_refund_rate],[name=domestic_price]', function(){
+    	var this_input = $(this).attr('name');
     	
     	var row = $(this).parent().parent();
-    	var price = $(row.find('[name=price]')).val()
-    	var count = $(row.find('[name=number]')).val()
-    	var tax_refund_rate = $(row.find('[name=tax_refund_rate]')).val()
+    	var price = parseFloat($(row.find('[name=price]')).val());
+    	var number = parseFloat($(row.find('[name=number]')).val());
+    	var domestic_price = parseFloat($(row.find('[name=domestic_price]')).val());
+    	var tax_refund_rate = parseFloat($(row.find('[name=tax_refund_rate]')).val());
+
+	    	var total ;
+	    	var calcPrice ;
+	    	var calcNumber;
+	    	if(this_input=='number'){
+	    		if(!isNaN(price) && !isNaN(number)){
+	    			total = parseFloat(price*number);
+		    		calcPrice = price;
+	    		}else if(!isNaN(domestic_price) && !isNaN(number) && isNaN(price) ){
+	    			calcPrice = parseFloat(domestic_price/number);
+	    			total = domestic_price;
+	    		}
+	    		calcNumber = number;
+	    	}else if(this_input=='price'){
+	    		if(!isNaN(price) && !isNaN(number) ){
+	    			total = parseFloat(price*number);
+	    			calcNumber = number;
+	    		}else if(!isNaN(price) && !isNaN(domestic_price) && isNaN(number) ){
+	    			calcNumber = parseFloat(domestic_price/price);
+	    			total = domestic_price;
+	    		}
+	    		calcPrice = price;
+	    	} else if(this_input=='domestic_price'){
+	    		if(!isNaN(price) && !isNaN(domestic_price)){
+	    			calcNumber = parseFloat(domestic_price/price);
+	    			calcPrice = price;
+	    		}else if(isNaN(price) && !isNaN(number) && !isNaN(domestic_price) ){
+	    			calcPrice = parseFloat(domestic_price/number);
+	    			calcNumber = number;
+	    		}
+	    		total = domestic_price;
+	    	}
     	
-    	if(price==''||count==''){
-    		$(row.find('[name=domestic_price]')).val('');
-    	}else if(!isNaN(price)&&!isNaN(count)){
-    		var domestic_price = parseFloat(price*count);
-    		$(row.find('[name=domestic_price]')).val(domestic_price.toFixed(3));
+    		
+    		if(!isNaN(calcNumber))
+    			$(row.find('[name=number]')).val(calcNumber);
+    		if(!isNaN(calcPrice))
+    			$(row.find('[name=price]')).val(calcPrice);
+    		if(!isNaN(total))
+    			$(row.find('[name=domestic_price]')).val(total);
     		var total = 0;
     		$('#trade_cost_table [name=domestic_price]').each(function(){
     			var a = this.value;
     			if(a!=''&&!isNaN(a)){
     				total+=parseFloat(a);
     			}
-    		})
+    		});
     		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html(total.toFixed(3));
     		if(tax_refund_rate==''){
         		$(row.find('[name=tax_refund_amount]')).val('');
         	}else if(!isNaN(tax_refund_rate)){
-        		var tax_refund_amount = parseFloat(domestic_price*tax_refund_rate/1.17);
+        		var value_added_tax = parseFloat($(row.find('[name=value_added_tax]')).val());
+        		var tax_refund_amount = parseFloat(domestic_price*tax_refund_rate/(1+value_added_tax));
         		$(row.find('[name=tax_refund_amount]')).val(tax_refund_amount.toFixed(3));
         		var total = 0;
         		$('#trade_cost_table [name=tax_refund_amount]').each(function(){
@@ -396,10 +456,10 @@ $(document).ready(function() {
         			if(a!=''&&!isNaN(a)){
         				total+=parseFloat(a);
         			}
-        		})
+        		});
         		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(9).html(total.toFixed(3));
-        	}
-    	}
+        	};
+    	//}
     
     	if(price==''){
     		$(row.find('[name=adjusted_unit_price]')).val('');
@@ -413,7 +473,7 @@ $(document).ready(function() {
     			if(a!=''&&!isNaN(a)){
     				total_tax_refund_amount+=parseFloat(a);
     			}
-    		})
+    		});
     		$('#charge_service_table [name=currency_total_amount]').each(function(){
     			var a = this.value;
     			if(a!=''&&!isNaN(a)){
@@ -425,7 +485,7 @@ $(document).ready(function() {
     			if(a!=''&&!isNaN(a)){
         			total_count+=parseInt(a);
         		}
-    		})
+    		});
         	var total_difference = total_tax_refund_amount-total_service_fee
     		var price_difference = total_difference/total_count;
         	$('#total_difference').text(total_difference.toFixed(3));
@@ -433,10 +493,10 @@ $(document).ready(function() {
     	    
     		var adjusted_unit_price = (parseFloat(price_difference)+parseFloat(price));
     		$(row.find('[name=adjusted_unit_price]')).val(adjusted_unit_price.toFixed(3));
-    		if(count==''){
+    		if(number==''){
         		$(row.find('[name=adjusted_total_price]')).val('');
-        	}else if(!isNaN(count)){
-        		var adjusted_total_price = parseFloat(adjusted_unit_price)*parseFloat(count);
+        	}else if(!isNaN(number)){
+        		var adjusted_total_price = parseFloat(adjusted_unit_price)*parseFloat(number);
         		$(row.find('[name=adjusted_total_price]')).val(adjusted_total_price.toFixed(3));
         		var total = 0;
         		$('#trade_cost_table [name=adjusted_total_price]').each(function(){
@@ -444,7 +504,7 @@ $(document).ready(function() {
         			if(a!=''&&!isNaN(a)){
         				total+=parseFloat(a);
         			}
-        		})
+        		});
         		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(12).html(total.toFixed(3));
         		if(tax_refund_rate==''){
             		$(row.find('[name=adjusted_tax_refund_amount]')).val('');
@@ -457,7 +517,7 @@ $(document).ready(function() {
             			if(a!=''&&!isNaN(a)){
             				total+=parseFloat(a);
             			}
-            		})
+            		});
             		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html(total.toFixed(3));
             	}
         	}

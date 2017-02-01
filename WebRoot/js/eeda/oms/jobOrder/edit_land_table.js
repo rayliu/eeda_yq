@@ -184,7 +184,7 @@ $(document).ready(function() {
                     return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:200px" />';
                 }
             },
-            { "data": "TRUCK_TYPE", "width": "80px",
+            { "data": "TRUCK_TYPE", "width": "70px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
@@ -192,7 +192,7 @@ $(document).ready(function() {
 	                    {
 	                        id: 'TRUCK_TYPE',
 	                        value: data,
-                            style:'width:100px'
+                            style:"width:90px"
 	                    }
 	                );
                     return field_html;

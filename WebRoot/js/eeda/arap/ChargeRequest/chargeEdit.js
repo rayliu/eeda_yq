@@ -7,7 +7,7 @@ $(document).ready(function() {
     if($('#receive_time').val()==""){
     	
     }
-    
+    $('.row.search_panel').hide();
     
     //构造主表json
     var buildOrder = function(){
@@ -141,17 +141,19 @@ $(document).ready(function() {
 	 
 	 //复核
 	  $("#checkBtn").on('click',function(){
-		  	$("#checkBtn").attr("disabled", true);
-		  	$("#saveBtn").attr("disabled", true);
-		  
+		  	
 			$.get("/chargeRequest/checkOrder", {order_id:$('#order_id').val(),}, function(data){
 				if(data.ID>0){
 					$("#check_name").val(data.CHECK_NAME);
 					$("#check_stamp").val(data.CHECK_STAMP);
 					$("#status").val(data.STATUS);
 					$.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+					$("#checkBtn").attr("disabled", true);
+				  	$("#saveBtn").attr("disabled", true);
+				  	$("#add_charge").attr("disabled", true);
 					$("#returnBtn").attr("disabled", false);
 					$("#confirmBtn").attr("disabled", false);
+					$("#select_item_table .delete").attr("disabled", true);
 				}else{
 					$("#checkBtn").attr("disabled", false);
 					$.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
@@ -203,7 +205,21 @@ $(document).ready(function() {
 	  //收款确认
 	  $("#confirmBtn").on('click',function(){
 		  	$("#confirmBtn").attr("disabled", true);
-		  	
+		  	var formRequired=0;
+		        $('form').each(function(){
+		            if(!$(this).valid()){
+		                formRequired++;
+		            }
+		        })
+		        if($('#receive_time').val()==''){
+		        	 formRequired++;
+		        }
+		        if(formRequired>0){
+		            $.scojs_message('收款时间为必填字段', $.scojs_message.TYPE_ERROR);
+		            $("#confirmBtn").attr("disabled", false);
+		            return;
+		        }
+
 //		  	if($("#receive_type").val()=='transfers'){
 //				if($("#receive_bank").val()==''){
 //					$.scojs_message('收入银行不能为空', $.scojs_message.TYPE_FALSE);

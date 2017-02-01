@@ -1,11 +1,13 @@
 define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './costEdit_select_item', 'dataTablesBootstrap', 
         'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
-	document.title = '收款申请单 | '+document.title;
+	document.title = '付款申请单 | '+document.title;
 
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     $('#receive_time').val(eeda.getDate());
-    
+    $('#add_cost').hide();
+    //隐藏第4列
+	$('#select_item_table').dataTable().fnSetColumnVis(3, false);
     //构造主表json
     var buildOrder = function(){
     	var item = {};
@@ -248,6 +250,12 @@ $(document).ready(function() {
 	                return;
 	            selected_ids.push(item.ID);
 	        });
+	        if(selected_ids==''){
+	        	$('#createSave').attr('disabled',true);
+	        	$('#selected_ids').val(selected_ids);
+	        	return ;
+	        }
+	        $('#createSave').attr('disabled',false);
 	        $('#selected_ids').val(selected_ids);
 
 	        
@@ -321,31 +329,9 @@ $(document).ready(function() {
  	   $('#account_name').val( $(this).attr('account_name'));
  	   
     });
-    
-    
-    
-	$('#costAccept_table').on('click , input[type="checkbox"]',function(){
-		var idsArray=[];
-      	$('#costAccept_table input[type="checkbox"]:checked').each(function(){
-      			var itemId = $(this).parent().parent().attr('id');
-      			idsArray.push(itemId);
 
-      	});
-  		if(idsArray.length>0){
-  			$('#createSave').prop('disabled',false);
-  		}else{
-  			$('#createSave').prop('disabled',true);
-  		}
-  		$('#ids').val(idsArray);
-  		selectContr.refleshSelectTable(idsArray);
-	});
-	
-	
-	
-	
-	
-	
-	
 
+	
+    
 });
 });

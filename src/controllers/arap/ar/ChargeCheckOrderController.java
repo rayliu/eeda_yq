@@ -95,8 +95,11 @@ public class ChargeCheckOrderController extends Controller {
 				aci.save();
                 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
                 jobOrderArap.set("bill_flag", "Y");
+                String hedge_order_type = jobOrderArap.getStr("order_type");
+                if("cost".equals(hedge_order_type)){
+                	jobOrderArap.set("hedge_flag", "Y");
+                }
                 jobOrderArap.update();
-
 			}
 		}
 		
@@ -609,6 +612,13 @@ public class ChargeCheckOrderController extends Controller {
 		aco.set("confirm_stamp", new Date());
 		aco.set("confirm_by", LoginUserController.getLoginUserId(this));
 		aco.update();
+		
+		//设置y，已生成对账单o
+		String itemList=aco.get("ref_order_id");
+		String sql="UPDATE job_order_arap joa set billConfirm_flag='Y' "
+					+"where joa.id in (select aci.ref_order_id FROM arap_charge_item aci where charge_order_id="+id+" )";
+		Db.update(sql);
+		
 		Record r = aco.toRecord();
 		r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
 		renderJson(r);
@@ -624,7 +634,12 @@ public class ChargeCheckOrderController extends Controller {
     		for(String itemId:itemArray){
     			aci = new ArapChargeItem();
 	    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
+
 	             jobOrderArap.set("bill_flag", "Y");
+	             String hedge_order_type = jobOrderArap.getStr("order_type");
+	             if("cost".equals(hedge_order_type)){
+	                	jobOrderArap.set("hedge_flag", "Y");
+	               }
 	             jobOrderArap.update();
 				aci.set("ref_order_id", itemId);
 				aci.set("charge_order_id", chargeOrderId);
@@ -648,6 +663,7 @@ public class ChargeCheckOrderController extends Controller {
     	if(itemid !=null&& chargeOrderId!=null){
     		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("bill_flag", "N");
+    		 jobOrderArap.set("hedge_flag", "N");
              jobOrderArap.update();
 //             String sql="delete from  where ref_order_id="+itemid+"and charge_order_id="+chargeOrderId;
              Db.deleteById("arap_charge_item","ref_order_id,charge_order_id",itemid,chargeOrderId);

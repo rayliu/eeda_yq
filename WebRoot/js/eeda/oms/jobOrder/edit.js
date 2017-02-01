@@ -7,13 +7,24 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
-	
+
+	var loadOrderToLocalstorage=function(order_id){
+        if(!!window.localStorage){//查询条件处理
+            var err_temp_job_order_str = localStorage.getItem('err_temp_job_order_'+order_id);
+            if(!err_temp_job_order_str)
+                return;
+            //显示数据恢复提示：你有未保存数据，是否恢复？
+            $('#trade_recover_div').show();
+        }
+    };
+
 	 //按钮状态
 	var id = $('#order_id').val();
 	var status = $('#status').val();
     if(id==''){
     	$('#confirmCompleted').attr('disabled', true);
     }else{
+        loadOrderToLocalstorage(id);//数据恢复
 		if(status=='已完成'){
 			$('#confirmCompleted').attr('disabled', true);
 			$('#saveBtn').attr('disabled', true);
@@ -125,6 +136,7 @@ $(document).ready(function() {
         
         var order={}
         order.id = $('#order_id').val();
+        order.update_stamp = $('#update_stamp').val();
         order.plan_order_id = $('#plan_order_id').val();
         order.plan_order_item_id = $('#plan_order_item_id').val();
         order.customer_id = $('#customer_id').val();
@@ -191,10 +203,10 @@ $(document).ready(function() {
         
         if(transport_type_str.indexOf('trade')>-1){
 	        //贸易
-	        order.trade_detail = itemOrder.buildTradeDetail();
-	        order.trade_cost = itemOrder.buildTradeCostItem();
-	        order.trade_service = itemOrder.buildTradeServiceItem();
-	        order.trade_sale = itemOrder.buildTradeSaleItem();
+	        order.trade_detail = itemOrder.buildTradeDetail();//form input
+	        order.trade_cost = itemOrder.buildTradeCostItem();//商品信息table
+	        order.trade_service = itemOrder.buildTradeServiceItem();//服务费用table
+	        order.trade_sale = itemOrder.buildTradeSaleItem();//销售应收费用table
         }
         
         //费用明细，应收，应付
@@ -208,48 +220,49 @@ $(document).ready(function() {
         
         //异步向后台提交数据
         $.post('/jobOrder/save', {params:JSON.stringify(order)}, function(data){
-            var order = data;
-            if(order.ID){
+            var server_back_order = data;
+            if(server_back_order.ID){
             	//控制报关申请单按钮
             	$('#custom_type input[type="checkbox"]:checked').each(function(){
                 	if($(this).val()=="china"){
                 		custom_type='china';
                 	};
                 });
-            	eeda.contactUrl("edit?id",order.ID);
+            	eeda.contactUrl("edit?id",server_back_order.ID);
             	$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
             	$('#saveBtn').attr('disabled', false);
             	$('#confirmCompleted').attr('disabled', false);
-                $("#order_id").val(order.ID);
-                $("#order_no").val(order.ORDER_NO);
-                $("#creator_name").val(order.CREATOR_NAME);
-                $("#create_stamp").val(order.CREATE_STAMP);
-                if(order.CUSTOM){
-                	$("#custom_id").val(order.CUSTOM.ID);
+                $("#order_id").val(server_back_order.ID);
+                $("#order_no").val(server_back_order.ORDER_NO);
+                $("#update_stamp").val(server_back_order.UPDATE_STAMP);
+                $("#creator_name").val(server_back_order.CREATOR_NAME);
+                $("#create_stamp").val(server_back_order.CREATE_STAMP);
+                if(server_back_order.CUSTOM){
+                	$("#custom_id").val(server_back_order.CUSTOM.ID);
                 }
-                if(order.ABROADCUSTOM){
-                	$("#abroad_custom_id").val(order.ABROADCUSTOM.ID);
+                if(server_back_order.ABROADCUSTOM){
+                	$("#abroad_custom_id").val(server_back_order.ABROADCUSTOM.ID);
                 }
-                if(order.HKCUSTOM){
-                	$("#hk_custom_id").val(order.HKCUSTOM.ID);
+                if(server_back_order.HKCUSTOM){
+                	$("#hk_custom_id").val(server_back_order.HKCUSTOM.ID);
                 }
-                if(order.CUSTOMSELF){
-                	$("#customSelf_id").val(order.CUSTOMSELF.ID);
+                if(server_back_order.CUSTOMSELF){
+                	$("#customSelf_id").val(server_back_order.CUSTOMSELF.ID);
                 }
-                if(order.SHIPMENT){
-                	$("#shipment_id").val(order.SHIPMENT.ID);
+                if(server_back_order.SHIPMENT){
+                	$("#shipment_id").val(server_back_order.SHIPMENT.ID);
                 }
-                if(order.INSURANCE){
-                	$("#insurance_id").val(order.INSURANCE.ID);
+                if(server_back_order.INSURANCE){
+                	$("#insurance_id").val(server_back_order.INSURANCE.ID);
                 }
-                if(order.AIR){
-                	$("#air_id").val(order.AIR.ID);
+                if(server_back_order.AIR){
+                	$("#air_id").val(server_back_order.AIR.ID);
                 }
-                if(order.TRADE){
-                	$("#trade_id").val(order.TRADE.ID);
+                if(server_back_order.TRADE){
+                	$("#trade_id").val(server_back_order.TRADE.ID);
                 }
-                if(order.EXPRESS){
-                	$("#express_id").val(order.EXPRESS.ID);
+                if(server_back_order.EXPRESS){
+                	$("#express_id").val(server_back_order.EXPRESS.ID);
                 }
                 
                 $("#fileuploadSpan").show();
@@ -259,19 +272,25 @@ $(document).ready(function() {
                 $("#truckOrderPDF").show();
                 
                 //异步刷新明细表
-                itemOrder.refleshOceanTable(order.ID);
-                itemOrder.refleshAirItemTable(order.ID);
-                itemOrder.refleshCargoDescTable(order.ID);
-                itemOrder.refleshLandItemTable(order.ID);
-                itemOrder.refleshChargeTable(order.ID);
-                itemOrder.refleshCostTable(order.ID);
-                itemOrder.refleshTradeCostItemTable(order.ID);
-                itemOrder.refleshTradeServiceItemTable(order.ID);
-                itemOrder.refleshTradeSaleItemTable(order.ID);
-                itemOrder.refleshCustomChinaSelfItemTable(order.ID);
+                itemOrder.refleshOceanTable(server_back_order.ID);
+                itemOrder.refleshAirItemTable(server_back_order.ID);
+                itemOrder.refleshCargoDescTable(server_back_order.ID);
+                itemOrder.refleshLandItemTable(server_back_order.ID);
+                itemOrder.refleshChargeTable(server_back_order.ID);
+                itemOrder.refleshCostTable(server_back_order.ID);
+                itemOrder.refleshTradeCostItemTable(server_back_order.ID);
+                itemOrder.refleshTradeServiceItemTable(server_back_order.ID);
+                itemOrder.refleshTradeSaleItemTable(server_back_order.ID);
+                itemOrder.refleshCustomChinaSelfItemTable(server_back_order.ID);
                 $.unblockUI();
             }else{
-                $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+                if(data.ERR_CODE == 'update_stamp_not_equal'){
+                    saveOrderToLocalstorage(order);
+                    $.scojs_message(data.ERR_MSG, $.scojs_message.TYPE_ERROR);
+                }else{
+                    $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+                }
+                
                 $('#saveBtn').attr('disabled', false);
                 $.unblockUI();
             }
@@ -282,7 +301,13 @@ $(document).ready(function() {
         });
     	
 	});
-    
+
+    var saveOrderToLocalstorage=function(order_dto){
+        if(!!window.localStorage){
+            localStorage.setItem("err_temp_job_order_"+order_dto.id, JSON.stringify(order_dto));
+        }
+    };
+
     var showServiceTab=function(service){
         switch (service){
             case 'ocean':
