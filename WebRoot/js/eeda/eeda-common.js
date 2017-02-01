@@ -11,7 +11,7 @@ define(['jquery', 'dataTablesBootstrap'], function($){
             // }
         },
         complete:function(XMLHttpRequest, textStatus){
-           console.log("ajaxSetup textStatus:"+textStatus);
+           //console.log("ajaxSetup textStatus:"+textStatus);
            if(XMLHttpRequest.responseText.indexOf('忘记密码')>0){
               alert( '您未登录, 请重新登录.' );
             }
@@ -322,6 +322,31 @@ eeda.refreshUrl = refreshUrl;
   	//暂时不处理 
    };
    
+    //表格中，凡是按enter自动跳到右边下一个input
+    $(document).on('keydown', 'table input:not([name$="_input"])', function(e) {
+      if (e.keyCode == 13) {//enter
+          var inputField = $(this);
+
+          var td = inputField.parent();
+          var row = td.parent();
+          var colCount = row.find('td').length;
+
+          var nextTdInput, nextTd=td;
+          var index = 0;
+          while(!nextTdInput && index<colCount){
+              nextTd = nextTd.next();
+              index = nextTd.index();
+              nextTdInput = nextTd.find('input:last');
+              if(nextTdInput && !nextTdInput.prop('disabled')){
+                  nextTdInput.focus();
+                  break;
+              }else{
+                  nextTdInput=null;
+              }
+          }
+        }
+    });
+
    //dataTable里的下拉列表，查询参数为input,url,添加的参数para,下拉显示的数据库字段
    eeda.bindTableField = function(table_id, el_name,url,para) {
 		  var tableFieldList = $('#table_input_field_list');
@@ -391,6 +416,7 @@ eeda.refreshUrl = refreshUrl;
 		  });
 
       tableFieldList.on('keydown', 'li', function(e){
+        e.preventDefault();
         if (e.keyCode == 13) {//enter
           var inputField = eeda._inputField;
           var hiddenField = eeda._hiddenField;
@@ -543,7 +569,11 @@ eeda.refreshUrl = refreshUrl;
                   var td = inputField.parent().parent();
                   var class_name = td.attr('class');
                   var currency_rate = $a.attr('currency_rate');
-                  td.next().children().val(currency_rate);//选择币制则填入汇率
+
+                  var nextTdInput = td.next().children();
+                  nextTdInput.val(currency_rate);//选择币制则填入汇率
+                  nextTdInput.focus();
+
                   if(class_name=='cny_to_other'){
                 	  var total = td.parent().find('.cny_total_amount input').val();
                   }else{
