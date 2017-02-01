@@ -363,3 +363,17 @@ div.dataTables_wrapper div.dataTables_paginate{
     border-color: #f7f7f7;
     border-bottom: 2px solid #005bac;
 }
+
+.nav-tabs>li>a {
+    border-radius: 15px 15px 0 0;
+    padding: 2px 40px;
+}
+.dataTables_scrollHead {
+    margin-top: -5px;
+}
+.pagination>.disabled>a, .pagination>.disabled>a:focus,
+.pagination>.disabled>a:hover, .pagination>.disabled>span, 
+.pagination>.disabled>span:focus, .pagination>.disabled>span:hover{
+    background-color: #f7f7f7;
+    border: 0px
+}
