@@ -328,6 +328,7 @@ thead.eeda{
 .table-bordered>tbody>tr>td{
     border: 0px;
     border-top: 1px solid #ddd;
+    vertical-align: middle;
 }
 
 .table>thead>tr>th{
