@@ -95,6 +95,7 @@ import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
+import controllers.app.AppControllerForMobile;
 import controllers.cms.jobOrder.CustomJobOrderController;
 import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.ModuleController;
@@ -183,11 +184,16 @@ public class EedaConfig extends JFinalConfig {
         //TODO: 为之后去掉 yh做准备
         String contentPath="/";//"yh";
 
-        // me.add("/fileUpload", HelloController.class);
+        setAppRoute(me, contentPath);
         setScmRoute(me, contentPath);
         
+        
     }
-    
+    private void setAppRoute(Routes me, String contentPath) {
+        me.add("/app", AppControllerForMobile.class);
+        me.add("/app/jobOrder", JobOrderControllerForMobile.class);
+        me.add("/app/planOrder", PlanOrderControllerForMobile.class);
+    }
 
 	private void setScmRoute(Routes me, String contentPath) {
 		// yh project controller
@@ -223,8 +229,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/planOrder", PlanOrderController.class, contentPath);
 		me.add("/todo", TodoController.class, contentPath);
 		me.add("/jobOrder", JobOrderController.class, contentPath);
-		me.add("/app/jobOrder", JobOrderControllerForMobile.class);
-		me.add("/app/planOrder", PlanOrderControllerForMobile.class);
+		
 		me.add("/jobOrderReport", JobOrderReportController.class, contentPath);
 //		me.add("/report", ReportController.class, contentPath);
 		me.add("/customOrder", CustomOrderController.class, contentPath);
