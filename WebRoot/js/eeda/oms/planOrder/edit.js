@@ -3,6 +3,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
     // $.blockUI({ 
     //     message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/></h4>' 
     // });
+    $("#breadcrumb_li").text('计划订单');
 
     $(document).ready(function() {
 
