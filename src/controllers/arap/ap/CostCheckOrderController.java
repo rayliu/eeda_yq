@@ -114,7 +114,8 @@ public class CostCheckOrderController extends Controller {
 	                + " cur.name currency_name,"
 	                + " ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
                     + " ifnull(joa.exchange_currency_rate, 1) exchange_currency_rate,"
-                    + " ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, joa.pay_flag "
+                    + " ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, joa.pay_flag ,"
+                    + " fi.name fin_name "
 	                + " from job_order_arap joa "
 	                + " left join job_order jo on jo.id=joa.order_id "
 	                + " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -125,6 +126,7 @@ public class CostCheckOrderController extends Controller {
 	                + " left join location l on l.id=jos.fnd "
 	                + " left join currency cur on cur.id=joa.currency_id "
 	                + " left join currency cur1 on cur1.id=joa.exchange_currency_id "
+	                +" left join fin_item fi on joa.charge_id = fi.id "
 	                + " where joa.audit_flag='Y' and joa.bill_flag='N' and joa.id in("+ids+") "
 	                + " GROUP BY joa.id"
 	                + " ORDER BY jo.order_no";	
@@ -141,6 +143,7 @@ public class CostCheckOrderController extends Controller {
 	                + " cur.name currency_name, "
 	                + " ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
 	                + " ifnull(joa.exchange_currency_rate, 1) exchange_currency_rate,"
+	                + " fi.name fin_name ,"
 	                + " ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, joa.pay_flag "
 	                + " from job_order_arap joa "
 	                + " left join job_order jo on jo.id=joa.order_id "
@@ -154,6 +157,7 @@ public class CostCheckOrderController extends Controller {
 	                + " left join currency cur1 on cur1.id=joa.exchange_currency_id "
 	                + " left join arap_cost_item aci on aci.ref_order_id = joa.id"
 					+ " left join arap_cost_order aco on aco.id = aci.cost_order_id "
+					+ " left join fin_item fi on joa.charge_id = fi.id "
 					+ " where joa.id = aci.ref_order_id and aco.id in ("+order_id+")"+currency_code
 	                + " GROUP BY joa.id "
 	                + " ORDER BY aco.order_no, jo.order_no ";

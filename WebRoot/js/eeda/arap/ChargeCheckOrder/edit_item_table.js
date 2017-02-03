@@ -72,7 +72,9 @@ $(document).ready(function() {
             },
             { "data": "CREATE_STAMP"},
             { "data": "SP_NAME"},
+            { "data": "FIN_NAME"},
             { "data": "CURRENCY_NAME",'class':'currency_name'},
+
             { "data": "TOTAL_AMOUNT",'class':'total_amount',
             	"render": function ( data, type, full, meta ) {
             		var total_str=parseFloat(data).toFixed(2);
