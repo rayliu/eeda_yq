@@ -178,30 +178,30 @@ $(document).ready(function() {
 			{ "data": "ID",
 			    "render": function ( data, type, full, meta ) {
 			    	if(data)
-			    		return '<input type="checkbox" style="width:30px" class="checkBoxOfCostTable" >';
+			    		return '<input type="checkbox"  class="checkBoxOfCostTable" >';
 			    	else 
-			    		return '<input type="checkbox" style="width:30px" disabled>';
+			    		return '<input type="checkbox"  disabled>';
 			    }
 			},
-			{ "width": "150px",
+			{ "width": "50px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
                 	if(full.ID&&full.AUDIT_FLAG == 'Y'){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" disabled>删除</button>&nbsp';
-                		str+= '<button type="button" class="cancelCostConfirm btn btn-danger btn-xs" style="width:60px">取消确认</button> '; 
+                		str+= '<button type="button" class="delete btn table_btn btn-default btn-xs" disabled>删除</button>&nbsp';
+                		str+= '<button type="button" class="cancelCostConfirm btn table_btn btn-danger btn-xs">取消确认</button> '; 
                 		}
                 	else if(full.ID){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" >删除</button>&nbsp';
-                		str+= '<button type="button" class="costConfirm btn btn-success btn-xs" style="width:60px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" class="delete btn table_btn btn-default btn-xs" >删除</button>&nbsp';
+                		str+= '<button type="button" class="costConfirm btn table_btn btn-success btn-xs" value="'+full.ID+'" >确认</button> ';		
                 	}else{
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px">删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:60px"  disabled>确认</button> ';
+                		str+= '<button type="button" class="delete btn table_btn btn-default btn-xs">删除</button>&nbsp';
+                		str+= '<button type="button" class="btn table_btn btn-success btn-xs"  disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;
                 }
             },
-            { "data": "TYPE","width": "80px",
+            { "data": "TYPE","width": "50px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		var str = '<select name="type" class="form-control search-control" style="width:100px" disabled>'
@@ -226,7 +226,7 @@ $(document).ready(function() {
                 	}
                 }
             },
-            { "data": "SP_ID","width": "180px",
+            { "data": "SP_ID","width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
@@ -256,7 +256,7 @@ $(document).ready(function() {
                  }
                }
             },
-            { "data": "CHARGE_ID","width": "180px",
+            { "data": "CHARGE_ID","width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
@@ -286,7 +286,7 @@ $(document).ready(function() {
                 }
               }
             },
-            { "data": "CHARGE_ENG_ID","width": "180px",
+            { "data": "CHARGE_ENG_ID","width": "80px",
             	"render": function ( data, type, full, meta ) {
         			if(!data)
         				data='';
@@ -302,7 +302,7 @@ $(document).ready(function() {
         			return field_html;
             	}
             },
-            { "data": "PRICE", "width": "120px",
+            { "data": "PRICE", "width": "50px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -356,7 +356,7 @@ $(document).ready(function() {
                 }
               }
             },
-            { "data": "TOTAL_AMOUNT", "width": "150px","className":"currency_total_amount",
+            { "data": "TOTAL_AMOUNT", "width": "80px","className":"currency_total_amount",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(3);
@@ -409,7 +409,7 @@ $(document).ready(function() {
                }
               }
             },
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "150px","className":"cny_total_amount",
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "80px","className":"cny_total_amount",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  (Math.round(data*100)/100).toFixed(2);
@@ -461,7 +461,7 @@ $(document).ready(function() {
             		}
             	}
             },
-            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "150px","className":"exchange_total_amount",
+            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "80px","className":"exchange_total_amount",
             	"render": function ( data, type, full, meta ) {
             		if(data)
             			var str =  (Math.round(data*100)/100).toFixed(2);

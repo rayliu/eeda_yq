@@ -10,6 +10,21 @@ html, body,.container {
     font-size: 10px;
 }
 
+body ::-webkit-scrollbar {
+    height: 12px;
+    width: 12px;
+    background: #f7f7f7;
+}
+
+body ::-webkit-scrollbar-thumb {
+    background: #005BAC;
+    -webkit-border-radius: 1ex;
+}
+
+body ::-webkit-scrollbar-corner {
+    background: #000;
+}
+
 .login_back_half_up{
     height: 40%;
     background-color: #fff;
@@ -388,7 +403,7 @@ div.dataTables_wrapper div.dataTables_paginate{
 
 /*  page edit start..... */
 .table .form-control{
-    width: 100% !important;
+    //width: 100%;
 }
 
 .simple_order_list_div .table_btn_bar {
@@ -434,6 +449,7 @@ div.dataTables_wrapper div.dataTables_paginate{
 .simple_order_list_div .table-bordered {
     border: 0px;
     background-color: #fff;
+    font-size: 10px;
 }
 
 .simple_order_list_div .table-bordered>tbody>tr>td{
@@ -464,17 +480,20 @@ div.dataTables_wrapper div.dataTables_paginate{
     padding-left: 15px;
 }
 
-body ::-webkit-scrollbar {
-    height: 12px;
-    width: 12px;
-    background: #f7f7f7;
+.simple_order_list_div h3 {
+    font-size: 13px;
+    font-weight: bold;
 }
 
-body ::-webkit-scrollbar-thumb {
-    background: #005BAC;
-    -webkit-border-radius: 1ex;
+h4.panel-title  {
+    font-size: 13px;
+    font-weight: bold;
 }
 
-body ::-webkit-scrollbar-corner {
-    background: #000;
+.simple_order_list_div table td{
+    font-size: 10px;
+}
+
+.simple_order_list_div .col-lg-12{
+    background-color: #fff;
 }

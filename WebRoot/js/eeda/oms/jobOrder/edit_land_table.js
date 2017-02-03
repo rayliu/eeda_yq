@@ -83,7 +83,7 @@ $(document).ready(function() {
     //------------事件处理
 	 var cargoTable = eeda.dt({
 	        id: 'land_table',
-	        autoWidth: false,
+	        autoWidth: true,
             
 	        drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
 	        	bindFieldEvent();
@@ -99,35 +99,35 @@ $(document).ready(function() {
 			},
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
+                	return '<button type="button" class="delete btn table_btn btn-default btn-xs" >删除</button>';
                 }
             },
             { "width": "30px",
             	"render": function ( data, type, full, meta ) {
             		if(full.ID){
-            			return '<button type="button" class="land_charge btn btn-success btn-xs" style="width:50px">费用</button>';	
+            			return '<button type="button" class="land_charge btn table_btn btn-success btn-xs" >费用</button>';	
             		}else{
-            			return '<button type="button" class="land_charge btn btn-success btn-xs" style="width:50px" disabled>费用</button>';
+            			return '<button type="button" class="land_charge btn table_btn btn-success btn-xs"  disabled>费用</button>';
             		}
             	}
             },
-            { "data":"ID","width": "80px",
+            { "data":"ID","width": "50px",
             	"render": function ( data, type, full, meta ) {
             		if(data)
-	            		return '<span class="btn btn-success btn-xs fileinput-button" style="width:100px">' 
+	            		return '<span class="btn table_btn btn-success btn-xs fileinput-button" >' 
 		                		+'<i class="glyphicon glyphicon-plus"></i>'
 		                		+'<span>上传签收文件</span>'
 		                		+'<input class="upload" type="file" multiple>'
 		                		+'</span>'
 		            else
-		            	return '<span class="btn btn-default btn-xs fileinput-button" style="width:100px" title="请先保存再上传文件">' 
+		            	return '<span class="btn table_btn btn-default btn-xs fileinput-button" title="请先保存再上传文件">' 
 		                		+'<i class="glyphicon glyphicon-plus"></i>'
 		                		+'<span>上传签收文件</span>'
 		                		+'<input  class="upload" type="button" disabled>'
 		                		+'</span>'			
             	}
             },
-            { "data": "DOC_NAME","width": "80px",
+            { "data": "DOC_NAME","width": "50px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                 		return '<button type="button" class="btn btn-default btn-xs delete_sign_desc" style="width:100px">删除签收文件</button>';
@@ -135,7 +135,7 @@ $(document).ready(function() {
                 		return '';
                 }
             },
-            { "data": "UNLOAD_TYPE", "width": "80px",
+            { "data": "UNLOAD_TYPE", "width": "50px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -148,7 +148,7 @@ $(document).ready(function() {
                     return str;
                 }
             },
-            { "data": "TRANSPORT_COMPANY", "width": "180px",
+            { "data": "TRANSPORT_COMPANY", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
@@ -157,31 +157,31 @@ $(document).ready(function() {
                                 id: 'TRANSPORT_COMPANY',
                                 value: data,
                                 display_value: full.TRANSPORT_COMPANY_NAME,
-                                style:'width:200px'
+                                style:'width:100px'
                             }
                         );
                     return field_html;
                 }
             },
-            { "data": "TRANS_NO", "width": "180px",
+            { "data": "TRANS_NO", "width": "100px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="trans_no" value="'+data+'" class="form-control" style="width:200px" />';
+                    return '<input type="text" name="trans_no" value="'+data+'" class="form-control" style="width:120px" />';
                 }
             },
-            { "data": "DRIVER", "width": "180px",
+            { "data": "DRIVER", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="driver" value="'+data+'" class="form-control" style="width:200px" />';
+                    return '<input type="text" name="driver" value="'+data+'" class="form-control" style="width:100px" />';
                 }
             },
-            { "data": "DRIVER_TEL", "width": "180px",
+            { "data": "DRIVER_TEL", "width": "100px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:200px" />';
+                    return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:100px" />';
                 }
             },
             { "data": "TRUCK_TYPE", "width": "70px",
@@ -358,7 +358,7 @@ $(document).ready(function() {
             { "data": "DOC_NAME", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data){
-            			return '<span style="width:200px" />';
+            			return '<span style="width:200px;"><span/>';
             		}
             		else{
             			var arr = data.split(",");
@@ -369,7 +369,7 @@ $(document).ready(function() {
 		            		str += '<a href="/upload/doc/'+arr[i]+'" target="_blank">'+arr[i]+'</a>&nbsp;&nbsp;'
 		            			  +'<a id="'+idArr[i]+'" class="glyphicon glyphicon-remove delete_icon_of_sign_desc" style="margin-right:15px;" role="menuitem" tabindex="-10"></a>'
 	            		}
-	            		return '<span style="width:200px" >'+str+'</span>';
+	            		return '<span style="width:200px;" >'+str+'</span>';
             		}
             	}
             },
