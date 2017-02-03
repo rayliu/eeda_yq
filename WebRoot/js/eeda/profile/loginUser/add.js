@@ -1,3 +1,6 @@
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 
+        'validate_cn', 'sco', 'datetimepicker_CN', 'jq_blockui'], function ($, metisMenu) { 
+
 var queryOffice=function(){
 	var offices=[];
 	$.post('/loginUser/searchAllOffice',function(data){
@@ -116,10 +119,11 @@ var customerList = function(){
 		                +' <td><a class="btn removeCustomer" title="删除"><i class="fa fa-trash-o fa-fw"></i></a></td></tr>');
 					
 					$("select[name='customerSelect']:last").append("<option value='"+data.customerlist[i].CUSTOMER_ID+"'>"+data.customerlist[i].COMPANY_NAME+"</option>");
-					queryCustomer();
+					
 				}
 				
 			}
+			queryCustomer();
 		}
 	},'json');
 };
@@ -211,8 +215,13 @@ $(document).ready(function(){
 		var is_check = $("#selectAllCustomer").prop("checked");
 		var userId = $("#userId").val();
 		if(userId != null && userId !=""){
+			$.blockUI({ 
+                message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
+            });
 			$.post('/loginUser/selectAllCustomer',{is_check:is_check,userId:userId},function(data){
 				customerList();
+				$.scojs_message('更新成功', $.scojs_message.TYPE_OK);
+				$.unblockUI();
 			},'json');
 		};
 	});
@@ -242,4 +251,6 @@ $(document).ready(function(){
 	if($("#userId").val() != "" && $("#userId").val() != null){
 		$("#assigning_role").show();
 	}
+	});
+	$.unblockUI();
 });
