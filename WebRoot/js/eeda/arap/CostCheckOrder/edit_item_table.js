@@ -44,7 +44,7 @@ $(document).ready(function() {
             	cnames = [];
             },
             columns:[
-            {"data": "ID",
+            {"data": "ID","width":"30px",
             	"render": function ( data, type, full, meta ) {
             		var str = '<input type="checkbox" class="checkBox" style="width:30px">';
             		for(var i=0;i<ids.length;i++){
@@ -55,11 +55,11 @@ $(document).ready(function() {
             		return str;
 			    }
             },
-            {"width":"30px",
+            {"width":"50px",
               "render": function ( data, type, full, meta ) {
-                    var str = '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" >删除</button>';
+                    var str = '<button type="button" class="delete btn table_btn btn-default btn-xs" style="width:50px" >删除</button>';
                      if($("#status").val()=='已确认'){
-                        return '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" disabled>删除</button>';
+                        return '<button type="button" class="delete btn table_btn btn-default btn-xs" style="width:50px" disabled>删除</button>';
                      }
                     return str;
                 }
@@ -132,7 +132,7 @@ $(document).ready(function() {
           //     flash();
           // },
           columns: [
-                { "width": "10px","orderable": false,
+                { "width": "30px","orderable": false,
                         "render": function ( data, type, full, meta ) {
                             var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
                             for(var i=0;i<itemIds.length;i++){
