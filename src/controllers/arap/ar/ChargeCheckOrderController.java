@@ -459,6 +459,11 @@ public class ChargeCheckOrderController extends Controller {
 		String usd_totalAmount = getPara("usd_totalAmount");
 		String hkd_totalAmount = getPara("hkd_totalAmount");
 		String jpy_totalAmount = getPara("jpy_totalAmount");
+		String exchange_total_amount = getPara("exchange_totalAmount");
+		String exchange_cny_totalAmount = getPara("exchange_cny_totalAmount");
+		String exchange_usd_totalAmount = getPara("exchange_usd_totalAmount");
+		String exchange_hkd_totalAmount = getPara("exchange_hkd_totalAmount");
+		String exchange_jpy_totalAmount = getPara("exchange_jpy_totalAmount");
 		
 		String sql = "SELECT cur.name currency_name ,joa.exchange_rate ,p.phone,p.contact_person,p.address,p.company_name,joa.sp_id,joa.order_id"
 				+ " FROM job_order_arap joa"
@@ -472,6 +477,11 @@ public class ChargeCheckOrderController extends Controller {
 		rec.set("cny", cny_totalAmount);
 		rec.set("usd", usd_totalAmount);
 		rec.set("hkd", hkd_totalAmount);
+		rec.set("exchange_total_amount", exchange_total_amount);
+		rec.set("exchange_jpy", exchange_jpy_totalAmount);
+		rec.set("exchange_cny", exchange_cny_totalAmount);
+		rec.set("exchange_usd", exchange_usd_totalAmount);
+		rec.set("exchange_hkd", exchange_hkd_totalAmount);
 
 		rec.set("address", rec.get("address"));
 		rec.set("customer", rec.get("contact_person"));

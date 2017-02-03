@@ -106,7 +106,36 @@
 					}){}%>
 				</div>
 			</div>      -->
-			
+			<div class="row">
+				<div class="form-group">
+					<div class="col-lg-12">
+						<h4>对账币值金额汇总</h4>
+					</div>
+				</div>
+		   </div>
+			<div class="row">
+				<div class="col-lg-3">
+					<%include("/eeda/component/form/inputField.html", { id:'cny',
+					label:'应收CNY', value:'',disabled:'disabled'
+					}){}%>
+				</div>
+				<div class="col-lg-3">
+					<%include("/eeda/component/form/inputField.html", { id:'usd',
+					label:'应收USD', value:'',disabled:'disabled'
+					}){}%>
+				</div>
+				<div class="col-lg-3">
+					<%include("/eeda/component/form/inputField.html", { id:'hkd',
+					label:'应收HKD', value:'',disabled:'disabled'
+					}){}%>
+				</div>
+				<div class="col-lg-3">
+					<%include("/eeda/component/form/inputField.html", { id:'jpy',
+					label:'应收JPY', value:'',disabled:'disabled'
+					}){}%>
+				</div>
+			</div>
+
 			<div class="row">
 				<div class="form-group">
 					<div class="col-lg-12">
@@ -116,22 +145,22 @@
 		   </div>
 			<div class="row">
 				<div class="col-lg-3">
-					<%include("/eeda/component/form/inputField.html", { id:'cny',
+					<%include("/eeda/component/form/inputField.html", { id:'exchange_cny',
 					label:'应收CNY', value:order.cny!'',disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-3">
-					<%include("/eeda/component/form/inputField.html", { id:'usd',
+					<%include("/eeda/component/form/inputField.html", { id:'exchange_usd',
 					label:'应收USD', value:order.usd!'',disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-3">
-					<%include("/eeda/component/form/inputField.html", { id:'hkd',
+					<%include("/eeda/component/form/inputField.html", { id:'exchange_hkd',
 					label:'应收HKD', value:order.hkd!'',disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-3">
-					<%include("/eeda/component/form/inputField.html", { id:'jpy',
+					<%include("/eeda/component/form/inputField.html", { id:'exchange_jpy',
 					label:'应收JPY', value:order.jpy!'',disabled:'disabled'
 					}){}%>
 				</div>
