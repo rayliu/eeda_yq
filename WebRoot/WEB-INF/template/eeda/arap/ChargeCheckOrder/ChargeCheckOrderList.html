@@ -2,12 +2,6 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="btn-header">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active" >
                             <a href="#unselected" data-toggle="tab">应收未对账明细</a>
@@ -19,7 +13,8 @@
 
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade active in" id="unselected">
-                            <div class="panel-body">
+                            <div class="row simple_search_div">
+                            	<div class="col-lg-12">
                                  <form id="orderForm">
                                     <div class="row">
                                         <div class="col-lg-4">
@@ -132,15 +127,15 @@
 									                       }){}%>
 									         </div>
                                        </div>
-                                     
-                                </form>
-
-                                <div class="form-group button-bar" >
-                                <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
-                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
-                                &nbsp&nbsp<input type="checkbox" name="checkOrderAll" id="checkOrderAll" value="Y">查看应收应付<span style="color:red">(红色为应付)</span>
+                                       <div class="form-group button-bar" >
+		                                	<button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+		                                	<button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
+		                                	&nbsp&nbsp<input type="checkbox" name="checkOrderAll" id="checkOrderAll" value="Y">查看应收应付<span style="color:red">(红色为应付)</span>
+		                               </div>
+                                	</form>
                                 </div>
-                                <div class="form-group">
+                            
+                                <div class="col-lg-12">
                                 	<form id="billForm" action="/chargeCheckOrder/create" method="post">
                                 		<input id="idsArray" name="idsArray" type="hidden">
                                 		<input id="totalAmount" name="totalAmount"  type="hidden">
@@ -148,7 +143,7 @@
                                 		<input id="usd_totalAmount" name="usd_totalAmount"  type="hidden">
                                 		<input id="hkd_totalAmount" name="hkd_totalAmount"  type="hidden">
                                 		<input id="jpy_totalAmount" name="jpy_totalAmount"  type="hidden">
-                                		<button id="createBtn" disabled type="button" class="btn  btn-success" >创建对账单</button>
+                                		<button id="createBtn" disabled type="button" class="btn btn_green" >创建对账单</button>
                                     </form>
                                     
 									<span class="badge" style='margin-top:12px;'> CNY总额: <span id="cny_totalAmountSpan">0</span></span>&nbsp;&nbsp;
@@ -156,89 +151,73 @@
 									<span class="badge" style='margin-top:12px;'> HKD总额: <span id="hkd_totalAmountSpan">0</span></span>&nbsp;&nbsp;
 									<span class="badge" style='margin-top:12px;'> JPY总额: <span id="jpy_totalAmountSpan">0</span></span>&nbsp;&nbsp;
 								</div>
-								<div class="form-group">
-		                            <ul id="orderTabs" class="nav nav-tabs">
-		                                <li class="active"><a href="#unchecked" data-toggle="tab" data-src="unchecked" id ="uncheckedChargeCheckOrder">未选中明细</a>
-		                                </li>
-		                                <li class=""><a href="#checked" data-toggle="tab" id="checkedChargeCheckOrder" style="display:none">已选中明细</a>
-		                                </li>                               
-		                            </ul><br>
-		                            <span style="color:#AAAAAA">* 注：请输入查询条件获取已确认的费用明细数据，其中结算公司为必填</span>
-                               </div>
-	                       <div class="tab-content">
-		                      <div class="tab-pane fade active in" id="unchecked">
-	                               <%include("/eeda/component/form/detailTable.html", 
-	                                        {
-	                                            id:'uncheckedEeda-table', 
-	                                            style: 'width:2500px',
-	                                            headers:['<input type="checkbox" id="allCheck">','工作单号','出货时间','创建时间','类型','费用名称','客户','结算公司',
-	                                             '对账金额','对账币制','对人民币汇率','总金额（CNY）','结算币制','结算汇率','结算金额',
-	                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','柜号','车型'
-	                                            ]
-	                                        }){} %>
-                               </div>
-                             <!--   <div role="tabpanel" class="tab-pane fade in" id="checked">
-                               	   <%include("/eeda/component/form/detailTable.html", 
-	                                        {
-	                                            id:'checkedEeda-table', 
-	                                            style: 'width:2500px',
-	                                            headers:['','工作单号','出货时间','创建时间','类型','费用名称','客户','结算公司','货币类型','金额','汇率','总金额（CNY）',
-	                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','柜号','车型','状态','DEBIT_NO'
-	                                            ]
-	                                        }){} %>
-                               </div> -->
-                            </div>
-                          </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane fade in" id="charge_check_order">
-                            <div class="panel-body">
-                             <form id="orderSearchForm">
-                               <div class="row"><!--  第1行  -->
-                                 <div class="col-lg-4">
-                                    <%include("/eeda/component/form/inputSpField.html", 
-				                    {   
-				                        id:'sp1',
-				                        label:'结算公司'
-				                    }){}%>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <%include("/eeda/component/form/inputField.html", 
-	                                {   
-	                                    id:'order_no1', 
-	                                    label:'对帐单号', 
-	                                    value:order.order_no!''
-	                              }){}%>
-                                    </div>  
-                                     <div class="col-lg-4">
-                                        <%include("/eeda/component/form/selectField.html", 
-                                            {   id:'status', 
-                                                label:'状态', 
-                                                value_list:[
-                                                    {code:'', value:''},
-                                                    {code:'新建', value:'新建'},
-                                                    {code:'已确认', value:'已确认'},
-                                                    {code:'部分申请付款中', value:'部分申请付款中'},
-                                                    {code:'全额申请付款中', value:'全额申请付款中'}
-                                                ]
-                                            }){}%>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <%include("/eeda/component/form/inputDateQueryField.html", 
-                                        {    id:'create_stamp1', 
-                                             label:'创建时间', 
-                                             value:''
-                                           }){} %>
-                                       </div>  
-                                </div>
-                                <!-- /.row-->  
-                               </form>
-
-                                <div class="form-group button-bar" >
-                                    <button id="searchBtn1" class="btn btn-primary btn-sm" type="button">查询</button>
-                              <button id="resetBtn1" class="btn btn-default btn-sm" type="button">清空条件</button>
+							</div>
+						
+                       	   <div class="row simple_list_div">
+                               <%include("/eeda/component/form/detailTable.html", 
+                                        {
+                                            id:'uncheckedEeda-table', 
+                                            style: 'width:2500px',
+                                            headers:['<input type="checkbox" id="allCheck">','工作单号','出货时间','创建时间','类型','费用名称','客户','结算公司',
+                                             '对账金额','对账币制','对人民币汇率','总金额（CNY）','结算币制','结算汇率','结算金额',
+                                             'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','柜号','车型'
+                                            ]
+                                        }){} %>
                            </div>
+                        </div>
+                        
+                        <div role="tabpanel" class="tab-pane fade in" id="charge_check_order">
+                            <div class="row simple_search_div">
+                            	<div class="col-lg-12">
+                             		<form id="orderSearchForm">
+		                               <div class="row"><!--  第1行  -->
+		                                 <div class="col-lg-4">
+		                                    <%include("/eeda/component/form/inputSpField.html", 
+						                    {   
+						                        id:'sp1',
+						                        label:'结算公司'
+						                    }){}%>
+		                                    </div>
+		                                    <div class="col-lg-4">
+		                                        <%include("/eeda/component/form/inputField.html", 
+			                                {   
+			                                    id:'order_no1', 
+			                                    label:'对帐单号', 
+			                                    value:order.order_no!''
+			                              }){}%>
+		                                    </div>  
+		                                     <div class="col-lg-4">
+		                                        <%include("/eeda/component/form/selectField.html", 
+		                                            {   id:'status', 
+		                                                label:'状态', 
+		                                                value_list:[
+		                                                    {code:'', value:''},
+		                                                    {code:'新建', value:'新建'},
+		                                                    {code:'已确认', value:'已确认'},
+		                                                    {code:'部分申请付款中', value:'部分申请付款中'},
+		                                                    {code:'全额申请付款中', value:'全额申请付款中'}
+		                                                ]
+		                                            }){}%>
+		                                    </div>
+		                                </div>
+		                                <div class="row">
+		                                    <div class="col-lg-4">
+		                                        <%include("/eeda/component/form/inputDateQueryField.html", 
+		                                        {    id:'create_stamp1', 
+		                                             label:'创建时间', 
+		                                             value:''
+		                                           }){} %>
+		                                       </div>  
+		                                </div>
+		                                <div class="form-group button-bar" >
+		                                    <button id="searchBtn1" class="btn btn_grey" type="button">查询</button>
+		                               		<button id="resetBtn1" class="btn btn_white" type="button">清空条件</button>
+		                                </div>
+                            		</form>
+                            	</div>
+                         </div>
+
+                         <div class="row simple_list_div">
                                 <%include("/eeda/component/form/detailTable.html", 
 	                              {   
 	                                  id:'eeda-tableChecked',
@@ -253,13 +232,13 @@
 	                                      '收入(JPY)',
 	                                      '收入(CNY)'
 	                                  ]
-	                              }){} %>   
-                            </div>
-                        </div>
+	                              }){} %>  
+	                     </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 <%}%>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
