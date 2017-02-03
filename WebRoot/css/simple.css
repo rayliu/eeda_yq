@@ -321,6 +321,16 @@ select.form-control{
 .btn_green{
     background-color: #DAE000;
 }
+.btn_blue{
+    background-color: #005BAC;
+    color: #ffffff; 
+}
+
+.btn_red{
+    background-color: #C30D23;
+    color: #ffffff; 
+    align:center;
+}
 
 /*  page search result list */
 
