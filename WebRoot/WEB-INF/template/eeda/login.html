@@ -18,9 +18,9 @@
 	<%}%>
 
     <!-- Core CSS - Include with every page -->
-    <link href="/yh/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/yh/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link href="/yh/css/sb-admin.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/css/sb-admin.css" rel="stylesheet">
     <link href="/css/simple.css" rel="stylesheet">
 </head>
 
@@ -84,7 +84,23 @@
                     <div class="form-group">
                         <button type="submit" class="btn">Sign In 登录</button>
                     </div>
-                    <a href ="/reset" style = "float:right">忘记密码?</a>
+                    <div class="form-group">
+                        <a title="注册" href="#">注册</a>
+                        <a href ="/reset" style = "float:right; padding-right: 0px;">忘记密码?</a>
+                    </div>
+                    
+                    
+                    <div class="form-group SNSSignIn">
+                        社交帐号登录
+
+                        <div class="sns-buttons is-visible" style="visibility: visible;">
+                            <a title="微信登录" class="js-bindwechat" href="#"><i class="fa fa-weixin"></i></a>
+                            <a title="微博登录" class="js-bindweibo" href="#"><i class="fa fa-weibo"></i></a>
+                            <a title="QQ 登录" class="js-bindqq" href="#"><i class="fa fa-qq"></i></a>
+                        </div>
+
+
+                    </div>
                 </fieldset>
             </form>
         </div>
