@@ -5,7 +5,7 @@
                     <div class="btn-header"style="font-size: 32px">应付对账单</div>
                     <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
                     <input id="company_id" type="hidden" name="company_id" value="${order.company_id!''}" />
-                    <input id="company_abbr" type="hidden" name="company_abbr" value="${order.sp_name!''}" />
+                    <input id="company_abbr" type="hidden" name="company_abbr" value="${order.company_abbr!''}" />
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -102,12 +102,43 @@
                                                             }){}%>
                                     </div>
                                 </div-->
-                                <div class="row">
+                                 <div class="row">
                                      <div class="col-lg-12">
                                          <label>备注</label>
                                          <textarea class="form-control" rows="4" id="remark">${order.remark!''}</textarea>
                                      </div>
                                 </div>
+                                
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-lg-12">
+                                            <h4>对账币值金额汇总</h4>
+                                        </div>
+                                    </div>
+                               </div>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <%include("/eeda/component/form/inputField.html", { id:'cny_duizhang',
+                                        label:'应收CNY', value:order.cny_duizhang!'',disabled:'disabled'
+                                        }){}%>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <%include("/eeda/component/form/inputField.html", { id:'usd_duizhang',
+                                        label:'应收USD', value:order.usd_duizhang!'',disabled:'disabled'
+                                        }){}%>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <%include("/eeda/component/form/inputField.html", { id:'hkd_duizhang',
+                                        label:'应收HKD', value:order.hkd_duizhang!'',disabled:'disabled'
+                                        }){}%>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <%include("/eeda/component/form/inputField.html", { id:'jpy_duizhang',
+                                        label:'应收JPY', value:order.jpy_duizhang!'',disabled:'disabled'
+                                        }){}%>
+                                    </div>
+                                </div>
+                               
                                 <div class="row" style="margin-top: 5px;">
                                     <div class="col-lg-12">
                                         <div class="btn-header" style="font-size: 18px">结算金额汇总</div>

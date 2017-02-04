@@ -288,7 +288,7 @@ public class ChargeCheckOrderController extends Controller {
     		 currenry_code=" and cur. NAME="+"'"+code+"'";
     	}
 		if(StringUtils.isEmpty(order_id)){
-			sql = " select joa.id,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
+			sql = " select joa.id, joa.order_type,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
     			+ "IFNULL(cur1.name,cur.name) exchange_currency_name,"
     			+ "IFNULL(joa.exchange_currency_rate,1) exchange_currency_rate,IFNULL(joa.exchange_total_amount,joa.total_amount) exchange_total_amount,"
     			+ "joa.total_amount total_amount,joa.exchange_rate exchange_rate," 
@@ -465,7 +465,7 @@ public class ChargeCheckOrderController extends Controller {
 		String exchange_hkd_totalAmount = getPara("exchange_hkd_totalAmount");
 		String exchange_jpy_totalAmount = getPara("exchange_jpy_totalAmount");
 		
-		String sql = "SELECT cur.name currency_name ,joa.exchange_rate ,p.phone,p.contact_person,p.address,p.company_name,joa.sp_id,joa.order_id"
+		String sql = "SELECT cur.name currency_name ,joa.exchange_rate ,p.phone,p.abbr company_abbr,p.contact_person,p.address,p.company_name,joa.sp_id,joa.order_id"
 				+ " FROM job_order_arap joa"
 				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
 				+ " left join party p on p.id = joa.sp_id "
@@ -473,15 +473,18 @@ public class ChargeCheckOrderController extends Controller {
 				+ " group by joa.order_id";
 		Record rec =Db.findFirst(sql);
 		rec.set("total_amount", total_amount);
-		rec.set("jpy", jpy_totalAmount);
-		rec.set("cny", cny_totalAmount);
-		rec.set("usd", usd_totalAmount);
-		rec.set("hkd", hkd_totalAmount);
+		//对账
+		rec.set("jpy_duizhang", jpy_totalAmount);
+		rec.set("cny_duizhang", cny_totalAmount);
+		rec.set("usd_duizhang",usd_totalAmount);
+		rec.set("hkd_duizhang", hkd_totalAmount);
+		//结算
 		rec.set("exchange_total_amount", exchange_total_amount);
-		rec.set("exchange_jpy", exchange_jpy_totalAmount);
-		rec.set("exchange_cny", exchange_cny_totalAmount);
-		rec.set("exchange_usd", exchange_usd_totalAmount);
-		rec.set("exchange_hkd", exchange_hkd_totalAmount);
+		rec.set("jpy", exchange_jpy_totalAmount);
+		rec.set("cny", exchange_cny_totalAmount);
+		rec.set("usd",exchange_usd_totalAmount);
+		rec.set("hkd", exchange_hkd_totalAmount);
+		
 
 		rec.set("address", rec.get("address"));
 		rec.set("customer", rec.get("contact_person"));
@@ -489,6 +492,7 @@ public class ChargeCheckOrderController extends Controller {
 		rec.set("user", LoginUserController.getLoginUserName(this));
 		rec.set("itemList", getItemList(ids,"",""));
 		rec.set("currencyList", getCurrencyList(ids,""));
+		rec.set("company_abbr", rec.get("company_abbr"));
 		setAttr("order",rec);
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
 	}

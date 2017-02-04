@@ -115,23 +115,23 @@
 		   </div>
 			<div class="row">
 				<div class="col-lg-3">
-					<%include("/eeda/component/form/inputField.html", { id:'cny',
-					label:'应收CNY', value:'',disabled:'disabled'
+					<%include("/eeda/component/form/inputField.html", { id:'cny_duizhang',
+					label:'应收CNY', value:order.cny_duizhang!'',disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-3">
-					<%include("/eeda/component/form/inputField.html", { id:'usd',
-					label:'应收USD', value:'',disabled:'disabled'
+					<%include("/eeda/component/form/inputField.html", { id:'usd_duizhang',
+					label:'应收USD', value:order.usd_duizhang!'',disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-3">
-					<%include("/eeda/component/form/inputField.html", { id:'hkd',
-					label:'应收HKD', value:'',disabled:'disabled'
+					<%include("/eeda/component/form/inputField.html", { id:'hkd_duizhang',
+					label:'应收HKD', value:order.hkd_duizhang!'',disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-3">
-					<%include("/eeda/component/form/inputField.html", { id:'jpy',
-					label:'应收JPY', value:'',disabled:'disabled'
+					<%include("/eeda/component/form/inputField.html", { id:'jpy_duizhang',
+					label:'应收JPY', value:order.jpy_duizhang!'',disabled:'disabled'
 					}){}%>
 				</div>
 			</div>
@@ -145,22 +145,22 @@
 		   </div>
 			<div class="row">
 				<div class="col-lg-3">
-					<%include("/eeda/component/form/inputField.html", { id:'exchange_cny',
+					<%include("/eeda/component/form/inputField.html", { id:'cny',
 					label:'应收CNY', value:order.cny!'',disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-3">
-					<%include("/eeda/component/form/inputField.html", { id:'exchange_usd',
+					<%include("/eeda/component/form/inputField.html", { id:'usd',
 					label:'应收USD', value:order.usd!'',disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-3">
-					<%include("/eeda/component/form/inputField.html", { id:'exchange_hkd',
+					<%include("/eeda/component/form/inputField.html", { id:'hkd',
 					label:'应收HKD', value:order.hkd!'',disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-3">
-					<%include("/eeda/component/form/inputField.html", { id:'exchange_jpy',
+					<%include("/eeda/component/form/inputField.html", { id:'jpy',
 					label:'应收JPY', value:order.jpy!'',disabled:'disabled'
 					}){}%>
 				</div>
