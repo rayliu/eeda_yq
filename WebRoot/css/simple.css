@@ -296,6 +296,15 @@ select.form-control{
     padding-top: 15px;
     padding-bottom: 15px;
     border-radius: 10px;
+    
+}
+
+.simple_row_div{
+    background-color: #fff;
+    padding-top: 0px;
+    padding-bottom: 8px;
+    border-radius: 10px;
+    margin:10px 0px;
 }
 
 .simple_list_div{
@@ -321,8 +330,15 @@ select.form-control{
 }
 
 .table_btn{
-    padding: 2px 10px;
+    padding: 1px 5px;
 }
+
+.delete_btn{
+	font-size : 9px;
+	color : #5d5d5d;
+	border:1px solid #5d5d5d;
+}
+
 .btn_grey{
     background-color: #c0c0c0;
 }
