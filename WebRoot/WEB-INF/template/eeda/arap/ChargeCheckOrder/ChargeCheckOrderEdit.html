@@ -3,12 +3,13 @@
 	<input id="order_id" type="hidden" name="order_id" value="${order.id!''}" />
 	<input id="company_id" type="hidden" name="company_id" value="${order.company_id!''}" />
 	<input id="company_abbr" type="hidden" name="company_abbr" value="${order.company_abbr!''}" />
-	<div class="row simple_search_div">
-        <div class="col-lg-12">
+	
 		<form id="orderForm">
 			<input id="sp_id" type="hidden" name="sp_id" value="${order.sp_id!''}" />
 				<!--  第1行  -->
 		   	<!--  第2行  -->
+	 <div class="row simple_search_div">
+        <div class="col-lg-12">
 			<div class="row">
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", {
@@ -86,15 +87,13 @@
 					<label>备注</label>
 					<textarea id='remark' class="form-control" rows="3" name="remark">${order.remark!''}</textarea>
 				</div>
-			</div><br><br>
-			
-			<div class="row">
-				<div class="form-group">
-					<div class="col-lg-12">
-						<h4>结算汇总金额</h4>
-					</div>
-				</div>
-		   </div>
+			</div>
+		</div>
+	</div>
+	
+	<div class=" head_style"><label class="font_style">结算金额汇总</label></div>
+	<div class="row simple_search_div">
+        <div class="col-lg-12">
 			<div class="row">
 				<div class="col-lg-3">
 					<%include("/eeda/component/form/inputField.html", { id:'cny',
@@ -117,7 +116,8 @@
 					}){}%>
 				</div>
 			</div>
-
+		</div>
+	</div>
 			<div class="row"  style="display:none">
 				<!--  第4行  -->
 				<div class="col-lg-4">
@@ -143,8 +143,7 @@
 
 			
 		</form>
-		</div>
-	</div>
+		
 
 	<div class="simple_order_list_div">
 	<div class="group-form" style="margin-top: 15px;">
