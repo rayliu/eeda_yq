@@ -34,7 +34,7 @@ var itemIds=[];
                 { "data": "CURRENCY_NAME","class":"currency_name"},
                 { "data": "TOTAL_AMOUNT","class":"total_amount", 
                     "render": function ( data, type, full, meta ) {
-                    	var str =  parseFloat(data).toFixed(2);
+                    	var str =  eeda.numFormat(parseFloat(data).toFixed(2),3);
                         if(full.ORDER_TYPE=='charge'){
                             return '<span style="color:red;">'+'-'+str+'</span>';
                         }
@@ -44,7 +44,7 @@ var itemIds=[];
                 { "data": "EXCHANGE_RATE", "visible": false},
                 { "data": "AFTER_TOTAL", "visible": false, 
                     "render": function ( data, type, full, meta ) {
-                    	var after_str =  parseFloat(data).toFixed(2);
+                    	var after_str =  eeda.numFormat(parseFloat(data).toFixed(2),3);
                         if(full.ORDER_TYPE=='charge'){
                             return '<span style="color:red;">'+'-'+after_str+'</span>';
                         }
@@ -64,7 +64,7 @@ var itemIds=[];
                 { "data": "EXCHANGE_CURRENCY_RATE"},
                 { "data": "EXCHANGE_TOTAL_AMOUNT",
                     "render": function ( data, type, full, meta ) {
-                    	var exchange_total_str = parseFloat(data).toFixed(2);
+                    	var exchange_total_str = eeda.numFormat(parseFloat(data).toFixed(2),3);
                         if(full.ORDER_TYPE=='charge'){
                             return '<span style="color:red;">'+'-'+exchange_total_str+'</span>';
                         }

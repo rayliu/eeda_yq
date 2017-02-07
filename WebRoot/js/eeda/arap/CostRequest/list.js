@@ -80,7 +80,7 @@ $(document).ready(function() {
             {"data":"MODAL_CNY",'class':'cny',
             	"render": function(data, type, full, meta) {
             		if(data)
-            			return parseFloat(data).toFixed(2);
+            			return eeda.numFormat(parseFloat(data).toFixed(2),3);
             		else
             			return '';
             	}
@@ -88,7 +88,7 @@ $(document).ready(function() {
             {"data":"MODAL_USD",'class':'usd',
             	"render": function(data, type, full, meta) {
             		if(data)
-            			return parseFloat(data).toFixed(2);
+            			return eeda.numFormat(parseFloat(data).toFixed(2),3);
             		else
             			return '';
             	}
@@ -96,7 +96,7 @@ $(document).ready(function() {
             {"data":"MODAL_JPY",'class':'jpy',
             	"render": function(data, type, full, meta) {
             		if(data)
-            			return parseFloat(data).toFixed(2);
+            			return eeda.numFormat(parseFloat(data).toFixed(2),3);
             		else
             			return '';
             	}
@@ -104,7 +104,7 @@ $(document).ready(function() {
             {"data":"MODAL_HKD",'class':'hkd',
             	"render": function(data, type, full, meta) {
             		if(data)
-            			return parseFloat(data).toFixed(2);
+            			return eeda.numFormat(parseFloat(data).toFixed(2),3);
             		else
             			return '';
             	}
