@@ -157,7 +157,6 @@
             </div>
 
                 <div class="simple_order_list_div">
-					<div class="group-form" style="margin-top: 15px;">
 	                        <ul id="orderTabs" class="nav nav-tabs">
 								<li  style="display:none">
 									<a href="#list" data-toggle="tab" id="costCheckOrderItem">业务单据</a>
@@ -232,8 +231,8 @@
 	                                <%include("/oms/ChargeRequest/chargeEdit_select_item.html", {}){} %>
 	                            </div>
 			                   <div class="tab-pane fade" id="upload">
-			                   		<div class="form-group">
-			                   			<br/>&nbsp;&nbsp;&nbsp;
+			                   		<div class="col-lg-12">
+			                   			<br/>
 			                   			<span class="btn btn_blue fileinput-button" id="fileuploadSpan"> 
 						                <i class="glyphicon glyphicon-plus"></i>
 						                <span>选择图片</span> 
@@ -250,24 +249,15 @@
 				                   	</div>
 			                   </div>
 			               </div>
-			              </div>
-			           </div>
-                      
-                      <div class="simple_order_list_div">
-                     		<div class="form-group"> 
-						       <div class=".tooltip-demo">
-		             		              <hr/>
-
+                     				<div class="button-bar">
 		             		          	<a style="display:none" id ="style"><i class='fa fa-check'></i></a>&nbsp;&nbsp;&nbsp;
-
 		             		          	<button id="saveBtn" type="button" disabled="disabled" class="btn  btn_green" >保存</button> 
 		             		              <button id="printBtn" type="button" disabled="disabled" class="btn btn_white" >打印</button>
 		             		              <a class="btn  btn-default" href="/chargeRequest?back=true">返回</a>
 		             		              <button id="checkBtn" type="button" disabled="disabled" class="btn  btn_blue" >复核</button>
 		             		              <button id="returnBtn" type="button" disabled="disabled" class="btn  btn-primary"  style="display:none" >退回</button>
 		             		              <button id="deleteBtn" type="button" class="btn  btn-danger"  style="display:none"  >撤销</button>
-		             		         </div>
-		             		 </div>
+		             		        </div>
 		             	</div>
                       
                     <div class="simple_order_list_div"> 
