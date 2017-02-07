@@ -75,7 +75,7 @@ $(document).ready(function() {
             { "data": "CURRENCY_NAME",'class':'currency_name', "width": "70px"},
             { "data": "TOTAL_AMOUNT",'class':'total_amount', "width": "70px",
             	"render": function ( data, type, full, meta ) {
-            		var total_str=parseFloat(data).toFixed(2);
+            		var total_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
             		if(full.ORDER_TYPE=='cost'){
 	            		return '<span style="color:red;">'+'-'+total_str+'</span>';
 	            	}
@@ -86,30 +86,30 @@ $(document).ready(function() {
             { "data": "AFTER_TOTAL","visible":false, "width": "70px",
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='cost'){
-	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 	            	}
-                    return data;
+                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
                   }
             },
             { "data": "NEW_RATE",'class':'new_rate',"visible": false, "width": "70px"},
             { "data": "AFTER_RATE_TOTAL",'class':'after_rate_total',"visible": false, "width": "70px",
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='cost'){
-	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 	            	}
-                    return data;
+                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
                   }
             },
             { "data": "EXCHANGE_CURRENCY_NAME", "width": "70px"}, 
             { "data": "EXCHANGE_CURRENCY_RATE", "width": "70px",
             	 "render": function ( data, type, full, meta ) {
-            		 var exchange_currency_str=parseFloat(data).toFixed(2);
+            		 var exchange_currency_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
             		 return exchange_currency_str;
             	 }
             	 },
             { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "70px", 
                 "render": function ( data, type, full, meta ) {
-                	var exchange_tota_str=(Math.round(data*100)/100).toFixed(2);
+                	var exchange_tota_str=eeda.numFormat((Math.round(data*100)/100).toFixed(2),3);
                     if(full.ORDER_TYPE=='cost'){
                         return '<span style="color:red;">'+'-'+exchange_tota_str+'</span>';
                     }
