@@ -305,7 +305,7 @@ $(document).ready(function() {
             { "data": "PRICE", "width": "50px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
-                        var str =  parseFloat(data).toFixed(2);
+                        var str =  eeda.numFormat(parseFloat(data).toFixed(2),3);
                     else
                     	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
@@ -412,7 +412,7 @@ $(document).ready(function() {
             { "data": "CURRENCY_TOTAL_AMOUNT", "width": "80px","className":"cny_total_amount",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
-                        var str =  (Math.round(data*100)/100).toFixed(2);
+                        var str =  eeda.numFormat((Math.round(data*100)/100).toFixed(2),3);
                     else
                     	str = '';
 	                return '<input type="text" name="currency_total_amount" style="width:150px" value="'+str+'" class="form-control" disabled />';
@@ -464,7 +464,7 @@ $(document).ready(function() {
             { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "80px","className":"exchange_total_amount",
             	"render": function ( data, type, full, meta ) {
             		if(data)
-            			var str =  (Math.round(data*100)/100).toFixed(2);
+            			var str =  eeda.numFormat((Math.round(data*100)/100).toFixed(2),3);
             		else
             			str = '';
             		return '<input type="text" name="exchange_total_amount" style="width:150px" value="'+str+'" class="form-control" disabled />';
