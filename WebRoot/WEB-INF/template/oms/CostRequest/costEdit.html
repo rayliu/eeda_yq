@@ -1,9 +1,9 @@
 <%layout("/eeda/layout.html"){%>
 <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
 	<div id="page-wrapper">
-		<div class="row simple_search_div">
-             <div class="col-lg-12">
-                	<form id="orderForm">
+		 <form id="orderForm">
+               <div class="row simple_search_div">
+             		<div class="col-lg-12">
             			<div class="row">
             				<input id='ids' name='ids' type="hidden" value="${ids!''}">
             				<input id='order_id' name='order_id' type="hidden" value="${order.id!''}">
@@ -120,6 +120,12 @@
 								<textarea id='invoice_no' class="form-control" rows="3" name="invoice_no">${order.invoice_no!''}</textarea>
 							</div>
                         </div>
+               		</div>
+			   </div>
+			   
+			   <div class=" head_style"><label class="font_style">结算金额汇总</label></div>
+               <div class="row simple_search_div">
+             		<div class="col-lg-12">
                         <div class="row" style="margin-top: 15px;">
                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_cny',
@@ -142,9 +148,10 @@
 	                                }){}%>
                             </div>
                         </div>
-					</form>
-			</div>
-		</div>
+                    </div>
+				</div>
+			</form>
+			
 
                 <div class="simple_order_list_div">
                         <ul id="orderTabs" class="nav nav-tabs">
@@ -230,7 +237,8 @@
 					                <input id="fileupload" type="file" name="files[]" multiple> 
 				           	    	</span> 
 				           	    	<hr>
-				           	    	<%include("/eeda/component/form/detailTable.html", 
+		                         </div>
+		                         <%include("/eeda/component/form/detailTable.html", 
 	                                    {
 	                                        id:'doc_table',
 	                                        style:'width:1200px',
@@ -239,8 +247,7 @@
 	                                        value_list: docList![]
 	                                    }){} %>
 			                   	   </div>
-		                   </div>
-                   </div>
+                   			</div>
        				     <div class="button-bar" >
                         		<a style="display:none" id ="style"><i class="fa fa-check"></i></a>
                         		<button id="saveBtn" type="button" disabled="disabled" class="btn  btn_green" >保存</button> 
@@ -255,8 +262,8 @@
             </div>
                       
             <div class="simple_order_list_div" style="margin-top:15px;"> 
+            <div class=" head_style"><label class="font_style">付款信息</label></div>
 				<div class="panel-body">
-                       <label class="" style="font-size:18px" >付款信息</label><hr/>
                        <div class="search_panel">
                          <div class="row">
                             <div class="col-lg-4">
@@ -359,6 +366,7 @@
       <div class="modal fade" id="cost_table_msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
+            	<div class="modal-thead head_style"><label class="font_style">明细添加</label></div>
                 <div class="modal-body">
                       <div class="row">
                             <div class="col-lg-4">
@@ -410,7 +418,7 @@
                                         }){} %>
                 </div>
                 <div class="modal-footer">
-                     <button id="add_cost_item" type="button" class="btn  btn-primary save" data-dismiss="modal">添加</button>
+                     <button id="add_cost_item" type="button" class="btn  btn_green save" data-dismiss="modal">添加</button>
                      <button type="button" class="btn  btn_white" data-dismiss="modal">返回</button>
                </div>
         </div>
