@@ -19,9 +19,9 @@ var itemIds=[];
                 { "data": "CHECK_ORDER_NO"},
                 {"width":"30px",
                     "render": function ( data, type, full, meta ) {
-                          var str = '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" >删除</button>';
+                          var str = '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>';
                           if($("#status").val()=='已复核'|| $("#status").val()=='已付款'){
-                              return '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" disabled>删除</button>';
+                              return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>';
                           }
                           return str;
                       }

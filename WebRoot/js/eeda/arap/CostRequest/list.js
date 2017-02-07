@@ -1,3 +1,4 @@
+
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN'], function ($, metisMenu) {
 $(document).ready(function() {
 	document.title = '应付申请单| '+document.title;
@@ -20,14 +21,14 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     var str="<nobr>";
                     if(full.STATUS=="新建"){
-                        str+= '<button type="button" class="checkBtn btn btn-success btn-xs" style="width:60px" >复核</button>&nbsp';
-                            str+= '<button type="button" disabled class="confirmBtn btn btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
+                        str+= '<button type="button" class="checkBtn btn table_btn btn-default btn-xs" style="width:60px" >复核</button>&nbsp';
+                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn-default btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
                     }else if(full.STATUS=="已复核"){
-                             str+= '<button type="button" disabled class="checkBtn btn btn-success btn-xs" style="width:60px" >复核</button>&nbsp';
-                             str+= '<button type="button" class="confirmBtn btn btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
+                             str+= '<button type="button" disabled class="checkBtn btn table_btn btn-default btn-xs" style="width:60px" >复核</button>&nbsp';
+                             str+= '<button type="button" class="confirmBtn btn table_btn btn-default btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
                          }else if(full.STATUS=="已付款"){
-                            str+= '<button type="button" disabled class="checkBtn btn btn-success btn-xs" style="width:60px" >复核</button>&nbsp';
-                            str+= '<button type="button" disabled class="confirmBtn btn btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
+                            str+= '<button type="button" disabled class="checkBtn btn table_btn btn-default btn-xs" style="width:60px" >复核</button>&nbsp';
+                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn-default btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
                                 }
                     str +="</nobr>";
                     return str;

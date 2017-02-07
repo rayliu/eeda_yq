@@ -1,17 +1,11 @@
 <%layout("/eeda/layout.html"){%>
 <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
 	<div id="page-wrapper">
-		<div class="row">
+		<div class="row simple_search_div">
              <div class="col-lg-12">
-              	<div class="btn-header">
-              		<div class="btn-header" style="font-size: 32px" align="left">付款申请单</div>
-				</div>
-                <div class="panel panel-default">
                 <form id="orderForm">
-            		<div class="panel-body">
-            			<div class="search_panel">
+            			<div class="row">
             			<input id='ids' name='ids' type="hidden" value="${ids!''}">
-            			
             			<input id='detailJson' name='detailJson' type="hidden">
             			<input id='total_app_usd' name='total_app_usd' type="hidden">
                         <input id='total_app_cny' name='total_app_cny' type="hidden">
@@ -23,7 +17,6 @@
 											{ id:'sp_id', 
 											label:'结算公司', 
 											value: '' }){} %>
-									
                             </div>
                             
                         <div class="col-lg-4">
@@ -123,14 +116,12 @@
     							<label>发票信息</label>
     							<textarea id='invoice_no' class="form-control" rows="3" name="invoice_no">${order.invoice_no!''}</textarea>
 						    </div>
-                        </div>
+                      </div>
                         
                         <div class="row" >
                             <div class="col-lg-12  btn-header">
-                                <button id="createSave" disabled class="btn btn-success btn-sm" type="button">创建申请单</button>
+                                <button id="createSave" disabled class="btn btn_blue" type="button">创建申请单</button>
                             </div>
-                        </div>
-                        <div class="row" >
                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_cny',
 	                                label:'CNY', value:order.cny!'',disabled:'disabled'
@@ -152,6 +143,13 @@
 	                                }){}%>
                             </div>
                         </div>
+                     </form>
+                  </div>
+            </div>
+
+
+                 <div class="simple_order_list_div">
+                 	<div class="group-form" style="margin-top: 15px;">
                         <ul id="orderTabs" class="nav nav-tabs">
 							<li class="active">
 								<a href="#list" data-toggle="tab" id="costCheckOrderItem">第一步: 选择对账单</a>
@@ -168,12 +166,9 @@
                                 <%include("/oms/CostRequest/costEdit_select_item.html", {}){} %>
                             </div>
 		               </div>
-           			</div>
-           		  </form>
-           		</div>	
-			</div>
-		</div>
-	</div>
+		            </div>
+           		</div>
+    </div>
 	
 <%}%>
 <script>

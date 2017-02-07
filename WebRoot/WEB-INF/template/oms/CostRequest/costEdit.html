@@ -1,24 +1,19 @@
 <%layout("/eeda/layout.html"){%>
 <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
 	<div id="page-wrapper">
-		<div class="row">
+		<div class="row simple_search_div">
              <div class="col-lg-12">
-              	<div class="btn-header">
-              		<div class="btn-header" style="font-size: 32px" align="left">付款申请单</div>
-				</div>
-                <div class="panel panel-default">
-                <form id="orderForm">
-            		<div class="panel-body">
-            			<div class="search_panel">
-            			<input id='ids' name='ids' type="hidden" value="${ids!''}">
-            			<input id='order_id' name='order_id' type="hidden" value="${order.id!''}">
-					   <input id="company_abbr" type="hidden" name="company_abbr" value="${party.abbr!''}" />
-            			
-            			<input id='detailJson' name='detailJson' type="hidden">
-            			<input id='total_app_usd' name='total_app_usd' type="hidden">
-                        <input id='total_app_cny' name='total_app_cny' type="hidden">
-                        <input id='total_app_hkd' name='total_app_hkd' type="hidden">
-                        <input id='total_app_jpy' name='total_app_jpy' type="hidden">
+                	<form id="orderForm">
+            			<div class="row">
+            				<input id='ids' name='ids' type="hidden" value="${ids!''}">
+            				<input id='order_id' name='order_id' type="hidden" value="${order.id!''}">
+					   		<input id="company_abbr" type="hidden" name="company_abbr" value="${party.abbr!''}" />
+            				
+            				<input id='detailJson' name='detailJson' type="hidden">
+            				<input id='total_app_usd' name='total_app_usd' type="hidden">
+                        	<input id='total_app_cny' name='total_app_cny' type="hidden">
+                        	<input id='total_app_hkd' name='total_app_hkd' type="hidden">
+                        	<input id='total_app_jpy' name='total_app_jpy' type="hidden">
                             <div class="col-lg-4">
                             	<%include("/eeda/component/form/inputField.html", { id:'order_no',
 										label:'申请单号', value:order.order_no!'',disabled:'disabled'
@@ -125,8 +120,7 @@
 								<textarea id='invoice_no' class="form-control" rows="3" name="invoice_no">${order.invoice_no!''}</textarea>
 							</div>
                         </div>
-                        <br/><br/><br/><br/><br/><br/>
-                        <div class="row" style="margin-top: 250px;">
+                        <div class="row" style="margin-top: 15px;">
                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_cny',
 	                                label:'CNY', value:order.modal_cny!'',disabled:'disabled'
@@ -148,6 +142,11 @@
 	                                }){}%>
                             </div>
                         </div>
+					</form>
+			</div>
+		</div>
+
+                <div class="simple_order_list_div">
                         <ul id="orderTabs" class="nav nav-tabs">
 							<li  style="display:none">
 								<a href="#list" data-toggle="tab" id="costCheckOrderItem">业务单据</a>
@@ -159,7 +158,7 @@
 								<a href="#upload" data-toggle="tab" data-src="create" id="costCheckOrderbasic">发票图片上传</a>
 							</li>
 						</ul>
-						<div class="tab-content">
+						<div class="tab-content" >
 							<div class="tab-pane fade active in" id="list" style="display:none">
 		                        <div class="table-responsive">
 		                            <table class="table table-striped table-bordered table-hover" id="eeda-table">
@@ -221,15 +220,16 @@
 		                   <div class="tab-pane fade active in" id="item_list">
                                 <%include("/oms/CostRequest/costEdit_select_item.html", {}){} %>
                             </div>
+
 		                   <div class="tab-pane fade" id="upload">
-		                   		<div class="form-group">
+		                   		  <div class="col-lg-12">
 		                   			<br/>
-		                   			<span class="btn btn-success fileinput-button" id="fileuploadSpan"> 
+		                   			<span class="btn btn_blue fileinput-button" id="fileuploadSpan"> 
 					                <i class="glyphicon glyphicon-plus"></i> 
 					                <span>选择图片</span> 
 					                <input id="fileupload" type="file" name="files[]" multiple> 
 				           	    	</span> 
-				           	    	
+				           	    	<hr>
 				           	    	<%include("/eeda/component/form/detailTable.html", 
 	                                    {
 	                                        id:'doc_table',
@@ -238,23 +238,24 @@
 	                                        field_list:['', 'doc_name','c_name','upload_time', 'remark'],
 	                                        value_list: docList![]
 	                                    }){} %>
-			                   	</div>
+			                   	   </div>
 		                   </div>
-		               </div>
-                       
-				       <div class=".tooltip-demo">
-                            <hr/>
-                        	<a style="display:none" id ="style"><i class='fa fa-check'></i></a>
-                        	<button id="saveBtn" type="button" disabled="disabled" class="btn  btn-primary" >保存</button> 
-                            <button id="printBtn" type="button" disabled="disabled" class="btn  btn-primary" >打印</button>
-                            <a class="btn  btn-default" href="/costRequest?back=true">返回</a>
-                            <button id="checkBtn" type="button" disabled="disabled" class="btn  btn-primary" >复核</button>
-                            <button id="returnBtn" type="button" disabled="disabled" class="btn  btn-primary"  style="display:none" >退回</button>
-                            <button id="deleteBtn" type="button" class="btn  btn-danger"  style="display:none"  >撤销</button>
-                       </div><br/><br/>
-                       <hr/>
+                   </div>
+       				     <div class="button-bar" >
+                        		<a style="display:none" id ="style"><i class="fa fa-check"></i></a>
+                        		<button id="saveBtn" type="button" disabled="disabled" class="btn  btn_green" >保存</button> 
+                            	<button id="printBtn" type="button" disabled="disabled" class="btn  btn_white" >打印</button>
+                            	<a class="btn  btn_white" href="/costRequest?back=true">返回</a>
+                            	<button id="checkBtn" type="button" disabled="disabled" class="btn  btn_blue" >复核</button>
+                            	<button id="returnBtn" type="button" disabled="disabled" class="btn  btn-primary"  style="display:none" >退回</button>
+                            	<button id="deleteBtn" type="button" class="btn  btn-danger"  style="display:none"  >撤销</button>
+                       </div>
+                   
+				
+            </div>
                       
-                        
+            <div class="simple_order_list_div" style="margin-top:15px;"> 
+				<div class="panel-body">
                        <label class="" style="font-size:18px" >付款信息</label><hr/>
                        <div class="search_panel">
                          <div class="row">
@@ -345,15 +346,12 @@
 	                         
                         <div class=".tooltip-demo">
                             <hr/>
-                            <button id="confirmBtn" type="button" class="btn  btn-primary" data-toggle="modal" disabled="disabled"  data-target=".bs-example-modal-sm">付款确认</button>
-                            <a class="btn  btn-default" href="/costRequest?back=confirmTrue">返回</a>
+                            <button id="confirmBtn" type="button" class="btn  btn_blue" data-toggle="modal" disabled="disabled"  data-target=".bs-example-modal-sm">付款确认</button>
+                            <a class="btn  btn_white" href="/costRequest?back=confirmTrue">返回</a>
                             <button id="returnConfirmBtn" type="button" class="btn  btn-primary" style="display:none" >撤回</button>
                         </div>
-           			</div>
-           		  </form>
-           		</div>	
-			</div>
-		</div>
+           		 </div>
+           	</div>
 	</div>
 	
 
@@ -396,7 +394,7 @@
                            </div>
                       </div>    
                          <div class="form-group button-bar" >
-                            <button id="searchBtn2" class="btn btn-primary btn-sm" type="button">查询</button>
+                            <button id="searchBtn2" class="btn btn_grey" type="button">查询</button>
                             <button id="resetBtn2" class="btn btn-default btn-sm" type="button">清空条件</button>
                             &nbsp&nbsp<input type="checkbox" name="checkOrderAll" id="checkOrderAll" value="Y">查看应收应付<span style="color:red">(红色为应收)</span>
                         </div>
@@ -413,11 +411,12 @@
                 </div>
                 <div class="modal-footer">
                      <button id="add_cost_item" type="button" class="btn  btn-primary save" data-dismiss="modal">添加</button>
-                     <button type="button" class="btn  btn-default" data-dismiss="modal">返回</button>
+                     <button type="button" class="btn  btn_white" data-dismiss="modal">返回</button>
                </div>
-            </div>
         </div>
+	</div>
 </div>
+
 <%}%>
 <script>
     var itemOrder = {};
