@@ -48,9 +48,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
-		            		return '<span style="color:red;">'+'-'+data+'</span>';
+		            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 		            	}
-	                    return data;
+	                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	                  }
 	            },
 	            { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
@@ -58,9 +58,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'AFTER_TOTAL',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
-		            		return '<span style="color:red;">'+'-'+data+'</span>';
+		            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 		            	}
-	                    return data;
+	                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	                  }
 	            },	            
 	            { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px"},
@@ -68,9 +68,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px" ,
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
-	            			return '<span style="color:red;">'+'-'+data+'</span>';
+	            			return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 	            		}
-	            		return data;
+	            		return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	            	}
 	            },	            
 	            { "data": "FND", "width": "60px",

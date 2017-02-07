@@ -67,7 +67,8 @@ $(document).ready(function() {
             { "data": "ORDER_NO", "width": "100px",
                   "render": function ( data, type, full, meta ) {
                       return "<a href='/jobOrder/edit?id="+full.JOB_ORDER_ID+"'target='_blank'>"+data+"</a>";
-                  }},
+                  }
+            },
             { "data": "TYPE"},
             { "data": "CREATE_STAMP", visible: false},
             { "data": "CUSTOMER_NAME"},
@@ -76,18 +77,18 @@ $(document).ready(function() {
             { "data": "TOTAL_AMOUNT","class":"total_amount", 
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
-	            		return '<span style="color:red;">'+'-'+parseFloat(data).toFixed(2)+'</span>';
+	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 	            	}
-            		return parseFloat(data).toFixed(2);
+            		return eeda.numFormat(parseFloat(data).toFixed(2),3);
                   }
             },
             { "data": "EXCHANGE_RATE", "visible": false},
             { "data": "AFTER_TOTAL", "visible": false, 
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
-	            		return '<span style="color:red;">'+'-'+parseFloat(data).toFixed(2)+'</span>';
+	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 	            	}else{
-	            		return parseFloat(data).toFixed(2);
+	            		return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	            	} 
             	}
             },
@@ -95,9 +96,9 @@ $(document).ready(function() {
             { "data": "AFTER_RATE_TOTAL","class":"after_rate_total", "visible": false,
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
-	            		return '<span style="color:red;">'+'-'+parseFloat(data).toFixed(2)+'</span>';
+	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 	            	}else{
-	            		return parseFloat(data).toFixed(2);
+	            		return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	            	}
             	}
             },
@@ -107,9 +108,9 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                 	var str =data;
                     if(full.ORDER_TYPE=='charge'){
-                        return '<span style="color:red;">'+'-'+(Math.round(str*100)/100).toFixed(2)+'</span>';
+                        return '<span style="color:red;">'+'-'+eeda.numFormat((Math.round(str*100)/100).toFixed(2),3)+'</span>';
                     }
-                    return (Math.round(str*100)/100).toFixed(2);
+                    return eeda.numFormat((Math.round(str*100)/100).toFixed(2),3);
                   }
             },
             { "data": "ORDER_TYPE", "visible": false,
@@ -119,6 +120,7 @@ $(document).ready(function() {
                     return data;
                 }
             },
+            { "data": "JOB_ORDER_ID", "visible": false}
         ]
     });
         var dataTable = eeda.dt({
