@@ -21,30 +21,30 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "STATUS"},
             { "data": "SP_NAME"},
             { "data": "TOTAL_AMOUNT","visible":false},
+            { "data": "CNY",
+                "render":function(data,type,full,meta){
+                  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
+                  return usd_str;
+                }
+            },
             { "data": "USD",
               "render":function(data,type,full,meta){
                 var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
                 return usd_str;
               }
             },
+            { "data": "JPY",
+                "render":function(data,type,full,meta){
+                  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
+                  return usd_str;
+                }
+            },
             { "data": "HKD",
               "render":function(data,type,full,meta){
                 var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
                 return usd_str;
               }
-            },
-            { "data": "JPY",
-              "render":function(data,type,full,meta){
-                var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
-                return usd_str;
-              }
-            },
-            { "data": "CNY",
-              "render":function(data,type,full,meta){
-                var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
-                return usd_str;
-              }
-            },
+            }
           ]
       });
 

@@ -23,36 +23,36 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 					  { "data": "TOTAL_AMOUNT","width": "60px","visible":false,
 				    	 "render":function(data, type, full, meta){
 				    		 if(data<0){
-				    			 return '<span style="color:red">'+data+'</span>';
+				    			 return '<span style="color:red">'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 				    		 }else{
 				    			 return data;
 				    		 }
 				    	 }
 					  },
-					  { "data": "USD",
+			          { "data": "CNY",
 						  "render":function(data,type,full,meta){
-							  var usd_str=parseFloat(data).toFixed(2);
+							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
 					  },
-			          { "data": "HKD",
+					  { "data": "USD",
 						  "render":function(data,type,full,meta){
-							  var usd_str=parseFloat(data).toFixed(2);
+							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
 					  },
 			          { "data": "JPY",
 						  "render":function(data,type,full,meta){
-							  var usd_str=parseFloat(data).toFixed(2);
+							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
 					  },
-			          { "data": "CNY",
+			          { "data": "HKD",
 						  "render":function(data,type,full,meta){
-							  var usd_str=parseFloat(data).toFixed(2);
+							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
-					  },
+					  }
             ]
         });
    	           
