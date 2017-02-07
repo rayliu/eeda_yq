@@ -1,9 +1,9 @@
 <%layout("/eeda/layout.html"){%>
 <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
 	<div id="page-wrapper">
-		 <form id="orderForm">
-               <div class="row simple_search_div">
-             		<div class="col-lg-12">
+		<div class="row simple_search_div">
+             <div class="col-lg-12">
+                	<form id="orderForm">
             			<div class="row">
             				<input id='ids' name='ids' type="hidden" value="${ids!''}">
             				<input id='order_id' name='order_id' type="hidden" value="${order.id!''}">
@@ -120,12 +120,12 @@
 								<textarea id='invoice_no' class="form-control" rows="3" name="invoice_no">${order.invoice_no!''}</textarea>
 							</div>
                         </div>
-               		</div>
-			   </div>
-			   
-			   <div class=" head_style"><label class="font_style">结算金额汇总</label></div>
-               <div class="row simple_search_div">
-             		<div class="col-lg-12">
+                        
+                        <div class="row">
+								<div class="col-lg-12">
+									<h4>结算汇总金额</h4>
+								</div>
+						</div>
                         <div class="row" style="margin-top: 15px;">
                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_cny',
@@ -148,10 +148,9 @@
 	                                }){}%>
                             </div>
                         </div>
-                    </div>
-				</div>
-			</form>
-			
+					</form>
+			</div>
+		</div>
 
                 <div class="simple_order_list_div">
                         <ul id="orderTabs" class="nav nav-tabs">
@@ -261,10 +260,15 @@
 				
             </div>
                       
-            <div class="simple_order_list_div" style="margin-top:15px;"> 
-            <div class=" head_style"><label class="font_style">付款信息</label></div>
+            <div class="simple_search_div" style="margin-top:15px;"> 
+            <!-- <div class=" head_style"><label class="font_style">付款信息</label></div> -->
 				<div class="panel-body">
                        <div class="search_panel">
+                         <div class="row">
+								<div class="col-lg-12">
+									<h4>付款信息</h4>
+								</div>
+						 </div>
                          <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
