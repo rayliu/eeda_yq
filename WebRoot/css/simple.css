@@ -166,6 +166,13 @@ body ::-webkit-scrollbar-corner {
     padding: 6px 8px;
 }
 
+.form-control{
+    border-radius: 0px;
+    height: 25px;
+    font-size: 10px;
+    padding: 6px 8px;
+}
+
 .login_form form #username{
     background: url(/images/simple/header_icon.png) no-repeat right 8px center;
 }
@@ -535,4 +542,16 @@ h4.panel-title  {
 
 .simple_order_list_div .col-lg-12{
     background-color: #fff;
+}
+
+.head_style{
+	background-color: #005bac;
+	color:#fff; 
+	height:35px;
+}
+
+.head_style .font_style{
+	margin-top: 10px;
+	margin-left: 20px;
+	font-size:13px
 }
