@@ -376,29 +376,50 @@ $(document).ready(function() {
             { "data": "CURRENCY_ID", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
-	                	if(!data)
-	                        data='';
-	                    var field_html = template('table_dropdown_template',
-	                        {
-	                            id: 'CURRENCY_ID',
-	                            value: data,
-	                            display_value: full.CURRENCY_NAME,
-	                            style:'width:80px',
-	                            disabled:'disabled'
-	                        }
-	                    );
+	                	if(!data){
+	                		var field_html = template('table_dropdown_template',
+	    	                        {
+	    	                            id: 'CURRENCY_ID',
+	    	                            value: '3',
+	    	                            display_value: "人民币",
+	    	                            style:'width:80px',
+	    	                            disabled:'disabled'
+	    	                        }
+	    	                    );
+	                	}else{
+	                		var field_html = template('table_dropdown_template',
+	    	                        {
+	    	                            id: 'CURRENCY_ID',
+	    	                            value: data,
+	    	                            display_value: "人民币",
+	    	                            style:'width:80px',
+	    	                            disabled:'disabled'
+	    	                        }
+	    	                    );
+	                	}
 	                    return field_html;
                 }else{
-                	if(!data)
-                        data='';
-                    var field_html = template('table_dropdown_template',
-                        {
-                            id: 'CURRENCY_ID',
-                            value: data,
-                            display_value: full.CURRENCY_NAME,
-                            style:'width:80px'
-                        }
-                    );
+                	if(!data){
+                		var field_html = template('table_dropdown_template',
+    	                        {
+    	                            id: 'CURRENCY_ID',
+    	                            value: '3',
+    	                            display_value: "人民币",
+    	                            style:'width:80px',
+    	                            disabled:'disabled'
+    	                        }
+    	                    );
+                	}else{
+                		var field_html = template('table_dropdown_template',
+    	                        {
+    	                            id: 'CURRENCY_ID',
+    	                            value: data,
+    	                            display_value: "人民币",
+    	                            style:'width:80px',
+    	                            disabled:'disabled'
+    	                        }
+    	                    );
+                	}
                     return field_html;
                   }
                 }
@@ -416,7 +437,7 @@ $(document).ready(function() {
 	                }
                 }
             },
-            { "data": "EXCHANGE_RATE", "width": "60px", "className":"currency_rate",
+            { "data": "EXCHANGE_RATE", "width": "60px", "className":"currency_rate","visible":false,
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -429,7 +450,7 @@ $(document).ready(function() {
 	                }
                 }
             },
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px","className":"cny_total_amount",
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px","className":"cny_total_amount","visible":false,
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
