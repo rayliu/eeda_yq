@@ -1,16 +1,9 @@
 <%layout("/eeda/layout.html"){%>
     
         <div id="page-wrapper">
-            
             <div class="row">
             	<div class="col-lg-12">
             	<div class="btn-header"></div>
-            	<div class="panel panel-default">
-                    <div class="panel-heading">
-                    	<div class="form-group">
-                    		<big style="font-size:22px;">管理看板</big>
-	                    </div>
-                    </div>
                     <div class="panel-body">
                         <%
 			                var title = SYS_CONFIG.system_title!'易达物流';
@@ -18,258 +11,67 @@
 			                if(title=='易达物流'){
 			                    show = 'block';
 			                }
-			            %>
-                                        <!--div class="col-lg-6">
-    			                            <div class="row">
-    						                    <div class="col-lg-6 col-md-6">
-    						                        <div class="panel panel-primary">
-    						                            <div class="panel-heading">
-    						                                <div class="row">
-    						                                    <div class="col-xs-3">
-    						                                        <i class="fa fa-file-text fa-4x"></i>
-    						                                    </div>
-    						                                    <div class="col-xs-9 text-right">
-    						                                        <div class="huge" id="planOrderTodoCount" style="font-size:26px;">
-                                                                        <img src="/images/loading.gif" style="height: 32px;">
-                                                                    </div>
-    						                                        <div style="font-size:14px;">计划订单待处理</div>
-    						                                    </div>
-    						                                </div>
-    						                            </div>
-    						                            <a href="/planOrder?type=todo">
-    						                                <div class="panel-footer">
-    						                                    <span class="pull-left"></span>
-    						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-    						                                    <div class="clearfix"></div>
-    						                                </div>
-    						                            </a>
-    						                        </div>
-    						                    </div>
-    						                    <div class="col-lg-6 col-md-6">
-    						                        <div class="panel panel-green">
-    						                            <div class="panel-heading">
-    						                                <div class="row">
-    						                                    <div class="col-xs-3">
-    						                                        <i class="fa fa-file-text fa-4x"></i>
-    						                                    </div>
-    						                                    <div class="col-xs-9 text-right">
-    						                                        <div class="huge" id="SOTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-    						                                        <div style="font-size:14px;">SO待更新</div>
-    						                                    </div>
-    						                                </div>
-    						                            </div>
-    						                            <a href="/jobOrder?type=sowait">
-    						                                <div class="panel-footer">
-    						                                    <span class="pull-left"></span>
-    						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-    						                                    <div class="clearfix"></div>
-    						                                </div>
-    						                            </a>
-    						                        </div>
-    						                    </div>
-    						                    <div class="col-lg-6 col-md-6">
-    						                        <div class="panel panel-yellow">
-    						                            <div class="panel-heading">
-    						                                <div class="row">
-    						                                    <div class="col-xs-3">
-    						                                        <i class="fa fa-file-text fa-4x"></i>
-    						                                    </div>
-    						                                    <div class="col-xs-9 text-right">
-    						                                        <div class="huge" id="truckOrderTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-    						                                        <div style="font-size:14px;">派车单待处理</div>
-    						                                    </div>
-    						                                </div>
-    						                            </div>
-    						                            <a href="/jobOrder?type=truckorderwait">
-    						                                <div class="panel-footer">
-    						                                    <span class="pull-left"></span>
-    						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-    						                                    <div class="clearfix"></div>
-    						                                </div>
-    						                            </a>
-    						                        </div>
-    						                    </div>
-    						                    <div class="col-lg-6 col-md-6">
-    						                        <div class="panel panel-red">
-    						                            <div class="panel-heading">
-    						                                <div class="row">
-    						                                    <div class="col-xs-3">
-    						                                        <i class="fa fa-file-text fa-4x"></i>
-    						                                    </div>
-    						                                    <div class="col-xs-9 text-right">
-    						                                        <div class="huge" id="SITodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-    						                                        <div style="font-size:14px;">SI待更新</div>
-    						                                    </div>
-    						                                </div>
-    						                            </div>
-    						                            <a href="/jobOrder?type=siwait">
-    						                                <div class="panel-footer">
-    						                                    <span class="pull-left"></span>
-    						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-    						                                    <div class="clearfix"></div>
-    						                                </div>
-    						                            </a>
-    						                        </div>
-    						                    </div>
-                                            </div>
-                                            <div class="row">
-    						                    <div class="col-lg-6 col-md-6">
-    						                        <div class="panel panel-info">
-    						                            <div class="panel-heading">
-    						                                <div class="row">
-    						                                    <div class="col-xs-3">
-    						                                        <i class="fa fa-file-text fa-4x"></i>
-    						                                    </div>
-    						                                    <div class="col-xs-9 text-right">
-    						                                        <div class="huge" id="MBLTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-    						                                        <div style="font-size:14px;">未确认MBL</div>
-    						                                    </div>
-    						                                </div>
-    						                            </div>
-    						                            <a href="/jobOrder?type=mblwait">
-    						                                <div class="panel-footer">
-    						                                    <span class="pull-left"></span>
-    						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-    						                                    <div class="clearfix"></div>
-    						                                </div>
-    						                            </a>
-    						                        </div>
-    						                    </div>
-    						                    <div class="col-lg-6 col-md-6">
-    						                        <div class="panel panel-danger">
-    						                            <div class="panel-heading">
-    						                                <div class="row">
-    						                                    <div class="col-xs-3">
-    						                                        <i class="fa fa-file-text fa-4x"></i>
-    						                                    </div>
-    						                                    <div class="col-xs-9 text-right">
-    						                                        <div class="huge" id="waitCustomTodoCountPlan"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-    						                                        <div style="font-size:14px;">计划单待报关</div>
-    						                                    </div>
-    						                                </div>
-    						                            </div>
-    						                            <a href="/planOrder?type=customwaitPlan">
-    						                                <div class="panel-footer">
-    						                                    <span class="pull-left"></span>
-    						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-    						                                    <div class="clearfix"></div>
-    						                                </div>
-    						                            </a>
-    						                        </div>
-    						                    </div>
-    						                    <div class="col-lg-6 col-md-6">
-    						                        <div class="panel panel-danger">
-    						                            <div class="panel-heading">
-    						                                <div class="row">
-    						                                    <div class="col-xs-3">
-    						                                        <i class="fa fa-file-text fa-4x"></i>
-    						                                    </div>
-    						                                    <div class="col-xs-9 text-right">
-    						                                        <div class="huge" id="waitCustomTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-    						                                        <div style="font-size:14px;">工作单待报关</div>
-    						                                    </div>
-    						                                </div>
-    						                            </div>
-    						                            <a href="/jobOrder?type=customwait" >
-    						                                <div class="panel-footer">
-    						                                    <span class="pull-left"></span>
-    						                                    <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-    						                                    <div class="clearfix"></div>
-    						                                </div>
-    						                            </a>                   
-    						                        </div>
-    						                    </div>
-    						                    <div class="col-lg-6 col-md-6">
-                                                    <div class="panel panel-danger">
-                                                        <div class="panel-heading">
-                                                            <div class="row">
-                                                                <div class="col-xs-3">
-                                                                    <i class="fa fa-file-text fa-4x"></i>
-                                                                </div>
-                                                                <div class="col-xs-9 text-right">
-                                                                    <div class="huge" id="waitBuyInsuranceTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-                                                                    <div style="font-size:14px;">待买保险</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <a href="/jobOrder?type=insurancewait">
-                                                            <div class="panel-footer">
-                                                                <span class="pull-left"></span>
-                                                                <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-                                                                <div class="clearfix"></div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6">
-                                                    <div class="panel panel-danger">
-                                                        <div class="panel-heading">
-                                                            <div class="row">
-                                                                <div class="col-xs-3">
-                                                                    <i class="fa fa-file-text fa-4x"></i>
-                                                                </div>
-                                                                <div class="col-xs-9 text-right">
-                                                                    <div class="huge" id="waitOverseaCustomTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-                                                                    <div style="font-size:14px;">待海外系统申报</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <a href="/jobOrder?type=overseacustomwait">
-                                                            <div class="panel-footer">
-                                                                <span class="pull-left"></span>
-                                                                <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-                                                                <div class="clearfix"></div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6">
-                                                    <div class="panel panel-danger">
-                                                        <div class="panel-heading">
-                                                            <div class="row">
-                                                                <div class="col-xs-3">
-                                                                    <i class="fa fa-file-text fa-4x"></i>
-                                                                </div>
-                                                                <div class="col-xs-9 text-right">
-                                                                    <div class="huge" id="TlxOrderTodoCount"  style="font-size:26px;"><img src="/images/loading.gif" style="height: 32px;"></div>
-                                                                    <div style="font-size:14px;">待电放提单</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <a href="/jobOrder?type=tlxOrderwait">
-                                                            <div class="panel-footer">
-                                                                <span class="pull-left"></span>
-                                                                <span class="pull-right"><i class="fa fa-arrow-circle-right fa-2x"></i></span>
-                                                                <div class="clearfix"></div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-    						                </div>
-    						             </div-->
-                                        
-                        <div class="row">
-                            <div class="col-lg-3">
-                                            <%include("/eeda/index/fmsAlertPanel.html",{}){} %>
-                            </div>
-                            <div class="col-lg-9">
+			            %>  
+			            
+			            <div class="row head_style"><div class="font_style">To-do List 代办事项</div></div>
+			            <div class="row simple_title_div">
+			            	<div class="col-xs-12">
+			            		<div class="row">
+			            		<%
+				                  var alertItems = [
+				                    { id: 'planOrderTodoCount', name: '计划订单待处理', url:'/planOrder?type=todo',row:'1'},
+				                    { id: 'SOTodoCount', name: 'SO待更新', url:'/jobOrder?type=sowait'},
+				                    { id: 'truckOrderTodoCount', name: '派车单待处理', url:'/jobOrder?type=truckorderwait',row:'1'},
+				                    { id: 'SITodoCount', name: 'SI待更新', url:'/jobOrder?type=siwait'},
+				                    { id: 'MBLTodoCount', name: '未确认MBL', url:'/jobOrder?type=mblwait',row:'1'},
+				                    { id: 'waitCustomTodoCountPlan', name: '计划单待报关', url:'/planOrder?type=customwaitPlan'},
+				                    { id: 'waitCustomTodoCount', name: '工作单待报关', url:'/jobOrder?type=customwait',row:'1'},
+				                    { id: 'waitBuyInsuranceTodoCount', name: '待买保险', url:'/jobOrder?type=insurancewait'},
+				                    { id: 'waitOverseaCustomTodoCount', name: '待海外系统申报', url:'/jobOrder?type=overseacustomwait',row:'1'},
+				                    { id: 'TlxOrderTodoCount', name: '待电放提单', url:'/jobOrder?type=tlxOrderwait'}
+				                  ];
+				                for(info in alertItems![]){%>
+						                    <div class="interval">
+						                        <div class="panel <% if(info.row=='1'){%>panel-blue<%}else{%>panel-gray<%}%> li">
+						                            <div class="panel-heading">
+						                                <div class="row">
+						                                	<div class="col-xs-9">
+						                                		<a href='${info.url}' style="<% if(info.row=='1'){%>color:white<%}%>">
+						                                			<div class="huge" id="${info.id}" style="font-size:60px;"></div>
+						                                        	<div style="font-size:14px;">${info.name}</div>
+						                                		</a>
+						                                    </div>
+						                                    <div class="col-xs-3 text-right" style="margin-top:20px">
+						                                        <i class="fa fa-file-text fa-2x"></i>
+						                                    </div>
+						                                </div>
+						                            </div>
+						                        </div>
+						                    </div>
+						         <%}%>
+						         </div>
+						   </div>            
+						</div>
+			            
+                    <div class="row">
+                        <div class="col-lg-6">
+                        	<div style="width:98%">
                                 <%include("/eeda/index/msgPanel.html",{}){} %>
                             </div>
-                            <div class="col-lg-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <i class="fa fa-bar-chart-o fa-fw"></i> 工作周报
-                                    </div>
-                                    <!-- /.panel-heading -->
-                                    <div class="panel-body">
-                                        <div id="line_chart" style="height:400px"></div>
-                                    </div>
-                                    <!-- /.panel-body -->
-                                </div>
-                            </div>
                         </div>
+	                     <div class="col-lg-6">   
+		                     <div class="row head_style"><div class="font_style">工作周报</div></div>
+					         <div class="row simple_title_div">
+		                        <div class="col-xs-12">
+		                            <div class="panel panel-default">
+		                                <div class="panel-body">
+		                                    <div id="line_chart" style="height:400px"></div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                   	</div>
+                   	</div>
+                   	</div>
 			            <div class="row">
 			                <div class="col-lg-12">
 			                    <div class="panel panel-default" style="display: none;">
@@ -287,11 +89,8 @@
 			                        var isShowProfitChart = permissionMap.Index_showProfitChart;
 			                        if(nvl(isShowProfitChart, '') != ""){
 			                    %>
-				                    <div class="panel panel-default">
-				                        <div class="panel-heading">
-				                            <i class="fa fa-bar-chart-o fa-fw"></i> 营收状态
-				                        </div>
-				                        <!-- /.panel-heading -->
+				               <div class="row head_style"><div class="font_style">运营报表</div></div>
+					         		<div class="row simple_title_div">
 				                        <div class="panel-body">
 					                        <div class="col-lg-4" style="margin:0px 0px 0px 80px;">
 			                                     <%include("/eeda/component/form/inputCustomerField.html", 
@@ -316,22 +115,14 @@
                                                     requirejs(['app/index/index_profit_charts']);
                                                 });
                                             </script>
-				                        <!-- /.panel-body -->
 				                    	</div>
 				                    </div>
 			                    <%}%>
-			                    <!-- /.panel -->
 			                </div>
-			                <!-- /.col-lg-12 -->
-			               
 			            </div>
-			            <!-- /.row -->
-			           
-			                    </div>
-			                    <!-- /.panel-body -->
-			                </div>
-			            	</div>
-			            </div>
+			           </div>
+			     </div>
+			</div>
 
         </div>
         <!-- /#page-wrapper -->

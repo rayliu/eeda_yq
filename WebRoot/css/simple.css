@@ -547,11 +547,44 @@ h4.panel-title  {
 .head_style{
 	background-color: #005bac;
 	color:#fff; 
-	height:35px;
+	height:28px;
+	margin-top:0px;
+	border-top-left-radius:1em;
+	border-top-right-radius:1em;
 }
 
 .head_style .font_style{
-	margin-top: 10px;
+	margin-top: 7px;
 	margin-left: 20px;
 	font-size:13px
+}
+
+.interval{
+	width:20%;
+	float:left;
+}
+
+.interval .li{
+	margin:0px 5px 10px 5px;
+	border-radius:1em;
+}
+
+.panel-gray{
+	background-color: #dddddd;
+	color:#127ccb;
+}
+
+
+.panel-blue{
+	background-color: #127ccb;
+	color:#fff;
+}
+
+.simple_title_div{
+    background-color: #fff;
+    padding-top: 15px;
+    border-bottom-left-radius:1em;
+	border-bottom-right-radius:1em;
+	margin-bottom:15px;
+	
 }

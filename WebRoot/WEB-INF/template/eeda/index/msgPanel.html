@@ -1,6 +1,5 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <i class="fa fa-bar-chart-o fa-fw"></i> 公告信息
+<div class="row head_style"><div class="font_style">公告信息</div>
+<div class="panel-heading" style="float:right">
         <% if(shiro.hasPermission("msg.create")){%>
         <div class="pull-right">
             <div class="btn-group">
@@ -11,13 +10,14 @@
         </div>
         <%}%>
     </div>
+</div>
+  <div class="row simple_title_div">
+  	<div class="col-xs-12">
+    
     <div class="panel-body">
         <ul class="chat">
                 <%for(info in msgBoardInfo![]){%>
 	            <li class="left clearfix">
-	             <!--    <span class="chat-img pull-left">
-	                    <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle">
-	                </span> -->
 	                <div class="clearfix">
                       <a href='#' class="seeMsgBoardDetail" msgBoardId="${info.id}">${info.title}</a><br>
 	                    <p style="margin-top: 10px;">
@@ -34,7 +34,7 @@
                 <%}%>
         </ul>
     </div><!-- /.panel-body -->
-</div>
+
 
 
 <!-- 拟态框 -->
@@ -62,6 +62,8 @@
 	            </form>
         </div>
       </div>
+       </div>
+   </div>
 </div>
 
 <!-- 拟态框,查看 -->
