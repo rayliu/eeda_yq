@@ -343,7 +343,7 @@ $(document).ready(function() {
 	                }
                 }
             },
-            { "data": "UNIT_ID", "width": "60px",
+            { "data": "UNIT_ID", "width": "60px","visible":false,
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                    	 if(!data)

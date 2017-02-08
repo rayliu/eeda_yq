@@ -230,7 +230,7 @@ public class JobOrderController extends Controller {
    			if(!order_update_stamp.equals(page_update_stamp)){
    			    Record rec = new Record();
    			    rec.set("err_code", "update_stamp_not_equal");
-   			    rec.set("err_msg", "数据已更新，请刷新页面重新操作。");
+   			    rec.set("err_msg", "当前单据已被更改，请刷新页面获取最新数据，重新操作。");
    			    renderJson(rec);
    			    return;
    			}

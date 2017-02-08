@@ -37,103 +37,51 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	                      return "<a href='/customPlanOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
 	                  }
 	            },
-	            { "data": "ORDER_EXPORT_DATE", "width": "100px"},
 	            { "data": "CREATE_STAMP", "width": "100px"},
-	            { "data": "TYPE", "width": "60px"},
-	            { "data": "FEE_NAME", "width": "60px",
+	            { "data": "BOOKING_NO", "width": "200px"},
+	            { "data": "COMPANY_ABBR", "width": "120px",
 	            	"render": function ( data, type, full, meta ) {
 	            		return data;
 	            	}
 	            },
-	            { "data": "CUSTOMER_NAME", "width": "100px"},
-	            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
-	            { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
+	            { "data": "BOOKING_NO", "width": "200px"},//装箱放式
+	            { "data": "BOOKING_NO", "width": "200px"},//报关单录入
+	            { "data": "ZLSCF", "width": "160px"},
+	            { "data": "FTF", "width": "100px"},
+	            { "data": "PZF", "width": "100px" ,
 	            	"render": function ( data, type, full, meta ) {
-	            		if(full.SQL_TYPE=='cost'){
-		            		return '<span style="color:red;">'+'-'+data+'</span>';
-		            	}
-	                    return data;
-	                  }
-	            },
-	            { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
-	            { "data": "EXCHANGE_RATE", "width": "60px"},
-	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'AFTER_TOTAL',
-	            	"render": function ( data, type, full, meta ) {
-	            		if(full.SQL_TYPE=='cost'){
+	            		if(full.ORDER_TYPE=='cost'){
 	            			return '<span style="color:red;">'+'-'+data+'</span>';
 		            	}
 	                    return data;
 	                  }
 	            },
-	            { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px"},
-	            { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px"},
-	            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px",
+	            { "data": "XDF", "width": "100px"},
+	            { "data": "WLDLF", "width": "100px"},
+	            { "data": "GKF", "width": "100px",
 	            	"render": function ( data, type, full, meta ) {
-	            		if(full.SQL_TYPE=='cost'){
-	            			return '<span style="color:red;">'+'-'+data+'</span>';
+	            		if(data==""){
+	            			return '';
+	            		}else{
+	            			return data;
 	            		}
-	            		return data;
 	            	}
 	            },
-	            { "data": "FND", "width": "60px",
-	            	"render": function ( data, type, full, meta ) {
-	            		if(data)
-				    		return data;
-	            		else
-				    		return full.DESTINATION;
-	            	}
-	            },
-	            { "data": "VOLUME", "width": "60px",
-	                "render": function ( data, type, full, meta ) {
-	                    return "";
-	                }
-	            },
-	            { "data": "CONTAINER_AMOUNT","width": "60px",
-	            	"render": function ( data, type, full, meta ) {
-		            	if(data){
-		            		var dataArr = data.split(",");
-		            		var a = 0;
-		            		var b = 0;
-		            		var c = 0;
-		            		var dataStr = "";
-		            		for(var i=0;i<dataArr.length;i++){
-		            			if(dataArr[i]=="20GP"){
-		            				a++;
-		            			}
-		            			if(dataArr[i]=="40GP"){
-		            				b++;
-		            			}
-		            			if(dataArr[i]=="45GP"){
-		            				c++;
-		            			}
-		            		}
-		            		if(a>0){
-		            			dataStr+="20GPx"+a+";"
-		            		}
-		            		if(b>0){
-		            			dataStr+="40GPx"+b+";"
-		            		}
-		            		if(c>0){
-		            			dataStr+="45GPx"+c+";"
-		            		}
-		            		return dataStr;
-		            	}else{
-		            		return '';
-		            	}
-	            	}
-	            },
-	            { "data": "NET_WEIGHT", "width": "60px"},
-	            { "data": "REF_NO", "width": "60px"},
-	            { "data": "MBL_NO", "width": "60px"},
-	            { "data": "HBL_NO", "width": "60px"},
-	            { "data": "CONTAINER_NO", "width": "100px"},
-	            { "data": "TRUCK_TYPE", "width": "100px"},
-	            { "data": "NET_WEIGHT", "width": "60px"},
-	            { "data": "REF_NO", "width": "60px"},
-	            { "data": "MBL_NO", "width": "60px"},
-	            { "data": "HBL_NO", "width": "60px"},
-	            { "data": "CONTAINER_NO", "width": "100px"},
-	            { "data": "TRUCK_TYPE", "width": "100px"}
+	            { "data": "MTF", "width": "100px"},
+	            { "data": "MTF", "width": "100px"},//码头费小计(前三项)
+	            { "data": "ZHF","width": "60px"},
+	            { "data": "LXF", "width": "60px"},
+	            { "data": "AC", "width": "60px"},
+	            { "data": "WJF", "width": "60px"},
+	            { "data": "WJF", "width": "60px"}, //工本费小计（前三项）
+	            { "data": "PZF", "width": "60px"},
+	            { "data": "RZF", "width": "100px"},
+	            { "data": "YF", "width": "60px"},
+	            { "data": "BGF", "width": "60px"},
+	            { "data": "DTF", "width": "120px"},
+	            { "data": "DTF", "width": "120px"},//合计
+	            { "data": "DTF", "width": "120px"},//备注
+	            { "data": "TRUCK_TYPE", "width": "60px"}
 	          ]
 	      });
         

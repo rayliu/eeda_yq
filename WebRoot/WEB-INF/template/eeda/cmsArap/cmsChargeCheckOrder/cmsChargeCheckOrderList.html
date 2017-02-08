@@ -92,8 +92,8 @@
 	                                         </div>
 	                                     <div class="col-lg-4">
 	                                           <%include("/eeda/component/form/inputField.html", 
-	                                               {   id:'mbl_no', 
-	                                                   label:'MBL号码', 
+	                                               {   id:'so_no', 
+	                                                   label:'so号码', 
 	                                                   value:''
 	                                               }){}%>
 	                                        </div>
@@ -113,23 +113,9 @@
                                                              value: ''
                                                          }){}%>
                                          </div>
-	                                        <div class="col-lg-4">
-	                                                 <%include("/eeda/component/form/inputPortField.html", 
-	                                                       {   id:'pol', 
-	                                                           label:'启运港 POL', 
-	                                                           value:shipment.pol!''
-	                                                       }){}%>
-	                                         </div>                                        
+	                                                                              
                                        </div>
-                                       <div class="row">  
-	                                         <div class="col-lg-4">
-			                                        <%include("/eeda/component/form/inputPortField.html", 
-									                       {   id:'pod', 
-									                           label:'目的港 POD', 
-									                           value:shipment.pod!''									                          
-									                       }){}%>
-									         </div>
-                                       </div>
+                                      
                                      
                                 </form>
 
@@ -167,9 +153,9 @@
 	                               <%include("/eeda/component/form/detailTable.html", 
 	                                        {
 	                                            id:'uncheckedEeda-table', 
-	                                            style: 'width:2500px',
-	                                            headers:['<input type="checkbox" id="allCheck">','工作单号','创建时间','日期','提单号/船运单号','出口客户号','结算公司','装箱方式',
-	                                             '报关单录入','资料上传费','封条费','配载费','消毒费','外轮代理费','港口费','码头费', '<span style="background-color: yellow;">码头费小计（前三项）</span>', '综合费', '理箱费', '改单费','文件费','工本费小计（前三项）','配载费','入闸费'
+	                                            style: 'width:3300px',
+	                                            headers:['<input type="checkbox" id="allCheck">','工作单号','创建时间','提单号/船运单号','出口客户号','装箱方式',
+	                                             '报关单录入','资料上传费','封条费','配载费','消毒费','外轮代理费','港口费','码头费', '码头费小计（前三项）', '综合费', '理箱费', '改单费','文件费','工本费小计（前三项）','配载费','入闸费'
 	                                             ,'运费','小计','报关费/票','代垫费','合计','备注'
 	                                            ]
 	                                        }){} %>
