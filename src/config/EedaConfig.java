@@ -221,6 +221,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/location", controllers.profile.LocationController.class, contentPath);
         me.add("/office", controllers.profile.OfficeController.class, contentPath);
         me.add("/product", controllers.profile.ProductController.class, contentPath);
+        me.add("/customerRemind", controllers.report.CustomerRemindController.class, contentPath);
 
 //		me.add("/accountAuditLog", AccountAuditLogController.class, contentPath);
 		me.add("/account", AccountController.class, contentPath);
@@ -236,6 +237,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/truckOrder", TruckOrderController.class, contentPath);
 		me.add("/currency", CurrencyController.class, contentPath);
 		me.add("/currencyRate", CurrencyRateController.class, contentPath);
+		
 		
 		//cms 报关管理
 		me.add("/customJobOrder", CustomJobOrderController.class, contentPath);

@@ -2,6 +2,8 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
 
     $(document).ready(function() {
     	document.title = '客户查询 | '+document.title;
+        $("#breadcrumb_li").text('客户列表');
+
     	$('#menu_profile').addClass('active').find('ul').addClass('in');
 
         var dataTable = eeda.dt({
