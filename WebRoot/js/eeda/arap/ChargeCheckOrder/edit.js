@@ -150,7 +150,8 @@ $(document).ready(function() {
     //打印应收对账明细
     $('#printTotaledBtn').click(function(){
     	var order_id = $('#order_id').val();
-    	$.post('/jobOrderReport/printTotaledReceiveDetailPDF',{order_id:order_id},function(data){
+    	var company_name = $('#company_name').val();
+    	$.post('/jobOrderReport/printTotaledReceiveDetailPDF',{order_id:order_id,company_name:company_name},function(data){
     		if(data){
     			window.open(data);
     		}else{
