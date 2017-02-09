@@ -1,71 +1,59 @@
 <%layout("/eeda/layout.html"){%>
 
         <div id="page-wrapper">
-            
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="btn-header">
-                    </div>
-                </div>
-            </div>
-
-           <!-- /.row -->
-           
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-list fa-fw"></i>客户列表
+            <div class="row simple_search_div">
+                 <div class="col-lg-12">
+                	<form id="orderForm">
+                	  <div class="row">
+                		  <div class="col-lg-4">
+                              <div class="form-group">
+                                  <label class="search-label">公司名称</label>
+                                  <input type="text" class="form-control search-control   orderNo_filter" id="COMPANY_NAME">
+                              </div>
+                          </div>
+                          <div class="col-lg-4">
+                              <div class="form-group">
+                                  <label class="search-label">简称</label>
+                                  <input type="text" class="form-control search-control   customer_filter" id="ABBR">
+                              </div>
+                           </div>
+                           <div class="col-lg-4">
+                              <div class="form-group">
+                                  <label class="search-label">地址</label>
+                                  <input type="text" class="form-control search-control sp_filter  " id="ADDRESS">
+                              </div>
+                          </div>
+                       </div>
+                      <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="search-label">负责人</label>
+                                <input type="text" class="form-control search-control address_filter" id="CONTACT_PERSON">
+                            </div>
                         </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                        	<div class="row search_panel">
-
-	                        	<form id="orderForm">
-	                        		<div class="col-lg-4">
-	                                    <div class="form-group">
-	                                        <label class="search-label">公司名称</label>
-	                                        <input type="text" class="form-control search-control orderNo_filter" id="COMPANY_NAME">
-	                                    </div>
-	                                </div>
-	                                <div class="col-lg-4">
-	                                    <div class="form-group">
-	                                        <label class="search-label">简称</label>
-	                                        <input type="text" class="form-control search-control customer_filter" id="ABBR">
-	                                    </div>
-	                                 </div>
-	                                 <div class="col-lg-4">
-	                                    <div class="form-group">
-	                                        <label class="search-label">地址</label>
-	                                        <input type="text" class="form-control search-control sp_filter" id="ADDRESS">
-	                                    </div>
-	                                </div>
-	                                <div class="col-lg-4">
-	                                    <div class="form-group">
-	                                        <label class="search-label">负责人</label>
-	                                        <input type="text" class="form-control search-control address_filter" id="CONTACT_PERSON">
-	                                    </div>
-	                                </div>
-	                                <div class="col-lg-4">
-	                                    <div class="form-group">
-	                                        <label class="search-label">代码</label>
-	                                        <input type="text" class="form-control search-control warehouse" id="code">
-	                                    </div>
-	                                </div>
-	                                </form>
-	                           </div>
-	                           <div class="form-group button-bar" >
-	                                <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
-	                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
-	                                <% if(shiro.hasPermission("Customer.create")){%>
-	                                <a class="btn btn-success btn-sm" href="/customer/add">新增客户</a>
-	                                <%}%>
-	                            </div> 
-                            
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="search-label">代码</label>
+                                <input type="text" class="form-control search-control warehouse" id="code">
+                            </div>
+                        </div>
+                       </div>
+                        </form>
+                       <div class="form-group button-bar" >
+                            <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+                            <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
+                            <% if(shiro.hasPermission("Customer.create")){%>
+                            <a class="btn btn_green" href="/customer/add">新增客户</a>
+                            <%}%>
+                        </div> 
+            </div>
+         </div>
+                    <div class="row simple_list_div">  
                             <br/>
                                 <table class="table table-striped table-bordered table-hover" id="eeda-table" style="width: 100%;">
                                     <thead>
                                         <tr>
+                                        	<th></th>
                                             <th>公司名称</th>
                                             <th>简称</th>
                                             <th>代码</th>
@@ -74,15 +62,12 @@
                                             <th>联系方式</th>
                                             <th>地址</th>
                                             <th>收款方式</th>
-                                           	<th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     </tbody>
                                 </table>
-                           
-                            </div>
-                        </div>
+                    </div> 
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
