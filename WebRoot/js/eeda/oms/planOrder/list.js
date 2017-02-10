@@ -22,7 +22,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             columns:[
                 { "width": "30px",
                     "render": function ( data, type, full, meta ) {
-                      return '<button type="button" class="btn table_btn btn-default btn-xs" disabled>'+
+                      return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
                 },
