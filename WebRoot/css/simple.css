@@ -306,13 +306,6 @@ select.form-control{
     
 }
 
-.simple_row_div{
-    background-color: #fff;
-    padding-top: 0px;
-    padding-bottom: 8px;
-    border-radius: 10px;
-    margin:10px 0px;
-}
 
 .simple_list_div{
     background-color: #fff;
@@ -587,4 +580,53 @@ h4.panel-title  {
 	border-bottom-right-radius:1em;
 	margin-bottom:15px;
 	
+}
+
+
+.simple_rectangle_title_div{
+    background-color: #005bac;
+    height:30px;
+	margin-bottom:10px;
+	
+}
+
+.simple_small_title_div{
+    background-color: #ffffff;
+    padding-top: 15px;
+    border-top-right-radius:1em;
+    border-bottom-left-radius:1em;
+	border-bottom-right-radius:1em;
+	margin-bottom:10px;
+}
+
+
+.simple_rectangle_title_div .font_style{
+	color:#ffffff;
+	margin-top: 7px;
+	margin-left: 20px;
+	font-size:13px;
+}
+
+.small_head{
+	background-color: #ffffff;
+	height:28px;
+	width:135px;
+	border-top-left-radius:1em;
+	border-top-right-radius:1em;
+}
+
+.small_head .font_style{
+	margin-top: 7px;
+	margin-left: 15px;
+	font-size:13px;
+	color:#005BAC;
+}
+
+
+.simple_row_div{
+    background-color: #fff;
+    padding-top: 0px;
+    padding-bottom: 8px;
+    border-radius: 10px;
+    margin:10px 0px;
 }

@@ -99,7 +99,7 @@ $(document).ready(function() {
 			},
             { "width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn table_btn btn-default btn-xs" >删除</button>';
+                	return '<button type="button" class="delete btn table_btn delete_btn btn-xs" >删除</button>';
                 }
             },
             { "width": "30px",
@@ -111,7 +111,7 @@ $(document).ready(function() {
             		}
             	}
             },
-            { "data":"ID","width": "50px",
+            { "data":"ID","width": "30px",
             	"render": function ( data, type, full, meta ) {
             		if(data)
 	            		return '<span class="btn table_btn btn-success btn-xs fileinput-button" >' 
@@ -127,7 +127,7 @@ $(document).ready(function() {
 		                		+'</span>'			
             	}
             },
-            { "data": "DOC_NAME","width": "50px",
+            { "data": "DOC_NAME","width": "30px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                 		return '<button type="button" class="btn btn-default btn-xs delete_sign_desc" style="width:100px">删除签收文件</button>';
