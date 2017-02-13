@@ -261,14 +261,14 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
                 	if(full.ID&&full.AUDIT_FLAG == 'Y'){
-                		str+= '<button type="button" class="delete btn table_btn btn-default btn-xs" disabled>删除</button>&nbsp';
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" disabled><i class="fa fa-trash-o"></i> 删除</button></button>&nbsp';
                 		str+= '<button type="button" class="cancelChargeConfirm btn table_btn btn-danger btn-xs" >取消确认</button> '; 
                 		}
                 	else if(full.ID){
-                		str+= '<button type="button" class="delete btn table_btn btn-default btn-xs" >删除</button>&nbsp';
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" ><i class="fa fa-trash-o"></i> 删除</button></button>&nbsp';
                 		str+= '<button type="button" class="chargeConfirm btn table_btn btn-success btn-xs"  value="'+full.ID+'" >确认</button> ';		
                 	}else{
-                		str+= '<button type="button" class="delete btn table_btn btn-default btn-xs">删除</button>&nbsp';
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs"><i class="fa fa-trash-o"></i> 删除</button></button>&nbsp';
                 		str+= '<button type="button" class="btn table_btn btn-success btn-xs" disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
