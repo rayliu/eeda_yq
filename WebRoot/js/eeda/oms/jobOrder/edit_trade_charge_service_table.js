@@ -75,7 +75,7 @@ $(document).ready(function() {
 	    columns:[
 			{ "width": "30px",
 			    "render": function ( data, type, full, meta ) {
-			    	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
+			    	return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px"><i class="fa fa-trash-o"></i> 删除</button></button> ';
 			    }
 			},
 			{ "data": "SP_ID", "width": "180px",
