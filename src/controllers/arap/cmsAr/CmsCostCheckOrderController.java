@@ -1,4 +1,4 @@
-package controllers.arap.ar;
+package controllers.arap.cmsAr;
 
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.ArapChargeItem;
-import models.ArapChargeOrder;
+import models.ArapCostItem;
+import models.ArapCostOrder;
 import models.RateContrast;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrderArap;
@@ -35,14 +35,14 @@ import controllers.util.OrderNoGenerator;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class ChargeCheckOrderController extends Controller {
+public class CmsCostCheckOrderController extends Controller {
 
-	private Logger logger = Logger.getLogger(ChargeCheckOrderController.class);
+	private Logger logger = Logger.getLogger(CmsCostCheckOrderController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
-		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderList.html");
+		render("/eeda/cmsArap/cmsCostCheckOrder/cmsCostCheckOrderList.html");
 	}
 	
 	@Before(Tx.class)
@@ -52,7 +52,7 @@ public class ChargeCheckOrderController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
-        ArapChargeOrder order = new ArapChargeOrder();
+        ArapCostOrder order = new ArapCostOrder();
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
@@ -60,7 +60,7 @@ public class ChargeCheckOrderController extends Controller {
    		
    		if (StringUtils.isNotEmpty(id)) {
    			//update
-   			order = ArapChargeOrder.dao.findById(id);
+   			order = ArapCostOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, order);
    			
    			//需后台处理的字段
@@ -73,7 +73,7 @@ public class ChargeCheckOrderController extends Controller {
    			
    			//需后台处理的字段
    			order.set("order_no", OrderNoGenerator.getNextOrderNo("YSDZ", user.getLong("office_id")));
-   			order.set("order_type", "应收对账单");
+   			order.set("order_type", "应付对账单");
    			order.set("create_by", user.getLong("id"));
    			order.set("create_stamp", new Date());
    			order.set("office_id", office_id);
@@ -82,24 +82,21 @@ public class ChargeCheckOrderController extends Controller {
    			id = order.getLong("id").toString();
    		}
 
-   		ArapChargeItem aci = null;
+   		ArapCostItem aci = null;
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
 		for(Map<String, String> item :itemList){
 			String action = item.get("action");
 			String itemId = item.get("id");
 			if("CREATE".equals(action)){
-				aci = new ArapChargeItem();
+				aci = new ArapCostItem();
 				aci.set("ref_order_type", "工作单");
 				aci.set("ref_order_id", itemId);
-				aci.set("charge_order_id", id);
+				aci.set("cost_order_id", id);
 				aci.save();
                 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
                 jobOrderArap.set("bill_flag", "Y");
-                String hedge_order_type = jobOrderArap.getStr("order_type");
-                if("cost".equals(hedge_order_type)){
-                	jobOrderArap.set("hedge_flag", "Y");
-                }
                 jobOrderArap.update();
+
 			}
 		}
 		
@@ -157,9 +154,10 @@ public class ChargeCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
+        	
         	 sql = "select * from(  "
-        			+ " select joa.order_type sql_type, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
-              		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type, "
+        			+ " select joa.order_type sql_type, joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+              		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
               		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
               		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
               		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
@@ -168,8 +166,8 @@ public class ChargeCheckOrderController extends Controller {
               		+ " ifnull( ( SELECT rc.new_rate FROM rate_contrast rc "
               		+ " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
               		+ " after_rate_total,ifnull(f.name,f.name_eng) fee_name,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
-      				+ " from job_order jo "
-      				+ " left join job_order_arap joa on jo.id=joa.order_id "
+      				+ " from job_order_arap joa "
+      				+ " left join job_order jo on jo.id=joa.order_id "
       				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
       				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
       				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
@@ -185,8 +183,8 @@ public class ChargeCheckOrderController extends Controller {
     				+ " ) B where 1=1 ";
         	}else{
         		 sql = "select * from(  "
-                 		+ " select ifnull(f.name,f.name_eng) fee_name, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
-                 		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type, "
+                 		+ " select ifnull(f.name,f.name_eng) fee_name, joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+                 		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
                  		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
                  		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
                  		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
@@ -195,8 +193,8 @@ public class ChargeCheckOrderController extends Controller {
                  		+ " ifnull( ( SELECT rc.new_rate FROM rate_contrast rc "
                  		+ " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
                  		+ " after_rate_total,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
-         				+ " from job_order jo "
-         				+ " left join job_order_arap joa on jo.id=joa.order_id "
+         				+ " from job_order_arap joa "
+         				+ " left join job_order jo on jo.id=joa.order_id "
          				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
          				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
          				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
@@ -207,7 +205,7 @@ public class ChargeCheckOrderController extends Controller {
          				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
          				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
          				+ " left join fin_item f on f.id = joa.charge_id"
-         				+ " where joa.order_type='charge' and joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
+         				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
          				+ " GROUP BY joa.id "
          				+ " ) B where 1=1 ";
         			}
@@ -218,7 +216,7 @@ public class ChargeCheckOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition);
+        List<Record> orderList = Db.find(sql+ condition  +sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
@@ -258,7 +256,7 @@ public class ChargeCheckOrderController extends Controller {
         
         String sql = "select * from(  "
         		+ " select aco.*, p.abbr sp_name "
-				+ " from arap_charge_order aco "
+				+ " from arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " where aco.office_id = "+office_id
 				+ " ) B where 1=1 ";
@@ -281,12 +279,8 @@ public class ChargeCheckOrderController extends Controller {
     }
     
     
-    public List<Record> getItemList(String ids,String order_id,String code){
+    public List<Record> getItemList(String ids,String order_id){
     	String sql = null;
-    	String currenry_code="";
-    	if(StringUtils.isNotEmpty(code)){
-    		 currenry_code=" and cur. NAME="+"'"+code+"'";
-    	}
 		if(StringUtils.isEmpty(order_id)){
 			sql = " select joa.id,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
     			+ "IFNULL(cur1.name,cur.name) exchange_currency_name,"
@@ -294,15 +288,18 @@ public class ChargeCheckOrderController extends Controller {
     			+ "joa.total_amount total_amount,joa.exchange_rate exchange_rate," 
     			+ " jo.net_weight gross_weight,"
     			+ " cur.name currency_name,"
+    			+ " ifnull((select rc.new_rate from rate_contrast rc "
+    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),ifnull(joa.exchange_rate,1)) new_rate,"
+    			+ " (ifnull(joa.total_amount,0)*ifnull(joa.exchange_rate,1)) after_total,"
+    			+ " ifnull((select rc.new_rate from rate_contrast rc "
+    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
     			+ " jo.ref_no ref_no,"
     			+ " p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
-    			+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount ,"
-    			+ " fi.name fin_name "
+    			+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount "
     			+ " from job_order_arap joa"
     			+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
     			+ " LEFT JOIN currency cur1 on cur1.id = joa.exchange_currency_id"
     			+ "	left join job_order jo on jo.id=joa.order_id "
-				+ " left join fin_item fi on joa.charge_id = fi.id "
     			+ "	left join job_order_shipment jos on jos.order_id=joa.order_id "
     			+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
     			+ "	left join job_order_air_item joai on joai.order_id=joa.order_id "
@@ -313,9 +310,8 @@ public class ChargeCheckOrderController extends Controller {
     			+ " and joa.id in("+ids+")"
     			+ " GROUP BY joa.id";
 			}else{				
-			sql = " select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
-					+" aco.order_no check_order_no, jo.id job_order_id, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
-					+ " jo.ref_no ref_no,"
+			sql = " select joa.id,joa.type,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
+					+" aco.order_no check_order_no, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight," 
 						+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
 						+" ifnull((select rc.new_rate from rate_contrast rc"
 						    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
@@ -323,14 +319,12 @@ public class ChargeCheckOrderController extends Controller {
 						    +"  ifnull((select rc.new_rate from rate_contrast rc"
 						    +" where rc.currency_id = joa.currency_id and rc.order_id = aco.id),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
 						+" GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount,"
-						+ " fi.name fin_name,"
-						+ " cur.name currency_name,"
+						+" cur.name currency_name,"
 						+" ifnull(cur1.NAME, cur.NAME) exchange_currency_name,"
 						+" ifnull(joa.exchange_currency_rate, 1) exchange_currency_rate,"
 						+" ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, joa.pay_flag"
-						+" from job_order jo"
-						+" left join job_order_arap joa on jo.id=joa.order_id"
-						+" left join fin_item fi on joa.charge_id = fi.id"
+						+" from job_order_arap joa"
+						+" left join job_order jo on jo.id=joa.order_id"
 						+" left join job_order_shipment jos on jos.order_id=joa.order_id"
 						+" left join job_order_shipment_item josi on josi.order_id=joa.order_id"
 						+" left join job_order_air_item joai on joai.order_id=joa.order_id"
@@ -339,104 +333,18 @@ public class ChargeCheckOrderController extends Controller {
 						+" left join location l on l.id=jos.fnd"
 						+" left join currency cur on cur.id=joa.currency_id"
 						+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
-						+" left join arap_charge_item aci on aci.ref_order_id = joa.id"
-					 +" left join arap_charge_order aco on aco.id = aci.charge_order_id"
-					 +" where joa.id = aci.ref_order_id and aco.id = ("+order_id+")" +currenry_code
-					 +" GROUP BY joa.id"
+						+" left join arap_cost_item aci on aci.ref_order_id = joa.id"
+					 +" left join arap_cost_order aco on aco.id = aci.cost_order_id"
+					 +" where joa.id = aci.ref_order_id and aco.id in ("+order_id+")"
+						+" GROUP BY joa.id"
 						+" ORDER BY aco.order_no, jo.order_no";
 				
 				
 			}	
     	List<Record> re = Db.find(sql);
-    	return re;
-    }
-    
-    public List<Record> getChargeItemList(String order_ids,String bill_flag,String code,String exchange_currency){
-    	String sql = null;
-    	String currency_code="";
-    	String query_exchange_currency="";
-		if(StringUtils.isNotEmpty(code)){
-			currency_code=" and cur. NAME="+"'"+code+"'";
-		}
-		if(StringUtils.isNotEmpty(exchange_currency)){
-			String sql2="select id from currency where currency.name='"+exchange_currency+"'";
-			List<Record> re=Db.find(sql2);
-			query_exchange_currency=" and joa. exchange_currency_id="+re.get(0).get("id");
-		}
-			if("create".equals(bill_flag)){
-				sql = " select joa.id,joa.create_flag,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
-						+" aco.order_no check_order_no, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
-							+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
-							+" ifnull((select rc.new_rate from rate_contrast rc"
-							    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
-							    +" (ifnull(joa.total_amount,0)*ifnull(joa.exchange_rate,1)) after_total,"
-							    +"  ifnull((select rc.new_rate from rate_contrast rc"
-							    +" where rc.currency_id = joa.currency_id and rc.order_id = aco.id),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
-							+" GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount,"
-							+ " fi.name fin_name,"
-							+" cur.name currency_name,"
-							+" ifnull(cur1.NAME, cur.NAME) exchange_currency_name,"
-							+" ifnull(joa.exchange_currency_rate, 1) exchange_currency_rate,"
-							+" ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, joa.pay_flag"
-							+" from job_order jo"
-							+" left join job_order_arap joa on jo.id=joa.order_id"
-							+" left join fin_item fi on joa.charge_id = fi.id"
-							+" left join job_order_shipment jos on jos.order_id=joa.order_id"
-							+" left join job_order_shipment_item josi on josi.order_id=joa.order_id"
-							+" left join job_order_air_item joai on joai.order_id=joa.order_id"
-							+" left join party p on p.id=joa.sp_id"
-							+" left join party p1 on p1.id=jo.customer_id"
-							+" left join location l on l.id=jos.fnd"
-							+" left join currency cur on cur.id=joa.currency_id"
-							+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
-							+" left join charge_application_order_rel caol on caol.job_order_arap_id  = joa.id"
-							+" left join arap_charge_application_order acao on caol.application_order_id = acao.id"
-							 +" left join arap_charge_order aco on aco.id=caol.charge_order_id"
-						  +" where acao.id="+order_ids
-							+" GROUP BY joa.id"
-							+" ORDER BY aco.order_no, jo.order_no";
-				
-			}else{
-				sql = "select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
-						+" aco.order_no check_order_no, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
-							+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
-							+" ifnull((select rc.new_rate from rate_contrast rc"
-							    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
-							    +" (ifnull(joa.total_amount,0)*ifnull(joa.exchange_rate,1)) after_total,"
-							    +"  ifnull((select rc.new_rate from rate_contrast rc"
-							    +" where rc.currency_id = joa.currency_id and rc.order_id = aco.id),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
-							+" GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount,"
-							+ " fi.name fin_name,"
-							+" cur.name currency_name,"
-							+" ifnull(cur1.NAME, cur.NAME) exchange_currency_name,"
-							+" ifnull(joa.exchange_currency_rate, 1) exchange_currency_rate,"
-							+" ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, joa.pay_flag"
-							+" from job_order jo"
-							+" left join job_order_arap joa on jo.id=joa.order_id"
-							+" left join fin_item fi on joa.charge_id = fi.id"
-							+" left join job_order_shipment jos on jos.order_id=joa.order_id"
-							+" left join job_order_shipment_item josi on josi.order_id=joa.order_id"
-							+" left join job_order_air_item joai on joai.order_id=joa.order_id"
-							+" left join party p on p.id=joa.sp_id"
-							+" left join party p1 on p1.id=jo.customer_id"
-							+" left join location l on l.id=jos.fnd"
-							+" left join currency cur on cur.id=joa.currency_id"
-							+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
-							+" left join arap_charge_item aci on aci.ref_order_id = joa.id"
-						 +" left join arap_charge_order aco on aco.id = aci.charge_order_id"
-						 +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
-							+currency_code
-							+query_exchange_currency
-							+" GROUP BY joa.id"
-							+" ORDER BY aco.order_no, jo.order_no";
-			}		
-			
-
-    	List<Record> re = Db.find(sql);
     	
     	return re;
     }
-    
     
     public List<Record> getCurrencyList(String ids,String order_id){
     	String sql = "SELECT "
@@ -479,19 +387,19 @@ public class ChargeCheckOrderController extends Controller {
 		rec.set("customer", rec.get("contact_person"));
 		rec.set("phone", rec.get("phone"));
 		rec.set("user", LoginUserController.getLoginUserName(this));
-		rec.set("itemList", getItemList(ids,"",""));
+		rec.set("itemList", getItemList(ids,""));
 		rec.set("currencyList", getCurrencyList(ids,""));
 		setAttr("order",rec);
-		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
+		render("/eeda/cmsArap/cmsCostCheckOrder/cmsCostCheckOrderEdit.html");
 	}
 	
 	
     @Before(EedaMenuInterceptor.class)
     public void edit(){
 		String id = getPara("id");//arap_charge_order id
-		String condition = "select ref_order_id from arap_charge_item where charge_order_id ="+id;
+		String condition = "select ref_order_id from arap_cost_item where cost_order_id ="+id;
 		
-		String sql = " select aco.*,p.company_name,p.contact_person,p.id company_id,p.abbr company_abbr,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from arap_charge_order aco "
+		String sql = " select aco.*,p.company_name,p.contact_person,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by "
    				+ " left join user_login u1 on u1.id=aco.confirm_by "
@@ -501,18 +409,16 @@ public class ChargeCheckOrderController extends Controller {
 		rec.set("address", rec.get("address"));
 		rec.set("customer", rec.get("contact_person"));
 		rec.set("phone", rec.get("phone"));
-		rec.set("itemList", getItemList(condition,id,""));
+		rec.set("itemList", getItemList(condition,id));
 		rec.set("currencyList", getCurrencyList(condition,id));
-		rec.set("company_id", rec.get("company_id"));
-		rec.set("company_abbr", rec.get("company_abbr"));
 		setAttr("order",rec);
-		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
+		render("/eeda/cmsArap/cmsCostCheckOrder/cmsCostCheckOrderEdit.html");
 	}
 
     
     @Before(Tx.class)
 	public void exchange_currency(){
-	    String chargeOrderId = getPara("charge_order_id");
+	    String costOrderId = getPara("cost_order_id");
 		String ids = getPara("ids");
 		String ex_currency_name = getPara("ex_currency_name");
 		Currency c = Currency.dao.findFirst("select id from currency where code = ?", ex_currency_name);
@@ -522,17 +428,17 @@ public class ChargeCheckOrderController extends Controller {
 				+ " exchange_total_amount=("+rate+"*total_amount)  where id in ("+ids+") and total_amount!=''");
 		
 		//计算结算汇总
-		Map<String, Double> exchangeTotalMap = updateExchangeTotal(chargeOrderId);
+		Map<String, Double> exchangeTotalMap = updateExchangeTotal(costOrderId);
 		renderJson(exchangeTotalMap);
 	}
     
-    private Map<String, Double> updateExchangeTotal(String chargeOrderId) {
+    private Map<String, Double> updateExchangeTotal(String costOrderId) {
         String sql="select joa.order_type, ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
         +"       ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount "
         +"       from  job_order_arap joa "
         +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
         +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
-        +"       where joa.id in (select aci.ref_order_id from arap_charge_item aci where aci.charge_order_id="+chargeOrderId+")";
+        +"       where joa.id in (select aci.ref_order_id from arap_cost_item aci where aci.cost_order_id="+costOrderId+")";
 		
 		Map<String, Double> exchangeTotalMap = new HashMap<String, Double>();
 		exchangeTotalMap.put("CNY", 0d);
@@ -546,13 +452,13 @@ public class ChargeCheckOrderController extends Controller {
             String type = rec.get("order_type");
             Double exchange_amount = exchangeTotalMap.get(name);
             if(exchangeTotalMap.get(name)==null){
-                if("charge".equals(type)){
+                if("cost".equals(type)){
                     exchangeTotalMap.put(name, exchange_amount+=exchange_amount);
                 }else{
                     exchangeTotalMap.put(name, 0-rec.getDouble("exchange_total_amount"));
                 }
             }else{
-                if("charge".equals(type)){
+                if("cost".equals(type)){
                     exchangeTotalMap.put(name, exchange_amount+=rec.getDouble("exchange_total_amount"));
                 }else{
                     exchangeTotalMap.put(name, exchange_amount-=rec.getDouble("exchange_total_amount"));
@@ -560,12 +466,12 @@ public class ChargeCheckOrderController extends Controller {
             }
         }
 		
-		Record order = Db.findById("arap_charge_order", chargeOrderId);
+		Record order = Db.findById("arap_cost_order", costOrderId);
 		for (Map.Entry<String, Double> entry : exchangeTotalMap.entrySet()) {
 		    System.out.println(entry.getKey() + " : " + entry.getValue());
 		    order.set(entry.getKey(), entry.getValue());
 		}
-		Db.update("arap_charge_order", order);
+		Db.update("arap_cost_order", order);
 		return exchangeTotalMap;
     }
     
@@ -573,28 +479,10 @@ public class ChargeCheckOrderController extends Controller {
     
 	//异步刷新字表
     public void tableList(){
-    	String order_ids = getPara("order_ids");
     	String order_id = getPara("order_id");
-    	String appliction_id = getPara("appApplication_id");
-    	String bill_flag = getPara("bill_flag");
-    	String currency_code=getPara("query_currency");
-    	//查询结算币制
-    	String  exchange_currency=getPara("query_exchange_currency");
     	List<Record> list = null;
-    	String condition = "select ref_order_id from arap_charge_item where charge_order_id in ("+order_ids+") ";
-    	
-    	if("N".equals(order_id)){//应收申请单
-    		if(StringUtils.isNotEmpty(appliction_id)){
-    			list = getChargeItemList(appliction_id,bill_flag,currency_code,exchange_currency);
-        	}else{
-	    		if("".equals(order_ids)){
-	    			order_ids=null;
-	    				}
-	    		list = getChargeItemList(order_ids,"",currency_code,exchange_currency);
-	    		}
-    	}else{//应收对账单
-    		    list = getItemList(condition,order_id,currency_code);
-    	}
+    	String condition = "select ref_order_id from arap_cost_item where cost_order_id ="+order_id;
+    	list = getItemList(condition,order_id);
 
     	Map BillingOrderListMap = new HashMap();
         BillingOrderListMap.put("sEcho", 1);
@@ -609,71 +497,16 @@ public class ChargeCheckOrderController extends Controller {
     @Before(Tx.class)
     public void confirm(){
 		String id = getPara("id");
-		ArapChargeOrder aco = ArapChargeOrder.dao.findById(id);
+		ArapCostOrder aco = ArapCostOrder.dao.findById(id);
 		aco.set("status","已确认");
 		aco.set("confirm_stamp", new Date());
 		aco.set("confirm_by", LoginUserController.getLoginUserId(this));
 		aco.update();
-		
-		//设置y，已生成对账单o
-		String itemList=aco.get("ref_order_id");
-		String sql="UPDATE job_order_arap joa set billConfirm_flag='Y' "
-					+"where joa.id in (select aci.ref_order_id FROM arap_charge_item aci where charge_order_id="+id+" )";
-		Db.update(sql);
-		
 		Record r = aco.toRecord();
 		r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
 		renderJson(r);
 	}
     
-    public void insertChargeItem(){
-    	String itemList= getPara("charge_itemlist");
-    	String[] itemArray =  itemList.split(",");
-    	String chargeOrderId=getPara("order_id");
-    	ArapChargeItem aci = null;
-    	
-    	if(chargeOrderId != null){
-    		for(String itemId:itemArray){
-    			aci = new ArapChargeItem();
-	    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
-
-	             jobOrderArap.set("bill_flag", "Y");
-	             String hedge_order_type = jobOrderArap.getStr("order_type");
-	             if("cost".equals(hedge_order_type)){
-	                	jobOrderArap.set("hedge_flag", "Y");
-	               }
-	             jobOrderArap.update();
-				aci.set("ref_order_id", itemId);
-				aci.set("charge_order_id", chargeOrderId);
-				aci.save();
-//        	String sql="INSERT into arap_charge_item (ref_order_id,charge_order_id) "
-//        				+ "VALUES ("+itemId+","+order_id+")";
-    		}
-    		
-    	}
-    	//计算结算汇总
-		Map<String, Double> exchangeTotalMap = updateExchangeTotal(chargeOrderId);
-		exchangeTotalMap.put("chargeOrderId", Double.parseDouble(chargeOrderId));
-		
-    	renderJson(exchangeTotalMap);
-
-    }
-    
-    public void deleteChargeItem(){
-    	String chargeOrderId=getPara("order_id");
-    	String itemid=getPara("charge_itemid");
-    	if(itemid !=null&& chargeOrderId!=null){
-    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
-    		 jobOrderArap.set("bill_flag", "N");
-    		 jobOrderArap.set("hedge_flag", "N");
-             jobOrderArap.update();
-//             String sql="delete from  where ref_order_id="+itemid+"and charge_order_id="+chargeOrderId;
-             Db.deleteById("arap_charge_item","ref_order_id,charge_order_id",itemid,chargeOrderId);
-    	}
-    	//计算结算汇总
-    			Map<String, Double> exchangeTotalMap = updateExchangeTotal(chargeOrderId);
-    			exchangeTotalMap.put("chargeOrderId", Double.parseDouble(chargeOrderId));
-    	    	renderJson(exchangeTotalMap);
-    }  
+   
 
 }

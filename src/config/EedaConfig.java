@@ -32,7 +32,10 @@ import models.UserCustomer;
 import models.UserLogin;
 import models.UserOffice;
 import models.UserRole;
+import models.eeda.cms.CustomArapChargeItem;
+import models.eeda.cms.CustomArapChargeOrder;
 import models.eeda.cms.CustomPlanOrder;
+import models.eeda.cms.CustomPlanOrderArap;
 import models.eeda.cms.CustomPlanOrderItem;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
@@ -244,7 +247,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/customPlanOrder", CustomPlanOrderController.class, contentPath);
 		me.add("/cmsChargeConfirm", controllers.arap.cmsAr.CmsChargeConfirmController.class, contentPath);
 		me.add("/cmsChargeCheckOrder", controllers.arap.cmsAr.CmsChargeCheckOrderController.class, contentPath);
-		
+		me.add("/cmsCostCheckOrder", controllers.arap.cmsAr.CmsCostCheckOrderController.class, contentPath);
 		
 		
 		//tms 车队系统
@@ -410,9 +413,12 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("app_invoice_doc", AppInvoiceDoc.class);
         arp.addMapping("rate_contrast", RateContrast.class);
         
-        //cms 报关管理
+        //cms 报关管理		
         arp.addMapping("custom_plan_order", CustomPlanOrder.class);
         arp.addMapping("custom_plan_order_item", CustomPlanOrderItem.class);
+        arp.addMapping("custom_arap_charge_order", CustomArapChargeOrder.class);
+        arp.addMapping("custom_arap_charge_item", CustomArapChargeItem.class);
+        arp.addMapping("custom_plan_order_arap", CustomPlanOrderArap.class);
         
         //tms 车队管理
         arp.addMapping("trans_job_order", TransJobOrder.class);
