@@ -54,7 +54,7 @@ $(document).ready(function() {
         id: 'custom_doc_table',
         autoWidth: false,
         columns:[
-			{ "data":"ID","width": "40px",
+			{ "data":"ID","width": "80px",
 			    "render": function ( data, type, full, meta ) {
                     if(!full.ID){//有doc id证明是自己上传的，否则是从job order 共享过来的
                         return '';
@@ -69,7 +69,7 @@ $(document).ready(function() {
             {"width": "30px",
                 "render": function ( data, type, full, meta ) {
                     if(full.ID){
-                	   return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
+                	   return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px"><i class="fa fa-trash-o"></i> 删除</button></button> ';
                     }else{
                         return '';
                     }
