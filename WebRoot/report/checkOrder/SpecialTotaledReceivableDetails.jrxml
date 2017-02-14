@@ -390,7 +390,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 			<staticText>
 				<reportElement x="722" y="64" width="66" height="17" uuid="f377ee0c-f2db-446a-a408-95e5e8fbda4f"/>
 				<textElement textAlignment="Center">
-					<font fontName="黑体"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[保险（CNY）]]></text>
 			</staticText>
