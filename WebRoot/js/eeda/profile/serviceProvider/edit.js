@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
 
   $(document).ready(function() {
+	  $("#breadcrumb_li").text('供应商管理');
+	  
     	var id = $("#partyId").val();
     	if(id != null && id != ""){
     		$("#addChargeType").attr("disabled",false);
