@@ -50,10 +50,7 @@
                                                 <label>负责人(必填)</label>
                                                 <input placeholder="" class="form-control" id="contact_person" type="text" name="contact_person" value="${party.contact_person!''}">
                                             </div>
-                                            <div class="form-group">
-                                                <label>注册资金</label>
-                                                <input placeholder="" class="form-control" id="capital" type="text" name="contact_person" value="${party.contact_person!''}">
-                                            </div>
+                                            
                                             <div class="form-group">
                                                 <label>供应商类型</label>
                                                 <div class="checkbox">
@@ -101,7 +98,48 @@
                                                     </label>
                                                 </div>
                                             </div>
-
+                                            <div class="form-group">
+                                                <label>注册资金</label>
+                                                <input placeholder="" class="form-control" id="capital" type="text" name="capital" value="${party.capital!''}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>企业性质</label>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input id="State-run" name="State-run" type="checkbox" value="State-run" style="margin-top: 0px;">国营
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="private" name="private" type="checkbox" value="private" style="margin-top: 0px;">私营
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="fund_raising" name="fund_raising" type="checkbox" value="fund_raising" style="margin-top: 0px;">集资
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="foreign_capital" name="foreign_capital" type="checkbox" value="foreign_capital" style="margin-top: 0px;">外资
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="shareholding" name="shareholding" type="checkbox" value="shareholding" style="margin-top: 0px;">股权
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="joint_venture" name="joint_venture" type="checkbox" value="joint_venture" style="margin-top: 0px;">合资
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>体系及资质认证</label>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input id="ISO9000_authentication" name="ISO9000_authentication" type="checkbox" value="ISO9000_authentication" style="margin-top: 0px;">ISO9000认证
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="other_authentication" name="other_authentication" type="checkbox" value="other_authentication" style="margin-top: 0px;">其他
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>收款人</label>
+                                                <input class="form-control" id="receiver" type="text" name="receiver" value="${party.receiver!''}">
+                                            </div>
                                             <div class="form-group">
                                                 <label>付款方式</label>
 	                                           	<select class="form-control" id="payment" name="payment">
@@ -112,10 +150,9 @@
                                             </div>
                                             
                                             <div class="form-group">
-                                                <label>收款人</label>
-                                                <input class="form-control" id="receiver" type="text" name="receiver" value="${party.receiver!''}">
+                                                <label>主营业务</label>
+                                                <input class="form-control" id="main_business" type="text" name="main_business" value="${party.main_business!''}">
                                             </div>
-                                            
                                             <div class="form-group">
                                                 <label>银行账号</label>
                                                 <input class="form-control" id="bank_no" type="text" name="bank_no" value="${party.bank_no!''}">
@@ -194,7 +231,24 @@
                                                 <label>公司传真</label>
                                                 <input placeholder="" class="form-control" id="fax" type="text" name="fax" value="${party.fax!''}">
                                             </div>
-
+                                            <div class="form-group">
+                                                <label>纳税人类别</label>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input id="VAT_general" name="VAT_general" type="checkbox" value="VAT_general" style="margin-top: 0px;">增值税一般纳税人
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="VAT_small_scale" name="VAT_small_scale" type="checkbox" value="VAT_small_scale" style="margin-top: 0px;">增值税小规模纳税人
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="other" name="other" type="checkbox" value="other" style="margin-top: 0px;">其他
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                </div>
+                                            </div>
+											<div class="form-group">
+                                                <label>开户信息</label>
+                                                <input placeholder="" class="form-control" id="account_information" type="text" name="account_information" value="${party.account_information!''}">
+                                            </div>
                                             <div class="form-group">
                                                 <label>邮政编码</label>
                                                 <input placeholder="" class="form-control" id="postal_code" type="text" name="postal_code" value="${party.postal_code!''}">
@@ -204,9 +258,14 @@
                                                 <input class="form-control" id="receipt" type="text" name="receipt" value="${party.receipt!''}">
                                             </div>
                                             <div class="form-group">
+                                                <label>营业范围</label>
+												<textarea class="form-control" rows="3" name="business_scope">${party.business_scope!''}</textarea>
+                                            </div>
+                                            <div class="form-group">
                                                 <label>公司简介</label>
 												<textarea class="form-control" rows="3" name="introduction">${party.introduction!''}</textarea>
                                             </div>
+                                            
                                        </div>
 									</form>
                                     <div class="col-lg-6" style="clear:both;">
