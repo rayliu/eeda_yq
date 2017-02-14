@@ -214,6 +214,8 @@ $(document).ready(function() {
         order.chargeCost_list = itemOrder.buildChargeCostDetail();
         order.charge_template = itemOrder.buildChargeTemplate();
         order.cost_template = itemOrder.buildCostTemplate();
+        order.allCharge_template = itemOrder.buildAllChargeTemplate();
+        order.allCost_template = itemOrder.buildAllCostTemplate();
         //相关文档
         order.doc_list = eeda.buildTableDetail("doc_table","");
 
