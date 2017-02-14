@@ -318,9 +318,9 @@ public class JobOrderReportController extends Controller {
 		String company_name = getPara("company_name");
 		String fileName = "";
 		if("昂励制冷器材（中山）有限公司".equals(company_name)){
-			fileName = "/report/checkOrder/TotaledReceivableDetails.jasper";
-		}else{
 			fileName = "/report/checkOrder/SpecialTotaledReceivableDetails.jasper";
+		}else{
+			fileName = "/report/checkOrder/TotaledReceivableDetails.jasper";
 		}
 		String outFileName = "/download/应收对账单(合计版)PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
