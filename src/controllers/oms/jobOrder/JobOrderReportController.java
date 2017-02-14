@@ -317,6 +317,7 @@ public class JobOrderReportController extends Controller {
 		String order_id = getPara("order_id");
 		String company_name = getPara("company_name");
 		String fileName = "";
+		
 		if("昂励制冷器材（中山）有限公司".equals(company_name)){
 			 fileName = "/report/checkOrder/SpecialTotaledReceivableDetails.jasper";
 		}else{
