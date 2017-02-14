@@ -86,7 +86,7 @@ jos.mbl_no MBL, jos.hbl_no HBL,
 		LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
 		WHERE
 			aco.id = $P{order_id}
-		AND joa.currency_id = 3 AND joa.order_id = jo.id and joa.order_type = 'charge'
+		AND joa.currency_id = 3 AND joa.order_id = jo.id and joa.order_type = 'charge' and charge_id != 68
 
 	) cny,
 
@@ -399,102 +399,102 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 	<detail>
 		<band height="15" splitType="Stretch">
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="662" y="0" width="61" height="12" uuid="1573c8f3-5e65-409b-be9c-a02fc6ce86a8"/>
+				<reportElement x="662" y="1" width="61" height="12" uuid="1573c8f3-5e65-409b-be9c-a02fc6ce86a8"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{usd}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="595" y="0" width="66" height="12" uuid="16b5d67b-1dca-41f6-a562-1d3e3f709591"/>
+				<reportElement x="595" y="1" width="66" height="12" uuid="16b5d67b-1dca-41f6-a562-1d3e3f709591"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cny}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="47" height="12" uuid="3512196d-f5c9-4c4f-bf9d-35288b99e69e"/>
+				<reportElement x="0" y="1" width="47" height="12" uuid="3512196d-f5c9-4c4f-bf9d-35288b99e69e"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="46" y="0" width="55" height="12" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
+				<reportElement x="46" y="1" width="55" height="12" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="340" y="0" width="46" height="12" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
+				<reportElement x="340" y="1" width="46" height="12" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{truck_type}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="515" y="0" width="80" height="12" uuid="d3d45fa5-a3d7-444d-aa12-85feab34e35a"/>
+				<reportElement x="515" y="1" width="80" height="12" uuid="d3d45fa5-a3d7-444d-aa12-85feab34e35a"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="458" y="0" width="59" height="12" uuid="f24a4c1a-3f07-4b8e-b200-0e77e85d92f3"/>
+				<reportElement x="458" y="1" width="59" height="12" uuid="f24a4c1a-3f07-4b8e-b200-0e77e85d92f3"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{HBL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="377" y="0" width="90" height="15" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
+				<reportElement stretchType="RelativeToBandHeight" x="377" y="1" width="90" height="14" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{MBL}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="237" y="0" width="34" height="12" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
+				<reportElement x="237" y="1" width="34" height="12" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{KGS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="206" y="0" width="31" height="12" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
+				<reportElement x="206" y="1" width="31" height="12" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CTNS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="172" y="0" width="34" height="12" uuid="031ec9cc-8b73-404c-94d7-8695bbeabf86"/>
+				<reportElement x="172" y="1" width="34" height="12" uuid="031ec9cc-8b73-404c-94d7-8695bbeabf86"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CBM}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="99" y="0" width="73" height="12" uuid="b47f4b0c-359f-4d35-b125-b37107c4ef04"/>
+				<reportElement x="99" y="1" width="73" height="12" uuid="b47f4b0c-359f-4d35-b125-b37107c4ef04"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="273" y="0" width="70" height="12" uuid="29e7ccc5-83fc-408a-bdbc-3ff2bc680a5c"/>
+				<reportElement stretchType="RelativeToBandHeight" x="273" y="1" width="70" height="12" uuid="29e7ccc5-83fc-408a-bdbc-3ff2bc680a5c"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ref_no}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="bottomLine" stretchType="RelativeToBandHeight" x="2" y="10" width="800" height="5" uuid="f5ee74a4-0050-466b-a169-c8b05a19a718"/>
+				<reportElement style="bottomLine" stretchType="RelativeToBandHeight" x="2" y="1" width="800" height="14" uuid="f5ee74a4-0050-466b-a169-c8b05a19a718"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<textField pattern="###0.00">
-				<reportElement x="723" y="0" width="65" height="12" uuid="7b112b43-1d8a-4381-8ae2-472084530cd6"/>
+				<reportElement x="723" y="1" width="65" height="12" uuid="7b112b43-1d8a-4381-8ae2-472084530cd6"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
