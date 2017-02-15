@@ -24,10 +24,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
   		var dataTable = eeda.dt({
             id: 'mark_table',
-            ajax:{
-                url: "/serviceProvider/markCustormerList?sp_id="+$('#markCustomer').val(),
-                type: 'POST'
-            }, 
+            // ajax:{
+            //     url: "/serviceProvider/markCustormerList?sp_id="+$('#markCustomer').val(),
+            //     type: 'POST'
+            // }, 
             columns:[
             { "width": "10px", "orderable": false,
             "render": function ( data, type, full, meta ) {
@@ -92,7 +92,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	 	 //异步向后台提交数据
         $.post('/serviceProvider/markCustormerSave', {params:JSON.stringify(item_list),sp_id:sp_id}, function(data){
         	freshItemTable();
-        	$.scojs_message('保存成功', $.scojs_message.TYPE_SUCCESS);
+        	$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
         },'JSON').fail(function(){
         	 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
         	});

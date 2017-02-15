@@ -739,12 +739,7 @@ public class ServiceProviderController extends Controller {
 				pm.set("mark_date",new Date());
 				pm.set("sp_id", sp_id);
 				pm.set("office_id", office_id);
-				if(item.get("marker_name")!=null){
-					pm.set("marker_name", item.get("marker_name"));
-				}else{
-					pm.set("user_id", userId);
-					pm.set("marker_name",  LoginUserController.getUserNameById(userId));
-				}
+				pm.set("user_id", userId);
 				pm.save();
 			}
     	}
