@@ -9,11 +9,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   					var item=$(this).children().find('[class=itemname]').val();
   					var score=$(this).children().find('[class=score]').val();
   					var remark=$(this).children().find('[class=remark]').val();
-  					var marker_name=$(this).children().find('[class=marker_name]').val();
   					item1.item=item;
   					item1.score=score;
   					item1.remark=remark;
-  					item1.marker_name=marker_name;  
   				 }
   			  if(item1.item!=null){
   			   items.push(item1);
@@ -101,7 +99,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	 var freshItemTable=function(){
   	 	 var sp_id=$('#markCustomer').val()
   	 	 var url = "/serviceProvider/markCustormerList?sp_id="+sp_id;
-          dataTable.ajax.url(url).load();
+          dataTable.ajax.url(url).load(function(){
+          	calculate();
+          });
+  	 }
+  	 //计算总分
+  	 var calculate=function(){
+  	 	var totalscore=80;
+  	 	dataTable.data().each(function(item,index){
+  	 		totalscore+=parseInt(item.SCORE);
+  	 	})
+  	 	$('#total_mark').val(totalscore);
+  	 	$('#total_mark').html(totalscore);
   	 }
   })
 })
