@@ -287,6 +287,9 @@ public class EedaConfig extends JFinalConfig {
         me.add("/oceanRouteReport", controllers.report.OceanRouteReportController.class, contentPath); 
         me.add("/airRouteReport", controllers.report.AirRouteReportController.class, contentPath); 
         
+        //合同管理
+        me.add("/supplierContract", controllers.contractManagement.SupplierContractController.class, contentPath);
+        
         //应付报销单
         //ßme.add("/costReimbursement", controllers.arap.ap.CostReimbursementOrder.class, contentPath);
         //财务转账单
