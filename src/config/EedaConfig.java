@@ -22,6 +22,7 @@ import models.CostApplicationOrderRel;
 import models.Location;
 import models.Office;
 import models.Party;
+import models.PartyMark;
 import models.Permission;
 import models.Product;
 import models.RateContrast;
@@ -355,6 +356,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("custom", Custom.class);
         arp.addMapping("container_type", ContainerType.class);
         arp.addMapping("party", Party.class);
+        arp.addMapping("party_mark", PartyMark.class);
 //        arp.addMapping("contact", Contact.class);       
         arp.addMapping("route", Route.class);
         arp.addMapping("product", Product.class);

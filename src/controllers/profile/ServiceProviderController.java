@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -11,9 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.ArapChargeOrder;
 import models.Location;
 import models.ParentOfficeModel;
 import models.Party;
+import models.PartyMark;
 import models.UserLogin;
 import models.yh.profile.ProviderChargeType;
 
@@ -23,6 +26,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
+import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
@@ -90,7 +94,6 @@ public class ServiceProviderController extends Controller {
         setAttr("location", re.getStr("loc_name"));
 
         setAttr("party", party);
-     
         render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
     }
     
@@ -698,5 +701,59 @@ public class ServiceProviderController extends Controller {
     	}
     	rec = Db.find(sql + " limit 10");
     	renderJson(rec);
+    }
+    
+    //打分
+    public void markCustormerList(){
+    	String sp_id=getPara("sp_id");
+    	String office_id= pom.getCurrentOfficeId().toString();
+        String sql="select pm.item,pm.score,pm.remark,pm.mark_date,pm.id,p.abbr,ul.c_name FROM party_mark pm "
+					+" LEFT JOIN party p on p.id=pm.sp_id "
+					+" LEFT JOIN office o on o.id = pm.office_id "
+					+" LEFT JOIN user_login ul on ul.id=pm.user_id "
+					+" WHERE pm.sp_id = " +sp_id
+						+" and pm.office_id= "+office_id;
+        List<Record> orderList = Db.find(sql);
+        Map map = new HashMap();
+        map.put("data", orderList);
+        renderJson(map);
+    }
+    //保存打分
+    public void markCustormerSave(){
+    	String jsonStr=getPara("params");
+       	String  sp_id=getPara("sp_id");
+       	UserLogin user = LoginUserController.getLoginUser(this);
+       	long userId = LoginUserController.getLoginUserId(this);
+		long office_id = user.getLong("office_id");
+       	
+       	Gson gson = new Gson();  
+       	List<Map<String, String>> dto= (List<Map<String, String>>) gson.fromJson(jsonStr, ArrayList.class);  
+        
+		for(Map<String, String> item :dto){
+			String itemId = item.get("id");
+			if(StringUtils.isEmpty(itemId)){
+				PartyMark pm=new PartyMark();
+				pm.set("item", item.get("item"));
+				pm.set("score", item.get("score"));
+				pm.set("remark", item.get("remark"));
+				pm.set("mark_date",new Date());
+				pm.set("sp_id", sp_id);
+				pm.set("office_id", office_id);
+				if(item.get("marker_name")!=null){
+					pm.set("marker_name", item.get("marker_name"));
+				}else{
+					pm.set("user_id", userId);
+					pm.set("marker_name",  LoginUserController.getUserNameById(userId));
+				}
+				pm.save();
+			}
+    	}
+		renderJson("saveStatu","OK");
+    }
+    //删除某项打分
+    public void markCustormerDelete(){
+    	String itemid=getPara("id");
+    	Db.deleteById("party_mark", itemid);
+    	renderJson("deleteStatu","OK");
     }
 }
