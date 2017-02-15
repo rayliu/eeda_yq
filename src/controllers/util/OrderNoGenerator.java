@@ -3,14 +3,10 @@ package controllers.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import models.eeda.profile.OrderNoSeq;
-
 import org.apache.commons.lang.StringUtils;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
-
-import controllers.profile.LoginUserController;
 
 /**
  * generate Order number

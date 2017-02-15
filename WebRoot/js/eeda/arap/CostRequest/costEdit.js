@@ -59,7 +59,7 @@ $(document).ready(function() {
     
     //金额取两位小数
 	var refleshNum = function(numValue){
-		var numbleValue = parseFloat(numValue).toFixed(2)
+		var numbleValue = eeda.numFormat(parseFloat(numValue).toFixed(2),3);
 		return numbleValue;
 	}
 	var currency=new Array('cny','usd','jpy','hkd')

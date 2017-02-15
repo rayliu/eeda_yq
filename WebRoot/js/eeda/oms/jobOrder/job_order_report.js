@@ -348,6 +348,40 @@ $(document).ready(function() {
 			$('#head_endPlace').val($('#ocean_HBLshipper_input').val());
 			$('#head_startPlace').val(loginUserName);
 			$('#head_date').val(eeda.getDate());
+			
+			
+			 //把提柜码头和还柜码头带到table中
+//			   $('#take_wharf,#back_wharf').keyup(function(){
+//				   if($('#take_wharf').val()!=''){
+//					   $($("#land_table tr:eq(1) td:nth-child(7)").find('input')).val($('#take_wharf').val());
+//				   }
+//				   if($('#back_wharf').val()!=''){
+//					   $($("#land_table tr:eq(2) td:nth-child(8)").find('input')).val($('#back_wharf').val());
+//				   }
+//			   
+//			   });
+			
+			   
+			   
+			var container_type =  $($("#ocean_cargo_table tr:eq(1) td:nth-child(4)").find('[name=container_type]')).val();
+			var por_input = $("#por_input").val();
+			var pod_input = $("#pod_input").val();
+			var head_title = $('#head_title').val();
+
+			if(head_title==""){
+			    head_title = '1X'+container_type+' FM '+por_input+' TO '+pod_input;
+				$('#head_title').val(head_title);
+			}
+				
+		    var order_export_date = $("#order_export_date").val();
+			
+		    var head_remark = $("#head_remark").val();
+		    if(head_remark==""){
+		    	head_remark = "请安排 "+order_export_date+" 西域港报关出口";
+		    	$("#head_remark").val(head_remark)
+		    }
+		    	
+
 			$('#oceanHeadDetailBtn1').click();
 		}
     })

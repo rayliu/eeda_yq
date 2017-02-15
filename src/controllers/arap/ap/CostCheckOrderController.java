@@ -53,21 +53,27 @@ public class CostCheckOrderController extends Controller {
 		String usd_totalAmount = getPara("usd_totalAmount");
 		String hkd_totalAmount = getPara("hkd_totalAmount");
 		String jpy_totalAmount = getPara("jpy_totalAmount");
+		String exchange_totalAmount = getPara("exchange_totalAmount");
+		String exchange_cny_totalAmount = getPara("exchange_cny_totalAmount");
+		String exchange_usd_totalAmount = getPara("exchange_usd_totalAmount");
+		String exchange_hkd_totalAmount = getPara("exchange_hkd_totalAmount");
+		String exchange_jpy_totalAmount = getPara("exchange_jpy_totalAmount");
 		
 		String strAry[] = ids.split(",");
 		String id = strAry[0];
-		String sql = " select joa.sp_id,p.company_name company_name from job_order_arap joa "
+		String sql = " select joa.sp_id,p.abbr company_abbr,p.company_name company_name from job_order_arap joa "
 				   + " left join party p on p.id = joa.sp_id "
 				   + "  where joa.id = ? ";
 		Record spRec = Db.findFirst(sql,id);
 		Record order = new Record();
 		order.set("sp_id", spRec.get("sp_id"));
 		order.set("company_name", spRec.get("company_name"));
-		order.set("total_amount",totalAmount);
-		order.set("jpy", jpy_totalAmount);
-		order.set("cny", cny_totalAmount);
-		order.set("usd", usd_totalAmount);
-		order.set("hkd", hkd_totalAmount);
+		order.set("company_abbr",spRec.get("company_abbr"));
+		order.set("total_amount",exchange_totalAmount);
+		order.set("jpy", exchange_jpy_totalAmount);
+		order.set("cny", exchange_cny_totalAmount);
+		order.set("usd", exchange_usd_totalAmount);
+		order.set("hkd",exchange_hkd_totalAmount);
 		
 		order.set("ids",ids);
 		order.set("creator_name", LoginUserController.getLoginUserName(this));
@@ -114,7 +120,8 @@ public class CostCheckOrderController extends Controller {
 	                + " cur.name currency_name,"
 	                + " ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
                     + " ifnull(joa.exchange_currency_rate, 1) exchange_currency_rate,"
-                    + " ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, joa.pay_flag "
+                    + " ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, joa.pay_flag ,"
+                    + " fi.name fin_name "
 	                + " from job_order_arap joa "
 	                + " left join job_order jo on jo.id=joa.order_id "
 	                + " left join job_order_shipment jos on jos.order_id=joa.order_id "
@@ -125,6 +132,7 @@ public class CostCheckOrderController extends Controller {
 	                + " left join location l on l.id=jos.fnd "
 	                + " left join currency cur on cur.id=joa.currency_id "
 	                + " left join currency cur1 on cur1.id=joa.exchange_currency_id "
+	                +" left join fin_item fi on joa.charge_id = fi.id "
 	                + " where joa.audit_flag='Y' and joa.bill_flag='N' and joa.id in("+ids+") "
 	                + " GROUP BY joa.id"
 	                + " ORDER BY jo.order_no";	
@@ -141,6 +149,7 @@ public class CostCheckOrderController extends Controller {
 	                + " cur.name currency_name, "
 	                + " ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
 	                + " ifnull(joa.exchange_currency_rate, 1) exchange_currency_rate,"
+	                + " fi.name fin_name ,"
 	                + " ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, joa.pay_flag "
 	                + " from job_order_arap joa "
 	                + " left join job_order jo on jo.id=joa.order_id "
@@ -154,6 +163,7 @@ public class CostCheckOrderController extends Controller {
 	                + " left join currency cur1 on cur1.id=joa.exchange_currency_id "
 	                + " left join arap_cost_item aci on aci.ref_order_id = joa.id"
 					+ " left join arap_cost_order aco on aco.id = aci.cost_order_id "
+					+ " left join fin_item fi on joa.charge_id = fi.id "
 					+ " where joa.id = aci.ref_order_id and aco.id in ("+order_id+")"+currency_code
 	                + " GROUP BY joa.id "
 	                + " ORDER BY aco.order_no, jo.order_no ";
@@ -502,7 +512,7 @@ public class CostCheckOrderController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void edit(){
 		String id = getPara("id");//arap_cost_order id
-		String sql = " select aco.*,p.id company_id,p.company_name,p.abbr sp_name,u.c_name creator_name,u1.c_name confirm_by_name from arap_cost_order aco "
+		String sql = " select aco.*,p.id company_id,p.company_name,p.abbr company_abbr,u.c_name creator_name,u1.c_name confirm_by_name from arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by "
    				+ " left join user_login u1 on u1.id=aco.confirm_by "

@@ -87,13 +87,58 @@
 					<label>备注</label>
 					<textarea id='remark' class="form-control" rows="3" name="remark">${order.remark!''}</textarea>
 				</div>
-			</div>
-	
+			</div><br><br>
 			
+		<!--  	<div class="row">
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", { id:'total_amount',
+					label:'应收总金额(CNY)', value:order.total_amount!'',disabled:'disabled'
+					}){}%>
+				</div>
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", { id:'check_amount',
+					label:'对账总金额(CNY)', value:order.check_amount!order.total_amount!'',disabled:'disabled'
+					}){}%>
+				</div>
+			</div>      -->
 			<div class="row">
-				<div class="col-lg-12">
-	                 <div class="btn-header" style="font-size: 18px">结算金额汇总</div>
-	            </div>
+				<div class="form-group">
+					<div class="col-lg-12">
+						<h4>对账币值金额汇总</h4>
+					</div>
+				</div>
+		   </div>
+			<div class="row">
+				<div class="col-lg-3">
+					<%include("/eeda/component/form/inputField.html", { id:'cny_duizhang',
+					label:'应收CNY', value:order.cny_duizhang!'',disabled:'disabled'
+					}){}%>
+				</div>
+				<div class="col-lg-3">
+					<%include("/eeda/component/form/inputField.html", { id:'usd_duizhang',
+					label:'应收USD', value:order.usd_duizhang!'',disabled:'disabled'
+					}){}%>
+				</div>
+				<div class="col-lg-3">
+					<%include("/eeda/component/form/inputField.html", { id:'hkd_duizhang',
+					label:'应收HKD', value:order.hkd_duizhang!'',disabled:'disabled'
+					}){}%>
+				</div>
+				<div class="col-lg-3">
+					<%include("/eeda/component/form/inputField.html", { id:'jpy_duizhang',
+					label:'应收JPY', value:order.jpy_duizhang!'',disabled:'disabled'
+					}){}%>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="form-group">
+					<div class="col-lg-12">
+						<h4>结算汇总金额</h4>
+					</div>
+				</div>
+		   </div>
+			<div class="row">
 				<div class="col-lg-3">
 					<%include("/eeda/component/form/inputField.html", { id:'cny',
 					label:'应收CNY', value:order.cny!'',disabled:'disabled'
@@ -199,12 +244,14 @@
 						<%include("/eeda/component/form/detailTable.html", 
                             {
                                 id:'eeda-table', 
-                                style:'width:1500px',
-                                headers:['<input type="checkbox" id="allcheck">',
+                                style:'width:1600px',
+                                headers:[
+                                	'<input type="checkbox" id="allcheck">',
                                 	'操作',
                                     '工作单号',
                                     '出货日期',			                                       
                                     '结算公司',
+                                    '费用名称',
                                     '对账币制',
                                     '对账金额', 
                                     '原汇率',
@@ -224,7 +271,7 @@
                                     '',
                                     ''	                                        
                                 ],
-					field_list:['id','','order_no','create_stamp','sp_name','currency_name','total_amount','exchange_rate','after_total',
+					field_list:['id','','order_no','create_stamp','sp_name','fin_name','currency_name','total_amount','exchange_rate','after_total',
 					'new_rate','after_rate_total','exchange_currency_name','exchange_currency_rate','exchange_total_amount','vgm','container_amount',
 					'gross_weight','container_no','ref_no','mbl_no','hbl_no','order_type', 'job_order_id'], value_list: order.itemList!item_list![] }){} %>
 			

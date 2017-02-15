@@ -72,7 +72,9 @@ $(document).ready(function() {
             },
             { "data": "CREATE_STAMP", "width": "70px"},
             { "data": "SP_NAME", "width": "70px"},
+            { "data": "FIN_NAME"},
             { "data": "CURRENCY_NAME",'class':'currency_name', "width": "70px"},
+
             { "data": "TOTAL_AMOUNT",'class':'total_amount', "width": "70px",
             	"render": function ( data, type, full, meta ) {
             		var total_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
@@ -253,7 +255,52 @@ $(document).ready(function() {
               { "data": "TRUCK_TYPE", "width": "100px"}
             ]
         });
-
+  
+       //对账金额汇总
+    var cal=function(){
+        var totalAmount = 0.0;
+        var cny_totalAmount = 0.0;
+        var usd_totalAmount = 0.0;
+        var hkd_totalAmount = 0.0;
+        var jpy_totalAmount = 0.0;
+        itemTable.data().each(function(item,index){
+        var total_amount = item.TOTAL_AMOUNT;
+        var currency_name = item.CURRENCY_NAME;
+        if(total_amount!=''&&!isNaN(total_amount)){
+           if(item.ORDER_TYPE=='charge'){
+                if(currency_name=='CNY'){
+                    cny_totalAmount += parseFloat(total_amount);
+                }else if(currency_name=='USD'){
+                    usd_totalAmount += parseFloat(total_amount);
+                }else if(currency_name=='HKD'){
+                    hkd_totalAmount += parseFloat(total_amount);
+                }else if(currency_name=='JPY'){
+                    jpy_totalAmount += parseFloat(total_amount);
+                }
+            }else if(item.ORDER_TYPE=='cost'){
+                if(currency_name=='CNY'){
+                    cny_totalAmount -= parseFloat(total_amount);
+                }else if(currency_name=='USD'){
+                    usd_totalAmount -= parseFloat(total_amount);
+                }else if(currency_name=='HKD'){
+                    hkd_totalAmount -= parseFloat(total_amount);
+                }else if(currency_name=='JPY'){
+                    jpy_totalAmount -= parseFloat(total_amount);
+                }
+            }
+        }
+    });
+      $('#cny_duizhang').html(cny_totalAmount.toFixed(2));
+       $('#usd_duizhang').html(usd_totalAmount.toFixed(2));
+       $('#hkd_duizhang').html(hkd_totalAmount.toFixed(2));
+       $('#jpy_duizhang').html(jpy_totalAmount.toFixed(2));
+       $('#totalAmount').val(totalAmount.toFixed(2));
+       $('#cny_duizhang').val(cny_totalAmount.toFixed(2));
+       $('#usd_duizhang').val(usd_totalAmount.toFixed(2));
+       $('#hkd_duizhang').val(hkd_totalAmount.toFixed(2));
+       $('#jpy_duizhang').val(jpy_totalAmount.toFixed(2));
+};
+    cal();
 
            
     $('input[name=new_rate]').on('keyup',function(){
@@ -290,8 +337,8 @@ $(document).ready(function() {
 		for(var i=0;i<currency.length;i++){
 			var cujh=currency[i];
 			var stringNum=cujh;
-			var cujh= $('#'+stringNum).val();
-			$('#'+stringNum).val(refleshNum(cujh));
+			var cujh= $('#exchange_'+stringNum).val();
+			$('#exchange_'+stringNum).val(refleshNum(cujh));
 		}
     
     
@@ -299,7 +346,9 @@ $(document).ready(function() {
     itemOrder.refleshTable = function(order_id){
     	var url = "/chargeCheckOrder/tableList?order_id="+order_id
         +"&table_type=item";
-    	itemTable.ajax.url(url).load();
+    	itemTable.ajax.url(url).load(function(){
+        cal();
+      });
     }
     
     
@@ -595,6 +644,7 @@ $(document).ready(function() {
                  $('#usd').val((parseFloat(data.USD)).toFixed(2));
                  $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
                  $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
+                 
              },'json').fail(function() {
                $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
           });

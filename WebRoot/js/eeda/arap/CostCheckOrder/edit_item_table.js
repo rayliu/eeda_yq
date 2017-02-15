@@ -73,6 +73,7 @@ $(document).ready(function() {
             { "data": "CREATE_STAMP", visible: false},
             { "data": "CUSTOMER_NAME"},
             { "data": "SP_NAME"},
+            { "data": "FIN_NAME"},
             { "data": "CURRENCY_NAME","class":"currency_name"},
             { "data": "TOTAL_AMOUNT","class":"total_amount", 
             	"render": function ( data, type, full, meta ) {
@@ -235,7 +236,51 @@ $(document).ready(function() {
                 { "data": "TRUCK_TYPE", "width": "100px"},
               ]
           });
-
+            
+        var cal=function(){
+        var totalAmount = 0.0;
+        var cny_totalAmount = 0.0;
+        var usd_totalAmount = 0.0;
+        var hkd_totalAmount = 0.0;
+        var jpy_totalAmount = 0.0;
+        itemTable.data().each(function(item,index){
+        var total_amount = item.TOTAL_AMOUNT;
+        var currency_name = item.CURRENCY_NAME;
+        if(total_amount!=''&&!isNaN(total_amount)){
+           if(item.ORDER_TYPE=='cost'){
+                if(currency_name=='CNY'){
+                    cny_totalAmount += parseFloat(total_amount);
+                }else if(currency_name=='USD'){
+                    usd_totalAmount += parseFloat(total_amount);
+                }else if(currency_name=='HKD'){
+                    hkd_totalAmount += parseFloat(total_amount);
+                }else if(currency_name=='JPY'){
+                    jpy_totalAmount += parseFloat(total_amount);
+                }
+            }else if(item.ORDER_TYPE=='charge'){
+                if(currency_name=='CNY'){
+                    cny_totalAmount -= parseFloat(total_amount);
+                }else if(currency_name=='USD'){
+                    usd_totalAmount -= parseFloat(total_amount);
+                }else if(currency_name=='HKD'){
+                    hkd_totalAmount -= parseFloat(total_amount);
+                }else if(currency_name=='JPY'){
+                    jpy_totalAmount -= parseFloat(total_amount);
+                }
+            }
+        }
+    });
+      $('#cny_duizhang').html(cny_totalAmount.toFixed(2));
+       $('#usd_duizhang').html(usd_totalAmount.toFixed(2));
+       $('#hkd_duizhang').html(hkd_totalAmount.toFixed(2));
+       $('#jpy_duizhang').html(jpy_totalAmount.toFixed(2));
+       $('#totalAmount').val(totalAmount.toFixed(2));
+       $('#cny_duizhang').val(cny_totalAmount.toFixed(2));
+       $('#usd_duizhang').val(usd_totalAmount.toFixed(2));
+       $('#hkd_duizhang').val(hkd_totalAmount.toFixed(2));
+       $('#jpy_duizhang').val(jpy_totalAmount.toFixed(2));
+};
+    cal();
         
         //选择是否是同一币种
         var cnames = [];
@@ -304,7 +349,9 @@ $(document).ready(function() {
     //刷新明细表
     itemOrder.refleshTable = function(order_id,ids){
     	var url = "/costCheckOrder/tableList?order_id="+order_id+"&ids="+ids;
-    	itemTable.ajax.url(url).load();
+    	itemTable.ajax.url(url).load(function(){
+            cal();
+        });
     }
     
     if($('#order_id').val()==''){
@@ -404,15 +451,8 @@ $(document).ready(function() {
                 }
      }else{
          $("#eeda-table .checkBox").prop('checked',false);
-         if(flag==0){
-                 $("#eeda-table .checkBox").each(function(){
-                     var id = $(this).parent().parent().attr('id');
-                     var currency_name = $(this).parent().siblings('.currency_name')[0].textContent;
-                     ids.splice(0,ids.length);
-                    cnames.splice(0,cnames.length);
-                    //cnames.pop(currency_name);
-                 })
-         }
+         ids.splice(0,ids.length);
+        cnames.splice(0,cnames.length);
      }
     });
 
@@ -564,6 +604,7 @@ $(document).ready(function() {
                  $('#usd').val((parseFloat(data.USD)).toFixed(2));
                  $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
                  $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
+                 cal();
              },'json').fail(function() {
                $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
           });
@@ -574,6 +615,7 @@ $(document).ready(function() {
         $('#checkOrderAll').click(function(){
             searchData1(); 
          });
+
 
 } );    
 } );

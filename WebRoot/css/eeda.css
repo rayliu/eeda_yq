@@ -264,6 +264,12 @@ label.error {
     margin-top: 10px;
 }
 
+.col-lg-6 .date .search-add-on{
+	position: absolute;
+    right: 8%;
+    margin-top: 35px;
+}
+
 .button-bar{
 	margin-top: 10px;
 }
