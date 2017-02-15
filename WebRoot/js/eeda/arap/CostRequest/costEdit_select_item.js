@@ -6,6 +6,7 @@ var itemIds=[];
             initComplete: function( settings ) {
                 ids = [];
                 cnames = [];
+                hideColumn();
             },
             columns:[
                 { "data": "ID", visible: false},
@@ -80,6 +81,17 @@ var itemIds=[];
                 }
             ]
         });
+        
+        var hideColumn = function(){
+        	//隐藏对账单号和checkBox列
+            if($('#order_id').val()!=""&&$('#order_id').val()!=undefined){
+            	$('#select_item_table').dataTable().fnSetColumnVis(1, false);
+            	$('#select_item_table').dataTable().fnSetColumnVis(2, false);
+            }else{
+            	//隐藏第3列
+            	$('#select_item_table').dataTable().fnSetColumnVis(3, false);
+            }
+        }
         
         var dataTable = eeda.dt({
           id: 'eeda_cost_table',
