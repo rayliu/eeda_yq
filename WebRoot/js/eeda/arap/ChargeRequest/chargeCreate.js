@@ -2,12 +2,11 @@
         'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
 	document.title = '收款申请单 | '+document.title;
-
+	
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     $('#receive_time').val(eeda.getDate());
     $('#add_charge').hide();
-    $('#select_item_table').dataTable().fnSetColumnVis(3, false);
-
+    
     //构造主表json
     var buildOrder = function(){
     	var item = {};
@@ -31,7 +30,7 @@ $(document).ready(function() {
     }
     //默认填上的字段
     if($('#billing_unit').val()==''){
-    	$('#billing_unit').val('珠海横琴远桥供应链管理有限公司')
+    	$('#billing_unit').val('珠海横琴远桥供应链管理有限公司');
     }
     
     
@@ -56,7 +55,6 @@ $(document).ready(function() {
 	
     //申请保存
 	$("#createSave").on('click',function(){
-	
 		$("#createSave").attr("disabled", true);
 		if($('#check_time_begin_time').val()==""||$('#check_time_end_time').val()==""){
 				$.scojs_message('业务发生月不能为空', $.scojs_message.TYPE_FALSE);
@@ -102,7 +100,7 @@ $(document).ready(function() {
 	        });
 	});
 	
-	
+
     //打印
 	 $("#printBtn").on('click',function(){
 	    	var order_no = $("#application_no").val();

@@ -7,6 +7,7 @@ var itemIds=[];
             initComplete: function( settings ) {
                 ids = [];
                 cnames = [];
+                hideColumn();
             },
             columns:[
                 { "data": "ID", visible: false},
@@ -81,6 +82,20 @@ var itemIds=[];
                 }
             ]
         });
+        
+      
+        var hideColumn = function(){         	
+         	//隐藏对账单号和checkBox列
+            if($('#order_id').val()!=""&&$('#order_id').val()!=undefined){
+            	var itemTable = $('#select_item_table').dataTable();
+            	itemTable.fnSetColumnVis(1, false);
+            	itemTable.fnSetColumnVis(2, false);
+            }else{
+            	//隐藏删除列
+            	var itemTable = $('#select_item_table').dataTable();
+             	itemTable.fnSetColumnVis(3, false);
+            }
+    	}
 
          var dataTable = eeda.dt({
             id: 'eeda_charge_table',
@@ -437,6 +452,8 @@ var itemIds=[];
                 $('#add_charge_item').attr('disabled',true);
           }
        });
+      
+    
 
         var refleshCreateTable = function(appApplication_id){
     		var url = "/chargeCheckOrder/tableList?appApplication_id="+appApplication_id+"&order_id=N&bill_flag=create";
@@ -484,7 +501,8 @@ var itemIds=[];
     return {
         refleshSelectTable: refleshSelectTable,
         refleshCreateTable:refleshCreateTable,
-        calcTotal: calcTotal
+        calcTotal:calcTotal,
+        hideColumn:hideColumn
     };
 
 });
