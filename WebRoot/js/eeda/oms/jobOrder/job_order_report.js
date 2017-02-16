@@ -334,7 +334,9 @@ $(document).ready(function() {
 			var arrStr = $('#ocean_HBLshipper_info').val();
 			var arry = arrStr.split("\n");
 			if(arry.length>=2){
-				$('#head_attn').val(arry[1]);
+				if($('#head_attn').val()==""||$('#head_attn').val()==undefined){
+					$('#head_attn').val(arry[1]);
+				}
 			}
 			if(arry.length>=3){
 				var arr = arry[2].split(" ");
@@ -345,7 +347,9 @@ $(document).ready(function() {
 			if(arr!=undefined&&arr.length>=2){
 				$('#head_fax').val(arr[1].replace("FAX:",""));
 			}
-			$('#head_endPlace').val($('#ocean_HBLshipper_input').val());
+			if($('#head_endPlace').val()==""||$('#head_endPlace').val()==undefined){
+    			$('#head_endPlace').val($('#ocean_HBLshipper_input').val());
+			}
 			$('#head_startPlace').val(loginUserName);
 			$('#head_date').val(eeda.getDate());
 			
