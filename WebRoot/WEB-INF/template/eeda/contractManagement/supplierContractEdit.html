@@ -1,0 +1,151 @@
+<%layout("/eeda/layout.html"){%>
+ <link href="/js/lib/sco/css/sco.message.css" rel="stylesheet">  
+  <!--<link rel="stylesheet" href="/yh/css/ui/jquery-ui.css"> -->
+ <div id="page-wrapper">
+    <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            	供应商基本信息
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <form id="customerForm" role="form"  method="post">
+                                    <input id="partyId" name="party_id" type="hidden" value="${party.id!''}">
+                                    <!-- /.col-lg-6 (odd) 奇数列 -->
+									<div class="col-lg-6">
+                                            
+                                            <div class="form-group">
+                                                <label>公司名称(必填)</label>
+                                                <input placeholder="" class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}">
+                                            </div> 
+                                            <div class="form-group">
+                                                <label>公司英文名称</label>
+                                                <input placeholder="" class="form-control" id="company_name_eng" name="company_name_eng" type="text" value="${party.company_name_eng!''}">
+                                            </div> 
+											<div class="form-group">
+                                                <label>简称(必填)</label>
+                                                <input class="form-control" id="abbr" type="text" name="abbr" value="${party.abbr!''}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>付款方式</label>
+	                                           	<select class="form-control" id="payment" name="payment">
+	                                           		<option value="monthlyStatement">月结</option>
+	                                           		<option value="freightCollect">到付</option>
+	                                           		<option value="cashPayment">现付</option>
+	                                           	</select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>公司简介</label>
+												<textarea class="form-control" rows="3" name="introduction">${party.introduction!''}</textarea>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label>供应商资质</label>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input id="sp_type_truck" name="sp_type_truck" type="checkbox" value="truck" style="margin-top: 0px;">远样柜货
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="sp_type_carrier" name="sp_type_carrier" type="checkbox" value="carrier" style="margin-top: 0px;">内贸
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="sp_type_air" name="sp_type_air" type="checkbox" value="air" style="margin-top: 0px;">海运散货
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="sp_type_broker" name="sp_type_broker" type="checkbox" value="broker" style="margin-top: 0px;">陆路运输
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="sp_type_line" name="sp_type_line" type="checkbox" value="line" style="margin-top: 0px;">仓储
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="sp_type_delivery" name="sp_type_delivery" type="checkbox" value="delivery" style="margin-top: 0px;">空运
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="sp_type_pickup" name="sp_type_pickup" type="checkbox" value="pickup" style="margin-top: 0px;">快递
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="sp_type_delivery" name="sp_type_delivery" type="checkbox" value="delivery" style="margin-top: 0px;">报关
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                    <label>
+                                                        <input id="sp_type_pickup" name="sp_type_pickup" type="checkbox" value="pickup" style="margin-top: 0px;">包装吊车
+                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                </div>
+                                            </div>
+
+                                            
+                                            
+                                        </div>
+										<div class="col-lg-6">
+											
+											<div class="form-group">
+                                                <label>联系人(必填)</label>
+                                                <input placeholder="" class="form-control" id="contact_person" type="text" name="contact_person" value="${party.contact_person!''}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>联系人_英文</label>
+                                                <input placeholder="" class="form-control" id="contact_person_eng" type="text" name="contact_person_eng" value="${party.contact_person_eng!''}">
+                                            </div>
+                                             <div class="form-group">
+                                                <label>联系人电话</label>
+                                                <input placeholder="" class="form-control" id="disabledInput" type="text" name="phone" value="${party.phone!''}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>联系地址</label>
+                                                <input placeholder="" class="form-control" id="address" type="text" name="address" value="${party.address!''}">
+                                            </div> 
+                                            <div class="form-group">
+                                                <label>联系地址_英文</label>
+                                                <input placeholder="" class="form-control" id="address_eng" type="text" name="address_eng" value="${party.address_eng!''}">
+                                            </div> 
+                                            <div class="form-group">
+                                                <label>备注</label>
+												<textarea class="form-control" rows="3" name="remark">${party.remark!''}</textarea>
+                                            </div>
+                                            
+                                       </div>
+									</form>
+                                    <div class="col-lg-6" style="clear:both;">
+                                        <button id="save" type="button" class="btn  btn_green">保存</button>
+                                        <a class="btn  btn_white" href="/serviceProvider">返回</a>
+                                    </div>
+
+                            </div>
+                            <!-- /.row (nested) -->
+                            
+			            	
+                        </div>
+                    </div>
+                    <div>
+                	
+                </div>
+                </div>
+                
+            </div>
+</div>
+			
+<%}%>
+<!-- 引入校验的js 文件及其 中文 文件-->
+<!-- <script src="/yh/js/plugins/dataTables/jquery.dataTables.js" type="text/javascript"></script>
+<script src="/yh/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="/yh/js/plugins/dataTables/jquery.dataTables.editable.js" type="text/javascript"></script>
+<script src="/yh/js/plugins/dataTables/jquery.jeditable.js" type="text/javascript"></script>
+<script src="/yh/js/jquery.validate.min.js"></script>
+<script src="/yh/js/jvalidate.messages_cn.js"></script>
+<script src="/yh/js/plugins/sco/js/sco.message.js"></script>
+<script src="/yh/css/ui/jquery-ui.js"></script> -->
+<script>
+	if('${party.company_name!''}'){
+		document.title = '${party.company_name!''}'+' | '+document.title;
+	}
+	
+	var spType = '${party.sp_type!''}';
+	var payment = '${party.payment!''}';
+</script>
+<!-- <script src="/yh/js/eeda-common.js"></script>
+<script src="/yh/js/profile/serviceProvider/edit.js"></script> -->
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/contractManagement/edit']);
+    });
+</script>
