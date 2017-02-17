@@ -46,45 +46,202 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            },
 	            { "data": "BOOKING_NO", "width": "200px"},//装箱放式
 	            { "data": "BOOKING_NO", "width": "200px"},//报关单录入
-	            { "data": "ZLSCF", "width": "160px"},
-	            { "data": "FTF", "width": "100px"},
-	            { "data": "PZF", "width": "100px" ,
+	            { "data": "G_ZLSCF", "width": "160px",
 	            	"render": function ( data, type, full, meta ) {
-	            		if(full.ORDER_TYPE=='cost'){
-	            			return '<span style="color:red;">'+'-'+data+'</span>';
-		            	}
-	                    return data;
-	                  }
-	            },
-	            { "data": "XDF", "width": "100px"},
-	            { "data": "WLDLF", "width": "100px"},
-	            { "data": "GKF", "width": "100px",
-	            	"render": function ( data, type, full, meta ) {
-	            		if(data==""){
-	            			return '';
-	            		}else{
-	            			return data;
+	            		if(full.G_ZLSCF==null){
+	            			return '0.00';
 	            		}
+	            	 var  aa=parseFloat(full.G_ZLSCF).toFixed(2);
+	            		return aa;
 	            	}
 	            },
-	            { "data": "MTF", "width": "100px"},
-	            { "data": "MTF", "width": "100px"},//码头费小计(前三项)
-	            { "data": "ZHF","width": "60px"},
-	            { "data": "LXF", "width": "60px"},
-	            { "data": "AC", "width": "60px"},
-	            { "data": "WJF", "width": "60px"},
-	            { "data": "WJF", "width": "60px"}, //工本费小计（前三项）
-	            { "data": "PZF", "width": "60px"},
-	            { "data": "RZF", "width": "100px"},
-	            { "data": "YF", "width": "60px"},
-	            { "data": "BGF", "width": "60px"},
-	            { "data": "DTF", "width": "120px"},
-	            { "data": "DTF", "width": "120px"},//合计
-	            { "data": "DTF", "width": "120px"},//备注
-	            { "data": "TRUCK_TYPE", "width": "60px"}
+	            { "data": "G_FTF", "width": "100px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_FTF==null){
+	            			return '0.00';
+	            		}
+	            		 var  aa=parseFloat(full.G_FTF).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "data": "G_PZF", "width": "100px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_PZF==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_PZF).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "data": "G_XDF", "width": "100px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_XDF==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_XDF).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "data": "G_WLDLF", "width": "100px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_WLDLF==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_WLDLF).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "data": "G_GKF", "width": "100px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_GKF==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_GKF).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "data": "G_MTF", "width": "100px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_MTF==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_MTF).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "width": "100px","class":'matou_fine',
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.ORDER_TYPE=='cost'){
+	            			return '<span style="color:red;">'+'-'+'</span>';
+		            	}
+		            	var matoufine=0,wldlf,gkf,mtf;
+		            	wldlf=parseFloat(full.G_WLDLF) ;gkf=parseFloat(full.G_GKF); mtf=parseFloat(full.G_MTF);
+		            	if(full.G_WLDLF==null){wldlf=0;}
+		            	if(full.G_GKF==null){gkf=0;}
+		            	if(full.G_MTF==null){mtf=0;}
+		            	matoufine=parseFloat(wldlf+gkf+mtf).toFixed(2);
+	                    return matoufine;
+	                  }
+	            },//码头费小计(前三项，G_LHF不)
+	            { "data": "G_ZHF","width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_ZHF==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_ZHF).toFixed(2);
+	            		return aa;
+	            	}
+	              },
+	            { "data": "G_LXF", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_LXF==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_LXF).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "data": "G_AC", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_AC==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_AC).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "data": "G_WJF", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_WJF==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_WJF).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "width": "60px","class":'gongben_fine',
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.ORDER_TYPE=='cost'){
+	            			return '<span style="color:red;">'+'-'+'</span>';
+		            	}
+		            	var gongbenfine=0,lxf,ac,wjf;
+		            	lxf=parseFloat(full.G_LXF) ;ac=parseFloat(full.G_AC); wjf=parseFloat(full.G_WJF);
+		            	if(full.G_LXF==null){lxf=0;}
+		            	if(full.G_AC==null){ac=0;}
+		            	if(full.G_WJF==null){wjf=0;}
+		            	gongbenfine=parseFloat(lxf+ac+wjf).toFixed(2);
+	                    return gongbenfine;
+	                  }
+	             }, //工本费小计（前三项）
+	            { "data": "G_PZF", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_PZF==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_PZF).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "data": "G_RZF", "width": "100px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_RZF==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_RZF).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "data": "G_YF", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_YF==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_YF).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "data": "G_DTF", "width": "120px",
+	            	"render": function ( data, type, full, meta ) {
+	            		
+	            		var  aa=parseFloat(full.G_DTF).toFixed(2);
+	            		return '小计';
+	            	}
+	            },//小计
+	            { "data": "G_BGF", "width": "60px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_BGF==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_BGF).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "data": "G_DTF", "width": "120px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.G_DTF==null){
+	            			return '0.00';
+	            		}
+	            		var  aa=parseFloat(full.G_DTF).toFixed(2);
+	            		return aa;
+	            	}
+	            },
+	            { "data": "TOTAL", "width": "120px"},//合计
+	            { "data": "TOTAL", "width": "120px"}//备注
 	          ]
 	      });
-        
+        //计算总额
+        var calculate=function(){
+        	var total=0;
+        	dataTable.data().each(function(item,index){
+        		if($('#checkbox_'+item.ID).prop('checked')){
+        			total+=item.TOTAL;
+        		}
+        	});
+        	$('#cny_totalAmountSpan').html(parseFloat(total).toFixed(2));
+        	$('#cny_totalAmountSpan').val(parseFloat(total).toFixed(2));
+
+        }
+
 //        var checkedDataTable = eeda.dt({
 //            id: 'checkedEeda-table',
 ////            pageLength: 25,
@@ -220,7 +377,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			}
 			
 			$('#idsArray').val(itemIds);
-			calcTotal();
+			// calcTotal();
+			calculate();
 		});
 
 		//计算总额
