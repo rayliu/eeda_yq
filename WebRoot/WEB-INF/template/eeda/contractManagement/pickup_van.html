@@ -1,0 +1,18 @@
+<input type="hidden" id="customSelf_id" value="${customSelf.id!''}">
+           
+            <div class="form-group"> 
+                    <div class="row">
+                            <div class="form-group button-bar">
+                                <button id='addpickup_van_item' class="btn btn_blue btn-xs" type="button">添加</button>
+                            </div>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'pickup_van_table',
+                                        style:'width:1200px;',
+                                        headers:[ '','区域', '服务内容','备注'],
+                                        field_list:['','custom_bank', 'custom_order_no', 'status'],
+                                        value_list: customSelfItemList![]
+                                    }){} %>
+                       
+                  	</div>
+         </div><!-- /.row -->

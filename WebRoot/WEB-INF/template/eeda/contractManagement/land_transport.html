@@ -1,0 +1,31 @@
+<input type="hidden" id="customSelf_id" value="${customSelf.id!''}">
+           
+            <div class="form-group">  <!--  form row  -->
+            		<div class="row">
+            				<div class="checkbox">
+                                <label style="margin-left:15px;">
+                                    <input id="land_danger_goods" name="land_danger_goods" type="checkbox" value="truck" style="margin-top: 0px;font-size:25px;">危险品
+                                </label>
+                                <label style="margin-left:15px;">
+                                    <input id="land_common_goods" name="land_common_goods" type="checkbox" value="carrier" style="margin-top: 0px;">普通
+                                </label>
+                                <label style="margin-left:15px;">
+                                    <input id="land_closed_transport" name="land_closed_transport" type="checkbox" value="air" style="margin-top: 0px;">封关运输
+                                </label>
+                            </div>
+            		</div>
+                    <div class="row">
+                            <div class="form-group button-bar">
+                                <button id='addCustomSelf' class="btn btn_blue btn-xs" type="button">添加</button>
+                            </div>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'land_transport_table',
+                                        style:'width:1200px;',
+                                        headers:[ '','区域', '服务内容','备注'],
+                                        field_list:['','custom_bank', 'custom_order_no', 'status'],
+                                        value_list: customSelfItemList![]
+                                    }){} %>
+                       
+                  	</div>
+         </div><!-- /.row -->

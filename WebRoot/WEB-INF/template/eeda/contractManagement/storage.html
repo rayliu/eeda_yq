@@ -1,0 +1,34 @@
+<input type="hidden" id="customSelf_id" value="${customSelf.id!''}">
+           
+            <div class="form-group">  <!--  form row  -->
+            		<div class="row">
+            				<div class="checkbox">
+                                <label style="margin-left:15px;">
+                                    <input id="common_warehouse" name="common_warehouse" type="checkbox" value="truck" style="margin-top: 0px;font-size:25px;">普通仓
+                                </label>
+                                <label style="margin-left:15px;">
+                                    <input id="constant_warehouse" name="constant_warehouse" type="checkbox" value="carrier" style="margin-top: 0px;">恒温仓
+                                </label>
+                                <label style="margin-left:15px;">
+                                    <input id="danger_warehouse" name="danger_warehouse" type="checkbox" value="air" style="margin-top: 0px;">危险品仓
+                                </label>
+                                <label style="margin-left:15px;">
+                                    <input id="bonded_warehouse" name="bonded_warehouse" type="checkbox" value="air" style="margin-top: 0px;">保税品仓
+                                </label>
+                            </div>
+            		</div>
+                    <div class="row">
+                            <div class="form-group button-bar">
+                                <button id='addCustomSelf' class="btn btn_blue btn-xs" type="button">添加</button>
+                            </div>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'storage_table',
+                                        style:'width:1200px;',
+                                        headers:[ '','区域', '基础设施','备注'],
+                                        field_list:['','custom_bank', 'custom_order_no', 'status'],
+                                        value_list: customSelfItemList![]
+                                    }){} %>
+                       
+                  	</div>
+         </div><!-- /.row -->
