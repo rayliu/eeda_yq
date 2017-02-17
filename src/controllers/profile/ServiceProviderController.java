@@ -130,7 +130,7 @@ public class ServiceProviderController extends Controller {
             party.set("receiver", getPara("receiver"));
             party.set("bank_no", getPara("bank_no"));
             party.set("bank_name", getPara("bank_name"));
-            setContact(party);
+            setParty(party);
             party.update();
         } else {
             //判断供应商简称
@@ -156,7 +156,7 @@ public class ServiceProviderController extends Controller {
             party.set("charge_type", getPara("chargeType"));
             party.set("office_id", pom.getCurrentOfficeId());
             
-            setContact(party);
+            setParty(party);
             party.save();
 
         }
@@ -166,7 +166,7 @@ public class ServiceProviderController extends Controller {
         renderJson(party);
     }
 
-    private void setContact(Party contact) {
+    private void setParty(Party contact) {
     	contact.set("code", getPara("code"));
     	contact.set("quick_search_code", getPara("quick_search_code"));
     	contact.set("fax", getPara("fax"));
@@ -199,6 +199,31 @@ public class ServiceProviderController extends Controller {
         contact.set("introduction", getPara("introduction"));
         contact.set("city", getPara("city"));
         contact.set("postal_code", getPara("postal_code"));
+        
+        //新增字段
+        contact.set("register_capital", getPara("register_capital"));
+        contact.set("main_business", getPara("main_business"));
+        contact.set("website", getPara("website"));
+        contact.set("account_information", getPara("account_information"));
+        if(StringUtils.isNotEmpty(getPara("establish_time"))){
+        	contact.set("establish_time", getPara("establish_time"));
+        }
+        
+        contact.set("enterprise_nature", getPara("enterprise_nature"));
+        contact.set("taxpayer_category", getPara("taxpayer_category"));
+        contact.set("sys_and_qua_certification", getPara("sys_and_qua_certification"));
+        contact.set("this_year_salesamount", getPara("this_year_salesamount"));
+        contact.set("last_year_salesamount", getPara("last_year_salesamount"));
+        contact.set("beforelast_year_salesamount", getPara("beforelast_year_salesamount"));
+        contact.set("sales_contact_information", getPara("sales_contact_information"));
+        contact.set("sales_manager_information", getPara("sales_manager_information"));
+        contact.set("operation_contact_information", getPara("operation_contact_information"));
+        contact.set("customer_contact_information", getPara("customer_contact_information"));
+        contact.set("financial_contact_information", getPara("financial_contact_information"));
+        contact.set("response_problem_time", getPara("response_problem_time"));
+        contact.set("solve_problem_time", getPara("solve_problem_time"));
+        contact.set("pay_account_time", getPara("pay_account_time"));
+        contact.set("business_scope", getPara("business_scope"));
     }
 
     public void province() {
