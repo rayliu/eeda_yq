@@ -5,7 +5,7 @@
                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
-                                        id:'land_transport_table',
+                                        id:'delivery_express_table',
                                         style:'width:1200px;',
                                         headers:[ '服务内容',''],
                                         field_list:['custom_bank',''],
@@ -24,3 +24,9 @@
                         </div>
                     </div>
          </div><!-- /.row -->
+
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/contractManagement/delivery_express']);
+    });
+</script>

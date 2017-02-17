@@ -19,7 +19,7 @@
             		</div>
                     <div class="row">
                             <div class="form-group button-bar">
-                                <button id='addCustomSelf' class="btn btn_blue btn-xs" type="button">添加</button>
+                                <button id='addstorage_item' class="btn btn_blue btn-xs" type="button">添加</button>
                             </div>
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
@@ -32,3 +32,8 @@
                        
                   	</div>
          </div><!-- /.row -->
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/contractManagement/storage']);
+    });
+</script>
