@@ -1,0 +1,62 @@
+ 
+          
+          
+                      
+			<div class="row">
+			   <div class="col-lg-12"> 
+				<ul id="custom_type_Tabs" class="nav nav-tabs">
+                    <li>
+                        <a id='chinaTab' href="#chinaDetail" data-toggle="tab" ">远洋柜货</a>
+                    </li>
+                    <li>
+                        <a id='hkTab' href="#hkDetail" data-toggle="tab" ">内贸</a>
+                    </li>
+                    <li>
+                        <a id='abroadTab' href="#abroadDetail" data-toggle="tab" ">海运散货</a>
+                    </li>
+                    <li>
+                        <a id='chinaTab' href="#chinaDetail" data-toggle="tab" ">陆路运输</a>
+                    </li>
+                    <li>
+                        <a id='hkTab' href="#hkDetail" data-toggle="tab" ">仓储</a>
+                    </li>
+                    <li>
+                        <a id='abroadTab' href="#abroadDetail" data-toggle="tab" ">空运</a>
+                    </li>
+                    <li>
+                        <a id='chinaTab' href="#chinaDetail" data-toggle="tab" ">快递</a>
+                    </li>
+                    <li>
+                        <a id='hkTab' href="#hkDetail" data-toggle="tab" ">报关</a>
+                    </li>
+                    <li>
+                        <a id='abroadTab' href="#abroadDetail" data-toggle="tab" ">包装吊车</a>
+                    </li>
+				</ul>
+				</div>
+				<div class="tab-content">
+                    <div class="tab-pane fade" id="chinaDetail">
+                        <div class="form-group"> 
+                          <div class="col-lg-12"> 
+						        <%include("/eeda/contractManagement/ocean_cargo.html", {}){} %>
+						   </div>
+						  </div>
+	                    </div>
+             
+                    <div class="tab-pane fade" id="hkDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                            <%include("/oms/JobOrder/JobOrderEdit_customType_hk.html", {}){} %>
+                             </div>
+                        </div>
+                    </div>
+                
+                    <div class="tab-pane fade" id="abroadDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                            <%include("/oms/JobOrder/JobOrderEdit_customType_abroad.html", {}){} %>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
