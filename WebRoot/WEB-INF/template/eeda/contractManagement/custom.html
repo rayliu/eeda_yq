@@ -1,22 +1,22 @@
 <input type="hidden" id="customSelf_id" value="${customSelf.id!''}">
            
-            <div class="form-group">  <!--  form row  -->
-            		
+            <div class="form-group"> 
                     <div class="row">
                             <div class="form-group button-bar">
-                                <button id='addCustom_item' class="btn btn_blue btn-xs" type="button">添加</button>
+                                <button id='addcustom_item' class="btn btn_blue btn-xs" type="button">添加</button>
                             </div>
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'custom_table',
                                         style:'width:1200px;',
-                                        headers:[ '','区域','服务口岸' '服务内容','备注'],
-                                        field_list:['','custom_bank','', 'custom_order_no', 'status'],
+                                        headers:[ '','区域', '服务口岸','服务内容','备注'],
+                                        field_list:['','custom_bank', '','custom_order_no', 'status'],
                                         value_list: customSelfItemList![]
                                     }){} %>
                        
                   	</div>
          </div><!-- /.row -->
+         
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/contractManagement/custom']);

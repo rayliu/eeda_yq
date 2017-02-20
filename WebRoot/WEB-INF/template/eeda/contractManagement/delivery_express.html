@@ -1,26 +1,14 @@
 <input type="hidden" id="customSelf_id" value="${customSelf.id!''}">
            
-            <div class="form-group">
+            <div class="form-group" style="margin-top:15px;">
                     <div class="row">
                             <div class="col-lg-3">
-                                <%include("/eeda/component/form/detailTable.html", 
-                                    {
-                                        id:'delivery_express_table',
-                                        style:'width:1200px;',
-                                        headers:[ '服务内容',''],
-                                        field_list:['custom_bank',''],
-                                        value_list: customSelfItemList![]
-                                    }){} %>
+                            <span>服务：</span> <textarea id="delivery_express_service" rows="3" cols="20"style="margin-top:5px;"></textarea>
+                               
                             </div>
                             <div class="col-lg-3" style="margin-left:15px;">
-                                <%include("/eeda/component/form/detailTable.html", 
-                                    {
-                                        id:'land_transport_table',
-                                        style:'width:1200px;',
-                                        headers:[ '备注',''],
-                                        field_list:['',''],
-                                        value_list: customSelfItemList![]
-                                    }){} %>
+                              备注：  <textarea id="delivery_express_remark" rows="3" cols="20"></textarea>
+                               
                         </div>
                     </div>
          </div><!-- /.row -->
