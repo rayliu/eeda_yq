@@ -9,7 +9,7 @@
                         <a id='sp_ocean_Shipment' href="#chinaDetail" data-toggle="tab" >远洋柜货</a>
                     </li>
                     <li>
-                        <a id='sp_internal_trade' href="#hkDetail" data-toggle="tab" >内贸</a>
+                        <a id='sp_internal_trade' href="#internalTrade" data-toggle="tab" >内贸</a>
                     </li>
                     <li>
                         <a id='sp_ocean_bulkCargo' href="#abroadDetail" data-toggle="tab">海运散货</a>
@@ -43,19 +43,19 @@
 						  </div>
 	                </div>
                     
-                    <div class="tab-pane fade" id="land_transportDetail">
+                    <div class="tab-pane fade" id="internalTrade">
                         <div class="form-group"> 
                           <div class="col-lg-12"> 
-                                <%include("/eeda/contractManagement/land_transport.html", {}){} %>
+                                <%include("/eeda/contractManagement/internal_trade.html", {}){} %>
                            </div>
                           </div>
                     </div>
-                    <div class="tab-pane fade" id="storageDetail">
+                    <div class="tab-pane fade" id="abroadDetail">
                         <div class="form-group"> 
-                          <div class="col-lg-12"> 
-                                <%include("/eeda/contractManagement/storage.html", {}){} %>
+                           <div class="col-lg-12"> 
+                                <%include("/eeda/contractManagement/ocean_bulk_cargo.html", {}){} %>
                            </div>
-                          </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="air_transportDetail">
                         <div class="form-group"> 

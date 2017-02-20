@@ -4,7 +4,6 @@
  <div id="page-wrapper">
     <div class="row">
                 <div class="col-lg-12">
-                    <div class="panel panel-default">
                         <div class="panel-heading">
                             	供应商基本信息
                         </div>
@@ -120,7 +119,6 @@
                             
 			            	
                         </div>
-                    </div>
                     <div>
                 	
                 </div>
@@ -139,6 +137,9 @@
 <script src="/yh/js/jvalidate.messages_cn.js"></script>
 <script src="/yh/js/plugins/sco/js/sco.message.js"></script>
 <script src="/yh/css/ui/jquery-ui.js"></script> -->
+<%include("/eeda/component/jsTemplate/tableInputDateField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>
 <script>
 	if('${party.company_name!''}'){
 		document.title = '${party.company_name!''}'+' | '+document.title;
@@ -146,6 +147,7 @@
 	
 	var spType = '${party.sp_type!''}';
 	var payment = '${party.payment!''}';
+	var itemOrder = {};
 </script>
 <!-- <script src="/yh/js/eeda-common.js"></script>
 <script src="/yh/js/profile/serviceProvider/edit.js"></script> -->

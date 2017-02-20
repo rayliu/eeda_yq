@@ -20,13 +20,13 @@
             		</div>
                     <div class="row">
                             <div class="form-group button-bar">
-                                <button id='add_ocean_cargo' class="btn btn_blue btn-xs" type="button">添加</button>
+                                <button id='add_bulkCargo_cargo' class="btn btn_blue btn-xs" type="button">添加</button>
                             </div>
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
-                                        id:'ocean_table',
-                                        headers:[ '区域','优势航线', '服务船东','备注'],
-                                        field_list:['region','advantage_route', 'service_owner', 'remark'],
+                                        id:'bulkCargo_table',
+                                        headers:[ '船运类型','区域','优势航线','备注'],
+                                        field_list:['shipping_type','region','advantage_route', 'remark'],
                                         value_list: oceanItemList![]
                                     }){} %>
                        
@@ -34,23 +34,19 @@
                   	
                   	<div class="row">
                             <div class="form-group button-bar">
-                                <button id='add_ocean_item_cargo' class="btn btn_blue btn-xs" type="button">添加</button>
+                                <button id='add_bulkCargo_item_cargo' class="btn btn_blue btn-xs" type="button">添加</button>
                             </div>
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
-                                        id:'ocean_item_table',
-                                        style:'width:4000px',
-                                        headers:[ '操作','POL', 'POD','服务船东','DOC-BL','TLX','EIR','HSS','O/F_20GP-CTR','O/F_40GP-CTR',
-                                        'O/F_40HQ-CTR','THC_20GP-CTR','THC_40GP-CTR' ,'THC_40HQ-CTR','EBS_20GP-CTR','EBS_40GP-CTR',
-                                        'EBS_40HQ-CTR','AMS/AFR_20GP-CTR','AMS/AFR_40GP-CTR','AMS/AFR_40HQ-CTR','VAT_20GP-CTR','VAT_40GP-CTR',
-                                        'VAT_40HQ-CTR','ISPS_20GP-CTR','ISPS_40GP-CTR','ISPS_40HQ-CTR','TRUCK_20GP-CTR','TRUCK_40GP-CTR',
-                                        'TRUCK_40HQ-CTR','TOTAL_20GP','TOTAL_40GP','TOTAL_40HQ','有效时间','备注','创建时间','创建人'],
+                                        id:'bulkCargo_item_table',
+                                        style:'width:2500px',
+                                        headers:[ '操作','POL', 'POD','服务船东','目的港费用','DOC-SET','VGM-BL','D/O-SET',
+                                        'O/F-RT','HANDLING-SET','CFS-RT','THC-RT','BAF-RT','CIC-RT','LOADING FEE-RT',
+                                        'TOTAL','有效时间','备注','创建时间','创建人'],
                                         
-                                        field_list:['','POL','POD', 'service_owner', 'DOC','TLX','EIR','HSS','O/F_20GP','O/F_40GP',
-                                        'O/F_40HQ','THC_20GP','THC_40GP' ,'THC_40HQ','EBS_20GP','EBS_40GP',
-                                        'EBS_40HQ','AMS/AFR_20GP','AMS/AFR_40GP','AMS/AFR_40HQ','VAT_20GP','VAT_40GP',
-                                        'VAT_40HQ','ISPS_20GP','ISPS_40GP','ISPS_40HQ','TRUCK_20GP','TRUCK_40GP',
-                                        'TRUCK_40HQ','TOTAL_20GP','TOTAL_40GP','TOTAL_40HQ','effective_time','remark','create_stamp','creator'],
+                                        field_list:['','POL','POD', 'service_owner', 'port_charge','DOC','VGM','D/O',
+                                        'O/F','HANDLING','CFS','THC','BAF','CIC','LOADING_FEE',
+                                        'total','effective_time','remark','create_stamp','creator'],
                                         value_list: oceanItemList![]
                                     }){} %>
                        
