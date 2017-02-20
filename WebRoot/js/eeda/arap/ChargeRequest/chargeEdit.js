@@ -360,14 +360,6 @@ $(document).ready(function() {
  	   
     })
     
-    
-    //隐藏对账单号和checkBox列
-    if($('#order_id')!=""){
-    	var itemTable = $('#select_item_table').dataTable();
-    	itemTable.fnSetColumnVis(1, false);
-    	itemTable.fnSetColumnVis(2, false);
-    }
-    
 
 	$('#chargeAccept_table').on('click , input[type="checkbox"]',function(){
 		var idsArray=[];
