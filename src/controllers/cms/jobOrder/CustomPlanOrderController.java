@@ -285,7 +285,9 @@ public class CustomPlanOrderController extends Controller {
     	if(checkRec==null){
     		Record r= new Record();
     		r.set("creator_id", creator_id);
-    		r.set("shipping_date", shipping_date);
+    		if(!"".equals(shipping_date)){
+    			r.set("shipping_date", shipping_date);
+    		}
     		r.set("customs_number", customs_number);
     		if(!"".equals(boat_company)){
     			r.set("boat_company", boat_company);

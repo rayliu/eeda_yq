@@ -596,7 +596,7 @@ $(document).ready(function() {
 	        }else if(tableCurCharge[i].value=='HKD'){
 	           totalChargeHKD += parseFloat(tableAmountCharge[i].value);
 	        }
-	        profitTotalCharge += parseFloat(currencyTotalAmount[i].value);
+//	        profitTotalCharge += parseFloat(currencyTotalAmount[i].value);
 	    }
 	    //隐藏字段   应收人民币汇总字段
 	    $('.profitTotalCharge').text(profitTotalCharge).hide();

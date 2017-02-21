@@ -490,7 +490,7 @@ $(document).ready(function() {
            }else if(tableCur[i].value=='HKD'){
                totalCostHKD += parseFloat(tableAmount[i].value);
            }
-           profitTotalCost+= parseFloat(currencyTotalAmountCost[i].value);
+//           profitTotalCost+= parseFloat(currencyTotalAmountCost[i].value);
        }
        //隐藏应付人民币汇总字段
        $('[name=profitTotalCost]').text(profitTotalCost).hide();   
