@@ -132,17 +132,40 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       	   $("#chargeType option[value='"+svalue+"']").attr("selected","selected");
          }
       }
+      
+    //构造主表json
+      var buildOrder = function(){
+    	  
+      	var item = {};
+      	item.id = $('#partyId').val();
+      	var orderForm = $('#customerForm input,#customerForm select,#customerForm textarea');
+      	for(var i = 0; i < orderForm.length; i++){
+      		var name = orderForm[i].id;
+          	var value =orderForm[i].value;
+          	if(name){
+          		item[name] = value;
+          	}
+      	}
+          return item;
+      }
+      
+      
       //自动提交改为手动提交
       $("#save").click(function(){
-    	  
-    	  /*$.post("/serviceProvider/check",$("#customerForm").serialize(),function(data){
-    		  
-    	  });*/
     	 if(!$("#customerForm").valid()){
     		  return false;
     	 }
+    	 
+    	 var order = {};
+    	 order = buildOrder();
+    	 order.oceanCargo = itemOrder.buildOceanCargoDetail();
+    	 order.oceanCargoItem = itemOrder.buildOceanCargoItemDetail();
+    	 order.internalTrade = itemOrder.buildInternalTradeDetail();
+    	 order.bulkCargo = itemOrder.buildBulkCargoDetail();
+    	 order.bulkCargoItem = itemOrder.buildBulkCargoItemDetail();
+    	 
     	 $("#save").attr("disabled",true);
-    	 $.post("/serviceProvider/save", $("#customerForm").serialize(),function(data){
+    	 $.post("/supplierContract/save",{params:JSON.stringify(order)},function(data){
     		if(data=='abbrError'){
     			$.scojs_message('供应商简称已存在', $.scojs_message.TYPE_ERROR);
     			$("#save").attr("disabled",false);
@@ -160,6 +183,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      			$.scojs_message('数据有误', $.scojs_message.TYPE_ERROR);
      			$("#save").attr("disabled",false);
      		}
+    		
+    		itemOrder.refleshOceanCargoTable(data.ID); 
+    		itemOrder.refleshOceanCargoItemTable(data.ID); 
+    		itemOrder.refleshInternalTradeTable(data.ID); 
+    		itemOrder.refleshBulkCargoTable(data.ID); 
+    		itemOrder.refleshBulkCargoItemTable(data.ID); 
          });
     	  
       });

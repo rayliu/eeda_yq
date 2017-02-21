@@ -36,7 +36,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>公司简介</label>
-												<textarea class="form-control" rows="3" name="introduction">${party.introduction!''}</textarea>
+												<textarea class="form-control" id="introduction" rows="3" name="introduction">${party.introduction!''}</textarea>
                                             </div>
                                             
                                             <div class="form-group">
@@ -85,7 +85,7 @@
                                             </div>
                                              <div class="form-group">
                                                 <label>联系人电话</label>
-                                                <input placeholder="" class="form-control" id="disabledInput" type="text" name="phone" value="${party.phone!''}">
+                                                <input placeholder="" class="form-control" id="phone" type="text" name="phone" value="${party.phone!''}">
                                             </div>
                                             <div class="form-group">
                                                 <label>联系地址</label>
@@ -97,18 +97,17 @@
                                             </div> 
                                             <div class="form-group">
                                                 <label>备注</label>
-												<textarea class="form-control" rows="3" name="remark">${party.remark!''}</textarea>
+												<textarea class="form-control" id="remark" rows="3" name="remark">${party.remark!''}</textarea>
                                             </div>
-                                            
                                        </div>
-                                       <div class="tab-pane fade in" id="customDetail">
-							                        <div class="form-group">
-							                            <div class="col-lg-12">
-							                                <%include("/eeda/contractManagement/supplier_type.html", {}){} %>
-							                            </div>
-							                        </div>
-							             </div>
 									</form>
+									<div class="tab-pane fade in" id="customDetail">
+				                        <div class="form-group">
+				                            <div class="col-lg-12">
+				                                <%include("/eeda/contractManagement/supplier_type.html", {}){} %>
+				                            </div>
+				                        </div>
+							        </div>
                                     <div class="col-lg-6" style="clear:both;">
                                         <button id="save" type="button" class="btn  btn_green">保存</button>
                                         <a class="btn  btn_white" href="/serviceProvider">返回</a>
@@ -149,8 +148,6 @@
 	var payment = '${party.payment!''}';
 	var itemOrder = {};
 </script>
-<!-- <script src="/yh/js/eeda-common.js"></script>
-<script src="/yh/js/profile/serviceProvider/edit.js"></script> -->
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/contractManagement/edit']);

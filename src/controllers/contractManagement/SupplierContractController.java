@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -14,7 +15,14 @@ import java.util.Map;
 import models.Location;
 import models.ParentOfficeModel;
 import models.Party;
+import models.SpBulkCargo;
+import models.SpBulkCargoItem;
+import models.SpInternalTrade;
+import models.SpOceanCargo;
+import models.SpOceanCargoItem;
 import models.UserLogin;
+import models.eeda.oms.PlanOrder;
+import models.eeda.oms.PlanOrderItem;
 import models.yh.profile.ProviderChargeType;
 
 import org.apache.commons.lang.StringUtils;
@@ -23,6 +31,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
+import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
@@ -91,6 +100,14 @@ public class SupplierContractController extends Controller {
         setAttr("location", re.getStr("loc_name"));
 
         setAttr("party", party);
+        
+        Record order = new Record();
+        order.set("oceanCargoList", getItems("oceanCargo",id));
+        order.set("oceanCargoItemList", getItems("oceanCargoItem",id));
+        order.set("internalTradeList", getItems("internalTrade",id));
+        order.set("bulkCargoItemList", getItems("bulkCargoItem",id));
+        order.set("bulkCargoList", getItems("bulkCargo",id));
+        setAttr("order", order);
      
         render("/eeda/contractManagement/supplierContractEdit.html");
     }
@@ -111,53 +128,61 @@ public class SupplierContractController extends Controller {
         redirect("/serviceProvider");
     }
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_CREATE, PermissionConstant.PERMSSION_P_UPDATE}, logical=Logical.OR)
-    public void save() {
-        String id = getPara("party_id");
-        Party party = null;
-        Party contact = null;
-        Party contact1 = null;
-        Party contact2 = null;
-        Date createDate = Calendar.getInstance().getTime();
-        if (id != null && !id.equals("")) {
-            party = Party.dao.findById(id);
-            party.set("last_updated_stamp", createDate);
-            party.set("remark", getPara("remark"));
-            party.set("receipt", getPara("receipt"));
-            party.set("payment", getPara("payment"));
+    public void save() throws InstantiationException, IllegalAccessException {
+        String jsonStr=getPara("params");
+       	
+       	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
-            party.set("receiver", getPara("receiver"));
-            party.set("bank_no", getPara("bank_no"));
-            party.set("bank_name", getPara("bank_name"));
-            setContact(party);
+        Party party = new Party();
+   		String id = (String) dto.get("id");
+   		
+   		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+       
+        if (StringUtils.isNotEmpty(id)) {
+            party = Party.dao.findById(id);
+            
+            DbUtils.setModelValues(dto, party);
+            party.set("last_updated_stamp", new Date());
+           
+            //setContact(party);
             party.update();
         } else {
             //判断供应商简称
-            contact1 = Party.dao.findFirst("select * from party where abbr=? and office_id=?", getPara("abbr"), pom.getCurrentOfficeId());
-            if(contact1!=null){
+        	party = Party.dao.findFirst("select * from party where abbr=? and office_id=?", getPara("abbr"), pom.getCurrentOfficeId());
+            if(party!=null){
             	renderText("abbrError");
             	return ;
             }
-          //判断供应商全称
-            contact2 = Party.dao.findFirst("select * from party where company_name=? and office_id=?", getPara("company_name"), pom.getCurrentOfficeId()); 
-            if(contact2!=null){
+            //判断供应商全称
+            party = Party.dao.findFirst("select * from party where company_name=? and office_id=?", getPara("company_name"), pom.getCurrentOfficeId()); 
+            if(party!=null){
             	renderText("companyError");
             	return ;
             }
+            
+            //create 
+   			DbUtils.setModelValues(dto, party);
 
-            party = new Party();
             party.set("type", Party.PARTY_TYPE_SERVICE_PROVIDER);
             party.set("creator", LoginUserController.getLoginUserId(this));
-            party.set("create_date", createDate);
-            party.set("receipt", getPara("receipt"));
-            party.set("remark", getPara("remark"));
-            party.set("payment", getPara("payment"));
-            party.set("charge_type", getPara("chargeType"));
+            party.set("create_date", new Date());
             party.set("office_id", pom.getCurrentOfficeId());
-            
-            setContact(party);
             party.save();
-
         }
+        
+        List<Map<String, String>> oceanCargoList = (ArrayList<Map<String, String>>)dto.get("oceanCargo");
+		DbUtils.handleList(oceanCargoList, id, SpOceanCargo.class, "order_id");
+		List<Map<String, String>> oceanCargoItemList = (ArrayList<Map<String, String>>)dto.get("oceanCargoItem");
+		DbUtils.handleList(oceanCargoItemList, id, SpOceanCargoItem.class, "order_id");
+		List<Map<String, String>> internalTradeList = (ArrayList<Map<String, String>>)dto.get("internalTrade");
+		DbUtils.handleList(internalTradeList, id, SpInternalTrade.class, "order_id");
+		List<Map<String, String>> bulkCargoList = (ArrayList<Map<String, String>>)dto.get("bulkCargo");
+		DbUtils.handleList(bulkCargoList, id, SpBulkCargo.class, "order_id");
+		List<Map<String, String>> bulkCargoItemList = (ArrayList<Map<String, String>>)dto.get("bulkCargoItem");
+		DbUtils.handleList(bulkCargoItemList, id, SpBulkCargoItem.class, "order_id");
+        
      
         setAttr("saveOK", true);
         //redirect("/serviceProvider");
@@ -699,5 +724,42 @@ public class SupplierContractController extends Controller {
     	}
     	rec = Db.find(sql + " limit 10");
     	renderJson(rec);
+    }
+    
+    public List<Record> getItems(String type,String order_id){
+    	String sql = null;
+    	if(type.equals("oceanCargo")){
+    		sql = "select * from sp_ocean_cargo where order_id = ?";
+    	}else if(type.equals("oceanCargoItem")){
+    		sql = "select * from sp_ocean_cargo_item where order_id = ?";
+    	}else if(type.equals("internalTrade")){
+    		sql = "select * from sp_internal_trade where order_id = ?";
+    	}else if(type.equals("bulkCargo")){
+    		sql = "select * from sp_bulk_cargo where order_id = ?";
+    	}else if(type.equals("bulkCargoItem")){
+    		sql = "select * from sp_bulk_cargo_item where order_id = ?";
+    	}
+    		
+    	
+    	List<Record> re = Db.find(sql,order_id);
+    	return re;
+    }
+    
+    
+    //异步刷新字表
+    public void tableList(){
+    	String order_id = getPara("order_id");
+    	String type = getPara("type");
+    	List<Record> list = null;
+    	list = getItems(type,order_id);
+
+    	Map BillingOrderListMap = new HashMap();
+        BillingOrderListMap.put("sEcho", 1);
+        BillingOrderListMap.put("iTotalRecords", list.size());
+        BillingOrderListMap.put("iTotalDisplayRecords", list.size());
+
+        BillingOrderListMap.put("aaData", list);
+
+        renderJson(BillingOrderListMap); 
     }
 }
