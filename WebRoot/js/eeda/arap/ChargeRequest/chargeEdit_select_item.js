@@ -311,9 +311,11 @@ var itemIds=[];
         var searchData2=function(){
             var ids=$('#ids').val();
             var query_exchange_currency=$('#query_currency').val();
+            var fin_name=$('#query_fin').val();
             var url = "/chargeCheckOrder/tableList?order_ids="+ids+"&order_id=N"
                             +"&table_type=item"
-                            +"&query_exchange_currency="+query_exchange_currency;
+                            +"&query_exchange_currency="+query_exchange_currency
+                            +"&query_fin_name="+fin_name;
            itemTable.ajax.url(url).load(function(){
               var a=[];
               $('#select_item_table input[type=checkbox]:checked').each(function(){
@@ -496,6 +498,16 @@ var itemIds=[];
        $("#select_item_table").on('click','input[type=checkbox]',function(){
               $("#allcheck2").prop("checked",$("#select_item_table input[type=checkbox]").length-1 == $("#select_item_table input[type=checkbox]:checked").length ? true : false);
         });
+       //清空条件
+       $("#clear_fin").click(function(){
+            $('#query_fin').val('');
+            $('#query_fin_input').val('');
+       });
+        $("#clear_query").click(function(){
+            $('#query_currency').val('');
+            $('#query_fin').val('');
+            $('#query_fin_input').val('');
+       });
     
     return {
         refleshSelectTable: refleshSelectTable,

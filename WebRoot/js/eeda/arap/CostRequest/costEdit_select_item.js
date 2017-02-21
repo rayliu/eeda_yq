@@ -277,9 +277,11 @@ var itemIds=[];
         var searchData2=function(){
             var ids=$('#ids').val();
             var query_exchange_currency=$('#query_currency').val();
+            var fin_name=$('#query_fin').val();
             var url = "/costCheckOrder/tableList?order_ids="+ids+"&order_id=N"
                             +"&table_type=item"
-                            +"&query_exchange_currency="+query_exchange_currency;
+                            +"&query_exchange_currency="+query_exchange_currency
+                            +"&query_fin_name="+fin_name;
            itemTable.ajax.url(url).load(function(){
               var a=[];
               $('#select_item_table input[type=checkbox]:checked').each(function(){
@@ -461,6 +463,17 @@ var itemIds=[];
 
       });
         
+      //清空条件
+       $("#clear_fin").click(function(){
+            $('#query_fin').val('');
+            $('#query_fin_input').val('');
+       });
+        $("#clear_query").click(function(){
+            $('#query_currency').val('');
+            $('#query_fin').val('');
+            $('#query_fin_input').val('');
+       });
+
     var refleshCreateTable = function(appApplication_id){
         var url = "/costCheckOrder/tableList?appApplication_id="+appApplication_id+"&order_id=N&bill_flag=create";
         itemTable.ajax.url(url).load();

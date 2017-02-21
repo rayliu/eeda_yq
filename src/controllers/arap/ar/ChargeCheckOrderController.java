@@ -351,10 +351,11 @@ public class ChargeCheckOrderController extends Controller {
     	return re;
     }
     
-    public List<Record> getChargeItemList(String order_ids,String bill_flag,String code,String exchange_currency){
+    public List<Record> getChargeItemList(String order_ids,String bill_flag,String code,String exchange_currency,String fin_name){
     	String sql = null;
     	String currency_code="";
     	String query_exchange_currency="";
+    	String query_fin_name="";
 		if(StringUtils.isNotEmpty(code)){
 			currency_code=" and cur. NAME="+"'"+code+"'";
 		}
@@ -362,6 +363,9 @@ public class ChargeCheckOrderController extends Controller {
 			String sql2="select id from currency where currency.name='"+exchange_currency+"'";
 			List<Record> re=Db.find(sql2);
 			query_exchange_currency=" and joa. exchange_currency_id="+re.get(0).get("id");
+		}
+		if(StringUtils.isNotEmpty(fin_name)){
+			query_fin_name=" and fi.id="+fin_name;
 		}
 			if("create".equals(bill_flag)){
 				sql = " select joa.id,joa.create_flag,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
@@ -392,7 +396,7 @@ public class ChargeCheckOrderController extends Controller {
 							+" left join charge_application_order_rel caol on caol.job_order_arap_id  = joa.id"
 							+" left join arap_charge_application_order acao on caol.application_order_id = acao.id"
 							 +" left join arap_charge_order aco on aco.id=caol.charge_order_id"
-						  +" where acao.id="+order_ids
+						  +" where acao.id="+order_ids+query_fin_name
 							+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
 				
@@ -426,7 +430,7 @@ public class ChargeCheckOrderController extends Controller {
 						 +" left join arap_charge_order aco on aco.id = aci.charge_order_id"
 						 +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
 							+currency_code
-							+query_exchange_currency
+							+query_exchange_currency+query_fin_name
 							+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
 			}		
@@ -594,17 +598,18 @@ public class ChargeCheckOrderController extends Controller {
     	String currency_code=getPara("query_currency");
     	//查询结算币制
     	String  exchange_currency=getPara("query_exchange_currency");
+    	String  fin_name=getPara("query_fin_name");
     	List<Record> list = null;
     	String condition = "select ref_order_id from arap_charge_item where charge_order_id in ("+order_ids+") ";
     	
     	if("N".equals(order_id)){//应收申请单
     		if(StringUtils.isNotEmpty(appliction_id)){
-    			list = getChargeItemList(appliction_id,bill_flag,currency_code,exchange_currency);
+    			list = getChargeItemList(appliction_id,bill_flag,currency_code,exchange_currency,fin_name);
         	}else{
 	    		if("".equals(order_ids)){
 	    			order_ids=null;
 	    				}
-	    		list = getChargeItemList(order_ids,"",currency_code,exchange_currency);
+	    		list = getChargeItemList(order_ids,"",currency_code,exchange_currency,fin_name);
 	    		}
     	}else{//应收对账单
     		    list = getItemList(condition,order_id,currency_code);

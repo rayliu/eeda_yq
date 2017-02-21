@@ -21,6 +21,18 @@
                    </div>
                    <button id='query_listCurrency' class="btn btn_grey"  type="button">查询</button>
                 </div>
+                <div class="row">
+                <div class="col-lg-4 ">
+                        <%include("/eeda/component/form/inputFinItem.html", 
+                                       {  id:'query_fin',
+                                          label:'费用名称', 
+                                          value:'',
+                                          display_value:''
+                                       }){}%>
+                    </div>
+                  <button type="button" id="clear_fin" class="btn btn_white">清空费用</button>
+                  <button type="button" id="clear_query" class="btn btn_white">清空条件</button>
+            </div>
         </div>
         
             
