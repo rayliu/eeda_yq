@@ -27,7 +27,7 @@
                                         id:'ocean_table',
                                         headers:[ '区域','优势航线', '服务船东','备注'],
                                         field_list:['region','advantage_route', 'service_owner', 'remark'],
-                                        value_list: oceanItemList![]
+                                        value_list: order.oceanCargoList![]
                                     }){} %>
                        
                   	</div>
@@ -51,7 +51,7 @@
                                         'EBS_40HQ','AMS/AFR_20GP','AMS/AFR_40GP','AMS/AFR_40HQ','VAT_20GP','VAT_40GP',
                                         'VAT_40HQ','ISPS_20GP','ISPS_40GP','ISPS_40HQ','TRUCK_20GP','TRUCK_40GP',
                                         'TRUCK_40HQ','TOTAL_20GP','TOTAL_40GP','TOTAL_40HQ','effective_time','remark','create_stamp','creator'],
-                                        value_list: oceanItemList![]
+                                        value_list: order.oceanCargoItemList![]
                                     }){} %>
                        
                   	</div>

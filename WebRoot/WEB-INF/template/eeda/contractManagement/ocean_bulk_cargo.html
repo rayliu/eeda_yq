@@ -20,21 +20,21 @@
             		</div>
                     <div class="row">
                             <div class="form-group button-bar">
-                                <button id='add_bulkCargo_cargo' class="btn btn_blue btn-xs" type="button">添加</button>
+                                <button id='add_bulkCargo' class="btn btn_blue btn-xs" type="button">添加</button>
                             </div>
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'bulkCargo_table',
                                         headers:[ '船运类型','区域','优势航线','备注'],
                                         field_list:['shipping_type','region','advantage_route', 'remark'],
-                                        value_list: oceanItemList![]
+                                        value_list: order.bulkCargoList![]
                                     }){} %>
                        
                   	</div>
                   	
                   	<div class="row">
                             <div class="form-group button-bar">
-                                <button id='add_bulkCargo_item_cargo' class="btn btn_blue btn-xs" type="button">添加</button>
+                                <button id='add_bulkCargo_item' class="btn btn_blue btn-xs" type="button">添加</button>
                             </div>
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
@@ -47,7 +47,7 @@
                                         field_list:['','POL','POD', 'service_owner', 'port_charge','DOC','VGM','D/O',
                                         'O/F','HANDLING','CFS','THC','BAF','CIC','LOADING_FEE',
                                         'total','effective_time','remark','create_stamp','creator'],
-                                        value_list: oceanItemList![]
+                                        value_list: order.bulkCargoItemList![]
                                     }){} %>
                        
                   	</div>
