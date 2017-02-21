@@ -11,7 +11,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        cargoTable.row(tr).remove().draw();
 	    }); 
 	    
-	    itemOrder.buildCargoDetail=function(){
+	    itemOrder.buildBulkCargoItemDetail=function(){
 	    	var cargo_table_rows = $("#bulkCargo_item_table tr");
 	        var cargo_items_array=[];
 	        for(var index=0; index<cargo_table_rows.length; index++){
@@ -32,7 +32,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            
 	            item.id = id;
 	           
-	            for(var i = 1; i < row.childNodes.length; i++){
+	            for(var i = 0; i < row.childNodes.length; i++){
 	            	var name = $(row.childNodes[i]).find('input,select').attr('name');
 	            	var value = $(row.childNodes[i]).find('input,select').val();
 	            	if(name){
@@ -44,7 +44,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        }
 
 	        //add deleted items
-	        for(var index=0; index<deletedTableIds.length; index++){
+	        for(var index=1; index<deletedTableIds.length; index++){
 	            var id = deletedTableIds[index];
 	            var item={
 	                id: id,
@@ -57,14 +57,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    };
 	    
 	    var bindFieldEvent=function(){
-//	    	$('table .date').datetimepicker({  
-//	    	    format: 'yyyy-MM-dd hh:mm:ss',  
-//	    	    language: 'zh-CN'
-//	    	}).on('changeDate', function(el){
-//	    	    $(".bootstrap-datetimepicker-widget").hide();   
-//	    	    $(el).trigger('keyup');
-//	    	});
-
 	    	eeda.bindTableField('cargo_table','UNIT_ID','/serviceProvider/searchUnit','');
 	    	eeda.bindTableField('cargo_table','POR','/location/searchPort','');
 	    	eeda.bindTableField('cargo_table','POL','/location/searchPort','');
@@ -225,14 +217,14 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    });
 
 	    
-	    $('#add_bulkCargo_item_cargo').on('click', function(){
+	    $('#add_bulkCargo_item').on('click', function(){
 	        var item={};
 	        cargoTable.row.add(item).draw(true);
 	    });
 	    
 	    //刷新明细表
-	    itemOrder.refleshTable = function(order_id){
-	    	var url = "/planOrder/tableList?order_id="+order_id;
+	    itemOrder.refleshBulkCargoItemTable = function(order_id){
+	    	var url = "/supplierContract/tableList?order_id="+order_id+"&type=bulkCargoItem";
 	    	cargoTable.ajax.url(url).load();
 	    }
 	    
