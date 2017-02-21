@@ -173,11 +173,57 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                 $('#saveBtn').attr('disabled', false);
               });
-        });  
+        }); 
         
+      //常用托运单信息模版
+        $('#usedConsignmentInfo').on('click', '.selectConsignmentTemplate', function(){
+        	var li = $(this).parent().parent();
+            $('#shipping_date').val(li.attr('shipping_date'));
+            $('#customs_number').val(li.attr('customs_number'));
+            $('#boat_company').val(li.attr('boat_company'));
+            $('#boat_name').val(li.attr('boat_name'));
+            
+            $('#consignee').val(li.attr('consignee'));
+            $('#consignee_input').val(li.attr('consignee_name'));
+            
+            $('#appointed_port').val(li.attr('appointed_port'));
+            $('#appointed_port_input').val(li.attr('port_name'));
+            
+            $('#shipping_men_phone').val(li.attr('shipping_men_phone'));
+            $('#shipping_men').val(li.attr('shipping_men'));
+            $('#shipping_men_input').val(li.attr('shipping_men_name'));
+            $('#consignee_phone').val(li.attr('consignee_phone'));
+            $('#notice_man').val(li.attr('notice_man'));
+            $('#notice_man_input').val(li.attr('notice_man_name'));
+            $('#notice_man_phone').val(li.attr('notice_man_phone'));
+            
+        });
+        $('#collapseConsignmentNoteInfo').on('show.bs.collapse', function () {
+          $('#collapseConsignmentNoteIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+        });
+        $('#collapseConsignmentNoteInfo').on('hide.bs.collapse', function () {
+          $('#collapseConsignmentNoteIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
+        });
         
-      //常用海运信息模版
-        $('#usedAirInfo').on('click', '.selectAirTemplate', function(){
+        $('.deleteConsignmentTemplate').click(function(e) {
+        	$(this).attr('disabled', true);
+        	e.preventDefault();
+        	var li = $(this).parent().parent();
+        	var id = li.attr('id');
+        	$.post('/customPlanOrder/deleteConsignmentTemplate', {id:id}, function(data){
+        		$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+        		$(this).attr('disabled', false);
+        		li.css("display","none");
+        	},'json').fail(function() {
+        		$(this).attr('disabled', false);
+                $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+            });
+        })
+        
+
+        
+      //常用报关单信息模版
+        $('#usedCustomNoteInfo').on('click', '.selectCustomNoteTemplate', function(){
         	var li = $(this).parent().parent();
             $('#receive_sent_consignee').val(li.attr('receive_sent_consignee'));
             $('#receive_sent_consignee_input').val(li.attr('receive_sent_consignee_abbr'));
@@ -214,14 +260,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $('#note').val(li.attr('note'));
             
         });
-        $('#collapseAirInfo').on('show.bs.collapse', function () {
-          $('#collapseAirIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+        $('#collapseCustomNoteInfo').on('show.bs.collapse', function () {
+          $('#collapseCustomNoteIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
         });
-        $('#collapseAirInfo').on('hide.bs.collapse', function () {
-          $('#collapseAirIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
+        $('#collapseCustomNoteInfo').on('hide.bs.collapse', function () {
+          $('#collapseCustomNoteIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
         });
         
-        $('.deleteAirTemplate').click(function(e) {
+        $('.deleteCustomNoteTemplate').click(function(e) {
         	$(this).attr('disabled', true);
         	e.preventDefault();
         	var li = $(this).parent().parent();

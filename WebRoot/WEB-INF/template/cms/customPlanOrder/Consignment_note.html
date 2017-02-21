@@ -1,4 +1,51 @@
-<input type="hidden" id="hk_custom_id" value="${hkCustom.id!''}">
+<input type="hidden" id="" value="">
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseConsignmentInfo" aria-expanded="false" class="collapsed">
+            <i id='collapseConsignmentIcon' class="fa 
+            <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用托运单信息模板
+            </a>
+        </h4>
+    </div>
+    <div id="collapseConsignmentInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+        <div class="panel-body">
+            <ul id="usedConsignmentInfo" class="usedConsignmentInfo">
+              <%for(userInfo in usedConsignmentInfo![]){%>
+                    <li id="${userInfo.id}"
+                        shipping_date="${userInfo.shipping_date}"
+                        customs_number="${userInfo.customs_number}"
+                        boat_company="${userInfo.boat_company}"
+                        
+                        boat_name="${userInfo.boat_name}"
+                        consignee="${userInfo.consignee}"
+                        consignee_name="${userInfo.consignee_name}"
+                        appointed_port="${userInfo.appointed_port}"
+                        port_name="${userInfo.port_name}"
+                        shipping_men="${userInfo.shipping_men}"
+                        shipping_men_name="${userInfo.shipping_men_name}"
+                        
+                        shipping_men_phone="${userInfo.shipping_men_phone}"
+                        consignee_phone="${userInfo.consignee_phone}"
+                        notice_man="${userInfo.notice_man}"
+                        notice_man_name="${userInfo.notice_man_name}"
+                        notice_man_phone="${userInfo.notice_man_phone}" 
+                        >
+                      <div class="radio">
+                        <a class="deleteConsignmentTemplate" href="#" style="margin-right: 10px;padding-top: 6px;float: left;">删除</a>
+                        <label class="selectConsignmentTemplate">
+                            <input type="radio" value="1" name="usedConsignmentInfo" style="margin-top: 0px;">
+                            <span>托运日期:${userInfo.shipping_date}, 企业海关代码:${userInfo.customs_number}, 指定港: ${userInfo.appointed_port}</span><br>
+                            <span class="port">收发货人${userInfo.shipping_men}, 收货人：${userInfo.consignee}</span>
+                        </label>
+                      </div>
+                    </li>
+              <%}%>
+            </ul>
+        </div>
+    </div>
+</div>
 <form id="hkForm">
 						    <div class="form-group">  <!--  form row  -->
 						         <div class="row"><!--  第1行  --> 

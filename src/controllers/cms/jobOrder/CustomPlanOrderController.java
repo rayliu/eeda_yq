@@ -49,6 +49,7 @@ public class CustomPlanOrderController extends Controller {
 		render("/cms/customPlanOrder/CustomPlanOrderlist.html");
 	}
 	
+	
 	@Before(EedaMenuInterceptor.class)
     public void create() {
         String jobId = getPara("jobOrderId");
@@ -88,7 +89,7 @@ public class CustomPlanOrderController extends Controller {
    			customPlanOrder.set("updator", user.getLong("id"));
    			customPlanOrder.set("update_stamp", new Date());
    			customPlanOrder.update();
-   			saveCustomTemplate(dto);
+   			
    		} else {
    			//create 
    			DbUtils.setModelValues(dto, customPlanOrder);
@@ -100,9 +101,12 @@ public class CustomPlanOrderController extends Controller {
    			customPlanOrder.set("office_id", office_id);
    			customPlanOrder.save();
    			id = customPlanOrder.getLong("id").toString();
-   			saveCustomTemplate(dto);
    		}
    		
+   		//保存托运单模板
+   		saveConsignmentTemplate(dto);
+   		//保存报关单模板
+   		saveCustomTemplate(dto);
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
 		DbUtils.handleList(itemList, id, CustomPlanOrderItem.class, "order_id");
 		
@@ -124,100 +128,185 @@ public class CustomPlanOrderController extends Controller {
    		r.set("creator_name", user_name);
    		renderJson(r);
    	}
-   
-    private void saveCustomTemplate(Map<String, ?> dto) {
+    
+    
+     //保存报关单模板
+      public void saveCustomTemplate(Map<String, ?> dto){
+    	  Long creator_id = LoginUserController.getLoginUserId(this);
+      	
+      	String receive_sent_consignee = (String) dto.get("receive_sent_consignee");
+      	String production_and_sales = (String) dto.get("production_and_sales");
+      	String application_unit = (String) dto.get("application_unit");
+      	String export_port = (String) dto.get("export_port");
+      	String transport_type = (String) dto.get("transport_type");
+      	String supervision_mode = (String) dto.get("supervision_mode");
+      	String nature_of_exemption = (String) dto.get("nature_of_exemption");
+      	String record_no = (String) dto.get("record_no");
+      	String trading_country = (String) dto.get("trading_country");
+      	String destination_country = (String) dto.get("destination_country");
+      	String destination_port = (String) dto.get("destination_port");
+      	String supply_of_goods = (String) dto.get("supply_of_goods");
+      	String license_no = (String) dto.get("license_no");
+      	String contract_agreement_no = (String) dto.get("contract_agreement_no");
+      	String deal_mode = (String) dto.get("deal_mode");
+      	String note = (String) dto.get("note");
+      	
+      	String sql = "select 1 from custom_plan_order_template where"
+                  + " creator_id = "+creator_id;
+        
+          if(StringUtils.isNotEmpty(receive_sent_consignee)){
+          	sql+=" and receive_sent_consignee= '"+receive_sent_consignee+"'";
+          }
+          if(StringUtils.isNotEmpty(production_and_sales)){
+          	sql+=" and production_and_sales= '"+production_and_sales+"'";
+          }
+          if(StringUtils.isNotEmpty(application_unit)){
+          	sql+=" and application_unit= '"+application_unit+"'";
+          }
+          if(StringUtils.isNotEmpty(export_port)){
+          	sql+=" and export_port= '"+export_port+"'";
+          }
+          if(StringUtils.isNotEmpty(transport_type)){
+          	sql+=" and transport_type= '"+transport_type+"'";
+          }
+          if(StringUtils.isNotEmpty(supervision_mode)){
+          	sql+=" and supervision_mode= '"+supervision_mode+"'";
+          }
+          if(StringUtils.isNotEmpty(nature_of_exemption)){
+          	sql+=" and nature_of_exemption= '"+nature_of_exemption+"'";
+          }
+          if(StringUtils.isNotEmpty(record_no)){
+          	sql+=" and record_no= '"+record_no+"'";
+          }
+          if(StringUtils.isNotEmpty(trading_country)){
+          	sql+=" and trading_country= '"+trading_country+"'";
+          }
+          if(StringUtils.isNotEmpty(destination_country)){
+          	sql+=" and destination_country= '"+destination_country+"'";
+          }
+          if(StringUtils.isNotEmpty(destination_port)){
+          	sql+=" and destination_port= '"+destination_port+"'";
+          }
+          if(StringUtils.isNotEmpty(supply_of_goods)){
+          	sql+=" and supply_of_goods= '"+supply_of_goods+"'";
+          }
+          if(StringUtils.isNotEmpty(license_no)){
+          	sql+=" and license_no= '"+license_no+"'";
+          }
+          if(StringUtils.isNotEmpty(contract_agreement_no)){
+          	sql+=" and contract_agreement_no= '"+contract_agreement_no+"'";
+          }
+          if(StringUtils.isNotEmpty(deal_mode)){
+          	sql+=" and deal_mode= '"+deal_mode+"'";
+          }
+          if(StringUtils.isNotEmpty(note)){
+          	sql+=" and note= '"+note+"'";
+          }
+    
+          Record checkRec = Db.findFirst(sql);
+      	if(checkRec==null){
+      		Record r= new Record();
+      		r.set("creator_id", creator_id);
+      		r.set("receive_sent_consignee", receive_sent_consignee);
+      		r.set("production_and_sales", production_and_sales);
+      		r.set("application_unit", application_unit);
+      		r.set("export_port", export_port);
+      		r.set("transport_type", transport_type);
+      		r.set("supervision_mode", supervision_mode);
+      		r.set("nature_of_exemption", nature_of_exemption);
+      		r.set("record_no", record_no);
+      		r.set("trading_country", trading_country);
+      		r.set("destination_country", destination_country);
+      		r.set("destination_port", destination_port);
+      		r.set("supply_of_goods", supply_of_goods);
+      		r.set("license_no", license_no);
+      		r.set("contract_agreement_no", contract_agreement_no);
+      		r.set("deal_mode", deal_mode);
+      		r.set("note", note);
+      		Db.save("custom_plan_order_template", r);
+          }
+      }
+
+    
+    //保存托运单填写模板
+    private void saveConsignmentTemplate(Map<String, ?> dto) {
     	Long creator_id = LoginUserController.getLoginUserId(this);
     	
-    	String receive_sent_consignee = (String) dto.get("receive_sent_consignee");
-    	String production_and_sales = (String) dto.get("production_and_sales");
-    	String application_unit = (String) dto.get("application_unit");
-    	String export_port = (String) dto.get("export_port");
-    	String transport_type = (String) dto.get("transport_type");
-    	String supervision_mode = (String) dto.get("supervision_mode");
-    	String nature_of_exemption = (String) dto.get("nature_of_exemption");
-    	String record_no = (String) dto.get("record_no");
-    	String trading_country = (String) dto.get("trading_country");
-    	String destination_country = (String) dto.get("destination_country");
-    	String destination_port = (String) dto.get("destination_port");
-    	String supply_of_goods = (String) dto.get("supply_of_goods");
-    	String license_no = (String) dto.get("license_no");
-    	String contract_agreement_no = (String) dto.get("contract_agreement_no");
-    	String deal_mode = (String) dto.get("deal_mode");
-    	String note = (String) dto.get("note");
+    	String shipping_date = (String) dto.get("shipping_date");
+    	String customs_number = (String) dto.get("customs_number");
+    	String boat_company = (String) dto.get("boat_company");
+    	String boat_name = (String) dto.get("boat_name");
+    	String shipping_men = (String) dto.get("shipping_men");
+    	String consignee = (String) dto.get("consignee");
+    	String appointed_port = (String) dto.get("appointed_port");
+    	String shipping_men_phone = (String) dto.get("shipping_men_phone");
+    	String consignee_phone = (String) dto.get("consignee_phone");
+    	String notice_man = (String) dto.get("notice_man");
+    	String notice_man_phone = (String) dto.get("notice_man_phone");
     	
-    	String sql = "select 1 from custom_plan_order_template where"
+    	String sql = "select 1 from consignment_plan_order_template where"
                 + " creator_id = "+creator_id;
       
-        if(StringUtils.isNotEmpty(receive_sent_consignee)){
-        	sql+=" and receive_sent_consignee= '"+receive_sent_consignee+"'";
+        if(StringUtils.isNotEmpty(shipping_date)){
+        	sql+=" and shipping_date= '"+shipping_date+"'";
         }
-        if(StringUtils.isNotEmpty(production_and_sales)){
-        	sql+=" and production_and_sales= '"+production_and_sales+"'";
+        if(StringUtils.isNotEmpty(customs_number)){
+        	sql+=" and customs_number= '"+customs_number+"'";
         }
-        if(StringUtils.isNotEmpty(application_unit)){
-        	sql+=" and application_unit= '"+application_unit+"'";
+        if(StringUtils.isNotEmpty(boat_company)){
+        	sql+=" and boat_company= '"+boat_company+"'";
         }
-        if(StringUtils.isNotEmpty(export_port)){
-        	sql+=" and export_port= '"+export_port+"'";
+        if(StringUtils.isNotEmpty(boat_name)){
+        	sql+=" and boat_name= '"+boat_name+"'";
         }
-        if(StringUtils.isNotEmpty(transport_type)){
-        	sql+=" and transport_type= '"+transport_type+"'";
+        if(StringUtils.isNotEmpty(shipping_men)){
+        	sql+=" and shipping_men= '"+shipping_men+"'";
         }
-        if(StringUtils.isNotEmpty(supervision_mode)){
-        	sql+=" and supervision_mode= '"+supervision_mode+"'";
+        if(StringUtils.isNotEmpty(consignee)){
+        	sql+=" and consignee= '"+consignee+"'";
         }
-        if(StringUtils.isNotEmpty(nature_of_exemption)){
-        	sql+=" and nature_of_exemption= '"+nature_of_exemption+"'";
+        if(StringUtils.isNotEmpty(appointed_port)){
+        	sql+=" and appointed_port= '"+appointed_port+"'";
         }
-        if(StringUtils.isNotEmpty(record_no)){
-        	sql+=" and record_no= '"+record_no+"'";
+        if(StringUtils.isNotEmpty(shipping_men_phone)){
+        	sql+=" and shipping_men_phone= '"+shipping_men_phone+"'";
         }
-        if(StringUtils.isNotEmpty(trading_country)){
-        	sql+=" and trading_country= '"+trading_country+"'";
+        if(StringUtils.isNotEmpty(consignee_phone)){
+        	sql+=" and consignee_phone= '"+consignee_phone+"'";
         }
-        if(StringUtils.isNotEmpty(destination_country)){
-        	sql+=" and destination_country= '"+destination_country+"'";
+        if(StringUtils.isNotEmpty(notice_man)){
+        	sql+=" and notice_man= '"+notice_man+"'";
         }
-        if(StringUtils.isNotEmpty(destination_port)){
-        	sql+=" and destination_port= '"+destination_port+"'";
-        }
-        if(StringUtils.isNotEmpty(supply_of_goods)){
-        	sql+=" and supply_of_goods= '"+supply_of_goods+"'";
-        }
-        if(StringUtils.isNotEmpty(license_no)){
-        	sql+=" and license_no= '"+license_no+"'";
-        }
-        if(StringUtils.isNotEmpty(contract_agreement_no)){
-        	sql+=" and contract_agreement_no= '"+contract_agreement_no+"'";
-        }
-        if(StringUtils.isNotEmpty(deal_mode)){
-        	sql+=" and deal_mode= '"+deal_mode+"'";
-        }
-        if(StringUtils.isNotEmpty(note)){
-        	sql+=" and note= '"+note+"'";
+        if(StringUtils.isNotEmpty(notice_man_phone)){
+        	sql+=" and notice_man_phone= '"+notice_man_phone+"'";
         }
   
         Record checkRec = Db.findFirst(sql);
     	if(checkRec==null){
     		Record r= new Record();
     		r.set("creator_id", creator_id);
-    		r.set("receive_sent_consignee", receive_sent_consignee);
-    		r.set("production_and_sales", production_and_sales);
-    		r.set("application_unit", application_unit);
-    		r.set("export_port", export_port);
-    		r.set("transport_type", transport_type);
-    		r.set("supervision_mode", supervision_mode);
-    		r.set("nature_of_exemption", nature_of_exemption);
-    		r.set("record_no", record_no);
-    		r.set("trading_country", trading_country);
-    		r.set("destination_country", destination_country);
-    		r.set("destination_port", destination_port);
-    		r.set("supply_of_goods", supply_of_goods);
-    		r.set("license_no", license_no);
-    		r.set("contract_agreement_no", contract_agreement_no);
-    		r.set("deal_mode", deal_mode);
-    		r.set("note", note);
-    		Db.save("custom_plan_order_template", r);
+    		r.set("shipping_date", shipping_date);
+    		r.set("customs_number", customs_number);
+    		if(!"".equals(boat_company)){
+    			r.set("boat_company", boat_company);
+    		}
+    		r.set("boat_name", boat_name);
+    		if(!"".equals(shipping_men)){
+    			r.set("shipping_men", shipping_men);
+    		}
+    		if(!"".equals(boat_company)){
+    			r.set("consignee", consignee);
+    		}
+    		if(!"".equals(appointed_port)){
+    			r.set("appointed_port", appointed_port);
+    		}
+    		r.set("shipping_men_phone", shipping_men_phone);
+    		r.set("consignee_phone", consignee_phone);
+    		if(!"".equals(notice_man)){
+    			r.set("notice_man", notice_man);
+    		}
+    		r.set("notice_man_phone", notice_man_phone);
+    		Db.save("consignment_plan_order_template", r);
     	}
 	}
 
@@ -317,7 +406,10 @@ public class CustomPlanOrderController extends Controller {
     	
     	setAttr("chargeList", getItems(id,"charge"));
     	setAttr("costList", getItems(id,"cost"));
+    	//获取报关单常用模板
     	setAttr("customTemplateInfo", getCustomTemplateInfo());
+    	//获取托运单常用模板
+    	setAttr("usedConsignmentInfo", getConsignmentTemplateInfo());
     	
     	//用户信息
     	long creator = r.getLong("creator");
@@ -344,6 +436,18 @@ public class CustomPlanOrderController extends Controller {
     			+ " left join location l1 on l1.id = t.destination_country"
     			+ " left join location l2 on l2.id = t.destination_port"
     			+ " where t.creator_id=? order by t.id";
+    	List<Record> t = Db.find(sql, LoginUserController.getLoginUserId(this));
+		return t;
+	}
+    
+    private List<Record> getConsignmentTemplateInfo() {
+    	String sql = " SELECT t.*,p.abbr shipping_men_name,p1.abbr consignee_name,p2.abbr notice_man_name,l.name port_name  "
+    			+" from consignment_plan_order_template t "
+    			+" LEFT JOIN party p on p.id = t.shipping_men "
+    			+" LEFT JOIN party p1 on p1.id = t.consignee "
+    			+" LEFT JOIN party p2 on p2.id = t.notice_man "
+    			+" LEFT JOIN location l on l.id = t.appointed_port "
+    			+" WHERE creator_id = ?";
     	List<Record> t = Db.find(sql, LoginUserController.getLoginUserId(this));
 		return t;
 	}
@@ -496,6 +600,15 @@ public class CustomPlanOrderController extends Controller {
     	Db.update("delete from custom_plan_order_template where id = ?",id);
     	renderJson("{\"result\":true}");
     }
+    
+  //删除常用模版
+    @Before(Tx.class)
+    public void deleteConsignmentTemplate(){
+    	String id = getPara("id");
+    	Db.update("delete from consignment_plan_order_template where id = ?",id);
+    	renderJson("{\"result\":true}");
+    }
+    
     
     //费用明细确认
     @Before(Tx.class)

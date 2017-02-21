@@ -105,7 +105,7 @@ $(document).ready(function() {
             { "data": "EXCHANGE_CURRENCY_NAME", "width": "70px"}, 
             { "data": "EXCHANGE_CURRENCY_RATE", "width": "70px",
             	 "render": function ( data, type, full, meta ) {
-            		 var exchange_currency_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
+            		 var exchange_currency_str=data;
             		 return exchange_currency_str;
             	 }
             	 },
