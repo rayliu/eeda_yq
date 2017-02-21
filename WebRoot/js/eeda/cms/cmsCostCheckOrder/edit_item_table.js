@@ -101,6 +101,14 @@ $(document).ready(function() {
             { "data": "REF_NO"},
             { "data": "MBL_NO"},
             { "data": "HBL_NO"},
+             { "data": "HBL_NO"},
+              { "data": "HBL_NO"},
+               { "data": "HBL_NO"},
+                { "data": "HBL_NO"},
+                 { "data": "HBL_NO"},
+                  { "data": "HBL_NO"},
+                   { "data": "HBL_NO"},
+                    { "data": "HBL_NO"},
             { "data": "ORDER_TYPE", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)

@@ -46,10 +46,10 @@ $(document).ready(function() {
             columns:[
             { "width": "10px", "orderable": false,
             "render": function ( data, type, full, meta ) {
-                  var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" id="checkbox_'+full.ID+'" value="'+full.ID+'">';
+                  var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" id="checkbox_'+full.CPOID+'" value="'+full.CPOID+'">';
                 for(var i=0;i<itemIds.length;i++){
-                           if(itemIds[i]==full.ID){
-                             strcheck= '<input type="checkbox" class="checkBox" checked="checked"  name="order_check_box" value="'+full.ID+'">';
+                           if(itemIds[i]==full.CPOID){
+                             strcheck= '<input type="checkbox" class="checkBox" checked="checked"  name="order_check_box" value="'+full.CPOID+'">';
                            }
                        }
                 return strcheck;
@@ -62,73 +62,73 @@ $(document).ready(function() {
               },
               { "data": "CREATE_STAMP", "width": "100px"},
               { "data": "BOOKING_NO", "width": "200px"},
-              { "data": "SP_NAME", "width": "120px","class":"COMPANY_ABBR",
+              { "data": "COMPANY_ABBR", "width": "120px","class":"COMPANY_ABBR",
                 "render": function ( data, type, full, meta ) {
                   return data;
                 }
               },
               { "data": "BOOKING_NO", "width": "200px"},//装箱放式
               { "data": "BOOKING_NO", "width": "200px"},//报关单录入
-              { "data": "G_ZLSCF", "width": "160px",
+              { "data": "ZLSCF", "width": "160px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_ZLSCF==null){
+                  if(full.ZLSCF==null){
                     return '0.00';
                   }
-                 var  aa=parseFloat(full.G_ZLSCF).toFixed(2);
+                 var  aa=parseFloat(full.ZLSCF).toFixed(2);
                   return aa;
                 }
               },
-              { "data": "G_FTF", "width": "100px",
+              { "data": "FTF", "width": "100px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_FTF==null){
+                  if(full.FTF==null){
                     return '0.00';
                   }
-                   var  aa=parseFloat(full.G_FTF).toFixed(2);
+                   var  aa=parseFloat(full.FTF).toFixed(2);
                   return aa;
                 }
               },
-              { "data": "G_PZF", "width": "100px",
+              { "data": "PZF", "width": "100px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_PZF==null){
+                  if(full.PZF==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_PZF).toFixed(2);
+                  var  aa=parseFloat(full.PZF).toFixed(2);
                   return aa;
                 }
               },
-              { "data": "G_XDF", "width": "100px",
+              { "data": "XDF", "width": "100px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_XDF==null){
+                  if(full.XDF==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_XDF).toFixed(2);
+                  var  aa=parseFloat(full.XDF).toFixed(2);
                   return aa;
                 }
               },
-              { "data": "G_WLDLF", "width": "100px",
+              { "data": "WLDLF", "width": "100px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_WLDLF==null){
+                  if(full.WLDLF==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_WLDLF).toFixed(2);
+                  var  aa=parseFloat(full.WLDLF).toFixed(2);
                   return aa;
                 }
               },
-              { "data": "G_GKF", "width": "100px",
+              { "data": "GKF", "width": "100px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_GKF==null){
+                  if(full.GKF==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_GKF).toFixed(2);
+                  var  aa=parseFloat(full.GKF).toFixed(2);
                   return aa;
                 }
               },
-              { "data": "G_MTF", "width": "100px",
+              { "data": "MTF", "width": "100px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_MTF==null){
+                  if(full.MTF==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_MTF).toFixed(2);
+                  var  aa=parseFloat(full.MTF).toFixed(2);
                   return aa;
                 }
               },
@@ -138,47 +138,47 @@ $(document).ready(function() {
                     return '<span style="color:red;">'+'-'+'</span>';
                   }
                   var matoufine=0,wldlf,gkf,mtf;
-                  wldlf=parseFloat(full.G_WLDLF) ;gkf=parseFloat(full.G_GKF); mtf=parseFloat(full.G_MTF);
-                  if(full.G_WLDLF==null){wldlf=0;}
-                  if(full.G_GKF==null){gkf=0;}
-                  if(full.G_MTF==null){mtf=0;}
+                  wldlf=parseFloat(full.WLDLF) ;gkf=parseFloat(full.GKF); mtf=parseFloat(full.MTF);
+                  if(full.WLDLF==null){wldlf=0;}
+                  if(full.GKF==null){gkf=0;}
+                  if(full.MTF==null){mtf=0;}
                   matoufine=parseFloat(wldlf+gkf+mtf).toFixed(2);
                     return matoufine;
                     }
-              },//码头费小计(前三项，G_LHF不)
-              { "data": "G_ZHF","width": "60px",
+              },//码头费小计(前三项，LHF不)
+              { "data": "ZHF","width": "60px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_ZHF==null){
+                  if(full.ZHF==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_ZHF).toFixed(2);
+                  var  aa=parseFloat(full.ZHF).toFixed(2);
                   return aa;
                 }
                 },
-              { "data": "G_LXF", "width": "60px",
+              { "data": "LXF", "width": "60px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_LXF==null){
+                  if(full.LXF==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_LXF).toFixed(2);
+                  var  aa=parseFloat(full.LXF).toFixed(2);
                   return aa;
                 }
               },
-              { "data": "G_AC", "width": "60px",
+              { "data": "AC", "width": "60px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_AC==null){
+                  if(full.AC==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_AC).toFixed(2);
+                  var  aa=parseFloat(full.AC).toFixed(2);
                   return aa;
                 }
               },
-              { "data": "G_WJF", "width": "60px",
+              { "data": "WJF", "width": "60px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_WJF==null){
+                  if(full.WJF==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_WJF).toFixed(2);
+                  var  aa=parseFloat(full.WJF).toFixed(2);
                   return aa;
                 }
               },
@@ -188,68 +188,86 @@ $(document).ready(function() {
                     return '<span style="color:red;">'+'-'+'</span>';
                   }
                   var gongbenfine=0,lxf,ac,wjf;
-                  lxf=parseFloat(full.G_LXF) ;ac=parseFloat(full.G_AC); wjf=parseFloat(full.G_WJF);
-                  if(full.G_LXF==null){lxf=0;}
-                  if(full.G_AC==null){ac=0;}
-                  if(full.G_WJF==null){wjf=0;}
+                  lxf=parseFloat(full.LXF) ;ac=parseFloat(full.AC); wjf=parseFloat(full.WJF);
+                  if(full.LXF==null){lxf=0;}
+                  if(full.AC==null){ac=0;}
+                  if(full.WJF==null){wjf=0;}
                   gongbenfine=parseFloat(lxf+ac+wjf).toFixed(2);
                       return gongbenfine;
                     }
                }, //工本费小计（前三项）
-              { "data": "G_PZF", "width": "60px",
+              { "data": "PZF", "width": "60px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_PZF==null){
+                  if(full.PZF==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_PZF).toFixed(2);
+                  var  aa=parseFloat(full.PZF).toFixed(2);
                   return aa;
                 }
               },
-              { "data": "G_RZF", "width": "100px",
+              { "data": "RZF", "width": "100px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_RZF==null){
+                  if(full.RZF==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_RZF).toFixed(2);
+                  var  aa=parseFloat(full.RZF).toFixed(2);
                   return aa;
                 }
               },
-              { "data": "G_YF", "width": "60px",
+              { "data": "YF", "width": "60px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_YF==null){
+                  if(full.YF==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_YF).toFixed(2);
+                  var  aa=parseFloat(full.YF).toFixed(2);
                   return aa;
                 }
               },
-              { "data": "G_DTF", "width": "120px",
+              { "data": "DTF", "width": "120px",
                 "render": function ( data, type, full, meta ) {
                   
-                  var  aa=parseFloat(full.G_DTF).toFixed(2);
+                  var  aa=parseFloat(full.DTF).toFixed(2);
                   return '小计';
                 }
               },//小计
-              { "data": "G_BGF", "width": "60px",
+              { "data": "BGF", "width": "60px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_BGF==null){
+                  if(full.BGF==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_BGF).toFixed(2);
+                  var  aa=parseFloat(full.BGF).toFixed(2);
                   return aa;
                 }
               },
-              { "data": "G_DTF", "width": "120px",
+              { "data": "DTF", "width": "120px",
                 "render": function ( data, type, full, meta ) {
-                  if(full.G_DTF==null){
+                  if(full.DTF==null){
                     return '0.00';
                   }
-                  var  aa=parseFloat(full.G_DTF).toFixed(2);
+                  var  aa=parseFloat(full.DTF).toFixed(2);
                   return aa;
                 }
               },
-              { "data": "TOTAL", "width": "120px"},//合计
-              { "data": "TOTAL", "width": "120px"}//备注
+              { "data": "TOTAL","class":"total", "width": "120px",
+                  "render": function ( data, type, full, meta ) {
+                  var total=0.0;
+                   total+=parseFloat(full.ZLSCF)+parseFloat(full.FTF)+parseFloat(full.PZF)+parseFloat(full.XDF)  +parseFloat(full.WLDLF)+parseFloat(full.GKF)+parseFloat(full.MTF)+
+                  parseFloat(full.ZHF)+parseFloat(full.LXF)+parseFloat(full.AC)+parseFloat(full.WJF)+
+                  parseFloat(full.RZF)+parseFloat(full.YF)+parseFloat(full.ZLSCF)+
+                  parseFloat(full.BGF)+parseFloat(full.DTF);
+                  return total.toFixed(2);
+                }
+              },//合计
+              { "data": "TOTAL", "width": "120px",
+                  "render": function ( data, type, full, meta ) {
+                  var total=0.0;
+                   total+=parseFloat(full.ZLSCF)+parseFloat(full.FTF)+parseFloat(full.PZF)+parseFloat(full.XDF)  +parseFloat(full.WLDLF)+parseFloat(full.GKF)+parseFloat(full.MTF)+
+                  parseFloat(full.ZHF)+parseFloat(full.LXF)+parseFloat(full.AC)+parseFloat(full.WJF)+
+                  parseFloat(full.RZF)+parseFloat(full.YF)+parseFloat(full.ZLSCF)+
+                  parseFloat(full.BGF)+parseFloat(full.DTF);
+                  return total.toFixed(2);
+                }},//备注,
+              { "data": "CPOID", "visible": false}
             ]
     }); 
        
@@ -261,15 +279,17 @@ $(document).ready(function() {
             var JPY_cost=0, JPY_charge=0;
             itemTable.data().each(function(item, index) {
                 //dom 对象的checkbox 是否勾上了？
-                var id = item.ID;
+                var id = item.CPOID;
 
                 if(!$('#checkbox_'+id).prop('checked'))
                     return;
 
                 if(item.ORDER_TYPE == 'cost'){
-                	CNY_cost+=item.MTF+item.MTF+item.MTF+item.MTF+item.MTF+item.MTF
-                				+item.ZLSCF+item.FTF+item.PZF+item.XDF+item.WLDLF
-                				+item.LXF+item.AC+item.WJF+item.RZF+item.YF+item.BGF+item.DTF;
+                    temp=parseFloat(item.ZLSCF)+parseFloat(item.FTF)+parseFloat(item.PZF)+parseFloat(item.XDF)  +parseFloat(item.WLDLF)+parseFloat(item.GKF)+parseFloat(item.MTF)+
+                             parseFloat(item.ZHF)+parseFloat(item.LXF)+parseFloat(item.AC)+parseFloat(item.WJF)+
+                             parseFloat(item.RZF)+parseFloat(item.YF)+parseFloat(item.ZLSCF)+
+                              parseFloat(item.BGF)+parseFloat(item.DTF);
+                       CNY_cost=parseFloat(CNY_cost)+parseFloat(temp)
 //                    if(item.EXCHANGE_CURRENCY_NAME=='CNY'){
 //                        CNY_cost+=item.EXCHANGE_TOTAL_AMOUNT;
 //                    }else if(item.EXCHANGE_CURRENCY_NAME=='USD'){
@@ -280,9 +300,11 @@ $(document).ready(function() {
 //                        JPY_cost+=item.EXCHANGE_TOTAL_AMOUNT;
 //                    }
                 }else{
-                	CNY_charge+=item.MTF+item.YJ+item.ZHF+item.GKF+item.LHF+item.SCF
-    				+item.ZLSCF+item.FTF+item.PZF+item.XDF+item.WLDLF
-    				+item.LXF+item.AC+item.WJF+item.RZF+item.YF+item.BGF+item.DTF;
+                	  temp1=parseFloat(item.ZLSCF)+parseFloat(item.FTF)+parseFloat(item.PZF)+parseFloat(item.XDF)  +parseFloat(item.WLDLF)+parseFloat(item.GKF)+parseFloat(item.MTF)+
+                            parseFloat(item.ZHF)+parseFloat(item.LXF)+parseFloat(item.AC)+parseFloat(item.WJF)+
+                            parseFloat(item.RZF)+parseFloat(item.YF)+parseFloat(item.ZLSCF)+
+                            parseFloat(item.BGF)+parseFloat(item.DTF);
+                       CNY_charge=parseFloat(CNY_charge)+parseFloat(temp1)
 //                    if(item.EXCHANGE_CURRENCY_NAME=='CNY'){
 //                        CNY_charge+=item.EXCHANGE_TOTAL_AMOUNT;
 //                    }else if(item.EXCHANGE_CURRENCY_NAME=='USD'){
@@ -376,58 +398,6 @@ $(document).ready(function() {
 			}
 			calcTotal();
 	}); 
-	
-
-     
-   
-//   $('#exchange').click(function(){
-//   	$(this).attr('disabled',true);
-//   	var rate = $('#exchange_rate').val();
-//   	if(rate==''||isNaN(rate)){
-//   		$.scojs_message('请输入正确的汇率进行兑换', $.scojs_message.TYPE_ERROR);
-//   		return;
-//   	}
-//   	var currency_name = cnames[0];
-//   	var ex_currency_name = $('#exchange_currency').val();
-////   	var total = 0;
-////	    $('#eeda-table input[type=checkbox]:checked').each(function(){
-////	    	var tr = $(this).parent().parent();
-////	    	
-////	    	var total_amount = tr.find(".total_amount").text();
-////	    	if(total_amount!=''&&!isNaN(total_amount)){
-////	    		total +=parseFloat(total_amount);
-////	    	}
-////	    })
-//	    if(ids.length==0){
-//	    	$.scojs_message('请选择一条费用明细进行兑换', $.scojs_message.TYPE_ERROR);
-//	    	$('#exchange').attr('disabled',false);
-//	    	return;
-//	    }
-//	    
-//	    $.post('/cmsChargeCheckOrder/exchange_currency', 
-//           {   charge_order_id: $('#order_id').val(),
-//               ids:ids.toString(), 
-//               rate:rate, 
-//               ex_currency_name:ex_currency_name}, function(data){
-//	    	$('#exchange').attr('disabled',false);
-//	    	var order_id = $('#order_id').val();
-//	    	itemOrder.refleshTable(order_id,ids.toString());
-//	    	$.scojs_message('兑换成功', $.scojs_message.TYPE_OK);
-//           $('#cny').val((parseFloat(data.CNY)).toFixed(2));
-//           $('#usd').val((parseFloat(data.USD)).toFixed(2));
-//           $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
-//           $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
-//	    },'json').fail(function() {
-//	    	$('#exchange').attr('disabled',false);
-//           $.scojs_message('发生异常，兑换失败', $.scojs_message.TYPE_ERROR);
-//	    });
-//   })
-    
-    
-    
-    
-    
-    
     
 } );    
 } );

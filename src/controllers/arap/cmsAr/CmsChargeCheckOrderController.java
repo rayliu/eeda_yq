@@ -83,25 +83,44 @@ public class CmsChargeCheckOrderController extends Controller {
    			order.save();
    			
    			id = order.getLong("id").toString();
+
+   			CustomArapChargeItem aci = null;
+   			List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
+   			for(Map<String, String> item :itemList){
+   					String item_order_id=item.get("order_check_box");
+		   			String sql2="SELECT id FROM custom_plan_order_arap"
+		   					+ " where order_id in("+ item_order_id+") and order_type='charge'";
+		   			List<Record> ids=Db.find(sql2);
+		   			
+		   			for(Record re :ids ){
+		   				aci = new CustomArapChargeItem();
+						aci.set("ref_order_type", "工作单");
+						aci.set("ref_order_id", re.get("ID"));
+						aci.set("custom_charge_order_id", id);
+						aci.save();
+						CustomPlanOrderArap cmsOrderArap = CustomPlanOrderArap.dao.findById(re.get("ID"));
+						cmsOrderArap.set("bill_flag", "Y");
+						cmsOrderArap.update();
+		   			}
+   				}
    		}
-
-   		CustomArapChargeItem aci = null;
-   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-		for(Map<String, String> item :itemList){
-			String action = item.get("action");
-			String itemId = item.get("id");
-			if("CREATE".equals(action)){
-				aci = new CustomArapChargeItem();
-				aci.set("ref_order_type", "工作单");
-				aci.set("ref_order_id", itemId);
-				aci.set("custom_charge_order_id", id);
-				aci.save();
-				CustomPlanOrderArap cmsOrderArap = CustomPlanOrderArap.dao.findById(itemId);
-				cmsOrderArap.set("bill_flag", "Y");
-				cmsOrderArap.update();
-
-			}
-		}
+//   		CustomArapChargeItem aci = null;
+//   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
+//		for(Map<String, String> item :itemList){
+//			String action = item.get("action");
+//			String itemId = item.get("id");
+//			if("CREATE".equals(action)){
+//				aci = new CustomArapChargeItem();
+//				aci.set("ref_order_type", "工作单");
+//				aci.set("ref_order_id", itemId);
+//				aci.set("custom_charge_order_id", id);
+//				aci.save();
+//				CustomPlanOrderArap cmsOrderArap = CustomPlanOrderArap.dao.findById(itemId);
+//				cmsOrderArap.set("bill_flag", "Y");
+//				cmsOrderArap.update();
+//
+//			}
+//		}
 		
 		
 //		List<Map<String, String>> currencyList = (ArrayList<Map<String, String>>)dto.get("currency_list");
@@ -157,64 +176,60 @@ public class CmsChargeCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
-	   		 sql = "select B.* ,MTF  G_MTF,YJ  G_YJ,ZHF  G_ZHF,GKF  G_GKF,LHF  G_LHF,SCF    G_SCF, ZLSCF    G_ZLSCF, FTF    G_FTF,"
-		   		 		+ " AC    G_AC, WJF    G_WJF, RZF    G_RZF, YF    G_YF, BGF    G_BGF, DTF    G_DTF, PZF    G_PZF, XDF    G_XDF, WLDLF    G_WLDLF,"
-		   		 		+ " LXF    G_LXF  from(  "
+	   		 sql = "select B.* from(  "
 						 +" SELECT cpoa .*,cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,p.abbr sp_name, "
-		   				 +" cpo.custom_export_date ,SUM(total_amount) total,"
-						 +" sum(iF(cpoa.charge_id=164,cpoa.total_amount,null)) MTF, "
-						 +" sum(iF(cpoa.charge_id=165,cpoa.total_amount,null)) YJ, "
-						 +" sum(iF(cpoa.charge_id=166,cpoa.total_amount,null)) ZHF, "
-						 +" sum(iF(cpoa.charge_id=167,cpoa.total_amount,null )) GKF, "
-						 +" sum(iF(cpoa.charge_id=168,cpoa.total_amount,null)) LHF, "
-						 +" sum(iF(cpoa.charge_id=169,cpoa.total_amount,null)) SCF, "
-						 +" sum(iF(cpoa.charge_id=175,cpoa.total_amount,null)) ZLSCF, "
-						 +" sum(iF(cpoa.charge_id=176,cpoa.total_amount,null)) FTF, "
-						 +" sum(iF(cpoa.charge_id=177,cpoa.total_amount,null)) PZF, "
-						 +" sum(iF(cpoa.charge_id=178,cpoa.total_amount,null)) XDF, "
-						 +" sum(iF(cpoa.charge_id=179,cpoa.total_amount,null)) WLDLF, "
-						 +" sum(iF(cpoa.charge_id=180,cpoa.total_amount,null)) LXF, "
-						 +" sum(iF(cpoa.charge_id=181,cpoa.total_amount,null)) AC,  "
-						 +" sum(iF(cpoa.charge_id=182,cpoa.total_amount,null)) WJF, "
-						 +" sum(iF(cpoa.charge_id=183,cpoa.total_amount,null)) RZF,  "
-						 +" sum(iF(cpoa.charge_id=184,cpoa.total_amount,null)) YF, "
-						 +" sum(iF(cpoa.charge_id=185,cpoa.total_amount,null)) BGF, "
-						 +" sum(iF(cpoa.charge_id=186,cpoa.total_amount,null)) DTF "
+		   				 +" cpo.custom_export_date ,"
+						 +" sum(iF(cpoa.charge_id=164,cpoa.total_amount,0)) MTF, "
+						 +" sum(iF(cpoa.charge_id=165,cpoa.total_amount,0)) YJ, "
+						 +" sum(iF(cpoa.charge_id=166,cpoa.total_amount,0)) ZHF, "
+						 +" sum(iF(cpoa.charge_id=167,cpoa.total_amount,0 )) GKF, "
+						 +" sum(iF(cpoa.charge_id=168,cpoa.total_amount,0)) LHF, "
+						 +" sum(iF(cpoa.charge_id=169,cpoa.total_amount,0)) SCF, "
+						 +" sum(iF(cpoa.charge_id=175,cpoa.total_amount,0)) ZLSCF, "
+						 +" sum(iF(cpoa.charge_id=176,cpoa.total_amount,0)) FTF, "
+						 +" sum(iF(cpoa.charge_id=177,cpoa.total_amount,0)) PZF, "
+						 +" sum(iF(cpoa.charge_id=178,cpoa.total_amount,0)) XDF, "
+						 +" sum(iF(cpoa.charge_id=179,cpoa.total_amount,0)) WLDLF, "
+						 +" sum(iF(cpoa.charge_id=180,cpoa.total_amount,0)) LXF, "
+						 +" sum(iF(cpoa.charge_id=181,cpoa.total_amount,0)) AC,  "
+						 +" sum(iF(cpoa.charge_id=182,cpoa.total_amount,0)) WJF, "
+						 +" sum(iF(cpoa.charge_id=183,cpoa.total_amount,0)) RZF,  "
+						 +" sum(iF(cpoa.charge_id=184,cpoa.total_amount,0)) YF, "
+						 +" sum(iF(cpoa.charge_id=185,cpoa.total_amount,0)) BGF, "
+						 +" sum(iF(cpoa.charge_id=186,cpoa.total_amount,0)) DTF "
 						 +" FROM custom_plan_order_arap cpoa  "
 						 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-						 +" LEFT JOIN party p on p.id = cpoa.sp_id "
+						 +" LEFT JOIN party p on p.id = cpo.application_unit "
 						 +" LEFT JOIN fin_item fi on cpoa.charge_id = fi.id  "
 						 +" WHERE cpoa.audit_flag='Y' and cpoa.bill_flag='N' AND cpo.office_id = "+office_id
 		 				 + " GROUP BY cpoa.order_id "
 		 				 + " ) B "
 		 				 +" where 1=1 ";
      			}else{
-		   		 sql = "select B.* ,MTF  G_MTF,YJ  G_YJ,ZHF  G_ZHF,GKF  G_GKF,LHF  G_LHF,SCF    G_SCF, ZLSCF    G_ZLSCF, FTF    G_FTF,"
-		   		 		+ " AC    G_AC, WJF    G_WJF, RZF    G_RZF, YF    G_YF, BGF    G_BGF, DTF    G_DTF, PZF    G_PZF, XDF    G_XDF, WLDLF    G_WLDLF,"
-		   		 		+ " LXF    G_LXF  from(  "
+		   		 sql = "select B.* from(  "
 						 +" SELECT cpoa .*,cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,p.abbr sp_name, "
-		   				 +" cpo.custom_export_date ,SUM(total_amount) total,"
-						 +" sum(iF(cpoa.charge_id=164,cpoa.total_amount,null)) MTF, "
-						 +" sum(iF(cpoa.charge_id=165,cpoa.total_amount,null)) YJ, "
-						 +" sum(iF(cpoa.charge_id=166,cpoa.total_amount,null)) ZHF, "
-						 +" sum(iF(cpoa.charge_id=167,cpoa.total_amount,null )) GKF, "
-						 +" sum(iF(cpoa.charge_id=168,cpoa.total_amount,null)) LHF, "
-						 +" sum(iF(cpoa.charge_id=169,cpoa.total_amount,null)) SCF, "
-						 +" sum(iF(cpoa.charge_id=175,cpoa.total_amount,null)) ZLSCF, "
-						 +" sum(iF(cpoa.charge_id=176,cpoa.total_amount,null)) FTF, "
-						 +" sum(iF(cpoa.charge_id=177,cpoa.total_amount,null)) PZF, "
-						 +" sum(iF(cpoa.charge_id=178,cpoa.total_amount,null)) XDF, "
-						 +" sum(iF(cpoa.charge_id=179,cpoa.total_amount,null)) WLDLF, "
-						 +" sum(iF(cpoa.charge_id=180,cpoa.total_amount,null)) LXF, "
-						 +" sum(iF(cpoa.charge_id=181,cpoa.total_amount,null)) AC,  "
-						 +" sum(iF(cpoa.charge_id=182,cpoa.total_amount,null)) WJF, "
-						 +" sum(iF(cpoa.charge_id=183,cpoa.total_amount,null)) RZF,  "
-						 +" sum(iF(cpoa.charge_id=184,cpoa.total_amount,null)) YF, "
-						 +" sum(iF(cpoa.charge_id=185,cpoa.total_amount,null)) BGF, "
-						 +" sum(iF(cpoa.charge_id=186,cpoa.total_amount,null)) DTF"
+		   				 +" cpo.custom_export_date ,"
+						 +" sum(iF(cpoa.charge_id=164,cpoa.total_amount,0)) MTF, "
+						 +" sum(iF(cpoa.charge_id=165,cpoa.total_amount,0)) YJ, "
+						 +" sum(iF(cpoa.charge_id=166,cpoa.total_amount,0)) ZHF, "
+						 +" sum(iF(cpoa.charge_id=167,cpoa.total_amount,0 )) GKF, "
+						 +" sum(iF(cpoa.charge_id=168,cpoa.total_amount,0)) LHF, "
+						 +" sum(iF(cpoa.charge_id=169,cpoa.total_amount,0)) SCF, "
+						 +" sum(iF(cpoa.charge_id=175,cpoa.total_amount,0)) ZLSCF, "
+						 +" sum(iF(cpoa.charge_id=176,cpoa.total_amount,0)) FTF, "
+						 +" sum(iF(cpoa.charge_id=177,cpoa.total_amount,0)) PZF, "
+						 +" sum(iF(cpoa.charge_id=178,cpoa.total_amount,0)) XDF, "
+						 +" sum(iF(cpoa.charge_id=179,cpoa.total_amount,0)) WLDLF, "
+						 +" sum(iF(cpoa.charge_id=180,cpoa.total_amount,0)) LXF, "
+						 +" sum(iF(cpoa.charge_id=181,cpoa.total_amount,0)) AC,  "
+						 +" sum(iF(cpoa.charge_id=182,cpoa.total_amount,0)) WJF, "
+						 +" sum(iF(cpoa.charge_id=183,cpoa.total_amount,0)) RZF,  "
+						 +" sum(iF(cpoa.charge_id=184,cpoa.total_amount,0)) YF, "
+						 +" sum(iF(cpoa.charge_id=185,cpoa.total_amount,0)) BGF, "
+						 +" sum(iF(cpoa.charge_id=186,cpoa.total_amount,0)) DTF"
 						 +" FROM custom_plan_order_arap cpoa  "
 						 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-						 +" LEFT JOIN party p on p.id = cpoa.sp_id "
+						 +" LEFT JOIN party p on p.id = cpo.application_unit "
 						 +" LEFT JOIN fin_item fi on cpoa.charge_id = fi.id  "
 						 +" WHERE cpoa.order_type = 'charge'  and cpoa.audit_flag='Y' and cpoa.bill_flag='N' AND cpo.office_id = "+office_id
 		 				 + " GROUP BY cpoa.order_id "
@@ -295,28 +310,28 @@ public class CmsChargeCheckOrderController extends Controller {
     	String sql = null;
 		if(StringUtils.isEmpty(order_id)){
 	   		 sql = "select * from(  "
-					 +" SELECT cpoa .*,cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,p.abbr company_abbr,SUM(total_amount) total,"
-						 +" sum(iF(cpoa.charge_id=164,cpoa.total_amount,null)) MTF, "
-						 +" sum(iF(cpoa.charge_id=165,cpoa.total_amount,null)) YJ, "
-						 +" sum(iF(cpoa.charge_id=166,cpoa.total_amount,null)) ZHF, "
-						 +" sum(iF(cpoa.charge_id=167,cpoa.total_amount,null )) GKF, "
-						 +" sum(iF(cpoa.charge_id=168,cpoa.total_amount,null)) LHF, "
-						 +" sum(iF(cpoa.charge_id=169,cpoa.total_amount,null)) SCF, "
-						 +" sum(iF(cpoa.charge_id=175,cpoa.total_amount,null)) ZLSCF, "
-						 +" sum(iF(cpoa.charge_id=176,cpoa.total_amount,null)) FTF, "
-						 +" sum(iF(cpoa.charge_id=177,cpoa.total_amount,null)) PZF, "
-						 +" sum(iF(cpoa.charge_id=178,cpoa.total_amount,null)) XDF, "
-						 +" sum(iF(cpoa.charge_id=179,cpoa.total_amount,null)) WLDLF, "
-						 +" sum(iF(cpoa.charge_id=180,cpoa.total_amount,null)) LXF, "
-						 +" sum(iF(cpoa.charge_id=181,cpoa.total_amount,null)) AC,  "
-						 +" sum(iF(cpoa.charge_id=182,cpoa.total_amount,null)) WJF, "
-						 +" sum(iF(cpoa.charge_id=183,cpoa.total_amount,null)) RZF,  "
-						 +" sum(iF(cpoa.charge_id=184,cpoa.total_amount,null)) YF, "
-						 +" sum(iF(cpoa.charge_id=185,cpoa.total_amount,null)) BGF, "
-						 +" sum(iF(cpoa.charge_id=186,cpoa.total_amount,null)) DTF "
+					 +" SELECT cpoa .*,cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,p.abbr company_abbr,"
+						 +" sum(iF(cpoa.charge_id=164,cpoa.total_amount,0)) MTF, "
+						 +" sum(iF(cpoa.charge_id=165,cpoa.total_amount,0)) YJ, "
+						 +" sum(iF(cpoa.charge_id=166,cpoa.total_amount,0)) ZHF, "
+						 +" sum(iF(cpoa.charge_id=167,cpoa.total_amount,0 )) GKF, "
+						 +" sum(iF(cpoa.charge_id=168,cpoa.total_amount,0)) LHF, "
+						 +" sum(iF(cpoa.charge_id=169,cpoa.total_amount,0)) SCF, "
+						 +" sum(iF(cpoa.charge_id=175,cpoa.total_amount,0)) ZLSCF, "
+						 +" sum(iF(cpoa.charge_id=176,cpoa.total_amount,0)) FTF, "
+						 +" sum(iF(cpoa.charge_id=177,cpoa.total_amount,0)) PZF, "
+						 +" sum(iF(cpoa.charge_id=178,cpoa.total_amount,0)) XDF, "
+						 +" sum(iF(cpoa.charge_id=179,cpoa.total_amount,0)) WLDLF, "
+						 +" sum(iF(cpoa.charge_id=180,cpoa.total_amount,0)) LXF, "
+						 +" sum(iF(cpoa.charge_id=181,cpoa.total_amount,0)) AC,  "
+						 +" sum(iF(cpoa.charge_id=182,cpoa.total_amount,0)) WJF, "
+						 +" sum(iF(cpoa.charge_id=183,cpoa.total_amount,0)) RZF,  "
+						 +" sum(iF(cpoa.charge_id=184,cpoa.total_amount,0)) YF, "
+						 +" sum(iF(cpoa.charge_id=185,cpoa.total_amount,0)) BGF, "
+						 +" sum(iF(cpoa.charge_id=186,cpoa.total_amount,0)) DTF "
 					 +" FROM custom_plan_order_arap cpoa  "
 					 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-					 +" LEFT JOIN party p on p.id = cpoa.sp_id "
+					 +" LEFT JOIN party p on p.id = cpo.application_unit "
 					 +" LEFT JOIN fin_item fi on cpoa.charge_id = fi.id  "
 					 +" WHERE cpoa.order_id in("+ids+")"
 					 +" and cpoa.audit_flag='Y' "
@@ -325,51 +340,51 @@ public class CmsChargeCheckOrderController extends Controller {
 				}else{
 			   		 sql = "select * from(  "
 							 +" SELECT cpoa .*,cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,p.abbr company_abbr, "
-							 +" sum(iF(cpoa.charge_id=164,cpoa.total_amount,null)) MTF, "
-							 +" sum(iF(cpoa.charge_id=165,cpoa.total_amount,null)) YJ, "
-							 +" sum(iF(cpoa.charge_id=166,cpoa.total_amount,null)) ZHF, "
-							 +" sum(iF(cpoa.charge_id=167,cpoa.total_amount,null )) GKF, "
-							 +" sum(iF(cpoa.charge_id=168,cpoa.total_amount,null)) LHF, "
-							 +" sum(iF(cpoa.charge_id=169,cpoa.total_amount,null)) SCF, "
-							 +" sum(iF(cpoa.charge_id=175,cpoa.total_amount,null)) ZLSCF, "
-							 +" sum(iF(cpoa.charge_id=176,cpoa.total_amount,null)) FTF, "
-							 +" sum(iF(cpoa.charge_id=177,cpoa.total_amount,null)) PZF, "
-							 +" sum(iF(cpoa.charge_id=178,cpoa.total_amount,null)) XDF, "
-							 +" sum(iF(cpoa.charge_id=179,cpoa.total_amount,null)) WLDLF, "
-							 +" sum(iF(cpoa.charge_id=180,cpoa.total_amount,null)) LXF, "
-							 +" sum(iF(cpoa.charge_id=181,cpoa.total_amount,null)) AC,  "
-							 +" sum(iF(cpoa.charge_id=182,cpoa.total_amount,null)) WJF, "
-							 +" sum(iF(cpoa.charge_id=183,cpoa.total_amount,null)) RZF,  "
-							 +" sum(iF(cpoa.charge_id=184,cpoa.total_amount,null)) YF, "
-							 +" sum(iF(cpoa.charge_id=185,cpoa.total_amount,null)) BGF, "
-							 +" sum(iF(cpoa.charge_id=186,cpoa.total_amount,null)) DTF "
+							 +" sum(iF(cpoa.charge_id=164,cpoa.total_amount,0)) MTF, "
+							 +" sum(iF(cpoa.charge_id=165,cpoa.total_amount,0)) YJ, "
+							 +" sum(iF(cpoa.charge_id=166,cpoa.total_amount,0)) ZHF, "
+							 +" sum(iF(cpoa.charge_id=167,cpoa.total_amount,0 )) GKF, "
+							 +" sum(iF(cpoa.charge_id=168,cpoa.total_amount,0)) LHF, "
+							 +" sum(iF(cpoa.charge_id=169,cpoa.total_amount,0)) SCF, "
+							 +" sum(iF(cpoa.charge_id=175,cpoa.total_amount,0)) ZLSCF, "
+							 +" sum(iF(cpoa.charge_id=176,cpoa.total_amount,0)) FTF, "
+							 +" sum(iF(cpoa.charge_id=177,cpoa.total_amount,0)) PZF, "
+							 +" sum(iF(cpoa.charge_id=178,cpoa.total_amount,0)) XDF, "
+							 +" sum(iF(cpoa.charge_id=179,cpoa.total_amount,0)) WLDLF, "
+							 +" sum(iF(cpoa.charge_id=180,cpoa.total_amount,0)) LXF, "
+							 +" sum(iF(cpoa.charge_id=181,cpoa.total_amount,0)) AC,  "
+							 +" sum(iF(cpoa.charge_id=182,cpoa.total_amount,0)) WJF, "
+							 +" sum(iF(cpoa.charge_id=183,cpoa.total_amount,0)) RZF,  "
+							 +" sum(iF(cpoa.charge_id=184,cpoa.total_amount,0)) YF, "
+							 +" sum(iF(cpoa.charge_id=185,cpoa.total_amount,0)) BGF, "
+							 +" sum(iF(cpoa.charge_id=186,cpoa.total_amount,0)) DTF "
 							 +" FROM custom_arap_charge_order caco  "
 							 +" left join custom_arap_charge_item caci on caci.custom_charge_order_id=caco.id "
 							 +" left join custom_plan_order_arap cpoa on cpoa.id=caci.ref_order_id"
 							 +" LEFT JOIN custom_plan_order cpo on cpo.id=cpoa.order_id"
-					         +" LEFT JOIN party p on p.id=cpoa.sp_id " 
+					         +" LEFT JOIN party p on p.id=cpo.application_unit " 
 							 +" where caco.id ="+order_id
-			 				+ " GROUP BY cpoa.id "
+			 				+ " GROUP BY cpoa.order_id "
 			 				+ " ) B where 1=1 ";
 						}	
     	List<Record> re = Db.find(sql);
     	return re;
     }
     
-    public List<Record> getCurrencyList(String ids,String order_id){
-    	String sql = "SELECT "
-    			+ " (select rc.id from rate_contrast rc "
-    	    	+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"') rate_id,"
-    			+ " cur.id ,cur.name currency_name ,group_concat(distinct cast(joa.exchange_rate as char) SEPARATOR ';') exchange_rate ,"
-    			+ " ifnull((select rc.new_rate from rate_contrast rc "
-    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),ifnull(joa.exchange_rate,1)) new_rate"
-				+ " FROM job_order_arap joa"
-				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
-				+ " WHERE joa.id in("+ ids +") and cur.name!='CNY' group by cur.id" ;
-    	List<Record> re = Db.find(sql);
-    	
-    	return re;
-    }
+//    public List<Record> getCurrencyList(String ids,String order_id){
+//    	String sql = "SELECT "
+//    			+ " (select rc.id from rate_contrast rc "
+//    	    	+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"') rate_id,"
+//    			+ " cur.id ,cur.name currency_name ,group_concat(distinct cast(joa.exchange_rate as char) SEPARATOR ';') exchange_rate ,"
+//    			+ "0ull((select rc.new_rate from rate_contrast rc "
+//    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),ifnull(joa.exchange_rate,1)) new_rate"
+//				+ " FROM job_order_arap joa"
+//				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
+//				+ " WHERE joa.id in("+ ids +") and cur.name!='CNY' group by cur.id" ;
+//    	List<Record> re = Db.find(sql);
+//    	
+//    	return re;
+//    }
     
     @Before(EedaMenuInterceptor.class)
 	public void create(){
@@ -383,8 +398,9 @@ public class CmsChargeCheckOrderController extends Controller {
 		String sql = "SELECT cur.name currency_name ,p.phone,p.contact_person,p.address,p.company_name,cpoa.sp_id,cpoa.order_id"
 				+ " FROM custom_plan_order_arap cpoa"
 				+ " LEFT JOIN currency cur on cur.id = cpoa.currency_id"
-				+ " left join party p on p.id = cpoa.sp_id "
-				+ " WHERE cpoa.id in("+ ids +")"
+				+ " LEFT JOIN custom_plan_order cpo on cpo.id=cpoa.order_id "
+				+ " left join party p on p.id = cpo.application_unit "
+				+ " WHERE cpoa.order_id in("+ ids +")"
 				+ " group by cpoa.order_id";
 		Record rec =Db.findFirst(sql);
 		rec.set("total_amount", total_amount);
@@ -398,7 +414,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		rec.set("phone", rec.get("phone"));
 		rec.set("user", LoginUserController.getLoginUserName(this));
 		rec.set("itemList", getItemList(ids,""));
-		rec.set("currencyList", getCurrencyList(ids,""));
+//		rec.set("currencyList", getCurrencyList(ids,""));
 		setAttr("order",rec);
 		render("/eeda/cmsArap/cmsChargeCheckOrder/cmsChargeCheckOrderEdit.html");
 	}
@@ -420,7 +436,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		rec.set("customer", rec.get("contact_person"));
 		rec.set("phone", rec.get("phone"));
 		rec.set("itemList", getItemList(condition,id));
-		rec.set("currencyList", getCurrencyList(condition,id));
+//		rec.set("currencyList", getCurrencyList(condition,id));
 		setAttr("order",rec);
 		render("/eeda/cmsArap/cmsChargeCheckOrder/cmsChargeCheckOrderEdit.html");
 	}
