@@ -399,7 +399,7 @@ $(document).ready(function() {
                  },
                  { "data": "CUSTOM_BANK"},
                  { "data": "APPLYBILL_STATUS"},
-                 { "data": "CUSTOM_ORDER_NO"},
+                 { "data": "CUSTOMS_BILLCODE"},
                  { "data": "STATUS"},
                  { "data": "CREATOR"},
                  { "data": "CREATE_STAMP"},
