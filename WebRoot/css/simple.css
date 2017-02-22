@@ -7,7 +7,7 @@ html, body,.container {
     height: 100%; 
     background-color: #fff;
     font-family: dinpro, "Microsoft YaHei", Arial,sans-serif;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 body ::-webkit-scrollbar {
@@ -629,4 +629,8 @@ h4.panel-title  {
     padding-bottom: 8px;
     border-radius: 10px;
     margin:10px 0px;
+}
+
+div.dataTables_wrapper div.dataTables_info {
+    padding-left: 10px;
 }
