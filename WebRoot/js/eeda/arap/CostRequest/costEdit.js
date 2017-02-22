@@ -116,25 +116,22 @@ $(document).ready(function() {
 	        });
 	});
 	
+	//打印按钮可以使用
+	if($("#order_id").val()!=''){
+		$("#printBtn").attr('disabled',false);
+	}
 	
-    //打印
+    //打印应付申请单
 	 $("#printBtn").on('click',function(){
-	    	var order_no = $("#application_no").val();
-	    	if(order_no != null && order_no != ""){
-		    	$.post('/report/printPayMent', {order_no:order_no}, function(data){
-		    		if(data.indexOf(",")>=0){
-						var file = data.substr(0,data.length-1);
-		    			var str = file.split(",");
-		    			for(var i = 0 ;i<str.length;i++){
-		    				window.open(str[i]);
-		    			}
-					}else{
-						window.open(data);
-					}
+	    	var order_id = $("#order_id").val();
+
+		    	$.post('/jobOrderReport/costApplicationBill', {order_id:order_id}, function(data){
+		    		if(data){
+		                window.open(data);
+		             }else{
+		               $.scojs_message('生成应付申请单 PDF失败', $.scojs_message.TYPE_ERROR);
+		               }
 		    	});
-	    	}else{
-	    		$.scojs_message('当前单号为空', $.scojs_message.TYPE_ERROR);
-	    	}	
 	    });
 	 
 	 //复核
