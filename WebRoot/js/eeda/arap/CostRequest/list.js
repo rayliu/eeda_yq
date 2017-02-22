@@ -21,14 +21,14 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     var str="<nobr>";
                     if(full.STATUS=="新建"){
-                        str+= '<button type="button" class="checkBtn btn table_btn btn-default btn-xs" style="width:60px" >复核</button>&nbsp';
-                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn-default btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
+                        str+= '<button type="button" class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
+                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
                     }else if(full.STATUS=="已复核"){
-                             str+= '<button type="button" disabled class="checkBtn btn table_btn btn-default btn-xs" style="width:60px" >复核</button>&nbsp';
-                             str+= '<button type="button" class="confirmBtn btn table_btn btn-default btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
+                             str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
+                             str+= '<button type="button" class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
                          }else if(full.STATUS=="已付款"){
-                            str+= '<button type="button" disabled class="checkBtn btn table_btn btn-default btn-xs" style="width:60px" >复核</button>&nbsp';
-                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn-default btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
+                            str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
+                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
                                 }
                     str +="</nobr>";
                     return str;

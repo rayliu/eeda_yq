@@ -335,7 +335,7 @@ $(document).ready(function() {
     
     //结算金额汇总取两位小数
     var refleshNum = function(numValue){
-		var numbleValue = eeda.numFormat(parseFloat(numValue).toFixed(2),3);
+		var numbleValue = parseFloat(numValue).toFixed(2);
 		return numbleValue;
 	}
 	var currency=new Array('cny','usd','jpy','hkd')
