@@ -41,6 +41,11 @@
         </java-->	
     </target>
 	
+	<target name="prod" depends="clean, compile">
+        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-prod" overwrite="true"/>
+        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-prod" overwrite="true"/>
+    </target>
+	
 	<target name="copy_uat_config" >
         <copy tofile="${project.classpath}/job.properties" file="WebRoot/WEB-INF/config/job.properties" overwrite="true"/>
         <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-uat" overwrite="true"/>
