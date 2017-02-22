@@ -204,11 +204,11 @@ $(document).ready(function() {
             		return '<input type="text" name="custom_price" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
-            { "data": "number", "width": "80px",
+            { "data": "NUMBER", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="custom_number" value="'+data+'" class="form-control" style="width:100px"/>';
+                    return '<input type="text" name="number" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
             { "data": "CUSTOM_AMOUNT", "width": "100px","className":"currency_total_amount",
@@ -234,7 +234,7 @@ $(document).ready(function() {
 			                        {
 			                            id: 'CUSTOM_CURRENCY',
 			                            value: data,
-			                            display_value: full.CUSTOM_CURRENCY_NAME,
+			                            display_value: full.CURRENCY_NAME,
 			                            style:'width:80px'
 			                        }
 			                    );
@@ -269,6 +269,13 @@ $(document).ready(function() {
                 }
             },
             { "data": "COMMODITY_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },
+            { "data": "CURRENCY_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
