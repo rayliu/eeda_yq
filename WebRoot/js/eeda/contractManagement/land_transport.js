@@ -3,9 +3,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   $(document).ready(function() {
   		 var dataTable = eeda.dt({
             id: 'land_transport_table',
-            paging: true,
-            serverSide: true, //不打开会出现排序不对
-            // ajax: "/serviceProvider/list",
+            autoWidth: false,
             columns:[
                 { "data": "COMPANY_NAME","width": "10%",
                     "render": function ( data, type, full, meta ) {

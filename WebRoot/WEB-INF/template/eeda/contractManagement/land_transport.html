@@ -14,19 +14,20 @@
                                 </label>
                             </div>
             		</div>
-                    <div class="row">
+                    <div class="row" style="margin-left:0px">
                             <div class="form-group button-bar">
                                 <button id='addland_transport_item' class="btn btn_blue btn-xs" type="button">添加</button>
                             </div>
+                            <div class="form-group ">
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'land_transport_table',
                                         style:'width:1200px;',
                                         headers:[ '','区域', '服务内容','备注'],
                                         field_list:['','custom_bank', 'custom_order_no', 'status'],
-                                        value_list: customSelfItemList![]
+                                        value_list: order.landTransportList![]
                                     }){} %>
-                       
+                       		</div>
                   	</div>
          </div><!-- /.row -->
 <script>

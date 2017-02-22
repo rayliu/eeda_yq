@@ -96,18 +96,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     "render": function(data, type, full, meta) {
                          var str ="<nobr>";
                          if(Provider.isUpdate){
-                          str += "<a class='btn table_btn btn-success btn-sm' href='/serviceProvider/edit?id="+full.ID+"' target='_blank'>"+
+                          str += "<a class='btn table_btn btn-success btn-sm' href='/supplierContract/edit?id="+full.ID+"' target='_blank'>"+
                                 "<i class='fa fa-edit fa-fw'></i>"+
                                 "编辑"+"</a> ";
                          }
                         if(Provider.isDel){
                             if(full.IS_STOP != true){
-                                str += "<a class='btn table_btn btn-danger btn-sm' href='/serviceProvider/delete/"+full.ID+"'>"+
+                                str += "<a class='btn table_btn btn-danger btn-sm' href='/supplierContract/delete/"+full.ID+"'>"+
                                      "<i class='fa fa-trash-o fa-fw'></i>"+ 
                                      "停用"+
                                      "</a>";
                              }else{
-                                str +="<a class='btn table_btn btn-success btn-sm' href='/serviceProvider/delete/"+full.ID+"'>"+
+                                str +="<a class='btn table_btn btn-success btn-sm' href='/supplierContract/delete/"+full.ID+"'>"+
                                          "<i class='fa fa-trash-o fa-fw'></i>"+ 
                                          "启用"+
                                      "</a>";

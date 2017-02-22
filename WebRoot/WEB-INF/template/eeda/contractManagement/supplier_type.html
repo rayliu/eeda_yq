@@ -12,7 +12,7 @@
                         <a id='sp_internal_trade' href="#internalTrade" data-toggle="tab" >内贸</a>
                     </li>
                     <li>
-                        <a id='sp_ocean_bulkCargo' href="#abroadDetail" data-toggle="tab">海运散货</a>
+                        <a id='sp_ocean_bulkCargo' href="#bulkCargoDetail" data-toggle="tab">海运散货</a>
                     </li>
                     <li>
                         <a id='sp_land_transport' href="#land_transportDetail" data-toggle="tab" >陆路运输</a>
@@ -50,11 +50,18 @@
                            </div>
                           </div>
                     </div>
-                    <div class="tab-pane fade" id="abroadDetail">
+                    <div class="tab-pane fade" id="bulkCargoDetail">
                         <div class="form-group"> 
                            <div class="col-lg-12"> 
                                 <%include("/eeda/contractManagement/ocean_bulk_cargo.html", {}){} %>
                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="land_transportDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                            <%include("/eeda/contractManagement/land_transport.html", {}){} %>
+                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="air_transportDetail">
@@ -89,14 +96,6 @@
                         <div class="form-group">
                             <div class="col-lg-12">
                             <%include("/oms/JobOrder/JobOrderEdit_customType_hk.html", {}){} %>
-                             </div>
-                        </div>
-                    </div>
-                
-                    <div class="tab-pane fade" id="abroadDetail">
-                        <div class="form-group">
-                            <div class="col-lg-12">
-                            <%include("/oms/JobOrder/JobOrderEdit_customType_abroad.html", {}){} %>
                              </div>
                         </div>
                     </div>
