@@ -105,9 +105,9 @@ $(document).ready(function() {
             { "width": "30px",
             	"render": function ( data, type, full, meta ) {
             		if(full.ID){
-            			return '<button type="button" class="land_charge btn table_btn btn-success btn-xs" >费用</button>';	
+            			return '<button type="button" class="land_charge btn table_btn btn_green btn-xs" >费用</button>';	
             		}else{
-            			return '<button type="button" class="land_charge btn table_btn btn-success btn-xs"  disabled>费用</button>';
+            			return '<button type="button" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>';
             		}
             	}
             },
