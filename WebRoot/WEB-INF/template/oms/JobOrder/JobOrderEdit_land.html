@@ -265,7 +265,20 @@
             <div class="modal-body">
 			  <button class="btn btn-success btn-xs" id="land_add_charge" >添加费用</button>
 			  <input type="hidden" id="land_item_id"/>
-			  <br>
+			   <div class="panel panel-default">
+				    <div class="panel-heading">
+					  <a data-toggle="collapse" data-parent="#accordion" href="#landcollapseChargeInfo" aria-expanded="false" class="collapsed">
+					     <i id='landcollapseChargeIcon' class="fa  <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i>
+					 常用费用
+					  </a>
+					</div>
+					<div id="landcollapseChargeInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+                       <div class="panel-body" id="landChargeDiv">
+                            
+                        </div>
+                   </div>
+			</div>
+			  <hr>
 			  <%include("/eeda/component/form/detailTable.html", 
 			      {
 			          id:'land_charge_table',

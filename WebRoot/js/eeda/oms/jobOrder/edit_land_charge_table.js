@@ -3,7 +3,20 @@ $(document).ready(function() {
     
 
 	var deletedTableIds=[];
-	
+	//费用明细
+    // $('#landcollapseChargeInfo').on('show.bs.collapse',function(){
+    //     var thisType=$(this).attr('id');
+    //     var type='charge';
+    //     var div=$('#land'+type+'Div').empty();
+    //     $('#collapse'+type+'Icon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+    //     if(order_type.trim() == '' || customer_id == ''){
+    //         $.scojs_message('请先选择类型和客户', $.scojs_message.TYPE_ERROR);
+    //         return
+    //     }else{
+
+    //     }
+    // });
+
     //删除一行
     $("#land_charge_table").on('click', '.delete', function(e){
         e.preventDefault();
