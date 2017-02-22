@@ -1,6 +1,6 @@
 <input type="hidden" id="customSelf_id" value="${customSelf.id!''}">
            
-            <div class="form-group"> 
+            <div class="form-group" style="margin-left:15px"> 
                     <div class="row">
                             <div class="form-group button-bar">
                                 <button id='addair_transport_item' class="btn btn_blue btn-xs" type="button">添加</button>
@@ -10,7 +10,7 @@
                                         id:'air_transport_table',
                                         style:'width:1200px;',
                                         headers:[ '','区域', '服务内容','备注'],
-                                        field_list:['','custom_bank', 'custom_order_no',''],
+                                        field_list:['','region', 'service_content','remark'],
                                         value_list: customSelfItemList![]
                                     }){} %>
                        
