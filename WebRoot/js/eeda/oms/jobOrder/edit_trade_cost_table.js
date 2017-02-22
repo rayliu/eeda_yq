@@ -127,6 +127,8 @@ $(document).ready(function() {
                         +'<option value="厘米" '+(data=='厘米' ? 'selected':'')+'>厘米</option>'
                         +'<option value="公顷" '+(data=='公顷' ? 'selected':'')+'>公顷</option>'
                         +'<option value="立方米" '+(data=='立方米' ? 'selected':'')+'>立方米</option>'
+                        +'<option value="台" '+(data=='台' ? 'selected':'')+'>台</option>'
+                        +'<option value="套" '+(data=='套' ? 'selected':'')+'>套</option>'
                         +'</select>';
                 	return str;
             	}

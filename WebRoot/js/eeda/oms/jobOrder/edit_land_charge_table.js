@@ -126,12 +126,20 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		var str = '<select name="type" class="form-control search-control" style="width:100px" disabled>'
 	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
+	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
+	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
+	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
+	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
 	                        +'</select>';
 	                	return str;
                 	}else{
                     var str = '<select name="type" class="form-control search-control" style="width:100px">'
-                               +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
-                               +'</select>';
+	                    	+'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
+	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
+	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
+	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
+	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
+                            +'</select>';
                     return str;
                   }
                 }
