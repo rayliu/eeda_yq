@@ -124,7 +124,6 @@ $(document).ready(function() {
     //打印应付申请单
 	 $("#printBtn").on('click',function(){
 	    	var order_id = $("#order_id").val();
-
 		    	$.post('/jobOrderReport/costApplicationBill', {order_id:order_id}, function(data){
 		    		if(data){
 		                window.open(data);
@@ -355,89 +354,6 @@ $(document).ready(function() {
       		$('#ids').val(idsArray);
       		selectContr.refleshSelectTable(idsArray);
 	})
-	
-	
-	
-	//付款方式回显（2）
-//	$('#receive_type').change(function(){
-//		var type = $(this).val();
-//		if(type == 'cash'){
-//			$('#receive_type_massage').hide();
-//		}else{
-//			$('#receive_type_massage').show();
-//		}
-//	})
-	
-//	var ids = [];
-//	var applied_arap_id = [];
-//	var itemTable = eeda.dt({
-//        id: 'cost-table',
-//        columns:[
-//	        {"data": "ID",
-//	        	"render": function ( data, type, full, meta ) {
-//	        		var str = '<input type="checkbox" style="width:30px">';
-//	        		for(var i=0;i<ids.length;i++){
-//	                    if(ids[i]==data){
-//	                   	 str = '<input type="checkbox" style="width:30px" checked>';
-//	                    }
-//	                }
-//	        		return str;
-//			    }
-//	        },
-//	        { "data": "ORDER_NO"},
-//	        { "data": "TYPE"},
-//	        { "data": "CREATE_STAMP"},
-//	        { "data": "SP_NAME"},
-//	        { "data": "CURRENCY_NAME","class":"currency_name"},
-//	        { "data": "TOTAL_AMOUNT","class":"total_amount",
-//	        	"render": function ( data, type, full, meta ) {
-//	        		if(full.ORDER_TYPE=='cost'){
-//	            		return '<span style="color:red;">'+'-'+data+'</span>';
-//	            	}
-//	                return data;
-//	              }
-//	        },
-//	        { "data": "EXCHANGE_RATE"},
-//	        { "data": "AFTER_TOTAL",
-//	        	"render": function ( data, type, full, meta ) {
-//	        		if(full.ORDER_TYPE=='cost'){
-//	            		return '<span style="color:red;">'+'-'+data+'</span>';
-//	            	}
-//	                return data;
-//	              }
-//	        },
-//	        { "data": "NEW_RATE"},
-//	        { "data": "AFTER_RATE_TOTAL",
-//	        	"render": function ( data, type, full, meta ) {
-//	        		if(full.ORDER_TYPE=='cost'){
-//	            		return '<span style="color:red;">'+'-'+data+'</span>';
-//	            	}
-//	                return data;
-//	              }
-//	        },
-//	        { "data": "EXCHANGE_CURRENCY_NAME","class":"EXCHANGE_CURRENCY_NAME"},
-//	        { "data": "EXCHANGE_CURRENCY_RATE"},
-//	        { "data": "EXCHANGE_TOTAL_AMOUNT","class":"EXCHANGE_TOTAL_AMOUNT"},
-//	        { "data": "ORDER_TYPE", "visible": false,
-//	            "render": function ( data, type, full, meta ) {
-//	                if(!data)
-//	                    data='';
-//	                return data;
-//	            }
-//	        },
-//	      ]
-//	});
-	
-	
-//	$('#eeda-table').on('click','td',function(){
-//		
-//		$('#costAlert').click();
-//		var order_id = $(this).parent().attr('id');
-//		$('#costAlert').attr('name',order_id);
-//		var url = "/costCheckOrder/tableList?order_id="+order_id;
-//    	itemTable.ajax.url(url).load();
-//	})
-	
 	
 	
 	

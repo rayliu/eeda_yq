@@ -349,7 +349,7 @@ public class JobOrderReportController extends Controller {
 	//打印应付申请单PDF
 	public void costApplicationBill(){
 		String order_id = getPara("order_id");
-		String fileName = "/report/costRequest/payableDetails.jasper";
+		String fileName = "/report/checkOrder/costApplicationBill.jasper";
 		String outFileName = "/download/应付申请单PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
