@@ -6,6 +6,7 @@ var itemIds=[];
             initComplete: function( settings ) {
                 ids = [];
                 cnames = [];
+                hideColumn();
             },
             columns:[
                 { "data": "ID", visible: false},
@@ -193,6 +194,21 @@ var itemIds=[];
                 { "data": "TRUCK_TYPE", "width": "100px"},
               ]
           });
+        
+        
+        var hideColumn = function(){         	
+         	//隐藏对账单号和checkBox列
+            if($('#order_id').val()!=""&&$('#order_id').val()!=undefined){
+            	var itemTable = $('#select_item_table').dataTable();
+            	itemTable.fnSetColumnVis(1, false);
+            	itemTable.fnSetColumnVis(2, false);
+            }else{
+            	//隐藏删除列
+            	var itemTable = $('#select_item_table').dataTable();
+             	itemTable.fnSetColumnVis(3, false);
+            }
+    	}
+        
 
         var refleshSelectTable = function(order_ids, ids){
             //ids为选中的item id
