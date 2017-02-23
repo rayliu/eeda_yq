@@ -9,14 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.ArapChargeItem;
-import models.ArapChargeOrder;
-import models.RateContrast;
 import models.UserLogin;
 import models.eeda.cms.CustomArapChargeItem;
 import models.eeda.cms.CustomArapChargeOrder;
 import models.eeda.cms.CustomPlanOrderArap;
-import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.profile.Currency;
 
 import org.apache.commons.lang.StringUtils;
@@ -207,32 +203,14 @@ public class CmsChargeCheckOrderController extends Controller {
 		 				 +" where 1=1 ";
      			}else{
 		   		 sql = "select B.* from(  "
-						 +" SELECT cpoa .*,cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,p.abbr sp_name, "
-		   				 +" cpo.custom_export_date ,"
-						 +" sum(iF(cpoa.charge_id=164,cpoa.total_amount,0)) MTF, "
-						 +" sum(iF(cpoa.charge_id=165,cpoa.total_amount,0)) YJ, "
-						 +" sum(iF(cpoa.charge_id=166,cpoa.total_amount,0)) ZHF, "
-						 +" sum(iF(cpoa.charge_id=167,cpoa.total_amount,0 )) GKF, "
-						 +" sum(iF(cpoa.charge_id=168,cpoa.total_amount,0)) LHF, "
-						 +" sum(iF(cpoa.charge_id=169,cpoa.total_amount,0)) SCF, "
-						 +" sum(iF(cpoa.charge_id=175,cpoa.total_amount,0)) ZLSCF, "
-						 +" sum(iF(cpoa.charge_id=176,cpoa.total_amount,0)) FTF, "
-						 +" sum(iF(cpoa.charge_id=177,cpoa.total_amount,0)) PZF, "
-						 +" sum(iF(cpoa.charge_id=178,cpoa.total_amount,0)) XDF, "
-						 +" sum(iF(cpoa.charge_id=179,cpoa.total_amount,0)) WLDLF, "
-						 +" sum(iF(cpoa.charge_id=180,cpoa.total_amount,0)) LXF, "
-						 +" sum(iF(cpoa.charge_id=181,cpoa.total_amount,0)) AC,  "
-						 +" sum(iF(cpoa.charge_id=182,cpoa.total_amount,0)) WJF, "
-						 +" sum(iF(cpoa.charge_id=183,cpoa.total_amount,0)) RZF,  "
-						 +" sum(iF(cpoa.charge_id=184,cpoa.total_amount,0)) YF, "
-						 +" sum(iF(cpoa.charge_id=185,cpoa.total_amount,0)) BGF, "
-						 +" sum(iF(cpoa.charge_id=186,cpoa.total_amount,0)) DTF"
-						 +" FROM custom_plan_order_arap cpoa  "
-						 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-						 +" LEFT JOIN party p on p.id = cpo.application_unit "
-						 +" LEFT JOIN fin_item fi on cpoa.charge_id = fi.id  "
-						 +" WHERE cpoa.order_type = 'charge'  and cpoa.audit_flag='Y' and cpoa.bill_flag='N' AND cpo.office_id = "+office_id
-		 				 + " GROUP BY cpoa.order_id "
+		   				+" SELECT cpo.order_no,cpo.id cpoid,cpo.date_custom,cpo.booking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
+		   				 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
+		   				 +" from custom_plan_order_arap cpoa "
+		   				 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
+		   				 +" LEFT JOIN fin_item f on f.id = cpoa.currency_id "
+		   				 +" LEFT JOIN party p on p.id = cpoa.sp_id "
+		   				 +" where cpoa.order_type='charge' and cpoa.audit_flag='Y' and cpoa.bill_flag='N'  and cpo.office_id = "+office_id
+		   				 +"  GROUP BY cpoa.id " 
 		 				 + " ) B "
 		 				 +" where 1=1 ";
         			}
