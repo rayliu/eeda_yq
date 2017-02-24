@@ -13,11 +13,8 @@ import java.util.Map;
 
 import models.AppInvoiceDoc;
 import models.ArapAccountAuditLog;
-import models.ArapChargeApplication;
-import models.ArapChargeOrder;
 import models.ArapCostApplication;
 import models.ArapCostOrder;
-import models.ChargeApplicationOrderRel;
 //import models.CostAppOrderRel;
 import models.CostApplicationOrderRel;
 import models.Party;
@@ -201,7 +198,7 @@ public class CostReuqestrController extends Controller {
         				+" left join party p on p.id=aco.sp_id "
         				+" where aco.status!='新建' and aco.office_id = "+office_id+" "
         				+" group by aco.id"
-        				+ " ) A where (FORMAT(ifnull(usd, 0),2) > FORMAT(paid_usd,2) or FORMAT(ifnull(cny, 0),2) > FORMAT(paid_cny,2) or FORMAT(ifnull(hkd, 0),2) > FORMAT(paid_hkd,2) or FORMAT(ifnull(jpy, 0),2) > FORMAT(paid_jpy,2))" ;
+        				+ " ) A where convert(ifnull(usd, 0), decimal) > convert(paid_usd, decimal) OR convert(ifnull(cny, 0), decimal) > convert(IFNULL(paid_cny,0), decimal) OR convert(ifnull(hkd, 0), decimal) > convert(paid_hkd, decimal)	OR convert(ifnull(jpy, 0), decimal) > convert(paid_jpy, decimal)" ;
 		
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition +") B";
