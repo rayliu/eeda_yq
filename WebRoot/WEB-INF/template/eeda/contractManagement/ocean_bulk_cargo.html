@@ -2,21 +2,22 @@
            
             <div class="form-group" style="margin-left:15px">  <!--  form row  -->
             		<div class="row">
-            				<div class="checkbox">
-                                <label>
-                                    <input id="NVOCC" name="NVOCC" type="checkbox" value="truck" style="margin-top: 0px;">NVOCC
-                                </label>&nbsp&nbsp&nbsp&nbsp
-                                <label>
-                                    <input id="freight_forwarding" name="freight_forwarding" type="checkbox" value="carrier" style="margin-top: 0px;">货代
-                                </label>&nbsp&nbsp&nbsp&nbsp
-                                <label>
-                                    <input id="shipowner" name="shipowner" type="checkbox" value="air" style="margin-top: 0px;">船东
+            				<input type="hidden" id="bulk_qualification_type" value="${party.bulk_qualification_type!''}">
+            				<div class="checkbox" id="bulk_qualification_type_val">
+                                <label class="checkbox-inline">
+                                    <input id="NVOCC" name="NVOCC" type="checkbox" value="NVOCC">NVOCC
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input id="freight_forwarding" name="freight_forwarding" type="checkbox" value="freight_forwarding">货代
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input id="shipowner" name="shipowner" type="checkbox" value="shipowner">船东
                                 </label>
                             </div>
             		</div>
             		<div class="row">
             			<label>船期</label>
-						<textarea class="form-control" rows="3" name="remark">${party.shipment!''}</textarea>
+						<textarea class="form-control" rows="3" id="bulk_shipment" name="bulk_shipment">${party.bulk_shipment!''}</textarea>
             		</div>
                     <div class="row">
                             <div class="form-group button-bar">
@@ -25,8 +26,8 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'bulkCargo_table',
-                                        headers:[ '船运类型','区域','优势航线','备注'],
-                                        field_list:['shipping_type','region','advantage_route', 'remark'],
+                                        headers:[ '','船运类型','区域','优势航线','备注'],
+                                        field_list:['','shipping_type','region','advantage_route', 'remark'],
                                         value_list: order.bulkCargoList![]
                                     }){} %>
                        

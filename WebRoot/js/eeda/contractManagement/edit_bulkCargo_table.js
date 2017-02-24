@@ -32,7 +32,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            
 	            item.id = id;
 	           
-	            for(var i = 0; i < row.childNodes.length; i++){
+	            for(var i = 1; i < row.childNodes.length; i++){
 	            	var name = $(row.childNodes[i]).find('input,select').attr('name');
 	            	var value = $(row.childNodes[i]).find('input,select').val();
 	            	if(name){
@@ -73,6 +73,12 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		        $.unblockUI();
 		    },
             columns:[
+				{ "width": "30px",
+				    "render": function ( data, type, full, meta ) {
+				    	return '<button type="button" class="delete btn table_btn delete_btn btn-xs">'+
+				        '<i class="fa fa-trash-o"></i> 删除</button>';
+				    }
+				},
 				{ "data": "SHIPPING_TYPE", 
 					"render": function ( data, type, full, meta ) {
 						if(!data)
