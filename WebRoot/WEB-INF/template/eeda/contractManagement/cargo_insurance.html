@@ -1,0 +1,22 @@
+
+            <div class="form-group"> 
+                    <div class="row" style="margin-left:0px">
+                            <div class="form-group button-bar">
+                                <button id='add_cargo_insurance' class="btn btn_blue btn-xs" type="button">添加</button>
+                            </div>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'cargo_insurance_table',
+                                        headers:[ '','区域', '服务内容','备注'],
+                                        field_list:['','region', 'service_content', 'remark'],
+                                        value_list: order.cargoInsuranceList![]
+                                    }){} %>
+                       
+                  	</div>
+         </div><!-- /.row -->
+         
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/contractManagement/cargo_insurance']);
+    });
+</script>
