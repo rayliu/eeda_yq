@@ -68,7 +68,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       
       
       //自动提交改为手动提交
-      $("#save").click(function(){
+      $("#saveBtn").click(function(){
     	 if(!$("#customerForm").valid()){
     		  return false;
     	 }

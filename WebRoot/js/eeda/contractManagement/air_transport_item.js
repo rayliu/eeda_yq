@@ -58,7 +58,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    
 	    var bindFieldEvent=function(){
 	    	$('table .date').datetimepicker({  
-	    	    format: 'yyyy-MM-dd hh:mm:ss',  
+	    	    format: 'yyyy-MM-dd',  
 	    	    language: 'zh-CN'
 	    	}).on('changeDate', function(el){
 	    	    $(".bootstrap-datetimepicker-widget").hide();   
@@ -119,7 +119,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            			data='';
 	            		 var field_html = template('table_date_field_template',
 	     	                    {
-	     	                        id: 'ETA',
+	     	                        id: 'ETD',
 	     	                        value: data.substr(0,19),
 	     	                        style:'width:180px'
 	     	                    }
@@ -131,7 +131,14 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="ETA"  value="'+data+'" class="form-control" />';
+	            		var field_html = template('table_date_field_template',
+	     	                    {
+	     	                        id: 'ETA',
+	     	                        value: data.substr(0,19),
+	     	                        style:'width:180px'
+	     	                    }
+	     	                );
+	                     return field_html;
 	            	}
             	},
             	{ "data": "FREQUENCY", 
