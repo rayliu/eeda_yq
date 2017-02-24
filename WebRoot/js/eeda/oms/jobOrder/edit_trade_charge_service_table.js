@@ -335,8 +335,11 @@ $(document).ready(function() {
     	
 		var total_count = $('#trade_cost_table tfoot').find('th').eq(2).text();
 	    var total_tax_refund = $('#trade_cost_table tfoot').find('th').eq(8).text();
+       
 	    var total_difference = parseFloat(total_tax_refund)-parseFloat(total_service);
 	    var price_difference = total_difference/parseFloat(total_count);
+         if(isNaN(total_difference)) total_difference=0;
+        if(isNaN(price_difference=="")) price_difference=0;
 	    $('#total_difference').text(total_difference.toFixed(3));
 	    $('#price_difference').text(price_difference.toFixed(3));
     }
