@@ -74,8 +74,10 @@
                                     label:'类型', 
                                     value:order.type!'',
                                     value_list:[
-                                        {code:'出口', value:'出口'},
-                                        {code:'进口', value:'进口'}
+                                        {code:'出口柜货', value:'出口柜货'},
+                                        {code:'出口散货', value:'出口散货'},
+                                        {code:'进口柜货', value:'进口柜货'},
+                                        {code:'进口散货', value:'进口散货'}
                                     ]
                                 }){}%>
                         </div>
@@ -223,6 +225,21 @@
 			                        </div>
 			                     </div>
 			                     <div class="row"><!--  第2行  --> 
+			                     	<div class="col-lg-4" >
+			                            <%include("/eeda/component/form/selectField.html", 
+							                                 {   id:'container_type', 
+							                                     label:'柜型',
+							                                     value:order.container_type!'',
+							                                     value_list:[
+			                                                        {code:'', value:''},
+			                                                        {code:'20GP', value:'20GP'},
+			                                                        {code:'40GP', value:'40GP'},
+			                                                        {code:'40HQ', value:'40HQ'},
+			                                                        {code:'45GP', value:'45GP'},
+			                                                        {code:'45HQ', value:'45HQ'}
+							                                    ] 
+							                                 }){}%>
+			                        </div>
 			                        <div class="col-lg-4">
 			                            <%include("/eeda/component/form/inputField.html", 
 			                                                {   id:'container_no', 
@@ -238,15 +255,38 @@
 			                                                display_value: order.head_carrier_name!''
 			                                            }){}%>
 			                        </div>
+			                     </div>
+			                     <div class="row"><!--  第2行  --> 
+			                     	<div class="col-lg-4">
+			                            <%include("/eeda/component/form/inputField.html", 
+			                                                {   id:'pieces', 
+			                                                    label:'件数',
+			                                                    value:order.pieces!''
+			                                                }){}%>
+			                        </div>
 			                        <div class="col-lg-4">
+			                            <%include("/eeda/component/form/inputField.html", 
+			                                                {   id:'gross_weight', 
+			                                                    label:'毛重（KG）',
+			                                                    value:order.gross_weight!''
+			                                                }){}%>
+			                        </div>
+			                        <div class="col-lg-4">
+			                            <%include("/eeda/component/form/inputField.html", 
+			                                            {   id:'volume',
+			                                                label: '体积（CBM）', 
+			                                                value: order.volume!''
+			                                            }){}%>
+			                        </div>
+			                     </div>
+			                     <div class="row"><!--  第3行  --> 
+			                     	<div class="col-lg-4">
 			                            <%include("/eeda/component/form/inputField.html", 
 			                                            {   id:'vessel', 
 			                                                label:'船名', 
 			                                                value:order.vessel!''
 			                                            }){}%>
 			                        </div>
-			                     </div>
-			                     <div class="row"><!--  第3行  --> 
 			                        <div class="col-lg-4">
 			                            <%include("/eeda/component/form/inputField.html", 
 			                                            {   id:'voyage', 
@@ -254,6 +294,8 @@
 			                                                value:order.voyage!''
 			                                            }){}%>
 			                        </div>
+			                     </div>
+			                     <div class="row">
 			                        <div class="col-lg-4">
 			                            <%include("/eeda/component/form/inputPortCnField.html", 
 			                                           {   id:'shipment_port', 

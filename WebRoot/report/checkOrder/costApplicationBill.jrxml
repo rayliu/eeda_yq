@@ -65,7 +65,7 @@
 	jo.type,
 	p.abbr sp_name,
 	p1.abbr customer_name,
-	p1.contact_person,
+	p.contact_person,
   p1.phone phone,
   p1.fax,
 	jos.mbl_no,
