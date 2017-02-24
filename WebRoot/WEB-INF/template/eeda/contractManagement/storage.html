@@ -1,6 +1,4 @@
-<input type="hidden" id="customSelf_id" value="${customSelf.id!''}">
-           
-            <div class="form-group">  <!--  form row  -->
+  <div class="form-group">  <!--  form row  -->
             		<div class="row">
             				<div class="checkbox">
                                 <label style="margin-left:15px;">
@@ -17,17 +15,16 @@
                                 </label>
                             </div>
             		</div>
-                    <div class="row">
+                    <div class="row" style="margin-left:0px">
                             <div class="form-group button-bar">
-                                <button id='addstorage_item' class="btn btn_blue btn-xs" type="button">添加</button>
+                                <button id='add_storage_item' class="btn btn_blue btn-xs" type="button">添加</button>
                             </div>
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'storage_table',
-                                        style:'width:1200px;',
                                         headers:[ '','区域', '基础设施','备注'],
-                                        field_list:['','custom_bank', 'custom_order_no', 'status'],
-                                        value_list: customSelfItemList![]
+                                        field_list:['','region', 'infrastructure', 'remark'],
+                                        value_list: order.storageList![]
                                     }){} %>
                        
                   	</div>
