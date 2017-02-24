@@ -1,0 +1,1 @@
+package models;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class SpLandTransport extends Model<SpLandTransport> {	public static final SpLandTransport dao = new SpLandTransport();}
