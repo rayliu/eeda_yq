@@ -2,22 +2,23 @@
            
             <div class="form-group" style="margin-left:15px">  <!--  form row  -->
             		<div class="row">
-            				<div class="checkbox">
-                                <label>
-                                    <input id="NVOCC" name="NVOCC" type="checkbox" value="truck" style="margin-top: 0px;">NVOCC
-                                </label>&nbsp&nbsp&nbsp&nbsp
-                                <label>
-                                    <input id="freight_forwarding" name="freight_forwarding" type="checkbox" value="carrier" style="margin-top: 0px;">货代
-                                </label>&nbsp&nbsp&nbsp&nbsp
-                                <label>
-                                    <input id="shipowner" name="shipowner" type="checkbox" value="air" style="margin-top: 0px;">船东
+            			<input type="hidden" id="trade_qualification_type" value="${party.trade_qualification_type!''}">
+            				<div class="checkbox" id="trade_qualification_type_val">
+                                <label class="checkbox-inline">
+                                    <input id="NVOCC" name="NVOCC" type="checkbox" value="NVOCC">NVOCC
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input id="freight_forwarding" name="freight_forwarding" type="checkbox" value="freight_forwarding">货代
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input id="shipowner" name="shipowner" type="checkbox" value="shipowner">船东
                                 </label>
                             </div>
             		</div>
-            		<div class="row">
+            		<!-- <div class="row">
             			<label>船期</label>
 						<textarea class="form-control" rows="3" name="remark">${party.shipment!''}</textarea>
-            		</div>
+            		</div> -->
                     <div class="row">
                             <div class="form-group button-bar">
                                 <button id='add_trade_cargo' class="btn btn_blue btn-xs" type="button">添加</button>
@@ -25,8 +26,8 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'internal_trade_table',
-                                        headers:[ '区域','服务内容','优势航线', '服务船东','备注'],
-                                        field_list:['region','service_content','advantage_route', 'service_owner', 'remark'],
+                                        headers:['', '区域','服务内容','优势航线', '服务船东','备注'],
+                                        field_list:['','region','service_content','advantage_route', 'service_owner', 'remark'],
                                         value_list: order.internalTradeList![]
                                     }){} %>
                        
