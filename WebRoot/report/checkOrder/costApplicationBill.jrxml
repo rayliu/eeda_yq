@@ -649,21 +649,21 @@ ORDER BY
 			<staticText>
 				<reportElement x="230" y="0" width="32" height="20" uuid="c7bb92bb-c69e-4173-9380-bd28991d85bd"/>
 				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="SansSerif" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[USD:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="322" y="0" width="30" height="20" uuid="e9b4d504-545c-4c43-9479-6692e100d6e3"/>
 				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="SansSerif" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[JPY:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="426" y="0" width="30" height="20" uuid="2f4f3076-3bbf-4a6f-8b8c-d270703aa928"/>
 				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="SansSerif" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[HKD:]]></text>
 			</staticText>
