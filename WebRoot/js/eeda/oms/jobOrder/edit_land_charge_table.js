@@ -727,10 +727,7 @@ $(document).ready(function() {
                
             });
     })
-    
-    $('input[type="checkbox"]').prop("checked",function(i,val){
-        return !val;
-    })
+   
   //数量和单价自动补零
     $('#land_charge_table').on('blur','[name=price],[name=amount]',function(){
     	var amount = $(this).val();

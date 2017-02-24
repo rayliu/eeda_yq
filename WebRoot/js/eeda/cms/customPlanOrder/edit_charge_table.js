@@ -348,19 +348,28 @@ $(document).ready(function() {
                         );
                         return field_html;
                   }else{
-                    if(!data)
-                        data='';
-                    var field_html = template('table_dropdown_template',
-                        {
-                            id: 'SP_ID',//对应数据库字段
-                            value: data,
-                            display_value: full.SP_NAME,
-                            style:'width:200px'
-                        }
-                    );
-                    return field_html;
+                    if(!data){
+                         var field_html = template('table_dropdown_template',
+                                {
+                                    id: 'SP_ID',//对应数据库字段
+                                    value: $('#sp').val(),
+                                    display_value: $('#sp_input').val(),
+                                    style:'width:200px'
+                                }
+                       );
+                    }else{
+                          var field_html = template('table_dropdown_template',
+                              {
+                                  id: 'SP_ID',//对应数据库字段
+                                  value: data,
+                                  display_value: full.SP_NAME,
+                                  style:'width:200px'
+                              }
+                          );
                   }
+                 return field_html;
                 }
+              }
             },
             { "data": "CHARGE_ID", "width": "180px",
                 "render": function ( data, type, full, meta ) {
@@ -803,6 +812,14 @@ $(document).ready(function() {
 				cnames.pop(cname);
 		 }
 	 });
+
+    $('#sp_list').on('click',function(){
+         var val=$('#sp').val();
+        $('input[name="SP_ID_input"]').each(function(){
+            if(!$(this).val()&&val)
+                $(this).val('val');
+        });
+    })
 	
 	
 	

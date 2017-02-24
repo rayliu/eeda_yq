@@ -326,28 +326,37 @@
 			            </div>
 		            </div>
 
-	            <div class="tab-pane fade in" id="chargeDetail">
-		            <div class="form-group">
-		                    <div class="col-lg-12">
-                                  <h3>应收信息</h3>
-                               </div>
-			                <div class="col-lg-12">
-			                	<div class="panel panel-default">
+	 <div class="tab-pane fade in" id="chargeDetail">
+		 <div class="form-group">
+		      <div class="col-lg-12">
+                 <div class="row simple_rectangle_title_div"><div class="font_style">Charge Information 应收信息</div></div>
+              
+			      <div class="panel panel-default">
 				    <div class="panel-heading">
 					  <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
-					     <i id='collapseChargeIcon' class="fa  <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i>
-					                 常用应收费用明细
+					     <i id='collapseChargeIcon' class="fa  <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i>  常用应收费用明细
 					  </a>
 					</div>
-					<div id="collapseChargeInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
-                       <div class="panel-body" id="ChargeDiv">
+					 <div id="collapseChargeInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" 	style="height: auto;">
+                         <div class="panel-body" id="ChargeDiv">
                             
+                          </div>
+                      </div>
+					</div>
+
+					<div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputSpField.html", 
+                                                  {
+                                                      id:'sp', 
+                                                      label:'结算公司', 
+                                                      value: ''
+                                                  }){} %>
+                    </div> 
+                </div>
+                	<div class="col-lg-12">
+                		<div class="table_btn_bar button-bar">
+			                 <button class="btn btn-success btn-xs" id="add_charge" type="button">添加费用</button> 
                         </div>
-                   </div>
-			</div>
-			                    <button class="btn btn-success btn-xs" id="add_charge" type="button">添加费用</button> 
-                                <br>
-                                <br>
 			                    <%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'charge_table',
