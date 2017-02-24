@@ -43,6 +43,7 @@ import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
+import com.jfinal.ext.interceptor.LogInterceptor;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -94,6 +95,7 @@ public class SupplierContractController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void add() {
         setAttr("saveOK", false);
+        setAttr("user", LoginUserController.getLoginUser(this));
             render("/eeda/contractManagement/supplierContractEdit.html");
     }
     
@@ -125,6 +127,7 @@ public class SupplierContractController extends Controller {
         order.set("cargoInsuranceList", getItems("cargoInsurance",id));
         
         setAttr("order", order);
+        setAttr("user", LoginUserController.getLoginUser(this));
      
         render("/eeda/contractManagement/supplierContractEdit.html");
     }
@@ -763,15 +766,19 @@ public class SupplierContractController extends Controller {
     public List<Record> getItems(String type,String order_id){
     	String sql = null;
     	if(type.equals("oceanCargo")){
-    		sql = "select * from sp_ocean_cargo where order_id = ?";
+    		sql = "select soc.*,ul.user_name creator_name from sp_ocean_cargo soc"
+    				+ " left join user_login ul on ul.id = soc.creator where soc.order_id = ?";
     	}else if(type.equals("oceanCargoItem")){
-    		sql = "select * from sp_ocean_cargo_item where order_id = ?";
+    		sql = "select soc.*,ul.user_name creator_name from sp_ocean_cargo_item soc"
+    				+ " left join user_login ul on ul.id = soc.creator where soc.order_id = ?";
     	}else if(type.equals("internalTrade")){
     		sql = "select * from sp_internal_trade where order_id = ?";
     	}else if(type.equals("bulkCargo")){
     		sql = "select * from sp_bulk_cargo where order_id = ?";
     	}else if(type.equals("bulkCargoItem")){
-    		sql = "select * from sp_bulk_cargo_item where order_id = ?";
+    		sql = "select sbc.*,ul.user_name creator_name from sp_bulk_cargo_item sbc"
+    				+ " left join user_login ul on ul.id = sbc.creator"
+    				+ " where sbc.order_id = ?";
     	}else if(type.equals("landTransport")){
     		sql = "select * from sp_land_transport where order_id = ?";
     	}else if(type.equals("landTransportItem")){
@@ -781,7 +788,9 @@ public class SupplierContractController extends Controller {
     	}else if(type.equals("airTransport")){
     		sql = "select * from sp_air_transport where order_id = ?";
     	}else if(type.equals("airTransportItem")){
-    		sql = "select * from sp_air_transport_item where order_id = ?";
+    		sql = "select sati.*,ul.user_name creator_name from sp_air_transport_item sati"
+    				+ " left join user_login ul on ul.id = sati.creator"
+    				+ " where sati.order_id = ?";
     	}else if(type.equals("custom")){
     		sql = "select * from sp_custom where order_id = ?";
     	}else if(type.equals("pickingCrane")){

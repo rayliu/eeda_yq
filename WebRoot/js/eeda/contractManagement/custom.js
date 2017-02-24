@@ -40,6 +40,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            	}
 	            }
 	            item.action = id.length > 0?'UPDATE':'CREATE';
+	            if(!id.length>0){
+	            	var d = new Date();
+	            	var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+	            	item.create_stamp = str;
+	            }
 	            cargo_items_array.push(item);
 	        }
 
@@ -153,7 +158,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="create_stamp"  value="'+data+'" class="form-control" />';
+	            		return '<input type="text" disabled value="'+data+'" class="form-control" />';
 	            	}
             	},
             	{ "data": "REMARK", 

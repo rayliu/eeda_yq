@@ -41,6 +41,12 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            }
 	            item.action = id.length > 0?'UPDATE':'CREATE';
 	            cargo_items_array.push(item);
+	            if(!id.length>0){
+	            	var d = new Date();
+	            	var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+	            	item.creator = $('#user_id').val();
+	            	item.create_stamp = str;
+	            }
 	        }
 
 	        //add deleted items
@@ -203,16 +209,25 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="create_stamp"  value="'+data+'" class="form-control" />';
+	            		return '<input type="text" disabled  value="'+data+'" class="form-control" />';
 	            	}
             	},
             	{ "data": "CREATOR", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="creator"  value="'+data+'" class="form-control" />';
+	            		else
+	            			data=full.CREATOR_NAME;
+	            		return '<input type="text" disabled value="'+data+'" class="form-control" />';
 	            	}
-            	}
+            	} ,
+            	{ "data": "CREATOR_NAME", "visible": false,
+	            	"render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
+	            }
 	        ]
 	    });
 
