@@ -429,4 +429,45 @@ li{
     color: #8a785b;
     font-weight: 100;
 }
+
+.person_image{
+    float: left;
+    margin-top: 4px;
+    margin-right: 45px;
+}
+
+.log_out {
+    margin-right: 25px;
+    margin-top: 15px;
+    display: inline-block;
+}
+
+.breadcrumb{
+    padding-left: 25px;
+    padding-top: 13px;
+    margin-left: 250px;
+    margin-bottom: 0px;
+    font-weight: bolder;
+    font-size: 18px;
+}
+
+.breadcrumb a{
+    color: white;
+    font-family: dinpro, Arial,sans-serif;
+    font-weight: bolder;
+    
+}
+
+.simple_search_div{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.simple_list_div{
+    background-color: #fff;
+    margin-top: 15px;
+    margin-left: 0px;
+    margin-right: 0px;
+    border-radius: 0 0 15px 15px;
+}
 /* ray added */
