@@ -8,7 +8,7 @@ $(document).ready(function() {
         var thisType=$(this).attr('id');
         var type='Charge';
         var div=$('#land'+type+'Div').empty();
-        $('#collapse'+type+'Icon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+        $('#landcollapse'+type+'Icon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
         var order_type = $('#type').val();
         var customer_id = $('#customer_id').val();
         if(order_type.trim() == '' || customer_id == ''){
@@ -65,7 +65,15 @@ $(document).ready(function() {
             });
         }
     });
-    
+     $('#landcollapseChargeInfo').on('hide.bs.collapse', function () {
+        var thisType = $(this).attr('id');
+        var type = 'Charge';
+        if('landcollapseChargeInfo'!=thisType){
+            type='Cost';
+        }
+        $('#landcollapse'+type+'Icon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
+    });
+
     $('#landChargeDiv,#landCostDiv').on('click','.deleteChargeTemplate,.deleteCostTemplate',function(){
         $(this).attr('disabled',true);
         var ul=$(this).parent().parent();
@@ -230,12 +238,14 @@ $(document).ready(function() {
         return cargo_items_array;
     };
 
+    $('.land_charge').on('click',function(){
+        deletedTableIds=[];
+    })
     //删除一行
     $("#land_charge_table").on('click', '.delete', function(e){
         e.preventDefault();
         var tr = $(this).parent().parent().parent();
         deletedTableIds.push(tr.attr('id'));
-        
         chargeTable.row(tr).remove().draw();
     }); 
     //添加一行
@@ -280,6 +290,7 @@ $(document).ready(function() {
         //add deleted items
         for(var index=0; index<deletedTableIds.length; index++){
             var id = deletedTableIds[index];
+            if(typeof(id)=="undefined")continue;
             var item={
                 id: id,
                 action: 'DELETE'
