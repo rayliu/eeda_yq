@@ -1,3 +1,4 @@
+
 <%layout("/eeda/layout.html"){%>
  <link href="/js/lib/sco/css/sco.message.css" rel="stylesheet">  
   <!--<link rel="stylesheet" href="/yh/css/ui/jquery-ui.css"> -->
@@ -41,34 +42,39 @@
                                             
                                             <div class="form-group">
                                                 <label>供应商资质</label>
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input id="sp_type_ocean_Shipment" name="sp_type_ocean_Shipment" type="checkbox" value="truck" style="margin-top: 0px;">远样柜货
-                                                    </label>&nbsp&nbsp&nbsp&nbsp
-                                                    <label>
-                                                        <input id="sp_type_internal_trade" name="sp_type_internal_trade" type="checkbox" value="carrier" style="margin-top: 0px;">内贸
-                                                    </label>&nbsp&nbsp&nbsp&nbsp
-                                                    <label>
-                                                        <input id="sp_type_ocean_bulkCargo" name="sp_type_ocean_bulkCargo" type="checkbox" value="air" style="margin-top: 0px;">海运散货
-                                                    </label>&nbsp&nbsp&nbsp&nbsp
-                                                    <label>
-                                                        <input id="sp_type_land_transport" name="sp_type_land_transport" type="checkbox" value="broker" style="margin-top: 0px;">陆路运输
-                                                    </label>&nbsp&nbsp&nbsp&nbsp
-                                                    <label>
-                                                        <input id="sp_type_storage" name="sp_type_storage" type="checkbox" value="line" style="margin-top: 0px;">仓储
-                                                    </label>&nbsp&nbsp&nbsp&nbsp
-                                                    <label>
-                                                        <input id="sp_type_air_transport" name="sp_type_air_transport" type="checkbox" value="delivery" style="margin-top: 0px;">空运
-                                                    </label>&nbsp&nbsp&nbsp&nbsp
-                                                    <label>
-                                                        <input id="sp_type_delivery_express" name="sp_type_delivery_express" type="checkbox" value="pickup" style="margin-top: 0px;">快递
-                                                    </label>&nbsp&nbsp&nbsp&nbsp
-                                                    <label>
-                                                        <input id="sp_type_custom" name="sp_type_custom" type="checkbox" value="delivery" style="margin-top: 0px;">报关
-                                                    </label>&nbsp&nbsp&nbsp&nbsp
-                                                    <label>
-                                                        <input id="sp_type_pickup_van" name="sp_type_pickup_van" type="checkbox" value="pickup" style="margin-top: 0px;">包装吊车
-                                                    </label>&nbsp&nbsp&nbsp&nbsp
+                                                
+                                                <input type="hidden" id="sp_qualification_type" value="${party.sp_qualification_type!''}">
+                                                <div class="checkbox"  id="sp_qualification_type_val">
+                                                    <label class="checkbox-inline">
+                                                        <input name="sp_type_ocean_shipment" type="checkbox" value="ocean_shipment" >远样柜货
+                                                    </label> 
+                                                    <label class="checkbox-inline">
+                                                        <input  name="sp_type_internal_trade" type="checkbox" value="internal_trade" >内贸
+                                                    </label> 
+                                                    <label class="checkbox-inline">
+                                                        <input  name="sp_type_ocean_bulkCargo" type="checkbox" value="ocean_bulkCargo" >海运散货
+                                                    </label> 
+                                                    <label class="checkbox-inline">
+                                                        <input  name="sp_type_land_transport" type="checkbox" value="land_transport" >陆路运输
+                                                    </label> 
+                                                    <label class="checkbox-inline">
+                                                        <input  name="sp_type_storage" type="checkbox" value="storage" >仓储
+                                                    </label> 
+                                                    <label class="checkbox-inline">
+                                                        <input  name="sp_type_air_transport" type="checkbox" value="air_transport" >空运
+                                                    </label> 
+                                                    <label class="checkbox-inline">
+                                                        <input  name="sp_type_delivery_express" type="checkbox" value="delivery_express" >快递
+                                                    </label>
+                                                    <label class="checkbox-inline">
+                                                        <input  name="sp_type_custom" type="checkbox" value="custom" >报关
+                                                    </label>
+                                                    <label class="checkbox-inline">
+                                                        <input name="sp_type_pickup_van" type="checkbox" value="pickup_van" >包装吊车
+                                                    </label>
+                                                    <label class="checkbox-inline">
+                                                        <input name="sp_type_cargo_insurance" type="checkbox" value="cargo_insurance" >货运保险
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
@@ -108,8 +114,8 @@
 				                            </div>
 				                        </div>
 							        </div>
-                                    <div class="col-lg-6" style="clear:both;">
-                                        <button id="save" type="button" class="btn  btn_green">保存</button>
+                                    <div class="col-lg-6" style="margin-top:15px">
+                                        <button id="saveBtn" type="button" class="btn  btn_green">保存</button>
                                         <a class="btn  btn_white" href="/supplierContract">返回</a>
                                     </div>
 
@@ -124,18 +130,8 @@
                 </div>
                 
             </div>
-</div>
-			
+</div>		
 <%}%>
-<!-- 引入校验的js 文件及其 中文 文件-->
-<!-- <script src="/yh/js/plugins/dataTables/jquery.dataTables.js" type="text/javascript"></script>
-<script src="/yh/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-<script src="/yh/js/plugins/dataTables/jquery.dataTables.editable.js" type="text/javascript"></script>
-<script src="/yh/js/plugins/dataTables/jquery.jeditable.js" type="text/javascript"></script>
-<script src="/yh/js/jquery.validate.min.js"></script>
-<script src="/yh/js/jvalidate.messages_cn.js"></script>
-<script src="/yh/js/plugins/sco/js/sco.message.js"></script>
-<script src="/yh/css/ui/jquery-ui.js"></script> -->
 <%include("/eeda/component/jsTemplate/tableInputDateField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>

@@ -15,11 +15,19 @@ import java.util.Map;
 import models.Location;
 import models.ParentOfficeModel;
 import models.Party;
+import models.SpAirTransport;
+import models.SpAirTransportItem;
 import models.SpBulkCargo;
 import models.SpBulkCargoItem;
+import models.SpCargoInsurance;
+import models.SpCustom;
 import models.SpInternalTrade;
+import models.SpLandTransport;
+import models.SpLandTransportItem;
 import models.SpOceanCargo;
 import models.SpOceanCargoItem;
+import models.SpPickingCrane;
+import models.SpStorage;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
@@ -106,7 +114,16 @@ public class SupplierContractController extends Controller {
         order.set("oceanCargoItemList", getItems("oceanCargoItem",id));
         order.set("internalTradeList", getItems("internalTrade",id));
         order.set("bulkCargoItemList", getItems("bulkCargoItem",id));
+        order.set("pickingCraneList", getItems("pickingCrane",id));
+        order.set("landTransportList", getItems("landTransport",id));
+        order.set("landTransportItemList", getItems("landTransportItem",id));
+        order.set("storageList", getItems("storage",id));
+        order.set("airTransportList", getItems("airTransport",id));
+        order.set("airTransportItemList", getItems("airTransportItem",id));
+        order.set("customList", getItems("custom",id));
         order.set("bulkCargoList", getItems("bulkCargo",id));
+        order.set("cargoInsuranceList", getItems("cargoInsurance",id));
+        
         setAttr("order", order);
      
         render("/eeda/contractManagement/supplierContractEdit.html");
@@ -182,6 +199,23 @@ public class SupplierContractController extends Controller {
 		DbUtils.handleList(bulkCargoList, id, SpBulkCargo.class, "order_id");
 		List<Map<String, String>> bulkCargoItemList = (ArrayList<Map<String, String>>)dto.get("bulkCargoItem");
 		DbUtils.handleList(bulkCargoItemList, id, SpBulkCargoItem.class, "order_id");
+		List<Map<String, String>> landTransportList = (ArrayList<Map<String, String>>)dto.get("landTransport");
+		DbUtils.handleList(landTransportList, id, SpLandTransport.class, "order_id");
+		List<Map<String, String>> landTransportItemList = (ArrayList<Map<String, String>>)dto.get("landTransportItem");
+		DbUtils.handleList(landTransportItemList, id, SpLandTransportItem.class, "order_id");
+		List<Map<String, String>> storageList = (ArrayList<Map<String, String>>)dto.get("storage");
+		DbUtils.handleList(storageList, id, SpStorage.class, "order_id");
+		List<Map<String, String>> airTransportList = (ArrayList<Map<String, String>>)dto.get("airTransport");
+		DbUtils.handleList(airTransportList, id, SpAirTransport.class, "order_id");
+		List<Map<String, String>> airTransportItemList = (ArrayList<Map<String, String>>)dto.get("airTransportItem");
+		DbUtils.handleList(airTransportItemList, id, SpAirTransportItem.class, "order_id");
+		List<Map<String, String>> customList = (ArrayList<Map<String, String>>)dto.get("custom");
+		DbUtils.handleList(customList, id, SpCustom.class, "order_id");
+		List<Map<String, String>> pickingCraneList = (ArrayList<Map<String, String>>)dto.get("pickingCrane");
+		DbUtils.handleList(pickingCraneList, id, SpPickingCrane.class, "order_id");
+		List<Map<String, String>> cargoInsuranceList = (ArrayList<Map<String, String>>)dto.get("cargoInsurance");
+		DbUtils.handleList(cargoInsuranceList, id, SpCargoInsurance.class, "order_id");
+		
         
      
         setAttr("saveOK", true);
@@ -738,8 +772,24 @@ public class SupplierContractController extends Controller {
     		sql = "select * from sp_bulk_cargo where order_id = ?";
     	}else if(type.equals("bulkCargoItem")){
     		sql = "select * from sp_bulk_cargo_item where order_id = ?";
+    	}else if(type.equals("landTransport")){
+    		sql = "select * from sp_land_transport where order_id = ?";
+    	}else if(type.equals("landTransportItem")){
+    		sql = "select * from sp_land_transport_item where order_id = ?";
+    	}else if(type.equals("storage")){
+    		sql = "select * from sp_storage where order_id = ?";
+    	}else if(type.equals("airTransport")){
+    		sql = "select * from sp_air_transport where order_id = ?";
+    	}else if(type.equals("airTransportItem")){
+    		sql = "select * from sp_air_transport_item where order_id = ?";
+    	}else if(type.equals("custom")){
+    		sql = "select * from sp_custom where order_id = ?";
+    	}else if(type.equals("pickingCrane")){
+    		sql = "select * from sp_picking_crane where order_id = ?";
+    	}else if(type.equals("cargoInsurance")){
+    		sql = "select * from sp_cargo_insurance where order_id = ?";
     	}
-    		
+    	
     	
     	List<Record> re = Db.find(sql,order_id);
     	return re;

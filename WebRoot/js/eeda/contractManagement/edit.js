@@ -8,94 +8,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	if(id != null && id != ""){
     		$("#addChargeType").attr("disabled",false);
     	}
-        var dataTable= $('#item_table').dataTable({
-        	"bFilter": false, //不需要默认的搜索框
-            "sDom": "<'row-fluid'<'span6'l><'span6'f>r><'datatable-scroll't><'row-fluid'<'span12'i><'span12 center'p>>",
-            "iDisplayLength": 10,
-            "aLengthMenu": [ [10, 25, 50, 100, 9999999], [10, 25, 50, 100, "All"] ],
-            "bServerSide": true,
-        	"oLanguage": {
-                "sUrl": "/eeda/dataTables.ch.txt"
-            },
-            "sAjaxSource": "/serviceProvider/chargeTypeList?typeId="+id,
-            "aoColumns": [
-                {"mDataProp":"CUSTOMER_NAME"},
-                {"mDataProp":"CHARGE_TYPE",
-                	"fnRender":function(obj){
-                		var str= "";
-                		if(obj.aData.CHARGE_TYPE == 'perUnit'){
-                			str = '计件';
-                		}else if(obj.aData.CHARGE_TYPE == 'perCar'){
-                			str = '整车';
-                		}else if(obj.aData.CHARGE_TYPE == 'perCargo'){
-                			str = '零担'
-                		}
-                		return str;
-                	}},
-                {"mDataProp":"REMARK"},
-                { 
-                    "mDataProp": null, 
-                    "sWidth": "8%",  
-                    "bVisible":(true),
-                    "fnRender": function(obj) {  
-                    	var str ="<nobr>";
-                    		str += "<a class='btn  btn-primary btn-sm itemEdit' code='"+obj.aData.ID+"'><i class='fa fa-edit fa-fw'></i>编辑</a> ";
-		                    str += "<a class='btn btn-danger btn-sm itemDel' code='"+obj.aData.ID+"'>"+
-		                         "<i class='fa fa-trash-o fa-fw'></i>删除</a>";
-                    	return str +="</nobr>";
-                       
-                    }
-                }
-            ]    
-        });
 
     	
-
-        var spArr= spType.split(';');
-        for (var i = 0; i < spArr.length; i++) {
-            var checkSpType = spArr[i];
-            //line;delivery;pickup;personal;carrier;air;broker;head_car;oversea_agent;booking_agent;truck;manufacturer;traders
-            if(checkSpType == 'line'){
-                $('#sp_type_line').attr('checked', 'checked');
-            }else if(checkSpType == 'delivery'){
-                $('#sp_type_delivery').attr('checked', 'checked');
-            }else if(checkSpType == 'pickup'){
-                $('#sp_type_pickup').attr('checked', 'checked');
-            }else if(checkSpType == 'personal'){
-                $('#sp_type_personal').attr('checked', 'checked');
-            }else if(checkSpType == 'carrier'){
-                $('#sp_type_carrier').attr('checked', 'checked');
-            }else if(checkSpType == 'air'){
-                $('#sp_type_air').attr('checked', 'checked');
-            }else if(checkSpType == 'broker'){
-                $('#sp_type_broker').attr('checked', 'checked');
-            }else if(checkSpType == 'head_car'){
-                $('#sp_type_head_car').attr('checked', 'checked');
-            }else if(checkSpType == 'oversea_agent'){
-                $('#sp_type_oversea_agent').attr('checked', 'checked');
-            }else if(checkSpType == 'booking_agent'){
-                $('#sp_type_booking_agent').attr('checked', 'checked');
-            }else if(checkSpType == 'truck'){
-                $('#sp_type_truck').attr('checked', 'checked');
-            }else if(checkSpType == 'cargo_agent'){
-                $('#sp_type_cargo_agent').attr('checked', 'checked');
-            }else if(checkSpType == 'manufacturer'){
-                $('#sp_type_manufacturer').attr('checked', 'checked');
-            }else if(checkSpType == 'traders'){
-                $('#sp_type_traders').attr('checked', 'checked');
-            }
-            
-        };
-
-    	if(payment == "monthlyStatement"){
-    		$("#payment").find("option[value='monthlyStatement']").attr("selected",true);
-  		}else if(payment == "freightCollect"){
-  			$("#payment").find("option[value='freightCollect']").attr("selected",true);
-  		}else{
-  			$("#payment").find("option[value='cashPayment']").attr("selected",true);
-  		}
-
-        $('#menu_profile').addClass('active').find('ul').addClass('in');
         $('#customerForm').validate({
             rules: {
               company_name: {//form 中company_name为必填, 注意input 中定义的id, name都要为company_name
@@ -123,19 +37,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         });
         
          
-      // 回显计费方式
-      var chargeTypeOption=$("#chargeType>option");
-      var chargeTypeVal=$("#chargeTypeSelect").val();
-      for(var i=0;i<chargeTypeOption.length;i++){
-         var svalue=chargeTypeOption[i].value;
-         if(chargeTypeVal==svalue){
-      	   $("#chargeType option[value='"+svalue+"']").attr("selected","selected");
-         }
-      }
+
       
     //构造主表json
       var buildOrder = function(){
-    	  
       	var item = {};
       	item.id = $('#partyId').val();
       	var orderForm = $('#customerForm input,#customerForm select,#customerForm textarea');
@@ -149,6 +54,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           return item;
       }
       
+      //构造checkBox保存数据
+      var getQualification_type=function(name){
+    	  var qualification_type = [];
+    	  $('#'+name+' input[type="checkbox"]').each(function(){
+  	        	var checkValue=$(this).val();
+  	        	if($(this).prop('checked')){
+  	        		qualification_type.push(checkValue);
+  	        	}
+  	      });
+    	  return qualification_type.toString();
+      }
+      
       
       //自动提交改为手动提交
       $("#save").click(function(){
@@ -158,120 +75,231 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	 
     	 var order = {};
     	 order = buildOrder();
-    	 order.oceanCargo = itemOrder.buildOceanCargoDetail();
-    	 order.oceanCargoItem = itemOrder.buildOceanCargoItemDetail();
-    	 order.internalTrade = itemOrder.buildInternalTradeDetail();
-    	 order.bulkCargo = itemOrder.buildBulkCargoDetail();
-    	 order.bulkCargoItem = itemOrder.buildBulkCargoItemDetail();
+    	 order.sp_qualification_type = getQualification_type('sp_qualification_type_val');
+    	 if(order.sp_qualification_type.indexOf("ocean_shipment") >= 0){
+    		 order.oceanCargo = itemOrder.buildOceanCargoDetail();
+    		 order.oceanCargoItem = itemOrder.buildOceanCargoItemDetail(); 
+    		 order.ocean_qualification_type = getQualification_type('ocean_qualification_type_val');
+    		 order.ocean_shipment = $('#ocean_shipment').val();
+    	 }
+    	 if(order.sp_qualification_type.indexOf("internal_trade") >= 0){
+    		 order.internalTrade = itemOrder.buildInternalTradeDetail(); 
+    		 order.trade_qualification_type = getQualification_type('trade_qualification_type_val');
+    	 }
+    	 if(order.sp_qualification_type.indexOf("ocean_bulkCargo") >= 0){
+    		 order.bulkCargo = itemOrder.buildBulkCargoDetail();
+    		 order.bulkCargoItem = itemOrder.buildBulkCargoItemDetail();
+    		 order.bulk_qualification_type = getQualification_type('bulk_qualification_type_val');
+    		 order.bulk_shipment = $('#bulk_shipment').val();
+    	 }
+    	 if(order.sp_qualification_type.indexOf("land_transport") >= 0){
+    		 order.landTransport = itemOrder.buildLandTransportDetail(); 
+    		 order.landTransportItem = itemOrder.buildLandTransportItemDetail(); 
+    		 order.land_qualification_type = getQualification_type('land_qualification_type_val');
+    	 }
+    	 if(order.sp_qualification_type.indexOf("storage") >= 0){
+    		 order.storage = itemOrder.buildStorageDetail(); 
+    	 }
+    	 if(order.sp_qualification_type.indexOf("air_transport") >= 0){
+    		 order.airTransport = itemOrder.buildAirTransportDetail(); 
+    		 order.airTransportItem = itemOrder.buildAirTransportItemDetail(); 
+    	 }
+    	 if(order.sp_qualification_type.indexOf("custom") >= 0){
+    		 order.custom = itemOrder.buildCustomDetail(); 
+    	 }
+    	 if(order.sp_qualification_type.indexOf("delivery_express") >= 0){
+    		 order.express_service = $('#express_service').val();
+    		 order.express_remark = $('#express_remark').val();
+    	 }
+    	 if(order.sp_qualification_type.indexOf("pickup_van") >= 0){
+    		 order.pickingCrane = itemOrder.buildPickupVanDetail(); 
+    	 }
+    	 if(order.sp_qualification_type.indexOf("cargo_insurance") >= 0){
+    		 order.cargoInsurance = itemOrder.buildCargoInsuranceDetail(); 
+    	 }
     	 
-    	 $("#save").attr("disabled",true);
+    	 $("#saveBtn").attr("disabled",true);
     	 $.post("/supplierContract/save",{params:JSON.stringify(order)},function(data){
     		if(data=='abbrError'){
     			$.scojs_message('供应商简称已存在', $.scojs_message.TYPE_ERROR);
-    			$("#save").attr("disabled",false);
+    			$("#saveBtn").attr("disabled",false);
     		}else if (data=='companyError'){
     			$.scojs_message('公司名称已存在', $.scojs_message.TYPE_ERROR);
-    			$("#save").attr("disabled",false);
+    			$("#saveBtn").attr("disabled",false);
     		}else if(data.ID != null && data.ID != ""){
      			eeda.contactUrl("edit?id",data.ID);
      			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
      			$("#partyId").val(data.ID);
      			$("#sp_id").val(data.ID);
      			$("#addChargeType").attr("disabled",false);
-     			$("#save").attr("disabled",false);
+     			$("#saveBtn").attr("disabled",false);
      		}else{
      			$.scojs_message('数据有误', $.scojs_message.TYPE_ERROR);
-     			$("#save").attr("disabled",false);
+     			$("#saveBtn").attr("disabled",false);
      		}
     		
-    		itemOrder.refleshOceanCargoTable(data.ID); 
-    		itemOrder.refleshOceanCargoItemTable(data.ID); 
-    		itemOrder.refleshInternalTradeTable(data.ID); 
-    		itemOrder.refleshBulkCargoTable(data.ID); 
-    		itemOrder.refleshBulkCargoItemTable(data.ID); 
+    		if(order.sp_qualification_type.indexOf("ocean_shipment") >= 0){
+    			itemOrder.refleshOceanCargoTable(data.ID); 
+    			itemOrder.refleshOceanCargoItemTable(data.ID); 
+	       	 }
+	       	 if(order.sp_qualification_type.indexOf("internal_trade") >= 0){
+	       		 itemOrder.refleshInternalTradeTable(data.ID); 
+	       	 }
+	       	 if(order.sp_qualification_type.indexOf("ocean_bulkCargo") >= 0){
+	       		 itemOrder.refleshBulkCargoTable(data.ID); 
+	       		 itemOrder.refleshBulkCargoItemTable(data.ID); 
+	       	 }
+	       	 if(order.sp_qualification_type.indexOf("land_transport") >= 0){ 
+	       		 itemOrder.refleshLandTransportTable(data.ID);
+	       		 itemOrder.refleshLandTransportItemTable(data.ID);
+	       	 }
+	       	 if(order.sp_qualification_type.indexOf("storage") >= 0){
+	       		 itemOrder.refleshStorageTable(data.ID); 
+	       	 }
+	       	 if(order.sp_qualification_type.indexOf("air_transport") >= 0){
+	       		 itemOrder.refleshAirTransportTable(data.ID);
+	       		 itemOrder.refleshAirTransportItemTable(data.ID);
+	       	 }
+	       	 if(order.sp_qualification_type.indexOf("custom") >= 0){
+	       		 itemOrder.refleshCustomTable(data.ID); 
+	       	 }
+	       	 if(order.sp_qualification_type.indexOf("pickup_van") >= 0){
+	       		 itemOrder.refleshPickupVanTable(data.ID); 
+	       	 }
+	       	 if(order.sp_qualification_type.indexOf("cargo_insurance") >= 0){
+	       		 itemOrder.refleshCargoInsuranceTable(data.ID); 
+	       	 }
+         }).fail(function() {
+             $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+             $('#saveBtn').attr('disabled', false);
+             $.unblockUI();
          });
     	  
       });
-      
-	  //获取客户信息
-	  $('#customer_name').on('keyup click', function(){
-	        var inputStr = $('#customer_name').val();
-	        var companyList =$("#customerList");
-	        $.get("/customer/searchPartCustomer", {input:inputStr}, function(data){
-	            companyList.empty();
-	            for(var i = 0; i < data.length; i++)
-	                companyList.append("<li><a tabindex='-1' class='fromLocationItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' partyId='"+data[i].PID+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].ABBR+"</a></li>");
-	        },'json');
-	       
-	        companyList.css({ 
-		    	left:$(this).position().left+"px", 
-		    	top:$(this).position().top+32+"px" 
-		    });
-	        companyList.show();
-	    });
-	    $('#customerList').on('click', '.fromLocationItem', function(e){        
-	        $('#customer_name').val($(this).text());
-	        $("#customerList").hide();
-	        var companyId = $(this).attr('partyId');
-	        $('#customer_id').val(companyId);
-	    	
-	    });
-	    // 没选中客户，焦点离开，隐藏列表
-	    $('#customer_name').on('blur', function(){
-	        $('#customerList').hide();
-	    });
+     
+	    
+	    var showServiceTab=function(service){
+	        switch (service){
+	            case 'ocean_shipment':
+	                $('#sp_ocean_shipment').show();
+	               
+	                break;
+	            case 'internal_trade':
+	                $('#sp_internal_trade').show();
+	                
+	                break;
+	            case 'ocean_bulkCargo':
+	                $('#sp_ocean_bulkCargo').show();
+	               
+	                break;
+	            case 'land_transport':
+	                $('#sp_land_transport').show();
+	                
+	                break;
+	            case 'storage':
+	                $('#sp_storage').show();
+	               
+	                break;
+	            case 'air_transport':
+	                $('#sp_air_transport').show();
+	               
+	                break;
+	            case 'delivery_express':
+	                $('#sp_delivery_express').show();
+	               
+	                break;
+	            case 'custom':
+	                $('#sp_custom').show();
+	                
+	                break;
+	            case 'pickup_van':
+	                $('#sp_pickup_van').show();
+	                
+	                break;
+	            case 'cargo_insurance':
+	                $('#sp_cargo_insurance').show();
+	                
+	                break;
+	        }
+	    };
 
-	    //当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
-	    $('#customer_name').on('blur', function(){
-	        $('#customerList').hide();
-	    });
+	    var hideServiceTab=function(service){
+	    	switch (service){
+	    	   case 'ocean_shipment':
+	                $('#sp_ocean_shipment').hide();
+	               
+	                break;
+	            case 'internal_trade':
+	                $('#sp_internal_trade').hide();
+	                
+	                break;
+	            case 'ocean_bulkCargo':
+	                $('#sp_ocean_bulkCargo').hide();
+	               
+	                break;
+	            case 'land_transport':
+	                $('#sp_land_transport').hide();
+	                
+	                break;
+	            case 'storage':
+	                $('#sp_storage').hide();
+	                
+	                break;
+	            case 'air_transport':
+	                $('#sp_air_transport').hide();
+	                
+	                break;
+	            case 'delivery_express':
+	                $('#sp_delivery_express').hide();
+	                
+	                break;
+	            case 'custom':
+	                $('#sp_custom').hide();
+	                
+	                break;
+	            case 'pickup_van':
+	                $('#sp_pickup_van').hide();
+	                
+	                break;
+	            case 'cargo_insurance':
+	                $('#sp_cargo_insurance').hide();
+	                
+	                break;
+	        }
+	    };
 
-	    $('#customerList').on('mousedown', function(){
-	        return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+	    $('#sp_qualification_type_val input[type="checkbox"]').change(function(){
+	        var checkValue=$(this).val();
+	        if($(this).prop('checked')){
+	            showServiceTab(checkValue);
+	        }else{
+	            hideServiceTab(checkValue);
+	        }
 	    });
 	    
-	    
-	    $('#itemFrom').validate({
-            rules: {
-            	customer_name: {//form 中company_name为必填, 注意input 中定义的id, name都要为company_name
-                required: true
-              }
-            },
-            highlight: function(element) {
-                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-            },
-            success: function(element) {
-                element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
-            }
-        });
 
-	    //点击新增客户计费内的按钮发生的事情
-	    $("#chargeTypeItemBtn").click(function(){
-	    	var sp_id = $("#sp_id").val();
-	    	if(sp_id == null || sp_id ==''){
-	    		$.scojs_message('供应商数据没有保存或者数据不完善，请先保存数据或者完善数据', $.scojs_message.TYPE_ERROR);
-	    		return false;
-	    	}
-	    	 if(!$("#itemFrom").valid()){
-	    		  return false;
-	    	 }
-	    	$.post("/serviceProvider/saveChargeType",$("#itemFrom").serialize(),function(data){
-	    		var id = $("#sp_id").val();
-	    		$('#chargeTypeItemModel').modal('hide');
-	    		dataTable.fnSettings().sAjaxSource = "/serviceProvider/chargeTypeList?typeId="+id;
-	    		dataTable.fnDraw(); 
-	            
-	    	},'json');
-	    	
-	    });
-	    $("#addChargeType").click(function(){
-	    	$("#chargeTypeItemId").val('');
-	    	$("#customer_id").val('');
-	    	$("#customer_name").val('');
-	    	$("#chargeTypeRemark").val('');
-	    	$("#customer_name").attr("disabled",false);
-	    	$("#c_type option[value='perUnit']").attr("selected","selected");
-	    });
-	    
+	    //构造checkBox回显数据
+		var showQualification_type=function(value){
+			var qualification_type = $('#'+value).val().split(",");
+			for(var i=0;i < qualification_type.length;i++){
+				$('#'+value+'_val input[type="checkbox"]').each(function(){
+					var checkValue=$(this).val();
+			        if(qualification_type[i]==checkValue){
+			        	this.checked = true;
+			        	
+			        	if(value=='sp_qualification_type'){
+			        		showServiceTab(checkValue);
+			        	}
+			        }
+				});
+			}
+		}
+		
+		showQualification_type('sp_qualification_type');
+		showQualification_type('ocean_qualification_type');
+		showQualification_type('land_qualification_type');
+		showQualification_type('trade_qualification_type');
+		showQualification_type('bulk_qualification_type');
+
     });
 });

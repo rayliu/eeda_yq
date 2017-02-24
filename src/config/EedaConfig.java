@@ -28,11 +28,19 @@ import models.Product;
 import models.RateContrast;
 import models.Role;
 import models.RolePermission;
+import models.SpAirTransport;
+import models.SpAirTransportItem;
 import models.SpBulkCargo;
 import models.SpBulkCargoItem;
+import models.SpCargoInsurance;
+import models.SpCustom;
 import models.SpInternalTrade;
+import models.SpLandTransport;
+import models.SpLandTransportItem;
 import models.SpOceanCargo;
 import models.SpOceanCargoItem;
+import models.SpPickingCrane;
+import models.SpStorage;
 import models.TradeItem;
 import models.UserCustomer;
 import models.UserLogin;
@@ -441,6 +449,15 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("sp_internal_trade", SpInternalTrade.class);
         arp.addMapping("sp_bulk_cargo_item", SpBulkCargoItem.class);
         arp.addMapping("sp_bulk_cargo", SpBulkCargo.class);  
+        
+        arp.addMapping("sp_land_transport", SpLandTransport.class); 
+        arp.addMapping("sp_land_transport_item", SpLandTransportItem.class); 
+        arp.addMapping("sp_storage", SpStorage.class);  
+        arp.addMapping("sp_air_transport", SpAirTransport.class);  
+        arp.addMapping("sp_air_transport_item", SpAirTransportItem.class);  
+        arp.addMapping("sp_custom", SpCustom.class);  
+        arp.addMapping("sp_picking_crane", SpPickingCrane.class);  
+        arp.addMapping("sp_cargo_insurance", SpCargoInsurance.class); 
     }
 
     private void initDBconnector() {
