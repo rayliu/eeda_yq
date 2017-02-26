@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import models.Office;
 import models.ParentOfficeModel;
 import models.UserLogin;
@@ -164,8 +166,24 @@ public class MainController extends Controller {
 	}
 
     public void login() {
+        
+        String strLoginPagePath = "/eeda/login.html";
+        
+        HttpServletRequest request = getRequest();
+        String serverName = request.getServerName();
+        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/";
+        
+        logger.debug("Current host path:"+basePath);
+        OfficeCofig of = OfficeCofig.dao.findFirst("select * from office_config where domain like '"
+                +serverName +"%' or domain like '%"+serverName +"%'");
+        if(of==null){//没有配置公司的login信息, 不知道显示那个系统的login页面, 跳到公司首页
+            redirect("/");
+        }else{
+            strLoginPagePath = of.getStr("index_page_path");
+        }
 
-    	if (isAuthenticated()) {
+                
+    	if (isAuthenticated()) {//如果已经登录, 跳转到系统管理平台首页
     		redirect("/");
     	}
         String username = getPara("username");
@@ -173,7 +191,7 @@ public class MainController extends Controller {
         setSysTitle();
         
         if (username == null) {
-            render("/eeda/login.html");
+            render(strLoginPagePath);
             return;
         }
         String sha1Pwd = MD5Util.encode("SHA1", getPara("password"));
@@ -214,7 +232,7 @@ public class MainController extends Controller {
         	if(user==null){
             	errMsg = "用户名不存在或已被停用";
             	setAttr("errMsg", errMsg);
-            	render("/eeda/login.html");
+            	render(strLoginPagePath);
             }else if(user.get("c_name") != null && !"".equals(user.get("c_name"))){
             	setAttr("userId", user.get("c_name"));
             	/*setAttr("login_time",user.get("last_login"));*/
@@ -230,7 +248,7 @@ public class MainController extends Controller {
             
         } else {
             setAttr("errMsg", errMsg);
-            render("/eeda/login.html");
+            render(strLoginPagePath);
         }
     }
 
