@@ -103,6 +103,21 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <h3>应收服务费用</h3>
+                                <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeServiceInfo" aria-expanded="false" class="collapsed">
+                                        <i id='collapseChargeServiceIcon' class="fa 
+                                        <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用应收服务费用
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseChargeServiceInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+                                   <div class="panel-body" id="ChargeServiceDiv">
+                                        
+                                    </div>
+                               </div>
+                            </div>
                             </div>
                         </div>
                            
@@ -155,6 +170,21 @@
                            <div class="row">
 	                            <div class="col-lg-12">
 	                                <h3>销售应收费用</h3>
+                                     <div class="panel panel-default">
+                                 <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeTradeSaleInfo" aria-expanded="false" class="collapsed">
+                                        <i id='collapseChargeTradeSaleIcon' class="fa 
+                                        <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用销售应收费用
+                                        </a>
+                                    </h4>
+                                  </div>
+                                 <div id="collapseChargeTradeSaleInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+                                    <div class="panel-body" id="ChargeTradeSaleDiv">
+                                        
+                                     </div>
+                                 </div>
+                            </div>
 	                            </div>
                              	<div class="col-lg-3">
 			                            <%include("/eeda/component/form/inputCurrencyField.html", 
