@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.CustomArapCostOrder;
 import models.UserLogin;
 import models.eeda.cms.CustomArapChargeItem;
 import models.eeda.cms.CustomArapChargeOrder;
@@ -63,6 +64,7 @@ public class CmsChargeCheckOrderController extends Controller {
    			DbUtils.setModelValues(dto, order);
    			
    			//需后台处理的字段
+   			order.set("check_amount", dto.get("total_amount"));
    			order.set("update_by", user.getLong("id"));
    			order.set("update_stamp", new Date());
    			order.update();
@@ -72,7 +74,7 @@ public class CmsChargeCheckOrderController extends Controller {
    			
    			//需后台处理的字段
    			order.set("order_no", OrderNoGenerator.getNextOrderNo("YSDZ", user.getLong("office_id")));
-   			order.set("order_type", "应收对账单");
+   			order.set("check_amount", dto.get("total_amount"));
    			order.set("create_by", user.getLong("id"));
    			order.set("create_stamp", new Date());
    			order.set("office_id", office_id);
@@ -83,73 +85,16 @@ public class CmsChargeCheckOrderController extends Controller {
    			CustomArapChargeItem aci = null;
    			List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
    			for(Map<String, String> item :itemList){
-   					String item_order_id=item.get("order_check_box");
-		   			String sql2="SELECT id FROM custom_plan_order_arap"
-		   					+ " where order_id in("+ item_order_id+") and order_type='charge'";
-		   			List<Record> ids=Db.find(sql2);
-		   			
-		   			for(Record re :ids ){
 		   				aci = new CustomArapChargeItem();
-						aci.set("ref_order_type", "工作单");
-						aci.set("ref_order_id", re.get("ID"));
+						aci.set("ref_order_type", "报关申请单");
+						aci.set("ref_order_id", item.get("id"));
 						aci.set("custom_charge_order_id", id);
 						aci.save();
-						CustomPlanOrderArap cmsOrderArap = CustomPlanOrderArap.dao.findById(re.get("ID"));
-						cmsOrderArap.set("bill_flag", "Y");
-						cmsOrderArap.update();
-		   			}
+						
+						Db.update("update custom_plan_order_arap set bill_flag = 'Y' where id = ?",item.get("id"));
    				}
    		}
-//   		CustomArapChargeItem aci = null;
-//   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-//		for(Map<String, String> item :itemList){
-//			String action = item.get("action");
-//			String itemId = item.get("id");
-//			if("CREATE".equals(action)){
-//				aci = new CustomArapChargeItem();
-//				aci.set("ref_order_type", "工作单");
-//				aci.set("ref_order_id", itemId);
-//				aci.set("custom_charge_order_id", id);
-//				aci.save();
-//				CustomPlanOrderArap cmsOrderArap = CustomPlanOrderArap.dao.findById(itemId);
-//				cmsOrderArap.set("bill_flag", "Y");
-//				cmsOrderArap.update();
-//
-//			}
-//		}
-		
-		
-//		List<Map<String, String>> currencyList = (ArrayList<Map<String, String>>)dto.get("currency_list");
-//		for(Map<String, String> item :currencyList){
-//			String new_rate = item.get("new_rate");
-//			String rate = item.get("rate");
-//			String order_type = item.get("order_type");
-//			String currency_id = item.get("currency_id");
-//			String rate_id = item.get("rate_id");
-//			String order_id = (String) dto.get("id");
-//			
-//			RateContrast rc = null;
-//			if(StringUtils.isEmpty(rate_id) && StringUtils.isEmpty(order_id)){
-//				rc = new RateContrast();
-//				rc.set("order_id", id);
-//				rc.set("new_rate", new_rate);
-//				rc.set("rate", rate);
-//				rc.set("currency_id", currency_id);
-//				rc.set("order_type", order_type);
-//				rc.set("create_by", LoginUserController.getLoginUserId(this));
-//				rc.set("create_stamp", new Date());
-//				rc.save();
-//			}else{
-//				rc = RateContrast.dao.findById(rate_id);
-//				if(rc == null){
-//					rc = RateContrast.dao.findFirst("select * from rate_contrast where order_id = ? and currency_id = ?",order_id,currency_id);
-//				}
-//				rc.set("new_rate", new_rate);
-//				rc.set("update_by", LoginUserController.getLoginUserId(this));
-//				rc.set("update_stamp", new Date());
-//				rc.update();
-//			}	
-//		}
+
 		
 		long create_by = order.getLong("create_by");
    		String user_name = LoginUserController.getUserNameById(create_by);
@@ -171,51 +116,27 @@ public class CmsChargeCheckOrderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String sql = "";
-        if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
-	   		 sql = "select B.* from(  "
-						 +" SELECT cpoa .*,cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,p.abbr sp_name, "
-		   				 +" cpo.custom_export_date ,"
-						 +" sum(iF(cpoa.charge_id=164,cpoa.total_amount,0)) MTF, "
-						 +" sum(iF(cpoa.charge_id=165,cpoa.total_amount,0)) YJ, "
-						 +" sum(iF(cpoa.charge_id=166,cpoa.total_amount,0)) ZHF, "
-						 +" sum(iF(cpoa.charge_id=167,cpoa.total_amount,0 )) GKF, "
-						 +" sum(iF(cpoa.charge_id=168,cpoa.total_amount,0)) LHF, "
-						 +" sum(iF(cpoa.charge_id=169,cpoa.total_amount,0)) SCF, "
-						 +" sum(iF(cpoa.charge_id=175,cpoa.total_amount,0)) ZLSCF, "
-						 +" sum(iF(cpoa.charge_id=176,cpoa.total_amount,0)) FTF, "
-						 +" sum(iF(cpoa.charge_id=177,cpoa.total_amount,0)) PZF, "
-						 +" sum(iF(cpoa.charge_id=178,cpoa.total_amount,0)) XDF, "
-						 +" sum(iF(cpoa.charge_id=179,cpoa.total_amount,0)) WLDLF, "
-						 +" sum(iF(cpoa.charge_id=180,cpoa.total_amount,0)) LXF, "
-						 +" sum(iF(cpoa.charge_id=181,cpoa.total_amount,0)) AC,  "
-						 +" sum(iF(cpoa.charge_id=182,cpoa.total_amount,0)) WJF, "
-						 +" sum(iF(cpoa.charge_id=183,cpoa.total_amount,0)) RZF,  "
-						 +" sum(iF(cpoa.charge_id=184,cpoa.total_amount,0)) YF, "
-						 +" sum(iF(cpoa.charge_id=185,cpoa.total_amount,0)) BGF, "
-						 +" sum(iF(cpoa.charge_id=186,cpoa.total_amount,0)) DTF "
-						 +" FROM custom_plan_order_arap cpoa  "
-						 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-						 +" LEFT JOIN party p on p.id = cpo.application_unit "
-						 +" LEFT JOIN fin_item fi on cpoa.charge_id = fi.id  "
-						 +" WHERE cpoa.audit_flag='Y' and cpoa.bill_flag='N' AND cpo.office_id = "+office_id
-		 				 + " GROUP BY cpoa.order_id "
-		 				 + " ) B "
-		 				 +" where 1=1 ";
-     			}else{
-		   		 sql = "select B.* from(  "
-		   				+" SELECT cpo.order_no,cpo.id cpoid,cpo.date_custom,cpo.booking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
-		   				 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
-		   				 +" from custom_plan_order_arap cpoa "
-		   				 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-		   				 +" LEFT JOIN fin_item f on f.id = cpoa.currency_id "
-		   				 +" LEFT JOIN party p on p.id = cpoa.sp_id "
-		   				 +" where cpoa.order_type='charge' and cpoa.audit_flag='Y' and cpoa.bill_flag='N'  and cpo.office_id = "+office_id
-		   				 +"  GROUP BY cpoa.id " 
-		 				 + " ) B "
-		 				 +" where 1=1 ";
-        			}
+        String checkCondition = "";
+        if(!"Y".equals(checked)){
+        	checkCondition = "and cpoa.order_type='charge'";
+        }
+
+		sql = "select B.* from(  "
+			+" SELECT cpo.order_no,cpoa.order_type ,cpoa.id arap_id,cpo.id order_id,cpo.date_custom,cpo.booking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
+			 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
+			 +" from custom_plan_order_arap cpoa "
+			 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
+			 +" LEFT JOIN fin_item f on f.id = cpoa.currency_id "
+			 +" LEFT JOIN party p on p.id = cpoa.sp_id "
+			 +" where 1 = 1 "
+			 + checkCondition
+			 + " and cpoa.audit_flag='Y' and cpoa.bill_flag='N'  and cpo.office_id = "+office_id
+			 +"  GROUP BY cpoa.id " 
+			 + " ) B "
+			 +" where 1=1 ";
+
         
-        String condition = DbUtils.buildConditions(getParaMap());
+    	String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") A";
         Record rec = Db.findFirst(sqlTotal);
@@ -260,11 +181,13 @@ public class CmsChargeCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select aco.*, p.abbr sp_name "
+        		+ " select aco.*, p.abbr party_name,ul.c_name creator_name,ul2.c_name confirm_name "
 				+ " from custom_arap_charge_order aco "
-				+ " left join party p on p.id=aco.sp_id "
+				+ " left join party p on p.id=aco.party_id "
+				+ " left join user_login ul on ul.id = aco.create_by"
+				+ " left join user_login ul2 on ul2.id = aco.confirm_by"
 				+ " where aco.office_id = "+office_id
-				+ " ) B where 1=1 ";
+				+ " group by aco.id) B where 1=1 ";
         String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
@@ -287,112 +210,42 @@ public class CmsChargeCheckOrderController extends Controller {
     public List<Record> getItemList(String ids,String order_id){
     	String sql = null;
 		if(StringUtils.isEmpty(order_id)){
-	   		 sql = "select * from(  "
-					 +" SELECT cpoa .*,cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,p.abbr company_abbr,"
-						 +" sum(iF(cpoa.charge_id=164,cpoa.total_amount,0)) MTF, "
-						 +" sum(iF(cpoa.charge_id=165,cpoa.total_amount,0)) YJ, "
-						 +" sum(iF(cpoa.charge_id=166,cpoa.total_amount,0)) ZHF, "
-						 +" sum(iF(cpoa.charge_id=167,cpoa.total_amount,0 )) GKF, "
-						 +" sum(iF(cpoa.charge_id=168,cpoa.total_amount,0)) LHF, "
-						 +" sum(iF(cpoa.charge_id=169,cpoa.total_amount,0)) SCF, "
-						 +" sum(iF(cpoa.charge_id=175,cpoa.total_amount,0)) ZLSCF, "
-						 +" sum(iF(cpoa.charge_id=176,cpoa.total_amount,0)) FTF, "
-						 +" sum(iF(cpoa.charge_id=177,cpoa.total_amount,0)) PZF, "
-						 +" sum(iF(cpoa.charge_id=178,cpoa.total_amount,0)) XDF, "
-						 +" sum(iF(cpoa.charge_id=179,cpoa.total_amount,0)) WLDLF, "
-						 +" sum(iF(cpoa.charge_id=180,cpoa.total_amount,0)) LXF, "
-						 +" sum(iF(cpoa.charge_id=181,cpoa.total_amount,0)) AC,  "
-						 +" sum(iF(cpoa.charge_id=182,cpoa.total_amount,0)) WJF, "
-						 +" sum(iF(cpoa.charge_id=183,cpoa.total_amount,0)) RZF,  "
-						 +" sum(iF(cpoa.charge_id=184,cpoa.total_amount,0)) YF, "
-						 +" sum(iF(cpoa.charge_id=185,cpoa.total_amount,0)) BGF, "
-						 +" sum(iF(cpoa.charge_id=186,cpoa.total_amount,0)) DTF "
-					 +" FROM custom_plan_order_arap cpoa  "
-					 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-					 +" LEFT JOIN party p on p.id = cpo.application_unit "
-					 +" LEFT JOIN fin_item fi on cpoa.charge_id = fi.id  "
-					 +" WHERE cpoa.order_id in("+ids+")"
-					 +" and cpoa.audit_flag='Y' "
-	 				+ " GROUP BY cpoa.order_id "
-	 				+ " ) B where 1=1 ";
+			 sql = "SELECT cpo.order_no,cpoa.id id,cpo.id order_id,cpo.date_custom,cpo.booking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
+		   				 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
+		   				 +" from custom_plan_order_arap cpoa "
+		   				 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
+		   				 +" LEFT JOIN fin_item f on f.id = cpoa.currency_id "
+		   				 +" LEFT JOIN party p on p.id = cpoa.sp_id "
+		   				 +" where cpoa.id in("+ids+")";
 				}else{
-			   		 sql = "select * from(  "
-							 +" SELECT cpoa .*,cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,p.abbr company_abbr, "
-							 +" sum(iF(cpoa.charge_id=164,cpoa.total_amount,0)) MTF, "
-							 +" sum(iF(cpoa.charge_id=165,cpoa.total_amount,0)) YJ, "
-							 +" sum(iF(cpoa.charge_id=166,cpoa.total_amount,0)) ZHF, "
-							 +" sum(iF(cpoa.charge_id=167,cpoa.total_amount,0 )) GKF, "
-							 +" sum(iF(cpoa.charge_id=168,cpoa.total_amount,0)) LHF, "
-							 +" sum(iF(cpoa.charge_id=169,cpoa.total_amount,0)) SCF, "
-							 +" sum(iF(cpoa.charge_id=175,cpoa.total_amount,0)) ZLSCF, "
-							 +" sum(iF(cpoa.charge_id=176,cpoa.total_amount,0)) FTF, "
-							 +" sum(iF(cpoa.charge_id=177,cpoa.total_amount,0)) PZF, "
-							 +" sum(iF(cpoa.charge_id=178,cpoa.total_amount,0)) XDF, "
-							 +" sum(iF(cpoa.charge_id=179,cpoa.total_amount,0)) WLDLF, "
-							 +" sum(iF(cpoa.charge_id=180,cpoa.total_amount,0)) LXF, "
-							 +" sum(iF(cpoa.charge_id=181,cpoa.total_amount,0)) AC,  "
-							 +" sum(iF(cpoa.charge_id=182,cpoa.total_amount,0)) WJF, "
-							 +" sum(iF(cpoa.charge_id=183,cpoa.total_amount,0)) RZF,  "
-							 +" sum(iF(cpoa.charge_id=184,cpoa.total_amount,0)) YF, "
-							 +" sum(iF(cpoa.charge_id=185,cpoa.total_amount,0)) BGF, "
-							 +" sum(iF(cpoa.charge_id=186,cpoa.total_amount,0)) DTF "
-							 +" FROM custom_arap_charge_order caco  "
-							 +" left join custom_arap_charge_item caci on caci.custom_charge_order_id=caco.id "
-							 +" left join custom_plan_order_arap cpoa on cpoa.id=caci.ref_order_id"
-							 +" LEFT JOIN custom_plan_order cpo on cpo.id=cpoa.order_id"
-					         +" LEFT JOIN party p on p.id=cpo.application_unit " 
-							 +" where caco.id ="+order_id
-			 				+ " GROUP BY cpoa.order_id "
-			 				+ " ) B where 1=1 ";
+			   		 sql = "SELECT cpo.order_no,cpoa.id id,cpo.id order_id,cpo.date_custom,cpo.booking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
+		   				 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
+		   				 +" from custom_plan_order_arap cpoa "
+		   				 +" left join custom_arap_charge_item caci on caci.ref_order_id = cpoa.id"
+		   				 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
+		   				 +" LEFT JOIN fin_item f on f.id = cpoa.currency_id "
+		   				 +" LEFT JOIN party p on p.id = cpoa.sp_id "
+		   				 +" where caci.custom_charge_order_id ="+order_id;
 						}	
     	List<Record> re = Db.find(sql);
     	return re;
     }
-    
-//    public List<Record> getCurrencyList(String ids,String order_id){
-//    	String sql = "SELECT "
-//    			+ " (select rc.id from rate_contrast rc "
-//    	    	+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"') rate_id,"
-//    			+ " cur.id ,cur.name currency_name ,group_concat(distinct cast(joa.exchange_rate as char) SEPARATOR ';') exchange_rate ,"
-//    			+ "0ull((select rc.new_rate from rate_contrast rc "
-//    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),ifnull(joa.exchange_rate,1)) new_rate"
-//				+ " FROM job_order_arap joa"
-//				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
-//				+ " WHERE joa.id in("+ ids +") and cur.name!='CNY' group by cur.id" ;
-//    	List<Record> re = Db.find(sql);
-//    	
-//    	return re;
-//    }
+
     
     @Before(EedaMenuInterceptor.class)
 	public void create(){
 		String ids = getPara("idsArray");//job_order_arap ids
 		String total_amount = getPara("totalAmount");
-		String cny_totalAmount = getPara("cny_totalAmount");
-		String usd_totalAmount = getPara("usd_totalAmount");
-		String hkd_totalAmount = getPara("hkd_totalAmount");
-		String jpy_totalAmount = getPara("jpy_totalAmount");
 		
-		String sql = "SELECT cur.name currency_name ,p.phone,p.contact_person,p.address,p.company_name,cpoa.sp_id,cpoa.order_id"
+		String sql = "SELECT p.phone,p.contact_person,p.address,p.company_name declare_unit,cpo.application_unit declare_unit_id,cpoa.sp_id party_id"
 				+ " FROM custom_plan_order_arap cpoa"
-				+ " LEFT JOIN currency cur on cur.id = cpoa.currency_id"
 				+ " LEFT JOIN custom_plan_order cpo on cpo.id=cpoa.order_id "
 				+ " left join party p on p.id = cpo.application_unit "
-				+ " WHERE cpoa.order_id in("+ ids +")"
+				+ " WHERE cpoa.id in("+ ids +")"
 				+ " group by cpoa.order_id";
 		Record rec =Db.findFirst(sql);
 		rec.set("total_amount", total_amount);
-		rec.set("jpy", jpy_totalAmount);
-		rec.set("cny", cny_totalAmount);
-		rec.set("usd", usd_totalAmount);
-		rec.set("hkd", hkd_totalAmount);
-
-		rec.set("address", rec.get("address"));
-		rec.set("customer", rec.get("contact_person"));
-		rec.set("phone", rec.get("phone"));
-		rec.set("user", LoginUserController.getLoginUserName(this));
 		rec.set("itemList", getItemList(ids,""));
-//		rec.set("currencyList", getCurrencyList(ids,""));
 		setAttr("order",rec);
 		render("/eeda/cmsArap/cmsChargeCheckOrder/cmsChargeCheckOrderEdit.html");
 	}
@@ -400,21 +253,18 @@ public class CmsChargeCheckOrderController extends Controller {
 	
     @Before(EedaMenuInterceptor.class)
     public void edit(){
-		String id = getPara("id");//custom_arap_charge_order id
-		String condition = "select ref_order_id from custom_arap_charge_item where custom_charge_order_id ="+id;
-		
-		String sql = " select aco.*,p.company_name,p.contact_person,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from custom_arap_charge_order aco "
-   				+ " left join party p on p.id=aco.sp_id "
-   				+ " left join user_login u on u.id=aco.create_by "
-   				+ " left join user_login u1 on u1.id=aco.confirm_by "
-   				+ " where aco.id = ? ";
-		Record rec =Db.findFirst(sql,id);
+		String id = getPara("id");
 
-		rec.set("address", rec.get("address"));
-		rec.set("customer", rec.get("contact_person"));
-		rec.set("phone", rec.get("phone"));
-		rec.set("itemList", getItemList(condition,id));
-//		rec.set("currencyList", getCurrencyList(condition,id));
+		CustomArapChargeOrder order = CustomArapChargeOrder.dao.findById(id);
+		Long create_by = order.getLong("create_by");
+		Long confirm_by = order.getLong("confirm_by");
+		UserLogin ul = UserLogin.dao.findById(create_by);
+		UserLogin ul2 = UserLogin.dao.findById(confirm_by);
+		
+		Record rec = order.toRecord(); 
+		rec.set("creator_name", ul.getStr("c_name"));
+		rec.set("confirm_name", ul2==null?"":ul2.getStr("c_name"));
+		rec.set("itemList", getItemList("",id));
 		setAttr("order",rec);
 		render("/eeda/cmsArap/cmsChargeCheckOrder/cmsChargeCheckOrderEdit.html");
 	}

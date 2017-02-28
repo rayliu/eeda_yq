@@ -28,27 +28,6 @@ $(document).ready(function() {
     }
     
     
-//    var buildCurJson = function(){
-//    	var items_array=[];
-//    	$('#currencyDiv ul li').each(function(){
-//    		var item={};
-//    		var new_rate = $(this).find('[name=new_rate]').val();
-//    		var rate = $(this).find('[name=rate]').val();
-//    		var currency_id = $(this).find('[name=new_rate]').attr('currency_id');
-//    		var rate_id = $(this).find('[name=new_rate]').attr('rate_id');
-//    		if(new_rate==''){
-//    			new_rate = rate;
-//    		}
-//    		
-//    		item.new_rate = new_rate;
-//    		item.rate = rate;
-//    		item.rate_id = rate_id;
-//    		item.currency_id = currency_id;
-//    		item.order_type = 'charge';
-//    		items_array.push(item);
-//    	})
-//    	return items_array;
-//    }
     
     //------------save
     $('#saveBtn').click(function(e){
@@ -65,14 +44,13 @@ $(document).ready(function() {
         order.have_invoice = $('input[type="radio"]:checked').val();
         order.id = $('#order_id').val();
         order.item_list = itemOrder.buildItemDetail();
-//        order.currency_list = buildCurJson();
-        
+
         //异步向后台提交数据
         $.post('/cmsChargeCheckOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
             if(order.ID>0){
             	$("#creator_name").val(order.CREATOR_NAME);
-                $("#create_stamp").val(order.CREATE_STAMP);
+                $("#create_time").val(order.CREATE_STAMP);
                 $("#order_no").val(order.ORDER_NO);
                 $("#order_id").val(order.ID);
                 $("#status").val(order.STATUS);
@@ -119,7 +97,7 @@ $(document).ready(function() {
     			 $('#saveBtn').attr('disabled', true);
     			 $("#status").val('已确认');
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
-    			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
+    			 $("#confirm_time").val(data.CONFIRM_STAMP); 
     			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
  			 
     		 }

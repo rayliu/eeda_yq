@@ -45,229 +45,33 @@ $(document).ready(function() {
             },
             columns:[
             { "width": "10px", "orderable": false,
-            "render": function ( data, type, full, meta ) {
-                  var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" id="checkbox_'+full.CPOID+'" value="'+full.CPOID+'">';
-                for(var i=0;i<itemIds.length;i++){
-                           if(itemIds[i]==full.CPOID){
-                             strcheck= '<input type="checkbox" class="checkBox" checked="checked"  name="order_check_box" value="'+full.CPOID+'">';
-                           }
+            	"render": function ( data, type, full, meta ) {
+                  var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
+                  	for(var i=0;i<itemIds.length;i++){
+                       if(itemIds[i]==full.CPOID){
+                           strcheck= '<input type="checkbox" class="checkBox" checked="checked"  name="order_check_box" value="'+full.ID+'">';
                        }
-                return strcheck;
-            }
+                    }
+                  	return strcheck;
+            	}
             },
-              { "data": "ORDER_NO", "width": "100px",
+            { "data": "ORDER_NO", "width": "100px",
               "render": function ( data, type, full, meta ) {
-                        return "<a href='/customPlanOrder/edit?id="+full.CPOID+"' target='_blank'>"+data+"</a>";
+                        return "<a href='/customPlanOrder/edit?id="+full.ORDER_ID+"' target='_blank'>"+data+"</a>";
                     }
-              },
-              { "data": "CREATE_STAMP", "width": "100px"},
-              { "data": "BOOKING_NO", "width": "200px"},
-              { "data": "COMPANY_ABBR", "width": "120px","class":"COMPANY_ABBR",
-                "render": function ( data, type, full, meta ) {
-                  return data;
-                }
-              },
-              { "data": "BOOKING_NO", "width": "200px"},//装箱放式
-              { "data": "BOOKING_NO", "width": "200px"},//报关单录入
-              { "data": "ZLSCF", "width": "160px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.ZLSCF==null){
-                    return '0.00';
-                  }
-                 var  aa=parseFloat(full.ZLSCF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "data": "FTF", "width": "100px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.FTF==null){
-                    return '0.00';
-                  }
-                   var  aa=parseFloat(full.FTF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "data": "PZF", "width": "100px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.PZF==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.PZF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "data": "XDF", "width": "100px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.XDF==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.XDF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "data": "WLDLF", "width": "100px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.WLDLF==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.WLDLF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "data": "GKF", "width": "100px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.GKF==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.GKF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "data": "MTF", "width": "100px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.MTF==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.MTF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "width": "100px","class":'matou_fine',
-                "render": function ( data, type, full, meta ) {
-                  if(full.ORDER_TYPE=='cost'){
-                    return '<span style="color:red;">'+'-'+'</span>';
-                  }
-                  var matoufine=0,wldlf,gkf,mtf;
-                  wldlf=parseFloat(full.WLDLF) ;gkf=parseFloat(full.GKF); mtf=parseFloat(full.MTF);
-                  if(full.WLDLF==null){wldlf=0;}
-                  if(full.GKF==null){gkf=0;}
-                  if(full.MTF==null){mtf=0;}
-                  matoufine=parseFloat(wldlf+gkf+mtf).toFixed(2);
-                    return matoufine;
-                    }
-              },//码头费小计(前三项，LHF不)
-              { "data": "ZHF","width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.ZHF==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.ZHF).toFixed(2);
-                  return aa;
-                }
-                },
-              { "data": "LXF", "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.LXF==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.LXF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "data": "AC", "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.AC==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.AC).toFixed(2);
-                  return aa;
-                }
-              },
-              { "data": "WJF", "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.WJF==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.WJF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "width": "60px","class":'gongben_fine',
-                "render": function ( data, type, full, meta ) {
-                  if(full.ORDER_TYPE=='cost'){
-                    return '<span style="color:red;">'+'-'+'</span>';
-                  }
-                  var gongbenfine=0,lxf,ac,wjf;
-                  lxf=parseFloat(full.LXF) ;ac=parseFloat(full.AC); wjf=parseFloat(full.WJF);
-                  if(full.LXF==null){lxf=0;}
-                  if(full.AC==null){ac=0;}
-                  if(full.WJF==null){wjf=0;}
-                  gongbenfine=parseFloat(lxf+ac+wjf).toFixed(2);
-                      return gongbenfine;
-                    }
-               }, //工本费小计（前三项）
-              { "data": "PZF", "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.PZF==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.PZF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "data": "RZF", "width": "100px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.RZF==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.RZF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "data": "YF", "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.YF==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.YF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "data": "DTF", "width": "120px",
-                "render": function ( data, type, full, meta ) {
-                  
-                  var  aa=parseFloat(full.DTF).toFixed(2);
-                  return '小计';
-                }
-              },//小计
-              { "data": "BGF", "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.BGF==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.BGF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "data": "DTF", "width": "120px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.DTF==null){
-                    return '0.00';
-                  }
-                  var  aa=parseFloat(full.DTF).toFixed(2);
-                  return aa;
-                }
-              },
-              { "data": "TOTAL","class":"total", "width": "120px",
-                  "render": function ( data, type, full, meta ) {
-                  var total=0.0;
-                   total+=parseFloat(full.ZLSCF)+parseFloat(full.FTF)+parseFloat(full.PZF)+parseFloat(full.XDF)  +parseFloat(full.WLDLF)+parseFloat(full.GKF)+parseFloat(full.MTF)+
-                  parseFloat(full.ZHF)+parseFloat(full.LXF)+parseFloat(full.AC)+parseFloat(full.WJF)+
-                  parseFloat(full.RZF)+parseFloat(full.YF)+parseFloat(full.ZLSCF)+
-                  parseFloat(full.BGF)+parseFloat(full.DTF);
-                  return total.toFixed(2);
-                }
-              },//合计
-              { "data": "TOTAL", "width": "120px",
-                  "render": function ( data, type, full, meta ) {
-                  var total=0.0;
-                   total+=parseFloat(full.ZLSCF)+parseFloat(full.FTF)+parseFloat(full.PZF)+parseFloat(full.XDF)  +parseFloat(full.WLDLF)+parseFloat(full.GKF)+parseFloat(full.MTF)+
-                  parseFloat(full.ZHF)+parseFloat(full.LXF)+parseFloat(full.AC)+parseFloat(full.WJF)+
-                  parseFloat(full.RZF)+parseFloat(full.YF)+parseFloat(full.ZLSCF)+
-                  parseFloat(full.BGF)+parseFloat(full.DTF);
-                  return total.toFixed(2);
-                }},//备注,
-              { "data": "CPOID", "visible": false}
+            },
+            { "data": "DATE_CUSTOM", "width": "100px"},
+            { "data": "BOOKING_NO", "width": "180px"},
+            { "data": "ABBR_NAME", "width": "120px"},
+            { "data": "FIN_NAME", "width": "200px"},
+            { "data": "AMOUNT", "width": "80px"},
+            { "data": "PRICE", "width": "80px"},
+            { "data": "CURRENCY_NAME", "width": "100px"},
+            { "data": "TOTAL_AMOUNT", "width": "100px"},
+            { "data": "REMARK", "width": "100px"},
+            { "data": "CUSTOMS_BILLCODE", "width": "120px"},
+            { "data": "CREATE_STAMP", "width": "100px"},
+            { "data": "ORDER_ID", "visible": false}
             ]
     }); 
        
