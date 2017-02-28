@@ -164,28 +164,28 @@ public class JobOrderController extends Controller {
     public String generateJobPrefix(String type){
     		String prefix = "";
 			if(type.equals("出口柜货")||type.equals("进口柜货")||type.equals("出口散货")||type.equals("内贸海运")){
-				prefix+="EKO";
+				prefix+="O";
 			}
 			else if(type.equals("出口空运")||type.equals("进口空运")){
-				prefix+="EKA";
+				prefix+="A";
 			}
 			else if(type.equals("香港头程")||type.equals("香港游")||type.equals("进口散货")){
-				prefix+="EKL";
+				prefix+="L";
 			}
 			else if(type.equals("加贸")||type.equals("园区游")){
-				prefix+="EKP";
+				prefix+="P";
 			}
 			else if(type.equals("陆运")){
-				prefix+="EKT";
+				prefix+="T";
 			}
 			else if(type.equals("报关")){
-				prefix+="EKC";
+				prefix+="C";
 			}
 			else if(type.equals("快递")){
-				prefix+="EKE";
+				prefix+="E";
 			}
 			else if(type.equals("贸易")){
-				prefix+="EKB";
+				prefix+="B";
 			}
 			return prefix;
     }
@@ -211,7 +211,7 @@ public class JobOrderController extends Controller {
    		String export_date = (String)dto.get("order_export_date");
         String newDateStr = "";
         SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMM");//转换后的格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yy");//转换后的格式
         try {
             Date date=parseFormat.parse(export_date);
             newDateStr=sdf.format(date);
@@ -251,8 +251,11 @@ public class JobOrderController extends Controller {
    			             !newDateStr.equals(oldOrderNoDate)
    			        ) 
    			  ){
-	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), newDateStr, office_id);
-	            jobOrder.set("order_no", order_no);
+	   			StringBuilder sb = new StringBuilder(oldOrderNo);//构造一个StringBuilder对象
+
+	   			sb.replace(5, 6, generateJobPrefix(type));
+	   			oldOrderNo =sb.toString();
+	            jobOrder.set("order_no", oldOrderNo);
    			}
    			
    			DbUtils.setModelValues(dto, jobOrder);
@@ -263,9 +266,13 @@ public class JobOrderController extends Controller {
    		} else {
    			//create 
    			DbUtils.setModelValues(dto, jobOrder);
+//   			String newOrder_on ="EKYZH"+generateJobPrefix(type);
    			
    			//需后台处理的字段
-   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), newDateStr, office_id);
+   			String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, office_id);
+   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
+   			sb.insert(5, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
+   			order_no = sb.toString();
             jobOrder.set("order_no", order_no);
    			jobOrder.set("creator", user.getLong("id"));
    			jobOrder.set("create_stamp", new Date());

@@ -26,13 +26,14 @@ public class OrderNoGenerator {
     
 	public synchronized static String getNextOrderNo(String orderPrefix, long officeId) {
 	    String orderNo = "";
-	    SimpleDateFormat sdf = new SimpleDateFormat("yyMM");
+	    SimpleDateFormat sdf = new SimpleDateFormat("yy");
         String nowdate = sdf.format(new Date());
         
 		orderNo = generateNo(orderPrefix, officeId, nowdate);
 		
 		return orderNo;
 	}
+	
 
     private static String generateNo(String orderPrefix, long officeId,
             String dateStr) {
@@ -41,19 +42,19 @@ public class OrderNoGenerator {
         //2. 判断是否日期相同, 相同就累加, 不同就重新计数
 	    Record orderSeq = Db.findFirst("select * from order_no_seq where prefix=? and office_id=?", orderPrefix+dateStr, officeId);
         if(orderSeq!=null){
-            String seq = "000";
+            String seq = "0000";
             String lastOrderNo = orderSeq.get("last_order_no");
             //不管前缀长度，后面的数字长度是 11， 1101001
-            String ym = StringUtils.right(lastOrderNo, 7).substring(0, 4); // 获取年月字符串
+            String ym = StringUtils.right(lastOrderNo, 6).substring(0, 2); // 获取年月字符串
             if(ym.equals(dateStr)){//如果年月 =今天， 获取流水号
-                seq = StringUtils.right(lastOrderNo, 3); // 获取流水号
+                seq = StringUtils.right(lastOrderNo, 4); // 获取流水号
             }
             orderNo = orderPrefix +dateStr+ getNo(seq);
             orderSeq.set("last_order_no", orderNo);
             Db.update("order_no_seq", orderSeq);
         }else{
             orderSeq = new Record();
-            orderNo = orderPrefix +dateStr+ getNo("000");
+            orderNo = orderPrefix +dateStr+ getNo("0000");
             orderSeq.set("prefix", orderPrefix+dateStr);
             orderSeq.set("last_order_no", orderNo);
             orderSeq.set("office_id", officeId);
@@ -70,7 +71,7 @@ public class OrderNoGenerator {
 		int i = Integer.parseInt(rs);
 		i += 1;
 		rs = "" + i;
-		int seqLength = 3;//序列号长度001
+		int seqLength = 4;//序列号长度0001
 		for (int j = rs.length(); j < seqLength; j++) {
 			rs = "0" + rs;
 		}
