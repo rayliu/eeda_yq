@@ -496,4 +496,18 @@ li{
     width: 20%;
     float: left;
 }
+
+.login_back_footer {
+    position: relative;
+    height: 35px;
+    margin-top: -35px;
+    background-color: #457ab7;
+    text-align: center;
+    padding: 10px;
+    color: white;
+}
+
+.login_back_footer  a {
+    color: white;
+}
 /* ray added */
