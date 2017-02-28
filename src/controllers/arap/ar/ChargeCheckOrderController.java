@@ -260,7 +260,7 @@ public class ChargeCheckOrderController extends Controller {
         		+ " select aco.*, p.abbr sp_name "
 				+ " from arap_charge_order aco "
 				+ " left join party p on p.id=aco.sp_id "
-				+ " where aco.office_id = "+office_id
+				+ " where aco.office_id = "+office_id+" order by aco.create_stamp DESC "
 				+ " ) B where 1=1 ";
         String condition = DbUtils.buildConditions(getParaMap());
 
