@@ -449,8 +449,13 @@ li{
     margin-bottom: 0px;
     font-weight: bolder;
     font-size: 18px;
+    background-color: #457ab7;
+    border-radius: 0px;
+    border-left: solid 1px #e7e7e7;
 }
-
+.breadcrumb>li {
+    color: #fff;
+}
 .breadcrumb a{
     color: white;
     font-family: dinpro, Arial,sans-serif;
