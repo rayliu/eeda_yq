@@ -2,10 +2,10 @@ define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table',  'dataTablesBoots
 
 $(document).ready(function() {
 
-	document.title = '创建应收对账单 | ' + document.title;
+	document.title = '报关创建应付对账单 | ' + document.title;
 
     $('#menu_charge').addClass('active').find('ul').addClass('in');
-    $("#breadcrumb_li").text('应收对账单');
+    $("#breadcrumb_li").text('报关应付对账单');
     
     //构造主表json
     var buildOrder = function(){
@@ -71,7 +71,7 @@ $(document).ready(function() {
             var order = data;
             if(order.ID>0){
             	$("#creator_name").val(order.CREATOR_NAME);
-                $("#create_stamp").val(order.CREATE_STAMP);
+                $("#create_time").val(order.CREATE_STAMP);
                 $("#order_no").val(order.ORDER_NO);
                 $("#order_id").val(order.ID);
                 $("#status").val(order.STATUS);
@@ -99,7 +99,6 @@ $(document).ready(function() {
     var status = $("#status").val()
     if(order_id==""){
     	$('#saveBtn').attr('disabled', false);
-    	
     }else{
     	if(status=='新建'){
     		$('#saveBtn').attr('disabled', false);
@@ -118,7 +117,7 @@ $(document).ready(function() {
     			 $('#saveBtn').attr('disabled', true);
     			 $("#status").val('已确认');
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
-    			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
+    			 $("#confirm_time").val(data.CONFIRM_STAMP); 
     			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
  			 
     		 }
@@ -153,17 +152,5 @@ $(document).ready(function() {
     });
     
 
-    
-    $('input[type=radio]').on('click',function(){
-    	var checked = $(this).val();
-    	
-    	if(checked=='Y'){
-    		$('#invoice_flag').show();
-    	}else{
-    		$('#invoice_flag').hide();
-    	}
-    });
-    
-   
 });
 });

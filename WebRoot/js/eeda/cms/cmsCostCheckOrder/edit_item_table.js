@@ -33,91 +33,42 @@ $(document).ready(function() {
 
         return items_array;
     };
+
     var ids = [];
     var cnames = [];
     //------------事件处理
-        var itemTable = eeda.dt({
-            id: 'eeda-table',
-            initComplete: function( settings ) {
-            	ids = [];
-            	cnames = [];
-            },
-            columns:[
-            {"data": "ID",
-            	"render": function ( data, type, full, meta ) {
-            		var str = '<input type="checkbox" style="width:30px" value="'+data+'">';
-            		for(var i=0;i<ids.length;i++){
-                        if(ids[i]==data){
-                       	 str = '<input type="checkbox" style="width:30px" value="'+data+'" checked>';
-                        }
-                    }
-            		return str;
-			    }
-            },
-            { "data": "ORDER_NO"},
-            { "data": "CREATE_STAMP"},
-            { "data": "SP_NAME"},
-            { "data": "CURRENCY_NAME",'class':'currency_name'},
-            { "data": "TOTAL_AMOUNT",'class':'total_amount',
-            	"render": function ( data, type, full, meta ) {
-            		if(full.ORDER_TYPE=='cost'){
-	            		return '<span style="color:red;">'+'-'+data+'</span>';
-	            	}
-                    return data;
-                  }
-            },
-            { "data": "EXCHANGE_RATE","visible":false},
-            { "data": "AFTER_TOTAL","visible":false,
-            	"render": function ( data, type, full, meta ) {
-            		if(full.ORDER_TYPE=='cost'){
-	            		return '<span style="color:red;">'+'-'+data+'</span>';
-	            	}
-                    return data;
-                  }
-            },
-            { "data": "NEW_RATE",'class':'new_rate',"visible": false},
-            { "data": "AFTER_RATE_TOTAL",'class':'after_rate_total',"visible": false,
-            	"render": function ( data, type, full, meta ) {
-            		if(full.ORDER_TYPE=='cost'){
-	            		return '<span style="color:red;">'+'-'+data+'</span>';
-	            	}
-                    return data;
-                  }
-            },
-            { "data": "EXCHANGE_CURRENCY_NAME"}, 
-            { "data": "EXCHANGE_CURRENCY_RATE"}, 
-            { "data": "EXCHANGE_TOTAL_AMOUNT", 
-                "render": function ( data, type, full, meta ) {
-                    if(full.ORDER_TYPE=='cost'){
-                        return '<span style="color:red;">'+'-'+data+'</span>';
-                    }
-                    return data;
-                  }
-            },
-            { "data": "VGM"},
-            { "data": "CONTAINER_AMOUNT"},
-            { "data": "GROSS_WEIGHT"},
-            { "data": "CONTAINER_NO"},
-            { "data": "REF_NO"},
-            { "data": "MBL_NO"},
-            { "data": "HBL_NO"},
-             { "data": "HBL_NO"},
-              { "data": "HBL_NO"},
-               { "data": "HBL_NO"},
-                { "data": "HBL_NO"},
-                 { "data": "HBL_NO"},
-                  { "data": "HBL_NO"},
-                   { "data": "HBL_NO"},
-                    { "data": "HBL_NO"},
-            { "data": "ORDER_TYPE", "visible": false,
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return data;
-                }
-            },
-        ]
-    }); 
+    var itemTable = eeda.dt({
+        id: 'eeda-table',
+        initComplete: function( settings ) {
+        	ids = [];
+        	cnames = [];
+        },
+        columns:[
+		        { "width": "10px", "orderable": false,
+		        	"render": function ( data, type, full, meta ) {
+		              var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
+		              	return strcheck;
+		        	}
+		        },
+		        { "data": "ORDER_NO", "width": "100px",
+		          "render": function ( data, type, full, meta ) {
+		                    return "<a href='/customPlanOrder/edit?id="+full.ORDER_ID+"' target='_blank'>"+data+"</a>";
+		                }
+		        },
+		        { "data": "DATE_CUSTOM", "width": "100px"},
+		        { "data": "BOOKING_NO", "width": "180px"},
+		        { "data": "ABBR_NAME", "width": "120px"},
+		        { "data": "FIN_NAME", "width": "200px"},
+		        { "data": "AMOUNT", "width": "80px"},
+		        { "data": "PRICE", "width": "80px"},
+		        { "data": "CURRENCY_NAME", "width": "100px"},
+		        { "data": "TOTAL_AMOUNT", "width": "100px"},
+		        { "data": "REMARK", "width": "100px"},
+		        { "data": "CUSTOMS_BILLCODE", "width": "120px"},
+		        { "data": "CREATE_STAMP", "width": "100px"},
+		        { "data": "ORDER_ID", "visible": false}
+	        ]
+	}); 
         
            
     $('input[name=new_rate]').on('keyup',function(){

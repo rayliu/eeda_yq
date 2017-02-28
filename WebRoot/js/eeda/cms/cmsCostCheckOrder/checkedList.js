@@ -12,27 +12,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
             serverSide: true, //不打开会出现排序不对
             ajax: "/cmsCostCheckOrder/checkedList",
             columns:[	                
-					  { "data": "ORDER_NO", "width": "100px",
-			            	 "render": function ( data, type, full, meta ) {
-			           		  return "<a href='/cmsCostCheckOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
-			           	  }
-			          },
-					  { "data": "CREATE_STAMP", "width": "100px"},  
-					  { "data": "STATUS", "width": "100px"},
-					  { "data": "SP_NAME", "width": "60px"}, 
-					  { "data": "TOTAL_AMOUNT","width": "60px",
-				    	 "render":function(data, type, full, meta){
-				    		 if(data<0){
-				    			 return '<span style="color:red">'+data+'</span>';
-				    		 }else{
-				    			 return data;
-				    		 }
-				    	 }
-					  },
-					  { "data": "USD"},
-			          { "data": "HKD"},
-			          { "data": "JPY"},
-			          { "data": "CNY"},
+				{ "data": "ORDER_NO", "width": "100px",
+					 "render": function ( data, type, full, meta ) {
+						  return "<a href='/cmsCostCheckOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+					  }
+				},
+				
+				{ "data": "STATUS", "width": "100px"},
+				{ "data": "PARTY_NAME", "width": "80px"}, 
+				{ "data": "CHECK_AMOUNT","width": "80px",
+				"render":function(data, type, full, meta){
+					 if(data<0){
+						 return '<span style="color:red">'+data+'</span>';
+					 }else{
+						 return data;
+					 }
+				}
+				},
+				{ "data": "CREATOR_NAME", "width": "80px"}, 
+				{ "data": "CREATE_STAMP", "width": "80px"}, 
+				{ "data": "CONFIRM_NAME", "width": "80px"}, 
+				{ "data": "CONFIRM_STAMP", "width": "80px"}
             ]
         });
    	           
@@ -58,7 +58,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
               时间字段需成双定义  *_begin_time *_end_time   between
           */
           var url = "/cmsCostCheckOrder/checkedList?order_no="+order_no
-               +"&sp_name="+sp_name
+               +"&party_name="+sp_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 
