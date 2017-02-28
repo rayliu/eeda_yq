@@ -248,10 +248,10 @@ $(document).ready(function() {
                 		}
                 	else if(full.ID){
                 		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" ><i class="fa fa-trash-o"></i> 删除</button></button>&nbsp';
-                		str+= '<button type="button" class="costConfirm btn table_btn btn-success btn-xs" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" class="costConfirm btn table_btn btn_green btn-xs" value="'+full.ID+'" >确认</button> ';		
                 	}else{
                 		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs"><i class="fa fa-trash-o"></i> 删除</button></button>&nbsp';
-                		str+= '<button type="button" class="btn table_btn btn-success btn-xs"  disabled>确认</button> ';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs"  disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;

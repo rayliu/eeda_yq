@@ -111,19 +111,19 @@ $(document).ready(function() {
                         return '<input type="checkbox" class="checkBox" name="hide_flag">';
 			    }
 			},
-			{ "data": "ID","width": "110px",
+			{ "data": "ID","width": "70px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
                 	if(data&&full.AUDIT_FLAG == 'Y'){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> '; 
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>&nbsp';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>确认</button> '; 
                 		}
                 	else if(data){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" class=" btn btn-success btn-xs costConfirm" style="width:50px" value="'+data+'" >确认</button> ';		
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>&nbsp';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs costConfirm" style="width:50px" value="'+data+'" >确认</button> ';		
                 	}else{
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> ';
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px">删除</button>&nbsp';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;
