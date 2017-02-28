@@ -388,10 +388,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         $('#collapse'+type+'Icon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
         var order_type = $('#type').val();
         var customer_id = $('#application_unit').val();
-        if(order_type.trim() == '' || customer_id == ''){
+        if(order_type == ''|| order_type ==null|| customer_id == ''){
             $.scojs_message('请先选择类型和申报单位', $.scojs_message.TYPE_ERROR);
-            return
+            return;
         }else{
+            
             $.post('/customPlanOrder/getArapTemplate', {order_type:order_type,customer_id:customer_id,arap_type:type}, function(data){
                 if(data){
                     for(var i = 0;i<data.length;i++){

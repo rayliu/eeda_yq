@@ -359,6 +359,7 @@ public class JobOrderController extends Controller {
 	        	if("UPDATE".equals(map.get("action"))){
 	        		model.update();
 	        	}else if("DELETE".equals(map.get("action"))){
+	        		if(map.get("id")!=null)
 	        		model.delete();
 	        	}else{
 	        		model.save();
@@ -376,6 +377,7 @@ public class JobOrderController extends Controller {
 	        	if("UPDATE".equals(map.get("action"))){
 	        		model.update();
 	        	}else if("DELETE".equals(map.get("action"))){
+	        		if(map.get("id")!=null)
 	        		model.delete();
 	        	}else{
 	        		model.save();

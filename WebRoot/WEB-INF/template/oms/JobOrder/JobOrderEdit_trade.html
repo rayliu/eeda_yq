@@ -100,7 +100,6 @@
                                     }){} %>
                             </div>
                         </div><br>
-                        <div class="row">
                             <div class="col-lg-12">
                                 <h3>应收服务费用</h3>
                                 <div class="panel panel-default">
@@ -118,10 +117,6 @@
                                     </div>
                                </div>
                             </div>
-                            </div>
-                        </div>
-                           
-                            <div class="row">
                                 <div class="col-lg-3">
 			                            <%include("/eeda/component/form/inputCurrencyField.html", 
 				                                {   id:'service_currency_id', 
@@ -160,32 +155,30 @@
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
                                         id:'charge_service_table',
-                                        headers:['','结算公司','费用名称','对账金额','对账币制','对人民币汇率', '金额(人民币)','结算币制','结算汇率','结算金额','sp_id_name','charge_id_name','currency_id_name'],
+                                        headers:['','结算公司','费用名称','对账金额','对账币制','对人民币汇率', '金额(人民币)','结算币制','结算汇率','结算金额','sp_id_name','charge_id_name','currency_id_name','',''],
                                         field_list:['','sp_id','charge_id','total_amount','currency_id',
                                      				'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','sp_id_name','charge_id_name','currency_id_name','EXCHANGE_CURRENCY_ID_NAME','audit_flag'],
                                         value_list: trade_charge_service_list![]
                                     }){} %>
                               </div>
                             </div>
-                           <div class="row">
 	                            <div class="col-lg-12">
 	                                <h3>销售应收费用</h3>
                                      <div class="panel panel-default">
                                  <div class="panel-heading">
                                     <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeTradeSaleInfo" aria-expanded="false" class="collapsed">
-                                        <i id='collapseChargeTradeSaleIcon' class="fa 
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeSaleInfo" aria-expanded="false" class="collapsed">
+                                        <i id='collapseChargeSaleIcon' class="fa 
                                         <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用销售应收费用
                                         </a>
                                     </h4>
                                   </div>
-                                 <div id="collapseChargeTradeSaleInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
-                                    <div class="panel-body" id="ChargeTradeSaleDiv">
+                                 <div id="collapseChargeSaleInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+                                    <div class="panel-body" id="ChargeSaleDiv">
                                         
                                      </div>
                                  </div>
                             </div>
-	                            </div>
                              	<div class="col-lg-3">
 			                            <%include("/eeda/component/form/inputCurrencyField.html", 
 				                                {   id:'sale_currency_id', 
@@ -216,7 +209,8 @@
 				                                    value:trade.sale_currency_rate!''
 				                                }){}%>
 				                 </div>
-				            <br>
+
+                             </div>
                             <div class="col-lg-12">
                                 <button class="btn btn_blue btn-xs" type="button" id="add_trade_sale_table">添加明细</button>
                                 <br>
@@ -228,7 +222,6 @@
                                      				'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','sp_id_name','charge_id_name','currency_id_name','EXCHANGE_CURRENCY_ID_NAME','unit_id_name','audit_flag'],
                                         value_list: trade_charge_sale_list![]
                                     }){} %>
-                            </div>
                             </div>
             </div><!-- /.row -->
             </form>
