@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -77,6 +78,10 @@ public class CustomPlanOrderController extends Controller {
             
         CustomPlanOrder customPlanOrder = new CustomPlanOrder();
    		String id = (String) dto.get("id");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM");//转换后的格式
+        String newDateStr = "";
+        
+        newDateStr=sdf.format(new Date());
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
@@ -95,7 +100,13 @@ public class CustomPlanOrderController extends Controller {
    			DbUtils.setModelValues(dto, customPlanOrder);
    			
    			//需后台处理的字段
-   			customPlanOrder.set("order_no", OrderNoGenerator.getNextOrderNo("BGSQ", office_id));
+   			String order_no =OrderNoGenerator.getNextOrderNo("BGSQ", office_id);
+   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
+   			sb.insert(6, newDateStr);//在指定的位置1，插入指定的字符串
+   			sb.replace(8, 9, "");
+   			order_no = sb.toString();
+   			customPlanOrder.set("order_no", order_no);
+   			
    			customPlanOrder.set("creator", user.getLong("id"));
    			customPlanOrder.set("create_stamp", new Date());
    			customPlanOrder.set("office_id", office_id);
