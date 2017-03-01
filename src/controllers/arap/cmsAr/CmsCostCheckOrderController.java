@@ -9,14 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.ArapCostItem;
-import models.ArapCostOrder;
 import models.CustomArapCostItem;
 import models.CustomArapCostOrder;
-import models.RateContrast;
 import models.UserLogin;
-import models.eeda.cms.CustomArapChargeItem;
-import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.profile.Currency;
 
 import org.apache.commons.lang.StringUtils;
@@ -128,7 +123,7 @@ public class CmsCostCheckOrderController extends Controller {
 			 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
 			 +" from custom_plan_order_arap cpoa "
 			 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-			 +" LEFT JOIN fin_item f on f.id = cpoa.currency_id "
+			 +" LEFT JOIN fin_item f on f.id = cpoa.charge_id "
 			 +" LEFT JOIN party p on p.id = cpoa.sp_id "
 			 +" where 1 = 1 "
 			 + checkCondition

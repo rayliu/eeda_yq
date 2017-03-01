@@ -9,11 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.CustomArapCostOrder;
 import models.UserLogin;
 import models.eeda.cms.CustomArapChargeItem;
 import models.eeda.cms.CustomArapChargeOrder;
-import models.eeda.cms.CustomPlanOrderArap;
 import models.eeda.profile.Currency;
 
 import org.apache.commons.lang.StringUtils;
@@ -126,7 +124,7 @@ public class CmsChargeCheckOrderController extends Controller {
 			 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
 			 +" from custom_plan_order_arap cpoa "
 			 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-			 +" LEFT JOIN fin_item f on f.id = cpoa.currency_id "
+			 +" LEFT JOIN fin_item f on f.id = cpoa.charge_id "
 			 +" LEFT JOIN party p on p.id = cpoa.sp_id "
 			 +" where 1 = 1 "
 			 + checkCondition
@@ -214,7 +212,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		   				 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
 		   				 +" from custom_plan_order_arap cpoa "
 		   				 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-		   				 +" LEFT JOIN fin_item f on f.id = cpoa.currency_id "
+		   				 +" LEFT JOIN fin_item f on f.id = cpoa.charge_id "
 		   				 +" LEFT JOIN party p on p.id = cpoa.sp_id "
 		   				 +" where cpoa.id in("+ids+")";
 				}else{
@@ -223,7 +221,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		   				 +" from custom_plan_order_arap cpoa "
 		   				 +" left join custom_arap_charge_item caci on caci.ref_order_id = cpoa.id"
 		   				 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-		   				 +" LEFT JOIN fin_item f on f.id = cpoa.currency_id "
+		   				 +" LEFT JOIN fin_item f on f.id = cpoa.charge_id "
 		   				 +" LEFT JOIN party p on p.id = cpoa.sp_id "
 		   				 +" where caci.custom_charge_order_id ="+order_id;
 						}	
