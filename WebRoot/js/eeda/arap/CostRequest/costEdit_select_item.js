@@ -1,6 +1,7 @@
 define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
     
 var itemIds=[];
+var checkIds=[];
         var itemTable = eeda.dt({
             id: 'select_item_table',
             initComplete: function( settings ) {
@@ -12,7 +13,11 @@ var itemIds=[];
                 { "data": "ID", visible: false},
                 { "data": null,
                     "render": function ( data, type, full, meta ) {
-                        str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked>';
+                    	var checkedVal = "";
+                    	if($.inArray(full.ID.toString(),itemOrder.checkIds)!='-1'){
+                    		checkedVal = "checked"
+                    	}
+                        str = '<input id="checkbox_'+full.ID+'" type="checkbox" '+checkedVal+' style="width:30px">';
                         return str;
                     }
                 },
@@ -494,6 +499,21 @@ var itemIds=[];
         var url = "/costCheckOrder/tableList?appApplication_id="+appApplication_id+"&order_id=N&bill_flag=create";
         itemTable.ajax.url(url).load();
         };
+        
+    
+   
+    $('#select_item_table').on('click','[type=checkbox]',function(){
+    	var checked = $(this).prop('checked');
+    	var item_id = $(this).parent().parent().attr('id');
+    	if(checked){
+    		checkIds.push(item_id)
+    	}else{
+    		var index = $.inArray(item_id,checkIds);
+    		checkIds.splice(index,1);
+    	}
+    	itemOrder.checkIds = checkIds;
+    })
+        		
 
     return {
         refleshSelectTable: refleshSelectTable,
