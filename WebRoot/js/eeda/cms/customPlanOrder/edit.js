@@ -11,7 +11,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		$(this).attr('disabled', true);
     		id = $('#order_id').val();
     		var plan_order_no = $('#order_no').val();
-    		var customer_id = $('#application_company').val();
+    		var customer_id = $('#receive_sent_consignee').val();
     		$.post('/customPlanOrder/confirmCompleted', {id:id,btnId:btnId,plan_order_no:plan_order_no,customer_id:customer_id}, function(order){
     				$('#status').val(order.STATUS);
     				var status = order.STATUS;
@@ -142,7 +142,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             order.allCharge_template = salesOrder.buildAllChargeTemplate();
             order.allCost_template = salesOrder.buildAllCostTemplate();
             order.order_type = $('#type').val();
-            order.customer_id = $('#application_unit').val();
+            order.customer_id = $('#receive_sent_consignee').val();
 //            var order = {
 //            		    id: $('#order_id').val(),
 //            	carrier_id: $('#carrier').val(),
@@ -387,9 +387,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         var div = $('#'+type+'Div').empty();
         $('#collapse'+type+'Icon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
         var order_type = $('#type').val();
-        var customer_id = $('#application_unit').val();
+        var customer_id = $('#receive_sent_consignee').val();
         if(order_type == ''|| order_type ==null|| customer_id == ''){
-            $.scojs_message('请先选择类型和申报单位', $.scojs_message.TYPE_ERROR);
+            $.scojs_message('请先选择类型和收发货人', $.scojs_message.TYPE_ERROR);
             return;
         }else{
             
