@@ -5,9 +5,8 @@
 	<div class="row simple_search_div">
 	   <div class="col-lg-12">
 		<form id="orderForm">
-			<input id="sp_id" type="hidden" name="sp_id" value="${order.sp_id!''}" />
-				<!--  第1行  -->
-		   	<!--  第2行  -->
+			<input id="party_id" type="hidden" name="party_id" value="${order.party_id!''}" />
+			<input id="declare_unit_id" type="hidden" name="declare_unit_id" value="${order.declare_unit_id!''}" />
 			<div class="row">
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", {
@@ -21,7 +20,7 @@
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", {
 					id:'creator_name',
-					 label:'创建人', value:order.user!order.creator_name!'',
+					 label:'创建人', value:order.creator_name!'',
 					 disabled:'disabled' 
 					 }){}%>
 				</div>
@@ -30,20 +29,20 @@
 			<div class="row">
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", {
-					id:'create_stamp', label:'创建时间', value:order.create_stamp!'',
+					id:'create_time', label:'创建时间', value:order.create_stamp!'',
 					disabled: 'disabled' }){}%>
 				</div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", {
 					 id:'confirm_name',
 					 label:'确认人',
-					 value:order.confirm_by_name!'', 
+					 value:order.confirm_name!'', 
 					 disabled:'disabled' 
 					 }){}%>
 				</div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", {
-					id:'confirm_stamp', label:'确认时间',
+					id:'confirm_time', label:'确认时间',
 					value:order.confirm_stamp!'',
 					disabled: 'disabled'
 					 }){}%>
@@ -52,8 +51,8 @@
 			<!--  第4行  -->
 			<div class="row">
 				<div class="col-lg-4">
-					<%include("/eeda/component/form/inputField.html", { id:'company_name',
-					label:'申报单位', value:order.company_name!'',disabled:'disabled'
+					<%include("/eeda/component/form/inputField.html", { id:'declare_unit',
+					label:'申报单位', value:order.declare_unit!'',disabled:'disabled'
 					}){}%>
 				</div>
 				<div class="col-lg-4">
@@ -62,8 +61,8 @@
 					}){}%>
 				</div>
 				<div class="col-lg-4">
-					<%include("/eeda/component/form/inputField.html", { id:'customer',
-					label:'联系人', value:order.customer!'',disabled:'disabled'
+					<%include("/eeda/component/form/inputField.html", { id:'contact_person',
+					label:'联系人', value:order.contact_person!'',disabled:'disabled'
 					}){}%>
 				</div>
 			</div>
@@ -86,52 +85,16 @@
 					<textarea id='remark' class="form-control" rows="3" name="remark">${order.remark!''}</textarea>
 				</div>
 			</div>
-			 	
-		<!--  	<div class="row">
-				<div class="col-lg-4">
-					<%include("/eeda/component/form/inputField.html", { id:'total_amount',
-					label:'应收总金额(CNY)', value:order.total_amount!'',disabled:'disabled'
-					}){}%>
-				</div>
-				<div class="col-lg-4">
-					<%include("/eeda/component/form/inputField.html", { id:'check_amount',
-					label:'对账总金额(CNY)', value:order.check_amount!order.total_amount!'',disabled:'disabled'
-					}){}%>
-				</div>
-			</div>      -->
 			
 			<div class="row">
 					<div class="col-lg-12">
 						<div class="btn-header" style="font-size: 18px">结算金额汇总</div>
 					</div>
-				   <div class="col-lg-3">
-					<%include("/eeda/component/form/inputField.html", { id:'cny',
-					label:'应收CNY', value:order.cny!'',disabled:'disabled'
+				   <div class="col-lg-6">
+					<%include("/eeda/component/form/inputField.html", { id:'total_amount',
+					label:'应收人民币总额', value:order.total_amount!'',disabled:'disabled'
 					}){}%>
 				</div>
-			</div>
-
-			<div class="row"  style="display:none">
-				<!--  第4行  -->
-				<div class="col-lg-4">
-					<div class="form-group">
-                         <label class="label-margin">是否开票</label>
-                        	<label class="radio-inline">
-                             <input type="radio" name="invoiceType" value="Y" <% if(order.have_invoice!''=='Y'||order.have_invoice==''){ %>checked="checked"<% }%>>是
-                         </label>
-                        	 <label class="radio-inline">
-                             <input type="radio" name="invoiceType"  value="N" <% if(order.have_invoice!'N'=='N'){%>checked="checked"<% }%>>否
-                         </label>
-                     </div>
-                </div>
-			</div>
-			<div class="row" id="invoice_flag" <% if(order.have_invoice!'N'=='N'){%>style="display:none"<% }%>>
-				<div class="col-lg-4">
-					<%include("/eeda/component/form/inputField.html", { id:'billing_unit',
-					label:'开票单位', value:order.billing_unit!''}){}%></div>
-				<div class="col-lg-4">
-					<%include("/eeda/component/form/inputField.html", { id:'payee',
-					label:'收款人', value:order.payee!''}){}%></div>
 			</div>
 		</form>
 	  </div>
@@ -139,58 +102,29 @@
 	<!-- /.row -->
 	
   <div class="simple_order_list_div">
-        
 		<ul id="orderTabs" class="nav nav-tabs">
 			<li class="active"><a href="#itemDetail" data-toggle="tab"
 				id="costCheckOrderItem">明细信息</a></li>
 		</ul>
 		<br>
-	<!-- -->
-			<div class="group-form"  id="currencyDiv">
-				<!--<div class="col-lg-12">
-                	<div class="row">
-					 <div class="col-lg-4">
-                        <%include("/eeda/component/form/selectField.html", 
-                                    {   id:'query_currency',
-                                        label:'选中查询币种', 
-                                        value:'',
-                                        value_list:[
-                                        	{code:'',value:''},
-                                            {code:'CNY', value:'CNY'},
-                                            {code:'USD', value:'USD'},
-                                            {code:'HKD', value:'HKD'},
-                                            {code:'JPY', value:'JPY'}
-                                        ]
-                                    }){}%>
-                    </div>
-                    <button id='query_listCurrency' class="btn btn_grey">查询</button>
-				</div>
-                </div> -->
-	        </div>
-	        
 	         <div class="tab-content">
                 <div class="tab-pane fade active in" id="unchecked">
 						<%include("/eeda/component/form/detailTable.html", 
                             {
                                 id:'eeda-table', 
-                                style:'width:3000px',
-                               headers:['<input type="checkbox" id="allCheck">','工作单号','创建时间','提单号/船运单号','出口客户号','装箱方式',
-                                                 '报关单录入','资料上传费','封条费','配载费','消毒费','外轮代理费','港口费','码头费', '码头费小计（前三项）',
-                                                  '综合费', '理箱费', '改单费','文件费','工本费小计（前三项）','配载费','入闸费'
-                                                 ,'运费','小计','报关费/票','代垫费','合计','备注',''
-                                     ],
-					field_list:['id','order_no','create_stamp','booking_no','company_abbr','booking_no',
-					'booking_no','zlscf','ftf','pzf','xdf','wldlf','gkf','mtf','mtf',
-					'zhf','lxf','ac','wjf','wjf','pzf',"rzf",
-					'yf','bgf','dtf','dtf','dtf','dtf','cpoid'], value_list: order.itemList!item_list![] }){} %>
+                                style:'width:1500px',
+                               headers:['<input type="checkbox" id="allCheck">','工作单号','报关日期','提单号/船运单号','结算公司','费用名称','单价','数量',
+                               '币制','金额','备注','报关单号码','创建时间','order_id'],
+								field_list:['id','order_no','date_custom','booking_no','abbr_name','fin_name',
+								'amount','price','currency_name','total_amount','remark','customs_billcode','create_stamp','order_id'], 
+								value_list: order.itemList!item_list![] 
+							}){} %>
 			    </div>
 			</div>
 
 		<div class="button-bar" >
 			<button id='saveBtn' class="btn  btn_green" disabled >保存</button> 
 			<button id='confrimBtn' class="btn  btn_green" disabled >确认</button> 
-			<button id="printBtn" type="button" class="btn  btn_green" disabled >打印</button>
-			<button id="printTotaledBtn" type="button" class="btn  btn_white" style="display:none;" disabled>打印(合计版本)</button>
 			<a class="btn  btn_white" href="/cmsChargeCheckOrder">返回</a>
 		</div>
 	</div>
