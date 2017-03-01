@@ -88,14 +88,14 @@ public class CmsCostCheckOrderController extends Controller {
    			CustomArapCostItem aci = null;
    			List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
    			for(Map<String, String> item :itemList){
-		   				aci = new CustomArapCostItem();
-						aci.set("ref_order_type", "报关申请单");
-						aci.set("ref_order_id", item.get("id"));
-						aci.set("custom_cost_order_id", id);
-						aci.save();
-						
-						Db.update("update custom_plan_order_arap set bill_flag = 'Y' where id = ?",item.get("id"));
-   				}
+   				aci = new CustomArapCostItem();
+				aci.set("ref_order_type", "报关申请单");
+				aci.set("ref_order_id", item.get("id"));
+				aci.set("custom_cost_order_id", id);
+				aci.save();
+					
+				Db.update("update custom_plan_order_arap set bill_flag = 'Y' where id = ?",item.get("id"));
+			}
    		}
 		
 		long create_by = order.getLong("create_by");
