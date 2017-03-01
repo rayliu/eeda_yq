@@ -143,6 +143,18 @@ $(document).ready(function() {
     	}
     });
     
+    //打印
+    $('#printCustomOrderBtn').click(function(){
+            $(this).attr('disabled', true);
+            var id = $('#order_id').val();
+            $.post('/jobOrderReport/printcmsChargecheckedOrder', {id:id}, function(data){
+                $('#printCustomOrderBtn').prop('disabled', false);
+                window.open(data);
+            }).fail(function() {
+                $('#printCustomOrderBtn').prop('disabled', false);
+                $.scojs_message('生成货物报关单PDF失败', $.scojs_message.TYPE_ERROR);
+            });
+        });
    
 });
 });

@@ -393,6 +393,20 @@ public class JobOrderReportController extends Controller {
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	
-	
+	//打印应收报关对账单
+	public void printcmsChargecheckedOrder(){
+		String order_id = getPara("id");
+		String fileName = "";
+		String outFileName = "";
+			outFileName = "/download/报关应收对账单 PDF";
+			fileName = "/report/cms/cmsChargeCheckedOrder.jasper";
+		
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_id;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
 	
 }
