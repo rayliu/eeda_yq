@@ -454,6 +454,7 @@ var checkIds=[];
             }
              calcTotal();
              $('#selected_ids').val(selected_ids);
+             
         });
         $("#select_item_table").on('click','input[type=checkbox]',function(){
               $("#coR_allcheck").prop("checked",$("#select_item_table input[type=checkbox]").length-1 == $("#select_item_table input[type=checkbox]:checked").length ? true : false);
@@ -512,7 +513,20 @@ var checkIds=[];
     		checkIds.splice(index,1);
     	}
     	itemOrder.checkIds = checkIds;
-    })
+    });
+    
+    $('#coR_allcheck').on('click',function(){
+    	var checked = $(this).prop('checked');
+    	var table = $('#select_item_table').DataTable();
+    	if(checked){
+    		table.data().each(function(item, index) {
+    			checkIds.push(item.ID);
+            });
+    	}else{
+    		checkIds=[];
+    	}
+    	itemOrder.checkIds = checkIds;
+    });
         		
 
     return {
