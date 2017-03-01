@@ -510,157 +510,178 @@
 				</graphicElement>
 			</line>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="547" y="0" width="29" height="20" uuid="1573c8f3-5e65-409b-be9c-a02fc6ce86a8"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				<reportElement style="right-border" mode="Transparent" x="547" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="1573c8f3-5e65-409b-be9c-a02fc6ce86a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{WLDLF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="488" y="0" width="29" height="20" uuid="16b5d67b-1dca-41f6-a562-1d3e3f709591"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				<reportElement style="right-border" mode="Transparent" x="488" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="16b5d67b-1dca-41f6-a562-1d3e3f709591"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{NFPTF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="636" y="0" width="35" height="20" uuid="6b4dde9d-0df0-46aa-afd7-15992b05fb6b"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				<reportElement style="right-border" mode="Transparent" x="636" y="0" width="35" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="6b4dde9d-0df0-46aa-afd7-15992b05fb6b"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{XDF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="671" y="0" width="29" height="20" uuid="b7f89dc5-0c04-487f-b03c-f3340e2792fa"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				<reportElement style="right-border" mode="Transparent" x="671" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b7f89dc5-0c04-487f-b03c-f3340e2792fa"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{BGDZLR}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement style="right-border" mode="Transparent" x="-1" y="0" width="41" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="3512196d-f5c9-4c4f-bf9d-35288b99e69e"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{create_stamp}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="257" y="0" width="29" height="20" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				<reportElement style="right-border" mode="Transparent" x="257" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{GKJSF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="459" y="0" width="29" height="20" uuid="d3d45fa5-a3d7-444d-aa12-85feab34e35a"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
+				<reportElement style="right-border" mode="Transparent" x="459" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d3d45fa5-a3d7-444d-aa12-85feab34e35a"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ZGZXF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="343" y="0" width="29" height="20" uuid="f24a4c1a-3f07-4b8e-b200-0e77e85d92f3"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfEncoding="Cp1252"/>
+				<reportElement style="right-border" mode="Transparent" x="343" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f24a4c1a-3f07-4b8e-b200-0e77e85d92f3"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CZGF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="285" y="0" width="29" height="20" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfEncoding="Cp1252"/>
+				<reportElement style="right-border" mode="Transparent" x="285" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{GWF}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="212" y="0" width="44" height="20" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="right-border" mode="Transparent" x="212" y="0" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement style="right-border" x="177" y="0" width="34" height="20" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="right-border" mode="Transparent" x="177" y="0" width="34" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_type}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement style="right-border" x="112" y="0" width="65" height="20" uuid="031ec9cc-8b73-404c-94d7-8695bbeabf86"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="right-border" mode="Transparent" x="112" y="0" width="65" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="031ec9cc-8b73-404c-94d7-8695bbeabf86"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tracking_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="700" y="0" width="29" height="20" uuid="5bd07be3-9c35-4c13-b6e5-703f28705972"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				<reportElement style="right-border" mode="Transparent" x="700" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5bd07be3-9c35-4c13-b6e5-703f28705972"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{BGDZSC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="730" y="0" width="29" height="20" uuid="5d315ed5-63d2-4388-8224-3c05edbd5303"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				<reportElement style="right-border" mode="Transparent" x="730" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5d315ed5-63d2-4388-8224-3c05edbd5303"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{BGDDLF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="576" y="0" width="29" height="20" uuid="7d62ce59-9060-48cf-a659-e182ee1002b8"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				<reportElement style="right-border" mode="Transparent" x="576" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="7d62ce59-9060-48cf-a659-e182ee1002b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{AC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="606" y="0" width="29" height="20" uuid="ea3ba0b6-3343-4606-b902-63902238ed93"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				<reportElement style="right-border" mode="Transparent" x="606" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ea3ba0b6-3343-4606-b902-63902238ed93"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ZHF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="517" y="0" width="29" height="20" uuid="5d4d87a7-6460-41a0-b6ef-2f59280e15b3"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				<reportElement style="right-border" mode="Transparent" x="517" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5d4d87a7-6460-41a0-b6ef-2f59280e15b3"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{TYDDY}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="401" y="0" width="29" height="20" uuid="b9f5e5f5-02e9-4ad1-ab8f-3fc1865b4b5c"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
+				<reportElement style="right-border" mode="Transparent" x="401" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b9f5e5f5-02e9-4ad1-ab8f-3fc1865b4b5c"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ZKCLF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="430" y="0" width="29" height="20" uuid="cf947219-429a-4e67-89f0-e3250361bfdb"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
+				<reportElement style="right-border" mode="Transparent" x="430" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="cf947219-429a-4e67-89f0-e3250361bfdb"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{DBZF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="314" y="0" width="29" height="20" uuid="74228ee6-62c2-4566-b69b-b4b3661b4ee1"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfEncoding="Cp1252"/>
+				<reportElement style="right-border" mode="Transparent" x="314" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="74228ee6-62c2-4566-b69b-b4b3661b4ee1"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{MTF}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement style="right-border" x="41" y="2" width="71" height="20" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="right-border" mode="Transparent" x="41" y="-1" width="71" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="372" y="0" width="29" height="20" uuid="0bd1adfb-d972-4254-8e60-b67a9b17aefc"/>
-				<textElement textAlignment="Center">
-					<font size="8" pdfEncoding="Cp1252"/>
+				<reportElement style="right-border" mode="Transparent" x="372" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0bd1adfb-d972-4254-8e60-b67a9b17aefc"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{DCF}]]></textFieldExpression>
 			</textField>
@@ -696,7 +717,7 @@
 				<text><![CDATA[户名：朱文丽]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="0" y="0" width="41" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d49899ef-c58b-4e83-83ad-1b5fc948c02b"/>
+				<reportElement style="right-border" mode="Transparent" x="0" y="0" width="41" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d49899ef-c58b-4e83-83ad-1b5fc948c02b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -709,112 +730,112 @@
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="343" y="0" width="29" height="20" uuid="39cc37b1-f334-46a7-af13-f0dd62002fd5"/>
 				<textElement textAlignment="Center">
-					<font size="8"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_CZGF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="286" y="0" width="29" height="20" uuid="9f13136c-0506-4968-8a7f-c028d48538ce"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfEncoding="Cp1252"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_GWF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="315" y="0" width="29" height="20" uuid="b4008df3-c2c5-49a3-ae6b-4b0352e876dc"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfEncoding="Cp1252"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_MTF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="430" y="0" width="29" height="20" uuid="1b0c19ea-253d-4fd8-9ab8-5f620867dcf3"/>
 				<textElement textAlignment="Center">
-					<font size="8"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_DBZF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="372" y="0" width="29" height="20" uuid="4c4286e7-8a8c-472c-8965-8f3e43c3218c"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfEncoding="Cp1252"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_DCF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="401" y="0" width="29" height="20" uuid="2e636d2d-47ed-481f-ac25-a61cba437b92"/>
 				<textElement textAlignment="Center">
-					<font size="8"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_ZKCLF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="459" y="0" width="29" height="20" uuid="a311e227-cb86-494c-a724-811fcab99e35"/>
 				<textElement textAlignment="Center">
-					<font size="8"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_ZGZXF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="546" y="0" width="29" height="20" uuid="1b62a54d-021a-4215-9507-545b21fb814a"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_WLDLF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="517" y="0" width="29" height="20" uuid="23e5efd1-2f21-4106-892b-a7051780cab5"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_TYDDY}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="488" y="0" width="29" height="20" uuid="71d7cfac-04f7-4ad1-b09e-0831db358822"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_NFPTF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="577" y="0" width="29" height="20" uuid="140995d4-7fa7-4165-9744-ce153633354e"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_AC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="636" y="0" width="35" height="20" uuid="72c8ba72-fd57-4d86-a1a6-c52d6dd5af1b"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_XDF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="671" y="0" width="29" height="20" uuid="f97da92a-b66a-4837-aeeb-6170b602e29f"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_BGDZLR}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="729" y="0" width="29" height="20" uuid="b9fb3f22-d6b1-4ee3-88a2-88f579bcb61f"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_BGDDLF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="605" y="0" width="29" height="20" uuid="c54a1f94-7fbb-4bb9-b52d-cdd7cde4a2fe"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_ZHF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="701" y="0" width="29" height="20" uuid="acfc0968-b374-4fa7-a5ac-c16e72006fe9"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_BGDZSC}]]></textFieldExpression>
 			</textField>
@@ -825,7 +846,7 @@
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" mode="Transparent" x="256" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c2c0c096-4f0b-46b8-b751-9eb52e9a4f1b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_GKJSF}]]></textFieldExpression>
@@ -833,25 +854,25 @@
 			<textField isBlankWhenNull="true">
 				<reportElement style="right-border" x="41" y="0" width="71" height="20" uuid="8f151fef-42f7-4b55-abb6-a8458d03e4ec"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement style="right-border" x="112" y="0" width="65" height="20" uuid="e80abda4-9718-4296-821a-e24e8bdc662c"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement style="right-border" x="177" y="1" width="34" height="20" uuid="500db03e-a4bf-4e8e-bf64-1b9807373579"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="211" y="0" width="44" height="20" uuid="9303487a-094e-4b41-9734-8ad753914f9d"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 			</textField>
 		</band>
