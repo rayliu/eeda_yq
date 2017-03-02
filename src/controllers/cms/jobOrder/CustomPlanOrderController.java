@@ -670,7 +670,7 @@ public class CustomPlanOrderController extends Controller {
         email.setSSLOnConnect(true);
         email.setFrom("info@yq-scm.com","Enkyo珠海远桥");//设置发信人
         //设置收件人，邮件标题，邮件内容
-    	email.addTo("ytimport@163.com");
+    	email.addTo("864358232@qq.com");
         email.setSubject(mailTitle);
         email.setMsg(mailContent);
         
