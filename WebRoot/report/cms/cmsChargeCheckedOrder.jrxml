@@ -396,7 +396,7 @@
 				<text><![CDATA[海事局]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="right-border" mode="Transparent" x="344" y="82" width="29" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="c2dc9d08-cefe-4140-9574-a2a04279e000"/>
+				<reportElement style="right-border" mode="Transparent" x="343" y="82" width="29" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="c2dc9d08-cefe-4140-9574-a2a04279e000"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -574,7 +574,7 @@
 				<textFieldExpression><![CDATA[$F{create_stamp}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="257" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
+				<reportElement style="right-border" mode="Transparent" x="256" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -875,7 +875,7 @@
 				<textFieldExpression><![CDATA[$V{SUM_GKJSF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="257" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="c2c0c096-4f0b-46b8-b751-9eb52e9a4f1b"/>
+				<reportElement style="right-border" mode="Transparent" x="256" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="c2c0c096-4f0b-46b8-b751-9eb52e9a4f1b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
