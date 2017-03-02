@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="842" pageHeight="595" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="80"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="style1" forecolor="#000000" backcolor="#000000">
 		<box>
@@ -20,6 +20,22 @@
 	</style>
 	<style name="right-border">
 		<box>
+			<rightPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<style name="r_l_border" pattern="">
+		<box>
+			<topPen lineWidth="0.25"/>
+			<leftPen lineWidth="0.25"/>
+			<bottomPen lineWidth="0.25"/>
+			<rightPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<style name="all_border">
+		<box>
+			<topPen lineWidth="0.25"/>
+			<leftPen lineWidth="0.25"/>
+			<bottomPen lineWidth="0.25"/>
 			<rightPen lineWidth="0.25"/>
 		</box>
 	</style>
@@ -170,14 +186,14 @@
 			<staticText>
 				<reportElement x="89" y="17" width="597" height="23" uuid="4ed9d707-a40e-4a26-b148-f7edc508b2a6"/>
 				<textElement textAlignment="Center">
-					<font size="16" isBold="true"/>
+					<font fontName="黑体" size="16" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[珠海瑞龙报关代理有限公司（西域/洪湾）码头报关费用结算明细]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="107" splitType="Stretch">
+		<band height="105" splitType="Stretch">
 			<staticText>
 				<reportElement mode="Transparent" x="0" y="20" width="38" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b9821a78-8916-41d2-b380-26e991a98dae"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
@@ -195,7 +211,7 @@
 				<text><![CDATA[联系人]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="330" y="39" width="36" height="21" forecolor="#000000" backcolor="#FFFFFF" uuid="ee6f64dd-c510-41ab-a32b-eae82efbe6c9"/>
+				<reportElement mode="Transparent" x="330" y="40" width="36" height="21" forecolor="#000000" backcolor="#FFFFFF" uuid="ee6f64dd-c510-41ab-a32b-eae82efbe6c9"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -211,7 +227,7 @@
 				<text><![CDATA[传真：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="right-border" mode="Transparent" x="0" y="82" width="40" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="2296abe4-f822-4292-b5c8-52e350fc9005"/>
+				<reportElement style="r_l_border" mode="Transparent" x="0" y="82" width="40" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="2296abe4-f822-4292-b5c8-52e350fc9005"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -267,7 +283,7 @@
 				<text><![CDATA[码头费]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="style1" mode="Transparent" x="488" y="66" width="147" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="280dc1db-cc0d-4759-a1cf-0714e97e5a88"/>
+				<reportElement style="style1" mode="Transparent" x="488" y="66" width="147" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="280dc1db-cc0d-4759-a1cf-0714e97e5a88"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -275,7 +291,7 @@
 				<text><![CDATA[船务公司]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="style1" mode="Transparent" x="635" y="65" width="35" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="24f766aa-0d26-41b9-9d2a-5769f5f099bc"/>
+				<reportElement style="style1" mode="Transparent" x="635" y="65" width="35" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="24f766aa-0d26-41b9-9d2a-5769f5f099bc"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -291,7 +307,7 @@
 				<text><![CDATA[报关公司]]></text>
 			</staticText>
 			<line>
-				<reportElement mode="Transparent" x="1" y="81" width="757" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="2b11b7f3-6ece-4e5c-a0c2-cb7875047478"/>
+				<reportElement mode="Transparent" x="0" y="81" width="758" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="2b11b7f3-6ece-4e5c-a0c2-cb7875047478"/>
 			</line>
 			<staticText>
 				<reportElement style="style1" mode="Transparent" x="286" y="64" width="202" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="86997206-8c3d-456b-a5be-b745215e11cd"/>
@@ -302,7 +318,7 @@
 				<text><![CDATA[码头商务部]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="40" y="21" width="293" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="8a4c37c2-aba7-4d10-aa4d-3a3918ec6101"/>
+				<reportElement mode="Transparent" x="40" y="21" width="290" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="8a4c37c2-aba7-4d10-aa4d-3a3918ec6101"/>
 				<textElement verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -336,8 +352,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fax}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement mode="Transparent" x="682" y="38" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="a783eba8-e672-4a01-b4fc-939b3782f716"/>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="682" y="40" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="a783eba8-e672-4a01-b4fc-939b3782f716"/>
 				<textElement verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -353,7 +369,7 @@
 				<text><![CDATA[邮箱地址：]]></text>
 			</staticText>
 			<line>
-				<reportElement mode="Transparent" x="2" y="105" width="801" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="23a40c22-0b0d-48c3-a138-f2f0e0d99606"/>
+				<reportElement mode="Transparent" x="0" y="104" width="803" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="23a40c22-0b0d-48c3-a138-f2f0e0d99606"/>
 			</line>
 			<staticText>
 				<reportElement style="style1" mode="Transparent" x="40" y="65" width="216" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="a15350cd-a1f5-4095-ad6c-3e337435e840"/>
@@ -372,7 +388,7 @@
 				<text><![CDATA[港口建设费]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="style1" mode="Transparent" x="256" y="64" width="29" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="81427202-9b79-47e9-baa2-25013c2e774d"/>
+				<reportElement style="style1" mode="Transparent" x="256" y="64" width="29" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="81427202-9b79-47e9-baa2-25013c2e774d"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -499,18 +515,26 @@
 				</textElement>
 				<text><![CDATA[合计]]></text>
 			</staticText>
+			<staticText>
+				<reportElement style="r_l_border" mode="Transparent" x="0" y="65" width="40" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="21d02983-83de-4f55-9d74-9d613457dced"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="22" splitType="Stretch">
 			<line>
-				<reportElement x="1" y="21" width="801" height="1" uuid="4c55ac81-c00e-44b4-b6a1-fdc0872caab8"/>
+				<reportElement x="0" y="21" width="802" height="1" uuid="4c55ac81-c00e-44b4-b6a1-fdc0872caab8"/>
 				<graphicElement>
 					<pen lineStyle="Solid"/>
 				</graphicElement>
 			</line>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="548" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="1573c8f3-5e65-409b-be9c-a02fc6ce86a8"/>
+				<reportElement style="right-border" mode="Transparent" x="548" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="1573c8f3-5e65-409b-be9c-a02fc6ce86a8"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -518,7 +542,7 @@
 				<textFieldExpression><![CDATA[$F{WLDLF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="489" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="16b5d67b-1dca-41f6-a562-1d3e3f709591"/>
+				<reportElement style="right-border" mode="Transparent" x="489" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="16b5d67b-1dca-41f6-a562-1d3e3f709591"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -526,7 +550,7 @@
 				<textFieldExpression><![CDATA[$F{NFPTF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="635" y="0" width="35" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="6b4dde9d-0df0-46aa-afd7-15992b05fb6b"/>
+				<reportElement style="right-border" mode="Transparent" x="635" y="0" width="35" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="6b4dde9d-0df0-46aa-afd7-15992b05fb6b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -534,7 +558,7 @@
 				<textFieldExpression><![CDATA[$F{XDF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="671" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b7f89dc5-0c04-487f-b03c-f3340e2792fa"/>
+				<reportElement style="right-border" mode="Transparent" x="671" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="b7f89dc5-0c04-487f-b03c-f3340e2792fa"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -542,7 +566,7 @@
 				<textFieldExpression><![CDATA[$F{BGDZLR}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="-1" y="0" width="41" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="3512196d-f5c9-4c4f-bf9d-35288b99e69e"/>
+				<reportElement style="r_l_border" mode="Transparent" x="0" y="0" width="40" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="3512196d-f5c9-4c4f-bf9d-35288b99e69e"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -550,7 +574,7 @@
 				<textFieldExpression><![CDATA[$F{create_stamp}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="257" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
+				<reportElement style="right-border" mode="Transparent" x="257" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -558,7 +582,7 @@
 				<textFieldExpression><![CDATA[$F{GKJSF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="459" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d3d45fa5-a3d7-444d-aa12-85feab34e35a"/>
+				<reportElement style="right-border" mode="Transparent" x="459" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="d3d45fa5-a3d7-444d-aa12-85feab34e35a"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -566,7 +590,7 @@
 				<textFieldExpression><![CDATA[$F{ZGZXF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="343" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f24a4c1a-3f07-4b8e-b200-0e77e85d92f3"/>
+				<reportElement style="right-border" mode="Transparent" x="343" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="f24a4c1a-3f07-4b8e-b200-0e77e85d92f3"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -574,7 +598,7 @@
 				<textFieldExpression><![CDATA[$F{CZGF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="285" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
+				<reportElement style="right-border" mode="Transparent" x="285" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -582,7 +606,7 @@
 				<textFieldExpression><![CDATA[$F{GWF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="212" y="0" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
+				<reportElement style="right-border" mode="Transparent" x="212" y="0" width="44" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -598,7 +622,7 @@
 				<textFieldExpression><![CDATA[$F{container_type}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="112" y="0" width="65" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="031ec9cc-8b73-404c-94d7-8695bbeabf86"/>
+				<reportElement style="right-border" mode="Transparent" x="112" y="0" width="65" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="031ec9cc-8b73-404c-94d7-8695bbeabf86"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -606,7 +630,7 @@
 				<textFieldExpression><![CDATA[$F{tracking_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="700" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5bd07be3-9c35-4c13-b6e5-703f28705972"/>
+				<reportElement style="right-border" mode="Transparent" x="700" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="5bd07be3-9c35-4c13-b6e5-703f28705972"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -614,7 +638,7 @@
 				<textFieldExpression><![CDATA[$F{BGDZSC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="729" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5d315ed5-63d2-4388-8224-3c05edbd5303"/>
+				<reportElement style="right-border" mode="Transparent" x="729" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="5d315ed5-63d2-4388-8224-3c05edbd5303"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -622,7 +646,7 @@
 				<textFieldExpression><![CDATA[$F{BGDDLF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="577" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="7d62ce59-9060-48cf-a659-e182ee1002b8"/>
+				<reportElement style="right-border" mode="Transparent" x="577" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="7d62ce59-9060-48cf-a659-e182ee1002b8"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -630,7 +654,7 @@
 				<textFieldExpression><![CDATA[$F{AC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="606" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ea3ba0b6-3343-4606-b902-63902238ed93"/>
+				<reportElement style="right-border" mode="Transparent" x="606" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="ea3ba0b6-3343-4606-b902-63902238ed93"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -638,7 +662,7 @@
 				<textFieldExpression><![CDATA[$F{ZHF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="517" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5d4d87a7-6460-41a0-b6ef-2f59280e15b3"/>
+				<reportElement style="right-border" mode="Transparent" x="517" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="5d4d87a7-6460-41a0-b6ef-2f59280e15b3"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -646,7 +670,7 @@
 				<textFieldExpression><![CDATA[$F{TYDDY}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="401" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b9f5e5f5-02e9-4ad1-ab8f-3fc1865b4b5c"/>
+				<reportElement style="right-border" mode="Transparent" x="401" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="b9f5e5f5-02e9-4ad1-ab8f-3fc1865b4b5c"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -654,7 +678,7 @@
 				<textFieldExpression><![CDATA[$F{ZKCLF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="430" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="cf947219-429a-4e67-89f0-e3250361bfdb"/>
+				<reportElement style="right-border" mode="Transparent" x="430" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="cf947219-429a-4e67-89f0-e3250361bfdb"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -662,7 +686,7 @@
 				<textFieldExpression><![CDATA[$F{DBZF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="314" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="74228ee6-62c2-4566-b69b-b4b3661b4ee1"/>
+				<reportElement style="right-border" mode="Transparent" x="314" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="74228ee6-62c2-4566-b69b-b4b3661b4ee1"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -670,7 +694,7 @@
 				<textFieldExpression><![CDATA[$F{MTF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="41" y="-1" width="71" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
+				<reportElement style="right-border" mode="Transparent" x="41" y="-1" width="71" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -678,7 +702,7 @@
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="372" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0bd1adfb-d972-4254-8e60-b67a9b17aefc"/>
+				<reportElement style="right-border" mode="Transparent" x="372" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="0bd1adfb-d972-4254-8e60-b67a9b17aefc"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -724,7 +748,7 @@
 				<text><![CDATA[户名：朱文丽]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="right-border" mode="Transparent" x="0" y="0" width="40" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d49899ef-c58b-4e83-83ad-1b5fc948c02b"/>
+				<reportElement style="r_l_border" mode="Transparent" x="0" y="0" width="40" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d49899ef-c58b-4e83-83ad-1b5fc948c02b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -732,7 +756,7 @@
 				<text><![CDATA[合计]]></text>
 			</staticText>
 			<line>
-				<reportElement mode="Transparent" x="2" y="21" width="801" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="54bd7c17-3974-4c91-afa1-fe03758b7037"/>
+				<reportElement mode="Transparent" x="2" y="19" width="801" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="54bd7c17-3974-4c91-afa1-fe03758b7037"/>
 			</line>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="343" y="0" width="29" height="20" uuid="39cc37b1-f334-46a7-af13-f0dd62002fd5"/>

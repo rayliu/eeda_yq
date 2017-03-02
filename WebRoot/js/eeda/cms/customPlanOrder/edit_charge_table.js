@@ -312,7 +312,7 @@ $(document).ready(function() {
             { "data": "TYPE", "width": "80px", "visible":false,
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
-                		var str = '<select name="type" class="form-control search-control" style="width:100px" disabled>'
+                		var str = '<select name="type" class="form-control search-control notsave" style="width:100px" disabled>'
 	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
 	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
 	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
@@ -321,7 +321,7 @@ $(document).ready(function() {
 	                        +'</select>';
 	                	return str;
                 	}else{
-                    var str = '<select name="type" class="form-control search-control" style="width:100px">'
+                    var str = '<select name="type" class="form-control search-control notsave" style="width:100px">'
                                +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
                                +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
                                +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
@@ -559,9 +559,9 @@ $(document).ready(function() {
                     else
                     	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="exchange_rate" style="width:80px" value="'+str+'" class="form-control" disabled />';
+                        return '<input type="text" name="exchange_rate" style="width:80px" value="'+str+'" class="form-control notsave" disabled />';
                     } else{
-	                    return '<input type="text" name="exchange_rate" style="width:80px" value="'+str+'" class="form-control" />';
+	                    return '<input type="text" name="exchange_rate" style="width:80px" value="'+str+'" class="form-control notsave" />';
 	                }
                 }
             },
@@ -572,9 +572,9 @@ $(document).ready(function() {
                     else
                     	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
+                        return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control notsave" disabled />';
                     } else{
-	                    return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control" disabled/>';
+	                    return '<input type="text" name="currency_total_amount" style="width:80px" value="'+str+'" class="form-control notsave" disabled/>';
 	                }
                 }
             },
