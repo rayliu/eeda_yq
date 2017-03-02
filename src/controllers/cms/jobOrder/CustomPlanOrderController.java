@@ -654,38 +654,6 @@ public class CustomPlanOrderController extends Controller {
     
 
     
-    @Before(Tx.class)
-    public void sendMail(CustomPlanOrder order) throws Exception {
-    	String order_no = order.getStr("order_no");
-    	String mailTitle = "您有一份报关单待处理";
-    	String mailContent = "单号为："+order_no;
-    	
-        MultiPartEmail email = new MultiPartEmail();  
-        /*smtp.exmail.qq.com*/
-        email.setHostName("smtp.mxhichina.com");
-        email.setSmtpPort(465);
-        
-        /*输入公司的邮箱和密码*/
-        email.setAuthenticator(new DefaultAuthenticator("info@yq-scm.com", "Enkyo123"));        
-        email.setSSLOnConnect(true);
-        email.setFrom("info@yq-scm.com","Enkyo珠海远桥");//设置发信人
-        //设置收件人，邮件标题，邮件内容
-    	email.addTo("864358232@qq.com");
-        email.setSubject(mailTitle);
-        email.setMsg(mailContent);
-        
-//        //抄送
-//        email.addCc("1063203104@qq.com");
-//       //密送
-//        email.addBcc("1063203104@qq.com");
-        try{
-        	email.setCharset("UTF-8"); 
-        	email.send();
-        }catch(Exception e){
-        	e.printStackTrace();
-        }
-       
-    }
 
     
     //提交申请单给报关行
@@ -696,11 +664,10 @@ public class CustomPlanOrderController extends Controller {
     	String btnId = getPara("btnId");
     	CustomPlanOrder order = CustomPlanOrder.dao.findById(id);
     	if("confirmCompleted".equals(btnId)){
+    		sendMail(plan_order_no);
     		order.set("status","待审核");
     		order.set("fill_by",LoginUserController.getLoginUserId(this));
     		order.set("fill_stamp",new Date());
-    		
-    		sendMail(order);
     	}
     	if("passBtn".equals(btnId)){
     		order.set("status","审核通过");
@@ -828,7 +795,38 @@ public class CustomPlanOrderController extends Controller {
     }
     
   
-    
+
+    @Before(Tx.class)
+    public void sendMail(String order_no) throws Exception {
+    	String mailTitle = "您有一份报关单待处理";
+    	String mailContent = "单号"+order_no;
+    	
+        MultiPartEmail email = new MultiPartEmail();  
+        /*smtp.exmail.qq.com*/
+        email.setHostName("smtp.mxhichina.com");
+        email.setSmtpPort(465);
+        
+        /*输入公司的邮箱和密码*/
+        email.setAuthenticator(new DefaultAuthenticator("info@yq-scm.com", "Enkyo123"));        
+        email.setSSLOnConnect(true);
+        email.setFrom("info@yq-scm.com","Enkyo珠海远桥");//设置发信人
+        //设置收件人，邮件标题，邮件内容
+    	email.addTo("ytimport@163.com");
+        email.setSubject(mailTitle);
+        email.setMsg(mailContent);
+        
+//        //抄送
+//        email.addCc("1063203104@qq.com");
+//       //密送
+//        email.addBcc("1063203104@qq.com");
+        try{
+        	email.setCharset("UTF-8"); 
+        	email.send();
+        }catch(Exception e){
+        	e.printStackTrace();
+        }
+       
+    }
    
     
 }
