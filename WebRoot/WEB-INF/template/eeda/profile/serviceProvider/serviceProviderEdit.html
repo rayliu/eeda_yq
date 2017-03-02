@@ -325,12 +325,17 @@
                                             </div>
                                        </div>
 									</form>
-									
+									<div class="col-lg-4">
+                                        <label>单据状态</label>
+										<input placeholder="" disabled class="form-control" id="status" name="status" type="text" value="${party.status!''}">
+                                    </div>
 									<div class="col-lg-12">
 										<div class="button-bar" style="clear:both;">
-                                        	<button id="save" type="button" class="btn  btn_green">保存</button>
+                                        	<button id="save" type="button" class="btn  btn_green" disabled>保存</button>
                                         	<a class="btn  btn_white" href="/serviceProvider">返回</a>
-                                         <button id="marking" type="button" class="btn  btn_green">打分</button>
+                                        	<button id="approval" type="button" class="btn  btn_green" disabled>审核通过</button>
+                                        	<button id="disapproval" type="button" class="btn  btn_green" disabled>审核不通过</button>
+                                        	<button id="marking" type="button" class="btn  btn_green">打分</button>
                                     	</div>
 									</div>
                                     
@@ -353,15 +358,6 @@
  <%include("/eeda/profile/serviceProvider/serviceProviderMark.html"){} %>
 			
 <%}%>
-<!-- 引入校验的js 文件及其 中文 文件-->
-<!-- <script src="/yh/js/plugins/dataTables/jquery.dataTables.js" type="text/javascript"></script>
-<script src="/yh/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-<script src="/yh/js/plugins/dataTables/jquery.dataTables.editable.js" type="text/javascript"></script>
-<script src="/yh/js/plugins/dataTables/jquery.jeditable.js" type="text/javascript"></script>
-<script src="/yh/js/jquery.validate.min.js"></script>
-<script src="/yh/js/jvalidate.messages_cn.js"></script>
-<script src="/yh/js/plugins/sco/js/sco.message.js"></script>
-<script src="/yh/css/ui/jquery-ui.js"></script> -->
 <script>
 	if('${party.company_name!''}'){
 		document.title = '${party.company_name!''}'+' | '+document.title;
@@ -370,8 +366,6 @@
 	var spType = '${party.sp_type!''}';
 	var payment = '${party.payment!''}';
 </script>
-<!-- <script src="/yh/js/eeda-common.js"></script>
-<script src="/yh/js/profile/serviceProvider/edit.js"></script> -->
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/profile/serviceProvider/edit']);

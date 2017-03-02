@@ -33,6 +33,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
@@ -150,6 +151,7 @@ public class ServiceProviderController extends Controller {
             party.set("type", Party.PARTY_TYPE_SERVICE_PROVIDER);
             party.set("creator", LoginUserController.getLoginUserId(this));
             party.set("create_date", createDate);
+            party.set("status", "审核状态");
             party.set("receipt", getPara("receipt"));
             party.set("remark", getPara("remark"));
             party.set("payment", getPara("payment"));
@@ -775,5 +777,21 @@ public class ServiceProviderController extends Controller {
     	String itemid=getPara("id");
     	Db.deleteById("party_mark", itemid);
     	renderJson("deleteStatu","OK");
+    }
+    
+    @Before(Tx.class)
+    public void approvalOrder(){
+    	String action = getPara("action");
+    	String id = getPara("id");
+    	
+    	Party party = Party.dao.findById(id);
+    	if("approval".equals(action)){
+    		party.set("status", "审核通过");
+    	}else{
+    		party.set("status", "审核不通过");
+    	}
+    	party.update();
+    	
+    	renderJson(party);
     }
 }

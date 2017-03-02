@@ -133,10 +133,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       }
       //自动提交改为手动提交
       $("#save").click(function(){
-    	  
-    	  /*$.post("/serviceProvider/check",$("#customerForm").serialize(),function(data){
-    		  
-    	  });*/
     	 if(!$("#customerForm").valid()){
     		  return false;
     	 }
@@ -151,6 +147,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		}else if(data.ID != null && data.ID != ""){
      			eeda.contactUrl("edit?id",data.ID);
      			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+     			$("#status").val(data.STATUS);
      			$("#partyId").val(data.ID);
      			$("#sp_id").val(data.ID);
      			$("#addChargeType").attr("disabled",false);
@@ -160,6 +157,25 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      			$("#save").attr("disabled",false);
      		}
          });
+    	  
+      });
+      
+      
+      $("#approval,#disapproval").click(function(){
+    	  var btn = $(this).attr('id');
+    	  var value = $(this).text();
+    	  $("#approval").prop('disabled',true);
+    	  $("#disapproval").prop('disabled',true);
+    	  $.post("/serviceProvider/approvalOrder", {id:$("#partyId").val(),action:btn},function(data){
+    		  if(data){
+    			  $.scojs_message('操作成功', $.scojs_message.TYPE_OK);
+    			  $("#status").val(data.STATUS);
+    		  }
+    	  }).fail(function() {
+	          $.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+	          $("#approval").prop('disabled',false);
+	    	  $("#disapproval").prop('disabled',false);
+    	  });
     	  
       });
       
@@ -242,6 +258,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	$("#customer_name").attr("disabled",false);
 	    	$("#c_type option[value='perUnit']").attr("selected","selected");
 	    });
+	    
+	    //按钮控制
+	    var status = $('#status').val();
+	    if(status=='' || status==null || status=='审核状态' ){
+	    	$("#save").prop('disabled',false);
+	    	$("#approval").prop('disabled',false);
+	    	$("#disapproval").prop('disabled',false);
+	    }else if(status=='审核通过' || status=='审核不通过'){
+	    	$("#save").prop('disabled',true);
+	    	$("#approval").prop('disabled',true);
+	    	$("#disapproval").prop('disabled',true);
+	    }
+	    
 	    
     });
 });
