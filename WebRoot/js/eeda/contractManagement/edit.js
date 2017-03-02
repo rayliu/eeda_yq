@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', './edit_ocean_table',
+define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', './edit_ocean_table',
         './edit_ocean_item_table','./edit_internal_trade_table','./edit_bulkCargo_table','./edit_bulkCargo_item_table'], function ($, metisMenu) { 
 
   $(document).ready(function() {

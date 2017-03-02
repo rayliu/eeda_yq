@@ -15,7 +15,7 @@
                                 </label>
                             </div>
             		</div>
-            		<div class="row">
+            		<div class="row" style="display:none;">
             			<label>船期</label>
 						<textarea class="form-control" rows="3" id="ocean_shipment" name="ocean_shipment">${party.ocean_shipment!''}</textarea>
             		</div>
@@ -40,18 +40,18 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'ocean_item_table',
-                                        style:'width:4000px',
-                                        headers:[ '操作','POL', 'POD','服务船东','DOC-BL','TLX','EIR','HSS','O/F_20GP-CTR','O/F_40GP-CTR',
-                                        'O/F_40HQ-CTR','THC_20GP-CTR','THC_40GP-CTR' ,'THC_40HQ-CTR','EBS_20GP-CTR','EBS_40GP-CTR',
-                                        'EBS_40HQ-CTR','AMS/AFR_20GP-CTR','AMS/AFR_40GP-CTR','AMS/AFR_40HQ-CTR','VAT_20GP-CTR','VAT_40GP-CTR',
-                                        'VAT_40HQ-CTR','ISPS_20GP-CTR','ISPS_40GP-CTR','ISPS_40HQ-CTR','TRUCK_20GP-CTR','TRUCK_40GP-CTR',
-                                        'TRUCK_40HQ-CTR','TOTAL_20GP','TOTAL_40GP','TOTAL_40HQ','有效时间','备注','创建时间','创建人','creator_name'],
+                                        style:'width:7000px',
+                                        headers:[ '操作','POL', 'POD','服务船东','船期','DOC-BL','DOC币制','TLX','TLX币制','EIR','EIR币制','HSS','HSS币制','O/F_20GP-CTR','O/F_20GP币制','O/F_40GP-CTR','O/F_40GP币制',
+                                        'O/F_40HQ-CTR','O/F_40HQ币制','THC_20GP-CTR','THC_20GP币制','THC_40GP-CTR','THC_40GP币制' ,'THC_40HQ-CTR','THC_40HQ币制','EBS_20GP-CTR','EBS_20GP币制','EBS_40GP-CTR','EBS_40GP币制',
+                                        'EBS_40HQ-CTR','EBS_40HQ币制','AMS/AFR_20GP-CTR','AMS/AFR_20GP币制','AMS/AFR_40GP-CTR','AMS/AFR_40GP币制','AMS/AFR_40HQ-CTR','AMS/AFR_40HQ币制','VAT_20GP-CTR','VAT_20GP币制','VAT_40GP-CTR','VAT_40GP币制',
+                                        'VAT_40HQ-CTR','VAT_40HQ币制','ISPS_20GP-CTR','ISPS_20GP币制','ISPS_40GP-CTR','ISPS_40GP币制','ISPS_40HQ-CTR','ISPS_40HQ币制','TRUCK_20GP-CTR','TRUCK_20GP币制','TRUCK_40GP-CTR','TRUCK_40GP币制',
+                                        'TRUCK_40HQ-CTR','TRUCK_40HQ币制','TOTAL_20GP','TOTAL_20GP币制','TOTAL_40GP','TOTAL_40GP币制','TOTAL_40HQ','TOTAL_40HQ币制','有效时间','备注','创建时间','创建人','creator_name'],
                                         
-                                        field_list:['','POL','POD', 'service_owner', 'DOC','TLX','EIR','HSS','O/F_20GP','O/F_40GP',
-                                        'O/F_40HQ','THC_20GP','THC_40GP' ,'THC_40HQ','EBS_20GP','EBS_40GP',
-                                        'EBS_40HQ','AMS/AFR_20GP','AMS/AFR_40GP','AMS/AFR_40HQ','VAT_20GP','VAT_40GP',
-                                        'VAT_40HQ','ISPS_20GP','ISPS_40GP','ISPS_40HQ','TRUCK_20GP','TRUCK_40GP',
-                                        'TRUCK_40HQ','TOTAL_20GP','TOTAL_40GP','TOTAL_40HQ','effective_time','remark','create_stamp','creator','creator_name'],
+                                        field_list:['','POL','POD', 'service_owner','shipment', 'DOC','DOC_CRC','TLX','TLX_CRC','EIR','EIR_CRC','HSS','HSS_CRC','O/F_20GP','O/F_20GP_CRC','O/F_40GP','O/F_40GP_CRC',
+                                        'O/F_40HQ','O/F_40HQ_CRC','THC_20GP','THC_20GP_CRC','THC_40GP' ,'THC_40GP_CRC','THC_40HQ','THC_40HQ_CRC','EBS_20GP','EBS_20GP_CRC','EBS_40GP','EBS_40GP_CRC',
+                                        'EBS_40HQ','EBS_40HQ_CRC','AMS/AFR_20GP','AMS/AFR_20GP_CRC','AMS/AFR_40GP','AMS/AFR_40GP_CRC','AMS/AFR_40HQ','MS/AFR_40HQ_CRC','VAT_20GP','VAT_20GP_CRC','VAT_40GP','VAT_40GP_CRC',
+                                        'VAT_40HQ','VAT_40HQ_CRC','ISPS_20GP','ISPS_20GP_CRC','ISPS_40GP','ISPS_40GP_CRC','ISPS_40HQ','ISPS_40HQ_CRC','TRUCK_20GP','TRUCK_20GP_CRC','TRUCK_40GP','TRUCK_40GP_CRC',
+                                        'TRUCK_40HQ','TRUCK_40HQ_CRC','TOTAL_20GP','TOTAL_20GP_CRC','TOTAL_40GP','TOTAL_40GP_CRC','TOTAL_40HQ','TOTAL_40HQ_CRC','effective_time','remark','create_stamp','creator','creator_name'],
                                         value_list: order.oceanCargoItemList![]
                                     }){} %>
                        
