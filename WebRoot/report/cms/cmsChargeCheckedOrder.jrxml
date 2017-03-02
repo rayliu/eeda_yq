@@ -211,7 +211,7 @@
 				<text><![CDATA[传真：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="right-border" mode="Transparent" x="0" y="82" width="41" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="2296abe4-f822-4292-b5c8-52e350fc9005"/>
+				<reportElement style="right-border" mode="Transparent" x="0" y="82" width="40" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="2296abe4-f822-4292-b5c8-52e350fc9005"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -590,7 +590,7 @@
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="177" y="0" width="34" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
+				<reportElement style="right-border" mode="Transparent" x="177" y="-2" width="34" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -717,7 +717,7 @@
 				<text><![CDATA[户名：朱文丽]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="right-border" mode="Transparent" x="0" y="0" width="41" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d49899ef-c58b-4e83-83ad-1b5fc948c02b"/>
+				<reportElement style="right-border" mode="Transparent" x="0" y="0" width="40" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d49899ef-c58b-4e83-83ad-1b5fc948c02b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -852,7 +852,7 @@
 				<textFieldExpression><![CDATA[$V{SUM_GKJSF}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="right-border" x="41" y="0" width="71" height="20" uuid="8f151fef-42f7-4b55-abb6-a8458d03e4ec"/>
+				<reportElement style="right-border" x="40" y="0" width="72" height="20" uuid="8f151fef-42f7-4b55-abb6-a8458d03e4ec"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
