@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="842" pageHeight="595" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="68"/>
 	<property name="ireport.y" value="0"/>
 	<style name="style1" forecolor="#000000" backcolor="#000000">
 		<box>
@@ -42,7 +42,7 @@
 	<parameter name="order_id" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from(
-							  SELECT cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,cpo.tracking_no tracking_no,
+							  SELECT cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,cpo.tracking_no tracking_no,cpo.cabinet_no,
 								cpo.container_no container_no,cpo.container_type container_type,p.abbr company_abbr,p.fax fax,
 									p.company_name company_name,p.contact_person contact_person ,p.phone phone,p.email email,
 
@@ -76,6 +76,32 @@
 
 			 				  ) B where 1=1 ;]]>
 	</queryString>
+	<field name="cpoid" class="java.lang.Long"/>
+	<field name="order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="create_stamp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="booking_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tracking_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cabinet_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="container_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="container_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="company_abbr" class="java.lang.String"/>
+	<field name="fax" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="company_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -85,42 +111,26 @@
 	<field name="phone" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="fax" class="java.lang.String">
+	<field name="email" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="order_no" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="GKJSF" class="java.lang.Double"/>
+	<field name="GWF" class="java.lang.Double"/>
+	<field name="MTF" class="java.lang.Double"/>
+	<field name="CZGF" class="java.lang.Double"/>
 	<field name="DCF" class="java.lang.Double"/>
-	<field name="GKJSF" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="GWF" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="MTF" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="CZGF" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="create_stamp" class="java.util.Date"/>
 	<field name="ZKCLF" class="java.lang.Double"/>
 	<field name="DBZF" class="java.lang.Double"/>
 	<field name="ZGZXF" class="java.lang.Double"/>
-	<field name="WLDLF" class="java.lang.Double"/>
 	<field name="NFPTF" class="java.lang.Double"/>
+	<field name="TYDDY" class="java.lang.Double"/>
+	<field name="WLDLF" class="java.lang.Double"/>
+	<field name="AC" class="java.lang.Double"/>
+	<field name="ZHF" class="java.lang.Double"/>
 	<field name="XDF" class="java.lang.Double"/>
 	<field name="BGDZLR" class="java.lang.Double"/>
 	<field name="BGDZSC" class="java.lang.Double"/>
 	<field name="BGDDLF" class="java.lang.Double"/>
-	<field name="AC" class="java.lang.Double"/>
-	<field name="ZHF" class="java.lang.Double"/>
-	<field name="tracking_no" class="java.lang.String"/>
-	<field name="container_type" class="java.lang.String"/>
-	<field name="container_no" class="java.lang.String"/>
-	<field name="TYDDY" class="java.lang.Double"/>
-	<field name="email" class="java.lang.String"/>
 	<variable name="SUM_GKJSF" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{GKJSF}]]></variableExpression>
 	</variable>
@@ -611,10 +621,10 @@
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cabinet_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="177" y="-2" width="34" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
+				<reportElement style="right-border" mode="Transparent" x="177" y="0" width="34" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -627,7 +637,7 @@
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tracking_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{booking_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" mode="Transparent" x="700" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="5bd07be3-9c35-4c13-b6e5-703f28705972"/>
