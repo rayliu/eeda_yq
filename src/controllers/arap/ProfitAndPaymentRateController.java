@@ -159,7 +159,21 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'cost' "+condition
-			+"	) cost_hkd ";
+			+"	) cost_hkd, "
+			+"	(SELECT "
+			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
+			+"	FROM  job_order jo "
+			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
+			+"	LEFT JOIN party p ON p.id = jo.customer_id "
+			+"	WHERE 	jo.office_id = "+office_id
+			+"	AND joa.order_type = 'charge' "+condition+") total_charge,"
+			+"	(SELECT "
+			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
+			+"	FROM  job_order jo "
+			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
+			+"	LEFT JOIN party p ON p.id = jo.customer_id "
+			+"	WHERE 	jo.office_id = "+office_id
+			+"	AND joa.order_type = 'cost' "+condition+") total_cost";
 		
 		Record re = Db.findFirst(sql);
 		renderJson(re);
