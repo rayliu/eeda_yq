@@ -46,7 +46,7 @@ public class ProfitAndPaymentRateController extends Controller {
         		+" SELECT jo.id,jo.customer_id,p.abbr,SUM(currency_total_amount) charge_rmb,"
         		+" (SELECT SUM(currency_total_amount) from  job_order_arap joa "
         		+" LEFT JOIN job_order jor on joa.order_id = jor.id "
-        		+" WHERE joa.order_type = 'cost' and jor.customer_id = jo.customer_id "+condition
+        		+" WHERE joa.order_type = 'cost' and office_id = "+office_id+" and jor.customer_id = jo.customer_id "+condition
         		+" ) cost_rmb"
         		+"  from job_order jo "
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "

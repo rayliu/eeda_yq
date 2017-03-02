@@ -23,6 +23,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				},
 	            { "data": "CHARGE_TOTAL", "width": "120px",
 	            	"render": function(data, type, full, meta) {
+	            		if(!full.COST_RMB){
+	            			return "";
+	            		}
 						return parseFloat(((full.CHARGE_RMB - full.COST_RMB)/full.COST_RMB)*100).toFixed(2);
 					}
 	            }
