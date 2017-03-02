@@ -20,6 +20,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                         }
                     }
                 },
+                { "data": "STATUS", "width": "10%"}, 
                 { "data": "ABBR", "width": "10%"}, 
                 { "data": "CODE", "width": "10%"}, 
                 { "data": "SP_TYPE", "width": "10%",
@@ -129,9 +130,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           	var COMPANY_NAME = $("#COMPANY_NAME").val().trim();
           	var CONTACT_PERSON = $("#CONTACT_PERSON").val().trim();
         	var code = $("#code").val().trim();
-          	var ABBR = $("#ABBR").val().trim(); 	
+          	var ABBR = $("#ABBR").val().trim(); 
+          	var status = $("#status").val().trim();
           	var ADDRESS = $("#ADDRESS").val().trim();
-          	var url = "/serviceProvider/list?company_name_like="+COMPANY_NAME+"&contact_person_like="+CONTACT_PERSON+"&code_like="+code+"&abbr_like="+ABBR+"&address_like="+ADDRESS;
+          	var url = "/serviceProvider/list?company_name_like="+COMPANY_NAME+"&contact_person_like="+CONTACT_PERSON
+          	+"&code_like="+code+"&abbr_like="+ABBR+"&address_like="+ADDRESS+"&status="+status;
           	dataTable.ajax.url(url).load();
         });
 
