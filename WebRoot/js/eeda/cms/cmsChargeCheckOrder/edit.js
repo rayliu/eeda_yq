@@ -152,7 +152,7 @@ $(document).ready(function() {
                 window.open(data);
             }).fail(function() {
                 $('#printCustomOrderBtn').prop('disabled', false);
-                $.scojs_message('生成货物报关单PDF失败', $.scojs_message.TYPE_ERROR);
+                $.scojs_message('生成报关应收对账单PDF失败', $.scojs_message.TYPE_ERROR);
             });
         });
    

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="842" pageHeight="595" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="80"/>
 	<property name="ireport.y" value="0"/>
 	<style name="style1" forecolor="#000000" backcolor="#000000">
 		<box>
@@ -504,13 +504,13 @@
 	<detail>
 		<band height="22" splitType="Stretch">
 			<line>
-				<reportElement x="1" y="20" width="801" height="1" uuid="4c55ac81-c00e-44b4-b6a1-fdc0872caab8"/>
+				<reportElement x="1" y="21" width="801" height="1" uuid="4c55ac81-c00e-44b4-b6a1-fdc0872caab8"/>
 				<graphicElement>
 					<pen lineStyle="Solid"/>
 				</graphicElement>
 			</line>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="547" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="1573c8f3-5e65-409b-be9c-a02fc6ce86a8"/>
+				<reportElement style="right-border" mode="Transparent" x="548" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="1573c8f3-5e65-409b-be9c-a02fc6ce86a8"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -518,7 +518,7 @@
 				<textFieldExpression><![CDATA[$F{WLDLF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="488" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="16b5d67b-1dca-41f6-a562-1d3e3f709591"/>
+				<reportElement style="right-border" mode="Transparent" x="489" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="16b5d67b-1dca-41f6-a562-1d3e3f709591"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -526,7 +526,7 @@
 				<textFieldExpression><![CDATA[$F{NFPTF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="636" y="0" width="35" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="6b4dde9d-0df0-46aa-afd7-15992b05fb6b"/>
+				<reportElement style="right-border" mode="Transparent" x="635" y="0" width="35" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="6b4dde9d-0df0-46aa-afd7-15992b05fb6b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -614,7 +614,7 @@
 				<textFieldExpression><![CDATA[$F{BGDZSC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="730" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5d315ed5-63d2-4388-8224-3c05edbd5303"/>
+				<reportElement style="right-border" mode="Transparent" x="729" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5d315ed5-63d2-4388-8224-3c05edbd5303"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -622,7 +622,7 @@
 				<textFieldExpression><![CDATA[$F{BGDDLF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="576" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="7d62ce59-9060-48cf-a659-e182ee1002b8"/>
+				<reportElement style="right-border" mode="Transparent" x="577" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="7d62ce59-9060-48cf-a659-e182ee1002b8"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -685,6 +685,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{DCF}]]></textFieldExpression>
 			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="right-border" mode="Transparent" x="758" y="0" width="44" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="485562c8-5465-4af4-a8ac-058fcabb79d5"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
@@ -725,7 +732,7 @@
 				<text><![CDATA[合计]]></text>
 			</staticText>
 			<line>
-				<reportElement mode="Transparent" x="2" y="22" width="801" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="54bd7c17-3974-4c91-afa1-fe03758b7037"/>
+				<reportElement mode="Transparent" x="2" y="21" width="801" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="54bd7c17-3974-4c91-afa1-fe03758b7037"/>
 			</line>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="343" y="0" width="29" height="20" uuid="39cc37b1-f334-46a7-af13-f0dd62002fd5"/>
@@ -735,14 +742,14 @@
 				<textFieldExpression><![CDATA[$V{SUM_CZGF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="286" y="0" width="29" height="20" uuid="9f13136c-0506-4968-8a7f-c028d48538ce"/>
+				<reportElement style="right-border" x="285" y="0" width="29" height="20" uuid="9f13136c-0506-4968-8a7f-c028d48538ce"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_GWF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="315" y="0" width="29" height="20" uuid="b4008df3-c2c5-49a3-ae6b-4b0352e876dc"/>
+				<reportElement style="right-border" x="314" y="0" width="29" height="20" uuid="b4008df3-c2c5-49a3-ae6b-4b0352e876dc"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -777,14 +784,14 @@
 				<textFieldExpression><![CDATA[$V{SUM_ZGZXF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="546" y="0" width="29" height="20" uuid="1b62a54d-021a-4215-9507-545b21fb814a"/>
+				<reportElement style="right-border" x="548" y="0" width="29" height="20" uuid="1b62a54d-021a-4215-9507-545b21fb814a"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_WLDLF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="517" y="0" width="29" height="20" uuid="23e5efd1-2f21-4106-892b-a7051780cab5"/>
+				<reportElement style="right-border" x="518" y="0" width="29" height="20" uuid="23e5efd1-2f21-4106-892b-a7051780cab5"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -805,7 +812,7 @@
 				<textFieldExpression><![CDATA[$V{SUM_AC}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="636" y="0" width="35" height="20" uuid="72c8ba72-fd57-4d86-a1a6-c52d6dd5af1b"/>
+				<reportElement style="right-border" x="635" y="0" width="35" height="20" uuid="72c8ba72-fd57-4d86-a1a6-c52d6dd5af1b"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -826,14 +833,14 @@
 				<textFieldExpression><![CDATA[$V{SUM_BGDDLF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="605" y="0" width="29" height="20" uuid="c54a1f94-7fbb-4bb9-b52d-cdd7cde4a2fe"/>
+				<reportElement style="right-border" x="606" y="0" width="29" height="20" uuid="c54a1f94-7fbb-4bb9-b52d-cdd7cde4a2fe"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_ZHF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="701" y="0" width="29" height="20" uuid="acfc0968-b374-4fa7-a5ac-c16e72006fe9"/>
+				<reportElement style="right-border" x="700" y="0" width="29" height="20" uuid="acfc0968-b374-4fa7-a5ac-c16e72006fe9"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -844,7 +851,7 @@
 				<textFieldExpression><![CDATA[$V{SUM_GKJSF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="256" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c2c0c096-4f0b-46b8-b751-9eb52e9a4f1b"/>
+				<reportElement style="right-border" mode="Transparent" x="257" y="0" width="29" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c2c0c096-4f0b-46b8-b751-9eb52e9a4f1b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -864,13 +871,19 @@
 				</textElement>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="right-border" x="177" y="1" width="34" height="20" uuid="500db03e-a4bf-4e8e-bf64-1b9807373579"/>
+				<reportElement style="right-border" x="177" y="0" width="34" height="20" uuid="500db03e-a4bf-4e8e-bf64-1b9807373579"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="211" y="0" width="44" height="20" uuid="9303487a-094e-4b41-9734-8ad753914f9d"/>
+				<textElement textAlignment="Center">
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="right-border" x="758" y="0" width="44" height="20" uuid="2b64757e-8a0b-44ee-a4cf-a5edc7ca467f"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
