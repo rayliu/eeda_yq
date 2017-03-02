@@ -14,7 +14,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
         
         var dataTable = eeda.dt({
             id: 'uncheckedEeda-table',
-            paging: true,
+            // paging: true,
             serverSide: false,
             ajax: "/cmsChargeCheckOrder/list",
             columns:[
