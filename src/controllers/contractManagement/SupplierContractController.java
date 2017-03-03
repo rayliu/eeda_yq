@@ -766,7 +766,7 @@ public class SupplierContractController extends Controller {
     public List<Record> getItems(String type,String order_id){
     	String sql = null;
     	if(type.equals("oceanCargo")){
-    		sql = "select soc.*,ul.user_name creator_name from sp_ocean_cargo soc"
+    		sql = "select soc.*,ul.c_name creator_name from sp_ocean_cargo soc"
     				+ " left join user_login ul on ul.id = soc.creator where soc.order_id = ?";
     	}else if(type.equals("oceanCargoItem")){
     	    		sql = " select soc.*,c1.name doc_crc_name,c2.name tlx_crc_name,c3.name eir_crc_name,c4.name hss_crc_name "
@@ -809,7 +809,7 @@ public class SupplierContractController extends Controller {
     	    				+" left join currency c26 on c26.id=soc.total_20gp_crc "
     	    				+" left join currency c27 on c27.id=soc.total_40gp_crc "
     	    				+" left join currency c28 on c28.id=soc.total_40hq_crc "
-    				+ " left join user_login ul on ul.id = soc.creator where soc.order_id = ?";
+    				+ "  where soc.order_id = ?";
     	}else if(type.equals("internalTrade")){
     		sql = "select * from sp_internal_trade where order_id = ?";
     	}else if(type.equals("bulkCargo")){
