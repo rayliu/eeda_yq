@@ -769,30 +769,131 @@ public class SupplierContractController extends Controller {
     		sql = "select soc.*,ul.user_name creator_name from sp_ocean_cargo soc"
     				+ " left join user_login ul on ul.id = soc.creator where soc.order_id = ?";
     	}else if(type.equals("oceanCargoItem")){
-    		sql = "select soc.*,ul.user_name creator_name from sp_ocean_cargo_item soc"
+    	    		sql = " select soc.*,c1.name doc_crc_name,c2.name tlx_crc_name,c3.name eir_crc_name,c4.name hss_crc_name "
+    	    				+" ,c5.name o_f_20gp_crc_name,c6.name o_f_40gp_crc_name,c7.name o_f_40hq_crc_name,c8.name "  
+    	    				+" thc_20gp_crc_name,c9.name thc_40gp_crc_name "
+    	    				+" ,c10.name thc_40hq_crc_name,c11.name ebs_20gp_crc_name,c12.name ebs_40gp_crc_name,c13.name " 
+    	    				+" ebs_40hq_crc_name,c14.name ams_afr_20gp_crc_name "
+    	    				+" ,c15.name ams_afr_40gp_crc_name,c16.name ams_afr_40hq_crc_name,c17.name vat_20gp_crc_name,c18.name "
+    	    				+" vat_40gp_crc_name,c19.name vat_40hq_crc_name "
+    	    				+" ,c20.name isps_20gp_crc_name,c21.name isps_40gp_crc_name,c22.name isps_40hq_crc_name,c23.name  "
+    	    				+" truck_20gp_crc_name,c24.name truck_40gp_crc_name "
+    	    				+" ,c25.name truck_40hq_crc_name,c26.name total_20gp_crc_name,c27.name total_40gp_crc_name,c28.name "
+    	    				+" total_40hq_crc_name  ,ul.c_name creator_name from sp_ocean_cargo_item soc "
+    	    				+"     				  left join user_login ul on ul.id = soc.creator  "
+    	    				+" left join currency c1 on c1.id=soc.doc_crc "
+    	    				+" left join currency c2 on c2.id=soc.tlx_crc "
+    	    				+" left join currency c3 on c3.id=soc.eir_crc "
+    	    				+" left join currency c4 on c4.id=soc.hss_crc "
+    	    				+" left join currency c5 on c5.id=soc.o_f_20gp_crc "
+    	    				+" left join currency c6 on c6.id=soc.o_f_40gp_crc "
+    	    				+" left join currency c7 on c7.id=soc.o_f_40hq_crc "
+    	    				+" left join currency c8 on c8.id=soc.thc_20gp_crc "
+    	    				+" left join currency c9 on c9.id=soc.thc_40gp_crc "
+    	    				+" left join currency c10 on c10.id=soc.thc_40hq_crc "
+    	    				+" left join currency c11 on c11.id=soc.ebs_20gp_crc "
+    	    				+" left join currency c12 on c12.id=soc.ebs_40gp_crc "
+    	    				+" left join currency c13 on c13.id=soc.ebs_40hq_crc "
+    	    				+" left join currency c14 on c14.id=soc.ams_afr_20gp_crc "
+    	    				+" left join currency c15 on c15.id=soc.ams_afr_40gp_crc "
+    	    				+" left join currency c16 on c16.id=soc.ams_afr_40hq_crc "
+    	    				+" left join currency c17 on c17.id=soc.vat_20gp_crc "
+    	    				+" left join currency c18 on c18.id=soc.vat_40gp_crc "
+    	    				+" left join currency c19 on c19.id=soc.vat_40hq_crc "
+    	    				+" left join currency c20 on c20.id=soc.isps_20gp_crc "
+    	    				+" left join currency c21 on c21.id=soc.isps_40gp_crc "
+    	    				+" left join currency c22 on c22.id=soc.isps_40hq_crc "
+    	    				+" left join currency c23 on c23.id=soc.truck_20gp_crc "
+    	    				+" left join currency c24 on c24.id=soc.truck_40gp_crc "
+    	    				+" left join currency c25 on c25.id=soc.truck_40hq_crc "
+    	    				+" left join currency c26 on c26.id=soc.total_20gp_crc "
+    	    				+" left join currency c27 on c27.id=soc.total_40gp_crc "
+    	    				+" left join currency c28 on c28.id=soc.total_40hq_crc "
     				+ " left join user_login ul on ul.id = soc.creator where soc.order_id = ?";
     	}else if(type.equals("internalTrade")){
     		sql = "select * from sp_internal_trade where order_id = ?";
     	}else if(type.equals("bulkCargo")){
     		sql = "select * from sp_bulk_cargo where order_id = ?";
     	}else if(type.equals("bulkCargoItem")){
-    		sql = "select sbc.*,ul.user_name creator_name from sp_bulk_cargo_item sbc"
-    				+ " left join user_login ul on ul.id = sbc.creator"
-    				+ " where sbc.order_id = ?";
+    		sql = " select sbc.*,ul.c_name creator_name ,c1.name port_charge_crc_name,c2.name doc_crc_name,c3.name vgm_crc_name,c4.name  d_o_crc_name "
+    				+" ,c5.name o_f_crc_name,c6.name handling_crc_name,c7.name cfs_crc_name,c8.name thc_crc_name,c9.name  "+" baf_crc_name "
+    				+" ,c10.name cic_crc_name,c11.name loading_fee_crc_name,c12.name total_crc_name "
+    				+"  from sp_bulk_cargo_item sbc "
+    				+"     				  left join user_login ul on ul.id = sbc.creator  "
+    				+" left join currency c1 on c1.id=sbc.port_charge_crc "
+    				+" left join currency c2 on c2.id=sbc.doc_crc "
+    				+" left join currency c3 on c3.id=sbc.vgm_crc "
+    				+" left join currency c4 on c4.id=sbc.d_o_crc "
+    				+" left join currency c5 on c5.id=sbc.o_f_crc "
+    				+" left join currency c6 on c6.id=sbc.handling_crc "
+    				+" left join currency c7 on c7.id=sbc.cfs_crc "
+    				+" left join currency c8 on c8.id=sbc.thc_crc "
+    				+" left join currency c9 on c9.id=sbc.baf_crc "
+    				+" left join currency c10 on c10.id=sbc.cic_crc "
+    				+" left join currency c11 on c11.id=sbc.loading_fee_crc "
+    				+" left join currency c12 on c12.id=sbc.total_crc "
+    				+"     				  where sbc.order_id = ? ";
     	}else if(type.equals("landTransport")){
     		sql = "select * from sp_land_transport where order_id = ?";
     	}else if(type.equals("landTransportItem")){
-    		sql = "select * from sp_land_transport_item where order_id = ?";
+    		sql = " select	slt.*,ul.c_name creator_name , c1. name document_fee_crc_name, "
+    				+" 	c2. name tally_fee_crc_name, "
+    				+" 	c3. name cea_custom_fee_crc_name, "
+    				+" 	c4. name dia_custom_fee_crc_name, "
+    				+" 	c5. name tariff_fee_crc_name, "
+    				+" 	c6. name exchange_fee_crc_name, "
+    				+" 	c7. name storage_fee_crc_name, "
+    				+" 	c8. name delivery_fee_crc_name, "
+    				+" 	c9. name customs_inspection_fee_crc_name, "
+    				+" 	c10. name price_crc_name, "
+    				+" 	c11. name tax_price_crc_name, "
+    				+" 	c12. name notax_price_crc_name "
+    				+" from	sp_land_transport_item slt "
+    				+" left join user_login ul on ul.id = slt.creator "
+    				+" left join currency c1 on c1.id = slt.document_fee_crc "
+    				+" left join currency c2 on c2.id = slt.tally_fee_crc "
+    				+" left join currency c3 on c3.id = slt.cea_custom_fee_crc "
+    				+" left join currency c4 on c4.id = slt.dia_custom_fee_crc "
+    				+" left join currency c5 on c5.id = slt.tariff_fee_crc "
+    				+" left join currency c6 on c6.id = slt.exchange_fee_crc "
+    				+" left join currency c7 on c7.id = slt.storage_fee_crc "
+    				+" left join currency c8 on c8.id = slt.delivery_fee_crc "
+    				+" left join currency c9 on c9.id = slt.customs_inspection_fee_crc "
+    				+" left join currency c10 on c10.id = slt.price_crc "
+    				+" left join currency c11 on c11.id = slt.tax_price_crc "
+    				+" left join currency c12 on c12.id = slt.notax_price_crc "
+    				+" where	slt.order_id = ? ";
     	}else if(type.equals("storage")){
     		sql = "select * from sp_storage where order_id = ?";
     	}else if(type.equals("airTransport")){
     		sql = "select * from sp_air_transport where order_id = ?";
     	}else if(type.equals("airTransportItem")){
-    		sql = "select sati.*,ul.user_name creator_name from sp_air_transport_item sati"
-    				+ " left join user_login ul on ul.id = sati.creator"
-    				+ " where sati.order_id = ?";
+    		sql = " select	sati.*, ul.c_name creator_name, "
+    				+" c1.name a45kg_crc_name,c2.name a100kg_crc_name,c3.name a300kg_crc_name,c4.name a500kg_crc_name "
+    				+" from	sp_air_transport_item sati "
+    				+" left join user_login ul on ul.id = sati.creator "
+    				+" 	 left join currency c1 on c1.id = sati.45kg_crc  "
+    				+" 	 left join currency c2 on c2.id = sati.100kg_crc  "
+    				+" 	 left join currency c3 on c3.id = sati.300kg_crc  "
+    				+" 	 left join currency c4 on c4.id = sati.500kg_crc  "
+    				+" where	sati.order_id = ?  ";
     	}else if(type.equals("custom")){
-    		sql = "select * from sp_custom where order_id = ?";
+    		sql = " SELECT	sc.*, ul.c_name creator_name, "
+    				+" 	c1. NAME df_reimbursement_crc_name, "
+    				+" 	c2. NAME iq_reimbursement_crc_name, "
+    				+" 	c3. NAME customs_entry_fee_crc_name, "
+    				+" 	c4. NAME inspection_entry_fee_crc_name, "
+    				+" 	c5. NAME customs_agent_fee_crc_name, "
+    				+" 	c6. NAME total_fee_crc_name "
+    				+" FROM 	sp_custom sc "
+    				+" LEFT JOIN user_login ul ON ul.id = sc.creator "
+    				+" LEFT JOIN currency c1 ON c1.id = sc.df_reimbursement_crc "
+    				+" LEFT JOIN currency c2 ON c2.id = sc.iq_reimbursement_crc "
+    				+" LEFT JOIN currency c3 ON c3.id = sc.customs_entry_fee_crc "
+    				+" LEFT JOIN currency c4 ON c4.id = sc.inspection_entry_fee_crc "
+    				+" LEFT JOIN currency c5 ON c5.id = sc.customs_agent_fee_crc "
+    				+" LEFT JOIN currency c6 ON c6.id = sc.total_fee_crc "
+    				+" WHERE	sc.order_id = ? ";
     	}else if(type.equals("pickingCrane")){
     		sql = "select * from sp_picking_crane where order_id = ?";
     	}else if(type.equals("cargoInsurance")){
