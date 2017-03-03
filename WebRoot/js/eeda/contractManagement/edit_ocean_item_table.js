@@ -70,7 +70,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	eeda.bindTableField('ocean_item_table','HSS_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('ocean_item_table','O_F_20GP_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('ocean_item_table','O_F_40GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableField('ocean_item_table','O_F_40HQ_CRC','/serviceProvider/searchCurrency','');
+        eeda.bindTableField('ocean_item_table','O_F_40HQ_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('ocean_item_table','THC_20GP_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('ocean_item_table','THC_40GP_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('ocean_item_table','THC_40HQ_CRC','/serviceProvider/searchCurrency','');
@@ -281,7 +281,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                            data='';
                        var field_html = template('table_dropdown_template',
                            {
-                               id: 'O_F_40HQCRC',
+                               id: 'O_F_40HQ_CRC',
                                value: data,
                                display_value: full.O_F_40HQ_CRC_NAME,
                                style:'width:80px'
