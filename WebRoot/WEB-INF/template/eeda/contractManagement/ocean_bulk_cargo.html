@@ -15,10 +15,6 @@
                                 </label>
                             </div>
             		</div>
-            		<div class="row">
-            			<label>船期</label>
-						<textarea class="form-control" rows="3" id="bulk_shipment" name="bulk_shipment">${party.bulk_shipment!''}</textarea>
-            		</div>
                     <div class="row">
                             <div class="form-group button-bar">
                                 <button id='add_bulkCargo' class="btn btn_blue btn-xs" type="button">添加</button>
@@ -41,13 +37,17 @@
                                     {
                                         id:'bulkCargo_item_table',
                                         style:'width:2500px',
-                                        headers:[ '操作','POL', 'POD','服务船东','目的港费用','DOC-SET','VGM-BL','D/O-SET',
-                                        'O/F-RT','HANDLING-SET','CFS-RT','THC-RT','BAF-RT','CIC-RT','LOADING FEE-RT',
-                                        'TOTAL','有效时间','备注','创建时间','创建人','creator_name'],
+                                        headers:[ '操作','POL', 'POD','服务船东','船期','目的港费用','目的港费用币制','DOC-SET','DOC-SET币制','VGM-BL','VGM-BL币制','D/O-SET','D/O-SET币制',
+                                        'O/F-RT','O/F-RT币制','HANDLING-SET','HANDLING-SET币制','CFS-RT','CFS-RT币制','THC-RT','THC-RT币制','BAF-RT','BAF-RT币制','CIC-RT',
+                                        'CIC-RT币制','LOADING FEE-RT','LOADING FEE-RT币制', 'TOTAL','TOTAL币制','有效时间','备注','创建时间','创建人',
+                                        'creator_name','','','','','','','','','','','','' ],
                                         
-                                        field_list:['','POL','POD', 'service_owner', 'port_charge','DOC','VGM','D/O',
-                                        'O/F','HANDLING','CFS','THC','BAF','CIC','LOADING_FEE',
-                                        'total','effective_time','remark','create_stamp','creator','creator_name'],
+                                        field_list:['','POL','POD', 'service_owner','shipment', 'port_charge','port_charge_crc','DOC','DOC_CRC','VGM','VGM_CRC','D_O','D_O_CRC',
+                                        'O_F','O_F_CRC',
+                                        'HANDLING','HANDLING_CRC','CFS','CFS_CRC','THC','THC_CRC','BAF','BAF_CRC','CIC','CIC_CRC','LOADING_FEE','LOADING_FEE_CRC',
+                                        'total',
+                                        'total_CRC','effective_time','remark','create_stamp','creator','creator_name'
+                                        ,'PORT_CHARGE_CRC_NAME','DOC_CRC_NAME','VGM_CRC_NAME','D_O_CRC_NAME','O_F_CRC_NAME','HANDLING_CRC_NAME','CFS_CRC_NAME','THC_CRC_NAME','BAF_CRC_NAME','CIC_CRC_NAME','LOADING_FEE_CRC_NAME','TOTAL_CRC_NAME' ],
                                         value_list: order.bulkCargoItemList![]
                                     }){} %>
                        

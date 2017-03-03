@@ -61,13 +61,28 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        deletedTableIds = [];
 	        return cargo_items_array;
 	    };
+
 	    
 	    var bindFieldEvent=function(){
-	    	eeda.bindTableField('cargo_table','UNIT_ID','/serviceProvider/searchUnit','');
-	    	eeda.bindTableField('cargo_table','POR','/location/searchPort','');
-	    	eeda.bindTableField('cargo_table','POL','/location/searchPort','');
-	    	eeda.bindTableField('cargo_table','POD','/location/searchPort','');
-	    	eeda.bindTableField('cargo_table','CARRIER','/serviceProvider/searchCarrier','');
+	    	eeda.bindTableField('bulkCargo_item_table','UNIT_ID','/serviceProvider/searchUnit','');
+	    	eeda.bindTableField('bulkCargo_item_table','POR','/location/searchPort','');
+	    	eeda.bindTableField('bulkCargo_item_table','POL','/location/searchPort','');
+	    	eeda.bindTableField('bulkCargo_item_table','POD','/location/searchPort','');
+	    	eeda.bindTableField('bulkCargo_item_table','CARRIER','/serviceProvider/searchCarrier','');	    	
+	    	eeda.bindTableField('bulkCargo_item_table','PORT_CHARGE_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('bulkCargo_item_table','DOC_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('bulkCargo_item_table','VGM_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('bulkCargo_item_table','D_O_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('bulkCargo_item_table','O_F_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('bulkCargo_item_table','HANDLING_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('bulkCargo_item_table','CFS_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('bulkCargo_item_table','THC_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('bulkCargo_item_table','BAF_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('bulkCargo_item_table','CIC_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('bulkCargo_item_table','LOADING_FEE_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('bulkCargo_item_table','TOTAL_CRC','/serviceProvider/searchCurrency','');
+
+
 	    };
 
 	    //------------事件处理
@@ -106,6 +121,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="service_owner"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+              { "data": "SHIPMENT", 
+                "render": function ( data, type, full, meta ) {
+                  if(!data)
+                    data='';
+                  return '<input type="text" name="shipment"  value="'+data+'" class="form-control" />';
+                }
+              },
             	{ "data": "PORT_CHARGE", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -113,6 +135,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="port_charge"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "PORT_CHARGE_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'PORT_CHARGE_CRC',
+                               value: data,
+                               display_value: full.PORT_CHARGE_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "DOC", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -120,6 +157,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="DOC"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "DOC_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'DOC_CRC',
+                               value: data,
+                               display_value: full.DOC_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "VGM", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -127,20 +179,65 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="VGM"  value="'+data+'" class="form-control" />';
 	            	}
             	},
-            	{ "data": "D/O", 
+            	{ "data": "VGM_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'VGM_CRC',
+                               value: data,
+                               display_value: full.VGM_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
+            	{ "data": "D_O", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="D/O"  value="'+data+'" class="form-control" />';
+	            		return '<input type="text" name="D_O"  value="'+data+'" class="form-control" />';
 	            	}
             	},
-            	{ "data": "O/F", 
+            	{ "data": "D_O_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'D_O_CRC',
+                               value: data,
+                               display_value: full.D_O_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
+            	{ "data": "O_F", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="O/F"  value="'+data+'" class="form-control" />';
+	            		return '<input type="text" name="O_F"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "O_F_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'O_F_CRC',
+                               value: data,
+                               display_value: full.O_F_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "HANDLING", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -148,6 +245,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="HANDLING"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "HANDLING_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'HANDLING_CRC',
+                               value: data,
+                               display_value: full.HANDLING_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "CFS", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -155,6 +267,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="CFS"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "CFS_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'CFS_CRC',
+                               value: data,
+                               display_value: full.CFS_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "THC", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -162,6 +289,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="THC"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "THC_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'THC_CRC',
+                               value: data,
+                               display_value: full.THC_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "BAF", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -169,6 +311,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="BAF"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "BAF_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'BAF_CRC',
+                               value: data,
+                               display_value: full.BAF_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "CIC", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -176,6 +333,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="CIC"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "CIC_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'CIC_CRC',
+                               value: data,
+                               display_value: full.CIC_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "LOADING_FEE", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -183,6 +355,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="LOADING_FEE"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "LOADING_FEE_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'LOADING_FEE_CRC',
+                               value: data,
+                               display_value: full.LOADING_FEE_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "TOTAL", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -190,6 +377,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="total"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "TOTAL_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'TOTAL_CRC',
+                               value: data,
+                               display_value: full.TOTAL_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	
             	{ "data": "EFFECTIVE_TIME", 
 	            	"render": function ( data, type, full, meta ) {
@@ -227,10 +429,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                        data='';
 	                    return data;
 	                }
-	            }
+	            },
+	            { "data": "PORT_CHARGE_CRC_NAME", "visible": false},
+	            { "data": "VGM_CRC_NAME", "visible": false},
+	            { "data": "DOC_CRC_NAME", "visible": false},
+	            { "data": "D_O_CRC_NAME", "visible": false},
+	            { "data": "O_F_CRC_NAME", "visible": false},
+	            { "data": "HANDLING_CRC_NAME", "visible": false},
+	            { "data": "CFS_CRC_NAME", "visible": false},
+	            { "data": "THC_CRC_NAME", "visible": false},
+	            { "data": "BAF_CRC_NAME", "visible": false},
+	            { "data": "CIC_CRC_NAME", "visible": false},
+	            { "data": "LOADING_FEE_CRC_NAME", "visible": false},
+	            { "data": "TOTAL_CRC_NAME", "visible": false}
 	        ]
 	    });
-
 	    
 	    $('#add_bulkCargo_item').on('click', function(){
 	        var item={};

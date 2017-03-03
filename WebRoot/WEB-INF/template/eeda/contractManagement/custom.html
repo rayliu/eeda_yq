@@ -7,12 +7,15 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'custom_table',
-                                        headers:[ '','区域', '服务口岸','服务内容','码头费实报实销','检验检疫实报实销','报关单证录入费','报检单证录入费',
-                                        '报关代理费','费用汇总','有效时间','创建时间','备注'],
-                                        field_list:['','region', 'service_port','service_content','dock_fee_reimbursement','inspection_quarantine_reimbursement','customs_entry_fee','inspection_entry_fee',
-                                        'customs_agent_fee','total_fee','effective_time','create_stamp', 'remark'],
+                                        headers:[ '','区域', '服务口岸','服务内容','码头费实报实销','码头费实报实销币制','检验检疫实报实销','检验检疫实报实销币制','报关单证录入费','报关单证录入费币制','报检单证录入费','报检单证录入费币制',
+                                        '报关代理费','报关代理费币制','费用汇总','费用汇总币制','有效时间','创建时间','备注','','','','','',''],
+                                        field_list:['','region', 'service_port','service_content','df_reimbursement','df_reimbursement_crc','iq_reimbursement','iq_reimbursement_crc','customs_entry_fee','customs_entry_fee_crc','inspection_entry_fee','inspection_entry_fee_crc',
+                                        'customs_agent_fee','customs_agent_fee_crc','total_fee','total_fee_crc','effective_time','create_stamp', 'remark',
+                                        'df_reimbursement_crc_name','iq_reimbursement_crc_name','customs_entry_fee_crc_name',
+                                        'inspection_entry_fee_crc_name','customs_agent_fee_crc_name','total_fee_crc_name'
+                                        ],
                                         value_list: order.customList![]
-                                    }){} %>
+                                    }){} %>_
                        
                   	</div>
          </div><!-- /.row -->

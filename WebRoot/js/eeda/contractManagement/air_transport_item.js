@@ -74,6 +74,10 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	
 	    	eeda.bindTableField('cargo_table','UNIT_ID','/serviceProvider/searchUnit','');
 	    	eeda.bindTableField('cargo_table','POR','/location/searchPort','');
+	    	eeda.bindTableField('air_transport_item_table','45KG_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('air_transport_item_table','100KG_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('air_transport_item_table','300KG_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('air_transport_item_table','500KG_CRC','/serviceProvider/searchCurrency','');
 	    };
 
 	    //------------事件处理
@@ -161,6 +165,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="45KG"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "45KG_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: '45KG_CRC',
+                               value: data,
+                               display_value: full.A45KG_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "100KG", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -168,6 +187,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="100KG"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "100KG_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: '100KG_CRC',
+                               value: data,
+                               display_value: full.A100KG_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "300KG", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -175,6 +209,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="300KG"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "300KG_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: '300KG_CRC',
+                               value: data,
+                               display_value: full.A300KG_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "500KG", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -182,6 +231,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="500KG"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "500KG_CRC", "width":"60px","className":"currency_name",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: '500KG_CRC',
+                               value: data,
+                               display_value: full.A500KG_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "EFFECTIVE_TIME", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -218,7 +282,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                        data='';
 	                    return data;
 	                }
-	            }
+	            },
+	            { "data": "A45KG_CRC_NAME", "visible": false}, 
+            	{ "data": "A100KG_CRC_NAME", "visible": false}, 
+            	{ "data": "A300KG_CRC_NAME", "visible": false}, 
+            	{ "data": "A500KG_CRC_NAME", "visible": false}
 	        ]
 	    });
 

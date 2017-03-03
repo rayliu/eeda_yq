@@ -64,34 +64,34 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    };
 	    
 	    var bindFieldEvent=function(){
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','DOC_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','TLX_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','EIR_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','HSS_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','O_F_20GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','O_F_40GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','O_F_40HQ_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','THC_20GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','THC_40GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','THC_40HQ_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','EBS_20GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','EBS_40GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','EBS_40HQ_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','AMS_AFR_20GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','AMS_AFR_40GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','MS_AFR_40HQ_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','VAT_20GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','VAT_40GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','VAT_40HQ_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','ISPS_20GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','ISPS_40GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','ISPS_40HQ_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','TRUCK_20GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','TRUCK_40GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','TRUCK_40HQ_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','TOTAL_20GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','TOTAL_40GP_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableFieldCurrencyId('ocean_item_table','TOTAL_40HQ_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','DOC_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','TLX_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','EIR_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','HSS_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','O_F_20GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','O_F_40GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','O_F_40HQ_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','THC_20GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','THC_40GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','THC_40HQ_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','EBS_20GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','EBS_40GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','EBS_40HQ_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','AMS_AFR_20GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','AMS_AFR_40GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','AMS_AFR_40HQ_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','VAT_20GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','VAT_40GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','VAT_40HQ_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','ISPS_20GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','ISPS_40GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','ISPS_40HQ_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','TRUCK_20GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','TRUCK_40GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','TRUCK_40HQ_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','TOTAL_20GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','TOTAL_40GP_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','TOTAL_40HQ_CRC','/serviceProvider/searchCurrency','');
 	    };
 
 	    //------------事件处理
@@ -224,11 +224,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                        return field_html; 
                     }
                 },
-            	{ "data": "O/F_20GP", 
+            	{ "data": "O_F_20GP", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="O/F_20GP"  value="'+data+'" class="form-control" />';
+	            		return '<input type="text" name="O_F_20GP"  value="'+data+'" class="form-control" />';
 	            	}
             	},
             	{ "data": "O_F_20GP_CRC", "width":"60px","className":"currency_name",
@@ -246,11 +246,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                        return field_html; 
                     }
                 },
-            	{ "data": "O/F_40GP", 
+            	{ "data": "O_F_40GP", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="O/F_40GP"  value="'+data+'" class="form-control" />';
+	            		return '<input type="text" name="O_F_40GP"  value="'+data+'" class="form-control" />';
 	            	}
             	},
             	{ "data": "O_F_40GP_CRC", "width":"60px","className":"currency_name",
@@ -268,11 +268,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                        return field_html; 
                     }
                 },
-            	{ "data": "O/F_40HQ", 
+            	{ "data": "O_F_40HQ", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="O/F_40HQ"  value="'+data+'" class="form-control" />';
+	            		return '<input type="text" name="O_F_40HQ"  value="'+data+'" class="form-control" />';
 	            	}
             	},
             	{ "data": "O_F_40HQ_CRC", "width":"60px","className":"currency_name",
@@ -422,11 +422,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                        return field_html; 
                     }
                 },
-            	{ "data": "AMS/AFR_20GP", 
+            	{ "data": "AMS_AFR_20GP", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="AMS/AFR_20GP"  value="'+data+'" class="form-control" />';
+	            		return '<input type="text" name="AMS_AFR_20GP"  value="'+data+'" class="form-control" />';
 	            	}
             	},
             	{ "data": "AMS_AFR_20GP_CRC", "width":"60px","className":"currency_name",
@@ -444,11 +444,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                        return field_html; 
                     }
                 },
-            	{ "data": "AMS/AFR_40GP", 
+            	{ "data": "AMS_AFR_40GP", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="AMS/AFR_40GP"  value="'+data+'" class="form_control" />';
+	            		return '<input type="text" name="AMS_AFR_40GP"  value="'+data+'" class="form_control" />';
 	            	}
             	},
             	{ "data": "AMS_AFR_40GP_CRC", "width":"60px","className":"currency_name",
@@ -466,11 +466,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                        return field_html; 
                     }
                 },
-            	{ "data": "AMS/AFR_40HQ", 
+            	{ "data": "AMS_AFR_40HQ", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="AMS/AFR_40HQ"  value="'+data+'" class="form_control" />';
+	            		return '<input type="text" name="AMS_AFR_40HQ"  value="'+data+'" class="form_control" />';
 	            	}
             	},
             	{ "data": "AMS_AFR_40HQ_CRC", "width":"60px","className":"currency_name",
@@ -788,7 +788,35 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                        data='';
 	                    return data;
 	                }
-	            }
+	            }, 
+            	{ "data": "DOC_CRC_NAME", "visible": false} , 
+            	{ "data": "TLX_CRC_NAME", "visible": false}, 
+            	{ "data": "EIR_CRC_NAME", "visible": false}, 
+            	{ "data": "HSS_CRC_NAME", "visible": false}, 
+            	{ "data": "O_F_20GP_CRC_NAME", "visible": false}, 
+            	{ "data": "O_F_40GP_CRC_NAME", "visible": false}, 
+            	{ "data": "O_F_40HQ_CRC_NAME", "visible": false}, 
+            	{ "data": "THC_20GP_CRC_NAME", "visible": false}, 
+            	{ "data": "THC_40GP_CRC_NAME", "visible": false}, 
+            	{ "data": "THC_40HQ_CRC_NAME", "visible": false},
+            	{ "data": "EBS_20GP_CRC_NAME", "visible": false}, 
+            	{ "data": "EBS_40GP_CRC_NAME", "visible": false}, 
+            	{ "data": "EBS_40HQ_CRC_NAME", "visible": false}, 
+            	{ "data": "AMS_AFR_20GP_CRC_NAME", "visible": false}, 
+            	{ "data": "AMS_AFR_40GP_CRC_NAME", "visible": false}, 
+            	{ "data": "AMS_AFR_40HQ_CRC_NAME", "visible": false},
+            	{ "data": "VAT_20GP_CRC_NAME", "visible": false}, 
+            	{ "data": "VAT_40GP_CRC_NAME", "visible": false}, 
+            	{ "data": "VAT_40HQ_CRC_NAME", "visible": false}, 
+            	{ "data": "ISPS_20GP_CRC_NAME", "visible": false}, 
+            	{ "data": "ISPS_40GP_CRC_NAME", "visible": false}, 
+            	{ "data": "ISPS_40HQ_CRC_NAME", "visible": false},
+            	{ "data": "TRUCK_20GP_CRC_NAME", "visible": false}, 
+            	{ "data": "TRUCK_40GP_CRC_NAME", "visible": false}, 
+            	{ "data": "TRUCK_40HQ_CRC_NAME", "visible": false}, 
+            	{ "data": "TOTAL_20GP_CRC_NAME", "visible": false}, 
+            	{ "data": "TOTAL_40GP_CRC_NAME", "visible": false}, 
+            	{ "data": "TOTAL_40HQ_CRC_NAME", "visible": false}
 	        ]
 	    });
 

@@ -62,12 +62,14 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    };
 	    
 	    var bindFieldEvent=function(){
-	    	eeda.bindTableField('cargo_table','UNIT_ID','/serviceProvider/searchUnit','');
-	    	eeda.bindTableField('cargo_table','POR','/location/searchPort','');
-	    	eeda.bindTableField('cargo_table','POL','/location/searchPort','');
-	    	eeda.bindTableField('cargo_table','POD','/location/searchPort','');
-	    	eeda.bindTableField('cargo_table','CARRIER','/serviceProvider/searchCarrier','');
+	    	eeda.bindTableField('custom_table','DF_REIMBURSEMENT_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('custom_table','IQ_REIMBURSEMENT_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('custom_table','CUSTOMS_ENTRY_FEE_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('custom_table','INSPECTION_ENTRY_FEE_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('custom_table','CUSTOMS_AGENT_FEE_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('custom_table','TOTAL_FEE_CRC','/serviceProvider/searchCurrency','');
 	    };
+
 
 	    //------------事件处理
 	    var cargoTable = eeda.dt({
@@ -105,20 +107,50 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="service_content"  value="'+data+'" class="form-control" />';
 	            	}
             	},
-            	{ "data": "DOCK_FEE_REIMBURSEMENT", 
+            	{ "data": "DF_REIMBURSEMENT", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="dock_fee_reimbursement"  value="'+data+'" class="form-control" />';
+	            		return '<input type="text" name="df_reimbursement"  value="'+data+'" class="form-control" />';
 	            	}
             	},
-            	{ "data": "INSPECTION_QUARANTINE_REIMBURSEMENT", 
+	            { "data": "DF_REIMBURSEMENT_CRC", "width":"80px",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'DF_REIMBURSEMENT_CRC',
+                               value: data,
+                               display_value: full.DF_REIMBURSEMENT_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
+            	{ "data": "IQ_REIMBURSEMENT", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="inspection_quarantine_reimbursement"  value="'+data+'" class="form-control" />';
+	            		return '<input type="text" name="iq_reimbursement"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+	            { "data": "IQ_REIMBURSEMENT_CRC", "width":"80px",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'IQ_REIMBURSEMENT_CRC',
+                               value: data,
+                               display_value: full.IQ_REIMBURSEMENT_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "CUSTOMS_ENTRY_FEE", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -126,6 +158,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="customs_entry_fee"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+	           { "data": "CUSTOMS_ENTRY_FEE_CRC", "width":"80px",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'CUSTOMS_ENTRY_FEE_CRC',
+                               value: data,
+                               display_value: full.CUSTOMS_ENTRY_FEE_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "INSPECTION_ENTRY_FEE", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -133,6 +180,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="inspection_entry_fee"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "INSPECTION_ENTRY_FEE_CRC", "width":"80px",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'INSPECTION_ENTRY_FEE_CRC',
+                               value: data,
+                               display_value: full.INSPECTION_ENTRY_FEE_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "CUSTOMS_AGENT_FEE", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -140,6 +202,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="customs_agent_fee"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "CUSTOMS_AGENT_FEE_CRC", "width":"80px",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'CUSTOMS_AGENT_FEE_CRC',
+                               value: data,
+                               display_value: full.CUSTOMS_AGENT_FEE_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "TOTAL_FEE", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -147,6 +224,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="total_fee"  value="'+data+'" class="form-control" />';
 	            	}
             	},
+            	{ "data": "TOTAL_FEE_CRC", 
+	            	"render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'TOTAL_FEE_CRC',
+                               value: data,
+                               display_value: full.TOTAL_FEE_CRC_NAME,
+                               style:'width:80px'
+                           }
+                       );
+                       return field_html; 
+                    }
+            	} ,
             	{ "data": "EFFECTIVE_TIME", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -167,7 +259,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            			data='';
 	            		return '<input type="text" name="remark"  value="'+data+'" class="form-control" />';
 	            	}
-            	}
+            	},
+            	{ "data": "DF_REIMBURSEMENT_CRC_NAME", "visible": false}, 
+            	{ "data": "IQ_REIMBURSEMENT_CRC_NAME", "visible": false}, 
+            	{ "data": "CUSTOMS_ENTRY_FEE_CRC_NAME", "visible": false},
+            	{ "data": "INSPECTION_ENTRY_FEE_CRC_NAME", "visible": false}, 
+            	{ "data": "CUSTOMS_AGENT_FEE_CRC_NAME", "visible": false}, 
+            	{ "data": "TOTAL_FEE_CRC_NAME", "visible": false}
 	        ]
 	    });
 

@@ -99,6 +99,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
     	 }
     	 if(order.sp_qualification_type.indexOf("storage") >= 0){
     		 order.storage = itemOrder.buildStorageDetail(); 
+    		 order.storage_qualification_type = getQualification_type('storage_qualification_type_val');
     	 }
     	 if(order.sp_qualification_type.indexOf("air_transport") >= 0){
     		 order.airTransport = itemOrder.buildAirTransportDetail(); 
@@ -300,6 +301,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		showQualification_type('land_qualification_type');
 		showQualification_type('trade_qualification_type');
 		showQualification_type('bulk_qualification_type');
+		showQualification_type('storage_qualification_type');
 
     });
 });
