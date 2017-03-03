@@ -664,7 +664,7 @@ public class CustomPlanOrderController extends Controller {
     	String btnId = getPara("btnId");
     	CustomPlanOrder order = CustomPlanOrder.dao.findById(id);
     	if("confirmCompleted".equals(btnId)){
-    		sendMail(plan_order_no);
+    		sendMail(id,plan_order_no);
     		order.set("status","待审核");
     		order.set("fill_by",LoginUserController.getLoginUserId(this));
     		order.set("fill_stamp",new Date());
@@ -797,9 +797,9 @@ public class CustomPlanOrderController extends Controller {
   
 
     @Before(Tx.class)
-    public void sendMail(String order_no) throws Exception {
+    public void sendMail(String order_id,String order_no) throws Exception {
     	String mailTitle = "您有一份报关单待处理";
-    	String mailContent = "单号"+order_no;
+    	String mailContent = "报关申请单号为<a href=\"http://www.esimplev.com/customPlanOrder/edit?id="+order_id+"\">"+order_no+"</a>";
     	
         MultiPartEmail email = new MultiPartEmail();  
         /*smtp.exmail.qq.com*/
@@ -811,16 +811,17 @@ public class CustomPlanOrderController extends Controller {
         email.setSSLOnConnect(true);
         email.setFrom("info@yq-scm.com","Enkyo珠海远桥");//设置发信人
         //设置收件人，邮件标题，邮件内容
+    	//email.addTo("1063203104@qq.com");
     	email.addTo("ytimport@163.com");
         email.setSubject(mailTitle);
-        email.setMsg(mailContent);
+        email.setContent(mailContent, "text/html;charset=gb2312");
         
 //        //抄送
 //        email.addCc("1063203104@qq.com");
 //       //密送
 //        email.addBcc("1063203104@qq.com");
         try{
-        	email.setCharset("UTF-8"); 
+        	//email.setCharset("UTF-8"); 
         	email.send();
         }catch(Exception e){
         	e.printStackTrace();
