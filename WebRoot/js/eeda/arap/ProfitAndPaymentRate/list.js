@@ -11,7 +11,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           ajax:{
               //url: "/chargeCheckOrder/list",
               type: 'POST'
-          }, 
+          },
+          initComplete:function(settings){
+        	  
+          },
           columns: [
       			{ "data": "ABBR", "width": "120px"},
 	            { "data": "CHARGE_CNY", "width": "120px",
@@ -175,11 +178,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
           });
           
+          var cssTd=function(){
+        	  $("#eeda_table th:eq(6)").css('background-color','#f5f5dc');
+        	  $("#eeda_table td:nth-child(6)").css('background-color','#f5f5dc');
+        	  $("#eeda_table td:nth-child(7)").css('background-color','#f5f5dc');
+        	  $("#eeda_table td:nth-child(8)").css('background-color','#f5f5dc');
+        	  $("#eeda_table td:nth-child(9)").css('background-color','#f5f5dc');
+          }
+         
+          
           var url = "/profitAndPaymentRate/list?customer_id="+customer
 				          +"&order_export_date_begin_time="+order_export_date_begin_time
 				          +"&order_export_date_end_time="+order_export_date_end_time;
-          dataTable.ajax.url(url).load();
+          dataTable.ajax.url(url).load(cssTd);
           
+         
           
       };
   });
