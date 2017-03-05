@@ -16,8 +16,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  
           },
           columns: [
-      			{ "data": "ABBR", "width": "120px"},
-	            { "data": "CHARGE_CNY", "width": "120px",
+      			{ "data": "ABBR", "width": "100px"},
+	            { "data": "CHARGE_CNY", "width": "80px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -25,7 +25,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return data;
 				  }
 	            },
-	            { "data": "CHARGE_USD", "width": "120px"  ,
+	            { "data": "CHARGE_USD", "width": "80px"  ,
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -33,7 +33,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return data;
 				  }
 	            },
-	            { "data": "CHARGE_JPY", "width": "120px",
+	            { "data": "CHARGE_JPY", "width": "80px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -41,7 +41,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return data;
 				  }
 	            },
-	            { "data": "CHARGE_HKD", "width": "120px",
+	            { "data": "CHARGE_HKD", "width": "80px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -49,7 +49,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return data;
 				  }
 	            },
-	            { "data": "COST_CNY", "width": "120px" ,
+	            { "data": "COST_CNY", "width": "80px" ,
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -57,7 +57,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return data;
 				  }
 	            },
-	            { "data": "COST_USD", "width": "120px",
+	            { "data": "COST_USD", "width": "80px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -65,7 +65,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return data;
 				  }
 	            },
-	            { "data": "COST_JPY", "width": "120px",
+	            { "data": "COST_JPY", "width": "80px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -73,7 +73,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return data;
 				  }
 	            },
-	            { "data": "COST_HKD", "width": "120px",
+	            { "data": "COST_HKD", "width": "80px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -101,7 +101,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					"render": function(data, type, full, meta) {
 	            	    var profit = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
 	            	    if(profit<0){
-	            	    	return '<span style="color:red;">'+profit+'</span>';
+	            	    	return '<span style="color:red;width:120px">'+profit+'</span>';
 	            	    }
 						return profit;
 					}
