@@ -326,16 +326,17 @@
                                        </div>
 									</form>
 									<div class="col-lg-4">
-                                        <label>单据状态</label>
+                                        <label>供应商审核状态</label>
 										<input placeholder="" disabled class="form-control" id="status" name="status" type="text" value="${party.status!''}">
                                     </div>
 									<div class="col-lg-12">
 										<div class="button-bar" style="clear:both;">
                                         	<button id="save" type="button" class="btn  btn_green" disabled>保存</button>
-                                        	<a class="btn  btn_white" href="/serviceProvider">返回</a>
+                                        	<button id="submit" type="button" class="btn  btn_green" disabled>提交</button>
                                         	<button id="approval" type="button" class="btn  btn_green" disabled>审核通过</button>
                                         	<button id="disapproval" type="button" class="btn  btn_green" disabled>审核不通过</button>
                                         	<button id="marking" type="button" class="btn  btn_green">打分</button>
+                                        	<a class="btn  btn_white" href="/serviceProvider">返回</a>
                                     	</div>
 									</div>
                                     

@@ -152,6 +152,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      			$("#sp_id").val(data.ID);
      			$("#addChargeType").attr("disabled",false);
      			$("#save").attr("disabled",false);
+     			$("#submit").attr("disabled",false);
      		}else{
      			$.scojs_message('数据有误', $.scojs_message.TYPE_ERROR);
      			$("#save").attr("disabled",false);
@@ -161,15 +162,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       });
       
       
-      $("#approval,#disapproval").click(function(){
+      $("#submit,#approval,#disapproval").click(function(){
     	  var btn = $(this).attr('id');
     	  var value = $(this).text();
+    	  $("#submit").prop('disabled',true);
     	  $("#approval").prop('disabled',true);
     	  $("#disapproval").prop('disabled',true);
     	  $.post("/serviceProvider/approvalOrder", {id:$("#partyId").val(),action:btn},function(data){
     		  if(data){
     			  $.scojs_message('操作成功', $.scojs_message.TYPE_OK);
-    			  $("#status").val(data.STATUS);
+    			  var status = data.STATUS;
+    			  $("#status").val(status);
+    			  if(status!="审核不通过"){
+    				  $("#save").prop('disabled',true);
+        	    	  $("#approval").prop('disabled',false);
+        	    	  $("#disapproval").prop('disabled',false); 
+    			  }else{
+    				  $("#save").prop('disabled',false);
+        	    	  $("#approval").prop('disabled',true);
+        	    	  $("#disapproval").prop('disabled',true);
+    			  }
+    			  
     		  }
     	  }).fail(function() {
 	          $.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
@@ -261,16 +274,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    
 	    //按钮控制
 	    var status = $('#status').val();
-	    if(status=='' || status==null || status=='审核状态' ){
+	    if(status=='' || status==null || status=='新建'|| status=='审核不通过'){
 	    	$("#save").prop('disabled',false);
+	    	$("#submit").prop('disabled',false);
+	    }else if(status=='待审核'||status=='审核通过'){
 	    	$("#approval").prop('disabled',false);
 	    	$("#disapproval").prop('disabled',false);
-	    }else if(status=='审核通过' || status=='审核不通过'){
-	    	$("#save").prop('disabled',true);
-	    	$("#approval").prop('disabled',true);
-	    	$("#disapproval").prop('disabled',true);
 	    }
-	    
-	    
+
     });
 });
