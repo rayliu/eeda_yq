@@ -62,8 +62,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    };
 	    
 	    var bindFieldEvent=function(){
-	    	eeda.bindTableField('custom_table','DF_REIMBURSEMENT_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableField('custom_table','IQ_REIMBURSEMENT_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('custom_table','DOCK_FEE_REIMBURSEMENT_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('custom_table','INSPECTION_QUARANTINE_REIMBURSEMENT_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('custom_table','CUSTOMS_ENTRY_FEE_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('custom_table','INSPECTION_ENTRY_FEE_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('custom_table','CUSTOMS_AGENT_FEE_CRC','/serviceProvider/searchCurrency','');
@@ -107,44 +107,44 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="service_content"  value="'+data+'" class="form-control" />';
 	            	}
             	},
-            	{ "data": "DF_REIMBURSEMENT", 
+            	{ "data": "DOCK_FEE_REIMBURSEMENT", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
 	            		return '<input type="text" name="df_reimbursement"  value="'+data+'" class="form-control" />';
 	            	}
             	},
-	            { "data": "DF_REIMBURSEMENT_CRC", "width":"80px",
+	            { "data": "DOCK_FEE_REIMBURSEMENT_CRC", "width":"80px",
                     "render": function ( data, type, full, meta ) {
                 	   if(!data)
                            data='';
                        var field_html = template('table_dropdown_template',
                            {
-                               id: 'DF_REIMBURSEMENT_CRC',
+                               id: 'DOCK_FEE_REIMBURSEMENT_CRC',
                                value: data,
-                               display_value: full.DF_REIMBURSEMENT_CRC_NAME,
+                               display_value: full.DOCK_FEE_REIMBURSEMENT_CRC_NAME,
                                style:'width:80px'
                            }
                        );
                        return field_html; 
                     }
                 },
-            	{ "data": "IQ_REIMBURSEMENT", 
+            	{ "data": "INSPECTION_QUARANTINE_REIMBURSEMENT_CRC", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
 	            		return '<input type="text" name="iq_reimbursement"  value="'+data+'" class="form-control" />';
 	            	}
             	},
-	            { "data": "IQ_REIMBURSEMENT_CRC", "width":"80px",
+	            { "data": "INSPECTION_QUARANTINE_REIMBURSEMENT_CRC", "width":"80px",
                     "render": function ( data, type, full, meta ) {
                 	   if(!data)
                            data='';
                        var field_html = template('table_dropdown_template',
                            {
-                               id: 'IQ_REIMBURSEMENT_CRC',
+                               id: 'INSPECTION_QUARANTINE_REIMBURSEMENT_CRC',
                                value: data,
-                               display_value: full.IQ_REIMBURSEMENT_CRC_NAME,
+                               display_value: full.INSPECTION_QUARANTINE_REIMBURSEMENT_CRC_NAME,
                                style:'width:80px'
                            }
                        );
@@ -260,8 +260,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		return '<input type="text" name="remark"  value="'+data+'" class="form-control" />';
 	            	}
             	},
-            	{ "data": "DF_REIMBURSEMENT_CRC_NAME", "visible": false}, 
-            	{ "data": "IQ_REIMBURSEMENT_CRC_NAME", "visible": false}, 
+            	{ "data": "DOCK_FEE_REIMBURSEMENT_CRC_NAME", "visible": false}, 
+            	{ "data": "INSPECTION_QUARANTINE_REIMBURSEMENT_CRC_NAME", "visible": false}, 
             	{ "data": "CUSTOMS_ENTRY_FEE_CRC_NAME", "visible": false},
             	{ "data": "INSPECTION_ENTRY_FEE_CRC_NAME", "visible": false}, 
             	{ "data": "CUSTOMS_AGENT_FEE_CRC_NAME", "visible": false}, 
