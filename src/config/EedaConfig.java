@@ -115,7 +115,9 @@ import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import controllers.app.AppControllerForMobile;
 import controllers.cms.jobOrder.CustomJobOrderController;
 import controllers.cms.jobOrder.CustomPlanOrderController;
+import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
+import controllers.msg.EwmsDashBoardController;
 import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.jobOrder.JobOrderControllerForMobile;
@@ -214,10 +216,11 @@ public class EedaConfig extends JFinalConfig {
 
 	private void setScmRoute(Routes me, String contentPath) {
 		// yh project controller
-        me.add("/", controllers.eeda.MainController.class, contentPath);
+        me.add("/", MainController.class, contentPath);
         me.add("/module", ModuleController.class, contentPath);
        // me.add("/apidoc", controllers.eeda.DocController.class);基础数据
         
+        me.add("/eWmsDashBoard", EwmsDashBoardController.class, contentPath);
         me.add("/tradeItem", TradeItemController.class, contentPath);
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);

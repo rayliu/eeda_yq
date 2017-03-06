@@ -108,15 +108,7 @@ public class MainController extends Controller {
             		+ " LIMIT 0,8 ";
     		setAttr("msgBoardInfo",Db.find(sql));
     		
-            //查询两个月内即将过期的客户合同
-//            String sql ="select p.id, p.name, p.period_to from user_customer uc"
-//					+" left join contract c on c.party_id= uc.customer_id  "
-//					+" LEFT JOIN party p ON uc.customer_id  = p.id and p.type = 'CUSTOMER'"
-//				    +" where uc.user_name='"+currentUser.getPrincipal()+"'"
-//					+" and c.period_to > SYSDATE()"
-//					+" and c.period_to < DATE_ADD(SYSDATE(), INTERVAL 60 DAY);  ";
-//            List<Record> contractList = Db.find(sql);
-//            setAttr("contractList", contractList);
+
             //更新当前用户最后一次登陆的时间
             updateLastLogin(user);
             
@@ -125,6 +117,7 @@ public class MainController extends Controller {
 
             String savedRequestUrl = this.getSessionAttr(ShiroKit.getSavedRequestKey());
             if(savedRequestUrl!=null){
+                System.out.println("111111");
             	setSessionAttr(ShiroKit.getSavedRequestKey(), null);
             	int index = savedRequestUrl.indexOf("/edit");
                 if(index>0){
@@ -132,6 +125,7 @@ public class MainController extends Controller {
                 }
             	redirect(savedRequestUrl);
             }else{
+                System.out.println("2222");
             	String officeConfig="select oc.index_page_path from office_config oc "
             			+ " where oc.office_id =?";
             	Record rec = Db.findFirst(officeConfig, user.getLong("office_id"));
@@ -139,10 +133,14 @@ public class MainController extends Controller {
             	    if(getAttr("modules")==null){
                         redirect("/");
                     }else{
-                        render("/eeda/index.html");
+                        List<Record> moduleList = (List<Record>)getAttr("modules");
+                        List<Record> orderList = (List<Record>)moduleList.get(0).get("orders");
+                        Record firstModule = (Record)orderList.get(0);
+                        
+                        redirect("/"+firstModule.getStr("url"));
                     };
             	}else{
-            		render(rec.getStr("index_page_path"));
+            		render(rec.getStr("index_page_path"));//显示不同URL对应的不同的login页面
             	}
             }
         }
