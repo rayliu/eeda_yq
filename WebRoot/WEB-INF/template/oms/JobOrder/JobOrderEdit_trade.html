@@ -71,7 +71,7 @@
                                     {
                                         id:'trade_cost_table',
                                         style:'width:2000px',
-                                        headers:['','','商品名称','数量','单位','单价(CNY)','国内货值(CNY)','增值税率','退税率','退税金额','调整后退税金额','调整后单价','调整后总价','报关单价','数量','报关金额','报关币制','报关汇率','报关金额(CNY)','currency_name','commodity_name'],
+                                        headers:['','','商品名称','数量','单位','单价(CNY)','国内货值(CNY)','增值税率','国税退税率','客户退税率','国税退税金额','客户退税金额','调整后单价','调整后总价','报关单价','数量','报关金额','报关币制','报关汇率','报关金额(CNY)','代理费百分比','代理费金额','currency_name','commodity_name'],
                                         field_list:[
                                         '',
                                         '',
@@ -82,6 +82,9 @@
 										'domestic_price',
 										'value_added_tax',
 										'tax_refund_rate',
+										
+										'tax_refund_rate',
+										  
 										'tax_refund_amount',
 										'adjusted_tax_refund_amount',
 										'adjusted_unit_price',
@@ -92,6 +95,10 @@
 										'custom_currency',
 										'custom_rate',
 										'custom_amount_cny',
+										
+										'custom_rate',
+										'custom_amount_cny',
+										
 										'CURRENCY_ID_NAME',
 										'commodity_name',
 										'currency_name'
