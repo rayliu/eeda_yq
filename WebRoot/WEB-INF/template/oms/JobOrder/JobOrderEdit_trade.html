@@ -63,11 +63,11 @@
                      
                        <div class="row">
                             <div class="col-lg-12">
-                            <input type="hidden" id="total_difference" value="{trade.total_difference}">
-                            <input type="hidden" id="price_difference" value="{trade.price_difference}">
+                            <input type="hidden" id="total_difference" value="${trade.total_difference!''}"  >
+                            <input type="hidden" id="price_difference" value="${trade.price_difference!''}">
                                 <button class="btn btn_blue btn-xs" type="button" id="add_trade_cost_table">添加明细</button><br><br>
-                                <font size="3px">(调整后总价 - 国内货值)总价差异：<span id="total_difference_span"></span></font>&nbsp&nbsp，
-                                <font size="3px">(总价差异 / 总数量)单价差异：<span id="price_difference_span"></span></font>
+                                <font size="3px">(调整后总价 - 国内货值)总价差异：<span id="total_difference_span" ></span></font>&nbsp&nbsp，
+                                <font size="3px">(总价差异 / 总数量)单价差异：<span id="price_difference_span" text="${trade.price_difference!''}"></span></font>
                                 <br>
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
@@ -85,7 +85,7 @@
 										'value_added_tax',
 										'tax_refund_rate',
 										
-										'tax_refund_rate',
+										'tax_refund_rate_customer',
 										  
 										'tax_refund_amount',
 										'adjusted_tax_refund_amount',
@@ -98,8 +98,8 @@
 										'custom_rate',
 										'custom_amount_cny',
 										
-										'custom_rate',
-										'custom_amount_cny',
+										'agency_rate',
+										'agency_amount_cny',
 										
 										'CURRENCY_ID_NAME',
 										'commodity_name',

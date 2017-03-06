@@ -2,6 +2,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 $(document).ready(function() {
 
 	var deletedTableIds=[];
+    $('#total_difference_span').text($('#total_difference').val());
+    $('#price_difference_span').text($('#price_difference').val());
     //删除一行
     $("#trade_cost_table").on('click', '.delete', function(e){
         e.preventDefault();
@@ -169,13 +171,13 @@ $(document).ready(function() {
             		return '<input type="text" name="tax_refund_rate" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
-            { "data": "TAX_REFUND_RATE", "width": "80px",//客户退税率
+            { "data": "TAX_REFUND_RATE_CUSTOMER", "width": "80px",//客户退税率
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
             		if(full.ID && data=='')
             			data = 0.0;
-            		return '<input type="text" name="tax_refund_rate" value="'+data+'" class="form-control" style="width:100px"/>';
+            		return '<input type="text" name="tax_refund_rate_customer" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },//客户退税率
             { "data": "TAX_REFUND_AMOUNT", "width": "100px",
@@ -271,18 +273,18 @@ $(document).ready(function() {
             	}
             },
             
-            { "data": "CUSTOM_AMOUNT_CNY", "width": "100px",//代理费百分比
+            { "data": "AGENCY_RATE", "width": "100px",//代理费百分比
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="custom_amount_cny" value="'+data+'" class="form-control" style="width:120px" disabled/>';
+            		return '<input type="text" name="agency_rate" value="'+data+'" class="form-control" style="width:120px" />';
             	}
             },//代理费百分比
-            { "data": "CUSTOM_AMOUNT_CNY", "width": "100px",//代理费金额
+            { "data": "AGENCY_AMOUNT_CNY", "width": "100px",//代理费金额
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="custom_amount_cny" value="'+data+'" class="form-control" style="width:120px" disabled/>';
+            		return '<input type="text" name="agency_amount_cny" value="'+data+'" class="form-control" style="width:120px" />';
             	}
             },//代理费金额
             
