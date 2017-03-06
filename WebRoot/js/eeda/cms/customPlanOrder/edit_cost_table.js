@@ -255,7 +255,7 @@ $(document).ready(function() {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
                     else
-                    	str = '';
+                    	str = '1';
                 	if(full.AUDIT_FLAG == 'Y'){
                         	return '<input type="text" name="amount" style="width:80px" value="'+str+'" class="form-control notsave" disabled />';
                      }else{

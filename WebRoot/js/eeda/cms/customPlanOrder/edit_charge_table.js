@@ -447,10 +447,11 @@ $(document).ready(function() {
             },
             { "data": "AMOUNT","width": "60px",
                 "render": function ( data, type, full, meta ) {
-                	if(data)
+                	if(data){
                         var str =  parseFloat(data).toFixed(2);
-                    else
-                    	str = '';
+                	}else{
+                    	str = '1';
+                    	}
                 	if(full.AUDIT_FLAG == 'Y'){
                         return '<input type="text" name="amount" style="width:80px" value="'+str+'" class="form-control notsave" disabled/>';
                      }else{
