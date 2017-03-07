@@ -246,12 +246,20 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                        return field_html; 
                     }
                 },
-            	{ "data": "EFFECTIVE_TIME", 
-	            	"render": function ( data, type, full, meta ) {
-	            		if(!data)
-	            			data='';
-	            		return '<input type="text" name="effective_time"  value="'+data+'" class="form-control" />';
-	            	}
+            	{ "data": "EFFECTIVE_TIME",
+            		"render":function(data,type,full,meta){
+            			if(!data)
+            				data='';
+            			 var field_html = template('table_date_field_template',
+                           {
+                               id: 'EFFECTIVE_TIME',
+                               value: data,
+                               display_value: full.EFFECTIVE_TIME,
+                               style:'width:110px'
+                           }
+                       );
+            			return field_html;
+            		}
             	},
             	{ "data": "CREATE_STAMP", 
 	            	"render": function ( data, type, full, meta ) {
