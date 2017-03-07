@@ -37,9 +37,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 						$('#passBtn').attr('disabled',true);
 			        	$('#refuseBtn').attr('disabled',true).hide();
 			        	$.scojs_message('审核成功', $.scojs_message.TYPE_OK);
-//			        	if(confirm('确定要前往工作单？')){
-//			        		location.href="/customJobOrder/edit?id="+order.JOB_ORDER_ID;
-//			        	}
+
 		        	}
     				if(status=="审核不通过"){
     					$('#confirmCompleted').attr('disabled', true);
@@ -143,16 +141,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             order.allCost_template = salesOrder.buildAllCostTemplate();
             order.order_type = $('#type').val();
             order.customer_id = $('#receive_sent_consignee').val();
-//            var order = {
-//            		    id: $('#order_id').val(),
-//            	carrier_id: $('#carrier').val(),
-//            	 deal_mode: $('#deal_mode').val(),
-//                      type: $('#type').val(),
-//                    remark: $('#note').val(),
-//                    status: $('#status').val()==''?'新建':$('#status').val(),
-//                 item_list:items_array
-//                
-//            };
+
             //异步向后台提交数据
             $.post('/customPlanOrder/save', {params:JSON.stringify(order)}, function(data){
                 var order = data;

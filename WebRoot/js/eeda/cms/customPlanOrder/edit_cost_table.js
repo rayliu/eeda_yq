@@ -523,19 +523,7 @@ $(document).ready(function() {
        calcCurrency();
    }
 
-    getTotalCost();
-//       var totalCharge = $('[name=chargeRMB]').text().toString();
-//       var totalChargeU = $('[name=chargeUSD]').text().toString();        
-//       var totalChargeRMB=parseFloat(totalCharge.replace('RMB',''));        
-//       var totalChargeUSD=parseFloat(totalChargeU.replace('USD',''));        
-//       if(isNaN(totalChargeRMB)|| totalChargeRMB =='' ){
-//           totalChargeRMB=0;
-//         }        
-//       if(isNaN(totalChargeUSD)|| totalChargeUSD =='' ){
-//          totalChargeUSD=0;
-//         }
-//    
-//    var costRMB = $('[name=costRMB]').text();    		        
+    getTotalCost();  		        
 
         
     salesOrder.buildCostTemplate=function(){
@@ -594,6 +582,8 @@ $(document).ready(function() {
         return cargo_items_array;
     };
     
+
+    
     salesOrder.buildAllCostTemplate=function(){
         var cargo_table_rows = $("#cost_table tr");
         var cargo_items_array=[];
@@ -642,6 +632,48 @@ $(document).ready(function() {
             cargo_items_array.push(item);
         }
         return cargo_items_array;
-    };    
+    };
+    
+  //复制应付费用到应收
+    $('#copyCostToCharge').click(function(){
+    	var order={};
+    	order = salesOrder.buildAllCostTemplate();
+    	$('#copyCostToCharge').attr("disabled",true);
+    	//点击回显
+    	 	var table = 'charge_table';
+    	 	var dataTable = $('#'+table).DataTable();
+            for(var i=0; i<order.length; i++){
+                var row = $(order[i]);
+                var item={};
+                item.ID='';
+                item.TYPE=row.attr('');
+                item.SP_ID=row.attr('');
+                item.CHARGE_ID= row.attr('CHARGE_ID');
+                item.CHARGE_ENG_ID= row.attr('charge_eng_id');
+                item.PRICE= row.attr('price');
+                item.AMOUNT= row.attr('amount');
+                item.UNIT_ID= row.attr('');
+                item.TOTAL_AMOUNT= row.attr('total_amount');
+                item.CURRENCY_ID= row.attr('currency_id');
+                item.EXCHANGE_RATE= row.attr('');
+                item.CURRENCY_TOTAL_AMOUNT= row.attr('currency_total_amount');
+                item.EXCHANGE_CURRENCY_ID= row.attr('exchange_currency_id');
+                item.EXCHANGE_CURRENCY_RATE= row.attr('exchange_currency_rate');
+                item.EXCHANGE_TOTAL_AMOUNT= row.attr('exchange_total_amount');
+                item.REMARK= row.attr('remark');
+                item.SP_NAME=row.attr('sp_name');
+                item.CHARGE_NAME=row.attr('charge_name');
+                item.CHARGE_NAME_ENG=row.attr('charge_name_eng');
+                item.UNIT_NAME=row.attr('unit_name');
+                item.CURRENCY_NAME=row.attr('currency_name');
+                item.EXCHANGE_CURRENCY_ID_NAME=row.attr('exchange_currency_name');
+                item.AUDIT_FLAG='';
+                dataTable.row.add(item).draw();
+            }
+        });
+    
+    
+    
+    
   });
 });
