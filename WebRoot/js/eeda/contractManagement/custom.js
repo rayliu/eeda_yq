@@ -44,6 +44,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            	var d = new Date();
 	            	var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 	            	item.create_stamp = str;
+	            	item.creator = $('#user_id').val();
 	            }
 	            cargo_items_array.push(item);
 	        }
