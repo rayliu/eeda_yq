@@ -370,14 +370,40 @@ $(document).ready(function() {
     	}
     }
     
-    $('#trade_sale_table').on('keyup', '[name=total_amount],[name=currency_total_amount],[name=exchange_rate]', function(){
+    $('#trade_sale_table').on('keyup', '[name=price],[name=amount],[name=total_amount],[name=currency_total_amount],[name=exchange_currency_rate],[name=exchange_rate]', function(){
     	var name = $(this).attr('name');
     	var row = $(this).parent().parent();
+    	var price = $(row.find('[name=price]')).val();
+    	var amount = $(row.find('[name=amount]')).val();
     	var currency_total_amount = $(row.find('[name=currency_total_amount]')).val();
     	var exchange_total_amount = $(row.find('[name=exchange_total_amount]')).val();
     	var total_amount = $(row.find('[name=total_amount]')).val();
     	var exchange_rate = $(row.find('[name=exchange_rate]')).val();
     	var exchange_currency_rate = $(row.find('[name=exchange_currency_rate]')).val();
+    	
+    	if(name=='price'||name=='amount'){
+        	if(price==''||amount==''){
+        		$(row.find('[name=total_amount]')).val('');
+        		$(row.find('[name=currency_total_amount]')).val('');
+        		$(row.find('[name=exchange_total_amount]')).val('');
+        	}else if(!isNaN(price)&&!isNaN(amount)){
+        		total_amount = (price*amount).toFixed(3);
+        		$(row.find('[name=total_amount]')).val(total_amount);
+        		$(row.find('[name=currency_total_amount]')).val((total_amount*exchange_rate).toFixed(3));
+	    		$(row.find('[name=exchange_total_amount]')).val((total_amount*exchange_currency_rate).toFixed(3));
+        		
+        	}
+    	}
+
+    	
+    	if(name=='currency_total_amount'){
+        	if(currency_total_amount==''||exchange_rate==''){
+        		$(row.find('[name=total_amount]')).val('');
+        	}else if(!isNaN(currency_total_amount)&&!isNaN(exchange_rate)){
+        		$(row.find('[name=total_amount]')).val((currency_total_amount/exchange_rate).toFixed(3));
+        	}
+    	}
+    	
     	
     	if(name=='currency_total_amount'){
         	if(currency_total_amount==''||exchange_rate==''){
@@ -401,6 +427,13 @@ $(document).ready(function() {
 	    		$(row.find('[name=currency_total_amount]')).val((total_amount*exchange_rate).toFixed(3));
 	    		$(row.find('[name=exchange_total_amount]')).val((total_amount*exchange_currency_rate).toFixed(3));
 	    	}
+    	}
+    	if(name=="exchange_currency_rate"){
+    		if(total_amount==""||exchange_currency_rate==""){
+    			$(row.find('[name=exchange_total_amount]')).val('');
+    		}else if(!isNaN(total_amount)&&!isNaN(exchange_currency_rate)){
+    			$(row.find('[name=exchange_total_amount]')).val((total_amount*exchange_currency_rate).toFixed(3));
+    		}
     	}
     	
     	var total_fee_amount_cny = 0;

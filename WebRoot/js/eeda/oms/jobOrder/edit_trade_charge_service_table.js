@@ -344,7 +344,7 @@ $(document).ready(function() {
 	    $('#price_difference').text(price_difference.toFixed(3));
     }
 
-    $('#charge_service_table').on('keyup', '[name=total_amount],[name=currency_total_amount],[name=exchange_rate],[name=exchange_total_amount]', function(){
+    $('#charge_service_table').on('keyup', '[name=total_amount],[name=currency_total_amount],[name=exchange_currency_rate],[name=exchange_rate],[name=exchange_total_amount]', function(){
     	var name = $(this).attr('name');
     	var row = $(this).parent().parent();
     	var currency_total_amount = $(row.find('[name=currency_total_amount]')).val();
@@ -373,6 +373,13 @@ $(document).ready(function() {
 	    		$(row.find('[name=exchange_total_amount]')).val('');
 	    	}else if(!isNaN(total_amount)&&!isNaN(exchange_rate)){
 	    		$(row.find('[name=currency_total_amount]')).val((total_amount*exchange_rate).toFixed(3));
+	    		$(row.find('[name=exchange_total_amount]')).val((total_amount*exchange_currency_rate).toFixed(3));
+	    	}
+    	}
+    	if(name=='exchange_currency_rate'){
+	    	if(total_amount==''||exchange_currency_rate==''){
+	    		$(row.find('[name=exchange_total_amount]')).val('');
+	    	}else if(!isNaN(total_amount)&&!isNaN(exchange_currency_rate)){
 	    		$(row.find('[name=exchange_total_amount]')).val((total_amount*exchange_currency_rate).toFixed(3));
 	    	}
     	}

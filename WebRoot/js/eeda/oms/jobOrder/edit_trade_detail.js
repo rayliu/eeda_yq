@@ -5,10 +5,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		var arrays = [];
         	var item = {};
         	item['id'] = $('#trade_id').val();
-        	var shipmentForm = $('#tradeForm input,#tradeForm select,#tradeForm textarea');
+        	var shipmentForm = $('#tradeForm input,#tradeForm select,#tradeForm textarea,#tradeForm span');
         	for(var i = 0; i < shipmentForm.length; i++){
         		var name = shipmentForm[i].id;
+        		
             	var value =shipmentForm[i].value;
+            	
             	if(name){
             			item[name] = value;
             	}
