@@ -503,5 +503,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         }
     });
 
+    //当报关单号码为空时，隐藏费用信息
+    var val=$('#customs_billCode').val();
+    if(!val) $('#chargeDetail_tab').hide();
+    if(val) $('#chargeDetail_tab').show()
+    $('#customs_billCode').blur(function(){
+    // on('keyup',function(){
+        var val=$('#customs_billCode').val().trim();
+        if(!val) $('#chargeDetail_tab').hide();
+        if(val) $('#chargeDetail_tab').show()
+    })
   });
 });
