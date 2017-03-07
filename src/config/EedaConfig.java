@@ -118,6 +118,7 @@ import controllers.app.AppControllerForMobile;
 import controllers.cms.jobOrder.CustomJobOrderController;
 import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.ModuleController;
+import controllers.msg.YqDashBoardController;
 import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.jobOrder.JobOrderControllerForMobile;
@@ -218,7 +219,7 @@ public class EedaConfig extends JFinalConfig {
 		// yh project controller
         me.add("/", controllers.eeda.MainController.class, contentPath);
         me.add("/module", ModuleController.class, contentPath);
-       // me.add("/apidoc", controllers.eeda.DocController.class);基础数据
+        me.add("/dashBoard", YqDashBoardController.class);
         
         me.add("/tradeItem", TradeItemController.class, contentPath);
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);

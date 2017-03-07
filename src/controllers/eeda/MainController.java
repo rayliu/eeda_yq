@@ -93,28 +93,9 @@ public class MainController extends Controller {
             setAttr("user_login_id", currentUser.getPrincipal());
             setAttr("login_time",user.get("last_login"));
             setAttr("lastIndex",user.get("last_index") == null ? "pastOneDay" : user.get("last_index"));
-            //公告
-            UserLogin u = LoginUserController.getLoginUser(this);
-            long office_id=u.getLong("office_id");
-            String sql = "select m.id, m.create_stamp, u.c_name,"
-            		+ " (case when length(m.title)>50 then CONCAT(substr(m.title,1,70),'....') else m.title end) title,"
-            		+ " (case when length(m.content)>50 then CONCAT(substr(m.content,1,75),'....') else m.content end) content"
-            		+ " from msg_board m "
-            		+ " left join user_login u on u.id = m.creator "
-            		+ " WHERE m.office_id="+office_id
-            		+ " order by create_stamp desc"
-            		+ " LIMIT 0,8 ";
-    		setAttr("msgBoardInfo",Db.find(sql));
+            
     		
-            //查询两个月内即将过期的客户合同
-//            String sql ="select p.id, p.name, p.period_to from user_customer uc"
-//					+" left join contract c on c.party_id= uc.customer_id  "
-//					+" LEFT JOIN party p ON uc.customer_id  = p.id and p.type = 'CUSTOMER'"
-//				    +" where uc.user_name='"+currentUser.getPrincipal()+"'"
-//					+" and c.period_to > SYSDATE()"
-//					+" and c.period_to < DATE_ADD(SYSDATE(), INTERVAL 60 DAY);  ";
-//            List<Record> contractList = Db.find(sql);
-//            setAttr("contractList", contractList);
+
             //更新当前用户最后一次登陆的时间
             updateLastLogin(user);
             
@@ -137,7 +118,11 @@ public class MainController extends Controller {
             	    if(getAttr("modules")==null){
                         redirect("/");
                     }else{
-                        render("/eeda/index.html");
+                        List<Record> moduleList = (List<Record>)getAttr("modules");
+                        List<Record> orderList = (List<Record>)moduleList.get(0).get("orders");
+                        Record firstModule = (Record)orderList.get(0);
+                        
+                        redirect("/"+firstModule.getStr("url"));
                     };
             	}else{
             		render(rec.getStr("index_page_path"));
