@@ -53,6 +53,8 @@
 		                                    <option value="consultFee" <% if(order.fee_type!''=='consultFee'){%>selected<%}%>>咨询服务费</option>
 		                                    <option value="internationalFee" <% if(order.fee_type!''=='internationalFee'){%>selected<%}%>>国际货代服务费</option>
 		                                    <option value="transAndInsurance" <% if(order.fee_type!''=='transAndInsurance'){%>selected<%}%>>货物运输保险费</option>
+		                                    <option value="domesticPaymentFee" <% if(order.fee_type!''=='domesticPaymentFee'){%>selected<%}%>>国内货款</option>
+			                                <option value="otherFee" <% if(order.fee_type!''=='otherFee'){%>selected<%}%>>其他</option>
 	                                    </select>
 	                            </div>
                             </div>
@@ -120,7 +122,7 @@
                         
                         <div class="row" >
                             <div class="col-lg-12  btn-header">
-                                <button id="createSave" disabled class="btn btn_blue" type="button">创建申请单</button>
+                                <button id="createSave" disabled class="btn btn_green" type="button">创建申请单</button>
                             </div>
                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_cny',

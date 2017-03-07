@@ -92,13 +92,13 @@ $(document).ready(function() {
 				return false;
 			}
 		}
-		
 		var order = buildOrder();
+		$("#saveBtn").attr("disabled", true);
 		$.get('/costRequest/save',{params:JSON.stringify(order)}, function(data){
 			$("#saveBtn").attr("disabled", false);
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-				$("#saveBtn").attr("disabled", true);
+				
 				$("#order_id").val(data.ID);
 				$("#order_no").val(data.ORDER_NO);
 				$("#create_stamp").val(data.CREATE_STAMP);

@@ -72,6 +72,10 @@ $(document).ready(function() {
         			strFeeType="国际货代服务费";
         		}else if(data=="transAndInsurance"){
         			strFeeType="货物运输保险费";
+        		}else if(data=="domesticPaymentFee"){
+        			strFeeType="国内货款";
+        		}else if(data=="otherFee"){
+        			strFeeType="其他";
         		}
         			
         		return strFeeType;
