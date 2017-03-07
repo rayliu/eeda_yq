@@ -46,7 +46,7 @@ public class ExpenseEntryController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
-		render("/eeda/cmsArap/cmsChargeCheckOrder/cmsChargeCheckOrderList.html");
+		render("/eeda/cmsArap/expenseEntry/ExpenseEntryList.html");
 	}
 	
 	public void list() {
@@ -66,19 +66,58 @@ public class ExpenseEntryController extends Controller {
         	checkCondition = "and cpoa.order_type='charge'";
         }
 
-		sql = "select B.* from(  "
-			+" SELECT cpo.order_no,cpoa.order_type ,cpoa.id arap_id,cpo.id order_id,cpo.date_custom,cpo.booking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
-			 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
-			 +" from custom_plan_order_arap cpoa "
-			 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-			 +" LEFT JOIN fin_item f on f.id = cpoa.charge_id "
-			 +" LEFT JOIN party p on p.id = cpoa.sp_id "
-			 +" where 1 = 1 "
-			 + checkCondition
-			 + " and cpoa.audit_flag='Y' and cpoa.bill_flag='N'  and cpo.office_id = "+office_id
-			 +"  GROUP BY cpoa.id " 
-			 + " ) B "
-			 +" where 1=1 ";
+		sql = " SELECT * from ( "
+				+" SELECT "
+				+" 	cpo.receive_sent_consignee_input customer_name, "
+				+" 	cpo.order_no, "
+				+" 	cpo.create_stamp, "
+				+" 	cpo.TRACKING_NO, "
+				+" 	cpoa.*, GROUP_CONCAT( "
+				+" 		( "
+				+" 			SELECT "
+				+" 				CONCAT( "
+				+" 					f.`name`, "
+				+" 					':', "
+				+" 					( "
+				+" 						SELECT "
+				+" 							FORMAT(cpoa1.total_amount, 2) "
+				+" 					) "
+				+" 				) "
+				+" 			FROM "
+				+" 				custom_plan_order_arap cpoa1 "
+				+" 			WHERE "
+				+" 				cpoa1.order_type = 'charge' "
+				+" 			AND cpoa1.id = cpoa.id "
+				+" 		) SEPARATOR '<br/>' "
+				+" 	) charge_msg, "
+				+" 	GROUP_CONCAT( "
+				+" 		( "
+				+" 			SELECT "
+				+" 				CONCAT( "
+				+" 					f.`name`, "
+				+" 					':', "
+				+" 					( "
+				+" 						SELECT "
+				+" 							FORMAT(cpoa2.total_amount, 2) "
+				+" 					) "
+				+" 				) "
+				+" 			FROM "
+				+" 				custom_plan_order_arap cpoa2 "
+				+" 			WHERE "
+				+" 				cpoa2.order_type = 'cost' "
+				+" 			AND cpoa2.id = cpoa.id "
+				+" 		) SEPARATOR '<br/>' "
+				+" 	) cost_msg "
+				+" FROM "
+				+" 	custom_plan_order_arap cpoa "
+				+" LEFT JOIN fin_item f ON f.id = cpoa.charge_id "
+				+" LEFT JOIN custom_plan_order cpo ON cpo.id = cpoa.order_id "
+				+" WHERE "
+				+" 	cpo.office_id = 2 "
+				+" GROUP BY "
+				+" 	cpoa.order_id "
+				+" ORDER BY create_stamp desc "
+				+" )A where 1=1 ";
 
         
     	String condition = DbUtils.buildConditions(getParaMap());
