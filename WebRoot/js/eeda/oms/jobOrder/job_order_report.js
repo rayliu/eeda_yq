@@ -151,7 +151,7 @@ $(document).ready(function() {
 	
 	
 	//生成海运HBL PDF
-    $('#printOceanHBL').click(function(){
+    $('#printOceanHBL,#prinTelextOceanHBL').click(function(){
     	//数据不足提示
     	var alert = '';
     
@@ -210,7 +210,8 @@ $(document).ready(function() {
 		}else{
 	    	var order_id = $("#order_id").val();
 	    	var hbl_no = $("#hbl_no").val();
-	    	$.post('/jobOrderReport/printOceanHBL', {order_id:order_id,hbl_no:hbl_no}, function(data){
+	    	var printHBL = $(this).attr('id');
+	    	$.post('/jobOrderReport/printOceanHBL', {order_id:order_id,hbl_no:hbl_no,printHBL:printHBL}, function(data){
 	    		if(data){
 	                window.open(data);
 	             }else{

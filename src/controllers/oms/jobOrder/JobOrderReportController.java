@@ -82,8 +82,17 @@ public class JobOrderReportController extends Controller {
 		
 		String order_id = getPara("order_id");
 		String hbl_no = getPara("hbl_no");
-		String fileName = "/report/jobOrder/oceanHBL.jasper";
-		String outFileName = "/download/"+hbl_no;
+		String printHBL = getPara("printHBL");
+		String fileName = "";
+		String outFileName ="";
+		if("printOceanHBL".equals(printHBL)){
+			 fileName = "/report/jobOrder/oceanHBL.jasper";
+			 outFileName = "/download/"+hbl_no;
+		}else if("prinTelextOceanHBL".equals(printHBL)){
+			 fileName = "/report/jobOrder/oceanTelexHBL.jasper";
+			 outFileName = "/download/"+hbl_no;
+		}
+		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
         fileName = getContextPath() + fileName;
@@ -91,7 +100,7 @@ public class JobOrderReportController extends Controller {
 		String file = myPrint(fileName, outFileName,hm);
 		renderText(file.substring(file.indexOf("download")-1));
 	}
-	
+
 	public void printOceanBooking() {
 		
 		String order_no = getPara("order_no");
