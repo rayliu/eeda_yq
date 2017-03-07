@@ -959,7 +959,7 @@ NON-NEGOTIABLE]]></text>
 			</textField>
 			<image>
 				<reportElement x="120" y="414" width="159" height="63" uuid="1e574cfa-f365-4806-835c-6cb4f019d3d5"/>
-				<imageExpression><![CDATA["C:\\Users\\Administrator\\Desktop\\申请单\\Telex.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["Telex.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</detail>
