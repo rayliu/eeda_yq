@@ -73,7 +73,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "data": "ITEM", "width": "100px",
                  "render": function ( data, type, full, meta ) {
                   if(full.AUDIT_FLAG == 'Y'){
-                    var str = '<select name="type" name="item" class="form-control search-control notsave" style="width:150px" disabled>' 
+                    var str = '<select name="type"  class="form-control search-control notsave" style="width:150px" disabled>' 
                       +'<option value="价格" '+(data=='价格' ? 'selected':'')+'> 价格 </option>'
                           +'<option value="附加费用" '+(data=='附加费用' ? 'selected':'')+'> 附加费用 </option>'
                           +'<option value="付款方式" '+(data=='付款方式' ? 'selected':'')+'> 付款方式 </option>'
@@ -88,7 +88,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     return str;
                   }else{
                       var trans_type=$('#trans_type').val();
-                      var  str = '<select name="type" name="item" class="form-control search-control notsave" style="width:150px">' 
+                      var  str = '<select name="type"  class="form-control search-control notsave" style="width:150px">' 
                       +'<option value="价格" '+(data=='价格' ? 'selected':'')+'> 价格 </option>'
                           +'<option value="附加费用" '+(data=='附加费用' ? 'selected':'')+'> 附加费用 </option>'
                           +'<option value="付款方式" '+(data=='付款方式' ? 'selected':'')+'> 付款方式 </option>'
@@ -146,6 +146,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         })
 
   	$('#add_mark').on('click',function(){
+        var sp_name=$('#markCustomer_input').val();
+        if(!sp_name){
+           $.scojs_message('请先选择供应商', $.scojs_message.TYPE_ERROR);
+          return;
+         }
   			var item={};
         dataTable.row.add(item).draw(true);
   	});		
@@ -190,5 +195,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	 	$('#total_mark').val(totalscore);
   	 	$('#total_mark').html(totalscore);
   	 }
+
+
+      $('#resetBtn').click(function(e){
+          $('#item').val('');
+          $('#markCustomer_input').val('');
+      });
+
+      $('#searchBtn').click(function(){
+        var sp_name=$('#markCustomer_input').val();
+        if(!sp_name){
+           $.scojs_message('请先选择供应商', $.scojs_message.TYPE_ERROR);
+          return;
+         }
+          freshItemTable() ;
+      });
+
   })
 })

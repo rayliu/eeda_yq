@@ -743,6 +743,7 @@ public class ServiceProviderController extends Controller {
 					+" LEFT JOIN party p on p.id=pm.sp_id "
 					+" LEFT JOIN user_login ul on ul.id=pm.creator "
 					+" WHERE pm.sp_id = " +sp_id;
+        
         List<Record> orderList = Db.find(sql);
         Map map = new HashMap();
         map.put("data", orderList);
