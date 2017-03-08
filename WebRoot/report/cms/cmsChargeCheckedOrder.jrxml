@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="842" pageHeight="595" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
-	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="68"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="style1" forecolor="#000000" backcolor="#000000">
 		<box>
@@ -41,7 +41,8 @@
 	</style>
 	<parameter name="order_id" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select * from(
+		<![CDATA[
+select * ,(IFNULL(GKJSF,0)+IFNULL(GWF,0)+IFNULL(MTF,0)+IFNULL(CZGF,0)+IFNULL(DCF,0)+IFNULL(ZKCLF,0)+IFNULL(DBZF,0)+IFNULL(ZGZXF,0)+IFNULL(NFPTF,0)+IFNULL(TYDDY,0)+IFNULL(WLDLF,0)+IFNULL(AC,0)+IFNULL(ZHF,0)+IFNULL(XDF,0)+IFNULL(BGDZLR,0)+IFNULL(BGDZSC,0)+IFNULL(BGDDLF,0)) as total from(
 							  SELECT cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,cpo.tracking_no tracking_no,cpo.cabinet_no,
 								cpo.container_no container_no,cpo.container_type container_type,p.abbr company_abbr,p.fax fax,
 									p.company_name company_name,p.contact_person contact_person ,p.phone phone,p.email email,
@@ -131,6 +132,7 @@
 	<field name="BGDZLR" class="java.lang.Double"/>
 	<field name="BGDZSC" class="java.lang.Double"/>
 	<field name="BGDDLF" class="java.lang.Double"/>
+	<field name="total" class="java.lang.Double"/>
 	<variable name="SUM_GKJSF" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{GKJSF}]]></variableExpression>
 	</variable>
@@ -725,6 +727,7 @@
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
