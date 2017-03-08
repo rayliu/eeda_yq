@@ -457,6 +457,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
         });
     })
+    
+    //提运单号的copy
+    $('#copyTracking_no').keyup(function(){
+    	
+    	$('#tracking_no').val($('#copyTracking_no').val());
+    });
+    $('#tracking_no').keyup(function(){
+    	$('#copyTracking_no').val($('#tracking_no').val());
+    });
+    
+    
 
      //选中回显
     $('#ChargeDiv,#CostDiv').on('click', '.selectChargeTemplate,.selectCostTemplate', function(){
