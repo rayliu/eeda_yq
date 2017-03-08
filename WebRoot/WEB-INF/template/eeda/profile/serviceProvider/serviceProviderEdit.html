@@ -12,6 +12,7 @@
                             <div class="row">
                                 <form id="customerForm" role="form"  method="post">
                                     <input id="partyId" name="party_id" type="hidden" value="${party.id!''}">
+                                     <input id="user_id" name="user_id" type="hidden" value="${user.id!''}">
                                     <!-- /.col-lg-6 (odd) 奇数列 -->
 									<div class="col-lg-4">
                                             <div class="form-group">
@@ -369,6 +370,7 @@
 	
 	var spType = '${party.sp_type!''}';
 	var payment = '${party.payment!''}';
+	var itemOrder={};
 </script>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {

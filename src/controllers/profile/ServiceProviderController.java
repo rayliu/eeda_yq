@@ -16,6 +16,7 @@ import models.Location;
 import models.ParentOfficeModel;
 import models.Party;
 import models.PartyMark;
+import models.SpOceanCargo;
 import models.UserLogin;
 import models.yh.profile.ProviderChargeType;
 
@@ -94,6 +95,7 @@ public class ServiceProviderController extends Controller {
         setAttr("location", re.getStr("loc_name"));
 
         setAttr("party", party);
+        setAttr("user", LoginUserController.getLoginUser(this));
         render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
     }
     
@@ -737,42 +739,31 @@ public class ServiceProviderController extends Controller {
     public void markCustormerList(){
     	String sp_id=getPara("sp_id");
     	String office_id= pom.getCurrentOfficeId().toString();
-        String sql="select pm.item,pm.score,pm.remark,pm.mark_date,pm.id,p.abbr,ul.c_name FROM party_mark pm "
+        String sql="select pm.*,p.abbr,ul.c_name creator FROM party_mark pm "
 					+" LEFT JOIN party p on p.id=pm.sp_id "
-					+" LEFT JOIN office o on o.id = pm.office_id "
-					+" LEFT JOIN user_login ul on ul.id=pm.user_id "
-					+" WHERE pm.sp_id = " +sp_id
-						+" and pm.office_id= "+office_id;
+					+" LEFT JOIN user_login ul on ul.id=pm.creator "
+					+" WHERE pm.sp_id = " +sp_id;
         List<Record> orderList = Db.find(sql);
         Map map = new HashMap();
         map.put("data", orderList);
         renderJson(map);
     }
     //保存打分
-    public void markCustormerSave(){
+    public void markCustormerSave() throws InstantiationException, IllegalAccessException{
     	String jsonStr=getPara("params");
-       	String  sp_id=getPara("sp_id");
+    	
+    	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class); 
+        
+       	String  sp_id=(String) dto.get("sp_id");
        	UserLogin user = LoginUserController.getLoginUser(this);
        	long userId = LoginUserController.getLoginUserId(this);
 		long office_id = user.getLong("office_id");
-       	
-       	Gson gson = new Gson();  
-       	List<Map<String, String>> dto= (List<Map<String, String>>) gson.fromJson(jsonStr, ArrayList.class);  
+       	 
         
-		for(Map<String, String> item :dto){
-			String itemId = item.get("id");
-			if(StringUtils.isEmpty(itemId)){
-				PartyMark pm=new PartyMark();
-				pm.set("item", item.get("item"));
-				pm.set("score", item.get("score"));
-				pm.set("remark", item.get("remark"));
-				pm.set("mark_date",new Date());
-				pm.set("sp_id", sp_id);
-				pm.set("office_id", office_id);
-				pm.set("user_id", userId);
-				pm.save();
-			}
-    	}
+       	List<Map<String, String>> item_list = (ArrayList<Map<String, String>>)dto.get("item_list");
+		DbUtils.handleList(item_list, sp_id, PartyMark.class, "sp_id");
+		
 		renderJson("saveStatu","OK");
     }
     //删除某项打分

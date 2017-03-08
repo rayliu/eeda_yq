@@ -27,6 +27,7 @@
                         <div class="panel-body">
                             <div class="row">
                                 <form id="customerForm" role="form"  method="post">
+                                    <input id="user_id" name="user_id" type="hidden" value="${user.id!''}">
                                     <input id="partyId" name="party_id" type="hidden" value="${party.id!''}">
                                     <!-- /.col-lg-6 (odd) 奇数列 -->
 									<div class="col-lg-6">
@@ -231,8 +232,9 @@
 		document.title = '${party.company_name!''}'+' | '+document.title;
 	}
 	
-	var spType = '${party.sp_type!''}';
+	var spType = v'${party.sp_type!''}';
 	var payment = '${party.payment!''}';
+    var itemOrder={};
 </script>
 <!-- <script src="/yh/js/eeda-common.js"></script>
 <script src="/yh/js/profile/serviceProvider/edit.js"></script> -->

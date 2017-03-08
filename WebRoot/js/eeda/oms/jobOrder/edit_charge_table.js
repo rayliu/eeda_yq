@@ -332,7 +332,7 @@ $(document).ready(function() {
             { "data": "TYPE", "width": "80px", 
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
-                		var str = '<select name="type" class="form-control search-control notsave" style="width:50px" disabled>'  +'<option value="" >空运</option>'
+                		var str = '<select name="type" class="form-control search-control notsave" style="width:50px" disabled>'  
                 			+'<option value="海运" '+(data=='海运' ? 'selected':'')+'> 海运 </option>'
 	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'> 空运 </option>'
 	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'> 陆运 </option>'
