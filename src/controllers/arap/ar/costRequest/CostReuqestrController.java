@@ -242,11 +242,11 @@ public class CostReuqestrController extends Controller {
     
     
     public void applicationList() {
-    	String sLimit = "";
-        String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//    	String sLimit = "";
+//        String pageIndex = getPara("draw");
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
@@ -269,9 +269,9 @@ public class CostReuqestrController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition +sLimit);
+        List<Record> orderList = Db.find(sql+ condition );//+sLimit
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("draw", pageIndex);
+//        map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
         map.put("data", orderList);

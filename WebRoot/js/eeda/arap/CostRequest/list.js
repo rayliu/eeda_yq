@@ -7,7 +7,9 @@ $(document).ready(function() {
     var application_table = eeda.dt({
     	id: 'application_table',
     	autoWidth: false,
-        paging: true,
+        // paging: true,
+        scrollY: 530,
+        scrollCollapse: true,
         serverSide: true, 
     	ajax: "/costRequest/applicationList?status=新建",
 		  columns: [
