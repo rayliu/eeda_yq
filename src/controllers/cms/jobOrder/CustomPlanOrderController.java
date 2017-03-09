@@ -664,10 +664,14 @@ public class CustomPlanOrderController extends Controller {
     	String btnId = getPara("btnId");
     	CustomPlanOrder order = CustomPlanOrder.dao.findById(id);
     	if("confirmCompleted".equals(btnId)){
-    		sendMail(id,plan_order_no);
+    		UserLogin user = LoginUserController.getLoginUser(this);
+       		long office_id = user.getLong("office_id");
+       		if(office_id!=2){
+       			sendMail(id,plan_order_no);
+        		order.set("fill_by",LoginUserController.getLoginUserId(this));
+        		order.set("fill_stamp",new Date());
+       		}
     		order.set("status","待审核");
-    		order.set("fill_by",LoginUserController.getLoginUserId(this));
-    		order.set("fill_stamp",new Date());
     	}
     	if("passBtn".equals(btnId)){
     		order.set("status","审核通过");
@@ -811,8 +815,9 @@ public class CustomPlanOrderController extends Controller {
         email.setSSLOnConnect(true);
         email.setFrom("info@yq-scm.com","Enkyo珠海远桥");//设置发信人
         //设置收件人，邮件标题，邮件内容
-    	//email.addTo("1063203104@qq.com");
+//    	email.addTo("1063203104@qq.com");
     	email.addTo("ytimport@163.com");
+//        email.addTo("864358232@qq.com");
         email.setSubject(mailTitle);
         email.setContent(mailContent, "text/html;charset=gb2312");
         
