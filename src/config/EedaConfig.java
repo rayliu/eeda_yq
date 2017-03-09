@@ -87,6 +87,7 @@ import models.eeda.profile.Warehouse;
 import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
 import models.eeda.tms.TransJobOrderLandItem;
+import models.wms.Wmsproduct;
 import models.yh.profile.Carinfo;
 import models.yh.profile.CustomizeField;
 import models.yh.profile.OfficeCofig;
@@ -139,6 +140,10 @@ import controllers.profile.UnitController;
 import controllers.report.OrderStatusController;
 import controllers.tms.jobOrder.TransJobOrderController;
 import controllers.tms.planOrder.TransPlanOrderController;
+import controllers.wms.GateInOrderController;
+import controllers.wms.GateOutOrderController;
+import controllers.wms.InventoryOrderController;
+import controllers.wms.ProductController;
 
 public class EedaConfig extends JFinalConfig {
     private Logger logger = Logger.getLogger(EedaConfig.class);
@@ -325,6 +330,16 @@ public class EedaConfig extends JFinalConfig {
         //发布公告
         me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
         me.add("/orderStatus", OrderStatusController.class, contentPath);
+        
+        
+        //仓库管理模块wms
+        me.add("/gateInOrder", GateInOrderController.class, contentPath);
+        me.add("/gateOutOrder", GateOutOrderController.class, contentPath);
+        me.add("/inventoryOrder", InventoryOrderController.class, contentPath);
+        me.add("/wmsproduct", ProductController.class, contentPath);
+        
+
+        
 	}
 
     @Override
@@ -461,6 +476,9 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("sp_custom", SpCustom.class);  
         arp.addMapping("sp_picking_crane", SpPickingCrane.class);  
         arp.addMapping("sp_cargo_insurance", SpCargoInsurance.class); 
+        
+        //仓库管理模块wms
+        arp.addMapping("wmsproduct", Wmsproduct.class); 
     }
 
     private void initDBconnector() {
