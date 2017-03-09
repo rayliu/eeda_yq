@@ -400,7 +400,7 @@ $(document).ready(function() {
                  { "data": "CUSTOM_BANK"},
                  { "data": "APPLYBILL_STATUS"},
                  { "data": "CUSTOMS_BILLCODE"},
-                 { "data": "STATUS"},
+                 { "data": "CUSTOM_STATUS"},
                  { "data": "CREATOR"},
                  { "data": "CREATE_STAMP"},
                  { "data": "FILL_NAME"},

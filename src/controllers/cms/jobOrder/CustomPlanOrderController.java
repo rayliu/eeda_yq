@@ -100,8 +100,6 @@ public class CustomPlanOrderController extends Controller {
     @Before(Tx.class)
    	public void save() throws Exception {		
    		String jsonStr=getPara("params");
-       	
-   		
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
@@ -111,7 +109,6 @@ public class CustomPlanOrderController extends Controller {
         String newDateStr = "";
         
         newDateStr=sdf.format(new Date());
-   		
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
    		if (StringUtils.isNotEmpty(id)) {
