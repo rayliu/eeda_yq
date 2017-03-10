@@ -6,6 +6,7 @@ import interceptor.SetAttrLoginUserInterceptor;
 import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -540,14 +541,36 @@ public class CostReuqestrController extends Controller {
   	@Before(Tx.class)
     public void checkOrder(){
         String application_id=getPara("order_id");
-          
-        ArapCostApplication order = ArapCostApplication.dao.findById(application_id);
-        order.set("status", "已复核");
-        order.set("check_by", LoginUserController.getLoginUserId(this));
-        order.set("check_stamp", new Date()).update();
-     
+   		String ids = getPara("ids");
         //更改原始单据状态
-        List<Record> res = Db.find("select * from cost_application_order_rel where application_order_id = ?",application_id);
+        List<Record> res = null;
+        Record re1=new Record();
+        if(StringUtils.isNotEmpty(application_id)){
+		    	 ArapCostApplication order = ArapCostApplication.dao.findById(application_id);
+		         order.set("status", "已复核");
+		         order.set("check_by", LoginUserController.getLoginUserId(this));
+		         order.set("check_stamp", new Date()).update();
+        		 res = Db.find("select * from cost_application_order_rel where application_order_id = ?",application_id);
+        		 
+        		 long check_by = order.getLong("check_by");
+    	   		 String user_name = LoginUserController.getUserNameById(check_by);
+    	  		 re1 = order.toRecord();
+    	  		 re1.set("check_name",user_name);
+        }
+        if(StringUtils.isNotEmpty(ids)){
+        	String[] arr= ids.split(",");
+        	for(int i=0;i<arr.length;i++){
+        		String id=arr[i];
+	        	ArapCostApplication order = ArapCostApplication.dao.findById(id);
+		         order.set("status", "已复核");
+		         order.set("check_by", LoginUserController.getLoginUserId(this));
+		         order.set("check_stamp", new Date()).update();
+		         
+        	}
+        	String str="select * from cost_application_order_rel where application_order_id in ( "+ids+" )";
+    	   res = Db.find(str);
+    	   re1.set("ids",ids);
+        }
   		for (Record re : res) {
   			Long id = re.getLong("cost_order_id");
   			String order_type = re.getStr("order_type");
@@ -557,13 +580,7 @@ public class CostReuqestrController extends Controller {
 				arapCostOrder.set("audit_status", "已复核").update();
 			}
   		}
-  		  
-  		long check_by = order.getLong("check_by");
-   		String user_name = LoginUserController.getUserNameById(check_by);
-  		  
-  		Record re = order.toRecord();
-  		re.set("check_name",user_name);
-  	    renderJson(re);
+  		renderJson(re1);
     }
   	
   	
@@ -587,12 +604,8 @@ public class CostReuqestrController extends Controller {
    	        	receive_bank_id = rec.getLong("id").toString();
    	        }
    		}
-   		
    		String receive_time = (String) dto.get("receive_time");
    		String payment_method = (String) dto.get("payment_method");
-
-
-   		
         ArapCostApplication arapCostInvoiceApplication = ArapCostApplication.dao.findById(id);
         arapCostInvoiceApplication.set("status", "已付款");
         arapCostInvoiceApplication.set("receive_time", receive_time);

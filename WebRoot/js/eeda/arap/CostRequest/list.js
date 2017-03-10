@@ -452,7 +452,7 @@ $(document).ready(function() {
             var order_id=row.attr('id');
             var this_but=$(this);
 
-            $.get("/costRequest/checkOrder", {order_id:order_id,}, function(data){
+            $.get("/costRequest/checkOrder", {order_id:order_id}, function(data){
                 if(data.ID>0){
                     $(this_but).attr('disabled',true);
                     $(this_but).next().attr('disabled',false);
@@ -464,6 +464,40 @@ $(document).ready(function() {
                 }
             },'json');
         });
+      //多条复核 /costRequest/checkOrder
+      $("#checked").on('click',function(){
+        var order={}
+        var application_ids=[];
+        var id='';
+        var rows=$('#application_table tr');
+        for(var i=1;i<rows.length;i++){
+           if($(rows[i]).find('[type=checkbox]').prop('checked')){
+                id=$(rows[i]).find('[type=checkbox]').val();
+                if(id)
+                    application_ids.push(id);
+           }
+
+        }
+        $.post("/costRequest/checkOrder", {ids:application_ids.toString()}, function(data){
+                if(data.IDS){
+                    var arr=data.IDS.split(',');
+                    for(var j=0;j<arr.length;j++){
+                        for(var i=1;i<rows.length;i++){
+                            var td=$(rows[i]).find('[type=checkbox]');
+                            var btn0=$(td).parent().next().children().find('[type=button]').eq(0);
+                            if($(td).val()==arr[j]){
+                                 $(btn0).attr('disabled',true);
+                                 $(btn0).next().attr('disabled',false);
+                                 $(btn0).parent().parent().next().next().html("已复核");
+                            }
+                        }
+                    }
+                    $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+                }else{
+                    $.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
+                }
+            },'json');
+      });
 
     //弹出下拉框 确认付款时间
       $("#application_table").on('click','.confirmBtn',function(){
@@ -511,6 +545,7 @@ $(document).ready(function() {
                         }
                     },'json');
      });
+    //多条付款确认
 
 });
 });
