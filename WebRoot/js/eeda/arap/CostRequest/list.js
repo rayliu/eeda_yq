@@ -397,6 +397,20 @@ $(document).ready(function() {
 	
     //勾选进行金额汇总
 	$('#application_table').on('click',"input[name='order_check_box']",function () {
+        $('#checked').attr('disabled',true);
+        $('#confirmed').attr('disabled',true);
+        var rows=$('#application_table tr');
+        for(var i=1;i<rows.length;i++){
+            var checked='';
+            var status='';
+            var checkbox=$(rows[i]).find('[type=checkbox]');
+           if($(checkbox).prop('checked')){
+                status=$(checkbox).parent().next().next().next().html();
+                if(status=='新建') $('#checked').attr('disabled',false);
+                if(status=='已复核') $('#confirmed').attr('disabled',false);
+                i=rows.length;
+           }
+        }
 		totalMoney(this);
 	});
 	$('#application_table').on('click',".checkBtn",function () {
@@ -484,7 +498,7 @@ $(document).ready(function() {
                     for(var j=0;j<arr.length;j++){
                         for(var i=1;i<rows.length;i++){
                             var td=$(rows[i]).find('[type=checkbox]');
-                            var btn0=$(td).parent().next().children().find('[type=button]').eq(0);
+                            var btn0=$(rows[i]).find('[type=button]').eq(0);
                             if($(td).val()==arr[j]){
                                  $(btn0).attr('disabled',true);
                                  $(btn0).next().attr('disabled',false);
@@ -502,8 +516,6 @@ $(document).ready(function() {
     //弹出下拉框 确认付款时间
       $("#application_table").on('click','.confirmBtn',function(){
             $('#cost_table_msg_btn').click();
-            var rowIndex= $(this).parent().parent().parent().index();
-            $('#rowIndex').val(rowIndex);
             $('#confirmBtn').attr('disabled',true);
             $('#receive_time').val('');
              
@@ -525,19 +537,21 @@ $(document).ready(function() {
     //付款确认
      $("#confirmBtn").on('click',function(){
         var order={};
-        var rowIndex =$('#rowIndex').val();
-        var row = application_table.row(rowIndex ).data();
-        var td1=$('tr[id$='+row.ID.toString()+'] ').children('.sorting_1');;
-
-        order.id=row.ID.toString();
-        order.receive_time=$('#receive_time').val();
-        order.receive_bank_id=row.DEPOSIT_BANK;
-        order.payment_method =row.PAYMENT_METHOD;
-        order.payment_type="cost";
+        var rows=$('#application_table tr');
+        order.costList=itemOrder.buildCostItem();
         $.post("/costRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
                         if(data){
-                            td1.next().next().html(data.STATUS);
-                            td1.next().children().children(".confirmBtn").attr('disabled',true);
+                            var arr=data.IDS.split(',');
+                            for(var j=0;j<arr.length;j++){
+                                for(var i=1;i<rows.length;i++){
+                                    var td=$(rows[i]).find('[type=checkbox]');
+                                    var btn0=$(rows[i]).find('[type=button]').eq(1);
+                                    if($(td).val()==arr[j]){
+                                         $(btn0).attr('disabled',true);
+                                         $(btn0).parent().parent().next().next().html("已付款");
+                                    }
+                                }
+                            }
                             $.scojs_message('付款成功', $.scojs_message.TYPE_OK);
                         }else{
                             td1.next().children().children(".confirmBtn").attr('disabled',false);
@@ -546,6 +560,30 @@ $(document).ready(function() {
                     },'json');
      });
     //多条付款确认
+    $("#confirmed").on('click',function(){
+        $('#cost_table_msg_btn').click();
+        $('#confirmBtn').attr('disabled',true);
+        $('#receive_time').val('');
+    });
+
+
+    itemOrder.buildCostItem=function(){
+        var cargo_items_array=[];
+        application_table.data().each(function(item,index){
+            var cargo_table_rows = $("#application_table tr");
+            var order={}
+            if($(cargo_table_rows[index+1]).find('[type=checkbox]').prop('checked')){
+                order.id = item.ID.toString();
+                order.receive_time=$('#receive_time').val();
+                order.receive_bank_id=item.DEPOSIT_BANK;
+                if(order.receive_bank_id)
+                    order.receive_bank_id=order.receive_bank_id.toString();
+                order.payment_method =item.PAYMENT_METHOD;
+                cargo_items_array.push(order);
+            }
+        });
+        return cargo_items_array;
+    };
 
 });
 });

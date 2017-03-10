@@ -59,8 +59,8 @@
 					<span class="badge" style='margin-top:12px;margin-right:5px;'> JPY总额: <span id="jpy_totalAmountSpan">0</span></span>
 					<span class="badge" style='margin-top:12px;margin-right:10px;'> HKD总额: <span id="hkd_totalAmountSpan">0</span></span>
 					<button id="totalZero" class="badge" style='margin-top:12px;margin-right:10px;background-color: #005BAC;'>金额清零</button>
-					<button id="checked" class="badge" style='margin-top:12px;margin-right:10px;background-color: #005BAC;'>复核</button>
-					<button id="confirmed" class="badge" style='margin-top:12px;margin-right:10px;background-color: #005BAC;'>付款确认</button>
+					<button id="checked" class="badge  btn btn_green" style='width:50px;margin-top:12px;margin-right:10px;background-color: #005BAC;' disabled>复核</button>
+					<button id="confirmed" class="badge btn btn_green" style='width:70px;margin-top:12px;margin-right:10px;background-color: #005BAC;' disabled>付款确认</button>
 				  </div>
 					<div class="row simple_list_div">
                                 <%include("/eeda/component/form/detailTable.html", 
@@ -123,6 +123,9 @@
     </div>
 </div>
 <%}%>
+<script>
+var itemOrder={};
+</script>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/arap/CostRequest/list']);
