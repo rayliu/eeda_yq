@@ -151,7 +151,9 @@
       //按照状态读取是否显示昵称
       var COOKIE_NAME = 'username'; 
       if( $.cookie(COOKIE_NAME) ){ 
-    	  	$("#username").val( $.cookie(COOKIE_NAME) ); 
+    	  	$("#username").val( $.cookie(COOKIE_NAME) );
+    	  	$("#remUserSelect").attr("checked",true) 
+    	  	$.cookie(COOKIE_NAME, $("#username").val() , { path: '/', expires: 365 });
     	}
       $("#remUserSelect").click(function(){ 
     	  if(this.checked){ 
