@@ -4,51 +4,26 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
-import javax.mail.Authenticator;
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.Message.RecipientType;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-
+import models.Office;
 import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
 import models.eeda.cms.CustomPlanOrderItem;
 import models.eeda.oms.jobOrder.JobOrder;
-import models.eeda.oms.jobOrder.JobOrderSendMail;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
-
-import sun.misc.BASE64Encoder;
 
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
@@ -664,7 +639,7 @@ public class CustomPlanOrderController extends Controller {
     		UserLogin user = LoginUserController.getLoginUser(this);
        		long office_id = user.getLong("office_id");
        		if(office_id!=2){
-       			sendMail(id,plan_order_no);
+       			sendMail(id,plan_order_no,office_id);
         		order.set("fill_by",LoginUserController.getLoginUserId(this));
         		order.set("fill_stamp",new Date());
        		}
@@ -798,7 +773,7 @@ public class CustomPlanOrderController extends Controller {
   
 
     @Before(Tx.class)
-    public void sendMail(String order_id,String order_no) throws Exception {
+    public void sendMail(String order_id,String order_no,long office_id) throws Exception {
     	String mailTitle = "您有一份报关单待处理";
     	String mailContent = "报关申请单号为<a href=\"http://www.esimplev.com/customPlanOrder/edit?id="+order_id+"\">"+order_no+"</a>";
     	
@@ -806,23 +781,24 @@ public class CustomPlanOrderController extends Controller {
         /*smtp.exmail.qq.com*/
         email.setHostName("smtp.mxhichina.com");
         email.setSmtpPort(465);
-        
+        //反查公司信息
+        Office office=Office.dao.findById(office_id);
+        try{
         /*输入公司的邮箱和密码*/
-        email.setAuthenticator(new DefaultAuthenticator("info@yq-scm.com", "Enkyo123"));        
+        email.setAuthenticator(new DefaultAuthenticator(office.getStr("email"), office.getStr("emailPassword")));        
         email.setSSLOnConnect(true);
-        email.setFrom("info@yq-scm.com","Enkyo珠海远桥");//设置发信人
+        email.setFrom(office.getStr("email"),office.getStr("office_name"));//设置发信人
         //设置收件人，邮件标题，邮件内容
 //    	email.addTo("1063203104@qq.com");
     	email.addTo("ytimport@163.com");
 //        email.addTo("864358232@qq.com");
         email.setSubject(mailTitle);
         email.setContent(mailContent, "text/html;charset=gb2312");
-        
 //        //抄送
 //        email.addCc("1063203104@qq.com");
 //       //密送
 //        email.addBcc("1063203104@qq.com");
-        try{
+        
         	//email.setCharset("UTF-8"); 
         	email.send();
         }catch(Exception e){
