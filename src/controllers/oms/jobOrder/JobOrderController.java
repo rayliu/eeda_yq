@@ -123,6 +123,14 @@ public class JobOrderController extends Controller {
     	jos.update();
     	renderJson("{\"result\":true,\"mbl_flag\":\"Y\"}");
     }
+   //已派车的标记位
+    public void sendTruckorder(){
+    	String order_id = getPara("order_id");
+    	JobOrder job_order = JobOrder.dao.findById(order_id);
+    	job_order.set("send_truckorder_flag", "Y");
+    	job_order.update();
+    	renderJson("{\"result\":true,\"send_truckorder_flag\":\"Y\"}");
+    }
     
     //已电放确认表标识
     public void alreadyInlineFlag(){
@@ -1583,7 +1591,7 @@ public class JobOrderController extends Controller {
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " WHERE jor.office_id="+office_id
-        			+ " and datediff(joli.eta, now()) <= 3 AND (joli.truckorder_flag != 'Y' OR joli.truckorder_flag IS NULL)"
+        			+ " and datediff(joli.eta, now()) <= 3 AND jor.send_truckorder_flag != 'Y'"
         			+ " AND jor.transport_type LIKE '%land%'"
         			+ " and jor.delete_flag = 'N'";
         	

@@ -13,7 +13,8 @@
                                 <a data-target='#land_printDebit' data-toggle='modal'>
                                 <button class="btn btn_green btn-xs" id="land_print_debit_note" disabled>Invoice(分单)PDF</button>
                                 </a>
-                                <button class="btn btn_green btn-xs" id="land_sendTruck" disabled>已派车</button>
+                                <button class="btn btn_green btn-xs" id="land_sendTruck" >已完成派车</button>
+                                 <input id="land_sendTruckHide" type="hidden" value="${order.send_truckorder_flag!''}">
                                 
 		                         <div class="modal fade" id="land_printDebit">
 		                            <div class="modal-dialog" >

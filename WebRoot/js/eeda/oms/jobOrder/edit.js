@@ -398,7 +398,23 @@ $(document).ready(function() {
     		$(this).attr("checked",true);
     	}
     });
-    
+    //派车标记位
+    $('#land_sendTruck').click(function(){
+    	//异步向后台提交数据
+    	var order_id = $('#order_id').val();
+        $.post('/jobOrder/sendTruckorder', {order_id:order_id}, function(data){
+        	$('#land_sendTruck').attr('disabled', true);
+        	$.scojs_message('已完成派车工作', $.scojs_message.TYPE_OK);
+        	},'json').fail(function() {
+            $.scojs_message('点击无效', $.scojs_message.TYPE_ERROR);
+            $('#land_sendTruck').attr('disabled', false);
+            $.unblockUI();
+           });
+        });
+    var land_sendTruckHide=$('#land_sendTruckHide').val(); 
+    if(land_sendTruckHide=='Y'){
+    	$('#land_sendTruck').attr('disabled', true);
+    }
 
     
     

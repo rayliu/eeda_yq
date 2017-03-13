@@ -9,7 +9,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
-import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
@@ -41,8 +40,8 @@ public class TodoController extends Controller {
             +"( "
             +"    SELECT count(1) total "
             +"        FROM job_order_land_item joli LEFT JOIN job_order jo on jo.id = joli.order_id "
-            +"        WHERE datediff(eta,now() )<=3 and (truckorder_flag != 'Y' OR truckorder_flag is null) "
-            +"        and transport_type LIKE '%land%' and jo.office_id ="+office_id 
+            +"        WHERE datediff(eta,now() )<=3 and jo.send_truckorder_flag != 'Y'  "
+            +"        and jo.transport_type LIKE '%land%' and jo.office_id ="+office_id
             +") TruckOrderTodoCount, "
             +"( "
             +"    SELECT count(1) total "
