@@ -80,6 +80,7 @@ public class CustomPlanOrderController extends Controller {
             
         CustomPlanOrder customPlanOrder = new CustomPlanOrder();
    		String id = (String) dto.get("id");
+   		String ref_job_order_id = (String) dto.get("ref_job_order_id");
         SimpleDateFormat sdf = new SimpleDateFormat("MM");//转换后的格式
         String newDateStr = "";
         
@@ -95,6 +96,11 @@ public class CustomPlanOrderController extends Controller {
    			customPlanOrder.set("updator", user.getLong("id"));
    			customPlanOrder.set("update_stamp", new Date());
    			customPlanOrder.update();
+   			JobOrder job_order= JobOrder.dao.findById(ref_job_order_id);
+   			if(job_order!=null){
+   				job_order.set("custom_flag","Y");
+   				job_order.update();
+   			}
    			
    		} else {
    			//create 
@@ -113,6 +119,11 @@ public class CustomPlanOrderController extends Controller {
    			customPlanOrder.set("office_id", office_id);
    			customPlanOrder.save();
    			id = customPlanOrder.getLong("id").toString();
+   			JobOrder job_order= JobOrder.dao.findById(ref_job_order_id);
+   			if(job_order!=null){
+   				job_order.set("custom_flag", "Y");
+   				job_order.update();
+   			}
    		}
    		
    		//保存托运单模板
