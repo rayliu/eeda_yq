@@ -1,0 +1,1 @@
+package models.eeda.profile;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class DockInfo extends Model<DockInfo> {	public static final DockInfo dao = new DockInfo();}

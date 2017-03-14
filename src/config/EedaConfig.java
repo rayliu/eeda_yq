@@ -80,6 +80,7 @@ import models.eeda.profile.Country;
 import models.eeda.profile.Currency;
 import models.eeda.profile.CurrencyRate;
 import models.eeda.profile.Custom;
+import models.eeda.profile.DockInfo;
 import models.eeda.profile.FinItem;
 import models.eeda.profile.Module;
 import models.eeda.profile.ModuleRole;
@@ -231,6 +232,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/finItem", FinItemController.class, contentPath);
         me.add("/custom", CustomController.class, contentPath);
         me.add("/carInfo", controllers.profile.CarinfoController.class, contentPath);
+        me.add("/dockInfo", controllers.profile.DockInfoController.class, contentPath);
         me.add("/containerType", ContainerTypeController.class, contentPath);
         //register loginUser
 //        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
@@ -384,6 +386,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("location", Location.class);
         arp.addMapping("order_no_seq", OrderNoSeq.class);
         arp.addMapping("carinfo", Carinfo.class);
+        arp.addMapping("dockinfo", DockInfo.class);
         //基本数据用户网点
         arp.addMapping("user_office", UserOffice.class);
         arp.addMapping("user_customer", UserCustomer.class);
