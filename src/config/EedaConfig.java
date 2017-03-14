@@ -139,6 +139,7 @@ import controllers.profile.TradeItemController;
 import controllers.profile.UnitController;
 import controllers.report.OrderStatusController;
 import controllers.tms.jobOrder.TransJobOrderController;
+import controllers.tms.jobOrder.TransOrderShortCutController;
 import controllers.tms.planOrder.TransPlanOrderController;
 
 public class EedaConfig extends JFinalConfig {
@@ -271,7 +272,8 @@ public class EedaConfig extends JFinalConfig {
 		
 		//tms 车队系统
 		me.add("/transJobOrder", TransJobOrderController.class, contentPath);
-		me.add("/transPlanOrder", TransPlanOrderController.class, contentPath);		
+		me.add("/transPlanOrder", TransPlanOrderController.class, contentPath);
+		me.add("/transOrderShortCut", TransOrderShortCutController.class, contentPath);
 		
 		//ar= account revenue  应收条目处理
 		me.add("/chargeRequest", controllers.arap.ar.chargeRequest.ChargeReuqestrController.class, contentPath);
