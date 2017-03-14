@@ -124,6 +124,7 @@ import controllers.oms.jobOrder.JobOrderControllerForMobile;
 import controllers.oms.jobOrder.JobOrderReportController;
 import controllers.oms.planOrder.PlanOrderController;
 import controllers.oms.planOrder.PlanOrderControllerForMobile;
+import controllers.oms.salesOrder.EbaySalesOrderController;
 import controllers.oms.todo.TodoController;
 import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
@@ -203,11 +204,23 @@ public class EedaConfig extends JFinalConfig {
         //TODO: 为之后去掉 yh做准备
         String contentPath="/";//"yh";
 
+        //common
+        me.add("/", MainController.class, contentPath);
+        me.add("/module", ModuleController.class, contentPath);
+        me.add("/loginUser", controllers.profile.LoginUserController.class, contentPath);
+        me.add("/role", controllers.profile.RoleController.class, contentPath);
+        me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
+        
+        setErpRoute(me, contentPath);
+        
         setAppRoute(me, contentPath);
-        setScmRoute(me, contentPath);
-        
-        
     }
+    
+    private void setErpRoute(Routes me, String contentPath) {
+        me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
+        me.add("/ebaySalesOrder", EbaySalesOrderController.class, contentPath);
+    }
+    
     private void setAppRoute(Routes me, String contentPath) {
         me.add("/app", AppControllerForMobile.class);
         me.add("/app/jobOrder", JobOrderControllerForMobile.class);
@@ -216,15 +229,14 @@ public class EedaConfig extends JFinalConfig {
 
 	private void setScmRoute(Routes me, String contentPath) {
 		// yh project controller
-        me.add("/", MainController.class, contentPath);
-        me.add("/module", ModuleController.class, contentPath);
+        
        // me.add("/apidoc", controllers.eeda.DocController.class);基础数据
         
         me.add("/eWmsDashBoard", EwmsDashBoardController.class, contentPath);
         me.add("/tradeItem", TradeItemController.class, contentPath);
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
-        me.add("/loginUser", controllers.profile.LoginUserController.class, contentPath);
+       
         me.add("/unit", UnitController.class, contentPath);
         me.add("/country", CountryController.class, contentPath);
         me.add("/finItem", FinItemController.class, contentPath);
@@ -234,8 +246,8 @@ public class EedaConfig extends JFinalConfig {
         //register loginUser
 //        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
         me.add("/reset",controllers.profile.ResetPassWordController.class,contentPath);
-        me.add("/role", controllers.profile.RoleController.class, contentPath);
-        me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
+        
+        
         me.add("/customer", controllers.profile.CustomerController.class, contentPath);
         me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);
         me.add("/location", controllers.profile.LocationController.class, contentPath);
@@ -323,7 +335,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/accountAuditLog", controllers.arap.AccountAuditLogController.class, contentPath);
         
         //发布公告
-        me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
+       
         me.add("/orderStatus", OrderStatusController.class, contentPath);
 	}
 
