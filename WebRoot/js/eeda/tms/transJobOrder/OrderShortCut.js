@@ -4,8 +4,17 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
   	  
       var deletedTableIds=[];
         var bindFieldEvent=function(){
-      eeda.bindTableField('eeda-table','CUSTOMER_ID','/serviceProvider/searchCompany','');
+//        	$('table .date').datetimepicker({  
+//        	    format: 'yyyy-MM-dd hh:mm:ss',  
+//        	    language: 'zh-CN'
+//        	}).on('changeDate', function(el){
+//        	    $(".bootstrap-datetimepicker-widget").hide();   
+//        	    $(el).trigger('keyup');
+//        	});
+        	
+        	eeda.bindTableField('eeda-table','CUSTOMER_ID','/serviceProvider/searchCompany','');
         eeda.bindTableField('eeda-table','CHARGE_ID','/finItem/search','');
+        eeda.bindTableFieldCarInfo('eeda-table', 'CAR_NO');
         eeda.bindTableFieldCurrencyId('eeda-table','CURRENCY_ID','/serviceProvider/searchCurrency','');
     };
   	//datatable, 动态处理
@@ -162,18 +171,34 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
             },
             { "data": "CAR_NO", 
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data = '';
-                          return '<input type="text" name="CAR_NO" style="width:100px" value="'+data+'" class="form-control"/>';
-                     }
+                	if(!data)
+                        data='';
+                    var field_html = template('table_car_no_field_template',
+                        {
+                            id: 'CAR_NO',  //component_id 便于用 #id取组件
+                            value: data,
+                            display_value: full.CAR_NO,
+                            style:'width:200px'
+                        }
+                    );
+                     return field_html;
+                 }
             },
              { "data": "CHARGE_ID", 
                   "render": function ( data, type, full, meta ) {
-                      if(!data)
-                        data = '';
-                          return '<input type="text" name="CURRENCY_ID" style="width:100px" value="'+data+'" class="form-control"/>';
-                     }
-            },
+                	  if(!data)
+                          data='';
+                      var field_html = template('table_dropdown_template',
+                          {
+                              id: 'CHARGE_ID',
+                              value: data,
+                              display_value: full.CHARGE_NAME,
+                              style:'width:200px'
+                          }
+                      );
+                      return field_html;
+                  }
+             },
             { "data": "TOTAL_AMOUNT", "width": "80px","className":"currency_total_amount",
               "render": function ( data, type, full, meta ) {
                 if(data)
