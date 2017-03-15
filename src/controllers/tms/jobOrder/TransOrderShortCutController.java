@@ -19,6 +19,7 @@ import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.jobOrder.JobOrderSendMail;
 import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
+import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
 import models.eeda.tms.TransJobOrderDoc;
@@ -64,45 +65,35 @@ public class TransOrderShortCutController extends Controller {
 	
 	@Before(EedaMenuInterceptor.class)
     public void create() {
-    	
-    	String order_id=getPara("order_id");
-    	String itemIds=getPara("itemIds");
-    	if(StringUtils.isNotEmpty(order_id)){
-    		//查询plan_order 里的计划单号
-    		PlanOrder planOrder = PlanOrder.dao.findById(order_id);
-        	setAttr("planOrder", planOrder);
-        	//客户回显
-        	Party party = Party.dao.findById(planOrder.get("customer_id"));
-        	setAttr("party", party);
-    	}
-
-    	if(StringUtils.isNotEmpty(itemIds)){
-    		
-    		String strAry[] = itemIds.split(",");
-    		String id = strAry[0];
-    		//查询plan_order_item
-	    	PlanOrderItem plan_order_item = PlanOrderItem.dao.findById(id);
-	    	setAttr("planOrderItem", plan_order_item);
-	    	
-	    	//返回海运的港口名称,加多一个船公司
-	    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name,p.abbr carrier_name from plan_order_item joi"
-				    			+" LEFT JOIN location lo on lo.id = joi.por"
-				    			+" LEFT JOIN location lo1 on lo1.id = joi.pol"
-				    			+" LEFT JOIN location lo2 on lo2.id = joi.pod"
-				    			+ " left join party p on p.id = joi.carrier"
-				    			+" where joi.id = ?";
-	    	setAttr("portCreate",Db.findFirst(port_sql,id));
-	    	
-    	}
+		String jsonStr=getPara("params");
+       	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+        
+      //海运
+		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("itemList");
+		
+		Record transJobOrder = new Record();
+		transJobOrder.set("so_no", itemList.get(0).get("SO_NO"));
+		transJobOrder.set("customer_id",itemList.get(0).get("CUSTOMER_ID") );
+		transJobOrder.set("type", itemList.get(0).get("TYPE"));
+		//提吉柜
+		transJobOrder.set("unload_type", itemList.get(0).get("unload_type"));
+		//码头
+		transJobOrder.set("take_wharf", itemList.get(0).get("TAKE_WHARF"));
+		transJobOrder.set("BACK_WHARF", itemList.get(0).get(""));
+		
+		transJobOrder.set("container_no", itemList.get(0).get("CONTAINER_NO"));
+		transJobOrder.set("cabinet_type", itemList.get(0).get("CABINET_TYPE"));
+		transJobOrder.set("CAR_NO", itemList.get(0).get(""));
+		transJobOrder.set("CHARGE_ID", itemList.get(0).get(""));
+		
+		
+		setAttr("order", transJobOrder);
+		setAttr("emailTemplateInfo", getEmailTemplateInfo());
     	setAttr("emailTemplateInfo", getEmailTemplateInfo());
     	setAttr("loginUser",LoginUserController.getLoginUserName(this));
         render("/tms/TransJobOrder/JobOrderEdit.html");
     }
-    
-
-    
-
-
 
     
     //插入派车单打印动作标记

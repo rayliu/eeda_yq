@@ -70,9 +70,9 @@
                                 </form>
 
                             <div class="form-group button-bar" >
-                           	 	<button type='button' class="btn btn-success btn-xs" id="add_land">将上框内容应用到表中</button> 
+                           	 	<button type='button' class="btn btn-success btn-xs" id="add_on">将上框内容应用到表中</button> 
                                 <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空上框内容</button>
-                                <a href="/transJobOrder/create" class="btn btn-success btn-sm" type="button">创建托运工作单</a><br>
+                                <button type='button' class="btn btn-success btn-xs" id="create">创建托运工作单</button>
                                 <hr>
                                 <button type='button' class="btn btn-success btn-xs" id="add_land">添加明细</button>
                             </div>
@@ -83,7 +83,7 @@
                                     headers:[
                                     	'<input id="allCheckOfLand" type="checkbox" style="width:30px">',
                                     	'',
-                                    	'业务发生时间',
+                                    	'创建时间',
                                     	'SO号',
                                         '客户',
                                         '类型',
@@ -113,9 +113,13 @@
         </div><!-- end of  .page-wrapper-->
 
 <%}%>
+<%include("/eeda/component/jsTemplate/tableInputDateField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputFieldCurrencyId.js",{}){} %>
 
 <script>
       var type = "${type!''}";
+      var itemOrder={};
  </script>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], 
