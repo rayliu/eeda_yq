@@ -534,8 +534,12 @@ public class TransJobOrderController extends Controller {
     @Before({EedaMenuInterceptor.class, Tx.class})
     public void edit() {
     	String id = getPara("id");
-    	TransJobOrder transJobOrder = TransJobOrder.dao.findById(id);
-    	setAttr("order", transJobOrder);
+    	String str=" select tjo.*,di.dock_name take_wharf_name ,di1.dock_name back_wharf_name from trans_job_order tjo "
+					+" LEFT JOIN dockinfo di on di.id=tjo.take_wharf "
+					+" LEFT JOIN dockinfo di1 on di1.id=tjo.back_wharf "
+					+"  where tjo.id= "+id;
+    	Record re= Db.find(str).get(0);
+    	setAttr("order", re);
     	//获取空运运明细表信息
     	//获取陆运明细表信息
     	setAttr("landList", getItems(id,"land"));
@@ -551,13 +555,13 @@ public class TransJobOrderController extends Controller {
     	setAttr("mailList", getItems(id,"mail"));
     	setAttr("emailTemplateInfo", getEmailTemplateInfo());
     	//客户回显
-    	Party party = Party.dao.findById(transJobOrder.get("customer_id"));
+    	Party party = Party.dao.findById(re.get("customer_id"));
     	setAttr("party", party);
     	//头程船公司回显
-    	Party head_carrier = Party.dao.findById(transJobOrder.get("head_carrier"));
+    	Party head_carrier = Party.dao.findById(re.get("head_carrier"));
     	setAttr("head", head_carrier);
     	//工作单创建人
-    	long creator = transJobOrder.getLong("creator");
+    	long creator = re.getLong("creator");
     	UserLogin user = UserLogin.dao.findById(creator);
     	setAttr("user", user);
     	//当前登陆用户
