@@ -10,27 +10,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             serverSide: true, //不打开会出现排序不对
             ajax: "/ebaySalesOrder/list",
             columns:[
-                { "width": "80px",
-                    "render": function ( data, type, full, meta ) {
-                      return '<button type="button" class="delete btn table_btn btn-default btn-xs">'+
-                        '<i class="fa fa-trash-o"></i> 删除</button>';
+                {"data": "TRANSACTION_ID", "width":"120px"},
+                { "data": "ITEM_ID", "width":"120px"},
+	              { "data": "BUYER_USER_ID", "width":"120px"}, 
+                { "data": "SELLER_USER_ID", "width":"90px"},
+                { "data": "TOTAL", "width":"60px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                          return full.TOTAL_CURRENCY_ID+" "+data;
+                      }
+                      return "";
                     }
-                },
-                {"data": "TITLE", "width":"120px",
-              	  "render": function ( data, type, full, meta ) {
-              		  return "<a href='#' class='edit' >"+data+"</a>";
-              	  }
-                },
-	              { "data": "CONTENT", "className":"content"}, 
-	              { "data": "CREATE_NAME", "width":"60px"}, 
-	              { "data": "CREATE_STAMP", "width":"90px"}, 
-	              { "data": "UPDATE_NAME", "width":"60px"},
-	              { "data": "UPDATE_STAMP", "width":"90px"},
-                { "data": "CREATE_NAME", "width":"60px"}, 
-                { "data": "CREATE_STAMP", "width":"90px"}, 
-                { "data": "UPDATE_NAME", "width":"60px"},
-                { "data": "UPDATE_STAMP", "width":"90px"},
-                { "data": "UPDATE_NAME", "width":"60px"}
+                }, 
+                { "data": "PAID_TIME", "width":"90px"}, 
+                { "data": "SHIPPED_TIME", "width":"60px"},
+                { "data": "CREATED_TIME", "width":"60px"},
+                { "data": "ORDER_STATUS", "width":"60px"},
+                { "data": "TRACK_NO", "width":"120px"}
             ]
         });
       
@@ -39,24 +35,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       })
 
      var searchData=function(){
-          var creator = $.trim($("#creator").val()); 
-          var start_date = $("#create_stamp_begin_time").val();
-          var end_date = $("#create_stamp_end_time").val();
 
-          var url = "/msgBoard/list?create_name_like="+creator
-               +"&create_stamp_begin_time="+start_date
-               +"&create_stamp_end_time="+end_date;
+          var url = "/ebaySalesOrder/list";
 
           dataTable.ajax.url(url).load();
       };
       
-      $('#eeda_table').on('click','.edit',function(){
-    	  var tr = $(this).parent().parent();
-    	  $('#edit_id').val(tr.attr('id'));
-    	  $('#edit_radioTitle').val($(this).text());
-    	  $('#edit_radioContent').val($(tr.find(".content")).text());
-    	  $('#editRadio').click();
-      });
+      $('#importBtn').click(function(){
+           $.post('/ebaySalesOrder/importOrders', {nothing: 'nothing'}, function(data, textStatus, xhr) {
+                
+           });
+      })
     	
 });
 });

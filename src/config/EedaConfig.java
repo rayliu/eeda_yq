@@ -133,6 +133,7 @@ import controllers.profile.CountryController;
 import controllers.profile.CurrencyController;
 import controllers.profile.CurrencyRateController;
 import controllers.profile.CustomController;
+import controllers.profile.EbayAccountController;
 import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.TradeItemController;
@@ -210,6 +211,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/loginUser", controllers.profile.LoginUserController.class, contentPath);
         me.add("/role", controllers.profile.RoleController.class, contentPath);
         me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
+        me.add("/sys", controllers.eeda.SysInfoController.class, contentPath); 
         
         setErpRoute(me, contentPath);
         
@@ -219,6 +221,7 @@ public class EedaConfig extends JFinalConfig {
     private void setErpRoute(Routes me, String contentPath) {
         me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
         me.add("/ebaySalesOrder", EbaySalesOrderController.class, contentPath);
+        me.add("/ebayAccount", EbayAccountController.class, contentPath);
     }
     
     private void setAppRoute(Routes me, String contentPath) {
@@ -234,7 +237,7 @@ public class EedaConfig extends JFinalConfig {
         
         me.add("/eWmsDashBoard", EwmsDashBoardController.class, contentPath);
         me.add("/tradeItem", TradeItemController.class, contentPath);
-        me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
+        
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
        
         me.add("/unit", UnitController.class, contentPath);
