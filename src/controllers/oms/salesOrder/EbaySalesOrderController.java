@@ -16,7 +16,6 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 
 import com.ebay.sdk.ApiContext;
 import com.ebay.sdk.call.GetOrdersCall;
-import com.ebay.sdk.util.eBayUtil;
 import com.ebay.soap.eBLBaseComponents.DetailLevelCodeType;
 import com.ebay.soap.eBLBaseComponents.OrderIDArrayType;
 import com.ebay.soap.eBLBaseComponents.OrderStatusCodeType;
@@ -25,9 +24,11 @@ import com.ebay.soap.eBLBaseComponents.TradingRoleCodeType;
 import com.ebay.soap.eBLBaseComponents.WarningLevelCodeType;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.profile.EbayAccountController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 
@@ -35,7 +36,7 @@ import controllers.util.DbUtils;
 @Before(SetAttrLoginUserInterceptor.class)
 public class EbaySalesOrderController extends Controller {
     private ApiContext apiContext = null;
-    private Logger logger = Logger.getLogger(EbaySalesOrderController.class);
+    private Log logger = Log.getLog(EbaySalesOrderController.class);
 
     @Before(EedaMenuInterceptor.class)
     public void index() {
