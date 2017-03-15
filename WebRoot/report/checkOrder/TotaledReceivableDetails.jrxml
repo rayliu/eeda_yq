@@ -285,14 +285,14 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<text><![CDATA[DATE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="45" y="66" width="55" height="15" uuid="64467f91-acc8-4246-b170-dc2861052e28"/>
+				<reportElement x="45" y="66" width="60" height="15" uuid="64467f91-acc8-4246-b170-dc2861052e28"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[DEBIT NO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="65" width="73" height="17" uuid="a7d6ecde-9476-466d-ac9e-42cf41f8fa2f"/>
+				<reportElement x="104" y="65" width="70" height="17" uuid="a7d6ecde-9476-466d-ac9e-42cf41f8fa2f"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
@@ -470,7 +470,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="46" y="0" width="55" height="12" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
+				<reportElement x="45" y="0" width="61" height="12" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
@@ -526,7 +526,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{CBM}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="99" y="0" width="73" height="12" uuid="b47f4b0c-359f-4d35-b125-b37107c4ef04"/>
+				<reportElement x="105" y="0" width="68" height="12" uuid="b47f4b0c-359f-4d35-b125-b37107c4ef04"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -540,7 +540,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{ref_no}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="bottomLine" stretchType="RelativeToBandHeight" x="1" y="0" width="800" height="14" uuid="f5ee74a4-0050-466b-a169-c8b05a19a718"/>
+				<reportElement style="bottomLine" stretchType="RelativeToBandHeight" x="1" y="1" width="800" height="14" uuid="f5ee74a4-0050-466b-a169-c8b05a19a718"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 		</band>
