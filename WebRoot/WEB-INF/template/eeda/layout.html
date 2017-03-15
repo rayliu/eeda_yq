@@ -56,7 +56,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href=""></a>
+                <a class="navbar-brand" href="" style="color: #457ab7;">${SYS_CONFIG.system_title!''}</a>
                 
             </div>
             <!-- /.navbar-header -->
@@ -86,7 +86,7 @@
                 </div>
 
                 <div class="person_image">
-                    <img src="/images/simple/person_image_40x40.png">
+                    <img src="/images/simple/person_image_40x40.png"   style="height: 28px;"  >
                     <a href="/loginUser/editPerson">
                         ${userId!'N/A'}
                     </a>
@@ -107,9 +107,9 @@
                 <ul class="nav" id="side-menu">
                     <%  
                         var map = permissionMap!'';
-                    
+
                         for(module in modules![]){
-                        %>
+                    %>
                             <li id="${module.id!}">
                                 <a href="#"><i class="fa fa-file-text fa-fw"></i>${module.module_name!}<span class="fa arrow"></span></a>
                                 <% if(module.orders != null ){%>
@@ -144,7 +144,9 @@
     </div>
     <!-- /#wrapper 11-->
 
-  
+    <section class="login_back_footer">
+    Copyright © 2017 创诚易达  <a href="http://www.eeda123.com">www.eeda123.com</a>
+    </section>
 </body>
 
 </html>

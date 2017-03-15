@@ -432,7 +432,7 @@ li{
 
 .person_image{
     float: left;
-    margin-top: 4px;
+    margin-top: 10px;
     margin-right: 45px;
 }
 
@@ -449,13 +449,23 @@ li{
     margin-bottom: 0px;
     font-weight: bolder;
     font-size: 18px;
+    background-color: #457ab7;
+    border-radius: 0px;
+    border-left: solid 1px #e7e7e7;
 }
-
+.breadcrumb>li {
+    color: #fff;
+}
 .breadcrumb a{
     color: white;
     font-family: dinpro, Arial,sans-serif;
     font-weight: bolder;
     
+}
+
+.simple_title_div{
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 .simple_search_div{
@@ -470,4 +480,39 @@ li{
     margin-right: 0px;
     border-radius: 0 0 15px 15px;
 }
+
+.interval .li {
+    margin: 0px 5px 10px 5px;
+    //border-radius: 1em;
+    border: solid 1px #ddd;
+}
+
+.panel-blue {
+    background-color: #127ccb;
+    color: #fff;
+}
+
+.interval {
+    width: 20%;
+    float: left;
+}
+
+.login_back_footer {
+    position: relative;
+    height: 35px;
+    margin-top: -35px;
+    background-color: #457ab7;
+    text-align: center;
+    padding: 10px;
+    color: white;
+}
+
+.login_back_footer  a {
+    color: white;
+}
+
+.navbar-brand{
+    color: #457ab7;
+}
+
 /* ray added */
