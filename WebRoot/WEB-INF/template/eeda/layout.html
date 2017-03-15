@@ -118,24 +118,13 @@
                                         for(menu_order in module.orders){
                                         %>
                                             <li id="${menu_order.id}">
-                                                <a href="/${menu_order.url!''}">${menu_order.module_name!}</a>
+                                                <a href="${menu_order.url!''}">${menu_order.module_name!}</a>
                                             </li>
                                         <%}%>
                                     </ul>
                                 <%}%>
                             </li>
                     <%  }%>
-
-                    <li>
-                        <a href="#"><i class="fa fa-question fa-fw"></i> 需要帮助<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="http://scmdoc.eeda123.com" target="_blank">货代系统帮助文档</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    
                 </ul>
                 <!--  /#side-menu -->
             </div>
