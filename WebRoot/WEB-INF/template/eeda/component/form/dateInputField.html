@@ -10,11 +10,12 @@
         <span style='color:red; display:initial;'>*</span>
    		<%}%>
    		</label>
-        <span <%if(inline!true){%>
-        class="add-on"
-         <%}else{%>
-        class="search-add-on"
-         <%}%>> 
+        
+        <% if(inline!true){%>
+			<span class="add-on"> 
+		<%}else{%>
+			<span class="add-on" style="margin-top:30px"> 
+		<%}%>
         	<i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
         </span>
         <input id="${id}" name= "${id}" class="form-control <% if(inline!true){%>

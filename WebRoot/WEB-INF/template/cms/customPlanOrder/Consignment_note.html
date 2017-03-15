@@ -1,0 +1,158 @@
+<input type="hidden" id="" value="">
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseConsignmentInfo" aria-expanded="false" class="collapsed">
+            <i id='collapseConsignmentIcon' class="fa 
+            <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用托运单信息模板
+            </a>
+        </h4>
+    </div>
+    <div id="collapseConsignmentInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+        <div class="panel-body">
+            <ul id="usedConsignmentInfo" class="usedConsignmentInfo">
+              <%for(userInfo in usedConsignmentInfo![]){%>
+                    <li id="${userInfo.id}"
+                        shipping_date="${userInfo.shipping_date}"
+                        customs_number="${userInfo.customs_number}"
+                        boat_company="${userInfo.boat_company}"
+                        
+                        boat_name="${userInfo.boat_name}"
+                        consignee="${userInfo.consignee}"
+                        consignee_name="${userInfo.consignee_name}"
+                        appointed_port="${userInfo.appointed_port}"
+                        port_name="${userInfo.port_name}"
+                        shipping_men="${userInfo.shipping_men}"
+                        shipping_men_name="${userInfo.shipping_men_name}"
+                        
+                        shipping_men_phone="${userInfo.shipping_men_phone}"
+                        consignee_phone="${userInfo.consignee_phone}"
+                        notice_man="${userInfo.notice_man}"
+                        notice_man_name="${userInfo.notice_man_name}"
+                        notice_man_phone="${userInfo.notice_man_phone}" 
+                        >
+                      <div class="radio">
+                        <a class="deleteConsignmentTemplate" href="#" style="margin-right: 10px;padding-top: 6px;float: left;">删除</a>
+                        <label class="selectConsignmentTemplate">
+                            <input type="radio" value="1" name="usedConsignmentInfo" style="margin-top: 0px;">
+                            <span>托运日期:${userInfo.shipping_date}, 企业海关代码:${userInfo.customs_number}, 指定港: ${userInfo.appointed_port}</span><br>
+                            <span class="port">收发货人${userInfo.shipping_men}, 收货人：${userInfo.consignee}</span>
+                        </label>
+                      </div>
+                    </li>
+              <%}%>
+            </ul>
+        </div>
+    </div>
+</div>
+<form id="hkForm">
+						    <div class="form-group">  <!--  form row  -->
+						         <div class="row"><!--  第1行  --> 
+                                    <div class="col-lg-4">
+                                        <%include("/eeda/component/form/dateInputField.html", 
+                                        {   id:'shipping_date', 
+                                            label:'托运日期',
+                                            class:'form-control',
+                                            value:order.shipping_date!''
+                                        }){}%>
+                                     </div>
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+	                                        {   id:'customs_number', 
+	                                            label:'企业海关代码',
+	                                            value:order.customs_number!''
+	                                        }){}%>
+                                    </div>
+                                </div>
+                                <div class="row"><!--  第1行  --> 
+                                     <div class="col-lg-4">
+	                                        <%include("/eeda/component/form/inputPartyField.html", 
+						                    {   id:'boat_company',
+						                        type:  'carrier',
+						                        label: '船公司', 
+						                        value: order.boat_company!'',
+						                        display_value: order.boat_company_name!''
+						                    }){}%>
+                                    </div>
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+	                                        {   id:'boat_name', 
+	                                            label:'船名',
+	                                            value:order.boat_name!''
+	                                        }){}%>
+                                    </div>
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputPortField.html", 
+                                             {   id:'appointed_port', 
+                                                 label:'指定港',
+                                                 value:order.appointed_port!'',
+                                                 display_value:order.appointed_port_name!''
+                                             }){}%>
+                                    </div>
+                                </div>
+                                <div class="row"><!--  第1行  --> 
+                                     <div class="col-lg-8">
+                                        <%include("/eeda/component/form/inputSpField.html", 
+	                                        {   id:'shipping_men', 
+	                                            label:'收发货人',
+	                                            value:order.shipping_men!'',
+	                                            display_value:order.shipping_men_name!''
+	                                        }){}%>
+                                    </div>
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+	                                        {   id:'shipping_men_phone', 
+	                                            label:'收发货人电话',
+	                                            value:order.shipping_men_phone!''
+	                                        }){}%>
+                                    </div>
+                                </div>
+                                <div class="row"><!--  第1行  --> 
+                                     <div class="col-lg-8">
+                                        <%include("/eeda/component/form/inputSpField.html", 
+	                                        {   id:'consignee', 
+	                                            label:'收货人',
+	                                            value:order.consignee!'',
+	                                            display_value:order.consignee_name!''
+	                                        }){}%>
+                                    </div>
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+	                                        {   id:'consignee_phone', 
+	                                            label:'收货人电话',
+	                                            value:order.consignee_phone!''
+	                                        }){}%>
+                                    </div>
+                                </div>
+                                <div class="row"><!--  第1行  --> 
+                                     <div class="col-lg-8">
+                                        <%include("/eeda/component/form/inputSpField.html", 
+	                                        {   id:'notice_man', 
+	                                            label:'通知人',
+	                                            value:order.notice_man!'',
+	                                            display_value:order.notice_man_name!''
+	                                        }){}%>
+                                    </div>
+                                     <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+	                                        {   id:'notice_man_phone', 
+	                                            label:'通知人电话',
+	                                            value:order.notice_man_phone!''
+	                                        }){}%>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn  btn_green" id="add_shipping_item" type="button">添加货品</button> 
+                                <br>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'shipping_item_table',
+                                        style:'width:1400px',
+                                        headers:['','唛头/箱号','包装', '件数', '货名', '净重(公斤)', '毛重(公斤)','尺码(CBM)'],
+                                        field_list:['','container_number','pack','number', 'cargo_name', 'net_weight', 'gross_weight','volume'],
+                                        value_list: shippingItemList![]
+                                    }){} %> 
+						                   
+						            </div><!-- /.row -->
+						</form>

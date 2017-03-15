@@ -24,16 +24,8 @@
     </target>
 	
 	<target name="copy_prod_config" >
-		<copy tofile="${project.classpath}/job.properties" file="WebRoot/WEB-INF/config/job.properties" overwrite="true"/>
-		<copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-yh-prod" overwrite="true"/>
-		<copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-yh-prod" overwrite="true"/>
-        <!--java classname="com.jfinal.core.JFinal" classpathref="project.lib.path">
-            <arg value="WebRoot"/>
-            <arg value="8000"/>
-            <arg value="/"/>
-            <arg value="0"/>
-            <classpath path="${project.classpath}"></classpath>
-        </java-->
+		<copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-yq-prod" overwrite="true"/>
+		<copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-yq-prod" overwrite="true"/>
     </target>
 	
 	<target name="uat" depends="clean, compile">
@@ -49,7 +41,12 @@
         </java-->	
     </target>
 	
-	<target name="uat_copy_config" >
+	<target name="prod" depends="clean, compile">
+        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-prod" overwrite="true"/>
+        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-prod" overwrite="true"/>
+    </target>
+	
+	<target name="copy_uat_config" >
         <copy tofile="${project.classpath}/job.properties" file="WebRoot/WEB-INF/config/job.properties" overwrite="true"/>
         <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-uat" overwrite="true"/>
         <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-uat" overwrite="true"/> 

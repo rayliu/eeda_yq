@@ -1,15 +1,10 @@
 <%layout("/eeda/layout.html"){%>
 <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
 	<div id="page-wrapper">
-		<div class="row">
+		<div class="row simple_search_div">
              <div class="col-lg-12">
-              	<div class="btn-header">
-              		<div class="btn-header" style="font-size: 32px" align="left">收款申请单</div>
-				</div>
-                <div class="panel panel-default">
                 <form id="orderForm">
-            		<div class="panel-body">
-            			<div class="search_panel">
+            			<div class="row">
             			<input id='ids' name='ids' type="hidden" value="${ids!''}">
             			
             			<input id='detailJson' name='detailJson' type="hidden">
@@ -109,34 +104,46 @@
     							<textarea id='invoice_no' class="form-control" rows="3" name="invoice_no">${order.invoice_no!''}</textarea>
 						    </div>
                         </div>
-                        
-                        <div class="row" >
+                        <
+                        <div class="row"  >
                             <div class="col-lg-12  btn-header">
-                                <button id="createSave" disabled class="btn btn-success btn-sm" type="button" >创建申请单</button>
+                                <button id="createSave" disabled class="btn btn_green" type="button" >创建申请单</button>
                             </div>
-                        </div>
-                        <div class="row" >
                             <div class="col-lg-3">
+                                <div class="form-group">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_cny',
                                 label:'CNY', value:order.cny!'',disabled:'disabled'
                                 }){}%>
+                                </div>
                             </div>
                             <div class="col-lg-3">
+                                <div class="form-group">
 	                            <%include("/eeda/component/form/inputField.html", { id:'modal_usd',
 	                            label:'USD', value:order.usd!'',disabled:'disabled'
 	                            }){}%>
+                                </div>
                        	    </div>
 	                       	 <div class="col-lg-3">
+                                <div class="form-group">
 		                         <%include("/eeda/component/form/inputField.html", { id:'modal_jpy',
 		                         label:'JPY', value:order.jpy!'',disabled:'disabled'
 		                         }){}%>
+                                 </div>
 	                     	 </div>
                              <div class="col-lg-3">
+                                <div class="form-group">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_hkd',
                                 label:'HKD', value:order.hkd!'',disabled:'disabled'
                                 }){}%>
+                                </div>
                              </div>
                         </div>
+                    </form>
+                </div>
+            </div>
+
+             <div class="simple_order_list_div" >
+                    <div>
                         <ul id="orderTabs" class="nav nav-tabs">
 							<li class="active">
 								<a href="#list" data-toggle="tab" id="costCheckOrderItem">第一步: 选择对账单</a>
@@ -153,11 +160,8 @@
                                 <%include("/oms/ChargeRequest/chargeEdit_select_item.html", {}){} %>
                             </div>
 		               </div>
-           			</div>
-           		  </form>
-           		</div>	
-			</div>
-		</div>
+           		    </div>
+            </div>
 	</div>
 	
 <%}%>

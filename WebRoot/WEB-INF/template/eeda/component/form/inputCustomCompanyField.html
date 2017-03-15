@@ -39,7 +39,14 @@ $(document).ready(function() {
 		    });
 
 		    eeda.hidePopList();
-	        companyList.show();    
+	        companyList.show();
+	        //当查询结果只有一个时，自动赋值到hiddenField
+            if(data.length==0)
+                hiddenField.val('');
+            if(data.length==1&&data[0].ID)
+                hiddenField.val(data[0].ID);
+            if(data.length>1)
+                hiddenField.val('');    
 	    },'json');
 	});
 	
@@ -55,6 +62,9 @@ $(document).ready(function() {
 		if (inputField.val().trim().length ==0) {
 			hiddenField.val('');
 		};
+		if (hiddenField.val().trim().length ==0) {
+            inputField.val('');
+        };
 		companyList.hide();
 	});
 	

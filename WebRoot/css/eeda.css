@@ -164,7 +164,7 @@ label.error {
 	margin-bottom: 5px !important;
 }
 .form-group .search-control{
-	height:30px;
+	height:22px;
 }
 
 .form-group label{
@@ -264,15 +264,11 @@ label.error {
     margin-top: 10px;
 }
 
-.col-lg-6 .date .search-add-on{
+/* .col-lg-4 .date .add-on{
 	position: absolute;
     right: 8%;
-    margin-top: 35px;
-}
-
-table .form-control{
-	/*width: 100% !important;*/
-}
+    margin-top: 32px;
+} */
 
 .button-bar{
 	margin-top: 10px;
@@ -432,5 +428,46 @@ li{
 .alert-warning a.no_need{
     color: #8a785b;
     font-weight: 100;
+}
+
+.person_image{
+    float: left;
+    margin-top: 4px;
+    margin-right: 45px;
+}
+
+.log_out {
+    margin-right: 25px;
+    margin-top: 15px;
+    display: inline-block;
+}
+
+.breadcrumb{
+    padding-left: 25px;
+    padding-top: 13px;
+    margin-left: 250px;
+    margin-bottom: 0px;
+    font-weight: bolder;
+    font-size: 18px;
+}
+
+.breadcrumb a{
+    color: white;
+    font-family: dinpro, Arial,sans-serif;
+    font-weight: bolder;
+    
+}
+
+.simple_search_div{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.simple_list_div{
+    background-color: #fff;
+    margin-top: 15px;
+    margin-left: 0px;
+    margin-right: 0px;
+    border-radius: 0 0 15px 15px;
 }
 /* ray added */

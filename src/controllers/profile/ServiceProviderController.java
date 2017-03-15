@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -14,6 +15,8 @@ import java.util.Map;
 import models.Location;
 import models.ParentOfficeModel;
 import models.Party;
+import models.PartyMark;
+import models.SpOceanCargo;
 import models.UserLogin;
 import models.yh.profile.ProviderChargeType;
 
@@ -23,12 +26,14 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
+import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
@@ -90,7 +95,7 @@ public class ServiceProviderController extends Controller {
         setAttr("location", re.getStr("loc_name"));
 
         setAttr("party", party);
-     
+        setAttr("user", LoginUserController.getLoginUser(this));
         render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
     }
     
@@ -123,11 +128,15 @@ public class ServiceProviderController extends Controller {
             party.set("remark", getPara("remark"));
             party.set("receipt", getPara("receipt"));
             party.set("payment", getPara("payment"));
+            String status = getPara("status");
+            if(status==null){
+            	party.set("status", "新建");
+            }
             
             party.set("receiver", getPara("receiver"));
             party.set("bank_no", getPara("bank_no"));
             party.set("bank_name", getPara("bank_name"));
-            setContact(party);
+            setParty(party);
             party.update();
         } else {
             //判断供应商简称
@@ -147,13 +156,14 @@ public class ServiceProviderController extends Controller {
             party.set("type", Party.PARTY_TYPE_SERVICE_PROVIDER);
             party.set("creator", LoginUserController.getLoginUserId(this));
             party.set("create_date", createDate);
+            party.set("status", "新建");
             party.set("receipt", getPara("receipt"));
             party.set("remark", getPara("remark"));
             party.set("payment", getPara("payment"));
             party.set("charge_type", getPara("chargeType"));
             party.set("office_id", pom.getCurrentOfficeId());
             
-            setContact(party);
+            setParty(party);
             party.save();
 
         }
@@ -163,7 +173,7 @@ public class ServiceProviderController extends Controller {
         renderJson(party);
     }
 
-    private void setContact(Party contact) {
+    private void setParty(Party contact) {
     	contact.set("code", getPara("code"));
     	contact.set("quick_search_code", getPara("quick_search_code"));
     	contact.set("fax", getPara("fax"));
@@ -196,6 +206,31 @@ public class ServiceProviderController extends Controller {
         contact.set("introduction", getPara("introduction"));
         contact.set("city", getPara("city"));
         contact.set("postal_code", getPara("postal_code"));
+        
+        //新增字段
+        contact.set("register_capital", getPara("register_capital"));
+        contact.set("main_business", getPara("main_business"));
+        contact.set("website", getPara("website"));
+        contact.set("account_information", getPara("account_information"));
+        if(StringUtils.isNotEmpty(getPara("establish_time"))){
+        	contact.set("establish_time", getPara("establish_time"));
+        }
+        
+        contact.set("enterprise_nature", getPara("enterprise_nature"));
+        contact.set("taxpayer_category", getPara("taxpayer_category"));
+        contact.set("sys_and_qua_certification", getPara("sys_and_qua_certification"));
+        contact.set("this_year_salesamount", getPara("this_year_salesamount"));
+        contact.set("last_year_salesamount", getPara("last_year_salesamount"));
+        contact.set("beforelast_year_salesamount", getPara("beforelast_year_salesamount"));
+        contact.set("sales_contact_information", getPara("sales_contact_information"));
+        contact.set("sales_manager_information", getPara("sales_manager_information"));
+        contact.set("operation_contact_information", getPara("operation_contact_information"));
+        contact.set("customer_contact_information", getPara("customer_contact_information"));
+        contact.set("financial_contact_information", getPara("financial_contact_information"));
+        contact.set("response_problem_time", getPara("response_problem_time"));
+        contact.set("solve_problem_time", getPara("solve_problem_time"));
+        contact.set("pay_account_time", getPara("pay_account_time"));
+        contact.set("business_scope", getPara("business_scope"));
     }
 
     public void province() {
@@ -698,5 +733,62 @@ public class ServiceProviderController extends Controller {
     	}
     	rec = Db.find(sql + " limit 10");
     	renderJson(rec);
+    }
+    
+    //打分
+    public void markCustormerList(){
+    	String sp_id=getPara("sp_id");
+    	String office_id= pom.getCurrentOfficeId().toString();
+        String sql="select pm.*,p.abbr,ul.c_name creator FROM party_mark pm "
+					+" LEFT JOIN party p on p.id=pm.sp_id "
+					+" LEFT JOIN user_login ul on ul.id=pm.creator "
+					+" WHERE pm.sp_id = " +sp_id;
+        
+        List<Record> orderList = Db.find(sql);
+        Map map = new HashMap();
+        map.put("data", orderList);
+        renderJson(map);
+    }
+    //保存打分
+    public void markCustormerSave() throws InstantiationException, IllegalAccessException{
+    	String jsonStr=getPara("params");
+    	
+    	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class); 
+        
+       	String  sp_id=(String) dto.get("sp_id");
+       	UserLogin user = LoginUserController.getLoginUser(this);
+       	long userId = LoginUserController.getLoginUserId(this);
+		long office_id = user.getLong("office_id");
+       	 
+        
+       	List<Map<String, String>> item_list = (ArrayList<Map<String, String>>)dto.get("item_list");
+		DbUtils.handleList(item_list, sp_id, PartyMark.class, "sp_id");
+		
+		renderJson("saveStatu","OK");
+    }
+    //删除某项打分
+    public void markCustormerDelete(){
+    	String itemid=getPara("id");
+    	Db.deleteById("party_mark", itemid);
+    	renderJson("deleteStatu","OK");
+    }
+    
+    @Before(Tx.class)
+    public void approvalOrder(){
+    	String action = getPara("action");
+    	String id = getPara("id");
+    	
+    	Party party = Party.dao.findById(id);
+    	if("submit".equals(action)){
+    		party.set("status", "待审核");
+    	}else if("approval".equals(action)){
+    		party.set("status", "审核通过");
+    	}else{
+    		party.set("status", "审核不通过");
+    	}
+    	party.update();
+    	
+    	renderJson(party);
     }
 }

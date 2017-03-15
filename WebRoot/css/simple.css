@@ -1,0 +1,636 @@
+@font-face { 
+  font-family: dinpro; /*这里是说明调用来的字体名字*/ 
+  src: url('/css/fonts/dinpro.otf'); /*这里是字体文件路径*/ 
+} 
+
+html, body,.container {
+    height: 100%; 
+    background-color: #fff;
+    font-family: dinpro, "Microsoft YaHei", Arial,sans-serif;
+    font-size: 12px;
+}
+
+body ::-webkit-scrollbar {
+    height: 12px;
+    width: 12px;
+    background: #f7f7f7;
+}
+
+body ::-webkit-scrollbar-thumb {
+    background: #005BAC;
+    -webkit-border-radius: 1ex;
+}
+
+body ::-webkit-scrollbar-corner {
+    background: #000;
+}
+
+.login_back_half_up{
+    height: 40%;
+    background-color: #fff;
+}
+
+.login_logo{
+    margin-top: 55px;
+    margin-left: 90px;
+    height: 50px;
+    width: 250px;
+    background: url(/images/simple/logo_50.png) no-repeat;
+    background-color: #fff;
+    display: inline-block;
+    //border: solid 1px red;
+}
+
+.login_slogan{
+    margin-left: 23%;
+    margin-top: 55px;
+    height: 25px;
+    width: 220px;
+    background: url(/images/simple/slogan_13px.png) no-repeat;
+    background-color: #fff;
+    display: inline-block;
+    //border: solid 1px red;
+}
+.login_langs{
+    margin-top: 75px;
+    display: inline-block;
+    float: right;
+    height: 13px;
+    padding-right: 90px;
+}
+.login_langs{
+    margin-top: 75px;
+    display: inline-block;
+    float: right;
+    height: 13px;
+    padding-right: 90px;
+}
+
+.simple_btn{
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 2px 15px;
+    border-radius: 15px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.simple_btn.active{
+    background-color: #DAE000;
+}
+
+.login_back_half_down{
+    height: 60%;
+    background-color: #DAE000;
+    background-image: url(/images/simple/login_background_lines-h50.png) ;
+    background-repeat: no-repeat;
+    background-position: 80% 10%;
+}
+.login_half_down_icons{
+    padding-top: 50px;
+    margin-left: 90px;
+    z-index: 2;
+}
+
+.login_half_down_icons .icon{
+    float: left;
+}
+
+.login_half_down_icons .icon>p{
+    margin-top: 10px;
+}
+
+.login_half_down_icons img{
+    height: 50px;
+    padding-right: 50px;
+}
+
+.login_back_footer{
+    position:relative;
+    height: 35px;
+    margin-top: -35px;
+    background-color: #005BAC;
+    text-align:center;
+    padding: 10px;
+    color: white;
+}
+
+.login_form{
+    width: 280px;
+    height: 280px;
+    background-color: #fff;
+    box-shadow: 0px 0px 20px 3px #898989;
+    border-radius: 15px;
+    margin-right: 90px;
+    float: right;
+    margin-top: -140px;
+    z-index: 200;
+}
+
+.login_form_eng_title{
+    margin-top: 40px;
+    margin-left: 15px;
+    color: #005BAC;
+    font-size: 15px;
+}
+
+.login_form_cn_title{
+    margin-top: 7px;
+    margin-left: 15px;
+    color: #005BAC;
+    font-size: 15px;
+}
+.login_form form{
+    margin-top: 30px;
+    clear: both;
+}
+
+.login_form form .form-group{
+    margin: 0 15px 10px 15px;
+}
+
+.login_form form .form-control{
+    border-radius: 0px;
+    height: 25px;
+    font-size: 10px;
+    padding: 6px 8px;
+}
+
+.form-control{
+    border-radius: 0px;
+    height: 25px;
+    font-size: 10px;
+    padding: 6px 8px;
+}
+
+.login_form form #username{
+    background: url(/images/simple/header_icon.png) no-repeat right 8px center;
+}
+
+.login_form form #password{
+    background: url(/images/simple/pwd_icon.png) no-repeat right 8px center;
+}
+
+
+.login_form .btn{
+    background-color: #DAE000;
+    border-radius: 0px;
+    height: 25px;
+    width: 100%;
+    color: #005BAC;
+    padding: 0 0;
+}
+
+
+
+.SNSSignIn{
+    padding-top: 15px;
+    color: #005BAC;
+}
+
+.sns-buttons {
+    display: inline;
+    padding-left: 15px;
+}
+
+.sns-buttons a {
+    padding-right: 0px; 
+    padding-right: 15px;
+}
+/* end of login page */
+
+/*   after login,  commond page  */
+.navbar {
+    min-height: 80px;
+    background-color: #DAE000;
+}
+
+.navbar-brand{
+    margin-top: 14px;
+    margin-left: 25px;
+    height: 55px;
+    width: 250px;
+    background: url(/images/simple/banner_logo.png) no-repeat;
+    display: inline-block;
+}
+
+.banner_slogan{
+    margin-top: 40px;
+    margin-left: 67px;
+    height: 15px;
+    width: 220px;
+    background: url(/images/simple/slogan_13px.png) no-repeat;
+    display: inline-block;
+}
+
+.navbar-right{
+    margin-right: 0px;
+}
+
+.person_image{
+    float: left;
+    margin-top: 20px;
+    margin-right: 45px;
+}
+
+.log_out{
+    margin-right: 25px;
+    margin-top: 32px;
+    display: inline-block;
+}
+.navbar-static-top {
+    border-width: 0 0 0px;
+}
+
+#wrapper{
+    background-color: #f7f7f7;
+}
+
+.breadcrumb{
+    padding-left: 25px;
+    padding-top: 13px;
+    margin-left: 250px;
+    margin-bottom: 0px; 
+    background-color: #005BAC;
+    height: 40px;
+    border-radius: 0px 0px 13px 13px;
+    color: white;
+    font-weight: bolder;
+    font-size: 14px;
+}
+.breadcrumb a{
+    color: white;
+    font-family: dinpro, Arial,sans-serif;
+    font-weight: bolder;
+
+}
+
+/*  page list */
+#page-wrapper{
+    padding: 15px 25px;
+    background-color: #f7f7f7;
+}
+
+.form-control {
+    border-radius: 0px; 
+    font-size: 10px;
+    padding: 3px;
+}
+
+select.form-control{
+    border: 0px;
+    outline: 1px solid rgb(204,204,204);
+
+}
+
+/*  search page query div */
+.row.simple_search_div{
+    margin: 0 0;
+}
+
+.simple_search_div{
+    background-color: #fff;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 10px;
+    
+}
+
+
+.simple_list_div{
+    background-color: #fff;
+    margin-top: 15px;
+    margin-left: 0px;
+    margin-right: 0px;
+    border-radius: 0 0 15px 15px;
+}
+
+.simple_list_div .dataTables_scrollHead {
+    background-color: #f7f7f7;
+}
+
+.btn{
+    padding: 2px 40px;
+    font-size: 8px;
+    border-radius: 15px;
+    font-family: dinpro, "Microsoft YaHei", Arial,sans-serif;
+    font-weight: bolder;
+    color: #005BAC;
+    background-color: #fff;
+}
+
+.table_btn{
+    padding: 1px 5px;
+}
+
+.delete_btn{
+	font-size : 9px;
+	color : #5d5d5d;
+	border:1px solid #5d5d5d;
+}
+
+.btn_grey{
+    background-color: #c0c0c0;
+}
+
+.btn_white{
+   border-color: #005BAC;
+}
+
+.btn_green{
+    background-color: #DAE000;
+}
+.btn_blue{
+    background-color: #005BAC;
+    color: #ffffff; 
+}
+
+.btn_red{
+    background-color: #C30D23;
+    color: #ffffff; 
+    align:center;
+}
+
+/*  page search result list */
+
+thead.eeda{
+    color: white;
+    background-color: #005bac;
+}
+
+.table-bordered>thead>tr>th{
+    border: 0px;
+}
+
+.table>thead:first-child>tr:first-child>th:first-child{
+    border-radius: 15px 0 0 0;
+}
+
+.table>thead:first-child>tr:first-child>th:last-child{
+    border-radius: 0 15px 0 0;
+}
+
+.table-bordered {
+    border: 0px;
+    border-bottom: 1px solid #ddd;
+    background-color: #f7f7f7;
+}
+
+.table-bordered>tbody>tr>td{
+    border: 0px;
+    border-top: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+.table>thead>tr>th{
+    line-height:  0.8;
+}
+
+div.dataTables_wrapper div.dataTables_paginate{
+    text-align: left;
+}
+
+.pagination>li:first-child>a, .pagination>li:last-child>a{
+    margin-top: 3px;
+    padding: 6px 9px;
+    border-radius: 15px;
+    line-height:  1;
+    background-color: #005bac;
+    color: white;
+}
+
+.pagination>li>a{
+    margin-top: 3px;
+    margin-right: 10px;
+    padding: 3px 6px;
+    color: #005bac;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+.pagination>.active>a{
+    padding: 3px 6px;
+    color: #005bac;
+    background-color: #fff;
+    border-color: #fff;
+    border-bottom: 2px solid #005bac;
+}
+
+.nav-tabs>li>a {
+    border-radius: 15px 15px 0 0;
+    padding: 2px 40px;
+}
+.dataTables_scrollHead {
+    margin-top: -5px;
+}
+.pagination>.disabled>a, .pagination>.disabled>a:focus,
+.pagination>.disabled>a:hover, .pagination>.disabled>span, 
+.pagination>.disabled>span:focus, .pagination>.disabled>span:hover{
+    background-color: #f7f7f7;
+    border: 0px
+}
+
+/*  page edit start..... */
+.table .form-control{
+    //width: 100%;
+}
+
+.simple_order_list_div .table_btn_bar {
+    height: 40px;
+    padding-top: 8px;
+    padding-left: 5px;
+    border-bottom: solid 0.5px #e7e7e7;
+}
+
+.simple_order_list_div .table_btn_bar .btn {
+    color: white;
+    background-color: #005bac;
+}
+
+.simple_order_list_div{
+    background-color: #fff;
+    margin-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 0 0 15px 15px;
+}
+
+.simple_order_list_div ul.nav{
+    background-color: #f7f7f7;
+}
+
+.simple_order_list_div .dataTables_scroll {
+    padding: 0px 15px; 
+}
+
+.simple_order_list_div thead.eeda {
+    color: #000; 
+    background-color: #fff; 
+}
+
+.simple_order_list_div .table>thead:first-child>tr:first-child>th:first-child{
+    border-radius: 0 0 0 0;
+}
+
+.simple_order_list_div .table>thead:first-child>tr:first-child>th:last-child{
+    border-radius: 0 0 0 0;
+}
+
+.simple_order_list_div .table-bordered {
+    border: 0px;
+    background-color: #fff;
+    font-size: 10px;
+}
+
+.simple_order_list_div .table-bordered>tbody>tr>td{
+    border: 0;
+    padding: 4px 2px;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #fff;
+}
+
+.simple_order_list_div table.dataTable thead > tr > th.sorting_asc, 
+.simple_order_list_div table.dataTable thead > tr > th.sorting_desc, 
+.simple_order_list_div table.dataTable thead > tr > th.sorting, 
+.simple_order_list_div table.dataTable thead > tr > td.sorting_asc, 
+.simple_order_list_div table.dataTable thead > tr > td.sorting_desc, 
+.simple_order_list_div table.dataTable thead > tr > td.sorting {
+    padding-right: 20px;
+}
+
+.simple_order_list_div table.dataTable .form-control {
+    height: 25px;
+    margin-top: 5px;
+}
+
+.simple_order_list_div .button-bar {
+    padding-top: 5px;
+    padding-left: 15px;
+}
+
+.simple_order_list_div h3 {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+h4.panel-title  {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.simple_order_list_div table td{
+    font-size: 10px;
+}
+
+.simple_order_list_div .col-lg-12{
+    background-color: #fff;
+}
+
+.head_style{
+	background-color: #005bac;
+	color:#fff; 
+	height:28px;
+	margin-top:0px;
+	border-top-left-radius:1em;
+	border-top-right-radius:1em;
+}
+
+.head_style .font_style{
+	margin-top: 7px;
+	margin-left: 20px;
+	font-size:13px
+}
+
+.interval{
+	width:20%;
+	float:left;
+}
+
+.interval .li{
+	margin:0px 5px 10px 5px;
+	border-radius:1em;
+}
+
+.panel-gray{
+	background-color: #dddddd;
+	color:#127ccb;
+}
+
+
+.panel-blue{
+	background-color: #127ccb;
+	color:#fff;
+}
+
+.simple_title_div{
+    background-color: #fff;
+    padding-top: 15px;
+    border-bottom-left-radius:1em;
+	border-bottom-right-radius:1em;
+	margin-bottom:15px;
+	
+}
+
+
+.simple_rectangle_title_div{
+    background-color: #005bac;
+    height:30px;
+	margin-bottom:10px;
+	
+}
+
+.simple_small_title_div{
+    background-color: #ffffff;
+    padding-top: 15px;
+    border-top-right-radius:1em;
+    border-bottom-left-radius:1em;
+	border-bottom-right-radius:1em;
+	margin-bottom:10px;
+}
+
+
+.simple_rectangle_title_div .font_style{
+	color:#ffffff;
+	margin-top: 7px;
+	margin-left: 20px;
+	font-size:13px;
+}
+
+.small_head{
+	background-color: #ffffff;
+	height:28px;
+	width:135px;
+	border-top-left-radius:1em;
+	border-top-right-radius:1em;
+}
+
+.small_head .font_style{
+	margin-top: 7px;
+	margin-left: 15px;
+	font-size:13px;
+	color:#005BAC;
+}
+
+
+.simple_row_div{
+    background-color: #fff;
+    padding-top: 0px;
+    padding-bottom: 8px;
+    border-radius: 10px;
+    margin:10px 0px;
+}
+
+div.dataTables_wrapper div.dataTables_info {
+    padding-left: 10px;
+}

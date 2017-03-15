@@ -1,0 +1,1 @@
+package models;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class SpPickingCrane extends Model<SpPickingCrane> {	public static final SpPickingCrane dao = new SpPickingCrane();}

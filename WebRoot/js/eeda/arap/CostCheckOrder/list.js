@@ -3,7 +3,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	document.title = '应付对账单查询  | '+document.title;
   	  $('#menu_cost').addClass('active').find('ul').removeClass('in');
   	  
-  	  
+  	  $("#breadcrumb_li").text('应付对账单');
 	  	var cnames = [];
 		var itemIds=[];
 	    var totalAmount = 0.0;
@@ -53,9 +53,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
-		            		return '<span style="color:red;">'+'-'+data+'</span>';
+		            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 		            	}
-	                    return data;
+	                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	                  }
 	            },
 	            { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
@@ -63,9 +63,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'AFTER_TOTAL',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
-		            		return '<span style="color:red;">'+'-'+data+'</span>';
+		            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 		            	}
-	                    return data;
+	                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	                  }
 	            },	            
 	            { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px",'class':'EXCHANGE_CURRENCY_NAME'},
@@ -73,9 +73,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px" ,'class':'EXCHANGE_TOTAL_AMOUNT',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
-	            			return '<span style="color:red;">'+'-'+data+'</span>';
+	            			return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 	            		}
-	            		return data;
+	            		return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	            	}
 	            },	            
 	            { "data": "FND", "width": "60px",
@@ -198,6 +198,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				var currency_name = $(this).parent().siblings('.CURRENCY_NAME')[0].textContent;
 				var  exchange_total_amount = $(this).parent().siblings('.EXCHANGE_TOTAL_AMOUNT')[0].textContent;
 				var exchange_currency_name = $(this).parent().siblings('.EXCHANGE_CURRENCY_NAME')[0].textContent;
+				after_total=after_total.replace(",","");
+				total_amount=total_amount.replace(",","");
+				exchange_total_amount=exchange_total_amount.replace(",","");
 				if($(this).prop('checked')==true){	
 					if(cnames.length > 0 ){
 						if(cnames[0]==cname){
@@ -388,6 +391,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		 	    		var currency_name = $(this).parent().siblings('.CURRENCY_NAME')[0].textContent;
 		 	    		var  exchange_total_amount = $(this).parent().siblings('.EXCHANGE_TOTAL_AMOUNT')[0].textContent;
 						var exchange_currency_name = $(this).parent().siblings('.EXCHANGE_CURRENCY_NAME')[0].textContent;
+		 	    		total_amount=total_amount.replace(",","");
+						exchange_total_amount=exchange_total_amount.replace(",","");
 		 	    		if(total_amount!=''&&!isNaN(total_amount)){
 							if(currency_name=='CNY'){
 								cny_totalAmount += parseFloat(total_amount);
@@ -426,6 +431,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	 	    		var currency_name = $(this).parent().siblings('.CURRENCY_NAME')[0].textContent;
 	 	    		var  exchange_total_amount = $(this).parent().siblings('.EXCHANGE_TOTAL_AMOUNT')[0].textContent;
 					var exchange_currency_name = $(this).parent().siblings('.EXCHANGE_CURRENCY_NAME')[0].textContent;
+	 	    		total_amount=total_amount.replace(",","");
+					exchange_total_amount=exchange_total_amount.replace(",","");
 	 	    		if(total_amount!=''&&!isNaN(total_amount)){
 						if(currency_name=='CNY'){
 							cny_totalAmount -= parseFloat(total_amount);

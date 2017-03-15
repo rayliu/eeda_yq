@@ -151,7 +151,7 @@ $(document).ready(function() {
 	
 	
 	//生成海运HBL PDF
-    $('#printOceanHBL').click(function(){
+    $('#printOceanHBL,#prinTelextOceanHBL').click(function(){
     	//数据不足提示
     	var alert = '';
     
@@ -210,7 +210,8 @@ $(document).ready(function() {
 		}else{
 	    	var order_id = $("#order_id").val();
 	    	var hbl_no = $("#hbl_no").val();
-	    	$.post('/jobOrderReport/printOceanHBL', {order_id:order_id,hbl_no:hbl_no}, function(data){
+	    	var printHBL = $(this).attr('id');
+	    	$.post('/jobOrderReport/printOceanHBL', {order_id:order_id,hbl_no:hbl_no,printHBL:printHBL}, function(data){
 	    		if(data){
 	                window.open(data);
 	             }else{
@@ -334,7 +335,9 @@ $(document).ready(function() {
 			var arrStr = $('#ocean_HBLshipper_info').val();
 			var arry = arrStr.split("\n");
 			if(arry.length>=2){
-				$('#head_attn').val(arry[1]);
+				if($('#head_attn').val()==""||$('#head_attn').val()==undefined){
+					$('#head_attn').val(arry[1]);
+				}
 			}
 			if(arry.length>=3){
 				var arr = arry[2].split(" ");
@@ -345,7 +348,9 @@ $(document).ready(function() {
 			if(arr!=undefined&&arr.length>=2){
 				$('#head_fax').val(arr[1].replace("FAX:",""));
 			}
-			$('#head_endPlace').val($('#ocean_HBLshipper_input').val());
+			if($('#head_endPlace').val()==""||$('#head_endPlace').val()==undefined){
+    			$('#head_endPlace').val($('#ocean_HBLshipper_input').val());
+			}
 			$('#head_startPlace').val(loginUserName);
 			$('#head_date').val(eeda.getDate());
 			

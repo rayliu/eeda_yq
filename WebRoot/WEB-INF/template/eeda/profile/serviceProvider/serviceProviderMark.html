@@ -1,0 +1,49 @@
+
+
+<a id='mark_table_msg_btn' data-target='#charge_table_msg' data-toggle='modal' style='display:none'></a>
+<div class="modal fade" id="charge_table_msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-thead head_style"><label class="font_style">供应商评分</label></div>
+            <div class="modal-body">
+                  <div class="row">
+                        <div class="col-lg-6">
+                              <%include("/eeda/component/form/inputSpField.html", {
+                               id:'markCustomer',
+                              label:'被评供应商名称', 
+                              value:order.markCustomer!'',
+                              required: 'required'
+                              }){}%>
+                        </div>
+                       <div class="col-lg-3">
+                            <button id="searchBtn" class="btn btn_green" type="button">查询</button>
+                       </div>
+                   </div>
+                     <div class="form-group button-bar" >
+                        <button id="add_mark" class="btn btn_grey" type="button">添加</button>
+                    </div>
+                     <div class="col-lg-3">
+                           <span class="badge" style="margin-bottom:3px;"> 总分（初始分80）: <span id="total_mark">80</span></span>
+                     </div>
+                  <%include("/eeda/component/form/detailTable.html", 
+                  {
+                      id:'mark_table',
+                      style:'width:1300px',
+                      headers:['','项目','分数值(数值只能输入数字)','说明','考评人','考评时间'],
+                      field_list:['','item','score','remark','c_name','mark_date'], 
+                      value_list: order.mark_item_list![] 
+                  }){} %>
+            
+            </div>
+           <div class="modal-footer">
+               <button id="save_mark" type="button" class="btn btn_green save" data-dismiss="modal">保存</button>
+               <button type="button" class="btn  btn_white" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function () {
+        requirejs(['app/profile/serviceProvider/mark']);
+    });
+</script>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="842" pageHeight="595" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="349"/>
 	<property name="ireport.y" value="0"/>
 	<style name="bottomLine" forecolor="#000000" fill="Solid">
 		<pen lineStyle="Dashed"/>
@@ -493,7 +493,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<reportElement style="bottomLine" stretchType="RelativeToBandHeight" x="2" y="1" width="800" height="14" uuid="f5ee74a4-0050-466b-a169-c8b05a19a718"/>
 				<text><![CDATA[]]></text>
 			</staticText>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="723" y="1" width="65" height="12" uuid="7b112b43-1d8a-4381-8ae2-472084530cd6"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
@@ -556,7 +556,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<reportElement x="536" y="0" width="59" height="20" uuid="fe64103a-065a-4549-95d3-b03d0d465b88"/>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
-			<textField pattern="###0.00">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="723" y="0" width="65" height="20" uuid="c0529e36-c715-41da-a128-5a3907a395d7"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$V{SUM_ins}]]></textFieldExpression>

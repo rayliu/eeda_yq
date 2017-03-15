@@ -1,6 +1,7 @@
 define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
     
 var itemIds=[];
+var checkIds=[];
         var itemTable = eeda.dt({
             id: 'select_item_table',
             initComplete: function( settings ) {
@@ -12,16 +13,20 @@ var itemIds=[];
                 { "data": "ID", visible: false},
                 { "data": null,
                     "render": function ( data, type, full, meta ) {
-                        str = '<input id="checkbox_'+full.ID+'" type="checkbox" style="width:30px" checked>';
+                    	var checkedVal = "";
+                    	if($.inArray(full.ID.toString(),itemOrder.checkIds)!='-1'){
+                    		checkedVal = "checked"
+                    	}
+                        str = '<input id="checkbox_'+full.ID+'" type="checkbox" '+checkedVal+' style="width:30px">';
                         return str;
                     }
                 },
                 { "data": "CHECK_ORDER_NO"},
                 {"width":"30px",
                     "render": function ( data, type, full, meta ) {
-                          var str = '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" >删除</button>';
+                          var str = '<button type="button" class="delete btn table_btn  delete_btn btn-xs" style="width:50px" >删除</button>';
                           if($("#status").val()=='已复核'|| $("#status").val()=='已付款'){
-                              return '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" disabled>删除</button>';
+                              return '<button type="button" class="delete btn table_btn  delete_btn btn-xs" style="width:50px" disabled>删除</button>';
                           }
                           return str;
                       }
@@ -205,6 +210,21 @@ var itemIds=[];
                 { "data": "TRUCK_TYPE", "width": "100px"},
               ]
           });
+        
+        
+        var hideColumn = function(){         	
+         	//隐藏对账单号和checkBox列
+            if($('#order_id').val()!=""&&$('#order_id').val()!=undefined){
+            	var itemTable = $('#select_item_table').dataTable();
+            	itemTable.fnSetColumnVis(1, false);
+            	itemTable.fnSetColumnVis(2, false);
+            }else{
+            	//隐藏删除列
+            	var itemTable = $('#select_item_table').dataTable();
+             	itemTable.fnSetColumnVis(3, false);
+            }
+    	}
+        
 
         var refleshSelectTable = function(order_ids, ids){
             //ids为选中的item id
@@ -289,9 +309,11 @@ var itemIds=[];
         var searchData2=function(){
             var ids=$('#ids').val();
             var query_exchange_currency=$('#query_currency').val();
+            var fin_name=$('#query_fin').val();
             var url = "/costCheckOrder/tableList?order_ids="+ids+"&order_id=N"
                             +"&table_type=item"
-                            +"&query_exchange_currency="+query_exchange_currency;
+                            +"&query_exchange_currency="+query_exchange_currency
+                            +"&query_fin_name="+fin_name;
            itemTable.ajax.url(url).load(function(){
               var a=[];
               $('#select_item_table input[type=checkbox]:checked').each(function(){
@@ -443,6 +465,7 @@ var itemIds=[];
             }
              calcTotal();
              $('#selected_ids').val(selected_ids);
+             
         });
         $("#select_item_table").on('click','input[type=checkbox]',function(){
               $("#coR_allcheck").prop("checked",$("#select_item_table input[type=checkbox]").length-1 == $("#select_item_table input[type=checkbox]:checked").length ? true : false);
@@ -473,10 +496,49 @@ var itemIds=[];
 
       });
         
+      //清空条件
+       $("#clear_fin").click(function(){
+            $('#query_fin').val('');
+            $('#query_fin_input').val('');
+       });
+        $("#clear_query").click(function(){
+            $('#query_currency').val('');
+            $('#query_fin').val('');
+            $('#query_fin_input').val('');
+       });
+
     var refleshCreateTable = function(appApplication_id){
         var url = "/costCheckOrder/tableList?appApplication_id="+appApplication_id+"&order_id=N&bill_flag=create";
         itemTable.ajax.url(url).load();
         };
+        
+    
+   
+    $('#select_item_table').on('click','[type=checkbox]',function(){
+    	var checked = $(this).prop('checked');
+    	var item_id = $(this).parent().parent().attr('id');
+    	if(checked){
+    		checkIds.push(item_id)
+    	}else{
+    		var index = $.inArray(item_id,checkIds);
+    		checkIds.splice(index,1);
+    	}
+    	itemOrder.checkIds = checkIds;
+    });
+    
+    $('#coR_allcheck').on('click',function(){
+    	var checked = $(this).prop('checked');
+    	var table = $('#select_item_table').DataTable();
+    	if(checked){
+    		table.data().each(function(item, index) {
+    			checkIds.push(item.ID);
+            });
+    	}else{
+    		checkIds=[];
+    	}
+    	itemOrder.checkIds = checkIds;
+    });
+        		
 
     return {
         refleshSelectTable: refleshSelectTable,

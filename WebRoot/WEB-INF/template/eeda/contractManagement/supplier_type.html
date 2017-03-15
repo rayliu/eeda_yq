@@ -1,0 +1,113 @@
+ 
+          
+          
+                      
+			<div class="row">
+			   <div class="col-lg-12"> 
+				<ul id="custom_type_Tabs" class="nav nav-tabs">
+                    <li>
+                        <a id='sp_ocean_shipment' href="#oceanCargo" data-toggle="tab" style="display: none;" >远洋柜货</a>
+                    </li>
+                    <li>
+                        <a id='sp_internal_trade' href="#internalTrade" data-toggle="tab" style="display: none;" >内贸</a>
+                    </li>
+                    <li>
+                        <a id='sp_ocean_bulkCargo' href="#bulkCargoDetail" data-toggle="tab" style="display: none;">海运散货</a>
+                    </li>
+                    <li>
+                        <a id='sp_land_transport' href="#land_transportDetail" data-toggle="tab" style="display: none;" >陆路运输</a>
+                    </li>
+                    <li>
+                        <a id='sp_storage' href="#storageDetail" data-toggle="tab" style="display: none;">仓储</a>
+                    </li>
+                    <li>
+                        <a id='sp_air_transport' href="#air_transportDetail" data-toggle="tab"  style="display: none;">空运</a>
+                    </li>
+                    <li>
+                        <a id='sp_delivery_express' href="#delivery_expressDetail" data-toggle="tab" style="display: none;" >快递</a>
+                    </li>
+                    <li>
+                        <a id='sp_custom' href="#sp_customDetail" data-toggle="tab" style="display: none;">报关</a>
+                    </li>
+                    <li>
+                        <a id='sp_pickup_van' href="#pickup_vanDetail" data-toggle="tab" style="display: none;">包装吊车</a>
+                    </li>
+                    <li>
+                        <a id='sp_cargo_insurance' href="#cargo_insuranceDetail" data-toggle="tab" style="display: none;">货运保险</a>
+                    </li>
+				</ul>
+				</div>
+				<div class="tab-content">
+                    <div class="tab-pane fade" id="oceanCargo">
+                        <div class="form-group"> 
+                          <div class="col-lg-12"> 
+						        <%include("/eeda/contractManagement/ocean_cargo.html", {}){} %>
+						   </div>
+						  </div>
+	                </div>
+                    
+                    <div class="tab-pane fade" id="internalTrade">
+                        <div class="form-group"> 
+                          <div class="col-lg-12"> 
+                                <%include("/eeda/contractManagement/internal_trade.html", {}){} %>
+                           </div>
+                          </div>
+                    </div>
+                    <div class="tab-pane fade" id="bulkCargoDetail">
+                        <div class="form-group"> 
+                           <div class="col-lg-12"> 
+                                <%include("/eeda/contractManagement/ocean_bulk_cargo.html", {}){} %>
+                           </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="land_transportDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                            <%include("/eeda/contractManagement/land_transport.html", {}){} %>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="storageDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                            <%include("/eeda/contractManagement/storage.html", {}){} %>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="air_transportDetail">
+                        <div class="form-group"> 
+                          <div class="col-lg-12"> 
+                                <%include("/eeda/contractManagement/air_transport.html", {}){} %>
+                           </div>
+                          </div>
+                    </div>
+                     <div class="tab-pane fade" id="delivery_expressDetail">
+                        <div class="form-group"> 
+                          <div class="col-lg-12"> 
+                                <%include("/eeda/contractManagement/delivery_express.html", {}){} %>
+                           </div>
+                          </div>
+                    </div>
+                    <div class="tab-pane fade" id="sp_customDetail">
+                        <div class="form-group"> 
+                          <div class="col-lg-12"> 
+                                <%include("/eeda/contractManagement/custom.html", {}){} %>
+                           </div>
+                          </div>
+                    </div>
+                    <div class="tab-pane fade" id="pickup_vanDetail">
+                        <div class="form-group"> 
+                          <div class="col-lg-12"> 
+                                <%include("/eeda/contractManagement/pickup_van.html", {}){} %>
+                           </div>
+                          </div>
+                    </div>
+                    <div class="tab-pane fade" id="cargo_insuranceDetail">
+                        <div class="form-group"> 
+                          <div class="col-lg-12"> 
+                                <%include("/eeda/contractManagement/cargo_insurance.html", {}){} %>
+                           </div>
+                          </div>
+                    </div>
+                </div>
+			</div>

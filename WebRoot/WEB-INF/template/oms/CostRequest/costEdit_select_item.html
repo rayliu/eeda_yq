@@ -3,8 +3,6 @@
      value="${selected_item_ids!''}">
     
     <div class="group-form" >
-      
-
         <div class="row search_panel" style="margin: 15px 15px;">
                 <div class="row">
                    <div class="col-lg-4">
@@ -21,15 +19,30 @@
                                              ]
                                        }){}%>
                    </div>
-                   <button id='query_listCurrency' class="btn btn-primary btn-sm"  type="button">查询</button>
+                   <button id='query_listCurrency' class="btn btn_grey"  type="button">查询</button>
                 </div>
-        </div>
-        <div class="row">
-             <br/>
-            <div class="col-lg-12">
-             <button class="btn btn-success btn-sm" id="add_cost" type="button">添加明细</button> 
+                <div class="row">
+                <div class="col-lg-4 ">
+                        <%include("/eeda/component/form/inputFinItem.html", 
+                                       {  id:'query_fin',
+                                          label:'费用名称', 
+                                          value:'',
+                                          display_value:''
+                                       }){}%>
+                    </div>
+                  <button type="button" id="clear_fin" class="btn btn_white">清空费用</button>
+                  <button type="button" id="clear_query" class="btn btn_white">清空条件</button>
             </div>
         </div>
+        
+            
+            <div class="col-lg-12 hide_add_cost">
+             <br/>
+               
+                  <button class="btn_green btn" id="add_cost" type="button">添加明细</button> 
+               
+            </div>
+       
        <%include("/eeda/component/form/detailTable.html", 
            {
                id:'select_item_table',
@@ -81,4 +94,4 @@
            }){} %>
       
     </div>
-        
+      

@@ -1,12 +1,15 @@
+
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN'], function ($, metisMenu) {
 $(document).ready(function() {
-	document.title = '复核付款| '+document.title;
-    $('#menu_finance').addClass('active').find('ul').addClass('in');
+	document.title = '应付申请单| '+document.title;
+	$("#breadcrumb_li").text('应付申请单');
                 
     var application_table = eeda.dt({
     	id: 'application_table',
     	autoWidth: false,
-        paging: true,
+        // paging: true,
+        scrollY: 530,
+        scrollCollapse: true,
         serverSide: true, 
     	ajax: "/costRequest/applicationList?status=新建",
 		  columns: [
@@ -20,14 +23,14 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     var str="<nobr>";
                     if(full.STATUS=="新建"){
-                        str+= '<button type="button" class="checkBtn btn btn-success btn-xs" style="width:60px" >复核</button>&nbsp';
-                            str+= '<button type="button" disabled class="confirmBtn btn btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
+                        str+= '<button type="button" class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
+                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
                     }else if(full.STATUS=="已复核"){
-                             str+= '<button type="button" disabled class="checkBtn btn btn-success btn-xs" style="width:60px" >复核</button>&nbsp';
-                             str+= '<button type="button" class="confirmBtn btn btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
+                             str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
+                             str+= '<button type="button" class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
                          }else if(full.STATUS=="已付款"){
-                            str+= '<button type="button" disabled class="checkBtn btn btn-success btn-xs" style="width:60px" >复核</button>&nbsp';
-                            str+= '<button type="button" disabled class="confirmBtn btn btn-success btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
+                            str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
+                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
                                 }
                     str +="</nobr>";
                     return str;
@@ -71,6 +74,10 @@ $(document).ready(function() {
         			strFeeType="国际货代服务费";
         		}else if(data=="transAndInsurance"){
         			strFeeType="货物运输保险费";
+        		}else if(data=="domesticPaymentFee"){
+        			strFeeType="国内货款";
+        		}else if(data=="otherFee"){
+        			strFeeType="其他";
         		}
         			
         		return strFeeType;
@@ -162,10 +169,10 @@ $(document).ready(function() {
         var hkd_totalAmount = 0.0;
         var jpy_totalAmount = 0.0;
     	$("#application_table tbody tr").each(function(){
-			 	    		var currency_cny = $(this).find('.cny').text();
-			 	    		var currency_usd = $(this).find('.usd').text();
-			 	    		var currency_jpy = $(this).find('.jpy').text();
-			 	    		var currency_hkd = $(this).find('.hkd').text();
+			 	    		var currency_cny = $(this).find('.cny').text().replace(',','');
+			 	    		var currency_usd = $(this).find('.usd').text().replace(',','');
+			 	    		var currency_jpy = $(this).find('.jpy').text().replace(',','');
+			 	    		var currency_hkd = $(this).find('.hkd').text().replace(',','');
 								if(currency_cny==''){
 									currency_cny=0.00;
 								}
@@ -184,10 +191,10 @@ $(document).ready(function() {
 								}
 							     hkd_totalAmount += parseFloat(currency_hkd);
     					});
-    	 $('#cny_totalAmountSpan').html(cny_totalAmount.toFixed(2));
-		 $('#usd_totalAmountSpan').html(usd_totalAmount.toFixed(2));
-		 $('#hkd_totalAmountSpan').html(hkd_totalAmount.toFixed(2));
-		 $('#jpy_totalAmountSpan').html(jpy_totalAmount.toFixed(2));
+    	 $('#cny_totalAmountSpan').html(eeda.numFormat(cny_totalAmount.toFixed(2),3));
+		 $('#usd_totalAmountSpan').html(eeda.numFormat(usd_totalAmount.toFixed(2),3));
+		 $('#hkd_totalAmountSpan').html(eeda.numFormat(hkd_totalAmount.toFixed(2),3));
+		 $('#jpy_totalAmountSpan').html(eeda.numFormat(jpy_totalAmount.toFixed(2),3));
     	}
       
   //返回标记
@@ -323,13 +330,13 @@ $(document).ready(function() {
     	
     //金额汇总
     var totalMoney = function(checkBox){
-		var cny_totalAmount = $('#cny_totalAmountSpan').text();
+		var cny_totalAmount = $('#cny_totalAmountSpan').text().replace(',','');
 		cny_totalAmount =parseFloat(cny_totalAmount);
-        var usd_totalAmount = $('#usd_totalAmountSpan').text();
+        var usd_totalAmount = $('#usd_totalAmountSpan').text().replace(',','');
         usd_totalAmount =parseFloat(usd_totalAmount);
-        var hkd_totalAmount = $('#hkd_totalAmountSpan').text();
+        var hkd_totalAmount = $('#hkd_totalAmountSpan').text().replace(',','');
         hkd_totalAmount =parseFloat(hkd_totalAmount);
-        var jpy_totalAmount = $('#jpy_totalAmountSpan').text();
+        var jpy_totalAmount = $('#jpy_totalAmountSpan').text().replace(',','');
         jpy_totalAmount =parseFloat(jpy_totalAmount);
         var currency_cny=0.00;
         var currency_usd=0.00;
@@ -337,13 +344,11 @@ $(document).ready(function() {
         var currency_hkd=0.00;
         
 		if($(checkBox).prop('checked')==true){
-			    currency_cny = $(checkBox).parent().parent().find('.cny').text();
-	    		currency_usd = $(checkBox).parent().parent().find('.usd').text();
-	    		currency_jpy = $(checkBox).parent().parent().find('.jpy').text();
-	    	    currency_hkd = $(checkBox).parent().parent().find('.hkd').text();
-				if(currency_cny==''){
-					currency_cny=0.00;
-				}
+			    currency_cny = $(checkBox).parent().parent().find('.cny').text().replace(',','');
+	    		currency_usd = $(checkBox).parent().parent().find('.usd').text().replace(',','');
+	    		currency_jpy = $(checkBox).parent().parent().find('.jpy').text().replace(',','');
+	    	    currency_hkd = $(checkBox).parent().parent().find('.hkd').text().replace(',','');
+				if(currency_cny==''){currency_cny=0.00; }
 				cny_totalAmount += parseFloat(currency_cny);
 				
 			    if(currency_usd==''){
@@ -359,10 +364,10 @@ $(document).ready(function() {
 				}
 			     hkd_totalAmount += parseFloat(currency_hkd);			     
 			}else{
-				currency_cny = $(checkBox).parent().parent().find('.cny').text();
-	    		currency_usd = $(checkBox).parent().parent().find('.usd').text();
-	    		currency_jpy = $(checkBox).parent().parent().find('.jpy').text();
-	    	    currency_hkd = $(checkBox).parent().parent().find('.hkd').text();
+				currency_cny = $(checkBox).parent().parent().find('.cny').text().replace(',','');
+	    		currency_usd = $(checkBox).parent().parent().find('.usd').text().replace(',','');
+	    		currency_jpy = $(checkBox).parent().parent().find('.jpy').text().replace(',','');
+	    	    currency_hkd = $(checkBox).parent().parent().find('.hkd').text().replace(',','');
 				if(currency_cny==''){
 					currency_cny=0.00;
 				}
@@ -382,16 +387,30 @@ $(document).ready(function() {
 			     hkd_totalAmount -= parseFloat(currency_hkd);
 			}
 		
-		 $('#cny_totalAmountSpan').html(cny_totalAmount.toFixed(2))
-		 $('#usd_totalAmountSpan').html(usd_totalAmount.toFixed(2))
-		 $('#hkd_totalAmountSpan').html(hkd_totalAmount.toFixed(2))
-		 $('#jpy_totalAmountSpan').html(jpy_totalAmount.toFixed(2))
+		 $('#cny_totalAmountSpan').html(eeda.numFormat(cny_totalAmount.toFixed(2),3));
+		 $('#usd_totalAmountSpan').html(eeda.numFormat(usd_totalAmount.toFixed(2),3));
+		 $('#hkd_totalAmountSpan').html(eeda.numFormat(hkd_totalAmount.toFixed(2),3));
+		 $('#jpy_totalAmountSpan').html(eeda.numFormat(jpy_totalAmount.toFixed(2),3));
 	}
     
     
 	
     //勾选进行金额汇总
 	$('#application_table').on('click',"input[name='order_check_box']",function () {
+        $('#checked').attr('disabled',true);
+        $('#confirmed').attr('disabled',true);
+        var rows=$('#application_table tr');
+        for(var i=1;i<rows.length;i++){
+            var checked='';
+            var status='';
+            var checkbox=$(rows[i]).find('[type=checkbox]');
+           if($(checkbox).prop('checked')){
+                status=$(checkbox).parent().next().next().next().html();
+                if(status=='新建') $('#checked').attr('disabled',false);
+                if(status=='已复核') $('#confirmed').attr('disabled',false);
+                i=rows.length;
+           }
+        }
 		totalMoney(this);
 	});
 	$('#application_table').on('click',".checkBtn",function () {
@@ -424,6 +443,7 @@ $(document).ready(function() {
 			$("#application_table .checkBox").each(function(){
 				$(this).prop('checked',false);
 			});
+            $('#allCheck').prop('checked',false);
 			$('#cny_totalAmountSpan').text(0);
 			$('#usd_totalAmountSpan').text(0);
 	        $('#hkd_totalAmountSpan').text(0);
@@ -446,7 +466,7 @@ $(document).ready(function() {
             var order_id=row.attr('id');
             var this_but=$(this);
 
-            $.get("/costRequest/checkOrder", {order_id:order_id,}, function(data){
+            $.get("/costRequest/checkOrder", {order_id:order_id}, function(data){
                 if(data.ID>0){
                     $(this_but).attr('disabled',true);
                     $(this_but).next().attr('disabled',false);
@@ -458,12 +478,44 @@ $(document).ready(function() {
                 }
             },'json');
         });
+      //多条复核 /costRequest/checkOrder
+      $("#checked").on('click',function(){
+        var order={}
+        var application_ids=[];
+        var id='';
+        var rows=$('#application_table tr');
+        for(var i=1;i<rows.length;i++){
+           if($(rows[i]).find('[type=checkbox]').prop('checked')){
+                id=$(rows[i]).find('[type=checkbox]').val();
+                if(id)
+                    application_ids.push(id);
+           }
+
+        }
+        $.post("/costRequest/checkOrder", {ids:application_ids.toString()}, function(data){
+                if(data.IDS){
+                    var arr=data.IDS.split(',');
+                    for(var j=0;j<arr.length;j++){
+                        for(var i=1;i<rows.length;i++){
+                            var td=$(rows[i]).find('[type=checkbox]');
+                            var btn0=$(rows[i]).find('[type=button]').eq(0);
+                            if($(td).val()==arr[j]){
+                                 $(btn0).attr('disabled',true);
+                                 $(btn0).next().attr('disabled',false);
+                                 $(btn0).parent().parent().next().next().html("已复核");
+                            }
+                        }
+                    }
+                    $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+                }else{
+                    $.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
+                }
+            },'json');
+      });
 
     //弹出下拉框 确认付款时间
       $("#application_table").on('click','.confirmBtn',function(){
             $('#cost_table_msg_btn').click();
-            var rowIndex= $(this).parent().parent().parent().index();
-            $('#rowIndex').val(rowIndex);
             $('#confirmBtn').attr('disabled',true);
             $('#receive_time').val('');
              
@@ -485,19 +537,21 @@ $(document).ready(function() {
     //付款确认
      $("#confirmBtn").on('click',function(){
         var order={};
-        var rowIndex =$('#rowIndex').val();
-        var row = application_table.row(rowIndex ).data();
-        var td1=$('tr[id$='+row.ID.toString()+'] ').children('.sorting_1');;
-
-        order.id=row.ID.toString();
-        order.receive_time=$('#receive_time').val();
-        order.receive_bank_id=row.DEPOSIT_BANK;
-        order.payment_method =row.PAYMENT_METHOD;
-        order.payment_type="cost";
+        var rows=$('#application_table tr');
+        order.costList=itemOrder.buildCostItem();
         $.post("/costRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
                         if(data){
-                            td1.next().next().html(data.STATUS);
-                            td1.next().children().children(".confirmBtn").attr('disabled',true);
+                            var arr=data.IDS.split(',');
+                            for(var j=0;j<arr.length;j++){
+                                for(var i=1;i<rows.length;i++){
+                                    var td=$(rows[i]).find('[type=checkbox]');
+                                    var btn0=$(rows[i]).find('[type=button]').eq(1);
+                                    if($(td).val()==arr[j]){
+                                         $(btn0).attr('disabled',true);
+                                         $(btn0).parent().parent().next().next().html("已付款");
+                                    }
+                                }
+                            }
                             $.scojs_message('付款成功', $.scojs_message.TYPE_OK);
                         }else{
                             td1.next().children().children(".confirmBtn").attr('disabled',false);
@@ -505,6 +559,31 @@ $(document).ready(function() {
                         }
                     },'json');
      });
+    //多条付款确认
+    $("#confirmed").on('click',function(){
+        $('#cost_table_msg_btn').click();
+        $('#confirmBtn').attr('disabled',true);
+        $('#receive_time').val('');
+    });
+
+
+    itemOrder.buildCostItem=function(){
+        var cargo_items_array=[];
+        application_table.data().each(function(item,index){
+            var cargo_table_rows = $("#application_table tr");
+            var order={}
+            if($(cargo_table_rows[index+1]).find('[type=checkbox]').prop('checked')){
+                order.id = item.ID.toString();
+                order.receive_time=$('#receive_time').val();
+                order.receive_bank_id=item.DEPOSIT_BANK;
+                if(order.receive_bank_id)
+                    order.receive_bank_id=order.receive_bank_id.toString();
+                order.payment_method =item.PAYMENT_METHOD;
+                cargo_items_array.push(order);
+            }
+        });
+        return cargo_items_array;
+    };
 
 });
 });

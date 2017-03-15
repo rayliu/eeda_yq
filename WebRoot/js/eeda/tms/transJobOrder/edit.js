@@ -54,27 +54,31 @@ $(document).ready(function() {
         }
     	
         //费用的结算公司必填
-        var sp = 0;
-        $('#chargeDetail [name=SP_ID]').each(function(){
-        	if(this.value==''){
-        		sp++;
-        	}
-        })
-        if(sp>0){
-        	$.scojs_message('费用明细里第'+sp+'行的结算公司还没有填好', $.scojs_message.TYPE_ERROR);
-    		return;
-        }
-        var CURRENCY_ID = 0;
-        $('#chargeDetail [name=CURRENCY_ID]').each(function(){
-        	if(this.value==''){
-        		CURRENCY_ID++;
-        	}
-        })
-        if(CURRENCY_ID>0){
-        	$.scojs_message('费用明细里的币制为必填', $.scojs_message.TYPE_ERROR);
-        	return;
-        }
-        
+        var error_data=0;
+        $('#charge_table [name=SP_ID],#charge_table [name=CURRENCY_ID]').each(function(index,item){
+            if(!item.value){
+                error_data++;
+                if(item.name=='SP_ID'){
+                    $.scojs_message('费用明细;应收信息表第'+(Math.ceil((parseInt(index)+1)/2))+'行的结算公司还没有填好', $.scojs_message.TYPE_ERROR);
+                     // return;
+                }else if(item.name=='CURRENCY_ID'){
+                    $.scojs_message('费用明细;应收信息表第'+(Math.ceil((parseInt(index)+1)/2))+'行的币制为必填', $.scojs_message.TYPE_ERROR);
+                }
+            }
+        });
+        $('#cost_table [name=SP_ID],#cost_table [name=CURRENCY_ID]').each(function(index,item){
+            if(!item.value){
+                error_data++;
+                if(item.name=='SP_ID'){
+                    $.scojs_message('费用明细;应付信息表第'+(Math.ceil((parseInt(index)+1)/2))+'行的结算公司还没有填好', $.scojs_message.TYPE_ERROR);
+                     // return;
+                }else if(item.name=='CURRENCY_ID'){
+                    $.scojs_message('费用明细;应付信息表第'+(Math.ceil((parseInt(index)+1)/2))+'行的币制为必填', $.scojs_message.TYPE_ERROR);
+                }
+            }
+        });
+        if(error_data>0)return;
+
         $.blockUI({ 
             message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
         });
@@ -200,6 +204,12 @@ $(document).ready(function() {
         });
     	
 	});
-  
+    
+    $('#take_wharf_list').on('mousedown', '.fromLocationItem', function(e){
+        $('#land_table tr:eq(1)').find('[name=take_address]').val($(this).text());
+    });
+    $('#back_wharf_list').on('mousedown', '.fromLocationItem', function(e){
+        $('#land_table tr:eq(2)').find('[name=delivery_address]').val($(this).text());
+    });
 });
 });

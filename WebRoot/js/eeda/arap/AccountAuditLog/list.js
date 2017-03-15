@@ -1,6 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN'], function ($, metisMenu) {
     $(document).ready(function() {
     	document.title = '出纳日记账查询 | '+document.title;
+        $("#breadcrumb_li").text('出纳日记账');
 
         $('#menu_finance').addClass('active').find('ul').addClass('in');
         

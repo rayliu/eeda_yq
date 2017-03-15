@@ -5,7 +5,8 @@ $(document).ready(function() {
 	document.title = '创建应收对账单 | ' + document.title;
 
     $('#menu_charge').addClass('active').find('ul').addClass('in');
-    
+    $('#menu_charge').addClass('active').find('ul').addClass('in');
+    $("#breadcrumb_li").text('报关模块应收对账单');
     
     //构造主表json
     var buildOrder = function(){
@@ -27,27 +28,6 @@ $(document).ready(function() {
     }
     
     
-    var buildCurJson = function(){
-    	var items_array=[];
-    	$('#currencyDiv ul li').each(function(){
-    		var item={};
-    		var new_rate = $(this).find('[name=new_rate]').val();
-    		var rate = $(this).find('[name=rate]').val();
-    		var currency_id = $(this).find('[name=new_rate]').attr('currency_id');
-    		var rate_id = $(this).find('[name=new_rate]').attr('rate_id');
-    		if(new_rate==''){
-    			new_rate = rate;
-    		}
-    		
-    		item.new_rate = new_rate;
-    		item.rate = rate;
-    		item.rate_id = rate_id;
-    		item.currency_id = currency_id;
-    		item.order_type = 'charge';
-    		items_array.push(item);
-    	})
-    	return items_array;
-    }
     
     //------------save
     $('#saveBtn').click(function(e){
@@ -64,14 +44,13 @@ $(document).ready(function() {
         order.have_invoice = $('input[type="radio"]:checked').val();
         order.id = $('#order_id').val();
         order.item_list = itemOrder.buildItemDetail();
-        order.currency_list = buildCurJson();
-        
+
         //异步向后台提交数据
-        $.post('/chargeCheckOrder/save', {params:JSON.stringify(order)}, function(data){
+        $.post('/cmsChargeCheckOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
             if(order.ID>0){
             	$("#creator_name").val(order.CREATOR_NAME);
-                $("#create_stamp").val(order.CREATE_STAMP);
+                $("#create_time").val(order.CREATE_STAMP);
                 $("#order_no").val(order.ORDER_NO);
                 $("#order_id").val(order.ID);
                 $("#status").val(order.STATUS);
@@ -113,12 +92,12 @@ $(document).ready(function() {
     $('#confrimBtn').click(function(){
     	$(this).attr('disabled', true);
     	var id = $("#order_id").val();
-    	 $.post('/chargeCheckOrder/confirm', {id:id}, function(data){
+    	 $.post('/cmsChargeCheckOrder/confirm', {id:id}, function(data){
     		 if(data){
     			 $('#saveBtn').attr('disabled', true);
     			 $("#status").val('已确认');
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
-    			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
+    			 $("#confirm_time").val(data.CONFIRM_STAMP); 
     			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
  			 
     		 }
@@ -164,6 +143,18 @@ $(document).ready(function() {
     	}
     });
     
+    //打印
+    $('#printCustomOrderBtn').click(function(){
+            $(this).attr('disabled', true);
+            var id = $('#order_id').val();
+            $.post('/jobOrderReport/printcmsChargecheckedOrder', {id:id}, function(data){
+                $('#printCustomOrderBtn').prop('disabled', false);
+                window.open(data);
+            }).fail(function() {
+                $('#printCustomOrderBtn').prop('disabled', false);
+                $.scojs_message('生成报关应收对账单PDF失败', $.scojs_message.TYPE_ERROR);
+            });
+        });
    
 });
 });

@@ -2,6 +2,7 @@
         'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
 	document.title = '收款申请单 | '+document.title;
+	$("#breadcrumb_li").text('收款申请单');
 
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     if($('#receive_time').val()==""){
@@ -55,23 +56,22 @@ $(document).ready(function() {
     var ids = $("#ids").val();
     var selected_item_ids = $("#selected_ids").val();
     
-	//保留两位小数
-	
-	var refleshNum = function(numValue){
-		var numbleValue = eeda.numFormat(parseFloat(numValue).toFixed(2),3);
-		return numbleValue;
-	}
-	var currency=new Array('cny','usd','jpy','hkd')
-	var comfirm_modal=['modal_','comfirm_modal_'];
-	for(var j=0;j<comfirm_modal.length;j++ ){
-		var bianliang=comfirm_modal[j];
-		for(var i=0;i<currency.length;i++){
-			var cujh=currency[i];
-			var stringNum=bianliang+cujh;
-			var modal_cujh= $('#'+stringNum).val();
-			$('#'+stringNum).val(refleshNum(modal_cujh));
-		}
-	}
+	//保留两位小数 , 要保留两位小数，要处理数据分割符，处理数据分割符不能保存
+//	var refleshNum = function(numValue){
+//		var numbleValue = eeda.numFormat(parseFloat(numValue).toFixed(2),3);
+//		return numbleValue;
+//	}
+//	var currency=new Array('cny','usd','jpy','hkd')
+//	var comfirm_modal=['modal_','comfirm_modal_'];
+//	for(var j=0;j<comfirm_modal.length;j++ ){
+//		var bianliang=comfirm_modal[j];
+//		for(var i=0;i<currency.length;i++){
+//			var cujh=currency[i];
+//			var stringNum=bianliang+cujh;
+//			var modal_cujh= $('#'+stringNum).val();
+//			$('#'+stringNum).val(refleshNum(modal_cujh));
+//		}
+//	}
 	
 	
     //申请保存
@@ -358,7 +358,6 @@ $(document).ready(function() {
  	   $('#account_name').val( $(this).attr('account_name'));
  	   
     })
-
     
 
 	$('#chargeAccept_table').on('click , input[type="checkbox"]',function(){

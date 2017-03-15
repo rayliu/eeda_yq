@@ -2,6 +2,7 @@
         'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
 	document.title = '付款申请单 | '+document.title;
+	$("#breadcrumb_li").text('付款申请单');
 
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     if($('#receive_time').val()==""){
@@ -58,7 +59,7 @@ $(document).ready(function() {
     
     //金额取两位小数
 	var refleshNum = function(numValue){
-		var numbleValue = eeda.numFormat(parseFloat(numValue).toFixed(2),3);
+		var numbleValue = parseFloat(numValue).toFixed(2);
 		return numbleValue;
 	}
 	var currency=new Array('cny','usd','jpy','hkd')
@@ -91,13 +92,13 @@ $(document).ready(function() {
 				return false;
 			}
 		}
-		
 		var order = buildOrder();
+		$("#saveBtn").attr("disabled", true);
 		$.get('/costRequest/save',{params:JSON.stringify(order)}, function(data){
 			$("#saveBtn").attr("disabled", false);
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-				$("#saveBtn").attr("disabled", true);
+				
 				$("#order_id").val(data.ID);
 				$("#order_no").val(data.ORDER_NO);
 				$("#create_stamp").val(data.CREATE_STAMP);
@@ -115,25 +116,21 @@ $(document).ready(function() {
 	        });
 	});
 	
+	//打印按钮可以使用
+	if($("#order_id").val()!=''){
+		$("#printBtn").attr('disabled',false);
+	}
 	
-    //打印
+    //打印应付申请单
 	 $("#printBtn").on('click',function(){
-	    	var order_no = $("#application_no").val();
-	    	if(order_no != null && order_no != ""){
-		    	$.post('/report/printPayMent', {order_no:order_no}, function(data){
-		    		if(data.indexOf(",")>=0){
-						var file = data.substr(0,data.length-1);
-		    			var str = file.split(",");
-		    			for(var i = 0 ;i<str.length;i++){
-		    				window.open(str[i]);
-		    			}
-					}else{
-						window.open(data);
-					}
+	    	var order_id = $("#order_id").val();
+		    	$.post('/jobOrderReport/costApplicationBill', {order_id:order_id}, function(data){
+		    		if(data){
+		                window.open(data);
+		             }else{
+		               $.scojs_message('生成应付申请单 PDF失败', $.scojs_message.TYPE_ERROR);
+		               }
 		    	});
-	    	}else{
-	    		$.scojs_message('当前单号为空', $.scojs_message.TYPE_ERROR);
-	    	}	
 	    });
 	 
 	 //复核
@@ -343,9 +340,7 @@ $(document).ready(function() {
  	   $('#account_name').val( $(this).attr('account_name'));
  	   
     })
-    
-  
-    
+
     
     
 	$('#costAccept_table').on('click , input[type="checkbox"]',function(){
@@ -359,89 +354,6 @@ $(document).ready(function() {
       		$('#ids').val(idsArray);
       		selectContr.refleshSelectTable(idsArray);
 	})
-	
-	
-	
-	//付款方式回显（2）
-//	$('#receive_type').change(function(){
-//		var type = $(this).val();
-//		if(type == 'cash'){
-//			$('#receive_type_massage').hide();
-//		}else{
-//			$('#receive_type_massage').show();
-//		}
-//	})
-	
-//	var ids = [];
-//	var applied_arap_id = [];
-//	var itemTable = eeda.dt({
-//        id: 'cost-table',
-//        columns:[
-//	        {"data": "ID",
-//	        	"render": function ( data, type, full, meta ) {
-//	        		var str = '<input type="checkbox" style="width:30px">';
-//	        		for(var i=0;i<ids.length;i++){
-//	                    if(ids[i]==data){
-//	                   	 str = '<input type="checkbox" style="width:30px" checked>';
-//	                    }
-//	                }
-//	        		return str;
-//			    }
-//	        },
-//	        { "data": "ORDER_NO"},
-//	        { "data": "TYPE"},
-//	        { "data": "CREATE_STAMP"},
-//	        { "data": "SP_NAME"},
-//	        { "data": "CURRENCY_NAME","class":"currency_name"},
-//	        { "data": "TOTAL_AMOUNT","class":"total_amount",
-//	        	"render": function ( data, type, full, meta ) {
-//	        		if(full.ORDER_TYPE=='cost'){
-//	            		return '<span style="color:red;">'+'-'+data+'</span>';
-//	            	}
-//	                return data;
-//	              }
-//	        },
-//	        { "data": "EXCHANGE_RATE"},
-//	        { "data": "AFTER_TOTAL",
-//	        	"render": function ( data, type, full, meta ) {
-//	        		if(full.ORDER_TYPE=='cost'){
-//	            		return '<span style="color:red;">'+'-'+data+'</span>';
-//	            	}
-//	                return data;
-//	              }
-//	        },
-//	        { "data": "NEW_RATE"},
-//	        { "data": "AFTER_RATE_TOTAL",
-//	        	"render": function ( data, type, full, meta ) {
-//	        		if(full.ORDER_TYPE=='cost'){
-//	            		return '<span style="color:red;">'+'-'+data+'</span>';
-//	            	}
-//	                return data;
-//	              }
-//	        },
-//	        { "data": "EXCHANGE_CURRENCY_NAME","class":"EXCHANGE_CURRENCY_NAME"},
-//	        { "data": "EXCHANGE_CURRENCY_RATE"},
-//	        { "data": "EXCHANGE_TOTAL_AMOUNT","class":"EXCHANGE_TOTAL_AMOUNT"},
-//	        { "data": "ORDER_TYPE", "visible": false,
-//	            "render": function ( data, type, full, meta ) {
-//	                if(!data)
-//	                    data='';
-//	                return data;
-//	            }
-//	        },
-//	      ]
-//	});
-	
-	
-//	$('#eeda-table').on('click','td',function(){
-//		
-//		$('#costAlert').click();
-//		var order_id = $(this).parent().attr('id');
-//		$('#costAlert').attr('name',order_id);
-//		var url = "/costCheckOrder/tableList?order_id="+order_id;
-//    	itemTable.ajax.url(url).load();
-//	})
-	
 	
 	
 	

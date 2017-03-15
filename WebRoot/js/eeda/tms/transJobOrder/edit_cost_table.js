@@ -127,18 +127,18 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		var str = '<select name="type" class="form-control search-control" style="width:100px" disabled>'
-	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
-	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
 	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
+	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
+	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
 	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
 	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
 	                        +'</select>';
 	                	return str;
                 	}else{
 	                	var str = '<select name="type" class="form-control search-control" style="width:100px">'
-	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
-	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
 	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
+	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
+	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
 	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
 	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
 	                        +'</select>';
@@ -206,37 +206,6 @@ $(document).ready(function() {
                 }
               }
             },
-            { "data": "CHARGE_ENG_ID","width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(full.AUDIT_FLAG == 'Y'){
-            			if(!data)
-            				data='';
-            			var field_html = template('table_dropdown_template',
-            					{
-            				id: 'CHARGE_ENG_ID',
-            				value: data,
-            				display_value: full.CHARGE_NAME_ENG,
-            				style:'width:200px',
-            				disabled:'disabled'
-            					}
-            			);
-            			return field_html;
-            		}else{
-            			if(!data)
-            				data='';
-            			var field_html = template('table_dropdown_template',
-            					{
-            				id: 'CHARGE_ENG_ID',
-            				value: data,
-            				display_value: full.CHARGE_NAME_ENG,
-            				style:'width:200px',
-            				disabled:'disabled'
-            					}
-            			);
-            			return field_html;
-            		}
-            	}
-            },
             { "data": "PRICE", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
@@ -253,7 +222,7 @@ $(document).ready(function() {
             { "data": "AMOUNT","width": "60px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
-                        data='';
+                        data='1.0';
                 	if(full.AUDIT_FLAG == 'Y'){
                         	return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control" disabled />';
                      }else{
@@ -320,8 +289,10 @@ $(document).ready(function() {
 	                    );
 	                    return field_html;
                 }else{
-            	   if(!data)
-                       data='';
+            	   if(!data&&!full.CURRENCY_NAME){
+                        data='3';
+                        full.CURRENCY_NAME="CNY";
+                    }
                    var field_html = template('table_dropdown_template',
                        {
                            id: 'CURRENCY_ID',
@@ -339,7 +310,7 @@ $(document).ready(function() {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
                     else
-                    	str = '';
+                    	str = '1.000000';
                 if(full.AUDIT_FLAG == 'Y'){
                     	return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control" disabled />';
                 }else{
@@ -413,6 +384,37 @@ $(document).ready(function() {
                     if(!data)
                         data='';
                     return data;
+                }
+            },
+            { "data": "CHARGE_ENG_ID","width": "180px","visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(full.AUDIT_FLAG == 'Y'){
+                        if(!data)
+                            data='';
+                        var field_html = template('table_dropdown_template',
+                                {
+                            id: 'CHARGE_ENG_ID',
+                            value: data,
+                            display_value: full.CHARGE_NAME_ENG,
+                            style:'width:200px',
+                            disabled:'disabled'
+                                }
+                        );
+                        return field_html;
+                    }else{
+                        if(!data)
+                            data='';
+                        var field_html = template('table_dropdown_template',
+                                {
+                            id: 'CHARGE_ENG_ID',
+                            value: data,
+                            display_value: full.CHARGE_NAME_ENG,
+                            style:'width:200px',
+                            disabled:'disabled'
+                                }
+                        );
+                        return field_html;
+                    }
                 }
             }
         ]

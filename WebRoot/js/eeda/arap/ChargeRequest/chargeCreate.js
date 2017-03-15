@@ -2,11 +2,14 @@
         'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
 	document.title = '收款申请单 | '+document.title;
-	
+
+		$("#breadcrumb_li").text('收款申请单');
+
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     $('#receive_time').val(eeda.getDate());
-    $('#add_charge').hide();
-    
+    $('.hide_add_charge').hide();
+
+
     //构造主表json
     var buildOrder = function(){
     	var item = {};

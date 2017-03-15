@@ -2,13 +2,6 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="btn-header">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    
                         <ul class="nav nav-tabs" role="tablist" >
                             <li role="presentation" class="active" >
                                 <a href="#unselected" data-toggle="tab">应付未对账明细</a>
@@ -20,7 +13,8 @@
 
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade active in" id="unselected">
-                                <div class="panel-body">
+                                	 <div class="row simple_search_div">
+                                	 <div class="col-lg-12">
                                      <form id="orderForm">
                                         <div class="row">
                                             <div class="col-lg-4">
@@ -134,8 +128,8 @@
                                     </form>
 
                                     <div class="form-group button-bar" >
-                                        <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
-                                        <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+                                        <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+                                        <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
                                         &nbsp&nbsp<input type="checkbox" name="checkOrderAll" id="checkOrderAll" value="Y">查看应收应付<span style="color:red">(红色为应收)</span>
                                     </div>
                                     <div class="form-group">
@@ -151,7 +145,7 @@
                                                 <input id="exchange_usd_totalAmount" name="exchange_usd_totalAmount"  type="hidden">
                                                 <input id="exchange_hkd_totalAmount" name="exchange_hkd_totalAmount"  type="hidden">
                                                 <input id="exchange_jpy_totalAmount" name="exchange_jpy_totalAmount"  type="hidden">
-                                                <button id="createBtn" disabled type="button" class="btn  btn-success" >创建对账单</button>
+                                                <button id="createBtn" disabled type="button" class="btn btn_green" >创建对账单</button>
                                             </form>
 
                                             <b >对账总额：</b>
@@ -166,23 +160,29 @@
                                             <span class="badge" style='margin-top:12px;'> HKD总额: <span id="exchange_hkd_totalAmountSpan">0</span></span>&nbsp;&nbsp;
                                             <span class="badge" style='margin-top:12px;'> JPY总额: <span id="exchange_jpy_totalAmountSpan">0</span></span>&nbsp;&nbsp;
                                     </div>
-                                    <br>
-		                            <span style="color:#AAAAAA">* 注：请输入查询条件获取已确认的费用明细数据，其中结算公司为必填</span>
-		                            <br>
+                                    </div>
+                                    </div>
                                     
+		                            
+                                    <div class="row simple_list_div">
+                                     <span style="color:#AAAAAA">* 注：请输入查询条件获取已确认的费用明细数据，其中结算公司为必填</span>
+                                     <br/><br/>
                                      <%include("/eeda/component/form/detailTable.html", 
                                         {
                                             id:'eeda_table', 
-                                            style: 'width:2000px',
+                                            style: 'width:2500px',
                                             headers:['<input type="checkbox" id="allCheck">','工作单号','出货时间','创建时间','类型','费用名称','客户','结算公司',
-                                            '金额','货币类型','汇率','总金额（CNY）','结算币制','结算汇率','结算金额',
+                                            '对账金额','对账币制','对人民币汇率','总金额（CNY）','结算币制','结算汇率','结算金额',
                                              'FND', '体积(CBM)', '箱量', '净重重量', 'REF_NO', 'MBL_NO','HBL_NO','箱号','车型'
                                             ]
                                         }){} %>
-                                </div>
+                                	</div>
                             </div>
+                            
+                            
                             <div role="tabpanel" class="tab-pane fade in" id="cost_check_order">
-                                <div class="panel-body">
+                            	<div class="row simple_search_div">
+                            		<div class="col-lg-12">
                                     <form id="orderSearchForm">
                                         <div class="row">
                                             <div class="col-lg-4">
@@ -225,22 +225,25 @@
                                     </form>
 
                                     <div class="form-group button-bar" >
-                                        <button id="searchOrderBtn" class="btn btn-primary btn-sm" type="button">查询</button>
-                                        <button id="resetOrderBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+                                        <button id="searchOrderBtn" class="btn btn_grey" type="button">查询</button>
+                                        <button id="resetOrderBtn" class="btn btn_white" type="button">清空条件</button>
                                     </div>
+                                </div>
+                             </div>
+                             
+                              <div class="row simple_list_div">
                                     <%include("/eeda/component/form/detailTable.html", 
                                         {
                                             id:'order_table',
-                                            headers:['对账单号','创建时间','状态','结算公司','总支出(CNY)','支出(USD)','支出(HKD)','支出(JPY)','支出(CNY)'
+                                            headers:['对账单号','创建时间','状态','结算公司','总支出(CNY)','支出(CNY)','支出(USD)','支出(JPY)','支出(HKD)'
                                             ]
                                         }){} %>
-                                </div>
-                            </div>
-                        
-                    </div>
+                              </div>
+                          </div>
+                      </div>   
+                   </div>
                 </div>
                 <!-- /.col-lg-12 -->
-            </div>
           
         </div><!-- end of  .page-wrapper-->
 

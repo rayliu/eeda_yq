@@ -298,7 +298,7 @@ $(document).ready(function() {
     //------------事件处理
     var chargeTable = eeda.dt({
         id: 'charge_table',
-        autoWidth: false,
+        autoWidth: true,
         drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
             bindFieldEvent();
         },
@@ -306,24 +306,24 @@ $(document).ready(function() {
 			{"data": "ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
 			    	if(data)
-			    		return '<input type="checkbox" class="checkBoxOfChargeTable" style="width:30px">';
+			    		return '<input type="checkbox" class="checkBoxOfChargeTable">';
 			    	else 
-			    		return '<input type="checkbox" style="width:30px" disabled>';
+			    		return '<input type="checkbox" disabled>';
 			    }
 			},
-            { "width": "150px",
+            { "width": "70px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
                 	if(full.ID&&full.AUDIT_FLAG == 'Y'){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" disabled>删除</button>&nbsp';
-                		str+= '<button class="cancelChargeConfirm btn btn-danger btn-xs" style="width:60px">取消确认</button> '; 
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" disabled><i class="fa fa-trash-o"></i> 删除</button></button>&nbsp';
+                		str+= '<button type="button" class="cancelChargeConfirm btn table_btn btn-danger btn-xs"  >取消确认</button> '; 
                 		}
                 	else if(full.ID){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" >删除</button>&nbsp';
-                		str+= '<button type="button" class="chargeConfirm btn btn-success btn-xs" style="width:60px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" ><i class="fa fa-trash-o"></i> 删除</button></button>&nbsp';
+                		str+= '<button type="button" class="chargeConfirm btn table_btn btn_green btn-xs"  value="'+full.ID+'" >确认</button> ';		
                 	}else{
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px">删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:60px"  disabled>确认</button> ';
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs"><i class="fa fa-trash-o"></i> 删除</button></button>&nbsp';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs" disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;
@@ -332,31 +332,31 @@ $(document).ready(function() {
             { "data": "TYPE", "width": "80px", 
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
-                		var str = '<select name="type" class="form-control search-control notsave" style="width:100px" disabled>'  +'<option value="" >空运</option>'
-                			+'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
-	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
-	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
-	                        +'<option value="贸易" '+(data=='贸易' ? 'selected':'')+'>贸易</option>'
-	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
-	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
+                		var str = '<select name="type" class="form-control search-control notsave" style="width:50px" disabled>'  
+                			+'<option value="海运" '+(data=='海运' ? 'selected':'')+'> 海运 </option>'
+	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'> 空运 </option>'
+	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'> 陆运 </option>'
+	                        +'<option value="贸易" '+(data=='贸易' ? 'selected':'')+'> 贸易 </option>'
+	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'> 报关 </option>'
+	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'> 保险 </option>'
 	                        +'</select>';
 	                	return str;
                 	}else{
                 			var trans_type=$('#trans_type').val();
-                			var str = '<select name="type" class="form-control search-control notsave" style="width:100px">'
+                			var str = '<select name="type" class="form-control search-control notsave" style="width:50px">'
                                +'<option value='+trans_type+'>'+trans_type+'</option>'
-                    		   +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
-                               +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
-                               +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
-                               +'<option value="贸易" '+(data=='贸易' ? 'selected':'')+'>贸易</option>'
-                               +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
-                               +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
+                    		   +'<option value="海运" '+(data=='海运' ? 'selected':'')+'> 海运 </option>'
+                               +'<option value="空运" '+(data=='空运' ? 'selected':'')+'> 空运 </option>'
+                               +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'> 陆运 </option>'
+                               +'<option value="贸易" '+(data=='贸易' ? 'selected':'')+'> 贸易 </option>'
+                               +'<option value="报关" '+(data=='报关' ? 'selected':'')+'> 报关 </option>'
+                               +'<option value="保险" '+(data=='保险' ? 'selected':'')+'> 保险 </option>'
                                +'</select>';
                     return str;
                   }
                 }
             },
-            { "data": "SP_ID", "width": "180px",
+            { "data": "SP_ID", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
@@ -366,7 +366,6 @@ $(document).ready(function() {
                                 id: 'SP_ID',
                                 value: data,
                                 display_value: full.SP_NAME,
-                                style:'width:200px',
                                 disabled:'disabled'
                             }
                         );
@@ -377,8 +376,7 @@ $(document).ready(function() {
     	                        {
     	                            id: 'SP_ID',
     	                            value: $('#sp').val(),
-    	                            display_value: $('#sp_input').val(),
-    	                            style:'width:200px'
+    	                            display_value: $('#sp_input').val()
     	                        }
                     	);
                        }else{
@@ -386,8 +384,7 @@ $(document).ready(function() {
                         {
                             id: 'SP_ID',
                             value: data,//对应数据库字段
-                            display_value: full.SP_NAME,
-                            style:'width:200px'
+                            display_value: full.SP_NAME
                         }
                      );
                    }
@@ -396,7 +393,7 @@ $(document).ready(function() {
                 }
             },
            
-            { "data": "CHARGE_ID", "width": "180px",
+            { "data": "CHARGE_ID", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
@@ -406,7 +403,6 @@ $(document).ready(function() {
                                 id: 'CHARGE_ID',
                                 value: data,
                                 display_value: full.CHARGE_NAME,
-                                style:'width:200px',
                                 disabled:'disabled'
                             }
                         );
@@ -418,8 +414,7 @@ $(document).ready(function() {
                         {
                             id: 'CHARGE_ID',//对应数据库字段
                             value: data,
-                            display_value: full.CHARGE_NAME,
-                            style:'width:200px'
+                            display_value: full.CHARGE_NAME
                         }
                     );
                     return field_html;
@@ -435,34 +430,34 @@ $(document).ready(function() {
         				id: 'CHARGE_ENG_ID',
         				value: data,
         				display_value: full.CHARGE_NAME_ENG,
-        				style:'width:200px',
+        				
         				disabled:'disabled'
         					}
         			);
         			return field_html;
             	}
             },
-            { "data": "PRICE", "width": "120px",
+            { "data": "PRICE", "width": "50px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
                     else
                     	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
-                    	return '<input type="text" name="price" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
+                    	return '<input type="text" name="price"  value="'+str+'" class="form-control notsave" disabled />';
                      }else{
-	                    return '<input type="text" name="price" style="width:120px" value="'+str+'" class="form-control notsave" />';
+	                    return '<input type="text" name="price" value="'+str+'" class="form-control notsave" />';
 	                 }
                   }
             },
-            { "data": "AMOUNT","width": "80px",
+            { "data": "AMOUNT","width": "50px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
                 	if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control notsave" disabled/>';
+                        return '<input type="text" name="amount"  value="'+data+'" class="form-control notsave" disabled/>';
                      }else{
-	                    return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control notsave"/>';
+	                    return '<input type="text" name="amount"  value="'+data+'" class="form-control notsave"/>';
 	                }
                 }
             },
@@ -496,7 +491,7 @@ $(document).ready(function() {
 	                }
                 }
             },
-            { "data": "TOTAL_AMOUNT", "width": "150px","className":"currency_total_amount",
+            { "data": "TOTAL_AMOUNT", "width": "80px","className":"currency_total_amount",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -549,7 +544,7 @@ $(document).ready(function() {
                }
               }
             },
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "150px","className":"cny_total_amount",
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "80px","className":"cny_total_amount",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -601,7 +596,7 @@ $(document).ready(function() {
             		}
             	}
             },
-            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "150px","className":"exchange_total_amount",
+            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "80px","className":"exchange_total_amount",
             	"render": function ( data, type, full, meta ) {
             		if(data)
             			var str =  parseFloat(data).toFixed(2);

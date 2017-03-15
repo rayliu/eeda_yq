@@ -568,7 +568,7 @@ where jos.order_id=$P{order_id}]]>
 				<textElement verticalAlignment="Middle">
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{shipper_phone}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_customer_tel}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

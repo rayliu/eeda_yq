@@ -58,73 +58,73 @@ $(document).ready(function() {
             },
             {"width":"30px",
               "render": function ( data, type, full, meta ) {
-                    var str = '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" >删除</button>';
+                    var str = '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>';
                      if($("#status").val()=='已确认'){
-                        return '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" disabled>删除</button>';
+                        return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>';
                      }
                     return str;
                 }
             },
-            { "data": "ORDER_NO", "width": "100px",
+            { "data": "ORDER_NO", "width": "80px",
 		    	  "render": function ( data, type, full, meta ) {
                       return "<a href='/jobOrder/edit?id="+full.JOB_ORDER_ID+"'target='_blank'>"+data+"</a>";
                   }
             },
-            { "data": "CREATE_STAMP"},
-            { "data": "SP_NAME"},
+            { "data": "CREATE_STAMP", "width": "70px"},
+            { "data": "SP_NAME", "width": "70px"},
             { "data": "FIN_NAME"},
-            { "data": "CURRENCY_NAME",'class':'currency_name'},
+            { "data": "CURRENCY_NAME",'class':'currency_name', "width": "70px"},
 
-            { "data": "TOTAL_AMOUNT",'class':'total_amount',
+            { "data": "TOTAL_AMOUNT",'class':'total_amount', "width": "70px",
             	"render": function ( data, type, full, meta ) {
-            		var total_str=parseFloat(data).toFixed(2);
+            		var total_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
             		if(full.ORDER_TYPE=='cost'){
 	            		return '<span style="color:red;">'+'-'+total_str+'</span>';
 	            	}
                     return total_str;
                   }
             },
-            { "data": "EXCHANGE_RATE","visible":false},
-            { "data": "AFTER_TOTAL","visible":false,
+            { "data": "EXCHANGE_RATE","visible":false, "width": "70px"},
+            { "data": "AFTER_TOTAL","visible":false, "width": "70px",
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='cost'){
-	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 	            	}
-                    return data;
+                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
                   }
             },
-            { "data": "NEW_RATE",'class':'new_rate',"visible": false},
-            { "data": "AFTER_RATE_TOTAL",'class':'after_rate_total',"visible": false,
+            { "data": "NEW_RATE",'class':'new_rate',"visible": false, "width": "70px"},
+            { "data": "AFTER_RATE_TOTAL",'class':'after_rate_total',"visible": false, "width": "70px",
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='cost'){
-	            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 	            	}
-                    return data;
+                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
                   }
             },
-            { "data": "EXCHANGE_CURRENCY_NAME"}, 
-            { "data": "EXCHANGE_CURRENCY_RATE",
+            { "data": "EXCHANGE_CURRENCY_NAME", "width": "70px"}, 
+            { "data": "EXCHANGE_CURRENCY_RATE", "width": "70px",
             	 "render": function ( data, type, full, meta ) {
-            		 var exchange_currency_str=parseFloat(data).toFixed(2);
+            		 var exchange_currency_str=data;
             		 return exchange_currency_str;
             	 }
             	 },
-            { "data": "EXCHANGE_TOTAL_AMOUNT", 
+            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "70px", 
                 "render": function ( data, type, full, meta ) {
-                	var exchange_tota_str=(Math.round(data*100)/100).toFixed(2);
+                	var exchange_tota_str=eeda.numFormat((Math.round(data*100)/100).toFixed(2),3);
                     if(full.ORDER_TYPE=='cost'){
                         return '<span style="color:red;">'+'-'+exchange_tota_str+'</span>';
                     }
                     return exchange_tota_str;
                   }
             },
-            { "data": "VGM"},
-            { "data": "CONTAINER_AMOUNT"},
-            { "data": "GROSS_WEIGHT"},
-            { "data": "CONTAINER_NO"},
-            { "data": "REF_NO"},
-            { "data": "MBL_NO"},
-            { "data": "HBL_NO"},
+            { "data": "VGM", "width": "70px"},
+            { "data": "CONTAINER_AMOUNT", "width": "70px"},
+            { "data": "GROSS_WEIGHT", "width": "50px"},
+            { "data": "CONTAINER_NO", "width": "50px"},
+            { "data": "REF_NO", "width": "250px"},
+            { "data": "MBL_NO", "width": "80px"},
+            { "data": "HBL_NO", "width": "80px"},
             { "data": "ORDER_TYPE", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
@@ -157,7 +157,7 @@ $(document).ready(function() {
                 return strcheck;
             }
             },
-              { "data": "ORDER_NO", "width": "100px",
+              { "data": "ORDER_NO", "width": "80px",
               "render": function ( data, type, full, meta ) {
                         return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
                     }
@@ -330,7 +330,7 @@ $(document).ready(function() {
     
     //结算金额汇总取两位小数
     var refleshNum = function(numValue){
-  		var numbleValue = parseFloat(numValue).toFixed(2)
+  		var numbleValue = eeda.numFormat(parseFloat(numValue).toFixed(2),3);
   		return numbleValue;
 	}
 	var currency=new Array('cny','usd','jpy','hkd')

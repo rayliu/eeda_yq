@@ -82,8 +82,17 @@ public class JobOrderReportController extends Controller {
 		
 		String order_id = getPara("order_id");
 		String hbl_no = getPara("hbl_no");
-		String fileName = "/report/jobOrder/oceanHBL.jasper";
-		String outFileName = "/download/"+hbl_no;
+		String printHBL = getPara("printHBL");
+		String fileName = "";
+		String outFileName ="";
+		if("printOceanHBL".equals(printHBL)){
+			 fileName = "/report/jobOrder/oceanHBL.jasper";
+			 outFileName = "/download/"+hbl_no;
+		}else if("prinTelextOceanHBL".equals(printHBL)){
+			 fileName = "/report/jobOrder/oceanTelexHBL.jasper";
+			 outFileName = "/download/"+hbl_no;
+		}
+		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
         fileName = getContextPath() + fileName;
@@ -91,7 +100,7 @@ public class JobOrderReportController extends Controller {
 		String file = myPrint(fileName, outFileName,hm);
 		renderText(file.substring(file.indexOf("download")-1));
 	}
-	
+
 	public void printOceanBooking() {
 		
 		String order_no = getPara("order_no");
@@ -317,10 +326,11 @@ public class JobOrderReportController extends Controller {
 		String order_id = getPara("order_id");
 		String company_name = getPara("company_name");
 		String fileName = "";
+		
 		if("昂励制冷器材（中山）有限公司".equals(company_name)){
-			fileName = "/report/checkOrder/SpecialTotaledReceivableDetails.jasper";
+			 fileName = "/report/checkOrder/SpecialTotaledReceivableDetails.jasper";
 		}else{
-			fileName = "/report/checkOrder/TotaledReceivableDetails.jasper";
+			 fileName = "/report/checkOrder/TotaledReceivableDetails.jasper";
 		}
 		String outFileName = "/download/应收对账单(合计版)PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
@@ -344,6 +354,20 @@ public class JobOrderReportController extends Controller {
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
 		renderText(file.substring(file.indexOf("download")-1));
 	}
+	
+	//打印应付申请单PDF
+	public void costApplicationBill(){
+		String order_id = getPara("order_id");
+		String fileName = "/report/checkOrder/costApplicationBill.jasper";
+		String outFileName = "/download/应付申请单PDF";
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_id;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
+
 	
     //报关申请单页面中，打印托运申报单
 	public void printConsignmentBill(){
@@ -378,6 +402,20 @@ public class JobOrderReportController extends Controller {
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	
-	
+	//打印应收报关对账单
+	public void printcmsChargecheckedOrder(){
+		String order_id = getPara("id");
+		String fileName = "";
+		String outFileName = "";
+			outFileName = "/download/报关应收对账单 PDF";
+			fileName = "/report/cms/cmsChargeCheckedOrder.jasper";
+		
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_id;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
 	
 }

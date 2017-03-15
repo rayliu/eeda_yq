@@ -63,17 +63,20 @@
                      
                        <div class="row">
                             <div class="col-lg-12">
-                                <button class="btn btn-success btn-xs" type="button" id="add_trade_cost_table">添加明细</button><br><br>
-                                <font size="3px">(调整后总价 - 国内货值)总价差异：<span id="total_difference"></span></font>&nbsp&nbsp，
-                                <font size="3px">(总价差异 / 总数量)单价差异：<span id="price_difference"></span></font>
+                            <input type="hidden" id="total_difference" value="${trade.total_difference!''}"  >
+                            <input type="hidden" id="price_difference" value="${trade.price_difference!''}">
+                                <button class="btn btn_blue btn-xs" type="button" id="add_trade_cost_table">添加明细</button><br><br>
+                                <font size="3px">(调整后总价 - 国内货值)总价差异：<span id="total_difference_span" name="total_difference" text="${trade.total_difference!''}" ></span></font>&nbsp&nbsp
+                                <font size="3px">(总价差异 / 总数量)单价差异：<span id="price_difference_span" name="price_difference" text="${trade.price_difference!''}"></span></font>
                                 <br>
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
                                         id:'trade_cost_table',
-                                        style:'width:2450px',
-                                        headers:['','','商品名称','数量','单位','单价(CNY)','国内货值(CNY)','增值税率','退税率','退税金额','调整后退税金额','调整后单价','调整后总价','报关单价','数量','报关金额','报关币制','报关汇率','报关金额(CNY)','CURRENCY_NAME','commodity_name'],
+                                        style:'width:2657px;',
+                                        headers:['','','商品名称','数量','单位','单价(CNY)','国内货值(CNY)','增值税率','国税退税率','客户退税率','国税退税金额','客户退税金额','调整后单价','调整后总价','报关单价','数量','报关金额','报关币制','报关汇率','报关金额(CNY)','代理费百分比(%)','代理费金额','currency_name','commodity_name'],
                                         field_list:[
-                                        '','',
+                                        '',
+                                        '',
                                         'commodity_id',
 										'number',
 										'legal_unit',
@@ -81,6 +84,9 @@
 										'domestic_price',
 										'value_added_tax',
 										'tax_refund_rate',
+										
+										'tax_refund_rate_customer',
+										  
 										'tax_refund_amount',
 										'adjusted_tax_refund_amount',
 										'adjusted_unit_price',
@@ -88,23 +94,45 @@
 										'custom_price',
 										'number',
 										'custom_amount',
-										'custom_currency_id',
+										'custom_currency',
 										'custom_rate',
 										'custom_amount_cny',
+										
+										'agency_rate',
+										'agency_amount_cny',
+										
 										'CURRENCY_ID_NAME',
-										'commodity_name'
+										'commodity_name',
+										'currency_name'
                                             ],
                                         value_list: trade_cost_list![]
                                     }){} %>
                             </div>
                         </div><br>
-                        <div class="row">
+                        * 注：<span style="color:#AAAAAA">代理金额=国内货值*代理费百分比</span><br><br>
+                        <span style="margin-left:38px;color:#AAAAAA">国税退税金额=国内货值/(1+增值税率)*国税退税率</span><br><br>
+                        <span style="margin-left:38px;color:#AAAAAA">客户退税金额=国内货值/(1+增值税率)*客户退税率</span><br><br>
+                        <span style="margin-left:38px;color:#AAAAAA">总价差异=国税退税总额-应收服务费(金额(人民币)总额)</span><br><br>
+                        <span style="margin-left:38px;color:#AAAAAA">单价差异=总价差异/总数量</span><br/>
+
+                        <br>
                             <div class="col-lg-12">
                                 <h3>应收服务费用</h3>
+                                <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeServiceInfo" aria-expanded="false" class="collapsed">
+                                        <i id='collapseChargeServiceIcon' class="fa 
+                                        <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用应收服务费用
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseChargeServiceInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+                                   <div class="panel-body" id="ChargeServiceDiv">
+                                        
+                                    </div>
+                               </div>
                             </div>
-                        </div>
-                           
-                            <div class="row">
                                 <div class="col-lg-3">
 			                            <%include("/eeda/component/form/inputCurrencyField.html", 
 				                                {   id:'service_currency_id', 
@@ -136,24 +164,37 @@
 				                                }){}%>
 				                 </div>
 				                 <div class="col-lg-12">
-	                            	<button class="btn btn-success btn-xs" type="button" id="add_charge_service_table">添加明细</button>
+	                            	<button class="btn btn_blue btn-xs" type="button" id="add_charge_service_table">添加明细</button>
 	                              </div>
                                 <br>
                                 <div class="col-lg-12">
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
                                         id:'charge_service_table',
-                                        headers:['','结算公司','费用名称','对账金额','对账币制','对人民币汇率', '金额(人民币)','结算币制','结算汇率','结算金额','sp_id_name','charge_id_name','currency_id_name'],
+                                        headers:['','结算公司','费用名称','对账金额','对账币制','对人民币汇率', '金额(人民币)','结算币制','结算汇率','结算金额','sp_id_name','charge_id_name','currency_id_name','',''],
                                         field_list:['','sp_id','charge_id','total_amount','currency_id',
                                      				'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','sp_id_name','charge_id_name','currency_id_name','EXCHANGE_CURRENCY_ID_NAME','audit_flag'],
                                         value_list: trade_charge_service_list![]
                                     }){} %>
                               </div>
                             </div>
-                           <div class="row">
 	                            <div class="col-lg-12">
 	                                <h3>销售应收费用</h3>
-	                            </div>
+                                     <div class="panel panel-default">
+                                 <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeSaleInfo" aria-expanded="false" class="collapsed">
+                                        <i id='collapseChargeSaleIcon' class="fa 
+                                        <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用销售应收费用
+                                        </a>
+                                    </h4>
+                                  </div>
+                                 <div id="collapseChargeSaleInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+                                    <div class="panel-body" id="ChargeSaleDiv">
+                                        
+                                     </div>
+                                 </div>
+                            </div>
                              	<div class="col-lg-3">
 			                            <%include("/eeda/component/form/inputCurrencyField.html", 
 				                                {   id:'sale_currency_id', 
@@ -184,9 +225,10 @@
 				                                    value:trade.sale_currency_rate!''
 				                                }){}%>
 				                 </div>
-				            <br>
+
+                             </div>
                             <div class="col-lg-12">
-                                <button class="btn btn-success btn-xs" type="button" id="add_trade_sale_table">添加明细</button>
+                                <button class="btn btn_blue btn-xs" type="button" id="add_trade_sale_table">添加明细</button>
                                 <br>
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
@@ -196,7 +238,6 @@
                                      				'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','sp_id_name','charge_id_name','currency_id_name','EXCHANGE_CURRENCY_ID_NAME','unit_id_name','audit_flag'],
                                         value_list: trade_charge_sale_list![]
                                     }){} %>
-                            </div>
                             </div>
             </div><!-- /.row -->
             </form>

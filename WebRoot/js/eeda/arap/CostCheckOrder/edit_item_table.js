@@ -44,7 +44,7 @@ $(document).ready(function() {
             	cnames = [];
             },
             columns:[
-            {"data": "ID",
+            {"data": "ID","width":"30px",
             	"render": function ( data, type, full, meta ) {
             		var str = '<input type="checkbox" class="checkBox" style="width:30px">';
             		for(var i=0;i<ids.length;i++){
@@ -55,11 +55,11 @@ $(document).ready(function() {
             		return str;
 			    }
             },
-            {"width":"30px",
+            {"width":"50px",
               "render": function ( data, type, full, meta ) {
-                    var str = '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" >删除</button>';
+                    var str = '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>';
                      if($("#status").val()=='已确认'){
-                        return '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" disabled>删除</button>';
+                        return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>';
                      }
                     return str;
                 }
@@ -67,7 +67,8 @@ $(document).ready(function() {
             { "data": "ORDER_NO", "width": "100px",
                   "render": function ( data, type, full, meta ) {
                       return "<a href='/jobOrder/edit?id="+full.JOB_ORDER_ID+"'target='_blank'>"+data+"</a>";
-                  }},
+                  }
+            },
             { "data": "TYPE"},
             { "data": "CREATE_STAMP", visible: false},
             { "data": "CUSTOMER_NAME"},
@@ -77,18 +78,18 @@ $(document).ready(function() {
             { "data": "TOTAL_AMOUNT","class":"total_amount", 
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
-	            		return '<span style="color:red;">'+'-'+parseFloat(data).toFixed(2)+'</span>';
+	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 	            	}
-            		return parseFloat(data).toFixed(2);
+            		return eeda.numFormat(parseFloat(data).toFixed(2),3);
                   }
             },
             { "data": "EXCHANGE_RATE", "visible": false},
             { "data": "AFTER_TOTAL", "visible": false, 
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
-	            		return '<span style="color:red;">'+'-'+parseFloat(data).toFixed(2)+'</span>';
+	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 	            	}else{
-	            		return parseFloat(data).toFixed(2);
+	            		return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	            	} 
             	}
             },
@@ -96,9 +97,9 @@ $(document).ready(function() {
             { "data": "AFTER_RATE_TOTAL","class":"after_rate_total", "visible": false,
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
-	            		return '<span style="color:red;">'+'-'+parseFloat(data).toFixed(2)+'</span>';
+	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 	            	}else{
-	            		return parseFloat(data).toFixed(2);
+	            		return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	            	}
             	}
             },
@@ -108,9 +109,9 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                 	var str =data;
                     if(full.ORDER_TYPE=='charge'){
-                        return '<span style="color:red;">'+'-'+(Math.round(str*100)/100).toFixed(2)+'</span>';
+                        return '<span style="color:red;">'+'-'+eeda.numFormat((Math.round(str*100)/100).toFixed(2),3)+'</span>';
                     }
-                    return (Math.round(str*100)/100).toFixed(2);
+                    return eeda.numFormat((Math.round(str*100)/100).toFixed(2),3);
                   }
             },
             { "data": "ORDER_TYPE", "visible": false,
@@ -120,6 +121,7 @@ $(document).ready(function() {
                     return data;
                 }
             },
+            { "data": "JOB_ORDER_ID", "visible": false}
         ]
     });
         var dataTable = eeda.dt({
@@ -133,7 +135,7 @@ $(document).ready(function() {
           //     flash();
           // },
           columns: [
-                { "width": "10px","orderable": false,
+                { "width": "30px","orderable": false,
                         "render": function ( data, type, full, meta ) {
                             var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
                             for(var i=0;i<itemIds.length;i++){
@@ -333,7 +335,7 @@ $(document).ready(function() {
     
     //结算金额汇总取两位小数
     var refleshNum = function(numValue){
-		var numbleValue = parseFloat(numValue).toFixed(2)
+		var numbleValue = parseFloat(numValue).toFixed(2);
 		return numbleValue;
 	}
 	var currency=new Array('cny','usd','jpy','hkd')

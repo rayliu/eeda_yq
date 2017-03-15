@@ -1,0 +1,42 @@
+<input type="hidden" id="customSelf_id" value="${customSelf.id!''}">
+           
+            <div class="form-group" style="margin-left:15px"> 
+                    <div class="row">
+                            <div class="form-group button-bar">
+                                <button id='add_air_transport' class="btn btn_blue btn-xs" type="button">添加</button>
+                            </div>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'air_transport_table',
+                                        headers:[ '','区域', '服务内容','备注'],
+                                        field_list:['','region', 'service_content','remark'],
+                                        value_list: order.airTransportList![]
+                                    }){} %>
+                       
+                  	</div>
+         	</div><!-- /.row -->
+         	<div class="form-group" style="margin-left:15px"> 
+                    <div class="row">
+                            <div class="form-group button-bar">
+                                <button id='add_air_transport_item' class="btn btn_blue btn-xs" type="button">添加</button>
+                            </div>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'air_transport_item_table',
+                                        headers:[ '','起运地', '中转地','目的地','flight_no','ETD','ETA','frequency',
+                                        '+45KG', '币制','+100KG','币制','+300KG','币制','+500KG','币制','有效时间','创建时间','创建人','备注','creator_name','','','',''],
+                                        field_list:['','route_from', 'transit_place','route_to','flight_no','ETD','ETA','frequency',
+                                        '45KG','45KG_CRC','100KG','100KG_CRC','300KG','300KG_CRC','500KG','500KG_CRC','effective_time','create_stamp','creator','remark','creator_name',
+                                        'A45KG_CRC_NAME','A100KG_CRC_NAME','A300KG_CRC_NAME','A500KG_CRC_NAME'
+                                        ],
+                                        value_list: order.airTransportItemList![]
+                                    }){} %>
+                       
+                  	</div>
+         	</div><!-- /.row -->
+         
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/contractManagement/air_transport','app/contractManagement/air_transport_item']);
+    });
+</script>

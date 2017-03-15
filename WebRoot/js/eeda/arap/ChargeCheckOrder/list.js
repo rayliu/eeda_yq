@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 
     $(document).ready(function() {
     	document.title = '应收对账单查询 | '+document.title;
-
+    	$("#breadcrumb_li").text('应收对账单');
     	//datatable, 动态处理
 		var cnames = [];
 		var itemIds=[];
@@ -146,6 +146,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 				var currency_name = $(this).parent().siblings('.CURRENCY_NAME')[0].textContent;
 				var  exchange_total_amount = $(this).parent().siblings('.EXCHANGE_TOTAL_AMOUNT')[0].textContent;
 				var exchange_currency_name = $(this).parent().siblings('.EXCHANGE_CURRENCY_NAME')[0].textContent;
+				after_total=after_total.replace(",","");
+				total_amount=total_amount.replace(",","");
+				exchange_total_amount=exchange_total_amount.replace(",","");
 				if($(this).prop('checked')==true){	
 					if(cnames.length > 0 ){
 							if(cnames[0]==cname){
@@ -380,6 +383,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			 	    		var currency_name = $(this).parent().siblings('.CURRENCY_NAME')[0].textContent;
 			 	    		var  exchange_total_amount = $(this).parent().siblings('.EXCHANGE_TOTAL_AMOUNT')[0].textContent;
 							var exchange_currency_name = $(this).parent().siblings('.EXCHANGE_CURRENCY_NAME')[0].textContent;
+			 	    		total_amount=total_amount.replace(",","");
+							exchange_total_amount=exchange_total_amount.replace(",","");
 			 	    		if(total_amount!=''&&!isNaN(total_amount)){
 								if(currency_name=='CNY'){
 									cny_totalAmount += parseFloat(total_amount);
@@ -417,6 +422,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	 	    		var currency_name = $(this).parent().siblings('.CURRENCY_NAME')[0].textContent;
 	 	    		var  exchange_total_amount = $(this).parent().siblings('.EXCHANGE_TOTAL_AMOUNT')[0].textContent;
 					var exchange_currency_name = $(this).parent().siblings('.EXCHANGE_CURRENCY_NAME')[0].textContent;
+	 	    		total_amount=total_amount.replace(",","");
+					exchange_total_amount=exchange_total_amount.replace(",","");
 	 	    		if(total_amount!=''&&!isNaN(total_amount)){
 						if(currency_name=='CNY'){
 							cny_totalAmount -= parseFloat(total_amount);

@@ -1,6 +1,9 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
   	document.title = '工作单查询   | '+document.title;
+
+    $("#breadcrumb_li").text('工作单');
+    
   	  if(type!=""){
   		  $('#menu_todo_list').addClass('active').find('ul').addClass('in');
   		  $('#menu_order').removeClass('active').find('ul').removeClass('in');
@@ -20,7 +23,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           columns: [
               { "width": "30px",
                   "render": function ( data, type, full, meta ) {
-                    return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled >删除</button>';
+                    return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
+                          '<i class="fa fa-trash-o"></i> 删除</button>';
                   }
               },
               { "data": "ORDER_NO", 

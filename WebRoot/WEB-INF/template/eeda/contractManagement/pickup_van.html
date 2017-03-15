@@ -1,0 +1,22 @@
+
+            <div class="form-group"> 
+                    <div class="row" style="margin-left:0px">
+                            <div class="form-group button-bar">
+                                <button id='addpickup_van_item' class="btn btn_blue btn-xs" type="button">添加</button>
+                            </div>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'pickup_van_table',
+                                        headers:[ '','区域', '服务内容','备注'],
+                                        field_list:['','region', 'service_content', 'remark'],
+                                        value_list: order.pickingCraneList![]
+                                    }){} %>
+                       
+                  	</div>
+         </div><!-- /.row -->
+         
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/contractManagement/pickup_van']);
+    });
+</script>

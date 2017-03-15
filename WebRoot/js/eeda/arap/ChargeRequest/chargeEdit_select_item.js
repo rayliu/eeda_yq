@@ -20,9 +20,9 @@ var itemIds=[];
                 { "data": "CHECK_ORDER_NO"},
                 {"width":"30px",
                     "render": function ( data, type, full, meta ) {
-                          var str = '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" >删除</button>';
+                          var str = '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>';
                           if($("#status").val()=='已复核'|| $("#status").val()=='已付款'){
-                              return '<button type="button" class="delete btn btn-danger btn-default btn-xs" style="width:50px" disabled>删除</button>';
+                              return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>';
                           }
                           return str;
                       }
@@ -82,8 +82,7 @@ var itemIds=[];
                 }
             ]
         });
-        
-      
+
         var hideColumn = function(){         	
          	//隐藏对账单号和checkBox列
             if($('#order_id').val()!=""&&$('#order_id').val()!=undefined){
@@ -96,6 +95,7 @@ var itemIds=[];
              	itemTable.fnSetColumnVis(3, false);
             }
     	}
+
 
          var dataTable = eeda.dt({
             id: 'eeda_charge_table',
@@ -310,9 +310,11 @@ var itemIds=[];
         var searchData2=function(){
             var ids=$('#ids').val();
             var query_exchange_currency=$('#query_currency').val();
+            var fin_name=$('#query_fin').val();
             var url = "/chargeCheckOrder/tableList?order_ids="+ids+"&order_id=N"
                             +"&table_type=item"
-                            +"&query_exchange_currency="+query_exchange_currency;
+                            +"&query_exchange_currency="+query_exchange_currency
+                            +"&query_fin_name="+fin_name;
            itemTable.ajax.url(url).load(function(){
               var a=[];
               $('#select_item_table input[type=checkbox]:checked').each(function(){
@@ -497,6 +499,16 @@ var itemIds=[];
        $("#select_item_table").on('click','input[type=checkbox]',function(){
               $("#allcheck2").prop("checked",$("#select_item_table input[type=checkbox]").length-1 == $("#select_item_table input[type=checkbox]:checked").length ? true : false);
         });
+       //清空条件
+       $("#clear_fin").click(function(){
+            $('#query_fin').val('');
+            $('#query_fin_input').val('');
+       });
+        $("#clear_query").click(function(){
+            $('#query_currency').val('');
+            $('#query_fin').val('');
+            $('#query_fin_input').val('');
+       });
     
     return {
         refleshSelectTable: refleshSelectTable,

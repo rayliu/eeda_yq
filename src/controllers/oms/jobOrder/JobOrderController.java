@@ -123,6 +123,14 @@ public class JobOrderController extends Controller {
     	jos.update();
     	renderJson("{\"result\":true,\"mbl_flag\":\"Y\"}");
     }
+   //已派车的标记位
+    public void sendTruckorder(){
+    	String order_id = getPara("order_id");
+    	JobOrder job_order = JobOrder.dao.findById(order_id);
+    	job_order.set("send_truckorder_flag", "Y");
+    	job_order.update();
+    	renderJson("{\"result\":true,\"send_truckorder_flag\":\"Y\"}");
+    }
     
     //已电放确认表标识
     public void alreadyInlineFlag(){
@@ -164,28 +172,28 @@ public class JobOrderController extends Controller {
     public String generateJobPrefix(String type){
     		String prefix = "";
 			if(type.equals("出口柜货")||type.equals("进口柜货")||type.equals("出口散货")||type.equals("内贸海运")){
-				prefix+="EKO";
+				prefix+="O";
 			}
 			else if(type.equals("出口空运")||type.equals("进口空运")){
-				prefix+="EKA";
+				prefix+="A";
 			}
 			else if(type.equals("香港头程")||type.equals("香港游")||type.equals("进口散货")){
-				prefix+="EKL";
+				prefix+="L";
 			}
 			else if(type.equals("加贸")||type.equals("园区游")){
-				prefix+="EKP";
+				prefix+="P";
 			}
 			else if(type.equals("陆运")){
-				prefix+="EKT";
+				prefix+="T";
 			}
 			else if(type.equals("报关")){
-				prefix+="EKC";
+				prefix+="C";
 			}
 			else if(type.equals("快递")){
-				prefix+="EKE";
+				prefix+="E";
 			}
 			else if(type.equals("贸易")){
-				prefix+="EKB";
+				prefix+="B";
 			}
 			return prefix;
     }
@@ -211,7 +219,7 @@ public class JobOrderController extends Controller {
    		String export_date = (String)dto.get("order_export_date");
         String newDateStr = "";
         SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMM");//转换后的格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yy");//转换后的格式
         try {
             Date date=parseFormat.parse(export_date);
             newDateStr=sdf.format(date);
@@ -230,7 +238,7 @@ public class JobOrderController extends Controller {
    			if(!order_update_stamp.equals(page_update_stamp)){
    			    Record rec = new Record();
    			    rec.set("err_code", "update_stamp_not_equal");
-   			    rec.set("err_msg", "数据已更新，请刷新页面重新操作。");
+   			    rec.set("err_msg", "当前单据已被更改，请刷新页面获取最新数据，重新操作。");
    			    renderJson(rec);
    			    return;
    			}
@@ -251,8 +259,11 @@ public class JobOrderController extends Controller {
    			             !newDateStr.equals(oldOrderNoDate)
    			        ) 
    			  ){
-	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), newDateStr, office_id);
-	            jobOrder.set("order_no", order_no);
+	   			StringBuilder sb = new StringBuilder(oldOrderNo);//构造一个StringBuilder对象
+
+	   			sb.replace(5, 6, generateJobPrefix(type));
+	   			oldOrderNo =sb.toString();
+	            jobOrder.set("order_no", oldOrderNo);
    			}
    			
    			DbUtils.setModelValues(dto, jobOrder);
@@ -263,9 +274,13 @@ public class JobOrderController extends Controller {
    		} else {
    			//create 
    			DbUtils.setModelValues(dto, jobOrder);
+//   			String newOrder_on ="EKYZH"+generateJobPrefix(type);
    			
    			//需后台处理的字段
-   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), newDateStr, office_id);
+   			String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, office_id);
+   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
+   			sb.insert(5, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
+   			order_no = sb.toString();
             jobOrder.set("order_no", order_no);
    			jobOrder.set("creator", user.getLong("id"));
    			jobOrder.set("create_stamp", new Date());
@@ -359,6 +374,7 @@ public class JobOrderController extends Controller {
 	        	if("UPDATE".equals(map.get("action"))){
 	        		model.update();
 	        	}else if("DELETE".equals(map.get("action"))){
+	        		if(map.get("id")!=null)
 	        		model.delete();
 	        	}else{
 	        		model.save();
@@ -376,6 +392,7 @@ public class JobOrderController extends Controller {
 	        	if("UPDATE".equals(map.get("action"))){
 	        		model.update();
 	        	}else if("DELETE".equals(map.get("action"))){
+	        		if(map.get("id")!=null)
 	        		model.delete();
 	        	}else{
 	        		model.save();
@@ -411,6 +428,15 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> allCharge_template = (ArrayList<Map<String, String>>)dto.get("allCharge_template");
 		List<Map<String, String>> allCost_template = (ArrayList<Map<String, String>>)dto.get("allCost_template");
    		saveArapTemplate(type,customer_id,charge_template,cost_template,allCharge_template,allCost_template);
+     	//贸易信息，应收服务，销售应收模板
+		List<Map<String, String>> chargeService_template = (ArrayList<Map<String, String>>)dto.get("chargeService_template");
+		List<Map<String, String>> allChargeService_template = (ArrayList<Map<String, String>>)dto.get("allChargeService_template");
+		saveTradeServiceTemplate(type,customer_id,chargeService_template,allChargeService_template);
+		List<Map<String, String>> chargeSale_template = (ArrayList<Map<String, String>>)dto.get("chargeSale_template");
+		List<Map<String, String>> allChargeSale_template = (ArrayList<Map<String, String>>)dto.get("allChargeSale_template");
+   		saveTradeSaleTemplate(type,customer_id,chargeSale_template,allChargeSale_template);
+   	   	   		
+	
    		renderJson(r);
    	}
     
@@ -496,6 +522,181 @@ public class JobOrderController extends Controller {
         }
     }
     
+    /**
+     * 保存费用模板
+     * @param shipment_detail
+     */
+    public void saveLandArapTemplate(String order_type,String customer_id,
+    		List<Map<String, String>> charge_list,List<Map<String, String>> cost_list,
+    		List<Map<String, String>> charge_list_all,List<Map<String, String>> cost_list_all){
+        if((charge_list==null||charge_list.size()<=0) && (cost_list==null||cost_list.size()<=0) )
+            return;
+
+        Gson gson = new Gson();
+        String chargeObject = gson.toJson(charge_list);
+//        String costObject = gson.toJson(cost_list);
+        String chargeObjectAll = gson.toJson(charge_list_all);
+//        String costObjectAll = gson.toJson(cost_list_all);
+        
+    	Long creator_id = LoginUserController.getLoginUserId(this);
+    	
+    	String chargeSql = "select parent_id from job_order_land_arap_template where"
+                + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
+                + " and  json_value = '"+chargeObject+"' and parent_id is not null";
+//    	String costSql = "select parent_id from job_order_land_arap_template where"
+//                + " arap_type = 'cost' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
+//                + " and  json_value = '"+costObject+"' and parent_id is not null ";
+
+        Record chargeRec = Db.findFirst(chargeSql);
+//        Record costRec = Db.findFirst(costSql);
+
+        if(chargeRec == null){
+        	if(!(charge_list==null||charge_list.size()<=0)){
+        		//保存全部信息
+                Record all= new Record();
+                all.set("creator_id", creator_id);
+                all.set("customer_id", customer_id);
+                all.set("arap_type", "charge");
+                all.set("order_type", order_type);
+                all.set("json_value", chargeObjectAll);          
+                Db.save("job_order_land_arap_template", all);  
+        		
+                //保存局部信息
+        		Record r= new Record();
+                r.set("creator_id", creator_id);
+                r.set("customer_id", customer_id);
+                r.set("arap_type", "charge");
+                r.set("order_type", order_type);
+                r.set("json_value", chargeObject);
+                r.set("parent_id", all.getLong("id"));
+                Db.save("job_order_land_arap_template", r);  
+       		}
+        }else{
+        	Long parent_id = chargeRec.getLong("parent_id");
+        	Db.update("update job_order_land_arap_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
+        }
+        
+//        if(costRec == null){
+//        	if(!(cost_list==null||cost_list.size()<=0)){
+//        		//保存全部信息
+//                Record all = new Record();
+//                all.set("creator_id", creator_id);
+//                all.set("customer_id", customer_id);
+//                all.set("arap_type", "cost");
+//                all.set("order_type", order_type);
+//                all.set("json_value", costObjectAll);
+//                Db.save("job_order_land_arap_template", all);  
+//                
+//        		//保存局部信息
+//        		Record r= new Record();
+//                r.set("creator_id", creator_id);
+//                r.set("customer_id", customer_id);
+//                r.set("arap_type", "cost");
+//                r.set("order_type", order_type);
+//                r.set("json_value", costObject);
+//                r.set("parent_id",  all.getLong("id"));
+//                Db.save("job_order_land_arap_template", r);  
+//       		}
+//        }else{
+//        	Long parent_id = costRec.getLong("parent_id");
+//        	Db.update("update job_order_land_arap_template set json_value = ? where id = ?",costObjectAll,parent_id);
+//        }
+    }
+    /**
+     * 保存费用模板
+     * @param shipment_detail
+     */
+    public void saveTradeServiceTemplate(String order_type,String customer_id,
+    		List<Map<String, String>> charge_list,List<Map<String, String>> charge_list_all){
+        if((charge_list==null||charge_list.size()<=0) )
+            return;
+
+        Gson gson = new Gson();
+        String chargeObject = gson.toJson(charge_list);
+        String chargeObjectAll = gson.toJson(charge_list_all);
+        
+    	Long creator_id = LoginUserController.getLoginUserId(this);
+    	
+    	String chargeSql = "select parent_id from job_order_trade_service_template where"
+                + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
+                + " and  json_value = '"+chargeObject+"' and parent_id is not null";
+        Record chargeRec = Db.findFirst(chargeSql);
+
+        if(chargeRec == null){
+        	if(!(charge_list==null||charge_list.size()<=0)){
+        		//保存全部信息
+                Record all= new Record();
+                all.set("creator_id", creator_id);
+                all.set("customer_id", customer_id);
+                all.set("arap_type", "charge");
+                all.set("order_type", order_type);
+                all.set("json_value", chargeObjectAll);          
+                Db.save("job_order_trade_service_template", all);  
+        		
+                //保存局部信息
+        		Record r= new Record();
+                r.set("creator_id", creator_id);
+                r.set("customer_id", customer_id);
+                r.set("arap_type", "charge");
+                r.set("order_type", order_type);
+                r.set("json_value", chargeObject);
+                r.set("parent_id", all.getLong("id"));
+                Db.save("job_order_trade_service_template", r);  
+       		}
+        }else{
+        	Long parent_id = chargeRec.getLong("parent_id");
+        	Db.update("update job_order_trade_service_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
+        }
+        
+    }
+    //常用贸易
+    /**
+     * 保存费用模板
+     * @param shipment_detail
+     */
+    public void saveTradeSaleTemplate(String order_type,String customer_id,
+    		List<Map<String, String>> charge_list, List<Map<String, String>> charge_list_all){
+        if((charge_list==null||charge_list.size()<=0) )
+            return;
+
+        Gson gson = new Gson();
+        String chargeObject = gson.toJson(charge_list);
+        String chargeObjectAll = gson.toJson(charge_list_all);
+        
+    	Long creator_id = LoginUserController.getLoginUserId(this);
+    	
+    	String chargeSql = "select parent_id from job_order_trade_sale_template where"
+                + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
+                + " and  json_value = '"+chargeObject+"' and parent_id is not null";
+
+        Record chargeRec = Db.findFirst(chargeSql);
+
+        if(chargeRec == null){
+        	if(!(charge_list==null||charge_list.size()<=0)){
+        		//保存全部信息
+                Record all= new Record();
+                all.set("creator_id", creator_id);
+                all.set("customer_id", customer_id);
+                all.set("arap_type", "charge");
+                all.set("order_type", order_type);
+                all.set("json_value", chargeObjectAll);          
+                Db.save("job_order_trade_sale_template", all);  
+        		
+                //保存局部信息
+        		Record r= new Record();
+                r.set("creator_id", creator_id);
+                r.set("customer_id", customer_id);
+                r.set("arap_type", "charge");
+                r.set("order_type", order_type);
+                r.set("json_value", chargeObject);
+                r.set("parent_id", all.getLong("id"));
+                Db.save("job_order_trade_sale_template", r);  
+       		}
+        }else{
+        	Long parent_id = chargeRec.getLong("parent_id");
+        	Db.update("update job_order_trade_sale_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
+        }
+    }
     
     //保存常用邮箱模版
     public void saveEmailTemplate(){
@@ -1096,7 +1297,7 @@ public class JobOrderController extends Controller {
 	    }else if("custom_app".equals(type)){
 	    	itemList = Db.find("SELECT"
 	    			+ " cjo.id, cjo.order_no custom_plan_no, o.office_name custom_bank,cjo.status applybill_status,"
-	    			+ " cjo.ref_no custom_order_no, cjo.custom_state status, ul.c_name creator,"
+	    			+ " cjo.ref_no custom_order_no, cjo.custom_state custom_status, ul.c_name creator,"
 	    			+ " cjo.create_stamp, ul2.c_name fill_name, cjo.fill_stamp,cjo.customs_billCode"
 	    			+ " FROM custom_plan_order cjo"
 	    			+ " LEFT JOIN user_login ul ON ul.id = cjo.creator"
@@ -1186,8 +1387,37 @@ public class JobOrderController extends Controller {
     			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
     	renderJson(list);
     }
-    
-
+    /**
+     * 获取陆运常用费用模板信息
+     */
+    public void getLandArapTemplate(){
+    	String order_type = getPara("order_type");
+    	String customer_id = getPara("customer_id");
+    	String arap_type = getPara("arap_type");
+    	List<Record> list = Db.find("select * from job_order_land_arap_template "
+    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
+    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
+    	renderJson(list);
+    }
+    //常用贸易信息
+    public void getTradeServiceTemplate(){
+    	String order_type = getPara("order_type");
+    	String customer_id = getPara("customer_id");
+    	String arap_type = getPara("arap_type");
+    	List<Record> list = Db.find("select * from job_order_trade_service_template "
+    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
+    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
+    	renderJson(list);
+    }
+    public void getTradeSaleTemplate(){
+    	String order_type = getPara("order_type");
+    	String customer_id = getPara("customer_id");
+    	String arap_type = getPara("arap_type");
+    	List<Record> list = Db.find("select * from job_order_trade_sale_template "
+    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
+    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
+    	renderJson(list);
+    }
     
     //常用海运信息
     public List<Record> getUsedOceanInfo(){
@@ -1361,7 +1591,7 @@ public class JobOrderController extends Controller {
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
         			+ " WHERE jor.office_id="+office_id
-        			+ " and datediff(joli.eta, now()) <= 3 AND (joli.truckorder_flag != 'Y' OR joli.truckorder_flag IS NULL)"
+        			+ " and datediff(joli.eta, now()) <= 3 AND jor.send_truckorder_flag != 'Y'"
         			+ " AND jor.transport_type LIKE '%land%'"
         			+ " and jor.delete_flag = 'N'";
         	
@@ -1561,7 +1791,27 @@ public class JobOrderController extends Controller {
     	Db.update("delete from job_order_arap_template where id = ? or parent_id = ?",id,id);
     	renderJson("{\"result\":true}");
     }
-    
+    //删除陆运费用明细常用信息模版
+    @Before(Tx.class)
+    public void deleteLandArapTemplate(){
+    	String id = getPara("id");
+    	Db.update("delete from job_order_land_arap_template where id = ? or parent_id = ?",id,id);
+    	renderJson("{\"result\":true}");
+    }
+  //删除常用模版
+    @Before(Tx.class)
+    public void deleteTradeSaleTemplate(){
+    	String id = getPara("id");
+    	Db.update("delete from job_order_trade_sale_template where id = ?",id);
+    	renderJson("{\"result\":true}");
+    }
+  //删除常用模版
+    @Before(Tx.class)
+    public void deleteTradeServiceTemplate(){
+    	String id = getPara("id");
+    	Db.update("delete from job_order_trade_service_template where id = ?",id);
+    	renderJson("{\"result\":true}");
+    }
     //删除海运常用信息模版
     @Before(Tx.class)
     public void deleteOceanTemplate(){
@@ -1672,10 +1922,21 @@ public class JobOrderController extends Controller {
         	model.set("order_id", order_id);
         	if("UPDATE".equals(map.get("action"))){
         		model.update();
+        	}else if("DELETE".equals(map.get("action"))){
+        		model.delete();
         	}else{
         		model.save();
         	}
         }
+      //保存陆运费用模版
+        String type = (String) dto.get("type");//根据工作单类型生成不同前缀
+        String customer_id = (String)dto.get("customer_id");
+   		List<Map<String, String>> land_charge_template = (ArrayList<Map<String, String>>)dto.get("land_charge_template");
+		List<Map<String, String>> land_cost_template = (ArrayList<Map<String, String>>)dto.get("land_cost_template");
+		List<Map<String, String>> land_allCharge_template = (ArrayList<Map<String, String>>)dto.get("land_allCharge_template");
+		List<Map<String, String>> land_allCost_template = (ArrayList<Map<String, String>>)dto.get("land_allCost_template");
+		saveLandArapTemplate(type,customer_id,land_charge_template,land_cost_template,land_allCharge_template,land_allCost_template);
+   		
         renderJson("{\"result\":true}");
     }
     

@@ -7,7 +7,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
-
+    $("#breadcrumb_li").text('工作单');
+    
 	var loadOrderToLocalstorage=function(order_id){
         if(!!window.localStorage){//查询条件处理
             var err_temp_job_order_str = localStorage.getItem('err_temp_job_order_'+order_id);
@@ -216,6 +217,11 @@ $(document).ready(function() {
         order.cost_template = itemOrder.buildCostTemplate();
         order.allCharge_template = itemOrder.buildAllChargeTemplate();
         order.allCost_template = itemOrder.buildAllCostTemplate();
+        //贸易信息模板
+        order.chargeService_template = itemOrder.buildChargeServiceTemplate();
+        order.chargeSale_template = itemOrder.buildChargeSaleTemplate();
+        order.allChargeService_template = itemOrder.buildAllChargeServiceTemplate();
+        order.allChargeSale_template = itemOrder.buildAllChargeSaleTemplate();
         //相关文档
         order.doc_list = eeda.buildTableDetail("doc_table","");
 
@@ -392,7 +398,23 @@ $(document).ready(function() {
     		$(this).attr("checked",true);
     	}
     });
-    
+    //派车标记位
+    $('#land_sendTruck').click(function(){
+    	//异步向后台提交数据
+    	var order_id = $('#order_id').val();
+        $.post('/jobOrder/sendTruckorder', {order_id:order_id}, function(data){
+        	$('#land_sendTruck').attr('disabled', true);
+        	$.scojs_message('已完成派车工作', $.scojs_message.TYPE_OK);
+        	},'json').fail(function() {
+            $.scojs_message('点击无效', $.scojs_message.TYPE_ERROR);
+            $('#land_sendTruck').attr('disabled', false);
+            $.unblockUI();
+           });
+        });
+    var land_sendTruckHide=$('#land_sendTruckHide').val(); 
+    if(land_sendTruckHide=='Y'){
+    	$('#land_sendTruck').attr('disabled', true);
+    }
 
     
     

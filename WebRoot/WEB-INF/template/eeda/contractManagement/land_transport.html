@@ -1,0 +1,61 @@
+
+            <div class="form-group">  <!--  form row  -->
+            		<div class="row" style="margin-left:0px">
+            			<input type="hidden" id="land_qualification_type" value="${party.land_qualification_type!''}">
+            				<div class="checkbox" id="land_qualification_type_val">
+                                <label class="checkbox-inline" >
+                                    <input id="danger_goods" name="danger_goods"  type="checkbox" value="danger_goods" >危险品
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input id="common_goods" name="common_goods" type="checkbox" value="common_goods">普通
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input id="closed_transport" name="closed_transport" type="checkbox" value="closed_transport">封关运输
+                                </label>
+                            </div>
+            		</div>
+                    <div class="row" style="margin-left:0px">
+                            <div class="form-group button-bar">
+                                <button id='addland_transport' class="btn btn_blue btn-xs" type="button">添加</button>
+                            </div>
+                            <div class="form-group ">
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'land_transport_table',
+                                        headers:[ '','区域', '服务内容','备注'],
+                                        field_list:['','region', 'service_content', 'remark'],
+                                        value_list: order.landTransportList![]
+                                    }){} %>
+                       		</div>
+                  	</div>
+                  	
+                  	<div class="row" style="margin-left:0px">
+                            <div class="form-group button-bar">
+                                <button id='addland_transport_item' class="btn btn_blue btn-xs" type="button">添加</button>
+                            </div>
+                            <div class="form-group ">
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'land_transport_item_table',
+                                        style:'width:3000px',
+                                        headers:[ '','启运地', '目的地','危险品类型','车型','单位','单价','币制','不含税单价','币制',
+                                        '税率','含税单价','币制','运输时间','文件费','币制','理货费','币制','中国出口代理报关费','币制','目的地进口代理报关费','币制','关税、增值税','币制',
+                                        '目的地场站换单费','币制','仓储费','币制','配送费','币制','海关查验费','币制','有效时间','创建时间','备注','','','','','','','','','','','',''],
+                                        field_list:['','route_from', 'route_to','dangerous_goods_type','car_type','unit','price','price_crc','notax_price','notax_price_crc',
+                                        'tax_rate','tax_price','tax_price_crc','transit_time','document_fee', 'document_fee_crc','tally_fee','tally_fee_crc','cea_custom_fee','cea_custom_fee_crc','dia_custom_fee','dia_custom_fee_crc','tariff_fee','tariff_fee_crc',
+                                        'exchange_fee','exchange_fee_crc','storage_fee','storage_fee_crc','delivery_fee','delivery_fee_crc','customs_inspection_fee','customs_inspection_fee_crc',
+                                        'effective_time','create_stamp','remark',
+                                        'price_crc_name','notax_price_crc_name','tax_price_crc_name',
+                                        'document_fee_crc_name','tally_fee_crc_name','cea_custom_fee_crc_name','dia_custom_fee_crc_name','tariff_fee_crc_name',
+                                        'exchange_fee_crc_name','storage_fee_crc_name','delivery_fee_crc_name','customs_inspection_fee_crc_name'
+                                        ],
+                                        value_list: order.landTransportItemList![]
+                                    }){} %>
+                       		</div>
+                  	</div>
+         </div><!-- /.row -->
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/contractManagement/land_transport','app/contractManagement/land_transport_item']);
+    });
+</script>

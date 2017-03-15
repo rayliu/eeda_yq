@@ -1,0 +1,37 @@
+  <div class="form-group">  <!--  form row  -->
+            		<div class="row">
+                            <input type="hidden" id="storage_qualification_type" value="${party.storage_qualification_type!''}">
+            				<div class="checkbox" id="storage_qualification_type_val">
+                                <label style="margin-left:15px;">
+                                    <input id="common_warehouse" name="common_warehouse" type="checkbox" value="truck" style="margin-top: 0px;font-size:25px;">普通仓
+                                </label>
+                                <label style="margin-left:15px;">
+                                    <input id="constant_warehouse" name="constant_warehouse" type="checkbox" value="carrier" style="margin-top: 0px;">恒温仓
+                                </label>
+                                <label style="margin-left:15px;">
+                                    <input id="danger_warehouse" name="danger_warehouse" type="checkbox" value="air" style="margin-top: 0px;">危险品仓
+                                </label>
+                                <label style="margin-left:15px;">
+                                    <input id="bonded_warehouse" name="bonded_warehouse" type="checkbox" value="air" style="margin-top: 0px;">保税品仓
+                                </label>
+                            </div>
+            		</div>
+                    <div class="row" style="margin-left:0px">
+                            <div class="form-group button-bar">
+                                <button id='add_storage_item' class="btn btn_blue btn-xs" type="button">添加</button>
+                            </div>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'storage_table',
+                                        headers:[ '','区域', '基础设施','备注'],
+                                        field_list:['','region', 'infrastructure', 'remark'],
+                                        value_list: order.storageList![]
+                                    }){} %>
+                       
+                  	</div>
+         </div><!-- /.row -->
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/contractManagement/storage']);
+    });
+</script>

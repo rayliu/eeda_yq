@@ -2,6 +2,7 @@
 requirejs.config({
     urlArgs: 'v=@verion@',
     baseUrl: '/js/lib',
+    waitSeconds: 200,
     paths: {
         app: '../eeda',
         jquery: 'jquery/jquery-1.10.2',

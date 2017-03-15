@@ -1,12 +1,16 @@
 define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './costEdit_select_item', 'dataTablesBootstrap', 
         'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
-	document.title = '付款申请单 | '+document.title;
+	document.title = '创建付款申请单 | '+document.title;
+	$("#breadcrumb_li").text('创建付款申请单');
 
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     $('#receive_time').val(eeda.getDate());
+
     $('#add_cost').hide();
-    
+
+    $('.hide_add_cost').hide();
+
     //构造主表json
     var buildOrder = function(){
     	var item = {};

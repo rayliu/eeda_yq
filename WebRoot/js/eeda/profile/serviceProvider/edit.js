@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
 
   $(document).ready(function() {
+	  $("#breadcrumb_li").text('供应商管理');
+	  
     	var id = $("#partyId").val();
     	if(id != null && id != ""){
     		$("#addChargeType").attr("disabled",false);
@@ -131,10 +133,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       }
       //自动提交改为手动提交
       $("#save").click(function(){
-    	  
-    	  /*$.post("/serviceProvider/check",$("#customerForm").serialize(),function(data){
-    		  
-    	  });*/
     	 if(!$("#customerForm").valid()){
     		  return false;
     	 }
@@ -149,15 +147,48 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		}else if(data.ID != null && data.ID != ""){
      			eeda.contactUrl("edit?id",data.ID);
      			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+     			$("#status").val(data.STATUS);
      			$("#partyId").val(data.ID);
      			$("#sp_id").val(data.ID);
      			$("#addChargeType").attr("disabled",false);
      			$("#save").attr("disabled",false);
+     			$("#submit").attr("disabled",false);
      		}else{
      			$.scojs_message('数据有误', $.scojs_message.TYPE_ERROR);
      			$("#save").attr("disabled",false);
      		}
          });
+    	  
+      });
+      
+      
+      $("#submit,#approval,#disapproval").click(function(){
+    	  var btn = $(this).attr('id');
+    	  var value = $(this).text();
+    	  $("#submit").prop('disabled',true);
+    	  $("#approval").prop('disabled',true);
+    	  $("#disapproval").prop('disabled',true);
+    	  $.post("/serviceProvider/approvalOrder", {id:$("#partyId").val(),action:btn},function(data){
+    		  if(data){
+    			  $.scojs_message('操作成功', $.scojs_message.TYPE_OK);
+    			  var status = data.STATUS;
+    			  $("#status").val(status);
+    			  if(status!="审核不通过"){
+    				  $("#save").prop('disabled',true);
+        	    	  $("#approval").prop('disabled',false);
+        	    	  $("#disapproval").prop('disabled',false); 
+    			  }else{
+    				  $("#save").prop('disabled',false);
+        	    	  $("#approval").prop('disabled',true);
+        	    	  $("#disapproval").prop('disabled',true);
+    			  }
+    			  
+    		  }
+    	  }).fail(function() {
+	          $.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+	          $("#approval").prop('disabled',false);
+	    	  $("#disapproval").prop('disabled',false);
+    	  });
     	  
       });
       
@@ -241,5 +272,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	$("#c_type option[value='perUnit']").attr("selected","selected");
 	    });
 	    
+	    //按钮控制
+	    var status = $('#status').val();
+	    if(status=='' || status==null || status=='新建'|| status=='审核不通过'){
+	    	$("#save").prop('disabled',false);
+	    	$("#submit").prop('disabled',false);
+	    }else if(status=='待审核'||status=='审核通过'){
+	    	$("#approval").prop('disabled',false);
+	    	$("#disapproval").prop('disabled',false);
+	    }
+
     });
 });

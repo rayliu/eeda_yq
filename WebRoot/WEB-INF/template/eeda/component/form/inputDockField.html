@@ -1,0 +1,110 @@
+<div class="form-group">
+	<label class="search-label">${label!''}
+		<%if(required!'' =='required'){%>
+	        <span style='color:red; display:initial;'>*</span>
+	    <%}%>
+    </label>
+	<input type="text" class="form-control search-control" 
+	id="${id}_input" AUTOCOMPLETE="off" 
+	placeholder="${placeholder!'请选择'}"  value="${value!''}">
+	<ul id='${id}_list' class="pull-right dropdown-menu default dropdown-scroll" tabindex="-1" style="top: 35%; left: 2%;">
+</ul>
+</div>
+<input id="${id}" style="display: none;" name="${id}" value="${value!''}"/>
+<script>
+
+$(document).ready(function() {
+	//获取sp列表，自动填充
+	var spList =$("#${id}_list");
+	var inputField = $('#${id}_input');
+	var hiddenField = $('#${id}');
+	
+	//处理中文输入法, 没完成前不触发查询
+	var cpLock = false;
+    inputField.on('compositionstart', function () {
+        cpLock = true;
+    });
+    inputField.on('compositionend', function () {
+        cpLock = false;
+    });
+    
+	
+	//供应商查询
+    //获取供应商的list，选中信息在下方展示其他信息
+    inputField.on('keyup click', function(){
+    	var me = this;
+		var inputStr = inputField.val();
+		if(cpLock)
+	    	return;
+		
+		if (event.keyCode == 40) {
+			spList.find('li').first().focus();
+            return false;
+        }
+		
+		$.get('/dockInfo/searchDock', {input:inputStr}, function(data){
+			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+				return;
+			}
+			spList.empty();
+			
+			if(inputStr=='' && data.length>0){
+				if(data[0].REF_ID){
+					spList.append('<span class="search_hint">您曾经使用过的'+data.length+'行记录, 需要别的数据请输入查询条件</span>');
+				}else{
+					spList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+				}
+			}else if(data.length==0){
+				spList.append('<span class="search_hint">无记录</span>');
+			}else if(inputStr.length>0 && data.length==10){
+				spList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+			}
+	        for(var i = 0; i < data.length; i++)
+	        	spList.append("<li><a tabindex='-1' class='fromLocationItem' dock_id='"+data[i].ID+"' >"+data[i].DOCK_NAME+"</a></li>");
+	            
+	        spList.css({ 
+		    	left:$(me).position().left+"px", 
+		    	top:$(me).position().top+28+"px" 
+		    });			
+			eeda.hidePopList();
+			spList.show();
+			
+			//当查询结果只有一个时，自动赋值到hiddenField
+            if(data.length==0)
+                hiddenField.val('');
+            if(data.length==1&&data[0].ID)
+                hiddenField.val(data[0].ID);
+            if(data.length>1)
+                hiddenField.val('');
+		},'json');
+    });
+    
+    // 没选中供应商，焦点离开，隐藏列表
+	inputField.on('blur', function(){
+		if (inputField.val().trim().length ==0) {
+			hiddenField.val('');
+		};
+		if (hiddenField.val().trim().length ==0) {
+			inputField.val('');
+		};
+		spList.hide();
+ 	});
+
+	//当用户只点击了滚动条，没选供应商，再点击页面别的地方时，隐藏列表
+	spList.on('blur', function(){
+		spList.hide();
+ 	});
+
+	spList.on('mousedown', function(){
+		return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+	});
+
+	// 选中供应商
+	spList.on('mousedown', '.fromLocationItem', function(e){
+		//console.log($('#spList').is(":focus"));
+		inputField.val($(this).text());
+		hiddenField.val($(this).attr('dock_id'));
+		spList.hide();
+    });
+});
+</script>

@@ -3,13 +3,23 @@
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<style name="bottomLine" forecolor="#000000" fill="Solid">
+		<pen lineStyle="Dashed"/>
+		<box bottomPadding="0">
+			<pen lineWidth="1.0" lineStyle="Dashed"/>
+			<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+			<leftPen lineWidth="1.0" lineStyle="Double" lineColor="#FFFFFF"/>
+			<bottomPen lineStyle="Dashed" lineColor="#000000"/>
+			<rightPen lineColor="#FFFFFF"/>
+		</box>
+	</style>
 	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="login_user_id" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT aco.begin_time,aco.end_time,p.company_name,p.contact_person,p.phone,p.fax, u.c_name,u.user_tel,
-jo.order_export_date,jo.order_no,
+jo.order_export_date,jo.order_no,jo.ref_no,
 
 CASE when l.name !='' then l.name when joai.destination!='' then joai.destination
 else p1.abbr end fnd,
@@ -29,52 +39,100 @@ where josi.order_id = joa.order_id),
  container_no,
 jos.mbl_no MBL, jos.hbl_no HBL,
 
+
+
+
+
+
 (
 		SELECT
+			sum(joa.total_amount)-
+                            IFNULL(( SELECT
 			sum(joa.total_amount)
+			FROM
+			job_order_arap joa
+		LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id
+		LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
+		WHERE
+			aco.id = $P{order_id}
+		AND joa.currency_id = 6 AND joa.order_id = jo.id and joa.order_type = 'cost'),0)
+
 		FROM
 			job_order_arap joa
 		LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id
 		LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
 		WHERE
 			aco.id = $P{order_id}
-		AND joa.currency_id = 6 AND joa.order_id = jo.id
+		AND joa.currency_id = 6 AND joa.order_id = jo.id and joa.order_type = 'charge'
 
 	) usd,
+
 (
 		SELECT
+			sum(joa.total_amount)-
+                            IFNULL(( SELECT
 			sum(joa.total_amount)
+			FROM
+			job_order_arap joa
+		LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id
+		LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
+		WHERE
+			aco.id = $P{order_id}
+		AND joa.currency_id = 3 AND joa.order_id = jo.id and joa.order_type = 'cost'),0)
+
 		FROM
 			job_order_arap joa
 		LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id
 		LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
 		WHERE
 			aco.id = $P{order_id}
-		AND joa.currency_id = 3 AND joa.order_id = jo.id
+		AND joa.currency_id = 3 AND joa.order_id = jo.id and joa.order_type = 'charge'
 
 	) cny,
+
 (
 		SELECT
+			sum(joa.total_amount)-
+                    IFNULL(( SELECT
 			sum(joa.total_amount)
+			FROM
+			job_order_arap joa
+		LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id
+		LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
+		WHERE
+			aco.id = $P{order_id}
+		AND joa.currency_id = 8 AND joa.order_id = jo.id and joa.order_type = 'cost'),0)
+
 		FROM
 			job_order_arap joa
 		LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id
 		LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
 		WHERE
 			aco.id = $P{order_id}
-		AND joa.currency_id = 8 AND joa.order_id = jo.id
+		AND joa.currency_id = 8 AND joa.order_id = jo.id and joa.order_type = 'charge'
 
 	) jpy,
-(
-		SELECT
+
+
+(	SELECT
+			sum(joa.total_amount)-
+                            IFNULL(( SELECT
 			sum(joa.total_amount)
+			FROM
+			job_order_arap joa
+		LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id
+		LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
+		WHERE
+			aco.id = $P{order_id}
+		AND joa.currency_id = 9 AND joa.order_id = jo.id and joa.order_type = 'cost'),0)
+
 		FROM
 			job_order_arap joa
 		LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id
 		LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id
 		WHERE
 			aco.id = $P{order_id}
-		AND joa.currency_id = 9 AND joa.order_id = jo.id
+		AND joa.currency_id = 9 AND joa.order_id = jo.id and joa.order_type = 'charge'
 
 	) hkd
 
@@ -150,6 +208,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 	<field name="hkd" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="ref_no" class="java.lang.String"/>
 	<variable name="SUM_RMB" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{cny}]]></variableExpression>
 	</variable>
@@ -219,77 +278,77 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<text><![CDATA[Print Date:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="66" width="50" height="15" uuid="2296abe4-f822-4292-b5c8-52e350fc9005"/>
+				<reportElement x="0" y="66" width="45" height="15" uuid="2296abe4-f822-4292-b5c8-52e350fc9005"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[DATE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="49" y="66" width="70" height="15" uuid="64467f91-acc8-4246-b170-dc2861052e28"/>
+				<reportElement x="45" y="66" width="60" height="15" uuid="64467f91-acc8-4246-b170-dc2861052e28"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[DEBIT NO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="119" y="65" width="97" height="17" uuid="a7d6ecde-9476-466d-ac9e-42cf41f8fa2f"/>
+				<reportElement x="104" y="65" width="70" height="17" uuid="a7d6ecde-9476-466d-ac9e-42cf41f8fa2f"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[DESTINATION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="215" y="66" width="34" height="16" uuid="1384bf7d-a986-4f8a-abe9-066a193c46c7"/>
+				<reportElement x="173" y="66" width="34" height="16" uuid="1384bf7d-a986-4f8a-abe9-066a193c46c7"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[CBM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="248" y="66" width="36" height="16" uuid="783b170c-4d40-4059-b113-108edb8eb1d3"/>
+				<reportElement x="206" y="66" width="36" height="16" uuid="783b170c-4d40-4059-b113-108edb8eb1d3"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[CTNS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="283" y="66" width="32" height="15" uuid="59288b4d-326a-4a71-95b4-3c9414ec5a6a"/>
+				<reportElement x="241" y="66" width="32" height="15" uuid="59288b4d-326a-4a71-95b4-3c9414ec5a6a"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[KGS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="315" y="66" width="51" height="16" uuid="8f8b6526-8b49-4f14-b97d-05edbf88b451"/>
+				<reportElement x="338" y="66" width="51" height="16" uuid="8f8b6526-8b49-4f14-b97d-05edbf88b451"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[REF NO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="366" y="65" width="70" height="17" uuid="4fd3f61d-328b-45e8-9969-2e2b98ffdb9c"/>
+				<reportElement x="390" y="65" width="64" height="17" uuid="4fd3f61d-328b-45e8-9969-2e2b98ffdb9c"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[MBL NO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="502" y="65" width="69" height="17" uuid="4eb7ce89-54b7-41bb-8d42-f04e283f2ccc"/>
+				<reportElement x="514" y="65" width="61" height="17" uuid="4eb7ce89-54b7-41bb-8d42-f04e283f2ccc"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[CTNR NO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="571" y="65" width="59" height="17" uuid="9909966c-2046-468c-9e53-0850e9789e9a"/>
+				<reportElement x="575" y="65" width="57" height="17" uuid="9909966c-2046-468c-9e53-0850e9789e9a"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[CNY]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="629" y="65" width="54" height="17" uuid="280dc1db-cc0d-4759-a1cf-0714e97e5a88"/>
+				<reportElement x="632" y="65" width="51" height="17" uuid="280dc1db-cc0d-4759-a1cf-0714e97e5a88"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
@@ -313,7 +372,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<reportElement x="1" y="81" width="801" height="1" uuid="2b11b7f3-6ece-4e5c-a0c2-cb7875047478"/>
 			</line>
 			<staticText>
-				<reportElement x="435" y="65" width="68" height="16" uuid="86997206-8c3d-456b-a5be-b745215e11cd"/>
+				<reportElement x="457" y="65" width="58" height="16" uuid="86997206-8c3d-456b-a5be-b745215e11cd"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
@@ -366,114 +425,124 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fax}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="273" y="64" width="65" height="17" uuid="e44021d6-7e96-4b1e-a2ef-a44ec4480db6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[BILL NO]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="32" splitType="Stretch">
-			<line>
-				<reportElement x="1" y="31" width="801" height="1" uuid="4c55ac81-c00e-44b4-b6a1-fdc0872caab8"/>
-				<graphicElement>
-					<pen lineStyle="Dashed"/>
-				</graphicElement>
-			</line>
+		<band height="15" splitType="Stretch">
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="629" y="2" width="54" height="20" uuid="1573c8f3-5e65-409b-be9c-a02fc6ce86a8"/>
+				<reportElement x="631" y="0" width="54" height="12" uuid="1573c8f3-5e65-409b-be9c-a02fc6ce86a8"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{usd}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="571" y="2" width="59" height="20" uuid="16b5d67b-1dca-41f6-a562-1d3e3f709591"/>
+				<reportElement x="575" y="0" width="57" height="12" uuid="16b5d67b-1dca-41f6-a562-1d3e3f709591"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cny}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="682" y="2" width="59" height="20" uuid="6b4dde9d-0df0-46aa-afd7-15992b05fb6b"/>
+				<reportElement x="684" y="0" width="59" height="12" uuid="6b4dde9d-0df0-46aa-afd7-15992b05fb6b"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{hkd}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="740" y="2" width="60" height="20" uuid="b7f89dc5-0c04-487f-b03c-f3340e2792fa"/>
+				<reportElement x="742" y="0" width="60" height="12" uuid="b7f89dc5-0c04-487f-b03c-f3340e2792fa"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{jpy}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="0" y="2" width="50" height="19" uuid="3512196d-f5c9-4c4f-bf9d-35288b99e69e"/>
+				<reportElement x="0" y="0" width="47" height="12" uuid="3512196d-f5c9-4c4f-bf9d-35288b99e69e"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="49" y="1" width="70" height="20" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
+				<reportElement x="45" y="0" width="61" height="12" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="315" y="2" width="51" height="20" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="340" y="0" width="46" height="12" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{truck_type}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="502" y="2" width="70" height="20" uuid="d3d45fa5-a3d7-444d-aa12-85feab34e35a"/>
+				<reportElement x="514" y="0" width="62" height="12" uuid="d3d45fa5-a3d7-444d-aa12-85feab34e35a"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="434" y="2" width="69" height="20" uuid="f24a4c1a-3f07-4b8e-b200-0e77e85d92f3"/>
+				<reportElement x="458" y="0" width="59" height="12" uuid="f24a4c1a-3f07-4b8e-b200-0e77e85d92f3"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfEncoding="Cp1252"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{HBL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="365" y="2" width="70" height="20" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
+				<reportElement stretchType="RelativeToBandHeight" x="377" y="0" width="90" height="15" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfEncoding="Cp1252"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{MBL}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="282" y="2" width="34" height="20" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
+				<reportElement x="237" y="0" width="34" height="12" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{KGS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="247" y="2" width="36" height="20" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
+				<reportElement x="206" y="0" width="31" height="12" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CTNS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="214" y="2" width="34" height="20" uuid="031ec9cc-8b73-404c-94d7-8695bbeabf86"/>
+				<reportElement x="172" y="0" width="34" height="12" uuid="031ec9cc-8b73-404c-94d7-8695bbeabf86"/>
 				<textElement textAlignment="Center">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CBM}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="118" y="2" width="97" height="30" uuid="b47f4b0c-359f-4d35-b125-b37107c4ef04"/>
+				<reportElement x="105" y="0" width="68" height="12" uuid="b47f4b0c-359f-4d35-b125-b37107c4ef04"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
 			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="273" y="0" width="70" height="12" uuid="29e7ccc5-83fc-408a-bdbc-3ff2bc680a5c"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ref_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="bottomLine" stretchType="RelativeToBandHeight" x="1" y="1" width="800" height="14" uuid="f5ee74a4-0050-466b-a169-c8b05a19a718"/>
+				<text><![CDATA[]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>
@@ -485,23 +554,23 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 	<summary>
 		<band height="35" splitType="Stretch">
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="643" y="0" width="50" height="20" uuid="9d492093-0cd2-4ca4-95d6-3f5a0db9d529"/>
+				<reportElement x="631" y="0" width="54" height="20" uuid="9d492093-0cd2-4ca4-95d6-3f5a0db9d529"/>
 				<textElement textAlignment="Center">
-					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_USD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="692" y="0" width="55" height="20" uuid="637f854b-f301-411d-bbf2-4887855d655c"/>
+				<reportElement x="684" y="0" width="59" height="20" uuid="637f854b-f301-411d-bbf2-4887855d655c"/>
 				<textElement textAlignment="Center">
-					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_HKD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="747" y="0" width="55" height="20" uuid="23bcd840-a1dc-44c0-9009-a895a50a90fd"/>
+				<reportElement x="742" y="0" width="60" height="20" uuid="23bcd840-a1dc-44c0-9009-a895a50a90fd"/>
 				<textElement textAlignment="Center">
-					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_JPY}]]></textFieldExpression>
 			</textField>
@@ -534,14 +603,14 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{user_tel}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="589" y="0" width="55" height="20" uuid="d438846b-7740-4512-9d7e-9bde9b2483c0"/>
+				<reportElement x="573" y="0" width="59" height="20" uuid="d438846b-7740-4512-9d7e-9bde9b2483c0"/>
 				<textElement textAlignment="Center">
-					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_RMB}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="530" y="0" width="59" height="20" uuid="fe64103a-065a-4549-95d3-b03d0d465b88"/>
+				<reportElement x="514" y="0" width="59" height="20" uuid="fe64103a-065a-4549-95d3-b03d0d465b88"/>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 		</band>

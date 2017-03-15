@@ -199,6 +199,20 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
+            { "data": "TOCA_WEIGHT", "width": "80px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="toca_weight" value="'+data+'" class="form-control toca_weight" style="width:100px" />';
+                }
+            },
+            { "data": "HEAD_WEIGHT", "width": "80px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="head_weight" value="'+data+'" class="form-control head_weight" style="width:100px" />';
+                }
+            },
             { "data": "DRIVER", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)

@@ -3,7 +3,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './todo', './index_weekly_charts'],
 
     $(document).ready(function () {
         document.title = '管理看板 | ' + document.title;
-
+        $("#breadcrumb_li").html('<i class="icon-th-large"></i>管理看板');
         todoController.updateTodo(true);
         
         $('.seeMsgBoardDetail').click(function(){

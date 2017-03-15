@@ -1,0 +1,18 @@
+<input type="hidden" id="customSelf_id" value="${customSelf.id!''}">
+           
+        <div class="form-group"  style="margin-top:15px">
+                    <div class="row">
+                            <div class="col-lg-6">
+                            	<label>服务</label> <textarea id="express_service" class="form-control" rows="3">${party.express_service!''}</textarea>
+                            </div>
+                            <div class="col-lg-6">
+                                <label>备注</label>   <textarea id="express_remark" class="form-control" rows="3">${party.express_remark!''}</textarea>  
+                        	</div>
+                    </div>
+         </div><!-- /.row -->
+
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/contractManagement/delivery_express']);
+    });
+</script>

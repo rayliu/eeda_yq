@@ -4,18 +4,22 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.Office;
 import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
 import models.eeda.cms.CustomPlanOrderItem;
 import models.eeda.oms.jobOrder.JobOrder;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.MultiPartEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -49,6 +53,7 @@ public class CustomPlanOrderController extends Controller {
 		render("/cms/customPlanOrder/CustomPlanOrderlist.html");
 	}
 	
+	
 	@Before(EedaMenuInterceptor.class)
     public void create() {
         String jobId = getPara("jobOrderId");
@@ -70,13 +75,16 @@ public class CustomPlanOrderController extends Controller {
     @Before(Tx.class)
    	public void save() throws Exception {		
    		String jsonStr=getPara("params");
-       	
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
         CustomPlanOrder customPlanOrder = new CustomPlanOrder();
    		String id = (String) dto.get("id");
-   		
+   		String ref_job_order_id = (String) dto.get("ref_job_order_id");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM");//转换后的格式
+        String newDateStr = "";
+        
+        newDateStr=sdf.format(new Date());
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
    		if (StringUtils.isNotEmpty(id)) {
@@ -88,21 +96,40 @@ public class CustomPlanOrderController extends Controller {
    			customPlanOrder.set("updator", user.getLong("id"));
    			customPlanOrder.set("update_stamp", new Date());
    			customPlanOrder.update();
-   			saveCustomTemplate(dto);
+   			JobOrder job_order= JobOrder.dao.findById(ref_job_order_id);
+   			if(job_order!=null){
+   				job_order.set("custom_flag","Y");
+   				job_order.update();
+   			}
+   			
    		} else {
    			//create 
    			DbUtils.setModelValues(dto, customPlanOrder);
    			
    			//需后台处理的字段
-   			customPlanOrder.set("order_no", OrderNoGenerator.getNextOrderNo("BGSQ", office_id));
+   			String order_no =OrderNoGenerator.getNextOrderNo("BGSQ", office_id);
+   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
+   			sb.insert(6, newDateStr);//在指定的位置1，插入指定的字符串
+   			sb.replace(8, 9, "");
+   			order_no = sb.toString();
+   			customPlanOrder.set("order_no", order_no);
+   			
    			customPlanOrder.set("creator", user.getLong("id"));
    			customPlanOrder.set("create_stamp", new Date());
    			customPlanOrder.set("office_id", office_id);
    			customPlanOrder.save();
    			id = customPlanOrder.getLong("id").toString();
-   			saveCustomTemplate(dto);
+   			JobOrder job_order= JobOrder.dao.findById(ref_job_order_id);
+   			if(job_order!=null){
+   				job_order.set("custom_flag", "Y");
+   				job_order.update();
+   			}
    		}
    		
+   		//保存托运单模板
+   		saveConsignmentTemplate(dto);
+   		//保存报关单模板
+   		saveCustomTemplate(dto);
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
 		DbUtils.handleList(itemList, id, CustomPlanOrderItem.class, "order_id");
 		
@@ -118,108 +145,285 @@ public class CustomPlanOrderController extends Controller {
 		List<Map<String, String>> shipping_item = (ArrayList<Map<String, String>>)dto.get("shipping_item");
 		DbUtils.handleList(shipping_item, "custom_plan_order_shipping_item", id, "order_id");
 
+		//保存费用明细，应收应付模版
+		String type=(String) dto.get("order_type");
+		String customer_id=(String) dto.get("customer_id");
+		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
+		List<Map<String, String>> cost_template = (ArrayList<Map<String, String>>)dto.get("cost_template");
+		List<Map<String, String>> allCharge_template = (ArrayList<Map<String, String>>)dto.get("allCharge_template");
+		List<Map<String, String>> allCost_template = (ArrayList<Map<String, String>>)dto.get("allCost_template");
+   		saveArapTemplate(type,customer_id,charge_template,cost_template,allCharge_template,allCost_template);
+		   		
 		long creator = customPlanOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
 		Record r = customPlanOrder.toRecord();
    		r.set("creator_name", user_name);
    		renderJson(r);
    	}
-   
-    private void saveCustomTemplate(Map<String, ?> dto) {
+    
+    
+     //保存报关单模板
+      public void saveCustomTemplate(Map<String, ?> dto){
+    	  Long creator_id = LoginUserController.getLoginUserId(this);
+      	
+      	String receive_sent_consignee = (String) dto.get("receive_sent_consignee");
+      	String production_and_sales = (String) dto.get("production_and_sales");
+      	String application_unit = (String) dto.get("application_unit");
+      	String export_port = (String) dto.get("export_port");
+      	String transport_type = (String) dto.get("transport_type");
+      	String supervision_mode = (String) dto.get("supervision_mode");
+      	String nature_of_exemption = (String) dto.get("nature_of_exemption");
+      	String record_no = (String) dto.get("record_no");
+      	String trading_country = (String) dto.get("trading_country");
+      	String destination_country = (String) dto.get("destination_country");
+      	String destination_port = (String) dto.get("destination_port");
+      	String supply_of_goods = (String) dto.get("supply_of_goods");
+      	String license_no = (String) dto.get("license_no");
+      	String contract_agreement_no = (String) dto.get("contract_agreement_no");
+      	String deal_mode = (String) dto.get("deal_mode");
+      	String note = (String) dto.get("note");
+      	
+      	String sql = "select 1 from custom_plan_order_template where"
+                  + " creator_id = "+creator_id;
+        
+          if(StringUtils.isNotEmpty(receive_sent_consignee)){
+          	sql+=" and receive_sent_consignee= '"+receive_sent_consignee+"'";
+          }
+          if(StringUtils.isNotEmpty(production_and_sales)){
+          	sql+=" and production_and_sales= '"+production_and_sales+"'";
+          }
+          if(StringUtils.isNotEmpty(application_unit)){
+          	sql+=" and application_unit= '"+application_unit+"'";
+          }
+          if(StringUtils.isNotEmpty(export_port)){
+          	sql+=" and export_port= '"+export_port+"'";
+          }
+          if(StringUtils.isNotEmpty(transport_type)){
+          	sql+=" and transport_type= '"+transport_type+"'";
+          }
+          if(StringUtils.isNotEmpty(supervision_mode)){
+          	sql+=" and supervision_mode= '"+supervision_mode+"'";
+          }
+          if(StringUtils.isNotEmpty(nature_of_exemption)){
+          	sql+=" and nature_of_exemption= '"+nature_of_exemption+"'";
+          }
+          if(StringUtils.isNotEmpty(record_no)){
+          	sql+=" and record_no= '"+record_no+"'";
+          }
+          if(StringUtils.isNotEmpty(trading_country)){
+          	sql+=" and trading_country= '"+trading_country+"'";
+          }
+          if(StringUtils.isNotEmpty(destination_country)){
+          	sql+=" and destination_country= '"+destination_country+"'";
+          }
+          if(StringUtils.isNotEmpty(destination_port)){
+          	sql+=" and destination_port= '"+destination_port+"'";
+          }
+          if(StringUtils.isNotEmpty(supply_of_goods)){
+          	sql+=" and supply_of_goods= '"+supply_of_goods+"'";
+          }
+          if(StringUtils.isNotEmpty(license_no)){
+          	sql+=" and license_no= '"+license_no+"'";
+          }
+          if(StringUtils.isNotEmpty(contract_agreement_no)){
+          	sql+=" and contract_agreement_no= '"+contract_agreement_no+"'";
+          }
+          if(StringUtils.isNotEmpty(deal_mode)){
+          	sql+=" and deal_mode= '"+deal_mode+"'";
+          }
+          if(StringUtils.isNotEmpty(note)){
+          	sql+=" and note= '"+note+"'";
+          }
+    
+          Record checkRec = Db.findFirst(sql);
+      	if(checkRec==null){
+      		Record r= new Record();
+      		r.set("creator_id", creator_id);
+      		r.set("receive_sent_consignee", receive_sent_consignee);
+      		r.set("production_and_sales", production_and_sales);
+      		r.set("application_unit", application_unit);
+      		r.set("export_port", export_port);
+      		r.set("transport_type", transport_type);
+      		r.set("supervision_mode", supervision_mode);
+      		r.set("nature_of_exemption", nature_of_exemption);
+      		r.set("record_no", record_no);
+      		r.set("trading_country", trading_country);
+      		r.set("destination_country", destination_country);
+      		r.set("destination_port", destination_port);
+      		r.set("supply_of_goods", supply_of_goods);
+      		r.set("license_no", license_no);
+      		r.set("contract_agreement_no", contract_agreement_no);
+      		r.set("deal_mode", deal_mode);
+      		r.set("note", note);
+      		Db.save("custom_plan_order_template", r);
+          }
+      }
+
+    
+    //保存托运单填写模板
+    private void saveConsignmentTemplate(Map<String, ?> dto) {
     	Long creator_id = LoginUserController.getLoginUserId(this);
     	
-    	String receive_sent_consignee = (String) dto.get("receive_sent_consignee");
-    	String production_and_sales = (String) dto.get("production_and_sales");
-    	String application_unit = (String) dto.get("application_unit");
-    	String export_port = (String) dto.get("export_port");
-    	String transport_type = (String) dto.get("transport_type");
-    	String supervision_mode = (String) dto.get("supervision_mode");
-    	String nature_of_exemption = (String) dto.get("nature_of_exemption");
-    	String record_no = (String) dto.get("record_no");
-    	String trading_country = (String) dto.get("trading_country");
-    	String destination_country = (String) dto.get("destination_country");
-    	String destination_port = (String) dto.get("destination_port");
-    	String supply_of_goods = (String) dto.get("supply_of_goods");
-    	String license_no = (String) dto.get("license_no");
-    	String contract_agreement_no = (String) dto.get("contract_agreement_no");
-    	String deal_mode = (String) dto.get("deal_mode");
-    	String note = (String) dto.get("note");
+    	String shipping_date = (String) dto.get("shipping_date");
+    	String customs_number = (String) dto.get("customs_number");
+    	String boat_company = (String) dto.get("boat_company");
+    	String boat_name = (String) dto.get("boat_name");
+    	String shipping_men = (String) dto.get("shipping_men");
+    	String consignee = (String) dto.get("consignee");
+    	String appointed_port = (String) dto.get("appointed_port");
+    	String shipping_men_phone = (String) dto.get("shipping_men_phone");
+    	String consignee_phone = (String) dto.get("consignee_phone");
+    	String notice_man = (String) dto.get("notice_man");
+    	String notice_man_phone = (String) dto.get("notice_man_phone");
     	
-    	String sql = "select 1 from custom_plan_order_template where"
+    	String sql = "select 1 from consignment_plan_order_template where"
                 + " creator_id = "+creator_id;
       
-        if(StringUtils.isNotEmpty(receive_sent_consignee)){
-        	sql+=" and receive_sent_consignee= '"+receive_sent_consignee+"'";
+        if(StringUtils.isNotEmpty(shipping_date)){
+        	sql+=" and shipping_date= '"+shipping_date+"'";
         }
-        if(StringUtils.isNotEmpty(production_and_sales)){
-        	sql+=" and production_and_sales= '"+production_and_sales+"'";
+        if(StringUtils.isNotEmpty(customs_number)){
+        	sql+=" and customs_number= '"+customs_number+"'";
         }
-        if(StringUtils.isNotEmpty(application_unit)){
-        	sql+=" and application_unit= '"+application_unit+"'";
+        if(StringUtils.isNotEmpty(boat_company)){
+        	sql+=" and boat_company= '"+boat_company+"'";
         }
-        if(StringUtils.isNotEmpty(export_port)){
-        	sql+=" and export_port= '"+export_port+"'";
+        if(StringUtils.isNotEmpty(boat_name)){
+        	sql+=" and boat_name= '"+boat_name+"'";
         }
-        if(StringUtils.isNotEmpty(transport_type)){
-        	sql+=" and transport_type= '"+transport_type+"'";
+        if(StringUtils.isNotEmpty(shipping_men)){
+        	sql+=" and shipping_men= '"+shipping_men+"'";
         }
-        if(StringUtils.isNotEmpty(supervision_mode)){
-        	sql+=" and supervision_mode= '"+supervision_mode+"'";
+        if(StringUtils.isNotEmpty(consignee)){
+        	sql+=" and consignee= '"+consignee+"'";
         }
-        if(StringUtils.isNotEmpty(nature_of_exemption)){
-        	sql+=" and nature_of_exemption= '"+nature_of_exemption+"'";
+        if(StringUtils.isNotEmpty(appointed_port)){
+        	sql+=" and appointed_port= '"+appointed_port+"'";
         }
-        if(StringUtils.isNotEmpty(record_no)){
-        	sql+=" and record_no= '"+record_no+"'";
+        if(StringUtils.isNotEmpty(shipping_men_phone)){
+        	sql+=" and shipping_men_phone= '"+shipping_men_phone+"'";
         }
-        if(StringUtils.isNotEmpty(trading_country)){
-        	sql+=" and trading_country= '"+trading_country+"'";
+        if(StringUtils.isNotEmpty(consignee_phone)){
+        	sql+=" and consignee_phone= '"+consignee_phone+"'";
         }
-        if(StringUtils.isNotEmpty(destination_country)){
-        	sql+=" and destination_country= '"+destination_country+"'";
+        if(StringUtils.isNotEmpty(notice_man)){
+        	sql+=" and notice_man= '"+notice_man+"'";
         }
-        if(StringUtils.isNotEmpty(destination_port)){
-        	sql+=" and destination_port= '"+destination_port+"'";
-        }
-        if(StringUtils.isNotEmpty(supply_of_goods)){
-        	sql+=" and supply_of_goods= '"+supply_of_goods+"'";
-        }
-        if(StringUtils.isNotEmpty(license_no)){
-        	sql+=" and license_no= '"+license_no+"'";
-        }
-        if(StringUtils.isNotEmpty(contract_agreement_no)){
-        	sql+=" and contract_agreement_no= '"+contract_agreement_no+"'";
-        }
-        if(StringUtils.isNotEmpty(deal_mode)){
-        	sql+=" and deal_mode= '"+deal_mode+"'";
-        }
-        if(StringUtils.isNotEmpty(note)){
-        	sql+=" and note= '"+note+"'";
+        if(StringUtils.isNotEmpty(notice_man_phone)){
+        	sql+=" and notice_man_phone= '"+notice_man_phone+"'";
         }
   
         Record checkRec = Db.findFirst(sql);
     	if(checkRec==null){
     		Record r= new Record();
     		r.set("creator_id", creator_id);
-    		r.set("receive_sent_consignee", receive_sent_consignee);
-    		r.set("production_and_sales", production_and_sales);
-    		r.set("application_unit", application_unit);
-    		r.set("export_port", export_port);
-    		r.set("transport_type", transport_type);
-    		r.set("supervision_mode", supervision_mode);
-    		r.set("nature_of_exemption", nature_of_exemption);
-    		r.set("record_no", record_no);
-    		r.set("trading_country", trading_country);
-    		r.set("destination_country", destination_country);
-    		r.set("destination_port", destination_port);
-    		r.set("supply_of_goods", supply_of_goods);
-    		r.set("license_no", license_no);
-    		r.set("contract_agreement_no", contract_agreement_no);
-    		r.set("deal_mode", deal_mode);
-    		r.set("note", note);
-    		Db.save("custom_plan_order_template", r);
+    		if(!"".equals(shipping_date)){
+    			r.set("shipping_date", shipping_date);
+    		}
+    		r.set("customs_number", customs_number);
+    		if(!"".equals(boat_company)){
+    			r.set("boat_company", boat_company);
+    		}
+    		r.set("boat_name", boat_name);
+    		if(!"".equals(shipping_men)){
+    			r.set("shipping_men", shipping_men);
+    		}
+    		if(!"".equals(boat_company)){
+    			r.set("consignee", consignee);
+    		}
+    		if(!"".equals(appointed_port)){
+    			r.set("appointed_port", appointed_port);
+    		}
+    		r.set("shipping_men_phone", shipping_men_phone);
+    		r.set("consignee_phone", consignee_phone);
+    		if(!"".equals(notice_man)){
+    			r.set("notice_man", notice_man);
+    		}
+    		r.set("notice_man_phone", notice_man_phone);
+    		Db.save("consignment_plan_order_template", r);
     	}
 	}
+    
+    /**
+     * 保存费用模板
+     * @param shipment_detail
+     */
+    public void saveArapTemplate(String order_type,String customer_id,
+    		List<Map<String, String>> charge_list,List<Map<String, String>> cost_list,
+    		List<Map<String, String>> charge_list_all,List<Map<String, String>> cost_list_all){
+        if((charge_list==null||charge_list.size()<=0) && (cost_list==null||cost_list.size()<=0) )
+            return;
+
+        Gson gson = new Gson();
+        String chargeObject = gson.toJson(charge_list);
+        String costObject = gson.toJson(cost_list);
+        String chargeObjectAll = gson.toJson(charge_list_all);
+        String costObjectAll = gson.toJson(cost_list_all);
+        
+    	Long creator_id = LoginUserController.getLoginUserId(this);
+    	
+    	String chargeSql = "select parent_id from custom_plan_order_arap_template where"
+                + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
+                + " and  json_value = '"+chargeObject+"' and parent_id is not null";
+    	String costSql = "select parent_id from custom_plan_order_arap_template where"
+                + " arap_type = 'cost' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
+                + " and  json_value = '"+costObject+"' and parent_id is not null ";
+
+        Record chargeRec = Db.findFirst(chargeSql);
+        Record costRec = Db.findFirst(costSql);
+
+        if(chargeRec == null){
+        	if(!(charge_list==null||charge_list.size()<=0)){
+        		//保存全部信息
+                Record all= new Record();
+                all.set("creator_id", creator_id);
+                all.set("customer_id", customer_id);
+                all.set("arap_type", "charge");
+                all.set("order_type", order_type);
+                all.set("json_value", chargeObjectAll);          
+                Db.save("custom_plan_order_arap_template", all);  
+        		
+                //保存局部信息
+        		Record r= new Record();
+                r.set("creator_id", creator_id);
+                r.set("customer_id", customer_id);
+                r.set("arap_type", "charge");
+                r.set("order_type", order_type);
+                r.set("json_value", chargeObject);
+                r.set("parent_id", all.getLong("id"));
+                Db.save("custom_plan_order_arap_template", r);  
+       		}
+        }else{
+        	Long parent_id = chargeRec.getLong("parent_id");
+        	Db.update("update custom_plan_order_arap_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
+        }
+        
+        if(costRec == null){
+        	if(!(cost_list==null||cost_list.size()<=0)){
+        		//保存全部信息
+                Record all = new Record();
+                all.set("creator_id", creator_id);
+                all.set("customer_id", customer_id);
+                all.set("arap_type", "cost");
+                all.set("order_type", order_type);
+                all.set("json_value", costObjectAll);
+                Db.save("custom_plan_order_arap_template", all);  
+                
+        		//保存局部信息
+        		Record r= new Record();
+                r.set("creator_id", creator_id);
+                r.set("customer_id", customer_id);
+                r.set("arap_type", "cost");
+                r.set("order_type", order_type);
+                r.set("json_value", costObject);
+                r.set("parent_id",  all.getLong("id"));
+                Db.save("custom_plan_order_arap_template", r);  
+       		}
+        }else{
+        	Long parent_id = costRec.getLong("parent_id");
+        	Db.update("update custom_plan_order_arap_template set json_value = ? where id = ?",costObjectAll,parent_id);
+        }
+    }
 
 	//返回list
     private List<Record> getItems(String orderId, String type) {
@@ -317,7 +521,10 @@ public class CustomPlanOrderController extends Controller {
     	
     	setAttr("chargeList", getItems(id,"charge"));
     	setAttr("costList", getItems(id,"cost"));
+    	//获取报关单常用模板
     	setAttr("customTemplateInfo", getCustomTemplateInfo());
+    	//获取托运单常用模板
+    	setAttr("usedConsignmentInfo", getConsignmentTemplateInfo());
     	
     	//用户信息
     	long creator = r.getLong("creator");
@@ -347,6 +554,31 @@ public class CustomPlanOrderController extends Controller {
     	List<Record> t = Db.find(sql, LoginUserController.getLoginUserId(this));
 		return t;
 	}
+    
+    private List<Record> getConsignmentTemplateInfo() {
+    	String sql = " SELECT t.*,p.abbr shipping_men_name,p1.abbr consignee_name,p2.abbr notice_man_name,l.name port_name  "
+    			+" from consignment_plan_order_template t "
+    			+" LEFT JOIN party p on p.id = t.shipping_men "
+    			+" LEFT JOIN party p1 on p1.id = t.consignee "
+    			+" LEFT JOIN party p2 on p2.id = t.notice_man "
+    			+" LEFT JOIN location l on l.id = t.appointed_port "
+    			+" WHERE creator_id = ?";
+    	List<Record> t = Db.find(sql, LoginUserController.getLoginUserId(this));
+		return t;
+	}
+    
+    /**
+     * 获取应收模板信息
+     */
+    public void getArapTemplate(){
+    	String order_type = getPara("order_type");
+    	String customer_id = getPara("customer_id");
+    	String arap_type = getPara("arap_type");
+    	List<Record> list = Db.find("select * from custom_plan_order_arap_template "
+    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
+    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
+    	renderJson(list);
+    }
 
 	public void list() {
         UserLogin user = LoginUserController.getLoginUser(this);
@@ -402,19 +634,27 @@ public class CustomPlanOrderController extends Controller {
         map.put("aaData", list);
         renderJson(map); 
     }
-   
+    
+
+    
+
     
     //提交申请单给报关行
-    public void confirmCompleted(){
+    public void confirmCompleted() throws Exception{
     	String id = getPara("id");
     	String plan_order_no = getPara("plan_order_no");
     	String customer_id= getPara("customer_id");
     	String btnId = getPara("btnId");
     	CustomPlanOrder order = CustomPlanOrder.dao.findById(id);
     	if("confirmCompleted".equals(btnId)){
+    		UserLogin user = LoginUserController.getLoginUser(this);
+       		long office_id = user.getLong("office_id");
+       		if(office_id!=2){
+       			sendMail(id,plan_order_no,office_id);
+        		order.set("fill_by",LoginUserController.getLoginUserId(this));
+        		order.set("fill_stamp",new Date());
+       		}
     		order.set("status","待审核");
-    		order.set("fill_by",LoginUserController.getLoginUserId(this));
-    		order.set("fill_stamp",new Date());
     	}
     	if("passBtn".equals(btnId)){
     		order.set("status","审核通过");
@@ -497,6 +737,21 @@ public class CustomPlanOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
+  //删除常用模版
+    @Before(Tx.class)
+    public void deleteConsignmentTemplate(){
+    	String id = getPara("id");
+    	Db.update("delete from consignment_plan_order_template where id = ?",id);
+    	renderJson("{\"result\":true}");
+    }
+    //删除费用明细常用信息模版
+    @Before(Tx.class)
+    public void deleteArapTemplate(){
+    	String id = getPara("id");
+    	Db.update("delete from custom_plan_order_arap_template where id = ? or parent_id = ?",id,id);
+    	renderJson("{\"result\":true}");
+    }
+    
     //费用明细确认
     @Before(Tx.class)
     public void feeConfirm(){
@@ -526,5 +781,42 @@ public class CustomPlanOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
+  
+
+    @Before(Tx.class)
+    public void sendMail(String order_id,String order_no,long office_id) throws Exception {
+    	String mailTitle = "您有一份报关单待处理";
+    	String mailContent = "报关申请单号为<a href=\"http://www.esimplev.com/customPlanOrder/edit?id="+order_id+"\">"+order_no+"</a>";
+    	
+        MultiPartEmail email = new MultiPartEmail();  
+        /*smtp.exmail.qq.com*/
+        email.setHostName("smtp.mxhichina.com");
+        email.setSmtpPort(465);
+        //反查公司信息
+        Office office=Office.dao.findById(office_id);
+        try{
+        /*输入公司的邮箱和密码*/
+        email.setAuthenticator(new DefaultAuthenticator(office.getStr("email"), office.getStr("emailPassword")));        
+        email.setSSLOnConnect(true);
+        email.setFrom(office.getStr("email"),office.getStr("office_name"));//设置发信人
+        //设置收件人，邮件标题，邮件内容
+//    	email.addTo("1063203104@qq.com");
+    	email.addTo("ytimport@163.com");
+//        email.addTo("864358232@qq.com");
+        email.setSubject(mailTitle);
+        email.setContent(mailContent, "text/html;charset=gb2312");
+//        //抄送
+//        email.addCc("1063203104@qq.com");
+//       //密送
+//        email.addBcc("1063203104@qq.com");
+        
+        	//email.setCharset("UTF-8"); 
+        	email.send();
+        }catch(Exception e){
+        	e.printStackTrace();
+        }
+       
+    }
+   
     
 }

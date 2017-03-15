@@ -111,25 +111,25 @@ $(document).ready(function() {
                         return '<input type="checkbox" class="checkBox" name="hide_flag">';
 			    }
 			},
-			{ "data": "ID","width": "110px",
+			{ "data": "ID","width": "70px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
                 	if(data&&full.AUDIT_FLAG == 'Y'){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> '; 
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>&nbsp';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>确认</button> '; 
                 		}
                 	else if(data){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" class=" btn btn-success btn-xs costConfirm" style="width:50px" value="'+data+'" >确认</button> ';		
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>&nbsp';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs costConfirm" style="width:50px" value="'+data+'" >确认</button> ';		
                 	}else{
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> ';
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px">删除</button>&nbsp';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;
                 }
             },
-            { "data": "TYPE","width": "80px",
+            { "data": "TYPE","width": "80px","visible":false,
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		var str = '<select name="type" class="form-control search-control" style="width:100px" disabled>'
@@ -244,9 +244,9 @@ $(document).ready(function() {
                     else
                     	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
-                    		return '<input type="text" name="price" style="width:80px" value="'+str+'" class="form-control" disabled />';
+                    		return '<input type="text" name="price" style="width:80px" value="'+str+'" class="form-control notsave" disabled />';
                      }else{
-                 			return '<input type="text" name="price" style="width:80px" value="'+str+'" class="form-control" />';
+                 			return '<input type="text" name="price" style="width:80px" value="'+str+'" class="form-control notsave" />';
                      }
                }
             },
@@ -255,15 +255,15 @@ $(document).ready(function() {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
                     else
-                    	str = '';
+                    	str = '1';
                 	if(full.AUDIT_FLAG == 'Y'){
-                        	return '<input type="text" name="amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
+                        	return '<input type="text" name="amount" style="width:80px" value="'+str+'" class="form-control notsave" disabled />';
                      }else{
-                         	return '<input type="text" name="amount" style="width:80px" value="'+str+'" class="form-control" />';
+                         	return '<input type="text" name="amount" style="width:80px" value="'+str+'" class="form-control notsave" />';
 	                 }
               }
             },
-            { "data": "UNIT_ID","width": "60px",
+            { "data": "UNIT_ID","width": "60px","visible":false,
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 	 if(!data)
@@ -296,30 +296,51 @@ $(document).ready(function() {
             { "data": "CURRENCY_ID", "width":"60px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
-	                	if(!data)
-	                        data='';
-	                    var field_html = template('table_dropdown_template',
-	                        {
-	                            id: 'CURRENCY_ID',
-	                            value: data,
-	                            display_value: full.CURRENCY_NAME,
-	                            style:'width:80px',
-	                            disabled:'disabled'
-	                        }
-	                    );
-	                    return field_html;
+                		if(!data){
+                    		var field_html = template('table_dropdown_template',
+        	                        {
+        	                            id: 'CURRENCY_ID',
+        	                            value: '3',
+        	                            display_value: "人民币",
+        	                            style:'width:80px',
+        	                            disabled:'disabled'
+        	                        }
+        	                    );
+                    	}else{
+                    		var field_html = template('table_dropdown_template',
+        	                        {
+        	                            id: 'CURRENCY_ID',
+        	                            value: data,
+        	                            display_value: "人民币",
+        	                            style:'width:80px',
+        	                            disabled:'disabled'
+        	                        }
+        	                    );
+                    	}
+                        return field_html;
                 }else{
-            	   if(!data)
-                       data='';
-                   var field_html = template('table_dropdown_template',
-                       {
-                           id: 'CURRENCY_ID',
-                           value: data,
-                           display_value: full.CURRENCY_NAME,
-                           style:'width:80px'
-                       }
-                   );
-                   return field_html; 
+                	if(!data){
+                		var field_html = template('table_dropdown_template',
+    	                        {
+    	                            id: 'CURRENCY_ID',
+    	                            value: '3',
+    	                            display_value: "人民币",
+    	                            style:'width:80px',
+    	                            disabled:'disabled'
+    	                        }
+    	                    );
+                	}else{
+                		var field_html = template('table_dropdown_template',
+    	                        {
+    	                            id: 'CURRENCY_ID',
+    	                            value: data,
+    	                            display_value: "人民币",
+    	                            style:'width:80px',
+    	                            disabled:'disabled'
+    	                        }
+    	                    );
+                	}
+                    return field_html;
                 }
               }
             },
@@ -330,13 +351,13 @@ $(document).ready(function() {
                     else
                     	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
-                        	return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control" disabled />';
+                        	return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control notsave" disabled />';
                 	}else{
-                        	return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control" disabled/>';
+                        	return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control notsave" disabled/>';
                 	}
                 }
             },
-            { "data": "EXCHANGE_RATE", "width": "60px", "className":"currency_rate",
+            { "data": "EXCHANGE_RATE", "width": "60px", "className":"currency_rate","visible":false,
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -349,7 +370,7 @@ $(document).ready(function() {
                }
               }
             },
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px","className":"cny_total_amount",
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px","className":"cny_total_amount","visible":false,
                 "render": function ( data, type, full, meta ) {
                 	if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -367,11 +388,11 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" disabled />';
+	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" disabled />';
 	                }else{
 	            	   if(!data)
 	                       data='';
-	                   return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" />';
+	                   return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" />';
 	                }
                }
             }, 
@@ -469,7 +490,7 @@ $(document).ready(function() {
            }else if(tableCur[i].value=='HKD'){
                totalCostHKD += parseFloat(tableAmount[i].value);
            }
-           profitTotalCost+= parseFloat(currencyTotalAmountCost[i].value);
+//           profitTotalCost+= parseFloat(currencyTotalAmountCost[i].value);
        }
        //隐藏应付人民币汇总字段
        $('[name=profitTotalCost]').text(profitTotalCost).hide();   
@@ -502,19 +523,157 @@ $(document).ready(function() {
        calcCurrency();
    }
 
-    getTotalCost();
-//       var totalCharge = $('[name=chargeRMB]').text().toString();
-//       var totalChargeU = $('[name=chargeUSD]').text().toString();        
-//       var totalChargeRMB=parseFloat(totalCharge.replace('RMB',''));        
-//       var totalChargeUSD=parseFloat(totalChargeU.replace('USD',''));        
-//       if(isNaN(totalChargeRMB)|| totalChargeRMB =='' ){
-//           totalChargeRMB=0;
-//         }        
-//       if(isNaN(totalChargeUSD)|| totalChargeUSD =='' ){
-//          totalChargeUSD=0;
-//         }
-//    
-//    var costRMB = $('[name=costRMB]').text();    		        
+    getTotalCost();  		        
 
+        
+    salesOrder.buildCostTemplate=function(){
+        var cargo_table_rows = $("#cost_table tr");
+        var cargo_items_array=[];
+        for(var index=0; index<cargo_table_rows.length; index++){
+            if(index==0)
+                continue;
+
+            var row = cargo_table_rows[index];
+            var empty = $(row).find('.dataTables_empty').text();
+            if(empty)
+                continue;
+            
+            var id = $(row).attr('id');
+            if(!id){
+                id='';
+            }
+            
+            var item={}
+            item.order_type = "cost";//应付
+            for(var i = 1; i < row.childNodes.length; i++){
+                if($(row.childNodes[i]).find('.notsave').size()==0){
+                    var el = $(row.childNodes[i]).find('input,select');
+                    var name = el.attr('name'); 
+                    
+                    if(el && name){
+                        
+                        if(name=='exchange_currency_id'&&el.val()==''){
+                            el.val(el.parent().parent().parent().find('[name=CURRENCY_ID]').val());
+                        }
+                        if(name=='exchange_currency_rate'&&el.val()==''){
+                            el.val(1);
+                        }
+                        if(name=='exchange_total_amount'&&el.val()==''){
+                            el.val(el.parent().parent().find('[name=total_amount]').val());
+                        }                   
+                        
+                        if(name.toLowerCase()!='unit_id'){
+                            var value = el.val();//元素的值
+                            item[name] = value;
+                        }
+                        
+                        if(name.toLowerCase().indexOf("_id")>=0){
+                            var id_value = $(row.childNodes[i]).find('[name='+name+'_input]').val();
+                            var abbr = name.toLowerCase().replace('id','name');
+                            if(abbr!='unit_name'){
+                                item[abbr] = id_value;
+                            }
+                        }
+                    }
+                }
+            }
+            cargo_items_array.push(item);
+        }
+        return cargo_items_array;
+    };
+    
+
+    
+    salesOrder.buildAllCostTemplate=function(){
+        var cargo_table_rows = $("#cost_table tr");
+        var cargo_items_array=[];
+        for(var index=0; index<cargo_table_rows.length; index++){
+            if(index==0)
+                continue;
+
+            var row = cargo_table_rows[index];
+            var empty = $(row).find('.dataTables_empty').text();
+            if(empty)
+                continue;
+            
+            var id = $(row).attr('id');
+            if(!id){
+                id='';
+            }
+            
+            var item={}
+            item.order_type = "cost";//应付
+            for(var i = 1; i < row.childNodes.length; i++){
+                    var el = $(row.childNodes[i]).find('input,select');
+                    var name = el.attr('name'); 
+                    
+                    if(el && name){
+                        
+                        if(name=='exchange_currency_id'&&el.val()==''){
+                            el.val(el.parent().parent().parent().find('[name=CURRENCY_ID]').val());
+                        }
+                        if(name=='exchange_currency_rate'&&el.val()==''){
+                            el.val(1);
+                        }
+                        if(name=='exchange_total_amount'&&el.val()==''){
+                            el.val(el.parent().parent().find('[name=total_amount]').val());
+                        }                   
+                        
+                        var value = el.val();//元素的值
+                        item[name] = value;
+                        
+                        if(name.toLowerCase().indexOf("_id")>=0){
+                            var id_value = $(row.childNodes[i]).find('[name='+name+'_input]').val();
+                            var abbr = name.toLowerCase().replace('id','name');
+                            item[abbr] = id_value;
+                        }
+                    }
+            }
+            cargo_items_array.push(item);
+        }
+        return cargo_items_array;
+    };
+    
+  //复制应付费用到应收
+    $('#copyCostToCharge').click(function(){
+    	var order={};
+    	order = salesOrder.buildAllCostTemplate();
+    	$('#copyCostToCharge').attr("disabled",true);
+    	//点击回显
+    	 	var table = 'charge_table';
+    	 	var dataTable = $('#'+table).DataTable();
+            for(var i=0; i<order.length; i++){
+                var row = $(order[i]);
+                var item={};
+                item.ID='';
+                item.TYPE=row.attr('');
+                item.SP_ID=row.attr('');
+                item.CHARGE_ID= row.attr('CHARGE_ID');
+                item.CHARGE_ENG_ID= row.attr('charge_eng_id');
+                item.PRICE= row.attr('price');
+                item.AMOUNT= row.attr('amount');
+                item.UNIT_ID= row.attr('');
+                item.TOTAL_AMOUNT= row.attr('total_amount');
+                item.CURRENCY_ID= row.attr('currency_id');
+                item.EXCHANGE_RATE= row.attr('');
+                item.CURRENCY_TOTAL_AMOUNT= row.attr('currency_total_amount');
+                item.EXCHANGE_CURRENCY_ID= row.attr('exchange_currency_id');
+                item.EXCHANGE_CURRENCY_RATE= row.attr('exchange_currency_rate');
+                item.EXCHANGE_TOTAL_AMOUNT= row.attr('exchange_total_amount');
+                item.REMARK= row.attr('remark');
+                item.SP_NAME=row.attr('sp_name');
+                item.CHARGE_NAME=row.attr('charge_name');
+                item.CHARGE_NAME_ENG=row.attr('charge_name_eng');
+                item.UNIT_NAME=row.attr('unit_name');
+                item.CURRENCY_NAME=row.attr('currency_name');
+                item.EXCHANGE_CURRENCY_ID_NAME=row.attr('exchange_currency_name');
+                item.AUDIT_FLAG='';
+                dataTable.row.add(item).draw();
+            }
+        });
+    
+    
+    
+    
   });
 });

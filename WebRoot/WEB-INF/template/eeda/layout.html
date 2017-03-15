@@ -30,8 +30,10 @@
 
     <!-- SB Admin CSS - Include with every page fdsafdsafdsa-->
     <link href="/js/lib/sb-admin/css/sb-admin.css" rel="stylesheet">
-    
-    <link href="/css/eeda.css" rel="stylesheet">  
+
+    <link href="/css/eeda.css" rel="stylesheet">
+
+    <link href="${SYS_CONFIG.css_path!''}" rel="stylesheet">
     
     <script src="/js/lib/jquery/jquery-1.10.2.js" type="text/javascript"></script>
 
@@ -54,34 +56,48 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="">${SYS_CONFIG.system_title!''}</a>
+                <a class="navbar-brand" href=""></a>
+                
             </div>
             <!-- /.navbar-header -->
-
+			<div class="banner_slogan"></div>
             <ul class="nav navbar-top-links navbar-right">
 				<%
 	                var title = SYS_CONFIG.system_title!'易达物流';
 	            %>
                 <!-- /.dropdown -->
-                ${office_name!''}
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i><span class="hidden-phone"> ${userId!'N/A'}</span>   <i class="fa fa-caret-down"></i>
+                <div style="display: none;">
+                    ${office_name!''}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-user fa-fw"></i><span class="hidden-phone"> ${userId!'N/A'}</span>   <i class="fa fa-caret-down"></i>
+                        </a>
+                      
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="/loginUser/editPerson"><i class="fa fa-user fa-fw"></i> 用户信息</a>
+                            </li>
+                           
+                            <li class="divider"></li>
+                            <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> 退出</a>
+                            </li>
+                        </ul>
+                        <!-- /.dropdown-user -->
+                    </li>
+                </div>
+
+                <div class="person_image">
+                    <img src="/images/simple/person_image_40x40.png">
+                    <a href="/loginUser/editPerson">
+                        ${userId!'N/A'}
                     </a>
-                  
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/loginUser/editPerson"><i class="fa fa-user fa-fw"></i> 用户信息</a>
-                        </li>
-                       
-                        <li class="divider"></li>
-                        <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> 退出</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
+                </div>
+                <div class="log_out"  style="float:right">
+                    <a href="/logout">
+                        Log Out 退出
+                        <img src="/images/simple/log_out_icon.png">
+                    </a>
+                </div>
             </ul>
-            <!-- /.navbar-top-links -->
 
         </nav>
         <!-- /.navbar-static-top -->
@@ -91,46 +107,7 @@
                 <ul class="nav" id="side-menu">
                     <%  
                         var map = permissionMap!'';
-                    %>
-                    <%if(!shiro.hasRole("outuser")){%>
-	                   <li>
-	                       <a href="/"><i class="fa fa-dashboard fa-fw"></i> 管理看板 </a>
-	                   </li>
-                    <%}%>
                     
-                        <!--li id="menu_todo_list">
-                            <a href="#"><i class="fa fa-file-text fa-fw"></i> 待办事项<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="/planOrder?type=todo">计划订单待处理 <span class="badge planOrderWait"></span></a>
-                                </li>
-                                <li>
-                                    <a href="/jobOrder?type=sowait">SO待更新 <span class="badge soWait"></span></a>
-                                </li>
-                                <li>
-                                    <a href="/jobOrder?type=truckorderwait">派车单待处理 <span class="badge truckOrderWait"></span></a>
-                                </li>
-                                <li>
-                                    <a href="/jobOrder?type=siwait">SI待更新 <span class="badge siWait"></span></a>
-                                </li>
-                                <li>
-                                    <a href="/jobOrder?type=mblwait">未确认MBL <span class="badge mblWait"></span></a>
-                                </li>
-                                <li>
-                                    <a href="/jobOrder?type=customwait">待报关 <span class="badge customWait"></span></a>
-                                </li>
-                                <li>
-                                    <a href="/jobOrder?type=insurancewait">待买保险 <span class="badge insuranceWait"></span></a>
-                                </li>
-                                <li>
-                                    <a href="/jobOrder?type=overseacustomwait">待海外申报 <span class="badge overseaCustomWait"></span></a>
-                                </li>
-                                <li>
-                                    <a href="/jobOrder?type=tlxOrderwait">待电放提单 <span class="badge tlxOrderWait"></span></a>
-                                </li>
-                            </ul>
-                        </li-->
-                        <%
                         for(module in modules![]){
                         %>
                             <li id="${module.id!}">
@@ -141,182 +118,13 @@
                                         for(menu_order in module.orders){
                                         %>
                                             <li id="${menu_order.id}">
-                                                <a href="/${menu_order.url!''}">${menu_order.module_name!}</a>
+                                                <a href="${menu_order.url!''}">${menu_order.module_name!}</a>
                                             </li>
                                         <%}%>
                                     </ul>
                                 <%}%>
                             </li>
-                        <%}%>
-                    <!--li id="menu_report">
-                        <a href="#"><i class="fa fa-table fa-fw"></i> 报表查询<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/statusReport/productIndex">工作单状态查询</a>
-                            </li>
-                            <li>
-                                <a href="/stock/outUserQuery">箱量报表</a>
-                            </li>
-                             <li>
-                                <a href="/stock/outUserQuery">在途货品查询</a>
-                            </li>
-                            <li>
-                                <a href="/statusReport/dailyReport">运营报表</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li id="menu_quotation">
-                            <a href="#"><i class="fa fa-book fa-fw"></i> 报价管理<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="/quotation">报价维护</a>
-                                </li>
-                                <li>
-                                    <a href="/customerQuotation">客户报价单</a>
-                                </li>
-                                <li>
-                                    <a href="/spQuotation">提货/配送供应商报价单</a>
-                                </li>
-                            </ul>
-                            
-                        </li>
-                    <li id="menu_contract">
-                        <a href="#"><i class="fa fa-book fa-fw"></i> 合同管理<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/customerContract">客户合同</a>
-                            </li>
-                            <li>
-                                <a href="/deliverySpContract/deliverySpIndex">提货/配送供应商合同</a>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    <%
-                    	var customerPermission = map.Customer_list;
-                    	var spListPermission = map.Provider_list;
-                    	var productListPermission = map.Product_list;
-                    	 var warehouseListPermission = map.Warehouse_list;
-                    	 var accountListPermission = map.Account_list;
-                    
-                    	
-                    	if(nvl(customerPermission, '') != '' || 
-                            nvl(spListPermission, '') != '' ||
-                            nvl(warehouseListPermission, '') != '' ||
-                            nvl(accountListPermission, '') != '' ||  
-                            nvl(productListPermission, '') != ''){
-                    %>
-                    
-	                    <li id="menu_profile">
-	                        <a href="#"><i class="fa fa-cog fa-fw"></i> 基础数据设置<span class="fa arrow"></span></a>
-	                        <ul class="nav nav-second-level">
-		                        <% if(customerPermission != ''){%>
-		                            <li>
-		                                <a href="/customer">客户</a>
-		                            </li>
-	                             <%}%>
-		                        <% if(spListPermission != ''){%>
-		                            <li>
-		                                <a href="/serviceProvider">供应商</a>
-		                            </li>
-	                            <%}%>
-		                        <% if(productListPermission != ''){%>
-		                            <li>
-		                                <a href="/product">产品</a>
-		                            </li>
-	                            <%}%>
-                                <li>
-                                    <a href="/unit">包装单位</a>
-                                </li>
-                                <li>
-                                    <a href="/containerType">箱型</a>
-                                </li>
-                                <li>
-                                    <a href="/custom">海关</a>
-                                </li>
-                                <li>
-                                    <a href="/country">国家</a>
-                                </li>
-                                <li>
-                                    <a href="/location">城市(含港口)</a>
-                                </li>
-	                            <% if(warehouseListPermission != ''){%>
-		                            <li>
-		                                <a href="/warehouse">仓库</a>
-		                            </li>
-	                            <%}%>
-	                            <% if(accountListPermission != ''){%>
-		                            <li>
-		                                <a  href="/account">银行账户</a>
-		                            </li>
-	                            <%}%>
-                                <li>
-                                    <a  href="/currency">币制</a>
-                                </li>
-                                <li>
-                                    <a  href="/account">汇率</a>
-                                </li>
-                                <li>
-                                    <a  href="/finItem">费用条目</a>
-                                </li>
-	                        </ul>
-	                        
-	                    </li>
-                    <%}%>
-                    <%
-                        var userLoginListPermission = map.User_list;
-                        var roleListPermission = map.Role_list;
-                        var userRoleListPermission = map.UserRole_list;
-                       
-                        var rolePrivilegeListPermission = map.RolePermission_list;
-                       
-                        if(nvl(userLoginListPermission, '') != '' 
-                            || nvl(roleListPermission, '') != '' 
-                            || nvl(userRoleListPermission, '') != ''
-                            || nvl(rolePrivilegeListPermission, '') != '' ){
-                    %>
-                        <li id="menu_sys_profile">
-                            <a href="#"><i class="fa fa-cog fa-fw"></i> 系统配置<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <% if(roleListPermission != ''){%>
-                                    <li>
-                                        <a href="/role">岗位</a>
-                                    </li>
-                                <%}%>
-                                <% if(rolePrivilegeListPermission != ''){%>
-                                    <li>
-                                        <a href="/privilege">岗位权限</a>
-                                    </li>
-                                 <%}%>
-                                <% if(userLoginListPermission != ''){%>
-                                    <li>
-                                        <a href="/loginUser">登录用户</a>
-                                    </li>
-                                 <%}%>
-                                 
-                                 <% if(userRoleListPermission != ''){%>
-                                    <li>
-                                        <a href="/userRole">用户岗位</a>
-                                    </li>
-                                 <%}%>
-                                 
-                                 
-                            </ul>
-                            
-                        </li-->
-                    <%}%>
-                    
-                    <li>
-                        <a href="#"><i class="fa fa-question fa-fw"></i> 需要帮助<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="http://scmdoc.eeda123.com" target="_blank">帮助文档</a>
-                            </li>
-                            
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    
+                    <%  }%>
                 </ul>
                 <!--  /#side-menu -->
             </div>
@@ -326,7 +134,11 @@
         <a id='hide_menu_btn' href="#" style="position: absolute;left: 250px;top: 250px; z-index:1; height: 200px; background-color: rgb(241, 241, 241); border-top-right-radius: 10px; border-bottom-right-radius:10px;" title="隐藏菜单">
             <i id='hide_menu_icon' class="fa fa-angle-double-left fa-2x" style="margin-top: 90px;"></i>
         </a>
-
+        <ol class="breadcrumb">
+            <div class="breadcrumb_icon"></div>
+            <!--li><a href="#"></a></li-->
+            <li id="breadcrumb_li"></li>
+        </ol>
         ${layoutContent}
 
     </div>

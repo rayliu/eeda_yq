@@ -1,0 +1,1 @@
+package models;import java.util.LinkedHashMap;import java.util.List;import java.util.Map;import com.jfinal.plugin.activerecord.Model;public class PartyMark extends Model<PartyMark> {	public static final PartyMark dao = new PartyMark();}

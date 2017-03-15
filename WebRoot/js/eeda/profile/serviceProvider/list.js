@@ -11,7 +11,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             serverSide: true, //不打开会出现排序不对
             ajax: "/serviceProvider/list",
             columns:[
-                { "data": "COMPANY_NAME","width": "15%",
+                { "data": "COMPANY_NAME","width": "10%",
                     "render": function ( data, type, full, meta ) {
                         if(Provider.isUpdate){
                              return "<a href='/serviceProvider/edit?id="+full.ID+"' target='_blank'>" + data+ "</a>";
@@ -20,9 +20,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                         }
                     }
                 },
-                { "data": "ABBR", "width": "10%",}, 
-                { "data": "CODE", "width": "10%",}, 
-                { "data": "SP_TYPE", "width": "15%",
+                { "data": "STATUS", "width": "10%"}, 
+                { "data": "ABBR", "width": "10%"}, 
+                { "data": "CODE", "width": "10%"}, 
+                { "data": "SP_TYPE", "width": "10%",
                     "render": function(data, type, full, meta) {
                          var str = "";
                          if(data == null)
@@ -66,9 +67,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                          return str;
                     }
                 }, 
-                { "data": "CONTACT_PERSON"}, 
-                { "data": "PHONE"}, 
-                { "data": "ADDRESS",
+                { "data": "CONTACT_PERSON", "width": "10%"}, 
+                { "data": "PHONE", "width": "10%"}, 
+                { "data": "ADDRESS", "width": "20%",
                     "render": function ( data, type, full, meta ) {
                         if(data){
                             return data;
@@ -77,8 +78,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                         }
                     }
                 },
-                { "data": "RECEIPT"},
-                { "data": "PAYMENT",
+                { "data": "RECEIPT" ,"width": "5%"},
+                { "data": "PAYMENT", "width": "10%",
                     "render": function(data, type, full, meta) {
                          if(data == "monthlyStatement"){
                              return "月结";
@@ -91,23 +92,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 },
                 { 
                     "data": null, 
-                    "width": "10%",
+                    "width": "5%",
                     "visible":(Provider.isUpdate || Provider.isDel),
                     "render": function(data, type, full, meta) {
                          var str ="<nobr>";
                          if(Provider.isUpdate){
-                          str += "<a class='btn  btn-primary btn-sm' href='/serviceProvider/edit?id="+full.ID+"' target='_blank'>"+
+                          str += "<a class='btn table_btn btn-success btn-sm' href='/serviceProvider/edit?id="+full.ID+"' target='_blank'>"+
                                 "<i class='fa fa-edit fa-fw'></i>"+
                                 "编辑"+"</a> ";
                          }
                         if(Provider.isDel){
                             if(full.IS_STOP != true){
-                                str += "<a class='btn btn-danger btn-sm' href='/serviceProvider/delete/"+full.ID+"'>"+
+                                str += "<a class='btn table_btn btn-danger btn-sm' href='/serviceProvider/delete/"+full.ID+"'>"+
                                      "<i class='fa fa-trash-o fa-fw'></i>"+ 
                                      "停用"+
                                      "</a>";
                              }else{
-                                str +="<a class='btn btn-success btn-sm' href='/serviceProvider/delete/"+full.ID+"'>"+
+                                str +="<a class='btn table_btn btn-success btn-sm' href='/serviceProvider/delete/"+full.ID+"'>"+
                                          "<i class='fa fa-trash-o fa-fw'></i>"+ 
                                          "启用"+
                                      "</a>";
@@ -129,9 +130,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           	var COMPANY_NAME = $("#COMPANY_NAME").val().trim();
           	var CONTACT_PERSON = $("#CONTACT_PERSON").val().trim();
         	var code = $("#code").val().trim();
-          	var ABBR = $("#ABBR").val().trim(); 	
+          	var ABBR = $("#ABBR").val().trim(); 
+          	var status = $("#status").val().trim();
           	var ADDRESS = $("#ADDRESS").val().trim();
-          	var url = "/serviceProvider/list?company_name_like="+COMPANY_NAME+"&contact_person_like="+CONTACT_PERSON+"&code_like="+code+"&abbr_like="+ABBR+"&address_like="+ADDRESS;
+          	var url = "/serviceProvider/list?company_name_like="+COMPANY_NAME+"&contact_person_like="+CONTACT_PERSON
+          	+"&code_like="+code+"&abbr_like="+ABBR+"&address_like="+ADDRESS+"&status="+status;
           	dataTable.ajax.url(url).load();
         });
 
