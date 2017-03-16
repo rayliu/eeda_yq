@@ -22,7 +22,7 @@
 										label:'申请日期', value:order.create_stamp!'',disabled:'disabled'
 										}){}%>
 								<%include("/eeda/component/form/inputField.html", { id:'creator_name',
-										label:'提交人', value:order.creator_name!'',disabled:'disabled'
+										label:'申请人', value:order.creator_name!'',disabled:'disabled'
 										}){}%>
 								<%include("/eeda/component/form/inputField.html", { id:'status',
 										label:'状态', value:order.status!'新建',disabled:'disabled'
@@ -255,7 +255,7 @@
                             	<button id="printBtn" type="button" disabled="disabled" class="btn  btn_white" >打印申请单</button>
                             	<a class="btn  btn_white" href="/costRequest?back=true">返回</a>
                             	<button id="checkBtn" type="button" disabled="disabled" class="btn  btn_green" >复核</button>
-                            	<button id="cancelcheckBtn" class="btn btn-danger btn-xs" style="display:none ;background-color:#d9534f">取消复核</button>
+                            	<button id="cancelcheckBtn" class="btn btn-danger btn-xs" style="background-color:#d9534f">复核不通过</button>
                             	<button id="returnBtn" type="button" disabled="disabled" class="btn  btn-primary"  style="display:none" >退回</button>
                             	<button id="deleteBtn" type="button" class="btn  btn-danger"  style="display:none"  >撤销</button>
                        </div>
@@ -317,7 +317,7 @@
                        		</div>
                        		<div class="col-lg-4">
 								<%include("/eeda/component/form/inputField.html", { id:'status_cancel',
-								label:'复核状态', value:order.status_cancel!'',disabled:'disabled'
+								label:'复核状态', value:order.status!'',disabled:'disabled'
 								}){}%>
                        		</div>
                        	</div>
