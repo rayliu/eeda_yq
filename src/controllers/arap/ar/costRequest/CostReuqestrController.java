@@ -17,14 +17,11 @@ import models.ArapCostApplication;
 import models.ArapCostOrder;
 //import models.CostAppOrderRel;
 import models.CostApplicationOrderRel;
-import models.Office;
 import models.Party;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.MultiPartEmail;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
@@ -417,7 +414,6 @@ public class CostReuqestrController extends Controller {
         ArapCostApplication order = new ArapCostApplication();
    		String id = (String) dto.get("id");
    		String ids=(String) dto.get("ids");
-   		String status = (String) dto.get("status");
 		String selected_item_ids= (String) dto.get("selected_ids"); //获取申请单据的id,用于回显
    		
    		
@@ -430,9 +426,6 @@ public class CostReuqestrController extends Controller {
    			DbUtils.setModelValues(dto, order); 
    			
    			//需后台处理的字段
-   			if("复核不通过".equals(status)){
-   				order.set("status", "新建");
-   			}
    			order.set("update_by", user.getLong("id"));
    			order.set("update_stamp", new Date());
    			order.update();
@@ -544,70 +537,24 @@ public class CostReuqestrController extends Controller {
 		render("/oms/CostRequest/costEdit.html");
 	}
   	
-    @Before(Tx.class)
-    public void sendMail(String order_id,String order_no,String creator_name) throws Exception {
-    	UserLogin userlogin = UserLogin.dao.findFirst("SELECT * from user_login where c_name='"+creator_name+"'");
-    	String mailTitle = "您有一份复核不通过的付款申请单";
-    	String mailContent = "付款申请单为<a href=\"http://www.esimplev.com/costRequest/edit?id="+order_id+"\">"+order_no+"</a>";
-    	
-    	Office office=Office.dao.findById(userlogin.get("office_id"));
-        MultiPartEmail email = new MultiPartEmail();  
-        /*smtp.exmail.qq.com*/
-        String HostName = office.getStr("host_name");
-        int SmtpPort = office.getInt("smtp_port");
-        email.setHostName(HostName);
-        email.setSmtpPort(SmtpPort);
-        //反查公司信息
-        
-        try{
-        /*输入公司的邮箱和密码*/
-        email.setAuthenticator(new DefaultAuthenticator(office.getStr("email"), office.getStr("emailPassword")));        
-        email.setSSLOnConnect(true);
-        email.setFrom(office.getStr("email"),office.getStr("office_name"));//设置发信人
-        //设置收件人，邮件标题，邮件内容
-//    	email.addTo("1063203104@qq.com");
-    	email.addTo(userlogin.getStr("email"));
-//        email.addTo("864358232@qq.com");
-        email.setSubject(mailTitle);
-        email.setContent(mailContent, "text/html;charset=gb2312");
-//        //抄送
-//        email.addCc("1063203104@qq.com");
-//       //密送
-//        email.addBcc("1063203104@qq.com");
-        
-        	//email.setCharset("UTF-8"); 
-        	email.send();
-        }catch(Exception e){
-        	e.printStackTrace();
-        }
-       
-    }
-  	
-  	
-  	
-  	
-  	
   	
     //复核
   	@Before(Tx.class)
-    public void checkOrder() throws Exception{
+    public void checkOrder(){
         String application_id=getPara("order_id");
         String selfId = getPara("selfId");
    		String ids = getPara("ids");
-   		String order_no =getPara("order_no");
-   		String creator_name =getPara("creator_name");
-   		
         //更改原始单据状态
         List<Record> res = null;
         Record re1=new Record();
         if(StringUtils.isNotEmpty(application_id)){
 		    	 ArapCostApplication order = ArapCostApplication.dao.findById(application_id);
 		    	 if("cancelcheckBtn".equals(selfId)){
-		    		 order.set("status", "复核不通过");
-		    		 sendMail(application_id,order_no,creator_name);
-
+		    		 order.set("status", "新建");
+		    		 order.set("status_cancel", "取消复核");
 		    	 }else{
 		    		 order.set("status", "已复核");
+		    		 order.set("status_cancel", "已复核");
 		    	 }
 		         order.set("check_by", LoginUserController.getLoginUserId(this));
 		         order.set("check_stamp", new Date()).update();
