@@ -125,8 +125,10 @@ public class TransOrderShortCutController extends Controller {
 				//车牌对应司机；
 				Carinfo ci=Carinfo.dao.findById(itemMap.get("TIJIGUI_CAR_NO"));
 				tjol.set("car_no", ci.get("id"));
-				tjol.set("unload_type", ci.get("car_no"));
+				tjol.set("truck_type", ci.get("cartype"));
 				tjol.set("driver", ci.get("driver"));
+				tjol.set("driver_tel", ci.get("phone"));
+				tjol.set("take_address", itemMap.get("TAKE_WHARF"));
 				tjol.save();
 			}
 			if(StringUtils.isNotEmpty(itemMap.get("YIGUI_CAR_NO"))){
@@ -135,8 +137,10 @@ public class TransOrderShortCutController extends Controller {
 				tjol.set("unload_type", "移柜");
 				//车牌对应司机；
 				Carinfo ci=Carinfo.dao.findById(itemMap.get("YIGUI_CAR_NO"));
-				tjol.set("unload_type", ci.get("car_no"));
+				tjol.set("car_no", ci.get("id"));
+				tjol.set("truck_type", ci.get("cartype"));
 				tjol.set("driver", ci.get("driver"));
+				tjol.set("driver_tel", ci.get("phone"));
 				tjol.save();
 			}
 			if(StringUtils.isNotEmpty(itemMap.get("SHOUZHONGGUI_CAR_NO"))){
@@ -145,8 +149,11 @@ public class TransOrderShortCutController extends Controller {
 				tjol.set("unload_type", "收重柜");
 				//车牌对应司机；
 				Carinfo ci=Carinfo.dao.findById(itemMap.get("SHOUZHONGGUI_CAR_NO"));
-				tjol.set("unload_type", ci.get("car_no"));
+				tjol.set("car_no", ci.get("id"));
+				tjol.set("truck_type", ci.get("cartype"));
 				tjol.set("driver", ci.get("driver"));
+				tjol.set("driver_tel", ci.get("phone"));
+				tjol.set("delivery_address", itemMap.get("BACK_WHARF"));
 				tjol.save();
 			}
 //			List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");

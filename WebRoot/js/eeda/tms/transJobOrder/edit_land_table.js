@@ -75,6 +75,8 @@ $(document).ready(function() {
     	});
     	
         eeda.bindTableFieldCarInfo('land_table', 'CAR_NO');
+        eeda.bindTableFieldDockInfo('land_table','TAKE_ADDRESS');
+        eeda.bindTableFieldDockInfo('land_table','DELIVERY_ADDRESS');
     };
 
 
@@ -160,16 +162,32 @@ $(document).ready(function() {
             { "data": "TAKE_ADDRESS", "width": "180px", "className":"consigner_addr",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
-            			data='';
-            		return '<input type="text" name="take_address" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
+                            data='';
+                        var field_html = template('table_dock_no_field_template',
+                            {
+                                id: 'TAKE_ADDRESS',
+                                value: data,
+                                display_value: full.TAKE_ADDRESS_NAME,
+                                style:'width:200px',
+                            }
+                        );
+                        return field_html;
+                    }
             },
             { "data": "DELIVERY_ADDRESS", "width": "180px", "className":"consignee_addr",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="delivery_address" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
+                if(!data)
+                            data='';
+                        var field_html = template('table_dock_no_field_template',
+                            {
+                                id: 'DELIVERY_ADDRESS',
+                                value: data,
+                                display_value: full.DELIVERY_ADDRESS_NAME,
+                                style:'width:200px',
+                            }
+                        );
+                        return field_html;
+                    }
             },
             { "data": "CAR_NO", "width": "100px",
             	"render": function ( data, type, full, meta ) {
@@ -354,7 +372,9 @@ $(document).ready(function() {
             		return data;
             	}
             },
-            { "data": "CAR_NO_NAME", "visible": false}
+            { "data": "CAR_NO_NAME", "visible": false},
+            { "data": "TAKE_ADDRESS_NAME", "visible": false},
+            { "data": "DELIVERY_ADDRESS_NAME", "visible": false}
         ]
     });
 
