@@ -424,10 +424,14 @@ $(document).ready(function() {
 
 	
 	$('#allCheck').click(function(){
+		
 		if(this.checked==true){
 			currenryTotalAmount();
 			$("#application_table .checkBox").each(function(){
 				$(this).prop('checked',true);
+			var status=	$(this).parent().next().next().next().html();
+			if(status=='新建') $('#checked').attr('disabled',false);
+			if(status=='已复核') $('#confirmed').attr('disabled',false);
 			});
 		}else{
 			$("#application_table .checkBox").each(function(){
@@ -437,6 +441,8 @@ $(document).ready(function() {
 			$('#usd_totalAmountSpan').text(0);
 	        $('#hkd_totalAmountSpan').text(0);
 	        $('#jpy_totalAmountSpan').text(0);
+	        $('#checked').attr('disabled',true);
+	        $('#confirmed').attr('disabled',true);
 		}
 	});
 	$('#totalZero').click(function(){
@@ -507,6 +513,8 @@ $(document).ready(function() {
                         }
                     }
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+                    $('#checked').attr('disabled',true);
+                    $('#confirmed').attr('disabled',false);
                 }else{
                     $.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
                 }
