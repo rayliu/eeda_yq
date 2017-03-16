@@ -166,7 +166,7 @@ public class MainController extends Controller {
         if(of==null){//没有配置公司的login信息, 不知道显示那个系统的login页面, 跳到公司首页
             redirect("/");
         }else{
-            if(of.getStr("index_page_path") != null)
+            if(StringUtils.isNotEmpty(of.getStr("index_page_path")))
                 strLoginPagePath = of.getStr("index_page_path");
         }
 
