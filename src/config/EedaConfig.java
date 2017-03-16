@@ -122,6 +122,7 @@ import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
 import controllers.msg.EwmsDashBoardController;
 import controllers.msg.YqDashBoardController;
+import controllers.oms.amazonSalesOrder.AmazonSalesOrderController;
 import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.jobOrder.JobOrderControllerForMobile;
@@ -227,6 +228,8 @@ public class EedaConfig extends JFinalConfig {
     private void setErpRoute(Routes me, String contentPath) {
         me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
         me.add("/ebaySalesOrder", EbaySalesOrderController.class, contentPath);
+        me.add("/amazonSalesOrder", AmazonSalesOrderController.class, contentPath);
+        
         me.add("/ebayAccount", EbayAccountController.class, contentPath);
         me.add("/amazonAccount", AmazonAccountController.class, contentPath);
     }
