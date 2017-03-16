@@ -1,13 +1,11 @@
 package controllers.arap.ar.costRequest;
 
-import freemarker.template.utility.StringUtil;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -544,13 +542,20 @@ public class CostReuqestrController extends Controller {
   	@Before(Tx.class)
     public void checkOrder(){
         String application_id=getPara("order_id");
+        String selfId = getPara("selfId");
    		String ids = getPara("ids");
         //更改原始单据状态
         List<Record> res = null;
         Record re1=new Record();
         if(StringUtils.isNotEmpty(application_id)){
 		    	 ArapCostApplication order = ArapCostApplication.dao.findById(application_id);
-		         order.set("status", "已复核");
+		    	 if("cancelcheckBtn".equals(selfId)){
+		    		 order.set("status", "新建");
+		    		 order.set("status_cancel", "取消复核");
+		    	 }else{
+		    		 order.set("status", "已复核");
+		    		 order.set("status_cancel", "已复核");
+		    	 }
 		         order.set("check_by", LoginUserController.getLoginUserId(this));
 		         order.set("check_stamp", new Date()).update();
         		 res = Db.find("select * from cost_application_order_rel where application_order_id = ?",application_id);

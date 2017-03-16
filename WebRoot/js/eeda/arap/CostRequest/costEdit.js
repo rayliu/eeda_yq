@@ -134,21 +134,36 @@ $(document).ready(function() {
 	    });
 	 
 	 //复核
-	  $("#checkBtn").on('click',function(){
-		  	
+	  $("#checkBtn,#cancelcheckBtn").on('click',function(){
+		  	var selfId=$(this).attr('id');
 		  
-			$.get("/costRequest/checkOrder", {order_id:$('#order_id').val(),}, function(data){
+			$.get("/costRequest/checkOrder", {order_id:$('#order_id').val(),selfId:selfId}, function(data){
 				if(data.ID>0){
 					$("#check_name").val(data.CHECK_NAME);
 					$("#check_stamp").val(data.CHECK_STAMP);
 					$("#status").val(data.STATUS);
-					$.scojs_message('复核成功', $.scojs_message.TYPE_OK);
-					$("#checkBtn").attr("disabled", true);
-		  			$("#saveBtn").attr("disabled", true);
-					$("#returnBtn").attr("disabled", false);
-					$("#confirmBtn").attr("disabled", false);
-					$("#add_cost").attr("disabled", true);
-					$('#select_item_table .delete').attr("disabled", true);
+					var status = data.STATUS_CANCEL;
+					$("#status_cancel").val(status);
+					if(status=="取消复核"){
+						$("#checkBtn").attr("disabled", false).show();
+						$.scojs_message('取消复核成功', $.scojs_message.TYPE_OK);
+						$("#cancelcheckBtn").attr("disabled", true).hide();
+						$("#saveBtn").attr("disabled", false);
+						$("#returnBtn").attr("disabled", true);
+						$("#confirmBtn").attr("disabled", true);
+						$("#add_cost").attr("disabled", false);
+						$('#select_item_table .delete').attr("disabled", false);
+					}else{
+						$("#checkBtn").attr("disabled", true);
+						$.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+						$("#cancelcheckBtn").attr("disabled", false).show();
+						$("#checkBtn").attr("disabled", true).hide();
+						$("#saveBtn").attr("disabled", true);
+						$("#confirmBtn").attr("disabled", false);
+						$("#add_cost").attr("disabled", true);
+						$('#select_item_table .delete').attr("disabled", true);
+						$("#returnBtn").attr("disabled", false);
+					}
 				}else{
 					$("#checkBtn").attr("disabled", false);
 					$.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
@@ -286,6 +301,14 @@ $(document).ready(function() {
 		}else if($('#status').val()=='已复核'){
 			$("#confirmBtn").attr('disabled',false);
 		}
+		if($('#status_cancel').val()=='取消复核'){
+			$("#checkBtn").attr('disabled',false).show();
+			$("#cancelcheckBtn").attr('disabled',true).hide();
+		}else if($('#status').val()=='已复核'){
+			$("#checkBtn").attr('disabled',true).hide();
+			$("#cancelcheckBtn").attr('disabled',false).show();
+		}
+		
 	}
 	
 	
