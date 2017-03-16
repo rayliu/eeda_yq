@@ -126,7 +126,7 @@ public class MainController extends Controller {
                         List<Record> orderList = (List<Record>)moduleList.get(0).get("orders");
                         Record firstModule = (Record)orderList.get(0);
                         
-                        redirect("/"+firstModule.getStr("url"));
+                        redirect(firstModule.getStr("url"));
                     };
             	}else{
             		render(rec.getStr("index_page_path"));//显示不同URL对应的不同的login页面

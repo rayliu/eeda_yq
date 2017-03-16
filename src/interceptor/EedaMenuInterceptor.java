@@ -84,6 +84,12 @@ public class EedaMenuInterceptor implements Interceptor {
 
             List<Record> orders = Db.find(sql, module.get("id"), office_id,
                     username);
+            for (Record order : orders) {
+                String urlStr = order.getStr("url");
+                if(!urlStr.startsWith("http")){
+                    order.set("url", "/"+urlStr);
+                }
+            }
             module.set("orders", orders);
         }
 
