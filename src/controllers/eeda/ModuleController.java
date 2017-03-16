@@ -44,6 +44,8 @@ public class ModuleController extends Controller {
     @RequiresRoles("admin")
     @Before(EedaMenuInterceptor.class)
     public void index() {
+        List<UserLogin> users = UserLogin.dao.find("select * from user_login where office_id=?", LoginUserController.getLoginUser(this).get("office_id"));
+        setAttr("users", users);
         render("/profile/module/moduleList.html");
     }
 
