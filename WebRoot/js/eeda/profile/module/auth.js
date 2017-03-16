@@ -5,6 +5,11 @@ define(['jquery', 'template', 'dataTablesBootstrap', 'sco'], function ($, templa
         var role_list=[];
         var permission_list=[];
 
+        $('#clearBtn').click(function(event) {
+            var user_id = $('#user_id').val();
+            window.open('/sys/clearMenuCache/'+user_id);
+        });
+
         var generateRoleList=function(default_val){
 
             var role_list_template =
