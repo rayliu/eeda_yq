@@ -2,7 +2,7 @@
         <div class="form-group">
             <input type="text" name="{{id}}" value="{{value}}" style="display:none;"/>
             <input type="text" {{disabled}} class="form-control search-control" 
-                   name="{{id}}_input" placeholder="请选择" value="{{display_value}}" style="{{style}}">
+                   name="{{id}}_input" placeholder="请选择" value="{{display_value}}" style="{{style}}" >
         </div> 
 </script>
 <ul id='table_input_field_list' tabindex="-1" 

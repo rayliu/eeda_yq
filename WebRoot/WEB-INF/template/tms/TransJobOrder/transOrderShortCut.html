@@ -72,7 +72,7 @@
                             <div class="form-group button-bar" >
                            	 	<button type='button' class="btn btn-success btn-xs" id="add_on">将上框内容应用到表中</button> 
                                 <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空上框内容</button>
-                                <button type='button' class="btn btn-success btn-xs" id="create">创建托运工作单</button>
+                                <button type='button' class="btn btn-success btn-xs" id="create" disabled>创建托运工作单</button>
                                 <hr>
                                 <button type='button' class="btn btn-success btn-xs" id="add_land">添加明细</button>
                             </div>
@@ -87,14 +87,13 @@
                                     	'SO号',
                                         '客户',
                                         '类型',
-                                        '提吉柜',
-                                        '移柜',
-                                        '收重柜',
-                                        '提柜码头',
-                                        '还柜码头',
                                         '柜号',
                                         '柜型',
-                                        '车牌号',
+                                        '提吉柜车牌号',
+                                        '移柜车牌号',
+                                        '收重柜车牌号',
+                                        '提柜码头',
+                                        '还柜码头',
                                         '应收费用名称',
                                         '应收费用金额',
                                         '币制',
@@ -126,6 +125,7 @@
 
 <%include("/oms/JobOrder/party_create_modal.html", {}){} %>
 <%include("/eeda/component/jsTemplate/tableInputCarInfoField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputDockInfoField.js",{}){} %>
 
 <script>
       var type = "${type!''}";

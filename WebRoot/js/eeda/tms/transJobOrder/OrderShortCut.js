@@ -1,22 +1,26 @@
-define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu,template) {
+define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN'], function ($, metisMenu,template) {
   $(document).ready(function() {
   	document.title = '工作单查询   | '+document.title;
   	  
       var deletedTableIds=[];
         var bindFieldEvent=function(){
-//        	$('table .date').datetimepicker({  
-//        	    format: 'yyyy-MM-dd hh:mm:ss',  
-//        	    language: 'zh-CN'
-//        	}).on('changeDate', function(el){
-//        	    $(".bootstrap-datetimepicker-widget").hide();   
-//        	    $(el).trigger('keyup');
-//        	});
-        	
-        	eeda.bindTableField('eeda-table','CUSTOMER_ID','/serviceProvider/searchCompany','');
-        eeda.bindTableField('eeda-table','CHARGE_ID','/finItem/search','');
-        eeda.bindTableFieldCarInfo('eeda-table', 'CAR_NO');
-        eeda.bindTableFieldCurrencyId('eeda-table','CURRENCY_ID','/serviceProvider/searchCurrency','');
-    };
+       	    $('table .date').datetimepicker({  
+       	        format: 'yyyy-MM-dd hh:mm:ss',  
+       	        language: 'zh-CN'
+       	    }).on('changeDate', function(el){
+       	        $(".bootstrap-datetimepicker-widget").hide();   
+       	        $(el).trigger('keyup');
+       	    });
+            	
+            eeda.bindTableField('eeda-table','CUSTOMER_ID','/serviceProvider/searchCompany','');
+            eeda.bindTableField('eeda-table','CHARGE_ID','/finItem/search','');
+            eeda.bindTableFieldCarInfo('eeda-table', 'TIJIGUI_CAR_NO');
+            eeda.bindTableFieldCarInfo('eeda-table', 'YIGUI_CAR_NO');
+            eeda.bindTableFieldCarInfo('eeda-table', 'SHOUZHONGGUI_CAR_NO');
+            eeda.bindTableFieldDockInfo('eeda-table','TAKE_WHARF');
+            eeda.bindTableFieldDockInfo('eeda-table','BACK_WHARF');
+            eeda.bindTableFieldCurrencyId('eeda-table','CURRENCY_ID','/serviceProvider/searchCurrency','');
+     };
   	//datatable, 动态处理
       var dataTable = eeda.dt({
           id: 'eeda-table',
@@ -32,12 +36,12 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 				        	if(data)
 				        		return '<input type="checkbox" class="checkBox" style="width:30px">';
 				        	else 
-				        		return '<input type="checkbox" style="width:30px" >';
+				        		return '<input type="checkbox" class="checkBox"  style="width:30px" >';
 				        }
 				    },
               { "data":"ID","width": "30px",
                   "render": function ( data, type, full, meta ) {
-                    return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled >删除</button>';
+                    return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px"  >删除</button>';
                   }
               },
               { "data": "CREATE_STAMP", 
@@ -49,7 +53,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                                id: 'CREATE_STAMP',
                                value: data,
                                display_value: full.EFFECTIVE_TIME,
-                               style:'width:110px'
+                               style:'width:130px'
                            }
                        );
                   return field_html;
@@ -59,7 +63,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                   "render": function ( data, type, full, meta ) {
                       if(!data)
                         data = '';
-                          return '<input type="text" name="SO_NO" style="width:100px" value="'+data+'" class="form-control"/>';
+                          return '<input type="text" name="so_no" style="width:100px" value="'+data+'" class="form-control"/>';
                      }
                }, 
               { "data": "CUSTOMER_ID", 
@@ -71,6 +75,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                                 id: 'CUSTOMER_ID',
                                 value: data,
                                 display_value: full.SP_NAME,
+                                required:'required',
                                 style:'width:200px',
                             }
                         );
@@ -82,7 +87,6 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                     if(!data)
                         data='';
                     var str= '<select name="type" class="form-control search-control"  style="width:100px">'
-                         +'<option></option>'
                         +'<option value="进口柜货">进口柜货</option>'
                         +'<option value="出口散货">出口散货</option>'
                         +'<option value="进口散货">进口散货</option>'
@@ -101,58 +105,11 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                     return str;
                 }
              }, 
-              { "data": "UNLOAD_TYPE",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    var str= '<select name="unload_type" class="form-control search-control"  style="width:100px">'
-                         +'<option></option>'
-                         +'<option value="提吉柜" >提吉柜</option>'
-                         +'</select>';
-                    return str;
-                }
-            }, 
-              { "data": "UNLOAD_TYPE",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    var str= '<select name="" class="form-control search-control"  style="width:100px">'
-                         +'<option></option>'
-                         +'<option value="移柜">移柜</option>'
-                         +'</select>';
-                    return str;
-                }
-            }, 
-              { "data": "UNLOAD_TYPE",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    var str= '<select name="" class="form-control search-control"  style="width:100px">'
-                         +'<option></option>'
-                         +'<option value="收重柜" >收重柜</option>'
-                         +'</select>';
-                    return str;
-                }
-            },
-              { "data": "TAKE_WHARF",
-                "render": function ( data, type, full, meta ) {
-                     if(!data)
-                        data = '';
-                          return '<input type="text" name="TAKE_WHARF" style="width:100px" value="'+data+'" class="form-control"/>';
-                     }
-              }, 
-              { "data": "BACK_WHARF",
-                "render": function ( data, type, full, meta ) {
-                      if(!data)
-                        data = '';
-                          return '<input type="text" name="BACK_WHARF" style="width:100px" value="'+data+'" class="form-control"/>';
-                     }
-              }, 
               { "data": "CONTAINER_NO",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data = '';
-                          return '<input type="text" name="CONTAINER_NO" style="width:100px" value="'+data+'" class="form-control"/>';
+                          return '<input type="text" name="container_no" style="width:100px" value="'+data+'" class="form-control"/>';
                      }
               }, 
               { "data": "CABINET_TYPE",
@@ -169,21 +126,81 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                     return str;
                 }
             },
-            { "data": "CAR_NO", 
+              { "data": "TIJIGUI_CAR_NO",
                 "render": function ( data, type, full, meta ) {
-                	if(!data)
+                   if(!data)
                         data='';
                     var field_html = template('table_car_no_field_template',
                         {
-                            id: 'CAR_NO',  //component_id 便于用 #id取组件
+                            id: 'TIJIGUI_CAR_NO',  //component_id 便于用 #id取组件
                             value: data,
-                            display_value: full.CAR_NO,
+                            display_value: full.TIJIGUI_CAR_NO,
+                            style:'width:200px'
+                        }
+                    );
+                     return field_html;
+                 }
+            }, 
+              { "data": "YIGUI_CAR_NO",
+                "render": function ( data, type, full, meta ) {
+                   if(!data)
+                        data='';
+                    var field_html = template('table_car_no_field_template',
+                        {
+                            id: 'YIGUI_CAR_NO',  //component_id 便于用 #id取组件
+                            value: data,
+                            display_value: full.YIGUI_CAR_NO,
+                            style:'width:200px'
+                        }
+                    );
+                     return field_html;
+                 }
+            }, 
+              { "data": "SHOUZHONGGUI_CAR_NO",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    var field_html = template('table_car_no_field_template',
+                        {
+                            id: 'SHOUZHONGGUI_CAR_NO',  //component_id 便于用 #id取组件
+                            value: data,
+                            display_value: full.SHOUZHONGGUI_CAR_NO,
                             style:'width:200px'
                         }
                     );
                      return field_html;
                  }
             },
+              { "data": "TAKE_WHARF",
+                "render": function ( data, type, full, meta ) {
+                     if(!data)
+                            data='';
+                        var field_html = template('table_dock_no_field_template',
+                            {
+                                id: 'TAKE_WHARF',
+                                value: data,
+                                display_value: full.TAKE_WHARF,
+                                style:'width:200px',
+                            }
+                        );
+                        return field_html;
+                    }
+              }, 
+              { "data": "BACK_WHARF",
+                "render": function ( data, type, full, meta ) {
+                      if(!data)
+                            data='';
+                        var field_html = template('table_dock_no_field_template',
+                            {
+                                id: 'BACK_WHARF',
+                                value: data,
+                                display_value: full.BACK_WHARF,
+                                style:'width:200px',
+                            }
+                        );
+                        return field_html;
+                    }
+              },
              { "data": "CHARGE_ID", 
                   "render": function ( data, type, full, meta ) {
                 	  if(!data)
@@ -244,7 +261,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                 "render": function ( data, type, full, meta ) {
                   if(!data)
                         data = '';
-                          return '<input type="text" name="REMARK" style="width:100px" value="'+data+'" class="form-control"/>';
+                          return '<input type="text" name="remark" style="width:100px" value="'+data+'" class="form-control"/>';
                      }
             }
           ]
@@ -254,26 +271,68 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
        $('#add_land').on('click', function(){
           var item={};
           dataTable.row.add(item).draw(true);
+          $('#eeda-table [type="checkbox"]');
+      });
+       $('#eeda-table').on('click','.delete', function(e){
+        e.preventDefault();
+        var tr = $(this).parent().parent();        
+        dataTable.row(tr).remove().draw();
+      });
+
+       $('#allCheckOfLand').on('click', function(){
+          if($(this).prop('checked')){
+            $('#eeda-table [type="checkbox"]').prop('checked',true);
+            $('#create').prop('disabled',false);
+          }else{
+            $('#eeda-table [type="checkbox"]').prop('checked',false);
+            $('#create').prop('disabled',true);
+          }
+      });
+
+
+        $('#eeda-table').on('click','.checkBox',function(){
+          if($('#eeda-table [type="checkbox"]:checked').size()>0){
+              $('#create').prop('disabled',false);
+            }else{
+              $('#create').prop('disabled',true);
+            }
+
+            $('#allCheckOfLand').prop('checked',$('#eeda-table .checkBox:checked').length==$('#eeda-table .checkBox').length)
       });
 
        //创建托运工作单
        $('#create').on('click', function(){
          var order={};
+         var error=0;
+          $("#eeda-table tr").each(function(index,item){
+            if($(item).find('[type=checkbox]').prop('checked')){
+              if(!$(item).find('[name=CUSTOMER_ID_input]').val()){
+
+               $.scojs_message('第'+index+'行未选择客户', $.scojs_message.TYPE_ERROR);
+                   error++;
+                  }
+            }
+          })
+         if(error>0){
+          return;
+         }
           order.itemList=itemOrder.buildItemList();
           $.post("/transOrderShortCut/create",{params:JSON.stringify(order)},function(data){
-               
+              if(data.IDS){
+                  $.scojs_message('全部创建成功', $.scojs_message.TYPE_OK);
+              }               
              }).fail(function() {
              $.scojs_message('创建失败', $.scojs_message.TYPE_ERROR);
          });
       });
+        // 柜号限制输入位为11位数，
+      
+
        
        itemOrder.buildItemList=function(){
           var cargo_table_rows = $("#eeda-table tr");
           var cargo_items_array=[];
-          for(var index=0; index<cargo_table_rows.length; index++){
-              if(index==0)
-                  continue;
-
+          for(var index=1; index<cargo_table_rows.length; index++){
               var row = cargo_table_rows[index];
               var empty = $(row).find('.dataTables_empty').text();
               if(empty)
@@ -294,28 +353,23 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                 if(name){
                   item[name] = value;
                 }
+                if(name=='TIJIGUI_CAR_NO'){
+                  item[name]=$(row.childNodes[i]).find('input,select').attr('car_id')
+                }
+                if(name=='YIGUI_CAR_NO'){
+                  item[name]=$(row.childNodes[i]).find('input,select').attr('car_id')
+                }
+                if(name=='SHOUZHONGGUI_CAR_NO'){
+                  item[name]=$(row.childNodes[i]).find('input,select').attr('car_id')
+                }
               }
               item.action = id.length > 0?'UPDATE':'CREATE';
-              if(!id.length>0){
-                var d = new Date();
-                var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-                item.creator = $('#user_id').val();
-                item.create_stamp = str;
-              }
-              
-              cargo_items_array.push(item);
+              if($(row).find('[type=checkbox]').prop('checked')){
+                    cargo_items_array.push(item);
+                    dataTable.row(row).remove().draw();
+                 }
           }
 
-          //add deleted items
-          for(var index=0; index<deletedTableIds.length; index++){
-              var id = deletedTableIds[index];
-              var item={
-                  id: id,
-                  action: 'DELETE'
-              };
-              cargo_items_array.push(item);
-          }
-          deletedTableIds = [];
           return cargo_items_array;
        }
 

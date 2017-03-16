@@ -179,7 +179,7 @@ $(document).ready(function() {
                         {
                             id: 'CAR_NO',  //component_id 便于用 #id取组件
                             value: data,
-                            display_value: full.CAR_NO,
+                            display_value: full.CAR_NO_NAME,
                             style:'width:200px'
                         }
                     );
@@ -353,7 +353,8 @@ $(document).ready(function() {
             			data='';
             		return data;
             	}
-            }
+            },
+            { "data": "CAR_NO_NAME", "visible": false}
         ]
     });
 

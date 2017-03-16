@@ -496,8 +496,9 @@ public class TransJobOrderController extends Controller {
     	String itemSql = "";
     	List<Record> itemList = null;
     	 if("land".equals(type)){
-    		itemSql = " select tjol.*, p.abbr transport_company_name,CAST(GROUP_CONCAT(tjold.id) as char ) trans_job_order_land_doc_id, GROUP_CONCAT(tjold.doc_name) doc_name,"
+    		itemSql = " select tjol.*,ci.car_no car_no_name, p.abbr transport_company_name,CAST(GROUP_CONCAT(tjold.id) as char ) trans_job_order_land_doc_id, GROUP_CONCAT(tjold.doc_name) doc_name,"
     				+ " p1.abbr consignor_name, p2.abbr consignee_name from trans_job_order_land_item tjol"
+    				+ " left join carinfo ci on ci.id=tjol.car_no"
     				+ " left join party p on p.id=tjol.transport_company"
     				+ " left join party p1 on p1.id=tjol.consignor"
     				+ " left join party p2 on p2.id=tjol.consignee"

@@ -24,6 +24,7 @@ import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
 import models.eeda.tms.TransJobOrderDoc;
 import models.eeda.tms.TransJobOrderLandItem;
+import models.yh.profile.Carinfo;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -43,6 +44,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -68,31 +70,109 @@ public class TransOrderShortCutController extends Controller {
 		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
-        
-      //海运
+        String id = (String) dto.get("id");
+        String ids="";
 		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("itemList");
 		
-		Record transJobOrder = new Record();
-		transJobOrder.set("so_no", itemList.get(0).get("SO_NO"));
-		transJobOrder.set("customer_id",itemList.get(0).get("CUSTOMER_ID") );
-		transJobOrder.set("type", itemList.get(0).get("TYPE"));
-		//提吉柜
-		transJobOrder.set("unload_type", itemList.get(0).get("unload_type"));
-		//码头
-		transJobOrder.set("take_wharf", itemList.get(0).get("TAKE_WHARF"));
-		transJobOrder.set("BACK_WHARF", itemList.get(0).get(""));
-		
-		transJobOrder.set("container_no", itemList.get(0).get("CONTAINER_NO"));
-		transJobOrder.set("cabinet_type", itemList.get(0).get("CABINET_TYPE"));
-		transJobOrder.set("CAR_NO", itemList.get(0).get(""));
-		transJobOrder.set("CHARGE_ID", itemList.get(0).get(""));
-		
-		
-		setAttr("order", transJobOrder);
-		setAttr("emailTemplateInfo", getEmailTemplateInfo());
-    	setAttr("emailTemplateInfo", getEmailTemplateInfo());
-    	setAttr("loginUser",LoginUserController.getLoginUserName(this));
-        render("/tms/TransJobOrder/JobOrderEdit.html");
+		TransJobOrderController tjc=new TransJobOrderController();
+   		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+   		for(int i=0;i<itemList.size();i++){
+   			TransJobOrder transJobOrder=new TransJobOrder();
+//   			//create 
+//			DbUtils.setModelValues(dto, transJobOrder);
+   			Map<String, String> itemMap=itemList.get(i);
+			//需后台处理的字段
+			String order_no = OrderNoGenerator.getNextOrderNo(tjc.generateJobPrefix(itemMap.get("type")), office_id);
+
+//			transJobOrder.set("plan_order_id", itemMap.get("plan_order_id"));
+//			transJobOrder.set("plan_order_item_id", itemMap.get("plan_order_item_id"));
+			transJobOrder.set("customer_id", itemMap.get("CUSTOMER_ID"));
+//			transJobOrder.set("plan_order_no", itemMap.get("plan_order_no"));
+			transJobOrder.set("type", itemMap.get("type"));
+			transJobOrder.set("status", "新建");
+			transJobOrder.set("remark", itemMap.get("remark"));
+			transJobOrder.set("container_no", itemMap.get("container_no"));
+			transJobOrder.set("so_no", itemMap.get("so_no"));
+			transJobOrder.set("cabinet_type", itemMap.get("CABINET_TYPE"));
+//			transJobOrder.set("head_carrier", itemMap.get("head_carrier"));
+//			transJobOrder.set("carriage_fee", itemMap.get("carriage_fee"));
+//			transJobOrder.set("bill_fee", itemMap.get("bill_fee"));
+//			transJobOrder.set("trans_clause", itemMap.get("trans_clause"));
+			transJobOrder.set("trade_type", itemMap.get("trade_type"));
+//			transJobOrder.set("land_export_date", itemMap.get("land_export_date"));
+			transJobOrder.set("take_wharf", itemMap.get("TAKE_WHARF"));
+			transJobOrder.set("back_wharf", itemMap.get("BACK_WHARF"));
+//			transJobOrder.set("transport_type", itemMap.get("transport_type"));
+			
+			transJobOrder.set("order_no", order_no);
+			transJobOrder.set("creator", user.getLong("id"));
+			if(StringUtils.isNotEmpty(itemMap.get("CREATE_STAMP"))){
+				transJobOrder.set("create_stamp", itemMap.get("CREATE_STAMP"));
+			}else{
+				transJobOrder.set("create_stamp", new Date());
+			}
+			transJobOrder.set("office_id", office_id);
+			transJobOrder.save();
+			id = transJobOrder.getLong("id").toString();
+			ids+=id+',';
+			System.out.println("test: "+ id);
+			//陆运 SHOUZHONGGUI_CAR_NO	TIJIGUI_CAR_NO	
+			if(StringUtils.isNotEmpty(itemMap.get("TIJIGUI_CAR_NO"))){
+				TransJobOrderLandItem tjol=new TransJobOrderLandItem();
+				tjol.set("order_id", id);
+				tjol.set("unload_type", "提吉柜");
+				//车牌对应司机；
+				Carinfo ci=Carinfo.dao.findById(itemMap.get("TIJIGUI_CAR_NO"));
+				tjol.set("car_no", ci.get("id"));
+				tjol.set("unload_type", ci.get("car_no"));
+				tjol.set("driver", ci.get("driver"));
+				tjol.save();
+			}
+			if(StringUtils.isNotEmpty(itemMap.get("YIGUI_CAR_NO"))){
+				TransJobOrderLandItem tjol=new TransJobOrderLandItem();
+				tjol.set("order_id", id);
+				tjol.set("unload_type", "移柜");
+				//车牌对应司机；
+				Carinfo ci=Carinfo.dao.findById(itemMap.get("YIGUI_CAR_NO"));
+				tjol.set("unload_type", ci.get("car_no"));
+				tjol.set("driver", ci.get("driver"));
+				tjol.save();
+			}
+			if(StringUtils.isNotEmpty(itemMap.get("SHOUZHONGGUI_CAR_NO"))){
+				TransJobOrderLandItem tjol=new TransJobOrderLandItem();
+				tjol.set("order_id", id);
+				tjol.set("unload_type", "收重柜");
+				//车牌对应司机；
+				Carinfo ci=Carinfo.dao.findById(itemMap.get("SHOUZHONGGUI_CAR_NO"));
+				tjol.set("unload_type", ci.get("car_no"));
+				tjol.set("driver", ci.get("driver"));
+				tjol.save();
+			}
+//			List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
+//			DbUtils.handleList(land_item, id, TransJobOrderLandItem.class, "order_id");
+			
+//			//费用明细，应收应付      CHARGE_ID    CURRENCY_ID total_amount exchange_rate  currency_total_amount
+//			List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");
+//			DbUtils.handleList(charge_list, id, TransJobOrderArap.class, "order_id");
+//			List<Map<String, String>> chargeCost_list = (ArrayList<Map<String, String>>)dto.get("chargeCost_list");
+//			DbUtils.handleList(chargeCost_list, id, TransJobOrderArap.class, "order_id");
+			//记录结算公司使用历史	
+//			saveAccoutCompanyQueryHistory(charge_list);
+//			saveAccoutCompanyQueryHistory(chargeCost_list);
+//			//记录结算费用使用历史  
+//			saveFinItemQueryHistory(charge_list);
+//			saveFinItemQueryHistory(chargeCost_list);
+   		}
+	
+//		setAttr("order", transJobOrder);
+//		setAttr("emailTemplateInfo", getEmailTemplateInfo());
+//    	setAttr("emailTemplateInfo", getEmailTemplateInfo());
+//    	setAttr("loginUser",LoginUserController.getLoginUserName(this));
+   		
+   		Record r =new Record();
+   		r.set("ids",ids);
+   		renderJson(r);
     }
 
     
