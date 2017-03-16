@@ -120,11 +120,8 @@ import controllers.cms.jobOrder.CustomJobOrderController;
 import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
-
-import controllers.msg.YqDashBoardController;
-
 import controllers.msg.EwmsDashBoardController;
-
+import controllers.msg.YqDashBoardController;
 import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.jobOrder.JobOrderControllerForMobile;
@@ -135,6 +132,7 @@ import controllers.oms.salesOrder.EbaySalesOrderController;
 import controllers.oms.todo.TodoController;
 import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
+import controllers.profile.AmazonAccountController;
 import controllers.profile.ContainerTypeController;
 import controllers.profile.CountryController;
 import controllers.profile.CurrencyController;
@@ -230,6 +228,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
         me.add("/ebaySalesOrder", EbaySalesOrderController.class, contentPath);
         me.add("/ebayAccount", EbayAccountController.class, contentPath);
+        me.add("/amazonAccount", AmazonAccountController.class, contentPath);
     }
     
     private void setAppRoute(Routes me, String contentPath) {
