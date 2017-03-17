@@ -536,6 +536,7 @@ eeda.refreshUrl = refreshUrl;
 			  var class_name = td.attr('class');
 			  var currency_rate = $(this).attr('currency_rate');
               td.next().children().val(currency_rate);//选择币制则填入汇率
+              td.parent().find('.exchange_currency_rate_rmb input').val(currency_rate);
               if(class_name==' cny_to_other'&&td.parent().find('[name=CURRENCY_ID_input]').val()!=$(this).text()){
             	   td.parent().find('.exchange_currency_rate input').val('');
             	   td.parent().find('.exchange_total_amount input').val('');
@@ -549,7 +550,7 @@ eeda.refreshUrl = refreshUrl;
               if(exchange_currency_rate!=''&&currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
             	  if(class_name==' cny_to_other'){
             		  td.next().next().children().val((total*exchange_currency_rate).toFixed(3));//转换后的金额
-            	  }else{
+            	   }else{
             		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
             		  td.parent().find('.exchange_total_amount input').val((total*exchange_currency_rate).toFixed(3));
             	  }
