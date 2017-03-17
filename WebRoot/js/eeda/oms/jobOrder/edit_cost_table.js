@@ -526,6 +526,28 @@ $(document).ready(function() {
             		return '<input type="text" name="exchange_total_amount" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
             	}
             },
+            { "data": "EXCHANGE_CURRENCY_RATE_RMB", "width": "80px", "className":"exchange_currency_rate_rmb",
+                "render": function ( data, type, full, meta ) {
+                    if(data)
+                        var str =  parseFloat(data).toFixed(6);
+                    else
+                        str = '';
+                    if(full.AUDIT_FLAG == 'Y'){
+                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:100px" value="'+str+'" class="form-control" disabled />';
+                    }else{
+                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:100px" value="'+str+'" class="form-control" />';
+                    }
+                }
+            },
+            { "data": "EXCHANGE_TOTAL_AMOUNT_RMB", "width": "80px","className":"exchange_total_amount_rmb",
+                "render": function ( data, type, full, meta ) {
+                    if(data)
+                        var str =  parseFloat(data).toFixed(2);
+                    else
+                        str = '';
+                    return '<input type="text" name="exchange_total_amount_rmb" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                }
+            },
             { "data": "REMARK","width": "180px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
@@ -590,6 +612,26 @@ $(document).ready(function() {
             }
         ]
     });
+    
+    //计算对账金额（人民币）与。。差
+   $(function(){
+       var cargo_table_rows= $('#cost_table tr');
+       var total_rmb=0;
+       var exchange_total_rmb=0;
+       for (var index = 1; index < cargo_table_rows.length; index++) {
+           var row= cargo_table_rows[index];
+           var empty = $(row).find('.dataTables_empty').text();
+            if(empty)
+                continue;
+
+           var total=$(row).find('[name=currency_total_amount]').val();
+           var exchange_total=$(row).find('[name=exchange_total_amount_rmb]').val();
+           total_rmb+=parseFloat(total);
+           exchange_total_rmb+=parseFloat(exchange_total);
+       };
+       var difference=parseFloat(total_rmb)-parseFloat(exchange_total_rmb);
+    $('#totalcost_rmb_difference_span').text(eeda.numFormat(parseFloat(difference).toFixed(2),3));
+    });
 
     //刷新明细表
     itemOrder.refleshCostTable = function(order_id){
@@ -621,35 +663,44 @@ $(document).ready(function() {
     	}
     
     //输入 数量*单价的时候，计算金额
-    $('#cost_table').on('keyup','[name=price],[name=amount],[name=exchange_rate],[name=exchange_currency_rate]',function(){
-    	var row = $(this).parent().parent();
-    	var price = $(row.find('[name=price]')).val();
-    	var amount = $(row.find('[name=amount]')).val();
-    	var exchange_rate = $(row.find('[name=exchange_rate]')).val();
-    	var exchange_currency_rate = $(row.find('[name=exchange_currency_rate]')).val();
-    	if(price==''||amount==''){
-    		$(row.find('[name=total_amount]')).val('');
-    		$(row.find('[name=currency_total_amount]')).val('');
-    		$(row.find('[name=exchange_total_amount]')).val('');
-    	}
-    	if(price!=''&&amount!=''&&!isNaN(price)&&!isNaN(amount)){
-    		var total_amount = parseFloat(price)*parseFloat(amount);
-    		$(row.find('[name=total_amount]')).val(total_amount);
-    		if(exchange_rate==''){
-    			$(row.find('[name=currency_total_amount]')).val('');
-    		}
-    		if(exchange_rate!=''&&!isNaN(exchange_rate)){
-    			$(row.find('[name=currency_total_amount]')).val((total_amount*parseFloat(exchange_rate)).toFixed(2));
-    			getTotalCost();
-    			if(exchange_currency_rate==''){
-        			$(row.find('[name=exchange_total_amount]')).val('');
-        		}
-    			if(exchange_currency_rate!=''&&!isNaN(exchange_currency_rate)){
-    				
-        			$(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_currency_rate)).toFixed(2));
-        		}
-    		}
-    	}
+    $('#cost_table').on('keyup','[name=price],[name=amount],[name=exchange_rate],[name=exchange_currency_rate],[name=exchange_currency_rate_rmb]',function(){
+        var row = $(this).parent().parent();
+        var price = $(row.find('[name=price]')).val();
+        var amount = $(row.find('[name=amount]')).val();
+        var exchange_rate = $(row.find('[name=exchange_rate]')).val();
+        var exchange_currency_rate = $(row.find('[name=exchange_currency_rate]')).val();
+        var exchange_currency_rate_rmb = $(row.find('[name=exchange_currency_rate_rmb]')).val();
+        if(price==''||amount==''){
+            $(row.find('[name=total_amount]')).val('');
+            $(row.find('[name=currency_total_amount]')).val('');
+            $(row.find('[name=exchange_total_amount]')).val('');
+            $(row.find('[name=exchange_total_amount_rmb]')).val('');
+        }
+        if(price!=''&&amount!=''&&!isNaN(price)&&!isNaN(amount)){
+            var total_amount = parseFloat(price)*parseFloat(amount);
+            $(row.find('[name=total_amount]')).val(total_amount);
+            if(exchange_rate==''){
+                $(row.find('[name=currency_total_amount]')).val('');
+            }
+            if(exchange_rate!=''&&!isNaN(exchange_rate)){
+                $(row.find('[name=currency_total_amount]')).val((total_amount*parseFloat(exchange_rate)).toFixed(2));
+                getTotalCost();
+                if(exchange_currency_rate==''){
+                    $(row.find('[name=exchange_total_amount]')).val('');
+                    $(row.find('[name=exchange_total_amount_rmb]')).val('');
+                }
+                if(exchange_currency_rate!=''&&!isNaN(exchange_currency_rate)){
+                    $(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_currency_rate)).toFixed(2));
+                      if(exchange_currency_rate_rmb==''){
+                         $(row.find('[name=exchange_total_amount_rmb]')).val('');
+                    }
+                    if(exchange_currency_rate_rmb!=''&&!isNaN(exchange_currency_rate_rmb)){
+                        var exchange_total_amount = parseFloat($(row.find('[name=exchange_total_amount]')).val());
+                        $(row.find('[name=exchange_total_amount_rmb]')).val((exchange_total_amount*parseFloat(exchange_currency_rate_rmb)).toFixed(2));
+                      }
+                }
+            }
+        }
     });
    
     

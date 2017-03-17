@@ -540,6 +540,7 @@ eeda.refreshUrl = refreshUrl;
               if(class_name==' cny_to_other'&&td.parent().find('[name=CURRENCY_ID_input]').val()!=$(this).text()){
             	   td.parent().find('.exchange_currency_rate input').val('');
             	   td.parent().find('.exchange_total_amount input').val('');
+                 td.parent().find('.exchange_total_amount_rmb input').val('');
             	   exchange_currency_rate='';
             	   
             	  }else{
@@ -554,6 +555,9 @@ eeda.refreshUrl = refreshUrl;
             		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
             		  td.parent().find('.exchange_total_amount input').val((total*exchange_currency_rate).toFixed(3));
             	  }
+                 var exchange_total = td.parent().find('.exchange_total_amount input').val();//此币种的金额
+                td.parent().find('.exchange_total_amount_rmb input').val((exchange_total*currency_rate).toFixed(3));
+               
               }
 		  });
 		  

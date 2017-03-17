@@ -141,7 +141,7 @@ $(document).ready(function() {
            exchange_total_rmb+=parseFloat(exchange_total);
        };
        var difference=parseFloat(total_rmb)-parseFloat(exchange_total_rmb);
-    $('#total_rmb_difference_span').text(eeda.numFormat(parseFloat(difference).toFixed(2),3));
+    $('#totalcharge_rmb_difference_span').text(eeda.numFormat(parseFloat(difference).toFixed(2),3));
     });
 
     itemOrder.buildChargeDetail=function(){
@@ -703,20 +703,6 @@ $(document).ready(function() {
             },
             { "data": "AUDIT_FLAG", "visible": false,
             	"render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return data;
-                }
-            },
-            { "data": "TOTAL_RMB", "visible": false,
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return data;
-                }
-            },
-            { "data": "EXCHANGE_TOTAL_RMB", "visible": false,
-                "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return data;
