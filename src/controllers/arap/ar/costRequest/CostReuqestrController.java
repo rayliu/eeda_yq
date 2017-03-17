@@ -596,6 +596,7 @@ public class CostReuqestrController extends Controller {
    		String ids = getPara("ids");
    		String order_no =getPara("order_no");
    		String creator_name =getPara("creator_name");
+   		String invoice_no =getPara("invoice_no");
    		
         //更改原始单据状态
         List<Record> res = null;
@@ -604,8 +605,9 @@ public class CostReuqestrController extends Controller {
 		    	 ArapCostApplication order = ArapCostApplication.dao.findById(application_id);
 		    	 if("cancelcheckBtn".equals(selfId)){
 		    		 order.set("status", "复核不通过");
+		    		 order.set("invoice_no", invoice_no);
 		    		 sendMail(application_id,order_no,creator_name);
-
+		    		 
 		    	 }else{
 		    		 order.set("status", "已复核");
 		    	 }

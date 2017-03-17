@@ -139,9 +139,10 @@ $(document).ready(function() {
 		  	var selfId=$(this).attr('id');
 		  	var order_no = $("#order_no").val();
 		  	var creator_name = $("#creator_name").val();
+		  	var invoice_no = $("#invoice_no").val();
 		  	
 		  
-			$.get("/costRequest/checkOrder", {order_id:$('#order_id').val(),selfId:selfId,order_no:order_no,creator_name:creator_name}, function(data){
+			$.get("/costRequest/checkOrder", {order_id:$('#order_id').val(),selfId:selfId,order_no:order_no,creator_name:creator_name,invoice_no:invoice_no}, function(data){
 				if(data.ID>0){
 					$("#check_name").val(data.CHECK_NAME);
 					$("#check_stamp").val(data.CHECK_STAMP);
@@ -302,6 +303,7 @@ $(document).ready(function() {
 		if($('#status').val()=='新建'){
 			$("#saveBtn").attr('disabled',false);
 			$("#checkBtn").attr('disabled',false);
+			$("#cancelcheckBtn").attr("disabled", false);
 		}else if($('#status').val()=='已复核'){
 			$("#checkBtn").attr("disabled", true);
 			$("#cancelcheckBtn").attr("disabled", false);
