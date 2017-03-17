@@ -50,9 +50,9 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                     data='';
                    var field_html = template('table_date_field_template',
                            {
-                               id: 'CREATE_STAMP',
+                               id: 'create_stamp',
                                value: data,
-                               display_value: full.EFFECTIVE_TIME,
+                               display_value: full.effective_time,
                                style:'width:130px'
                            }
                        );
@@ -72,9 +72,9 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                             data='';
                         var field_html = template('table_dropdown_template',
                             {
-                                id: 'CUSTOMER_ID',
+                                id: 'customer_id',
                                 value: data,
-                                display_value: full.SP_NAME,
+                                display_value: full.CUSTOMER_ID_INPUT,
                                 required:'required',
                                 style:'width:200px',
                             }
@@ -87,20 +87,20 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                     if(!data)
                         data='';
                     var str= '<select name="type" class="form-control search-control"  style="width:100px">'
-                        +'<option value="进口柜货">进口柜货</option>'
-                        +'<option value="出口散货">出口散货</option>'
-                        +'<option value="进口散货">进口散货</option>'
-                        +'<option value="出口空运">出口空运</option>'
-                        +'<option value="进口空运">进口空运</option>'
-                        +'<option value="内贸海运">内贸海运</option>'
-                        +'<option value="香港头程">香港头程</option>'
-                        +'<option value="香港游">香港游</option>'
-                        +'<option value="陆运">陆运</option>'
-                        +'<option value="报关">报关</option>'
-                        +'<option value="快递">快递</option>'
-                        +'<option value="加贸">加贸</option>'
-                        +'<option value="贸易">贸易</option>'
-                        +'<option value="园区游">园区游</option>'
+                        +'<option value="进口柜货" '+(data=='进口柜货' ? 'selected':'')+'>进口柜货</option>'
+                        +'<option value="出口散货" '+(data=='出口散货' ? 'selected':'')+'>出口散货</option>'
+                        +'<option value="进口散货" '+(data=='进口散货' ? 'selected':'')+'>进口散货</option>'
+                        +'<option value="出口空运" '+(data=='出口空运' ? 'selected':'')+'>出口空运</option>'
+                        +'<option value="进口空运" '+(data=='进口空运' ? 'selected':'')+'>进口空运</option>'
+                        +'<option value="内贸海运" '+(data=='内贸海运' ? 'selected':'')+'>内贸海运</option>'
+                        +'<option value="香港头程" '+(data=='香港头程' ? 'selected':'')+'>香港头程</option>'
+                        +'<option value="香港游" '+(data=='香港游' ? 'selected':'')+'>香港游</option>'
+                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
+                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
+                        +'<option value="快递" '+(data=='快递' ? 'selected':'')+'>快递</option>'
+                        +'<option value="加贸" '+(data=='加贸' ? 'selected':'')+'>加贸</option>'
+                        +'<option value="贸易" '+(data=='贸易' ? 'selected':'')+'>贸易</option>'
+                        +'<option value="园区游" '+(data=='园区游' ? 'selected':'')+'>园区游</option>'
                          +'</select>';
                     return str;
                 }
@@ -118,10 +118,10 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                         data='';
                     var str= '<select id="cabinet_type" name="CABINET_TYPE" class="form-control search-control valid">'
                              +'  <option value=""></option> '
-                             +'  <option value="20GP">20GP</option> '
-                             +'  <option value="40GP">40GP</option> '
-                             +'  <option value="40HQ">40HQ</option> '
-                             +'  <option value="45GP">45GP</option> '
+                             +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>20GP</option>'
+                             +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>40GP</option>'
+                             +'<option value="40HQ" '+(data=='40HQ' ? 'selected':'')+'>40HQ</option>'
+                             +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>45GP</option>'
                              +'</select>'; 
                     return str;
                 }
@@ -132,9 +132,9 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                         data='';
                     var field_html = template('table_car_no_field_template',
                         {
-                            id: 'TIJIGUI_CAR_NO',  //component_id 便于用 #id取组件
+                            id: 'tijigui_car_no',  //component_id 便于用 #id取组件
                             value: data,
-                            display_value: full.TIJIGUI_CAR_NO,
+                            display_value: full.TIJIGUI_CAR_NO_INPUT,
                             style:'width:200px'
                         }
                     );
@@ -147,9 +147,9 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                         data='';
                     var field_html = template('table_car_no_field_template',
                         {
-                            id: 'YIGUI_CAR_NO',  //component_id 便于用 #id取组件
+                            id: 'yigui_car_no',  //component_id 便于用 #id取组件
                             value: data,
-                            display_value: full.YIGUI_CAR_NO,
+                            display_value: full.YIGUI_CAR_NO_INPUT,
                             style:'width:200px'
                         }
                     );
@@ -162,9 +162,9 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                         data='';
                     var field_html = template('table_car_no_field_template',
                         {
-                            id: 'SHOUZHONGGUI_CAR_NO',  //component_id 便于用 #id取组件
+                            id: 'shouzhonggui_car_no',  //component_id 便于用 #id取组件
                             value: data,
-                            display_value: full.SHOUZHONGGUI_CAR_NO,
+                            display_value: full.SHOUZHONGGUI_CAR_NO_INPUT,
                             style:'width:200px'
                         }
                     );
@@ -177,9 +177,9 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                             data='';
                         var field_html = template('table_dock_no_field_template',
                             {
-                                id: 'TAKE_WHARF',
+                                id: 'take_wharf',
                                 value: data,
-                                display_value: full.TAKE_WHARF,
+                                display_value: full.TAKE_WHARF_INPUT,
                                 style:'width:200px',
                             }
                         );
@@ -192,9 +192,9 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                             data='';
                         var field_html = template('table_dock_no_field_template',
                             {
-                                id: 'BACK_WHARF',
+                                id: 'back_wharf',
                                 value: data,
-                                display_value: full.BACK_WHARF,
+                                display_value: full.BACK_WHARF_INPUT,
                                 style:'width:200px',
                             }
                         );
@@ -209,7 +209,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                           {
                               id: 'CHARGE_ID',
                               value: data,
-                              display_value: full.CHARGE_NAME,
+                              display_value: full.CHARGE_NAME_INPUT,
                               style:'width:200px'
                           }
                       );
@@ -233,7 +233,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                            {
                                id: 'CURRENCY_ID',
                                value: data,
-                               display_value: full.CURRENCY_ID,
+                               display_value: full.CURRENCY_ID_INPUT,
                                style:'width:80px'
                            }
                        );
@@ -269,7 +269,30 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 
      
        $('#add_land').on('click', function(){
-          var item={};
+          var create_stamp=$('#sent_out_time').val();
+          var so_no=$('#so_no').val();
+          var customer_id=$('#customer_id').val();
+          var type=$('#type').val();
+          var container_no=$('#container_no').val();
+          var cabinet_type=$('#cabinet_type').val();
+          var tijigui_car_no=$('#tiji_car_no').val();
+          var yigui_car_no=$('#yi_car_no').val();
+          var shouzhonggui_car_no=$('#shouzhong_car_no').val();
+          var take_wharf=$('#take_wharf').val();
+          var back_wharf=$('#back_wharf').val();
+          var remark=$('#remark').val();
+          var customer_id_input=$('#customer_id_input').val();
+          var tijigui_car_no_input=$('#tiji_car_no_input').val();
+          var yigui_car_no_input=$('#yi_car_no_input').val();
+          var shouzhonggui_car_no_input=$('#shouzhong_car_no_input').val();
+          var take_wharf_input=$('#take_wharf_input').val();
+          var back_wharf_input=$('#back_wharf_input').val();
+          // var =$('#').val();CUSTOMER_ID_input
+          var item={"CREATE_STAMP":create_stamp,"SO_NO":so_no,"CUSTOMER_ID":customer_id,"TYPE":type,
+                    "CONTAINER_NO":container_no,"CABINET_TYPE":cabinet_type,"TIJIGUI_CAR_NO":tijigui_car_no,"YIGUI_CAR_NO":yigui_car_no,
+                    "SHOUZHONGGUI_CAR_NO":shouzhonggui_car_no,"TAKE_WHARF":take_wharf,"BACK_WHARF":back_wharf,"REMARK":remark,
+                    "CUSTOMER_ID_INPUT":customer_id_input,"TIJIGUI_CAR_NO_INPUT":tijigui_car_no_input,"YIGUI_CAR_NO_INPUT":yigui_car_no_input,
+                    "SHOUZHONGGUI_CAR_NO_INPUT":shouzhonggui_car_no_input,"TAKE_WHARF_INPUT":take_wharf_input,"BACK_WHARF_INPUT":back_wharf_input,};
           dataTable.row.add(item).draw(true);
           $('#eeda-table [type="checkbox"]');
       });
@@ -278,7 +301,12 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
         var tr = $(this).parent().parent();        
         dataTable.row(tr).remove().draw();
       });
+       //清空
+        $('#resetBtn').on('click', function(e){
+          $('#orderForm')[0].reset();
+      });
 
+        //全选
        $('#allCheckOfLand').on('click', function(){
           if($(this).prop('checked')){
             $('#eeda-table [type="checkbox"]').prop('checked',true);
@@ -325,10 +353,30 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
              $.scojs_message('创建失败', $.scojs_message.TYPE_ERROR);
          });
       });
-        // 柜号限制输入位为11位数，
-      
+        
+     //将上框内容应用到表中
+     $('#add_on').on('click',function(){
+      //当客户为空的列，添加
+        var create_stamp=$('#sent_out_time').val();customer_id
+           // dataTable.row.add(item).draw(true);
+          var cargo_table_rows = $("#eeda-table tr");
+          for(var index=1; index<cargo_table_rows.length; index++){
+              var row = cargo_table_rows[index];
+              var empty = $(row).find('.dataTables_empty').text();
+              if(empty)
+                continue;
+              for(var i = 1; i < row.childNodes.length; i++){
+                var name = $(row.childNodes[i]).find('input,select').attr('name');
+               name = name.toLowerCase()
+                var value = $('#'+name).val();
+                if(name&&value!=undefined&&value){
+                   $(row).find('[name='+name.toLowerCase()+']').val(value);
+                }
+              }
+          }
+       });
 
-       
+      
        itemOrder.buildItemList=function(){
           var cargo_table_rows = $("#eeda-table tr");
           var cargo_items_array=[];
