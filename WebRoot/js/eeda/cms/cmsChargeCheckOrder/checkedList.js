@@ -19,7 +19,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			          },
 					  
 					  { "data": "STATUS", "width": "100px"},
-					  { "data": "PARTY_NAME", "width": "80px"}, 
+					  { "data": "SP_NAME", "width": "80px"}, 
 					  { "data": "CHECK_AMOUNT","width": "80px",
 				    	 "render":function(data, type, full, meta){
 				    		 if(data<0){
@@ -46,13 +46,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 
      var searchData=function(){
           var order_no = $("#order_no1").val();
-          var party_name = $('#party_input').val().trim();
+          var sp_name = $('#sp_input').val().trim();
           var start_date = $("#create_stamp1_begin_time").val();
           var end_date = $("#create_stamp1_end_time").val();
           
 
           var url = "/cmsChargeCheckOrder/checkedList?order_no="+order_no
-               +"&party_name="+party_name
+               +"&sp_name="+sp_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 

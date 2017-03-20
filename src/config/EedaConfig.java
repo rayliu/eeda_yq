@@ -270,7 +270,9 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/cmsChargeCheckOrder", controllers.arap.cmsAr.CmsChargeCheckOrderController.class, contentPath);
 		me.add("/cmsCostCheckOrder", controllers.arap.cmsAr.CmsCostCheckOrderController.class, contentPath);
 		me.add("/expenseEntry", controllers.cms.expenseEntry.ExpenseEntryController.class, contentPath);
-		
+		me.add("/cmsAccountAuditLog", controllers.arap.CustomAccountAging.class, contentPath);
+		me.add("/cmsChargeRequest", controllers.arap.cmsAr.CustomChargeReuqestrController.class, contentPath);
+		me.add("/cmsCostRequest", controllers.arap.cmsAr.CustomCostReuqestrController.class, contentPath);  
 		
 		//tms 车队系统
 		me.add("/transJobOrder", TransJobOrderController.class, contentPath);

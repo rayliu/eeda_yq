@@ -179,13 +179,13 @@ public class CmsChargeCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select aco.*, p.abbr party_name,ul.c_name creator_name,ul2.c_name confirm_name "
+        		+ " select aco.*, p.abbr sp_name,ul.c_name creator_name,ul2.c_name confirm_name "
 				+ " from custom_arap_charge_order aco "
-				+ " left join party p on p.id=aco.party_id "
+				+ " left join party p on p.id=aco.sp_id "
 				+ " left join user_login ul on ul.id = aco.create_by"
 				+ " left join user_login ul2 on ul2.id = aco.confirm_by"
 				+ " where aco.office_id = "+office_id
-				+ " group by aco.id) B where 1=1 ";
+				+ " group by aco.id ORDER BY  aco.create_stamp desc ) B where 1=1 ";
         String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
@@ -235,7 +235,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		String ids = getPara("idsArray");//job_order_arap ids
 		String total_amount = getPara("totalAmount");
 		
-		String sql = "SELECT p.phone,p.contact_person,p.address,p.company_name declare_unit,cpo.application_unit declare_unit_id,cpoa.sp_id party_id"
+		String sql = "SELECT p.phone,p.contact_person,p.address,p.company_name declare_unit,cpo.application_unit declare_unit_id,cpoa.sp_id"
 				+ " FROM custom_plan_order_arap cpoa"
 				+ " LEFT JOIN custom_plan_order cpo on cpo.id=cpoa.order_id "
 				+ " left join party p on p.id = cpo.application_unit "
@@ -331,10 +331,33 @@ public class CmsChargeCheckOrderController extends Controller {
     
 	//异步刷新字表
     public void tableList(){
+    	String order_ids = getPara("order_ids");
     	String order_id = getPara("order_id");
-    	List<Record> list = null;
-    	String condition = "select ref_order_id from custom_arap_charge_item where custom_charge_order_id ="+order_id;
-    	list = getItemList(condition,order_id);
+    	String appliction_id = getPara("appApplication_id");
+    	String bill_flag = getPara("bill_flag");
+    	String currency_code=getPara("query_currency");
+    	//查询结算币制
+    	String  exchange_currency=getPara("query_exchange_currency");
+    	String  fin_name=getPara("query_fin_name");
+    	
+//    	List<Record> list = null;
+//    	String condition = "select ref_order_id from custom_arap_charge_item where custom_charge_order_id ="+order_id;
+     	List<Record> list = null;
+    	String condition = "select ref_order_id from custom_arap_charge_item where custom_charge_order_id in ("+order_ids+") ";
+//    	list = getItemList(condition,order_id);
+    	
+    	if("N".equals(order_id)){//应收申请单
+    		if(StringUtils.isNotEmpty(appliction_id)){
+    			list = getItemList("",appliction_id);
+        	}else{
+	    		if("".equals(order_ids)){
+	    			order_ids=null;
+	    				}
+	    		list = getItemList(condition,"");
+	    		}
+    	}else{//应收对账单
+    		    list = getItemList(condition,order_id);
+    	}
 
     	Map BillingOrderListMap = new HashMap();
         BillingOrderListMap.put("sEcho", 1);
@@ -344,6 +367,7 @@ public class CmsChargeCheckOrderController extends Controller {
         BillingOrderListMap.put("aaData", list);
 
         renderJson(BillingOrderListMap); 
+    
     }
 
     @Before(Tx.class)
