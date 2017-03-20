@@ -7,15 +7,17 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
             id:'example',
             "ajax": "/loginUser/listUser",
             "columns": [
-                { "data": "USER_NAME", "width": "30%",
+                { "data": "USER_NAME", "width": "2%",
                     "render":function(data, type, full, meta){
                         return "<a  href='/loginUser/edit/"+full.ID+"' target='_blank' >" + data + "</a>";
                     }},
-                { "data": "C_NAME", "width": "30%" },
-                { "data": "PASSWORD_HINT","width": "30%"},
+                { "data": "C_NAME", "width": "10%" },
+                { "data": "POSITION_NAME", "width": "10%" },
+                { "data": "ROLE_MSG", "width": "40%" },
+                { "data": "PASSWORD_HINT","width": "15%"},
                 { 
                     "data": null, 
-                    "width": "8%",
+                    "width": "5%",
                     //"bVisible":(User.update || User.del),
                     "render": function(data, type, full, meta) {
                         var str = "<nobr>";
