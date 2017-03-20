@@ -50,9 +50,9 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                     data='';
                    var field_html = template('table_date_field_template',
                            {
-                               id: 'create_stamp',
+                               id: 'CREATE_STAMP',
                                value: data,
-                               display_value: full.effective_time,
+                               display_value: full.CREATE_STAMP,
                                style:'width:130px'
                            }
                        );
@@ -72,7 +72,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                             data='';
                         var field_html = template('table_dropdown_template',
                             {
-                                id: 'customer_id',
+                                id: 'CUSTOMER_ID',
                                 value: data,
                                 display_value: full.CUSTOMER_ID_INPUT,
                                 required:'required',
@@ -87,6 +87,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                     if(!data)
                         data='';
                     var str= '<select name="type" class="form-control search-control"  style="width:100px">'
+                        +'<option value="出口柜货" '+(data=='出口柜货' ? 'selected':'')+'>出口柜货</option>'
                         +'<option value="进口柜货" '+(data=='进口柜货' ? 'selected':'')+'>进口柜货</option>'
                         +'<option value="出口散货" '+(data=='出口散货' ? 'selected':'')+'>出口散货</option>'
                         +'<option value="进口散货" '+(data=='进口散货' ? 'selected':'')+'>进口散货</option>'
@@ -116,7 +117,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    var str= '<select id="cabinet_type" name="CABINET_TYPE" class="form-control search-control valid">'
+                    var str= '<select  name="cabinet_type" class="form-control search-control valid">'
                              +'  <option value=""></option> '
                              +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>20GP</option>'
                              +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>40GP</option>'
@@ -132,7 +133,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                         data='';
                     var field_html = template('table_car_no_field_template',
                         {
-                            id: 'tijigui_car_no',  //component_id 便于用 #id取组件
+                            id: 'TIJIGUI_CAR_NO',  //component_id 便于用 #id取组件
                             value: data,
                             display_value: full.TIJIGUI_CAR_NO_INPUT,
                             style:'width:200px'
@@ -147,7 +148,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                         data='';
                     var field_html = template('table_car_no_field_template',
                         {
-                            id: 'yigui_car_no',  //component_id 便于用 #id取组件
+                            id: 'YIGUI_CAR_NO',  //component_id 便于用 #id取组件
                             value: data,
                             display_value: full.YIGUI_CAR_NO_INPUT,
                             style:'width:200px'
@@ -162,7 +163,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                         data='';
                     var field_html = template('table_car_no_field_template',
                         {
-                            id: 'shouzhonggui_car_no',  //component_id 便于用 #id取组件
+                            id: 'SHOUZHONGGUI_CAR_NO',  //component_id 便于用 #id取组件
                             value: data,
                             display_value: full.SHOUZHONGGUI_CAR_NO_INPUT,
                             style:'width:200px'
@@ -177,7 +178,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                             data='';
                         var field_html = template('table_dock_no_field_template',
                             {
-                                id: 'take_wharf',
+                                id: 'TAKE_WHARF',
                                 value: data,
                                 display_value: full.TAKE_WHARF_INPUT,
                                 style:'width:200px',
@@ -192,7 +193,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                             data='';
                         var field_html = template('table_dock_no_field_template',
                             {
-                                id: 'back_wharf',
+                                id: 'BACK_WHARF',
                                 value: data,
                                 display_value: full.BACK_WHARF_INPUT,
                                 style:'width:200px',
@@ -269,24 +270,24 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 
      
        $('#add_land').on('click', function(){
-          var create_stamp=$('#sent_out_time').val();
+          var create_stamp=$('#CREATE_STAMP').val();
           var so_no=$('#so_no').val();
-          var customer_id=$('#customer_id').val();
+          var customer_id=$('#CUSTOMER_ID').val();
           var type=$('#type').val();
           var container_no=$('#container_no').val();
           var cabinet_type=$('#cabinet_type').val();
-          var tijigui_car_no=$('#tiji_car_no').val();
-          var yigui_car_no=$('#yi_car_no').val();
-          var shouzhonggui_car_no=$('#shouzhong_car_no').val();
-          var take_wharf=$('#take_wharf').val();
-          var back_wharf=$('#back_wharf').val();
+          var tijigui_car_no=$('#TIJIGUI_CAR_NO').val();
+          var yigui_car_no=$('#YIGUI_CAR_NO').val();
+          var shouzhonggui_car_no=$('#SHOUZHONGGUI_CAR_NO').val();
+          var take_wharf=$('#TAKE_WHARF').val();
+          var back_wharf=$('#BACK_WHARF').val();
           var remark=$('#remark').val();
-          var customer_id_input=$('#customer_id_input').val();
-          var tijigui_car_no_input=$('#tiji_car_no_input').val();
-          var yigui_car_no_input=$('#yi_car_no_input').val();
-          var shouzhonggui_car_no_input=$('#shouzhong_car_no_input').val();
-          var take_wharf_input=$('#take_wharf_input').val();
-          var back_wharf_input=$('#back_wharf_input').val();
+          var customer_id_input=$('#CUSTOMER_ID_input').val();
+          var tijigui_car_no_input=$('#TIJIGUI_CAR_NO_input').val();
+          var yigui_car_no_input=$('#YIGUI_CAR_NO_input').val();
+          var shouzhonggui_car_no_input=$('#SHOUZHONGGUI_CAR_NO_input').val();
+          var take_wharf_input=$('#TAKE_WHARF_input').val();
+          var back_wharf_input=$('#BACK_WHARF_input').val();
           // var =$('#').val();CUSTOMER_ID_input
           var item={"CREATE_STAMP":create_stamp,"SO_NO":so_no,"CUSTOMER_ID":customer_id,"TYPE":type,
                     "CONTAINER_NO":container_no,"CABINET_TYPE":cabinet_type,"TIJIGUI_CAR_NO":tijigui_car_no,"YIGUI_CAR_NO":yigui_car_no,
@@ -335,7 +336,6 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           $("#eeda-table tr").each(function(index,item){
             if($(item).find('[type=checkbox]').prop('checked')){
               if(!$(item).find('[name=CUSTOMER_ID_input]').val()){
-
                $.scojs_message('第'+index+'行未选择客户', $.scojs_message.TYPE_ERROR);
                    error++;
                   }
@@ -357,7 +357,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
      //将上框内容应用到表中
      $('#add_on').on('click',function(){
       //当客户为空的列，添加
-        var create_stamp=$('#sent_out_time').val();customer_id
+        var create_stamp=$('#CREATE_STAMP').val();
            // dataTable.row.add(item).draw(true);
           var cargo_table_rows = $("#eeda-table tr");
           for(var index=1; index<cargo_table_rows.length; index++){
@@ -365,13 +365,24 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
               var empty = $(row).find('.dataTables_empty').text();
               if(empty)
                 continue;
+
+                //客户为空时应用
+              var customer=$(row).find('[name=CUSTOMER_ID_input]').val();
               for(var i = 1; i < row.childNodes.length; i++){
                 var name = $(row.childNodes[i]).find('input,select').attr('name');
-               name = name.toLowerCase()
-                var value = $('#'+name).val();
-                if(name&&value!=undefined&&value){
-                   $(row).find('[name='+name.toLowerCase()+']').val(value);
-                }
+                if((!customer||customer==undefined)&&name&&name!=undefined){
+                      var value = $('#'+name).val();
+                    if(value!=undefined&&value){
+                       $(row).find('[name='+name+']').val(value);
+                       if(name=='CUSTOMER_ID'||name=='TIJIGUI_CAR_NO'||name=='YIGUI_CAR_NO'||
+                        name=='SHOUZHONGGUI_CAR_NO'||name=='TAKE_WHARF'||name=='BACK_WHARF'){
+                            $(row).find('[name='+name+'_input]').val($('#'+(name+'_input')).val());
+                       }
+                       if(name=='type'||name=='cabinet_type'){
+                          $(row).find('option[value='+value+']').attr('selected',true);
+                       }
+                    }
+                  }
               }
           }
        });
@@ -402,13 +413,13 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                   item[name] = value;
                 }
                 if(name=='TIJIGUI_CAR_NO'){
-                  item[name]=$(row.childNodes[i]).find('input,select').attr('car_id')
+                  item[name]=$(row.childNodes[i]).find('input,select').val()
                 }
                 if(name=='YIGUI_CAR_NO'){
-                  item[name]=$(row.childNodes[i]).find('input,select').attr('car_id')
+                  item[name]=$(row.childNodes[i]).find('input,select').val()
                 }
                 if(name=='SHOUZHONGGUI_CAR_NO'){
-                  item[name]=$(row.childNodes[i]).find('input,select').attr('car_id')
+                  item[name]=$(row.childNodes[i]).find('input,select').val()
                 }
               }
               item.action = id.length > 0?'UPDATE':'CREATE';

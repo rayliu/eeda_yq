@@ -18,7 +18,7 @@
                                     <div class="row"><!--  第1行  -->
                                         <div class="col-lg-4"><!--  三列排版  -->
                                             <%include("/eeda/component/form/dateInputField.html", 
-                                                                {   id: 'sent_out_time', 
+                                                                {   id: 'CREATE_STAMP', 
                                                                     label: '创建时间', 
                                                                     value: ''
                                                                 }){}%>
@@ -33,7 +33,7 @@
 				                        <div class="col-lg-4">
 				                            <%include("/eeda/component/form/inputCustomerField.html", 
 				                                {
-				                                    id:'customer_id', 
+				                                    id:'CUSTOMER_ID', 
 				                                    label:'客户', 
 				                                    required:'required',
 				                                    value:order.customer_id!planOrder.customer_id!'',
@@ -91,7 +91,7 @@
                              <div class="row">
 					            <div class="col-lg-4">
 					                  <%include("/eeda/component/form/inputCarInfoField.html", 
-							                    {   id:'tiji_car_no',
+							                    {   id:'TIJIGUI_CAR_NO',
 							                        type:'head_car',
 							                        label:'提吉柜车牌号', 
 							                        value: head.head_carrier!'',
@@ -100,7 +100,7 @@
 					           </div>
 					           <div class="col-lg-4">
 					                  <%include("/eeda/component/form/inputCarInfoField.html", 
-							                    {   id:'yi_car_no',
+							                    {   id:'YIGUI_CAR_NO',
 							                        type:'head_car',
 							                        label:'移柜车牌号', 
 							                        value: head.head_carrier!'',
@@ -109,7 +109,7 @@
 					           </div>
 					           <div class="col-lg-4">
 					                  <%include("/eeda/component/form/inputCarInfoField.html", 
-							                    {   id:'shouzhong_car_no',
+							                    {   id:'SHOUZHONGGUI_CAR_NO',
 							                        type:'head_car',
 							                        label:'收重柜车牌号', 
 							                        value: head.head_carrier!'',
@@ -120,7 +120,7 @@
 					        <div class="row">
 					            <div class="col-lg-4">
 					                  <%include("/eeda/component/form/inputDockField.html", 
-					                    {   id:'take_wharf', 
+					                    {   id:'TAKE_WHARF', 
 					                        label:'提柜码头', 
 					                        value:order.take_wharf!'',
 		                                    display_value:order.take_wharf_name!''
@@ -128,7 +128,7 @@
 					            </div>
 					            <div class="col-lg-4">
 					                  <%include("/eeda/component/form/inputDockField.html", 
-					                    {   id:'back_wharf', 
+					                    {   id:'BACK_WHARF', 
 					                        label:'还柜码头', 
 					                        value:order.back_wharf!'',
 		                                    display_value:order.back_wharf_name!''
