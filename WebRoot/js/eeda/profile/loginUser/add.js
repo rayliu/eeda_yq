@@ -247,10 +247,23 @@ $(document).ready(function(){
 		$("#customerIds").val(customerIds.toString());
 		
 		$("#leadsForm").submit();
+		
 	});
 	if($("#userId").val() != "" && $("#userId").val() != null){
 		$("#assigning_role").show();
 	}
 	});
 	$.unblockUI();
+	
+	var refreshUrl=function(url){
+	  	var state = window.history.state;
+	  	if(state){
+	  		window.history.replaceState(state, "", url);
+	  	}else{
+	  		window.history.pushState({}, "", url);
+	  	}
+	 };
+	 
+	 if(window.location.pathname.substring(window.location.pathname.length-8, window.location.pathname.length)=='saveUser')
+		 refreshUrl(window.location.protocol + "//" + window.location.host+window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')+1)+'edit/'+$('#userId').val());
 });

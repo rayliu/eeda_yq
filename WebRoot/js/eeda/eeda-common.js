@@ -117,6 +117,7 @@ $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) {
 //dataTables builder for 1.10
 eeda.dt = function(opt){
     var option = {
+    	bSort: opt.sort || false, 
         processing: opt.processing || true,
         searching: opt.searching || false,
         paging: opt.paging || false,
