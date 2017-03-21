@@ -27,7 +27,10 @@ var itemIds=[];
                           return str;
                       }
                 },
-                { "data": "ORDER_NO"},
+                { "data": "ORDER_NO","width": "100px",
+                      "render": function ( data, type, full, meta ) {
+                        return "<a href='/customPlanOrder/edit?id="+full.ORDER_ID+"' target='_blank'>"+data+"</a>";
+                    }},
                 { "data": "TYPE"},
                 { "data": "CREATE_STAMP", visible: false},
                 { "data": "CUSTOMER_NAME"},
@@ -275,8 +278,8 @@ var itemIds=[];
                     return;
 
                 if(item.ORDER_TYPE == 'cost'){
-                    if(item.EXCHANGE_CURRENCY_NAME=='CNY'){
-                        CNY_cost+=item.EXCHANGE_TOTAL_AMOUNT;
+                    if(item.CURRENCY_NAME=='CNY'){
+                        CNY_cost+=item.TOTAL_AMOUNT;
                     }else if(item.EXCHANGE_CURRENCY_NAME=='USD'){
                         USD_cost+=item.EXCHANGE_TOTAL_AMOUNT;
                     }else if(item.EXCHANGE_CURRENCY_NAME=='HKD'){
@@ -285,8 +288,8 @@ var itemIds=[];
                         JPY_cost+=item.EXCHANGE_TOTAL_AMOUNT;
                     }
                 }else{
-                    if(item.EXCHANGE_CURRENCY_NAME=='CNY'){
-                        CNY_charge+=item.EXCHANGE_TOTAL_AMOUNT;
+                    if(item.CURRENCY_NAME=='CNY'){
+                        CNY_charge+=item.TOTAL_AMOUNT;
                     }else if(item.EXCHANGE_CURRENCY_NAME=='USD'){
                         USD_charge+=item.EXCHANGE_TOTAL_AMOUNT;
                     }else if(item.EXCHANGE_CURRENCY_NAME=='HKD'){

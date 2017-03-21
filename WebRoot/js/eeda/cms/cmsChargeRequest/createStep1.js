@@ -12,7 +12,7 @@
 	    serverSide: true, //不打开会出现排序不对 
 	    ajax: "/cmsChargeRequest/OrderList",
 	    columns: [
-				{ 
+				{ "width":"20px",
 				    "render": function(data, type, full, meta) {
 				    	if(full.GREATE_FLAG=='Y'){
 				    		return '<input type="checkbox" class="checkBox" name="order_check_box" disabled>';
@@ -33,7 +33,7 @@
 				        
 				    }
 				},
-				{"data":"ORDER_NO", 
+				{"data":"ORDER_NO", "width":"100px",
 					"render": function(data, type, full, meta) {
 						return "<a href='/cmsChargeCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
 					}
@@ -47,7 +47,7 @@
 						if(data==''){
 							data=0.00;
 						}
-						return parseFloat(data).toFixed(2);
+						return eeda.numFormat(parseFloat(data).toFixed(2),3);
 					}
 				},
 				{"data":"PAID_CNY","width":"70px",
@@ -55,7 +55,7 @@
 							if(data==''){
 								data=0.00;
 							   }
-							return parseFloat(data).toFixed(2);
+							return eeda.numFormat(parseFloat(data).toFixed(2),3);
 					}
 				},
 				{	"width":"70px",
@@ -63,7 +63,7 @@
 						return "<span style='width:70px'>"+parseFloat(full.TOTAL_AMOUNT - full.PAID_CNY).toFixed(2)+"</span>";	
 					}
 				},
-				{"data":"SP_ID","visable":false	}	
+				{"data":"SP_ID","visble":false	}	
         ]      
     });
                       

@@ -136,17 +136,17 @@
                                 label:'CNY', value:order.modal_cny!'',disabled:'disabled'
                                 }){}%>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-3" style="display:none;">
 	                            <%include("/eeda/component/form/inputField.html", { id:'modal_usd',
 	                            label:'USD', value:order.modal_usd!'',disabled:'disabled'
 	                            }){}%>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-3" style="display:none;">
 	                            <%include("/eeda/component/form/inputField.html", { id:'modal_jpy',
 	                            label:'JPY', value:order.modal_jpy!'',disabled:'disabled'
 	                            }){}%>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-3" style="display:none;">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_hkd',
                                 label:'HKD', value:order.modal_hkd!'',disabled:'disabled'
                                 }){}%>
@@ -276,14 +276,14 @@
 		                                }){}%>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4" style="display:none;">
                                 <div class="form-group">
                                     <%include("/eeda/component/form/inputField.html", { id:'comfirm_modal_usd',
 		                                label:'收款USD', value:order.modal_usd!'',disabled:'disabled'
 		                                }){}%>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4" style="display:none;">
                                 <div class="form-group">
                                     <%include("/eeda/component/form/inputField.html", { id:'comfirm_modal_jpy',
 		                                label:'收款JPY', value:order.modal_jpy!'',disabled:'disabled'
@@ -292,7 +292,7 @@
                             </div>
                        </div>
                        <div class="row">  
-                            <div class="col-lg-4">
+                            <div class="col-lg-4" style="display:none;">
                                 <div class="form-group">
                                     <%include("/eeda/component/form/inputField.html", { id:'comfirm_modal_hkd',
 		                                label:'收款HKD', value:order.modal_hkd!'',disabled:'disabled'
