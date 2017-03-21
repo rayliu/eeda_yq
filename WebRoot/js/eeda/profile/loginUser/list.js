@@ -7,7 +7,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
             id:'example',
             "ajax": "/loginUser/listUser",
             "columns": [
-                { "data": "USER_NAME", "width": "2%",
+                { "data": "USER_NAME", "width": "20%",
                     "render":function(data, type, full, meta){
                         return "<a  href='/loginUser/edit/"+full.ID+"' target='_blank' >" + data + "</a>";
                     }},
