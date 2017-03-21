@@ -123,10 +123,116 @@
 							</div>
                         <!-- </div><br/><br/> -->
 
-                       
-							<div class="form-group">
+                    </form>
+                </div>
+            </div>
+            
+            
+            <div class="row simple_search_div" style="margin-top:15px"> 
+                    	<!-- <div class=" head_style"><label class="font_style">收款信息</label></div> -->
+                      	<div class="panel-body">
+                      	 	<div class="row">
 								<div class="col-lg-12">
-									<h4>结算汇总金额</h4>
+									<h4>收款信息</h4>
+								</div>
+							</div>
+                         <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <%include("/eeda/component/form/inputField.html", { id:'comfirm_modal_cny',
+		                                label:'收款CNY', value:order.modal_cny!'',disabled:'disabled'
+		                                }){}%>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <%include("/eeda/component/form/inputField.html", { id:'comfirm_modal_usd',
+		                                label:'收款USD', value:order.modal_usd!'',disabled:'disabled'
+		                                }){}%>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <%include("/eeda/component/form/inputField.html", { id:'comfirm_modal_jpy',
+		                                label:'收款JPY', value:order.modal_jpy!'',disabled:'disabled'
+		                                }){}%>
+                                </div>
+                            </div>
+                       </div>
+                       <div class="row">  
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <%include("/eeda/component/form/inputField.html", { id:'comfirm_modal_hkd',
+		                                label:'收款HKD', value:order.modal_hkd!'',disabled:'disabled'
+		                                }){}%>
+                                </div>
+                            </div>
+                       </div>
+                       <div class="row">
+                           <div class="col-lg-4">
+                           		<%include("/eeda/component/form/inputField.html", { id:'check_name',
+								label:'复核人', value:order.check_name!'',disabled:'disabled'
+								}){}%>
+					       </div>
+					        <div class="col-lg-4">
+								<%include("/eeda/component/form/inputField.html", { id:'check_stamp',
+								label:'复核时间', value:order.check_stamp!'',disabled:'disabled'
+								}){}%>
+                       		</div>
+                       	</div>
+                       	<div class="row">
+                       		<div class="col-lg-4">
+                           		<%include("/eeda/component/form/inputField.html", { id:'confirm_name',
+								label:'	确认收款人', value:order.confirm_name!'',disabled:'disabled'
+								}){}%>
+					       </div>
+					       <div class="col-lg-4">
+	                            <%include("/eeda/component/form/dateInputField.html",
+				                        {    id:'receive_time', 
+				                             label:'收款时间',
+				                             required:'required',
+				                             value:order.receive_time!''
+	                              }){} %>
+	                        </div>
+	                       <div class="col-lg-4">
+	                       		<div class="form-group" style="display:none">
+	                           	   <label class="search-label">收款方式</label> 
+	                                  <select id="receive_type" class="form-control search-control receive_type" name="receive_type">
+	                                  	<option value=""></option>
+                                    	<option value="cash" <% if(order.receive_type!'cash'=='cash'){%>selected<% }%>>现金</option>
+                                    	<option value="transfers" <% if(order.receive_type!''=='transfers'){%>selected<% }%>>转账</option>                                       
+	                                  </select>
+	                            </div>
+	                       </div>
+
+	                         <div class="col-lg-12" style="display:none">
+	                       		<div id="receive_type_massage_" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
+		                            <div class="form-group">
+			                            <label class="search-label" style="width: 11%" >收入银行</label>
+			                            <input type="hidden" id="receive_banks_" placeholder="请选择支付银行" name="pay_banks" value="${invoiceApplication.confirm_bank_id_!''}"> 
+			                        	   <select class="form-control search-control receive_bank" name="receive_bank_" id="receive_bank_" >
+			                        	   		<option></option>
+			                             		<%for(account in accountList){ %>
+			                             		<option value="${account.ID!''}" <%if(order.receive_bank_id_!'4'==account.ID!){%>selected<% }%>>${account.BANK_NAME_!''}</option>
+			                             		<%}%>
+			                               </select>
+		                        	</div>
+	                        	</div>	
+	                         </div>   
+	                    </div>  
+	                    
+             </div>
+             <hr>
+             <div class="form-group button-bar" >
+                   <button id="confirmBtn" type="button" class="btn btn_green"  disabled="disabled" >收款确认</button>
+                   <a class="btn  btn_white" href="/chargeRequest?back=confirmTrue">返回</a>
+                   <button id="returnConfirmBtn" type="button" class="btn  btn-primary" style="display:none" >撤回</button>
+             </div>
+       </div>
+			
+			<div class="form-group">
+								<div class="col-lg-12">
+									<h4>申请结算汇总金额</h4>
 								</div>
 							</div>
 					   
@@ -151,10 +257,9 @@
                                 label:'HKD', value:order.modal_hkd!'',disabled:'disabled'
                                 }){}%>
                             </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+               </div>
+			
+            
 
                 <div class="simple_order_list_div">
 	                        <ul id="orderTabs" class="nav nav-tabs">
@@ -259,108 +364,6 @@
 		             		              <button id="deleteBtn" type="button" class="btn  btn-danger"  style="display:none"  >撤销</button>
 		             		        </div>
 		             	</div>
-                      
-                    <div class="row simple_search_div" style="margin-top:15px"> 
-                    	<!-- <div class=" head_style"><label class="font_style">收款信息</label></div> -->
-                      	<div class="panel-body">
-                      	 	<div class="row">
-								<div class="col-lg-12">
-									<h4>收款信息</h4>
-								</div>
-							</div>
-                         <div class="row">
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <%include("/eeda/component/form/inputField.html", { id:'comfirm_modal_cny',
-		                                label:'收款CNY', value:order.modal_cny!'',disabled:'disabled'
-		                                }){}%>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <%include("/eeda/component/form/inputField.html", { id:'comfirm_modal_usd',
-		                                label:'收款USD', value:order.modal_usd!'',disabled:'disabled'
-		                                }){}%>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <%include("/eeda/component/form/inputField.html", { id:'comfirm_modal_jpy',
-		                                label:'收款JPY', value:order.modal_jpy!'',disabled:'disabled'
-		                                }){}%>
-                                </div>
-                            </div>
-                       </div>
-                       <div class="row">  
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <%include("/eeda/component/form/inputField.html", { id:'comfirm_modal_hkd',
-		                                label:'收款HKD', value:order.modal_hkd!'',disabled:'disabled'
-		                                }){}%>
-                                </div>
-                            </div>
-                       </div>
-                       <div class="row">
-                           <div class="col-lg-4">
-                           		<%include("/eeda/component/form/inputField.html", { id:'check_name',
-								label:'复核人', value:order.check_name!'',disabled:'disabled'
-								}){}%>
-					       </div>
-					        <div class="col-lg-4">
-								<%include("/eeda/component/form/inputField.html", { id:'check_stamp',
-								label:'复核时间', value:order.check_stamp!'',disabled:'disabled'
-								}){}%>
-                       		</div>
-                       	</div>
-                       	<div class="row">
-                       		<div class="col-lg-4">
-                           		<%include("/eeda/component/form/inputField.html", { id:'confirm_name',
-								label:'	确认收款人', value:order.confirm_name!'',disabled:'disabled'
-								}){}%>
-					       </div>
-					       <div class="col-lg-4">
-	                            <%include("/eeda/component/form/dateInputField.html",
-				                        {    id:'receive_time', 
-				                             label:'收款时间',
-				                             required:'required',
-				                             value:order.receive_time!''
-	                              }){} %>
-	                        </div>
-	                       <div class="col-lg-4">
-	                       		<div class="form-group" style="display:none">
-	                           	   <label class="search-label">收款方式</label> 
-	                                  <select id="receive_type" class="form-control search-control receive_type" name="receive_type">
-	                                  	<option value=""></option>
-                                    	<option value="cash" <% if(order.receive_type!'cash'=='cash'){%>selected<% }%>>现金</option>
-                                    	<option value="transfers" <% if(order.receive_type!''=='transfers'){%>selected<% }%>>转账</option>                                       
-	                                  </select>
-	                            </div>
-	                       </div>
-
-	                         <div class="col-lg-12" style="display:none">
-	                       		<div id="receive_type_massage_" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
-		                            <div class="form-group">
-			                            <label class="search-label" style="width: 11%" >收入银行</label>
-			                            <input type="hidden" id="receive_banks_" placeholder="请选择支付银行" name="pay_banks" value="${invoiceApplication.confirm_bank_id_!''}"> 
-			                        	   <select class="form-control search-control receive_bank" name="receive_bank_" id="receive_bank_" >
-			                        	   		<option></option>
-			                             		<%for(account in accountList){ %>
-			                             		<option value="${account.ID!''}" <%if(order.receive_bank_id_!'4'==account.ID!){%>selected<% }%>>${account.BANK_NAME_!''}</option>
-			                             		<%}%>
-			                               </select>
-		                        	</div>
-	                        	</div>	
-	                         </div>   
-	                    </div>  
-	                    
-             </div>
-             <hr>
-             <div class="form-group button-bar" >
-                   <button id="confirmBtn" type="button" class="btn btn_green"  disabled="disabled" >收款确认</button>
-                   <a class="btn  btn_white" href="/chargeRequest?back=confirmTrue">返回</a>
-                   <button id="returnConfirmBtn" type="button" class="btn  btn-primary" style="display:none" >撤回</button>
-             </div>
-       </div>
        
   </div>
 	

@@ -137,6 +137,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		  return false;
     	 }
     	 $("#save").attr("disabled",true);
+    	 var acount_json=itemOrder.buildCargoDetail();
+    	 $("#acount_json").val(JSON.stringify(acount_json));
     	 $.post("/serviceProvider/save", $("#customerForm").serialize(),function(data){
     		if(data=='abbrError'){
     			$.scojs_message('供应商简称已存在', $.scojs_message.TYPE_ERROR);
@@ -254,6 +256,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	 if(!$("#itemFrom").valid()){
 	    		  return false;
 	    	 }
+	    	 
 	    	$.post("/serviceProvider/saveChargeType",$("#itemFrom").serialize(),function(data){
 	    		var id = $("#sp_id").val();
 	    		$('#chargeTypeItemModel').modal('hide');
