@@ -4,16 +4,23 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import models.UserLogin;
 
 import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 
+import com.amazonservices.mws.client.MwsUtl;
+import com.amazonservices.mws.orders._2013_09_01.MarketplaceWebServiceOrdersClient;
+import com.amazonservices.mws.orders._2013_09_01.model.ListOrdersRequest;
 import com.ebay.sdk.ApiContext;
 import com.ebay.sdk.call.GetOrdersCall;
 import com.ebay.soap.eBLBaseComponents.DetailLevelCodeType;
@@ -28,6 +35,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.oms.amazonSalesOrder.util.MarketplaceWebServiceOrdersSampleConfig;
 import controllers.profile.EbayAccountController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -66,7 +74,7 @@ public class AmazonSalesOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
 
         List<Record> orderList = Db.find(sql + condition
-                + " order by created_time desc " + sLimit);
+                + " order by last_update_date desc " + sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
@@ -76,87 +84,62 @@ public class AmazonSalesOrderController extends Controller {
     }
 
     public void importOrders() {
-        OrderType[] orders = getOrders();
-        int size = orders != null ? orders.length : 0;
-        String[] columnNames = { "OrderId", "NumberOfTrans", "TransPrice",
-                "CreatedDate", "ShippingServiceSelected", "InsuranceWanted",
-                "IsMultiLegShipping" };
+     // Get a client connection.
+        // Make sure you've set the variables in MarketplaceWebServiceOrdersSampleConfig.
+        MarketplaceWebServiceOrdersClient client = MarketplaceWebServiceOrdersSampleConfig.getClient();
 
-        List<Record> recList = new ArrayList<Record>(size);
+        // Create a request.
+        ListOrdersRequest request = new ListOrdersRequest();
+        String sellerId = "A2EOZCNPFBJY0B";
+        request.setSellerId(sellerId);
+        //Secret Key?
+//        String mwsAuthToken = "+qVn8uo1/sId/diaBqcOlSv96eObknLR7i7ABC2J";
+//        request.setMWSAuthToken(mwsAuthToken);
+//        Date now = new Date();
+        Calendar nowDate = Calendar.getInstance();
+        nowDate.add(Calendar.DAY_OF_MONTH, -7);//每次更新当前日期-7
         
-        for (int i = 0; i < size; i++) {
-            Record rec = new Record();
-            OrderType order = orders[i];
-            rec.set("order_id", order.getOrderID());
-            rec.set("created_time", order.getCreatedTime().getTime());
-//            rec.set("transaction_id", order.getTransactionArray().getTransaction())
-            rec.set("total", order.getTotal().getValue());
-            rec.set("buyer_user_ID", order.getBuyerUserID());
-            rec.set("seller_user_ID", order.getSellerUserID());
-            Db.save("ebay_order", rec);
-            
-            recList.add(rec);
-        }
+        XMLGregorianCalendar createdAfter = MwsUtl.getDTF().newXMLGregorianCalendar();
+        createdAfter.setYear(nowDate.get(Calendar.YEAR));
+        createdAfter.setMonth(nowDate.get(Calendar.MONTH));
+        createdAfter.setDay(nowDate.get(Calendar.DAY_OF_MONTH));
+        logger.debug("createdAfter: "+createdAfter.toString());
+        request.setCreatedAfter(createdAfter);
+        
+//        XMLGregorianCalendar createdBefore = MwsUtl.getDTF().newXMLGregorianCalendar();
+//        request.setCreatedBefore(createdBefore);
+//        XMLGregorianCalendar lastUpdatedAfter = MwsUtl.getDTF().newXMLGregorianCalendar();
+//        request.setLastUpdatedAfter(lastUpdatedAfter);
+//        XMLGregorianCalendar lastUpdatedBefore = MwsUtl.getDTF().newXMLGregorianCalendar();
+//        request.setLastUpdatedBefore(lastUpdatedBefore);
+        List<String> orderStatus = new ArrayList<String>();
+        request.setOrderStatus(orderStatus);
+        List<String> marketplaceId = new ArrayList<String>();
+        
+        marketplaceId.add("A1F83G8C2ARO7P");//UK
+        marketplaceId.add("A1PA6795UKMFR9");//DE
+        marketplaceId.add("A13V1IB3VIYZZH");//ES
+        marketplaceId.add("A1RKKUPIHCS9HS");//FR
+        marketplaceId.add("APJ6JRA9NG5V4");//IT
+        request.setMarketplaceId(marketplaceId);
+//        List<String> fulfillmentChannel = new ArrayList<String>();
+//        fulfillmentChannel.add("AFN");
+//        request.setFulfillmentChannel(fulfillmentChannel);
+//        List<String> paymentMethod = new ArrayList<String>();
+//        request.setPaymentMethod(paymentMethod);
+//        String buyerEmail = "example";
+//        request.setBuyerEmail(buyerEmail);
+//        String sellerOrderId = "example";
+//        request.setSellerOrderId(sellerOrderId);
+        Integer maxResultsPerPage = 100;//每页可返回的最多订单数。默认100
+        request.setMaxResultsPerPage(maxResultsPerPage);
+        List<String> tfmShipmentStatus = new ArrayList<String>();
+        request.setTFMShipmentStatus(tfmShipmentStatus);
+        
+        List<Record> recList = ListOrdersApi.invokeListOrders(client, request);
         
         renderJson(recList);
     }
 
-    private OrderType[] getOrders() {
-        apiContext = null;
-        OrderType[] orders = null;
-        try {
-            String ids = "";// this.txtOrderId.getText().trim();
-            // if (ids.length() == 0) {
-            // throw new Exception("Please enter valid OrderIds.");
-            // }
-
-            DetailLevelCodeType[] detailLevels = new DetailLevelCodeType[] {
-                    DetailLevelCodeType.RETURN_ALL,
-                    DetailLevelCodeType.ITEM_RETURN_ATTRIBUTES,
-                    DetailLevelCodeType.ITEM_RETURN_DESCRIPTION };
-
-            GetOrdersCall api = new GetOrdersCall(this.apiContext);
-            // api.setDetailLevel(detailLevels);
-
-            StringTokenizer st = new StringTokenizer(ids, ",");
-            ArrayList lstOrders = new ArrayList();
-            while (st.hasMoreTokens()) {
-                lstOrders.add(st.nextToken());
-            }
-
-            int size = lstOrders.size();
-            String[] orderIds = new String[size];
-            for (int i = 0; i < size; i++) {
-                orderIds[i] = lstOrders.get(i).toString().trim();
-            }
-
-            OrderIDArrayType oiat = new OrderIDArrayType();
-            // oiat.setOrderID(orderIds);
-            // api.setOrderIDArray(oiat);
-
-            api.setOrderStatus(OrderStatusCodeType.COMPLETED);
-
-            api.setOrderRole(TradingRoleCodeType.SELLER);
-
-            // if (this.txtStartDate.getText().trim().length() > 0) {
-            // Calendar date = GuiUtil.getCalendarFromField(this.txtStartDate);
-            // api.setCreateTimeFrom(date);
-            // }
-            //
-            // if (this.txtEndDate.getText().trim().length() > 0) {
-            // Calendar date = GuiUtil.getCalendarFromField(this.txtEndDate);
-            // api.setCreateTimeTo(date);
-            // }
-
-            api.setWarningLevel(WarningLevelCodeType.HIGH);
-            api.setNumberOfDays(7);
-
-            orders = api.getOrders();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return orders;
-    }
+   
 }

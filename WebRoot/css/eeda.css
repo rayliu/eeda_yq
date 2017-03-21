@@ -515,4 +515,10 @@ li{
     color: #457ab7;
 }
 
+.badge-warning{
+    background-color:#f0ad4e;
+}
+.badge-danger{
+    background-color:#d9534f;
+}
 /* ray added */

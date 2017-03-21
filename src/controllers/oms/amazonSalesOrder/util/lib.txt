@@ -1,0 +1,3 @@
+commons-codec-1.6.jar
+MWSOrders_2013-09-01_v2017-02-22.jar
+MWSClientJavaRuntime-1.0.jar

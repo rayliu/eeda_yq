@@ -8,25 +8,25 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             id: 'eeda_table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/ebaySalesOrder/list",
+            ajax: "/amazonSalesOrder/list",
             columns:[
-                {"data": "TRANSACTION_ID", "width":"120px"},
-                { "data": "ITEM_ID", "width":"120px"},
-	              { "data": "BUYER_USER_ID", "width":"120px"}, 
-                { "data": "SELLER_USER_ID", "width":"90px"},
-                { "data": "TOTAL", "width":"60px",
-                  "render": function ( data, type, full, meta ) {
-                      if(data){
-                          return full.TOTAL_CURRENCY_ID+" "+data;
-                      }
-                      return "";
-                    }
+                {"data": "AMAZON_ORDER_ID", "width":"120px"},
+                { "data": "BUYER_NAME", "width":"120px"},
+	              { "data": "", "width":"120px"}, 
+                { "data": "", "width":"90px"},
+                { "data": "PURCHASE_DATE", "width":"60px",
                 }, 
                 { "data": "PAID_TIME", "width":"90px"}, 
-                { "data": "SHIPPED_TIME", "width":"60px"},
+                { "data": "TOTAL_AMOUNT", "width":"60px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                          return full.ORDER_CURRENCY_CODE+" "+data;
+                      }
+                      return "";
+                    }},
                 { "data": "CREATED_TIME", "width":"60px"},
-                { "data": "ORDER_STATUS", "width":"60px"},
-                { "data": "TRACK_NO", "width":"120px"}
+                { "data": "FULFILLMENT_CHANNEL", "width":"60px"},
+                { "data": "ORDER_STATUS", "width":"60px"}
             ]
         });
       
@@ -36,13 +36,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 
      var searchData=function(){
 
-          var url = "/ebaySalesOrder/list";
+          var url = "/amazonSalesOrder/list";
 
           dataTable.ajax.url(url).load();
       };
       
       $('#importBtn').click(function(){
-           $.post('/ebaySalesOrder/importOrders', {nothing: 'nothing'}, function(data, textStatus, xhr) {
+           $.post('/amazonSalesOrder/importOrders', {nothing: 'nothing'}, function(data, textStatus, xhr) {
                 
            });
       })
