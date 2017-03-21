@@ -153,9 +153,30 @@ public class JobOrderController extends Controller {
     //插入派车单打印动作标记
     public void truckOrderflag(){
     	String jsonStr = getPara("itemId");
+    	String order_id = getPara("order_id");
     	JobOrderLandItem joli = JobOrderLandItem.dao.findFirst("select id from job_order_land_item where id = ?",jsonStr);
     	joli.set("truckorder_flag", "Y");
     	joli.update();
+    	
+    	Record count_joli = Db.findFirst("SELECT count(1) count from job_order jo "
+				+ " LEFT JOIN job_order_land_item joli on jo.id = joli.order_id WHERE joli.order_id = ?", order_id);
+    	
+    	Record rjoli = Db.findFirst("SELECT GROUP_CONCAT(truckorder_flag) truckorder_msg from job_order jo "
+    								+ " LEFT JOIN job_order_land_item joli on jo.id = joli.order_id WHERE joli.order_id = ?", order_id);
+    	long  count = count_joli.getLong("count");
+    	long count_flag = 0;
+    	String truckorder_msg = rjoli.get("truckorder_msg");
+    	String [] stringArr= truckorder_msg.split(",");
+    	for(String s :stringArr){
+    		if("Y".equals(s)){
+    			count_flag++;
+    		}
+    	}
+    	if(count_flag==count){
+    		 Db.update("UPDATE job_order SET send_truckorder_flag='Y' WHERE id = ?",order_id);
+    	}else{
+    		 Db.update("UPDATE job_order SET send_truckorder_flag='N' WHERE id = ?",order_id);
+    	}
     	renderJson("{\"result\":true}");
     }
     

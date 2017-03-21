@@ -536,11 +536,12 @@ $(document).ready(function() {
     	});
 
     //打印生成陆运派车单truckOrderPDF
-    $('#truckOrderPDF').click(function(){
+    $('#truckOrderPDF,#cabinet_truck').click(function(){
     	//判断table是否添加了一行
+    	var btnId = $(this).attr("id");
     	if($('#land_table td').length==1){
     		$.scojs_message('请添加一行地点', $.scojs_message.TYPE_ERROR);
-    	}else {
+    	}else if(btnId=="truckOrderPDF") {
 	    	var alert = '';
 	    	var a=0;
 	    	var b=0;
@@ -629,6 +630,7 @@ $(document).ready(function() {
 				$('#pdfAlert').click();
 			}else{
 				var itemIds=[];
+				var order_id = $("#order_id").val();
 				var k = 0;
 				$('#land_table input[type="checkbox"]').each(function(){
 					var checkbox = $(this).prop('checked');
@@ -638,8 +640,8 @@ $(document).ready(function() {
 				    	$.post('/jobOrderReport/printTruckOrderPDF', {itemId:itemId}, function(data){
 							if(data){
 								 window.open(data);	
-								 $.post('/jobOrder/truckOrderflag', {itemId:itemId}, function(data){
-						    		    
+								 $.post('/jobOrder/truckOrderflag', {itemId:itemId,order_id:order_id}, function(data){
+									 $.scojs_message('已完成本次派车工作', $.scojs_message.TYPE_OK);
 					                });
 							}else{
 								$.scojs_message('所选中的里面第'+k+'条生成派车单 PDF失败', $.scojs_message.TYPE_ERROR);
@@ -648,17 +650,6 @@ $(document).ready(function() {
 						itemIds.push(itemId);
 					}
 				});
-//		    	var order_id = $("#order_id").val();
-//				$.post('/jobOrderReport/printTruckOrderPDF', {order_id:order_id}, function(data){
-//					if(data){
-//					window.open(data);	
-//						 $.post('/jobOrder/truckOrderflag', {order_id:order_id}, function(data){
-//				    		    
-//			                });
-//					}else{
-//						$.scojs_message('生成派车单 PDF失败', $.scojs_message.TYPE_ERROR);
-//					}
-//				}); 
 			}
     	}
     });
