@@ -28,7 +28,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
                             str = str +"<a class='btn  btn-danger btn-sm ' href='/loginUser/del/"+full.ID+"'>"+
                                          "<i class='fa fa-trash-o fa-edit'></i>停用</a>";
                         }else{
-                            str = str + "<a class='btn  btn-success btn-sm dropdown-toggle' href='/loginUser/del/"+full.ID+"'>"+
+                            str = str + "<a class='btn btn_green btn-xs dropdown-toggle' href='/loginUser/del/"+full.ID+"'>"+
                                          "<i class='fa fa-trash-o fa-edit'></i>启用 </a>";
                         }
                         
