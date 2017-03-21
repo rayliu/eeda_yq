@@ -16,10 +16,12 @@ import models.ArapAccountAuditLog;
 import models.ArapChargeApplication;
 import models.ArapChargeItem;
 import models.ArapChargeOrder;
-//import models.ChargeAppOrderRel;
-import models.ChargeApplicationOrderRel;
+
+import models.CustomArapChargeApplicationOrder;
+import models.CustomChargeApplicationOrderRel;
 import models.Party;
 import models.UserLogin;
+import models.eeda.cms.CustomArapChargeOrder;
 import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
@@ -76,7 +78,7 @@ public class CustomChargeReuqestrController extends Controller {
         		+ " sum(ifnull(c.paid_jpy,0)) paid_jpy,"
         		+ " group_concat((select concat(order_no,'-',status) from arap_charge_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
 				+ " from arap_charge_order aco "
-				+ " left join charge_application_order_rel c on c.charge_order_id=aco.id"
+				+ " left join custom_charge_application_order_rel c on c.charge_order_id=aco.id"
 				+ " left join party p on p.id=aco.sp_id "
 				+ " where aco.status!='新建' and aco.office_id = "+office_id
 				+ " group by aco.id"
@@ -115,111 +117,31 @@ public class CustomChargeReuqestrController extends Controller {
         		+" 			IFNULL( "
         		+" 				( "
         		+" 					SELECT "
-        		+" 						SUM(joa.exchange_total_amount)-(IFNULL( "
+        		+" 						SUM(joa.total_amount)-(IFNULL( "
         		+" 				( "
         		+" 					SELECT "
-        		+" 						SUM(joa.exchange_total_amount) "
+        		+" 						SUM(joa.total_amount) "
         		+" 					FROM "
-        		+" 						custom_job_order_arap joa "
+        		+" 						custom_plan_order_arap joa "
         		+" 					LEFT JOIN custom_arap_charge_item aci ON joa.id = aci.ref_order_id "
         		+" 					WHERE "
         		+" 						joa.create_flag = 'Y' AND joa.order_type = 'cost' "
-        		+" 					AND joa.exchange_currency_id = 3 "
+        		+" 					AND joa.currency_id = 3 "
         		+" 					AND aci.custom_charge_order_id = aco.id "
         		+" 				), "
         		+" 				0 "
         		+" 			)) "
         		+" 					FROM "
-        		+" 						custom_job_order_arap joa "
+        		+" 						custom_plan_order_arap joa "
         		+" 					LEFT JOIN custom_arap_charge_item aci ON joa.id = aci.ref_order_id "
         		+" 					WHERE "
         		+" 						joa.create_flag = 'Y' AND joa.order_type = 'charge' "
-        		+" 					AND joa.exchange_currency_id = 3 "
+        		+" 					AND joa.currency_id = 3 "
         		+" 					AND aci.custom_charge_order_id = aco.id "
         		+" 				), "
         		+" 				0 "
         		+" 			) paid_cny, "
-        		+" 			IFNULL( "
-        		+" 				( "
-        		+" 					SELECT "
-        		+" 						SUM(joa.exchange_total_amount)-(IFNULL( "
-        		+" 				( "
-        		+" 					SELECT "
-        		+" 						SUM(joa.exchange_total_amount) "
-        		+" 					FROM "
-        		+" 						custom_job_order_arap joa  "
-        		+" 					LEFT JOIN custom_arap_charge_item aci ON joa.id = aci.ref_order_id "
-        		+" 					WHERE "
-        		+" 						joa.create_flag = 'Y' AND joa.order_type = 'cost' "
-        		+" 					AND joa.exchange_currency_id = 6 "
-        		+" 					AND aci.custom_charge_order_id = aco.id "
-        		+" 				), "
-        		+" 				0 "
-        		+" 			)) "
-        		+" 					FROM "
-        		+" 						custom_job_order_arap joa "
-        		+" 					LEFT JOIN custom_arap_charge_item aci ON joa.id = aci.ref_order_id "
-        		+" 					WHERE "
-        		+" 						joa.create_flag = 'Y' AND joa.order_type = 'charge' "
-        		+" 					AND joa.exchange_currency_id = 6 "
-        		+" 					AND aci.custom_charge_order_id = aco.id "
-        		+" 				), "
-        		+" 				0 "
-        		+" 			) paid_usd, "
-        		+" 			IFNULL( "
-        		+" 				( "
-        		+" 					SELECT "
-        		+" 						SUM(joa.exchange_total_amount)-(IFNULL( "
-        		+" 				( "
-        		+" 					SELECT "
-        		+" 						SUM(joa.exchange_total_amount) "
-        		+" 					FROM "
-        		+" 						custom_job_order_arap joa "
-        		+" 					LEFT JOIN custom_arap_charge_item aci ON joa.id = aci.ref_order_id "
-        		+" 					WHERE "
-        		+" 						joa.create_flag = 'Y' AND joa.order_type = 'cost' "
-        		+" 					AND joa.exchange_currency_id = 8 "
-        		+" 					AND aci.custom_charge_order_id = aco.id "
-        		+" 				), "
-        		+" 				0 "
-        		+" 			)) "
-        		+" 					FROM "
-        		+" 						custom_job_order_arap joa "
-        		+" 					LEFT JOIN custom_arap_charge_item aci ON joa.id = aci.ref_order_id "
-        		+" 					WHERE "
-        		+" 						joa.create_flag = 'Y' AND joa.order_type = 'charge' "
-        		+" 					AND joa.exchange_currency_id = 8 "
-        		+" 					AND aci.custom_charge_order_id = aco.id "
-        		+" 				), "
-        		+" 				0 "
-        		+" 			) paid_jpy, "
-        		+" 			IFNULL( "
-        		+" 				( "
-        		+" 					SELECT "
-        		+" 						SUM(joa.exchange_total_amount)-(IFNULL( "
-        		+" 				( "
-        		+" 					SELECT "
-        		+" 						SUM(joa.exchange_total_amount) "
-        		+" 					FROM "
-        		+" 						custom_job_order_arap joa "
-        		+" 					LEFT JOIN custom_arap_charge_item aci ON joa.id = aci.ref_order_id "
-        		+" 					WHERE "
-        		+" 						joa.create_flag = 'Y'  AND joa.order_type = 'cost' "
-        		+" 					AND joa.exchange_currency_id = 9 "
-        		+" 					AND aci.custom_charge_order_id = aco.id "
-        		+" 				), "
-        		+" 				0 "
-        		+" 			)) "
-        		+" 					FROM "
-        		+" 						custom_job_order_arap joa "
-        		+" 					LEFT JOIN custom_arap_charge_item aci ON joa.id = aci.ref_order_id "
-        		+" 					WHERE "
-        		+" 						joa.create_flag = 'Y'  AND joa.order_type = 'charge' "
-        		+" 					AND joa.exchange_currency_id = 9 "
-        		+" 					AND aci.custom_charge_order_id = aco.id "
-        		+" 				), "
-        		+" 				0 "
-        		+" 			) paid_hkd, "
+        		
         		+" 			group_concat( "
         		+" 				DISTINCT ( "
         		+" 					SELECT "
@@ -242,10 +164,7 @@ public class CustomChargeReuqestrController extends Controller {
         		+" 	) A "
         		+" WHERE "
         		+" 	( "
-        		+" 		ifnull(usd, 0) > paid_usd "
-        		+" 		OR ifnull(check_amount, 0) > paid_cny "
-        		+" 		OR ifnull(hkd, 0) > paid_hkd "
-        		+" 		OR ifnull(jpy, 0) > paid_jpy "
+        		+" 		 ifnull(total_amount, 0) > paid_cny "
         		+" 	) ";
         
         String condition = DbUtils.buildConditions(getParaMap());
@@ -279,11 +198,11 @@ public class CustomChargeReuqestrController extends Controller {
 		setAttr("order", re);
 		
 		String sql="select group_concat(cast(ref_order_id as char) SEPARATOR ',') selected_item_ids"
-                + " from arap_charge_item where charge_order_id in("+ids+")";
+                + " from custom_arap_charge_item where charge_order_id in("+ids+")";
         String selected_item_ids = Db.findFirst(sql).getStr("selected_item_ids");
         setAttr("selected_item_ids", selected_item_ids);
 		
-        render("/eeda/cmsArap/cmsChargeRequest/chargeEdit_select_item.html");
+        render("/eeda/cmsArap/cmsChargeRequest/cmsChargeEdit_select_item.html");
 	}
     
     
@@ -343,9 +262,9 @@ public class CustomChargeReuqestrController extends Controller {
           			+"     case "
           			+"         when c.charge_order_id is not null then"
           			+"             ifnull("
-          			+"                    ( SELECT sum(exchange_total_amount) FROM job_order_arap"
-          			+"                                 WHERE id IN(SELECT ref_order_id FROM arap_charge_item aci WHERE charge_order_id IN(c.charge_order_id) ) "
-          			+"                                     AND exchange_currency_id =( SELECT id FROM currency WHERE CODE = 'USD' ) "
+          			+"                    ( SELECT sum(exchange_total_amount) FROM custom_plan_order_arap"
+          			+"                                 WHERE id IN(SELECT ref_order_id FROM custom_arap_charge_item aci WHERE charge_order_id IN(c.charge_order_id) ) "
+          			+"                                     AND currency_id =( SELECT id FROM currency WHERE CODE = 'USD' ) "
           			+"                                     AND pay_flag = 'Y' "
           			+"                     ),0) "
           			+"     else aco.usd "
@@ -353,9 +272,9 @@ public class CustomChargeReuqestrController extends Controller {
           			+"     case  "
           			+"         when c.charge_order_id is not null then "
           			+"             ifnull( "
-          			+"                    ( SELECT sum(exchange_total_amount) FROM job_order_arap "
-          			+"                        WHERE id IN( SELECT ref_order_id FROM arap_charge_item WHERE charge_order_id IN(c.charge_order_id) ) "
-          			+"                             AND exchange_currency_id =( SELECT id FROM currency WHERE CODE = 'CNY' ) "
+          			+"                    ( SELECT sum(exchange_total_amount) FROM custom_plan_order_arap "
+          			+"                        WHERE id IN( SELECT ref_order_id FROM custom_arap_charge_item WHERE charge_order_id IN(c.charge_order_id) ) "
+          			+"                             AND currency_id =( SELECT id FROM currency WHERE CODE = 'CNY' ) "
           			+"                             AND pay_flag = 'Y' "
           			+"                     ),0) "
           			+"     else aco.cny "
@@ -363,9 +282,9 @@ public class CustomChargeReuqestrController extends Controller {
           			+"     case  "
           			+"         when c.charge_order_id is not null then "
           			+"             ifnull( "
-          			+"                     ( SELECT sum(exchange_total_amount) FROM job_order_arap "
-          			+"                         WHERE id IN( SELECT ref_order_id FROM arap_charge_item WHERE charge_order_id IN(c.charge_order_id) ) "
-          			+"                             AND exchange_currency_id =( SELECT id FROM currency WHERE CODE = 'JPY' ) "
+          			+"                     ( SELECT sum(exchange_total_amount) FROM custom_plan_order_arap "
+          			+"                         WHERE id IN( SELECT ref_order_id FROM custom_arap_charge_item WHERE charge_order_id IN(c.charge_order_id) ) "
+          			+"                             AND currency_id =( SELECT id FROM currency WHERE CODE = 'JPY' ) "
           			+"                             AND pay_flag = 'Y' "
           			+"                     ), 0 ) "
           			+"     else aco.jpy "
@@ -373,15 +292,15 @@ public class CustomChargeReuqestrController extends Controller {
           			+"     case  "
           			+"         when c.charge_order_id is not null then "
           			+"             ifnull( "
-          			+"                     ( SELECT sum(exchange_total_amount) FROM job_order_arap "
-          			+"                         WHERE id IN( SELECT ref_order_id FROM arap_charge_item WHERE charge_order_id IN(c.charge_order_id) ) "
-          			+"                             AND exchange_currency_id =( SELECT id FROM currency WHERE CODE = 'HKD' )" 
+          			+"                     ( SELECT sum(exchange_total_amount) FROM custom_plan_order_arap "
+          			+"                         WHERE id IN( SELECT ref_order_id FROM custom_arap_charge_item WHERE charge_order_id IN(c.charge_order_id) ) "
+          			+"                             AND currency_id =( SELECT id FROM currency WHERE CODE = 'HKD' )" 
           			+"                             AND pay_flag = 'Y' "
           			+"                 ), 0 ) "
           			+"     else aco.hkd "
           			+"     end  apply_pay_hkd "
           			+" FROM arap_charge_order aco "
-          			+" LEFT JOIN charge_application_order_rel c on c.charge_order_id = aco.id"
+          			+" LEFT JOIN custom_charge_application_order_rel c on c.charge_order_id = aco.id"
           			+" LEFT JOIN party p ON p.id = aco.sp_id"
           			+" LEFT JOIN user_login ul ON ul.id = aco.create_by"
           			+" WHERE aco.id in(" +ids +")"
@@ -390,48 +309,48 @@ public class CustomChargeReuqestrController extends Controller {
   		}else{
   			sql = " SELECT aco.*, p.company_name payee_name, '应收对账单' order_type,"
 					+"  p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
-					+"  ifnull((SELECT sum(exchange_total_amount) from job_order_arap " 
-					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" ))"  
-					+" and exchange_currency_id = (select id from currency where code='USD')"
+					+"  ifnull((SELECT sum(exchange_total_amount) from custom_plan_order_arap " 
+					+" where id in(select ref_order_id from custom_arap_charge_item where charge_order_id in ("+ids+" ))"  
+					+" and currency_id = (select id from currency where code='USD')"
 					+" and pay_flag='Y' ),0) apply_pay_usd, "
-					+" ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
-					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" )) " 
-					+" and exchange_currency_id = (select id from currency where code='CNY') "
+					+" ifnull((SELECT sum(exchange_total_amount) from custom_plan_order_arap  "
+					+" where id in(select ref_order_id from custom_arap_charge_item where charge_order_id in ("+ids+" )) " 
+					+" and currency_id = (select id from currency where code='CNY') "
 					+" and pay_flag='Y'),0) apply_pay_cny,"
-					+"  ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
-					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" )) " 
-					+" and exchange_currency_id = (select id from currency where code='JPY') "
+					+"  ifnull((SELECT sum(exchange_total_amount) from custom_plan_order_arap  "
+					+" where id in(select ref_order_id from custom_arap_charge_item where charge_order_id in ("+ids+" )) " 
+					+" and currency_id = (select id from currency where code='JPY') "
 					+" and pay_flag='Y'),0) apply_pay_jpy,"
-					+"  ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
-					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" ))"  
-					+" and exchange_currency_id = (select id from currency where code='HKD') "
+					+"  ifnull((SELECT sum(exchange_total_amount) from custom_plan_order_arap  "
+					+" where id in(select ref_order_id from custom_arap_charge_item where charge_order_id in ("+ids+" ))"  
+					+" and currency_id = (select id from currency where code='HKD') "
 					+" and pay_flag='Y'),0) apply_pay_hkd,"
 					+"  ( "
-					+"  aco.usd - ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
-					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" )) " 
-					+" and exchange_currency_id = (select id from currency where code='USD')"
+					+"  aco.usd - ifnull((SELECT sum(exchange_total_amount) from custom_plan_order_arap  "
+					+" where id in(select ref_order_id from custom_arap_charge_item where charge_order_id in ("+ids+" )) " 
+					+" and currency_id = (select id from currency where code='USD')"
 					+" and pay_flag='Y' ),0) "
 					+" ) wait_usd, "
 					+" ( "
-					+" aco.cny - ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
-					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" )) " 
-					+" and exchange_currency_id = (select id from currency where code='CNY') "
+					+" aco.cny - ifnull((SELECT sum(exchange_total_amount) from custom_plan_order_arap  "
+					+" where id in(select ref_order_id from custom_arap_charge_item where charge_order_id in ("+ids+" )) " 
+					+" and currency_id = (select id from currency where code='CNY') "
 					+" and pay_flag='Y'),0) "
 					+" ) wait_cny, "
 					+" ( "
-					+" aco.jpy - ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
-					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" )) " 
-					+" and exchange_currency_id = (select id from currency where code='JPY') "
+					+" aco.jpy - ifnull((SELECT sum(exchange_total_amount) from custom_plan_order_arap  "
+					+" where id in(select ref_order_id from custom_arap_charge_item where charge_order_id in ("+ids+" )) " 
+					+" and currency_id = (select id from currency where code='JPY') "
 					+" and pay_flag='Y'),0) "
 					+" ) wait_jpy, "
 					+" ( "
-					+" aco.hkd - ifnull((SELECT sum(exchange_total_amount) from job_order_arap  "
-					+" where id in(select ref_order_id from arap_charge_item where charge_order_id in ("+ids+" )) " 
-					+" and exchange_currency_id = (select id from currency where code='HKD') "
+					+" aco.hkd - ifnull((SELECT sum(exchange_total_amount) from custom_plan_order_arap  "
+					+" where id in(select ref_order_id from custom_arap_charge_item where charge_order_id in ("+ids+" )) " 
+					+" and currency_id = (select id from currency where code='HKD') "
 					+" and pay_flag='Y'),0) "
 					+" ) wait_hkd"
 					+"  FROM arap_charge_order aco "
-					+"  LEFT JOIN charge_application_order_rel caor on caor.charge_order_id = aco.id"
+					+"  LEFT JOIN custom_charge_application_order_rel caor on caor.charge_order_id = aco.id"
 					+"  LEFT JOIN arap_charge_application_order acao on acao.id = caor.application_order_id"
 					+"  LEFT JOIN party p ON p.id = aco.sp_id"
 					+"  LEFT JOIN user_login ul ON ul.id = aco.create_by"
@@ -459,7 +378,7 @@ public class CustomChargeReuqestrController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
-        ArapChargeApplication order = new ArapChargeApplication();
+        CustomArapChargeApplicationOrder order = new CustomArapChargeApplicationOrder();
    		String id = (String) dto.get("id");
    		String ids=(String) dto.get("ids");
 		String selected_item_ids= (String) dto.get("selected_ids"); //获取申请单据的id,用于回显
@@ -471,7 +390,7 @@ public class CustomChargeReuqestrController extends Controller {
    		
    		if (StringUtils.isNotEmpty(id)) {
    			//update
-   			order = ArapChargeApplication.dao.findById(id);
+   			order = CustomArapChargeApplicationOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, order); 
    			
    			//需后台处理的字段
@@ -484,7 +403,7 @@ public class CustomChargeReuqestrController extends Controller {
    			DbUtils.setModelValues(dto, order);
    			
    			//需后台处理的字段
-   			order.set("order_no", OrderNoGenerator.getNextOrderNo("YSSQ", user.getLong("office_id")));
+   			order.set("order_no", OrderNoGenerator.getNextOrderNo("BGYSSQ", user.getLong("office_id")));
    			order.set("create_by", user.getLong("id"));
    			order.set("create_stamp", new Date());
    			order.set("office_id", office_id);
@@ -496,22 +415,22 @@ public class CustomChargeReuqestrController extends Controller {
    			id = order.getLong("id").toString();
    			
 		String itemId="";
-   		ChargeApplicationOrderRel caor = null;
+		CustomChargeApplicationOrderRel caor = null;
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
 		for(Map<String, String> item :itemList){
 			String action = item.get("action");
 				   itemId = item.get("id");
 			if("CREATE".equals(action)){
-				caor = new ChargeApplicationOrderRel();
+				caor = new CustomChargeApplicationOrderRel();
 				caor.set("application_order_id", id);
 				caor.set("job_order_arap_id", itemId);
-				Record aci = Db.findFirst("select * from arap_charge_item where ref_order_id=?",itemId);
-				Long charge_order_id=aci.getLong("charge_order_id");
-				caor.set("charge_order_id", charge_order_id);
+				Record aci = Db.findFirst("select * from custom_arap_charge_item where ref_order_id=?",itemId);
+				String custom_charge_order_id=aci.getStr("custom_charge_order_id");
+				caor.set("charge_order_id", custom_charge_order_id);
 				caor.set("order_type", "应收对账单");
 				caor.save();
 				
-				ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(charge_order_id);
+				CustomArapChargeOrder arapChargeOrder = CustomArapChargeOrder.dao.findById(custom_charge_order_id);
 				arapChargeOrder.set("audit_status", "收款申请中").update();
 				
 			}
@@ -523,8 +442,8 @@ public class CustomChargeReuqestrController extends Controller {
 //			renderJson(textError);
 //			return ;
 //        }
-		//更新勾选的job_order_arap item creat_flag,改变创建标记位
-		String ySql ="update job_order_arap set create_flag='Y' where id in("+selected_item_ids+")";
+		//更新勾选的job_order_arap item create_flag,改变创建标记位
+		String ySql ="update custom_plan_order_arap set create_flag='Y' where id in("+selected_item_ids+")";
         Db.update(ySql);
 	        
 		
@@ -542,13 +461,13 @@ public class CustomChargeReuqestrController extends Controller {
   	@Before(EedaMenuInterceptor.class)
   	public void edit() throws ParseException {
 		String id = getPara("id");
-		ArapChargeApplication order = ArapChargeApplication.dao.findById(id);
+		CustomArapChargeApplicationOrder order = CustomArapChargeApplicationOrder.dao.findById(id);
 		
 		Party p  = Party.dao.findById(order.getLong("sp_id"));
 		if(p != null){
 			setAttr("party", p);
 		}
-		String sql = "select group_concat(cast(charge_order_id as char) SEPARATOR ',') ids from charge_application_order_rel where application_order_id = ?";
+		String sql = "select group_concat(cast(charge_order_id as char) SEPARATOR ',') ids from custom_charge_application_order_rel where application_order_id = ?";
 		Record rec = Db.findFirst(sql,id);
 		setAttr("ids", rec.getStr("ids"));
 		
@@ -580,7 +499,7 @@ public class CustomChargeReuqestrController extends Controller {
 
 		List<Record> Account = Db.find("select * from fin_account where bank_name != '现金'");
 		setAttr("accountList", Account);
-		render("/eeda/cmsArap/cmsChargeRequest/chargeEdit.html");
+		render("/eeda/cmsArap/cmsChargeRequest/cmsChargeEdit.html");
 	}
   	
   	
@@ -589,13 +508,13 @@ public class CustomChargeReuqestrController extends Controller {
     public void checkOrder(){
         String application_id=getPara("order_id");
           
-        ArapChargeApplication order = ArapChargeApplication.dao.findById(application_id);
+        CustomArapChargeApplicationOrder order = CustomArapChargeApplicationOrder.dao.findById(application_id);
         order.set("status", "已复核");
         order.set("check_by", LoginUserController.getLoginUserId(this));
         order.set("check_stamp", new Date()).update();
      
         //更改原始单据状态
-        List<Record> res = Db.find("select * from charge_application_order_rel where application_order_id = ?",application_id);
+        List<Record> res = Db.find("select * from custom_charge_application_order_rel where application_order_id = ?",application_id);
   		for (Record re : res) {
   			Long id = re.getLong("charge_order_id");
   			String order_type = re.getStr("order_type");
@@ -640,7 +559,7 @@ public class CustomChargeReuqestrController extends Controller {
    		String payment_method = (String) dto.get("payment_method");
    		
    		
-        ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(id);
+        CustomArapChargeApplicationOrder arapChargeInvoiceApplication = CustomArapChargeApplicationOrder.dao.findById(id);
         arapChargeInvoiceApplication.set("status", "已收款");
         arapChargeInvoiceApplication.set("receive_time", receive_time);
         arapChargeInvoiceApplication.set("confirm_by", user.get("id"));
@@ -648,13 +567,13 @@ public class CustomChargeReuqestrController extends Controller {
         arapChargeInvoiceApplication.update();
         
         //已收款的标记位
-		String paySql ="update job_order_arap set pay_flag='Y' "
-				+ " where id in (SELECT job_order_arap_id FROM charge_application_order_rel WHERE application_order_id ="+id+")" ; //chargeOrderId.substring(1) 去掉第一位
+		String paySql ="update custom_plan_order_arap set pay_flag='Y' "
+				+ " where id in (SELECT job_order_arap_id FROM custom_charge_application_order_rel WHERE application_order_id ="+id+")" ; //chargeOrderId.substring(1) 去掉第一位
                 
         Db.update(paySql);
             
         //更改原始单据状态
-        List<Record> res = Db.find("select * from charge_application_order_rel where application_order_id = ?",id);
+        List<Record> res = Db.find("select * from custom_charge_application_order_rel where application_order_id = ?",id);
         
         
         
@@ -669,17 +588,17 @@ public class CustomChargeReuqestrController extends Controller {
                 Double jpy = arapChargeOrder.getDouble("jpy");
 
                 String sql = "SELECT "
-                		+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_charge_item aci on joa.id = aci.ref_order_id"
-        				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =3 and aci.charge_order_id="+charge_order_id
+                		+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
+        				+" where joa.create_flag = 'Y' AND joa.currency_id =3 and aci.charge_order_id="+charge_order_id
         				+" ),0) paid_cny,"
-        				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_charge_item aci on joa.id = aci.ref_order_id"
-        				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =6 and aci.charge_order_id="+charge_order_id
+        				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
+        				+" where joa.create_flag = 'Y' AND joa.currency_id =6 and aci.charge_order_id="+charge_order_id
         				+" ),0) paid_usd,"
-        				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_charge_item aci on joa.id = aci.ref_order_id"
-        				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =8 and aci.charge_order_id="+charge_order_id
+        				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
+        				+" where joa.create_flag = 'Y' AND joa.currency_id =8 and aci.charge_order_id="+charge_order_id
         				+" ),0) paid_jpy,"
-        				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_charge_item aci on joa.id = aci.ref_order_id"
-        				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =9 and aci.charge_order_id="+charge_order_id
+        				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
+        				+" where joa.create_flag = 'Y' AND joa.currency_id =9 and aci.charge_order_id="+charge_order_id
         				+" ),0) paid_hkd ";
                    
                    Record r = Db.findFirst(sql);
@@ -810,10 +729,10 @@ public class CustomChargeReuqestrController extends Controller {
     private Map<String, Double> updateExchangeTotal(String appOrderId) {
         String sql="select joa.order_type, ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
         +"       ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount "
-        +"       from  job_order_arap joa "
+        +"       from  custom_plan_order_arap joa "
         +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
-        +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
-        +"       where joa.id in (select caor.job_order_arap_id from charge_application_order_rel caor where caor.application_order_id="+appOrderId+")";
+        +"       LEFT JOIN currency cur1 ON cur1.id = joa.currency_id"
+        +"       where joa.id in (select caor.job_order_arap_id from custom_charge_application_order_rel caor where caor.application_order_id="+appOrderId+")";
 		
 		Map<String, Double> exchangeTotalMap = new HashMap<String, Double>();
 		exchangeTotalMap.put("MODAL_CNY", 0d);
@@ -880,7 +799,7 @@ public class CustomChargeReuqestrController extends Controller {
               		+ " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
               		+ " after_rate_total,ifnull(f.name,f.name_eng) fee_name,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
       				+ " from job_order jo "
-      				+ " left join job_order_arap joa on jo.id=joa.order_id "
+      				+ " left join custom_plan_order_arap joa on jo.id=joa.order_id "
       				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
       				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
       				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
@@ -888,7 +807,7 @@ public class CustomChargeReuqestrController extends Controller {
       				+ " left join party p1 on p1.id=jo.customer_id "
       				+ " left join location l on l.id=jos.fnd "
       				+ " left join currency cur on cur.id=joa.currency_id "
-      				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
+      				+ " left join currency cur1 on cur1.id=joa.currency_id "
       				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
       				+ " left join fin_item f on f.id = joa.charge_id"
       				+ " where  joa.audit_flag='Y' and joa.billconfirm_flag = 'Y'  and joa.create_flag='N'  and jo.office_id = "+office_id
@@ -907,7 +826,7 @@ public class CustomChargeReuqestrController extends Controller {
                  		+ " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
                  		+ " after_rate_total,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
          				+ " from job_order jo "
-         				+ " left join job_order_arap joa on jo.id=joa.order_id "
+         				+ " left join custom_plan_order_arap joa on jo.id=joa.order_id "
          				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
          				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
          				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
@@ -915,7 +834,7 @@ public class CustomChargeReuqestrController extends Controller {
          				+ " left join party p1 on p1.id=jo.customer_id "
          				+ " left join location l on l.id=jos.fnd "
          				+ " left join currency cur on cur.id=joa.currency_id "
-         				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
+         				+ " left join currency cur1 on cur1.id=joa.currency_id "
          				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
          				+ " left join fin_item f on f.id = joa.charge_id"
          				+ " where joa.order_type='charge' and joa.audit_flag='Y' and joa.billconfirm_flag = 'Y' and joa.create_flag='N' and jo.office_id = "+office_id
@@ -949,14 +868,14 @@ public class CustomChargeReuqestrController extends Controller {
     	String itemList= getPara("charge_itemlist");
     	String[] itemArray =  itemList.split(",");
     	String appOrderId=getPara("order_id");
-    	ArapChargeApplication order = ArapChargeApplication.dao.findById(appOrderId);
+    	CustomArapChargeApplicationOrder order = CustomArapChargeApplicationOrder.dao.findById(appOrderId);
     	
-   		ChargeApplicationOrderRel caor = null;
+   		CustomChargeApplicationOrderRel caor = null;
 		for(String item :itemArray){
-				caor = new ChargeApplicationOrderRel();
+				caor = new CustomChargeApplicationOrderRel();
 				caor.set("application_order_id", appOrderId);
 				caor.set("job_order_arap_id", item);
-				Record re = Db.findFirst("select * from arap_charge_item where ref_order_id=?",item);
+				Record re = Db.findFirst("select * from custom_arap_charge_item where ref_order_id=?",item);
 				Long charge_order_id=re.getLong("charge_order_id");
 				caor.set("charge_order_id", charge_order_id);
 				caor.set("order_type", "应收对账单");
@@ -979,8 +898,8 @@ public class CustomChargeReuqestrController extends Controller {
     	String appOrderId=getPara("order_id");
     	String itemid=getPara("charge_itemid");
     	if(itemid !=null&& appOrderId!=null){
-    		 Db.deleteById("charge_application_order_rel","job_order_arap_id,application_order_id",itemid,appOrderId);
-    		 Record re = Db.findFirst("select * from arap_charge_item where ref_order_id=?",itemid);
+    		 Db.deleteById("custom_charge_application_order_rel","job_order_arap_id,application_order_id",itemid,appOrderId);
+    		 Record re = Db.findFirst("select * from custom_arap_charge_item where ref_order_id=?",itemid);
 			 Long charge_order_id=re.getLong("charge_order_id");
     		 ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(charge_order_id);
     		 arapChargeOrder.set("audit_status", "新建").update();

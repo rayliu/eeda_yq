@@ -19,8 +19,10 @@ import models.ArapMiscCostOrder;
 import models.Category;
 import models.ChargeApplicationOrderRel;
 import models.CostApplicationOrderRel;
+import models.CustomArapChargeApplicationOrder;
 import models.CustomArapCostItem;
 import models.CustomArapCostOrder;
+import models.CustomChargeApplicationOrderRel;
 import models.Location;
 import models.Office;
 import models.Party;
@@ -451,6 +453,9 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("custom_arap_cost_order", CustomArapCostOrder.class);
         arp.addMapping("custom_arap_cost_item", CustomArapCostItem.class);
         arp.addMapping("custom_plan_order_arap", CustomPlanOrderArap.class);
+        
+        arp.addMapping("custom_arap_charge_application_order", CustomArapChargeApplicationOrder.class);
+        arp.addMapping("custom_charge_application_order_rel", CustomChargeApplicationOrderRel.class);
         
         //tms 车队管理
         arp.addMapping("trans_job_order", TransJobOrder.class);
