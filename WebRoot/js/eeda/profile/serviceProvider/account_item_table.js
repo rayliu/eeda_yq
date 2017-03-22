@@ -109,10 +109,10 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    });
 	    
 	    //刷新明细表
-//	    itemOrder.refleshTable = function(order_id){
-//	    	var url = "/customPlanOrder/tableList?order_id="+order_id+"&type=cargo";
-//	    	cargoTable.ajax.url(url).load();
-//	    }
+	    itemOrder.refleshTable = function(order_id){
+	    	var url = "/serviceProvider/tableList?order_id="+order_id;
+	    	cargoTable.ajax.url(url).load();
+	    }
 	    
 	});
 });

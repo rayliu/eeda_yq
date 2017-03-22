@@ -16,7 +16,6 @@ import models.Location;
 import models.ParentOfficeModel;
 import models.Party;
 import models.PartyMark;
-import models.SpOceanCargo;
 import models.UserLogin;
 import models.yh.profile.ProviderChargeType;
 
@@ -84,6 +83,19 @@ public class ServiceProviderController extends Controller {
             render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
     }
     
+    
+    //返回对象	
+    private List<Record> getItemDetail(String id){
+    	List<Record> itemList = null;
+    	itemList = Db.find("SELECT * FROM fin_account WHERE order_id = ?",id);
+		return itemList;
+    }
+    
+    
+    
+    
+    
+    
     @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
@@ -93,13 +105,30 @@ public class ServiceProviderController extends Controller {
 
         Record re = Db.findFirst("select get_loc_full_name('"+code+"') as loc_name");
         setAttr("location", re.getStr("loc_name"));
-
+        
         setAttr("party", party);
         setAttr("user", LoginUserController.getLoginUser(this));
+        setAttr("itemList", getItemDetail(id));
         render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
     }
     
-    public void delete() {
+  //异步刷新字表
+    public void tableList(){
+    	String order_id = getPara("order_id");
+    	List<Record> list = null;
+    	list = Db.find("SELECT * FROM fin_account WHERE order_id = ?",order_id);
+    	
+    	Map map = new HashMap();
+        map.put("sEcho", 1);
+        map.put("iTotalRecords", list.size());
+        map.put("iTotalDisplayRecords", list.size());
+        map.put("aaData", list);
+        renderJson(map); 
+    }
+    
+
+
+	public void delete() {
        
         String id = getPara();
         
@@ -115,7 +144,9 @@ public class ServiceProviderController extends Controller {
         redirect("/serviceProvider");
     }
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_CREATE, PermissionConstant.PERMSSION_P_UPDATE}, logical=Logical.OR)
-    public void save() {
+    @SuppressWarnings("unchecked")
+	@Before(Tx.class)
+    public void save() throws Exception { {
         String id = getPara("party_id");
         Party party = null;
         Party contact = null;
@@ -151,7 +182,7 @@ public class ServiceProviderController extends Controller {
             	renderText("companyError");
             	return ;
             }
-
+            
             party = new Party();
             party.set("type", Party.PARTY_TYPE_SERVICE_PROVIDER);
             party.set("creator", LoginUserController.getLoginUserId(this));
@@ -167,10 +198,16 @@ public class ServiceProviderController extends Controller {
             party.save();
 
         }
-     
+        String acount_json = getPara("acount_json");
+       	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(acount_json, HashMap.class);  
+        //保存账户信息
+        List<Map<String, String>> acount = (ArrayList<Map<String, String>>)dto.get("acount_json");
+		DbUtils.handleList(acount, id, FinAccount.class, "order_id");
         setAttr("saveOK", true);
         //redirect("/serviceProvider");
         renderJson(party);
+      }
     }
 
     private void setParty(Party contact) {

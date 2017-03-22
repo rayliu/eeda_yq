@@ -137,8 +137,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		  return false;
     	 }
     	 $("#save").attr("disabled",true);
-    	 var acount_json=itemOrder.buildCargoDetail();
-    	 $("#acount_json").val(JSON.stringify(acount_json));
+    	 var order={};
+    	 order.acount_json =itemOrder.buildCargoDetail();
+    	 $("#acount_json").val(JSON.stringify(order));
     	 $.post("/serviceProvider/save", $("#customerForm").serialize(),function(data){
     		if(data=='abbrError'){
     			$.scojs_message('供应商简称已存在', $.scojs_message.TYPE_ERROR);
@@ -159,6 +160,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      			$.scojs_message('数据有误', $.scojs_message.TYPE_ERROR);
      			$("#save").attr("disabled",false);
      		}
+    		//异步刷新明细表
+    		itemOrder.refleshTable(data.ID);
          });
     	  
       });

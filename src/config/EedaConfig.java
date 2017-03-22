@@ -136,6 +136,7 @@ import controllers.profile.CountryController;
 import controllers.profile.CurrencyController;
 import controllers.profile.CurrencyRateController;
 import controllers.profile.CustomController;
+import controllers.profile.FinAccount;
 import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.TradeItemController;
@@ -444,6 +445,9 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("charge_application_order_rel", ChargeApplicationOrderRel.class);
         arp.addMapping("app_invoice_doc", AppInvoiceDoc.class);
         arp.addMapping("rate_contrast", RateContrast.class);
+        
+        //账户
+        arp.addMapping("fin_account", FinAccount.class);
         
         //cms 报关管理		
         arp.addMapping("custom_plan_order", CustomPlanOrder.class);
