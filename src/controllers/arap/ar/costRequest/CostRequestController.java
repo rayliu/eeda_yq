@@ -44,8 +44,8 @@ import controllers.util.OrderNoGenerator;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class CostReuqestrController extends Controller {
-    private Log logger = Log.getLog(CostReuqestrController.class);
+public class CostRequestController extends Controller {
+    private Log logger = Log.getLog(CostRequestController.class);
     Subject currentUser = SecurityUtils.getSubject();
     
     @Before(EedaMenuInterceptor.class)

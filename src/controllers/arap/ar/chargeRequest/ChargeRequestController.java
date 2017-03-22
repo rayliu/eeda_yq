@@ -14,15 +14,17 @@ import java.util.Map;
 import models.AppInvoiceDoc;
 import models.ArapAccountAuditLog;
 import models.ArapChargeApplication;
-import models.ArapChargeItem;
 import models.ArapChargeOrder;
 //import models.ChargeAppOrderRel;
 import models.ChargeApplicationOrderRel;
+import models.Office;
 import models.Party;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.MultiPartEmail;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
@@ -42,8 +44,8 @@ import controllers.util.OrderNoGenerator;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class ChargeReuqestrController extends Controller {
-    private Log logger = Log.getLog(ChargeReuqestrController.class);
+public class ChargeRequestController extends Controller {
+    private Log logger = Log.getLog(ChargeRequestController.class);
     Subject currentUser = SecurityUtils.getSubject();
     
     @Before(EedaMenuInterceptor.class)
@@ -290,11 +292,11 @@ public class ChargeReuqestrController extends Controller {
     
     
     public void applicationList() {
-    	String sLimit = "";
-        String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//    	String sLimit = "";
+//        String pageIndex = getPara("draw");
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
@@ -317,9 +319,9 @@ public class ChargeReuqestrController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition +sLimit);
+        List<Record> orderList = Db.find(sql+ condition );//+sLimit
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("draw", pageIndex);
+//        map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
         map.put("data", orderList);
@@ -585,23 +587,71 @@ public class ChargeReuqestrController extends Controller {
 	}
   	
   	
+  	@Before(Tx.class)
+    public void sendMail(String order_id,String order_no,String creator_name) throws Exception {
+    	UserLogin userlogin = UserLogin.dao.findFirst("SELECT * from user_login where c_name='"+creator_name+"'");
+    	String mailTitle = "您有一份复核不通过的收款申请单";
+    	String mailContent = "收款申请单为<a href=\"http://www.esimplev.com/chargeRequest/edit?id="+order_id+"\">"+order_no+"</a>";
+    	
+    	Office office=Office.dao.findById(userlogin.get("office_id"));
+        MultiPartEmail email = new MultiPartEmail();  
+        /*smtp.exmail.qq.com*/
+        String HostName = office.getStr("host_name");
+        int SmtpPort = office.getInt("smtp_port");
+        email.setHostName(HostName);
+        email.setSmtpPort(SmtpPort);
+        //反查公司信息
+        
+        try{
+        /*输入公司的邮箱和密码*/
+        email.setAuthenticator(new DefaultAuthenticator(office.getStr("email"), office.getStr("emailPassword")));        
+        email.setSSLOnConnect(true);
+        email.setFrom(office.getStr("email"),office.getStr("office_name"));//设置发信人
+        //设置收件人，邮件标题，邮件内容
+//    	email.addTo("1063203104@qq.com");
+    	email.addTo(userlogin.getStr("email"));
+//        email.addTo("864358232@qq.com");
+        email.setSubject(mailTitle);
+        email.setContent(mailContent, "text/html;charset=gb2312");
+//        //抄送
+//        email.addCc("1063203104@qq.com");
+//       //密送
+//        email.addBcc("1063203104@qq.com");
+        
+        	//email.setCharset("UTF-8"); 
+        	email.send();
+        }catch(Exception e){
+        	e.printStackTrace();
+        }
+       
+    }
+  	
+  	
     //复核
   	@Before(Tx.class)
-    public void checkOrder(){
+    public void checkOrder() throws Exception{
         String application_id=getPara("order_id");
+        String selfId = getPara("selfId");
         String ids = getPara("ids");
-          
-       
-     
+        String order_no =getPara("order_no");
+   		String creator_name =getPara("creator_name");
+   		String invoice_no =getPara("invoice_no");
         //更改原始单据状态
         List<Record> res = null;
-  		  
-  		
+
    		  
   		Record re = new Record();
   		if(StringUtils.isNotEmpty(application_id)){
   			ArapChargeApplication order = ArapChargeApplication.dao.findById(application_id);
-  			
+  			if("cancelcheckBtn".equals(selfId)){
+	    		 order.set("status", "复核不通过");
+	    		 order.set("invoice_no", invoice_no);
+	    		 sendMail(application_id,order_no,creator_name);
+	    		 
+	    	 }else{
+	    		 order.set("status", "已复核");
+	    	 }
+
   			order.set("check_by", LoginUserController.getLoginUserId(this));
 	        order.set("check_stamp", new Date()).update();
 	        res = Db.find("select * from charge_application_order_rel where application_order_id = ?",application_id);

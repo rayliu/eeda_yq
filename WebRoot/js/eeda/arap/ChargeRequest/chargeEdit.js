@@ -140,20 +140,39 @@ $(document).ready(function() {
 	    });
 	 
 	 //复核
-	  $("#checkBtn").on('click',function(){
+	  $("#checkBtn,#cancelcheckBtn").on('click',function(){
+		    var selfId=$(this).attr('id');
+		  	var order_no = $("#order_no").val();
+		  	var creator_name = $("#creator_name").val();
+		  	var invoice_no = $("#invoice_no").val();
 		  	
-			$.get("/chargeRequest/checkOrder", {order_id:$('#order_id').val(),}, function(data){
+			$.get("/chargeRequest/checkOrder", {order_id:$('#order_id').val(),selfId:selfId,order_no:order_no,creator_name:creator_name,invoice_no:invoice_no}, function(data){
 				if(data.ID>0){
 					$("#check_name").val(data.CHECK_NAME);
 					$("#check_stamp").val(data.CHECK_STAMP);
 					$("#status").val(data.STATUS);
-					$.scojs_message('复核成功', $.scojs_message.TYPE_OK);
-					$("#checkBtn").attr("disabled", true);
-				  	$("#saveBtn").attr("disabled", true);
-				  	$("#add_charge").attr("disabled", true);
-					$("#returnBtn").attr("disabled", false);
-					$("#confirmBtn").attr("disabled", false);
-					$("#select_item_table .delete").attr("disabled", true);
+					var status = data.STATUS;
+					$("#status_cancel").val(status);
+					if(status=="复核不通过"){
+						$("#checkBtn").attr("disabled", false);
+						$.scojs_message('复核不通过', $.scojs_message.TYPE_OK);
+						$("#cancelcheckBtn").attr("disabled", true);
+						$("#saveBtn").attr("disabled", false);
+						$("#returnBtn").attr("disabled", true);
+						$("#confirmBtn").attr("disabled", true);
+						$("#add_cost").attr("disabled", false);
+						$('#select_item_table .delete').attr("disabled", false);
+					}else{
+						$("#checkBtn").attr("disabled", true);
+						$.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+						$("#cancelcheckBtn").attr("disabled", false);
+						$("#checkBtn").attr("disabled", true);
+						$("#saveBtn").attr("disabled", true);
+						$("#confirmBtn").attr("disabled", false);
+						$("#add_cost").attr("disabled", true);
+						$('#select_item_table .delete').attr("disabled", true);
+						$("#returnBtn").attr("disabled", false);
+					}
 				}else{
 					$("#checkBtn").attr("disabled", false);
 					$.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
@@ -303,8 +322,24 @@ $(document).ready(function() {
 		if($('#status').val()=='新建'){
 			$("#saveBtn").attr('disabled',false);
 			$("#checkBtn").attr('disabled',false);
+			$("#cancelcheckBtn").attr("disabled", false);
 		}else if($('#status').val()=='已复核'){
-			$("#confirmBtn").attr('disabled',false);
+			$("#checkBtn").attr("disabled", true);
+			$("#cancelcheckBtn").attr("disabled", false);
+			$("#checkBtn").attr("disabled", true);
+			$("#saveBtn").attr("disabled", true);
+			$("#confirmBtn").attr("disabled", false);
+			$("#add_cost").attr("disabled", true);
+			$('#select_item_table .delete').attr("disabled", true);
+			$("#returnBtn").attr("disabled", false);
+		}else if($('#status').val()=='复核不通过'){
+			$("#checkBtn").attr("disabled", false);
+			$("#cancelcheckBtn").attr("disabled", true);
+			$("#saveBtn").attr("disabled", false);
+			$("#returnBtn").attr("disabled", true);
+			$("#confirmBtn").attr("disabled", true);
+			$("#add_cost").attr("disabled", false);
+			$('#select_item_table .delete').attr("disabled", false);
 		}
 	}
 	

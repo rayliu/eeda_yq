@@ -492,9 +492,16 @@ $(document).ready(function() {
         var rows=$('#application_table tr');
         for(var i=1;i<rows.length;i++){
            if($(rows[i]).find('[type=checkbox]').prop('checked')){
-                id=$(rows[i]).find('[type=checkbox]').val();
-                if(id)
-                    application_ids.push(id);
+        	   var checkBox = $(rows[i]).find('[type=checkbox]');
+               id=checkBox.val();
+               if(id){
+               	application_ids.push(id);
+               }
+               //多条复核去掉金额
+//               if($(checkBox).prop('checked')==true){
+//       			$(checkBox).attr('checked',false);
+//       			totalMoney(checkBox);
+//       		}
            }
 
         }
@@ -524,6 +531,9 @@ $(document).ready(function() {
     //弹出下拉框 确认付款时间
       $("#application_table").on('click','.confirmBtn',function(){
             $('#cost_table_msg_btn').click();
+            
+            var rowIndex= $(this).parent().parent().parent().index();
+            $('#rowIndex').val(rowIndex);
             $('#confirmBtn').attr('disabled',true);
             $('#receive_time').val('');
              
@@ -548,20 +558,37 @@ $(document).ready(function() {
         var rows=$('#application_table tr');
         order.costList=itemOrder.buildCostItem();
         $.post("/costRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
-                        if(data){
-                            var arr=data.IDS.split(',');
-                            for(var j=0;j<arr.length;j++){
-                                for(var i=1;i<rows.length;i++){
-                                    var td=$(rows[i]).find('[type=checkbox]');
-                                    var btn0=$(rows[i]).find('[type=button]').eq(1);
-                                    if($(td).val()==arr[j]){
-                                         $(btn0).attr('disabled',true);
-                                         $(btn0).parent().parent().next().next().html("已付款");
-                                    }
-                                }
-                            }
-                            $.scojs_message('付款成功', $.scojs_message.TYPE_OK);
-                        }else{
+			        	if(data){
+			                for(var i=1;i<rows.length;i++){
+			                   if($(rows[i]).find('[type=checkbox]').prop('checked')){
+			                        var checkBox = $(rows[i]).find('[type=checkbox]');
+			                        if($(checkBox).prop('checked')==true){
+			                			$(checkBox).attr('checked',false);
+			                			totalMoney(checkBox);
+			                		}
+			                   	}
+			                   }
+			            	if(data.IDS.length>0){
+			            		var arr=[];
+			            		    arr=data.IDS.split(',');
+			                    for(var j=0;j<arr.length;j++){
+			                        for(var i=1;i<rows.length;i++){
+			                            var td=$(rows[i]).find('[type=checkbox]');
+			                            var btn0=$(rows[i]).find('[type=button]').eq(1);
+			                            if($(td).val()==arr[j]){
+			                                 $(btn0).attr('disabled',true);
+			                                 $(btn0).parent().parent().next().next().html("已收款");
+			                            }
+			                        }
+			                    }
+			            	}else{
+			            		var td=$(rows).find('.confirmBtn');
+			            		var rowIndex = $('#rowIndex').val();
+			            		$(td[rowIndex]).attr('disabled',true);
+			            		$(td[rowIndex]).parent().parent().next().next().html(data.STATUS);
+			            	}
+			            	$.scojs_message('收款成功', $.scojs_message.TYPE_OK);
+			            }else{
                             td1.next().children().children(".confirmBtn").attr('disabled',false);
                             $.scojs_message('付款失败', $.scojs_message.TYPE_FALSE);
                         }
