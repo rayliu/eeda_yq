@@ -97,7 +97,7 @@
                             </div>
                             <div class="col-lg-4">
 		                         <div id="transfers_massage_pay" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
-		                         <%include("/eeda/component/form/inputField.html", 
+		                         <%include("/eeda/component/form/partyAccountField.html", 
 		                            { id:'pay_bank',
 									label:'收款开户行', value:order.pay_bank!''
 									}){}%>

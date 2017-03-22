@@ -100,9 +100,11 @@
 										{ id:'account_name',
 										label:'付款账户名', value:order.account_name!''
 										}){}%>
-			                         <%include("/eeda/component/form/inputField.html", 
+			                         <%include("/eeda/component/form/partyAccountField.html", 
 			                            { id:'pay_bank',
-										label:'收款开户行', value:order.pay_bank!''
+										label:'收款开户行', 
+										value:order.pay_bank!'',
+									    display_value:order.pay_bank_input
 										}){}%>
 										
 										<%include("/eeda/component/form/inputField.html", 

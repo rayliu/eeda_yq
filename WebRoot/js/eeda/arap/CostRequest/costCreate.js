@@ -329,6 +329,11 @@ $(document).ready(function() {
  	   $('#account_name').val( $(this).attr('account_name'));
  	   
     });
+	$('#pay_bank_list').on('mousedown','a',function(){
+		   $('#pay_no').val( $(this).attr('account_no'));
+	 	   $('#pay_name').val( $(this).attr('account_name'));
+	 	   
+	    });
 
 
 	

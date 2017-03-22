@@ -371,12 +371,18 @@ $(document).ready(function() {
 		}else{
 			$('#invoiceDiv').show();
 		}
-	
+	//付款账户信息
 	$('#deposit_bank_list').on('mousedown','a',function(){
 	   $('#account_no').val( $(this).attr('account_no'));
  	   $('#account_name').val( $(this).attr('account_name'));
  	   
     })
+    //收款账户信息
+    $('#pay_bank_list').on('mousedown','a',function(){
+		   $('#pay_no').val( $(this).attr('account_no'));
+	 	   $('#pay_name').val( $(this).attr('account_name'));
+	 	   
+	    });
     
     
     
