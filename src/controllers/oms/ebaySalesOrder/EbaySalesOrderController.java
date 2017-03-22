@@ -1,4 +1,4 @@
-package controllers.oms.salesOrder;
+package controllers.oms.ebaySalesOrder;
 
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
@@ -20,7 +20,9 @@ import com.ebay.soap.eBLBaseComponents.DetailLevelCodeType;
 import com.ebay.soap.eBLBaseComponents.OrderIDArrayType;
 import com.ebay.soap.eBLBaseComponents.OrderStatusCodeType;
 import com.ebay.soap.eBLBaseComponents.OrderType;
+import com.ebay.soap.eBLBaseComponents.ShipmentTrackingDetailsType;
 import com.ebay.soap.eBLBaseComponents.TradingRoleCodeType;
+import com.ebay.soap.eBLBaseComponents.TransactionType;
 import com.ebay.soap.eBLBaseComponents.WarningLevelCodeType;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
@@ -40,9 +42,14 @@ public class EbaySalesOrderController extends Controller {
 
     @Before(EedaMenuInterceptor.class)
     public void index() {
-        String type = getPara("type");
-        setAttr("type", type);
-        render("/oms/SalesOrder/ebaySalesOrderList.html");
+        
+        Record orderNopayRec = Db.findFirst("select count(1) total from ebay_order where paid_time is null");
+        setAttr("orderNopayCount", orderNopayRec.get("total"));
+        
+        Record orderNoshipRec = Db.findFirst("select count(1) total from ebay_order where shipped_time is null");
+        setAttr("orderNoshipCount", orderNoshipRec.get("total"));
+        
+        render("/oms/ebaySalesOrder/ebaySalesOrderList.html");
     }
 
     public void list() {
@@ -89,11 +96,34 @@ public class EbaySalesOrderController extends Controller {
             OrderType order = orders[i];
             rec.set("order_id", order.getOrderID());
             rec.set("created_time", order.getCreatedTime().getTime());
-//            rec.set("transaction_id", order.getTransactionArray().getTransaction())
+            
+            
+            TransactionType[] tType = order.getTransactionArray().getTransaction();
+            TransactionType transaction = tType[0];//只获取第一个
+            
+            rec.set("transaction_id", transaction.getTransactionID());
+            rec.set("item_id", transaction.getItem().getItemID());
             rec.set("total", order.getTotal().getValue());
+            rec.set("total_currency_id", order.getTotal().getCurrencyID().value());
             rec.set("buyer_user_ID", order.getBuyerUserID());
             rec.set("seller_user_ID", order.getSellerUserID());
-            Db.save("ebay_order", rec);
+            rec.set("order_status", order.getOrderStatus().value());
+            rec.set("shipped_time", order.getShippedTime().getTime());
+            rec.set("paid_time", order.getPaidTime().getTime());
+            
+            ShipmentTrackingDetailsType stdt = transaction.getShippingDetails().getShipmentTrackingDetails(0);
+            rec.set("shipment_tracking_number", stdt.getShipmentTrackingNumber());
+            rec.set("shipping_carrier_used", stdt.getShippingCarrierUsed());//送货公司
+            
+            Record oldRec = Db.findFirst("select * from ebay_order where order_id=?", order.getOrderID());
+            if(oldRec != null){
+                rec.set("id", oldRec.getLong("id"));
+                Db.update("ebay_order", rec);
+            }else{
+                Db.save("ebay_order", rec);
+            }
+            
+            
             
             recList.add(rec);
         }

@@ -29,7 +29,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
-import controllers.oms.salesOrder.EbayApiContextUtil;
+import controllers.oms.ebaySalesOrder.EbayApiContextUtil;
 import controllers.util.DbUtils;
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)

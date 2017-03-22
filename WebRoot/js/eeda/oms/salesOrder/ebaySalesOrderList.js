@@ -22,11 +22,35 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                       return "";
                     }
                 }, 
-                { "data": "PAID_TIME", "width":"90px"}, 
-                { "data": "SHIPPED_TIME", "width":"60px"},
                 { "data": "CREATED_TIME", "width":"60px"},
+                { "data": "PAID_TIME", "width":"60px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                          return data;
+                      }
+                      return "未付款";
+                    }
+                }, 
+                { "data": "SHIPPED_TIME", "width":"60px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                          return data;
+                      }
+                      return "未发货";
+                    }
+                },
+                { "data": "SHIPPING_CARRIER_USED", "width":"60px"},
                 { "data": "ORDER_STATUS", "width":"60px"},
-                { "data": "TRACK_NO", "width":"120px"}
+                { "data": "SHIPMENT_TRACKING_NUMBER", "width":"120px"
+                  // "render": function ( data, type, full, meta ) {
+                  //     var editBtn = '<button type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i> 编辑</button>';
+                  //     if(data){
+                  //         return full.SHIPMENT_TRACKING_NUMBER +'<br>'+editBtn;
+                          
+                  //     }
+                  //     return editBtn;
+                  //   }
+                }
             ]
         });
       

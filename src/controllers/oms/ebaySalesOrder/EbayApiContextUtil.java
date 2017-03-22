@@ -1,4 +1,4 @@
-package controllers.oms.salesOrder;
+package controllers.oms.ebaySalesOrder;
 
 import models.UserLogin;
 
@@ -20,7 +20,7 @@ public class EbayApiContextUtil {
     static final String CONFIG_PROD = "ebay";
     private Logger logger = Logger.getLogger(EbayApiContextUtil.class);
     
-    public static String configStr = CONFIG_SANDBOX;
+    public static String configStr = CONFIG_PROD;
     public static String ruName = "";
     public static String signInUrl = "";
     
@@ -60,7 +60,7 @@ public class EbayApiContextUtil {
     }
 
     public void loadConfiguration() throws Exception {
-        Record ebayConfig = Db.findFirst("select * from sell_platform_config where sell_platform=?", configStr);
+        Record ebayConfig = Db.findFirst("select * from ebay_platform_config where sell_platform=?", configStr);
         
         this.apiContext.setApiServerUrl(ebayConfig.getStr("server_url"));
         this.apiContext.setEpsServerUrl(ebayConfig.getStr("eps_server_url"));
@@ -88,7 +88,7 @@ public class EbayApiContextUtil {
         
         UserLogin user = LoginUserController.getLoginUser(null);
         logger.debug("office_id:"+user.getLong("office_id"));
-        Record ebayAccount = Db.findFirst("select * from seller_account where type='"+configStr+"' and office_id=?",  user.getLong("office_id"));
+        Record ebayAccount = Db.findFirst("select * from ebay_seller_account where type='"+configStr+"' and office_id=?",  user.getLong("office_id"));
         if(ebayAccount!=null){
             logger.debug("ebay token:"+ebayAccount.getStr("token"));
             apiCred.seteBayToken(ebayAccount.getStr("token"));

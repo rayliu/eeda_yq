@@ -52,14 +52,14 @@
             <div class="row simple_list_div">
                 
                 <ul id="orderTabs" class="nav nav-tabs">
-                    <li class="">
+                    <li class="active">
                         <a href="#" data-toggle="tab" name="全部">全部</a>
                     </li>
                     <li style="text-align:center;" class="">
-                        <a href="#" data-toggle="tab" name="待审核">未付款 <span id="waitAuditing" class="badge">1</span></a>
+                        <a href="#" data-toggle="tab" name="待审核">未付款 <span id="waitAuditing" class="badge badge-warning">${orderNopayCount!0}</span></a>
                     </li>
-                    <li style="text-align:center;" class="active">
-                        <a href="#" data-toggle="tab" name="放行">未发货 <span id="release" class="badge">35</span></a>
+                    <li style="text-align:center;">
+                        <a href="#" data-toggle="tab" name="放行">未发货 <span id="release" class="badge badge-warning">${orderNoshipCount!0}</span></a>
                     </li>
                 </ul>
 		            <%include("/eeda/component/form/detailTable.html", 
@@ -72,9 +72,10 @@
                                 '买家ID',
                                 '卖家ID',
                                 '实付金额',
+                                '下单日期',
                                 '付款时间',
                                 '发货',
-                                '下单日期',
+                                '发货方式',
                                 '状态',
                                 '追踪单号']
                         }){} %>
@@ -136,7 +137,7 @@
 
 <%}%>
 <script>
-    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
     	 requirejs(['app/oms/salesOrder/ebaySalesOrderList']);
     });
 </script>
