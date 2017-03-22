@@ -29,13 +29,15 @@ var itemIds=[];
                 },
                 { "data": "ORDER_NO","width": "100px",
                       "render": function ( data, type, full, meta ) {
-                        return "<a href='/customPlanOrder/edit?id="+full.ORDER_ID+"' target='_blank'>"+data+"</a>";
+                        return data;
                     }},
                 { "data": "TYPE"},
                 { "data": "CREATE_STAMP", visible: false},
                 { "data": "CUSTOMER_NAME"},
                 { "data": "SP_NAME"},
                 { "data": "FIN_NAME"},
+                { "data": "AMOUNT", "width": "80px"},
+                { "data": "PRICE", "width": "80px"},
                 { "data": "CURRENCY_NAME","class":"currency_name"},
                 { "data": "TOTAL_AMOUNT","class":"total_amount", 
                     "render": function ( data, type, full, meta ) {
@@ -46,43 +48,15 @@ var itemIds=[];
                         return str;
                       }
                 },
-                { "data": "EXCHANGE_RATE", "visible": false},
-                { "data": "AFTER_TOTAL", "visible": false, 
-                    "render": function ( data, type, full, meta ) {
-                    	var after_str =  eeda.numFormat(parseFloat(data).toFixed(2),3);
-                        if(full.ORDER_TYPE=='cost'){
-                            return '<span style="color:red;">'+'-'+after_str+'</span>';
-                        }
-                        return after_str;
-                      }
-                },
-                { "data": "NEW_RATE","class":"new_rate", "visible": false },
-                { "data": "AFTER_RATE_TOTAL","class":"after_rate_total", "visible": false,
-                    "render": function ( data, type, full, meta ) {
-                        if(full.ORDER_TYPE=='cost'){
-                            return '<span style="color:red;">'+'-'+data+'</span>';
-                        }
-                        return data;
-                      }
-                },
-                { "data": "EXCHANGE_CURRENCY_NAME"},
-                { "data": "EXCHANGE_CURRENCY_RATE"},
-                { "data": "EXCHANGE_TOTAL_AMOUNT",
-                    "render": function ( data, type, full, meta ) {
-                    	var exchange_total_str = eeda.numFormat(parseFloat(data).toFixed(2),3);
-                        if(full.ORDER_TYPE=='cost'){
-                            return '<span style="color:red;">'+'-'+exchange_total_str+'</span>';
-                        }
-                        return exchange_total_str;
-                      }
-                },
-                { "data": "ORDER_TYPE", "visible": false,
+              { "data": "CUSTOMS_BILLCODE", "width": "120px"},
+              { "data": "CREATE_STAMP", "width": "100px"},
+              { "data": "ORDER_TYPE", "visible": false,
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
                         return data;
                     }
-                }
+              }
             ]
         });
         
@@ -124,100 +98,34 @@ var itemIds=[];
             },
               { "data": "ORDER_NO", "width": "100px",
               "render": function ( data, type, full, meta ) {
-                        return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+                        return "<a href='/customPlanOrder/edit?id="+full.ORDER_ID+"'target='_blank'>"+data+"</a>";
                     }
               },
-              { "data": "ORDER_EXPORT_DATE", "width": "100px"},
+                { "data": "CPO_TYPE"},
+                { "data": "CUSTOMER_NAME"},
+                { "data": "SP_NAME"},
+                { "data": "FIN_NAME"},
+                { "data": "PRICE", "width": "80px"},
+                { "data": "AMOUNT", "width": "80px"},
+                { "data": "CURRENCY_NAME","class":"currency_name"},
+                { "data": "TOTAL_AMOUNT","class":"total_amount", 
+                    "render": function ( data, type, full, meta ) {
+                      var str =  eeda.numFormat(parseFloat(data).toFixed(2),3);
+                        if(full.ORDER_TYPE=='cost'){
+                            return '<span style="color:red;">'+'-'+str+'</span>';
+                        }
+                        return str;
+                      }
+                },
+              { "data": "CUSTOMS_BILLCODE", "width": "120px"},
               { "data": "CREATE_STAMP", "width": "100px"},
-              { "data": "TYPE", "width": "60px"},
-              { "data": "FEE_NAME", "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  return data;
-                }
-              },
-              { "data": "CUSTOMER_NAME", "width": "100px"},
-              { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
-              { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
-                "render": function ( data, type, full, meta ) {
-                  if(full.SQL_TYPE=='cost'){
-                    return '<span style="color:red;">'+'-'+data+'</span>';
-                  }
-                      return data;
+              { "data": "ORDER_TYPE", "visible": false,
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return data;
                     }
-              },
-              { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
-              { "data": "EXCHANGE_RATE", "width": "60px"},
-              { "data": "AFTER_TOTAL", "width": "60px" ,'class':'AFTER_TOTAL',
-                "render": function ( data, type, full, meta ) {
-                  if(full.SQL_TYPE=='cost'){
-                    return '<span style="color:red;">'+'-'+data+'</span>';
-                  }
-                      return data;
-                    }
-              },
-              { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px"},
-              { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px"},
-              { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.SQL_TYPE=='cost'){
-                    return '<span style="color:red;">'+'-'+data+'</span>';
-                  }
-                  return data;
-                }
-              },
-              { "data": "FND", "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  if(data)
-                return data;
-                  else
-                return full.DESTINATION;
-                }
-              },
-              { "data": "VOLUME", "width": "60px",
-                  "render": function ( data, type, full, meta ) {
-                      return "";
-                  }
-              },
-              { "data": "CONTAINER_AMOUNT","width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  if(data){
-                    var dataArr = data.split(",");
-                    var a = 0;
-                    var b = 0;
-                    var c = 0;
-                    var dataStr = "";
-                    for(var i=0;i<dataArr.length;i++){
-                      if(dataArr[i]=="20GP"){
-                        a++;
-                      }
-                      if(dataArr[i]=="40GP"){
-                        b++;
-                      }
-                      if(dataArr[i]=="45GP"){
-                        c++;
-                      }
-                    }
-                    if(a>0){
-                      dataStr+="20GPx"+a+";"
-                    }
-                    if(b>0){
-                      dataStr+="40GPx"+b+";"
-                    }
-                    if(c>0){
-                      dataStr+="45GPx"+c+";"
-                    }
-                    return dataStr;
-                  }else{
-                    return '';
-                  }
-                }
-              },
-              { "data": "NET_WEIGHT", "width": "60px"},
-              { "data": "REF_NO", "width": "60px"},
-              { "data": "MBL_NO", "width": "60px"},
-              { "data": "HBL_NO", "width": "60px"},
-              { "data": "CONTAINER_NO", "width": "100px"},
-              { "data": "TRUCK_TYPE", "width": "100px"}
+              }
             ]
         });
 
@@ -299,7 +207,7 @@ var itemIds=[];
                     }
                 }
             });
-            $('#modal_cny').val((parseFloat(CNY_charge - CNY_cost)).toFixed(2));
+            $('#modal_cny').val(eeda.numFormat(parseFloat((CNY_charge - CNY_cost)).toFixed(2),3));
             $('#modal_usd').val((parseFloat(USD_charge - USD_cost)).toFixed(2));
             $('#modal_hkd').val((parseFloat(HKD_charge - HKD_cost)).toFixed(2));
             $('#modal_jpy').val((parseFloat(JPY_charge - JPY_cost)).toFixed(2));
@@ -410,7 +318,7 @@ var itemIds=[];
           }
           $.post('/cmsChargeRequest/insertChargeItem',{order_id:order_id,charge_itemlist:charge_itemlist.toString()},function(data){
                 refleshCreateTable(data.appOrderId);
-                 $('#modal_cny').val((parseFloat(data.MODAL_CNY)).toFixed(2));
+                 $('#modal_cny').val( eeda.numFormat(parseFloat(data.MODAL_CNY).toFixed(2),3));
                  $('#modal_usd').val((parseFloat(data.MODAL_USD)).toFixed(2));
                  $('#modal_hkd').val((parseFloat(data.MODAL_HKD)).toFixed(2));
                  $('#modal_jpy').val((parseFloat(data.MODAL_JPY)).toFixed(2));
@@ -489,7 +397,8 @@ var itemIds=[];
             var order_id=$('#order_id').val();
              $.post('/cmsChargeRequest/deleteChargeItem', {charge_itemid:id,order_id:order_id},function(data){
                  refleshCreateTable(data.appOrderId);
-                 $('#modal_cny').val((parseFloat(data.MODAL_CNY)).toFixed(2));
+                 
+                 $('#modal_cny').val(eeda.numFormat(parseFloat(data.MODAL_CNY).toFixed(2),3));
                  $('#modal_usd').val((parseFloat(data.MODAL_USD)).toFixed(2));
                  $('#modal_hkd').val((parseFloat(data.MODAL_HKD)).toFixed(2));
                  $('#modal_jpy').val((parseFloat(data.MODAL_JPY)).toFixed(2));

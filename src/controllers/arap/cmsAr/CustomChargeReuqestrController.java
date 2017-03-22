@@ -76,8 +76,8 @@ public class CustomChargeReuqestrController extends Controller {
         		+ " sum(ifnull(c.paid_cny,0)) paid_cny,"
         		+ " sum(ifnull(c.paid_hkd,0)) paid_hkd,"
         		+ " sum(ifnull(c.paid_jpy,0)) paid_jpy,"
-        		+ " group_concat((select concat(order_no,'-',status) from arap_charge_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
-				+ " from arap_charge_order aco "
+        		+ " group_concat((select concat(order_no,'-',status) from custom_arap_charge_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
+				+ " from custom_arap_charge_order aco "
 				+ " left join custom_charge_application_order_rel c on c.charge_order_id=aco.id"
 				+ " left join party p on p.id=aco.sp_id "
 				+ " where aco.status!='新建' and aco.office_id = "+office_id
@@ -189,7 +189,7 @@ public class CustomChargeReuqestrController extends Controller {
 		
 		String[] orderArrId=ids.split(",");
 		Record r = Db.findFirst("select aco.sp_id,ifnull(company_name,company_name_eng) payee_unit,ifnull(contact_person,contact_person_eng) payee_name"
-				+ " from arap_charge_order aco left join party p on p.id = aco.sp_id where aco.id = ?",orderArrId[0]);
+				+ " from custom_arap_charge_order aco left join party p on p.id = aco.sp_id where aco.id = ?",orderArrId[0]);
 
 		Record re = new Record();
 		re.set("sp_id", r.getLong("SP_ID"));
@@ -299,7 +299,7 @@ public class CustomChargeReuqestrController extends Controller {
           			+"                 ), 0 ) "
           			+"     else aco.hkd "
           			+"     end  apply_pay_hkd "
-          			+" FROM arap_charge_order aco "
+          			+" FROM custom_arap_charge_order aco "
           			+" LEFT JOIN custom_charge_application_order_rel c on c.charge_order_id = aco.id"
           			+" LEFT JOIN party p ON p.id = aco.sp_id"
           			+" LEFT JOIN user_login ul ON ul.id = aco.create_by"
@@ -349,9 +349,9 @@ public class CustomChargeReuqestrController extends Controller {
 					+" and currency_id = (select id from currency where code='HKD') "
 					+" and pay_flag='Y'),0) "
 					+" ) wait_hkd"
-					+"  FROM arap_charge_order aco "
+					+"  FROM custom_arap_charge_order aco "
 					+"  LEFT JOIN custom_charge_application_order_rel caor on caor.charge_order_id = aco.id"
-					+"  LEFT JOIN arap_charge_application_order acao on acao.id = caor.application_order_id"
+					+"  LEFT JOIN custom_arap_charge_application_order acao on acao.id = caor.application_order_id"
 					+"  LEFT JOIN party p ON p.id = aco.sp_id"
 					+"  LEFT JOIN user_login ul ON ul.id = aco.create_by"
 					+"  where acao.id="+application_id
@@ -765,7 +765,7 @@ public class CustomChargeReuqestrController extends Controller {
             }
         }
 		
-		Record order = Db.findById("arap_charge_application_order", appOrderId);
+		Record order = Db.findById("custom_arap_charge_application_order", appOrderId);
 		for (Map.Entry<String, Double> entry : exchangeTotalMap.entrySet()) {
 		    System.out.println(entry.getKey() + " : " + entry.getValue());
 		    order.set(entry.getKey(), entry.getValue());
@@ -775,7 +775,7 @@ public class CustomChargeReuqestrController extends Controller {
 		}else{
 			order.set("return_confirm_stamp", new Date());
 		}
-		Db.update("arap_charge_application_order", order);
+		Db.update("custom_arap_charge_application_order", order);
 		return exchangeTotalMap;
     }
     //添加明细的查询
@@ -792,58 +792,41 @@ public class CustomChargeReuqestrController extends Controller {
         long office_id=user.getLong("office_id");
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
-        	 sql = "select * from(  "
-        			+ " select joa.order_type sql_type, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
-              		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type, "
-              		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
-              		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
-              		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
-              		+ " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"
-              		+ " ) after_total,"
-              		+ " ifnull( ( SELECT rc.new_rate FROM rate_contrast rc "
-              		+ " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
-              		+ " after_rate_total,ifnull(f.name,f.name_eng) fee_name,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
-      				+ " from job_order jo "
-      				+ " left join custom_plan_order_arap joa on jo.id=joa.order_id "
-      				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
-      				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
-      				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
-      				+ " left join party p on p.id=joa.sp_id "
-      				+ " left join party p1 on p1.id=jo.customer_id "
-      				+ " left join location l on l.id=jos.fnd "
-      				+ " left join currency cur on cur.id=joa.currency_id "
-      				+ " left join currency cur1 on cur1.id=joa.currency_id "
-      				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
-      				+ " left join fin_item f on f.id = joa.charge_id"
-      				+ " where  joa.audit_flag='Y' and joa.billconfirm_flag = 'Y'  and joa.create_flag='N'  and jo.office_id = "+office_id
-      				+ " GROUP BY joa.id "
+        	 sql = "select * from(  select cpoa.*,aco.order_no check_order_no,cpo.customs_billcode ,cpo.order_no,cpo.create_stamp,cpo.customer_id,cpo.volume,cpo.type cpo_type,  "
+						+" 							 p.abbr sp_name,p1.abbr customer_name, "
+						+" 							 fi.name fin_name, "
+						+" 							 cur.name currency_name "
+						+" 							 from custom_plan_order cpo "
+						+" 							 left join custom_plan_order_arap cpoa on cpo.id=cpoa.order_id "
+						+" 							 left join fin_item fi on cpoa.charge_id = fi.id "
+						+" 							 left join custom_plan_order_shipping_item josi on josi.order_id=cpoa.order_id "
+						+" 							 left join party p on p.id=cpoa.sp_id "
+						+" 							 left join party p1 on p1.id=cpo.customer_id "
+						+" 							 left join currency cur on cur.id=cpoa.currency_id "
+						+" 							 left join custom_charge_application_order_rel caol on caol.job_order_arap_id  = cpoa.id "
+						+" 							 left join custom_arap_charge_application_order acao on caol.application_order_id = acao.id "
+						+" 							  left join custom_arap_charge_order aco on aco.id=caol.charge_order_id "
+						+ " where  cpoa.audit_flag='Y' and cpoa.billconfirm_flag = 'Y'  and cpoa.create_flag='N'  and cpo.office_id = "+office_id
+      				+ " GROUP BY cpoa.id "
     				+ " ) B where 1=1 ";
         	}else{
         		 sql = "select * from(  "
-                 		+ " select ifnull(f.name,f.name_eng) fee_name, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
-                 		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type, "
-                 		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
-                 		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
-                 		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
-                 		+ " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"
-                 		+ " ) after_total,"
-                 		+ " ifnull( ( SELECT rc.new_rate FROM rate_contrast rc "
-                 		+ " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
-                 		+ " after_rate_total,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
-         				+ " from job_order jo "
-         				+ " left join custom_plan_order_arap joa on jo.id=joa.order_id "
-         				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
-         				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
-         				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
-         				+ " left join party p on p.id=joa.sp_id "
-         				+ " left join party p1 on p1.id=jo.customer_id "
-         				+ " left join location l on l.id=jos.fnd "
-         				+ " left join currency cur on cur.id=joa.currency_id "
-         				+ " left join currency cur1 on cur1.id=joa.currency_id "
-         				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
-         				+ " left join fin_item f on f.id = joa.charge_id"
-         				+ " where joa.order_type='charge' and joa.audit_flag='Y' and joa.billconfirm_flag = 'Y' and joa.create_flag='N' and jo.office_id = "+office_id
-         				+ " GROUP BY joa.id "
+                 		+ "   select cpoa.*,aco.order_no check_order_no,cpo.customs_billcode ,cpo.order_no,cpo.create_stamp,cpo.customer_id,cpo.volume,cpo.type cpo_type,  "
+						+" 							 p.abbr sp_name,p1.abbr customer_name, "
+						+" 							 fi.name fin_name, "
+						+" 							 cur.name currency_name "
+						+" 							 from custom_plan_order cpo "
+						+" 							 left join custom_plan_order_arap cpoa on cpo.id=cpoa.order_id "
+						+" 							 left join fin_item fi on cpoa.charge_id = fi.id "
+						+" 							 left join custom_plan_order_shipping_item josi on josi.order_id=cpoa.order_id "
+						+" 							 left join party p on p.id=cpoa.sp_id "
+						+" 							 left join party p1 on p1.id=cpo.customer_id "
+						+" 							 left join currency cur on cur.id=cpoa.currency_id "
+						+" 							 left join custom_charge_application_order_rel caol on caol.job_order_arap_id  = cpoa.id "
+						+" 							 left join custom_arap_charge_application_order acao on caol.application_order_id = acao.id "
+						+" 						  left join custom_arap_charge_order aco on aco.id=caol.charge_order_id "
+						+ " where cpoa.order_type='charge' and cpoa.audit_flag='Y' and cpoa.billconfirm_flag = 'Y' and cpoa.create_flag='N' and cpo.office_id = "+office_id
+         				+ " GROUP BY cpoa.id "
          				+ " ) B where 1=1 ";
         			}
         
@@ -863,10 +846,6 @@ public class CustomChargeReuqestrController extends Controller {
 
         renderJson(orderListMap); 
     	 
-//    	String sql="select * from	job_order_arap joa where sp_id ="+sp_id
-//    						+"and billconfirm_flag = 'Y'"
-//							+"and create_flag='N' "
-//							+"and order_type = 'charge' ";
     }
     
     public void insertChargeItem(){
@@ -881,7 +860,7 @@ public class CustomChargeReuqestrController extends Controller {
 				caor.set("application_order_id", appOrderId);
 				caor.set("job_order_arap_id", item);
 				Record re = Db.findFirst("select * from custom_arap_charge_item where ref_order_id=?",item);
-				Long charge_order_id=re.getLong("charge_order_id");
+				String charge_order_id=re.getStr("custom_charge_order_id");
 				caor.set("charge_order_id", charge_order_id);
 				caor.set("order_type", "应收对账单");
 				caor.save();
@@ -905,7 +884,7 @@ public class CustomChargeReuqestrController extends Controller {
     	if(itemid !=null&& appOrderId!=null){
     		 Db.deleteById("custom_charge_application_order_rel","job_order_arap_id,application_order_id",itemid,appOrderId);
     		 Record re = Db.findFirst("select * from custom_arap_charge_item where ref_order_id=?",itemid);
-			 Long charge_order_id=re.getLong("charge_order_id");
+			 String charge_order_id=re.getStr("custom_charge_order_id");
     		 CustomArapChargeOrder arapChargeOrder = CustomArapChargeOrder.dao.findById(charge_order_id);
     		 arapChargeOrder.set("audit_status", "新建").update();
     		 

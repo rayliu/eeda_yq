@@ -63,7 +63,7 @@
 						return "<span style='width:70px'>"+parseFloat(full.TOTAL_AMOUNT - full.PAID_CNY).toFixed(2)+"</span>";	
 					}
 				},
-				{"data":"SP_ID","visble":false	}	
+				{"data":"SP_ID","visible": false	}	
         ]      
     });
                       

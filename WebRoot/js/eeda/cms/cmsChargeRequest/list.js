@@ -396,7 +396,7 @@ $(document).ready(function() {
         var order={};
         var rowIndex =$('#rowIndex').val();
         var row = application_table.row(rowIndex ).data();
-        var td1=$('tr[id$='+row.ID.toString()+'] ').children('.sorting_1');;
+        var td1=$('tr[id$='+row.ID.toString()+'] ').find('.checkBox');
 
         order.id=row.ID.toString();
         order.receive_time=$('#receive_time').val();
@@ -405,8 +405,8 @@ $(document).ready(function() {
         order.payment_type="charge";
         $.post("/cmsChargeRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
                         if(data){
-                            td1.next().next().next().html(data.STATUS);
-                            td1.next().children().children(".confirmBtn").attr('disabled',true);
+                            td1.parent().next().next().next().html(data.STATUS);
+                            td1.parent().next().children().children(".confirmBtn").attr('disabled',true);
                             $('#application_table .confirmBtn');
                             
                             $.scojs_message('收款成功', $.scojs_message.TYPE_OK);
