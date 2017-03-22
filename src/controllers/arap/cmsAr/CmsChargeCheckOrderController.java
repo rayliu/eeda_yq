@@ -340,11 +340,8 @@ public class CmsChargeCheckOrderController extends Controller {
     	String  exchange_currency=getPara("query_exchange_currency");
     	String  fin_name=getPara("query_fin_name");
     	
-//    	List<Record> list = null;
-//    	String condition = "select ref_order_id from custom_arap_charge_item where custom_charge_order_id ="+order_id;
      	List<Record> list = null;
     	String condition = "select ref_order_id from custom_arap_charge_item where custom_charge_order_id in ("+order_ids+") ";
-//    	list = getItemList(condition,order_id);
     	
     	if("N".equals(order_id)){//应收申请单
     		if(StringUtils.isNotEmpty(appliction_id)){

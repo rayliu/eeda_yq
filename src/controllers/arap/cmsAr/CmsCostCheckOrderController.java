@@ -179,7 +179,7 @@ public class CmsCostCheckOrderController extends Controller {
         String sql = "select * from(  "
         		+ " select aco.*, p.abbr party_name,ul.c_name creator_name,ul2.c_name confirm_name "
 				+ " from custom_arap_cost_order aco "
-				+ " left join party p on p.id=aco.party_id "
+				+ " left join party p on p.id=aco.sp_id "
 				+ " left join user_login ul on ul.id = aco.create_by"
 				+ " left join user_login ul2 on ul2.id = aco.confirm_by"
 				+ " where aco.office_id = "+office_id
@@ -248,7 +248,7 @@ public class CmsCostCheckOrderController extends Controller {
 		String ids = getPara("idsArray");//job_order_arap ids
 		String total_amount = getPara("totalAmount");
 		
-		String sql = "SELECT p.phone,p.contact_person,p.address,p.company_name declare_unit,cpo.application_unit declare_unit_id,cpoa.sp_id party_id"
+		String sql = "SELECT p.phone,p.contact_person,p.address,p.company_name declare_unit,cpo.application_unit declare_unit_id,cpoa.sp_id"
 				+ " FROM custom_plan_order_arap cpoa"
 				+ " LEFT JOIN custom_plan_order cpo on cpo.id=cpoa.order_id "
 				+ " left join party p on p.id = cpo.application_unit "
@@ -304,7 +304,7 @@ public class CmsCostCheckOrderController extends Controller {
         +"       from  job_order_arap joa "
         +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
         +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
-        +"       where joa.id in (select aci.ref_order_id from arap_cost_item aci where aci.cost_order_id="+costOrderId+")";
+        +"       where joa.id in (select aci.ref_order_id from custom_arap_cost_item aci where aci.cost_order_id="+costOrderId+")";
 		
 		Map<String, Double> exchangeTotalMap = new HashMap<String, Double>();
 		exchangeTotalMap.put("CNY", 0d);
@@ -345,10 +345,30 @@ public class CmsCostCheckOrderController extends Controller {
     
 	//异步刷新字表
     public void tableList(){
+    	String order_ids = getPara("order_ids");
     	String order_id = getPara("order_id");
+    	String appliction_id = getPara("appApplication_id");
+    	String bill_flag = getPara("bill_flag");
+    	String currency_code=getPara("query_currency");
+    	//查询结算币制
+    	String  exchange_currency=getPara("query_exchange_currency");
+    	String  fin_name=getPara("query_fin_name");
     	List<Record> list = null;
-    	String condition = "select ref_order_id from arap_cost_item where cost_order_id ="+order_id;
-    	list = getItemList(condition,order_id);
+    	
+    	String condition = "select ref_order_id from custom_arap_cost_item where custom_cost_order_id in ("+order_ids+") ";
+    	
+    	if("N".equals(order_id)){//应收申请单
+    		if(StringUtils.isNotEmpty(appliction_id)){
+    			list = getCostItemList(appliction_id,bill_flag,currency_code,exchange_currency,fin_name);
+        	}else{
+	    		if("".equals(order_ids)){
+	    			order_ids=null;
+	    				}
+	    		list = getCostItemList(order_ids,"",currency_code,exchange_currency,fin_name);
+	    		}
+    	}else{//应收对账单
+    		    list = getItemList(condition,order_id);
+    	}
 
     	Map BillingOrderListMap = new HashMap();
         BillingOrderListMap.put("sEcho", 1);
@@ -380,6 +400,67 @@ public class CmsCostCheckOrderController extends Controller {
 		renderJson(r);
 	}
     
-   
+    public List<Record> getCostItemList(String order_ids,String bill_flag,String code,String exchange_currency,String fin_name){
+    	String sql = null;
+    	String currency_code="";
+    	String query_exchange_currency="";
+    	String query_fin_name="";
+		if(StringUtils.isNotEmpty(code)){
+			currency_code=" and cur. NAME="+"'"+code+"'";
+		}
+		if(StringUtils.isNotEmpty(exchange_currency)){
+			String sql2="select id from currency where currency.name='"+exchange_currency+"'";
+			List<Record> re=Db.find(sql2);
+			query_exchange_currency=" and joa. exchange_currency_id="+re.get(0).get("id");
+		}
+		if(StringUtils.isNotEmpty(fin_name)){
+			query_fin_name=" and fi.id="+fin_name;
+		}
+			if("create".equals(bill_flag)){
+				sql = " select cpoa.*,aco.order_no check_order_no,cpo.customs_billcode ,cpo.order_no,cpo.create_stamp,cpo.customer_id,cpo.volume,cpo.type,  "
+						+" 							 p.abbr sp_name,p1.abbr customer_name, "
+						+" 							 fi.name fin_name, "
+						+" 							 cur.name currency_name "
+						+" 							 from custom_plan_order cpo "
+						+" 							 left join custom_plan_order_arap cpoa on cpo.id=cpoa.order_id "
+						+" 							 left join fin_item fi on cpoa.charge_id = fi.id "
+						+" 							 left join custom_plan_order_shipping_item josi on josi.order_id=cpoa.order_id "
+						+" 							 left join party p on p.id=cpoa.sp_id "
+						+" 							 left join party p1 on p1.id=cpo.customer_id "
+						+" 							 left join currency cur on cur.id=cpoa.currency_id "
+						+" 							 left join custom_cost_application_order_rel caol on caol.job_order_arap_id  = cpoa.id "
+						+" 							 left join custom_arap_cost_application_order acao on caol.application_order_id = acao.id "
+						+" 							  left join custom_arap_cost_order aco on aco.id=caol.cost_order_id "
+						+" 						   where acao.id="+order_ids+query_fin_name
+						+" 							 GROUP BY cpoa.id "
+						+" 							 ORDER BY aco.order_no, cpo.order_no";
+				
+			}else{
+				sql = "  select joa.*,aco.order_no check_order_no, jo.order_no,jo.customs_billcode , "
+						+" jo.create_stamp,jo.customer_id,jo.volume,jo.type,  "
+						+" 							 p.abbr sp_name,p1.abbr customer_name, "
+						+" 							  fi.name fin_name, "
+						+" 							 cur.name currency_name "
+						+" 							 from custom_plan_order jo "
+						+" 							 left join custom_plan_order_arap joa on jo.id=joa.order_id "
+						+" 							 left join fin_item fi on joa.charge_id = fi.id "
+						+" 							 left join custom_plan_order_shipping_item josi on josi.order_id=joa.order_id "
+						+" 							 left join party p on p.id=joa.sp_id "
+						+" 							 left join party p1 on p1.id=jo.customer_id "
+						+" 							 left join currency cur on cur.id=joa.currency_id "
+						+" 							 left join custom_arap_cost_item aci on aci.ref_order_id = joa.id "
+						+" 						  left join custom_arap_cost_order aco on aco.id = aci.custom_cost_order_id "
+						+" 						  where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
+							+currency_code
+							+query_exchange_currency+query_fin_name
+							+" GROUP BY joa.id"
+							+" ORDER BY aco.order_no, jo.order_no";
+			}		
+			
+
+    	List<Record> re = Db.find(sql);
+    	
+    	return re;
+    }
 
 }
