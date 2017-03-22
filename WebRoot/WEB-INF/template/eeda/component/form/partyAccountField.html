@@ -1,0 +1,82 @@
+<div class="form-group">
+	<label class="search-label">${label!''}</label>
+	<input type="text" class="form-control search-control" 
+	id="${id}_input" 
+	placeholder="${placeholder!'请选择'}"  value="${display_value!''}">
+	<ul id='${id}_list' class="pull-right dropdown-menu default dropdown-scroll" tabindex="-1" style="top: 35%; left: 2%;">
+</ul>
+</div>
+<input id="${id}" style="display: none;" name="${id}" value="${value!''}"/>
+<script>
+
+$(document).ready(function() {
+	//获取Account列表，自动填充
+	var accountList =$("#${id}_list");
+	var inputField = $('#${id}_input');
+	var hiddenField = $('#${id}');
+	
+	//银行账户查询
+    //获取银行账户的list，选中信息在下方展示其他信息
+    inputField.on('input click', function(){
+    	var me = this;
+		var inputStr = inputField.val();
+		var order_id = $("#sp_id").val();
+		if(!order_id){
+			$.scojs_message('请选择结算公司', $.scojs_message.TYPE_FALSE);
+			return;
+		}
+		
+		$.get('/serviceProvider/searchPartyAccount', {input:inputStr,order_id:order_id}, function(data){
+			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+				return;
+			}
+			accountList.empty();
+			for(var i = 0; i < data.length; i++){
+				accountList.append("<li><a tabindex='-1' class='fromLocationItem' id='"+data[i].ID+"' account_no='"+data[i].ACCOUNT_NO+"' account_name='"+data[i].ACCOUNT_NAME+"'  bank_name='"+data[i].BANK_NAME+"'>"+data[i].BANK_NAME+"</a></li>");
+			}
+			accountList.css({ 
+	        	left:$(me).position().left+"px", 
+	        	top:$(me).position().top+28+"px" 
+	        }); 
+			
+			eeda.hidePopList();
+			accountList.show();
+			//当查询结果只有一个时，自动赋值到hiddenField
+            if(data.length==0)
+                hiddenField.val('');
+            if(data.length==1&&data[0].ID)
+                hiddenField.val(data[0].ID);
+            if(data.length>1)
+                hiddenField.val('');
+		},'json');
+    });
+    
+    // 没选中银行账户，焦点离开，隐藏列表
+	inputField.on('blur', function(){
+		if (inputField.val().trim().length ==0) {
+			hiddenField.val('');
+		};
+		
+		accountList.hide();
+ 	});
+
+	//当用户只点击了滚动条，没选银行账户，再点击页面别的地方时，隐藏列表
+	accountList.on('blur', function(){
+		accountList.hide();
+ 	});
+
+	accountList.on('mousedown', function(){
+		return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+	});
+
+	// 选中银行账户
+	accountList.on('mousedown', '.fromLocationItem', function(e){
+		//console.log($('#accountList').is(":focus"));
+		inputField.val($(this).text());
+		hiddenField.val($(this).attr('id'));
+		accountList.hide();
+    });
+    
+	
+});
+</script>
