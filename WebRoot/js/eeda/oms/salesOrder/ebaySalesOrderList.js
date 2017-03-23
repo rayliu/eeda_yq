@@ -12,6 +12,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             columns:[
                 {"data": "TRANSACTION_ID", "width":"120px"},
                 { "data": "ITEM_ID", "width":"120px"},
+                { "data": "SKU", "width":"120px"},
 	              { "data": "BUYER_USER_ID", "width":"120px"}, 
                 { "data": "SELLER_USER_ID", "width":"90px"},
                 { "data": "TOTAL", "width":"60px",

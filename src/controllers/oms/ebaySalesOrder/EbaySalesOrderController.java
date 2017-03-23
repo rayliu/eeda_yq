@@ -103,6 +103,7 @@ public class EbaySalesOrderController extends Controller {
             
             rec.set("transaction_id", transaction.getTransactionID());
             rec.set("item_id", transaction.getItem().getItemID());
+            rec.set("sku", transaction.getItem().getSKU());
             rec.set("total", order.getTotal().getValue());
             rec.set("total_currency_id", order.getTotal().getCurrencyID().value());
             rec.set("buyer_user_ID", order.getBuyerUserID());
