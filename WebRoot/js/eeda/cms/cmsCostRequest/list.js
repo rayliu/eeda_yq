@@ -561,6 +561,7 @@ $(document).ready(function() {
                                 }
                             }
                             $.scojs_message('付款成功', $.scojs_message.TYPE_OK);
+                             $('#confirmed').attr('disabled',true);
                         }else{
                             td1.next().children().children(".confirmBtn").attr('disabled',false);
                             $.scojs_message('付款失败', $.scojs_message.TYPE_FALSE);

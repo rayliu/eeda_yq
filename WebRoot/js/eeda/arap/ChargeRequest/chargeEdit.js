@@ -246,11 +246,7 @@ $(document).ready(function() {
 //				}
 //			}
 			var order={};
-			order.id=$('#order_id').val();
-			order.receive_time=$('#receive_time').val();
-			order.receive_bank_id=$('#deposit_bank').val();
-			order.payment_method = $('#payment_method').val();
-			order.payment_type="charge";
+			order.chargeList=itemOrder.buildChargeItem();
 			$.get("/chargeRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
 				if(data){
 					$("#status").val('已收款');
@@ -489,7 +485,16 @@ $(document).ready(function() {
 //    	itemTable.ajax.url(url).load();
 //	})
 	
-	
+		itemOrder.buildChargeItem=function(){
+		var cargo_items_array=[];
+		var order={};
+		order.id=$('#order_id').val();
+		order.receive_time=$('#receive_time').val();
+		order.receive_bank_id=$('#deposit_bank').val();
+		order.payment_method = $('#payment_method').val();
+		cargo_items_array.push(order);
+		return cargo_items_array;
+	}
 	
 	
 

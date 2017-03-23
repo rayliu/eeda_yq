@@ -304,16 +304,22 @@ $(document).ready(function() {
     
 	
     //勾选进行金额汇总
-	$('#application_table').on('click',"input[name='order_check_box']",function () {
-		totalMoney(this);
-	});
-	$('#application_table').on('click',".checkBtn",function () {
-		var tr = $(this).parent().parent().parent();
-		var checkBox = tr.find('.checkBox');
-		if($(checkBox).prop('checked')==true){
-			$(checkBox).attr('checked',false);
-			totalMoney(checkBox);
-		}
+	$('#application_table').on('click',".checkBox",function () {
+         $('#checked').attr('disabled',true);
+        $('#confirmed').attr('disabled',true);
+        var rows=$('#application_table tr');
+        for(var i=1;i<rows.length;i++){
+            var checked='';
+            var status='';
+            var checkbox=$(rows[i]).find('[type=checkbox]');
+           if($(checkbox).prop('checked')){
+                status=$(checkbox).parent().next().next().next().html();
+                if(status=='新建') $('#checked').attr('disabled',false);
+                if(status=='已复核') $('#confirmed').attr('disabled',false);
+                i=rows.length;
+           }
+        }
+        totalMoney(this);
 	});
 
 	
@@ -328,8 +334,12 @@ $(document).ready(function() {
 				$(this).prop('checked',false);
 			});
 			$('#cny_totalAmountSpan').text(0);
+            $('#checked').attr('disabled',true);
+           $('#confirmed').attr('disabled',true);
 		}
 	});
+
+
 	$('#totalZero').click(function(){
 			$("#application_table .checkBox").each(function(){
 				$(this).prop('checked',false);
@@ -394,30 +404,107 @@ $(document).ready(function() {
     //收款确认
      $("#confirmBtn").on('click',function(){
         var order={};
-        var rowIndex =$('#rowIndex').val();
-        var row = application_table.row(rowIndex ).data();
-        var td1=$('tr[id$='+row.ID.toString()+'] ').find('.checkBox');
-
-        order.id=row.ID.toString();
-        order.receive_time=$('#receive_time').val();
-        order.receive_bank_id=row.DEPOSIT_BANK;
-        order.payment_method =row.PAYMENT_METHOD;
-        order.payment_type="charge";
+        var rows =$('#application_table tr');
+        order.chargeList=itemOrder.buildChargeItem();
         $.post("/cmsChargeRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
                         if(data){
-                            td1.parent().next().next().next().html(data.STATUS);
-                            td1.parent().next().children().children(".confirmBtn").attr('disabled',true);
-                            $('#application_table .confirmBtn');
-                            
+                            for(var i=1;i<rows.length;i++){
+                               if($(rows[i]).find('[type=checkbox]').prop('checked')){
+                                    var checkBox = $(rows[i]).find('[type=checkbox]');
+                                    if($(checkBox).prop('checked')==true){
+                                        $(checkBox).attr('checked',false);
+                                        totalMoney(checkBox);
+                                    }
+                                }
+                               }
+                            if(data.IDS.length>0){
+                                var arr=[];
+                                    arr=data.IDS.split(',');
+                                for(var j=0;j<arr.length;j++){
+                                    for(var i=1;i<rows.length;i++){
+                                        var td=$(rows[i]).find('[type=checkbox]');
+                                        var btn0=$(rows[i]).find('[type=button]').eq(1);
+                                        if($(td).val()==arr[j]){
+                                             $(btn0).attr('disabled',true);
+                                             $(btn0).parent().parent().next().next().html("已收款");
+                                        }
+                                    }
+                                }
+                            }else{
+                                var td=$(rows).find('.confirmBtn');
+                                var rowIndex = $('#rowIndex').val();
+                                $(td[rowIndex]).attr('disabled',true);
+                                $(td[rowIndex]).parent().parent().next().next().html(data.STATUS);
+                            }
                             $.scojs_message('收款成功', $.scojs_message.TYPE_OK);
-
+                            $('#confirmed').attr('disabled',true);
                         }else{
                             $("#application_table .confirmBtn").attr("disabled", false);
                             $.scojs_message('收款失败', $.scojs_message.TYPE_FALSE);
                         }
                     },'json');
      });
+    
+    //多条复核 /cmsCostRequest/checkOrder
+      $("#checked").on('click',function(){
+        var order={}
+        var application_ids=[];
+        var id='';
+        var rows=$('#application_table tr');
+        for(var i=1;i<rows.length;i++){
+           if($(rows[i]).find('[type=checkbox]').prop('checked')){
+                id=$(rows[i]).find('[type=checkbox]').val();
+                if(id)
+                    application_ids.push(id);
+           }
 
+        }
+        $.post("/cmsChargeRequest/checkOrder", {ids:application_ids.toString()}, function(data){
+                if(data.IDS){
+                    var arr=data.IDS.split(',');
+                    for(var j=0;j<arr.length;j++){
+                        for(var i=1;i<rows.length;i++){
+                            var td=$(rows[i]).find('[type=checkbox]');
+                            var btn0=$(rows[i]).find('[type=button]').eq(0);
+                            if($(td).val()==arr[j]){
+                                 $(btn0).attr('disabled',true);
+                                 $(btn0).next().attr('disabled',false);
+                                 $(btn0).parent().parent().next().next().html("已复核");
+                            }
+                        }
+                    }
+                    $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+                    $('#checked').attr('disabled',true);
+                    $('#confirmed').attr('disabled',false);
+                }else{
+                    $.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
+                }
+            },'json');
+      });
+
+     //多条付款确认
+    $("#confirmed").on('click',function(){
+        $('#chargeRe_table_msg_btn').click();
+        $('#confirmBtn').attr('disabled',true);
+        $('#receive_time').val('');
+    });
       
+       itemOrder.buildChargeItem=function(){
+        var cargo_items_array=[];
+        application_table.data().each(function(item,index){
+            var cargo_table_rows = $("#application_table tr");
+            var order={}
+            if($(cargo_table_rows[index+1]).find('[type=checkbox]').prop('checked')){
+                order.id = item.ID.toString();
+                order.receive_time=$('#receive_time').val();
+                order.receive_bank_id=item.DEPOSIT_BANK;
+                if(order.receive_bank_id)
+                    order.receive_bank_id=order.receive_bank_id.toString();
+                order.payment_method =item.PAYMENT_METHOD;
+                cargo_items_array.push(order);
+            }
+        });
+        return cargo_items_array;
+    };
 });
 });

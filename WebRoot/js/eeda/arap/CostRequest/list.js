@@ -577,7 +577,7 @@ $(document).ready(function() {
 			                            var btn0=$(rows[i]).find('[type=button]').eq(1);
 			                            if($(td).val()==arr[j]){
 			                                 $(btn0).attr('disabled',true);
-			                                 $(btn0).parent().parent().next().next().html("已收款");
+			                                 $(btn0).parent().parent().next().next().html("已付款");
 			                            }
 			                        }
 			                    }
@@ -587,7 +587,8 @@ $(document).ready(function() {
 			            		$(td[rowIndex]).attr('disabled',true);
 			            		$(td[rowIndex]).parent().parent().next().next().html(data.STATUS);
 			            	}
-			            	$.scojs_message('收款成功', $.scojs_message.TYPE_OK);
+			            	$.scojs_message('付款成功', $.scojs_message.TYPE_OK);
+                             $('#confirmed').attr('disabled',true);
 			            }else{
                             td1.next().children().children(".confirmBtn").attr('disabled',false);
                             $.scojs_message('付款失败', $.scojs_message.TYPE_FALSE);

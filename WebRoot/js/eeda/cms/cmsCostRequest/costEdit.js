@@ -221,7 +221,7 @@ $(document).ready(function() {
 	  $("#confirmBtn").on('click',function(){
 		  	$("#confirmBtn").attr("disabled", true);
 		  	if(!$('#receive_time').val().trim()){
-		  		$.scojs_message('收款时间为必填', $.scojs_message.TYPE_FALSE);
+		  		$.scojs_message('付款时间为必填', $.scojs_message.TYPE_FALSE);
 		  		$("#confirmBtn").attr("disabled", false);
 		  		return;
 		  	}

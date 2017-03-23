@@ -543,6 +543,7 @@ $(document).ready(function() {
                         		$(td[rowIndex]).parent().parent().next().next().html(data.STATUS);
                         	}
                         	$.scojs_message('收款成功', $.scojs_message.TYPE_OK);
+                             $('#confirmed').attr('disabled',true);
                         }else{
                             $("#application_table .confirmBtn").attr("disabled", false);
                             $.scojs_message('收款失败', $.scojs_message.TYPE_FALSE);
