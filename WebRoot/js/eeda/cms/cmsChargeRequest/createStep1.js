@@ -38,11 +38,11 @@
 						return "<a href='/cmsChargeCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
 					}
 				},
-				{"data":"ORDER_TYPE","class":"order_type","width":"60px"},   
+				{"data":"ORDER_TYPE","class":"order_type","width":"100px"},   
 				{"data":"STATUS","width":"30px"},
-				{"data":"SP_NAME","sClass":"SP_NAME","width":"60px"},
-				{"data":"APP_MSG","width":"120px"},
-				{"data":"TOTAL_AMOUNT","width":"70px",
+				{"data":"SP_NAME","sClass":"SP_NAME","width":"70px"},
+				{"data":"APP_MSG","width":"150px"},
+				{"data":"TOTAL_AMOUNT","width":"100px",
 					"render":function(data,type,full,meta){
 						if(data==''){
 							data=0.00;
@@ -50,7 +50,7 @@
 						return eeda.numFormat(parseFloat(data).toFixed(2),3);
 					}
 				},
-				{"data":"PAID_CNY","width":"70px",
+				{"data":"PAID_CNY","width":"100px",
 					"render": function(data, type, full, meta) {
 							if(data==''){
 								data=0.00;
@@ -58,9 +58,9 @@
 							return eeda.numFormat(parseFloat(data).toFixed(2),3);
 					}
 				},
-				{	"width":"70px",
+				{	"width":"100px",
 					"render": function(data, type, full, meta) {
-						return "<span style='width:70px'>"+parseFloat(full.TOTAL_AMOUNT - full.PAID_CNY).toFixed(2)+"</span>";	
+						return "<span style='width:100px'>"+parseFloat(full.TOTAL_AMOUNT - full.PAID_CNY).toFixed(2)+"</span>";	
 					}
 				},
 				{"data":"SP_ID","visible": false	}	
@@ -79,7 +79,7 @@
             			return "<a href='/chargeAcceptOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
             	 }
             },
-            {"data":"ORDER_TYPE"},
+            {"data":"ORDER_TYPE","width":"100px"},
             {"data":"STATUS"},    
             {"data":"COST_ORDER_NO"},
             {"data":"APP_USD",

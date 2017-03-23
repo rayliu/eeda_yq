@@ -329,72 +329,37 @@ $(document).ready(function() {
 	
     	
     //金额汇总
-    var totalMoney = function(checkBox){
-		var cny_totalAmount = $('#cny_totalAmountSpan').text().replace(',','');
-		cny_totalAmount =parseFloat(cny_totalAmount);
-        var usd_totalAmount = $('#usd_totalAmountSpan').text().replace(',','');
-        usd_totalAmount =parseFloat(usd_totalAmount);
-        var hkd_totalAmount = $('#hkd_totalAmountSpan').text().replace(',','');
-        hkd_totalAmount =parseFloat(hkd_totalAmount);
-        var jpy_totalAmount = $('#jpy_totalAmountSpan').text().replace(',','');
-        jpy_totalAmount =parseFloat(jpy_totalAmount);
-        var currency_cny=0.00;
-        var currency_usd=0.00;
-        var currency_jpy=0.00;
-        var currency_hkd=0.00;
-        
-		if($(checkBox).prop('checked')==true){
-			    currency_cny = $(checkBox).parent().parent().find('.cny').text().replace(',','');
-	    		currency_usd = $(checkBox).parent().parent().find('.usd').text().replace(',','');
-	    		currency_jpy = $(checkBox).parent().parent().find('.jpy').text().replace(',','');
-	    	    currency_hkd = $(checkBox).parent().parent().find('.hkd').text().replace(',','');
-				if(currency_cny==''){currency_cny=0.00; }
-				cny_totalAmount += parseFloat(currency_cny);
-				
-			    if(currency_usd==''){
-			    	currency_usd=0.00;
-			    }
-				usd_totalAmount += parseFloat(currency_usd);
-				if(currency_jpy==''){
-					currency_jpy=0.00;
-				}
-				jpy_totalAmount += parseFloat(currency_jpy);
-			    if(currency_hkd==''){
-			    	currency_hkd=0.00;
-				}
-			     hkd_totalAmount += parseFloat(currency_hkd);			     
-			}else{
-				currency_cny = $(checkBox).parent().parent().find('.cny').text().replace(',','');
-	    		currency_usd = $(checkBox).parent().parent().find('.usd').text().replace(',','');
-	    		currency_jpy = $(checkBox).parent().parent().find('.jpy').text().replace(',','');
-	    	    currency_hkd = $(checkBox).parent().parent().find('.hkd').text().replace(',','');
-				if(currency_cny==''){
-					currency_cny=0.00;
-				}
-				cny_totalAmount -= parseFloat(currency_cny);
-				
-			    if(currency_usd==''){
-			    	currency_usd=0.00;
-			    }
-				usd_totalAmount -= parseFloat(currency_usd);
-				if(currency_jpy==''){
-					currency_jpy=0.00;
-				}
-				jpy_totalAmount -= parseFloat(currency_jpy);
-			    if(currency_hkd==''){
-			    	currency_hkd=0.00;
-				}
-			     hkd_totalAmount -= parseFloat(currency_hkd);
-			}
-		
-		 $('#cny_totalAmountSpan').html(eeda.numFormat(cny_totalAmount.toFixed(2),3));
-		 $('#usd_totalAmountSpan').html(eeda.numFormat(usd_totalAmount.toFixed(2),3));
-		 $('#hkd_totalAmountSpan').html(eeda.numFormat(hkd_totalAmount.toFixed(2),3));
-		 $('#jpy_totalAmountSpan').html(eeda.numFormat(jpy_totalAmount.toFixed(2),3));
-	}
-    
-    
-	
+    var totalMoney=function(){
+       var rows=$('#application_table tr');
+       var sum_cny=0.0;
+       var sum_usd=0.0;
+       var sum_jpy=0.0;
+       var sum_hkd=0.0;
+       for(var i=1;i<rows.length;i++){
+            var tr=rows[i];
+            var currency_cny = $(tr).find('.cny').text().replace(/,/g,'');
+            var currency_usd = $(tr).find('.usd').text().replace(/,/g,'');
+            var currency_jpy = $(tr).find('.jpy').text().replace(/,/g,'');
+            var currency_hkd = $(tr).find('.hkd').text().replace(/,/g,'');
+            if($(tr).find('[type=checkbox]').prop('checked')&&currency_cny){
+                sum_cny+=parseFloat(currency_cny);
+            }
+            if($(tr).find('[type=checkbox]').prop('checked')&&currency_usd){
+                sum_usd+=parseFloat(currency_usd);
+            }
+            if($(tr).find('[type=checkbox]').prop('checked')&&currency_jpy){
+                sum_jpy+=parseFloat(currency_jpy);
+            }
+            if($(tr).find('[type=checkbox]').prop('checked')&&currency_hkd){
+                sum_hkd+=parseFloat(currency_hkd);
+            }
+       }
+        $('#cny_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_cny).toFixed(2),3))
+       $('#usd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_usd).toFixed(2),3));
+      $('#jpy_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_jpy).toFixed(2),3));
+       $('#hkd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_hkd).toFixed(2),3));
+    }
+
     //勾选进行金额汇总
 	$('#application_table').on('click',"input[name='order_check_box']",function () {
         $('#checked').attr('disabled',true);
@@ -411,15 +376,7 @@ $(document).ready(function() {
                 i=rows.length;
            }
         }
-		totalMoney(this);
-	});
-	$('#application_table').on('click',".checkBtn",function () {
-		var tr = $(this).parent().parent().parent();
-		var checkBox = tr.find('.checkBox');
-		if($(checkBox).prop('checked')==true){
-			$(checkBox).attr('checked',false);
-			totalMoney(checkBox);
-		}
+		totalMoney()
 	});
 
 	
@@ -477,8 +434,9 @@ $(document).ready(function() {
                     $(this_but).attr('disabled',true);
                     $(this_but).next().attr('disabled',false);
                     td.next().next().html(data.STATUS);
-                    
+                    row.find('[type=checkbox]').prop('checked',false);
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+                    totalMoney();
                 }else{
                     $.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
                 }
@@ -531,9 +489,9 @@ $(document).ready(function() {
     //弹出下拉框 确认付款时间
       $("#application_table").on('click','.confirmBtn',function(){
             $('#cost_table_msg_btn').click();
-            
-            var rowIndex= $(this).parent().parent().parent().index();
-            $('#rowIndex').val(rowIndex);
+            var checkbox1=$(this).parent().parent().parent().find('[type=checkbox]');
+            $(checkbox1).prop('checked',true);
+            totalMoney();
             $('#confirmBtn').attr('disabled',true);
             $('#receive_time').val('');
              
@@ -559,15 +517,7 @@ $(document).ready(function() {
         order.costList=itemOrder.buildCostItem();
         $.post("/costRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
 			        	if(data){
-			                for(var i=1;i<rows.length;i++){
-			                   if($(rows[i]).find('[type=checkbox]').prop('checked')){
-			                        var checkBox = $(rows[i]).find('[type=checkbox]');
-			                        if($(checkBox).prop('checked')==true){
-			                			$(checkBox).attr('checked',false);
-			                			totalMoney(checkBox);
-			                		}
-			                   	}
-			                   }
+
 			            	if(data.IDS.length>0){
 			            		var arr=[];
 			            		    arr=data.IDS.split(',');
@@ -588,6 +538,8 @@ $(document).ready(function() {
 			            		$(td[rowIndex]).parent().parent().next().next().html(data.STATUS);
 			            	}
 			            	$.scojs_message('付款成功', $.scojs_message.TYPE_OK);
+                             $('#application_table [type=checkbox]').prop('checked',false);
+                             totalMoney();
                              $('#confirmed').attr('disabled',true);
 			            }else{
                             td1.next().children().children(".confirmBtn").attr('disabled',false);

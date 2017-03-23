@@ -30,12 +30,12 @@ public class CustomAccountAuditLogController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void index() {
-    	List<ArapAccountAuditLog> list = ArapAccountAuditLog.dao.find("SELECT DISTINCT source_order FROM arap_account_audit_log");
+    	List<ArapAccountAuditLog> list = ArapAccountAuditLog.dao.find("SELECT DISTINCT source_order FROM custom_arap_account_audit_log");
     	setAttr("List", list);
     	
-    	List<ArapAccountAuditLog> accountlist = ArapAccountAuditLog.dao.find("SELECT DISTINCT a.bank_name FROM arap_account_audit_log aaa left join fin_account a on a.id = aaa.account_id");
+    	List<ArapAccountAuditLog> accountlist = ArapAccountAuditLog.dao.find("SELECT DISTINCT a.bank_name FROM custom_arap_account_audit_log aaa left join fin_account a on a.id = aaa.account_id");
     	setAttr("accountList", accountlist);
-    	render("/eeda/arap/AccountAuditLog/AccountAuditLogList.html");
+    	render("/eeda/cmsArap/cmsAccountAuditLog/cmsAccountAuditLogList.html");
     }
 
     public void list() {
@@ -108,16 +108,16 @@ public class CustomAccountAuditLogController extends Controller {
         if(true){
         	sql = " select * from (select aaal.*,ifnull(ul.c_name, ul.user_name) user_name, fa.bank_name,"
         			+ " (CASE "
-        			+ " WHEN aaal.source_order = '应收申请单' "
+        			+ " WHEN aaal.source_order = '报关应收申请单' "
 				    + " THEN "
-				    + " (select aco.order_no FROM arap_charge_application_order aco where aco.id = aaal.invoice_order_id )"
-				    + " WHEN aaal.source_order = '应付申请单' "
+				    + " (select aco.order_no FROM custom_arap_charge_application_order aco where aco.id = aaal.invoice_order_id )"
+				    + " WHEN aaal.source_order = '报关应付申请单' "
 				    + " THEN "
-				    + " (select aco.order_no FROM arap_cost_application_order aco where aco.id = aaal.invoice_order_id )"
+				    + " (select aco.order_no FROM custom_arap_cost_application_order aco where aco.id = aaal.invoice_order_id )"
 				    + " end ) order_no,"
-				    + " (select amount from arap_account_audit_log where id=aaal.id and payment_type='cost') cost_amount,"
-				    + " (select amount from arap_account_audit_log where id=aaal.id and payment_type='charge') charge_amount"
-				    + " from arap_account_audit_log aaal"
+				    + " (select amount from custom_arap_account_audit_log where id=aaal.id and payment_type='cost') cost_amount,"
+				    + " (select amount from custom_arap_account_audit_log where id=aaal.id and payment_type='charge') charge_amount"
+				    + " from custom_arap_account_audit_log aaal"
         			+ " left join user_login ul on ul.id = aaal.creator"
         			+ " left join fin_account fa on aaal.account_id = fa.id "
         			+ " ) A where office_id="+office_id;        	
@@ -162,29 +162,29 @@ public class CustomAccountAuditLogController extends Controller {
     	 
     	String sql = " SELECT fa.office_id,fa.id,(select bank_name from fin_account where id = fa.id) bank_name,'"+ beginTime +"' date, "
     			+ " ( ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
-    			+ " FROM arap_account_audit_log aa"
+    			+ " FROM custom_arap_account_audit_log aa"
     			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+(month-1)+"-31 23:59:59' AND aa.payment_type = 'CHARGE' ) "
     			+ " - "
     			+ " ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
-    			+ " FROM arap_account_audit_log aa"
+    			+ " FROM custom_arap_account_audit_log aa"
     			+ " WHERE account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+(month-1)+"-31 23:59:59' AND aa.payment_type = 'COST'"
     			+ " ) ) init_amount,"
     			+ " ( ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
-    			+ " FROM arap_account_audit_log aa "
+    			+ " FROM custom_arap_account_audit_log aa "
     			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '"+year+"-"+month+"-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'CHARGE'"
     			+ " ) ) total_charge,"
     			+ " ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
-    			+ " FROM arap_account_audit_log aa"
+    			+ " FROM custom_arap_account_audit_log aa"
     			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '"+year+"-"+month+"-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'COST'"
     			+ " ) total_cost,"
     			+ " ( ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
-    			+ " FROM arap_account_audit_log aa"
+    			+ " FROM custom_arap_account_audit_log aa"
     			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'CHARGE'  )"
     			+ "  - "
-    			+ " ( SELECT ROUND(ifnull(sum(amount), 0), 2) FROM arap_account_audit_log aa  "
+    			+ " ( SELECT ROUND(ifnull(sum(amount), 0), 2) FROM custom_arap_account_audit_log aa  "
     			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'COST'"
     			+ " ) ) balance_amount"
-    			+ " FROM arap_account_audit_log aal"
+    			+ " FROM custom_arap_account_audit_log aal"
     			+ " right JOIN fin_account fa ON fa.id = aal.account_id"
     			+ " where fa.office_id="+office_id
     			+ " GROUP BY fa.id ";

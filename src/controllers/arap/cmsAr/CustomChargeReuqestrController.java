@@ -16,6 +16,7 @@ import models.ArapAccountAuditLog;
 import models.ArapChargeApplication;
 import models.ArapChargeItem;
 import models.ArapChargeOrder;
+import models.CustomArapAccountAuditLog;
 import models.CustomArapChargeApplicationOrder;
 import models.CustomChargeApplicationOrderRel;
 import models.Party;
@@ -569,11 +570,11 @@ public class CustomChargeReuqestrController extends Controller {
         	String id=(String) map.get("id");
         	ids=id+","+ids;
 
-       		String receive_time = (String) dto.get("receive_time");
-       		String payment_method = (String) dto.get("payment_method");
+       		String receive_time = (String) map.get("receive_time");
+       		String payment_method = (String) map.get("payment_method");
 	   		String receive_bank_id = "";
-	   		if(dto.get("receive_bank_id")!=null){
-	   			 receive_bank_id =  dto.get("receive_bank_id").toString();
+	   		if(map.get("receive_bank_id")!=null){
+	   			 receive_bank_id =  map.get("receive_bank_id").toString();
 	   		}else{
 	   			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
 	   	        Record rec = Db.findFirst(str2);
@@ -640,35 +641,35 @@ public class CustomChargeReuqestrController extends Controller {
 	        //新建日记账表数据
       		String cny_pay_amount = "0.0"; 
       		if(arapChargeInvoiceApplication.getDouble("modal_cny")!=null)
-      				arapChargeInvoiceApplication.getDouble("modal_cny").toString();
+      			cny_pay_amount=arapChargeInvoiceApplication.getDouble("modal_cny").toString();
       		if(!"0.0".equals(cny_pay_amount)&&StringUtils.isNotEmpty(cny_pay_amount)){
       			createAuditLog(id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY");
       		}
       		
             String usd_pay_amount ="0.0"; 
             if(arapChargeInvoiceApplication.getDouble("modal_usd")!=null)
-            		arapChargeInvoiceApplication.getDouble("modal_usd").toString();
+            	usd_pay_amount=arapChargeInvoiceApplication.getDouble("modal_usd").toString();
             if(!"0.0".equals(usd_pay_amount)&&StringUtils.isNotEmpty(usd_pay_amount)){
             	createAuditLog(id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD");
             }
             
             String jpy_pay_amount ="0.0"; 
             if(arapChargeInvoiceApplication.getDouble("modal_jpy")!=null)
-            		arapChargeInvoiceApplication.getDouble("modal_jpy").toString();
+            	jpy_pay_amount=arapChargeInvoiceApplication.getDouble("modal_jpy").toString();
             if(!"0.0".equals(jpy_pay_amount)&&StringUtils.isNotEmpty(jpy_pay_amount)){
             	createAuditLog(id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY");
             }
             
             String hkd_pay_amount ="0.0"; 
             if(arapChargeInvoiceApplication.getDouble("modal_hkd")!=null)
-            		arapChargeInvoiceApplication.getDouble("modal_hkd").toString();
+            	hkd_pay_amount=arapChargeInvoiceApplication.getDouble("modal_hkd").toString();
             if(!"0.0".equals(hkd_pay_amount)&&StringUtils.isNotEmpty(hkd_pay_amount)){
             	createAuditLog(id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD");
             }
         } 
         
         Record r = new Record();
-		r.set("confirm_name", LoginUserController.getLoginUserId(this).toString());
+		r.set("confirm_name", LoginUserController.getLoginUserName(this));
 		r.set("status","已收款");
 		r.set("ids", ids);
         renderJson(r);
@@ -681,9 +682,9 @@ public class CustomChargeReuqestrController extends Controller {
         //新建日记账表数据
   		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
-		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
+		CustomArapAccountAuditLog auditLog = new CustomArapAccountAuditLog();
         auditLog.set("payment_method", payment_method);
-        auditLog.set("payment_type", ArapAccountAuditLog.TYPE_CHARGE);
+        auditLog.set("payment_type", CustomArapAccountAuditLog.TYPE_CHARGE);
         auditLog.set("currency_code", currency_code);
         auditLog.set("amount", pay_amount);
         auditLog.set("creator", LoginUserController.getLoginUserId(this));
@@ -694,7 +695,7 @@ public class CustomChargeReuqestrController extends Controller {
         	}else{
         		auditLog.set("account_id", 4);
         	}
-        auditLog.set("source_order", "应收申请单");
+        auditLog.set("source_order", "报关应收申请单");
         auditLog.set("invoice_order_id", application_id);
         auditLog.save();
     }

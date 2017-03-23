@@ -276,31 +276,36 @@ $(document).ready(function() {
     
     
     //金额汇总
-    var totalMoney = function(checkBox){
-		var cny_totalAmount = $('#cny_totalAmountSpan').text();
-		cny_totalAmount =parseFloat(cny_totalAmount);
-        var currency_cny=0.00;
-        
-		if($(checkBox).prop('checked')==true){
-			    currency_cny = $(checkBox).parent().parent().find('.cny').text();
-                
-				if(currency_cny==''){
-					currency_cny=0.00;
-				}
-				cny_totalAmount += parseFloat(currency_cny);
-						     
-			}else{
-				currency_cny = $(checkBox).parent().parent().find('.cny').text();
-				if(currency_cny==''){
-					currency_cny=0.00;
-				}
-				cny_totalAmount -= parseFloat(currency_cny);
-				
-			}
-		
-		 $('#cny_totalAmountSpan').html(eeda.numFormat(parseFloat(cny_totalAmount).toFixed(2),3))
-	}
-    
+    var totalMoney=function(){
+       var rows=$('#application_table tr');
+       var sum_cny=0.0;
+       var sum_usd=0.0;
+       var sum_jpy=0.0;
+       var sum_hkd=0.0;
+       for(var i=1;i<rows.length;i++){
+            var tr=rows[i];
+            var currency_cny = $(tr).find('.cny').text().replace(/,/g,'');
+            var currency_usd = $(tr).find('.usd').text().replace(/,/g,'');
+            var currency_jpy = $(tr).find('.jpy').text().replace(/,/g,'');
+            var currency_hkd = $(tr).find('.hkd').text().replace(/,/g,'');
+            if($(tr).find('[type=checkbox]').prop('checked')&&currency_cny){
+                sum_cny+=parseFloat(currency_cny);
+            }
+            if($(tr).find('[type=checkbox]').prop('checked')&&currency_usd){
+                sum_usd+=parseFloat(currency_usd);
+            }
+            if($(tr).find('[type=checkbox]').prop('checked')&&currency_jpy){
+                sum_jpy+=parseFloat(currency_jpy);
+            }
+            if($(tr).find('[type=checkbox]').prop('checked')&&currency_hkd){
+                sum_hkd+=parseFloat(currency_hkd);
+            }
+       }
+       $('#cny_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_cny).toFixed(2),3))
+       $('#usd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_usd).toFixed(2),3));
+      $('#jpy_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_jpy).toFixed(2),3));
+       $('#hkd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_hkd).toFixed(2),3));
+    }
     
 	
     //勾选进行金额汇总
@@ -319,7 +324,7 @@ $(document).ready(function() {
                 i=rows.length;
            }
         }
-        totalMoney(this);
+        totalMoney();
 	});
 
 	
@@ -381,8 +386,9 @@ $(document).ready(function() {
     //弹出下拉框 确认收款时间
       $("#application_table").on('click','.confirmBtn',function(){
             $('#chargeRe_table_msg_btn').click();
-            var rowIndex= $(this).parent().parent().parent().index();
-            $('#rowIndex').val(rowIndex);
+            var checkbox1=$(this).parent().parent().parent().find('[type=checkbox]');
+            $(checkbox1).prop('checked',true);
+            totalMoney();
             $('#confirmBtn').attr('disabled',true);
             $('#receive_time').val('');
              
@@ -408,15 +414,8 @@ $(document).ready(function() {
         order.chargeList=itemOrder.buildChargeItem();
         $.post("/cmsChargeRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
                         if(data){
-                            for(var i=1;i<rows.length;i++){
-                               if($(rows[i]).find('[type=checkbox]').prop('checked')){
-                                    var checkBox = $(rows[i]).find('[type=checkbox]');
-                                    if($(checkBox).prop('checked')==true){
-                                        $(checkBox).attr('checked',false);
-                                        totalMoney(checkBox);
-                                    }
-                                }
-                               }
+                            $('#application_table [type=checkbox]').prop('checked',false)
+                            totalMoney();
                             if(data.IDS.length>0){
                                 var arr=[];
                                     arr=data.IDS.split(',');

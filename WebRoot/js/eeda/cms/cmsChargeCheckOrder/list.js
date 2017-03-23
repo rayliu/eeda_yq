@@ -10,7 +10,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
     	//datatable, 动态处理
 		var cnames = [];
 		var itemIds=[];
-        var totalAmount = 0.0;
         
         var dataTable = eeda.dt({
             id: 'uncheckedEeda-table',
@@ -39,7 +38,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            { "data": "ABBR_NAME", "width": "120px","class":"SP_NAME"},
 	            { "data": "FIN_NAME", "width": "200px"},
 	            { "data": "AMOUNT", "width": "80px"},
-	            { "data": "PRICE", "width": "80px"},
+	            { "data": "PRICE", "width": "80px",
+	            	"render": function ( data, type, full, meta ) {
+						return eeda.numFormat(parseFloat(data).toFixed(2),3);
+	            	}
+	        	},
 	            { "data": "CURRENCY_NAME", "width": "100px"},
 	            { "data": "TOTAL_AMOUNT", "width": "100px","class":"TOTAL_AMOUNT",
 	            	"render": function ( data, type, full, meta ) {
@@ -48,11 +51,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            		}
 	            		var str = '';
 	            		if(full.ORDER_TYPE=='cost'){
-	            			str='<span style="color:red">'+(0.0-parseFloat(data))+'</span>';
+	            			str='<span style="color:red">'+eeda.numFormat(parseFloat(0.0-parseFloat(data)).toFixed(2),3)+'</span>';
 	            		}else{
-	            			str = data;
+	            			str = eeda.numFormat(parseFloat(data).toFixed(2),3);
 	            		}
-	                    return str
+	                    return str;
 	            	}
 	            },
 	            { "data": "REMARK", "width": "100px"},
@@ -65,13 +68,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
       //选择是否是同一个结算公司
 		$('#uncheckedEeda-table').on('click',"input[name='order_check_box']",function () {
 				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
-				var total_amount = $(this).parent().siblings('.TOTAL_AMOUNT')[0].textContent;
 				if($(this).prop('checked')==true){	
 					if(cnames.length > 0 ){
 							if(cnames[0]==cname){
-								if(total_amount!=''&&!isNaN(total_amount)){
-									totalAmount += parseFloat(total_amount);
-								}
 							cnames.push(cname);
 							if($(this).val() != ''){
 								itemIds.push($(this).val());
@@ -82,9 +81,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 							return false;
 						}
 					}else{
-						if(total_amount!=''&&!isNaN(total_amount)){
-							totalAmount += parseFloat(total_amount);
-						}
 						cnames.push(cname);
 						if($(this).val() != ''){
 							itemIds.push($(this).val());
@@ -92,14 +88,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 					}
 				}else{
 					itemIds.splice($.inArray($(this).val(), itemIds), 1);
-					if(total_amount!=''&&!isNaN(total_amount)){
-						totalAmount -= parseFloat(total_amount);
-					}
+					
 					cnames.pop(cname);
 			 }
-			//对账
-			 $('#totalAmount').val(totalAmount.toFixed(2));
-			 $('#totalAmount_val').text(totalAmount.toFixed(2));
+			totalMoney();
     	 });
 		
 		//查看应收应付对账结果
@@ -158,12 +150,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
  	    	 $("#uncheckedEeda-table .checkBox").each(function(){
  	    		var id = $(this).val();
  	   		 	var sp_name = $(this).parent().siblings('.SP_NAME')[0].textContent;
-
- 	   		    var total_amount = $(this).parent().siblings('.TOTAL_AMOUNT')[0].textContent;
- 	   		    if(total_amount == '' || total_amount == null ){
- 	   		    	total_amount = 0.0;
- 	   		    }
- 	    		 
+		 
  	    		if(cnames.length==0 && itemIds.length==0){
  	    			 cnames.push(sp_name);
  	    		 }else{
@@ -173,31 +160,42 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
  	    				cnames = [];
  	    				itemIds = [];
  	    				$('#allCheck').prop('checked',false);
- 	    				totalAmount = 0.0;
- 	    				 $('#totalAmount').val(totalAmount.toFixed(2));
- 	    				 $('#totalAmount_val').text(totalAmount.toFixed(2));
  	    				return false;
  	    			 }
  	    		 }
  	    		 itemIds.push(id);
  	    		 $(this).prop('checked',true);
- 	    		 totalAmount += parseFloat(total_amount);
  	    	 })
     	 }else{
 			 $("#uncheckedEeda-table .checkBox").prop('checked',false);
 			 cnames = [];
 			 itemIds = [];
-			 totalAmount = 0.0;
     	 }
 	 	 if(cnames.length>0){
 	 		 $("#createBtn").prop('disabled',false);
 	 	 }else{
 	 		 $("#createBtn").prop('disabled',true);
 	 	 }
-	 	 
-	 	 $('#totalAmount').val(totalAmount.toFixed(2));
-		 $('#totalAmount_val').text(totalAmount.toFixed(2));
+	 	 totalMoney();
+		 
      });   
+
+	var totalMoney=function(){
+       var rows=$('#uncheckedEeda-table tr');
+       var sum_cny=0.0;
+       var sum_usd=0.0;
+       var sum_jpy=0.0;
+       var sum_hkd=0.0;
+       for(var i=1;i<rows.length;i++){
+            var tr=rows[i];
+            var currency_cny = $(tr).find('.TOTAL_AMOUNT').text().replace(/,/g,'');
+            if($(tr).find('[type=checkbox]').prop('checked')&&currency_cny){
+                sum_cny+=parseFloat(currency_cny);
+            }
+       }
+       $('#totalAmount').val(sum_cny.toFixed(2));
+       $('#totalAmount_val').html(eeda.numFormat(parseFloat(sum_cny).toFixed(2),3))
+    }
        
     });
 });

@@ -17,6 +17,7 @@ import models.ArapCostApplication;
 import models.ArapCostOrder;
 //import models.CostAppOrderRel;
 import models.CostApplicationOrderRel;
+import models.CustomArapAccountAuditLog;
 import models.CustomArapCostApplicationOrder;
 import models.CustomArapCostOrder;
 import models.CustomCostApplicationOrderRel;
@@ -705,7 +706,7 @@ public class CustomCostReuqestrController extends Controller {
             }
         }
         Record r = new Record();
-		r.set("confirm_name", LoginUserController.getLoginUserId(this).toString());
+		r.set("confirm_name", LoginUserController.getLoginUserName(this));
 		r.set("status", "已付款");
 		r.set("ids", ids);
         renderJson(r);
@@ -716,9 +717,9 @@ public class CustomCostReuqestrController extends Controller {
         //新建日记账表数据\
   		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
-		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
+		CustomArapAccountAuditLog auditLog = new CustomArapAccountAuditLog();
         auditLog.set("payment_method", payment_method);
-        auditLog.set("payment_type", ArapAccountAuditLog.TYPE_COST);
+        auditLog.set("payment_type", CustomArapAccountAuditLog.TYPE_COST);
         auditLog.set("currency_code", currency_code);
         auditLog.set("amount", pay_amount);
         auditLog.set("creator", LoginUserController.getLoginUserId(this));
@@ -729,7 +730,7 @@ public class CustomCostReuqestrController extends Controller {
         	}else{
         		auditLog.set("account_id", 4);
         	}
-        auditLog.set("source_order", "应付申请单");
+        auditLog.set("source_order", "报关应付申请单");
         auditLog.set("invoice_order_id", application_id);
         auditLog.save();
     }
