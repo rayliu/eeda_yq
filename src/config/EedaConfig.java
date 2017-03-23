@@ -124,9 +124,9 @@ import controllers.msg.EwmsDashBoardController;
 import controllers.msg.YqDashBoardController;
 import controllers.oms.amazonSalesOrder.AmazonSalesOrderController;
 import controllers.oms.customOrder.CustomOrderController;
+import controllers.oms.ebaySalesOrder.AllOrderControllerForMobile;
 import controllers.oms.ebaySalesOrder.EbaySalesOrderController;
 import controllers.oms.jobOrder.JobOrderController;
-import controllers.oms.jobOrder.JobOrderControllerForMobile;
 import controllers.oms.jobOrder.JobOrderReportController;
 import controllers.oms.planOrder.PlanOrderController;
 import controllers.oms.planOrder.PlanOrderControllerForMobile;
@@ -236,7 +236,7 @@ public class EedaConfig extends JFinalConfig {
     
     private void setAppRoute(Routes me, String contentPath) {
         me.add("/app", AppControllerForMobile.class);
-        me.add("/app/jobOrder", JobOrderControllerForMobile.class);
+        me.add("/app/allOrder", AllOrderControllerForMobile.class);
         me.add("/app/planOrder", PlanOrderControllerForMobile.class);
     }
 
