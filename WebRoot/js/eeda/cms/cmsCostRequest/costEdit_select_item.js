@@ -80,93 +80,28 @@ var checkIds=[];
                         }
                 },
                 { "data": "ORDER_NO", "width": "100px",
-                      "render": function ( data, type, full, meta ) {
-                          return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
-                      }
-                },
-                { "data": "ORDER_EXPORT_DATE", "width": "100px"},
-                { "data": "CREATE_STAMP", "width": "100px"},
-                { "data": "TYPE", "width": "60px"},
-                { "data": "FEE_NAME", "width": "60px"},
-                { "data": "CUSTOMER_NAME", "width": "100px"},
-                { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
-                { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
-                    "render": function ( data, type, full, meta ) {
-                        if(full.SQL_TYPE=='charge'){
-                            return '<span style="color:red;">'+'-'+data+'</span>';
-                        }
-                        return data;
-                      }
-                },
-                { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
-                { "data": "EXCHANGE_RATE", "width": "60px" },
-                { "data": "AFTER_TOTAL", "width": "60px" ,'class':'AFTER_TOTAL',
-                    "render": function ( data, type, full, meta ) {
-                        if(full.SQL_TYPE=='charge'){
-                            return '<span style="color:red;">'+'-'+data+'</span>';
-                        }
-                        return data;
-                      }
-                },              
-                { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px"},
-                { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px" },
-                { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px" ,
-                    "render": function ( data, type, full, meta ) {
-                        if(full.SQL_TYPE=='charge'){
-                            return '<span style="color:red;">'+'-'+data+'</span>';
-                        }
-                        return data;
-                    }
-                },              
-                { "data": "FND", "width": "60px",
-                    "render": function ( data, type, full, meta ) {
-                        if(data)
-                                 return data;
-                        else
-                                 return full.DESTINATION;
+                   "render": function ( data, type, full, meta ) {
+                        return "<a href='/customPlanOrder/edit?id="+full.ORDER_ID+"'target='_blank'>"+data+"</a>";
                     }
                 },
-                { "data": "VOLUME", "width": "60px"},
-                { "data": "CONTAINER_AMOUNT","width": "60px",
+                { "data": "TYPE"},
+                { "data": "CUSTOMER_NAME"},
+                { "data": "SP_NAME"},
+                { "data":"FIN_NAME"},
+                { "data": "AMOUNT", "width": "80px"},
+                { "data": "PRICE", "width": "80px"},
+                { "data": "CURRENCY_NAME","class":"currency_name"},
+                { "data": "TOTAL_AMOUNT","class":"total_amount", 
                     "render": function ( data, type, full, meta ) {
-                        if(data){
-                            var dataArr = data.split(",");
-                            var a = 0;
-                            var b = 0;
-                            var c = 0;
-                            var dataStr = "";
-                            for(var i=0;i<dataArr.length;i++){
-                                if(dataArr[i]=="20GP"){
-                                    a++;
-                                }
-                                if(dataArr[i]=="40GP"){
-                                    b++;
-                                }
-                                if(dataArr[i]=="45GP"){
-                                    c++;
-                                }
-                            }
-                            if(a>0){
-                                dataStr+="20GPx"+a+";"
-                            }
-                            if(b>0){
-                                dataStr+="40GPx"+b+";"
-                            }
-                            if(c>0){
-                                dataStr+="45GPx"+c+";"
-                            }
-                            return dataStr;
-                        }else{
-                            return '';
+                      var str =  eeda.numFormat(parseFloat(data).toFixed(2),3);
+                        if(full.ORDER_TYPE=='charge'){
+                            return '<span style="color:red;">'+'-'+str+'</span>';
                         }
-                    }
+                        return str;
+                      }
                 },
-                { "data": "NET_WEIGHT", "width": "60px"},
-                { "data": "REF_NO", "width": "200px"},
-                { "data": "MBL_NO", "width": "60px"},
-                { "data": "HBL_NO", "width": "60px"},
-                { "data": "CONTAINER_NO", "width": "100px"},
-                { "data": "TRUCK_TYPE", "width": "100px"},
+              { "data": "CUSTOMS_BILLCODE", "width": "120px"},
+              { "data": "CREATE_STAMP", "width": "100px"}
               ]
           });
         
