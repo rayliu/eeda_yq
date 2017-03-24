@@ -1,0 +1,136 @@
+
+
+<%layout("/eeda/layout.html"){%>
+<link href="/yh/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet">
+        <div id="page-wrapper">
+                        <input id="checkedId" type="hidden"> 
+                        <div class="row simple_search_div">
+					        <div class="col-lg-12">
+                            	<form id="searchForm"">
+                                        <div class="col-lg-4">            
+                                            <div id="datetimepicker" class="input-append date "> 
+                                                <label class="search-label">月份</label> 
+                                                <input id="beginTime_filter" class="form-control search-control beginTime_filter" type="text">
+                                                <span class="add-on">  
+                                                    <i class="fa fa-calendar icon-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>  
+                                                </span>  
+                                            </div>
+                                        </div>    
+                           		    </form>
+                           		 </div>
+                              </div>
+                              
+                              <div class="row simple_list_div">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                                <table class="table table-striped table-bordered table-hover " id="account-table">
+                                                    <thead class="eeda">
+                                                        <tr>
+                                                            <th>显示</th>
+                                                            <th>账户名称</th>
+                                                            <th>所属年月</th>
+                                                            <th>期初</th>
+                                                            <th>本期收入</th>
+                                                            <th>本期支出</th>
+                                                            <th>期末余额</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+        
+                                        </div>
+                                    </div>
+                  			 </div>
+
+            
+              							
+                                		<div class="row simple_search_div" style="margin-top:20px">
+					       						 <div class="col-lg-12">
+			                                            <div class="row">
+			                                            	<div class="col-lg-4 form-group">
+			                                                   <label class="search-label">来源单据</label>
+					                                           <select id="source_order" class="form-control search-control source_order" name="source_order">
+					                                               <option value=""></option>
+					                                               <%
+					                                                   for(list in List){
+					                                               %>
+					                                                   <option value="${list.source_order}">${list.source_order}</option>
+					                                               <%}%>
+					                                           </select>
+			                                                 </div>
+			                                                <div class="col-lg-4 form-group">
+			                                                    <div id="datetimepicker3" class="input-append date ">
+			                                                        <label class="search-label">开始日期</label>
+			                                                        <input id="beginTime" class="form-control search-control  beginTime" type="text">
+			                                                        <span class="add-on"> <i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+			                                                        </span>
+			                                                    </div>
+			                                                </div>
+			                                            	<div class="col-lg-4 form-group">
+			                                                    <label class="search-label">业务单号</label>
+			                                                    <input type="text" class="form-control search-control orderNo" id="orderNo" value=""/>
+			                                                </div>
+			                                            </div>
+			                                            <div class="row">
+			                                            	<div class="col-lg-4 form-group">
+			                                                    <span id="datetimepicker2" class="input-append date search-control ">
+			                                                        <label class="search-label">结束日期</label>
+			                                                        <input id="endTime" class="form-control search-control endTime" type="text"/>
+			                                                        <span class="add-on"> <i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+			                                                        </span>
+			                                                    </span>
+			                                                </div>
+			                                            	<div class="col-lg-4 form-group">
+			                                                   <label class="search-label">账户名称</label>
+					                                           <select id="bankName" class="form-control search-control bankName" name="bankName">
+					                                               <option value=""></option>
+					                                               <%
+					                                                   for(alist in accountList){
+					                                               %>
+					                                                   <option value="${alist.bank_name}">${alist.bank_name}</option>
+					                                               <%}%>
+					                                           </select>
+			                                                 </div>
+			                                                 <div class="col-lg-4 form-group">
+			                                                    <label class="search-label">收付款金额</label>
+			                                                    <input type="text" class="form-control search-control orderNo" id="money" value=""/>
+			                                                </div>
+			                                            </div>
+                                				</div>
+                                			</div>
+                                <div class="row simple_list_div">
+                                        <table class="table table-striped table-bordered table-hover" id="accountAuditLog-table" >
+                                            <thead class="eeda">
+                                                <tr>
+                                                    <th></th>
+                                                    <th>单号</th>
+                                                    <th>来源单据</th>
+                                                    <th>收款金额</th>
+                                                    <th>付款金额</th>
+                                                    <th>账户名称</th>
+                                                    <th>日期</th>
+                                                    <th>操作人</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                            </tbody>
+                                        </table>
+                                </div>
+       </div>
+
+<%}%>
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/cms/cmsAccountAuditLog/list']);
+    });
+</script>
+<!--script src="/yh/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="/yh/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="/yh/js/eeda-common.js"></script>
+<script src="/yh/js/arap/AccountAuditLog/list.js"></script>
+<script src="/yh/js/plugins/sco/js/sco.message.js"></script>
+<script src="/yh/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/yh/js/bootstrap-datetimepicker.zh-CN.js"></script-->
