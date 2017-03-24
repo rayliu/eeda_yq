@@ -224,11 +224,21 @@ $(document).ready(function() {
                     return '<input type="text" name="toca_weight" value="'+data+'" class="form-control toca_weight" style="width:100px" />';
                 }
             },
+            { "width": "10px",
+                "render": function ( data, type, full, meta ) {
+                    return '<span aligen="center">kg</span>';
+                }
+            },
             { "data": "HEAD_WEIGHT", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="head_weight" value="'+data+'" class="form-control head_weight" style="width:100px" />';
+                }
+            },
+            { "width": "10px",
+                "render": function ( data, type, full, meta ) {
+                    return '<span aligen="center">kg</span>';
                 }
             },
             { "data": "DRIVER", "width": "80px",

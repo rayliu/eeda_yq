@@ -923,6 +923,8 @@ eeda.refreshUrl = refreshUrl;
                       tableFieldList.append("<li tabindex='"+i+"'><a class='item' dataId='"+data[i].ID
                               +"' carType='"+data[i].CARTYPE+"' "
                               +" phone='"+data[i].PHONE+"' "
+                              +" toca_weight='"+data[i].TOCA_WEIGHT+"' "
+                              +" head_weight='"+data[i].HEAD_WEIGHT+"' "
                               +" driver='"+data[i].DRIVER+"' >"+data[i].CAR_NO
                               +"</a></li>");
                   tableFieldList.css({ 
@@ -942,10 +944,18 @@ eeda.refreshUrl = refreshUrl;
               tableFieldList.hide();
               hiddenField.val($(this).attr('dataId'));
               hiddenField.attr("car_id",$(this).attr('dataId'));
+              var toca_weight=$(this).attr('toca_weight')=="null"?'':$(this).attr('toca_weight');
+              var head_weight=$(this).attr('head_weight')=="null"?'':$(this).attr('head_weight');
               var row = inputField.parent().parent().parent();
               row.find('select.truck_type').val($(this).attr('carType'));
               row.find('input.driver ').val($(this).attr('driver'));
               row.find('input.phone').val($(this).attr('phone'));
+              row.find('input.toca_weight').val(toca_weight);
+              row.find('input.head_weight').val(head_weight);
+              if($(this).attr('toca_weight').indexOf('k')!=-1)
+                row.find('input.toca_weight').val(toca_weight.substring(0,toca_weight.indexOf('k',0)+1));
+              if($(this).attr('head_weight').indexOf('k')!=-1)
+                row.find('input.head_weight').val(head_weight.substring(0,toca_weight.indexOf('k',0)+1));
           });
 
           tableFieldList.on('keydown', 'li', function(e){
