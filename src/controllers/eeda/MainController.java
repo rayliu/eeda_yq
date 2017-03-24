@@ -117,7 +117,6 @@ public class MainController extends Controller {
 
             String savedRequestUrl = this.getSessionAttr(ShiroKit.getSavedRequestKey());
             if(savedRequestUrl!=null){
-                System.out.println("111111");
             	setSessionAttr(ShiroKit.getSavedRequestKey(), null);
             	int index = savedRequestUrl.indexOf("/edit");
                 if(index>0){

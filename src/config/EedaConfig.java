@@ -87,6 +87,9 @@ import models.eeda.profile.Warehouse;
 import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
 import models.eeda.tms.TransJobOrderLandItem;
+import models.wms.GateIn;
+import models.wms.GateOut;
+import models.wms.InvCheckOrder;
 import models.wms.Wmsproduct;
 import models.yh.profile.Carinfo;
 import models.yh.profile.CustomizeField;
@@ -140,10 +143,12 @@ import controllers.profile.UnitController;
 import controllers.report.OrderStatusController;
 import controllers.tms.jobOrder.TransJobOrderController;
 import controllers.tms.planOrder.TransPlanOrderController;
-import controllers.wms.GateInOrderController;
-import controllers.wms.GateOutOrderController;
-import controllers.wms.InventoryOrderController;
+import controllers.wms.GateInController;
+import controllers.wms.GateOutController;
+import controllers.wms.InvCheckOrderController;
+import controllers.wms.InventoryController;
 import controllers.wms.ProductController;
+import controllers.wms.importOrder.ImportOrder;
 
 public class EedaConfig extends JFinalConfig {
     private Logger logger = Logger.getLogger(EedaConfig.class);
@@ -333,10 +338,12 @@ public class EedaConfig extends JFinalConfig {
         
         
         //仓库管理模块wms
-        me.add("/gateInOrder", GateInOrderController.class, contentPath);
-        me.add("/gateOutOrder", GateOutOrderController.class, contentPath);
-        me.add("/inventoryOrder", InventoryOrderController.class, contentPath);
+        me.add("/importOrder", ImportOrder.class, contentPath);
+        me.add("/gateIn", GateInController.class, contentPath);
+        me.add("/gateOut", GateOutController.class, contentPath);
+        me.add("/invCheckOrder", InvCheckOrderController.class, contentPath);
         me.add("/wmsproduct", ProductController.class, contentPath);
+        me.add("/inventory", InventoryController.class, contentPath);
         
 
         
@@ -479,6 +486,9 @@ public class EedaConfig extends JFinalConfig {
         
         //仓库管理模块wms
         arp.addMapping("wmsproduct", Wmsproduct.class); 
+        arp.addMapping("gate_in", GateIn.class); 
+        arp.addMapping("gate_out", GateOut.class); 
+        arp.addMapping("inv_check_order", InvCheckOrder.class); 
     }
 
     private void initDBconnector() {
