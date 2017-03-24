@@ -1,0 +1,721 @@
+
+<input type="hidden" id="shipment_id" value="${shipment.id!''}">
+	<%
+      //如果只有edit, 没指定特定的, 默认都有编辑权限
+      var editPermission = shiro.hasPermission("jobOrder.edit");
+      var oceanPermission = shiro.hasPermission("jobOrder.edit.ocean");
+      var airPermission = shiro.hasPermission("jobOrder.edit.air");
+      var landPermission = shiro.hasPermission("jobOrder.edit.land");
+      var customPermission = shiro.hasPermission("jobOrder.edit.custom");
+      var insurPermission = shiro.hasPermission("jobOrder.edit.insur");
+      var boolEdit= editPermission;
+      var boolOcean = oceanPermission;
+      var boolAir = true;//editPermission || oceanPermission;
+      var boolLand = true;//editPermission || oceanPermission;
+      var boolCustom = true;//editPermission || oceanPermission;
+      var boolInsur = true;//editPermission || oceanPermission;
+      var disableStr = (boolOcean==true?'':'disabled');
+    %>
+<%if(boolOcean){%>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOceanInfo" aria-expanded="false" class="collapsed">
+            <i id='collapseOceanIcon' class="fa 
+            <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用海运信息
+            </a>
+        </h4>
+    </div>
+  <%}else{%>
+<div class="panel panel-default" style="display:none">
+    <div class="panel-heading" >
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOceanInfo" aria-expanded="false" class="collapsed">
+            <i id='collapseOceanIcon' class="fa 
+            <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用海运信息
+            </a>
+        </h4>
+    </div>
+
+  <%}%> 
+    <div id="collapseOceanInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+        <div class="panel-body">
+            <ul id="usedOceanInfo" class="usedOceanInfo">
+              <%for(userInfo in usedOceanInfo![]){%>
+                    <li id="${userInfo.id}"
+                        MBLshipper_id="${userInfo.MBLshipper}"
+                        MBLshipper_abbr="${userInfo.MBLshipperAbbr}"
+                        MBLshipper_info="${userInfo.MBLshipper_info}"
+                        MBLconsignee_id="${userInfo.MBLconsignee}"
+                        MBLconsignee_abbr="${userInfo.MBLconsigneeAbbr}"
+                        MBLconsignee_info="${userInfo.MBLconsignee_info}"
+                        MBLnotify_id="${userInfo.MBLnotify_party}"
+                        MBLnotify_abbr="${userInfo.MBLnotify_partyAbbr}"
+                        MBLnotify_info="${userInfo.MBLnotify_info}"
+                        
+                        HBLshipper_id="${userInfo.HBLshipper}"
+                        HBLshipper_abbr="${userInfo.HBLshipperAbbr}"
+                        HBLshipper_info="${userInfo.HBLshipper_info}"
+                        HBLconsignee_id="${userInfo.HBLconsignee}"
+                        HBLconsignee_abbr="${userInfo.HBLconsigneeAbbr}"
+                        HBLconsignee_info="${userInfo.HBLconsignee_info}"
+                        HBLnotify_id="${userInfo.HBLnotify_party}"
+                        HBLnotify_abbr="${userInfo.HBLnotify_partyAbbr}"
+                        HBLnotify_info="${userInfo.HBLnotify_info}"
+                        por_id="${userInfo.por}" 
+                        pol_id="${userInfo.pol}" 
+                        pod_id="${userInfo.pod}" 
+                        fnd_id="${userInfo.fnd}" 
+                        por_name="${userInfo.por_name}" 
+                        pol_name="${userInfo.pol_name}" 
+                        pod_name="${userInfo.pod_name}" 
+                        fnd_name="${userInfo.fnd_name}" 
+                        carrier="${userInfo.carrier}" 
+                        carrier_name="${userInfo.carrier_name}" 
+                        head_carrier="${userInfo.head_carrier}" 
+                        head_carrier_name="${userInfo.head_carrier_name}" 
+                        oversea_agent="${userInfo.oversea_agent}" 
+                        oversea_agent_name="${userInfo.oversea_agent_name}" 
+                        oversea_agent_info="${userInfo.oversea_agent_info}" 
+                        booking_agent="${userInfo.booking_agent}" 
+                        booking_agent_name="${userInfo.booking_agent_name}" 
+                        release_type="${userInfo.release_type}" 
+                        shipping_mark="${userInfo.shipping_mark}" 
+                        cargo_desc="${userInfo.cargo_desc}" 
+                        >
+                      <div class="radio">
+                        <a class="deleteOceanTemplate" href="#" style="margin-right: 10px;padding-top: 6px;float: left;">删除</a>
+                        <label class="selectOceanTemplate">
+                            <input type="radio" value="1" name="usedOceanInfo" style="margin-top: 0px;">
+                            <span>MBLshipper:${userInfo.MBLshipperAbbr}, MBLconsignee:${userInfo.MBLconsigneeAbbr}, MBLnotifyParty: ${userInfo.MBLnotify_partyAbbr}</span><br>
+                            <span>HBLshipper:${userInfo.HBLshipperAbbr}, HBLconsignee:${userInfo.HBLconsigneeAbbr}, HBLnotifyParty: ${userInfo.HBLnotify_partyAbbr}</span><br>
+                            <span class="port">订舱代理：${userInfo.booking_agent_name}, 船公司：${userInfo.carrier_name}, 头程船公司：${userInfo.head_carrier_name}, POR:${userInfo.por_name}, POL:${userInfo.pol_name}, POD:${userInfo.pod_name}, FND:${userInfo.fnd_name}, 海外代理：${userInfo.oversea_agent_name}</span> 
+                        </label>
+                      </div>
+                   </li>
+              <%}%>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<form id = "shipmentForm">
+    <div class="form-group">  <!--  form row  -->
+      <h4>MBL联系人信息</h4>
+        <div class="row">
+        	
+            <div class="col-lg-4"><!--  三列排版  -->
+            <% 
+                var ocean_MBLshippe = '365dfrs256';
+                if(boolOcean){
+                	ocean_MBLshippe = 'ocean_MBLshipper';
+                }
+                 %>  
+                <%include("/eeda/component/form/inputSelectArea.html", 
+                    {   id:ocean_MBLshippe, 
+                        label:'发货人MBLShipper', 
+                        display_value:shipment.MBLshipperAbbr!'',
+                        value:shipment.MBLshipper!'',
+                        textarea_value:shipment.MBLshipper_info!'',
+                        disabled:disableStr
+                    }){}%>
+            </div>
+            <div class="col-lg-4"><!--  三列排版  -->
+            <% 
+                var ocean_MBLconsignee = '458dsfs454';
+                if(boolOcean){
+                	ocean_MBLconsignee = 'ocean_MBLconsignee';
+                }
+                 %>
+                <%include("/eeda/component/form/inputSelectArea.html", 
+                    {   id:ocean_MBLconsignee, 
+                        label:'收货人MBLConsignee', 
+                        display_value:shipment.MBLconsigneeAbbr!'',
+                        value:shipment.MBLconsignee!'',
+                        textarea_value:shipment.MBLconsignee_info!'',
+                        disabled:disableStr
+                    }){}%>
+            </div>
+            <div class="col-lg-4">
+            <% 
+                var ocean_MBLnotify_party = '458dsfs454';
+                if(boolOcean){
+                	ocean_MBLnotify_party = 'ocean_MBLnotify_party';
+                }
+                 %>
+                <%include("/eeda/component/form/inputSelectArea.html", 
+                    {
+                        id:ocean_MBLnotify_party, 
+                        label:'通知人MBLNotifyParty', 
+                        display_value:shipment.MBLnotify_partyAbbr!'',
+                        value:shipment.MBLnotify_party!'',
+                        textarea_value:shipment.MBLnotify_party_info!'',
+                        disabled:disableStr
+                    }){} %>
+           </div>
+        </div>
+      <h4>HBL联系人信息</h4>
+        <div class="row">
+        	
+            <div class="col-lg-4"><!--  三列排版  -->
+            <% 
+                var ocean_HBLshippe = '365dfrs256';
+                if(boolOcean){
+                	ocean_HBLshippe = 'ocean_HBLshipper';
+                }
+                 %>  
+                <%include("/eeda/component/form/inputSelectArea.html", 
+                    {   id:ocean_HBLshippe, 
+                        label:'发货人HBLShipper', 
+                        display_value:shipment.HBLshipperAbbr!'',
+                        value:shipment.HBLshipper!'',
+                        textarea_value:shipment.HBLshipper_info!'',
+                        disabled:disableStr
+                    }){}%>
+            </div>
+            <div class="col-lg-4"><!--  三列排版  -->
+            <% 
+                var ocean_HBLconsignee = '458dsfs454';
+                if(boolOcean){
+                	ocean_HBLconsignee = 'ocean_HBLconsignee';
+                }
+                 %>
+                <%include("/eeda/component/form/inputSelectArea.html", 
+                    {   id:ocean_HBLconsignee, 
+                        label:'收货人HBLConsignee', 
+                        display_value:shipment.HBLconsigneeAbbr!'',
+                        value:shipment.HBLconsignee!'',
+                        textarea_value:shipment.HBLconsignee_info!'',
+                        disabled:disableStr
+                    }){}%>
+            </div>
+            <div class="col-lg-4">
+            <% 
+                var ocean_HBLnotify_party = '458dsfs454';
+                if(boolOcean){
+                	ocean_HBLnotify_party = 'ocean_HBLnotify_party';
+                }
+                 %>
+                <%include("/eeda/component/form/inputSelectArea.html", 
+                    {
+                        id:ocean_HBLnotify_party, 
+                        label:'通知人HBLNotifyParty', 
+                        display_value:shipment.HBLnotify_partyAbbr!'',
+                        value:shipment.HBLnotify_party!'',
+                        textarea_value:shipment.HBLnotify_party_info!'',
+                        disabled:disableStr
+                    }){} %>
+           </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+              <% if(boolOcean){ %>
+                <%include("/eeda/component/form/inputPartyField.html", 
+                    {   id:'ocean_booking_agent', 
+                        label:'订舱代理', 
+                        type:'booking_agent',
+                        value:shipment.booking_agent!'',
+                        display_value:shipment.booking_agent_name!''
+                    }){}%>
+              <%}else{%>
+              <label class="search-label">订舱代理 </label> <span class='search-control'>${shipment.booking_agent_name!''}</span>
+              <%}%>
+            </div>
+            <div class="col-lg-4">
+            <% if(boolOcean){ %>
+                <% 
+                 include("/eeda/component/form/inputPartyField.html", 
+                    {   id:'carrier',
+                        type:  'carrier',
+                        label: '船公司', 
+                        value: shipment.carrier!planOrderItem.carrier!'',
+                        display_value: shipment.carrier_name!portCreate.carrier_name!''
+                    }){}%>
+              <%}else{%>
+              	<label class="search-label">船公司 </label> <span class='search-control'>${shipment.carrier_name!portCreate.carrier_name!''}</span>
+              <%}%>
+            </div>
+             <div class="col-lg-4">
+              <% if(boolOcean){ %>
+                <%include("/eeda/component/form/inputPartyField.html", 
+                    {   id:'head_carrier',
+                        type:  'head_car',
+                        label: '头程船公司', 
+                        value: shipment.head_carrier!'',
+                        display_value: shipment.head_carrier_name!''
+                    }){}%>
+              <%}else{%>
+              		<label class="search-label">头程船公司 </label> <span class='search-control'>${shipment.head_carrier_name!''}</span>
+              <%}%>
+                    
+            </div>
+           
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+              <% if(boolOcean){ %>   
+                <%include("/eeda/component/form/inputField.html", 
+                    {   id:'hbl_no', 
+                        label:'HBL号码', 
+                        value:shipment.hbl_no!''
+                    }){}%>
+              <%}else{%>
+              		<label class="search-label">HBL号码 </label> <span class='search-control'>${shipment.hbl_no!''}</span>
+              <%}%>
+            </div>
+            <div class="col-lg-4">
+            <% if(boolOcean){ %>
+                <%include("/eeda/component/form/inputField.html", 
+                    {   id:'mbl_no', 
+                        label:'MBL号码', 
+                        value:shipment.mbl_no!''
+                    }){}%>
+              <%}else{%>
+              		<label class="search-label">MBL号码 </label> <span class='search-control'>${shipment.mbl_no!''}</span>
+              <%}%>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group" id="release_radio_div">
+                	<input type="hidden" id="hidden_release_type" value="${shipment.release_type!''}">
+                    <label class="search-label">放货方式</label>
+                    <label class="radio-inline">
+                        <input type="radio" name='release_radio' value='tlx' checked>电放
+                    </label><nbsp>
+                    <label class="radio-inline">
+                        <input type="radio" name='release_radio' value='swb'>SeaWayBill
+                    </label><nbsp>
+                    <label class="radio-inline">
+                        <input type="radio" name='release_radio' value='obl'>OBL
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+               <% if(boolOcean){ %> 
+                <%include("/eeda/component/form/inputField.html", 
+                    {   id:'vessel', 
+                        label:'船名', 
+                        value:shipment.vessel!planOrderItem.vessel!''
+                    }){}%>
+               <%}else{%>
+              		<label class="search-label">船名</label> <span class='search-control'>${shipment.vessel!planOrderItem.vessel!''}</span>
+              <%}%>
+            </div>
+            <div class="col-lg-4">
+              <% if(boolOcean){ %> 
+                <%include("/eeda/component/form/inputField.html", 
+                    {   id:'route', 
+                        label:'航线',
+                        value:shipment.route!''
+                    }){}%>
+               <%}else{%>
+              		<label class="search-label">航线</label> <span class='search-control'>${shipment.route!''}</span>
+               <%}%>
+            </div>
+            <div class="col-lg-4">
+              <% if(boolOcean){ %> 
+                <%include("/eeda/component/form/inputField.html", 
+                    {   id:'voyage', 
+                        label:'航次',
+                        value:shipment.voyage!planOrderItem.voyage!''
+                    }){}%>
+               <%}else{%>
+              		<label class="search-label">航次</label> <span class='search-control'>${shipment.voyage!planOrderItem.voyage!''}</span>
+               <%}%>
+            </div>  
+         </div>
+           <div class="row">
+               <div class="col-lg-4">
+                 <% if(boolOcean){ %>
+                   <%include("/eeda/component/form/inputPortField.html", 
+                       {   id:'por', 
+                           label:'收货港 POR', 
+                           value:shipment.por!planOrderItem.por!'',
+                           display_value:shipment.por_name!portCreate.por_name!''
+                       }){}%>
+                 <%}else{%>
+              		<label class="search-label">收货港 POR</label> <span class='search-control'>${shipment.por_name!portCreate.por_name!''}</span>
+                 <%}%>
+               </div>
+               <div class="col-lg-4">
+                 <% if(boolOcean){ %>
+                   <%include("/eeda/component/form/inputPortField.html", 
+                       {   id:'pol', 
+                           label:'启运港 POL', 
+                           value:shipment.pol!planOrderItem.pol!'',
+                           display_value:shipment.pol_name!portCreate.pol_name!''
+                       }){}%>
+                   <%}else{%>
+              		   <label class="search-label">启运港 POL</label> <span class='search-control'>${shipment.pol_name!portCreate.pol_name!''}</span>
+                   <%}%>
+               </div>
+               <div class="col-lg-4">
+                 <% if(boolOcean){ %>
+                   <%include("/eeda/component/form/inputPortField.html", 
+                       {   id:'hub', 
+                           label:'转运港 HUB',
+                           value:shipment.hub!'',
+                           display_value:shipment.hub_name!''
+                       }){}%>
+                   <%}else{%>
+              		   <label class="search-label">转运港 HUB</label> <span class='search-control'>${shipment.hub_name!''}</span>
+                   <%}%>
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-lg-4">
+                  <% if(boolOcean){ %>
+                   <%include("/eeda/component/form/inputPortField.html", 
+                       {   id:'pod', 
+                           label:'目的港 POD', 
+                           value:shipment.pod!planOrderItem.pod!'',
+                           display_value:shipment.pod_name!portCreate.pod_name!''
+                       }){}%>
+                  <%}else{%>
+              		   <label class="search-label">目的港 POD</label> <span class='search-control'>${shipment.pod_name!portCreate.pod_name!''}</span>
+                  <%}%>
+               </div>
+               <div class="col-lg-4">
+                 <% if(boolOcean){ %>
+                   <%include("/eeda/component/form/inputPortAndCityField.html", 
+                       {   id:'fnd', 
+                           label:'目的地 FND', 
+                           value:shipment.fnd!planOrderItem.pod!'',
+                           display_value:shipment.fnd_name!portCreate.pod_name!''
+                       }){}%>
+                 <%}else{%>
+              		   <label class="search-label">目的地 FND</label> <span class='search-control'>${shipment.fnd_name!portCreate.pod_name!''}</span>
+                 <%}%>
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-lg-4">
+                 <% if(boolOcean){ %>
+                   <%include("/eeda/component/form/dateInputField.html", 
+                       {   id:'etd', 
+                           label:'ETD',
+                           value:shipment.etd!planOrderItem.etd!''
+                       }){}%>
+                   <%}else{%>
+              		   <label class="search-label">ETD</label> <span class='search-control'>${shipment.etd!planOrderItem.etd!''}</span>
+                   <%}%>
+               </div>
+               <div class="col-lg-4">
+                 <% if(boolOcean){ %>
+                   <%include("/eeda/component/form/dateInputField.html", 
+                       {   id:'eta', 
+                           label:'ETA', 
+                           value:shipment.eta!planOrderItem.eta!''
+                       }){}%>
+                   <%}else{%>
+              		   <label class="search-label">ETA</label> <span class='search-control'>${shipment.eta!planOrderItem.eta!''}</span>
+                   <%}%>
+               </div>
+               <div class="col-lg-4">
+                 <% if(boolOcean){ %>
+                   <%include("/eeda/component/form/inputField.html", 
+                       {   id:'SONO', 
+                           label:'SO NO', 
+                           value:shipment.SONO!''
+                       }){}%>
+                   <%}else{%>
+              		   <label class="search-label">SO NO</label> <span class='search-control'>${shipment.SONO!''}</span>
+                   <%}%>
+               </div>
+               <div class="col-lg-4">
+                 <% if(boolOcean){ %>
+                   <%include("/eeda/component/form/dateInputField.html", 
+                       {   id:'closing_date', 
+                           label:'截关日期',
+                           value:shipment.closing_date!planOrderItem.cls!''
+                       }){}%>
+                 <%}else{%>
+              		   <label class="search-label">截关日期</label> <span class='search-control'>${shipment.closing_date!planOrderItem.cls!''}</span>
+                 <%}%>
+               </div>
+               <div class="col-lg-4">
+                  <input type="hidden" id="hidden_wait_overseaCustom" value="${shipment.wait_overseaCustom!''}">
+                  <label class="checkbox-inline">
+                     <%if(boolOcean){%>               
+                        <input id="wait_overseaCustom" type="checkbox" disableStr>待海外系统申报
+                     <%}else{%>
+                     	<input id="wait_overseaCustom" type="checkbox" disabled>待海外系统申报
+                     <%}%>
+                  </label>
+                  <input type="hidden" id="hidden_prepaid" value="${shipment.prepaid!''}">
+                  <label class="checkbox-inline"> 
+                    <%if(boolOcean){%>                 
+                      <input id=prepaid type="checkbox" >预付
+                    <%}else{%>
+                  	  <input id=prepaid type="checkbox" disabled>预付
+                    <%}%>
+                  </label>
+               </div>      
+
+           </div>
+           <div class="row">
+             <div class="col-lg-4">
+               <% 
+                var oversea_agent = '458dsfs4y54';
+                if(boolOcean){
+                	oversea_agent = 'oversea_agent';
+                }
+                 %>        
+                 <%include("/eeda/component/form/inputSelectAreaOfOverseaAgent.html", 
+                    {   id:oversea_agent,
+                        label: '海外代理', 
+                        type:'oversea_agent',
+                        value: shipment.oversea_agent!'',
+                        display_value: shipment.oversea_agent_name!'',
+                        textarea_value:shipment.oversea_agent_info!'',
+                        disabled:disableStr
+                    }){}%>
+              </div>
+              <div class="col-lg-4">
+
+
+              </div>
+              <div class="col-lg-4">
+                  
+              </div>   
+           </div>
+           
+           <div class="row">
+               <div class="col-lg-4">
+                <% 
+	                var ocean_shipping_mark = '458dosfs454';
+	                if(boolOcean){
+	                	ocean_shipping_mark = 'ocean_shipping_mark';
+	                }
+                 %> 
+                   <%include("/eeda/component/form/inputArea.html", 
+                       {   id:ocean_shipping_mark, 
+                           label:'唛头', 
+                           value:shipment.shipping_mark!'',
+                           disabled:disableStr
+                       }){}%>
+               </div>
+               
+               <div class="col-lg-4">
+                 <% 
+	                var ocean_cargo_desc = '458sfs454';
+	                if(boolOcean){
+	                	ocean_cargo_desc = 'ocean_cargo_desc';
+	                }
+                 %>
+                   <%include("/eeda/component/form/inputArea.html", 
+                       {   id:'ocean_cargo_desc', 
+                           label:'货物描述', 
+                           value:shipment.cargo_desc!'',
+                           disabled:disableStr
+                       }){}%>
+               </div>
+               
+               <div class="col-lg-4">
+                <% 
+	                var ocean_booking_mark = '45f8dsfs4s5ud4';
+	                if(boolOcean){
+	                	ocean_booking_mark = 'ocean_booking_mark';
+	                }
+                 %>
+                   <%include("/eeda/component/form/inputArea.html", 
+                       {   id:ocean_booking_mark, 
+                           label:'booking备注', 
+                           value:shipment.booking_mark!'',
+                           disabled:disableStr
+                       }){}%>
+               </div>
+              
+           </div>
+           <div class="row">
+               <div class="col-lg-4">
+                 <% if(boolOcean){ %>
+                   <%include("/eeda/component/form/inputField.html", 
+                       {    id:'vgm', 
+                            label:'总重量VGM', 
+                            value:shipment.vgm!planOrderItem.vgm!'',
+                            placeholder:'请输入数字'
+                       }){}%>
+                  <%}else{%>
+              		   <label class="search-label">总重量VGM</label> <span class='search-control'>${shipment.vgm!''}</span>   
+                  <%}%>
+               </div>
+           </div>
+     </div>
+</form>
+        <% if(boolOcean){ %>  
+           <div id="oceanPDF" class="form-group" >
+           	 <button id="printOceanHBL" class="btn btn_green"  disableStr>生成HBL PDF</button>
+           	 <button id="printOceanWord" class="btn btn_green" disableStr>生成电放保函  Word</button>
+           	 <button id="printOceanBooking" class="btn btn_green" disableStr>生成booking PDF</button>
+           	 <button id="printOceanSI" class="btn btn_green" disableStr>生成SI MBLPDF</button>
+           	 <button id="printOceanHBLSI" class="btn btn_green" disableStr>生成SI HBLPDF</button>
+           	 
+			 <button id="oceanHeadDetailBtn" class="btn btn_green" disableStr>生成头程资料 PDF</button>
+           	 <a data-target='#oceanHeadDetail' data-toggle='modal'>
+				<button id="oceanHeadDetailBtn1" style="display:none"></button>
+			 </a>
+           	 <button id="oceanMBL" class="btn btn_green" disableStr>确认MBL</button>
+           	 <input id="oceanMBLHidden" type="hidden" value="${shipment.mbl_flag!''}" >
+           	 <button id="alreadyAFR_AMS" class="btn btn_green" disableStr>已AFR/AMS</button>
+           	 <input id="alreadyAFR_AMShide" type="hidden" value="${shipment.afr_ams_flag!''}" >
+           	 <button id="alreadyInline" class="btn btn_green" disableStr>已电放</button>
+           	 <input id="alreadyInlineHide" type="hidden" value="${shipment.in_line_flag!''}">
+           	 <% if(shiro.hasPermission("oceanTelexHBL")){ %>
+           	 	<button id="prinTelextOceanHBL" class="btn btn_green"  disableStr>生成电放HBL PDF</button>
+           	 <%}%>
+			 <br><br>
+           </div>
+          <%}else{%> 
+             <div id="oceanPDF" class="form-group"  style="display:none">
+           	 <button id="printOceanHBL" class="btn btn_green"  disableStr>生成HBL PDF</button>
+           	 <button id="printOceanWord" class="btn btn_green" disableStr>生成电放保函  Word</button>
+           	 <button id="printOceanBooking" class="btn btn_green" disableStr>生成booking PDF</button>
+           	 <button id="printOceanSI" class="btn btn_green" disableStr>生成SI MBLPDF</button>
+           	 <button id="printOceanHBLSI" class="btn btn_green" disableStr>生成SI HBLPDF</button>
+           	 
+			 <button id="oceanHeadDetailBtn" class="btn btn_green" disableStr>生成头程资料 PDF</button>
+           	 <a data-target='#oceanHeadDetail' data-toggle='modal'>
+				<button id="oceanHeadDetailBtn1" style="display:none"></button>
+			 </a>
+           	 <button id="oceanMBL" class="btn btn_green" disableStr>确认MBL</button>
+           	 <input id="oceanMBLHidden" type="hidden" value="${shipment.mbl_flag!''}" >
+           	 <button id="alreadyAFR_AMS" class="btn btn_green" disableStr>已AFR/AMS</button>
+           	 <input id="alreadyAFR_AMShide" type="hidden" value="${shipment.afr_ams_flag!''}" >
+           	 <button id="alreadyInline" class="btn btn_green" disableStr>已电放</button>
+           	 <input id="alreadyInlineHide" type="hidden" value="${shipment.in_line_flag!''}">
+			 <br><br>
+           </div>
+          <%}%>
+          
+           
+     <div class="modal fade" id="oceanHeadDetail">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">生成头程资料详情</div>
+	      	<div class="modal-body">
+	      	
+	      	<input type="hidden" value="${oceanHead.id!oceanHeadId!''}" id="oceanHeadId">
+	      	<form id = "oceanHeadForm">
+				<div class="form-group">
+						<div class="row">
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_endPlace', 
+			                           label:'TO',
+			                           value:oceanHead.head_endPlace!''
+			                       }){}%>
+			               </div>
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_startPlace', 
+			                           label:'FROM',
+			                           value:oceanHead.head_startPlace!''
+			                       }){}%>
+			               </div>
+			           </div>
+						<div class="row">
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_attn', 
+			                           label:'ATTN',
+			                           value:oceanHead.head_attn!''
+			                       }){}%>
+			               </div>
+			               <div class="col-lg-6">
+				                 <%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_tel', 
+			                           label:'TEL',
+			                           value:oceanHead.head_tel!'3225992'
+			                       }){}%>
+			               </div>
+			           </div>
+						<div class="row">
+							<div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_customer_tel', 
+			                           label:'TEL',
+			                           value:oceanHead.head_customer_tel!''
+			                       }){}%>
+			               </div>
+			               <div class="col-lg-6">
+				               		<%include("/eeda/component/form/inputField.html", 
+				                       {   id:'head_date',
+				                           label:'DATE',
+				                           disabled:'disabled',
+				                           value:oceanHead.head_date!''
+				                       }){}%>
+				           </div>
+			           </div>
+						<div class="row">
+			               <div class="col-lg-6">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_fax', 
+			                           label:'FAX',
+			                           value:oceanHead.head_fax!''
+			                       }){}%>
+			               </div>
+						</div>
+						<div class="row">
+			               <div class="col-lg-12">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_title', 
+			                           label:'标题',
+			                           value:oceanHead.head_title!''
+			                       }){}%>
+			               </div>
+			           </div>
+			           <div class="row">
+			               <div class="col-lg-12">
+			               		<%include("/eeda/component/form/inputField.html", 
+			                       {   id:'head_remark',
+			                           label:'备注',
+			                           value:oceanHead.head_remark!''
+			                       }){}%>
+			               </div>
+			           </div>
+					
+				</div>   
+				</form>
+	        </div>
+	        <div class="modal-footer">
+	        	<button id="printOceanHead" class="btn btn_green" disableStr>生成海运头程PDF</button>
+	            <button class="btn  btn-default" data-dismiss="modal" disableStr>返回</button>
+	        </div>
+	    </div>
+	  </div>
+	</div>
+                    
+<div class="row">
+    <div class="form-group">
+        <div class="col-lg-12">
+          <% if(boolOcean){ %>
+            <button class="btn btn_green btn-xs" id="add_ocean_cargo" >添加货品</button> <br>
+         <%}else{%>
+         	<button class="btn btn_green btn-xs" id="add_ocean_cargo" style="display:none">添加货品</button> <br><br>
+         <%}%>
+            <%include("/eeda/component/form/detailTable.html", 
+                {
+                    id:'ocean_cargo_table',
+                    headers:   ['', '', '负载方式', '柜型', '柜号', '封条号', '件数','单位','托板描述', '毛重(KG)', '体积(CBM)', '总重量VGM','unit_name'],
+                    field_list:['id', '', 'load_type', 'container_type', 'container_no', 'seal_no', 'pieces','unit_id','pallet_desc', 'gross_weight', 'volume', 'vgm','unit_name'],
+                    value_list: shipmentList![]
+                }){} %>
+        </div>
+    </div>
+</div>
+
+<script>
+    var editPermission=${editPermission!''};
+    var boolOcean = ${boolOcean!''};//updatePermission || oceanPermission;
+    var boolAir = true;//updatePermission || oceanPermission;
+    var boolLand = true;//updatePermission || oceanPermission;
+    var boolCustom = true;//updatePermission || oceanPermission;
+    var boolInsur = true;//updatePermission || oceanPermission;
+    var disableStr = (boolOcean==true?'':'disabled');
+</script>
+            
+
+
+
