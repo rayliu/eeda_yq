@@ -190,9 +190,9 @@ var checkIds=[];
                 }
             });
             $('#modal_cny').val(eeda.numFormat(parseFloat(CNY_cost - CNY_charge).toFixed(2),3));
-            $('#modal_usd').val((parseFloat(USD_cost - USD_charge)).toFixed(2));
-            $('#modal_hkd').val((parseFloat(HKD_cost - HKD_charge)).toFixed(2));
-            $('#modal_jpy').val((parseFloat(JPY_cost - JPY_charge)).toFixed(2));
+            $('#modal_usd').val(eeda.numFormat(parseFloat(USD_cost - USD_charge).toFixed(2),3));
+            $('#modal_hkd').val(eeda.numFormat(parseFloat(HKD_cost - HKD_charge).toFixed(2),3));
+            $('#modal_jpy').val(eeda.numFormat(parseFloat(JPY_cost - JPY_charge).toFixed(2),3));
 
         }
         //查询选中币种

@@ -24,6 +24,9 @@ $(document).ready(function() {
         		}else if(name.indexOf("check_time_end") != -1){
         			name = "end_time"
         		}
+        		if(name.indexOf("modal_") != -1){
+            	  	value=value.replace(/,/g,'');
+            	}
         		item[name] = value;
         	}
     	}

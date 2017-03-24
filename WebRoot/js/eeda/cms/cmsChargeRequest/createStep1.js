@@ -60,7 +60,7 @@
 				},
 				{	"width":"100px",
 					"render": function(data, type, full, meta) {
-						return "<span style='width:100px'>"+parseFloat(full.TOTAL_AMOUNT - full.PAID_CNY).toFixed(2)+"</span>";	
+						return "<span style='width:100px'>"+eeda.numFormat(parseFloat(full.TOTAL_AMOUNT - full.PAID_CNY).toFixed(2),3)+"</span>";	
 					}
 				},
 				{"data":"SP_ID","visible": false	}	
