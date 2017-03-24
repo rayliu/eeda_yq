@@ -129,6 +129,7 @@ import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.jobOrder.JobOrderControllerForMobile;
 import controllers.oms.jobOrder.JobOrderReportController;
+import controllers.oms.planOrder.BookingOrderController;
 import controllers.oms.planOrder.PlanOrderController;
 import controllers.oms.planOrder.PlanOrderControllerForMobile;
 import controllers.oms.todo.TodoController;
@@ -258,6 +259,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/privilege", PrivilegeController.class, contentPath);
 		//oms管理系统
 		me.add("/planOrder", PlanOrderController.class, contentPath);
+		me.add("/bookingOrder", BookingOrderController.class, contentPath);
 		me.add("/todo", TodoController.class, contentPath);
 		me.add("/jobOrder", JobOrderController.class, contentPath);
 		

@@ -453,7 +453,8 @@ var checkIds=[];
                 $('#createSave').attr('disabled',true);
             }
              calcTotal();
-             $('#selected_ids').val(selected_ids);
+             var selected_ids_str=selected_ids.toString();
+             $('#selected_ids').val(selected_ids_str);
              
         });
         $("#select_item_table").on('click','input[type=checkbox]',function(){

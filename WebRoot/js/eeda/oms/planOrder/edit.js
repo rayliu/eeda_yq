@@ -111,7 +111,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
         	});
         	location.href ="/jobOrder/create?order_id="+order_id+"&itemIds="+itemIds;
         })
-        
+
 
      });
 });
