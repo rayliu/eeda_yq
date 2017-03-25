@@ -406,6 +406,7 @@ $(document).ready(function() {
 		order.receive_time=$('#receive_time').val();
 		order.receive_bank_id=$('#deposit_bank').val();
 		order.payment_method = $('#payment_method').val();
+		order.payRemark = $('#payRemark').val();
 		cargo_items_array.push(order);
 		return cargo_items_array;
 	}
