@@ -703,6 +703,7 @@ public class ChargeRequestController extends Controller {
         	String id=(String) map.get("id");
         	ids=id+","+ids;
         	String receive_time = (String) dto.get("receive_time");
+        	String pay_remark=(String) map.get("pay_remark");
         	String receive_bank_id = "";
         	String payment_method = (String) dto.get("payment_method");
         	
@@ -720,6 +721,7 @@ public class ChargeRequestController extends Controller {
             arapChargeInvoiceApplication.set("receive_time", receive_time);
             arapChargeInvoiceApplication.set("confirm_by", user.get("id"));
             arapChargeInvoiceApplication.set("confirm_stamp", new Date());
+            arapChargeInvoiceApplication.set("pay_remark", pay_remark);
             arapChargeInvoiceApplication.update();
             //已收款的标记位
     		String paySql ="update job_order_arap set pay_flag='Y' "
@@ -797,7 +799,7 @@ public class ChargeRequestController extends Controller {
         }
         
         Record r = new Record();
-		r.set("confirm_name", LoginUserController.getLoginUserId(this).toString());
+		r.set("confirm_name", LoginUserController.getUserNameById(LoginUserController.getLoginUserId(this)));
 		r.set("status", "已收款");
 		r.set("ids", ids);
         renderJson(r);

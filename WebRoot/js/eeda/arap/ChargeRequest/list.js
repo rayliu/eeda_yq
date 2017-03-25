@@ -110,6 +110,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
+            {"data":"PAY_REMARK"},
             {"data":"CHARGE_ORDER_NO"},
             {"data":"PAYMENT_METHOD",'class':'payment_method',
                 "render": function(data, type, full, meta) {
