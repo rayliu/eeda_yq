@@ -201,7 +201,7 @@ public class CostRequestController extends Controller {
         				+" left join party p on p.id=aco.sp_id "
         				+" where aco.status!='新建' and aco.office_id = "+office_id+" "
         				+" group by aco.id"
-        				+ " ) A where convert(ifnull(usd, 0), decimal) > convert(paid_usd, decimal) OR convert(ifnull(cny, 0), decimal) > convert(IFNULL(paid_cny,0), decimal) OR convert(ifnull(hkd, 0), decimal) > convert(paid_hkd, decimal)	OR convert(ifnull(jpy, 0), decimal) > convert(paid_jpy, decimal)" ;
+        				+ " ) A where (convert(ifnull(usd, 0), decimal) > convert(paid_usd, decimal) OR convert(ifnull(cny, 0), decimal) > convert(IFNULL(paid_cny,0), decimal) OR convert(ifnull(hkd, 0), decimal) > convert(paid_hkd, decimal)	OR convert(ifnull(jpy, 0), decimal) > convert(paid_jpy, decimal))" ;
 		
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition +") B";
