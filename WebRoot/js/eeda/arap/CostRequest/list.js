@@ -116,6 +116,7 @@ $(document).ready(function() {
             			return '';
             	}
             },
+            {"data":"PAY_REMARK"},
             {"data":"COST_ORDER_NO"},
             {"data":"PAYMENT_METHOD",
             	"render": function(data, type, full, meta) {

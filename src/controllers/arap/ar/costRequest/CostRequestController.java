@@ -663,7 +663,7 @@ public class CostRequestController extends Controller {
         	String id=(String) map.get("id");
         	ids=id+","+ids;
         	String receive_time=(String) map.get("receive_time");
-        	String payRemark=(String) map.get("payRemark");
+        	String pay_remark=(String) map.get("pay_remark");
         	String receive_bank_id = "";
         	String payment_method=(String) map.get("payment_method");
         	
@@ -681,7 +681,7 @@ public class CostRequestController extends Controller {
 	          arapCostInvoiceApplication.set("receive_time", receive_time);
 	          arapCostInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
 	          arapCostInvoiceApplication.set("confirm_stamp", new Date());
-	          arapCostInvoiceApplication.set("payRemark", payRemark);
+	          arapCostInvoiceApplication.set("pay_remark", pay_remark);
 	          arapCostInvoiceApplication.update();
         	//已付款的标记位
       		String paySql ="update job_order_arap set pay_flag='Y' "
@@ -759,7 +759,7 @@ public class CostRequestController extends Controller {
             }
         }
         Record r = new Record();
-		r.set("confirm_name", LoginUserController.getLoginUserId(this).toString());
+		r.set("confirm_name", LoginUserController.getUserNameById(LoginUserController.getLoginUserId(this)));
 		r.set("status", "已付款");
 		r.set("ids", ids);
         renderJson(r);
