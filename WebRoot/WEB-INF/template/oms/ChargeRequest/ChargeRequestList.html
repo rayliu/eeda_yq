@@ -29,20 +29,33 @@
 									</div>
 								</div>
 								<!-- end of col-lg-6-->
-								<div class="col-lg-4">
-									<div class="form-group">      
-                                         	<%include("/eeda/component/form/inputDateQueryField.html", {id:'begin_date', label:'创建时间', value:''}){} %>
-									</div>
-									<div class="form-group">      
-                                         	<%include("/eeda/component/form/inputDateQueryField.html", {id:'check_begin_date', label:'复核时间', value:''}){} %>
-									</div>
-									<div class="form-group">      
-                                         	<%include("/eeda/component/form/inputDateQueryField.html", {id:'confirmBegin_date', label:'收款时间', value:''}){} %>
-									</div>
-									<div class="form-group">      
-	                             			<%include("/eeda/component/form/dateInputField.html", {id:'service_stamp', label:'业务发生月', value:''}){} %>
-									</div>
+							<div class="col-lg-4">
+								<div class="form-group">
+								<label class="search-label">项目</label>
+									<select id="fee_type" class="form-control search-control ">
+										<option></option>
+										<option value="transFee">代理货运服务费</option>
+										<option value="customFee">代理报关服务费</option>
+										<option value="consultFee">咨询服务费</option>
+										<option value="internationalFee">国际货代服务费</option>
+									</select>
 								</div>
+								<div class="form-group">      
+		                     			<%include("/eeda/component/form/dateInputField.html", {id:'service_stamp', label:'业务发生月', value:''}){} %>
+								</div>
+								<div class="form-group">      
+                                     	<%include("/eeda/component/form/inputDateQueryField.html", {id:'check_begin_date', label:'复核时间', value:''}){} %>
+								</div>
+								<div class="form-group">      
+                                     	<%include("/eeda/component/form/inputDateQueryField.html", {id:'confirmBegin_date', label:'收款时间', value:''}){} %>
+								</div>	
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">      
+                                     	<%include("/eeda/component/form/inputDateQueryField.html", {id:'begin_date', label:'创建时间', value:''}){} %>
+								</div>
+								
+							</div>
 								
 							</div>
 							<!-- end of row-->

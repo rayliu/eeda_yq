@@ -217,7 +217,7 @@ $(document).ready(function() {
 				charge_order_no : $('#orderNo').val().trim(), 
                 applicationOrderNo : $('#applicationOrderNo').val(),
                 status2 : $('#status2').val().trim(),
-                
+                fee_type : $('#fee_type').val().trim(),
                 service_stamp : $('#service_stamp').val(),
                 
                 begin_date_begin_time : $('#begin_date_begin_time').val(),
@@ -236,7 +236,7 @@ $(document).ready(function() {
 
     //查询动作
     var refreshData=function(back){
-    	 var sp_id = $('#sp_id').val();
+    	  var sp_id = $('#sp_id').val();
     	  var payee_company = $('#sp_id_input').val().trim();
     	  
           var charge_order_no = $('#orderNo').val().trim(); 
@@ -250,6 +250,7 @@ $(document).ready(function() {
           var status2 = $('#status2').val().trim();
           
           var service_stamp = $('#service_stamp').val();
+          var fee_type = $('#fee_type').val();
           
           var begin_date_begin_time = $('#begin_date_begin_time').val();
           var begin_date_end_time = $('#begin_date_end_time').val();
@@ -265,7 +266,7 @@ $(document).ready(function() {
             +"&charge_order_no="+charge_order_no
             +"&application_order_no="+applicationOrderNo
             +"&status="+status2
-            
+            +"&fee_type="+fee_type
             +"&service_stamp_between="+service_stamp
 
             +"&create_stamp_begin_time="+begin_date_begin_time
@@ -293,7 +294,7 @@ $(document).ready(function() {
             $("#orderNo").val(conditions.charge_order_no);
             $("#applicationOrderNo").val(conditions.applicationOrderNo);
             $("#status2").val(conditions.status2);
-            
+            $("#fee_type").val(conditions.fee_type);
             $("#service_stamp").val(conditions.service_stamp);
             $("#begin_date_begin_time").val(conditions.begin_date_begin_time);
             $("#begin_date_end_time").val(conditions.begin_date_end_time);

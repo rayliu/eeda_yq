@@ -221,7 +221,7 @@ $(document).ready(function() {
 				charge_order_no : $('#orderNo').val().trim(), 
                 applicationOrderNo : $('#applicationOrderNo').val(),
                 status2 : $('#status2').val().trim(),
-                
+                fee_type : $('#fee_type').val().trim(),
                 service_stamp : $('#service_stamp').val(),
                 
                 begin_date_begin_time : $('#begin_date_begin_time').val(),
@@ -252,6 +252,7 @@ $(document).ready(function() {
           	  $('#status2').val("已复核");
             }
           var status2 = $('#status2').val().trim();
+          var fee_type = $('#fee_type').val();
           
           var service_stamp = $('#service_stamp').val();
           
@@ -269,6 +270,7 @@ $(document).ready(function() {
             +"&charge_order_no="+charge_order_no
             +"&application_order_no="+applicationOrderNo
             +"&status="+status2
+            +"&fee_type="+fee_type
             
             +"&service_stamp_between="+service_stamp
 
@@ -297,7 +299,7 @@ $(document).ready(function() {
             $("#orderNo").val(conditions.charge_order_no);
             $("#applicationOrderNo").val(conditions.applicationOrderNo);
             $("#status2").val(conditions.status2);
-            
+            $("#fee_type").val(conditions.fee_type);
             $("#service_stamp").val(conditions.service_stamp);
             $("#begin_date_begin_time").val(conditions.begin_date_begin_time);
             $("#begin_date_end_time").val(conditions.begin_date_end_time);
