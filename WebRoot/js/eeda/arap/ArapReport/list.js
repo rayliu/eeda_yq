@@ -67,7 +67,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var order_no = $.trim($("#order_no").val()); 
           var customer = $("#customer").val();
           var fin_item_id = $("#fin_item").val();
-          var fin_name = $("#fin_item_input").val(); 
+          var fin_name = $("#fin_item_input").val();
+          var flag = $("#flag").val();
           var sp = $("#sp").val(); 
           var order_export_date_start_date = $("#order_export_date_begin_time").val();
           var order_export_date_end_date = $("#order_export_date_end_time").val();
@@ -85,6 +86,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			           +"&fin_item_id="+fin_item_id
 			           +"&fin_name_equals="+fin_name
 			           +"&sp_id="+sp
+			           +"&flag="+flag
 			           +"&order_export_date_begin_time="+order_export_date_start_date
 		               +"&order_export_date_end_time="+order_export_date_end_date;
 		               +"&create_stamp_begin_time="+start_date

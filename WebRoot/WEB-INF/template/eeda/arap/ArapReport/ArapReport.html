@@ -41,27 +41,35 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                        <div class="col-lg-4">
-                                        <%include("/eeda/component/form/inputFinItem.html", 
-						                                        {   id:'fin_item', 
-						                                            label:'费用名称', 
-						                                            value:''
-						                                        }){} %>
-                                		</div>
-                                        <div class="col-lg-4">
-                                        <%include("/eeda/component/form/inputDateQueryField.html", 
-						                                        {   id:'order_export_date', 
-						                                            label:'出货时间', 
-						                                            value:''
-						                                        }){} %>
-                                		</div>
-                                        <div class="col-lg-4">
-	                                        <%include("/eeda/component/form/inputDateQueryField.html", 
-							                                        {   id:'create_stamp', 
-							                                            label:'创建时间', 
-							                                            value:''
-							                                        }){} %>
-                                    	</div>
+	                                        
+	                                        <div class="col-lg-4">
+		                                        <%include("/eeda/component/form/inputFinItem.html", 
+								                                        {   id:'fin_item', 
+								                                            label:'费用名称', 
+								                                            value:''
+								                                        }){} %>
+		                                	</div>
+		                                	<div class="col-lg-4">
+		                                        <div class="form-group">
+		    									<label class="search-label">费用状态</label>
+		    										<select id="flag" class="form-control search-control ">
+		    											<option></option>
+		    											<option value="费用未确认">费用未确认</option>
+		    											<option value="费用已确认">费用已确认</option>
+		    											<option value="费用已创建对账单">费用已创建对账单</option>
+		    											<option value="费用已创建对账单并已确认">费用已创建对账单并已确认</option>
+		    		                                    <option value="费用已创建申请单">费用已创建申请单</option>
+		    		                                    <option value="费用已结算" >费用已结算</option>
+		    										</select>
+		    									</div>
+	    									</div>
+	                                        <div class="col-lg-4">
+		                                        <%include("/eeda/component/form/inputDateQueryField.html", 
+								                                        {   id:'order_export_date', 
+								                                            label:'出货时间', 
+								                                            value:''
+								                                        }){} %>
+		                                	</div>
                                       </div>
                                     </form>
 
