@@ -3,27 +3,25 @@ package controllers.msg.ebayMsg;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import models.UserLogin;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 
 import com.ebay.sdk.ApiContext;
-import com.ebay.sdk.call.GetOrdersCall;
+import com.ebay.sdk.ApiException;
+import com.ebay.sdk.SdkException;
+import com.ebay.sdk.call.AddMemberMessageRTQCall;
+import com.ebay.sdk.call.GetMemberMessagesCall;
 import com.ebay.soap.eBLBaseComponents.DetailLevelCodeType;
-import com.ebay.soap.eBLBaseComponents.OrderIDArrayType;
-import com.ebay.soap.eBLBaseComponents.OrderStatusCodeType;
-import com.ebay.soap.eBLBaseComponents.OrderType;
-import com.ebay.soap.eBLBaseComponents.ShipmentTrackingDetailsType;
-import com.ebay.soap.eBLBaseComponents.TradingRoleCodeType;
-import com.ebay.soap.eBLBaseComponents.TransactionType;
-import com.ebay.soap.eBLBaseComponents.WarningLevelCodeType;
+import com.ebay.soap.eBLBaseComponents.MemberMessageExchangeType;
+import com.ebay.soap.eBLBaseComponents.MemberMessageType;
+import com.ebay.soap.eBLBaseComponents.MessageTypeCodeType;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.log.Log;
@@ -31,7 +29,6 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.oms.ebaySalesOrder.EbayApiContextUtil;
-import controllers.profile.EbayAccountController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 
@@ -43,13 +40,15 @@ public class EbayMemberMsgController extends Controller {
 
     @Before(EedaMenuInterceptor.class)
     public void index() {
-        
-//        Record orderNopayRec = Db.findFirst("select count(1) total from ebay_member_msg where paid_time is null");
-//        setAttr("orderNopayCount", orderNopayRec.get("total"));
-//        
-//        Record orderNoshipRec = Db.findFirst("select count(1) total from ebay_member_msg where shipped_time is null");
-//        setAttr("orderNoshipCount", orderNoshipRec.get("total"));
-        
+
+        // Record orderNopayRec =
+        // Db.findFirst("select count(1) total from ebay_member_msg where paid_time is null");
+        // setAttr("orderNopayCount", orderNopayRec.get("total"));
+        //
+        // Record orderNoshipRec =
+        // Db.findFirst("select count(1) total from ebay_member_msg where shipped_time is null");
+        // setAttr("orderNoshipCount", orderNoshipRec.get("total"));
+
         render("/msg/ebayMemberMsg/ebayMemberMsgList.html");
     }
 
@@ -74,7 +73,7 @@ public class EbayMemberMsgController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
 
         List<Record> orderList = Db.find(sql + condition
-                + " order by creation_date desc " + sLimit);
+                + " order by message_status desc, creation_date desc " + sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
@@ -83,112 +82,124 @@ public class EbayMemberMsgController extends Controller {
         renderJson(map);
     }
 
-    public void importOrders() {
-        OrderType[] orders = getOrders();
-        int size = orders != null ? orders.length : 0;
-        String[] columnNames = { "OrderId", "NumberOfTrans", "TransPrice",
-                "CreatedDate", "ShippingServiceSelected", "InsuranceWanted",
-                "IsMultiLegShipping" };
-
-        List<Record> recList = new ArrayList<Record>(size);
-        
-        for (int i = 0; i < size; i++) {
-            Record rec = new Record();
-            OrderType order = orders[i];
-            rec.set("order_id", order.getOrderID());
-            rec.set("created_time", order.getCreatedTime().getTime());
-            
-            
-            TransactionType[] tType = order.getTransactionArray().getTransaction();
-            TransactionType transaction = tType[0];//只获取第一个
-            
-            rec.set("transaction_id", transaction.getTransactionID());
-            rec.set("item_id", transaction.getItem().getItemID());
-            rec.set("sku", transaction.getItem().getSKU());
-            rec.set("total", order.getTotal().getValue());
-            rec.set("total_currency_id", order.getTotal().getCurrencyID().value());
-            rec.set("buyer_user_ID", order.getBuyerUserID());
-            rec.set("seller_user_ID", order.getSellerUserID());
-            rec.set("order_status", order.getOrderStatus().value());
-            rec.set("shipped_time", order.getShippedTime().getTime());
-            rec.set("paid_time", order.getPaidTime().getTime());
-            
-            ShipmentTrackingDetailsType stdt = transaction.getShippingDetails().getShipmentTrackingDetails(0);
-            rec.set("shipment_tracking_number", stdt.getShipmentTrackingNumber());
-            rec.set("shipping_carrier_used", stdt.getShippingCarrierUsed());//送货公司
-            
-            Record oldRec = Db.findFirst("select * from ebay_order where order_id=?", order.getOrderID());
-            if(oldRec != null){
-                rec.set("id", oldRec.getLong("id"));
-                Db.update("ebay_order", rec);
-            }else{
-                Db.save("ebay_order", rec);
-            }
-            
-            
-            
-            recList.add(rec);
-        }
-        
-        renderJson(recList);
+    public void getMemberMsg(){
+        long id = getParaToLong("id");
+        Record rec = Db.findById("ebay_member_msg", id);
+        renderJson(rec);
     }
-
-    private OrderType[] getOrders() {
-        apiContext = new EbayApiContextUtil().getApiContext();
-        OrderType[] orders = null;
+    
+    public void importMemberMsg() {
         try {
-            String ids = "";// this.txtOrderId.getText().trim();
-            // if (ids.length() == 0) {
-            // throw new Exception("Please enter valid OrderIds.");
+            apiContext = new EbayApiContextUtil().getApiContext();
+            GetMemberMessagesCall api = new GetMemberMessagesCall(
+                    this.apiContext);
+
+            // api.setDisplayToPublic(new
+            // Boolean(this.ckbDisplayToPublic.isSelected()));
+
+            // Calendar cd =
+            // GuiUtil.getCalendarFromField(this.txtEndCreationDate);
+            // if (cd != null) {
+            // api.setEndCreationTime(cd);
             // }
 
-            DetailLevelCodeType[] detailLevels = new DetailLevelCodeType[] {
-                    DetailLevelCodeType.RETURN_ALL,
-                    DetailLevelCodeType.ITEM_RETURN_ATTRIBUTES,
-                    DetailLevelCodeType.ITEM_RETURN_DESCRIPTION };
+            // 必填项
+            Calendar cd = Calendar.getInstance();
+            cd.add(Calendar.DATE, -7);
+            api.setStartCreationTime(cd);
 
-            GetOrdersCall api = new GetOrdersCall(this.apiContext);
-            // api.setDetailLevel(detailLevels);
-
-            StringTokenizer st = new StringTokenizer(ids, ",");
-            ArrayList lstOrders = new ArrayList();
-            while (st.hasMoreTokens()) {
-                lstOrders.add(st.nextToken());
-            }
-
-            int size = lstOrders.size();
-            String[] orderIds = new String[size];
-            for (int i = 0; i < size; i++) {
-                orderIds[i] = lstOrders.get(i).toString().trim();
-            }
-
-            OrderIDArrayType oiat = new OrderIDArrayType();
-            // oiat.setOrderID(orderIds);
-            // api.setOrderIDArray(oiat);
-
-            api.setOrderStatus(OrderStatusCodeType.COMPLETED);
-
-            api.setOrderRole(TradingRoleCodeType.SELLER);
-
-            // if (this.txtStartDate.getText().trim().length() > 0) {
-            // Calendar date = GuiUtil.getCalendarFromField(this.txtStartDate);
-            // api.setCreateTimeFrom(date);
-            // }
-            //
-            // if (this.txtEndDate.getText().trim().length() > 0) {
-            // Calendar date = GuiUtil.getCalendarFromField(this.txtEndDate);
-            // api.setCreateTimeTo(date);
+            // String itemId = this.txtItemId.getText().trim();
+            // if (itemId.length() > 0) {
+            // api.setItemID(itemId);
             // }
 
-            api.setWarningLevel(WarningLevelCodeType.HIGH);
-            api.setNumberOfDays(7);
-
-            orders = api.getOrders();
+            api.setMailMessageType(MessageTypeCodeType.ALL);
+            // api.setMessageStatus(MessageStatusTypeCodeType.ANSWERED);
+            // PaginationType pt = new PaginationType();
+            // String entriesPerPage = this.txtEntriesPerPage.getText().trim();
+            // if (entriesPerPage.length() > 0) {
+            // pt.setEntriesPerPage(new Integer(entriesPerPage));
+            // }
+            // String pageNumber = this.txtPageNumber.getText().trim();
+            // if (pageNumber.length() > 0) {
+            // pt.setPageNumber(new Integer(pageNumber));
+            // }
+            // api.setPagination(pt);
+            DetailLevelCodeType[] detailLevel = { DetailLevelCodeType.RETURN_ALL };
+            api.setDetailLevel(detailLevel);
+            MemberMessageExchangeType[] arrMessages = api.getMemberMessages();
+            handleMsg(arrMessages);
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            renderText("Failed");
         }
+        renderText("OK");
+    }
 
-        return orders;
+    private void handleMsg(MemberMessageExchangeType[] arrMessages) {
+        int size = arrMessages != null ? arrMessages.length : 0;
+        logger.debug("arrMessages.length="+arrMessages.length);
+        for (int i = 0; i < size; i++) {
+            Record rec = new Record();
+            MemberMessageExchangeType msg = arrMessages[i];
+            rec.set("item_id", msg.getItem().getItemID());
+            rec.set("message_id", msg.getQuestion().getMessageID());
+            rec.set("sender_id", msg.getQuestion().getSenderID());
+            rec.set("sender_email", msg.getQuestion().getSenderEmail());
+            
+            String rId = StringUtils.join(msg.getQuestion().getRecipientID(),",");
+            rec.set("recipient_id", rId);//TODO
+
+            rec.set("subject", msg.getQuestion().getSubject());
+            rec.set("body", msg.getQuestion().getBody());
+            
+            if(msg.getResponse().length>0)
+                rec.set("response", msg.getResponse()[0]);//TODO
+            
+            rec.set("message_status", msg.getMessageStatus().value());
+            rec.set("creation_date", msg.getCreationDate().getTime());
+            rec.set("last_modified_date", msg.getLastModifiedDate().getTime());
+
+            Record oldRec = Db.findFirst(
+                    "select * from ebay_member_msg where message_id=?", msg
+                            .getQuestion().getMessageID());
+            if (oldRec != null) {
+                rec.set("id", oldRec.getLong("id"));
+                Db.update("ebay_member_msg", rec);
+            } else {
+                Db.save("ebay_member_msg", rec);
+            }
+        }
+    }
+
+    
+    public void replyMsg(){
+        apiContext = new EbayApiContextUtil().getApiContext();
+        String id = getPara("id");
+        String msg_id = getPara("msg_id");
+        String response = getPara("response");
+        String recipientID = getPara("recipient_id");
+        Record rec = Db.findById("ebay_member_msg", Long.valueOf(id));
+        rec.set("response", response);
+        Db.update("ebay_member_msg", rec);
+        
+        AddMemberMessageRTQCall api = new AddMemberMessageRTQCall(
+                this.apiContext);
+        
+        MemberMessageType mm = new MemberMessageType();
+        mm.setBody(response);
+        mm.setParentMessageID(msg_id);
+        String recipientId[] = new String[]{recipientID};
+        mm.setRecipientID(recipientId);
+        api.setMemberMessage(mm);
+        api.setMessageID(msg_id);
+        try {
+            api.addMemberMessageRTQ();
+        } catch (Exception e) {
+            e.printStackTrace();
+            renderText("Failed");
+        }
+        renderText("OK");
     }
 }
