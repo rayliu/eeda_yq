@@ -109,12 +109,18 @@ public class EbaySalesOrderController extends Controller {
             rec.set("buyer_user_ID", order.getBuyerUserID());
             rec.set("seller_user_ID", order.getSellerUserID());
             rec.set("order_status", order.getOrderStatus().value());
-            rec.set("shipped_time", order.getShippedTime().getTime());
-            rec.set("paid_time", order.getPaidTime().getTime());
+            if(order.getShippedTime()!=null)
+                rec.set("shipped_time", order.getShippedTime().getTime());
+            if(order.getPaidTime()!=null)
+                rec.set("paid_time", order.getPaidTime().getTime());
             
-            ShipmentTrackingDetailsType stdt = transaction.getShippingDetails().getShipmentTrackingDetails(0);
-            rec.set("shipment_tracking_number", stdt.getShipmentTrackingNumber());
-            rec.set("shipping_carrier_used", stdt.getShippingCarrierUsed());//送货公司
+            if(transaction.getShippingDetails().getShipmentTrackingDetails().length>0){
+                ShipmentTrackingDetailsType stdt = transaction.getShippingDetails().getShipmentTrackingDetails(0);
+                rec.set("shipment_tracking_number", stdt.getShipmentTrackingNumber());
+                rec.set("shipping_carrier_used", stdt.getShippingCarrierUsed());//送货公司
+            }
+            
+            rec.set("sales_record_number", transaction.getShippingDetails().getSellingManagerSalesRecordNumber());
             
             Record oldRec = Db.findFirst("select * from ebay_order where order_id=?", order.getOrderID());
             if(oldRec != null){

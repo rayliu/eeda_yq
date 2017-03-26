@@ -10,8 +10,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             serverSide: true, //不打开会出现排序不对
             ajax: "/ebaySalesOrder/list",
             columns:[
-                {"data": "TRANSACTION_ID", "width":"120px"},
-                { "data": "ITEM_ID", "width":"120px"},
+                {"data": "TRANSACTION_ID", "width":"100px"},
+                { "data": "ITEM_ID", "width":"100px"},
+                { "data": "SALES_RECORD_NUMBER", "width":"40px"},
                 { "data": "SKU", "width":"120px"},
 	              { "data": "BUYER_USER_ID", "width":"120px"}, 
                 { "data": "SELLER_USER_ID", "width":"90px"},
