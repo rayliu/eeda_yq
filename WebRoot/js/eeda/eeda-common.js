@@ -1,4 +1,20 @@
 define(['jquery', 'dataTablesBootstrap'], function($){
+  
+    var url = window.location;
+    // var element = $('ul.nav a').filter(function() {
+    //     return this.href == url;
+    // }).addClass('active').parent().parent().addClass('in').parent();
+    var element = $('ul.nav a').filter(function() {
+        return this.href == url;
+    }).addClass('active').parent();
+
+    while (true) {
+        if (element.is('li')) {
+            element = element.parent().addClass('in').parent();
+        } else {
+            break;
+        }
+    }
     //全局的ajax访问，处理ajax请求时sesion超时, 跳转到登录页面
     $.ajaxSetup({
         //contentType:"application/x-www-form-urlencoded;charset=utf-8",
