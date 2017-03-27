@@ -1273,7 +1273,7 @@ public class JobOrderController extends Controller {
 	    			+ " where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("trade_sale".equals(type)){
-	    	itemSql = "select jor.*, pr.abbr sp_id_name, f.name charge_id_name, f.name_eng charge_id_name_eng, u.name unit_id_name, c.name currency_id_name,"
+	    	itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name, f.name_eng charge_name_eng, u.name unit_name, c.name currency_name,"
     				+ " c1.name exchange_currency_id_name"
     				+ " from job_order_arap jor "
     		        + " left join party pr on pr.id=jor.sp_id"
@@ -1284,7 +1284,7 @@ public class JobOrderController extends Controller {
     		        + " where jor.order_id=? and jor.order_type=? and jor.trade_fee_flag=? order by jor.id";
     		itemList = Db.find(itemSql, orderId,"charge","trade_sale_fee");
 	    }else if("trade_service".equals(type)){
-	    	itemSql = "select jor.*, pr.abbr sp_id_name, f.name charge_id_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_id_name,"
+	    	itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
     				+ " c1.name exchange_currency_id_name"
     				+ " from job_order_arap jor "
     		        + " left join party pr on pr.id=jor.sp_id"
