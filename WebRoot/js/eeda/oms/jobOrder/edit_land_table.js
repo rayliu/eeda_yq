@@ -79,6 +79,8 @@ $(document).ready(function() {
         eeda.bindTableFieldTruckOut('land_table', 'CONSIGNOR');
         eeda.bindTableFieldTruckIn('land_table', 'CONSIGNEE');
         eeda.bindTableField('land_table','UNIT_ID','/serviceProvider/searchUnit','');
+        eeda.bindTableLocationField('land_table','ROUTE_FROM');
+        eeda.bindTableLocationField('land_table','ROUTE_TO');
     };
     //------------事件处理
 	 var cargoTable = eeda.dt({
@@ -133,6 +135,34 @@ $(document).ready(function() {
                 		return '<button type="button" class="btn btn-default btn-xs delete_sign_desc" style="width:100px">删除签收文件</button>';
                 	else 
                 		return '';
+                }
+            },
+            { "data": "ROUTE_FROM", "width": "200px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    var field_html = template('input_location_template',
+                            {
+                                id: 'ROUTE_FROM',
+                                value: data,
+                                style:'width:100px'
+                            }
+                        );
+                    return field_html;
+                }
+            },
+            { "data": "ROUTE_TO", "width": "200px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    var field_html = template('input_location_template',
+                            {
+                                id: 'ROUTE_TO',
+                                value: data,
+                                style:'width:100px'
+                            }
+                        );
+                    return field_html;
                 }
             },
             { "data": "UNLOAD_TYPE", "width": "50px",

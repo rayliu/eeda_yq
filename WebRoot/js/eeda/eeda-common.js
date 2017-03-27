@@ -1010,7 +1010,118 @@ eeda.refreshUrl = refreshUrl;
           }).find('li').first().focus();
       };
       
-      
+      eeda.bindTableLocationField = function(talbe_id, el_name) {
+//    	  var spList = $('#input_location_field_list');
+    	  
+           var spList =$("#"+talbe_id+' input[name='+el_name+"_list]");
+           var area_list_title = $("#"+talbe_id+' input[name='+el_name+"_list] .area-list-title");
+           var spListContent =$("#"+talbe_id+' input[name='+el_name+"_list] .area-list-content");
+           var inputField = $('#'+talbe_id+' input[name='+el_name+'_INPUT]');
+           var hiddenField = $('#'+talbe_id+' input[name='+el_name+']');
+           var hiddenProvinceField = $('#'+talbe_id+' input[name='+el_name+'_province]');//这里是方便用户选错时，回选上级
+           
+           area_list_title.click(function(){
+             var selectedLevel=$(this).attr('data-level');
+             var currentLevel=$(this).parent().find('.this').attr('data-level');
+             if(selectedLevel>=currentLevel)
+                 return;
+             
+             if(selectedLevel<currentLevel && selectedLevel==0){
+               inputField.val('');
+                     hiddenField.val('');
+                     hiddenProvinceField.val('');
+               searchLocation();
+             }else{
+               inputField.val(inputField.val().split('-')[0]);
+               searchLocation(1, hiddenProvinceField.val());
+             }
+                 
+           });
+           
+           var searchLocation = function(level, code){
+             var locLevel = "province";
+             level = level | 0;
+             if(level == 1){
+               locLevel = "city";
+             }
+             if(level == 2){
+               locLevel = "area";
+             }
+        
+             $.get('/serviceProvider/'+locLevel, {id:code}, function(data){
+               spListContent.empty();
+               for(var i = 0; i < data.length; i++){
+                 var loc = data[i];
+                 spListContent.append('<a next-level="'+(level+1)+'" p_code="'+loc.PCODE+'" href="javascript:void(0)" code="'+loc.CODE+'" name="'+loc.NAME+'">'+loc.NAME+'</a>');
+               }
+               spList.find('input').removeClass('this');
+                 spList.find('input[data-level='+level+']').addClass('this');
+                 spList.css({ 
+                     left:$(inputField).position().left+"px", 
+                     top:$(inputField).position().top+30+"px" 
+                   }); 
+                 spList.show();
+               
+             },'json');
+           };
+             
+             inputField.on('input click', function(){
+               var me = this;
+             var inputStr = inputField.val();
+             
+             searchLocation();
+             spList.css({ 
+                   left:$(me).position().left+"px", 
+                   top:$(me).position().top+30+"px" 
+                 }); 
+             spList.show();
+             });
+        
+             spListContent.on('click', 'a', function(){
+               var dataLevel = $(this).attr('next-level');
+               var code = $(this).attr('code');
+               var name = $(this).attr('name');
+               var oldValue = inputField.val();
+               if(dataLevel == 1){
+                 hiddenProvinceField.val(code);
+               }
+               
+               if(dataLevel>1){
+                 name = oldValue+'-'+name;
+               }
+               inputField.val(name);
+               hiddenField.val(code);
+        
+               if(dataLevel == 3){
+                 spList.hide();
+                 return;
+               }
+               searchLocation(dataLevel, code);
+        
+               spList.find('input').removeClass('this');
+               spList.find('input[data-level='+dataLevel+']').addClass('this');
+             });
+             
+             // 没选中，焦点离开，隐藏列表
+           inputField.on('blur', function(){
+             if (inputField.val().trim().length ==0 || inputField.val().split('-').length==1) {
+               inputField.val('');
+               hiddenField.val('');
+             };
+             spList.hide();
+           });
+        
+           //当用户只点击了滚动条，没选，再点击页面别的地方时，隐藏列表
+           spList.on('blur', function(){
+             spList.hide();
+           });
+        
+           spList.on('mousedown', function(){
+             return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+           });
+
+
+      };
       
       eeda.bindTableFieldDockInfo = function(talbe_id, el_name) {
           var tableFieldList = $('#table_dock_no_field_list');
