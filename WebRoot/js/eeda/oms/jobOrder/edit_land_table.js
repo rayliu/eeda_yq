@@ -137,7 +137,7 @@ $(document).ready(function() {
                 		return '';
                 }
             },
-            { "data": "ROUTE_FROM", "width": "200px",
+            { "data": "ROUTE_FROM", "width": "100px","visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -151,7 +151,7 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "ROUTE_TO", "width": "200px",
+            { "data": "ROUTE_TO", "width": "100px","visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';

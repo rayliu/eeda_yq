@@ -1028,14 +1028,14 @@ eeda.refreshUrl = refreshUrl;
       
       eeda.bindTableLocationField = function(talbe_id, el_name) {
 //    	  var spList = $('#input_location_field_list');
-    	  
-           var spList =$("#"+talbe_id+' input[name='+el_name+"_list]");
-           var area_list_title = $("#"+talbe_id+' input[name='+el_name+"_list] .area-list-title");
-           var spListContent =$("#"+talbe_id+' input[name='+el_name+"_list] .area-list-content");
-           var inputField = $('#'+talbe_id+' input[name='+el_name+'_INPUT]');
-           var hiddenField = $('#'+talbe_id+' input[name='+el_name+']');
-           var hiddenProvinceField = $('#'+talbe_id+' input[name='+el_name+'_province]');//这里是方便用户选错时，回选上级
-           
+    	   var table_height= $('#'+talbe_id).height();
+//           var spList =$("#"+talbe_id+' [name='+el_name+"_list]");
+//           var area_list_title = $("#"+talbe_id+' [name='+el_name+"_list] .area-list-title");
+//           var spListContent =$("#"+talbe_id+' [name='+el_name+"_list] .area-list-content");
+//           var inputField = $('#'+talbe_id+' input[name='+el_name+'_INPUT]');
+//           var hiddenField = $('#'+talbe_id+' input[name='+el_name+']');
+//           var hiddenProvinceField = $('#'+talbe_id+' [name='+el_name+'_province]');//这里是方便用户选错时，回选上级
+//           
            area_list_title.click(function(){
              var selectedLevel=$(this).attr('data-level');
              var currentLevel=$(this).parent().find('.this').attr('data-level');
@@ -1081,9 +1081,10 @@ eeda.refreshUrl = refreshUrl;
              },'json');
            };
              
-             inputField.on('input click', function(){
+           $('#'+talbe_id+' input[name='+el_name+'_INPUT]').on('input click', function(){
+            	 $('#'+talbe_id).height($('#'+talbe_id).height()+100);
                var me = this;
-             var inputStr = inputField.val();
+             var inputStr = $(this).val();
              
              searchLocation();
              spList.css({ 
@@ -1094,6 +1095,9 @@ eeda.refreshUrl = refreshUrl;
              });
         
              spListContent.on('click', 'a', function(){
+            	 var inputField = eeda._inputField;
+                 var hiddenField = eeda._hiddenField;
+                 inputField.val($(this).text());//名字
                var dataLevel = $(this).attr('next-level');
                var code = $(this).attr('code');
                var name = $(this).attr('name');
@@ -1120,6 +1124,7 @@ eeda.refreshUrl = refreshUrl;
              
              // 没选中，焦点离开，隐藏列表
            inputField.on('blur', function(){
+        	   $('#'+talbe_id).height(table_height);
              if (inputField.val().trim().length ==0 || inputField.val().split('-').length==1) {
                inputField.val('');
                hiddenField.val('');
@@ -1129,6 +1134,7 @@ eeda.refreshUrl = refreshUrl;
         
            //当用户只点击了滚动条，没选，再点击页面别的地方时，隐藏列表
            spList.on('blur', function(){
+        	   $('#'+talbe_id).height(table_height);
              spList.hide();
            });
         
