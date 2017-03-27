@@ -548,6 +548,15 @@ $(document).ready(function() {
                     return '<input type="text" name="exchange_total_amount_rmb" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
                 }
             },
+            { "data": "RMB_DIFFERENCE", "width": "80px","className":"rmb_difference",
+                "render": function ( data, type, full, meta ) {
+                    if(data)
+                        var str =  parseFloat(data).toFixed(2);
+                    else
+                        str = '';
+                    return '<input type="text" name="rmb_difference" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                }
+            },
             { "data": "REMARK","width": "180px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
@@ -675,6 +684,7 @@ $(document).ready(function() {
             $(row.find('[name=currency_total_amount]')).val('');
             $(row.find('[name=exchange_total_amount]')).val('');
             $(row.find('[name=exchange_total_amount_rmb]')).val('');
+            $(row.find('[name=rmb_difference]')).val('');
         }
         if(price!=''&&amount!=''&&!isNaN(price)&&!isNaN(amount)){
             var total_amount = parseFloat(price)*parseFloat(amount);
@@ -688,15 +698,20 @@ $(document).ready(function() {
                 if(exchange_currency_rate==''){
                     $(row.find('[name=exchange_total_amount]')).val('');
                     $(row.find('[name=exchange_total_amount_rmb]')).val('');
+                    $(row.find('[name=rmb_difference]')).val('');
                 }
                 if(exchange_currency_rate!=''&&!isNaN(exchange_currency_rate)){
                     $(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_currency_rate)).toFixed(2));
                       if(exchange_currency_rate_rmb==''){
                          $(row.find('[name=exchange_total_amount_rmb]')).val('');
+                         $(row.find('[name=rmb_difference]')).val('');
                     }
                     if(exchange_currency_rate_rmb!=''&&!isNaN(exchange_currency_rate_rmb)){
                         var exchange_total_amount = parseFloat($(row.find('[name=exchange_total_amount]')).val());
+                        var currency_total_amount = parseFloat($(row.find('[name=currency_total_amount]')).val());
                         $(row.find('[name=exchange_total_amount_rmb]')).val((exchange_total_amount*parseFloat(exchange_currency_rate_rmb)).toFixed(2));
+                        var exchange_total_amount_rmb = parseFloat($(row.find('[name=exchange_total_amount_rmb]')).val());
+                        $(row.find('[name=rmb_difference]')).val((parseFloat(currency_total_amount-exchange_total_amount_rmb)).toFixed(2));
                       }
                 }
             }
