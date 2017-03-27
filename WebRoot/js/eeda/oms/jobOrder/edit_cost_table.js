@@ -82,7 +82,9 @@ $(document).ready(function() {
             		if(name=='exchange_total_amount'&&el.val()==''){
                 		el.val(el.parent().parent().find('[name=total_amount]').val());
                 	}            		
-            		
+            		if(name=='rmb_difference'&&el.val()==''){
+                        el.val(0.00);
+                    }
                 	var value = el.val();//元素的值
                 	item[name] = value;
             	}
