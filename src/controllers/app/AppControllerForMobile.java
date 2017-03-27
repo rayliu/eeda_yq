@@ -36,8 +36,10 @@ public class AppControllerForMobile extends Controller {
             Record rec = new Record();
             rec.set("msg", "用户未登录!");
             renderJson(rec);
+            System.out.println("auth signIn failed");
             return;
         }
+        System.out.println("auth signIn ok");
         Record rec = new Record();
         rec.set("authKey", getRequest().getSession().getAttribute("authKey").toString());
         renderJson(rec);
