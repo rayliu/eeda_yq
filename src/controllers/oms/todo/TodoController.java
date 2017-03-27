@@ -18,7 +18,7 @@ import com.jfinal.plugin.activerecord.Record;
 import controllers.profile.LoginUserController;
 
 @RequiresAuthentication
-@Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
+//@Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
 public class TodoController extends Controller {
 
 	private Logger logger = Logger.getLogger(TodoController.class);
