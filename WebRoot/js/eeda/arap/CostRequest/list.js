@@ -53,7 +53,7 @@ $(document).ready(function() {
 	        		}else if(data=="quotabill"){
 	        			strBillType="定额发票";
 	        		}else if(data=="dbill"){
-	        			strBillType="代开发票(垫付款)";
+	        			strBillType="代开发票";
 	        		}else if(data=="HKINVbill"){
 	        			strBillType="HK INV";
 	        		}
@@ -76,6 +76,8 @@ $(document).ready(function() {
         			strFeeType="货物运输保险费";
         		}else if(data=="domesticPaymentFee"){
         			strFeeType="国内货款";
+        		}else if(data=="advanceFee"){
+        			strFeeType="代垫付费";
         		}else if(data=="otherFee"){
         			strFeeType="其他";
         		}

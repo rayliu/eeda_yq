@@ -53,7 +53,7 @@ $(document).ready(function() {
 	        		}else if(data=="specialbill"){
 	        			strBillType="增值税专用发票";
 	        		}else if(data=="dbill"){
-	        			strBillType="代开发票(垫付款)";
+	        			strBillType="代开发票";
 	        		}else if(data=="HKINVbill"){
 	        			strBillType="HK INV";
 	        		}
@@ -72,6 +72,8 @@ $(document).ready(function() {
         			strFeeType="咨询服务费";
         		}else if(data=="internationalFee"){
         			strFeeType="国际货代服务费";
+        		}else if(data=="advanceFee"){
+        			strFeeType="代垫付费";
         		}
         			
         		return strFeeType;

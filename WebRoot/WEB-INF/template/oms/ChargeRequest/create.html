@@ -72,7 +72,7 @@
 		                                    <option value="wbill" <% if(order.bill_type!'wbill'=='wbill'){%>selected<%}%>>无发票</option>
 		                                    <option value="ordinarybill" <% if(order.bill_type!''=='ordinarybill'){%>selected<%}%>>增值税普通发票</option>
 		                                    <option value="specialbill" <% if(order.bill_type!''=='specialbill'){%>selected<%}%>>增值税专用发票</option>
-		                                    <option value="dbill" <% if(order.bill_type!''=='dbill'){%>selected<%}%>>代开发票(垫付款)</option>
+		                                    <option value="dbill" <% if(order.bill_type!''=='dbill'){%>selected<%}%>>代开发票</option>
 		                                    <option value="HKINVbill" <% if(order.bill_type!''=='HKINVbill'){%>selected<%}%>>HK INV</option>
 	                                    </select>
 	                            </div>
@@ -88,6 +88,7 @@
     		                                    <option value="customFee" <% if(order.fee_type!''=='customFee'){%>selected<%}%>>代理报关服务费</option>
     		                                    <option value="consultFee" <% if(order.fee_type!''=='consultFee'){%>selected<%}%>>咨询服务费</option>
     		                                    <option value="internationalFee" <% if(order.fee_type!''=='internationalFee'){%>selected<%}%>>国际货代服务费</option>
+    		                                    <option value="advanceFee" <% if(order.fee_type!''=='advanceFee'){%>selected<%}%>>代垫付费</option>
     	                                    </select>
     	                            </div>
                                 </div>

@@ -29,7 +29,7 @@
 	                                    <option value="ordinarybill" <% if(order.bill_type!''=='ordinarybill'){%>selected<%}%>>增值税普通发票</option>
 	                                    <option value="specialbill" <% if(order.bill_type!''=='specialbill'){%>selected<%}%>>增值税专用发票</option>
 	                                    <option value="quotabill" <% if(order.bill_type!''=='quotabill'){%>selected<%}%>>定额发票</option>
-	                                    <option value="dbill" <% if(order.bill_type!''=='dbill'){%>selected<%}%>>代开发票(垫付款)</option>
+	                                    <option value="dbill" <% if(order.bill_type!''=='dbill'){%>selected<%}%>>代开发票</option>
 	                                    <option value="HKINVbill" <% if(order.bill_type!''=='HKINVbill'){%>selected<%}%>>HK INV</option>
                                     </select>
                             </div>
@@ -54,6 +54,7 @@
 		                                    <option value="internationalFee" <% if(order.fee_type!''=='internationalFee'){%>selected<%}%>>国际货代服务费</option>
 		                                    <option value="transAndInsurance" <% if(order.fee_type!''=='transAndInsurance'){%>selected<%}%>>货物运输保险费</option>
 		                                    <option value="domesticPaymentFee" <% if(order.fee_type!''=='domesticPaymentFee'){%>selected<%}%>>国内货款</option>
+		                                    <option value="advanceFee" <% if(order.fee_type!''=='advanceFee'){%>selected<%}%>>代垫付费</option>
 			                                <option value="otherFee" <% if(order.fee_type!''=='otherFee'){%>selected<%}%>>其他</option>
 	                                    </select>
 	                            </div>

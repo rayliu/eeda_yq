@@ -297,29 +297,21 @@ $(document).ready(function() {
 			$('#projectFee').hide();
 		}else{
 			$('#invoiceDiv').show();
-			if(type=='ordinarybill'||type=='specialbill'){
-				$('#projectFee').show();
-			}else{
-				$('#projectFee').hide();
-			}
+			$('#projectFee').show();
 		}
-	})
+	});
 	
 	
 	var projectFeeType = $('#bill_type').val();
-	if(projectFeeType=='ordinarybill'||projectFeeType=='specialbill'){
-		$('#projectFee').show();
-	}else{
+	if(projectFeeType == 'wbill'||type==""){
 		$('#projectFee').hide();
+		$('#invoiceDiv').hide();
+	}else{
+		$('#projectFee').show();
+		$('#invoiceDiv').show();
 	}
 	
 	
-	var invoice_type = $('#bill_type').val();
-	if(invoice_type == 'wbill'||invoice_type==""){
-			$('#invoiceDiv').hide();
-		}else{
-			$('#invoiceDiv').show();
-		}
 	
 	$('#deposit_bank_list').on('mousedown','a',function(){
 	   $('#account_no').val( $(this).attr('account_no'));

@@ -76,7 +76,7 @@ $(document).ready(function() {
 	
     //申请保存
 	$("#saveBtn").on('click',function(){
-		$("#saveBtn").attr("disabled", true);
+		
 		
 		$("#createSave").attr("disabled", true);
 		if($('#check_time_begin_time').val()==""||$('#check_time_end_time').val()==""){
@@ -92,7 +92,7 @@ $(document).ready(function() {
 				return false;
 			}
 		}
-		
+		$("#saveBtn").attr("disabled", true);
 		var order = buildOrder();
 		order.item_list = buildItem();
 		order.selected_item_ids=$("#selected_ids").val();
@@ -360,29 +360,19 @@ $(document).ready(function() {
 			$('#projectFee').hide();
 		}else{
 			$('#invoiceDiv').show();
-			if(type=='ordinarybill'||type=='specialbill'){
-				$('#projectFee').show();
-			}else{
-				$('#projectFee').hide();
-			}
+			$('#projectFee').show();
 		}
-	})
+	});
 	
 	
 	var projectFeeType = $('#bill_type').val();
-	if(projectFeeType=='ordinarybill'||projectFeeType=='specialbill'){
-		$('#projectFee').show();
-	}else{
+	if(projectFeeType == 'wbill'||type==""){
 		$('#projectFee').hide();
+		$('#invoiceDiv').hide();
+	}else{
+		$('#projectFee').show();
+		$('#invoiceDiv').show();
 	}
-	
-	
-	var invoice_type = $('#bill_type').val();
-	if(invoice_type == 'wbill'||invoice_type==""){
-			$('#invoiceDiv').hide();
-		}else{
-			$('#invoiceDiv').show();
-		}
 	
 	$('#deposit_bank_list').on('mousedown','a',function(){
 	   $('#account_no').val( $(this).attr('account_no'));
