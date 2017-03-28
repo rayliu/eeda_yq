@@ -113,6 +113,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
+import com.jfinal.plugin.scheduler.SchedulerPlugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.app.AppControllerForMobile;
@@ -370,8 +371,8 @@ public class EedaConfig extends JFinalConfig {
     	me.add(new ShiroPlugin(routes));
     	
     	//job启动
-//    	SchedulerPlugin sp = new SchedulerPlugin("job.properties");
-//        me.add(sp);
+    	SchedulerPlugin sp = new SchedulerPlugin("job.properties");
+        me.add(sp);
     	
         mailUser = getProperty("mail_user_name");
         mailPwd = getProperty("mail_pwd");
