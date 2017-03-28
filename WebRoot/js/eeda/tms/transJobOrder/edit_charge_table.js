@@ -237,16 +237,23 @@ $(document).ready(function() {
                         );
                         return field_html;
                   }else{
-                    if(!data)
-                        data='';
-                    var field_html = template('table_dropdown_template',
+                    if(!data){
+                        var field_html = template('table_dropdown_template',
+                                {
+                                    id: 'SP_ID',
+                                    value: $('#sp').val(),
+                                    display_value: $('#sp_input').val()
+                                }
+                        );
+                       }else{
+                         var field_html = template('table_dropdown_template',
                         {
-                            id: 'SP_ID',//对应数据库字段
-                            value: data,
-                            display_value: full.SP_NAME,
-                            style:'width:200px'
+                            id: 'SP_ID',
+                            value: data,//对应数据库字段
+                            display_value: full.SP_NAME
                         }
-                    );
+                     );
+                   }
                     return field_html;
                   }
                 }

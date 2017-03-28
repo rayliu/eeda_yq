@@ -13,7 +13,7 @@ $(document).ready(function() {
     }); 
     //添加一行
     $('#add_land').on('click', function(){
-        var item={};
+        var item={"TRUCK_TYPE":"40HQ"};
         cargoTable.row.add(item).draw(true);
     });
     
@@ -77,6 +77,8 @@ $(document).ready(function() {
         eeda.bindTableFieldCarInfo('land_table', 'CAR_NO');
         eeda.bindTableFieldDockInfo('land_table','TAKE_ADDRESS');
         eeda.bindTableFieldDockInfo('land_table','DELIVERY_ADDRESS');
+        eeda.bindTableFieldDockInfo('land_table','LOADING_WHARF1');
+        eeda.bindTableFieldDockInfo('land_table','LOADING_WHARF2');
     };
 
 
@@ -159,7 +161,7 @@ $(document).ready(function() {
                     return field_html;
             	}
             },
-            { "data": "TAKE_ADDRESS", "width": "180px", "className":"consigner_addr",
+            { "data": "TAKE_ADDRESS", "width": "150px", "className":"consigner_addr",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                             data='';
@@ -168,13 +170,43 @@ $(document).ready(function() {
                                 id: 'TAKE_ADDRESS',
                                 value: data,
                                 display_value: full.TAKE_ADDRESS_NAME,
-                                style:'width:200px',
+                                style:'width:180px',
                             }
                         );
                         return field_html;
                     }
             },
-            { "data": "DELIVERY_ADDRESS", "width": "180px", "className":"consignee_addr",
+            { "data": "LOADING_WHARF1", "width": "150px", "className":"consigner_addr",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                            data='';
+                        var field_html = template('table_dock_no_field_template',
+                            {
+                                id: 'LOADING_WHARF1',
+                                value: data,
+                                display_value: full.LOADING_WHARF1_NAME,
+                                style:'width:180px',
+                            }
+                        );
+                        return field_html;
+                    }
+            },
+            { "data": "LOADING_WHARF2", "width": "150px", "className":"consigner_addr",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                            data='';
+                        var field_html = template('table_dock_no_field_template',
+                            {
+                                id: 'LOADING_WHARF2',
+                                value: data,
+                                display_value: full.LOADING_WHARF2_NAME,
+                                style:'width:180px',
+                            }
+                        );
+                        return field_html;
+                    }
+            },
+            { "data": "DELIVERY_ADDRESS", "width": "150px", "className":"consignee_addr",
             	"render": function ( data, type, full, meta ) {
                 if(!data)
                             data='';
@@ -183,13 +215,13 @@ $(document).ready(function() {
                                 id: 'DELIVERY_ADDRESS',
                                 value: data,
                                 display_value: full.DELIVERY_ADDRESS_NAME,
-                                style:'width:200px',
+                                style:'width:180px',
                             }
                         );
                         return field_html;
                     }
             },
-            { "data": "CAR_NO", "width": "100px",
+            { "data": "CAR_NO", "width": "150px",
             	"render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -198,7 +230,7 @@ $(document).ready(function() {
                             id: 'CAR_NO',  //component_id 便于用 #id取组件
                             value: data,
                             display_value: full.CAR_NO_NAME,
-                            style:'width:200px'
+                            style:'width:180px'
                         }
                     );
                     return field_html;
@@ -264,7 +296,7 @@ $(document).ready(function() {
                             id: 'CONSIGNOR',
                             value: data,
                             display_value: full.CONSIGNOR_NAME,
-                            style:'width:200px'
+                            style:'width:180px'
                         }
                     );
                     return field_html;
@@ -384,15 +416,17 @@ $(document).ready(function() {
             },
             { "data": "CAR_NO_NAME", "visible": false},
             { "data": "TAKE_ADDRESS_NAME", "visible": false},
-            { "data": "DELIVERY_ADDRESS_NAME", "visible": false}
+            { "data": "DELIVERY_ADDRESS_NAME", "visible": false},
+            { "data": "LOADING_WHARF1_NAME", "visible": false},
+            { "data": "LOADING_WHARF2_NAME", "visible": false}
         ]
     });
 
     //默认加两行, 提空柜, 还重柜
     var addDefaultRows=function(){
         cargoTable.rows.add([
-            {"UNLOAD_TYPE":"提吉柜"},
-            {"UNLOAD_TYPE":"收重柜"}]).draw();
+            {"UNLOAD_TYPE":"提吉柜","TRUCK_TYPE":"40HQ"},
+            {"UNLOAD_TYPE":"收重柜","TRUCK_TYPE":"40HQ"}]).draw();
     };
     
     //把提柜码头和还柜码头带到table中

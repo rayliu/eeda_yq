@@ -100,18 +100,18 @@
 					           </div>
 					           <div class="col-lg-4">
 					                  <%include("/eeda/component/form/inputCarInfoField.html", 
-							                    {   id:'YIGUI_CAR_NO',
+							                    {   id:'SHOUZHONGGUI_CAR_NO',
 							                        type:'head_car',
-							                        label:'移柜车牌号', 
+							                        label:'收重柜车牌号', 
 							                        value: head.head_carrier!'',
 							                        display_value:head.abbr!''
 							                    }){}%>
 					           </div>
 					           <div class="col-lg-4">
 					                  <%include("/eeda/component/form/inputCarInfoField.html", 
-							                    {   id:'SHOUZHONGGUI_CAR_NO',
+							                    {   id:'YIGUI_CAR_NO',
 							                        type:'head_car',
-							                        label:'收重柜车牌号', 
+							                        label:'移柜车牌号', 
 							                        value: head.head_carrier!'',
 							                        display_value:head.abbr!''
 							                    }){}%>
@@ -132,6 +132,20 @@
 					                        label:'还柜码头', 
 					                        value:order.back_wharf!'',
 		                                    display_value:order.back_wharf_name!''
+					                    }){}%>
+					            </div>
+					        </div>
+					        <div class="row">
+					            <div class="col-lg-4">
+					                  <%include("/eeda/component/form/inputDockField.html", 
+					                    {   id:'LOADING_WHARF1', 
+					                        label:'装货地点1'
+					                    }){}%>
+					            </div>
+					            <div class="col-lg-4">
+					                  <%include("/eeda/component/form/inputDockField.html", 
+					                    {   id:'LOADING_WHARF2', 
+					                        label:'装货地点2'
 					                    }){}%>
 					            </div>
 					        </div>
@@ -163,9 +177,11 @@
                                         '柜号',
                                         '柜型',
                                         '提吉柜车牌号',
-                                        '移柜车牌号',
                                         '收重柜车牌号',
+                                        '移柜车牌号',
                                         '提柜码头',
+                                        '装货地点1',
+                                        '装货地点2',
                                         '还柜码头',
                                         '应收费用名称',
                                         '应收费用金额',

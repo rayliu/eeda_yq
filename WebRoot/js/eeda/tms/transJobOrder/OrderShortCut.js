@@ -19,6 +19,8 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
             eeda.bindTableFieldCarInfo('eeda-table', 'SHOUZHONGGUI_CAR_NO');
             eeda.bindTableFieldDockInfo('eeda-table','TAKE_WHARF');
             eeda.bindTableFieldDockInfo('eeda-table','BACK_WHARF');
+            eeda.bindTableFieldDockInfo('eeda-table','LOADING_WHARF1');
+            eeda.bindTableFieldDockInfo('eeda-table','LOADING_WHARF2');
             eeda.bindTableFieldCurrencyId('eeda-table','CURRENCY_ID','/serviceProvider/searchCurrency','');
      };
   	//datatable, 动态处理
@@ -142,21 +144,6 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                      return field_html;
                  }
             }, 
-              { "data": "YIGUI_CAR_NO",
-                "render": function ( data, type, full, meta ) {
-                   if(!data)
-                        data='';
-                    var field_html = template('table_car_no_field_template',
-                        {
-                            id: 'YIGUI_CAR_NO',  //component_id 便于用 #id取组件
-                            value: data,
-                            display_value: full.YIGUI_CAR_NO_INPUT,
-                            style:'width:200px'
-                        }
-                    );
-                     return field_html;
-                 }
-            }, 
               { "data": "SHOUZHONGGUI_CAR_NO",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
@@ -172,6 +159,21 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                      return field_html;
                  }
             },
+              { "data": "YIGUI_CAR_NO",
+                "render": function ( data, type, full, meta ) {
+                   if(!data)
+                        data='';
+                    var field_html = template('table_car_no_field_template',
+                        {
+                            id: 'YIGUI_CAR_NO',  //component_id 便于用 #id取组件
+                            value: data,
+                            display_value: full.YIGUI_CAR_NO_INPUT,
+                            style:'width:200px'
+                        }
+                    );
+                     return field_html;
+                 }
+            }, 
               { "data": "TAKE_WHARF",
                 "render": function ( data, type, full, meta ) {
                      if(!data)
@@ -181,6 +183,36 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                                 id: 'TAKE_WHARF',
                                 value: data,
                                 display_value: full.TAKE_WHARF_INPUT,
+                                style:'width:200px',
+                            }
+                        );
+                        return field_html;
+                    }
+              }, 
+              { "data": "LOADING_WHARF1",
+                "render": function ( data, type, full, meta ) {
+                     if(!data)
+                            data='';
+                        var field_html = template('table_dock_no_field_template',
+                            {
+                                id: 'LOADING_WHARF1',
+                                value: data,
+                                display_value: full.LOADING_WHARF1_INPUT,
+                                style:'width:200px',
+                            }
+                        );
+                        return field_html;
+                    }
+              }, 
+              { "data": "LOADING_WHARF2",
+                "render": function ( data, type, full, meta ) {
+                     if(!data)
+                            data='';
+                        var field_html = template('table_dock_no_field_template',
+                            {
+                                id: 'LOADING_WHARF2',
+                                value: data,
+                                display_value: full.LOADING_WHARF2_INPUT,
                                 style:'width:200px',
                             }
                         );
@@ -281,6 +313,8 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           var shouzhonggui_car_no=$('#SHOUZHONGGUI_CAR_NO').val();
           var take_wharf=$('#TAKE_WHARF').val();
           var back_wharf=$('#BACK_WHARF').val();
+          var loading_wharf1=$('#LOADING_WHARF1').val();
+          var loading_wharf2=$('#LOADING_WHARF2').val();
           var remark=$('#remark').val();
           var customer_id_input=$('#CUSTOMER_ID_input').val();
           var tijigui_car_no_input=$('#TIJIGUI_CAR_NO_input').val();
@@ -288,12 +322,15 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           var shouzhonggui_car_no_input=$('#SHOUZHONGGUI_CAR_NO_input').val();
           var take_wharf_input=$('#TAKE_WHARF_input').val();
           var back_wharf_input=$('#BACK_WHARF_input').val();
+          var loading_wharf1_input=$('#LOADING_WHARF1_input').val();
+          var loading_wharf2_input=$('#LOADING_WHARF2_input').val();
           // var =$('#').val();CUSTOMER_ID_input
           var item={"CREATE_STAMP":create_stamp,"SO_NO":so_no,"CUSTOMER_ID":customer_id,"TYPE":type,
                     "CONTAINER_NO":container_no,"CABINET_TYPE":cabinet_type,"TIJIGUI_CAR_NO":tijigui_car_no,"YIGUI_CAR_NO":yigui_car_no,
                     "SHOUZHONGGUI_CAR_NO":shouzhonggui_car_no,"TAKE_WHARF":take_wharf,"BACK_WHARF":back_wharf,"REMARK":remark,
                     "CUSTOMER_ID_INPUT":customer_id_input,"TIJIGUI_CAR_NO_INPUT":tijigui_car_no_input,"YIGUI_CAR_NO_INPUT":yigui_car_no_input,
-                    "SHOUZHONGGUI_CAR_NO_INPUT":shouzhonggui_car_no_input,"TAKE_WHARF_INPUT":take_wharf_input,"BACK_WHARF_INPUT":back_wharf_input,};
+                    "SHOUZHONGGUI_CAR_NO_INPUT":shouzhonggui_car_no_input,"TAKE_WHARF_INPUT":take_wharf_input,"BACK_WHARF_INPUT":back_wharf_input,
+                    "LOADING_WHARF1_INPUT":loading_wharf1_input,"LOADING_WHARF2_INPUT":loading_wharf2_input,"LOADING_WHARF1":loading_wharf1,"LOADING_WHARF2":loading_wharf2,};
           dataTable.row.add(item).draw(true);
           $('#eeda-table [type="checkbox"]');
       });
@@ -375,7 +412,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                     if(value!=undefined&&value){
                        $(row).find('[name='+name+']').val(value);
                        if(name=='CUSTOMER_ID'||name=='TIJIGUI_CAR_NO'||name=='YIGUI_CAR_NO'||
-                        name=='SHOUZHONGGUI_CAR_NO'||name=='TAKE_WHARF'||name=='BACK_WHARF'){
+                        name=='SHOUZHONGGUI_CAR_NO'||name=='TAKE_WHARF'||name=='BACK_WHARF' ||name=='LOADING_WHARF1' ||name=='LOADING_WHARF2'){
                             $(row).find('[name='+name+'_input]').val($('#'+(name+'_input')).val());
                        }
                        if(name=='type'||name=='cabinet_type'){
