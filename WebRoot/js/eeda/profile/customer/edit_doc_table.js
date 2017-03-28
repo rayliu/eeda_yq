@@ -67,7 +67,7 @@ $(document).ready(function() {
      
     //刷新明细表
     var refleshDocTable = function(order_id){
-    	var url = "/customer/tableList?order_id="+order_id;
+    	var url = "/customer/tableList?order_id="+order_id+"&type=docItem";
     	docTable.ajax.url(url).load();
     }
      

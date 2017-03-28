@@ -14,6 +14,7 @@ import java.util.Map;
 
 import models.ParentOfficeModel;
 import models.Party;
+import models.SpOceanCargo;
 import models.UserCustomer;
 import models.UserLogin;
 import models.UserRole;
@@ -95,6 +96,7 @@ public class CustomerController extends Controller {
         String sql = "select jod.*,u.c_name from party_doc jod left join user_login u on jod.uploader=u.id "
     			+ " where party_id=? order by jod.id";
         setAttr("docList", Db.find(sql,id));
+        setAttr("customerQuotationList", getItems(id, "customerQuotationItem"));
         render("/eeda/profile/customer/CustomerEdit.html");
     }
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_DELETE})
@@ -113,7 +115,7 @@ public class CustomerController extends Controller {
     }
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_CREATE, PermissionConstant.PERMSSION_C_UPDATE}, logical=Logical.OR)
     @Before(Tx.class)
-    public void save() {
+    public void save() throws InstantiationException, IllegalAccessException {
 
     	String jsonStr=getPara("params");
        	Gson gson = new Gson();  
@@ -158,6 +160,8 @@ public class CustomerController extends Controller {
         }
         List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("docItem");
 		DbUtils.handleList(itemList, "party_doc", id, "party_id");
+		List<Map<String, String>> customerQuotationItemList = (ArrayList<Map<String, String>>)dto.get("customer_quotationItem");
+		DbUtils.handleList(customerQuotationItemList,  "party_quotation", id, "party_id");
     	renderJson(party);
     }
 
@@ -460,11 +464,15 @@ public class CustomerController extends Controller {
     
   //异步刷新字表
     public void tableList(){
+//    	String order_id = getPara("order_id");
+//    	String sql = "select jod.*,u.c_name from party_doc jod left join user_login u on jod.uploader=u.id "
+//    			+ " where party_id=? order by jod.id";
+//    	List<Record> list = Db.find(sql,order_id);
     	String order_id = getPara("order_id");
-    	String sql = "select jod.*,u.c_name from party_doc jod left join user_login u on jod.uploader=u.id "
-    			+ " where party_id=? order by jod.id";
-    	List<Record> list = Db.find(sql,order_id);
+    	String type = getPara("type");
     	
+    	List<Record> list = null;
+    	list = getItems(order_id,type);
     	Map map = new HashMap();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
@@ -473,5 +481,24 @@ public class CustomerController extends Controller {
         renderJson(map); 
     }
     
+    private List<Record> getItems(String orderId,String type) {
+    	String itemSql = "";
+    	List<Record> itemList = null;
+    	 if("docItem".equals(type)){
+    		itemSql = "select jod.*,u.c_name from party_doc jod left join user_login u on jod.uploader=u.id "
+        			+ " where party_id=? order by jod.id";
+    		itemList = Db.find(itemSql, orderId);
+    	}else if("customerQuotationItem".equals(type)){
+    		itemSql = " SELECT pq.*,d1.dock_name take_address_name,d2.dock_name delivery_address_name,d3.dock_name loading_wharf1_name "
+    				+" ,d4.dock_name loading_wharf2_name FROM party_quotation pq "
+    				+" LEFT JOIN dockinfo d1 on d1.id=pq.take_address "
+    				+" LEFT JOIN dockinfo d2 on d2.id=pq.delivery_address "
+    				+" LEFT JOIN dockinfo d3 on d3.id=pq.loading_wharf1 "
+    				+" LEFT JOIN dockinfo d4 on d4.id=pq.loading_wharf2 "
+    				+ " where party_id=? order by pq.id";
+    		itemList = Db.find(itemSql, orderId);
+    	}
+		return itemList;
+	}
     
 }
