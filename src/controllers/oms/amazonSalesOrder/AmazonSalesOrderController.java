@@ -36,6 +36,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.oms.amazonSalesOrder.util.MarketplaceWebServiceOrdersSampleConfig;
+import controllers.oms.ebaySalesOrder.EbayApiContextUtil;
 import controllers.profile.EbayAccountController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -48,6 +49,11 @@ public class AmazonSalesOrderController extends Controller {
 
     @Before(EedaMenuInterceptor.class)
     public void index() {
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	String sql = "select * from amazon_seller_account where office_id = "+ user.getLong("office_id");
+        List<Record> amazonAcountList = Db.find(sql);
+        setAttr("amazonAcountList", amazonAcountList);
+    	
         String type = getPara("type");
         setAttr("type", type);
         render("/oms/amazonSalesOrder/amazonSalesOrderList.html");

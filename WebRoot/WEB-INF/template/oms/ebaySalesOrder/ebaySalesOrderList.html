@@ -23,16 +23,12 @@
                             <div class="row">
                               <div class="col-lg-8">
                                   <div class="form-group" id="transport_type">
-                                      <label class="search-label">eBay 账号</label>
-                                      <label class="checkbox-inline">
-                                          <input type="checkbox" value="air" checked>DE
+                                  	  <label class="search-label">eBay 账号</label>
+                                  	  <% for(list in ebayAcountList){%>
+                                  	  <label class="checkbox-inline">
+                                          <input type="checkbox" value="${list.id!''}" checked>${list.account_name!''}
                                       </label>
-                                      <label class="checkbox-inline">
-                                          <input type="checkbox" value="land" checked>UK
-                                      </label>
-                                      <label class="checkbox-inline">
-                                          <input type="checkbox" value="land" checked>US
-                                      </label>
+                                  	  <% }%>
                                   </div>
                               </div>
                             </div>

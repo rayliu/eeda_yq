@@ -42,6 +42,10 @@ public class EbaySalesOrderController extends Controller {
 
     @Before(EedaMenuInterceptor.class)
     public void index() {
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        String sql = "select * from ebay_seller_account where type='"+EbayApiContextUtil.configStr+"' and office_id = "+ user.getLong("office_id");
+        List<Record> ebayAcountList = Db.find(sql);
+        setAttr("ebayAcountList", ebayAcountList);
         
         Record orderNopayRec = Db.findFirst("select count(1) total from ebay_order where paid_time is null");
         setAttr("orderNopayCount", orderNopayRec.get("total"));
