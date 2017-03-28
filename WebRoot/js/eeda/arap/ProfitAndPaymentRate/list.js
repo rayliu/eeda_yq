@@ -96,27 +96,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    }
 					return data;
 				  }
-	            },
-	            {
-					"render": function(data, type, full, meta) {
-	            	    var profit = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
-	            	    if(profit<0){
-	            	    	return '<span style="color:red;width:120px">'+profit+'</span>';
-	            	    }
-						return profit;
-					}
-				},
-	            { 
-	            	"render": function(data, type, full, meta) {
-					    var profit_rate=parseFloat(((full.CHARGE_RMB - full.COST_RMB)/full.COST_RMB)*100).toFixed(2);
-	            		if(!full.COST_RMB){
-	            			return "";
-	            		}
-	            		if(profit_rate<0){
-	            			return '<span style="color:red;">'+profit_rate+'</span>';
-	            		}
-	            		return profit_rate;
-					}
 	            }
 	          ]
 	      });
