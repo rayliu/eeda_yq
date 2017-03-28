@@ -23,16 +23,12 @@
                             <div class="row">
                               <div class="col-lg-8">
                                   <div class="form-group" id="transport_type">
-                                      <label class="search-label">eBay 账号</label>
-                                      <label class="checkbox-inline">
-                                          <input type="checkbox" value="air" checked>DE
+                                  	  <label class="search-label">eBay 账号</label>
+                                  	  <% for(list in ebayAcountList){%>
+                                  	  <label class="checkbox-inline">
+                                          <input type="checkbox" value="${list.id!''}" checked>${list.account_name!''}
                                       </label>
-                                      <label class="checkbox-inline">
-                                          <input type="checkbox" value="land" checked>UK
-                                      </label>
-                                      <label class="checkbox-inline">
-                                          <input type="checkbox" value="land" checked>US
-                                      </label>
+                                  	  <% }%>
                                   </div>
                               </div>
                             </div>
@@ -117,73 +113,13 @@
                           <input type="hidden" id="recipient_id" name="recipient_id">
                           <label>标题</label>
                           <textarea id="msg_subject" name="msg_subject" class="form-control" rows="2" disabled></textarea><br>
-                          <label>正文</label>
-                          <textarea id="msg_body" name="msg_body" class="form-control" rows="6" disabled></textarea><br>
-                          <label>客服回复 </label>
-                          <textarea id="msg_response" name="msg_response" class="form-control" rows="20" required></textarea><br>
+                          <label>正文</label><hr/>
+                          <!-- <textarea id="msg_body" name="msg_body" class="form-control" rows="6" disabled></textarea><br> -->
                           <ul class="chat">
-                                <li class="left clearfix">
-                                    <span class="chat-img pull-left">
-                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle">
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">Jack Sparrow</strong>
-                                            <small class="pull-right text-muted">
-                                                <i class="fa fa-clock-o fa-fw"></i> 2017-03-18 10:00:00
-                                            </small>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="right clearfix">
-                                    <span class="chat-img pull-right">
-                                        <img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle">
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <small class=" text-muted">
-                                                <i class="fa fa-clock-o fa-fw"></i> 2017-03-21 10:00:00</small>
-                                            <strong class="pull-right primary-font">Bhaumik Patel</strong>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="left clearfix">
-                                    <span class="chat-img pull-left">
-                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle">
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">Jack Sparrow</strong>
-                                            <small class="pull-right text-muted">
-                                                <i class="fa fa-clock-o fa-fw"></i> 2017-03-21 14:00:00</small>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="right clearfix">
-                                    <span class="chat-img pull-right">
-                                        <img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle">
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <small class=" text-muted">
-                                                <i class="fa fa-clock-o fa-fw"></i> 2017-03-27 10:00:00</small>
-                                            <strong class="pull-right primary-font">Bhaumik Patel</strong>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul>
+                                
+                          </ul>
+                          <label>客服回复 </label>
+                          <textarea id="msg_response" name="msg_response" class="form-control" rows="3" required></textarea><br>
                     </div>
                 </div>
                 <div class="modal-footer">

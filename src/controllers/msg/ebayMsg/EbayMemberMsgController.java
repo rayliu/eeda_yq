@@ -48,6 +48,10 @@ public class EbayMemberMsgController extends Controller {
         // Record orderNoshipRec =
         // Db.findFirst("select count(1) total from ebay_member_msg where shipped_time is null");
         // setAttr("orderNoshipCount", orderNoshipRec.get("total"));
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        String sql = "select * from ebay_seller_account where type='"+EbayApiContextUtil.configStr+"' and office_id = "+ user.getLong("office_id");
+        List<Record> ebayAcountList = Db.find(sql);
+        setAttr("ebayAcountList", ebayAcountList);
 
         render("/msg/ebayMemberMsg/ebayMemberMsgList.html");
     }
@@ -63,7 +67,7 @@ public class EbayMemberMsgController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "select * from ebay_member_msg where 1=1 ";
+        String sql = "select * from (select * from ebay_member_msg group by item_id) A where 1=1 ";
 
         String condition = DbUtils.buildConditions(getParaMap());
 
@@ -84,7 +88,11 @@ public class EbayMemberMsgController extends Controller {
 
     public void getMemberMsg(){
         long id = getParaToLong("id");
-        Record rec = Db.findById("ebay_member_msg", id);
+        long item_id = getParaToLong("item_id");
+        //Record rec = Db.findById("ebay_member_msg", id);
+        
+        List<Record> rec = Db.find("select * from ebay_member_msg where item_id = ? ORDER BY creation_date",item_id);
+        
         renderJson(rec);
     }
     
@@ -200,6 +208,6 @@ public class EbayMemberMsgController extends Controller {
 //            e.printStackTrace();
 //            renderText("Failed");
 //        }
-        renderText("OK");
+        renderJson(rec);
     }
 }
