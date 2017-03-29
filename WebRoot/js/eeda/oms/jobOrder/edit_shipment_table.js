@@ -225,6 +225,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             $('#vgm').val(vgm);
         })
         
-
+        
+        if(container_type_hidden!=null && container_type_hidden!=""){
+        	var arrays = container_type_hidden.split(",");
+            var dataTable = $('#ocean_cargo_table').DataTable();
+            for(var i = 0; i < arrays.length; i++){
+            	
+            	var array = arrays[i].split("X");
+            	var type = array[0];
+            	var number = array[1];
+            	for(var j = 0; j < number; j++){
+            		var item={};
+            		item.CONTAINER_TYPE = type.trim();
+            		dataTable.row.add(item).draw();
+            	}
+            };
+        };
     });
 });

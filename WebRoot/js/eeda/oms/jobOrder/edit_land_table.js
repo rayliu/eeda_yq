@@ -79,14 +79,13 @@ $(document).ready(function() {
         eeda.bindTableFieldTruckOut('land_table', 'CONSIGNOR');
         eeda.bindTableFieldTruckIn('land_table', 'CONSIGNEE');
         eeda.bindTableField('land_table','UNIT_ID','/serviceProvider/searchUnit','');
-        eeda.bindTableLocationField('land_table','ROUTE_FROM');
-        eeda.bindTableLocationField('land_table','ROUTE_TO');
+//        eeda.bindTableLocationField('land_table','ROUTE_FROM');
+//        eeda.bindTableLocationField('land_table','ROUTE_TO');
     };
     //------------事件处理
 	 var cargoTable = eeda.dt({
 	        id: 'land_table',
 	        autoWidth: true,
-            
 	        drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
 	        	bindFieldEvent();
 	        },
@@ -137,34 +136,7 @@ $(document).ready(function() {
                 		return '';
                 }
             },
-            { "data": "ROUTE_FROM", "width": "100px","visible": false,
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    var field_html = template('input_location_template',
-                            {
-                                id: 'ROUTE_FROM',
-                                value: data,
-                                style:'width:100px'
-                            }
-                        );
-                    return field_html;
-                }
-            },
-            { "data": "ROUTE_TO", "width": "100px","visible": false,
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    var field_html = template('input_location_template',
-                            {
-                                id: 'ROUTE_TO',
-                                value: data,
-                                style:'width:100px'
-                            }
-                        );
-                    return field_html;
-                }
-            },
+           
             { "data": "UNLOAD_TYPE", "width": "50px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
@@ -440,6 +412,8 @@ $(document).ready(function() {
             }
         ]
     });
+	 
+	 
 
     //刷新明细表
     itemOrder.refleshLandItemTable = function(order_id){
@@ -541,7 +515,23 @@ $(document).ready(function() {
     $('#land_btnConfirm').click(function(){
 		var showNote = $('#land_showNote').val();
 		self.val(showNote);
-	})
+	});
+    
+    if(truck_type_hidden!=null && truck_type_hidden!=""){
+    	var arrays = truck_type_hidden.split(",");
+        var landtable = $('#land_table').DataTable();
+        for(var i = 0; i < arrays.length; i++){
+        	
+        	var array = arrays[i].split("X");
+        	var type = array[0];
+        	var number = array[1];
+        	for(var j = 0; j < number; j++){
+        		var item={};
+        		item.TRUCK_TYPE = type;
+        		landtable.row.add(item).draw();
+        	}
+        };
+    };
 
 });
 });

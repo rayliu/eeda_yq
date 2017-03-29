@@ -98,6 +98,26 @@ public class JobOrderController extends Controller {
 	    	PlanOrderItem plan_order_item = PlanOrderItem.dao.findById(id);
 	    	setAttr("planOrderItem", plan_order_item);
 	    	
+	    	String transport_type = "";
+	    	String truct_type = plan_order_item.getStr("truck_type");
+	    	String container_type = plan_order_item.getStr("container_type");
+	    	if(StringUtils.isNotBlank(truct_type)){
+	    		if(StringUtils.isBlank(transport_type)){
+	    			transport_type += "land";
+	    		}else{
+	    			transport_type += ",land";
+	    		}
+	    	}
+	    	if(StringUtils.isNotBlank(container_type)){
+	    		if(StringUtils.isBlank(transport_type)){
+	    			transport_type += "ocean";
+	    		}else{
+	    			transport_type += ",ocean";
+	    		}
+	    	}
+	    	setAttr("transport_type", transport_type);
+	    	
+	    	
 	    	//返回海运的港口名称,加多一个船公司
 	    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name,p.abbr carrier_name from plan_order_item joi"
 				    			+" LEFT JOIN location lo on lo.id = joi.por"
@@ -106,7 +126,6 @@ public class JobOrderController extends Controller {
 				    			+ " left join party p on p.id = joi.carrier"
 				    			+" where joi.id = ?";
 	    	setAttr("portCreate",Db.findFirst(port_sql,id));
-	    	
     	}
     	setAttr("usedOceanInfo", getUsedOceanInfo());
     	setAttr("usedAirInfo", getUsedAirInfo());

@@ -29,6 +29,7 @@
         	    </div>
         	</div>
             
+
         <div style="margin-left:12px;margin-right:12px">
             <form id="orderForm" class="form-group">
             	<div class="row small_head"><div class="font_style">Work Order 工作单</div></div>
@@ -645,7 +646,9 @@
 	var loginUserName = '${loginUser!''}';
     var order_no = '${order.order_no!'订单编辑'}'; 
     var itemOrder = {};
-    var transport_type_hidden = '${order.transport_type!planOrderItem.transport_type!''}';
+    var transport_type_hidden = "${order.transport_type!transport_type!''}";
+    var container_type_hidden = "${planOrderItem.container_type!''}";
+    var truck_type_hidden = "${planOrderItem.truck_type!''}";
     
     var custom_type_hidden = '${planOrderItem.customs_type!''}';
     if(custom_type_hidden=="自理报关"){
