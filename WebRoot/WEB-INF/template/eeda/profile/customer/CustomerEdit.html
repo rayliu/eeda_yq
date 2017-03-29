@@ -252,20 +252,20 @@
 								</form>       
                             </div>
                             <!-- /.row (nested) -->
-          <div class="row">
+          <div class="row" style="margin-top:15px;">
                <div class="col-lg-12"> 
                 <ul  class="nav nav-tabs">
-                    <li class="active">
+                    <li >
                         <a id='document_info' href="#documentInfo" data-toggle="tab" >文档信息</a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a id='customer_quotation' href="#customerQuotation" data-toggle="tab" >客户报价表</a>
                     </li>
                 </ul>
                </div>
          </div>
          <div class="tab-content">
-                <div class="tab-pane fade active in" id="documentInfo">
+                <div class="tab-pane fade " id="documentInfo">
                     <div class="form-group"> 
                      <div class="col-lg-12"> 
                         <span class="btn btn-success btn-xs fileinput-button" id="fileuploadSpan"> 
@@ -284,7 +284,7 @@
                           </div>
                         </div>      
                 </div>
-                <div class="tab-pane fade" id="customerQuotation">
+                <div class="tab-pane fade active in" id="customerQuotation">
                     <div class="form-group"> 
                      <div class="col-lg-12"> 
                        <button id="add_customerQuotation" type="button" class="btn btn_blue btn-xs">添加</button>
@@ -293,9 +293,9 @@
                                     {
                                         id:'customer_quotation_table',
                                         style:'width:1380px',
-                                        headers:[' 操作 ','提柜码头', '装货地点1', '装货地点2', '还柜码头','车型','货柜数量','不含税运费','税率','税金','价税费','备注','','','',''],
-                                        field_list:['','take_address','loading_wharf1','loading_wharf2','delivery_address','truck_type','container_volume', 'tax_free_freight','tax_rate','tax','price_tax','remark'
-                                            ,'take_address_name','delivery_address_name','loading_wharf1_name','loading_wharf2_name'],
+                                        headers:[' 操作 ','提柜码头', '装货地点1', '装货地点2', '还柜码头','车型','货柜数量','不含税运费币制','不含税运费','税率','税金','价税费','备注','','','','',''],
+                                        field_list:['','take_address','loading_wharf1','loading_wharf2','delivery_address','truck_type','currency_id','container_volume', 'tax_free_freight','tax_rate','tax','price_tax','remark'
+                                            ,'take_address_name','delivery_address_name','loading_wharf1_name','loading_wharf2_name','CURRENCY_NAME'],
                                         value_list: customerQuotationList![]
                                     }){} %>
                           </div>
@@ -323,6 +323,7 @@
 
 <%}%>
 
+<%include("/eeda/component/jsTemplate/tableInputFieldCurrencyId.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputDockInfoField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>

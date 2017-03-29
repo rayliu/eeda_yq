@@ -22,6 +22,8 @@ $(document).ready(function() {
             $(el).trigger('keyup');
         }); 
 
+
+        eeda.bindTableFieldCurrencyId('charge_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
         eeda.bindTableFieldDockInfo('customer_quotation_table','TAKE_ADDRESS');
         eeda.bindTableFieldDockInfo('customer_quotation_table','DELIVERY_ADDRESS');
         eeda.bindTableFieldDockInfo('customer_quotation_table','LOADING_WHARF1');
@@ -121,6 +123,23 @@ $(document).ready(function() {
                     return '<input type="text" name="container_volume" value="'+data+'" class="form-control" style="width:80px"/>';
                 }
             },
+            { "data": "CURRENCY_ID", "width": "60px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data&&!full.CURRENCY_NAME){
+                        data='3';
+                        full.CURRENCY_NAME="CNY";
+                    }
+                    var field_html = template('table_dropdown_template',
+                        {
+                            id: 'CURRENCY_ID',
+                            value: data,
+                            display_value: full.CURRENCY_NAME,
+                            style:'width:80px'
+                        }
+                       );
+                       return field_html;
+                     }
+            },
             { "data": "TAX_FREE_FREIGHT","width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
@@ -159,7 +178,8 @@ $(document).ready(function() {
             { "data": "TAKE_ADDRESS_NAME","visible": false},
             { "data": "DELIVERY_ADDRESS_NAME","visible": false},
             { "data": "LOADING_WHARF1_NAME","visible": false},
-            { "data": "LOADING_WHARF2_NAME","visible": false}
+            { "data": "LOADING_WHARF2_NAME","visible": false},
+            { "data": "CURRENCY_NAME","visible": false}
             ]
     });
     
@@ -224,7 +244,33 @@ $(document).ready(function() {
             var url = "/customer/tableList?order_id="+order_id+"&type=customerQuotationItem";
             cargoTable.ajax.url(url).load();
         }
-        
+
+        $('#customer_quotation_table').on('keyup','[name=tax_free_freight],[name=tax_rate],[name=tax]',function(){
+            var row=$(this).parent().parent();
+            var tax_free_freight=$(row.find('[name=tax_free_freight]')).val();
+            var tax_rate=$(row.find('[name=tax_rate]')).val();
+            var tax=$(row.find('[name=tax]')).val();
+    
+            if(tax_free_freight==''){
+              $(row.find('[name=price_tax]')).val('');
+              $(row.find('[name=tax]')).val('');
+            }
+            if(tax_rate==''){
+              $(row.find('[name=tax]')).val('');
+            }
+            if(tax_free_freight!=''&&tax_rate!=''&&!isNaN(tax_free_freight)&&!isNaN(tax_rate)){
+                var amount = (parseFloat(tax_free_freight)*parseFloat(tax_rate)).toFixed(2);
+                $(row.find('[name=tax]')).val(amount);
+            }
+            if(tax_free_freight!=''&&!isNaN(tax_free_freight)){
+                
+                $(row.find('[name=price_tax]')).val(tax_free_freight);
+                var tax1=$(row.find('[name=tax]')).val();
+                if(tax1!=''&&!isNaN(tax1)){
+                    $(row.find('[name=price_tax]')).val((parseFloat(tax_free_freight)+parseFloat(tax1)).toFixed(2));
+                }
+            }
+       })
 
 });
 });

@@ -189,6 +189,21 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                         return field_html;
                     }
               }, 
+              { "data": "BACK_WHARF",
+                "render": function ( data, type, full, meta ) {
+                      if(!data)
+                            data='';
+                        var field_html = template('table_dock_no_field_template',
+                            {
+                                id: 'BACK_WHARF',
+                                value: data,
+                                display_value: full.BACK_WHARF_INPUT,
+                                style:'width:200px',
+                            }
+                        );
+                        return field_html;
+                    }
+              },
               { "data": "LOADING_WHARF1",
                 "render": function ( data, type, full, meta ) {
                      if(!data)
@@ -219,21 +234,6 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                         return field_html;
                     }
               }, 
-              { "data": "BACK_WHARF",
-                "render": function ( data, type, full, meta ) {
-                      if(!data)
-                            data='';
-                        var field_html = template('table_dock_no_field_template',
-                            {
-                                id: 'BACK_WHARF',
-                                value: data,
-                                display_value: full.BACK_WHARF_INPUT,
-                                style:'width:200px',
-                            }
-                        );
-                        return field_html;
-                    }
-              },
              { "data": "CHARGE_ID", 
                   "render": function ( data, type, full, meta ) {
                 	  if(!data)
@@ -468,6 +468,8 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 
           return cargo_items_array;
        }
+
+     
 
   });
 });
