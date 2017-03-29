@@ -125,6 +125,7 @@ import controllers.msg.EwmsDashBoardController;
 import controllers.msg.YqDashBoardController;
 import controllers.msg.ebayMsg.EbayMemberMsgController;
 import controllers.msg.ebayMsg.MsgController4App;
+import controllers.oms.aliexpressSalesOrder.AliexpressSalesOrderController;
 import controllers.oms.amazonSalesOrder.AmazonSalesOrderController;
 import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.ebaySalesOrder.AllOrderControllerForMobile;
@@ -233,6 +234,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/ebaySalesOrder", EbaySalesOrderController.class, contentPath);
         me.add("/ebayMemberMsg", EbayMemberMsgController.class, contentPath);
         me.add("/amazonSalesOrder", AmazonSalesOrderController.class, contentPath);
+        me.add("/aliexpressSalesOrder", AliexpressSalesOrderController.class, contentPath);
         
         
         me.add("/ebayAccount", EbayAccountController.class, contentPath);
@@ -371,8 +373,8 @@ public class EedaConfig extends JFinalConfig {
     	me.add(new ShiroPlugin(routes));
     	
     	//job启动
-    	SchedulerPlugin sp = new SchedulerPlugin("job.properties");
-        me.add(sp);
+//    	SchedulerPlugin sp = new SchedulerPlugin("job.properties");
+//        me.add(sp);
     	
         mailUser = getProperty("mail_user_name");
         mailPwd = getProperty("mail_pwd");
