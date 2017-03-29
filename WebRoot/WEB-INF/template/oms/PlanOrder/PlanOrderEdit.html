@@ -102,11 +102,11 @@
                                     {
                                         id:'cargo_table',
                                         style:'width:3500px',
-                                        headers:['','','出货时间','柜型','箱量','目的港POD','ETA','车型车量','运输方式', '负载方式',   '货物名称', '件数','单位', 
+                                        headers:['','','book单号','工作单类型','出货时间','柜型','箱量','目的港POD','ETA','车型车量','运输方式', '负载方式',   '货物名称', '件数','单位', 
                                                   '体积(CBM)','净重(KG)', '毛重(KG)', '总重量(KG)',   '提货地点', '送货地点',
                                                  '收货港POR', '起运港POL',  '船公司', '船名vessel', '航次voyage',
                                                  '截关日期', 'ETD', '报关类型','报关日期', 'por_name', 'pol_name', 'pod_name', 'carrier_name', 'is_gen_job','unit_name'],
-                                        field_list:['id','','factory_loading_time','container_type','container_amount','pod','eta','truck_type','transport_type','load_type',   'cargo_name',  'pieces',
+                                        field_list:['id','','book_order_no','job_order_type','factory_loading_time','container_type','container_amount','pod','eta','truck_type','transport_type','load_type',   'cargo_name',  'pieces',
                                         'unit_id','volume', 'net_weight','gross_weight', 'vgm',   'pickup_addr', 'dilvery_addr',
                                         'por','pol', 'carrier', 'vessel', 'voyage', 
                                         'cls', 'etd','customs_type','customs_data', 'por_name', 'pol_name', 'pod_name', 'carrier_name', 'is_gen_job','unit_name'],
@@ -135,16 +135,16 @@
 		                <div class="form-group">
 		                    <ul id="containerTypeTab" class="checkbox-inline">
 			                    <li class="checkbox-inline">
-			                        <input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+			                        <input type="checkbox" value="20'GP">20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
 			                    </li><br>
 			                    <li class="checkbox-inline">
-			                        <input type="checkbox" value='40GP'>40GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+			                        <input type="checkbox" value="40'GP">40GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
 			                    </li><br>
 			                    <li class="checkbox-inline">
-			                        <input type="checkbox" value='45GP'>45GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+			                        <input type="checkbox" value="45'GP">45GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
 			                    </li><br>
 			                    <li class="checkbox-inline">
-			                        <input type="checkbox" value='45GP'>45HQ X </input><input class="container_amount" style="width:30px"  value='1'></input>
+			                        <input type="checkbox" value="45'GP">45HQ X </input><input class="container_amount" style="width:30px"  value='1'></input>
 			                    </li>
 			                </ul>
 		                </div>
@@ -166,54 +166,105 @@
 		                <div class="form-group" id="truckTypeTab">
 		                   <ul style="overflow:hidden;zoom:1" >
 						　　　　<li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='40HQ'>40HQ X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 							  <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='40GP'>40GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 						      <li style=" float:left; margin-left:20px; list-style-type:none;">
 									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 							  <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='40T'>40T X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 							  <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='20T'>20T X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 							  <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='10T'>10T X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 						      <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='8T'>8T X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 							  <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='5T'>5T X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 						      <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='3T'>3T X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 							  <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='1.5T'>1.5T X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 						      <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='21M'>21M X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 							  <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='18.5M'>18.5M X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 							  <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='18.0M'>18.0M X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 							  <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='17.8M'>17.8M X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 						      <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='17.5M'>17.5M X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 							  <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='17.0M'>17.0M X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
-						
+						     <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='16.0M'>16.0M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+							  <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='15.0M'>15.0M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+							  <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='14.5M'>14.5M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+						      <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='13.5M'>13.5M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+							  <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='13.0M'>13.0M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+						     <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='12.5M'>12.5M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+							  <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='9.6M'>9.6M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+							  <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='8.6M'>8.6M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+						      <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='8.0M'>8.0M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+							  <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='7.6M'>7.6M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+							 <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='7.2M'>7.2M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+							 <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='6.8M'>6.8M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+						 	 <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='6.5M'>6.5M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+						 	  <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='5.3M'>5.3M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+							 <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='4.3M'>4.3M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+						 	 <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='4.2M'>4.2M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+						 	  <li style=" float:left; margin-left:20px; list-style-type:none;">
+									<input type="checkbox" value='2.6M'>2.6M X </input><input class="container_amount" style="width:30px"  value='1'></input>
+						　　　　</li>
+							
 							
 							　　
 							</ul>

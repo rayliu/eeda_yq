@@ -98,6 +98,37 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                	}
 	                }
 	            },
+	            { "data": "BOOK_ORDER_NO","width": "30px",
+	                "render": function ( data, type, full, meta ) {
+	                	if(!data)
+	                        data='';
+	                   return '<input type="text" disabled value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            { "data": "JOB_ORDER_TYPE","width": "30px",
+	            	"render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    var str = '<select name="job_order_type" class="form-control search-control">'
+		                   +'<option value="出口柜货" '+(data=='出口柜货' ? 'selected':'')+'>出口柜货</option>'
+		                   +'<option value="进口柜货" '+(data=='进口柜货' ? 'selected':'')+'>进口柜货</option>'
+		                   +'<option value="出口散货" '+(data=='出口散货' ? 'selected':'')+'>出口散货</option>'
+		                   +'<option value="进口散货" '+(data=='进口散货' ? 'selected':'')+'>进口散货</option>'
+		                   +'<option value="出口空运" '+(data=='出口空运' ? 'selected':'')+'>出口空运</option>'
+		                   +'<option value="进口空运" '+(data=='进口空运' ? 'selected':'')+'>进口空运</option>'
+		                   +'<option value="内贸海运" '+(data=='内贸海运' ? 'selected':'')+'>内贸海运</option>'
+		                   +'<option value="香港头程" '+(data=='香港头程' ? 'selected':'')+'>香港头程</option>'
+		                   +'<option value="香港游" '+(data=='香港游' ? 'selected':'')+'>香港游</option>'
+		                   +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
+		                   +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
+		                   +'<option value="快递" '+(data=='快递' ? 'selected':'')+'>快递</option>'
+		                   +'<option value="加贸" '+(data=='加贸' ? 'selected':'')+'>加贸</option>'
+		                   +'<option value="贸易" '+(data=='贸易' ? 'selected':'')+'>贸易</option>'
+		                   +'<option value="园区游" '+(data=='园区游' ? 'selected':'')+'>园区游</option>'
+		                   +'</select>';
+	                    return str;
+	                }
+	            },
 	            { "data": "FACTORY_LOADING_TIME" ,"width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
@@ -447,7 +478,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    $('#truckType_btnConfirm').click(function(){
 	    	var transport_type = [];
 	    	$('#truckTypeTab li input[type="checkbox"]:checked').each(function(){
-	    		var containerVal=$(this).val()+' X'+$(this).parent().find('.container_amount').val()
+	    		var containerVal=$(this).val()+'X'+$(this).parent().find('.container_amount').val()
 	        	transport_type.push(containerVal); 
 	        });
 	        var transport_type_str = transport_type.toString();
