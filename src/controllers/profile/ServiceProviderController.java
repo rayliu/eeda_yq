@@ -202,8 +202,9 @@ public class ServiceProviderController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(acount_json, HashMap.class);  
         //保存账户信息
+        String order_id = party.get("id").toString();
         List<Map<String, String>> acount = (ArrayList<Map<String, String>>)dto.get("acount_json");
-		DbUtils.handleList(acount, id, FinAccount.class, "order_id");
+		DbUtils.handleList(acount, order_id, FinAccount.class, "order_id");
         setAttr("saveOK", true);
         //redirect("/serviceProvider");
         renderJson(party);

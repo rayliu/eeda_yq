@@ -317,11 +317,16 @@
 									<div class="col-lg-12">
 										<div class="button-bar" style="clear:both;">
                                         	<button id="save" type="button" class="btn  btn_green" disabled>保存</button>
-                                        	<button id="submit" type="button" class="btn  btn_green" disabled>提交</button>
-                                        	
-                                    		<% if(shiro.hasPermission("approval")){%>
-                                        	<button id="approval" type="button" class="btn  btn_green" disabled>审核通过</button>
-                                        	<button id="disapproval" type="button" class="btn  btn_green" disabled>审核不通过</button>
+                                        	<% if(shiro.hasPermission("approval")){%>
+                                        		<button id="submit" type="button" class="btn  btn_green" disabled>提交</button>
+                                        	<%}%>
+                                        	<% if(shiro.hasPermission("approval")){%>
+	                                        	<button id="approval" type="button" class="btn  btn_green" disabled>审核通过</button>
+	                                        	<button id="disapproval" type="button" class="btn btn-danger btn-xs" disabled>审核不通过</button>
+                                        	<%}%>
+                                        	<% if(shiro.hasPermission("verification")){%>
+	                                        	<button id="verification" type="button" class="btn  btn_green" disabled>审批通过</button>
+	                                        	<button id="disVerification" type="button" class="btn btn-danger btn-xs" disabled>审批不通过</button>
                                         	<%}%>
                                         	<button id="marking" type="button" class="btn  btn_green">打分</button>
                                         	<a class="btn  btn_white" href="/serviceProvider">返回</a>

@@ -101,6 +101,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            }
 	        ]
 	    });
+	    
 
 
 	    $('#add_cargo').on('click', function(){

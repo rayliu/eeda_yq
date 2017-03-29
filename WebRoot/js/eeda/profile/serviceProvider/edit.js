@@ -134,6 +134,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       //自动提交改为手动提交
       $("#save").click(function(){
     	 if(!$("#customerForm").valid()){
+    		 $.scojs_message('请填上面的必填字段', $.scojs_message.TYPE_ERROR);
     		  return false;
     	 }
     	 $("#save").attr("disabled",true);
@@ -167,23 +168,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       });
       
       
-      $("#submit,#approval,#disapproval").click(function(){
+      $("#submit,#approval,#disapproval,#verification,#disVerification").click(function(){
     	  var btn = $(this).attr('id');
     	  var value = $(this).text();
     	  $("#submit").prop('disabled',true);
-    	  $("#approval").prop('disabled',true);
-    	  $("#disapproval").prop('disabled',true);
+    	  
     	  $.post("/serviceProvider/approvalOrder", {id:$("#partyId").val(),action:btn},function(data){
     		  if(data){
     			  $.scojs_message('操作成功', $.scojs_message.TYPE_OK);
     			  var status = data.STATUS;
     			  $("#status").val(status);
     			  if(status!="审核不通过"){
-    				  $("#save").prop('disabled',true);
         	    	  $("#approval").prop('disabled',false);
         	    	  $("#disapproval").prop('disabled',false); 
     			  }else{
-    				  $("#save").prop('disabled',false);
         	    	  $("#approval").prop('disabled',true);
         	    	  $("#disapproval").prop('disabled',true);
     			  }
