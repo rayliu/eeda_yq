@@ -22,7 +22,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "COST_RMB", "width": "120px" ,
@@ -30,16 +30,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            {
 					"render": function(data, type, full, meta) {
 	            	    var profit = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
 	            	    if(profit<0){
-	            	    	return '<span style="color:red;width:120px">'+profit+'</span>';
+	            	    	return '<span style="color:red;width:120px">'+eeda.numFormat(profit,3)+'</span>';
 	            	    }
-						return profit;
+						return eeda.numFormat(profit,3);
 					}
 				},
 	            { 

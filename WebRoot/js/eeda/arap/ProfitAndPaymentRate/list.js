@@ -22,7 +22,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "CHARGE_USD", "width": "80px"  ,
@@ -30,7 +30,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "CHARGE_JPY", "width": "80px",
@@ -38,7 +38,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "CHARGE_HKD", "width": "80px",
@@ -46,7 +46,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "COST_CNY", "width": "80px" ,
@@ -54,7 +54,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "COST_USD", "width": "80px",
@@ -62,7 +62,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "COST_JPY", "width": "80px",
@@ -70,7 +70,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "COST_HKD", "width": "80px",
@@ -78,7 +78,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "CHARGE_RMB", "width": "120px",
@@ -86,7 +86,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "COST_RMB", "width": "120px" ,
@@ -94,7 +94,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            }
 	          ]

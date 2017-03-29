@@ -152,39 +152,85 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      			eeda.contactUrl("edit?id",data.ID);
      			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
      			$("#status").val(data.STATUS);
+     			var status= data.STATUS;
+     			$("#status_").val(data.STATUS);
      			$("#partyId").val(data.ID);
      			$("#sp_id").val(data.ID);
      			$("#addChargeType").attr("disabled",false);
-     			$("#save").attr("disabled",false);
-     			$("#submit").attr("disabled",false);
+     			statusBtn(status);
      		}else{
      			$.scojs_message('数据有误', $.scojs_message.TYPE_ERROR);
      			$("#save").attr("disabled",false);
      		}
     		//异步刷新明细表
-    		itemOrder.refleshTable(data.ID);
+    		if(data!='abbrError'){
+    			itemOrder.refleshTable(data.ID);
+    		}
+    		
          });
     	  
       });
+      
+      var statusBtn=function(status){
+    	  if(status=="新建"){
+    		  $("#submit").prop('disabled',false);
+	    	  $("#save").prop('disabled',false);
+	    	  $("#approval").prop('disabled',true);
+	    	  $("#disapproval").prop('disabled',true);
+	    	  $("#verification").prop('disabled',true);
+	    	  $("#disVerification").prop('disabled',true);
+    	  }else if(status=="待审核"){
+			  $("#submit").prop('disabled',true);
+	    	  $("#save").prop('disabled',true);
+	    	  $("#approval").prop('disabled',false);
+	    	  $("#disapproval").prop('disabled',false);
+	    	  $("#verification").prop('disabled',true);
+	    	  $("#disVerification").prop('disabled',true);
+		  }else if(status=="审核通过"){
+			  $("#save").prop('disabled',false);
+			  $("#submit").prop('disabled',true);
+	    	  $("#approval").prop('disabled',true);
+	    	  $("#disapproval").prop('disabled',false);
+	    	  $("#verification").prop('disabled',false);
+	    	  $("#disVerification").prop('disabled',false);
+		  }else if(status=="审核不通过"){
+			  $("#save").prop('disabled',false);
+			  $("#submit").prop('disabled',false);
+			  $("#approval").prop('disabled',false);
+	    	  $("#disapproval").prop('disabled',true);
+	    	  $("#verification").prop('disabled',true);
+	    	  $("#disVerification").prop('disabled',true);
+		  }else if(status=="审批通过"){
+			  $("#save").prop('disabled',false);
+			  $("#submit").prop('disabled',true);
+			  $("#approval").prop('disabled',true);
+	    	  $("#disapproval").prop('disabled',true);
+	    	  $("#verification").prop('disabled',true);
+	    	  $("#disVerification").prop('disabled',false);
+		  }else if(status=="审批不通过"){
+			  $("#save").prop('disabled',false);
+			  $("#submit").prop('disabled',false);
+			  $("#approval").prop('disabled',true);
+	    	  $("#disapproval").prop('disabled',true);
+	    	  $("#verification").prop('disabled',false);
+	    	  $("#disVerification").prop('disabled',true);
+		  }
+      }
+      
+      
+      
       
       
       $("#submit,#approval,#disapproval,#verification,#disVerification").click(function(){
     	  var btn = $(this).attr('id');
     	  var value = $(this).text();
-    	  $("#submit").prop('disabled',true);
-    	  
     	  $.post("/serviceProvider/approvalOrder", {id:$("#partyId").val(),action:btn},function(data){
     		  if(data){
     			  $.scojs_message('操作成功', $.scojs_message.TYPE_OK);
     			  var status = data.STATUS;
     			  $("#status").val(status);
-    			  if(status!="审核不通过"){
-        	    	  $("#approval").prop('disabled',false);
-        	    	  $("#disapproval").prop('disabled',false); 
-    			  }else{
-        	    	  $("#approval").prop('disabled',true);
-        	    	  $("#disapproval").prop('disabled',true);
-    			  }
+    			  $("#status_").val(data.STATUS);
+    			  statusBtn(status);
     			  
     		  }
     	  }).fail(function() {
@@ -194,6 +240,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  });
     	  
       });
+      
+      
+      
+      //审核按钮状态
+      var statuOrder=$('#status').val();
+      if(statuOrder!=''){
+    	  statusBtn(statuOrder);
+      }
+      
+      
+      
       
 	  //获取客户信息
 	  $('#customer_name').on('keyup click', function(){
@@ -276,15 +333,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	$("#c_type option[value='perUnit']").attr("selected","selected");
 	    });
 	    
-	    //按钮控制
-	    var status = $('#status').val();
-	    if(status=='' || status==null || status=='新建'|| status=='审核不通过'){
-	    	$("#save").prop('disabled',false);
-	    	$("#submit").prop('disabled',false);
-	    }else if(status=='待审核'||status=='审核通过'){
-	    	$("#approval").prop('disabled',false);
-	    	$("#disapproval").prop('disabled',false);
-	    }
 
     });
 });

@@ -163,7 +163,6 @@ public class ServiceProviderController extends Controller {
             if(status==null){
             	party.set("status", "新建");
             }
-            
             party.set("receiver", getPara("receiver"));
             party.set("bank_no", getPara("bank_no"));
             party.set("bank_name", getPara("bank_name"));
@@ -187,6 +186,7 @@ public class ServiceProviderController extends Controller {
             party.set("type", Party.PARTY_TYPE_SERVICE_PROVIDER);
             party.set("creator", LoginUserController.getLoginUserId(this));
             party.set("create_date", createDate);
+            
             party.set("status", "新建");
             party.set("receipt", getPara("receipt"));
             party.set("remark", getPara("remark"));
@@ -844,11 +844,14 @@ public class ServiceProviderController extends Controller {
     		party.set("status", "待审核");
     	}else if("approval".equals(action)){
     		party.set("status", "审核通过");
-    	}else{
+    	}else if("disapproval".equals(action)){
     		party.set("status", "审核不通过");
+    	}else if("verification".equals(action)){
+    		party.set("status", "审批通过");
+    	}else if("disVerification".equals(action)){
+    		party.set("status", "审批不通过");
     	}
     	party.update();
-    	
     	renderJson(party);
     }
 }
