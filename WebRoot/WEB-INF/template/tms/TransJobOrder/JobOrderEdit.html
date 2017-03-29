@@ -158,18 +158,10 @@
 					                    }){}%>
 			           </div>
                        <div class="col-lg-4">
-                              <%include("/eeda/component/form/selectField.html", 
-                                {   id:'trade_type', 
-                                    label:'贸易类型', 
-                                    value:order.trade_type!'',
-                                    value_list:[
-                                        {code:'FOB', value:'FOB'},
-                                        {code:'CIF', value:'CIF'},
-                                        {code:'CFR', value:'CFR'},
-                                        {code:'DDU', value:'DDU'},
-                                        {code:'DDP', value:'DDP'},
-                                        {code:'OTHER', value:'OTHER'}
-                                    ]
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'lading_no', 
+                                    label:'提单号', 
+                                    value: order.lading_no!''
                                 }){}%>
                         </div>
 			        </div>
@@ -190,6 +182,21 @@
                                     display_value:order.back_wharf_name!''
 			                    }){}%>
 			            </div>
+                       <div class="col-lg-4">
+                              <%include("/eeda/component/form/selectField.html", 
+                                {   id:'trade_type', 
+                                    label:'贸易类型', 
+                                    value:order.trade_type!'',
+                                    value_list:[
+                                        {code:'FOB', value:'FOB'},
+                                        {code:'CIF', value:'CIF'},
+                                        {code:'CFR', value:'CFR'},
+                                        {code:'DDU', value:'DDU'},
+                                        {code:'DDP', value:'DDP'},
+                                        {code:'OTHER', value:'OTHER'}
+                                    ]
+                                }){}%>
+                        </div>
 			        </div>
                     <div class="form-group">
 	                 <label>备注</label>

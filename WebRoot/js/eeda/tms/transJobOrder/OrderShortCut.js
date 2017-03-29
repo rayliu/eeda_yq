@@ -61,6 +61,13 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                   return field_html;
                 }
               },
+              { "data": "LADING_NO",
+                  "render": function ( data, type, full, meta ) {
+                      if(!data)
+                        data = '';
+                          return '<input type="text" name="lading_no" style="width:100px" value="'+data+'" class="form-control"/>';
+                     }
+               }, 
               { "data": "SO_NO",
                   "render": function ( data, type, full, meta ) {
                       if(!data)
@@ -304,6 +311,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
        $('#add_land').on('click', function(){
           var create_stamp=$('#CREATE_STAMP').val();
           var so_no=$('#so_no').val();
+          var lading_no=$('#lading_no').val();
           var customer_id=$('#CUSTOMER_ID').val();
           var type=$('#type').val();
           var container_no=$('#container_no').val();
@@ -325,7 +333,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           var loading_wharf1_input=$('#LOADING_WHARF1_input').val();
           var loading_wharf2_input=$('#LOADING_WHARF2_input').val();
           // var =$('#').val();CUSTOMER_ID_input
-          var item={"CREATE_STAMP":create_stamp,"SO_NO":so_no,"CUSTOMER_ID":customer_id,"TYPE":type,
+          var item={"CREATE_STAMP":create_stamp,"SO_NO":so_no,"LADING_NO":lading_no,"CUSTOMER_ID":customer_id,"TYPE":type,
                     "CONTAINER_NO":container_no,"CABINET_TYPE":cabinet_type,"TIJIGUI_CAR_NO":tijigui_car_no,"YIGUI_CAR_NO":yigui_car_no,
                     "SHOUZHONGGUI_CAR_NO":shouzhonggui_car_no,"TAKE_WHARF":take_wharf,"BACK_WHARF":back_wharf,"REMARK":remark,
                     "CUSTOMER_ID_INPUT":customer_id_input,"TIJIGUI_CAR_NO_INPUT":tijigui_car_no_input,"YIGUI_CAR_NO_INPUT":yigui_car_no_input,
@@ -469,7 +477,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           return cargo_items_array;
        }
 
-     
+
 
   });
 });

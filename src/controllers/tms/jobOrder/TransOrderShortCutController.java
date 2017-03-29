@@ -94,6 +94,7 @@ public class TransOrderShortCutController extends Controller {
 			transJobOrder.set("remark", itemMap.get("remark"));
 			transJobOrder.set("container_no", itemMap.get("container_no"));
 			transJobOrder.set("so_no", itemMap.get("so_no"));
+			transJobOrder.set("lading_no", itemMap.get("lading_no"));
 			transJobOrder.set("cabinet_type", itemMap.get("cabinet_type"));
 //			transJobOrder.set("head_carrier", itemMap.get("head_carrier"));
 //			transJobOrder.set("carriage_fee", itemMap.get("carriage_fee"));

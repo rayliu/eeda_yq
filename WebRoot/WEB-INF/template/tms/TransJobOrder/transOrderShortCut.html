@@ -23,13 +23,13 @@
                                                                     value: ''
                                                                 }){}%>
                                         </div>
-				                        <div class="col-lg-4">
-				                            <%include("/eeda/component/form/inputField.html", 
-				                                {   id:'so_no', 
-				                                    label:'SO号', 
-				                                    value: order.so_no!''
-				                                }){}%>
-				                        </div>
+		                        		<div class="col-lg-4">
+		                        		    <%include("/eeda/component/form/inputField.html", 
+		                        		        {   id:'lading_no', 
+		                        		            label:'提单号', 
+		                        		            value: order.lading_no!''
+		                        		        }){}%>
+		                        		</div>
 				                        <div class="col-lg-4">
 				                            <%include("/eeda/component/form/inputCustomerField.html", 
 				                                {
@@ -65,7 +65,14 @@
 	                                        {code:'园区游', value:'园区游'}
 	                                    ]
 	                                }){}%>
-	                        </div><!-- /.col-lg-4 -->
+	                        </div><!-- /.col-lg-4 -->		                    
+	                        <div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                {   id:'so_no', 
+	                                    label:'SO号', 
+	                                    value: order.so_no!''
+	                                }){}%>
+	                        </div>   
 	                        <div class="col-lg-4">
 	                            <%include("/eeda/component/form/inputField.html", 
 	                                {   id:'container_no', 
@@ -73,20 +80,6 @@
 	                                    value: order.container_no!''
 	                                }){}%>
 	                        </div>
-	                    	<div class="col-lg-4">
-				                <%include("/eeda/component/form/selectField.html", 
-				                    {   id:'cabinet_type', 
-				                        label:'柜型', 
-				                        value:order.cabinet_type!'',
-				                        value_list:[
-				                            {code:'40HQ', value:'40HQ'},
-				                        	{code:'', value:''},
-				                            {code:'20GP', value:'20GP'},
-				                            {code:'40GP', value:'40GP'}, 
-				                            {code:'45GP', value:'45GP'}
-				                        ]
-				                    }){}%>
-				            </div>
 	                    </div>
                              <div class="row">
 					            <div class="col-lg-4">
@@ -147,7 +140,21 @@
 					                    {   id:'LOADING_WHARF2', 
 					                        label:'装货地点2'
 					                    }){}%>
-					            </div>
+					            </div>   
+	                    		<div class="col-lg-4">
+				           	     <%include("/eeda/component/form/selectField.html", 
+				           	         {   id:'cabinet_type', 
+				           	             label:'柜型', 
+				           	             value:order.cabinet_type!'',
+				           	             value_list:[
+				           	                 {code:'40HQ', value:'40HQ'},
+				           	             	{code:'', value:''},
+				           	                 {code:'20GP', value:'20GP'},
+				           	                 {code:'40GP', value:'40GP'}, 
+				           	                 {code:'45GP', value:'45GP'}
+				           	             ]
+				           	         }){}%>
+				           	 </div>
 					        </div>
 		                    <div class="form-group">
 			                 <label>备注</label>
@@ -171,6 +178,7 @@
                                     	'<input id="allCheckOfLand" type="checkbox" style="width:30px">',
                                     	'',
                                     	'创建时间',
+                                    	'提单号',
                                     	'SO号',
                                         '客户',
                                         '类型',
