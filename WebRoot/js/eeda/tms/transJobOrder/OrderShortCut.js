@@ -432,7 +432,32 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           }
        });
 
-      
+      $('#eeda-table').on('blur','[name=CUSTOMER_ID_input],[name=TAKE_WHARF_input],[name=BACK_WHARF_input],[name=LOADING_WHARF1_input],[name=LOADING_WHARF2_input],[name=CHARGE_ID_input]',function(){
+        var row=$(this).parent().parent().parent();
+        var order={};
+        order.CUSTOMER_ID=$(row.find('[name=CUSTOMER_ID]')).val();
+        order.TAKE_WHARF=$(row.find('[name=TAKE_WHARF]')).val();
+        order.BACK_WHARF=$(row.find('[name=BACK_WHARF]')).val();
+        order.LOADING_WHARF1=$(row.find('[name=LOADING_WHARF1]')).val();
+        order.LOADING_WHARF2=$(row.find('[name=LOADING_WHARF2]')).val();
+        order.CHARGE_ID=$(row.find('[name=CHARGE_ID]')).val();
+        order.truck_type=$(row.find('[name=cabinet_type]')).val();
+        if(order.CUSTOMER_ID&&order.CHARGE_ID&&order.truck_type){
+          $.post("/transOrderShortCut/checkCustomerQuotation",{params:JSON.stringify(order)},function(data){
+                if(data.length==1){
+                  $(row.find('[name=total_amount]')).val(data[0].TAX_FREE_FREIGHT);
+                   $(row.find('[name=currency_total_amount]')).val(data[0].TAX_FREE_FREIGHT);
+                   $(row.find('[name=CURRENCY_ID]')).val(data[0].CURRENCY_ID);
+                    $(row.find('[name=CURRENCY_ID_input]')).val(data[0].CURRENCY_NAME);
+                }               
+               }).fail(function() {
+               
+           });
+        }
+
+      });
+
+
        itemOrder.buildItemList=function(){
           var cargo_table_rows = $("#eeda-table tr");
           var cargo_items_array=[];

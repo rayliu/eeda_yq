@@ -42,6 +42,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -201,6 +202,40 @@ public class TransJobOrderController extends Controller {
 		//陆运
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
 		DbUtils.handleList(land_item, id, TransJobOrderLandItem.class, "order_id");
+		for(int i=0;i<land_item.size();i++){
+			Map<String, ?> map=land_item.get(i);
+			if(StringUtils.isEmpty((String) map.get("id"))){
+				String sqlString="SELECT A.*,c.name currency_name from( SELECT pq.* FROM party_quotation pq "
+						+" WHERE pq.party_id = "+customerId
+						+" and pq.loading_wharf1= "+map.get("LOADING_WHARF1")
+						+" and pq.loading_wharf2= "+map.get("LOADING_WHARF2")
+						+" and pq.take_address= "+map.get("TAKE_ADDRESS")
+						+" and pq.delivery_address= "+map.get("DELIVERY_ADDRESS")
+						+" and pq.truck_type= '"+map.get("truck_type")+" ' "
+						+" )A left join currency c on c.id=A.currency_id";
+				List<Record> reItem=Db.find(sqlString);
+				if(reItem.size()==1){
+					TransJobOrderArap tArap=new TransJobOrderArap();
+					tArap.set("order_id", id);
+					tArap.set("order_type", "charge");
+					tArap.set("type", "陆运");
+					tArap.set("sp_id", customerId);
+					String str1="select id from fin_item where office_id ="+office_id+" and name='运费'";
+					List<Record> re1=(List<Record>) Db.find(str1); 
+					tArap.set("charge_id", re1.get(0).get("ID"));
+					tArap.set("price", reItem.get(0).get("tax_free_freight"));
+					tArap.set("amount", 1);
+					tArap.set("currency_id", reItem.get(0).get("currency_id"));
+					tArap.set("total_amount", reItem.get(0).get("tax_free_freight"));
+					tArap.set("exchange_rate", 1.00000);
+					tArap.set("currency_total_amount", reItem.get(0).get("tax_free_freight"));
+					tArap.set("create_time", new Date());
+//					tArap.set("ref_land_id", );
+					tArap.save();	
+				}	
+			}
+			
+		}
 		
 		//费用明细，应收应付
 		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");

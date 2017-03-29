@@ -190,6 +190,38 @@ public class TransOrderShortCutController extends Controller {
    		renderJson(r);
     }
 
+	 public void checkCustomerQuotation() {
+			String jsonStr=getPara("params");
+	       	Gson gson = new Gson();  
+	        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+
+	   		UserLogin user = LoginUserController.getLoginUser(this);
+	   		long office_id = user.getLong("office_id");
+	        String CUSTOMER_ID = (String) dto.get("CUSTOMER_ID");
+	        String TAKE_WHARF = (String) dto.get("TAKE_WHARF");
+	        String BACK_WHARF = (String) dto.get("BACK_WHARF");
+	        String LOADING_WHARF1 = (String) dto.get("LOADING_WHARF1");
+	        String LOADING_WHARF2 = (String) dto.get("LOADING_WHARF2");
+	        String CHARGE_ID ="";
+	        	if(StringUtils.isNotEmpty((String) dto.get("CHARGE_ID")))
+	        		CHARGE_ID=" and "+dto.get("CHARGE_ID")+" = ( SELECT f.id FROM fin_item f WHERE f.office_id="+office_id
+	    					+"		and f.name ='运费' ) ";
+	        String truck_type = (String) dto.get("truck_type");
+
+			String sqlString="SELECT A.*,c.name currency_name from( SELECT pq.* FROM party_quotation pq "
+					+" WHERE pq.party_id = "+CUSTOMER_ID
+					+" and pq.loading_wharf1= "+LOADING_WHARF1
+					+" and pq.loading_wharf2= "+LOADING_WHARF2
+					+" and pq.take_address= "+TAKE_WHARF
+					+" and pq.delivery_address= "+BACK_WHARF
+					+" and pq.truck_type= '"+truck_type+" ' "
+					+CHARGE_ID
+					+" )A left join currency c on c.id=A.currency_id";
+			List<Record> records=Db.find(sqlString);
+	   		Record r =new Record();
+//	   		r.set("ids",ids);
+	   		renderJson(records);
+	    }
    
 
 }
