@@ -424,6 +424,27 @@ $(document).ready(function() {
     	}
     })
 
+    $('#trade_cost_table').on('keyup', '[name=agency_rate],[name=domestic_price]', function(){
+        var row = $(this).parent().parent();
+        var domestic_price = $(row.find('[name=domestic_price]')).val();
+        var agency_rate = $(row.find('[name=agency_rate]')).val();
+        if(domestic_price==''||agency_rate==''){
+            $(row.find('[name=agency_amount_cny]')).val('');
+        }else if(!isNaN(domestic_price)&&!isNaN(agency_rate)){
+            var agency_amount_cny = parseFloat(domestic_price*agency_rate);
+            $(row.find('[name=agency_amount_cny]')).val(agency_amount_cny.toFixed(3));
+            
+            var total = 0;
+            $('#trade_cost_table [name=agency_amount_cny]').each(function(){
+                var a = this.value;
+                if(a!=''&&!isNaN(a)){
+                    total+=parseFloat(a);
+                }
+            })
+            $($('.dataTables_scrollFoot tr')[0]).find('th').eq(21).html(total.toFixed(3));
+        }
+    })
+
     $('#trade_cost_table').on('blur', '[name=number], [name=price], [name=tax_refund_rate],[name=domestic_price],[name=tax_refund_rate_customer],[name=agency_rate],[name=agency_amount_cny]', function(){
     	var this_input = $(this).attr('name');
     	
