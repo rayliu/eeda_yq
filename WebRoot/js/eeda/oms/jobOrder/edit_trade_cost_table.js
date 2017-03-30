@@ -226,7 +226,7 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="custom_amount" value="'+data+'" class="form-control" style="width:120px" disabled/>';
+            		return '<input type="text" name="custom_amount" value="'+data+'" class="form-control" style="width:120px" />';
             	}
             },
             { "data": "CUSTOM_CURRENCY", "width": "60px", 
@@ -445,7 +445,28 @@ $(document).ready(function() {
         }
     })
 
-    $('#trade_cost_table').on('blur', '[name=number], [name=price], [name=tax_refund_rate],[name=domestic_price],[name=tax_refund_rate_customer],[name=agency_rate],[name=agency_amount_cny]', function(){
+    $('#trade_cost_table').on('keyup', '[name=custom_amount]', function(){
+        var row = $(this).parent().parent();
+        var custom_amount = $(row.find('[name=custom_amount]')).val();
+        var number = $(row.find('[name=number]')).val();
+        if(custom_amount==''){
+            $(row.find('[name=custom_price]')).val('');
+        }else if(!isNaN(custom_amount)&&!isNaN(number)){
+            var custom_price = parseFloat(custom_amount/number);
+            $(row.find('[name=custom_price]')).val(custom_price.toFixed(3));
+            
+            var total = 0;
+            $('#trade_cost_table [name=custom_amount]').each(function(){
+                var a = this.value;
+                if(a!=''&&!isNaN(a)){
+                    total+=parseFloat(a);
+                }
+            })
+            $($('.dataTables_scrollFoot tr')[0]).find('th').eq(16).html(total.toFixed(3));
+        }
+    })
+
+    $('#trade_cost_table').on('keyup', '[name=number], [name=price], [name=tax_refund_rate],[name=domestic_price],[name=tax_refund_rate_customer],[name=agency_rate],[name=agency_amount_cny]', function(){
     	var this_input = $(this).attr('name');
     	
     	var row = $(this).parent().parent();
@@ -495,8 +516,10 @@ $(document).ready(function() {
     			$(row.find('[name=number]')).val(calcNumber);
     		if(!isNaN(calcPrice))
     			$(row.find('[name=price]')).val(calcPrice);
-    		if(!isNaN(total))
+    		if(!isNaN(total)){
     			$(row.find('[name=domestic_price]')).val(total);
+                $(row.find('[name=domestic_price]')).val(total);
+            }
 
 	    	
 	    	
