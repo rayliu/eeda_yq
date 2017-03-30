@@ -1,0 +1,1 @@
+package models.eeda.oms.bookOrder;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class BookOrderAirCargoDesc extends Model<BookOrderAirCargoDesc> {	public static final BookOrderAirCargoDesc dao = new BookOrderAirCargoDesc();}

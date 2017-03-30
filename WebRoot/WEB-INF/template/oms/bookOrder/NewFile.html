@@ -1,0 +1,397 @@
+<div class="dataTables_scroll">
+	<div class="dataTables_scrollHead"
+		style="overflow: hidden; position: relative; border: 0px; width: 100%;">
+		<div class="dataTables_scrollHeadInner"
+			style="box-sizing: content-box; width: 3800px; padding-right: 0px;">
+			<table
+				class="table table-striped table-bordered table-hover display dataTable"
+				cellspacing="0" style="width: 3800px; margin-left: 0px;" role="grid">
+				<thead class="eeda">
+					<tr role="row">
+						<th class="sorting_asc" tabindex="0"
+							aria-controls="trade_cost_table" rowspan="1" colspan="1"
+							style="width: 31.0909px;" aria-label=": 以降序排列此列"
+							aria-sort="ascending"></th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 187.091px;"
+							aria-label="供应商: 以升序排列此列">供应商</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 187.091px;"
+							aria-label="商品名称: 以升序排列此列">商品名称</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 187.091px;"
+							aria-label="规格型号: 以升序排列此列">规格型号</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 187.091px;"
+							aria-label="数量: 以升序排列此列">数量</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 187.091px;"
+							aria-label="单位: 以升序排列此列">单位</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 187.091px;"
+							aria-label="单价(CNY): 以升序排列此列">单价(CNY)</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 187.091px;"
+							aria-label="国内货值(CNY): 以升序排列此列">国内货值(CNY)</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 187.091px;"
+							aria-label="增值税率: 以升序排列此列">增值税率</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 187.091px;"
+							aria-label="退税率: 以升序排列此列">退税率</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 187.091px;"
+							aria-label="退税金额: 以升序排列此列">退税金额</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 187.091px;"
+							aria-label="调整后退税金额: 以升序排列此列">调整后退税金额</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 188.091px;"
+							aria-label="调整后单价: 以升序排列此列">调整后单价</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 188.091px;"
+							aria-label="调整后总价: 以升序排列此列">调整后总价</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 188.091px;"
+							aria-label="报关单价: 以升序排列此列">报关单价</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 63.0909px;"
+							aria-label="报关币制: 以升序排列此列">报关币制</th>
+						<th class="currency_rate sorting" tabindex="0"
+							aria-controls="trade_cost_table" rowspan="1" colspan="1"
+							style="width: 188.091px;" aria-label="报关汇率: 以升序排列此列">报关汇率</th>
+						<th class="sorting" tabindex="0" aria-controls="trade_cost_table"
+							rowspan="1" colspan="1" style="width: 189px;"
+							aria-label="报关金额: 以升序排列此列">报关金额</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+	<div class="dataTables_scrollBody"
+		style="position: relative; overflow: auto; width: 100%;">
+		<table id="trade_cost_table"
+			class="table table-striped table-bordered table-hover display dataTable"
+			cellspacing="0" style="width: 3800px" role="grid"
+			aria-describedby="trade_cost_table_info">
+			<tfoot class="eeda">
+				<tr style="height: 0px;">
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 53.0909px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 209.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 209.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 209.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 209.091px;">120.0</th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 209.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 209.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 209.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 209.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 209.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 209.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 209.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 210.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 210.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 210.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 85.0909px;"></th>
+					<th class="currency_rate" rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 210.091px;"></th>
+					<th rowspan="1" colspan="1"
+						style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 211px;"></th>
+				</tr>
+			</tfoot>
+			<thead class="eeda">
+				<tr role="row" style="height: 0px;">
+					<th class="sorting_asc" aria-controls="trade_cost_table"
+						rowspan="1" colspan="1"
+						style="width: 31.0909px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-sort="ascending" aria-label=": 以降序排列此列"><div
+							class="dataTables_sizing" style="height: 0; overflow: hidden;"></div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 187.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="供应商: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">供应商</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 187.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="商品名称: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">商品名称</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 187.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="规格型号: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">规格型号</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 187.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="数量: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">数量</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 187.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="单位: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">单位</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 187.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="单价(CNY): 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">单价(CNY)</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 187.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="国内货值(CNY): 以升序排列此列"><div
+							class="dataTables_sizing" style="height: 0; overflow: hidden;">国内货值(CNY)</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 187.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="增值税率: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">增值税率</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 187.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="退税率: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">退税率</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 187.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="退税金额: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">退税金额</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 187.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="调整后退税金额: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">调整后退税金额</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 188.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="调整后单价: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">调整后单价</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 188.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="调整后总价: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">调整后总价</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 188.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="报关单价: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">报关单价</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 63.0909px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="报关币制: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">报关币制</div></th>
+					<th class="currency_rate sorting" aria-controls="trade_cost_table"
+						rowspan="1" colspan="1"
+						style="width: 188.091px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="报关汇率: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">报关汇率</div></th>
+					<th class="sorting" aria-controls="trade_cost_table" rowspan="1"
+						colspan="1"
+						style="width: 189px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"
+						aria-label="报关金额: 以升序排列此列"><div class="dataTables_sizing"
+							style="height: 0; overflow: hidden;">报关金额</div></th>
+				</tr>
+			</thead>
+
+
+			<tbody>
+
+
+				<tr id="159" role="row" class="odd">
+					<td class="sorting_1"><button type="button"
+							class="delete btn btn-default btn-xs" style="width: 50px">删除</button>
+					</td>
+					<td><div class="form-group">
+							<input type="text" name="SP" value="" style="display: none;">
+							<input type="text" class="form-control search-control"
+								name="SP_input" placeholder="请选择" value="" style="width: 200px">
+						</div></td>
+					<td><input type="text" name="commodity_name" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="specification_model" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="number" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="unit" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="price" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="domestic_price" value=""
+						class="form-control" style="width: 200px" disabled=""></td>
+					<td><input type="text" name="value_added_tax" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="tax_refund_rate" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="tax_refund_amount" value=""
+						class="form-control" style="width: 200px" disabled=""></td>
+					<td><input type="text" name="adjusted_tax_refund_amount"
+						value="" class="form-control" style="width: 200px" disabled=""></td>
+					<td><input type="text" name="adjusted_unit_price" value=""
+						class="form-control" style="width: 200px" disabled=""></td>
+					<td><input type="text" name="adjusted_total_price" value=""
+						class="form-control" style="width: 200px" disabled=""></td>
+					<td><input type="text" name="custom_price" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><div class="form-group">
+							<input type="text" name="CUSTOM_CURRENCY" value=""
+								style="display: none;"> <input type="text"
+								class="form-control search-control" name="CUSTOM_CURRENCY_input"
+								placeholder="请选择" value="" style="width: 80px">
+						</div></td>
+					<td class=" currency_rate"><input type="text"
+						name="custom_rate" value="" class="form-control"
+						style="width: 200px"></td>
+					<td><input type="text" name="custom_amount" value=""
+						class="form-control" style="width: 200px" disabled=""></td>
+				</tr>
+				<tr id="160" role="row" class="even">
+					<td class="sorting_1"><button type="button"
+							class="delete btn btn-default btn-xs" style="width: 50px">删除</button>
+					</td>
+					<td><div class="form-group">
+							<input type="text" name="SP" value="" style="display: none;">
+							<input type="text" class="form-control search-control"
+								name="SP_input" placeholder="请选择" value="" style="width: 200px">
+						</div></td>
+					<td><input type="text" name="commodity_name" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="specification_model" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="number" value="100.0"
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="unit" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="price" value="10.0"
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="domestic_price" value="1000.0"
+						class="form-control" style="width: 200px" disabled=""></td>
+					<td><input type="text" name="value_added_tax" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="tax_refund_rate" value="10.0"
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="tax_refund_amount"
+						value="8547.0085" class="form-control" style="width: 200px"
+						disabled=""></td>
+					<td><input type="text" name="adjusted_tax_refund_amount"
+						value="81427.423" class="form-control" style="width: 200px"
+						disabled=""></td>
+					<td><input type="text" name="adjusted_unit_price"
+						value="95.2701" class="form-control" style="width: 200px"
+						disabled=""></td>
+					<td><input type="text" name="adjusted_total_price"
+						value="9527.008" class="form-control" style="width: 200px"
+						disabled=""></td>
+					<td><input type="text" name="custom_price" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><div class="form-group">
+							<input type="text" name="CUSTOM_CURRENCY" value=""
+								style="display: none;"> <input type="text"
+								class="form-control search-control" name="CUSTOM_CURRENCY_input"
+								placeholder="请选择" value="" style="width: 80px">
+						</div></td>
+					<td class=" currency_rate"><input type="text"
+						name="custom_rate" value="" class="form-control"
+						style="width: 200px"></td>
+					<td><input type="text" name="custom_amount" value=""
+						class="form-control" style="width: 200px" disabled=""></td>
+				</tr>
+				<tr role="row" class="odd">
+					<td class="sorting_1"><button type="button"
+							class="delete btn btn-default btn-xs" style="width: 50px">删除</button>
+					</td>
+					<td><div class="form-group">
+							<input type="text" name="SP" value="" style="display: none;">
+							<input type="text" class="form-control search-control"
+								name="SP_input" placeholder="请选择" value="" style="width: 200px">
+						</div></td>
+					<td><input type="text" name="commodity_name" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="specification_model" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="number" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="unit" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="price" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="domestic_price" value=""
+						class="form-control" style="width: 200px" disabled=""></td>
+					<td><input type="text" name="value_added_tax" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="tax_refund_rate" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><input type="text" name="tax_refund_amount" value=""
+						class="form-control" style="width: 200px" disabled=""></td>
+					<td><input type="text" name="adjusted_tax_refund_amount"
+						value="" class="form-control" style="width: 200px" disabled=""></td>
+					<td><input type="text" name="adjusted_unit_price" value=""
+						class="form-control" style="width: 200px" disabled=""></td>
+					<td><input type="text" name="adjusted_total_price" value=""
+						class="form-control" style="width: 200px" disabled=""></td>
+					<td><input type="text" name="custom_price" value=""
+						class="form-control" style="width: 200px"></td>
+					<td><div class="form-group">
+							<input type="text" name="CUSTOM_CURRENCY" value=""
+								style="display: none;"> <input type="text"
+								class="form-control search-control" name="CUSTOM_CURRENCY_input"
+								placeholder="请选择" value="" style="width: 80px">
+						</div></td>
+					<td class=" currency_rate"><input type="text"
+						name="custom_rate" value="" class="form-control"
+						style="width: 200px"></td>
+					<td><input type="text" name="custom_amount" value=""
+						class="form-control" style="width: 200px" disabled=""></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="dataTables_scrollFoot"
+		style="overflow: hidden; border: 0px; width: 100%;">
+		<div class="dataTables_scrollFootInner"
+			style="width: 3800px; padding-right: 0px;">
+			<table
+				class="table table-striped table-bordered table-hover display dataTable"
+				cellspacing="0" style="width: 3800px; margin-left: 0px;" role="grid">
+				<tfoot class="eeda">
+					<tr>
+						<th rowspan="1" colspan="1" style="width: 53.0909px;"></th>
+						<th rowspan="1" colspan="1" style="width: 209.091px;"></th>
+						<th rowspan="1" colspan="1" style="width: 209.091px;"></th>
+						<th rowspan="1" colspan="1" style="width: 209.091px;"></th>
+						<th rowspan="1" colspan="1" style="width: 209.091px;">100</th>
+						<th rowspan="1" colspan="1" style="width: 209.091px;"></th>
+						<th rowspan="1" colspan="1" style="width: 209.091px;"></th>
+						<th rowspan="1" colspan="1" style="width: 209.091px;">1000</th>
+						<th rowspan="1" colspan="1" style="width: 209.091px;"></th>
+						<th rowspan="1" colspan="1" style="width: 209.091px;"></th>
+						<th rowspan="1" colspan="1" style="width: 209.091px;">8547.0085</th>
+						<th rowspan="1" colspan="1" style="width: 209.091px;">81427.423</th>
+						<th rowspan="1" colspan="1" style="width: 210.091px;"></th>
+						<th rowspan="1" colspan="1" style="width: 210.091px;">9527.008</th>
+						<th rowspan="1" colspan="1" style="width: 210.091px;"></th>
+						<th rowspan="1" colspan="1" style="width: 85.0909px;"></th>
+						<th class="currency_rate" rowspan="1" colspan="1"
+							style="width: 210.091px;"></th>
+						<th rowspan="1" colspan="1" style="width: 211px;">0</th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>

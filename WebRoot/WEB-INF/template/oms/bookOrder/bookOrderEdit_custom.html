@@ -1,0 +1,83 @@
+ 
+          
+          
+           <div class="form-group" id="custom_type">
+               <label class="search-label">报关类型</label>
+               <label class="checkbox-inline">
+                   <input type="checkbox" value='china'>国内
+               </label>
+               <label class="checkbox-inline">
+                   <input type="checkbox" value='HK/MAC'>HK/MAC
+               </label>
+               <label class="checkbox-inline">
+                   <input type="checkbox" value='abroad'>国外
+               </label>
+               <label class="checkbox-inline">
+                   <button type="button" class="btn btn_green btn-xs" id="alreadyCustom" disabled>已报关</button>
+               </label>
+           </div>
+                      
+			<div class="row">
+				<ul id="custom_type_Tabs" class="nav nav-tabs">
+                    <li>
+                        <a id='chinaTab' href="#chinaDetail" data-toggle="tab" style="display: none;">国内</a>
+                    </li>
+                    <li>
+                        <a id='hkTab' href="#hkDetail" data-toggle="tab" style="display: none;">HK/MAC</a>
+                    </li>
+                    <li>
+                        <a id='abroadTab' href="#abroadDetail" data-toggle="tab" style="display: none;">国外</a>
+                    </li>
+				</ul>
+				<div class="tab-content">
+                    <div class="tab-pane fade" id="chinaDetail">
+                        <div class="form-group">
+                            <br>
+                            <div class="row" id="entrust_or_self_custom" style="margin-left:0px">
+				               <label class="checkbox-inline">
+				                   <input type="radio" name="entrust_or_self_custom" value='entrust_custom' checked>委托报关
+				               </label>
+				               <label class="checkbox-inline">
+				                   <input type="radio" name="entrust_or_self_custom" value='self_custom'>自理报关
+				               </label>
+				           </div>
+                            
+                                <div class="form-group">
+						                <div class="tab-content">
+						                    <div class="tab-pane fade" id="entrustDetail">
+						                        <div class="form-group">
+						                            <div class="col-lg-12">
+						                                <%include("/oms/bookOrder/bookOrderEdit_customType_china.html", {}){} %>
+						                            </div>
+						                        </div>
+						                    </div>
+						                    <div class="tab-pane fade" id="selfDetail">
+						                        <div class="form-group">
+						                            <div class="col-lg-12">
+						                                <%include("/oms/bookOrder/bookOrderEdit_customType_china_self.html", {}){} %>
+						                            </div>
+						                        </div>
+						                    </div>
+						                </div>
+						            </div>
+	                            
+	                        </div>
+	                    </div>
+             
+                    <div class="tab-pane fade" id="hkDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                            <%include("/oms/bookOrder/bookOrderEdit_customType_hk.html", {}){} %>
+                             </div>
+                        </div>
+                    </div>
+                
+                    <div class="tab-pane fade" id="abroadDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                            <%include("/oms/bookOrder/bookOrderEdit_customType_abroad.html", {}){} %>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+			</div>

@@ -1,0 +1,46 @@
+<input type="hidden" id="hk_custom_id" value="${hkCustom.id!''}">
+<form id="hkForm">
+						            <div class="form-group">  <!--  form row  -->
+						                    <div class="row">
+						                        <div class="col-lg-4">
+						                            <%include("/eeda/component/form/inputField.html", 
+						                                {   id:'hk_customs_broker', 
+						                                    label:'报关行', 
+						                                    value:hkCustom.customs_broker!''
+						                                }){}%>
+						                        </div>
+						                        <div class="col-lg-4">
+						                            <%include("/eeda/component/form/inputField.html", 
+						                                {   id:'hk_contact', 
+						                                    label:'联系人', 
+						                                    value:hkCustom.contact!''
+						                                }){}%>
+						                        </div>
+						                        <div class="col-lg-4">
+						                            <%include("/eeda/component/form/inputField.html", 
+						                                {   id:'hk_phone', 
+						                                    label:'电话', 
+						                                    value:hkCustom.phone!''
+						                                }){}%>
+						                        </div>
+						                    </div>
+						                    <div class="row">
+						                        
+						                        <div class="col-lg-4">
+						                            <%include("/eeda/component/form/inputField.html", 
+						                                {   id:'hk_custom_order_no', 
+						                                    label:'报关单号码', 
+						                                    value:hkCustom.custom_order_no!''
+						                                }){}%>
+						                        </div>
+						                        <div class="col-lg-4">
+						                            <%include("/eeda/component/form/inputField.html", 
+						                                {   id:'hk_destination_country', 
+						                                    label:'目的国', 
+						                                    value:hkCustom.destination_country!''
+						                                }){}%>
+						                        </div>
+						                    </div>
+						                   
+						            </div><!-- /.row -->
+						</form>
