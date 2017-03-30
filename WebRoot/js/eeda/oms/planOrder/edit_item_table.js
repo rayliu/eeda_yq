@@ -92,9 +92,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            {"width": "10px",
 	                "render": function ( data, type, full, meta ) {
 	                	if(full.IS_GEN_JOB == 'Y'){
-	                		return '<button type="button" class="btn table_btn btn-default btn-xs" disabled>删除</button> ';
+	                		return '<button type="button" class="delete btn table_btn btn-default btn-xs" disabled>删除</button> ';
 	                	}else{
-	                		return '<button type="button" class="btn table_btn btn-default btn-xs">删除</button> ';
+	                		return '<button type="button" class="delete btn table_btn btn-default btn-xs">删除</button> ';
 	                	}
 	                }
 	            },
@@ -102,7 +102,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                	if(!data)
 	                        data='';
-	                   return '<input type="text" disabled value="'+data+'" class="form-control search-control" />';
+	                   return '<input type="text" disabled name="book_order_no" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "JOB_ORDER_TYPE","width": "30px",
@@ -459,7 +459,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    $('#containerType_btnConfirm').click(function(){
 	    	var transport_type = [];
 	    	$('#containerTypeTab li input[type="checkbox"]:checked').each(function(){
-	    		var containerVal=$(this).val()+' X'+$(this).parent().find('.container_amount').val()
+	    		var containerVal=$(this).val()+'X'+$(this).parent().find('.container_amount').val()
 	        	transport_type.push(containerVal); 
 	        });
 	        var transport_type_str = transport_type.toString();

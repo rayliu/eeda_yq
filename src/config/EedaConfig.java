@@ -60,6 +60,22 @@ import models.eeda.cms.CustomPlanOrderArap;
 import models.eeda.cms.CustomPlanOrderItem;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
+import models.eeda.oms.bookOrder.BookOrder;
+import models.eeda.oms.bookOrder.BookOrderAir;
+import models.eeda.oms.bookOrder.BookOrderAirCargoDesc;
+import models.eeda.oms.bookOrder.BookOrderAirItem;
+import models.eeda.oms.bookOrder.BookOrderArap;
+import models.eeda.oms.bookOrder.BookOrderCustom;
+import models.eeda.oms.bookOrder.BookOrderDoc;
+import models.eeda.oms.bookOrder.BookOrderExpress;
+import models.eeda.oms.bookOrder.BookOrderInsurance;
+import models.eeda.oms.bookOrder.BookOrderLandItem;
+import models.eeda.oms.bookOrder.BookOrderOceanTemplate;
+import models.eeda.oms.bookOrder.BookOrderSendMail;
+import models.eeda.oms.bookOrder.BookOrderSendMailTemplate;
+import models.eeda.oms.bookOrder.BookOrderShipment;
+import models.eeda.oms.bookOrder.BookOrderShipmentHead;
+import models.eeda.oms.bookOrder.BookOrderShipmentItem;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderAir;
 import models.eeda.oms.jobOrder.JobOrderAirCargoDesc;
@@ -125,6 +141,7 @@ import controllers.cms.jobOrder.CustomJobOrderController;
 import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.ModuleController;
 import controllers.msg.YqDashBoardController;
+import controllers.oms.bookOrder.BookOrderController;
 import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.jobOrder.JobOrderControllerForMobile;
@@ -262,6 +279,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/bookingOrder", BookingOrderController.class, contentPath);
 		me.add("/todo", TodoController.class, contentPath);
 		me.add("/jobOrder", JobOrderController.class, contentPath);
+		me.add("/bookOrder", BookOrderController.class, contentPath);
 		
 		me.add("/jobOrderReport", JobOrderReportController.class, contentPath);
 //		me.add("/report", ReportController.class, contentPath);
@@ -431,6 +449,25 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("job_order_ocean_template", JobOrderOceanTemplate.class);
         arp.addMapping("job_order_sendmail_template", JobOrderSendMailTemplate.class);
         arp.addMapping("job_order_express", JobOrderExpress.class);
+        
+        arp.addMapping("book_order", BookOrder.class);
+        arp.addMapping("book_order_shipment_item", BookOrderShipmentItem.class);
+        arp.addMapping("book_order_arap", BookOrderArap.class);
+        arp.addMapping("book_order_shipment", BookOrderShipment.class);
+        arp.addMapping("book_order_doc", BookOrderDoc.class);
+        arp.addMapping("book_order_air", BookOrderAir.class);
+        arp.addMapping("book_order_air_item", BookOrderAirItem.class);
+        arp.addMapping("book_order_air_cargodesc", BookOrderAirCargoDesc.class);
+        arp.addMapping("book_order_land_item", BookOrderLandItem.class);
+        arp.addMapping("book_order_custom", BookOrderCustom.class);
+        arp.addMapping("book_order_insurance", BookOrderInsurance.class);
+        arp.addMapping("book_order_sendMail", BookOrderSendMail.class);
+        arp.addMapping("book_order_shipment_head", BookOrderShipmentHead.class);
+        arp.addMapping("book_order_ocean_template", BookOrderOceanTemplate.class);
+        arp.addMapping("book_order_sendmail_template", BookOrderSendMailTemplate.class);
+        arp.addMapping("book_order_express", BookOrderExpress.class);
+        
+        
         
         arp.addMapping("truck_order", TruckOrder.class);
         arp.addMapping("truck_order_arap", TruckOrderArap.class);

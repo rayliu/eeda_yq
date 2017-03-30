@@ -14,6 +14,7 @@ import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
+import models.eeda.oms.bookOrder.BookOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -89,6 +90,13 @@ public class PlanOrderController extends Controller {
    		
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
 		DbUtils.handleList(itemList, id, PlanOrderItem.class, "order_id");
+		
+		
+		List<PlanOrderItem> reList = PlanOrderItem.dao.find("select * from plan_order_item where order_id = ?",id);
+		for(PlanOrderItem item:reList){
+			createBookOrder(item,id);
+		}
+		
 
 		long creator = planOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
@@ -97,14 +105,60 @@ public class PlanOrderController extends Controller {
    		renderJson(r);
    	}
     
+    @Before(Tx.class)
+    public void createBookOrder(PlanOrderItem item,String id){
+    	Long item_id = item.getLong("id");
+    	BookOrder order  = BookOrder.dao.findFirst("select * from book_order where plan_item_id = ? ",item_id);
+    	
+    	UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+    	if(order==null){
+    		PlanOrder re = PlanOrder.dao.findById(id);
+       		order  = new BookOrder();
+        	order.set("order_no", OrderNoGenerator.getNextOrderNo("BK", office_id));
+        	order.set("creator", user.getLong("id"));
+        	order.set("create_stamp", new Date());
+        	order.set("updator", user.getLong("id"));
+        	order.set("update_stamp", new Date());
+            order.set("office_id", office_id);
+            order.set("type", item.getStr("job_order_type"));
+            order.set("order_export_date", item.get("factory_loading_time"));
+            order.set("transport_type", item.getStr("transport_type"));
+            order.set("plan_order_no", re.getStr("order_no"));
+            order.set("plan_order_id", id);
+            order.set("customer_id", re.getLong("customer_id"));
+            order.set("plan_item_id", item.getLong("id"));
+            order.set("pieces", item.get("pieces"));
+            order.set("net_weight", item.get("net_weight"));
+            order.set("gross_weight", item.get("gross_weight"));
+            order.set("volume", item.get("volume"));
+            order.save();
+    		
+    	}else{
+        	order.set("updator", user.getLong("id"));
+        	order.set("update_stamp", new Date());
+            order.set("office_id", office_id);
+            order.set("type", item.getStr("job_order_type"));
+            order.set("order_export_date", item.get("factory_loading_time"));
+            order.set("transport_type", item.getStr("transport_type"));
+            order.set("pieces", item.get("pieces"));
+            order.set("net_weight", item.get("net_weight"));
+            order.set("gross_weight", item.get("gross_weight"));
+            order.set("volume", item.get("volume"));
+            
+            order.update();
+    	}
+    }
+
     
     private List<Record> getPlanOrderItems(String orderId) {
-        String itemSql = "select pi.*, l_por.name por_name, l_pol.name pol_name, l_pod.name pod_name,u.name unit_name,"
+        String itemSql = "select pi.*, l_por.name por_name, l_pol.name pol_name, l_pod.name pod_name,u.name unit_name,bor.order_no book_order_no,"
                 + " p.abbr carrier_name "
                 + " from plan_order_item pi "
                 +" left join location l_por on pi.por=l_por.id"
                 +" left join location l_pol on pi.pol=l_pol.id"
                 +" left join location l_pod on pi.pod=l_pod.id"
+                + " left join book_order bor on bor.plan_item_id = pi.id"
                 +" left join party p on pi.carrier=p.id"
                 +" left join unit u on u.id=pi.unit_id"
                 +" where order_id=?";
