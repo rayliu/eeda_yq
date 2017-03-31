@@ -158,6 +158,7 @@ public class TransJobOrderController extends Controller {
         String id = (String) dto.get("id");
 //      String planOrderItemID = (String) dto.get("plan_order_item_id");
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
+        String customer_id = (String)dto.get("customer_id");
         
         TransJobOrder transJobOrder = new TransJobOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
@@ -253,6 +254,15 @@ public class TransJobOrderController extends Controller {
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
 		DbUtils.handleList(doc_list, id, TransJobOrderDoc.class, "order_id");
 
+		
+		
+		
+		 //费用明细，应收应付
+		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
+		List<Map<String, String>> cost_template = (ArrayList<Map<String, String>>)dto.get("cost_template");
+		List<Map<String, String>> allCharge_template = (ArrayList<Map<String, String>>)dto.get("allCharge_template");
+		List<Map<String, String>> allCost_template = (ArrayList<Map<String, String>>)dto.get("allCost_template");
+   		saveArapTemplate(type,customer_id,charge_template,cost_template,allCharge_template,allCost_template);
 		long creator = transJobOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
    		
@@ -263,6 +273,87 @@ public class TransJobOrderController extends Controller {
 
    		renderJson(r);
    	}
+    
+    /**
+     * 保存费用模板
+     * @param shipment_detail
+     */
+    public void saveArapTemplate(String order_type,String customer_id,
+    		List<Map<String, String>> charge_list,List<Map<String, String>> cost_list,
+    		List<Map<String, String>> charge_list_all,List<Map<String, String>> cost_list_all){
+        if((charge_list==null||charge_list.size()<=0) && (cost_list==null||cost_list.size()<=0) )
+            return;
+
+        Gson gson = new Gson();
+        String chargeObject = gson.toJson(charge_list);
+        String costObject = gson.toJson(cost_list);
+        String chargeObjectAll = gson.toJson(charge_list_all);
+        String costObjectAll = gson.toJson(cost_list_all);
+        
+    	Long creator_id = LoginUserController.getLoginUserId(this);
+    	
+    	String chargeSql = "select parent_id from trans_job_order_arap_template where"
+                + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
+                + " and  json_value = '"+chargeObject+"' and parent_id is not null";
+    	String costSql = "select parent_id from trans_job_order_arap_template where"
+                + " arap_type = 'cost' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
+                + " and  json_value = '"+costObject+"' and parent_id is not null ";
+
+        Record chargeRec = Db.findFirst(chargeSql);
+        Record costRec = Db.findFirst(costSql);
+
+        if(chargeRec == null){
+        	if(!(charge_list==null||charge_list.size()<=0)){
+        		//保存全部信息
+                Record all= new Record();
+                all.set("creator_id", creator_id);
+                all.set("customer_id", customer_id);
+                all.set("arap_type", "charge");
+                all.set("order_type", order_type);
+                all.set("json_value", chargeObjectAll);          
+                Db.save("trans_job_order_arap_template", all);  
+        		
+                //保存局部信息
+        		Record r= new Record();
+                r.set("creator_id", creator_id);
+                r.set("customer_id", customer_id);
+                r.set("arap_type", "charge");
+                r.set("order_type", order_type);
+                r.set("json_value", chargeObject);
+                r.set("parent_id", all.getLong("id"));
+                Db.save("trans_job_order_arap_template", r);  
+       		}
+        }else{
+        	Long parent_id = chargeRec.getLong("parent_id");
+        	Db.update("update trans_job_order_arap_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
+        }
+        
+        if(costRec == null){
+        	if(!(cost_list==null||cost_list.size()<=0)){
+        		//保存全部信息
+                Record all = new Record();
+                all.set("creator_id", creator_id);
+                all.set("customer_id", customer_id);
+                all.set("arap_type", "cost");
+                all.set("order_type", order_type);
+                all.set("json_value", costObjectAll);
+                Db.save("trans_job_order_arap_template", all);  
+                
+        		//保存局部信息
+        		Record r= new Record();
+                r.set("creator_id", creator_id);
+                r.set("customer_id", customer_id);
+                r.set("arap_type", "cost");
+                r.set("order_type", order_type);
+                r.set("json_value", costObject);
+                r.set("parent_id",  all.getLong("id"));
+                Db.save("trans_job_order_arap_template", r);  
+       		}
+        }else{
+        	Long parent_id = costRec.getLong("parent_id");
+        	Db.update("update trans_job_order_arap_template set json_value = ? where id = ?",costObjectAll,parent_id);
+        }
+    }
     
     //保存常用邮箱模版
     public void saveEmailTemplate(){
@@ -619,6 +710,19 @@ public class TransJobOrderController extends Controller {
         render("/tms/TransJobOrder/JobOrderEdit.html");
     }
     
+    /**
+     * 获取应收模板信息
+     */
+    public void getArapTemplate(){
+    	String order_type = getPara("order_type");
+    	String customer_id = getPara("customer_id");
+    	String arap_type = getPara("arap_type");
+    	List<Record> list = Db.find("select * from trans_job_order_arap_template "
+    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
+    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
+    	renderJson(list);
+    }
+    
     //常用邮箱模版
     public List<Record> getEmailTemplateInfo(){
     	List<Record> list = Db.find("select t.* from trans_job_order_sendmail_template t"
@@ -922,6 +1026,13 @@ public class TransJobOrderController extends Controller {
 
     //删除空运常用信息模版
 
+    //删除费用明细常用信息模版
+    @Before(Tx.class)
+    public void deleteArapTemplate(){
+    	String id = getPara("id");
+    	Db.update("delete from trans_job_order_arap_template where id = ? or parent_id = ?",id,id);
+    	renderJson("{\"result\":true}");
+    }
     //删除邮箱常用模版
     @Before(Tx.class)
     public void deleteEmailTemplate(){

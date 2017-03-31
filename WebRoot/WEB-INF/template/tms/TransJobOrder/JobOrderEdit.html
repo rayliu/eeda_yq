@@ -228,10 +228,8 @@
 
                     <div class="tab-pane fade in" id="chargeDetail">
                      <div class="col-lg-12">
-                     <h3>应收应付汇总：</h3>
-                     </div>
-                     <div class="col-lg-12">
-                     <table class="customized table table-striped table-bordered table-hover display" id="profit_table" style="width:600px">
+                        <div class="row simple_rectangle_title_div"><div class="font_style">Collect Information 应收应付汇总</div></div>
+                        <table class="customized table table-striped table-bordered table-hover display" id="profit_table" style="width:600px">
                                <thead class="eeda" >
 	                               <tr>
 	                                   <td >应收</td>
@@ -269,6 +267,22 @@
                         </div>
                         <div class="col-lg-12">
                             <div class="row simple_rectangle_title_div"><div class="font_style">Charge Information 应收信息</div></div>
+                                 <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+                                        <i id='collapseChargeIcon' class="fa 
+                                        <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用应收费用明细
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseChargeInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+                                   <div class="panel-body" id="ChargeDiv">
+                                        
+                                    </div>
+                               </div>
+                            </div>
+
 
                                 <div class="col-lg-4">
                                         <%include("/eeda/component/form/inputSpField.html", 
@@ -340,7 +354,22 @@
         
                          <div class="col-lg-12" style="margin-top:15px">
                             <div class="row simple_rectangle_title_div"><div class="font_style">Cost Information 应付信息</div></div>
-                       
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseCostInfo" aria-expanded="false" class="collapsed">
+                                        <i id='collapseCostIcon' class="fa 
+                                        <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用应付费用明细
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseCostInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+                                    <div class="panel-body"  id="CostDiv">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
                        
                             <button class="btn btn-success btn-xs" id="add_charge_cost">添加费用</button>
                             <br>

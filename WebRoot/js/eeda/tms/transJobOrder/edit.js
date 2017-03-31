@@ -1,6 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'jq_blockui',
     './edit_land_table', './edit_charge_table','./edit_cost_table','./edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report',
-], function ($, metisMenu) {
+    './edit_arap_detail'], function ($, metisMenu) {
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
@@ -135,6 +135,10 @@ $(document).ready(function() {
         //费用明细，应收，应付
         order.charge_list = itemOrder.buildChargeDetail();
         order.chargeCost_list = itemOrder.buildChargeCostDetail();
+        order.charge_template = itemOrder.buildChargeTemplate();
+        order.cost_template = itemOrder.buildCostTemplate();
+        order.allCharge_template = itemOrder.buildAllChargeTemplate();
+        order.allCost_template = itemOrder.buildAllCostTemplate();
         //相关文档
         order.doc_list = eeda.buildTableDetail("doc_table","");
        

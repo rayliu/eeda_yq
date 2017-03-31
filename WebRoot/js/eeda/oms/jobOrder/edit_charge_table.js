@@ -665,11 +665,11 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" disabled />';
+	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" disabled />';
 	                }else{
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" />';
+	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" />';
 	                }
                 }
             }, { "data": "SP_NAME", "visible": false,
