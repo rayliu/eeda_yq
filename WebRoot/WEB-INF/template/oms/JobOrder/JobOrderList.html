@@ -6,6 +6,22 @@
                         <div class="row"><!--  第1行  -->
                             <div class="col-lg-4"><!--  三列排版  -->
                                 <%include("/eeda/component/form/inputField.html", 
+                                                    {   id: 'sono', 
+                                                        label: 'so号', 
+                                                        value: ''
+                                                    }){}%>
+                            </div>
+                            <div class="col-lg-4"><!--  三列排版  -->
+                                <%include("/eeda/component/form/inputField.html", 
+                                                    {   id: 'container_no', 
+                                                        label: '柜号', 
+                                                        value: ''
+                                                    }){}%>
+                            </div>
+                        </div>
+                        <div class="row"><!--  第1行  -->
+                            <div class="col-lg-4"><!--  三列排版  -->
+                                <%include("/eeda/component/form/inputField.html", 
                                                     {   id: 'order_no', 
                                                         label: '工作单号', 
                                                         value: ''

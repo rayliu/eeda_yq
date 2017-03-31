@@ -1698,9 +1698,11 @@ public class JobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         }
         else{
-		         sql = "SELECT * from (select jo.*,"
+		         sql = "SELECT * from (select jo.*,jos.sono,josi.container_no, "
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code"
 		         		+ "	from job_order jo"
+		         		+ "	left join job_order_shipment jos on jos.order_id = jo.id"
+		         		+ "	left join job_order_shipment_item josi on josi.order_id = jo.id"
 		         		+ "	left join party p on p.id = jo.customer_id"
 		         		+ "	left join user_login u on u.id = jo.creator"
 		         		+ "	where jo.office_id="+office_id

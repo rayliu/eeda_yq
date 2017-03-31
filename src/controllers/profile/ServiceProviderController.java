@@ -799,7 +799,7 @@ public class ServiceProviderController extends Controller {
     public void markCustormerList(){
     	String sp_id=getPara("sp_id");
     	String office_id= pom.getCurrentOfficeId().toString();
-        String sql="select pm.*,p.abbr,ul.c_name creator FROM party_mark pm "
+        String sql="select pm.*,p.abbr,ul.c_name creator_name FROM party_mark pm "
 					+" LEFT JOIN party p on p.id=pm.sp_id "
 					+" LEFT JOIN user_login ul on ul.id=pm.creator "
 					+" WHERE pm.sp_id = " +sp_id;
