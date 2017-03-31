@@ -22,6 +22,8 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
             eeda.bindTableFieldDockInfo('eeda-table','LOADING_WHARF1');
             eeda.bindTableFieldDockInfo('eeda-table','LOADING_WHARF2');
             eeda.bindTableFieldCurrencyId('eeda-table','CURRENCY_ID','/serviceProvider/searchCurrency','');
+
+             // eeda.bindTableLocationField('eeda-table','route_to');
      };
   	//datatable, 动态处理
       var dataTable = eeda.dt({

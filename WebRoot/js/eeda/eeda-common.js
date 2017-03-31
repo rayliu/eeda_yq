@@ -1027,33 +1027,12 @@ eeda.refreshUrl = refreshUrl;
       };
       
       eeda.bindTableLocationField = function(talbe_id, el_name) {
-//    	  var spList = $('#input_location_field_list');
-    	   var table_height= $('#'+talbe_id).height();
-//           var spList =$("#"+talbe_id+' [name='+el_name+"_list]");
-//           var area_list_title = $("#"+talbe_id+' [name='+el_name+"_list] .area-list-title");
-//           var spListContent =$("#"+talbe_id+' [name='+el_name+"_list] .area-list-content");
-//           var inputField = $('#'+talbe_id+' input[name='+el_name+'_INPUT]');
-//           var hiddenField = $('#'+talbe_id+' input[name='+el_name+']');
-//           var hiddenProvinceField = $('#'+talbe_id+' [name='+el_name+'_province]');//这里是方便用户选错时，回选上级
-//           
-           area_list_title.click(function(){
-             var selectedLevel=$(this).attr('data-level');
-             var currentLevel=$(this).parent().find('.this').attr('data-level');
-             if(selectedLevel>=currentLevel)
-                 return;
-             
-             if(selectedLevel<currentLevel && selectedLevel==0){
-               inputField.val('');
-                     hiddenField.val('');
-                     hiddenProvinceField.val('');
-               searchLocation();
-             }else{
-               inputField.val(inputField.val().split('-')[0]);
-               searchLocation(1, hiddenProvinceField.val());
-             }
-                 
-           });
+    	  var spList = $('#input_location_field_list');
+           var area_list_title = $("#input_location_field_list .area-list-title");
+           var spListContent =$("#input_location_field_list .area-list-content");
+           var hiddenProvinceField = $('#input_location_field_list [name='+el_name+'_province]');//这里是方便用户选错时，回选上级
            
+                     
            var searchLocation = function(level, code){
              var locLevel = "province";
              level = level | 0;
@@ -1073,40 +1052,47 @@ eeda.refreshUrl = refreshUrl;
                spList.find('input').removeClass('this');
                  spList.find('input[data-level='+level+']').addClass('this');
                  spList.css({ 
-                     left:$(inputField).position().left+"px", 
-                     top:$(inputField).position().top+30+"px" 
+                     left:$(eeda._inputField).offset().left+"px", 
+                     top:$(eeda._inputField).offset().top+30+"px" 
                    }); 
                  spList.show();
                
              },'json');
            };
              
-           $('#'+talbe_id+' input[name='+el_name+'_INPUT]').on('input click', function(){
-            	 $('#'+talbe_id).height($('#'+talbe_id).height()+100);
+           $('#'+talbe_id+' input[name='+el_name+'_INPUT]').on(' click', function(){
                var me = this;
+               var inputField = $(this);
+               var hiddenField = $(this).parent().find('input[name='+el_name+']');
              var inputStr = $(this).val();
              
              searchLocation();
              spList.css({ 
-                   left:$(me).position().left+"px", 
-                   top:$(me).position().top+30+"px" 
+                   left:$(me).offset().left+"px", 
+                   top:$(me).offset().top+30+"px" 
                  }); 
              spList.show();
+
+                  eeda._inputField = inputField;
+                  eeda._hiddenField = hiddenField;
              });
         
              spListContent.on('click', 'a', function(){
             	 var inputField = eeda._inputField;
                  var hiddenField = eeda._hiddenField;
-                 inputField.val($(this).text());//名字
+                 // inputField.val($(this).text());//名字
                var dataLevel = $(this).attr('next-level');
                var code = $(this).attr('code');
                var name = $(this).attr('name');
-               var oldValue = inputField.val();
+               oldValue = inputField.val();
                if(dataLevel == 1){
                  hiddenProvinceField.val(code);
                }
                
                if(dataLevel>1){
+                if(oldValue.indexOf(name,0)!=-1){
+                  oldValue=oldValue.substring(0,oldValue.indexOf("-"+name,0));
+                }
                  name = oldValue+'-'+name;
                }
                inputField.val(name);
@@ -1123,18 +1109,14 @@ eeda.refreshUrl = refreshUrl;
              });
              
              // 没选中，焦点离开，隐藏列表
-           inputField.on('blur', function(){
-        	   $('#'+talbe_id).height(table_height);
-             if (inputField.val().trim().length ==0 || inputField.val().split('-').length==1) {
-               inputField.val('');
-               hiddenField.val('');
-             };
-             spList.hide();
+           $(document).on('click', function(event){
+              if (spList.is(':visible') ){
+               spList.hide();
+             }
            });
         
            //当用户只点击了滚动条，没选，再点击页面别的地方时，隐藏列表
            spList.on('blur', function(){
-        	   $('#'+talbe_id).height(table_height);
              spList.hide();
            });
         
