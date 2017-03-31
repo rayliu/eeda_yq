@@ -546,19 +546,25 @@ public class TransJobOrderController extends Controller {
     				+ " where tjol.order_id=? GROUP BY tjol.id order by tjol.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
-    		itemSql = " select tjor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name from trans_job_order_arap tjor"
+    		itemSql = " select tjor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name ,"
+    				+ " c1.name exchange_currency_id_name"
+    				+ " from trans_job_order_arap tjor"
     				+ " left join party pr on pr.id=tjor.sp_id"
     				+ " left join fin_item f on f.id=tjor.charge_id"
     				+ " left join unit u on u.id=tjor.unit_id"
     				+ " left join currency c on c.id=tjor.currency_id"
+    		        + " left join currency c1 on c1.id=tjor.exchange_currency_id"
     				+ " where tjor.order_id=? and order_type=? order by tjor.id";
     		itemList = Db.find(itemSql, orderId,"charge");
     	}else if("cost".equals(type)){
-	    	itemSql = " select tjor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name from trans_job_order_arap tjor"
+	    	itemSql = " select tjor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name ,"
+	    			+ " c1.name exchange_currency_id_name"
+	    			+ " from trans_job_order_arap tjor"
 	    			+ "	left join party pr on pr.id=tjor.sp_id"
 	    			+ "	left join fin_item f on f.id=tjor.charge_id"
 	    			+ "	left join unit u on u.id=tjor.unit_id"
 	    			+ " left join currency c on c.id=tjor.currency_id"
+    		        + " left join currency c1 on c1.id=tjor.exchange_currency_id"
 	    			+ "	where tjor.order_id=? and order_type=? order by tjor.id";
 	    	itemList = Db.find(itemSql, orderId,"cost");
     	}else if("doc".equals(type)){

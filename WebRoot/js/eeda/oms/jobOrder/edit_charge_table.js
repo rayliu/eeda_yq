@@ -138,7 +138,8 @@ $(document).ready(function() {
            var total=$(row).find('[name=currency_total_amount]').val();
            var exchange_total=$(row).find('[name=exchange_total_amount_rmb]').val();
            total_rmb+=parseFloat(total);
-           exchange_total_rmb+=parseFloat(exchange_total);
+           if(exchange_total)
+              exchange_total_rmb+=parseFloat(exchange_total);
        };
        var difference=parseFloat(total_rmb)-parseFloat(exchange_total_rmb);
     $('#totalcharge_rmb_difference_span').text(eeda.numFormat(parseFloat(difference).toFixed(2),3));
@@ -664,11 +665,11 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" disabled />';
+	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" disabled />';
 	                }else{
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" />';
+	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" />';
 	                }
                 }
             }, { "data": "SP_NAME", "visible": false,
