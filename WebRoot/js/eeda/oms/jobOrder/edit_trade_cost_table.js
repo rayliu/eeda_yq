@@ -466,7 +466,7 @@ $(document).ready(function() {
         }
     })
 
-    $('#trade_cost_table').on('keyup', '[name=number], [name=price], [name=tax_refund_rate],[name=domestic_price],[name=tax_refund_rate_customer],[name=agency_rate],[name=agency_amount_cny]', function(){
+    $('#trade_cost_table').on('keyup', '[name=number], [name=price], [name=tax_refund_rate],[name=domestic_price],[name=value_added_tax],[name=tax_refund_rate_customer],[name=agency_rate],[name=agency_amount_cny]', function(){
     	var this_input = $(this).attr('name');
     	
     	var row = $(this).parent().parent();
@@ -564,24 +564,7 @@ $(document).ready(function() {
     			}
     		});
     		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html(total.toFixed(3));
-    		if(tax_refund_rate==''){
-        		$(row.find('[name=tax_refund_amount]')).val(0);
-        	}else if(!isNaN(tax_refund_rate)){
-        		var value_added_tax = parseFloat($(row.find('[name=value_added_tax]')).val());
-        		var tax_refund_amount = parseFloat(domestic_price*tax_refund_rate/(1+value_added_tax));
-        		
-//        		var tax_refund_amount = parseFloat(domestic_price*tax_refund_rate/(1+value_added_tax));
-        		
-        		$(row.find('[name=tax_refund_amount]')).val(tax_refund_amount.toFixed(3));
-        		var total = 0;
-        		$('#trade_cost_table [name=tax_refund_amount]').each(function(){
-        			var a = this.value;
-        			if(a!=''&&!isNaN(a)){
-        				total+=parseFloat(a);
-        			}
-        		});
-        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html(total.toFixed(3));
-        	}
+    		
     		
     		if(tax_refund_rate_customer==0){
         		$(row.find('[name=adjusted_tax_refund_amount]')).val(0);
@@ -600,21 +583,18 @@ $(document).ready(function() {
         		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(11).html(total.toFixed(3));
         	}
     		
-    		
-    		
-    	//}
     
     	if(price==''){
     		$(row.find('[name=adjusted_unit_price]')).val(0);
     		$(row.find('[name=adjusted_total_price]')).val(0);
     	}else if(!isNaN(price)){
-    		var total_tax_refund_amount = 0;
+    		var total_adjusted_tax_refund_amount = 0;
     		var total_service_fee = 0;
     		var total_count = 0;
-    		$('#trade_cost_table [name=tax_refund_amount]').each(function(){
+    		$('#trade_cost_table [name=adjusted_tax_refund_amount]').each(function(){
     			var a = this.value;
     			if(a!=''&&!isNaN(a)){
-    				total_tax_refund_amount+=parseFloat(a);
+    				total_adjusted_tax_refund_amount+=parseFloat(a);
     			}
     		});
     		$('#charge_service_table [name=currency_total_amount]').each(function(){
@@ -629,7 +609,7 @@ $(document).ready(function() {
         			total_count+=parseInt(a);
         		}
     		});
-        	var total_difference = total_tax_refund_amount-total_service_fee
+        	var total_difference = total_adjusted_tax_refund_amount-total_service_fee
     		var price_difference = total_difference/total_count;
         	$('#total_difference').val(total_difference.toFixed(3));
     	    $('#price_difference').val(price_difference.toFixed(3));
@@ -666,6 +646,24 @@ $(document).ready(function() {
 //            		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(12).html(total.toFixed(3));
 //            	}
         	}
+
+            if(tax_refund_rate==''){
+                $(row.find('[name=tax_refund_amount]')).val(0);
+            }else if(!isNaN(tax_refund_rate)){
+                var value_added_tax = parseFloat($(row.find('[name=value_added_tax]')).val());
+                var adjusted_total_price = parseFloat($(row.find('[name=adjusted_total_price]')).val());
+                var tax_refund_amount = parseFloat(adjusted_total_price*tax_refund_rate/(1+value_added_tax));
+                
+                $(row.find('[name=tax_refund_amount]')).val(tax_refund_amount.toFixed(3));
+                var total = 0;
+                $('#trade_cost_table [name=tax_refund_amount]').each(function(){
+                    var a = this.value;
+                    if(a!=''&&!isNaN(a)){
+                        total+=parseFloat(a);
+                    }
+                });
+                $($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html(total.toFixed(3));
+            }
     	}
     	
     })
