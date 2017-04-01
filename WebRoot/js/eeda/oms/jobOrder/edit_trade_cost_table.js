@@ -442,7 +442,7 @@ $(document).ready(function() {
             $('#trade_cost_table [name=agency_amount_cny]').each(function(){
                 var a = this.value;
                 if(a!=''&&!isNaN(a)){
-                    total+=parseFloat(a);
+                    total+=parseFloat(a)/100;
                 }
             })
             $($('.dataTables_scrollFoot tr')[0]).find('th').eq(21).html(total.toFixed(3));

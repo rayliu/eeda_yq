@@ -703,7 +703,6 @@ public class ChargeRequestController extends Controller {
         String ids = getPara("ids");
   		String application_id=getPara("application_id");
         
-//        List<Map<String, ?>> chargeList = (ArrayList<Map<String, ?>>)dto.get("chargeList");
         
         if(StringUtils.isNotEmpty(application_id)){
         	String receive_time = (String) dto.get("receive_time");
