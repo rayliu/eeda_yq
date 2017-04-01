@@ -239,15 +239,13 @@ $(document).ready(function() {
 		            return;
 		        }
 
-//		  	if($("#receive_type").val()=='transfers'){
-//				if($("#receive_bank").val()==''){
-//					$.scojs_message('收入银行不能为空', $.scojs_message.TYPE_FALSE);
-//					return false;
-//				}
-//			}
 			var order={};
-			order.chargeList=itemOrder.buildChargeItem();
-			$.get("/chargeRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
+	  		order.id=$('#order_id').val();
+			order.receive_time=$('#receive_time').val();
+			order.receive_bank_id=$('#deposit_bank').val();
+			order.payment_method = $('#payment_method').val();
+			order.pay_remark = $('#pay_remark').val();
+			$.get("/chargeRequest/confirmOrder", {params:JSON.stringify(order),application_id:$('#order_id').val()}, function(data){
 				if(data){
 					$("#status").val('已收款');
 					$("#returnBtn").attr("disabled", true);
@@ -474,19 +472,6 @@ $(document).ready(function() {
 //		var url = "/chargeCheckOrder/tableList?order_id="+order_id;
 //    	itemTable.ajax.url(url).load();
 //	})
-	
-		itemOrder.buildChargeItem=function(){
-		var cargo_items_array=[];
-		var order={};
-		order.id=$('#order_id').val();
-		order.receive_time=$('#receive_time').val();
-		order.receive_bank_id=$('#deposit_bank').val();
-		order.payment_method = $('#payment_method').val();
-		order.pay_remark = $('#pay_remark').val();
-		cargo_items_array.push(order);
-		return cargo_items_array;
-	}
-	
 	
 
 });

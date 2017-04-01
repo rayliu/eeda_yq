@@ -1,26 +1,26 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN'], function ($, metisMenu) {
 $(document).ready(function() {
-	document.title = '应收申请单| '+document.title;
-	$("#breadcrumb_li").text('应收申请单');
+    document.title = '应收申请单| '+document.title;
+    $("#breadcrumb_li").text('应收申请单');
                 
     var application_table = eeda.dt({
-    	id: 'application_table',
-    	autoWidth: false,
-    	scrollY: 530,
-    	scrollCollapse: true,
+        id: 'application_table',
+        autoWidth: false,
+        scrollY: 530,
+        scrollCollapse: true,
 //        paging: true,
         drawCallback: function( settings ) {
-      	    flash();
-	    },
+            flash();
+        },
         serverSide: true, 
-    	ajax: "/chargeRequest/applicationList?status=新建",
-		  columns: [
-		  { "width": "10px", "orderable": false,
-		    "render": function ( data, type, full, meta ) {
-		        var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
-		    	return strcheck;
-		    }
-		  },
+        ajax: "/chargeRequest/applicationList?status=新建",
+          columns: [
+          { "width": "10px", "orderable": false,
+            "render": function ( data, type, full, meta ) {
+                var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
+                return strcheck;
+            }
+          },
           { "width": "100px",
                 "render": function ( data, type, full, meta ) {
                     var str="<nobr>";
@@ -38,124 +38,124 @@ $(document).ready(function() {
                     return str;
                 }
             },
-		    {"data":"APPLICATION_ORDER_NO",
-            	 "render": function(data, type, full, meta) {
-            			return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
-            	 }
+            {"data":"APPLICATION_ORDER_NO",
+                 "render": function(data, type, full, meta) {
+                        return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
+                 }
             },
             {"data":"STATUS"},
             {"data":"PAYEE_COMPANY","class":"SP_NAME"},
             {"data":"BILL_TYPE",
-            	"render": function(data,type,full,mate){
-            		var strBillType = "无发票";
-	        		if(data=="ordinarybill"){
-	        			strBillType="增值税普通发票";
-	        		}else if(data=="specialbill"){
-	        			strBillType="增值税专用发票";
-	        		}else if(data=="dbill"){
-	        			strBillType="代开发票";
-	        		}else if(data=="HKINVbill"){
-	        			strBillType="HK INV";
-	        		}
-	        			
-	        		return strBillType;
-        		}	
+                "render": function(data,type,full,mate){
+                    var strBillType = "无发票";
+                    if(data=="ordinarybill"){
+                        strBillType="增值税普通发票";
+                    }else if(data=="specialbill"){
+                        strBillType="增值税专用发票";
+                    }else if(data=="dbill"){
+                        strBillType="代开发票";
+                    }else if(data=="HKINVbill"){
+                        strBillType="HK INV";
+                    }
+                        
+                    return strBillType;
+                }   
             },
             {"data":"FEE_TYPE",
-            	"render": function(data,type,full,mate){
-        		var strFeeType = "";
-        		if(data=="transFee"){
-        			strFeeType="代理货运服务费";
-        		}else if(data=="customFee"){
-        			strFeeType="代理报关服务费";
-        		}else if(data=="consultFee"){
-        			strFeeType="咨询服务费";
-        		}else if(data=="internationalFee"){
-        			strFeeType="国际货代服务费";
-        		}else if(data=="advanceFee"){
-        			strFeeType="代垫付费";
-        		}
-        			
-        		return strFeeType;
-    			}	
+                "render": function(data,type,full,mate){
+                var strFeeType = "";
+                if(data=="transFee"){
+                    strFeeType="代理货运服务费";
+                }else if(data=="customFee"){
+                    strFeeType="代理报关服务费";
+                }else if(data=="consultFee"){
+                    strFeeType="咨询服务费";
+                }else if(data=="internationalFee"){
+                    strFeeType="国际货代服务费";
+                }else if(data=="advanceFee"){
+                    strFeeType="代垫付费";
+                }
+                    
+                return strFeeType;
+                }   
             },
             {"data":"SERVICE_STAMP","width":"80px"},
             {"data":"MODAL_CNY",'class':'cny',
-            	"render": function(data, type, full, meta) {
-            		if(data)
-            			return eeda.numFormat(parseFloat(data).toFixed(2),3);
-            		else
-            			return '';
-            	}
+                "render": function(data, type, full, meta) {
+                    if(data)
+                        return eeda.numFormat(parseFloat(data).toFixed(2),3);
+                    else
+                        return '';
+                }
             },
             {"data":"MODAL_USD",'class':'usd',
-            	"render": function(data, type, full, meta) {
-            		if(data)
-            			return eeda.numFormat(parseFloat(data).toFixed(2),3);
-            		else
-            			return '';
-            	}
+                "render": function(data, type, full, meta) {
+                    if(data)
+                        return eeda.numFormat(parseFloat(data).toFixed(2),3);
+                    else
+                        return '';
+                }
             },
             {"data":"MODAL_JPY",'class':'jpy',
-            	"render": function(data, type, full, meta) {
-            		if(data)
-            			return eeda.numFormat(parseFloat(data).toFixed(2),3);
-            		else
-            			return '';
-            	}
+                "render": function(data, type, full, meta) {
+                    if(data)
+                        return eeda.numFormat(parseFloat(data).toFixed(2),3);
+                    else
+                        return '';
+                }
             },
             {"data":"MODAL_HKD",'class':'hkd',
-            	"render": function(data, type, full, meta) {
-            		if(data)
-            			return eeda.numFormat(parseFloat(data).toFixed(2),3);
-            		else
-            			return '';
-            	}
+                "render": function(data, type, full, meta) {
+                    if(data)
+                        return eeda.numFormat(parseFloat(data).toFixed(2),3);
+                    else
+                        return '';
+                }
             },
             {"data":"PAY_REMARK"},
             {"data":"CHARGE_ORDER_NO"},
             {"data":"PAYMENT_METHOD",'class':'payment_method',
                 "render": function(data, type, full, meta) {
                     if(data == 'cash'){
-                    	 return '现金';
+                         return '现金';
                     }else if(data == 'transfers'){
-                    	  return '转账';
+                          return '转账';
                     }else if(data =='checkTransfers'){
-                    	  return '支票转账';
+                          return '支票转账';
                     }else{
-                    	  return data;
+                          return data;
                     }
-                    	
+                        
                 }
             },
             {"data":"C_NAME"},
             {"data":"CREATE_STAMP",
-        		"render":function(data, type, full, meta){
-        			if(data)
-        				return data.substr(0,10);
-        			else 
-        				return '';
-    			}
-    		},
-        	{"data":"CHECK_STAMP",
-        		"render":function(data, type, full, meta){
-        			if(data)
-        				return data.substr(0,10);
-        			else 
-        				return '';
-    			}
-        	},
-        	{"data":"RECEIVE_TIME",
-        		"render":function(data, type, full, meta){
-        			if(data)
-        				return data.substr(0,10);
-        			else 
-        				return '';
-    			}
-        	},
-        	{"data":"ORDER_TYPE"},
+                "render":function(data, type, full, meta){
+                    if(data)
+                        return data.substr(0,10);
+                    else 
+                        return '';
+                }
+            },
+            {"data":"CHECK_STAMP",
+                "render":function(data, type, full, meta){
+                    if(data)
+                        return data.substr(0,10);
+                    else 
+                        return '';
+                }
+            },
+            {"data":"RECEIVE_TIME",
+                "render":function(data, type, full, meta){
+                    if(data)
+                        return data.substr(0,10);
+                    else 
+                        return '';
+                }
+            },
+            {"data":"ORDER_TYPE"},
             {"data":"INVOICE_NO"}
-		]      
+        ]      
     });
     
      var checked_application_table = eeda.dt({
@@ -320,7 +320,7 @@ $(document).ready(function() {
     $("#searchBtn1").click(function(){
         $('#checked_application_table').empty();
            
-    	back="";
+        back="";
         refreshData(back);
     });
 
@@ -333,11 +333,11 @@ $(document).ready(function() {
     //保留查询条件
     var saveConditions=function(){
         var conditions={
-        		sp_id:$('#sp_id').val(),
-        		
-        		payee_company:$('#sp_id_input').val().trim(),
-        	  	  
-				charge_order_no : $('#orderNo').val().trim(), 
+                sp_id:$('#sp_id').val(),
+                
+                payee_company:$('#sp_id_input').val().trim(),
+                  
+                charge_order_no : $('#orderNo').val().trim(), 
                 applicationOrderNo : $('#applicationOrderNo').val(),
                 status2 : $('#status2').val().trim(),
                 fee_type : $('#fee_type').val().trim(),
@@ -359,16 +359,16 @@ $(document).ready(function() {
 
     //查询动作
     var refreshData=function(back){
-    	  var sp_id = $('#sp_id').val();
-    	  var payee_company = $('#sp_id_input').val().trim();
-    	  
+          var sp_id = $('#sp_id').val();
+          var payee_company = $('#sp_id_input').val().trim();
+          
           var charge_order_no = $('#orderNo').val().trim(); 
           var applicationOrderNo = $('#applicationOrderNo').val();
           if(back=="true"){
-          	  $('#status2').val("新建");
+              $('#status2').val("新建");
             }
           if(back=="confirmTrue"){
-          	  $('#status2').val("已复核");
+              $('#status2').val("已复核");
             }
           var status2 = $('#status2').val().trim();
           
@@ -385,7 +385,7 @@ $(document).ready(function() {
           var confirmBegin_date_end_time = $('#confirmBegin_date_end_time').val();
 
           var url = "/chargeRequest/applicationList?sp_id="+sp_id
-     	   +"&payee_company_equals="+payee_company  
+           +"&payee_company_equals="+payee_company  
             +"&charge_order_no="+charge_order_no
             +"&application_order_no="+applicationOrderNo
             +"&status="+status2
@@ -433,16 +433,16 @@ $(document).ready(function() {
     
     //浏览器回退按钮,加载页面
 //    $(window).on('beforeunload', function(e) {
-//    	$.load(function(){
-//    		
-//    		refreshData(this);
-//    	})
+//      $.load(function(){
+//          
+//          refreshData(this);
+//      })
 //    });
     
     if(back=="true"||back=="confirmTrue"){
-    	refreshData(back);
+        refreshData(back);
     }else{
-    	$('#applicationForm')[0].reset();
+        $('#applicationForm')[0].reset();
     }
     
     
@@ -479,9 +479,9 @@ $(document).ready(function() {
     }
     
     
-	
+    
     //勾选进行金额汇总
-	$('#application_table').on('click',"input[name='order_check_box']",function (e) {
+    $('#application_table').on('click',"input[name='order_check_box']",function (e) {
         e.preventDefault();
         $('#checked').attr('disabled',true);
         $('#confirmed').attr('disabled',true);
@@ -497,16 +497,17 @@ $(document).ready(function() {
                 if(status=='新建') $('#checked').attr('disabled',false);
                 if(status=='已复核') $('#confirmed').attr('disabled',false);
             tr.remove();
+             $(this).prop('checked',true);
 
         }
-	
+    
     });
-	
-	$('#allCheck').click(function(){
+    
+    $('#allCheck').click(function(){
         var status=[];
         var error=0;
-		if(this.checked==true){
-			$("#application_table .checkBox").each(function(){
+        if(this.checked==true){
+            $("#application_table .checkBox").each(function(){
                     var statu= $(this).parent().next().next().next().html();
                     if(status[0]==''||status[0]==undefined){
                         status.push(statu);
@@ -526,41 +527,41 @@ $(document).ready(function() {
     
                     if(status=='新建') $('#checked').attr('disabled',false);
                      if(status=='已复核') $('#confirmed').attr('disabled',false);
-			     });
+                 });
                 $('#allCheck2').prop('checked',true);
                 totalMoney();
             }
-		}else{
-			$("#application_table .checkBox").each(function(){
-				$(this).prop('checked',false);
-			});
-			$('#cny_totalAmountSpan').text(0);
-			$('#usd_totalAmountSpan').text(0);
-	        $('#hkd_totalAmountSpan').text(0);
-	        $('#jpy_totalAmountSpan').text(0);
+        }else{
+            $("#application_table .checkBox").each(function(){
+                $(this).prop('checked',false);
+            });
+            $('#cny_totalAmountSpan').text(0);
+            $('#usd_totalAmountSpan').text(0);
+            $('#hkd_totalAmountSpan').text(0);
+            $('#jpy_totalAmountSpan').text(0);
              $('#checked').attr('disabled',true);
             $('#confirmed').attr('disabled',true);
-		}
-	});
+        }
+    });
 
-	$('#totalZero').click(function(){
-			$("#application_table .checkBox").each(function(){
-				$(this).prop('checked',false);
-			});
-			$('#cny_totalAmountSpan').text(0);
-			$('#usd_totalAmountSpan').text(0);
-	        $('#hkd_totalAmountSpan').text(0);
-	        $('#jpy_totalAmountSpan').text(0);
-	    }
-	);
-	
-	  $("#application_table").on('click','.checkBox,.checkBtn',function(){
-		   $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
-	  });
-	  
-	  var flash = function(){    
-	 	 $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
-	  };
+    $('#totalZero').click(function(){
+            $("#application_table .checkBox").each(function(){
+                $(this).prop('checked',false);
+            });
+            $("#checked_application_table").empty();
+            $('#cny_totalAmountSpan').text(0);
+            $('#usd_totalAmountSpan').text(0);
+            $('#hkd_totalAmountSpan').text(0);
+            $('#jpy_totalAmountSpan').text(0);
+        });
+    
+      $("#application_table").on('click','.checkBox,.checkBtn',function(){
+           $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
+      });
+      
+      var flash = function(){    
+         $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
+      };
 
       //复核
       $("#application_table").on('click','.checkBtn',function(){
@@ -587,8 +588,8 @@ $(document).ready(function() {
       $("#application_table").on('click','.confirmBtn',function(){
             $('#chargeRe_table_msg_btn').click();           
             var checkbox1=$(this).parent().parent().parent().find('[type=checkbox]');
-            $(checkbox1).prop('checked',true);
-            totalMoney();
+            $('#table_id').val($(this).parent().parent().parent().parent().parent().attr("id"));
+            $('#rowIndex').val(checkbox1.val());
             $('#confirmBtn').attr('disabled',true);
             $('#receive_time').val('');
              
@@ -618,8 +619,8 @@ $(document).ready(function() {
       $("#checked_application_table").on('click','.confirmBtn',function(){
             $('#chargeRe_table_msg_btn').click();           
             var checkbox1=$(this).parent().parent().parent().find('[type=checkbox]');
-            $(checkbox1).prop('checked',true);
-            totalMoney();
+            $('#table_id').val($(this).parent().parent().parent().parent().parent().attr("id"));
+            $('#rowIndex').val(checkbox1.val());
             $('#confirmBtn').attr('disabled',true);
             $('#receive_time').val('');
              
@@ -686,17 +687,32 @@ $(document).ready(function() {
 
     //收款确认
      $("#confirmBtn").on('click',function(){
-        var order={};
-        var rows =$('#checked_application_table tr');
-        order.chargeList=itemOrder.buildChargeItem();
-        
-        $.post("/chargeRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
+        //单条确认，多条确认
+        var application_ids=[];
+        var rowIndex=$('#rowIndex').val();
+        var table=$('#table_id').val();
+        var rows =$('#'+table+' tr');
+        if(rowIndex){
+            application_ids.push(rowIndex);
+        }else{
+            for(var i=1;i<rows.length;i++){
+           if($(rows[i]).find('[type=checkbox]').prop('checked')){
+               var checkBox = $(rows[i]).find('[type=checkbox]');
+                id=checkBox.val();
+                if(id){
+                    application_ids.push(id);
+                }
+            }
+
+          }
+        }
+        $.post("/chargeRequest/confirmOrder", {ids:application_ids.toString(),receive_time:$('#receive_time').val()}, function(data){
                         if(data){
                             // $('#application_table [type=checkbox]').prop('checked',false);
                             totalMoney();
-                        	if(data.IDS.length>0){
-                        		var arr=[];
-                        		    arr=data.IDS.split(',');
+                            if(data.IDS.length>0){
+                                var arr=[];
+                                    arr=data.IDS.split(',');
                                 for(var j=0;j<arr.length;j++){
                                     for(var i=1;i<rows.length;i++){
                                         var td=$(rows[i]).find('[type=checkbox]');
@@ -707,13 +723,14 @@ $(document).ready(function() {
                                         }
                                     }
                                 }
-                        	}else{
-                        		var td=$(rows).find('.confirmBtn');
-                        		var rowIndex = $('#rowIndex').val();
-                        		$(td[rowIndex]).attr('disabled',true);
-                        		$(td[rowIndex]).parent().parent().next().next().html(data.STATUS);
-                        	}
-                        	$.scojs_message('收款成功', $.scojs_message.TYPE_OK);
+                            }else{
+                                var td=$(rows).find('.confirmBtn');
+                                var rowIndex = $('#rowIndex').val();
+                                $(td[rowIndex]).attr('disabled',true);
+                                $(td[rowIndex]).parent().parent().next().next().html(data.STATUS);
+                            }
+                            $.scojs_message('收款成功', $.scojs_message.TYPE_OK);
+                            $('#rowIndex').val('');
                              $('#confirmed').attr('disabled',true);
                         }else{
                             $("#checked_application_table .confirmBtn").attr("disabled", false);
@@ -723,7 +740,7 @@ $(document).ready(function() {
      });
 
         $('#allCheck2').click(function(){
-        if(this.checked==true){
+         if(this.checked==true){
             totalMoney();
             $("#checked_application_table .checkBox").each(function(){
                 $(this).prop('checked',true);
@@ -731,7 +748,7 @@ $(document).ready(function() {
                 if(status=='新建') $('#checked').attr('disabled',false);
                  if(status=='已复核') $('#confirmed').attr('disabled',false);
             });
-        }else{
+         }else{
             $("#checked_application_table .checkBox").each(function(){
                 $(this).prop('checked',false);
                     var tr=$(this).parent().parent();
