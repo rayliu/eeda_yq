@@ -1353,7 +1353,12 @@ public class JobOrderController extends Controller {
     	String id = getPara("id");
     	JobOrder jobOrder = JobOrder.dao.findById(id);
     	setAttr("order", jobOrder);
-
+    	
+    	//获取汇率日期信息
+    	Record r = Db.findFirst("SELECT * from ( SELECT min(to_stamp) min_stamp FROM currency_rate) A WHERE min_stamp > now()");
+    	if(r==null){
+    		setAttr("rateExpired", "Y");
+    	}
     	//获取海运明细表信息
     	setAttr("usedOceanInfo", getUsedOceanInfo());
     	setAttr("shipmentList", getItems(id,"shipment"));
@@ -1706,7 +1711,6 @@ public class JobOrderController extends Controller {
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code"
 		         		+ "	from job_order jo"
 		         		+ "	left join job_order_shipment jos on jos.order_id = jo.id"
-		         		
 		         		+ "	left join party p on p.id = jo.customer_id"
 		         		+ "	left join user_login u on u.id = jo.creator"
 		         		+ "	where jo.office_id="+office_id

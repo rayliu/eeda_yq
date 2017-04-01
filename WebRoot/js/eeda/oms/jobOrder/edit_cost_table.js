@@ -13,6 +13,10 @@ $(document).ready(function() {
     }); 
     //添加一行
     $('#add_charge_cost').on('click', function(){
+    	if($('#rateExpired').val()=='Y'){
+    		$.scojs_message('当前汇率已过期，请更新汇率才能进行添加费用', $.scojs_message.TYPE_ERROR);
+    		return;
+    	}
     	var item={};
     	costTable.row.add(item).draw(true);
     	

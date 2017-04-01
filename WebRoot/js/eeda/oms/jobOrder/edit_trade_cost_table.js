@@ -313,6 +313,10 @@ $(document).ready(function() {
     });
     
     $('#add_trade_cost_table').on('click', function(){
+    	if($('#rateExpired').val()=='Y'){
+    		$.scojs_message('当前汇率已过期，请更新汇率才能进行添加费用', $.scojs_message.TYPE_ERROR);
+    		return;
+    	}
         var item={};
         cargoTable.row.add(item).draw(true);
     });
