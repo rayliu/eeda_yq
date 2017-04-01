@@ -366,7 +366,7 @@ $(document).ready(function() {
 	
 	
 	var projectFeeType = $('#bill_type').val();
-	if(projectFeeType == 'wbill'||type==""){
+	if(projectFeeType == 'wbill'||projectFeeType==""){
 		$('#projectFee').hide();
 		$('#invoiceDiv').hide();
 	}else{
