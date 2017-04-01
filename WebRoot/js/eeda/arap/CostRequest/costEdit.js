@@ -232,8 +232,12 @@ $(document).ready(function() {
 //				}
 //			}
 			var order={};
-			order.costList=itemOrder.buildCostItem();
-			$.get("/costRequest/confirmOrder", {params:JSON.stringify(order)}, function(data){
+			order.id=$('#order_id').val();
+			order.receive_time=$('#receive_time').val();
+			order.receive_bank_id=$('#deposit_bank').val();
+			order.payment_method = $('#payment_method').val();
+			order.pay_remark = $('#pay_remark').val();
+			$.get("/costRequest/confirmOrder", {params:JSON.stringify(order),application_id:$('#order_id').val()}, function(data){
 				if(data){
 					$("#status").val('已付款');
 					$("#returnBtn").attr("disabled", true);
@@ -390,18 +394,6 @@ $(document).ready(function() {
       		$('#ids').val(idsArray);
       		selectContr.refleshSelectTable(idsArray);
 	})
-	
-	itemOrder.buildCostItem=function(){
-		var cargo_items_array=[];
-		var order={};
-		order.id=$('#order_id').val();
-		order.receive_time=$('#receive_time').val();
-		order.receive_bank_id=$('#deposit_bank').val();
-		order.payment_method = $('#payment_method').val();
-		order.pay_remark = $('#pay_remark').val();
-		cargo_items_array.push(order);
-		return cargo_items_array;
-	}
 	
 
 });

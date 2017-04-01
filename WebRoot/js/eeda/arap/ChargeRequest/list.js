@@ -319,7 +319,7 @@ $(document).ready(function() {
       //查询已申请单
     $("#searchBtn1").click(function(){
         $('#checked_application_table').empty();
-           
+        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr').size()));
         back="";
         refreshData(back);
     });
@@ -498,9 +498,8 @@ $(document).ready(function() {
                 if(status=='已复核') $('#confirmed').attr('disabled',false);
             tr.remove();
              $(this).prop('checked',true);
-
         }
-    
+      $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr').size()));
     });
     
     $('#allCheck').click(function(){
@@ -542,13 +541,16 @@ $(document).ready(function() {
              $('#checked').attr('disabled',true);
             $('#confirmed').attr('disabled',true);
         }
+        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr').size()));
     });
 
     $('#totalZero').click(function(){
             $("#application_table .checkBox").each(function(){
                 $(this).prop('checked',false);
             });
-            $("#checked_application_table").empty();
+            $("#checked_application_table .checkBox").each(function(){
+                $(this).prop('checked',false);
+            });
             $('#cny_totalAmountSpan').text(0);
             $('#usd_totalAmountSpan').text(0);
             $('#hkd_totalAmountSpan').text(0);
@@ -708,8 +710,6 @@ $(document).ready(function() {
         }
         $.post("/chargeRequest/confirmOrder", {ids:application_ids.toString(),receive_time:$('#receive_time').val()}, function(data){
                         if(data){
-                            // $('#application_table [type=checkbox]').prop('checked',false);
-                            totalMoney();
                             if(data.IDS.length>0){
                                 var arr=[];
                                     arr=data.IDS.split(',');
@@ -729,7 +729,8 @@ $(document).ready(function() {
                                 $(td[rowIndex]).attr('disabled',true);
                                 $(td[rowIndex]).parent().parent().next().next().html(data.STATUS);
                             }
-                            $.scojs_message('收款成功', $.scojs_message.TYPE_OK);
+                            $.scojs_message('收款成功', $.scojs_message.TYPE_OK);                            
+                            totalMoney();
                             $('#rowIndex').val('');
                              $('#confirmed').attr('disabled',true);
                         }else{
@@ -764,6 +765,7 @@ $(document).ready(function() {
              $('#checked').attr('disabled',true);
             $('#confirmed').attr('disabled',true);
         }
+        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr').size()));
     });
     
 
@@ -775,48 +777,10 @@ $(document).ready(function() {
                     tr.clone().appendTo($('#application_table'));
                     tr.remove();
         }
+        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr').size()));
         totalMoney();
     });
 
-     itemOrder.buildChargeItem=function(){
-        var cargo_items_array=[];
-        application_table.data().each(function(item,index){
-            var cargo_table_rows = $("#application_table tr");
-            var order={}
-            if($(cargo_table_rows[index+1]).find('[type=checkbox]').prop('checked')){
-                order.id = item.ID.toString();
-                order.receive_time=$('#receive_time').val();
-                order.receive_bank_id=item.DEPOSIT_BANK;
-                if(order.receive_bank_id)
-                    order.receive_bank_id=order.receive_bank_id.toString();
-                order.payment_method =item.PAYMENT_METHOD;
-                cargo_items_array.push(order);
-            }
-        });
-        
-            var cargo_table_rows2 = $("#checked_application_table tr");
-            for(var index=0; index<cargo_table_rows2.length; index++){
-                 var order2={};
-                if($(cargo_table_rows2[index]).find('[type=checkbox]').prop('checked')){
-                     if(index==0)
-                    continue;
-
-                     var row = cargo_table_rows2[index];
-                     var empty = $(row).find('.dataTables_empty').text();
-                     if(empty)
-                    continue;
-                    order2.id = $(row).attr('id');
-                    order2.receive_time=$('#receive_time').val();
-                    order2.receive_bank_id=$(row).find('.receive_bank_id').text();
-                    if(order2.receive_bank_id)
-                        order2.receive_bank_id=order2.receive_bank_id.toString();
-                    order2.payment_method =$(row).find('.payment_method').text();
-                    cargo_items_array.push(order2);
-                }
-            }
-       
-        return cargo_items_array;
-    };
 
 });
 });

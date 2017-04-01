@@ -464,6 +464,7 @@ public class ChargeRequestController extends Controller {
         ArapChargeApplication order = new ArapChargeApplication();
    		String id = (String) dto.get("id");
    		String ids=(String) dto.get("ids");
+   		String status = (String) dto.get("status");
 		String selected_item_ids= (String) dto.get("selected_ids"); //获取申请单据的id,用于回显
 		String sp_id=(String) dto.get("sp_id");
 		String sp_name=(String) dto.get("sp_name");
@@ -476,6 +477,10 @@ public class ChargeRequestController extends Controller {
    			order = ArapChargeApplication.dao.findById(id);
    			DbUtils.setModelValues(dto, order); 
    			
+   		//需后台处理的字段
+   			if("复核不通过".equals(status)){
+   				order.set("status", "新建");
+   			}
    			//需后台处理的字段
    			order.set("update_by", user.getLong("id"));
    			order.set("update_stamp", new Date());
@@ -695,15 +700,14 @@ public class ChargeRequestController extends Controller {
  
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
-        String ids="";
+        String ids = getPara("ids");
+  		String application_id=getPara("application_id");
         
-        List<Map<String, ?>> chargeList = (ArrayList<Map<String, ?>>)dto.get("chargeList"); 
-        for(int i=0;i<chargeList.size();i++){
-        	Map<String, ?> map=(Map<String, ?>) chargeList.get(i);
-        	String id=(String) map.get("id");
-        	ids=id+","+ids;
+//        List<Map<String, ?>> chargeList = (ArrayList<Map<String, ?>>)dto.get("chargeList");
+        
+        if(StringUtils.isNotEmpty(application_id)){
         	String receive_time = (String) dto.get("receive_time");
-        	String pay_remark=(String) map.get("pay_remark");
+        	String pay_remark=(String) dto.get("pay_remark");
         	String receive_bank_id = "";
         	String payment_method = (String) dto.get("payment_method");
         	
@@ -716,20 +720,24 @@ public class ChargeRequestController extends Controller {
       	        	receive_bank_id = rec.getLong("id").toString();
       	        }
       		}
-        	ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(id);
+        	
+        	ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(application_id);
             arapChargeInvoiceApplication.set("status", "已收款");
-            arapChargeInvoiceApplication.set("receive_time", receive_time);
+            if(StringUtils.isNotEmpty(receive_time)){
+            	arapChargeInvoiceApplication.set("receive_time", receive_time);
+            }
             arapChargeInvoiceApplication.set("confirm_by", user.get("id"));
             arapChargeInvoiceApplication.set("confirm_stamp", new Date());
-            arapChargeInvoiceApplication.set("pay_remark", pay_remark);
+            if(StringUtils.isNotEmpty(pay_remark)){
+            	arapChargeInvoiceApplication.set("pay_remark",pay_remark );
+            }
             arapChargeInvoiceApplication.update();
             //已收款的标记位
     		String paySql ="update job_order_arap set pay_flag='Y' "
-    				+ " where id in (SELECT job_order_arap_id FROM charge_application_order_rel WHERE application_order_id ="+id+")" ; //chargeOrderId.substring(1) 去掉第一位
+    				+ " where id in (SELECT job_order_arap_id FROM charge_application_order_rel WHERE application_order_id ="+application_id+")" ; //chargeOrderId.substring(1) 去掉第一位
             Db.update(paySql);
-          //更改原始单据状态
-            List<Record> res = Db.find("select * from charge_application_order_rel where application_order_id = ?",id);
-           
+        	//更改原始单据状态
+            List<Record> res = Db.find("select * from charge_application_order_rel where application_order_id = ?",application_id);
             for (Record re : res) {
       			Long charge_order_id = re.getLong("charge_order_id");
       			String order_type = re.getStr("order_type");
@@ -759,7 +767,7 @@ public class ChargeRequestController extends Controller {
                        Double paid_usd = r.getDouble("paid_usd");
                        Double paid_jpy = r.getDouble("paid_jpy");
                        Double paid_hkd = r.getDouble("paid_hkd");
-    				
+            
     				if(cny>paid_cny||usd>paid_usd||jpy>paid_jpy||hkd>paid_hkd){
     					arapChargeOrder.set("audit_status", "部分已收款").update();
     				}else{
@@ -770,32 +778,130 @@ public class ChargeRequestController extends Controller {
           //新建日记账表数据
       		String cny_pay_amount = "0.0"; 
       		if(arapChargeInvoiceApplication.getDouble("modal_cny")!=null)
-      				arapChargeInvoiceApplication.getDouble("modal_cny").toString();
+      			cny_pay_amount =arapChargeInvoiceApplication.getDouble("modal_cny").toString();
       		if(!"0.0".equals(cny_pay_amount)&&StringUtils.isNotEmpty(cny_pay_amount)){
-      			createAuditLog(id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY");
+      			createAuditLog(application_id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY");
       		}
       		
             String usd_pay_amount ="0.0"; 
             if(arapChargeInvoiceApplication.getDouble("modal_usd")!=null)
-            		arapChargeInvoiceApplication.getDouble("modal_usd").toString();
+            	usd_pay_amount =arapChargeInvoiceApplication.getDouble("modal_usd").toString();
             if(!"0.0".equals(usd_pay_amount)&&StringUtils.isNotEmpty(usd_pay_amount)){
-            	createAuditLog(id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD");
+            	createAuditLog(application_id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD");
             }
             
             String jpy_pay_amount ="0.0"; 
             if(arapChargeInvoiceApplication.getDouble("modal_jpy")!=null)
-            		arapChargeInvoiceApplication.getDouble("modal_jpy").toString();
+            	jpy_pay_amount =arapChargeInvoiceApplication.getDouble("modal_jpy").toString();
             if(!"0.0".equals(jpy_pay_amount)&&StringUtils.isNotEmpty(jpy_pay_amount)){
-            	createAuditLog(id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY");
+            	createAuditLog(application_id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY");
             }
             
             String hkd_pay_amount ="0.0"; 
             if(arapChargeInvoiceApplication.getDouble("modal_hkd")!=null)
-            		arapChargeInvoiceApplication.getDouble("modal_hkd").toString();
+            	hkd_pay_amount =arapChargeInvoiceApplication.getDouble("modal_hkd").toString();
             if(!"0.0".equals(hkd_pay_amount)&&StringUtils.isNotEmpty(hkd_pay_amount)){
-            	createAuditLog(id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD");
+            	createAuditLog(application_id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD");
             }
-            
+           
+        }
+        if(StringUtils.isNotEmpty(ids)){
+  			String[] arr= ids.split(",");
+	        for(int i=0;i<arr.length;i++){
+	        	String id=arr[i];
+	        	String receive_time =getPara("receive_time");
+	        	String receive_bank_id = "";
+	        	
+	        	ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(id);
+	        	String payment_method = arapChargeInvoiceApplication.get("payment_method") ;
+	        	receive_bank_id = arapChargeInvoiceApplication.get("receive_bank_id") ;
+	        	if(StringUtils.isEmpty(receive_bank_id)){
+	      			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
+	      	        Record rec = Db.findFirst(str2);
+	      	        if(rec!=null){
+	      	        	receive_bank_id = rec.getLong("id").toString();
+	      	        }
+	      		}
+	            arapChargeInvoiceApplication.set("status", "已收款");
+	            arapChargeInvoiceApplication.set("receive_time", receive_time);
+	            arapChargeInvoiceApplication.set("confirm_by", user.get("id"));
+	            arapChargeInvoiceApplication.set("confirm_stamp", new Date());
+//	            arapChargeInvoiceApplication.set("pay_remark", pay_remark);
+	            arapChargeInvoiceApplication.update();
+	            //已收款的标记位
+	    		String paySql ="update job_order_arap set pay_flag='Y' "
+	    				+ " where id in (SELECT job_order_arap_id FROM charge_application_order_rel WHERE application_order_id ="+id+")" ; //chargeOrderId.substring(1) 去掉第一位
+	            Db.update(paySql);
+	          //更改原始单据状态
+	            List<Record> res = Db.find("select * from charge_application_order_rel where application_order_id = ?",id);
+	           
+	            for (Record re : res) {
+	      			Long charge_order_id = re.getLong("charge_order_id");
+	      			String order_type = re.getStr("order_type");
+	      			if(order_type.equals("应收对账单")){
+	    				ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(charge_order_id);
+	                    Double usd = arapChargeOrder.getDouble("usd");
+	                    Double cny = arapChargeOrder.getDouble("cny");
+	                    Double hkd = arapChargeOrder.getDouble("hkd");
+	                    Double jpy = arapChargeOrder.getDouble("jpy");
+	
+	                    String sql = "SELECT "
+	                    		+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_charge_item aci on joa.id = aci.ref_order_id"
+	            				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =3 and aci.charge_order_id="+charge_order_id
+	            				+" ),0) paid_cny,"
+	            				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_charge_item aci on joa.id = aci.ref_order_id"
+	            				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =6 and aci.charge_order_id="+charge_order_id
+	            				+" ),0) paid_usd,"
+	            				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_charge_item aci on joa.id = aci.ref_order_id"
+	            				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =8 and aci.charge_order_id="+charge_order_id
+	            				+" ),0) paid_jpy,"
+	            				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  job_order_arap joa LEFT JOIN arap_charge_item aci on joa.id = aci.ref_order_id"
+	            				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =9 and aci.charge_order_id="+charge_order_id
+	            				+" ),0) paid_hkd ";
+	                       
+	                       Record r = Db.findFirst(sql);
+	                       Double paid_cny = r.getDouble("paid_cny");//greate_flay=Y的arap item 汇总金额
+	                       Double paid_usd = r.getDouble("paid_usd");
+	                       Double paid_jpy = r.getDouble("paid_jpy");
+	                       Double paid_hkd = r.getDouble("paid_hkd");
+	    				
+	    				if(cny>paid_cny||usd>paid_usd||jpy>paid_jpy||hkd>paid_hkd){
+	    					arapChargeOrder.set("audit_status", "部分已收款").update();
+	    				}else{
+	    					arapChargeOrder.set("audit_status", "已收款").update();
+	    				}
+	    			}
+	      		}
+	            //新建日记账表数据
+	      		String cny_pay_amount = "0.0"; 
+	      		if(arapChargeInvoiceApplication.getDouble("modal_cny")!=null)
+	      			cny_pay_amount =arapChargeInvoiceApplication.getDouble("modal_cny").toString();
+	      		if(!"0.0".equals(cny_pay_amount)&&StringUtils.isNotEmpty(cny_pay_amount)){
+	      			createAuditLog(id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY");
+	      		}
+	      		
+	            String usd_pay_amount ="0.0"; 
+	            if(arapChargeInvoiceApplication.getDouble("modal_usd")!=null)
+	            	usd_pay_amount =arapChargeInvoiceApplication.getDouble("modal_usd").toString();
+	            if(!"0.0".equals(usd_pay_amount)&&StringUtils.isNotEmpty(usd_pay_amount)){
+	            	createAuditLog(id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD");
+	            }
+	            
+	            String jpy_pay_amount ="0.0"; 
+	            if(arapChargeInvoiceApplication.getDouble("modal_jpy")!=null)
+	            	jpy_pay_amount =arapChargeInvoiceApplication.getDouble("modal_jpy").toString();
+	            if(!"0.0".equals(jpy_pay_amount)&&StringUtils.isNotEmpty(jpy_pay_amount)){
+	            	createAuditLog(id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY");
+	            }
+	            
+	            String hkd_pay_amount ="0.0"; 
+	            if(arapChargeInvoiceApplication.getDouble("modal_hkd")!=null)
+	            	hkd_pay_amount =arapChargeInvoiceApplication.getDouble("modal_hkd").toString();
+	            if(!"0.0".equals(hkd_pay_amount)&&StringUtils.isNotEmpty(hkd_pay_amount)){
+	            	createAuditLog(id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD");
+	            }
+	            
+	        }
         }
         
         Record r = new Record();
