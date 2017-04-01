@@ -307,9 +307,9 @@
                                 {
                                     id:'charge_table',
                                     style:'width:1850px',
-                                    headers:['<input type="checkbox" class="checkBoxOfChargeTable" style="width:30px" id="AllCheckOfChargeTable">','', '类别', '结算公司', '费用名称', '单价', '数量', '单位', '金额', '币制', '对人民币汇率', '对账金额(人民币)','结算币制','结算汇率','结算金额','对人民币汇率','结算金额(人民币)','汇兑损益','备注','sp_name', 'charge_name','charge_name_eng','unit_name','currency_name','audit_flag'],
+                                    headers:['<input type="checkbox" class="checkBoxOfChargeTable" style="width:30px" id="AllCheckOfChargeTable">','', '类别', '结算公司', '费用名称', '单价', '数量', '单位', '金额', '币制', '对人民币汇率','结算币制','备注','sp_name', 'charge_name','charge_name_eng','unit_name','currency_name','audit_flag'],
                                     field_list:['id','', 'type', 'sp_id', 'charge_id', 'price', 'amount', 'unit_id','total_amount', 'currency_id', 
-                                     'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','exchange_currency_rate_rmb','exchange_total_amount_rmb','rmb_difference','remark','sp_name', 'charge_name','charge_name_eng','unit_name','currency_name','exchange_currency_id_name','audit_flag','charge_eng_id'],
+                                     'exchange_rate', 'currency_total_amount','remark','sp_name', 'charge_name','charge_name_eng','unit_name','currency_name','audit_flag','charge_eng_id'],
                                     value_list: chargeList![]
                                 }){} %>
                             </div>
@@ -377,9 +377,9 @@
                                 {
                                     id:'cost_table',
                                     style:'width:1850px',
-                                    headers:['<input type="checkbox" style="width:30px" id="AllCheckOfCostTable">','', '类别','结算公司', '费用名称', '单价', '数量', '单位', '金额', '币制', '对人民币汇率',  '对账金额(人民币)','结算币制','结算汇率','结算金额','对人民币汇率','结算金额(人民币)','汇兑损益', '备注', 'sp_name','charge_name','charge_name_eng','unit_name','currency_name','audit_flag',''],
+                                    headers:['<input type="checkbox" style="width:30px" id="AllCheckOfCostTable">','', '类别','结算公司', '费用名称', '单价', '数量', '单位', '金额', '币制', '对人民币汇率','结算币制', '备注', 'sp_name','charge_name','charge_name_eng','unit_name','currency_name','audit_flag',''],
                                     field_list:['id','', 'type', 'sp_id', 'charge_id', 'price', 'amount', 'unit_id', 'total_amount','currency_id',
-                                     'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','exchange_currency_rate_rmb','exchange_total_amount_rmb','rmb_difference', 'remark', 'sp_name', 'charge_name','charge_name_eng','unit_name','currency_name','EXCHANGE_CURRENCY_ID_NAME','audit_flag','charge_eng_id'],
+                                     'exchange_rate', 'currency_total_amount','remark', 'sp_name', 'charge_name','charge_name_eng','unit_name','currency_name','audit_flag','charge_eng_id'],
                                     value_list: costList![]
                                 }){} %>
                         </div>

@@ -34,11 +34,7 @@ $(document).ready(function() {
         						+'charge_name_eng="'+json_obj[j].charge_eng_name+'" '
         						+'currency_name="'+json_obj[j].currency_name+'" '
         						+'currency_total_amount="'+json_obj[j].currency_total_amount+'" '
-        						+'exchange_currency_id="'+json_obj[j].exchange_currency_id+'" '
-        						+'exchange_currency_name="'+json_obj[j].exchange_currency_name+'" '
-        						+'exchange_currency_rate="'+json_obj[j].exchange_currency_rate+'" '
         						+'exchange_rate="'+json_obj[j].exchange_rate+'" '
-        						+'exchange_total_amount="'+json_obj[j].exchange_total_amount+'" '
         						+'order_type="'+json_obj[j].order_type+'" '
         						+'price="'+json_obj[j].price+'" '
         						+'remark="'+json_obj[j].remark+'" '
@@ -122,16 +118,12 @@ $(document).ready(function() {
         	item.CURRENCY_ID= row.attr('currency_id');
         	item.EXCHANGE_RATE= row.attr('exchange_rate');
         	item.CURRENCY_TOTAL_AMOUNT= row.attr('currency_total_amount');
-        	item.EXCHANGE_CURRENCY_ID= row.attr('exchange_currency_id');
-        	item.EXCHANGE_CURRENCY_RATE= row.attr('exchange_currency_rate');
-        	item.EXCHANGE_TOTAL_AMOUNT= row.attr('exchange_total_amount');
         	item.REMARK= row.attr('remark');
         	item.SP_NAME=row.attr('sp_name');
         	item.CHARGE_NAME=row.attr('charge_name');
         	item.CHARGE_NAME_ENG=row.attr('charge_name_eng');
         	item.UNIT_NAME=row.attr('unit_name');
         	item.CURRENCY_NAME=row.attr('currency_name');
-        	item.EXCHANGE_CURRENCY_ID_NAME=row.attr('exchange_currency_name');
         	item.AUDIT_FLAG='';
         	dataTable.row.add(item).draw();
         }

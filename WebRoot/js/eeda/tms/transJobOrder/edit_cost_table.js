@@ -438,89 +438,6 @@ $(document).ready(function() {
 	                }
               }
             },
-            { "data": "EXCHANGE_CURRENCY_ID", "width":"60px","className":"cny_to_other",
-                "render": function ( data, type, full, meta ) {
-                    if(full.AUDIT_FLAG == 'Y'){
-                        if(!data)
-                            data='';
-                        var field_html = template('table_dropdown_template',
-                                {
-                                    id: 'exchange_currency_id',
-                                    value: data,
-                                    display_value: full.EXCHANGE_CURRENCY_ID_NAME,
-                                    style:'width:80px',
-                                    disabled:'disabled'
-                                }
-                        );
-                        return field_html;
-                    }else{
-                        if(!data)
-                            data='';
-                        var field_html = template('table_dropdown_template',
-                                {
-                                    id: 'exchange_currency_id',
-                                    value: data,
-                                    display_value: full.EXCHANGE_CURRENCY_ID_NAME,
-                                    style:'width:80px'
-                                }
-                        );
-                        return field_html; 
-                    }
-                }
-            },
-            { "data": "EXCHANGE_CURRENCY_RATE", "width": "80px","className":"exchange_currency_rate",
-                "render": function ( data, type, full, meta ) {
-                    if(data)
-                        var str =  parseFloat(data).toFixed(6);
-                    else
-                        str = '';
-                    if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control" disabled />';
-                    }else{
-                        return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control" />';
-                    }
-                }
-            },
-            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "80px","className":"exchange_total_amount",
-                "render": function ( data, type, full, meta ) {
-                    if(data)
-                        var str =  (Math.round(data*100)/100).toFixed(2);
-                    else
-                        str = '';
-                    return '<input type="text" name="exchange_total_amount" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
-                }
-            },
-            { "data": "EXCHANGE_CURRENCY_RATE_RMB", "width": "80px", "className":"exchange_currency_rate_rmb",
-                "render": function ( data, type, full, meta ) {
-                    if(data)
-                        var str =  parseFloat(data).toFixed(6);
-                    else
-                        str = '';
-                    if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:100px" value="'+str+'" class="form-control " disabled />';
-                    }else{
-                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:100px" value="'+str+'" class="form-control " />';
-                    }
-                }
-            },
-            { "data": "EXCHANGE_TOTAL_AMOUNT_RMB", "width": "80px","className":"exchange_total_amount_rmb",
-                "render": function ( data, type, full, meta ) {
-                    if(data)
-                        var str =  parseFloat(data).toFixed(2);
-                    else
-                        str = '';
-                    return '<input type="text" name="exchange_total_amount_rmb" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
-                }
-            },
-            { "data": "RMB_DIFFERENCE", "width": "80px","className":"rmb_difference",
-                "render": function ( data, type, full, meta ) {
-                    if(data)
-                        var str =  parseFloat(data).toFixed(2);
-                    else
-                        str = '';
-                    return '<input type="text" name="rmb_difference" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
-                }
-            },
             { "data": "REMARK","width": "180px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
@@ -563,13 +480,6 @@ $(document).ready(function() {
                 }
             },
             { "data": "CURRENCY_NAME", "visible": false,
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return data;
-                }
-            },
-            { "data": "EXCHANGE_CURRENCY_ID_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
