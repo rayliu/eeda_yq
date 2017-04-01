@@ -1698,15 +1698,20 @@ public class JobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         }
         else{
-		         sql = "SELECT * from (select jo.*,jos.sono,josi.container_no, "
+		         sql = "SELECT * from (select jo.*,jos.sono, "
+		        		 +" (SELECT GROUP_CONCAT(josi.container_no SEPARATOR '<br>' ) "
+		        		 +" FROM  job_order_shipment_item josi  "
+		        		 +" LEFT JOIN job_order jor on jor.id=josi.order_id "
+		        		 +" WHERE josi.order_id =jo.id) container_no, "
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code"
 		         		+ "	from job_order jo"
 		         		+ "	left join job_order_shipment jos on jos.order_id = jo.id"
-		         		+ "	left join job_order_shipment_item josi on josi.order_id = jo.id"
+		         		
 		         		+ "	left join party p on p.id = jo.customer_id"
 		         		+ "	left join user_login u on u.id = jo.creator"
 		         		+ "	where jo.office_id="+office_id
 		         	    + " and jo.delete_flag = 'N'"
+		         	    + " GROUP BY jo.id "
 		         	    + " ) A where 1 = 1 ";
          }
         
