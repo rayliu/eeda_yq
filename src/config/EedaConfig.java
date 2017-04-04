@@ -375,8 +375,8 @@ public class EedaConfig extends JFinalConfig {
     	me.add(new ShiroPlugin(routes));
     	
     	//job启动
-    	SchedulerPlugin sp = new SchedulerPlugin("job.properties");
-        me.add(sp);
+//    	SchedulerPlugin sp = new SchedulerPlugin("job.properties");
+//        me.add(sp);
     	
         mailUser = getProperty("mail_user_name");
         mailPwd = getProperty("mail_pwd");
