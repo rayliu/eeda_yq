@@ -57,7 +57,7 @@ public class EbayMemberMsgController extends Controller {
     }
 
     public void list() {
-        UserLogin user = LoginUserController.getLoginUser(this);
+UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
 
         String type = getPara("type");
@@ -98,7 +98,10 @@ public class EbayMemberMsgController extends Controller {
     
     public void importMemberMsg() {
         try {
-            apiContext = new EbayApiContextUtil().getApiContext();
+            UserLogin user = LoginUserController.getLoginUser(this);
+            long office_id = user.getLong("office_id");
+            apiContext = new EbayApiContextUtil(office_id).getApiContext();
+            
             GetMemberMessagesCall api = new GetMemberMessagesCall(
                     this.apiContext);
 
@@ -183,7 +186,10 @@ public class EbayMemberMsgController extends Controller {
 
     
     public void replyMsg(){
-        apiContext = new EbayApiContextUtil().getApiContext();
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
+        apiContext = new EbayApiContextUtil(office_id).getApiContext();
+        
         String id = getPara("id");
         String msg_id = getPara("msg_id");
         String response = getPara("response");

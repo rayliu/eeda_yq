@@ -137,6 +137,7 @@ import controllers.oms.planOrder.PlanOrderControllerForMobile;
 import controllers.oms.todo.TodoController;
 import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
+import controllers.profile.AliexpressAccountController;
 import controllers.profile.AmazonAccountController;
 import controllers.profile.ContainerTypeController;
 import controllers.profile.CountryController;
@@ -239,6 +240,7 @@ public class EedaConfig extends JFinalConfig {
         
         me.add("/ebayAccount", EbayAccountController.class, contentPath);
         me.add("/amazonAccount", AmazonAccountController.class, contentPath);
+        me.add("/aliexpressAccount", AliexpressAccountController.class, contentPath);
     }
     
     private void setAppRoute(Routes me, String contentPath) {
@@ -373,8 +375,8 @@ public class EedaConfig extends JFinalConfig {
     	me.add(new ShiroPlugin(routes));
     	
     	//job启动
-//    	SchedulerPlugin sp = new SchedulerPlugin("job.properties");
-//        me.add(sp);
+    	SchedulerPlugin sp = new SchedulerPlugin("job.properties");
+        me.add(sp);
     	
         mailUser = getProperty("mail_user_name");
         mailPwd = getProperty("mail_pwd");

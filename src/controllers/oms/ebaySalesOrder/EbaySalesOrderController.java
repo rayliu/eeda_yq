@@ -86,8 +86,18 @@ public class EbaySalesOrderController extends Controller {
         renderJson(map);
     }
 
+    //专供页面单独调用
     public void importOrders() {
-        OrderType[] orders = getOrders();
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
+        importOrders(office_id);
+    }
+    
+    //供job调用
+    public void importOrders(long office_id) {
+        
+        OrderType[] orders = getOrders(office_id);
+        
         int size = orders != null ? orders.length : 0;
         String[] columnNames = { "OrderId", "NumberOfTrans", "TransPrice",
                 "CreatedDate", "ShippingServiceSelected", "InsuranceWanted",
@@ -142,8 +152,8 @@ public class EbaySalesOrderController extends Controller {
         renderJson(recList);
     }
 
-    private OrderType[] getOrders() {
-        apiContext = new EbayApiContextUtil().getApiContext();
+    private OrderType[] getOrders(long office_id) {
+        apiContext = new EbayApiContextUtil(office_id).getApiContext();
         OrderType[] orders = null;
         try {
             String ids = "";// this.txtOrderId.getText().trim();

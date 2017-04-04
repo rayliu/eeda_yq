@@ -24,7 +24,7 @@ public class EbayApiContextUtil {
     public static String ruName = "";
     public static String signInUrl = "";
     
-    public EbayApiContextUtil() {
+    public EbayApiContextUtil(long office_id) {
         // Enable Call-Retry.
         CallRetry cr = new CallRetry();
         cr.setMaximumRetries(3);
@@ -47,7 +47,7 @@ public class EbayApiContextUtil {
         apiContext.setTimeout(180000);
 
         try {
-            this.loadConfiguration();
+            this.loadConfiguration(office_id);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -59,7 +59,7 @@ public class EbayApiContextUtil {
         return apiContext;
     }
 
-    public void loadConfiguration() throws Exception {
+    public void loadConfiguration(long office_id) throws Exception {
         Record ebayConfig = Db.findFirst("select * from ebay_platform_config where sell_platform=?", configStr);
         
         this.apiContext.setApiServerUrl(ebayConfig.getStr("server_url"));
@@ -86,9 +86,7 @@ public class EbayApiContextUtil {
         logger.debug("ebay CertID:"+ebayConfig.getStr("cert_id"));
         logger.debug("ebay RuName:"+ebayConfig.getStr("ru_name"));
         
-        UserLogin user = LoginUserController.getLoginUser(null);
-        logger.debug("office_id:"+user.getLong("office_id"));
-        Record ebayAccount = Db.findFirst("select * from ebay_seller_account where type='"+configStr+"' and office_id=?",  user.getLong("office_id"));
+        Record ebayAccount = Db.findFirst("select * from ebay_seller_account where type='"+configStr+"' and office_id=?", office_id);
         if(ebayAccount!=null){
             logger.debug("ebay token:"+ebayAccount.getStr("token"));
             apiCred.seteBayToken(ebayAccount.getStr("token"));

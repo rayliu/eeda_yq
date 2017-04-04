@@ -133,7 +133,9 @@ public class EbayAccountController extends Controller {
     }
     
     private void buildSignInUrl(String user_name) throws Exception{
-        apiContext = new EbayApiContextUtil().getApiContext();
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
+        apiContext = new EbayApiContextUtil(office_id).getApiContext();
         
         //step1: get session id
         GetSessionIDCall sessionIdCall = new GetSessionIDCall(this.apiContext);
@@ -166,7 +168,9 @@ public class EbayAccountController extends Controller {
         String sessionID = getSessionAttr(user_name);
         logger.debug("sessionID:"+sessionID); 
         
-        apiContext = new EbayApiContextUtil().getApiContext();
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
+        apiContext = new EbayApiContextUtil(office_id).getApiContext();
         FetchTokenCall fetchTokenCall = new FetchTokenCall(this.apiContext);
         fetchTokenCall.setSessionID(sessionID);
         
@@ -182,7 +186,7 @@ public class EbayAccountController extends Controller {
                 rec.set("expire_date", expireDate);
                 Db.update("seller_account", rec);
             }else{
-                UserLogin user = LoginUserController.getLoginUser(this);
+                
                 Record newRec = new Record();
                 newRec.set("account_name", user_name);
                 newRec.set("code", account_code);
@@ -190,7 +194,7 @@ public class EbayAccountController extends Controller {
                 newRec.set("expire_date", expireDate);
                 newRec.set("created_time", new Date());
                 newRec.set("creator", user.getLong("id"));
-                newRec.set("office_id", user.getLong("office_id"));
+                newRec.set("office_id", office_id);
                 Db.save("seller_account", newRec);
             }
             
