@@ -208,12 +208,12 @@ UserLogin user = LoginUserController.getLoginUser(this);
         mm.setRecipientID(recipientId);
         api.setMemberMessage(mm);
         api.setMessageID(msg_id);
-//        try {
-//            api.addMemberMessageRTQ();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            renderText("Failed");
-//        }
+        try {
+            api.addMemberMessageRTQ();
+        } catch (Exception e) {
+            e.printStackTrace();
+            renderText("Failed");
+        }
         renderJson(rec);
     }
 }
