@@ -74,6 +74,10 @@ public class ListOrdersApi {
             }
             System.out.println(result);
             Map jsonObject = new Gson().fromJson(result.toString(), Map.class);
+            
+            if(jsonObject.get("exception")!=null){
+                throw new Exception(jsonObject.get("exception").toString());
+            }
             System.out.println("totalItem = "
                     + jsonObject.get("totalItem").toString());
             Date rightNow = new Date();// 20170327 224206000-0700

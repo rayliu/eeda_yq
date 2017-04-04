@@ -260,36 +260,8 @@ public class AliexpressAccountController extends Controller {
         redirect("/aliexpressAccount");
     }
 
-
-    
-    // ebay callback this auth_accepted
-    @Before(EedaMenuInterceptor.class)
-    public void auth_accepted() {
-        String user_name = getPara("username");
-        String account_code = getSessionAttr(user_name + "_code");
-        String sessionID = getSessionAttr(user_name);
-        logger.debug("sessionID:" + sessionID);
-
-        /*
-         * String strEbayAuthToken = null; try { strEbayAuthToken =
-         * fetchTokenCall.fetchToken(); Date expireDate =
-         * fetchTokenCall.getHardExpirationTime().getTime();
-         * logger.debug("strEbayAuthToken:" + strEbayAuthToken);
-         * logger.debug("expireDate:" + expireDate); Record rec = Db
-         * .findFirst("select * from ebay_seller_account where account_name='" +
-         * user_name + "'"); if (rec != null) { rec.set("token",
-         * strEbayAuthToken); rec.set("expire_date", expireDate);
-         * Db.update("seller_account", rec); } else { UserLogin user =
-         * LoginUserController.getLoginUser(this); Record newRec = new Record();
-         * newRec.set("account_name", user_name); newRec.set("code",
-         * account_code); newRec.set("token", strEbayAuthToken);
-         * newRec.set("expire_date", expireDate); newRec.set("created_time", new
-         * Date()); newRec.set("creator", user.getLong("id"));
-         * newRec.set("office_id", user.getLong("office_id"));
-         * Db.save("seller_account", newRec); }
-         * 
-         * } catch (Exception e) { e.printStackTrace(); }
-         */
+    public void refreshToken() {
+        
         redirect("/aliexpressAccount");
     }
 }
