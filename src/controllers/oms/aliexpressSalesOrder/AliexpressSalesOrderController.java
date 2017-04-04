@@ -18,6 +18,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.oms.ebaySalesOrder.EbayApiContextUtil;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 
@@ -29,8 +30,11 @@ public class AliexpressSalesOrderController extends Controller {
 
     @Before(EedaMenuInterceptor.class)
     public void index() {
-        String type = getPara("type");
-        setAttr("type", type);
+        UserLogin user = LoginUserController.getLoginUser(this);
+        String sql = "select * from aliexpress_seller_account where office_id = "+ user.getLong("office_id");
+        List<Record> ebayAcountList = Db.find(sql);
+        setAttr("aliexpressAcountList", ebayAcountList); 
+        
         render("/oms/aliexpressSalesOrder/aliexpressSalesOrderList.html");
     }
 
@@ -71,9 +75,20 @@ public class AliexpressSalesOrderController extends Controller {
     }
 
     public void importOrders() throws IOException {
-        List<Record> recList = ListOrdersApi.findOrderListQuery();
+        UserLogin user = LoginUserController.getLoginUser(null);
+        long office_id = user.getLong("office_id");
         
-        renderJson(recList);
+        List<Record> accountList = Db.find("select * from aliexpress_seller_account where office_id=?", office_id);
+        for (Record setting : accountList) {
+            long appKey = setting.getLong("client_id");
+            String appSecret = setting.getStr("secret");
+            String access_token = setting.getStr("access_token");
+            String refresh_token = setting.getStr("refresh_token");
+            
+            List<Record> recList = ListOrdersApi.findOrderListQuery(appKey, appSecret, access_token, refresh_token);
+        }
+        
+        renderText("OK");
     }
 
    

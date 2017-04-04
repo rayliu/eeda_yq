@@ -24,15 +24,11 @@
                               <div class="col-lg-8">
                                   <div class="form-group" id="transport_type">
                                       <label class="search-label">速卖通账号</label>
+                                      <% for(list in aliexpressAcountList){%>
                                       <label class="checkbox-inline">
-                                          <input type="checkbox" value="air" checked>DE
+                                          <input type="checkbox" name="shop_id" value="${list.id!''}" checked>${list.account_name!''}
                                       </label>
-                                      <label class="checkbox-inline">
-                                          <input type="checkbox" value="land" checked>UK
-                                      </label>
-                                      <label class="checkbox-inline">
-                                          <input type="checkbox" value="land" checked>US
-                                      </label>
+                                      <% }%>
                                   </div>
                               </div>
                             </div>

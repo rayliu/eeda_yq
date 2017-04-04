@@ -61,6 +61,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       })
 
      var searchData=function(){
+          var ids = "";
+          var arr =$('[name=shop_id]');
+          for(var i=0;i<arr.length;i++){
+            ids = ids + ',' + $(arr[i]).val();
+          }
 
           var url = "/aliexpressSalesOrder/list";
 
@@ -68,7 +73,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       };
       
       $('#importBtn').click(function(){
-           $.post('/aliexpressSalesOrder/importOrders', {nothing: 'nothing'}, function(data, textStatus, xhr) {
+          
+
+           $.post('/aliexpressSalesOrder/importOrders', {}, function(data, textStatus, xhr) {
                 
            });
       })

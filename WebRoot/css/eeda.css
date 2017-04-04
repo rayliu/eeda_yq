@@ -505,6 +505,7 @@ li{
     text-align: center;
     padding: 10px;
     color: white;
+    bottom: -35px;
 }
 
 .login_back_footer  a {
@@ -520,5 +521,12 @@ li{
 }
 .badge-danger{
     background-color:#d9534f;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd){
+    background-color: #fff;
+}
+.table-hover>tbody>tr:hover {
+    background-color: #fff;
 }
 /* ray added */

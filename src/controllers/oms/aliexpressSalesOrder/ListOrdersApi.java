@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,19 +25,38 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.profile.LoginUserController;
+import controllers.util.ali.CommonUtil;
 
 public class ListOrdersApi {
 
-    public static List<Record> findOrderListQuery() throws IOException {
+    public static List<Record> findOrderListQuery(long appKey,
+            String appSecret, String access_token, String refresh_token)
+            throws IOException {
         List list = Collections.EMPTY_LIST;
+        UserLogin user = LoginUserController.getLoginUser(null);
+        long office_id = user.getLong("office_id");
+
+        String urlPath = "param2/1/aliexpress.open/api.findOrderListQuery/"
+                + appKey;
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("page", "1");
+        params.put("pageSize", "50");
+        params.put("access_token", access_token);
+
+        String signStr = CommonUtil.signatureWithParamsAndUrlPath(urlPath,
+                params, appSecret);
 
         // Create an instance of HttpClient.
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        String url = "http://gw.api.alibaba.com:80/openapi/param2/1/aliexpress.open/api.findOrderListQuery/8437829?page=1&pageSize=2&access_token=3d00c634-f173-411d-8e75-dcabcd15edb6&_aop_signature=F26728142EA2827ACF8EC60D0575A212AB86D6D2";
+        String url = "http://gw.api.alibaba.com:80/openapi/"
+                + urlPath
+                + "?page=1&pageSize=50"
+                + "&access_token="+access_token
+                + "&_aop_signature="+signStr;
+        System.out.println(url);
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpResponse response = null;
-        UserLogin user = LoginUserController.getLoginUser(null);
-        long office_id = user.getLong("office_id");
+
         try {
             response = httpclient.execute(httpGet);
             System.out.println(response.getStatusLine());
