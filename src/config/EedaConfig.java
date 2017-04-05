@@ -108,6 +108,8 @@ import models.eeda.profile.ModuleRole;
 import models.eeda.profile.OrderNoSeq;
 import models.eeda.profile.Unit;
 import models.eeda.profile.Warehouse;
+import models.eeda.tms.TransArapCostItem;
+import models.eeda.tms.TransArapCostOrder;
 import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
 import models.eeda.tms.TransJobOrderLandItem;
@@ -304,6 +306,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/transJobOrder", TransJobOrderController.class, contentPath);
 		me.add("/transPlanOrder", TransPlanOrderController.class, contentPath);
 		me.add("/transOrderShortCut", TransOrderShortCutController.class, contentPath);
+		me.add("/transCostCheckOrder", controllers.tms.arap.TransCostCheckOrderController.class, contentPath);
 		
 		//ar= account revenue  应收条目处理
 		me.add("/chargeRequest", controllers.arap.ar.chargeRequest.ChargeRequestController.class, contentPath);
@@ -511,6 +514,8 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("trans_job_order", TransJobOrder.class);
         arp.addMapping("trans_job_order_land_item", TransJobOrderLandItem.class);
         arp.addMapping("trans_job_order_arap", TransJobOrderArap.class);
+        arp.addMapping("trans_arap_cost_order", TransArapCostOrder.class);
+        arp.addMapping("trans_arap_cost_item", TransArapCostItem.class);
         
         //保险供应商
         arp.addMapping("sp_ocean_cargo", SpOceanCargo.class);

@@ -1,0 +1,1 @@
+package models.eeda.tms;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class TransArapCostOrder extends Model<TransArapCostOrder> {	public static final TransArapCostOrder dao = new TransArapCostOrder();}

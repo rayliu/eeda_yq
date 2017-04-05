@@ -18,12 +18,12 @@ $(document).ready(function() {
     });
     
     //费用明细确认按钮动作
-    $("#cost_table").on('click', '#costConfirm', function(e){
+    $("#cost_table").on('click', '.costConfirm', function(e){
     	e.preventDefault();
     	var id = $(this).val();
-    	$.post('/jobOrder/feeConfirm',{id:id},function(joa){
+    	$.post('/transJobOrder/feeConfirm',{id:id},function(joa){
     		var order_id = joa.ORDER_ID;
-	    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=cost";
+	    	var url = "/transJobOrder/tableList?order_id="+order_id+"&type=cost";
 	    	costTable.ajax.url(url).load();    		
     		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
     	},'json').fail(function() {
@@ -217,14 +217,14 @@ $(document).ready(function() {
                 	var str="<nobr>";
                 	if(full&&full.AUDIT_FLAG == 'Y'){
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> '; 
+                		str+= '<button type="button" class="costConfirm btn btn-success btn-xs" style="width:50px"  disabled>确认</button> '; 
                 		}
                 	else if(full.ID){
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" id="costConfirm" class=" btn btn-success btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" class="costConfirm btn btn-success btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
                 	}else{
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> ';
+                		str+= '<button type="button" class="costConfirm btn btn-success btn-xs" style="width:50px"  disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;

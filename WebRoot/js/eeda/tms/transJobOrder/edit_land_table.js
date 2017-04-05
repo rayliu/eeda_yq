@@ -432,12 +432,12 @@ $(document).ready(function() {
     //把提柜码头和还柜码头带到table中
    $('#take_wharf_input,#back_wharf_input').click(function(){
 	   if($('#take_wharf_input').val()!=''){
-		   $($("#land_table tr:eq(1) td:nth-child(7)").find('input[name=TAKE_ADDRESS_input]')).val($('#take_wharf_input').val());
-           $($("#land_table tr:eq(1) td:nth-child(7)").find('input[name=TAKE_ADDRESS]')).val($('#take_wharf').val());
+		   $($("#land_table tr:eq(1) td").find('input[name=TAKE_ADDRESS_input]')).val($('#take_wharf_input').val());
+           $($("#land_table tr:eq(1) td").find('input[name=TAKE_ADDRESS]')).val($('#take_wharf').val());
 	   }
 	   if($('#back_wharf_input').val()!=''){
-		   $($("#land_table tr:eq(2) td:nth-child(10)").find('input[name=DELIVERY_ADDRESS_input]')).val($('#back_wharf_input').val());
-           $($("#land_table tr:eq(2) td:nth-child(10)").find('input[name=DELIVERY_ADDRESS]')).val($('#back_wharf').val());
+		   $($("#land_table tr:eq(2) td").find('input[name=DELIVERY_ADDRESS_input]')).val($('#back_wharf_input').val());
+           $($("#land_table tr:eq(2) td").find('input[name=DELIVERY_ADDRESS]')).val($('#back_wharf').val());
 	   }
    
    });

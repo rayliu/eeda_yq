@@ -204,15 +204,36 @@ public class TransJobOrderController extends Controller {
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
 		DbUtils.handleList(land_item, id, TransJobOrderLandItem.class, "order_id");
 		for(int i=0;i<land_item.size();i++){
+			String loading_wharf1="";
+			String loading_wharf2="";
+			String take_address="";
+			String delivery_address="";
+			String truck_type="";
 			Map<String, ?> map=land_item.get(i);
+			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
+				loading_wharf1=" and pq.loading_wharf1= "+map.get("LOADING_WHARF1");
+			}
+			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
+				loading_wharf2=" and pq.loading_wharf2= "+map.get("LOADING_WHARF2");	
+			}
+			if(StringUtils.isNotEmpty((String) map.get("TAKE_ADDRESS"))){
+				take_address=" and pq.take_address= "+map.get("TAKE_ADDRESS");
+			}
+			if(StringUtils.isNotEmpty((String) map.get("DELIVERY_ADDRESS"))){
+				delivery_address=" and pq.delivery_address= "+map.get("DELIVERY_ADDRESS");
+			}
+			if(StringUtils.isNotEmpty((String) map.get("truck_type"))){
+				truck_type=" and pq.truck_type like '"+map.get("truck_type")+"' ";
+			}
+			
 			if(StringUtils.isEmpty((String) map.get("id"))){
 				String sqlString="SELECT A.*,c.name currency_name from( SELECT pq.* FROM party_quotation pq "
 						+" WHERE pq.party_id = "+customerId
-						+" and pq.loading_wharf1= "+map.get("LOADING_WHARF1")
-						+" and pq.loading_wharf2= "+map.get("LOADING_WHARF2")
-						+" and pq.take_address= "+map.get("TAKE_ADDRESS")
-						+" and pq.delivery_address= "+map.get("DELIVERY_ADDRESS")
-						+" and pq.truck_type= '"+map.get("truck_type")+" ' "
+						+loading_wharf1
+						+loading_wharf2
+						+take_address
+						+delivery_address
+						+truck_type
 						+" )A left join currency c on c.id=A.currency_id";
 				List<Record> reItem=Db.find(sqlString);
 				if(reItem.size()==1){
