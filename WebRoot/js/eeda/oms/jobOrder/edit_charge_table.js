@@ -481,7 +481,7 @@ $(document).ready(function() {
             { "data": "AMOUNT","width": "50px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
-                        data='';
+                        data='1';
                 	if(full.AUDIT_FLAG == 'Y'){
                         return '<input type="text" name="amount"  value="'+data+'" class="form-control notsave" disabled/>';
                      }else{
@@ -505,8 +505,10 @@ $(document).ready(function() {
                         );
                         return field_html;
                    }else{
-	                	if(!data)
-	                        data='';
+	                	if(!data){
+	                        data='33';
+                            full.UNIT_="B/L";
+                        }
 	                    var field_html = template('table_dropdown_template',
 	                        {
 	                            id: 'UNIT_ID',                            
@@ -782,7 +784,7 @@ $(document).ready(function() {
                         var currency_total_amount = parseFloat($(row.find('[name=currency_total_amount]')).val());
                         $(row.find('[name=exchange_total_amount_rmb]')).val((exchange_total_amount*parseFloat(exchange_currency_rate_rmb)).toFixed(2));
                         var exchange_total_amount_rmb = parseFloat($(row.find('[name=exchange_total_amount_rmb]')).val());
-                        $(row.find('[name=rmb_difference]')).val((parseFloat(currency_total_amount-exchange_total_amount_rmb)).toFixed(2));
+                        $(row.find('[name=rmb_difference]')).val((parseFloat(exchange_total_amount_rmb-currency_total_amount)).toFixed(2));
                       }
                 }
     		}

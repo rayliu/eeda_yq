@@ -559,7 +559,7 @@ $(document).ready(function() {
                         var currency_total_amount = parseFloat($(row.find('[name=currency_total_amount]')).val());
                         $(row.find('[name=exchange_total_amount_rmb]')).val((exchange_total_amount*parseFloat(exchange_currency_rate_rmb)).toFixed(2));
                         var exchange_total_amount_rmb = parseFloat($(row.find('[name=exchange_total_amount_rmb]')).val());
-                        $(row.find('[name=rmb_difference]')).val((parseFloat(currency_total_amount-exchange_total_amount_rmb)).toFixed(2));
+                        $(row.find('[name=rmb_difference]')).val((parseFloat(exchange_total_amount_rmb-currency_total_amount)).toFixed(2));
                       }
                 }
             }
