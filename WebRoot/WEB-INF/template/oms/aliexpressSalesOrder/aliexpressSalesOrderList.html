@@ -131,6 +131,7 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-    	 requirejs(['app/oms/aliexpressSalesOrder/aliexpressSalesOrderList']);
+      $.blockUI();
+    	requirejs(['app/oms/aliexpressSalesOrder/aliexpressSalesOrderList']);
     });
 </script>

@@ -1,4 +1,4 @@
-define(['jquery', 'dataTablesBootstrap'], function($){
+define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
   
     var url = window.location;
     // var element = $('ul.nav a').filter(function() {
@@ -19,6 +19,7 @@ define(['jquery', 'dataTablesBootstrap'], function($){
     $.ajaxSetup({
         //contentType:"application/x-www-form-urlencoded;charset=utf-8",
         error: function (xhr, e) {
+          
             if(xhr.responseText.indexOf('忘记密码')>0){
               alert( '您未登录, 请重新登录.' );
             }
@@ -27,6 +28,7 @@ define(['jquery', 'dataTablesBootstrap'], function($){
             // }
         },
         complete:function(XMLHttpRequest, textStatus){
+          
            //console.log("ajaxSetup textStatus:"+textStatus);
            if(XMLHttpRequest.responseText.indexOf('忘记密码')>0){
               alert( '您未登录, 请重新登录.' );
@@ -158,7 +160,9 @@ eeda.dt = function(opt){
             }
         },
         drawCallback: opt.drawCallback || function ( settings ) {},
-        initComplete: opt.initComplete || function ( settings ) {},
+        initComplete: opt.initComplete || function ( settings ) { 
+            $.unblockUI();
+        },
         ajax: opt.ajax || '',
 //        ajax: {
 //            url: opt.ajax || '',

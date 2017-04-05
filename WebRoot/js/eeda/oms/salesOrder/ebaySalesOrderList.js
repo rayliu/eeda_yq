@@ -68,9 +68,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       };
       
       $('#importBtn').click(function(){
-           $.post('/ebaySalesOrder/importOrders', {nothing: 'nothing'}, function(data, textStatus, xhr) {
-                
-           });
+        $.blockUI();
+         $.post('/ebaySalesOrder/importOrders', {nothing: 'nothing'}, function(data, textStatus, xhr) {
+            searchData();
+            $.unblockUI();
+         });
       })
     	
 });

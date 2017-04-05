@@ -12,7 +12,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             columns:[
 	              { "data": null, 
                   "render": function ( data, type, full, meta ) {
-                      var status = "";
+                      var status = full.ORDER_STATUS;
                       if(full.ORDER_STATUS=='WAIT_SELLER_SEND_GOODS'){
                         status = "等待发货";
                       }else if(full.ORDER_STATUS=='WAIT_BUYER_ACCEPT_GOODS'){
@@ -73,11 +73,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       };
       
       $('#importBtn').click(function(){
-          
+          $.blockUI();
 
-           $.post('/aliexpressSalesOrder/importOrders', {}, function(data, textStatus, xhr) {
-                
-           });
+          $.post('/aliexpressSalesOrder/importOrders', {}, function(data, textStatus, xhr) {
+              searchData();
+              $.unblockUI();
+          });
       })
     	
 });

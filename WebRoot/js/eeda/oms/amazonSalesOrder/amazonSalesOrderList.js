@@ -42,9 +42,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       };
       
       $('#importBtn').click(function(){
-           $.post('/amazonSalesOrder/importOrders', {nothing: 'nothing'}, function(data, textStatus, xhr) {
-                
-           });
+        $.blockUI();
+        $.post('/amazonSalesOrder/importOrders', {nothing: 'nothing'}, function(data, textStatus, xhr) {
+          searchData();
+          $.unblockUI();
+        });
       })
     	
 });

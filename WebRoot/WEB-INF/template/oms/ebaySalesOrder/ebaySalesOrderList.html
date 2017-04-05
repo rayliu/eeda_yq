@@ -8,7 +8,7 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label class="search-label">销售日期</label>
-                                        <select id="created_time" name="created_time" class="form-control search-control">
+                                        <select id="created_time" name="created_time" class="search-control">
                                               <option value="1">1天内</option>
                                               <option value="3" selected="">3天内</option>
                                               <option value="7">7天内</option>
@@ -33,9 +33,9 @@
                               </div>
                             </div>
                         <div class="form-group button-bar" >
-                            <button id="searchBtn" class="btn btn-default" type="button">刷新</button>
+                            <button id="searchBtn" class="btn btn-default" type="button">查询</button>
                             <button id="resetBtn" class="btn btn-default" type="reset">清空条件</button>
-                            <button id="importBtn" class="btn btn-default" type="button">导入最新数据</button>
+                            <button id="importBtn" class="btn btn-default" type="button">同步最新数据</button>
                             <% if(shiro.hasPermission("msg.create")){%>
           					          <a data-target='#addRadioDetail' data-toggle='modal'>
           					                <button id="addRadio" type="button" class="btn btn_green">发布公告</button>
@@ -136,6 +136,7 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-    	 requirejs(['app/oms/salesOrder/ebaySalesOrderList']);
+      $.blockUI();
+    	requirejs(['app/oms/salesOrder/ebaySalesOrderList']);
     });
 </script>

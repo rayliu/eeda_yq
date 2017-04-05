@@ -33,9 +33,9 @@
                               </div>
                             </div>
                         <div class="form-group button-bar" >
-                            <button id="searchBtn" class="btn btn-default" type="button">刷新</button>
+                            <button id="searchBtn" class="btn btn-default" type="button">查询</button>
                             <button id="resetBtn" class="btn btn-default" type="reset">清空条件</button>
-                            <button id="importBtn" class="btn btn-default" type="button">导入最新数据</button>
+                            <button id="importBtn" class="btn btn-default" type="button">同步最新数据</button>
                             <% if(shiro.hasPermission("msg.create")){%>
           					          <a data-target='#addRadioDetail' data-toggle='modal'>
           					                <button id="addRadio" type="button" class="btn btn_green">发布公告</button>
@@ -142,6 +142,7 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-    	 requirejs(['app/oms/amazonSalesOrder/amazonSalesOrderList']);
+      $.blockUI();
+    	requirejs(['app/oms/amazonSalesOrder/amazonSalesOrderList']);
     });
 </script>
