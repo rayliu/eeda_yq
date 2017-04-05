@@ -40,7 +40,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			      },
       			{ "data": "ORDER_NO", "width": "100px",
 			    	  "render": function ( data, type, full, meta ) {
-	                      return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+	                      return "<a href='/transJobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
 	                  }
 	            },
 	            { "data": "CREATE_STAMP", "width": "100px"},

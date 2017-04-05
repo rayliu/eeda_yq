@@ -67,7 +67,7 @@ $(document).ready(function() {
             },
             { "data": "ORDER_NO", "width": "80px",
 		    	  "render": function ( data, type, full, meta ) {
-                      return "<a href='/jobOrder/edit?id="+full.JOB_ORDER_ID+"'target='_blank'>"+data+"</a>";
+                      return "<a href='/transJobOrder/edit?id="+full.JOB_ORDER_ID+"'target='_blank'>"+data+"</a>";
                   }
             },
             { "data": "CREATE_STAMP", "width": "70px"},
@@ -129,16 +129,14 @@ $(document).ready(function() {
                         return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
                     }
               },
-              { "data": "ORDER_EXPORT_DATE", "width": "100px"},
               { "data": "CREATE_STAMP", "width": "100px"},
-              { "data": "TYPE", "width": "60px"},
+              { "data": "CUSTOMER_NAME", "width": "100px"},
+              { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
               { "data": "FEE_NAME", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                   return data;
                 }
               },
-              { "data": "CUSTOMER_NAME", "width": "100px"},
-              { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
               { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
                 "render": function ( data, type, full, meta ) {
                   if(full.SQL_TYPE=='cost'){
@@ -157,69 +155,7 @@ $(document).ready(function() {
                       return data;
                     }
               },
-              { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px"},
-              { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px"},
-              { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  if(full.SQL_TYPE=='cost'){
-                    return '<span style="color:red;">'+'-'+data+'</span>';
-                  }
-                  return data;
-                }
-              },
-              { "data": "FND", "width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  if(data)
-                return data;
-                  else
-                return full.DESTINATION;
-                }
-              },
-              { "data": "VOLUME", "width": "60px",
-                  "render": function ( data, type, full, meta ) {
-                      return "";
-                  }
-              },
-              { "data": "CONTAINER_AMOUNT","width": "60px",
-                "render": function ( data, type, full, meta ) {
-                  if(data){
-                    var dataArr = data.split(",");
-                    var a = 0;
-                    var b = 0;
-                    var c = 0;
-                    var dataStr = "";
-                    for(var i=0;i<dataArr.length;i++){
-                      if(dataArr[i]=="20GP"){
-                        a++;
-                      }
-                      if(dataArr[i]=="40GP"){
-                        b++;
-                      }
-                      if(dataArr[i]=="45GP"){
-                        c++;
-                      }
-                    }
-                    if(a>0){
-                      dataStr+="20GPx"+a+";"
-                    }
-                    if(b>0){
-                      dataStr+="40GPx"+b+";"
-                    }
-                    if(c>0){
-                      dataStr+="45GPx"+c+";"
-                    }
-                    return dataStr;
-                  }else{
-                    return '';
-                  }
-                }
-              },
-              { "data": "NET_WEIGHT", "width": "60px"},
-              { "data": "REF_NO", "width": "60px"},
-              { "data": "MBL_NO", "width": "60px"},
-              { "data": "HBL_NO", "width": "60px"},
-              { "data": "CONTAINER_NO", "width": "100px"},
-              { "data": "TRUCK_TYPE", "width": "100px"}
+              { "data": "REMARK", "width": "100px"}
             ]
         });
   

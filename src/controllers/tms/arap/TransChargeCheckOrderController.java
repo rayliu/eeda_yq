@@ -250,7 +250,7 @@ public class TransChargeCheckOrderController extends Controller {
         
         String sql = "select * from(  "
         		+ " select aco.*, p.abbr sp_name "
-				+ " from arap_charge_order aco "
+				+ " from trans_arap_charge_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " where aco.office_id = "+office_id+" order by aco.create_stamp DESC "
 				+ " ) B where 1=1 ";
@@ -544,12 +544,12 @@ public class TransChargeCheckOrderController extends Controller {
             }
         }
 		
-		Record order = Db.findById("arap_charge_order", chargeOrderId);
+		Record order = Db.findById("trans_arap_charge_order", chargeOrderId);
 		for (Map.Entry<String, Double> entry : exchangeTotalMap.entrySet()) {
 		    System.out.println(entry.getKey() + " : " + entry.getValue());
 		    order.set(entry.getKey(), entry.getValue());
 		}
-		Db.update("arap_charge_order", order);
+		Db.update("trans_arap_charge_order", order);
 		return exchangeTotalMap;
     }
     
