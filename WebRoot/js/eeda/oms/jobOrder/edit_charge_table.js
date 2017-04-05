@@ -507,7 +507,7 @@ $(document).ready(function() {
                    }else{
 	                	if(!data){
 	                        data='33';
-                            full.UNIT_="B/L";
+                            full.UNIT_NAME="B/L";
                         }
 	                    var field_html = template('table_dropdown_template',
 	                        {

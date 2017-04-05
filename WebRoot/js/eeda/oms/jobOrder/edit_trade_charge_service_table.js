@@ -216,7 +216,7 @@ $(document).ready(function() {
             { "data": "AMOUNT","width": "50px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
-                        data='';
+                        data='1';
                     if(full.AUDIT_FLAG == 'Y'){
                         return '<input type="text" name="amount"  value="'+data+'" class="form-control notsave" disabled/>';
                      }else{
@@ -240,8 +240,10 @@ $(document).ready(function() {
                         );
                         return field_html;
                    }else{
-                        if(!data)
-                            data='';
+                        if(!data){
+                            data='33';
+                            full.UNIT_NAME="B/L";
+                        }
                         var field_html = template('table_dropdown_template',
                             {
                                 id: 'UNIT_ID',                            
