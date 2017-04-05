@@ -343,7 +343,7 @@ $(document).ready(function() {
     	}
     }
     
-    $('#trade_cost_table').on('keyup', '[name=number]', function(){
+    $('#trade_cost_table').on('blur', '[name=number]', function(){
     	var row = $(this).parent().parent();
     	var count = $(row.find('[name=number]')).val();
     	if(count==''){
@@ -362,7 +362,7 @@ $(document).ready(function() {
 		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html(total.toFixed(3));
     })
     
-    $('#trade_cost_table').on('keyup', '[name=custom_number]', function(){
+    $('#trade_cost_table').on('blur', '[name=custom_number]', function(){
     	var row = $(this).parent().parent();
     	var customNumber = $(row.find('[name=custom_number]')).val();
     	var custom_price = $(row.find('[name=custom_price]')).val();
@@ -386,7 +386,7 @@ $(document).ready(function() {
     	}
     })
     
-    $('#trade_cost_table').on('keyup', '[name=custom_rate],[name=custom_price],[name=custom_number]', function(){
+    $('#trade_cost_table').on('blur', '[name=custom_rate],[name=custom_price],[name=custom_number]', function(){
     	var row = $(this).parent().parent();
     	var rate = $(this).val();
     	var custom_amount = $(row.find('[name=custom_amount]')).val();
@@ -405,7 +405,7 @@ $(document).ready(function() {
 		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(19).html(total.toFixed(3));
     })
     
-    $('#trade_cost_table').on('keyup', '[name=number],[name=custom_price]', function(){
+    $('#trade_cost_table').on('blur', '[name=number],[name=custom_price]', function(){
     	var row = $(this).parent().parent();
     	var custom_price = $(row.find('[name=custom_price]')).val();
     	var custom_rate = $(row.find('[name=custom_rate]')).val();
@@ -428,7 +428,7 @@ $(document).ready(function() {
     	}
     })
 
-    $('#trade_cost_table').on('keyup', '[name=agency_rate],[name=domestic_price]', function(){
+    $('#trade_cost_table').on('blur', '[name=agency_rate],[name=domestic_price]', function(){
         var row = $(this).parent().parent();
         var domestic_price = $(row.find('[name=domestic_price]')).val();
         var agency_rate = $(row.find('[name=agency_rate]')).val();
@@ -449,7 +449,7 @@ $(document).ready(function() {
         }
     })
 
-    $('#trade_cost_table').on('keyup', '[name=custom_amount]', function(){
+    $('#trade_cost_table').on('blur', '[name=custom_amount]', function(){
         var row = $(this).parent().parent();
         var custom_amount = $(row.find('[name=custom_amount]')).val();
         var number = $(row.find('[name=number]')).val();
@@ -470,7 +470,7 @@ $(document).ready(function() {
         }
     })
 
-    $('#trade_cost_table').on('keyup', '[name=number], [name=price], [name=tax_refund_rate],[name=domestic_price],[name=value_added_tax],[name=tax_refund_rate_customer],[name=agency_rate],[name=agency_amount_cny]', function(){
+    $('#trade_cost_table').on('blur', '[name=number], [name=price], [name=tax_refund_rate],[name=domestic_price],[name=value_added_tax],[name=tax_refund_rate_customer],[name=agency_rate],[name=agency_amount_cny]', function(){
     	var this_input = $(this).attr('name');
     	
     	var row = $(this).parent().parent();

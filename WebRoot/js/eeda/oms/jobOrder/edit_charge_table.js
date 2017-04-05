@@ -145,7 +145,7 @@ $(document).ready(function() {
            if(exchange_total)
               exchange_total_rmb+=parseFloat(exchange_total);
        };
-       var difference=parseFloat(total_rmb)-parseFloat(exchange_total_rmb);
+       var difference=parseFloat(exchange_total_rmb)-parseFloat(total_rmb);
     $('#totalcharge_rmb_difference_span').text(eeda.numFormat(parseFloat(difference).toFixed(2),3));
     });
 
