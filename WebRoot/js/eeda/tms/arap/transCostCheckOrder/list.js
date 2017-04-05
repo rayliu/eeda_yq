@@ -72,7 +72,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	                  }
 	            },	
-	            { "data": "REMARK", "width": "100px"},
+	            { "data": "REMARK", "width": "100px"}
 	          ]
 	      });
 

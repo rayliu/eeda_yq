@@ -1,0 +1,1 @@
+package models.eeda.tms;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class TransArapChargeItem extends Model<TransArapChargeItem> {	public static final TransArapChargeItem dao = new TransArapChargeItem();}

@@ -689,12 +689,12 @@ public class TransCostCheckOrderController extends Controller {
     	String itemList= getPara("cost_itemlist");
     	String[] itemArray =  itemList.split(",");
     	String costOrderId=getPara("order_id");
-    	ArapCostItem aci = null;
+    	TransArapCostItem aci = null;
     	
     	if(costOrderId != null){
     		for(String itemId:itemArray){
-    			aci = new ArapCostItem();
-	    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
+    			aci = new TransArapCostItem();
+    			TransJobOrderArap jobOrderArap = TransJobOrderArap.dao.findById(itemId);
 	             jobOrderArap.set("bill_flag", "Y");
 	             String hedge_order_type = jobOrderArap.getStr("order_type");
 					if("charge".equals(hedge_order_type)){
@@ -718,12 +718,12 @@ public class TransCostCheckOrderController extends Controller {
     	String costOrderId=getPara("order_id");
     	String itemid=getPara("cost_itemid");
     	if(itemid !=null&& costOrderId!=null){
-    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
+    		TransJobOrderArap jobOrderArap = TransJobOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("bill_flag", "N");
     		 jobOrderArap.set("hedge_flag", "N");
              jobOrderArap.update();
 //             String sql="delete from  where ref_order_id="+itemid+"and cost_order_id="+costOrderId;
-             Db.deleteById("arap_cost_item","ref_order_id,cost_order_id",itemid,costOrderId);
+             Db.deleteById("trans_arap_cost_item","ref_order_id,cost_order_id",itemid,costOrderId);
     	}
     	//计算结算汇总
     			Map<String, Double> exchangeTotalMap = updateExchangeTotal(costOrderId);
