@@ -113,7 +113,6 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
-import com.jfinal.plugin.scheduler.SchedulerPlugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.app.AppControllerForMobile;
@@ -123,6 +122,7 @@ import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
 import controllers.msg.EwmsDashBoardController;
 import controllers.msg.YqDashBoardController;
+import controllers.msg.aliMsg.AliMsgController;
 import controllers.msg.ebayMsg.EbayMemberMsgController;
 import controllers.msg.ebayMsg.MsgController4App;
 import controllers.oms.aliexpressSalesOrder.AliexpressSalesOrderController;
@@ -236,7 +236,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/ebayMemberMsg", EbayMemberMsgController.class, contentPath);
         me.add("/amazonSalesOrder", AmazonSalesOrderController.class, contentPath);
         me.add("/aliexpressSalesOrder", AliexpressSalesOrderController.class, contentPath);
-        
+        me.add("/aliMsg", AliMsgController.class, contentPath);
         
         me.add("/ebayAccount", EbayAccountController.class, contentPath);
         me.add("/amazonAccount", AmazonAccountController.class, contentPath);

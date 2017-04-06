@@ -1,0 +1,137 @@
+<%layout("/eeda/layout.html"){%>
+        <div id="page-wrapper">
+            
+            <div class="row simple_search_div">
+                <div class="col-lg-12">
+                    <form id="orderForm">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="search-label">创建日期</label>
+                                        <select id="created_time" name="created_time" class="form-control search-control">
+                                              <option value="1">1天内</option>
+                                              <option value="3" selected="">3天内</option>
+                                              <option value="7">7天内</option>
+                                              <option value="15">15天内</option>
+                                              <option value="30">30天内</option>
+                                              <option value="60">60天内</option>
+                                              <option value="90">90天内</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-lg-8">
+                                  <div class="form-group" id="transport_type">
+                                  	  <label class="search-label"> 速卖通账号</label>
+                                  	  <% for(list in ebayAcountList){%>
+                                  	  <label class="checkbox-inline">
+                                          <input type="checkbox" value="${list.id!''}" checked>${list.account_name!''}
+                                      </label>
+                                  	  <% }%>
+                                  </div>
+                              </div>
+                            </div>
+                        <div class="form-group button-bar" >
+                            <button id="searchBtn" class="btn btn-default" type="button">刷新</button>
+                            <button id="resetBtn" class="btn btn-default" type="reset">清空条件</button>
+                            <button id="importBtn" class="btn btn-default" type="button">同步最新数据</button>
+
+                            <button data-target='#editRadioDetail' data-toggle='modal' id="editMsgBtn" style="display:none" ></button>
+                        </div>
+                   </form>
+                </div>
+            </div><!-- /.row -->
+            <div class="row simple_list_div">
+                
+                <ul id="orderTabs" class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#" data-toggle="tab" >站内信 </a>
+                    </li>
+                    <li >
+                        <a href="#" data-toggle="tab" >订单留言 </a>
+                    </li>
+                </ul>
+		            <%include("/eeda/component/form/detailTable.html", 
+                        {
+                            id:'eeda_table',
+                            width: '1150px',
+                            headers:[
+                                'ID',
+                                '回复状态',
+                                '标签',
+                                '来自于',
+                                '消息内容',
+                                '订单ID',
+                                '日期'
+                            ]
+                        }){} %>
+                
+            </div><!-- /.row -->
+        </div><!-- end of  .page-wrapper-->
+        
+<!-- 拟态框 ,添加公告-->
+<div class="modal fade" id="addRadioDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width:1000px;">
+    <div class="modal-content">
+      <div class="modal-header">发送公告详情</div>
+            <form action="/msgBoard/saveOfMsgBoard" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                          <label>公告标题</label>
+                          <input type="text" id="radioTitle" name="radioTitle" class="form-control" required><br>
+                          <label>公告正文</label>
+                          <textarea id="radioContent" name="radioContent" class="form-control" rows="5" required></textarea><br>
+                    </div>   
+                </div>
+                <div class="modal-footer">
+                    <button id="addRadioBtn" class="btn btn-primary" type="submit">发布公告</button>
+                    <button id="returnBtn" class="btn  btn-default" data-dismiss="modal">返回</button>
+                </div>
+            </form>
+    </div>
+  </div>
+</div>
+
+<!-- 拟态框，编辑修改公告 -->
+<% if(shiro.hasPermission("msg.create")){%>
+  <a data-target='#editRadioDetail' data-toggle='modal'>
+        <button id="editRadio" style="display:none" ></button>
+  </a>
+<%}%>
+<div class="modal fade" id="editMsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width:1000px;">
+    <div class="modal-content">
+      <div class="modal-header">站内信详情</div>
+            <form>
+                <div class="modal-body">
+                    <div class="form-group">
+                          <input type="hidden" id="edit_id" name="edit_id">
+                          <input type="hidden" id="msg_id" name="msg_id">
+                          <input type="hidden" id="recipient_id" name="recipient_id">
+                          <label>标题</label>
+                          <textarea id="msg_subject" name="msg_subject" class="form-control" rows="2" disabled></textarea><br>
+                          <label>正文</label><hr/>
+                          <!-- <textarea id="msg_body" name="msg_body" class="form-control" rows="6" disabled></textarea><br> -->
+                          <ul class="chat">
+                                
+                          </ul>
+                          <label>客服回复 </label>
+                          <textarea id="msg_response" name="msg_response" class="form-control" rows="3" required></textarea><br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal_reply_btn" class="btn btn-primary" type="button">回复</button>
+                    <button class="btn  btn-default" data-dismiss="modal">返回</button>
+                </div>
+            </form>
+    </div>
+  </div>
+</div>
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['app/msg/aliMsg/aliMsgList']);
+    });
+</script>
