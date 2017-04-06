@@ -507,7 +507,7 @@ $(document).ready(function() {
             tr.remove();
              $(this).prop('checked',true);
         }
-      $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr').size()));
+      $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
     });
     
     $('#allCheck').click(function(){
@@ -549,7 +549,7 @@ $(document).ready(function() {
              $('#checked').attr('disabled',true);
             $('#confirmed').attr('disabled',true);
         }
-        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr').size()));
+        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
     });
 
     $('#totalZero').click(function(){
@@ -701,7 +701,11 @@ $(document).ready(function() {
         var application_ids=[];
         var rowIndex=$('#rowIndex').val();
         var table=$('#table_id').val();
-        var rows =$('#'+table+' tr');
+        if(table){
+            var rows =$('#'+table+' tr');
+          }else{
+              var rows =$('#checked_application_table tr');
+          }
         if(rowIndex){
             application_ids.push(rowIndex);
         }else{
@@ -773,19 +777,21 @@ $(document).ready(function() {
              $('#checked').attr('disabled',true);
             $('#confirmed').attr('disabled',true);
         }
-        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr').size()));
+        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
     });
     
 
     $('#checked_application_table').on('click',"input[name='order_check_box']",function () {
-        $('#checked').attr('disabled',true);
-        $('#confirmed').attr('disabled',true);
-        if(!$(this).prop('checked')){
+       if(!$(this).prop('checked')){
             var tr=$(this).parent().parent();
                     tr.clone().appendTo($('#application_table'));
                     tr.remove();
         }
-        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr').size()));
+        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+        if($('#checked_application_table tr:has(td)').size()==0){
+            $('#checked').attr('disabled',true);
+            $('#confirmed').attr('disabled',true);
+        }
         totalMoney();
     });
 
