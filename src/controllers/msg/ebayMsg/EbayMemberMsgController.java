@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,7 @@ public class EbayMemberMsgController extends Controller {
     }
 
     public void list() {
-UserLogin user = LoginUserController.getLoginUser(this);
+    	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
 
         String type = getPara("type");
@@ -91,7 +92,11 @@ UserLogin user = LoginUserController.getLoginUser(this);
         long item_id = getParaToLong("item_id");
         //Record rec = Db.findById("ebay_member_msg", id);
         
-        List<Record> rec = Db.find("select * from ebay_member_msg where item_id = ? ORDER BY creation_date",item_id);
+        List<Record> rec = Db.find("select * from (select id, item_id, sender_id,recipient_id ,"
+        		+ " creation_date ,body,subject,'N' replay_flag from ebay_member_msg "
+        		+ " union "
+        		+ " select *,'Y' replay_flag from ebay_member_msg_replay) A "
+        		+ " where item_id = ? ORDER BY creation_date",item_id);
         
         renderJson(rec);
     }
@@ -190,21 +195,29 @@ UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
         apiContext = new EbayApiContextUtil(office_id).getApiContext();
         
-        String id = getPara("id");
+        String msg_response = getPara("msg_response");
         String msg_id = getPara("msg_id");
-        String response = getPara("response");
-        String recipientID = getPara("recipient_id");
-        Record rec = Db.findById("ebay_member_msg", Long.valueOf(id));
-        rec.set("response", response);
-        Db.update("ebay_member_msg", rec);
+        String item_id = getPara("item_id");
+        String sender_id = getPara("sender_id");
+        String subject = getPara("subject");
+        String recipient_id = getPara("recipient_id");
+        //Record rec = Db.findById("ebay_member_msg_replay", Long.valueOf(id));
+        Record rec = new Record();
+        rec.set("body", msg_response);
+        rec.set("item_id", item_id);
+        rec.set("recipient_id", sender_id);
+        rec.set("sender_id", recipient_id);
+        rec.set("subject", subject);
+        rec.set("creation_date", new Date());
+        Db.save("ebay_member_msg_replay", rec);
         
         AddMemberMessageRTQCall api = new AddMemberMessageRTQCall(
                 this.apiContext);
         
         MemberMessageType mm = new MemberMessageType();
-        mm.setBody(response);
+        mm.setBody(msg_response);
         mm.setParentMessageID(msg_id);
-        String recipientId[] = new String[]{recipientID};
+        String recipientId[] = new String[]{sender_id};
         mm.setRecipientID(recipientId);
         api.setMemberMessage(mm);
         api.setMessageID(msg_id);

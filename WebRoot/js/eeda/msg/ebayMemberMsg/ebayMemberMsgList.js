@@ -46,23 +46,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
         $('#edit_id').val(tr.attr('id'));
 
           $.post('/ebayMemberMsg/getMemberMsg', {id: tr.attr('id'),item_id:tr.find(".item_id").text()}, function(data, textStatus, xhr) {
-        	  $('#msg_id').val(data[0].MESSAGE_ID);
-              $('#msg_body').text(data[0].BODY);
-              $('#recipient_id').val(data[0].SENDER_ID);
-              if(data.RESPONSE){
-                $('#msg_response').text(data.RESPONSE);
-              }else{
-                $('#msg_response').text("");
-              }
+              $('#msg_id').val(data[0].MESSAGE_ID);
+        	  $('#sender_id').val(data[0].SENDER_ID);
+              $('#recipient_id').val(data[0].RECIPIENT_ID);
+              $('#subject').val(data[0].SUBJECT);
+              $('#item_id').val(data[0].ITEM_ID);
+
               
               $('.chat').text('');
               for(var i = 0; i<data.length;i++){
-            	  var response = data[i].RESPONSE;
             	  var body = data[i].BODY;
-            	  var send_id = data[i].SENDER_ID;
+            	  var sender_id = data[i].SENDER_ID;
             	  var recipient_id = data[i].RECIPIENT_ID;
             	  var creation_date = data[i].CREATION_DATE;
-            	  if(response==null || response==''){
+            	  var replay_flag = data[i].REPLAY_FLAG;
+            	  if(replay_flag=='N'){
             		  $('.chat').append(
                        	   '<li class="left clearfix">'
                        	  +'	<span class="chat-img pull-left">'
@@ -70,7 +68,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                        	  +'	</span>'
                        	  +'    <div class="chat-body clearfix">'
                        	  +'        <div class="header">'
-                       	  +'            <strong class="primary-font">'+send_id+'</strong>'
+                       	  +'            <strong class="primary-font">'+sender_id+'</strong>'
                        	  +'            <small class="pull-right text-muted">'
                        	  +'                <i class="fa fa-clock-o fa-fw"></i>'+creation_date
                        	  +'            </small>'
@@ -93,7 +91,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             		  +'            <i class="fa fa-clock-o fa-fw"></i>'+creation_date
             		  +'        </small>'
             		  +'    </div><br/>'
-            		  +'    <p style="float:right">'+response+'</p>'
+            		  +'    <p style="float:right">'+body+'</p>'
             		  +'</div>'
             		  +'</li>')};
             	  
@@ -103,17 +101,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           $('#msg_subject').val($(this).text()); 
       });
 
-    	$('#modal_reply_btn').click(function(event) {
-        var id=$('#edit_id').val(); 
-        var msg_id=$('#msg_id').val(); 
-        var response=$('#msg_response').val(); 
+      $('#modal_reply_btn').click(function(event) {
+        var msg_response = $('#msg_response').val(); 
         var recipient_id=$('#recipient_id').val();
+        var sender_id=$('#sender_id').val();
+        var subject=$('#subject').val();
+        var item_id=$('#item_id').val();
+        var msg_id=$('#msg_id').val(); 
 
-        $.post('/ebayMemberMsg/replyMsg', {id:id, msg_id:msg_id, response:response, recipient_id:recipient_id}, function(data, textStatus, xhr) {
-            //alert(data);
-            //$('#editMsgModal').modal('hide');
-            
-           var response = data.RESPONSE;
+
+        $.post('/ebayMemberMsg/replyMsg', {msg_id:msg_id, item_id:item_id, msg_response:msg_response,sender_id:sender_id,subject:subject, recipient_id:recipient_id}, function(data, textStatus, xhr) {
       	   var body = data.BODY;
       	   var send_id = data.SENDER_ID;
       	   var recipient_id = data.RECIPIENT_ID;
@@ -127,13 +124,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           		  +'    <div class="header">'
           		  +'    	<strong class="pull-right primary-font">'+recipient_id+'</strong>'
           		  +'        <small class=" text-muted" >'
-          		  +'            <i class="fa fa-clock-o fa-fw"></i>'+creation_date
+          		  +'            <i class="fa fa-clock-o fa-fw"></i>'+send_id
           		  +'        </small>'
           		  +'    </div><br/>'
-          		  +'    <p style="float:right">'+response+'</p>'
+          		  +'    <p style="float:right">'+body+'</p>'
           		  +'</div>'
           		  +'</li>');
             
+            $('#msg_response').val("");
             
         }).fail(function() {
             $.scojs_message('回复失败', $.scojs_message.TYPE_ERROR);
