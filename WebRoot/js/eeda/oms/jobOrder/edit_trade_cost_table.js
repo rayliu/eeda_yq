@@ -457,7 +457,7 @@ $(document).ready(function() {
             $(row.find('[name=custom_price]')).val('');
         }else if(!isNaN(custom_amount)&&!isNaN(number)){
             var custom_price = parseFloat(custom_amount/number);
-            $(row.find('[name=custom_price]')).val(custom_price.toFixed(3));
+            $(row.find('[name=custom_price]')).val(custom_price);
             
             var total = 0;
             $('#trade_cost_table [name=custom_amount]').each(function(){
