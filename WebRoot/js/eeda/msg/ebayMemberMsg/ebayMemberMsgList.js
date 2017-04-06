@@ -86,7 +86,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             		  +'</span>'
             		  +'<div class="chat-body clearfix">'
             		  +'    <div class="header">'
-            		  +'    	<strong class="pull-right primary-font">'+recipient_id+'</strong>'
+            		  +'    	<strong class="pull-right primary-font">'+sender_id+'</strong>'
             		  +'        <small class=" text-muted" >'
             		  +'            <i class="fa fa-clock-o fa-fw"></i>'+creation_date
             		  +'        </small>'
@@ -112,7 +112,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 
         $.post('/ebayMemberMsg/replyMsg', {msg_id:msg_id, item_id:item_id, msg_response:msg_response,sender_id:sender_id,subject:subject, recipient_id:recipient_id}, function(data, textStatus, xhr) {
       	   var body = data.BODY;
-      	   var send_id = data.SENDER_ID;
+      	   var sender_id = data.SENDER_ID;
       	   var recipient_id = data.RECIPIENT_ID;
       	   var creation_date = data.CREATION_DATE;
             $('.chat').append(
@@ -122,9 +122,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           		  +'</span>'
           		  +'<div class="chat-body clearfix">'
           		  +'    <div class="header">'
-          		  +'    	<strong class="pull-right primary-font">'+recipient_id+'</strong>'
+          		  +'    	<strong class="pull-right primary-font">'+sender_id+'</strong>'
           		  +'        <small class=" text-muted" >'
-          		  +'            <i class="fa fa-clock-o fa-fw"></i>'+send_id
+          		  +'            <i class="fa fa-clock-o fa-fw"></i>'+creation_date
           		  +'        </small>'
           		  +'    </div><br/>'
           		  +'    <p style="float:right">'+body+'</p>'
