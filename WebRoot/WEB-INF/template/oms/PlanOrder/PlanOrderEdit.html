@@ -44,16 +44,6 @@
                                                     disabled: 'disabled'
                                                 }){}%>
                         </div>
-                         <div class="col-lg-4">
-                            <%include("/eeda/component/form/inputCustomerField.html", 
-                                {
-                                    id:'customer_id', 
-                                    label:'客户', 
-                                    required:'required',
-                                    value:order.customer_id!'',
-                                    display_value:party.abbr!''
-                                }){} %>
-                       </div>
                        <div class="col-lg-4">
                              <%include("/eeda/component/form/inputDateQueryField.html", 
                              {	id:'create_stamp', 
@@ -74,24 +64,32 @@
             </div>
            
             <div class="simple_order_list_div">
+	            <div class="col-lg-6">
+	                    <%include("/eeda/component/form/inputField.html", 
+	                    {   id:'entrusting', 
+	                        label:'委托方',
+	                        required:'required', 
+	                        disabled:'disabled'
+	                    }){}%> 
+	             </div>
             	
-           		<div class="col-lg-12">
+           		<div class="col-lg-6">
                     <%include("/eeda/component/form/selectField.html", 
-                    {   id:'customs_broker', 
-                        label:'业务公司',
+                    {   id:'entrusted', 
+                        label:'被委托方',
                         required:'required', 
                         value:custom.customs_broker!'',
                         value_list:[
                             {code:'', value:''},
-                            {code:'3', value:'珠海瑞龙报关代理有限公司'}
+                            {code:'1', value:'珠海市远桥供应链管理有限公司'}
                         ]
                     }){}%> 
-                   </div>  
+                  </div>  
                    
                 <div class="">
                     <ul id="orderTabs" class="nav nav-tabs">
                         <li class="active">
-                            <a href="#itemDetail" data-toggle="tab">货品明细</a>
+                            <a href="#itemDetail" data-toggle="tab">计划明细</a>
                         </li>
                     </ul>
                     <div class="button-bar ">
@@ -101,15 +99,13 @@
                     <%include("/eeda/component/form/detailTable.html", 
                                     {
                                         id:'cargo_table',
-                                        style:'width:3500px',
-                                        headers:['','','book单号','工作单类型','出货时间','柜型','箱量','目的港POD','ETA','车型车量','运输方式', '负载方式',   '货物名称', '件数','单位', 
-                                                  '体积(CBM)','净重(KG)', '毛重(KG)', '总重量(KG)',   '提货地点', '送货地点',
-                                                 '收货港POR', '起运港POL',  '船公司', '船名vessel', '航次voyage',
-                                                 '截关日期', 'ETD', '报关类型','报关日期', 'por_name', 'pol_name', 'pod_name', 'carrier_name', 'is_gen_job','unit_name'],
-                                        field_list:['id','','book_order_no','job_order_type','factory_loading_time','container_type','container_amount','pod','eta','truck_type','transport_type','load_type',   'cargo_name',  'pieces',
-                                        'unit_id','volume', 'net_weight','gross_weight', 'vgm',   'pickup_addr', 'dilvery_addr',
-                                        'por','pol', 'carrier', 'vessel', 'voyage', 
-                                        'cls', 'etd','customs_type','customs_data', 'por_name', 'pol_name', 'pod_name', 'carrier_name', 'is_gen_job','unit_name'],
+                                        style:'width:3950px',
+                                        headers:['','','','book单号','出货类型','出货时间','纳期','提货地点', '起运港POL','目的港POD','件数','毛重(KG)','体积(CBM)','柜型','柜量','车型车量','货物名称',
+                                        			'船公司', '船名vessel', '航次voyage','ETA','ETD','SO号码','运输方式', '负载方式','单位','净重(KG)','总重量(KG)','送货地点','收货港POR',  
+                                                 '截关日期',  '报关类型','报关日期', 'por_name', 'pol_name', 'pod_name', 'carrier_name', 'is_gen_job','unit_name'],
+                                        field_list:['id','','','book_order_no','job_order_type','factory_loading_time','eta','pickup_addr','pol','pod','pieces','gross_weight','volume', 
+                                        'container_type','container_amount','truck_type','cargo_name','carrier', 'vessel', 'voyage', 'eta','etd','so_number', 'transport_type','load_type',    
+                                        'unit_id', 'net_weight','vgm','dilvery_addr','por','cls', 'customs_type','customs_data', 'por_name', 'pol_name', 'pod_name', 'carrier_name', 'is_gen_job','unit_name'],
                                         value_list: itemList![]
                                     }){} %>
 
@@ -175,7 +171,7 @@
 									<input type="checkbox" value='20GP'>20GP X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 							  <li style=" float:left; margin-left:20px; list-style-type:none;">
-									<input type="checkbox" value='40T'>40T X </input><input class="container_amount" style="width:30px"  value='1'></input>
+									<input type="checkbox" value='40T'>40T  X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
 							  <li style=" float:left; margin-left:20px; list-style-type:none;">
 									<input type="checkbox" value='20T'>20T X </input><input class="container_amount" style="width:30px"  value='1'></input>
@@ -264,9 +260,6 @@
 						 	  <li style=" float:left; margin-left:20px; list-style-type:none;">
 									<input type="checkbox" value='2.6M'>2.6M X </input><input class="container_amount" style="width:30px"  value='1'></input>
 						　　　　</li>
-							
-							
-							　　
 							</ul>
 		                </div>
 		            </div>

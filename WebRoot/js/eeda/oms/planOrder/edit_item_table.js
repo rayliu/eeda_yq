@@ -98,6 +98,15 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                	}
 	                }
 	            },
+	            {"width": "10px",
+	                "render": function ( data, type, full, meta ) {
+	                	if(full.IS_GEN_JOB == 'Y'){
+	                		return '<button type="button" class="btn btn_green btn-xs" disabled>确认出货</button>';
+	                	}else{
+	                		return '<button type="button" class="btn btn_green btn-xs">确认出货</button> ';
+	                	}
+	                }
+	            },
 	            { "data": "BOOK_ORDER_NO","width": "30px",
 	                "render": function ( data, type, full, meta ) {
 	                	if(!data)
@@ -142,34 +151,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return field_html;
 	                }
 	            },
-	            { "data": "CONTAINER_TYPE","width": "30px",
-	                "render": function ( data, type, full, meta ) {
-	                	if(!data)
-	                        data='';
-	                   return '<input type="text" name="CONTAINER_TYPE" value="'+data+'" class="form-control search-control" />';
-	                }
-	            },
-	            { "data": "CONTAINER_AMOUNT","width": "20px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                   return '<input type="text" name="CONTAINER_AMOUNT" value="'+data+'" class="form-control search-control" />';
-	                }
-	            },
-	            { "data": "POD","width": "100px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                    var field_html = template('table_dropdown_template',
-		                    {
-		                        id: 'POD',
-		                        value: data,
-		                        display_value: full.POD_NAME
-		                    }
-		                );
-	                    return field_html;
-	                }
-	            },
 	            { "data": "ETA","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
@@ -183,124 +164,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return field_html;
 	                }
 	            },
-	            { "data": "TRUCK_TYPE","width": "50px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                   return '<input type="text" name="TRUCK_TYPE" value="'+data+'" class="form-control search-control" />';
-	                }
-	            },
-	            { "data": "TRANSPORT_TYPE","width": "60px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                    var str = '<select name="transport_type" class="form-control search-control">'
-                			+'<option></option>'
-		                   +'<option value="ocean" '+(data=='ocean' ? 'selected':'')+'>海运</option>'
-		                   +'<option value="land" '+(data=='land' ? 'selected':'')+'>陆运</option>'
-		                   +'<option value="air" '+(data=='air' ? 'selected':'')+'>空运</option>'
-		                   +'</select>';
-	                    return str;
-	                }
-	            },
-	            
-	            { "data": "LOAD_TYPE","width": "60px",
-	                "render": function ( data, type, full, meta ) {
-	                   if(!data)
-	                	   data='';
-	                   var str= '<select name="load_type" class="form-control search-control">'
-	                	   	 	+'<option></option>'
-			                   +'<option value="FCL" '+ (data=='FCL'?'selected':'') +'>FCL</option>'
-			                   +'<option value="LCL" '+ (data=='LCL'?'selected':'') +'>LCL</option>'
-			                   +'<option value="FTL" '+ (data=='FTL'?'selected':'') +'>FTL</option>'
-			                   +'<option value="LTL" '+ (data=='LTL'?'selected':'') +'>LTL</option>'
-			                   +'</select>';
-			           return str;
-	                }
-	            },
-	            { "data": "CARGO_NAME","width": "80px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                   return '<input type="text" name="CARGO_NAME" value="'+data+'" class="form-control search-control" />';
-	                }
-	            },
-	            { "data": "PIECES" ,"width": "30px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                   return '<input type="text" name="PIECES" value="'+data+'" class="form-control search-control" />';
-	                }
-	            },
-	            { "data": "UNIT_ID","width": "50px",
-	                "render": function ( data, type, full, meta ) {
-	                	if(!data)
-	                        data='';
-	                    var field_html = template('table_dropdown_template',
-	                        {
-	                            id: 'UNIT_ID',
-	                            value: data,
-	                            display_value: full.UNIT_NAME,
-	                            style: 'margin-top: 10px;'
-	                        }
-	                    );
-	                    return field_html;
-	                }
-	            },
-	            { "data": "VOLUME","width": "50px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                   return '<input type="text" name="VOLUME" value="'+data+'" class="form-control search-control" />';
-	                }
-	            },
-	            { "data": "NET_WEIGHT","width": "45px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                   return '<input type="text" name="NET_WEIGHT" value="'+data+'" class="form-control search-control" />';
-	                }
-	            },
-	            { "data": "GROSS_WEIGHT","width": "45px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                   return '<input type="text" name="GROSS_WEIGHT" value="'+data+'" class="form-control search-control" />';
-	                }
-	            },
-	            { "data": "VGM","width": "50px",
-	            	"render": function ( data, type, full, meta ) {
-	            		if(!data)
-	            			data='';
-	            		return '<input type="text" name="VGM" value="'+data+'" class="form-control search-control" />';
-	            	}
-	            },
 	            { "data": "PICKUP_ADDR","width": "180px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                   return '<input type="text" name="PICKUP_ADDR" value="'+data+'" class="form-control search-control" />';
-	                }
-	            },
-	            { "data": "DILVERY_ADDR","width": "180px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                   return '<input type="text" name="DILVERY_ADDR" value="'+data+'" class="form-control search-control" />';
-	                }
-	            },
-	            { "data": "POR" ,"width": "100px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                    var field_html = template('table_dropdown_template',
-		                    {
-		                        id: 'POR',
-		                        value: data,
-		                        display_value: full.POR_NAME
-		                    }
-		                );
-	                    return field_html;
 	                }
 	            },
 	            { "data": "POL" ,"width": "100px",
@@ -317,7 +185,69 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return field_html;
 	                }
 	            },
-	            
+	            { "data": "POD","width": "100px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    var field_html = template('table_dropdown_template',
+		                    {
+		                        id: 'POD',
+		                        value: data,
+		                        display_value: full.POD_NAME
+		                    }
+		                );
+	                    return field_html;
+	                }
+	            },
+	            { "data": "PIECES" ,"width": "30px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                   return '<input type="text" name="PIECES" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            { "data": "GROSS_WEIGHT","width": "45px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                   return '<input type="text" name="GROSS_WEIGHT" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            { "data": "VOLUME","width": "50px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                   return '<input type="text" name="VOLUME" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            { "data": "CONTAINER_TYPE","width": "30px",
+	                "render": function ( data, type, full, meta ) {
+	                	if(!data)
+	                        data='';
+	                   return '<input type="text" name="CONTAINER_TYPE" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            { "data": "CONTAINER_AMOUNT","width": "20px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                   return '<input type="text" name="CONTAINER_AMOUNT" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            { "data": "TRUCK_TYPE","width": "50px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                   return '<input type="text" name="TRUCK_TYPE" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            { "data": "CARGO_NAME","width": "80px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                   return '<input type="text" name="CARGO_NAME" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
 	            { "data": "CARRIER","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
@@ -346,6 +276,121 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                   return '<input type="text" name="VOYAGE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
+	            { "data": "ETA","width": "80px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    var field_html = template('table_date_field_template',
+		                    {
+		                        id: 'ETA',
+		                        value: data.substr(0,10)
+		                    }
+		                );
+	                    return field_html;
+	                }
+	            },
+	            { "data": "ETD","width": "80px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    var field_html = template('table_date_field_template',
+		                    {
+		                        id: 'ETD',
+		                        value: data.substr(0,10)
+		                    }
+		                );
+	                    return field_html;
+	                }
+	            },
+	            { "data": "NET_WEIGHT","width": "45px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                   return '<input type="text" name="NET_WEIGHT" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            { "data": "TRANSPORT_TYPE","width": "100px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    var str = '<select name="transport_type" class="form-control search-control">'
+                			+'<option></option>'
+		                   +'<option value="ocean" '+(data=='ocean' ? 'selected':'')+'>海运</option>'
+		                   +'<option value="land" '+(data=='land' ? 'selected':'')+'>陆运</option>'
+		                   +'<option value="air" '+(data=='air' ? 'selected':'')+'>空运</option>'
+		                   +'</select>';
+	                    return str;
+	                }
+	            },
+	            
+	            { "data": "LOAD_TYPE","width": "100px",
+	                "render": function ( data, type, full, meta ) {
+	                   if(!data)
+	                	   data='';
+	                   var str= '<select name="load_type" class="form-control search-control">'
+	                	   	 	+'<option></option>'
+			                   +'<option value="FCL" '+ (data=='FCL'?'selected':'') +'>FCL</option>'
+			                   +'<option value="LCL" '+ (data=='LCL'?'selected':'') +'>LCL</option>'
+			                   +'<option value="FTL" '+ (data=='FTL'?'selected':'') +'>FTL</option>'
+			                   +'<option value="LTL" '+ (data=='LTL'?'selected':'') +'>LTL</option>'
+			                   +'</select>';
+			           return str;
+	                }
+	            },
+	            { "data": "UNIT_ID","width": "50px",
+	                "render": function ( data, type, full, meta ) {
+	                	if(!data)
+	                        data='';
+	                    var field_html = template('table_dropdown_template',
+	                        {
+	                            id: 'UNIT_ID',
+	                            value: data,
+	                            display_value: full.UNIT_NAME,
+	                            style: 'margin-top: 10px;'
+	                        }
+	                    );
+	                    return field_html;
+	                }
+	            },
+	            
+	            { "data": "NET_WEIGHT","width": "45px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                   return '<input type="text" name="NET_WEIGHT" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            
+	            { "data": "VGM","width": "50px",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(!data)
+	            			data='';
+	            		return '<input type="text" name="VGM" value="'+data+'" class="form-control search-control" />';
+	            	}
+	            },
+	            
+	            { "data": "DILVERY_ADDR","width": "180px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                   return '<input type="text" name="DILVERY_ADDR" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            { "data": "POR" ,"width": "100px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    var field_html = template('table_dropdown_template',
+		                    {
+		                        id: 'POR',
+		                        value: data,
+		                        display_value: full.POR_NAME
+		                    }
+		                );
+	                    return field_html;
+	                }
+	            },
+	            
 	            { "data": "CLS","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
@@ -359,20 +404,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return field_html;
 	                }
 	            },
-	            { "data": "ETD","width": "100px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                    var field_html = template('table_date_field_template',
-		                    {
-		                        id: 'ETD',
-		                        value: data.substr(0,10)
-		                    }
-		                );
-	                    return field_html;
-	                }
-	            },
-	             
 	            { "data": "CUSTOMS_TYPE","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
