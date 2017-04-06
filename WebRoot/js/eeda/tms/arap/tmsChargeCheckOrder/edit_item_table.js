@@ -433,8 +433,8 @@ $(document).ready(function() {
       $('#resetBtn').click(function(e){
           $('#que_sp_input').val('');
           $('#que_order_no').val('');
-          $('#que_order_export_date_begin_time').val('');
-          $('#que_order_export_date_end_time').val('');
+          $('#que_create_stamp_begin_time').val('');
+          $('#que_create_stamp_end_time').val('');
           $('#que_customer_input').val('');
       });
          

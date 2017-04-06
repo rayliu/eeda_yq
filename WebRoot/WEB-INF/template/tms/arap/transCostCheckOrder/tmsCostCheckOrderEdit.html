@@ -136,40 +136,18 @@
 	                               <%include("/eeda/component/form/detailTable.html", 
 	                                   {
 	                                       id:'eeda-table', 
+                                            style: 'width:1500px',
 	                                       headers:[
 	                                           '<input type="checkbox" id="allcheck" >',
-                                               '操作',
-	                                           '工作单号',
-	                                           '创建时间',
-                                               '柜号',
-                                               'so号',
-	                                           '客户',
-	                                           '结算公司',
-                                               '费用名称',
-	                                           '对账币制',
-			                                   '对账金额', 
-			                                   '对人民币汇率',
-			                                   '对账金额(CNY)',  
-			                                   '备注',
-                                               '',
+                                               '操作','工作单号','创建时间','柜号',
+                                               'so号', '客户','结算公司','费用名称','对账币制',
+			                                   '对账金额', '对人民币汇率','对账金额(CNY)', '备注','',
                                                ''
 	                                       ],
 	                                       field_list:[
-	                                           'ID', 
-                                               '',
-	                                           'ORDER_NO', 
-	                                           'CREATE_STAMP',
-                                               'CONTAINER_NO',
-                                               'SO_NO',
-	                                           'CUSTOMER_NAME', 
-	                                           'SP_NAME', 
-                                               'fin_name',
-	                                           'CURRENCY_NAME',
-	                                           'TOTAL_AMOUNT',
-	                                           'EXCHANGE_RATE',
-	                                           'AFTER_TOTAL', 
-                                               'remark',
-	                                           'ORDER_TYPE',
+	                                           'ID','','ORDER_NO','CREATE_STAMP','CONTAINER_NO',
+                                           'SO_NO','CUSTOMER_NAME', 'SP_NAME', 'fin_name','CURRENCY_NAME',
+	                                   'TOTAL_AMOUNT','EXCHANGE_RATE', 'AFTER_TOTAL', 'remark', 'ORDER_TYPE',
                                                'JOB_ORDER_ID'
 	                                       ],
 	                                       value_list: order.item_list!item_list![]
@@ -214,8 +192,8 @@
                        <div class="row">
                             <div class="col-lg-4">
                                  <%include("/eeda/component/form/inputDateQueryField.html", 
-                                         {   id:'que_order_export_date', 
-                                             label:'出货日期'
+                                         {   id:'que_create_stamp', 
+                                             label:'创建日期'
                                          }){} %>
                              </div>
                              <div class="col-lg-4">
@@ -238,7 +216,7 @@
                                             style: 'width:2000px',
                                             headers:['<input type="checkbox" id="allcost">','工作单号','创建时间','柜号','so号',
                                                 '客户','结算公司','费用名称',
-                                            '对账金额','对账币制','对人民币汇率','总金额（CNY）','备注'
+                                            '对账金额','对账币制','对人民币汇率','对账金额（CNY）','备注'
                                             ]
                                         }){} %>
                 </div>

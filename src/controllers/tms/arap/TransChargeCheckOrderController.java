@@ -157,7 +157,7 @@ public class TransChargeCheckOrderController extends Controller {
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
         	 sql = "select * from(  "
-        			+ " select joa.order_type sql_type, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+        			+ " select joa.order_type sql_type,joa.remark, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
               		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.land_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type,jo.so_no,jo.container_no, "
               		+ " p.abbr sp_name,p1.abbr customer_name, "
               		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
@@ -179,7 +179,7 @@ public class TransChargeCheckOrderController extends Controller {
     				+ " ) B where 1=1 ";
         	}else{
         		 sql = "select * from(  "
-                 		+ " select ifnull(f.name,f.name_eng) fee_name, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+                 		+ " select ifnull(f.name,f.name_eng) fee_name,joa.remark, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
                  		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.land_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type,jo.so_no,jo.container_no, "
                  		+ " p.abbr sp_name,p1.abbr customer_name, "
                  		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
@@ -280,7 +280,7 @@ public class TransChargeCheckOrderController extends Controller {
 			sql = " select joa.id, joa.order_type,jo.order_no,jo.create_stamp,jo.id job_order_id,jo.customer_id,jo.volume vgm,"
     			+ "IFNULL(cur1.name,cur.name) exchange_currency_name,"
     			+ "IFNULL(joa.exchange_currency_rate,1) exchange_currency_rate,IFNULL(joa.exchange_total_amount,joa.total_amount) exchange_total_amount,"
-    			+ "joa.total_amount total_amount,joa.exchange_rate exchange_rate," 
+    			+ "joa.total_amount total_amount,joa.exchange_rate exchange_rate,joa.remark, " 
     			+ " jo.net_weight gross_weight,jo.so_no,jo.container_no,"
     			+ " cur.name currency_name,"
     			+ " jo.ref_no ref_no,"
@@ -297,7 +297,7 @@ public class TransChargeCheckOrderController extends Controller {
     			+ " and joa.id in("+ids+")"
     			+ " GROUP BY joa.id";
 			}else{				
-			sql = " select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
+			sql = " select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,joa.remark,"
 					+" aco.order_no check_order_no, jo.id job_order_id, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
 					+ " jo.ref_no ref_no,jo.so_no,jo.container_no,"
 						+" p.abbr sp_name,p1.abbr customer_name, "
@@ -347,7 +347,7 @@ public class TransChargeCheckOrderController extends Controller {
 			query_fin_name=" and fi.id="+fin_name;
 		}
 			if("create".equals(bill_flag)){
-				sql = " select joa.id,joa.create_flag,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
+				sql = " select joa.id,joa.create_flag,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.remark,joa.currency_total_amount,"
 						+" aco.order_no check_order_no, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
 							+" p.abbr sp_name,p1.abbr customer_name, "
 							+" ifnull((select rc.new_rate from rate_contrast rc"
@@ -376,7 +376,7 @@ public class TransChargeCheckOrderController extends Controller {
 							+" ORDER BY aco.order_no, jo.order_no";
 				
 			}else{
-				sql = "select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
+				sql = "select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,joa.remark,"
 						+" aco.order_no check_order_no, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
 							+" p.abbr sp_name,p1.abbr customer_name,"
 							+" ifnull((select rc.new_rate from rate_contrast rc"

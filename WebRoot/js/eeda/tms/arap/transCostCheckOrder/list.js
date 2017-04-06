@@ -112,6 +112,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var land_export_date_begin_time = $("#land_export_date_begin_time").val();
           var land_export_date_end_time = $("#land_export_date_end_time").val();
           
+          var container_no = $("#container_no").val().trim(); 
+          var so_no = $("#so_no").val().trim(); 
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -130,7 +132,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date
 		               +"&land_export_date_begin_time="+land_export_date_begin_time
-		               +"&land_export_date_end_time="+land_export_date_end_time;
+		               +"&land_export_date_end_time="+land_export_date_end_time
+		               +"&container_no_like="+container_no
+		               +"&so_no_like="+so_no;
 
           dataTable.ajax.url(url).load();
       };

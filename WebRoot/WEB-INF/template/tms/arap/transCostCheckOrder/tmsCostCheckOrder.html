@@ -34,22 +34,22 @@
                                                                     }){}%>
                                             </div>
                                             <div class="col-lg-4">
-                                                <%include("/eeda/component/form/inputCustomerField.html", 
-                                                                    {   id: 'customer', 
-                                                                        label: '客户', 
-                                                                        value: ''
-                                                                    }){}%>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-4">
                                                 <%include("/eeda/component/form/inputDateQueryField.html", 
                                                 {   id:'create_stamp', 
                                                     label:'创建时间', 
                                                     value:''
                                                 }){} %>
                                             </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-lg-4">
+                                                <%include("/eeda/component/form/inputCustomerField.html", 
+                                                                    {   id: 'customer', 
+                                                                        label: '客户', 
+                                                                        value: ''
+                                                                    }){}%>
+                                            </div>
+                                            <div class="col-lg-4" style="display:none;">
 					                            <%include("/eeda/component/form/selectField.html", 
 					                                {   id:'type', 
 					                                    label:'类型', 
@@ -67,11 +67,18 @@
                                         <div class="row">  
                                         <div class="col-lg-4">
                                          <%include("/eeda/component/form/inputField.html", 
-                                         {   id:'cabinet_no', 
+                                         {   id:'container_no', 
                                              label:'柜号', 
                                              value:''
                                          }){} %>
                                          </div>
+                                         <div class="col-lg-4">
+                                             <%include("/eeda/component/form/inputField.html", 
+                                             {   id:'so_no', 
+                                                 label:'so号', 
+                                                 value:''
+                                             }){} %>
+                                             </div>
                                          <div class="col-lg-4">
                                                 <%include("/eeda/component/form/inputField.html", 
                                                          {   id: 'creator', 
@@ -124,7 +131,7 @@
                                      <%include("/eeda/component/form/detailTable.html", 
                                         {
                                             id:'eeda_table', 
-                                            style: 'width:1800px',
+                                            style: 'width:1700px',
                                             headers:['<input type="checkbox" id="allCheck">','工作单号','创建时间','柜号','so号',
                                                 '客户','结算公司','费用名称',
                                             '对账金额','对账币制','对人民币汇率','总金额（CNY）','备注'

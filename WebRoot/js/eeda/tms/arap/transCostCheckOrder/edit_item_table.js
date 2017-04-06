@@ -66,16 +66,17 @@ $(document).ready(function() {
             },
             { "data": "ORDER_NO", "width": "100px",
                   "render": function ( data, type, full, meta ) {
-                      return "<a href='/jobOrder/edit?id="+full.JOB_ORDER_ID+"'target='_blank'>"+data+"</a>";
+                      return "<a href='/transJobOrder/edit?id="+full.JOB_ORDER_ID+"'target='_blank'>"+data+"</a>";
                   }
             },
-            { "data": "TYPE"},
-            { "data": "CREATE_STAMP", visible: false},
-            { "data": "CUSTOMER_NAME"},
-            { "data": "SP_NAME"},
-            { "data": "FIN_NAME"},
-            { "data": "CURRENCY_NAME","class":"currency_name"},
-            { "data": "TOTAL_AMOUNT","class":"total_amount", 
+            { "data": "CREATE_STAMP", "width": "70px"},
+            { "data": "CONTAINER_NO", "width": "70px"},
+            { "data": "SO_NO", "width": "70px"},
+            { "data": "CUSTOMER_NAME", "width": "70px"},
+            { "data": "SP_NAME", "width": "70px"},
+            { "data": "FIN_NAME", "width": "70px"},
+            { "data": "CURRENCY_NAME","class":"currency_name", "width": "70px"},
+            { "data": "TOTAL_AMOUNT","class":"total_amount",  "width": "70px",
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
 	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
@@ -83,8 +84,8 @@ $(document).ready(function() {
             		return eeda.numFormat(parseFloat(data).toFixed(2),3);
                   }
             },
-            { "data": "EXCHANGE_RATE", "visible": false},
-            { "data": "AFTER_TOTAL", "visible": false, 
+            { "data": "EXCHANGE_RATE" , "width": "70px"},
+            { "data": "AFTER_TOTAL" , "width": "70px",
             	"render": function ( data, type, full, meta ) {
             		if(full.ORDER_TYPE=='charge'){
 	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
@@ -93,27 +94,7 @@ $(document).ready(function() {
 	            	} 
             	}
             },
-            { "data": "NEW_RATE","class":"new_rate", "visible": false },
-            { "data": "AFTER_RATE_TOTAL","class":"after_rate_total", "visible": false,
-            	"render": function ( data, type, full, meta ) {
-            		if(full.ORDER_TYPE=='charge'){
-	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
-	            	}else{
-	            		return eeda.numFormat(parseFloat(data).toFixed(2),3);
-	            	}
-            	}
-            },
-            { "data": "EXCHANGE_CURRENCY_NAME"},
-            { "data": "EXCHANGE_CURRENCY_RATE"},
-            { "data": "EXCHANGE_TOTAL_AMOUNT",
-                "render": function ( data, type, full, meta ) {
-                	var str =data;
-                    if(full.ORDER_TYPE=='charge'){
-                        return '<span style="color:red;">'+'-'+eeda.numFormat((Math.round(str*100)/100).toFixed(2),3)+'</span>';
-                    }
-                    return eeda.numFormat((Math.round(str*100)/100).toFixed(2),3);
-                  }
-            },
+            { "data": "REMARK", "width": "70px"},
             { "data": "ORDER_TYPE", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
@@ -148,7 +129,7 @@ $(document).ready(function() {
                 },
                 { "data": "ORDER_NO", "width": "100px",
                       "render": function ( data, type, full, meta ) {
-                          return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+                          return "<a href='/transJobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
                       }
                 },
                 { "data": "CREATE_STAMP", "width": "100px"},
@@ -175,7 +156,7 @@ $(document).ready(function() {
                         return eeda.numFormat(parseFloat(data).toFixed(2),3);
                       }
                 },  
-                { "data": "REMARK", "width": "100px"},
+                { "data": "REMARK", "width": "100px"}
               ]
           });
             
@@ -212,15 +193,15 @@ $(document).ready(function() {
             }
         }
     });
-      $('#cny_duizhang').html(cny_totalAmount.toFixed(2));
-       $('#usd_duizhang').html(usd_totalAmount.toFixed(2));
-       $('#hkd_duizhang').html(hkd_totalAmount.toFixed(2));
-       $('#jpy_duizhang').html(jpy_totalAmount.toFixed(2));
+      $('#cny').html(cny_totalAmount.toFixed(2));
+       $('#usd').html(usd_totalAmount.toFixed(2));
+       $('#hkd').html(hkd_totalAmount.toFixed(2));
+       $('#jpy').html(jpy_totalAmount.toFixed(2));
        $('#totalAmount').val(totalAmount.toFixed(2));
-       $('#cny_duizhang').val(cny_totalAmount.toFixed(2));
-       $('#usd_duizhang').val(usd_totalAmount.toFixed(2));
-       $('#hkd_duizhang').val(hkd_totalAmount.toFixed(2));
-       $('#jpy_duizhang').val(jpy_totalAmount.toFixed(2));
+       $('#cny').val(cny_totalAmount.toFixed(2));
+       $('#usd').val(usd_totalAmount.toFixed(2));
+       $('#hkd').val(hkd_totalAmount.toFixed(2));
+       $('#jpy').val(jpy_totalAmount.toFixed(2));
 };
     cal();
         
@@ -431,8 +412,8 @@ $(document).ready(function() {
       $('#resetBtn').click(function(e){
           $('#que_sp_input').val('');
           $('#que_order_no').val('');
-          $('#que_order_export_date_begin_time').val('');
-          $('#que_order_export_date_end_time').val('');
+          $('#que_create_stamp_begin_time').val('');
+          $('#que_create_stamp_end_time').val('');
           $('#que_customer_input').val('');
       });
          
@@ -456,8 +437,8 @@ $(document).ready(function() {
               return;
           }
           var customer_name = $('#que_customer_input').val().trim();
-          var order_export_date_begin_time = $("#que_order_export_date_begin_time").val();
-          var order_export_date_end_time = $("#que_order_export_date_end_time").val();
+          var create_stamp_begin_time = $("#que_create_stamp_begin_time").val();
+          var create_stamp_end_time = $("#que_create_stamp_end_time").val();
           
           /*  
               查询规则：参数对应DB字段名
@@ -470,8 +451,8 @@ $(document).ready(function() {
                 +"&order_no="+order_no
                +"&sp_name="+sp_name
                +"&customer_name="+customer_name
-               +"&order_export_date_end_time="+order_export_date_end_time
-               +"&order_export_date_begin_time="+order_export_date_begin_time;
+               +"&create_stamp_end_time="+create_stamp_end_time
+               +"&create_stamp_begin_time="+create_stamp_begin_time;
 
           dataTable.ajax.url(url).load();
         }

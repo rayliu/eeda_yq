@@ -43,12 +43,6 @@
                                          </div>
                                      </div>       
                                      <div class="row">  
-                                        <div class="col-lg-4">
-                                         <%include("/eeda/component/form/inputDateQueryField.html", 
-                                         {   id:'order_export_date', 
-                                             label:'出货日期'
-                                         }){} %>
-                                         </div>
                                          <div class="col-lg-4">
                                                 <%include("/eeda/component/form/inputCustomerField.html", 
                                                          {   id: 'customer', 
@@ -56,7 +50,7 @@
                                                              value: ''
                                                          }){}%>
                                          </div>
-	                                    <div class="col-lg-4">
+	                                    <div class="col-lg-4" style="display:none;">
                                            <%include("/eeda/component/form/selectField.html", 
                                                {   id:'type', 
                                                    label:'类型', 
@@ -75,57 +69,27 @@
                                     <div class="row">  
 	                                        <div class="col-lg-4">
 	                                         <%include("/eeda/component/form/inputField.html", 
-	                                         {   id:'cabinet_no', 
+	                                         {   id:'container_no', 
 	                                             label:'柜号', 
 	                                             value:''
 	                                         }){} %>
 	                                         </div>
-	                                         <div class="col-lg-4">
-	                                                <%include("/eeda/component/form/inputField.html", 
-	                                                         {   id: 'cabinet_type', 
-	                                                             label: '柜型', 
-	                                                             value: ''
-	                                                         }){}%>
-	                                         </div>
-	                                     <div class="col-lg-4">
-	                                           <%include("/eeda/component/form/inputField.html", 
-	                                               {   id:'mbl_no', 
-	                                                   label:'MBL号码', 
-	                                                   value:''
-	                                               }){}%>
-	                                        </div>
-                                    </div>
-                                    <div class="row">  
-                                        <div class="col-lg-4">
-                                         <%include("/eeda/component/form/inputField.html", 
-                                         {   id:'declare_no', 
-                                             label:'报关单号', 
-                                             value:''
-                                         }){} %>
-                                         </div>
+                                             <div class="col-lg-4">
+                                             <%include("/eeda/component/form/inputField.html", 
+                                             {   id:'so_no', 
+                                                 label:'so号', 
+                                                 value:''
+                                             }){} %>
+                                             </div>
                                          <div class="col-lg-4">
                                                 <%include("/eeda/component/form/inputField.html", 
                                                          {   id: 'creator', 
                                                              label: '创建人', 
                                                              value: ''
                                                          }){}%>
-                                         </div>
-	                                        <div class="col-lg-4">
-	                                                 <%include("/eeda/component/form/inputPortField.html", 
-	                                                       {   id:'pol', 
-	                                                           label:'启运港 POL', 
-	                                                           value:shipment.pol!''
-	                                                       }){}%>
-	                                         </div>                                        
+                                         </div>                                       
                                        </div>
                                        <div class="row">  
-	                                         <div class="col-lg-4">
-			                                        <%include("/eeda/component/form/inputPortField.html", 
-									                       {   id:'pod', 
-									                           label:'目的港 POD', 
-									                           value:shipment.pod!''									                          
-									                       }){}%>
-									         </div>
                                        </div>
                                        <div class="form-group button-bar" >
 		                                	<button id="searchBtn" class="btn btn_grey" type="button">查询</button>
@@ -168,7 +132,7 @@
                                <%include("/eeda/component/form/detailTable.html", 
                                         {
                                             id:'uncheckedEeda-table', 
-                                            style: 'width:2500px',
+                                            style: 'width:1700px',
                                             headers:['<input type="checkbox" id="allCheck">','工作单号','创建时间','柜号','so号',
                                                 '客户','结算公司','费用名称',
                                             '对账金额','对账币制','对人民币汇率','总金额（CNY）','备注'

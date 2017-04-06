@@ -112,7 +112,7 @@ public class TransCostCheckOrderController extends Controller {
 		}
 		
 		if(StringUtils.isEmpty(order_id)){
-			sql = " select joa.id,joa.type,joa.sp_id, joa.order_type, joa.total_amount, joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
+			sql = " select joa.id,joa.type,joa.sp_id, joa.order_type,joa.remark, joa.total_amount, joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
 	                + " p.abbr sp_name,p1.abbr customer_name, jo.container_no,jo.so_no, "
 	                + " ifnull((select rc.new_rate from rate_contrast rc "
 	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),cast(joa.exchange_rate as char)) new_rate,"
@@ -135,7 +135,7 @@ public class TransCostCheckOrderController extends Controller {
 	                + " GROUP BY joa.id"
 	                + " ORDER BY jo.order_no";	
 		}else{
-			sql = " select joa.id,joa.type,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
+			sql = " select joa.id,joa.type,joa.sp_id,joa.remark,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
 			        + " aco.order_no check_order_no, jo.order_no,jo.id job_order_id,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
 	                + " p.abbr sp_name,p1.abbr customer_name,jo.container_no,jo.so_no,  "
 	                + " ifnull((select rc.new_rate from rate_contrast rc "
@@ -321,7 +321,7 @@ public class TransCostCheckOrderController extends Controller {
         	sql = " SELECT	* FROM	"
         			+" 	(	"
         			+" 		SELECT	"
-        			+" 			joa.id,	"
+        			+" 			joa.order_type sql_type,joa.id,joa.remark,	"
         			+" 			joa.type,	"
         			+" 			joa.sp_id,	"
         			+" 			ifnull(joa.total_amount, 0) total_amount,	"
@@ -372,7 +372,7 @@ public class TransCostCheckOrderController extends Controller {
 	         sql = " SELECT	* FROM	"
 	        		 +" 	(	"
 	        		 +" 		SELECT	"
-	        		 +" 			joa.id,	"
+	        		 +" 			joa.order_type sql_type,joa.id,joa.remark,	"
 	        		 +" 			joa.type,	"
 	        		 +" 			joa.sp_id,	"
 	        		 +" 			ifnull(joa.total_amount, 0) total_amount,	"
