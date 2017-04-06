@@ -113,7 +113,7 @@ public class TransCostCheckOrderController extends Controller {
 		
 		if(StringUtils.isEmpty(order_id)){
 			sql = " select joa.id,joa.type,joa.sp_id, joa.order_type, joa.total_amount, joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
-	                + " p.abbr sp_name,p1.abbr customer_name, "
+	                + " p.abbr sp_name,p1.abbr customer_name, jo.container_no,jo.so_no, "
 	                + " ifnull((select rc.new_rate from rate_contrast rc "
 	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),cast(joa.exchange_rate as char)) new_rate,"
 	    			+ " (ifnull(joa.total_amount,0)*ifnull(joa.exchange_rate,1)) after_total,"
@@ -137,7 +137,7 @@ public class TransCostCheckOrderController extends Controller {
 		}else{
 			sql = " select joa.id,joa.type,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
 			        + " aco.order_no check_order_no, jo.order_no,jo.id job_order_id,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
-	                + " p.abbr sp_name,p1.abbr customer_name, "
+	                + " p.abbr sp_name,p1.abbr customer_name,jo.container_no,jo.so_no,  "
 	                + " ifnull((select rc.new_rate from rate_contrast rc "
 	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
 	    			+ " (ifnull(joa.total_amount,0)*ifnull(joa.exchange_rate,1)) after_total,"
@@ -592,10 +592,10 @@ public class TransCostCheckOrderController extends Controller {
     private Map<String, Double> updateExchangeTotal(String costOrderId) {
         String sql="select joa.order_type, ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
         +"       ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount "
-        +"       from  job_order_arap joa "
+        +"       from  trans_job_order_arap joa "
         +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
         +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
-        +"       where joa.id in(select aci.ref_order_id from arap_cost_item aci where aci.cost_order_id="+costOrderId+")";
+        +"       where joa.id in(select aci.ref_order_id from trans_arap_cost_item aci where aci.cost_order_id="+costOrderId+")";
 		
 		Map<String, Double> exchangeTotalMap = new HashMap<String, Double>();
 		exchangeTotalMap.put("CNY", 0d);
@@ -623,12 +623,12 @@ public class TransCostCheckOrderController extends Controller {
             }
         }
 		
-		Record order = Db.findById("arap_cost_order", costOrderId);
+		Record order = Db.findById("trans_arap_cost_order", costOrderId);
 		for (Map.Entry<String, Double> entry : exchangeTotalMap.entrySet()) {
 		    System.out.println(entry.getKey() + " : " + entry.getValue());
 		    order.set(entry.getKey(), entry.getValue());
 		}
-		Db.update("arap_cost_order", order);
+		Db.update("trans_arap_cost_order", order);
 		return exchangeTotalMap;
     }
 	

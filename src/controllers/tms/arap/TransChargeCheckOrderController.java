@@ -9,11 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.ArapChargeItem;
-import models.ArapChargeOrder;
 import models.RateContrast;
 import models.UserLogin;
-import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.profile.Currency;
 import models.eeda.tms.TransArapChargeItem;
 import models.eeda.tms.TransArapChargeOrder;
@@ -280,7 +277,7 @@ public class TransChargeCheckOrderController extends Controller {
     		 currenry_code=" and cur. NAME="+"'"+code+"'";
     	}
 		if(StringUtils.isEmpty(order_id)){
-			sql = " select joa.id, joa.order_type,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume vgm,"
+			sql = " select joa.id, joa.order_type,jo.order_no,jo.create_stamp,jo.id job_order_id,jo.customer_id,jo.volume vgm,"
     			+ "IFNULL(cur1.name,cur.name) exchange_currency_name,"
     			+ "IFNULL(joa.exchange_currency_rate,1) exchange_currency_rate,IFNULL(joa.exchange_total_amount,joa.total_amount) exchange_total_amount,"
     			+ "joa.total_amount total_amount,joa.exchange_rate exchange_rate," 
@@ -373,7 +370,7 @@ public class TransChargeCheckOrderController extends Controller {
 							+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
 							+" left join charge_application_order_rel caol on caol.job_order_arap_id  = joa.id"
 							+" left join arap_charge_application_order acao on caol.application_order_id = acao.id"
-							 +" left join arap_charge_order aco on aco.id=caol.charge_order_id"
+							 +" left join trans_arap_charge_order aco on aco.id=caol.charge_order_id"
 						  +" where acao.id="+order_ids+query_fin_name
 							+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
@@ -422,7 +419,7 @@ public class TransChargeCheckOrderController extends Controller {
     			+ " cur.id ,cur.name currency_name ,group_concat(distinct cast(joa.exchange_rate as char) SEPARATOR ';') exchange_rate ,"
     			+ " ifnull((select rc.new_rate from rate_contrast rc "
     			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),ifnull(joa.exchange_rate,1)) new_rate"
-				+ " FROM job_order_arap joa"
+				+ " FROM trans_job_order_arap joa"
 				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
 				+ " WHERE joa.id in("+ ids +") and cur.name!='CNY' group by cur.id" ;
     	List<Record> re = Db.find(sql);
@@ -472,7 +469,7 @@ public class TransChargeCheckOrderController extends Controller {
 	
     @Before(EedaMenuInterceptor.class)
     public void edit(){
-		String id = getPara("id");//arap_charge_order id
+		String id = getPara("id");//trans_arap_charge_order id
 		String condition = "select ref_order_id from trans_arap_charge_item where charge_order_id ="+id;
 		
 		String sql = " select aco.*,p.company_name,p.contact_person,p.id company_id,p.abbr company_abbr,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from trans_arap_charge_order aco "
@@ -502,7 +499,7 @@ public class TransChargeCheckOrderController extends Controller {
 		Currency c = Currency.dao.findFirst("select id from currency where code = ?", ex_currency_name);
 		Long ex_currency_id = c.getLong("id");
 		String rate = getPara("rate");
-		Db.update("update job_order_arap set exchange_currency_id="+ex_currency_id+" , exchange_currency_rate="+rate+","
+		Db.update("update trans_job_order_arap set exchange_currency_id="+ex_currency_id+" , exchange_currency_rate="+rate+","
 				+ " exchange_total_amount=("+rate+"*total_amount)  where id in ("+ids+") and total_amount!=''");
 		
 		//计算结算汇总
@@ -513,10 +510,10 @@ public class TransChargeCheckOrderController extends Controller {
     private Map<String, Double> updateExchangeTotal(String chargeOrderId) {
         String sql="select joa.order_type, ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
         +"       ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount "
-        +"       from  job_order_arap joa "
+        +"       from  trans_job_order_arap joa "
         +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
         +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
-        +"       where joa.id in (select aci.ref_order_id from arap_charge_item aci where aci.charge_order_id="+chargeOrderId+")";
+        +"       where joa.id in (select aci.ref_order_id from trans_arap_charge_item aci where aci.charge_order_id="+chargeOrderId+")";
 		
 		Map<String, Double> exchangeTotalMap = new HashMap<String, Double>();
 		exchangeTotalMap.put("CNY", 0d);
@@ -566,7 +563,7 @@ public class TransChargeCheckOrderController extends Controller {
     	String  exchange_currency=getPara("query_exchange_currency");
     	String  fin_name=getPara("query_fin_name");
     	List<Record> list = null;
-    	String condition = "select ref_order_id from arap_charge_item where charge_order_id in ("+order_ids+") ";
+    	String condition = "select ref_order_id from trans_arap_charge_item where charge_order_id in ("+order_ids+") ";
     	
     	if("N".equals(order_id)){//应收申请单
     		if(StringUtils.isNotEmpty(appliction_id)){
@@ -594,7 +591,7 @@ public class TransChargeCheckOrderController extends Controller {
     @Before(Tx.class)
     public void confirm(){
 		String id = getPara("id");
-		ArapChargeOrder aco = ArapChargeOrder.dao.findById(id);
+		TransArapChargeOrder aco = TransArapChargeOrder.dao.findById(id);
 		aco.set("status","已确认");
 		aco.set("confirm_stamp", new Date());
 		aco.set("confirm_by", LoginUserController.getLoginUserId(this));
@@ -602,8 +599,8 @@ public class TransChargeCheckOrderController extends Controller {
 		
 		//设置y，已生成对账单o
 		String itemList=aco.get("ref_order_id");
-		String sql="UPDATE job_order_arap joa set billConfirm_flag='Y' "
-					+"where joa.id in (select aci.ref_order_id FROM arap_charge_item aci where charge_order_id="+id+" )";
+		String sql="UPDATE trans_job_order_arap joa set billConfirm_flag='Y' "
+					+"where joa.id in (select aci.ref_order_id FROM trans_arap_charge_item aci where charge_order_id="+id+" )";
 		Db.update(sql);
 		
 		Record r = aco.toRecord();
@@ -631,7 +628,7 @@ public class TransChargeCheckOrderController extends Controller {
 				aci.set("ref_order_id", itemId);
 				aci.set("charge_order_id", chargeOrderId);
 				aci.save();
-//        	String sql="INSERT into arap_charge_item (ref_order_id,charge_order_id) "
+//        	String sql="INSERT into trans_arap_charge_item (ref_order_id,charge_order_id) "
 //        				+ "VALUES ("+itemId+","+order_id+")";
     		}
     		

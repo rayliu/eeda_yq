@@ -71,11 +71,11 @@ $(document).ready(function() {
                   }
             },
             { "data": "CREATE_STAMP", "width": "70px"},
-            { "data": "CONTAINER_NO", "width": "70px", "visible": false},
-            { "data": "SO_NO", "width": "70px", "visible": false},
+            { "data": "CONTAINER_NO", "width": "70px" },
+            { "data": "SO_NO", "width": "70px"},
             { "data": "CUSTOMER_NAME", "width": "70px"},
             { "data": "SP_NAME", "width": "70px"},
-            { "data": "FIN_NAME"},
+            { "data": "FIN_NAME","width": "70px"},
             { "data": "CURRENCY_NAME",'class':'currency_name', "width": "70px"},
 
             { "data": "TOTAL_AMOUNT",'class':'total_amount', "width": "70px",
@@ -87,8 +87,8 @@ $(document).ready(function() {
                     return total_str;
                   }
             },
-            { "data": "EXCHANGE_RATE", "width": "70px"},
-            { "data": "AFTER_TOTAL", "width": "70px",
+            { "data": "EXCHANGE_RATE", "width": "90px"},
+            { "data": "AFTER_TOTAL", "width": "90px",
             	"render": function ( data, type, full, meta ) {
                 if(!data)
                   data=0.00;
@@ -99,6 +99,7 @@ $(document).ready(function() {
                   }
             },
             { "data": "REMARK", "width": "70px"},
+            { "data": "ORDER_TYPE", "visible": false},
             { "data": "JOB_ORDER_ID", "visible": false}
         ]
     }); 
@@ -193,15 +194,15 @@ $(document).ready(function() {
             }
         }
     });
-      $('#cny_duizhang').html(cny_totalAmount.toFixed(2));
-       $('#usd_duizhang').html(usd_totalAmount.toFixed(2));
-       $('#hkd_duizhang').html(hkd_totalAmount.toFixed(2));
-       $('#jpy_duizhang').html(jpy_totalAmount.toFixed(2));
+      $('#cny').html(cny_totalAmount.toFixed(2));
+       $('#usd').html(usd_totalAmount.toFixed(2));
+       $('#hkd').html(hkd_totalAmount.toFixed(2));
+       $('#jpy').html(jpy_totalAmount.toFixed(2));
        $('#totalAmount').val(totalAmount.toFixed(2));
-       $('#cny_duizhang').val(cny_totalAmount.toFixed(2));
-       $('#usd_duizhang').val(usd_totalAmount.toFixed(2));
-       $('#hkd_duizhang').val(hkd_totalAmount.toFixed(2));
-       $('#jpy_duizhang').val(jpy_totalAmount.toFixed(2));
+       $('#cny').val(cny_totalAmount.toFixed(2));
+       $('#usd').val(usd_totalAmount.toFixed(2));
+       $('#hkd').val(hkd_totalAmount.toFixed(2));
+       $('#jpy').val(jpy_totalAmount.toFixed(2));
 };
     cal();
 
@@ -456,8 +457,8 @@ $(document).ready(function() {
               return;
           }
           var customer_name = $('#que_customer_input').val().trim();
-          var order_export_date_begin_time = $("#que_order_export_date_begin_time").val();
-          var order_export_date_end_time = $("#que_order_export_date_end_time").val();
+          var que_create_stamp_begin_time = $("#que_create_stamp_begin_time").val();
+          var que_create_stamp_end_time = $("#que_create_stamp_end_time").val();
           
           /*  
               查询规则：参数对应DB字段名
@@ -470,8 +471,8 @@ $(document).ready(function() {
                +"&order_no="+order_no
                +"&sp_name="+sp_name
                +"&customer_name="+customer_name
-               +"&order_export_date_end_time="+order_export_date_end_time
-               +"&order_export_date_begin_time="+order_export_date_begin_time;
+               +"&create_stamp_begin_time="+que_create_stamp_begin_time
+               +"&create_stamp_end_time="+que_create_stamp_end_time;
 
 
           dataTable.ajax.url(url).load();

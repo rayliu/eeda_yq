@@ -31,24 +31,32 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 					  },
 			          { "data": "CNY",
 						  "render":function(data,type,full,meta){
+						  	if(!data)
+						  		data=0.00;
 							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
 					  },
 					  { "data": "USD",
 						  "render":function(data,type,full,meta){
+						  	if(!data)
+						  		data=0.00;
 							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
 					  },
 			          { "data": "JPY",
 						  "render":function(data,type,full,meta){
+						  	if(!data)
+						  		data=0.00;
 							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
 					  },
 			          { "data": "HKD",
 						  "render":function(data,type,full,meta){
+						  	if(!data)
+						  		data=0.00;
 							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }

@@ -48,7 +48,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            { "data": "SO_NO", "width": "60px"},
 	            { "data": "CUSTOMER_NAME", "width": "100px"},
 	            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
-            	{ "data": "FEE_NAME", "width": "180px"},
+            	{ "data": "FEE_NAME", "width": "70px"},
 	            { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
