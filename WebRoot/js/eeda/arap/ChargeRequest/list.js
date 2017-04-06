@@ -7,10 +7,12 @@ $(document).ready(function() {
         id: 'application_table',
         autoWidth: false,
         scrollY: 530,
+        
         scrollCollapse: true,
 //        paging: true,
         drawCallback: function( settings ) {
             flash();
+            uncheckedCostCheckOrder();
         },
         serverSide: true, 
         ajax: "/chargeRequest/applicationList?status=新建",
@@ -322,13 +324,18 @@ $(document).ready(function() {
     });
    
     
+     
+     var uncheckedCostCheckOrder = function(){
+    	 $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
+     }
+     
     //返回标记
     var back=$('#back').val(); 
       //查询已申请单
     $("#searchBtn1").click(function(){
         $('#checked_application_table').empty();
-        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr').size()));//uncheckedCostCheckOrder
-        $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr').size()));//uncheckedCostCheckOrder
+        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));//uncheckedCostCheckOrder
+        $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));//uncheckedCostCheckOrder
         back="";
         refreshData(back);
     });

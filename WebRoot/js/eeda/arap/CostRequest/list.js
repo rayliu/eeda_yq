@@ -10,6 +10,9 @@ $(document).ready(function() {
         // paging: true,
         scrollY: 530,
         scrollCollapse: true,
+        drawCallback: function( settings ) {
+            uncheckedCostCheckOrder();
+        },
         serverSide: true, 
     	ajax: "/costRequest/applicationList?status=新建",
 		  columns: [
@@ -318,13 +321,19 @@ $(document).ready(function() {
         ]      
     });
 
-
+     
+     
+     
+     var uncheckedCostCheckOrder = function(){
+    	 $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
+     }
   //返回标记
     var back=$('#back').val(); 
       //查询已申请单
     $("#searchBtn1").click(function(){
         $('#checked_application_table').empty();
         $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+        $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
     	back="";
         refreshData(back);
     });
@@ -506,6 +515,7 @@ $(document).ready(function() {
              $(this).prop('checked',true);
         }
         $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+        $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
 	});
 
 	
@@ -549,6 +559,7 @@ $(document).ready(function() {
             $('#confirmed').attr('disabled',true);
         }
         $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+        $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
 	});
 
 	$('#totalZero').click(function(){
@@ -779,6 +790,7 @@ $(document).ready(function() {
             $('#confirmed').attr('disabled',true);
         }
         $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+        $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
     });
 
     $('#checked_application_table').on('click',"input[name='order_check_box']",function () {
@@ -788,6 +800,7 @@ $(document).ready(function() {
                     tr.remove();
         }
         $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+        $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
         if($('#checked_application_table tr:has(td)').size()==0){
             $('#checked').attr('disabled',true);
             $('#confirmed').attr('disabled',true);
