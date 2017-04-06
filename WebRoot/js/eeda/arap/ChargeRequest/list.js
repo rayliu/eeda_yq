@@ -74,6 +74,10 @@ $(document).ready(function() {
                     strFeeType="国际货代服务费";
                 }else if(data=="advanceFee"){
                     strFeeType="代垫付费";
+                }else if(data=="foreignFee"){
+                    strFeeType="国外货款";
+                }else if(data=="taxRefundFee"){
+                    strFeeType="国税退税";
                 }
                     
                 return strFeeType;
@@ -229,9 +233,13 @@ $(document).ready(function() {
                     strFeeType="国际货代服务费";
                 }else if(data=="advanceFee"){
                     strFeeType="代垫付费";
+                }else if(data=="foreignFee"){
+                    strFeeType="国外货款";
+                }else if(data=="taxRefundFee"){
+                    strFeeType="国税退税";
                 }
                     
-                return strFeeType;
+                	return strFeeType;
                 }   
             },
             {"data":"SERVICE_STAMP","width":"80px"},
