@@ -327,7 +327,8 @@ $(document).ready(function() {
       //查询已申请单
     $("#searchBtn1").click(function(){
         $('#checked_application_table').empty();
-        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr').size()));
+        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr').size()));//uncheckedCostCheckOrder
+        $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr').size()));//uncheckedCostCheckOrder
         back="";
         refreshData(back);
     });
@@ -461,7 +462,7 @@ $(document).ready(function() {
        var sum_usd=0.0;
        var sum_jpy=0.0;
        var sum_hkd=0.0;
-       for(var i=1;i<rows.length;i++){
+       for(var i=0;i<rows.length;i++){
             var tr=rows[i];
             var currency_cny = $(tr).find('.cny').text().replace(/,/g,'');
             var currency_usd = $(tr).find('.usd').text().replace(/,/g,'');
@@ -482,7 +483,7 @@ $(document).ready(function() {
        }
        $('#cny_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_cny).toFixed(2),3))
        $('#usd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_usd).toFixed(2),3));
-      $('#jpy_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_jpy).toFixed(2),3));
+       $('#jpy_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_jpy).toFixed(2),3));
        $('#hkd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_hkd).toFixed(2),3));
     }
     
@@ -508,6 +509,7 @@ $(document).ready(function() {
              $(this).prop('checked',true);
         }
       $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+      $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
     });
     
     $('#allCheck').click(function(){
@@ -550,6 +552,7 @@ $(document).ready(function() {
             $('#confirmed').attr('disabled',true);
         }
         $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+        $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
     });
 
     $('#totalZero').click(function(){
@@ -778,6 +781,7 @@ $(document).ready(function() {
             $('#confirmed').attr('disabled',true);
         }
         $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+        $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
     });
     
 
@@ -788,6 +792,7 @@ $(document).ready(function() {
                     tr.remove();
         }
         $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+        $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
         if($('#checked_application_table tr:has(td)').size()==0){
             $('#checked').attr('disabled',true);
             $('#confirmed').attr('disabled',true);
