@@ -397,7 +397,7 @@ $(document).ready(function() {
                     if(data)
                         var str =  parseFloat(data).toFixed(2);
                     else
-                        str = '';
+                        str = '0.00';
                     return '<input type="text" name="rmb_difference" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
                 }
             },
@@ -688,12 +688,17 @@ $(document).ready(function() {
         var li = $(this).parent().parent().find('li');
         var dataTable = $('#'+table).DataTable();
         
-        for(var i=0; i<li.length; i++){
+         for(var i=0; i<li.length; i++){
             var row = $(li[i]);
             var item={};
             item.ID='';
+            item.TYPE=row.attr('type');
             item.SP_ID=row.attr('sp_id');
             item.CHARGE_ID= row.attr('charge_id');
+            item.CHARGE_ENG_ID= row.attr('charge_eng_id');
+            item.PRICE= row.attr('PRICE');
+            item.AMOUNT= row.attr('amount');
+            item.UNIT_ID= row.attr('unit_id');
             item.TOTAL_AMOUNT= row.attr('total_amount');
             item.CURRENCY_ID= row.attr('currency_id');
             item.EXCHANGE_RATE= row.attr('exchange_rate');
@@ -701,9 +706,12 @@ $(document).ready(function() {
             item.EXCHANGE_CURRENCY_ID= row.attr('exchange_currency_id');
             item.EXCHANGE_CURRENCY_RATE= row.attr('exchange_currency_rate');
             item.EXCHANGE_TOTAL_AMOUNT= row.attr('exchange_total_amount');
-            item.SP_ID_NAME=row.attr('sp_name');
-            item.CHARGE_ID_NAME=row.attr('charge_name');
-            item.CURRENCY_ID_NAME=row.attr('currency_name');
+            item.REMARK= row.attr('remark');
+            item.SP_NAME=row.attr('sp_name');
+            item.CHARGE_NAME=row.attr('charge_name');
+            item.CHARGE_NAME_ENG=row.attr('charge_name_eng');
+            item.UNIT_NAME=row.attr('unit_name');
+            item.CURRENCY_NAME=row.attr('currency_name');
             item.EXCHANGE_CURRENCY_ID_NAME=row.attr('exchange_currency_name');
             item.AUDIT_FLAG='';
             dataTable.row.add(item).draw();

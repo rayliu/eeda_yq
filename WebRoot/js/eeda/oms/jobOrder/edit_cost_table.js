@@ -561,7 +561,7 @@ $(document).ready(function() {
                     if(data)
                         var str =  parseFloat(data).toFixed(2);
                     else
-                        str = '';
+                        str = '0.00';
                     return '<input type="text" name="rmb_difference" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
                 }
             },
