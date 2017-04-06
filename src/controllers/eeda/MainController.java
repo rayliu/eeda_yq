@@ -34,6 +34,7 @@ import org.apache.shiro.subject.Subject;
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.core.JFinal;
 import com.jfinal.ext.plugin.shiro.ShiroKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
@@ -114,7 +115,18 @@ public class MainController extends Controller {
                 }
             	redirect(savedRequestUrl);
             }else{
-                System.out.println("2222");
+                //当模块没有正确配置url路由时，显示无权限
+                if(getPara()!=null){
+                    String moduleUrl = "/"+getPara();
+                    System.out.println("moduleUrl:"+moduleUrl);
+                    
+                    List<String> actionList = JFinal.me().getAllActionKeys();
+                    if(!actionList.contains(moduleUrl)){
+                        renderError(403, "/eeda/noPermission.html");
+                        return;
+                    }
+                }
+                //以下为显示login page的处理
             	String officeConfig="select oc.index_page_path from office_config oc "
             			+ " where oc.office_id =?";
             	Record rec = Db.findFirst(officeConfig, user.getLong("office_id"));
@@ -183,6 +195,7 @@ public class MainController extends Controller {
             return;
         }
         String sha1Pwd = MD5Util.encode("SHA1", getPara("password"));
+        System.out.println("sha1Pwd:"+sha1Pwd);
         UsernamePasswordToken token = new UsernamePasswordToken(username, sha1Pwd );
 
         if (getPara("remember") != null && "Y".equals(getPara("remember")))
@@ -280,100 +293,6 @@ public class MainController extends Controller {
         
     }
     
-    public void getTodoList(){
-        Map orderMap = new HashMap();
-        String pageIndex = getPara("sEcho");
-        String sLimit = "";
-        if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
-            sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
-        }
-        
-        Calendar pastDay = Calendar.getInstance();
-        pastDay.add(Calendar.DAY_OF_WEEK, -5);
-        String sql = " select * from (SELECT "
-                +"     'PS' type, dor.id, dor.order_no, cast(dor.business_stamp as char) business_stamp, "
-                +"     (select group_concat(serial_no separator ',') from transfer_order_item_detail toid where toid.delivery_id = dor.id) serial_no,"
-                +"     status, dor.route_from, lf.name from_name, dor.route_to, lt.name to_name, "
-                +" 	   ifnull(GROUP_CONCAT(cast(o.id as char)),(select GROUP_CONCAT(cast(o.id as char)) from office o LEFT JOIN location l on l.pcode = o.location where l.code = dor.route_from)) office_id,"
-                +"     ifnull(GROUP_CONCAT(cast(o.office_name as char)),(select GROUP_CONCAT(cast(o.office_name as char)) from office o LEFT JOIN location l on l.pcode = o.location where l.code = dor.route_from)) office_name,"
-                +"		(case   when (select l.id from location l  "
-                +" 		LEFT JOIN location l2 on l2.code = l.pcode "
-                +" 		where l.code = dor.route_from and l2.pcode = 1) is null"
-                +" 		then"
-                +" 		(select l.code from location l "
-                +" 		LEFT JOIN location l2 on l2.pcode = l.code"
-                +" 		LEFT JOIN location l3 on l3.pcode = l2.code"
-                +" 		where l3.code = dor.route_from)"
-                +" 		when "
-                +" 		(select l.id from location l "
-                +" 		LEFT JOIN location l2 on l2.code = l.pcode "
-                +" 		where l.code = dor.route_from  and l2.pcode = 1) is not null"
-                +" 		then"
-                +" 		 (select l.code from location l "
-                +" 		LEFT JOIN location l2 on l2.pcode = l.code"
-                +" 		where l2.code = dor.route_from)"
-                +" 		end"
-                +" 		) province "
-                +" FROM"
-                +"     delivery_order dor"
-                +"     left join location lf on lf.code = dor.route_from"
-                +"     left join location lt on lt.code = dor.route_to"
-                +"     left join office o on o.location = dor.route_from"
-                +"     left join user_office uo on o.id = uo.office_id and uo.user_name = '"+currentUser.getPrincipal()+"'"
-                +" WHERE"
-                +"     status = '新建'"
-                +"         AND (business_stamp > DATE_SUB(NOW(), INTERVAL 5 DAY)"
-                +"         OR NOW() >= business_stamp)"
-                +" union"
-                +"    select 'YS' type, tor.id, tor.order_no, '' business_stamp, '' serial_no, group_concat(distinct tor.status separator ',') status, "
-                +"    tor.route_from, lf.name from_name, tor.route_to, lt.name to_name, "
-                +"    ifnull(GROUP_CONCAT(cast(o.id as char)),(select GROUP_CONCAT(cast(o.id as char)) from office o LEFT JOIN location l on l.pcode = o.location where l.code = tor.route_to)) office_id, "
-                +"    ifnull(GROUP_CONCAT(cast(o.office_name as char)),(select GROUP_CONCAT(cast(o.office_name as char)) from office o LEFT JOIN location l on l.pcode = o.location where l.code = tor.route_to)) office_name,"
-                +"		(case   when (select l.id from location l  "
-                +" 		LEFT JOIN location l2 on l2.code = l.pcode "
-                +" 		where l.code = tor.route_to and l2.pcode = 1) is null"
-                +" 		then"
-                +" 		(select l.code from location l "
-                +" 		LEFT JOIN location l2 on l2.pcode = l.code"
-                +" 		LEFT JOIN location l3 on l3.pcode = l2.code"
-                +" 		where l3.code = tor.route_to)"
-                +" 		when "
-                +" 		(select l.id from location l "
-                +" 		LEFT JOIN location l2 on l2.code = l.pcode "
-                +" 		where l.code = tor.route_to  and l2.pcode = 1) is not null"
-                +" 		then"
-                +" 		 (select l.code from location l "
-                +" 		LEFT JOIN location l2 on l2.pcode = l.code"
-                +" 		where l2.code = tor.route_to)"
-                +" 		end"
-                +" 		) province "
-                +" from transfer_order tor"
-                +"      left join depart_pickup dp on tor.id = dp.order_id"
-                +"      left join depart_transfer dt on tor.id = dt.order_id "
-                +"      left join location lf on lf.code = tor.route_from"
-                +"      left join location lt on lt.code = tor.route_to"
-                +"      left join office o on o.location = tor.route_to"
-                +"      left join user_office uo on o.id = uo.office_id and uo.user_name = '"+currentUser.getPrincipal()+"'"
-                +"    where tor.status not in ('新建', '已签收', '已入库' ,'已收货','配送中', '取消', '部分配送中', '手动删除', '已投保', '部分已签收')"
-                +"    group by tor.id) B"
-                +" 	  where "
-                +" 	  province IN ( SELECT l.pcode FROM user_office uo  "
-                +" 	  LEFT JOIN office o on o.id = uo.office_id "
-                +" 	  LEFT JOIN location l on l.`code` = o.location"
-                +" 	  WHERE"
-                +" 	  user_name = '" + currentUser.getPrincipal() +"')";
-//                + "office_id in (select office_id from user_office where user_name = '" + currentUser.getPrincipal() +"')";
-        
-        Record rec = Db.findFirst("select count(1) total from (" + sql + ") A");
-        
-        List<Record> list = Db.find(sql + sLimit);
-        
-        orderMap.put("sEcho", pageIndex);
-        orderMap.put("iTotalRecords", rec.getLong("total"));
-        orderMap.put("iTotalDisplayRecords", rec.getLong("total"));
-        orderMap.put("aaData", list);
-        renderJson(orderMap);
-    }
     
     @Before(SetAttrLoginUserInterceptor.class)
     public void m() {
