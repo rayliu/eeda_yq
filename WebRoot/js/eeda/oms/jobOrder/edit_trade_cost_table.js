@@ -328,7 +328,7 @@ $(document).ready(function() {
     }
     
     if($('#trade_cost_table td').length>1){
-    	var col = [3, 6, 10,11,12, 13, 16, 19];
+    	var col = [3, 6, 10,11,12, 13, 16, 19,21];
     	for (var i=0;i<col.length;i++){
 	    	var arr = cargoTable.column(col[i]).data();
     		$('#trade_cost_table tfoot').find('th').eq(col[i]).html(
@@ -442,7 +442,7 @@ $(document).ready(function() {
             $('#trade_cost_table [name=agency_amount_cny]').each(function(){
                 var a = this.value;
                 if(a!=''&&!isNaN(a)){
-                    total+=parseFloat(a)/100;
+                    total+=parseFloat(a);
                 }
             })
             $($('.dataTables_scrollFoot tr')[0]).find('th').eq(21).html(total.toFixed(3));

@@ -494,7 +494,7 @@ $(document).ready(function() {
     }
     
     if($('#trade_sale_table td').length>1){
-    	var col = [6,9];
+    	var col = [6,11,,16,17];
     	for (var i=0;i<col.length;i++){
 	    	var arr = cargoTable.column(col[i]).data();
     		$('#trade_sale_table tfoot').find('th').eq(col[i]).html(
@@ -553,24 +553,33 @@ $(document).ready(function() {
             }
         }
     	
-    	var total_fee_amount_cny = 0;
+    	var total_currency_total_amount = 0;
 		$('#trade_sale_table [name=currency_total_amount]').each(function(){
 			var a = this.value;
 			if(a!=''&&!isNaN(a)){
-				total_fee_amount_cny+=parseFloat(a);
+				total_currency_total_amount+=parseFloat(a);
 			}
 		})
-		$($('.dataTables_scrollFoot tr')[2]).find('th').eq(9).html(total_fee_amount_cny.toFixed(3));
+		$($('.dataTables_scrollFoot tr')[2]).find('.cny_total_amount').html(total_currency_total_amount.toFixed(3));
 		
-		var total = 0;
-		$('#trade_sale_table [name=total_amount]').each(function(){
+		var total_exchange_total_amount_rmb = 0;
+		$('#trade_sale_table [name=exchange_total_amount_rmb]').each(function(){
 			var a = this.value;
 			if(a!=''&&!isNaN(a)){
-				total+=parseFloat(a);
+				total_exchange_total_amount_rmb+=parseFloat(a);
 			}
 		})
-		$($('.dataTables_scrollFoot tr')[2]).find('th').eq(6).html(total.toFixed(3));
+		$($('.dataTables_scrollFoot tr')[2]).find('.exchange_total_amount_rmb').html(total_exchange_total_amount_rmb.toFixed(3));
 		
+        var total_rmb_difference = 0;
+        $('#trade_sale_table [name=rmb_difference]').each(function(){
+            var a = this.value;
+            if(a!=''&&!isNaN(a)){
+                total_rmb_difference+=parseFloat(a);
+            }
+        })
+        $($('.dataTables_scrollFoot tr')[2]).find('.rmb_difference').html(total_rmb_difference.toFixed(3));
+        
     })
    
      //贸易常用模板

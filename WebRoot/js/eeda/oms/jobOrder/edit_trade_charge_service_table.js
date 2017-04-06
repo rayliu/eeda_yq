@@ -494,33 +494,19 @@ $(document).ready(function() {
     }
     
     if($('#charge_service_table td').length>1){
-    	var total_fee_amount = cargoTable.column(3).data().reduce(function (a, b) {
-    		a = parseFloat(a);
-    		if(isNaN(a)){ a = 0; }                   
-    		b = parseFloat(b);
-    		if(isNaN(b)){ b = 0; }
-    		return (a + b).toFixed(3);
-    	})
-    	$('#charge_service_table tfoot').find('th').eq(3).html(total_fee_amount);
-    	
-    	var total_service = cargoTable.column(6).data().reduce(function (a, b) {
-    		a = parseFloat(a);
-    		if(isNaN(a)){ a = 0; }                   
-    		b = parseFloat(b);
-    		if(isNaN(b)){ b = 0; }
-    		return (a + b).toFixed(3);
-    	})
-		$('#charge_service_table tfoot').find('th').eq(6).html(total_service);
-    	
-		var total_count = $('#trade_cost_table tfoot').find('th').eq(2).text();
-	    var total_tax_refund = $('#trade_cost_table tfoot').find('th').eq(8).text();
-       
-	    var total_difference = parseFloat(total_tax_refund)-parseFloat(total_service);
-	    var price_difference = total_difference/parseFloat(total_count);
-         if(isNaN(total_difference)) total_difference=0;
-        if(isNaN(price_difference=="")) price_difference=0;
-	    $('#total_difference').text(total_difference.toFixed(3));
-	    $('#price_difference').text(price_difference.toFixed(3));
+        var col = [6,11,,16,17];
+        for (var i=0;i<col.length;i++){
+            var arr = cargoTable.column(col[i]).data();
+            $('#charge_service_table tfoot').find('th').eq(col[i]).html(
+                arr.reduce(function (a, b) {
+                    a = parseFloat(a);
+                    if(isNaN(a)){ a = 0; }                   
+                    b = parseFloat(b);
+                    if(isNaN(b)){ b = 0; }
+                    return (a + b).toFixed(3);
+                })
+            );
+        }
     }
 
     $('#charge_service_table').on('keyup','[name=price],[name=amount],[name=exchange_rate],[name=exchange_currency_rate],[name=exchange_currency_rate_rmb]', function(){
@@ -568,24 +554,33 @@ $(document).ready(function() {
         }
     	
 
-    	var total_fee_amount_cny = 0;
+    	var total_cny_total_amount = 0;
 		$('#charge_service_table [name=currency_total_amount]').each(function(){
 			var a = this.value;
 			if(a!=''&&!isNaN(a)){
-				total_fee_amount_cny+=parseFloat(a);
+				total_cny_total_amount+=parseFloat(a);
 			}
 		})
-		$($('.dataTables_scrollFoot tr')[1]).find('th').eq(6).html(total_fee_amount_cny.toFixed(3));
+		$($('.dataTables_scrollFoot tr')[1]).find('.cny_total_amount').html(total_cny_total_amount.toFixed(3));
 		
-		var total = 0;
-		$('#charge_service_table [name=total_amount]').each(function(){
+		var total_exchange_total_amount_rmb = 0;
+		$('#charge_service_table [name=exchange_total_amount_rmb]').each(function(){
 			var a = this.value;
 			if(a!=''&&!isNaN(a)){
-				total+=parseFloat(a);
+				total_exchange_total_amount_rmb+=parseFloat(a);
 			}
 		})
-		$($('.dataTables_scrollFoot tr')[1]).find('th').eq(3).html(total.toFixed(3));
+		$($('.dataTables_scrollFoot tr')[1]).find('.exchange_total_amount_rmb').html(total_exchange_total_amount_rmb.toFixed(3));
 		
+        var total_rmb_difference = 0;
+        $('#charge_service_table [name=rmb_difference]').each(function(){
+            var a = this.value;
+            if(a!=''&&!isNaN(a)){
+                total_rmb_difference+=parseFloat(a);
+            }
+        })
+        $($('.dataTables_scrollFoot tr')[1]).find('.rmb_difference').html(total_rmb_difference.toFixed(3));
+        
     	$("#trade_cost_table [name=number]").each(function(){
 			$(this).keyup();
 		});
