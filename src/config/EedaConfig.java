@@ -115,6 +115,11 @@ import models.eeda.tms.TransArapCostOrder;
 import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
 import models.eeda.tms.TransJobOrderLandItem;
+import models.eeda.tr.tradeJoborder.TradeJobOrder;
+import models.eeda.tr.tradeJoborder.TradeJobOrderArap;
+import models.eeda.tr.tradeJoborder.TradeJobOrderDoc;
+import models.eeda.tr.tradeJoborder.TradeJobOrderSendMail;
+import models.eeda.tr.tradeJoborder.TradeJobOrderSendMailTemplate;
 import models.yh.profile.Carinfo;
 import models.yh.profile.CustomizeField;
 import models.yh.profile.OfficeCofig;
@@ -310,6 +315,9 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/transOrderShortCut", TransOrderShortCutController.class, contentPath);
 		me.add("/transCostCheckOrder", controllers.tms.arap.TransCostCheckOrderController.class, contentPath);
 		me.add("/tmsChargeCheckOrder", controllers.tms.arap.TransChargeCheckOrderController.class, contentPath);
+		
+		//tr,贸易工作单
+		me.add("/trJobOrder", controllers.tr.joborder.TrJobOrderController.class, contentPath);
 		
 		//ar= account revenue  应收条目处理
 		me.add("/chargeRequest", controllers.arap.ar.chargeRequest.ChargeRequestController.class, contentPath);
@@ -538,6 +546,13 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("sp_custom", SpCustom.class);  
         arp.addMapping("sp_picking_crane", SpPickingCrane.class);  
         arp.addMapping("sp_cargo_insurance", SpCargoInsurance.class); 
+        
+        //tr 贸易工作单
+        arp.addMapping("trade_job_order", TradeJobOrder.class);
+        arp.addMapping("trade_job_order_arap", TradeJobOrderArap.class);
+        arp.addMapping("trade_job_order_doc", TradeJobOrderDoc.class);
+        arp.addMapping("trade_job_order_sendMail", TradeJobOrderSendMail.class);
+        arp.addMapping("trade_job_order_sendmail_template", TradeJobOrderSendMailTemplate.class);
     }
 
     private void initDBconnector() {
