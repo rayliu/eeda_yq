@@ -157,6 +157,21 @@ public class CustomerController extends Controller {
     			}
             }
             
+            //同步到用户
+            List<UserLogin> ulList = UserLogin.dao.find("select * from user_login where all_customer = 'Y' and office_id = ? ",pom.getCurrentOfficeId());
+            for(UserLogin ul :ulList){
+            	Record re = Db.findFirst("select * from user_role ur left join user_login ul on ur.user_name = ul.user_name "
+            			+ " left join office o on o.id = ul.office_id  "
+            			+ " where role_code = 'admin' and (o.id = ? or o.belong_office = ?) and ur.user_name = ?",parentID,parentID,ul.getStr("user_name")) ;
+            	if(re!=null)
+            		continue;
+            	String user_name = ul.getStr("user_name");
+            	UserCustomer uc = new UserCustomer();
+            	uc.set("user_name", user_name);
+            	uc.set("customer_id", party.getLong("id"));
+            	uc.save();
+            }
+            
         }
         List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("docItem");
 		DbUtils.handleList(itemList, "party_doc", id, "party_id");
