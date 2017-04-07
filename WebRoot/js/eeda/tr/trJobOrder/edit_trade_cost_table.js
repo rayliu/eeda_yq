@@ -353,13 +353,13 @@ $(document).ready(function() {
     	}
     	
     	var total = 0;
-		$('#trade_cost_table [name=number]').each(function(){
+		$('#trade_cost_table tr').find('[name=number]:eq(0)').each(function(){
 			var a = this.value;
 			if(a!=''&&!isNaN(a)){
 				total+=parseInt(a);
 			}
 		})
-		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html((total/2).toFixed(3));
+		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html(total.toFixed(3));
     })
     
     $('#trade_cost_table').on('blur', '[name=custom_number]', function(){
@@ -589,14 +589,14 @@ $(document).ready(function() {
     				total_service_fee+=parseFloat(a);
     			}
     		})
-        	$('#trade_cost_table [name=number]').each(function(){
+        	$('#trade_cost_table tr').find('[name=number]:eq(0)').each(function(){
         		var a = this.value;
     			if(a!=''&&!isNaN(a)){
         			total_count+=parseInt(a);
         		}
     		});
         	var total_difference = total_adjusted_tax_refund_amount-total_service_fee
-    		var price_difference = total_difference/(total_count/2);
+    		var price_difference = total_difference/total_count;
         	$('#total_difference').val(total_difference.toFixed(3));
     	    $('#price_difference').val(price_difference.toFixed(3));
     	    $('#total_difference_span').text(total_difference.toFixed(3));

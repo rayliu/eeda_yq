@@ -391,10 +391,10 @@ public class TrJobOrderController extends Controller {
         
     	Long creator_id = LoginUserController.getLoginUserId(this);
     	
-    	String chargeSql = "select parent_id from job_order_arap_template where"
+    	String chargeSql = "select parent_id from trade_job_order_arap_template where"
                 + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
                 + " and  json_value = '"+chargeObject+"' and parent_id is not null";
-    	String costSql = "select parent_id from job_order_arap_template where"
+    	String costSql = "select parent_id from trade_job_order_arap_template where"
                 + " arap_type = 'cost' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
                 + " and  json_value = '"+costObject+"' and parent_id is not null ";
 
@@ -410,7 +410,7 @@ public class TrJobOrderController extends Controller {
                 all.set("arap_type", "charge");
                 all.set("order_type", order_type);
                 all.set("json_value", chargeObjectAll);          
-                Db.save("job_order_arap_template", all);  
+                Db.save("trade_job_order_arap_template", all);  
         		
                 //保存局部信息
         		Record r= new Record();
@@ -420,11 +420,11 @@ public class TrJobOrderController extends Controller {
                 r.set("order_type", order_type);
                 r.set("json_value", chargeObject);
                 r.set("parent_id", all.getLong("id"));
-                Db.save("job_order_arap_template", r);  
+                Db.save("trade_job_order_arap_template", r);  
        		}
         }else{
         	Long parent_id = chargeRec.getLong("parent_id");
-        	Db.update("update job_order_arap_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
+        	Db.update("update trade_job_order_arap_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
         }
         
         if(costRec == null){
@@ -436,7 +436,7 @@ public class TrJobOrderController extends Controller {
                 all.set("arap_type", "cost");
                 all.set("order_type", order_type);
                 all.set("json_value", costObjectAll);
-                Db.save("job_order_arap_template", all);  
+                Db.save("trade_job_order_arap_template", all);  
                 
         		//保存局部信息
         		Record r= new Record();
@@ -446,11 +446,11 @@ public class TrJobOrderController extends Controller {
                 r.set("order_type", order_type);
                 r.set("json_value", costObject);
                 r.set("parent_id",  all.getLong("id"));
-                Db.save("job_order_arap_template", r);  
+                Db.save("trade_job_order_arap_template", r);  
        		}
         }else{
         	Long parent_id = costRec.getLong("parent_id");
-        	Db.update("update job_order_arap_template set json_value = ? where id = ?",costObjectAll,parent_id);
+        	Db.update("update trade_job_order_arap_template set json_value = ? where id = ?",costObjectAll,parent_id);
         }
     }
     
@@ -549,7 +549,7 @@ public class TrJobOrderController extends Controller {
         
     	Long creator_id = LoginUserController.getLoginUserId(this);
     	
-    	String chargeSql = "select parent_id from job_order_trade_service_template where"
+    	String chargeSql = "select parent_id from trade_job_order_trade_service_template where"
                 + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
                 + " and  json_value = '"+chargeObject+"' and parent_id is not null";
         Record chargeRec = Db.findFirst(chargeSql);
@@ -563,7 +563,7 @@ public class TrJobOrderController extends Controller {
                 all.set("arap_type", "charge");
                 all.set("order_type", order_type);
                 all.set("json_value", chargeObjectAll);          
-                Db.save("job_order_trade_service_template", all);  
+                Db.save("trade_job_order_trade_service_template", all);  
         		
                 //保存局部信息
         		Record r= new Record();
@@ -573,11 +573,11 @@ public class TrJobOrderController extends Controller {
                 r.set("order_type", order_type);
                 r.set("json_value", chargeObject);
                 r.set("parent_id", all.getLong("id"));
-                Db.save("job_order_trade_service_template", r);  
+                Db.save("trade_job_order_trade_service_template", r);  
        		}
         }else{
         	Long parent_id = chargeRec.getLong("parent_id");
-        	Db.update("update job_order_trade_service_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
+        	Db.update("update trade_job_order_trade_service_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
         }
         
     }
@@ -597,7 +597,7 @@ public class TrJobOrderController extends Controller {
         
     	Long creator_id = LoginUserController.getLoginUserId(this);
     	
-    	String chargeSql = "select parent_id from job_order_trade_sale_template where"
+    	String chargeSql = "select parent_id from trade_job_order_trade_sale_template where"
                 + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
                 + " and  json_value = '"+chargeObject+"' and parent_id is not null";
 
@@ -612,7 +612,7 @@ public class TrJobOrderController extends Controller {
                 all.set("arap_type", "charge");
                 all.set("order_type", order_type);
                 all.set("json_value", chargeObjectAll);          
-                Db.save("job_order_trade_sale_template", all);  
+                Db.save("trade_job_order_trade_sale_template", all);  
         		
                 //保存局部信息
         		Record r= new Record();
@@ -622,11 +622,11 @@ public class TrJobOrderController extends Controller {
                 r.set("order_type", order_type);
                 r.set("json_value", chargeObject);
                 r.set("parent_id", all.getLong("id"));
-                Db.save("job_order_trade_sale_template", r);  
+                Db.save("trade_job_order_trade_sale_template", r);  
        		}
         }else{
         	Long parent_id = chargeRec.getLong("parent_id");
-        	Db.update("update job_order_trade_sale_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
+        	Db.update("update trade_job_order_trade_sale_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
         }
     }
     
@@ -1026,41 +1026,8 @@ public class TrJobOrderController extends Controller {
     //返回对象	
     private Record getItemDetail(String id,String type){
     	Record re = null;
-    	if("shipment".equals(type)){
-    		re = Db.findFirst("select jos.*, p1.abbr MBLshipperAbbr , p2.abbr MBLconsigneeAbbr, p3.abbr MBLnotify_partyAbbr, "
-    				+ " p8.abbr HBLshipperAbbr , p9.abbr HBLconsigneeAbbr, p10.abbr HBLnotify_partyAbbr,p4.abbr carrier_name,"
-    				+ " p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name,"
-    				+ " lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name,lo4.name hub_name"
-    				+ " from job_order_shipment jos "
-    				+ " left join party p1 on p1.id=jos.MBLshipper"
-    				+ " left join party p2 on p2.id=jos.MBLconsignee"
-    				+ " left join party p3 on p3.id=jos.MBLnotify_party"
-    				+ " left join party p8 on p8.id=jos.HBLshipper"
-    				+ " left join party p9 on p9.id=jos.HBLconsignee"
-    				+ " left join party p10 on p10.id=jos.HBLnotify_party"
-    				+ " left join party p4 on p4.id=jos.carrier"
-    				+ " left join party p5 on p5.id=jos.head_carrier"
-    				+ " left join party p6 on p6.id=jos.oversea_agent"
-    				+ " left join party p7 on p7.id=jos.booking_agent"
-    				+ " LEFT JOIN location lo on lo.id = jos.por"
-					+ " LEFT JOIN location lo1 on lo1.id = jos.pol"
-					+ " LEFT JOIN location lo2 on lo2.id = jos.pod"
-					+ " LEFT JOIN location lo3 on lo3.id = jos.fnd"
-					+ " LEFT JOIN location lo4 on lo4.id = jos.hub"
-    				+ " where order_id = ?",id);
-    	}else if("insure".equals(type)){
-    		re = Db.findFirst("select * from job_order_insurance joi where order_id = ?",id);
-    	}else if("express".equals(type)){
-    		re = Db.findFirst("select * from job_order_express joe where order_id = ?",id);
-    	}else if("air".equals(type)){
-    		re = Db.findFirst("select joa.* ,p1.abbr shipperAbbr,p2.abbr consigneeAbbr,p3.abbr notify_partyAbbr,p4.abbr booking_agent_name from job_order_air joa"
-    				+ " left join party p1 on p1.id=joa.shipper"
-    				+ " left join party p2 on p2.id=joa.consignee"
-    				+ " left join party p3 on p3.id=joa.notify_party"
-    				+ " left join party p4 on p4.id=joa.booking_agent"
-    				+ " where order_id=?", id);
-    	}else if("trade".equals(type)){
-	    	re = Db.findFirst("select j.*,p.abbr cost_company_name, c.name cost_currency_name from job_order_trade j "
+    	if("trade".equals(type)){
+	    	re = Db.findFirst("select j.*,p.abbr cost_company_name, c.name cost_currency_name from trade_job_order_trade j "
 	    			+ " left join party p on p.id = j.cost_company"
 	    			+ " left join currency c on c.id = j.cost_currency"
 	    			+ " where order_id=?", id);
@@ -1072,34 +1039,10 @@ public class TrJobOrderController extends Controller {
     private List<Record> getItems(String orderId,String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
-    	if("shipment".equals(type)){
-    		itemSql = "select jos.*,CONCAT(u.name,u.name_eng) unit_name from job_order_shipment_item jos"
-    				+ " left join unit u on u.id=jos.unit_id"
-    				+ " where order_id=? order by jos.id";
-    		itemList = Db.find(itemSql, orderId);
-    	}else if("air".equals(type)){
-    		itemSql = "select joa.*, pa.abbr air_company_name from job_order_air_item joa"
-    		        + " left join party pa on pa.id=joa.air_company"
-    		        + " where order_id=? order by joa.id";
-    		itemList = Db.find(itemSql, orderId);
-    	}else if("cargoDesc".equals(type)){
-    		itemSql = "select * from job_order_air_cargodesc where order_id=? order by id";
-    		itemList = Db.find(itemSql, orderId);
-    	}else if("land".equals(type)){
-    		itemSql = "select jol.*, p.abbr transport_company_name,CAST(GROUP_CONCAT(jold.id) as char ) job_order_land_doc_id, GROUP_CONCAT(jold.doc_name) doc_name,"
-    		        + " p1.abbr consignor_name, p2.abbr consignee_name, CONCAT(u.name,u.name_eng) unit_name "
-    		        + " from job_order_land_item jol "
-    				+ " left join party p on p.id=jol.transport_company"
-    				+ " left join party p1 on p1.id=jol.consignor"
-    				+ " left join party p2 on p2.id=jol.consignee"
-    				+ " left join job_order_land_doc jold on jold.land_id=jol.id"
-    				+ " left join unit u on u.id=jol.unit_id"
-    				+ " where order_id=? GROUP BY jol.id order by jol.id";
-    		itemList = Db.find(itemSql, orderId);
-    	}else if("charge".equals(type)){
+     if("charge".equals(type)){
     		itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
     				+ " c1.name exchange_currency_id_name"
-    				+ " from job_order_arap jor "
+    				+ " from trade_job_order_arap jor "
     		        + " left join party pr on pr.id=jor.sp_id"
     		        + " left join fin_item f on f.id=jor.charge_id"
     		        + " left join unit u on u.id=jor.unit_id"
@@ -1110,7 +1053,7 @@ public class TrJobOrderController extends Controller {
     	}else if("cost".equals(type)){
 	    	itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
 	    			+ " c1.name exchange_currency_id_name"
-	    			+ " from job_order_arap jor"
+	    			+ " from trade_job_order_arap jor"
 	    	        + " left join party pr on pr.id=jor.sp_id"
 	    	        + " left join fin_item f on f.id=jor.charge_id"
 	    	        + " left join unit u on u.id=jor.unit_id"
@@ -1119,14 +1062,14 @@ public class TrJobOrderController extends Controller {
 	    	        + " where order_id=? and order_type=? order by jor.id";
 	    	itemList = Db.find(itemSql, orderId,"cost");
     	}else if("doc".equals(type)){
-	    	itemSql = "select jod.*,u.c_name from job_order_doc jod left join user_login u on jod.uploader=u.id "
+	    	itemSql = "select jod.*,u.c_name from trade_job_order_doc jod left join user_login u on jod.uploader=u.id "
 	    			+ " where order_id=? order by jod.id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("mail".equals(type)){
-	    	itemSql = "select * from job_order_sendMail where order_id=? order by id";
+	    	itemSql = "select * from trade_job_order_sendMail where order_id=? order by id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("trade_cost".equals(type)){
-	    	itemSql = "select jotc.*,p.abbr sp_name,c.name currency_name,ifnull(ti.commodity_name,jotc.commodity_name) commodity_name from job_order_trade_cost jotc"
+	    	itemSql = "select jotc.*,p.abbr sp_name,c.name currency_name,ifnull(ti.commodity_name,jotc.commodity_name) commodity_name from trade_job_order_trade_cost jotc"
 	    			+ " left join party p on p.id = jotc.sp"
 	    			+ "	left join trade_item ti on ti.id = jotc.commodity_id"
 	    			+ " left join currency c on c.id = jotc.custom_currency"
@@ -1135,7 +1078,7 @@ public class TrJobOrderController extends Controller {
 	    }else if("trade_sale".equals(type)){
 	    	itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name, f.name_eng charge_name_eng, u.name unit_name, c.name currency_name,"
     				+ " c1.name exchange_currency_id_name"
-    				+ " from job_order_arap jor "
+    				+ " from trade_job_order_arap jor "
     		        + " left join party pr on pr.id=jor.sp_id"
     		        + " left join fin_item f on f.id=jor.charge_id"
     		        + " left join unit u on u.id=jor.unit_id"
@@ -1146,7 +1089,7 @@ public class TrJobOrderController extends Controller {
 	    }else if("trade_service".equals(type)){
 	    	itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
     				+ " c1.name exchange_currency_id_name"
-    				+ " from job_order_arap jor "
+    				+ " from trade_job_order_arap jor "
     		        + " left join party pr on pr.id=jor.sp_id"
     		        + " left join fin_item f on f.id=jor.charge_id"
     		        + " left join unit u on u.id=jor.unit_id"
@@ -1154,37 +1097,6 @@ public class TrJobOrderController extends Controller {
     		        + " left join currency c1 on c1.id=jor.exchange_currency_id"
     		        + " where jor.order_id=? and jor.order_type=? and jor.trade_fee_flag=? order by jor.id";
     		itemList = Db.find(itemSql, orderId,"charge","trade_service_fee");
-	    }else if("china_self".equals(type)){
-	    	itemSql = "select j.*,p.abbr custom_bank_name from job_order_custom_china_self_item j"
-	    			+ " left join party p on p.id = j.custom_bank"
-	    			+ " where j.order_id=? order by j.id";
-	    	itemList = Db.find(itemSql, orderId);
-	    }else if("custom_doc".equals(type)){
-//	    	itemSql = "select jod.*,u.c_name from job_order_custom_doc jod left join user_login u on jod.uploader=u.id "
-//	    			+ " where order_id=? order by jod.id";
-	        itemSql = "select cpo.ref_job_order_id, jocd.id,jocd.doc_name,jocd.upload_time,jocd.remark,"
-	                + " ul.c_name c_name,jocd.uploader, jocd.share_flag ,null share_flag from job_order_custom_doc jocd"
-                    + " LEFT JOIN user_login ul on ul.id = jocd.uploader"
-                    + " LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id and jocd.share_flag = 'Y'"
-                    + " where jocd.order_id =?"
-                    + " union all"
-                    + " select cpo.ref_job_order_id, null id ,jod.doc_name,jod.upload_time,jod.remark,u.c_name c_name,"
-                    + " jod.uploader,null share_flag, jod.cms_share_flag"
-                    + " from custom_plan_order_doc jod "
-                    + " left join custom_plan_order cpo on cpo.id = jod.order_id"
-                    + " left join user_login u on jod.uploader=u.id "
-                    + " where cpo.ref_job_order_id=?";
-	    	itemList = Db.find(itemSql, orderId, orderId);
-	    }else if("custom_app".equals(type)){
-	    	itemList = Db.find("SELECT"
-	    			+ " cjo.id, cjo.order_no custom_plan_no, o.office_name custom_bank,cjo.status applybill_status,"
-	    			+ " cjo.ref_no custom_order_no, cjo.custom_state custom_status, ul.c_name creator,"
-	    			+ " cjo.create_stamp, ul2.c_name fill_name, cjo.fill_stamp,cjo.customs_billCode"
-	    			+ " FROM custom_plan_order cjo"
-	    			+ " LEFT JOIN user_login ul ON ul.id = cjo.creator"
-	    			+ " LEFT JOIN user_login ul2 ON ul2.id = cjo.fill_by"
-	    			+ " left join office o on o.id = cjo.to_office_id"
-	    			+ " WHERE cjo.ref_job_order_id = ? ",orderId);
 	    }
 		return itemList;
 	}
@@ -1200,35 +1112,12 @@ public class TrJobOrderController extends Controller {
     	if(r==null){
     		setAttr("rateExpired", "Y");
     	}
-    	//获取海运明细表信息
-    	setAttr("usedOceanInfo", getUsedOceanInfo());
-    	setAttr("shipmentList", getItems(id,"shipment"));
-    	setAttr("shipment", getItemDetail(id,"shipment"));
-    	//获取空运运明细表信息
-    	setAttr("usedAirInfo", getUsedAirInfo());
-    	setAttr("airList", getItems(id,"air"));
-    	setAttr("cargoDescList", getItems(id,"cargoDesc"));
-    	setAttr("air", getItemDetail(id,"air"));
-    	//获取陆运明细表信息
-    	setAttr("landList", getItems(id,"land"));
     	//贸易
     	setAttr("trade", getItemDetail(id,"trade"));
     	setAttr("trade_cost_list", getItems(id,"trade_cost"));
     	setAttr("trade_charge_service_list", getItems(id,"trade_service"));
     	setAttr("trade_charge_sale_list", getItems(id,"trade_sale"));
 
-    	//报关
-    	setAttr("customItemList",getItems(id, "custom_app"));
-    	setAttr("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
-   		setAttr("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
-   		setAttr("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
-   		setAttr("customSelf", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china_self"));
-   		setAttr("customSelfItemList", getItems(id,"china_self"));
-   		setAttr("customDocList", getItems(id,"custom_doc"));
-    	//保险
-    	setAttr("insurance", getItemDetail(id,"insure"));
-    	//快递
-    	setAttr("express", getItemDetail(id,"express"));
     	//获取费用明细
     	setAttr("chargeList", getItems(id,"charge"));
     	setAttr("costList", getItems(id,"cost"));
@@ -1246,16 +1135,13 @@ public class TrJobOrderController extends Controller {
     	setAttr("user", user);
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
-    	//海运头程资料
-   		setAttr("oceanHead", Db.findFirst("select * from job_order_shipment_head where order_id = ?",id));
-   		setAttr("truckHead", Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",id));
     	  
         render("/tr/trJobOrder/trJobOrderEdit.html");
     }
     
     //常用邮箱模版
     public List<Record> getEmailTemplateInfo(){
-    	List<Record> list = Db.find("select t.* from job_order_sendmail_template t"
+    	List<Record> list = Db.find("select t.* from trade_job_order_sendmail_template t"
                 + " where t.creator=?", LoginUserController.getLoginUserId(this));
         return list;
     }
@@ -1268,7 +1154,7 @@ public class TrJobOrderController extends Controller {
     	String order_type = getPara("order_type");
     	String customer_id = getPara("customer_id");
     	String arap_type = getPara("arap_type");
-    	List<Record> list = Db.find("select * from job_order_arap_template "
+    	List<Record> list = Db.find("select * from trade_job_order_arap_template "
     			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
     			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
     	renderJson(list);
@@ -1290,7 +1176,7 @@ public class TrJobOrderController extends Controller {
     	String order_type = getPara("order_type");
     	String customer_id = getPara("customer_id");
     	String arap_type = getPara("arap_type");
-    	List<Record> list = Db.find("select * from job_order_trade_service_template "
+    	List<Record> list = Db.find("select * from trade_job_order_trade_service_template "
     			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
     			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
     	renderJson(list);
@@ -1299,7 +1185,7 @@ public class TrJobOrderController extends Controller {
     	String order_type = getPara("order_type");
     	String customer_id = getPara("customer_id");
     	String arap_type = getPara("arap_type");
-    	List<Record> list = Db.find("select * from job_order_trade_sale_template "
+    	List<Record> list = Db.find("select * from trade_job_order_trade_sale_template "
     			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
     			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
     	renderJson(list);
@@ -1544,14 +1430,9 @@ public class TrJobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         }
         else{
-		         sql = "SELECT * from (select jo.*,jos.sono, "
-		        		 +" (SELECT GROUP_CONCAT(josi.container_no SEPARATOR '<br>' ) "
-		        		 +" FROM  job_order_shipment_item josi  "
-		        		 +" LEFT JOIN job_order jor on jor.id=josi.order_id "
-		        		 +" WHERE josi.order_id =jo.id) container_no, "
+		         sql = "SELECT * from (select jo.*, "
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code"
-		         		+ "	from job_order jo"
-		         		+ "	left join job_order_shipment jos on jos.order_id = jo.id"
+		         		+ "	from trade_job_order jo"
 		         		+ "	left join party p on p.id = jo.customer_id"
 		         		+ "	left join user_login u on u.id = jo.creator"
 		         		+ "	where jo.office_id="+office_id
@@ -1599,7 +1480,7 @@ public class TrJobOrderController extends Controller {
     	String land_item_id = getPara("land_item_id");
 	    String itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
     				+ " c1.name exchange_currency_id_name"
-    				+ " from job_order_arap jor "
+    				+ " from trade_job_order_arap jor "
     		        + " left join party pr on pr.id=jor.sp_id"
     		        + " left join fin_item f on f.id=jor.charge_id"
     		        + " left join unit u on u.id=jor.unit_id"
@@ -1661,7 +1542,7 @@ public class TrJobOrderController extends Controller {
     public void saveDebitNote(){
     	String ids = getPara("itemIds");
     	String invoiceNo = getPara("invoiceNo");
-    	Db.update("update job_order_arap set invoice_no ='"+invoiceNo+"' where id in ("+ids+")");
+    	Db.update("update trade_job_order_arap set invoice_no ='"+invoiceNo+"' where id in ("+ids+")");
     	renderJson("{\"result\":true}");
     }
     
@@ -1671,7 +1552,7 @@ public class TrJobOrderController extends Controller {
     	String ids = getPara("landIds");
     	String invoice_land_hbl_no = getPara("invoice_land_hbl_no");
     	String land_ref_no = getPara("land_ref_no");
-    	Db.update("update job_order_arap set invoice_land_hbl_no='"+invoice_land_hbl_no+"',land_ref_no='"+land_ref_no+"'  where land_item_id in ("+ids+")");
+    	Db.update("update trade_job_order_arap set invoice_land_hbl_no='"+invoice_land_hbl_no+"',land_ref_no='"+land_ref_no+"'  where land_item_id in ("+ids+")");
     	
      	renderJson("{\"result\":true}");
     }
@@ -1680,49 +1561,30 @@ public class TrJobOrderController extends Controller {
     @Before(Tx.class)
     public void deleteArapTemplate(){
     	String id = getPara("id");
-    	Db.update("delete from job_order_arap_template where id = ? or parent_id = ?",id,id);
+    	Db.update("delete from trade_job_order_arap_template where id = ? or parent_id = ?",id,id);
     	renderJson("{\"result\":true}");
     }
-    //删除陆运费用明细常用信息模版
-    @Before(Tx.class)
-    public void deleteLandArapTemplate(){
-    	String id = getPara("id");
-    	Db.update("delete from job_order_land_arap_template where id = ? or parent_id = ?",id,id);
-    	renderJson("{\"result\":true}");
-    }
+   
   //删除常用模版
     @Before(Tx.class)
     public void deleteTradeSaleTemplate(){
     	String id = getPara("id");
-    	Db.update("delete from job_order_trade_sale_template where id = ?",id);
+    	Db.update("delete from trade_job_order_trade_sale_template where id = ?",id);
     	renderJson("{\"result\":true}");
     }
   //删除常用模版
     @Before(Tx.class)
     public void deleteTradeServiceTemplate(){
     	String id = getPara("id");
-    	Db.update("delete from job_order_trade_service_template where id = ?",id);
+    	Db.update("delete from trade_job_order_trade_service_template where id = ?",id);
     	renderJson("{\"result\":true}");
     }
-    //删除海运常用信息模版
-    @Before(Tx.class)
-    public void deleteOceanTemplate(){
-    	String id = getPara("id");
-    	Db.update("delete from job_order_ocean_template where id = ?",id);
-    	renderJson("{\"result\":true}");
-    }
-    //删除空运常用信息模版
-    @Before(Tx.class)
-    public void deleteAirTemplate(){
-    	String id = getPara("id");
-    	Db.update("delete from job_order_air_template where id = ?",id);
-    	renderJson("{\"result\":true}");
-    }
+    
     //删除邮箱常用模版
     @Before(Tx.class)
     public void deleteEmailTemplate(){
     	String id = getPara("id");
-    	Db.update("delete from job_order_sendmail_template where id = ?",id);
+    	Db.update("delete from trade_job_order_sendmail_template where id = ?",id);
     	renderJson("{\"result\":true}");
     }
     
@@ -1731,12 +1593,12 @@ public class TrJobOrderController extends Controller {
     public void feeConfirm(){
 		String id = getPara("id");
 		if (id != null) {
-        	TradeJobOrderArap joa = TradeJobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",id);
+        	TradeJobOrderArap joa = TradeJobOrderArap.dao.findFirst("select * from trade_job_order_arap where id = ?",id);
            		joa.set("audit_flag", "Y");
         	   	joa.update();
         }
-		//Db.update("update job_order_arap set audit_flag = 'Y' where id = ?", id);
-		Record re = Db.findFirst("select * from job_order_arap where id = ?",id);
+		//Db.update("update trade_job_order_arap set audit_flag = 'Y' where id = ?", id);
+		Record re = Db.findFirst("select * from trade_job_order_arap where id = ?",id);
 		renderJson(re);
 	 }
   //费用明细取消确认，
@@ -1744,14 +1606,14 @@ public class TrJobOrderController extends Controller {
     public void feeCancelConfirm(){
 		String id = getPara("id");
 		if (id != null) {
-        	TradeJobOrderArap joa = TradeJobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",id);
+        	TradeJobOrderArap joa = TradeJobOrderArap.dao.findFirst("select * from trade_job_order_arap where id = ?",id);
         	if( joa.get("audit_flag").equals("Y")&&joa.get("bill_flag").equals("N")){
         		joa.set("audit_flag", "N");
         	}
         	joa.update();
         }
-		//Db.update("update job_order_arap set audit_flag = 'Y' where id = ?", id);
-		Record re = Db.findFirst("select * from job_order_arap where id = ?",id);
+		//Db.update("update trade_job_order_arap set audit_flag = 'Y' where id = ?", id);
+		Record re = Db.findFirst("select * from trade_job_order_arap where id = ?",id);
 		renderJson(re);
 	 }
     

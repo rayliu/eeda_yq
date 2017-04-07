@@ -280,16 +280,11 @@ $(document).ready(function() {
                 $("#truckOrderPDF").show();
                 
                 //异步刷新明细表
-                itemOrder.refleshOceanTable(server_back_order.ID);
-                itemOrder.refleshAirItemTable(server_back_order.ID);
-                itemOrder.refleshCargoDescTable(server_back_order.ID);
-                itemOrder.refleshLandItemTable(server_back_order.ID);
                 itemOrder.refleshChargeTable(server_back_order.ID);
                 itemOrder.refleshCostTable(server_back_order.ID);
                 itemOrder.refleshTradeCostItemTable(server_back_order.ID);
                 itemOrder.refleshTradeServiceItemTable(server_back_order.ID);
                 itemOrder.refleshTradeSaleItemTable(server_back_order.ID);
-                itemOrder.refleshCustomChinaSelfItemTable(server_back_order.ID);
                 $.unblockUI();
             }else{
                 if(data.ERR_CODE == 'update_stamp_not_equal'){

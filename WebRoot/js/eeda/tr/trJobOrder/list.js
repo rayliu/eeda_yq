@@ -47,8 +47,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	  }
               }, 
               { "data": "CUSTOMER_NAME"}, 
-              { "data": "SONO"},
-              { "data": "CONTAINER_NO"},
               { "data": "CREATOR_NAME"}, 
               { "data": "CREATE_STAMP"}, 
               { "data": "STATUS"},
@@ -82,14 +80,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var status = $('#status').val();
           var customer_code = $("#customer_code").val().trim();
           var customer_name = $("#customer_name").val().trim();
-          var sono = $("#sono").val().trim();
-          var container_no = $("#container_no").val().trim();
           var transport_type = type;
           //增加出口日期查询
           var url = "/trJobOrder/list?order_no="+order_no
           	   +"&status="+status
-               +"&sono_like="+sono
-               +"&container_no="+container_no
           	   +"&transport_type_like="+transport_type
           	   +"&customer_code_like="+customer_code
                +"&customer_name_like="+customer_name
