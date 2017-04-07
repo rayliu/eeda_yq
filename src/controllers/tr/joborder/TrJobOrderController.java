@@ -877,7 +877,7 @@ public class TrJobOrderController extends Controller {
             List<UploadFile> fileList = getFiles("doc");
             Long userId = LoginUserController.getLoginUserId(this);
             
-            FileUploadUtil.uploadFile(fileList, order_id, userId, "job_order_doc", false);
+            FileUploadUtil.uploadFile(fileList, order_id, userId, "trade_job_order_doc", false);
             
             renderJson("{\"result\":true}");
         } catch (Exception e) {

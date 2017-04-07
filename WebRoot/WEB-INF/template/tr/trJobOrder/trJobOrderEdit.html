@@ -199,13 +199,13 @@
                     <li>
                         <a id='insurDetailTab' href="#insurDetail" data-toggle="tab" style="display: none;">保险信息</a>
                     </li>
-                    <li class="active">
+                    <li >
                         <a id='tradeDetailTab' href="#tradeDetail" data-toggle="tab" >贸易信息</a>
                     </li>
                     <li>
                         <a id='expressDetailTab' href="#expressDetail" data-toggle="tab" style="display: none;">快递</a>
                     </li>
-                    <li >
+                    <li class="active">
                         <a id='chargeTab' href="#chargeDetail" data-toggle="tab">费用明细</a>
                     </li>
                     <li>
@@ -214,14 +214,14 @@
                 </ul>
                 <div class="tab-content">
                     
-                    <div class="tab-pane fade active in" id="tradeDetail">
+                    <div class="tab-pane fade  in" id="tradeDetail">
                         <div class="form-group">
                             <div class="col-lg-12">
                                 <%include("/tr/trJobOrder/JobOrderEdit_trade.html", {}){} %>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade  in" id="chargeDetail">
+                    <div class="tab-pane fade active in" id="chargeDetail">
                         <div class="col-lg-12">
                             <div class="row simple_rectangle_title_div"><div class="font_style">Collect Information 应收应付汇总</div></div>
                             <table class="customized table table-striped table-bordered table-hover display" id="profit_table" style="width:600px">
@@ -287,10 +287,10 @@
                                             label:'类别', 
                                             value:'',
                                             value_list:[
+                                                {code:'贸易', value:'贸易'},
                                                 {code:'海运', value:'海运'},
                                                 {code:'空运', value:'空运'}, 
                                                 {code:'陆运', value:'陆运'},
-                                                {code:'贸易', value:'贸易'},
                                                 {code:'报关', value:'报关'},
                                                 {code:'保险', value:'保险'}
                                             ]
