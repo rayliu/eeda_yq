@@ -614,7 +614,7 @@ $(document).ready(function() {
                                 +'charge_id="'+json_obj[j].CHARGE_ID+'" '
                                 +'currency_id="'+json_obj[j].CURRENCY_ID+'" '
                                 +'sp_id="'+json_obj[j].SP_ID+'" '
-                                // +'unit_id="'+json_obj[j].UNIT_ID+'" '
+                                +'unit_id="'+json_obj[j].UNIT_ID+'" '
                                 +'charge_name="'+json_obj[j].charge_name+'" '
                                 +'currency_name="'+json_obj[j].currency_name+'" '
                                 +'currency_total_amount="'+json_obj[j].currency_total_amount+'" '
@@ -623,6 +623,9 @@ $(document).ready(function() {
                                 +'exchange_currency_rate="'+json_obj[j].exchange_currency_rate+'" '
                                 +'exchange_rate="'+json_obj[j].exchange_rate+'" '
                                 +'exchange_total_amount="'+json_obj[j].exchange_total_amount+'" '
+                                +'exchange_currency_rate_rmb="'+json_obj[j].exchange_currency_rate_rmb+'" '
+                                +'exchange_total_amount_rmb="'+json_obj[j].exchange_total_amount_rmb+'" '
+                                +'rmb_difference="'+json_obj[j].rmb_difference+'" '
                                 +'order_type="'+json_obj[j].order_type+'" '
                                 +'total_amount="'+json_obj[j].total_amount+'" '
                                 +'type="'+json_obj[j].type+'" '
@@ -706,6 +709,9 @@ $(document).ready(function() {
             item.EXCHANGE_CURRENCY_ID= row.attr('exchange_currency_id');
             item.EXCHANGE_CURRENCY_RATE= row.attr('exchange_currency_rate');
             item.EXCHANGE_TOTAL_AMOUNT= row.attr('exchange_total_amount');
+            item.EXCHANGE_CURRENCY_RATE_RMB= row.attr('exchange_currency_rate_rmb');
+            item.EXCHANGE_TOTAL_AMOUNT_RMB= row.attr('exchange_total_amount_rmb');
+            item.RMB_DIFFERENCE= row.attr('rmb_difference');
             item.REMARK= row.attr('remark');
             item.SP_NAME=row.attr('sp_name');
             item.CHARGE_NAME=row.attr('charge_name');
