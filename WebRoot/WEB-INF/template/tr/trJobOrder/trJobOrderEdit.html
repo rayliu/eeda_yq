@@ -1,0 +1,567 @@
+
+<%include("/eeda/component/form/mask.html", {}){}%>
+
+<%layout("/eeda/layout.html"){%>
+
+<link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
+	<%
+      //如果只有edit, 没指定特定的, 默认都有编辑权限
+      var orderPermission = shiro.hasPermission("jobOrder.order");
+      var boolOrder= orderPermission;
+    %>
+        <div id="page-wrapper">
+            <a data-target='#pdfAlertDetail' data-toggle='modal'>
+            	<button id="pdfAlert" style="display:none"></button>
+    		</a>
+        	<div class="modal fade" id="pdfAlertDetail">
+        		<div class="modal-dialog">
+        		    <div class="modal-content">
+            		    <div class="modal-header">生成PDF数据不足详情</div>
+        		        <div class="modal-body">
+        	      			<div class="alert alert-danger alert-dismissable">
+                                <div id="pdfAlertContent"></div> 
+                             </div>
+        				</div>
+            	       	<div class="modal-footer">
+            	            <button class="btn  btn-default" data-dismiss="modal">返回</button>
+            	        </div>
+            	    </div>
+        	    </div>
+        	</div>
+            
+
+        <div style="margin-left:12px;margin-right:12px">
+            <form id="orderForm" class="form-group">
+            	<div class="row small_head"><div class="font_style">Work Order 工作单</div></div>
+                <div class="row simple_small_title_div">
+                	<div class="col-lg-12">
+                        <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
+                        <input id="plan_order_id" type="hidden" name="plan_order_id" value="${planOrder.id!''}"/>
+                        <input id="plan_order_item_id" type="hidden" value="${planOrderItem.id!''}"/>
+                        <input id="updator_id" type="hidden" name="updator_id" value="${order.updator!''}"/>
+                        <input id="update_stamp" type="hidden" name="update_stamp" value="${order.update_stamp!''}"/>rateExpired
+                        <input id="rateExpired" type="hidden"  name="rateExpired" value="${rateExpired!''}"/>
+                        <div class="row"><!--  第1行  -->
+                            <div class="col-lg-4"><!--  三列排版  -->
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'order_no', 
+                                        label:'工作单号', 
+                                        value:order.order_no!'',
+                                        disabled: 'disabled'
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4"><!--  三列排版  -->
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'plan_order_no', 
+                                        label:'计划订单号', 
+                                        value: order.plan_order_no!planOrder.order_no!'',
+                                        disabled: 'disabled'
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/inputCustomerField.html", 
+                                    {
+                                        id:'customer_id', 
+                                        label:'客户', 
+                                        required:'required',
+                                        value:order.customer_id!planOrder.customer_id!'',
+                                        display_value:party.abbr!''
+                                    }){} %>
+                           </div>
+                        </div>
+                        <div class="row"><!--  第4行  -->
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/selectField.html", 
+                                    {   id:'type', 
+                                        label:'类型', 
+                                        value:order.type!planOrderItem.JOB_ORDER_TYPE!'',
+                                        value_list:[
+                                            {code:'出口柜货', value:'出口柜货'},
+                                            {code:'进口柜货', value:'进口柜货'}, 
+                                            {code:'出口散货', value:'出口散货'},
+                                            {code:'进口散货', value:'进口散货'},
+                                            {code:'出口空运', value:'出口空运'},
+                                            {code:'进口空运', value:'进口空运'},
+                                            {code:'内贸海运', value:'内贸海运'},
+                                            {code:'香港头程', value:'香港头程'},
+                                            {code:'香港游', value:'香港游'},
+                                            {code:'陆运', value:'陆运'},
+                                            {code:'报关', value:'报关'},
+                                            {code:'快递', value:'快递'},
+                                            {code:'加贸', value:'加贸'},
+                                            {code:'贸易', value:'贸易'},
+                                            {code:'园区游', value:'园区游'}
+                                        ]
+                                    }){}%>
+                            </div><!-- /.col-lg-4 -->
+                            <div class="col-lg-8">
+                                <div class="form-group" id="transport_type">
+                                    <label class="search-label">服务项目</label>
+                                    
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value='trade'>贸易
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"><!--  第4行  -->
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'status', 
+                                        label:'状态', 
+                                        value:order.status!'', 
+                                        disabled: 'disabled'
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'creator_name', 
+                                        label:'创建人', 
+                                        value:user.c_name!'', 
+                                        disabled: 'disabled'
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'create_stamp', 
+                                        label:'创建时间', 
+                                        value:order.create_stamp!'', 
+                                        disabled: 'disabled'
+                                    }){}%>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/selectField.html", 
+                                    {   id:'trans_clause', 
+                                        label:'运输条款', 
+                                        value:order.trans_clause!'',
+                                        value_list:[
+                                            {code:'CFS-CFS', value:'CFS-CFS'},
+                                            {code:'CFS-DOOR', value:'CFS-DOOR'}, 
+                                            {code:'CY-CY', value:'CY-CY'},
+                                            {code:'CY-DOOR', value:'CY-DOOR'},
+                                            {code:'DOOR-DOOR', value:'DOOR-DOOR'},
+                                            {code:'DOOR-CFS', value:'DOOR-CFS'},
+                                            {code:'DOOR-CY', value:'DOOR-CY'}
+                                        ]
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4">
+                                  <%include("/eeda/component/form/selectField.html", 
+                                    {   id:'trade_type', 
+                                        label:'贸易类型', 
+                                        value:order.trade_type!'',
+                                        value_list:[
+                                            {code:'FOB', value:'FOB'},
+                                            {code:'CIF', value:'CIF'},
+                                            {code:'CFR', value:'CFR'},
+                                            {code:'DDU', value:'DDU'},
+                                            {code:'DDP', value:'DDP'},
+                                            {code:'OTHER', value:'OTHER'}
+                                        ]
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4">
+                               <%include("/eeda/component/form/dateInputField.html", 
+                                   {   id:'order_export_date', 
+                                       label:'出货日期', 
+                                       value:order.order_export_date!'',
+                                       required:'required'
+                                   }){}%>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                         <label>备注</label>
+                             <textarea id='note' class="form-control" rows="3" name="note">${order.remark!''}</textarea>
+                        </div>
+                    </div>
+            	</div>
+                
+             </form>
+          </div>
+                
+            
+            <div class="simple_order_list_div">
+                <ul id="orderTabs" class="nav nav-tabs">
+                    <li>
+                        <a id='oceanDetailTab' href="#oceanDetail" data-toggle="tab" style="display: none;">海运信息</a>
+                    </li>
+                    <li>
+                        <a id='airDetailTab' href="#airDetail" data-toggle="tab" style="display: none;">空运信息</a>
+                    </li>
+                    <li>
+                        <a id='domesticDetailTab' href="#domesticDetail" data-toggle="tab" style="display: none;">陆运信息</a>
+                    </li>
+                    <li>
+                        <a id='customDetailTab' href="#customDetail" data-toggle="tab" style="display: none;">报关信息</a>
+                    </li>
+                    <li>
+                        <a id='insurDetailTab' href="#insurDetail" data-toggle="tab" style="display: none;">保险信息</a>
+                    </li>
+                    <li class="active">
+                        <a id='tradeDetailTab' href="#tradeDetail" data-toggle="tab" >贸易信息</a>
+                    </li>
+                    <li>
+                        <a id='expressDetailTab' href="#expressDetail" data-toggle="tab" style="display: none;">快递</a>
+                    </li>
+                    <li >
+                        <a id='chargeTab' href="#chargeDetail" data-toggle="tab">费用明细</a>
+                    </li>
+                    <li>
+                        <a id='docTab' href="#docDetail" data-toggle="tab">相关文档</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    
+                    <div class="tab-pane fade in" id="tradeDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/tr/trJobOrder/JobOrderEdit_trade.html", {}){} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade active in" id="chargeDetail">
+                        <div class="col-lg-12">
+                            <div class="row simple_rectangle_title_div"><div class="font_style">Collect Information 应收应付汇总</div></div>
+                            <table class="customized table table-striped table-bordered table-hover display" id="profit_table" style="width:600px">
+                               <thead class="eeda" >
+                                   <tr>
+                                       <td>应收</td>
+                                       <td>应付</td>
+                                       <td>利润</td>
+                                       <td>利润总额（人民币）</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                         <td class="chargeRMB" name="chargeRMB">${order.total_chargeRMB!''}RMB</td>   
+                                         <td class="costRMB" name="costRMB">${order.total_costRMB!''}</td>
+                                         <td class="profitRMB" name="profitRMB">${order.total_profitRMB!''}</td>
+                                         <td class="profitTotalRMB" name="profitTotalRMB">${order.total_profitTotalRMB!''}</td>
+                                   </tr>
+                                   <tr>
+                                         <td class="chargeUSD" name="chargeUSD">${order.total_chargeUSD!''}</td>
+                                         <td class="costUSD" name="costUSD">${order.total_costUSD!''}</td>
+                                         <td class="profitUSD" name="profitUSD">${order.total_profitUSD!''}</td>
+                                         <td class="profitTotalCharge" name="profitTotalCharge"  >${order.total_profitTotalCharge!''}</td>
+                                         <td class="profitTotalCost" name="profitTotalCost"  >${order.total_profitTotalCost!''}</td>                                        
+                                   </tr>
+                                   <tr>
+                                         <td class="chargeJPY" name="chargeJPY">${order.total_chargeUSD!''}</td>
+                                         <td class="costJPY" name="costJPY">${order.total_costUSD!''}</td>
+                                         <td class="profitJPY" name="profitJPY">${order.total_profitUSD!''}</td>
+                                   </tr>
+                                   <tr>
+                                         <td class="chargeHKD" name="chargeHKD">${order.total_chargeUSD!''}</td>
+                                         <td class="costHKD" name="costHKD">${order.total_costUSD!''}</td>
+                                         <td class="profitHKD" name="profitHKD">${order.total_profitUSD!''}</td>
+                                   </tr>
+                                </tbody>
+                            </table>
+                            
+                        </div><!-- end of .col-lg-12-->
+
+                        <div class="col-lg-12">
+                        <div class="row simple_rectangle_title_div"><div class="font_style">Charge Information 应收信息</div></div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+                                        <i id='collapseChargeIcon' class="fa 
+                                        <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用应收费用明细
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseChargeInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+                                   <div class="panel-body" id="ChargeDiv">
+                                        
+                                    </div>
+                               </div>
+                            </div>
+                            
+
+                               <div class="col-lg-4">
+                                    <%include("/eeda/component/form/selectField.html", 
+                                        {   id:'trans_type',
+                                            label:'类别', 
+                                            value:'',
+                                            value_list:[
+                                                {code:'海运', value:'海运'},
+                                                {code:'空运', value:'空运'}, 
+                                                {code:'陆运', value:'陆运'},
+                                                {code:'贸易', value:'贸易'},
+                                                {code:'报关', value:'报关'},
+                                                {code:'保险', value:'保险'}
+                                            ]
+                                        }){}%>
+                                </div>
+                                <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputSpField.html", 
+                                                  {
+                                                      id:'sp', 
+                                                      label:'结算公司', 
+                                                      value: ''
+                                                  }){} %>
+                                </div> 
+                        </div>
+                    
+                        <div class="col-lg-12">
+                            <div class=" button-bar ">
+                                <button class="btn btn_green " id="add_charge">添加费用</button>
+                                <a data-target='#printDebit' data-toggle='modal'>
+                                    <button class="btn btn_green btn-xs" id="print_debit_note" disabled>生成Debit_note</button>
+                                </a>
+                                <font size="3px" style="margin-left:15px">汇兑损益 - 应收 (结算金额（人民币） - 对账金额（人民币）)总价差异：<span id="totalcharge_rmb_difference_span" name="total_rmb_difference" text=""></span></font>
+                             </div>
+                            <%include("/eeda/component/form/detailTable.html", 
+                                {
+                                    id:'charge_table',
+                                    style:'width:1950px',
+                                    headers:['<input type="checkbox" style="width:30px" id="AllCheckOfChargeTable">','操作', '类别', '结算公司', '费用名称','费用名称(英文)', '单价', '数量', '单位','对账金额','对账币制', '对人民币汇率', '对账金额(人民币)','结算币制','结算汇率','结算金额','对人民币汇率','结算金额(人民币)','汇兑损益','备注','sp_name', 'charge_name','charge_name_eng','unit_name','currency_name','audit_flag'],
+                                    field_list:['id','', 'type', 'sp_id', 'charge_id','charge_eng_id', 'price', 'amount', 'unit_id', 'total_amount','currency_id',
+                                     'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','exchange_currency_rate_rmb','exchange_total_amount_rmb','rmb_difference','remark','sp_name', 'charge_name','charge_name_eng','unit_name','currency_name','exchange_currency_id_name','audit_flag'],
+                                    value_list: chargeList![]
+                                }){} %>
+                        </div>
+
+                        <div class="modal fade" id="printDebit">
+                            <div class="modal-dialog" >
+                                    <div class="modal-content">
+                                       <div class="modal-body">
+                                              <br>
+                                              <div class="row">
+                                                  <div class="form-group">
+                                                     <div class="col-lg-12">
+                                                        <label class="search-label">发票号</label>
+                                                        <input class="form-control search-control" name="invoiceNo" id="invoiceNo" >
+                                                     </div>
+                                                 </div>
+                                             </div>
+                                             <br>
+                                             <div class="row">
+                                                 <div class="form-group">
+                                                        <label class="checkbox-inline">
+                                                            <input type="radio" name='debit_note' value='debitNote' checked>Debit note(中文版)
+                                                        </label><br />
+                                                        <label class="checkbox-inline">
+                                                            <input type="radio" name='debit_note' value='debit_note_eng'>Debit note(英文版)
+                                                        </label><br>
+                                                        <label class="checkbox-inline">
+                                                            <input type="radio" name='debit_note' value='invoice'>Invoice(中文版)
+                                                        </label><br>
+                                                        <label class="checkbox-inline">
+                                                            <input type="radio" name='debit_note' value='invoice_eng'>Invoice(英文版)
+                                                        </label>
+                                                 </div>
+                                             </div>
+                                             <br>
+                                        </div>
+                                        <div class="modal-footer button-bar">
+                                            <button type="button" id="printDebitNoteBtn" class="btn btn-primary">生成PDF</button>
+                                            <button type="button" id="returnBtn" class="btn  btn-default" data-dismiss="modal">返回</button>         
+                                        </div>
+                                      </div>           
+                                  </div>
+                          </div>
+
+                        <div class="col-lg-12"  style="margin-top:15px">
+                        <div class="row simple_rectangle_title_div"><div class="font_style">Cost Information 应付信息</div></div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseCostInfo" aria-expanded="false" class="collapsed">
+                                        <i id='collapseCostIcon' class="fa 
+                                        <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用应付费用明细
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseCostInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+                                    <div class="panel-body"  id="CostDiv">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="button-bar">
+                            <button class="btn btn_green btn-xs" id="add_charge_cost">添加费用</button>
+                            <font size="3px" style="margin-left:15px">汇兑损益 - 应付 (结算金额（人民币） - 对账金额（人民币）)总价差异：<span id="totalcost_rmb_difference_span" name="total_rmb_difference" text=""></span></font>
+                            </div>
+                            <%include("/eeda/component/form/detailTable.html", 
+                                {
+                                    id:'cost_table',
+                                    style:'width:1950px',
+                                    headers:['','操作', '类别','结算公司', '费用名称','费用名称(英文)', '单价', '数量', '单位','对账金额','对账币制','对人民币汇率', '对账金额(人民币)','结算币制','结算汇率','结算金额','对人民币汇率','结算金额(人民币)','汇兑损益','备注', 'sp_name','charge_name','charge_name_eng','unit_name','currency_name','audit_flag'],
+                                    field_list:['id','', 'type', 'sp_id', 'charge_id','charge_eng_id', 'price', 'amount', 'unit_id', 'total_amount','currency_id',
+                                     'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','exchange_currency_rate_rmb','exchange_total_amount_rmb','rmb_difference','remark', 'sp_name', 'charge_name','charge_name_eng','unit_name','currency_name','EXCHANGE_CURRENCY_ID_NAME','audit_flag'],
+                                    value_list: costList![]
+                                }){} %>
+                        </div>
+                        
+                    </div>
+                    <div class="tab-pane fade in" id="docDetail">
+                        <div class="form-group">
+                        	<div class="col-lg-12">
+                                <div class="row simple_rectangle_title_div"><div class="font_style">Document Information 文档信息</div></div>
+                                <span class="btn btn_grey btn-xs fileinput-button" id="fileuploadSpan"> 
+                                    <i class="glyphicon glyphicon-plus"></i> 
+                                    <span>选择文件</span> 
+                                    <input id="fileupload" type="file" name="files[]" multiple> 
+                                </span> 
+                                <a data-target='#sendDetail' data-toggle='modal'>
+                                    <button id="sendEmail" class="btn btn_green btn-xs">发送邮件</button>
+                                </a>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'doc_table',
+                                        style:'width:1400px',
+                                        headers:['<input id="allCheckOfDoc" type="checkbox" style="width:30px">','', '文档名称', '上传人', '上传时间', '备注'],
+                                        field_list:['id','', 'doc_name','c_name','upload_time', 'remark'],
+                                        value_list: docList![]
+                                    }){} %>
+                                 <br>
+                                 <div class="row simple_rectangle_title_div"><div class="font_style">Send Massage 发送记录</div></div>
+                                <%include("/eeda/component/form/detailTable.html", 
+                                {
+                                    id:'email_table', 
+                                    style:'width:2000px',
+                                    headers:['邮件标题','发送文档','收件人','抄送人','密送人', '发送人','发送时间'],
+                                    field_list:['mail_title', 'doc_name','receive_mail','cc_mail','bcc_mail','sender','send_time'],
+                                    value_list: mailList![]
+                                }){} %>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+                
+                <div class="button-bar" >
+                    <a id='saveBtn' class="btn btn_green" href="#">保存</a>
+                    <%if(boolOrder){%>
+                    <button id="confirmCompleted" class="btn btn_white">工作单锁单</button>
+                    <%}%>
+                    <a class="btn  btn_white" href="/jobOrder">返回</a>
+                </div>
+            </div><!-- end of .simple_order_list_div-->
+
+	  <div class="modal fade" id="sendDetail">
+	  <div class="modal-dialog modal-lg" style="width:1000px;">
+	    <div class="modal-content">
+	      <div class="modal-header">发送邮件详情</div>
+	      	<div class="modal-body">
+				<div class="form-group">
+				
+				<div class="panel panel-default">
+				    <div class="panel-heading">
+				        <h4 class="panel-title">
+				            <a data-toggle="collapse" data-parent="#accordion" href="#collapseEmailInfo" aria-expanded="false" class="collapsed">
+				            <i id="collapseEmailIcon" class="fa 
+				            <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用邮箱信息
+				            </a>
+				        </h4>
+				    </div>
+				    <div id="collapseEmailInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+				        <div class="panel-body">
+				            <ul id="useEmailTemplate" class="useEmailTemplate">
+				              <%for(Info in emailTemplateInfo![]){%>
+				                    <li id="${Info.id}"
+				                        email="${Info.receive_mail}"
+				                        ccEmail="${Info.cc_mail}"
+				                        bccEmail="${Info.bcc_mail}" >
+				                      <div class="radio">
+				                        <label>
+				                            <input type="radio" value="1" name="useEmailTemplate" style="margin-top: 0px;">
+				                            <font size="3px"><span>名称:${Info.remark}</span></font><br> 
+				                            <span>收件人:${Info.receive_mail}<br>抄送人:${Info.cc_mail}<br>密送人: ${Info.bcc_mail}</span><br>
+				                        </label>
+				                        <a class="deleteEmailTemplate" href="#" style="margin-right: 10px;padding-top: 6px;float: left;">删除</a>
+				                      </div>
+				                    </li>
+				              <%}%>
+				            </ul>
+				        </div>
+				    </div>
+				</div>
+				
+				<form id="emailForm">
+					  <font size="5px"><span id="attachment"></span></font><br><br>   
+	                  <label>收件人</label>
+	                  <textarea id="email" name="email" class="form-control" rows="3" required></textarea><br>
+	                  <label>抄送人</label>
+	                  <textarea id="ccEmail" name="ccEmail" class="form-control" rows="3"></textarea><br>
+	                  <label>密送人</label>
+	                  <textarea id="bccEmail" name="bccEmail" class="form-control" rows="3"></textarea><br>
+	                  <label>邮件标题</label>
+	                  <input type="text" id="emailTitle" name="emailTitle" class="form-control"><br>
+	                  <label>邮件正文</label>
+	                  <textarea id='emailContent' class="form-control" rows="5"></textarea><br>
+	                  <label>常用邮箱模版名称</label>
+	                  <textarea id='emailTemplateRemark' class="form-control" rows="2"></textarea><br>
+				</form>
+				</div>   
+	        </div>
+	        <div class="modal-footer button-bar">
+	        	<button id="confirmSendBtn" class="btn btn_green">发送</button>
+	        	<button id="addEmailTemplate" class="btn btn_green">添加常用邮箱模版</button>
+	            <button id="returnBtn" class="btn  btn_white" data-dismiss="modal">返回</button>
+	        </div>
+	    </div>
+	  </div>
+	</div>
+
+</div><!--  form row  -->
+<!-- /#page-wrapper -->
+<%}%>
+
+
+
+<%include("/eeda/component/jsTemplate/tableInputTruckOutField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputTruckInField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputTradeItemField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputDateField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputFieldCurrencyId.js",{}){} %>
+<%include("/tr/trJobOrder/party_create_modal.html", {}){} %>
+<%include("/eeda/component/jsTemplate/inputLocationField.js",{}){} %>
+
+
+
+
+<script>
+
+	//当前登陆用户名
+	var loginUserName = '${loginUser!''}';
+    var order_no = '${order.order_no!'订单编辑'}'; 
+    var itemOrder = {};
+    var transport_type_hidden = "${order.transport_type!transport_type!''}";
+    var container_type_hidden = "${planOrderItem.container_type!''}";
+    var truck_type_hidden = "${planOrderItem.truck_type!''}";
+    
+    var custom_type_hidden = '${planOrderItem.customs_type!''}';
+    if(custom_type_hidden=="自理报关"){
+    	transport_type_hidden+=",custom";
+    }
+    var custom_type = '${order.custom_type!''}';
+    var custom_status_hidden = '${custom.status!''}';
+    var custom_self_status_hidden = '${customSelf.status!''}';
+    
+    var entrust_or_self_custom_str = '${order.entrust_or_self_custom!''}';
+</script>
+
+<script>
+var order = {};
+    requirejs(['/js/eeda/eeda-common.js'], 
+        function (common) {
+            requirejs(['app/tr/trJobOrder/edit']);
+        },
+        function(error) {
+            console.error('报错了: ',error);
+            //error.requireModules : is Array of all failed modules
+            var failedId = error.requireModules && error.requireModules[0];
+            console.error(failedId);
+            console.error(error.message);
+            debugger;
+            window.location.reload();
+        });
+</script>

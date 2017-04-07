@@ -1,0 +1,1 @@
+package models.eeda.tr.tradeJoborder;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class TradeJobOrderSendMailTemplate extends Model<TradeJobOrderSendMailTemplate> {	public static final TradeJobOrderSendMailTemplate dao = new TradeJobOrderSendMailTemplate();}
