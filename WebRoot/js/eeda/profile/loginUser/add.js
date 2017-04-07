@@ -156,6 +156,7 @@ $(document).ready(function(){
 	$("#customerTbody").on('click','.removeCustomer',function(){
 		$(this).parent().parent().remove();
 		$(this).parent().parent().remove();
+		$("#selectAllCustomer").prop("checked",false);
 		queryCustomer();
 	});
 	/*下拉框选择、点击*/
@@ -185,7 +186,7 @@ $(document).ready(function(){
 		queryCustomer();
 		
 	});
-	$.post('/loginUser/isSelectAll',{userId:userId},function(data){
+	/*$.post('/loginUser/isSelectAll',{userId:userId},function(data){
 		if(data == "checked"){
 			$("#selectAllOffice").prop("checked",true);
 		}else{
@@ -198,7 +199,7 @@ $(document).ready(function(){
 		}else{
 			$("#selectAllCustomer").prop("checked",false);
 		};
-	});
+	});*/
 	//添加全部网点
 	$("#selectAllOffice").on('click',function(){
 		var is_check = $("#selectAllOffice").prop("checked");
@@ -225,13 +226,22 @@ $(document).ready(function(){
 			},'json');
 		};
 	});
-	//点击保存按钮时，将用户网点和用户可见客户的值传到后台中
-	$("#saveBtn").click(function(){
-		//检测验证是否通过
-//		if(!$('#leadsForm').valid()){
-//			return false;
-//		}
-		var officeIds=[];
+	
+	
+	 //------------save
+    $('#saveBtn').click(function(e){
+        //阻止a 的默认响应行为，不需要跳转
+        e.preventDefault();
+        //提交前，校验数据
+        if(!$("#leadsForm").valid()){
+            return;
+        }
+        $.blockUI({ 
+            message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
+        });
+        $(this).attr('disabled', true);
+        
+        var officeIds=[];
 		var customerIds=[];
 		$("select[name='officeSelect']").each(function(){
 			if($(this).val()!=null&&$(this).val()!=""){
@@ -245,25 +255,32 @@ $(document).ready(function(){
    		});
 		$("#officeIds").val(officeIds.toString());
 		$("#customerIds").val(customerIds.toString());
-		
-		$("#leadsForm").submit();
-		
-	});
+
+        //异步向后台提交数据
+        $.post('/loginUser/saveUser',$("#leadsForm").serialize() , function(data){
+            var order = data;
+            if(order.ID>0){
+                $.unblockUI();
+                //异步刷新明细表
+                eeda.contactUrl("edit?id",order.ID);
+                $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+                $('#saveBtn').attr('disabled', false);
+            }else{
+                $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+                $('#saveBtn').attr('disabled', false);
+                $.unblockUI();
+            }
+        },'json').fail(function() {
+            $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+            $('#saveBtn').attr('disabled', false);
+            $.unblockUI();
+        });
+    });  
+
 	if($("#userId").val() != "" && $("#userId").val() != null){
 		$("#assigning_role").show();
 	}
 	});
 	$.unblockUI();
-	
-	var refreshUrl=function(url){
-	  	var state = window.history.state;
-	  	if(state){
-	  		window.history.replaceState(state, "", url);
-	  	}else{
-	  		window.history.pushState({}, "", url);
-	  	}
-	 };
-	 
-	 if(window.location.pathname.substring(window.location.pathname.length-8, window.location.pathname.length)=='saveUser')
-		 refreshUrl(window.location.protocol + "//" + window.location.host+window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')+1)+'edit/'+$('#userId').val());
+
 });
