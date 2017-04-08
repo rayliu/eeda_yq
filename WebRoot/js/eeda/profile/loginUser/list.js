@@ -21,7 +21,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
                     //"bVisible":(User.update || User.del),
                     "render": function(data, type, full, meta) {
                         var str = "<nobr>";
-                        str = str + "<a class='btn  btn-primary btn-sm editbutton' href='/loginUser/edit?id"+full.ID+"' target='_blank'>"+
+                        str = str + "<a class='btn  btn-primary btn-sm editbutton' href='/loginUser/edit?id="+full.ID+"' target='_blank'>"+
                                      "<i class='fa fa-edit'> </i>编辑</a> ";
                         
                         if(full.IS_STOP != true){
