@@ -12,7 +12,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             columns:[
                 {"data": "AMAZON_ORDER_ID", "width":"120px"},
                 { "data": "BUYER_NAME", "width":"120px"},
-	              { "data": "", "width":"120px"}, 
+	              { "data": "SKU", "width":"120px"}, 
                 { "data": "", "width":"90px"},
                 { "data": "PURCHASE_DATE", "width":"60px",
                 }, 
@@ -46,6 +46,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
         $.post('/amazonSalesOrder/importOrders', {nothing: 'nothing'}, function(data, textStatus, xhr) {
           searchData();
           $.unblockUI();
+        }).error(function() { 
+          $.unblockUI();
+          alert("出错，请重试或联系管理员查看出错原因。"); 
         });
       })
     	

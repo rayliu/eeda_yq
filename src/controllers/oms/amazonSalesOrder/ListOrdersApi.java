@@ -24,6 +24,7 @@ import com.amazonservices.mws.client.MwsUtl;
 import com.amazonservices.mws.orders._2013_09_01.MarketplaceWebServiceOrders;
 import com.amazonservices.mws.orders._2013_09_01.MarketplaceWebServiceOrdersClient;
 import com.amazonservices.mws.orders._2013_09_01.MarketplaceWebServiceOrdersException;
+import com.amazonservices.mws.orders._2013_09_01.model.ListOrderItemsRequest;
 import com.amazonservices.mws.orders._2013_09_01.model.ListOrdersRequest;
 import com.amazonservices.mws.orders._2013_09_01.model.ListOrdersResponse;
 import com.amazonservices.mws.orders._2013_09_01.model.ListOrdersResult;
@@ -95,6 +96,23 @@ public class ListOrdersApi {
                 }
                 
                 recList.add(rec);
+            }
+            //获取order 下的 SKU 等信息
+            for (Record record : recList) {
+                String amazonOrderId = record.getStr("amazon_order_id");
+                Record oldRec = Db.findFirst("select * from amazon_sales_order_item where amazon_order_id=?", amazonOrderId);
+                if(oldRec!=null){
+                    continue;
+                }
+             // Create a request.
+                ListOrderItemsRequest itemRequest = new ListOrderItemsRequest();
+                String sellerId = "A2EOZCNPFBJY0B";
+                itemRequest.setSellerId(sellerId);
+//                String mwsAuthToken = "example";
+//                request.setMWSAuthToken(mwsAuthToken);
+                itemRequest.setAmazonOrderId(amazonOrderId);
+                ListOrderItemsApi.invokeListOrderItems(client, itemRequest);
+                
             }
             return recList;
         } catch (MarketplaceWebServiceOrdersException ex) {

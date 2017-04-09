@@ -245,7 +245,7 @@ public class EedaConfig extends JFinalConfig {
     
     private void setAppRoute(Routes me, String contentPath) {
         me.add("/app", AppControllerForMobile.class);
-        me.add("/app/allOrder", AllOrderControllerForMobile.class);
+        me.add("/app/order", AllOrderControllerForMobile.class);
         me.add("/app/msg", MsgController4App.class);
         me.add("/app/planOrder", PlanOrderControllerForMobile.class);
     }

@@ -70,7 +70,10 @@ public class AmazonSalesOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "select * from amazon_sales_order where 1=1 ";
+        String sql = "select *, "
+                + "(select group_concat(ai.seller_sku separator '<br/>')  from amazon_sales_order_item  ai "
+                + "where ai.amazon_order_id =aso.amazon_order_id) sku "
+                + "from amazon_sales_order aso where order_status<>'Canceled' ";
 
         String condition = DbUtils.buildConditions(getParaMap());
 
@@ -137,7 +140,7 @@ public class AmazonSalesOrderController extends Controller {
 //        request.setBuyerEmail(buyerEmail);
 //        String sellerOrderId = "example";
 //        request.setSellerOrderId(sellerOrderId);
-        Integer maxResultsPerPage = 100;//每页可返回的最多订单数。默认100
+        Integer maxResultsPerPage = 30;//每页可返回的最多订单数。默认100
         request.setMaxResultsPerPage(maxResultsPerPage);
         List<String> tfmShipmentStatus = new ArrayList<String>();
         request.setTFMShipmentStatus(tfmShipmentStatus);
