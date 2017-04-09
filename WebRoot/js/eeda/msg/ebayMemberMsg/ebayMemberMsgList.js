@@ -12,7 +12,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             columns:[
                 { "data": "ID", visible: false}, 
                 { "data": "MESSAGE_STATUS", "width":"20px"}, 
-	              { "data": "SENDER_ID", "width":"60px"}, 
+	              { "data": "SENDER_ID", "class":'sender_id', "width":"60px"}, 
                 { "data": "RECIPIENT_ID", "width":"60px"},
                 { "data": "SUBJECT", "width":"260px",
                   "render": function ( data, type, full, meta ) {
@@ -44,10 +44,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       $('#eeda_table').on('click','.edit',function(){
         var tr = $(this).parent().parent();
         $('#edit_id').val(tr.attr('id'));
+        var sender_id = tr.find(".sender_id").text();
 
-          $.post('/ebayMemberMsg/getMemberMsg', {id: tr.attr('id'),item_id:tr.find(".item_id").text()}, function(data, textStatus, xhr) {
+          $.post('/ebayMemberMsg/getMemberMsg', {id: tr.attr('id'),item_id:tr.find(".item_id").text(), sender_id:sender_id}, function(data, textStatus, xhr) {
               $('#msg_id').val(data[0].MESSAGE_ID);
-        	  $('#sender_id').val(data[0].SENDER_ID);
+        	    $('#sender_id').val(data[0].SENDER_ID);
               $('#recipient_id').val(data[0].RECIPIENT_ID);
               $('#subject').val(data[0].SUBJECT);
               $('#item_id').val(data[0].ITEM_ID);

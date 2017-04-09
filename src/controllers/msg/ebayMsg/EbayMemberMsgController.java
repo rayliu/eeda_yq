@@ -68,7 +68,7 @@ public class EbayMemberMsgController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "select * from (select * from ebay_member_msg group by item_id) A where 1=1 ";
+        String sql = "select * from (select * from ebay_member_msg group by item_id, sender_id) A where 1=1 ";
 
         String condition = DbUtils.buildConditions(getParaMap());
 
@@ -90,13 +90,14 @@ public class EbayMemberMsgController extends Controller {
     public void getMemberMsg(){
         long id = getParaToLong("id");
         long item_id = getParaToLong("item_id");
+        String sender_id = getPara("sender_id");
         //Record rec = Db.findById("ebay_member_msg", id);
         
         List<Record> rec = Db.find("select * from (select id, item_id, sender_id,recipient_id ,"
-        		+ " creation_date ,body,subject,'N' replay_flag, message_id from ebay_member_msg "
+        		+ " creation_date ,body,subject,'N' replay_flag, message_id from ebay_member_msg where sender_id=?"
         		+ " union "
-        		+ " select *,'Y' replay_flag, 0 message_id from ebay_member_msg_replay) A "
-        		+ " where item_id = ? ORDER BY creation_date",item_id);
+        		+ " select *,'Y' replay_flag, 0 message_id from ebay_member_msg_replay where recipient_id=?) A "
+        		+ " where item_id = ? ORDER BY creation_date", sender_id, sender_id, item_id);
         
         renderJson(rec);
     }
