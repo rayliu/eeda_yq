@@ -37,8 +37,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       };
       
       $('#importBtn').click(function(){
+        $.blockUI();
            $.post('/aliMsg/importMsg', {nothing: 'nothing'}, function(data, textStatus, xhr) {
-                
+                $.unblockUI();
+                searchData(); 
            });
       });
 

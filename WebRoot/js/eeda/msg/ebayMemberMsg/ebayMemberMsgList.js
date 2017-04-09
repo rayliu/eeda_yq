@@ -36,8 +36,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       };
       
       $('#importBtn').click(function(){
+        $.blockUI();
            $.post('/ebayMemberMsg/importMemberMsg', {nothing: 'nothing'}, function(data, textStatus, xhr) {
-                
+              searchData(); 
+              $.unblockUI();
            });
       });
 

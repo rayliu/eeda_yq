@@ -132,6 +132,7 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
+      $.blockUI();
     	 requirejs(['app/msg/aliMsg/aliMsgList']);
     });
 </script>
