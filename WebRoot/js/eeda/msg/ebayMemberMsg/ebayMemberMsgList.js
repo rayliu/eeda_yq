@@ -91,7 +91,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             		  +'            <i class="fa fa-clock-o fa-fw"></i>'+creation_date
             		  +'        </small>'
             		  +'    </div><br/>'
-            		  +'    <pre style="float:right">'+response+'</pre>'
+            		  +'    <pre style="float:right">'+body+'</pre>'
             		  +'</div>'
             		  +'</li>')};
             	  
@@ -127,7 +127,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           		  +'            <i class="fa fa-clock-o fa-fw"></i>'+creation_date
           		  +'        </small>'
           		  +'    </div><br/>'
-          		  +'    <pre style="float:right">'+response+'</pre>'
+          		  +'    <pre style="float:right">'+body+'</pre>'
           		  +'</div>'
           		  +'</li>');
             

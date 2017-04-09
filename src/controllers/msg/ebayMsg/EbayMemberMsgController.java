@@ -93,9 +93,9 @@ public class EbayMemberMsgController extends Controller {
         //Record rec = Db.findById("ebay_member_msg", id);
         
         List<Record> rec = Db.find("select * from (select id, item_id, sender_id,recipient_id ,"
-        		+ " creation_date ,body,subject,'N' replay_flag from ebay_member_msg "
+        		+ " creation_date ,body,subject,'N' replay_flag, message_id from ebay_member_msg "
         		+ " union "
-        		+ " select *,'Y' replay_flag from ebay_member_msg_replay) A "
+        		+ " select *,'Y' replay_flag, 0 message_id from ebay_member_msg_replay) A "
         		+ " where item_id = ? ORDER BY creation_date",item_id);
         
         renderJson(rec);
@@ -221,6 +221,8 @@ public class EbayMemberMsgController extends Controller {
         mm.setRecipientID(recipientId);
         api.setMemberMessage(mm);
         api.setMessageID(msg_id);
+        
+        //TODO: 发送失败应该在UI上提示失败！
         try {
             api.addMemberMessageRTQ();
         } catch (Exception e) {
