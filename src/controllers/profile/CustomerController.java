@@ -158,7 +158,7 @@ public class CustomerController extends Controller {
             }
             
             //同步到用户
-            List<UserLogin> ulList = UserLogin.dao.find("select * from user_login where all_customer = 'Y' and office_id = ? ",pom.getCurrentOfficeId());
+            List<UserLogin> ulList = UserLogin.dao.find("select * from user_login where (all_customer = 'Y' and office_id = ?) or id = ?",pom.getCurrentOfficeId(),LoginUserController.getLoginUserId(this));
             for(UserLogin ul :ulList){
             	Record re = Db.findFirst("select * from user_role ur left join user_login ul on ur.user_name = ul.user_name "
             			+ " left join office o on o.id = ul.office_id  "
