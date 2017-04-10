@@ -84,7 +84,10 @@ public class AllOrderControllerForMobile extends Controller {
       }else{
           sLimit = " LIMIT 0, 20";
       }
-      String sql = "select * from amazon_sales_order where 1=1 ";
+      String sql = "select *, "
+              + "(select group_concat(ai.seller_sku separator '<br/>')  from amazon_sales_order_item  ai "
+              + "where ai.amazon_order_id =aso.amazon_order_id) sku "
+              + "from amazon_sales_order aso where order_status<>'Canceled' ";
 
       String condition = DbUtils.buildConditions(getParaMap());
 
