@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
   	document.title = '客户应收余额汇总表  | '+document.title;
+  		
+  	$("#breadcrumb_li").text('客户应收余额汇总表');
   	  $('#menu_cost').addClass('active').find('ul').removeClass('in');
   	  
       var dataTable = eeda.dt({
@@ -26,11 +28,43 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 						return eeda.numFormat(parseFloat(data).toFixed(2),3);
 					}
 	            },
+	            { "data": "ABBR", "width": "120px"},
+	            {
+					"render": function(data, type, full, meta) {
+						return '<span style="color:red">'+eeda.numFormat(parseFloat(full.CHARGE_TOTAL - full.CHARGE_CONFIRM).toFixed(2),3)+'</span>';
+					}
+				},
+	            {
+					"render": function(data, type, full, meta) {
+						return '<span style="color:red">'+eeda.numFormat(parseFloat(full.CHARGE_TOTAL - full.CHARGE_CONFIRM).toFixed(2),3)+'</span>';
+					}
+				},
+	            { "data": "CHARGE_CONFIRM", "width": "80px","visible":false,
+					"render": function(data, type, full, meta) {
+						return '<span style="color:green">'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
+					}
+	            },
+	            { "data": "CHARGE_TOTAL", "width": "80px",
+	            	"render": function(data, type, full, meta) {
+						return eeda.numFormat(parseFloat(data).toFixed(2),3);
+					}
+	            },
+	            { "data": "CHARGE_TOTAL", "width": "80px",
+	            	"render": function(data, type, full, meta) {
+						return eeda.numFormat(parseFloat(data).toFixed(2),3);
+					}
+	            },
+	            {
+					"render": function(data, type, full, meta) {
+						return ((parseFloat(full.CHARGE_CONFIRM / full.CHARGE_TOTAL).toFixed(4))*100).toFixed(2);
+					}
+				},
 	            {
 					"render": function(data, type, full, meta) {
 						return ((parseFloat(full.CHARGE_CONFIRM / full.CHARGE_TOTAL).toFixed(4))*100).toFixed(2);
 					}
 				}
+	            
 	          ]
 	      });
 

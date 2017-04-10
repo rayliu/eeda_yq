@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
   	document.title = '应收应付利润率分析表  | '+document.title;
+  	
+  	$("#breadcrumb_li").text('应收应付统计报表');
   	  $('#menu_cost').addClass('active').find('ul').removeClass('in');
   	  
       var dataTable = eeda.dt({
@@ -110,7 +112,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       })
 
      var searchData=function(){
-          var customer = $("#customer").val(); 
+          var sp_id = $("#sp_id").val(); 
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
           var order_export_date_end_time = $("#order_export_date_end_time").val();
           /*  
@@ -123,7 +125,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           
           //合计字段
           $.post('profitAndPaymentRate/listTotal',{
-        	  customer:customer,
+        	  sp_id:sp_id,
         	  order_export_date_begin_time:order_export_date_begin_time,
         	  order_export_date_end_time:order_export_date_end_time
           },function(data){
@@ -166,7 +168,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           }
          
           
-          var url = "/profitAndPaymentRate/list?customer_id="+customer
+          var url = "/profitAndPaymentRate/list?sp_id="+sp_id
 				          +"&order_export_date_begin_time="+order_export_date_begin_time
 				          +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load(cssTd);

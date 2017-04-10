@@ -42,9 +42,9 @@ public class ProfitAndPaymentRateController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
-        String sql = " SELECT A.id,A.customer_id,A.abbr,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
+        String sql = " SELECT A.id,A.customer_id,A.abbr,A.sp_id,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
         		+" sum(cost_jpy) cost_jpy,SUM(cost_hkd) cost_hkd,SUM(charge_rmb) charge_rmb,sum(cost_rmb) cost_rmb FROM ("
-        		+" SELECT jo.id,jo.customer_id,p.abbr,"
+        		+" SELECT jo.id,jo.customer_id,p.abbr,joa.sp_id,"
         		+" IF(joa.order_type='charge' and joa.exchange_currency_id = 3,exchange_total_amount,0) charge_cny,"
         		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 6,exchange_total_amount,0) charge_usd,"
         		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 8,exchange_total_amount,0) charge_jpy,"
@@ -57,9 +57,9 @@ public class ProfitAndPaymentRateController extends Controller {
 	    		+"	if(joa.order_type='cost',currency_total_amount,0) cost_rmb"
         		+"  from job_order jo "
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-        		+"  LEFT JOIN party p on p.id = jo.customer_id"
+        		+"  LEFT JOIN party p ON p.id = joa.sp_id"
         		+"  WHERE jo.office_id ="+office_id+" "+condition
-        		+" ) A where 1=1 GROUP BY A.customer_id  ORDER BY abbr";
+        		+" ) A where A.sp_id is NOT NULL GROUP BY A.sp_id  ORDER BY abbr";
 		
         String sqlTotal = "select count(1) total from ("+sql+") C";
         Record rec = Db.findFirst(sqlTotal);
@@ -76,15 +76,15 @@ public class ProfitAndPaymentRateController extends Controller {
 	}
 	
 	public void listTotal() {
-		String customer_id =(String) getPara("customer");
+		String spid =(String) getPara("sp_id");
 		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
 		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
-		String sp_id =" and customer_id="+customer_id;
-		if(" and customer_id=".equals(sp_id)){
+		String sp_id =" and sp_id="+spid;
+		if(" and sp_id=".equals(sp_id)){
 			sp_id="";
 		}
 		if(order_export_date_begin_time==null){
