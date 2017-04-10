@@ -42,68 +42,41 @@ public class ChargeBalanceReportController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
-        String sql = " SELECT * FROM ("
-        		+" SELECT p.abbr ,joa.sp_id sp, ifnull(SUM(total_amount),0) charge_total,'CNY' currency,jo.order_export_date, "
-        		+" 		ifnull((SELECT SUM(total_amount) "
-        		+" 			from job_order jo  "
-        		+" 			LEFT JOIN job_order_arap joa on jo.id=joa.order_id "
-        		+" 			LEFT JOIN party p on p.id = joa.sp_id "
-        		+" 			WHERE  exchange_currency_id = 3 AND joa.order_type = 'charge' AND pay_flag='Y'  "
-        		+"             and joa.sp_id =sp and jo.office_id ="+ office_id + condition
-        		+"  ),0) charge_confirm  from job_order jo  "
-        		+" 	LEFT JOIN job_order_arap joa on jo.id=joa.order_id "
-        		+" 	LEFT JOIN party p on p.id = joa.sp_id "
-        		+" 	WHERE  exchange_currency_id = 3 AND joa.order_type = 'charge' and jo.office_id = "+ office_id + condition
-        		+"          "
-        		+"   GROUP BY sp_id "
-        		+" union "
-        		+" SELECT p.abbr ,joa.sp_id sp, ifnull(SUM(total_amount),0) charge_total,'USD' currency,jo.order_export_date, "
-        		+" 		ifnull((SELECT SUM(total_amount) "
-        		+" 			from job_order jo  "
-        		+" 			LEFT JOIN job_order_arap joa on jo.id=joa.order_id "
-        		+" 			LEFT JOIN party p on p.id = joa.sp_id "
-        		+" 			WHERE  exchange_currency_id = 6 AND joa.order_type = 'charge' AND pay_flag='Y'  "
-        		+"             and joa.sp_id =sp and jo.office_id = "+ office_id + condition
-        		+"  ),0) charge_confirm  from job_order jo  "
-        		+" 	LEFT JOIN job_order_arap joa on jo.id=joa.order_id "
-        		+" 	LEFT JOIN party p on p.id = joa.sp_id "
-        		+" 	WHERE  exchange_currency_id = 6 AND joa.order_type = 'charge' and jo.office_id ="+ office_id + condition
-        		+"          "
-        		+"   GROUP BY sp_id "
-        		+" union "
-        		+" SELECT p.abbr ,joa.sp_id sp, ifnull(SUM(total_amount),0) charge_total,'JPY' currency,jo.order_export_date, "
-        		+" 		ifnull((SELECT SUM(total_amount) "
-        		+" 			from job_order jo  "
-        		+" 			LEFT JOIN job_order_arap joa on jo.id=joa.order_id "
-        		+" 			LEFT JOIN party p on p.id = joa.sp_id "
-        		+" 			WHERE  exchange_currency_id = 8 AND joa.order_type = 'charge' AND pay_flag='Y'  "
-        		+"             and joa.sp_id =sp and jo.office_id = "+ office_id + condition
-        		+"  ),0) charge_confirm  from job_order jo  "
-        		+" 	LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-        		+" 	LEFT JOIN party p on p.id = joa.sp_id "
-        		+" 	WHERE  exchange_currency_id = 8 AND joa.order_type = 'charge' and jo.office_id = "+ office_id + condition
-        		+"          "
-        		+"   GROUP BY sp_id "
-        		+" union "
-        		+" SELECT p.abbr ,joa.sp_id sp, ifnull(SUM(total_amount),0) charge_total,'HKD' currency,jo.order_export_date, "
-        		+" 		ifnull((SELECT SUM(total_amount) "
-        		+" 			from job_order jo  "
-        		+" 			LEFT JOIN job_order_arap joa on jo.id=joa.order_id "
-        		+" 			LEFT JOIN party p on p.id = joa.sp_id "
-        		+" 			WHERE  exchange_currency_id = 9 AND joa.order_type = 'charge' AND pay_flag='Y'  "
-        		+"             and joa.sp_id =sp and jo.office_id = "+ office_id + condition
-        		+"  ),0) charge_confirm  from job_order jo  "
-        		+" 	LEFT JOIN job_order_arap joa on jo.id=joa.order_id "
-        		+" 	LEFT JOIN party p on p.id = joa.sp_id "
-        		+" 	WHERE  exchange_currency_id = 9 AND joa.order_type = 'charge' and jo.office_id ="+ office_id + condition
-        		+"   GROUP BY sp_id "	 
-        		+" ) A where charge_total!=0 ORDER BY abbr";
+        String sql = " SELECT A.id,A.customer_id,A.abbr,A.sp_id,sum(charge_cny) charge_cny,"
+        		+ " SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,"
+        		+ " SUM(uncharge_cny) uncharge_cny,SUM(uncharge_usd) uncharge_usd,sum(uncharge_jpy) uncharge_jpy,"
+        		+ " SUM(uncharge_hkd) uncharge_hkd,SUM(charge_rmb) charge_rmb,sum(uncharge_rmb) uncharge_rmb"
+        		+ " FROM (SELECT jo.id,jo.customer_id,p.abbr,joa.sp_id,IF (joa.order_type = 'charge'"
+        		+ " AND joa.exchange_currency_id = 3,exchange_total_amount,0) charge_cny,"
+        		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 6,"
+        		+ " exchange_total_amount,0) charge_usd,IF (joa.order_type = 'charge'"
+        		+ " AND joa.exchange_currency_id = 8,exchange_total_amount,0) charge_jpy,"
+        		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 9,"
+        		+ " exchange_total_amount,0) charge_hkd,"
+        		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 3 AND pay_flag!='Y',"
+        		+ " exchange_total_amount,0) uncharge_cny,"
+        		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 6 AND pay_flag!='Y',"
+        		+ " exchange_total_amount,0) uncharge_usd,"
+        		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 8 AND pay_flag!='Y',"
+        		+ " exchange_total_amount,0) uncharge_jpy,"
+        		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 9 AND pay_flag!='Y',"
+        		+ " exchange_total_amount,0) uncharge_hkd,"
+        		+ " IF (joa.order_type = 'charge',currency_total_amount,0) charge_rmb,"
+        		+ " IF (joa.order_type = 'charge' AND pay_flag!='Y',currency_total_amount,0) uncharge_rmb"
+        		+ " FROM job_order jo"
+        		+ " LEFT JOIN job_order_arap joa ON jo.id = joa.order_id"
+        		+ " LEFT JOIN party p ON p.id = joa.sp_id"
+        		+ " WHERE jo.office_id =" +office_id+" "+condition
+        		+ " ) A"
+        		+ " WHERE A.sp_id IS NOT NULL AND A.charge_rmb!=0"
+        		+ " GROUP BY A.sp_id"
+        		+ " ORDER BY uncharge_rmb desc";
 		
         String sqlTotal = "select count(1) total from ("+sql+") C";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition );
+        List<Record> orderList = Db.find(sql);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
@@ -112,5 +85,109 @@ public class ChargeBalanceReportController extends Controller {
         renderJson(map); 
 		
 	}
+	
+	public void listTotal() {
+		String spid =(String) getPara("sp_id");
+		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
+		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
+		
+		UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+		
+		String sp_id =" and sp_id="+spid;
+		if(" and sp_id=".equals(sp_id)){
+			sp_id="";
+		}
+		if(order_export_date_begin_time==null){
+			order_export_date_begin_time="";
+		}
+		if(order_export_date_end_time==null){
+			order_export_date_end_time="";
+		}
+		
+		String order_export_date =  " and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"')";
+
+		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
+			order_export_date="";
+		}
+		String condition = sp_id+order_export_date;
+		
+		String sql=" SELECT "
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
+			+"	  and joa.order_type = 'charge' "+condition
+			+"	) charge_cny,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
+			+"	  and joa.order_type = 'charge' "+condition
+			+"	) charge_usd,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
+			+"	  and joa.order_type = 'charge' "+condition
+			+"	) charge_jpy,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
+			+"	  and joa.order_type = 'charge' "+condition
+			+"	) charge_hkd,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
+			+"	  and joa.order_type = 'charge' and pay_flag!='Y'  "+condition
+			+"	) uncharge_cny,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
+			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
+			+"	) uncharge_usd,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
+			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
+			+"	) uncharge_jpy,"
+			+"	(SELECT "
+			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+			+"	  from job_order jo "
+			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
+			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
+			+"	) uncharge_hkd, "
+			+"	(SELECT "
+			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
+			+"	FROM  job_order jo "
+			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
+			+"	WHERE 	jo.office_id = "+office_id
+			+"	AND joa.order_type = 'charge' "+condition+") total_charge,"
+			+"	(SELECT "
+			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
+			+"	FROM  job_order jo "
+			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
+			+"	WHERE 	jo.office_id = "+office_id
+			+"	AND joa.order_type = 'charge' and pay_flag!='Y' "+condition+") total_uncharge";
+		
+		Record re = Db.findFirst(sql);
+		renderJson(re);
+	}
+	
+	
+	
+	
 	
 }

@@ -18,17 +18,10 @@
                                 <div class="panel-body">
                                      <form id="orderForm">
                                         <div class="row">
-                                            <div class="col-lg-4" style="display:none">
-                                                <%include("/eeda/component/form/inputField.html", 
-                                                                    {   id: 'order_no', 
-                                                                        label: '工作单号', 
-                                                                        value: ''
-                                                                    }){}%>
-                                            </div>
                                             <div class="col-lg-4">
-                                                <%include("/eeda/component/form/inputCustomerField.html", 
-                                                                    {   id: 'customer', 
-                                                                        label: '客户', 
+                                                <%include("/eeda/component/form/inputSpField.html", 
+                                                                    {   id: 'sp_id', 
+                                                                        label: '结算公司', 
                                                                         value: ''
                                                                     }){}%>
                                             </div>
@@ -54,12 +47,12 @@
 	                                
 	                                    <div class="form-group" >
 		                                   <label>未收对账金额合计：<span style="color:#AAAAAA"></span></label>
-		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">USD:<span id="USD_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">JPY:<span id="JPY_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">HKD:<span id="HKD_cost_tatol" style="color:black"></span></label><nbsp><nbsp><br>
+		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_uncharge_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">USD:<span id="USD_uncharge_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">JPY:<span id="JPY_uncharge_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">HKD:<span id="HKD_uncharge_tatol" style="color:black"></span></label><nbsp><nbsp><br>
 		                                   <label>未收对账金额(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
-		                                   <label style="color:#AAAAAA"><span id="total_cost" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA"><span id="total_uncharge" style="color:black"></span></label><nbsp><nbsp>
 	                                    </div><br>
 
                                     <div class="form-group button-bar" >
@@ -71,7 +64,7 @@
                                         {
                                             id:'eeda_table', 
                                            
-                                            headers:['结算客户','应收CNY','USD','JPY','JPY','HKD','折合应收(RMB)','未收CNY','USD','JPY','HKD','折合未收(RMB)','回款率（%）'
+                                            headers:['结算公司','CNY','USD','JPY','HKD','折合应收(RMB)','CNY','USD','JPY','HKD','折合未收(RMB)','回款率（%）'
                                             ]
                                         }){} %>
                                 </div>
