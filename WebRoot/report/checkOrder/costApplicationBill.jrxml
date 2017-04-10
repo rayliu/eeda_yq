@@ -50,6 +50,7 @@
 	<queryString>
 		<![CDATA[SELECT
 	u.c_name,
+	u.user_tel,
 	joa.id,
 	joa.create_flag,
 	joa.sp_id,
@@ -137,6 +138,9 @@ ORDER BY
 	jo.order_no]]>
 	</queryString>
 	<field name="c_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_tel" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="id" class="java.lang.Long">
@@ -716,6 +720,10 @@ ORDER BY
 			<textField>
 				<reportElement x="77" y="1" width="40" height="20" uuid="f294392f-6092-45ad-9dd9-e0b1370a0a2b"/>
 				<textFieldExpression><![CDATA[$V{PageSize}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="283" y="47" width="100" height="20" uuid="d3f628d7-5013-4716-8093-ed1ddf382729"/>
+				<textFieldExpression><![CDATA[$F{user_tel}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
