@@ -120,6 +120,7 @@ import controllers.cms.jobOrder.CustomJobOrderController;
 import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
+import controllers.issue.ebay.cacellation.EbayCancellationController;
 import controllers.issue.ebay.ebayReturn.EbayReturnController;
 import controllers.msg.EwmsDashBoardController;
 import controllers.msg.YqDashBoardController;
@@ -236,6 +237,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/ebaySalesOrder", EbaySalesOrderController.class, contentPath);
         me.add("/ebayMemberMsg", EbayMemberMsgController.class, contentPath);
         me.add("/ebayReturn", EbayReturnController.class, contentPath);
+        me.add("/ebayCancellation", EbayCancellationController.class, contentPath);
         
         me.add("/amazonSalesOrder", AmazonSalesOrderController.class, contentPath);
         me.add("/aliexpressSalesOrder", AliexpressSalesOrderController.class, contentPath);
