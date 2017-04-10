@@ -67,7 +67,10 @@ public class EbaySalesOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "select * from ebay_order where 1=1 ";
+        String sql = "select *,"
+        		+ " if(sales_record_parent_number=sales_record_number,cast(sales_record_number as char),"
+        		+ " concat(cast(sales_record_parent_number as char),'-',cast(sales_record_number as char))) group_record_number"
+        		+ " from ebay_order where 1=1 ";
 
         String condition = DbUtils.buildConditions(getParaMap());
 
@@ -104,49 +107,53 @@ public class EbaySalesOrderController extends Controller {
                 "IsMultiLegShipping" };
 
         List<Record> recList = new ArrayList<Record>(size);
-        
+        int num = 1;
         for (int i = 0; i < size; i++) {
-            Record rec = new Record();
+            
             OrderType order = orders[i];
-            rec.set("order_id", order.getOrderID());
-            rec.set("created_time", order.getCreatedTime().getTime());
-            
-            
             TransactionType[] tType = order.getTransactionArray().getTransaction();
-            TransactionType transaction = tType[0];//只获取第一个
             
-            rec.set("transaction_id", transaction.getTransactionID());
-            rec.set("item_id", transaction.getItem().getItemID());
-            rec.set("sku", transaction.getItem().getSKU());
-            rec.set("total", order.getTotal().getValue());
-            rec.set("total_currency_id", order.getTotal().getCurrencyID().value());
-            rec.set("buyer_user_ID", order.getBuyerUserID());
-            rec.set("seller_user_ID", order.getSellerUserID());
-            rec.set("order_status", order.getOrderStatus().value());
-            if(order.getShippedTime()!=null)
-                rec.set("shipped_time", order.getShippedTime().getTime());
-            if(order.getPaidTime()!=null)
-                rec.set("paid_time", order.getPaidTime().getTime());
-            
-            if(transaction.getShippingDetails().getShipmentTrackingDetails().length>0){
-                ShipmentTrackingDetailsType stdt = transaction.getShippingDetails().getShipmentTrackingDetails(0);
-                rec.set("shipment_tracking_number", stdt.getShipmentTrackingNumber());
-                rec.set("shipping_carrier_used", stdt.getShippingCarrierUsed());//送货公司
+            for(int j = 0; j < tType.length; j++){
+            	System.out.println(num);
+            	num++;
+            	
+            	Record rec = new Record();
+            	TransactionType transaction = tType[j];//只获取第一个
+                rec.set("order_id", order.getOrderID());
+                rec.set("created_time", order.getCreatedTime().getTime()); 
+                rec.set("transaction_id", transaction.getTransactionID());
+                rec.set("item_id", transaction.getItem().getItemID());
+                rec.set("sku", transaction.getItem().getSKU());
+                rec.set("total", order.getTotal().getValue());
+                rec.set("total_currency_id", order.getTotal().getCurrencyID().value());
+                rec.set("buyer_user_ID", order.getBuyerUserID());
+                rec.set("seller_user_ID", order.getSellerUserID());
+                rec.set("order_status", order.getOrderStatus().value());
+                if(order.getShippedTime()!=null)
+                    rec.set("shipped_time", order.getShippedTime().getTime());
+                if(order.getPaidTime()!=null)
+                    rec.set("paid_time", order.getPaidTime().getTime());
+                
+                if(transaction.getShippingDetails().getShipmentTrackingDetails().length>0){
+                    ShipmentTrackingDetailsType stdt = transaction.getShippingDetails().getShipmentTrackingDetails(0);
+                    rec.set("shipment_tracking_number", stdt.getShipmentTrackingNumber());
+                    rec.set("shipping_carrier_used", stdt.getShippingCarrierUsed());//送货公司
+                }
+                
+                rec.set("sales_record_number", transaction.getShippingDetails().getSellingManagerSalesRecordNumber());
+                rec.set("sales_record_parent_number", order.getShippingDetails().getSellingManagerSalesRecordNumber());
+                
+                //Record oldRec = Db.findFirst("select * from ebay_order where order_id=?", order.getOrderID());
+                Record oldRec = Db.findFirst("select * from ebay_order where order_id=? and sales_record_number=?", order.getOrderID(),rec.get("sales_record_number"));
+                if(oldRec != null){
+                    rec.set("id", oldRec.getLong("id"));
+                    Db.update("ebay_order", rec);
+                }else{
+                    Db.save("ebay_order", rec);
+                }
+                
+                recList.add(rec);
             }
-            
-            rec.set("sales_record_number", transaction.getShippingDetails().getSellingManagerSalesRecordNumber());
-            
-            Record oldRec = Db.findFirst("select * from ebay_order where order_id=?", order.getOrderID());
-            if(oldRec != null){
-                rec.set("id", oldRec.getLong("id"));
-                Db.update("ebay_order", rec);
-            }else{
-                Db.save("ebay_order", rec);
-            }
-            
-            
-            
-            recList.add(rec);
         }
         
         renderJson(recList);
