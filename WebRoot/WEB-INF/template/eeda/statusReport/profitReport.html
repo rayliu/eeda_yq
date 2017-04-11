@@ -42,13 +42,23 @@
 								id:'customer_id', label:'客户名称', value: '' }){} %>
 							</div>
 						</div>
-						
 						<div class="form-group button-bar" >
                                 <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
                                 <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
                         </div>
+                        <div class="form-group" style="display:none" >
+                            <label>总件数汇总：</label><span id="pieces_total" style="color:black"></span><br>
+		                    <label>总重量汇总(毛重)：<span id="gross_weight_total" style="color:black"></span><br>
+		                    <label>总体积汇总(立方)：<span id="volume_total" style="color:black"></span><br>
+		                    <label>海运货量TEU汇总：</label><span id="ocean_fcl_teu_total" style="color:black"></span><br>
+		                    <label>票数汇总(海运货量)：</label><span id="ocean_fcl_bill_total" style="color:black"></span><br>
+		                    <label>海运散货(立方)汇总：</label><span id="ocean_lcl_cbm_total" style="color:black"></span><br>
+		                    <label>票数汇总(海运散货)：</label><span id="ocean_lcl_bill_total" style="color:black"></span><br>
+		                    <label>空运货量(公斤)汇总：</label><span id="ari_kg_total" style="color:black"></span><br>
+		                    <label>票数汇总(空运货量)：</label><span id="ari_kg_bill_total" style="color:black"></span><br>
+                        </div>
 					</form>
-					<%include("/eeda/component/form/detailTable.html", 
+					<%include("/eeda/component/form/detailTableWithFoot.html", 
                                 {
                                     id:'eeda-table', 
                                     style:'width:1600px',
