@@ -121,6 +121,7 @@ import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
 import controllers.issue.ebay.cacellation.EbayCancellationController;
+import controllers.issue.ebay.ebayNotReceive.EbayNotReceiveController;
 import controllers.issue.ebay.ebayReturn.EbayReturnController;
 import controllers.msg.EwmsDashBoardController;
 import controllers.msg.YqDashBoardController;
@@ -233,11 +234,11 @@ public class EedaConfig extends JFinalConfig {
     }
     
     private void setErpRoute(Routes me, String contentPath) {
-        me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
         me.add("/ebaySalesOrder", EbaySalesOrderController.class, contentPath);
         me.add("/ebayMemberMsg", EbayMemberMsgController.class, contentPath);
         me.add("/ebayReturn", EbayReturnController.class, contentPath);
         me.add("/ebayCancellation", EbayCancellationController.class, contentPath);
+        me.add("/ebayOrderInquiries", EbayNotReceiveController.class, contentPath);
         
         me.add("/amazonSalesOrder", AmazonSalesOrderController.class, contentPath);
         me.add("/aliexpressSalesOrder", AliexpressSalesOrderController.class, contentPath);
@@ -258,10 +259,12 @@ public class EedaConfig extends JFinalConfig {
 	private void setScmRoute(Routes me, String contentPath) {
 		// yh project controller
 
+        
         me.add("/", controllers.eeda.MainController.class, contentPath);
         me.add("/module", ModuleController.class, contentPath);
         me.add("/dashBoard", YqDashBoardController.class);
 
+        me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
         
         me.add("/eWmsDashBoard", EwmsDashBoardController.class, contentPath);
         me.add("/tradeItem", TradeItemController.class, contentPath);

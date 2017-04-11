@@ -1,4 +1,4 @@
-package controllers.issue.ebay.cacellation;
+package controllers.issue.ebay.ebayNotReceive;
 
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
@@ -44,9 +44,9 @@ import controllers.util.OkHttpUtil;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class EbayCancellationController extends Controller {
+public class EbayNotReceiveController extends Controller {
     private ApiContext apiContext = null;
-    private Log logger = Log.getLog(EbayCancellationController.class);
+    private Log logger = Log.getLog(EbayNotReceiveController.class);
 
     @Before(EedaMenuInterceptor.class)
     public void index() {
@@ -65,7 +65,7 @@ public class EbayCancellationController extends Controller {
         List<Record> ebayAcountList = Db.find(sql);
         setAttr("ebayAcountList", ebayAcountList);
 
-        render("/issue/ebay/cancellation/ebayCancellationList.html");
+        render("/issue/ebay/notReceive/ebayNotReceiveList.html");
     }
 
     public void list() {
@@ -79,7 +79,7 @@ public class EbayCancellationController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "select * from ebay_cancellation A where office_id = "
+        String sql = "select * from ebay_inquiry A where office_id = "
                 + user.getLong("office_id");
 
         String condition = DbUtils.buildConditions(getParaMap());
@@ -90,7 +90,7 @@ public class EbayCancellationController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
 
         List<Record> orderList = Db.find(sql + condition
-                + " order by cancel_request_date desc " + sLimit);
+                + " order by creation_date desc " + sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
@@ -99,8 +99,19 @@ public class EbayCancellationController extends Controller {
         renderJson(map);
     }
 
+    public void getMemberMsg() {
+        long id = getParaToLong("id");
+        long item_id = getParaToLong("item_id");
+        // Record rec = Db.findById("ebay_member_msg", id);
 
-    public void importCancellation() {
+        List<Record> rec = Db
+                .find("select * from ebay_member_msg where item_id = ? ORDER BY creation_date",
+                        item_id);
+
+        renderJson(rec);
+    }
+
+    public void importData() {
         try {
             UserLogin user = LoginUserController.getLoginUser(this);
             long office_id = user.getLong("office_id");
@@ -112,11 +123,11 @@ public class EbayCancellationController extends Controller {
             }
             
             Request request = new Request.Builder()
-            .url("https://api.ebay.com/post-order/v2/cancellation/search?creation_date_range_from=2017-02-01T00:00:00.000Z")
+            .url("https://api.ebay.com/post-order/v2/inquiry/search?inquiry_creation_date_range_from=2016-05-01T00:00:00.000Z")
             .get()
             .addHeader("authorization", "TOKEN "+token)
-            .addHeader("x-ebay-c-marketplace-id", "EBAY_US, EBAY_UK, EBAY_DE, EBAY_AU, EBAY_CA")
             .addHeader("content-type", "application/json")
+            .addHeader("x-ebay-c-marketplace-id", "EBAY_US, EBAY_UK, EBAY_DE, EBAY_AU, EBAY_CA")
             .addHeader("accept", "application/json")
             .build();
             Response response = OkHttpUtil.execute(request);
@@ -136,51 +147,54 @@ public class EbayCancellationController extends Controller {
     }
 
     private void handleResponse(String responseStr, long office_id) throws Exception{
+        Date rightNow = new Date();
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         Map json = new Gson().fromJson(responseStr, Map.class);
-        List<Map> list = (List<Map>) json.get("cancellations");
+        List<Map> list = (List<Map>) json.get("members");
         for (Map map : list) {
             Record rec = new Record();
-            String cancelId= map.get("cancelId").toString();
-            rec.set("cancel_id", cancelId);
-            rec.set("marketplace_id", map.get("marketplaceId"));
-            rec.set("legacy_order_id", map.get("legacyOrderId"));
-            rec.set("requestor_type", map.get("requestorType"));
-            rec.set("cancel_reason", map.get("cancelReason"));
-            rec.set("cancel_state", map.get("cancelState"));
+            String inquiryId= map.get("inquiryId").toString();
+            rec.set("inquiry_id", inquiryId);
+            rec.set("item_id", map.get("itemId"));
+            rec.set("transaction_id", map.get("transactionId"));
+            rec.set("buyer", map.get("buyer"));
+            rec.set("seller", map.get("seller"));
+            rec.set("inquiry_status_enum", map.get("inquiryStatusEnum"));
+            Map claimAmount = (Map) map.get("claimAmount");
+            if(claimAmount!=null){
+                rec.set("claim_amount", (Double)claimAmount.get("value"));
+                rec.set("claim_amount_currency", claimAmount.get("currency"));
+            }
             
-            rec.set("cancel_status", map.get("cancelStatus"));
-            rec.set("cancel_close_reason", map.get("cancelCloseReason"));
-            rec.set("payment_status", map.get("paymentStatus"));
            
-            Map requestRefundAmount = (Map)map.get("requestRefundAmount");
-            rec.set("request_refund_amount", (Double)requestRefundAmount.get("value"));
-            rec.set("request_refund_amount_currency", requestRefundAmount.get("currency"));
+            Map respondByDate = (Map)map.get("respondByDate");
+            String respondByDateStr = respondByDate.get("value").toString().replaceAll("Z$", "+0000");
+            Date d = sdf.parse(respondByDateStr);
+            rec.set("respond_by_date", d);
             
-            Map cancelRequestDate = (Map)map.get("cancelRequestDate");
-            String cancelRequestDateValue = (String) cancelRequestDate.get("value");
-            Date d = sdf.parse(cancelRequestDateValue.replaceAll("Z$", "+0000"));
-            rec.set("cancel_request_date", d);
+            Map creationDate = (Map)map.get("creationDate");
+            String creationDateStr = creationDate.get("value").toString().replaceAll("Z$", "+0000");
+            d = sdf.parse(creationDateStr);
+            rec.set("creation_date", d);
             
-            Map cancelCloseDate = (Map)map.get("cancelCloseDate");
-            String cancelCloseDateValue = (String) cancelRequestDate.get("value");
-            d = sdf.parse(cancelCloseDateValue.replaceAll("Z$", "+0000"));
-            rec.set("cancel_close_date", d);
+            Map lastModifiedDate = (Map)map.get("lastModifiedDate");
+            String lastModifiedDateStr = lastModifiedDate.get("value").toString().replaceAll("Z$", "+0000");
+            d = sdf.parse(lastModifiedDateStr);
+            rec.set("last_modified_date", d);
             
             rec.set("office_id", office_id);
             
-            Record oldRec = Db.findFirst("select * from ebay_cancellation where cancel_id=?", cancelId);
+            Record oldRec = Db.findFirst("select * from ebay_inquiry where inquiry_id=?", inquiryId);
             if(oldRec!=null){
                 rec.set("id", oldRec.get("id"));
-                Db.update("ebay_cancellation", rec);
+                Db.update("ebay_inquiry", rec);
             }else{
-                Db.save("ebay_cancellation", rec);
+                Db.save("ebay_inquiry", rec);
             }
             
         }
     }
-    
-    public void replyCancellation() {
+    public void replyMsg() {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
         apiContext = new EbayApiContextUtil(office_id).getApiContext();

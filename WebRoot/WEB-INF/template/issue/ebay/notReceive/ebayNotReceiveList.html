@@ -63,13 +63,16 @@
                             id:'eeda_table',
                             width: '1150px',
                             headers:[
-                                'Cancel Id',
-                                '订单号',
-                                '取消原因',
+                                'Inquiry ID',
+                                'TransactionID',
+                                'ItemID',
+                                '买家',
+                                '卖家',
+                                '金额',
                                 '发起日期',
-                                '取消状态',
-                                '最迟回应时间'
-                                ]
+                                '更新日期',
+                                '最迟回应时间',
+                                '状态']
                         }){} %>
                 
             </div><!-- /.row -->
@@ -131,6 +134,6 @@
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
       $.blockUI();
-    	requirejs(['app/issue/cancellation/ebayCancellationList']);
+    	requirejs(['app/issue/ebay/notReceive/ebayNotReceiveList']);
     });
 </script>
