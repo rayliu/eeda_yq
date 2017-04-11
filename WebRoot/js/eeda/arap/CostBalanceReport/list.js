@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
   	document.title = '应付余额汇总表  | '+document.title;
+  	  
+  	  $("#breadcrumb_li").text('应付余额汇总表');
   	  $('#menu_cost').addClass('active').find('ul').removeClass('in');
   	  
   	  

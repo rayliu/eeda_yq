@@ -1,21 +1,7 @@
 <%layout("/eeda/layout.html"){%>
         <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="btn-header">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-list fa-fw"></i>应付余额汇总表
-                        </div>
-
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade active in" id="unselected">
-                                <div class="panel-body">
+           <div class="row simple_search_div">
+            	<div class="col-lg-12">
                                      <form id="orderForm">
                                         <div class="row">
                                             <div class="col-lg-4" style="display:none">
@@ -54,13 +40,8 @@
                                             headers:['客户','币制','未付款余额（应付余额）','已付款金额','应付金额','付款率（%）'
                                             ]
                                         }){} %>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-          
+                </div> <!-- /.col-lg-12 -->
+            </div> <!-- /.simple_search_div -->
         </div><!-- end of  .page-wrapper-->
 
 <%}%>
