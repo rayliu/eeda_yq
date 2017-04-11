@@ -41,7 +41,7 @@ $(document).ready(function() {
             }
             companyList.empty();
             for(var i = 0; i < data.length; i++)
-                companyList.append("<li><a class='fromLocationItem popListItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' phone='"+data[i].PHONE+"' fax='"+data[i].FAX+"' partyId='"+data[i].ID+"' address='"+data[i].ADDRESS+"' >"+data[i].ABBR+"</a></li>");
+                companyList.append("<li><a class='fromLocationItem popListItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' phone='"+data[i].PHONE+"' fax='"+data[i].FAX+"' partyId='"+data[i].ID+"' zip_code='"+data[i].ZIP_CODE+"' address='"+data[i].ADDRESS+"' >"+data[i].ABBR+"</a></li>");
             companyList.css({ 
                 left:$(me).position().left+"px", 
                 top:$(me).position().top+28+"px" 
@@ -68,11 +68,14 @@ $(document).ready(function() {
         var contact_person = $(this).attr('contact_person');
         var phone = $(this).attr('phone');
         var fax = $(this).attr('fax');
+        var zip_code = $(this).attr('zip_code');
        	if(address==''||address=='undefined'||address=="null"){
                address='';
         }
        	if(contact_person==''||contact_person=='undefined'||contact_person=="null"){
                contact_person='';
+        }else{
+        	contact_person='ATTN:'+contact_person+'\r';
         }
        	if(phone==''||phone=='undefined'||phone=="null"){
                phone='';
@@ -84,7 +87,12 @@ $(document).ready(function() {
         }else{
         	fax = 'FAX:'+fax;
         }
-        infoField.val(address+'\r'+contact_person+'\r'+phone+fax);
+        if(zip_code==''||zip_code=='undefined'||zip_code=="null"){
+        	zip_code='';
+        }else{
+        	zip_code = 'ZIP CODE:'+zip_code+'\r';
+        }
+        infoField.val(address+'\r'+zip_code+contact_person+phone+fax);
     });
 
     // 1 没选中客户，焦点离开，隐藏列表
