@@ -12,7 +12,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           ajax: "/chargeBalanceReport/list",
           initComplete:function(settings){
     	  cssTd();
-      },
+          },
           columns: [
       			{ "data": "ABBR", "width": "120px"},
       			{ "data": "CHARGE_CNY", "width": "80px",

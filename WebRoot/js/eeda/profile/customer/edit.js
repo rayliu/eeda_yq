@@ -222,6 +222,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             order.customer_remind = $("#customer_remind").val();
             order.registration = $("#registration").val();
             order.custom_registration = $("#custom_registration").val();
+            order.zip_code = $("#zip_code").val();
             order.docItem = buildDocItem();
             		
             order.customer_quotationItem=itemOrder.buildCustomerQuotationDetail();
