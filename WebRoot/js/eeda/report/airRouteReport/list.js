@@ -1,6 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '运营报表  | '+document.title;
+  	document.title = '空运路线运营报表  | '+document.title;
+  	$('#breadcrumb_li').text('空运路线运营报表');
   	
   	//datatable, 动态处理
       var dataTable = eeda.dt({
@@ -16,7 +17,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "data": "PIECES", 
                 "render": function ( data, type, full, meta ) {
                   if(data){
-                    return "<span class='pull-right'>"+data + "</span>";
+                    return "<span class=''>"+data + "</span>";
                   } else {
                     return '';
                   }
@@ -25,7 +26,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "data": "VOLUME", 
                 "render": function ( data, type, full, meta ) {
                   if(data){
-                    return "<span class='pull-right'>"+(data).toFixed(2) + "</span>";
+                    return "<span class=''>"+(data).toFixed(2) + "</span>";
                   } else{
                     return '';
                   }
@@ -34,7 +35,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "data": "ARI_KG",
                 "render": function ( data, type, full, meta ) {
                     if(data){
-                      return "<span class='pull-right'>"+(data).toFixed(2) + "</span>";
+                      return "<span class=''>"+(data).toFixed(2) + "</span>";
                     } else{
                       return '';
                   }
@@ -68,6 +69,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  begin_date = $("#month_begin_time").val();
               end_date = $("#month_end_time").val();
           }
+          
+          
+        //合计字段
+          $.post('airRouteReport/listTotal',{
+        	  customer_id:customer_id,
+        	  date_type:date_type,
+        	  end_date:end_date,
+        	  end_date:end_date
+          },function(data){
+        	  var pieces_total = parseFloat(data.PIECES_TOTAL);
+        	  var gross_weight_total = parseFloat(data.GROSS_WEIGHT_TOTAL);
+        	  var volume_total = parseFloat(data.VOLUME_TOTAL);
+        	  var ari_kg_total = parseFloat(data.ARI_KG_TOTAL);
+        	  var total=parseFloat(data.TOTAL);
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html(eeda.numFormat(pieces_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html(eeda.numFormat(gross_weight_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html(eeda.numFormat(volume_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html(eeda.numFormat(ari_kg_total,3));
+
+          });
          
           
           //增加出口日期查询
@@ -98,6 +120,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  }
       })
  
-
+      searchData(); 
   });
 });
