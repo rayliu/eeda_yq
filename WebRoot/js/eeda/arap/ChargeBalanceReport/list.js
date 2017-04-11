@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   $(document).ready(function() {
   	document.title = '客户应收余额汇总表  | '+document.title;
   		
-  	$("#breadcrumb_li").text('客户应收余额汇总表');
+  	$("#breadcrumb_li").text('应收余额汇总表');
   	  $('#menu_cost').addClass('active').find('ul').removeClass('in');
   	  
       var dataTable = eeda.dt({
