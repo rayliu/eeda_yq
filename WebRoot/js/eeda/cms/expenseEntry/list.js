@@ -40,7 +40,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            	"render": function ( data, type, full, meta ) {
 			            var strcheck='';
 			            if(full.CHARGE_MSG) {strcheck+='<span style="color:red">应收：</span><br/>'+full.CHARGE_MSG};
-			            if(full.COST_MSG) {strcheck+='<br/><span style="color:red">应付：</span><br/>'+full.CHARGE_MSG};
+			            if(full.COST_MSG) {strcheck+='<br/><span style="color:red">应付：</span><br/>'+full.COST_MSG};
 			        	return strcheck;
 			        }
 	        	},
