@@ -514,15 +514,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         }
     });
 
-    //当报关单号码为空时，隐藏费用信息
-    var val=$('#customs_billCode').val();
-    if(!val) $('#chargeDetail_tab').hide();
-    if(val) $('#chargeDetail_tab').show()
-    $('#customs_billCode').blur(function(){
-    // on('keyup',function(){
-        var val=$('#customs_billCode').val().trim();
+    //当报关单号码或者提运单号为空时，隐藏费用信息
+    var chargeDetail_tabShow=function(){
+    	var val_billCode=$('#customs_billCode').val();
+        var val_no=$('#copyTracking_no').val();
+        var val=val_billCode+val_no;
         if(!val) $('#chargeDetail_tab').hide();
         if(val) $('#chargeDetail_tab').show()
+    }
+    chargeDetail_tabShow();
+    $('#customs_billCode,#copyTracking_no').blur(function(){
+    // on('keyup',function(){
+    	chargeDetail_tabShow();
     })
   });
 });
