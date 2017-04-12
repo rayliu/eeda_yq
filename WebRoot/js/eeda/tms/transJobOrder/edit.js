@@ -4,7 +4,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
-	$('#breadcrumb_li').text('工作单');
+	$('#breadcrumb_li').text('工作单详细信息');
 	 //柜号限制输入位为11位数，
 	$("#orderForm").validate({
 	    rules: {
@@ -49,7 +49,7 @@ $(document).ready(function() {
 	$('#saveBtn').click(function(e){
         //提交前，校验数据
     	if(!$('#orderForm').valid()){
-    		$.scojs_message('有必填字段未填', $.scojs_message.TYPE_ERROR);
+    		$.scojs_message('客户为必填字段未填', $.scojs_message.TYPE_ERROR);
     		return false;
         }
     	

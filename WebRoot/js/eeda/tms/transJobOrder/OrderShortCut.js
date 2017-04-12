@@ -1,6 +1,7 @@
 define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN'], function ($, metisMenu,template) {
   $(document).ready(function() {
-  	document.title = '工作单查询   | '+document.title;
+  	document.title = '托运单快速录入   | '+document.title;
+  	$('#breadcrumb_li').text('托运单快速录入');
   	  
       var deletedTableIds=[];
         var bindFieldEvent=function(){
@@ -28,9 +29,12 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
   	//datatable, 动态处理
       var dataTable = eeda.dt({
           id: 'eeda-table',
-          paging: true,
+//          paging: true,
           // serverSide: true, //不打开会出现排序不对
-          // ajax: "/transJobOrder/list?",
+          autoWidth: false,
+          scrollY: 530,
+          
+          scrollCollapse: true,
           "drawCallback":function(settings){
             bindFieldEvent();
           },
@@ -497,7 +501,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
               item.action = id.length > 0?'UPDATE':'CREATE';
               if($(row).find('[type=checkbox]').prop('checked')){
                     cargo_items_array.push(item);
-                    dataTable.row(row).remove().draw();
+//                    dataTable.row(row).remove().draw();
                  }
           }
 

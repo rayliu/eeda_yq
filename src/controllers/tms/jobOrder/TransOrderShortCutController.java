@@ -3,8 +3,6 @@ package controllers.tms.jobOrder;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,42 +10,24 @@ import java.util.List;
 import java.util.Map;
 
 import models.ParentOfficeModel;
-import models.Party;
-import models.UserCustomer;
 import models.UserLogin;
-import models.eeda.oms.PlanOrder;
-import models.eeda.oms.PlanOrderItem;
-import models.eeda.oms.jobOrder.JobOrderSendMail;
-import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
-import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.tms.TransJobOrder;
-import models.eeda.tms.TransJobOrderArap;
-import models.eeda.tms.TransJobOrderDoc;
 import models.eeda.tms.TransJobOrderLandItem;
 import models.yh.profile.Carinfo;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.EmailAttachment;
-import org.apache.commons.mail.MultiPartEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
-
-import sun.misc.BASE64Encoder;
 
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
-import com.jfinal.plugin.activerecord.tx.Tx;
-import com.jfinal.upload.UploadFile;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import controllers.profile.LoginUserController;
-import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
 
@@ -180,10 +160,6 @@ public class TransOrderShortCutController extends Controller {
 //			saveFinItemQueryHistory(chargeCost_list);
    		}
 	
-//		setAttr("order", transJobOrder);
-//		setAttr("emailTemplateInfo", getEmailTemplateInfo());
-//    	setAttr("emailTemplateInfo", getEmailTemplateInfo());
-//    	setAttr("loginUser",LoginUserController.getLoginUserName(this));
    		
    		Record r =new Record();
    		r.set("ids",ids);

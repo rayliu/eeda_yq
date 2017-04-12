@@ -42,7 +42,6 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -160,6 +159,10 @@ public class TransJobOrderController extends Controller {
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
         String customer_id = (String)dto.get("customer_id");
         
+//        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");//转换后的格式
+        String jobOrderDate = sdf.format(new Date()).toString();
+        
         TransJobOrder transJobOrder = new TransJobOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
@@ -168,7 +171,7 @@ public class TransJobOrderController extends Controller {
    			transJobOrder = TransJobOrder.dao.findById(id);
 
    			if(!type.equals(transJobOrder.get("type"))){
-	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
+	   			String order_no = OrderNoGenerator.getNextOrderNo("HT", office_id);
 	   			transJobOrder.set("order_no", order_no);
    			}
             
@@ -182,7 +185,11 @@ public class TransJobOrderController extends Controller {
    			DbUtils.setModelValues(dto, transJobOrder);
    			
    			//需后台处理的字段
-   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
+   			String order_no = OrderNoGenerator.getNextOrderNo("HT", office_id);
+   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
+   			sb.replace(2, 5, jobOrderDate);
+   			order_no =sb.toString();
+   			
    			transJobOrder.set("order_no", order_no);
    			transJobOrder.set("creator", user.getLong("id"));
    			transJobOrder.set("create_stamp", new Date());
