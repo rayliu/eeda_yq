@@ -101,10 +101,12 @@
         <button id="editRadio" style="display:none" ></button>
   </a>
 <%}%>
-<div class="modal fade" id="editMsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="editMsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"  data-backdrop="static">
   <div class="modal-dialog" style="width:1000px;">
     <div class="modal-content">
-      <div class="modal-header">站内信详情</div>
+      <div class="modal-header">站内信详情
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
             <form>
                 <div class="modal-body">
                     <div class="form-group">
