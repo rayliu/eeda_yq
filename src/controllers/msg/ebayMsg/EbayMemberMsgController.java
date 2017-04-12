@@ -22,6 +22,7 @@ import com.ebay.sdk.call.GetMemberMessagesCall;
 import com.ebay.soap.eBLBaseComponents.DetailLevelCodeType;
 import com.ebay.soap.eBLBaseComponents.MemberMessageExchangeType;
 import com.ebay.soap.eBLBaseComponents.MemberMessageType;
+import com.ebay.soap.eBLBaseComponents.MessageStatusTypeCodeType;
 import com.ebay.soap.eBLBaseComponents.MessageTypeCodeType;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
@@ -130,7 +131,7 @@ public class EbayMemberMsgController extends Controller {
             // api.setItemID(itemId);
             // }
 
-            api.setMailMessageType(MessageTypeCodeType.ALL);
+            
             // api.setMessageStatus(MessageStatusTypeCodeType.ANSWERED);
             // PaginationType pt = new PaginationType();
             // String entriesPerPage = this.txtEntriesPerPage.getText().trim();
@@ -142,8 +143,11 @@ public class EbayMemberMsgController extends Controller {
             // pt.setPageNumber(new Integer(pageNumber));
             // }
             // api.setPagination(pt);
+            api.setMailMessageType(MessageTypeCodeType.ASK_SELLER_QUESTION);
             DetailLevelCodeType[] detailLevel = { DetailLevelCodeType.RETURN_ALL };
             api.setDetailLevel(detailLevel);
+            api.setMessageStatus(MessageStatusTypeCodeType.CUSTOM_CODE);//这里设置了才能获取所有回复
+            api.setDisplayToPublic(false);
             MemberMessageExchangeType[] arrMessages = api.getMemberMessages();
             handleMsg(arrMessages);
 
@@ -162,6 +166,15 @@ public class EbayMemberMsgController extends Controller {
             MemberMessageExchangeType msg = arrMessages[i];
             rec.set("item_id", msg.getItem().getItemID());
             rec.set("message_id", msg.getQuestion().getMessageID());
+            
+            rec.set("seller_id", msg.getItem().getSeller().getUserID());
+            rec.set("selling_currency", msg.getItem().getSellingStatus().getCurrentPrice().getCurrencyID().value());
+            rec.set("selling_price", msg.getItem().getSellingStatus().getCurrentPrice().getValue());
+            rec.set("title", msg.getItem().getTitle());
+            rec.set("message_type", msg.getQuestion().getMessageType().value());
+            rec.set("question_type", msg.getQuestion().getQuestionType().value());
+            rec.set("display_to_public", msg.getQuestion().isDisplayToPublic()==true?"Y":"N");
+            
             rec.set("sender_id", msg.getQuestion().getSenderID());
             rec.set("sender_email", msg.getQuestion().getSenderEmail());
             
