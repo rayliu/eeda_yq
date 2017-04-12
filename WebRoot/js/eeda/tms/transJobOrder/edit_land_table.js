@@ -112,13 +112,13 @@ $(document).ready(function() {
             { "data":"ID","width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(data)
-	            		return '<span class="btn btn-success btn-xs fileinput-button" style="width:100px">' 
+	            		return '<span class="btn table_btn btn-default btn-xs fileinput-button" style="width:100px">' 
 		                		+'<i class="glyphicon glyphicon-plus"></i>'
 		                		+'<span>上传签收文件</span>'
 		                		+'<input class="upload" type="file" multiple>'
 		                		+'</span>'
 		            else
-		            	return '<span class="btn btn-default btn-xs fileinput-button" style="width:100px" title="请先保存再上传文件">' 
+		            	return '<span class="btn table_btn btn-default btn-xs fileinput-button" style="width:100px" title="请先保存再上传文件">' 
 		                		+'<i class="glyphicon glyphicon-plus"></i>'
 		                		+'<span>上传签收文件</span>'
 		                		+'<input  class="upload" type="button" disabled>'
@@ -161,20 +161,19 @@ $(document).ready(function() {
                     return field_html;
             	}
             },
-            { "data": "TAKE_ADDRESS", "width": "150px", "className":"consigner_addr",
+            { "data": "CLOSING_DATE", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
-                            data='';
-                        var field_html = template('table_dock_no_field_template',
-                            {
-                                id: 'TAKE_ADDRESS',
-                                value: data,
-                                display_value: full.TAKE_ADDRESS_NAME,
-                                style:'width:180px',
-                            }
-                        );
-                        return field_html;
-                    }
+                        data='';
+                    var field_html = template('table_date_field_template',
+	                    {
+	                        id: 'CLOSING_DATE',
+	                        value: data.substr(0,19),
+	                        style:'width:180px'
+	                    }
+	                );
+                    return field_html;
+            	}
             },
             { "data": "LOADING_WHARF1", "width": "150px", "className":"consigner_addr",
                 "render": function ( data, type, full, meta ) {
@@ -200,21 +199,6 @@ $(document).ready(function() {
                                 id: 'LOADING_WHARF2',
                                 value: data,
                                 display_value: full.LOADING_WHARF2_NAME,
-                                style:'width:180px',
-                            }
-                        );
-                        return field_html;
-                    }
-            },
-            { "data": "DELIVERY_ADDRESS", "width": "150px", "className":"consignee_addr",
-            	"render": function ( data, type, full, meta ) {
-                if(!data)
-                            data='';
-                        var field_html = template('table_dock_no_field_template',
-                            {
-                                id: 'DELIVERY_ADDRESS',
-                                value: data,
-                                display_value: full.DELIVERY_ADDRESS_NAME,
                                 style:'width:180px',
                             }
                         );

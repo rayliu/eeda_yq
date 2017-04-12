@@ -291,14 +291,14 @@ $(document).ready(function() {
                 	var str="<nobr>";
                 	if(full&&full.AUDIT_FLAG == 'Y'){
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> '; 
+                		str+= '<button type="button" class="btn btn_green" style="width:50px"  disabled>确认</button> '; 
                 		}
                 	else if(full.ID){
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" id="chargeConfirm" class=" btn btn-success btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" id="chargeConfirm" class=" btn btn_green" style="width:50px" value="'+full.ID+'" >确认</button> ';		
                 	}else{
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:50px"  disabled>确认</button> ';
+                		str+= '<button type="button" class="btn btn_green" style="width:50px"  disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;

@@ -211,7 +211,8 @@ $(document).ready(function() {
 	});
     
     $('#take_wharf_list').on('mousedown', '.fromLocationItem', function(e){
-        $('#land_table tr:eq(1)').find('[name=take_address]').val($(this).text());
+        $('#back_wharf_input').val($(this).text());
+        $('#back_wharf').val($(this).attr('dock_id'));
     });
     $('#back_wharf_list').on('mousedown', '.fromLocationItem', function(e){
         $('#land_table tr:eq(2)').find('[name=delivery_address]').val($(this).text());
