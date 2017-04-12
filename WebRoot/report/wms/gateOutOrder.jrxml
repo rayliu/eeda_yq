@@ -162,7 +162,7 @@
 			<staticText>
 				<reportElement x="270" y="0" width="221" height="56" uuid="19c720f7-6f4f-4317-8bc3-ef04714cbcee"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="黑体" size="28" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<font fontName="黑体" size="28" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[出库单]]></text>
 			</staticText>

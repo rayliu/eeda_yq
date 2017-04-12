@@ -237,13 +237,6 @@ GROUP BY
 					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 			</textField>
-			<staticText>
-				<reportElement x="644" y="0" width="27" height="20" uuid="6fddac8a-19e4-4cb5-bab2-a1fa66ff07ae"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[合计:]]></text>
-			</staticText>
 		</band>
 	</summary>
 </jasperReport>
