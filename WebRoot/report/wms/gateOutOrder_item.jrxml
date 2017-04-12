@@ -190,7 +190,7 @@ GROUP BY
 			<textField isStretchWithOverflow="true" pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="35" y="0" width="107" height="20" uuid="b06a53d5-ef87-4a5d-89e0-bd521a599fc2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{item_name}]]></textFieldExpression>
 			</textField>
@@ -204,7 +204,7 @@ GROUP BY
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="272" y="0" width="133" height="20" uuid="57160360-1b80-4610-a975-0856dd7f71d4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{part_name}]]></textFieldExpression>
 			</textField>
@@ -224,19 +224,6 @@ GROUP BY
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="20" splitType="Stretch">
-			<textField isBlankWhenNull="true">
-				<reportElement style="table_TD" x="0" y="0" width="671" height="19" uuid="86d8c89a-8857-49c1-8bfd-f62e82744681"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement style="table_TD" x="671" y="-1" width="131" height="20" uuid="44dd0914-c84c-42e4-8fd5-1eca399ebfe3"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-			</textField>
-		</band>
+		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>
