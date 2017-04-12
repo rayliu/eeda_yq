@@ -1,0 +1,137 @@
+<%layout("/eeda/layout.html"){%>
+    <div id="page-wrapper">
+        <div class="row simple_list_div">
+        	<ul id="myTab" class="nav nav-tabs">
+				<li class="active">
+					<a href="#gateOutList" data-toggle="tab" >
+						待出库列表
+					</a>
+				</li>
+				<li><a href="#orderList" data-toggle="tab">出库单列表</a></li>
+			</ul>
+        	<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade in active" id="gateOutList">
+					<div class="row simple_search_div">
+			            <div class="col-lg-12">
+			                <form id="orderForm">
+			                    <div class="row">
+			                    	<div class="col-lg-4">
+			                        	<%include("/eeda/component/form/inputField.html", 
+			                        	{ 	id: 'item_no', 
+			                            	label: '产品编码', 
+			                            	value: 'BX1388-SP01'
+			                        	}){}%>
+			                        </div>
+			                        <div class="col-lg-4">
+			                        	<%include("/eeda/component/form/inputField.html", 
+			                        	{ 	id: 'quantity', 
+			                            	label: '数量', 
+			                            	value: ''
+			                        	}){}%>
+			                        </div>
+			                        <div class="col-lg-4" style="display:none;">        
+			                            <%include("/eeda/component/form/inputDateQueryField.html", 
+			                            {	id:'create_time', 
+				                            label:'创建时间', 
+				                            value:''
+				                        }){} %>
+			                        </div>
+			                    </div>
+			                   
+			                    <div class="form-group button-bar" >
+			                        <button id="searchBtn" class="btn btn-primary" type="button">查询</button>
+			                        <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
+									<button id="createBtn" class="btn btn-primary" type="button" disabled>创建出库单</button>
+			                    </div>
+			                </form>
+			            </div>
+			        </div>
+	                <%include("/eeda/component/form/detailTable.html", 
+	                {
+	                    id:'eeda-table', 
+	                    style:'width:1200px',
+	                    headers:[
+	                    	'',
+	                    	'产品名称',
+	                    	'产品编码',
+	                        '组件名称',
+	                        '组件编码',
+	                        '使用量',
+	                        '数量',
+	                        '货架',
+	                        '操作时间',
+	                        '操作人']
+	                }){} %>
+	             </div>
+	             <div class="tab-pane fade" id="orderList">
+	             	<%include("/eeda/component/form/detailTable.html", 
+	                {
+	                    id:'order_table', 
+	                    style:'width:1200px;',
+	                    headers:[
+	                    	'',
+	                        '单号',
+	                        '产品编号',
+	                        '产品数量',
+	                        '创建时间',
+	                        '操作人']
+	                }){} %>
+	             </div>
+	        </div>
+        </div>
+        
+       <div class="modal fade" id="itemDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" style="width:1200px;">
+		    <div class="modal-content">
+		      	<div class="modal-header">出库单明细列表</div>
+		      	<div class="modal-body">
+					<div class="row">
+					</div>
+					<div class="">  
+						 <%include("/eeda/component/form/detailTable.html", 
+                        { 
+						id:'item_table', 
+						style:'width:1300px',
+						headers:[
+		                    	'产品名称',
+		                    	'产品编码',
+		                        '组件名称',
+		                        '组件编码',
+		                        '库位',
+		                        '数量']
+						}){} %>        
+	               </div>
+		        </div>
+		        <div class="modal-footer">
+		        	<button type="button" id="confirmBtn" disabled class="btn  btn-primary" style="display:none;">确认</button>
+		            <button type="button" id="returnBtn" class="btn  btn-default" data-dismiss="modal">返回</button>
+		        </div>
+		    </div>
+		  </div>
+		</div>
+		
+		
+		<div class="panel-heading">
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="false" data-backdrop="static">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body pre-scrollable">
+                    		<span id="msgLoad"></span>
+                    </div>
+                    <div class="modal-footer" id="footer" aria-hidden="true">
+                    	<button type="button" class="btn  btn-primary" id="confirm" style="display:none">确认</button>
+				  	<button type="button" class="btn  btn-primary" data-dismiss="modal" id="cancel">关闭</button>
+					</div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+<%}%>
+
+<script>
+	var order = {};
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/wms/gateOutOrder/list']);
+    });
+</script>
