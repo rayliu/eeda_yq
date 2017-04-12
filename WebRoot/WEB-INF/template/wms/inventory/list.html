@@ -7,14 +7,14 @@
                     	<div class="col-lg-4">
                         	<%include("/eeda/component/form/inputField.html", 
                         	{ 	id: 'item_no', 
-                            	label: '注塑件编码', 
+                            	label: '产品编码', 
                             	value: ''
                         	}){}%>
                         </div>
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
                             {   id: 'item_name', 
-                                label: '注塑件名称', 
+                                label: '产品名称', 
                                 value: ''
                             }){}%>
                         </div>
@@ -43,8 +43,9 @@
                         </div>
                     </div>
                     <div class="form-group button-bar" >
-                        <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+                        <button id="searchBtn" class="btn btn-primary" type="button">查询</button>
                         <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
+                        <!-- <button id="showBtn" class="btn btn-info" style="float:right;" type="button">显示明细</button> -->
                     </div>
                 </form>
             </div>
@@ -53,17 +54,12 @@
                 <%include("/eeda/component/form/detailTable.html", 
                 {
                     id:'eeda-table', 
-                    style:'width:1400px',
                     headers:[
                     	'',
-                    	'注塑件名称',
-                    	'注塑件号码',
-                        '组件名称',
-                        '组件号',
-                        '库位',
-                        '数量',
-                        '操作时间',
-                        '操作人']
+                    	'产品名称',
+                    	'产品编码',
+                        '数量'
+                        ]
                 }){} %>
         </div>
         
@@ -82,6 +78,42 @@
               </div>
             </div>
         </div>
+        
+        <a id='edit_detail' data-target='#itemDetail' data-toggle='modal' style="display:none">
+				<button class="btn btn-success btn-xs" id="add_cargo1">添加</button>
+		</a>
+        <div class="modal fade" id="itemDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" style="width:1200px;">
+		    <div class="modal-content">
+		      	<div class="modal-header">库存明细列表</div>
+		      	<div class="modal-body">
+					<div class="row">
+					</div>
+					<div class="">  
+						 <%include("/eeda/component/form/detailTable.html", 
+                        { 
+						id:'item_table', 
+						style:'width:1300px',
+						headers:[
+		                    	'qr Code',
+		                    	'产品名称',
+		                    	'产品编码',
+		                        '组件名称',
+		                        '组件编码',
+		                        '库位',
+		                        '数量',
+		                        '操作时间',
+		                        '操作人']
+						}){} %>        
+	               </div>
+		        </div>
+		        <div class="modal-footer">
+		        	<button type="button" id="confirmBtn" disabled class="btn  btn-primary" style="display:none;">确认</button>
+		            <button type="button" id="returnBtn" class="btn  btn-default" data-dismiss="modal">返回</button>
+		        </div>
+		    </div>
+		  </div>
+		</div>
     </div>
 <%}%>
 

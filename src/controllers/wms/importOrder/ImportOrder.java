@@ -121,12 +121,12 @@ public class ImportOrder extends Controller {
 				if (checkOrder.checkoutExeclTitle(title, order_type)) {
 					if("product".equals(order_type)){
 						// 内容校验
-						resultMap = checkOrder.importProductCheck(content);
+						//resultMap = checkOrder.importProductCheck(content);
 						
 						// 内容开始导入
-						if(resultMap.getBoolean("result")){
+						//if(resultMap.getBoolean("result")){
 							resultMap = checkOrder.importProductValue(content, userId, officeId);
-						}
+						//}
 					}
 				} else {
 					resultMap.set("result", false);

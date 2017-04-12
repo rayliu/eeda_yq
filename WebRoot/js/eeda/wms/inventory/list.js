@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 'validate_cn', 'sco','./item_list'], function ($, metisMenu) {
 	$(document).ready(function() {
     	document.title = '库存统计 | '+document.title;
 
@@ -9,7 +9,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             id: 'eeda-table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/gateIn/list?out_flag=N&error_flag=N",
+            ajax: "/inventory/list",
             columns:[
                 { "width": "30px",
                     "render": function ( data, type, full, meta ) {
@@ -19,18 +19,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 }, 
                 {"data": "ITEM_NAME", 
               	    "render": function ( data, type, full, meta ) {
-              		    return data;
+              	    	if(!data)
+              	    		data = '';
+              	    	return "<a class='item_detail' item_no='"+full.ITEM_NO+"' data-target='#itemDetail' data-toggle='modal'>"+data+"<i class='glyphicon glyphicon-th-list'></i></a>";
               	    }
                 },
-                { "data": "QR_CODE"}, 
-				{ "data": "PART_NAME"}, 
-				{ "data": "PART_NO"}, 
-				{ "data": "SHELVES"},
-				{ "data": "QUANTITY"},
-				{ "data": "CREATE_TIME"},
-				{ "data": "CREATOR_NAME"}
+                { "data": "ITEM_NO"}, 
+				{ "data": "TOTAL"}
             ]
         });
+        
+        
       
         $('#resetBtn').click(function(e){
         	$("#orderForm")[0].reset();
@@ -55,12 +54,24 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	        return item;
         };
       
-        var searchData=function(){
+        var searchData=function(showMsg){
         	var itemJson = buildCondition();
-        	var url = "/gateIn/list?out_flag=N&error_flag=N&jsonStr="+JSON.stringify(itemJson);
+        	var url = "/inventory/list?jsonStr="+JSON.stringify(itemJson);
         	dataTable.ajax.url(url).load();
         };
         
-        
+        $('#showBtn').on('click',function(){
+        	var showMsg = this.textContent;
+        	if(showMsg=='显示明细'){
+        		//执行明细信息
+        		this.textContent='显示汇总';
+        	}else{
+        		//执行汇总信息
+        		this.textContent='显示明细';
+        	}
+        	
+        	searchData(showMsg);
+        	
+        });
 	});
 });

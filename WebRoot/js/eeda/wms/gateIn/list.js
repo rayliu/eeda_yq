@@ -19,7 +19,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 },
                 {"data": "ITEM_NAME", 
               	  	"render": function ( data, type, full, meta ) {
-              	  		return "<a href='/wmsproduct/edit?id="+full.PRODUCT_ID+"'target='_blank'>"+data+"</a>";
+              	  		//return "<a href='/wmsproduct/edit?id="+full.PRODUCT_ID+"'target='_blank'>"+data+"</a>";
+              	  		return data;
               	  	}
                 },
                 { "data": "QR_CODE"}, 

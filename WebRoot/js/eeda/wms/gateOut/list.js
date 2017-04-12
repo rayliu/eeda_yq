@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	$(document).ready(function() {
     	document.title = '出库记录 | '+document.title;
 
-    	$("#breadcrumb_li").text('出库记录 ');
+    	$("#breadcrumb_li").text('出库记录列表 ');
 
     	//datatable, 动态处理
         var dataTable = eeda.dt({

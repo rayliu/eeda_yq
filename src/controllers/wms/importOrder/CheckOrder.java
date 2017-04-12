@@ -256,13 +256,13 @@ public class CheckOrder extends Controller {
 			conn.setAutoCommit(false);// 自动提交变成false
 			
 			for (Map<String, String> line :lines) {
-				String item_name = line.get("注塑件名称")==null?null:line.get("注塑件名称").trim();
-				String item_no = line.get("注塑件编码")==null?null:line.get("注塑件编码").trim();
-				String part_no = line.get("组件编码")==null?null:line.get("组件编码").trim();
-				String part_name = line.get("组件名称")==null?null:line.get("组件名称").trim();
-				String amount = line.get("数量")==null?null:line.get("数量").trim();
-				String unit = line.get("Un")==null?null:line.get("Un").trim();
-				String node = line.get("节点")==null?null:line.get("节点").trim();
+				String item_name = line.get("maktx")==null?null:line.get("maktx").trim();
+				String item_no = line.get("matnr")==null?null:line.get("matnr").trim();
+				String part_no = line.get("idnrk")==null?null:line.get("idnrk").trim();
+				String part_name = line.get("ojtxp")==null?null:line.get("ojtxp").trim();
+				String amount = line.get("bdmng")==null?null:line.get("bdmng").trim();
+				String unit = line.get("meins")==null?null:line.get("meins").trim();
+				String node = line.get("pid")==null?null:line.get("pid").trim();
 		
 
 				//默认值带入
@@ -373,12 +373,15 @@ public class CheckOrder extends Controller {
 	 */
 	@Before(Tx.class)
 	public Record importGateInValue(CSVReader csvReader, long officeId) {
+		Connection conn = null;
 		Record result = new Record();
 		result.set("result",true);
 		String repeatMsg = "";
 		int rowNumber = 0;
-		//JfinalKit.beginTran();
 		try {
+			conn = DbKit.getConfig().getDataSource().getConnection();
+			DbKit.getConfig().setThreadLocalConnection(conn);
+			conn.setAutoCommit(false);// 自动提交变成false
 			
 			String[] csvRow = null;//row  
             String[] title = null;
@@ -399,7 +402,9 @@ public class CheckOrder extends Controller {
 		                    order.set(titleName, value);
 	                	}else if("creator".equals(titleName)){
 	                		UserLogin ul = UserLogin.dao.findFirst("select * from user_login where c_name = ?",value);
-	                		order.set(titleName, ul.getLong("id"));
+	                		if(ul != null)
+	                			order.set(titleName, ul.getLong("id"));
+	                		order.set("creator_code", value);
 	                	}else if("qr_code".equals(titleName)){
 	                		order.set(titleName, value);
 	                		GateIn gi = GateIn.dao.findFirst("select * from gate_in where qr_code = ? and move_flag = ? and return_flag = ?",value,order.getStr("move_flag"),order.getStr("return_flag"));
@@ -414,16 +419,31 @@ public class CheckOrder extends Controller {
                 order.save();
                 rowNumber++;
             }
-            //JfinalKit.commit();
+            conn.commit();
 			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！<br/><br/>"+repeatMsg);
 		} catch (Exception e) {
-			//JfinalKit.rollback();
+			try {
+				if (null != conn)
+					conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
             
 			result.set("result", false);
 			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber)
 						+ "行时出现异常:" + e.getMessage() + "<br/>导入数据已取消！");
 			//throw new ActiveRecordException(e);
-		} 
+		}  finally {
+			try {
+				if (null != conn) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			} finally {
+				DbKit.getConfig().removeThreadLocalConnection();
+			}
+		}
 		return result;
 	}
 	
@@ -431,6 +451,7 @@ public class CheckOrder extends Controller {
 	
 	@Before(Tx.class)
 	public Record importGateOutCheck(CSVReader csvReader) {
+
 		Record result = new Record();
 		result.set("result",true);
 		String errorMsg = "";
@@ -461,18 +482,15 @@ public class CheckOrder extends Controller {
                 }    
                 rowNumber++;
             }
-            //JfinalKit.commit();
             if(StringUtils.isNotBlank(errorMsg)){
             	result.set("result", false);
             	result.set("cause", errorMsg);
             }
 		} catch (Exception e) {
-			//JfinalKit.rollback();
             
 			result.set("result", false);
 			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber)
 						+ "行时出现异常:" + e.getMessage() + "<br/>导入数据已取消！");
-			//throw new ActiveRecordException(e);
 		} 
 		return result;
 	}
@@ -485,12 +503,16 @@ public class CheckOrder extends Controller {
 	 */
 	@Before(Tx.class)
 	public Record importGateOutValue(CSVReader csvReader, long officeId) {
+		Connection conn = null;
 		Record result = new Record();
 		result.set("result",true);
 		String repeatMsg = "";
 		int rowNumber = 0;
-		//JfinalKit.beginTran();
 		try {
+			
+			conn = DbKit.getConfig().getDataSource().getConnection();
+			DbKit.getConfig().setThreadLocalConnection(conn);
+			conn.setAutoCommit(false);// 自动提交变成false
 			
 			String[] csvRow = null;//row  
             String[] title = null;
@@ -510,7 +532,9 @@ public class CheckOrder extends Controller {
 		                    order.set(titleName, value);
 	                	}else if("creator".equals(titleName)){
 	                		UserLogin ul = UserLogin.dao.findFirst("select * from user_login where c_name = ?",value);
-	                		order.set(titleName, ul.getLong("id"));
+	                		if(ul != null)
+	                			order.set(titleName, ul.getLong("id"));
+	                		order.set("creator_code", value);
 	                	}else if("qr_code".equals(titleName)){
 	                		order.set(titleName, value);
 	                		GateIn gi = GateIn.dao.findFirst("select * from gate_in where error_flag='N' and qr_code = ? and move_flag = ?",value,order.getStr("move_flag"));
@@ -533,16 +557,31 @@ public class CheckOrder extends Controller {
                 order.save();
                 rowNumber++;
             }
-            //JfinalKit.commit();
+            conn.commit();
 			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！<br/><br/>"+repeatMsg);
 		} catch (Exception e) {
-			//JfinalKit.rollback();
-            
+			try {
+				if (null != conn)
+					conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			
 			result.set("result", false);
 			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber)
 						+ "行时出现异常:" + e.getMessage() + "<br/>导入数据已取消！");
-			//throw new ActiveRecordException(e);
-		} 
+
+		} finally {
+			try {
+				if (null != conn) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			} finally {
+				DbKit.getConfig().removeThreadLocalConnection();
+			}
+		}
 		return result;
 	}
 	
@@ -554,11 +593,14 @@ public class CheckOrder extends Controller {
 	 */
 	@Before(Tx.class)
 	public Record importInvCheckValue(CSVReader csvReader, long officeId) {
+		Connection conn = null;
 		Record result = new Record();
 		result.set("result",true);
 		int rowNumber = 0;
-		//JfinalKit.beginTran();
 		try {
+			conn = DbKit.getConfig().getDataSource().getConnection();
+			DbKit.getConfig().setThreadLocalConnection(conn);
+			conn.setAutoCommit(false);// 自动提交变成false
 			
 			String[] csvRow = null;//row  
             String[] title = null;
@@ -578,7 +620,9 @@ public class CheckOrder extends Controller {
 		                    order.set(titleName, value);
 	                	} else if("creator".equals(titleName)){
 	                		UserLogin ul = UserLogin.dao.findFirst("select * from user_login where c_name = ?",value);
-	                		order.set(titleName, ul.getLong("id"));
+	                		if(ul != null)
+	                			order.set(titleName, ul.getLong("id"));
+	                		order.set("creator_code", value);
 	                	} 
                 	}
                 }    
@@ -611,17 +655,8 @@ public class CheckOrder extends Controller {
                 order.save();
                 rowNumber++;
                 
-                order_no = order.getStr("order_no");
-//                if(true){
-//                	if(!order_no[order_no.length-1].equals(order.getStr("order_no"))){
-//                		order_no[order_no.length] = "'"+order.getStr("order_no")+"'";
-//                	}
-//                }else{
-//                	order_no[0] = "'"+order.getStr("order_no")+"'";
-//                }
-                
+                order_no = order.getStr("order_no");    
             }
-            //JfinalKit.commit();
             
             //过滤掉库存中不存在的货品（多出来的货品）
             List<Record> invList = Db.find("SELECT shelves,GROUP_CONCAT(qr_code SEPARATOR ',') qr_codes,count(qr_code) amount FROM `inv_check_order` where order_no = ? GROUP BY shelves",order_no);
@@ -643,12 +678,6 @@ public class CheckOrder extends Controller {
                 			String [] giArray = gi_qrCode.split(",");
                 			
                 			for (int i = 0; i < giArray.length; i++) {
-//                				for (int j = 0; j < invArray.length; j++) {
-//                					if(giArray[i].equals(invArray[j])){
-//                						String qr_code = giArray[i];//多出来的
-//                						Db.update("update gate_in set inv_flag = 'Y' and out_flag='Y' and inv_msg = '盘点单号:?,盘点出库' where qr_code = ?",order_no,qr_code);
-//                					}
-//								}
                 				if(!useList(invArray,giArray[i])){
                 					String qr_code = giArray[i];//多出来的
             						Db.update("update gate_in set inv_flag = 'Y',out_flag='Y', inv_msg = '盘点单号:"+order_no+",盘点出库' where qr_code = ?",qr_code);
@@ -661,14 +690,30 @@ public class CheckOrder extends Controller {
             
             
 			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！<br/>");
+			conn.commit();
 		} catch (Exception e) {
-			//JfinalKit.rollback();
+			try {
+				if (null != conn)
+					conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
             
 			result.set("result", false);
 			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber)
 						+ "行时出现异常:" + e.getMessage() + "<br/>导入数据已取消！");
 			//throw new ActiveRecordException(e);
-		} 
+		} finally {
+			try {
+				if (null != conn) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			} finally {
+				DbKit.getConfig().removeThreadLocalConnection();
+			}
+		}
 		return result;
 	}
 	

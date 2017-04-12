@@ -190,11 +190,10 @@ public class InvCheckOrderController extends Controller {
 	        sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
 	    }
 	   
-		sql = "SELECT * from (select gi.*,ifnull(gi.quantity,gi.check_quantity) actral_amount, ifnull(u.c_name, u.user_name) creator_name,pro.id product_id,pro.item_name,pro2.part_name part_name "
+		sql = "SELECT * from (select gi.*,ifnull(gi.quantity,gi.check_quantity) actral_amount, ifnull(u.c_name, u.user_name) creator_name,pro.id product_id,pro.item_name,pro.part_name part_name "
 				+ " from inv_check_order gi "
 				+ " left join user_login u on u.id = gi.creator"
-				+ " left join wmsproduct pro on pro.id = gi.qr_code"
-				+ " left join wmsproduct pro2 on pro2.id = gi.part_no"
+				+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 				+ " where gi.office_id="+office_id
 				+ " ) A where 1=1 ";
 		

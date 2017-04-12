@@ -47,9 +47,33 @@ public class GateOutController extends Controller {
 		render("/wms/gateOut/list.html");
 	}
 	
-	@Before(EedaMenuInterceptor.class)
+	@Before(Tx.class)
     public void create() {
-        render("/wms/gateOut/edit.html");
+		String idArray = getPara("idArray");
+		String item_no = getPara("item_no");
+		
+		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+		
+		Record order = new Record();
+		order.set("order_no", OrderNoGenerator.getNextOrderNo("GO", office_id));
+		order.set("item_no", item_no);
+		order.set("office_id", office_id);
+		order.set("creator", LoginUserController.getLoginUserId(this));
+		order.set("create_time", new Date());
+		Db.save("gate_out_order", order);
+		
+		String [] array = idArray.split(",");
+		for (int i = 0; i < array.length; i++) {
+			Record item = new Record();
+			item.set("order_id", order.getLong("id"));
+			item.set("item_id", array[i]);
+			Db.save("gate_out_order_item", item);
+			
+			Db.update("update gate_in set out_order_flag = 'Y' where id = ?",array[i]);
+		}
+		
+        renderJson(order);
     }
     
     @Before(Tx.class)
@@ -143,15 +167,14 @@ public class GateOutController extends Controller {
         String pageIndex = getPara("draw");
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        
         String error_flag = getPara("error_flag");
-       
         if(StringUtils.isNotBlank(error_flag)){
         	error_flag = " and error_flag = '"+error_flag+"'";
         }else{
         	error_flag = "";
         }
-        
-        
+
         String jsonStr = getPara("jsonStr");
     	if(StringUtils.isNotBlank(jsonStr)){
     		Gson gson = new Gson(); 
@@ -192,20 +215,20 @@ public class GateOutController extends Controller {
             }
             
             condition += " and create_time between '"+begin_time+"' and '"+end_time+"'";
+            
     	}
         
     	if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
        
-    	sql = "SELECT * from (select gi.*, ifnull(u.c_name, u.user_name) creator_name,pro.id product_id,pro.item_name,pro2.part_name part_name "
-    			+ " from gate_out gi "
-    			+ " left join user_login u on u.id = gi.creator"
-    			+ " left join wmsproduct pro on pro.id = gi.qr_code"
-    			+ " left join wmsproduct pro2 on pro2.id = gi.part_no"
-    			+ " where gi.office_id="+office_id
-    			+ error_flag
-    			+ " ) A where 1=1 ";
+    	sql = "SELECT * from (select go.*, ifnull(u.c_name, u.user_name) creator_name,pro.id product_id,pro.item_name,pro.part_name part_name "
+			+ " from gate_out go "
+			+ " left join user_login u on u.id = go.creator"
+			+ " left join wmsproduct pro on pro.part_no = go.part_no"
+			+ " where go.office_id="+office_id
+			+ error_flag
+			+ " ) A where 1=1 ";
     	
         
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";

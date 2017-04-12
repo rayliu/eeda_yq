@@ -144,35 +144,153 @@ public class InventoryController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         
-        
-        String jsonStr = getPara("jsonStr");
-    	if(StringUtils.isNotBlank(jsonStr)){
-    		Gson gson = new Gson(); 
-            Map<String, String[]> dto= gson.fromJson(jsonStr, HashMap.class);  
-            condition = DbUtils.buildConditions(dto);
-    	}
-        
-    	if (getPara("start") != null && getPara("length") != null) {
+        if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
        
-    	sql = "SELECT * from (select pro.*, ifnull(u.c_name, u.user_name) creator_name "
-			+ " from wmsinventory pro "
-			+ " left join user_login u on u.id = pro.creator"
-			+ " where pro.office_id="+office_id
-			+ " ) A where 1=1 ";
+
+        String jsonStr = getPara("jsonStr");
+    	if(StringUtils.isNotBlank(jsonStr)){
+    		Gson gson = new Gson(); 
+            Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class); 
+            String item_no = dto.get("item_no");
+            String item_name = dto.get("item_name");
+            String part_name = dto.get("part_name");
+            String part_no = dto.get("part_no");
+            
+            if(StringUtils.isNotBlank(item_no)){
+            	condition += " and pro.item_no like '%"+item_no+"%'";
+            }
+            
+            if(StringUtils.isNotBlank(item_name)){
+            	condition += " and pro.item_name like '%"+item_name+"%'";
+            }
+            
+            if(StringUtils.isNotBlank(part_name)){
+            	condition += " and pro.part_name like '%"+part_name+"%'";
+            }
+            
+            if(StringUtils.isNotBlank(part_no)){
+            	condition += " and pro.part_no like '%"+part_no+"%'";
+            }
+            
+            
+            String begin_time = dto.get("create_time_begin_time");
+            if(StringUtils.isBlank(begin_time)){
+            	begin_time = "2000-01-01";
+            }
+            
+            String end_time = dto.get("create_time_end_time");
+            if(StringUtils.isBlank(end_time)){
+            	end_time = "2037-01-01";
+            }else{
+            	end_time = end_time +" 23:59:59";
+            }
+            
+            condition += " and gi.create_time between '"+begin_time+"' and '"+end_time+"'";
+            
+    	}
+        
+    	sql = "select gi.*, ifnull(u.c_name, u.user_name) creator_name,"
+    		+ " pro.item_name,ifnull(pro.item_no,'') item_no,pro.part_name part_name "
+			+ " from gate_in gi "
+			+ " left join user_login u on u.id = gi.creator"
+			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+			+ " where gi.office_id="+office_id
+			+ " and out_flag = 'N' and error_flag = 'N'"
+			+ condition;
     	
         
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        String sqlTotal = "select count(1) total from ("+sql+" group by pro.item_no"+") B";
         Record rec = Db.findFirst(sqlTotal);
-        logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by create_time desc " +sLimit);
+        List<Record> orderList = Db.find("select A.* , sum(A.quantity) total from ("+sql+") A group by A.item_no" +sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
+        orderListMap.put("data", orderList);
 
+        renderJson(orderListMap); 
+    }
+    
+    public void itemDetailList() {
+    	String sql = "";
+        String condition="";
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+       
+        String item_no = getPara("item_no");
+        if(StringUtils.isNotBlank(item_no)){
+        	condition += " and pro.item_no = '"+item_no+"'";
+        }else{
+        	condition += " and pro.item_no is null ";
+        }
+        
+        String jsonStr = getPara("jsonStr");
+    	if(StringUtils.isNotBlank(jsonStr)){
+    		Gson gson = new Gson(); 
+            Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class); 
+            
+            String item_name = dto.get("item_name");
+            String part_name = dto.get("part_name");
+            String part_no = dto.get("part_no");
+            
+            
+            
+            if(StringUtils.isNotBlank(item_name)){
+            	condition += " and pro.item_name like '%"+item_name+"%'";
+            }
+            
+            if(StringUtils.isNotBlank(part_name)){
+            	condition += " and pro.part_name like '%"+part_name+"%'";
+            }
+            
+            if(StringUtils.isNotBlank(part_no)){
+            	condition += " and pro.part_no like '%"+part_no+"%'";
+            }
+            
+            
+            String begin_time = dto.get("create_time_begin_time");
+            if(StringUtils.isBlank(begin_time)){
+            	begin_time = "2000-01-01";
+            }
+            
+            String end_time = dto.get("create_time_end_time");
+            if(StringUtils.isBlank(end_time)){
+            	end_time = "2037-01-01";
+            }else{
+            	end_time = end_time +" 23:59:59";
+            }
+            
+            condition += " and gi.create_time between '"+begin_time+"' and '"+end_time+"'";
+            
+    	}
+        
+    	sql = "select gi.*, ifnull(u.c_name, u.user_name) creator_name,"
+    		+ " pro.item_name,pro.item_no,pro.part_name part_name "
+			+ " from gate_in gi "
+			+ " left join user_login u on u.id = gi.creator"
+			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+			+ " where gi.office_id="+office_id
+			+ " and out_flag = 'N' and error_flag = 'N'"
+			+ condition;
+    	
+        
+        String sqlTotal = "select count(1) total from ("+sql+") B";
+        Record rec = Db.findFirst(sqlTotal);
+        
+        List<Record> orderList = Db.find(sql +sLimit);
+        Map orderListMap = new HashMap();
+        orderListMap.put("draw", pageIndex);
+        orderListMap.put("recordsTotal", rec.getLong("total"));
+        orderListMap.put("recordsFiltered", rec.getLong("total"));
         orderListMap.put("data", orderList);
 
         renderJson(orderListMap); 

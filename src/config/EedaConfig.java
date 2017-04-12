@@ -145,6 +145,7 @@ import controllers.tms.jobOrder.TransJobOrderController;
 import controllers.tms.planOrder.TransPlanOrderController;
 import controllers.wms.GateInController;
 import controllers.wms.GateOutController;
+import controllers.wms.GateOutOrderController;
 import controllers.wms.InvCheckOrderController;
 import controllers.wms.InventoryController;
 import controllers.wms.ProductController;
@@ -341,6 +342,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/importOrder", ImportOrder.class, contentPath);
         me.add("/gateIn", GateInController.class, contentPath);
         me.add("/gateOut", GateOutController.class, contentPath);
+        me.add("/gateOutOrder", GateOutOrderController.class, contentPath);
         me.add("/invCheckOrder", InvCheckOrderController.class, contentPath);
         me.add("/wmsproduct", ProductController.class, contentPath);
         me.add("/inventory", InventoryController.class, contentPath);
