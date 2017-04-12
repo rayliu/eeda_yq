@@ -14,7 +14,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 { "data": "MESSAGE_STATUS", "width":"20px"}, 
 	              { "data": "SENDER_ID", "class":'sender_id', "width":"60px"}, 
                 { "data": "RECIPIENT_ID", "width":"60px"},
-                { "data": "SUBJECT", "width":"260px",
+                { "data": "SUBJECT", "width":"360px",
                   "render": function ( data, type, full, meta ) {
                       return "<a href='#' class='edit' style='cursor: pointer;'>"+data+"</a>";
                   }
@@ -58,45 +58,49 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
               
               $('.chat').text('');
               for(var i = 0; i<data.length;i++){
-            	  var body = data[i].BODY;
-            	  var sender_id = data[i].SENDER_ID;
-            	  var recipient_id = data[i].RECIPIENT_ID;
-            	  var creation_date = data[i].CREATION_DATE;
-            	  var replay_flag = data[i].REPLAY_FLAG;
-            	  if(replay_flag=='N'){
-            		  $('.chat').append(
-                       	   '<li class="left clearfix">'
-                       	  +'	<span class="chat-img pull-left">'
-                       	  +'	<img src="/images/user_chat.png" alt="User Avatar" >'
-                       	  +'	</span>'
-                       	  +'    <div class="chat-body clearfix">'
-                       	  +'        <div class="header">'
-                       	  +'            <strong class="primary-font">'+sender_id+'</strong>'
-                       	  +'            <small class="pull-right text-muted">'
-                       	  +'                <i class="fa fa-clock-o fa-fw"></i>'+creation_date
-                       	  +'            </small>'
-                       	  +'        </div><br/>'
-                       	  +'    <pre>'+body+'</pre>'
-                       	  +'    </div>'
-                       	  +'</li>'  
-                       	  );
-            	  }else{//发送人
-            		  
-            		  $('.chat').append(
-            		  '<li class="right clearfix">'
-            		  +'<span class="chat-img pull-right">'
-            		  +'    <img src="/images/user_headphone.png" alt="User Avatar" >'
-            		  +'</span>'
-            		  +'<div class="chat-body clearfix">'
-            		  +'    <div class="header">'
-            		  +'    	<strong class="pull-right primary-font">'+sender_id+'</strong>'
-            		  +'        <small class=" text-muted" >'
-            		  +'            <i class="fa fa-clock-o fa-fw"></i>'+creation_date
-            		  +'        </small>'
-            		  +'    </div><br/>'
-            		  +'    <pre style="float:right">'+body+'</pre>'
-            		  +'</div>'
-            		  +'</li>')};
+              	  var body = data[i].BODY;
+              	  var sender_id = data[i].SENDER_ID;
+              	  var recipient_id = data[i].RECIPIENT_ID;
+              	  var creation_date = data[i].CREATION_DATE;
+              	  var replay_flag = data[i].REPLAY_FLAG;
+                  var response = data[i].RESPONSE;
+                  var response_date = data[i].LAST_MODIFIED_DATE;
+
+                  $('.chat').append(
+                             '<li class="left clearfix">'
+                            +'  <span class="chat-img pull-left">'
+                            +'  <img src="/images/user_chat.png" alt="User Avatar" >'
+                            +'  </span>'
+                            +'    <div class="chat-body clearfix">'
+                            +'        <div class="header">'
+                            +'            <strong class="primary-font">'+sender_id+'</strong>'
+                            +'            <small class="pull-right text-muted">'
+                            +'                <i class="fa fa-clock-o fa-fw"></i>'+creation_date
+                            +'            </small>'
+                            +'        </div><br/>'
+                            +'    <pre>'+body+'</pre>'
+                            +'    </div>'
+                            +'</li>'  
+                            );
+
+              	  if(response!=null){
+              		  
+                		  $('.chat').append(
+                		  '<li class="right clearfix">'
+                		  +'<span class="chat-img pull-right">'
+                		  +'    <img src="/images/user_headphone.png" alt="User Avatar" >'
+                		  +'</span>'
+                		  +'<div class="chat-body clearfix">'
+                		  +'    <div class="header">'
+                		  +'    	<strong class="pull-right primary-font">'+recipient_id+'</strong>'
+                		  +'        <small class=" text-muted" >'
+                		  +'            <i class="fa fa-clock-o fa-fw"></i>'+response_date
+                		  +'        </small>'
+                		  +'    </div><br/>'
+                		  +'    <pre style="float:right">'+response+'</pre>'
+                		  +'</div>'
+                		  +'</li>')
+                  }
             	  
               }
               $('#editMsgModal').modal('show');

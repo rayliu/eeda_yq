@@ -15,8 +15,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 
 import com.ebay.sdk.ApiContext;
-import com.ebay.sdk.ApiException;
-import com.ebay.sdk.SdkException;
 import com.ebay.sdk.call.AddMemberMessageRTQCall;
 import com.ebay.sdk.call.GetMemberMessagesCall;
 import com.ebay.soap.eBLBaseComponents.DetailLevelCodeType;
@@ -24,6 +22,7 @@ import com.ebay.soap.eBLBaseComponents.MemberMessageExchangeType;
 import com.ebay.soap.eBLBaseComponents.MemberMessageType;
 import com.ebay.soap.eBLBaseComponents.MessageStatusTypeCodeType;
 import com.ebay.soap.eBLBaseComponents.MessageTypeCodeType;
+import com.ebay.soap.eBLBaseComponents.PaginationType;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.log.Log;
@@ -69,7 +68,7 @@ public class EbayMemberMsgController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "select * from (select * from ebay_member_msg group by item_id, sender_id) A where 1=1 ";
+        String sql = "select * from (select * from ebay_member_msg group by item_id, sender_id, subject) A where 1=1 ";
 
         String condition = DbUtils.buildConditions(getParaMap());
 
@@ -95,10 +94,11 @@ public class EbayMemberMsgController extends Controller {
         //Record rec = Db.findById("ebay_member_msg", id);
         
         List<Record> rec = Db.find("select * from (select id, item_id, sender_id,recipient_id ,"
-        		+ " creation_date ,body,subject,'N' replay_flag, message_id from ebay_member_msg where sender_id=?"
-        		+ " union "
-        		+ " select *,'Y' replay_flag, 0 message_id from ebay_member_msg_replay where recipient_id=?) A "
-        		+ " where item_id = ? ORDER BY creation_date", sender_id, sender_id, item_id);
+        		+ " creation_date ,body, subject,'N' replay_flag, message_id, response, last_modified_date from ebay_member_msg where sender_id=?"
+//        		+ " union "
+//        		+ " select *,'Y' replay_flag, 0 message_id from ebay_member_msg_replay where recipient_id=?
+                +") A "
+        		+ " where item_id = ? ORDER BY creation_date", sender_id, item_id);
         
         renderJson(rec);
     }
@@ -133,17 +133,11 @@ public class EbayMemberMsgController extends Controller {
 
             
             // api.setMessageStatus(MessageStatusTypeCodeType.ANSWERED);
-            // PaginationType pt = new PaginationType();
-            // String entriesPerPage = this.txtEntriesPerPage.getText().trim();
-            // if (entriesPerPage.length() > 0) {
-            // pt.setEntriesPerPage(new Integer(entriesPerPage));
-            // }
-            // String pageNumber = this.txtPageNumber.getText().trim();
-            // if (pageNumber.length() > 0) {
-            // pt.setPageNumber(new Integer(pageNumber));
-            // }
-            // api.setPagination(pt);
-            api.setMailMessageType(MessageTypeCodeType.ASK_SELLER_QUESTION);
+             PaginationType pt = new PaginationType();
+             pt.setEntriesPerPage(100);
+             pt.setPageNumber(1);
+             api.setPagination(pt);
+            api.setMailMessageType(MessageTypeCodeType.ALL);
             DetailLevelCodeType[] detailLevel = { DetailLevelCodeType.RETURN_ALL };
             api.setDetailLevel(detailLevel);
             api.setMessageStatus(MessageStatusTypeCodeType.CUSTOM_CODE);//这里设置了才能获取所有回复
