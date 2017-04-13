@@ -8,29 +8,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.ParentOfficeModel;
 import models.UserLogin;
 import models.eeda.profile.FinItem;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
-import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
-
-import controllers.util.DbUtils;
-import controllers.util.ParentOffice;
-import controllers.util.PermissionConstant;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -102,7 +92,12 @@ public class FinItemController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
-        
+        String	office_id="";
+        if(officeId==2){
+        	office_id="";
+        }else{
+        	office_id="and f.office_id="+officeId;
+        }
         String sLimit = "";
         String pageIndex = getPara("sEcho");
         if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
@@ -111,9 +106,9 @@ public class FinItemController extends Controller {
         
         String sql = "";
         if(code==null&&name==null&&name_eng==null){
-        	sql = "SELECT id,code,name_eng,name,remark from fin_item f where 1 =1 and f.office_id="+officeId;
+        	sql = "SELECT id,code,name_eng,name,remark from fin_item f where 1 =1 "+office_id;
         }else{
-        	sql = "SELECT id,code,name_eng,name,remark from fin_item f where 1 =1 and f.office_id="+officeId
+        	sql = "SELECT id,code,name_eng,name,remark from fin_item f where 1 =1 "+office_id
         			+ " and code like '%"+code
         			+"%' and name like '%"+name
         			+"%' and name_eng like '%"+name_eng+"%'";

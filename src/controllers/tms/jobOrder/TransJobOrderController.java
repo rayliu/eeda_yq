@@ -206,65 +206,44 @@ public class TransJobOrderController extends Controller {
    		}
    		long customerId = Long.valueOf(dto.get("customer_id").toString());
    		saveCustomerQueryHistory(customerId);
-		
+   		String loadingWharf1="";
+		String loadingWharf2="";
+		String takeAddress="";
+		String deliveryAddress="";
+		String truckType="";
+
 		//陆运
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
 		DbUtils.handleList(land_item, id, TransJobOrderLandItem.class, "order_id");
 		for(int i=0;i<land_item.size();i++){
-			String loading_wharf1="";
-			String loading_wharf2="";
-			String take_address="";
-			String delivery_address="";
-			String truck_type="";
+			
 			Map<String, ?> map=land_item.get(i);
 			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
-				loading_wharf1=" and pq.loading_wharf1= "+map.get("LOADING_WHARF1");
+				
+				loadingWharf1=(String) map.get("LOADING_WHARF1");
 			}
 			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
-				loading_wharf2=" and pq.loading_wharf2= "+map.get("LOADING_WHARF2");	
+				
+				loadingWharf2=(String) map.get("LOADING_WHARF2");
 			}
 			if(StringUtils.isNotEmpty((String) map.get("TAKE_ADDRESS"))){
-				take_address=" and pq.take_address= "+map.get("TAKE_ADDRESS");
+				
+				takeAddress=(String) map.get("TAKE_ADDRESS");
 			}
 			if(StringUtils.isNotEmpty((String) map.get("DELIVERY_ADDRESS"))){
-				delivery_address=" and pq.delivery_address= "+map.get("DELIVERY_ADDRESS");
+				
+				deliveryAddress=(String) map.get("DELIVERY_ADDRESS");
 			}
 			if(StringUtils.isNotEmpty((String) map.get("truck_type"))){
-				truck_type=" and pq.truck_type like '"+map.get("truck_type")+"' ";
+				
+				truckType=(String) map.get("truck_type");
 			}
-			
-			if(StringUtils.isEmpty((String) map.get("id"))){
-				String sqlString="SELECT A.*,c.name currency_name from( SELECT pq.* FROM party_quotation pq "
-						+" WHERE pq.party_id = "+customerId
-						+loading_wharf1
-						+loading_wharf2
-						+take_address
-						+delivery_address
-						+truck_type
-						+" )A left join currency c on c.id=A.currency_id";
-				List<Record> reItem=Db.find(sqlString);
-				if(reItem.size()==1){
-					TransJobOrderArap tArap=new TransJobOrderArap();
-					tArap.set("order_id", id);
-					tArap.set("order_type", "charge");
-					tArap.set("type", "陆运");
-					tArap.set("sp_id", customerId);
-					String str1="select id from fin_item where office_id ="+office_id+" and name='运费'";
-					List<Record> re1=(List<Record>) Db.find(str1); 
-					tArap.set("charge_id", re1.get(0).get("ID"));
-					tArap.set("price", reItem.get(0).get("tax_free_freight"));
-					tArap.set("amount", 1);
-					tArap.set("currency_id", reItem.get(0).get("currency_id"));
-					tArap.set("total_amount", reItem.get(0).get("tax_free_freight"));
-					tArap.set("exchange_rate", 1.00000);
-					tArap.set("currency_total_amount", reItem.get(0).get("tax_free_freight"));
-					tArap.set("create_time", new Date());
-//					tArap.set("ref_land_id", );
-					tArap.save();	
-				}	
-			}
+
 			
 		}
+		
+		
+	
 		
 		//费用明细，应收应付
 		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");
@@ -277,6 +256,10 @@ public class TransJobOrderController extends Controller {
 		//记录结算费用使用历史  
 		saveFinItemQueryHistory(charge_list);
 		saveFinItemQueryHistory(chargeCost_list);
+		
+		//获取合同费用
+		TransOrderShortCutController.checkCustomerQuotation(office_id,id,customer_id,truckType,
+				takeAddress,deliveryAddress,loadingWharf1,loadingWharf2);
 		
 		//相关文档
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");

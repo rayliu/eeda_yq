@@ -70,7 +70,7 @@ $(document).ready(function() {
                       return "<a href='/jobOrder/edit?id="+full.JOB_ORDER_ID+"'target='_blank'>"+data+"</a>";
                   }
             },
-            { "data": "CREATE_STAMP", "width": "70px"},
+            { "data": "ORDER_EXPORT_DATE", "width": "70px"},
             { "data": "SP_NAME", "width": "70px"},
             { "data": "FIN_NAME"},
             { "data": "CURRENCY_NAME",'class':'currency_name', "width": "70px"},

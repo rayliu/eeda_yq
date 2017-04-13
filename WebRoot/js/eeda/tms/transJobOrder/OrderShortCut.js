@@ -447,8 +447,8 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
         order.LOADING_WHARF1=$(row.find('[name=LOADING_WHARF1]')).val();
         order.LOADING_WHARF2=$(row.find('[name=LOADING_WHARF2]')).val();
         order.CHARGE_ID=$(row.find('[name=CHARGE_ID]')).val();
-        order.truck_type=$(row.find('[name=cabinet_type]')).val();
-        if(order.CUSTOMER_ID&&order.CHARGE_ID&&order.truck_type){
+        order.CABINET_TYPE=$(row.find('[name=cabinet_type]')).val();
+        if(order.CUSTOMER_ID&&order.CABINET_TYPE){
           $.post("/transOrderShortCut/checkCustomerQuotation",{params:JSON.stringify(order)},function(data){
                 if(data.length==1){
                   $(row.find('[name=total_amount]')).val(data[0].TAX_FREE_FREIGHT);
@@ -501,7 +501,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
               item.action = id.length > 0?'UPDATE':'CREATE';
               if($(row).find('[type=checkbox]').prop('checked')){
                     cargo_items_array.push(item);
-//                    dataTable.row(row).remove().draw();
+                    dataTable.row(row).remove().draw();
                  }
           }
 
