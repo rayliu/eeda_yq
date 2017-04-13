@@ -393,7 +393,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
             }
           })
          if(error>0){
-          return;
+//          return;
          }
           order.itemList=itemOrder.buildItemList();
           $.post("/transOrderShortCut/create",{params:JSON.stringify(order)},function(data){

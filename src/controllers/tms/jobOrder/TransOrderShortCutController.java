@@ -111,8 +111,15 @@ public class TransOrderShortCutController extends Controller {
 				tjol.set("driver", ci.get("driver"));
 				tjol.set("driver_tel", ci.get("phone"));
 				tjol.set("take_address", itemMap.get("TAKE_WHARF"));
-				tjol.set("loading_wharf1", itemMap.get("LOADING_WHARF1"));
-				tjol.set("loading_wharf2", itemMap.get("LOADING_WHARF2"));
+				String loading_wharf1=itemMap.get("LOADING_WHARF1");
+				if(!"".equals(loading_wharf1)){
+					tjol.set("loading_wharf1", itemMap.get("LOADING_WHARF1"));
+				}
+				
+				String loading_wharf2=itemMap.get("LOADING_WHARF2");
+				if(!"".equals(loading_wharf2)){
+					tjol.set("loading_wharf2", itemMap.get("LOADING_WHARF2"));
+				}
 				tjol.save();
 			}
 			if(StringUtils.isNotEmpty(itemMap.get("YIGUI_CAR_NO"))){
@@ -125,8 +132,15 @@ public class TransOrderShortCutController extends Controller {
 				tjol.set("truck_type", ci.get("cartype"));
 				tjol.set("driver", ci.get("driver"));
 				tjol.set("driver_tel", ci.get("phone"));
-				tjol.set("loading_wharf1", itemMap.get("LOADING_WHARF1"));
-				tjol.set("loading_wharf2", itemMap.get("LOADING_WHARF2"));
+				String loading_wharf1=itemMap.get("LOADING_WHARF1");
+				if(!"".equals(loading_wharf1)){
+					tjol.set("loading_wharf1", itemMap.get("LOADING_WHARF1"));
+				}
+				
+				String loading_wharf2=itemMap.get("LOADING_WHARF2");
+				if(!"".equals(loading_wharf2)){
+					tjol.set("loading_wharf2", itemMap.get("LOADING_WHARF2"));
+				}
 				tjol.save();
 			}
 			if(StringUtils.isNotEmpty(itemMap.get("SHOUZHONGGUI_CAR_NO"))){
@@ -140,8 +154,15 @@ public class TransOrderShortCutController extends Controller {
 				tjol.set("driver", ci.get("driver"));
 				tjol.set("driver_tel", ci.get("phone"));
 				tjol.set("delivery_address", itemMap.get("BACK_WHARF"));
-				tjol.set("loading_wharf1", itemMap.get("LOADING_WHARF1"));
-				tjol.set("loading_wharf2", itemMap.get("LOADING_WHARF2"));
+				String loading_wharf1=itemMap.get("LOADING_WHARF1");
+				if(!"".equals(loading_wharf1)){
+					tjol.set("loading_wharf1", itemMap.get("LOADING_WHARF1"));
+				}
+				
+				String loading_wharf2=itemMap.get("LOADING_WHARF2");
+				if(!"".equals(loading_wharf2)){
+					tjol.set("loading_wharf2", itemMap.get("LOADING_WHARF2"));
+				}
 				tjol.save();
 			}
 //			List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
