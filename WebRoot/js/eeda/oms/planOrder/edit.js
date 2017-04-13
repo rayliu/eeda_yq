@@ -100,6 +100,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
         
         //计划单跳转到工作单
         $('#create_jobOrder').click(function(){
+        	this.diabled = true;
         	var order_id = $('#order_id').val();
         	var itemIds=[];
         	$('#cargo_table input[type="checkbox"]').each(function(){
@@ -109,6 +110,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
         			itemIds.push(itemId);
         		}
         	});
+        	if(itemIds.length>1){
+        		$.scojs_message('只能勾选一条明细创建工作单', $.scojs_message.TYPE_ERROR);
+        		this.diabled = false;
+        		return false;
+        	}
+        		
+        	
         	location.href ="/jobOrder/create?order_id="+order_id+"&itemIds="+itemIds;
         })
 

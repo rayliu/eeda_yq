@@ -15,6 +15,7 @@ import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.bookOrder.BookOrder;
+import models.eeda.oms.jobOrder.JobOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -92,10 +93,10 @@ public class PlanOrderController extends Controller {
 		DbUtils.handleList(itemList, id, PlanOrderItem.class, "order_id");
 		
 		
-		List<PlanOrderItem> reList = PlanOrderItem.dao.find("select * from plan_order_item where order_id = ?",id);
-		for(PlanOrderItem item:reList){
-			createBookOrder(item,id);
-		}
+//		List<PlanOrderItem> reList = PlanOrderItem.dao.find("select * from plan_order_item where order_id = ?",id);
+//		for(PlanOrderItem item:reList){
+//			createBookOrder(item,id);
+//		}
 		
 
 		long creator = planOrder.getLong("creator");
@@ -269,6 +270,7 @@ public class PlanOrderController extends Controller {
    
     
     //确认已完成计划单
+    @Before(Tx.class)
     public void confirmCompleted(){
     	String id = getPara("id");
     	PlanOrder order = PlanOrder.dao.findById(id);
@@ -287,6 +289,24 @@ public class PlanOrderController extends Controller {
     	String delete_stamp = sf.format(date);
     	Db.update("update plan_order set delete_flag='Y', deletor='"+deletor+"', delete_stamp='"+delete_stamp+"',"
     			+ " delete_reason='"+delete_reason+"' where id = ?  ",id);
+    	renderJson("{\"result\":true}");
+    }
+    
+
+    @Before(Tx.class)
+    public void confirmShipment(){
+    	String item_id = getPara("item_id");
+    	
+    	String[] idArray = item_id.split(",");
+    	for (int i = 0; i < idArray.length; i++) {
+    		PlanOrderItem item = PlanOrderItem.dao.findById(idArray[i]);
+    		item.set("confirm_shipment", "Y");
+    		item.update();
+    		
+    		createBookOrder(item,item.getLong("order_id").toString());
+		}
+    	
+    	
     	renderJson("{\"result\":true}");
     }
     

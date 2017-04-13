@@ -71,6 +71,22 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	eeda.bindTableField('cargo_table','POD','/location/searchPort','');
 	    	eeda.bindTableField('cargo_table','CARRIER','/serviceProvider/searchCarrier','');
 	    };
+	    
+	    $('.allCheck').on('click',function(){
+	    	var check = this.checked;
+	    	if(check){
+	    		$('#cargo_table .checkBox').each(function(){
+	    			if($(this).attr('confirm_shipment')=='N')
+	    				this.checked = true;
+	    		});
+	    	}else{
+	    		$('#cargo_table .checkBox').each(function(){
+	    			if($(this).attr('confirm_shipment')=='N')
+	    				this.checked = false;
+	    		});
+	    	}
+	    })
+	    
 
 	    //------------事件处理
 	    var cargoTable = eeda.dt({
@@ -84,9 +100,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 				{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
 				    	if(full.IS_GEN_JOB == 'N')
-				    		return '<input type="checkbox" class="checkBox">';
+				    		return '<input type="checkbox" confirm_shipment="'+full.CONFIRM_SHIPMENT+'" class="checkBox">';
 				    	else 
-				    		return '<input type="checkbox" class="checkBox" disabled>';
+				    		return '<input type="checkbox" confirm_shipment="'+full.CONFIRM_SHIPMENT+'" class="checkBox" disabled>';
 				    }
 				},
 	            {"width": "10px",
@@ -100,10 +116,10 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            },
 	            {"width": "10px",
 	                "render": function ( data, type, full, meta ) {
-	                	if(full.IS_GEN_JOB == 'Y'){
-	                		return '<button type="button" class="btn btn_green btn-xs" disabled>确认出货</button>';
+	                	if(full.CONFIRM_SHIPMENT == 'N'){
+	                		return '<button type="button" class="btn btn_green btn-xs confirm_shipment" >确认出货</button>';
 	                	}else{
-	                		return '<button type="button" class="btn btn_green btn-xs">确认出货</button> ';
+	                		return '<button type="button" class="btn btn_green btn-xs confirm_shipment" disabled>确认出货</button> ';
 	                	}
 	                }
 	            },
@@ -470,9 +486,78 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                        data='';
 	                    return data;
 	                }
+	            },
+	            { "data": "CONFIRM_SHIPMENT", "visible": false,
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
 	            }
 	        ]
 	    });
+	    
+	    $('#cargo_table').on('click','.confirm_shipment',function(){
+	    	var self = this;
+	    	var item_id  = $(this).parent().parent().attr('id');
+
+	    	$.blockUI({ 
+                message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
+            });
+	    	$.post('/planOrder/confirmShipment',{item_id:item_id},function(data){
+    		    if(data.result){
+    			    $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+    			    //异步刷新明细表
+                    salesOrder.refleshTable($('#order_id').val());
+    		    }else{
+    			    $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+    			    self.disabled = false;
+    		    }
+    		    $.unblockUI();
+    	    }).fail(function() {
+    		    $.unblockUI();
+    		    self.disabled = false;
+                $.scojs_message('后台出错', $.scojs_message.TYPE_ERROR);
+            });
+	    	
+	    });
+	    
+	    $('#allShipmentBtn').on('click',function(){
+	    	var self = this;
+	    	
+	    	var itemIdArray = [];
+	    	$('#cargo_table .checkBox:checked').each(function(){
+	    		  var id  = $(this).parent().parent().attr('id');
+	    		  itemIdArray.push(id);
+	    	});
+	    	
+	    	if(itemIdArray.length == 0){
+	    		$.scojs_message('请勾选要出货的明细', $.scojs_message.TYPE_ERROR);
+	    		return;
+	    	}
+
+	    	$.blockUI({ 
+                message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
+            });
+	    	$.post('/planOrder/confirmShipment',{item_id:itemIdArray.toString()},function(data){
+    		    if(data.result){
+    			    $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+    			    //异步刷新明细表
+                    salesOrder.refleshTable($('#order_id').val());
+    		    }else{
+    			    $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+    			    self.disabled = false;
+    		    }
+    		    $.unblockUI();
+    	    }).fail(function() {
+    		    $.unblockUI();
+    		    self.disabled = false;
+                $.scojs_message('后台出错', $.scojs_message.TYPE_ERROR);
+            });
+	    	
+	    });
+	    
+	    
 
 	    $('#add_cargo').on('click', function(){
 	        var item={};
