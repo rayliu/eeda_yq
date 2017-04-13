@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
 
 	$(document).ready(function() {
 		document.title = '岗位查询 | '+document.title;
-		$('#menu_sys_profile').addClass('active').find('ul').addClass('in');
+		$("#breadcrumb_li").text('岗位查询');
 
 	var dataTable = eeda.dt({
 			id: 'example',
