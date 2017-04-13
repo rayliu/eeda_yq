@@ -1429,7 +1429,7 @@ public class JobOrderController extends Controller {
     	String arap_type = getPara("arap_type");
     	List<Record> list = Db.find("select * from job_order_arap_template "
     			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
-    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
+    			+ " order by id desc", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
     	renderJson(list);
     }
     /**
