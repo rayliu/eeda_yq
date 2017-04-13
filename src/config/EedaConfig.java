@@ -228,12 +228,16 @@ public class EedaConfig extends JFinalConfig {
         me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath); 
         
+        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
+        
         setErpRoute(me, contentPath);
         
         setAppRoute(me, contentPath);
     }
     
     private void setErpRoute(Routes me, String contentPath) {
+        
+        
         me.add("/ebaySalesOrder", EbaySalesOrderController.class, contentPath);
         me.add("/ebayMemberMsg", EbayMemberMsgController.class, contentPath);
         me.add("/ebayReturn", EbayReturnController.class, contentPath);

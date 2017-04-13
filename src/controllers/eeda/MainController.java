@@ -96,8 +96,6 @@ public class MainController extends Controller {
             setAttr("user_login_id", currentUser.getPrincipal());
             setAttr("login_time",user.get("last_login"));
             setAttr("lastIndex",user.get("last_index") == null ? "pastOneDay" : user.get("last_index"));
-            
-    		
 
             //更新当前用户最后一次登陆的时间
             updateLastLogin(user);
@@ -165,7 +163,10 @@ public class MainController extends Controller {
 	}
 
     public void login() {
-        
+        String register= getPara("register");
+        if(register!=null){
+            setAttr("registerMsg", register);
+        }
         String strLoginPagePath = "/eeda/login.html";
         
         HttpServletRequest request = getRequest();

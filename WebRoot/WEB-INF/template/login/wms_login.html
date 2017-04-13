@@ -4,14 +4,14 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>首页 - 易达</title>
+    <title>首页 - 海卖管家</title>
     <link rel="icon" href="http://www.eeda123.com/favicon.ico">
     <link rel="shortcut icon" href="http://www.eeda123.com/favicon.ico">
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="expires" content="0">
-    <meta name="keywords" content="首页 - 易达">
-    <meta name="description" content="首页 - 易达">
+    <meta name="keywords" content="首页 - 海卖管家">
+    <meta name="description" content="首页 - 海卖管家">
     <!-- IE兼容处理 -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,7 +36,7 @@
             <div class="container">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="/">
-                        <img class="eeda_logo" alt="eeda_logo" src="./wms_files/logo.png" width="35" height="35"> 创诚易达
+                        <img class="eeda_logo" alt="eeda_logo" src="./wms_files/logo.png" width="35" height="35"> 海卖管家
                     </a>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
@@ -47,7 +47,10 @@
             </div>
         </div>
     </nav>
-
+    
+    <div style="register_success">
+        
+    </div>
     
     <!-- Carousel
     ================================================== -->
@@ -98,7 +101,7 @@
                 <div class="col-md-6 main-container">
                     
                     <ul class="nav nav-tabs new-tabs">
-                        <li class="active"><a href="#user-login" data-toggle="tab">登录易达</a></li>
+                        <li class="active"><a href="#user-login" data-toggle="tab">登录</a></li>
                         <li><a href="#user-registration" data-toggle="tab">免费注册</a></li>
                     </ul>
                         <div class="tab-content new-content">
@@ -108,7 +111,11 @@
                                 <div class="panel-body">
                                     
                                         <div class="form-group">
-                                            <h4 class="text-center text-color">易达，助你轻松管理订单及库存</h4>
+                                            <% var msgStr = registerMsg!'';
+                                                if(msgStr=='ok'){%>
+                                                    <h4 class="text-center" style="color: #19b396;">注册成功，请登录</h4>
+                                            <%  }%>
+                                            <h4 class="text-center text-color">海卖管家，助你轻松管理和运营</h4>
                                         </div>
                                         <div class="form-group">
                                             <div class="input-group">
@@ -153,7 +160,7 @@
                              <div class="form panel bdr0 nm">
                                 <div class="panel-body">
                                     <div class="form-group">
-                                        <h4 class="text-center text-color">免费注册易达电商ERP</h4>
+                                        <h4 class="text-center text-color">免费注册海卖管家</h4>
                                     </div>
                                     <!-- <div class="form-group">
                                         <ul class="nav nav-pills nav-justified new-reg-tabs">
@@ -163,32 +170,32 @@
                                     </div> -->
                                     <div class="tab-content panel bdr0">
                                         <div class="tab-pane active panel-body" id="mobile-register">
-                                            <form class="form panel bdr0 nm" id="mobile-register-form">
+                                            <form class="form panel bdr0 nm" id="mobile-register-form" method="post" action="/register/saveRegistrant">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-addon"><i class="icon-main-mobile"></i><span class="text">手机号</span></div>
-                                                        <input name="mobile" type="text" class="form-control" placeholder="请输入手机号" data-parsley-error-message="请正确填写手机号码" data-parsley-errors-container="#error-container2" data-parsley-required="">
+                                                        <input id="mobile" name="mobile" type="text" class="form-control" placeholder="请输入手机号" value="18578200347" data-parsley-error-message="请正确填写手机号码" data-parsley-errors-container="#error-container2" data-parsley-required="">
                                                             <span class="input-group-btn">
-                                                            <button type="button" class="btn btn-primary" id="btn-code1">获取验证码</button>
+                                                            <button type="button" class="btn btn-primary" id="getCodeBtn">获取验证码</button>
                                                             </span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                         <div class="input-group">
                                                             <div class="input-group-addon"><i class="icon-main-verification"></i><span class="text">验证码</span></div>
-                                                            <input name="pCode" type="text" class="form-control" placeholder="请输入验证码" data-parsley-error-message="请正确填写验证码">
+                                                            <input name="smsCode" type="text" class="form-control" placeholder="请输入验证码" data-parsley-error-message="请正确填写验证码">
                                                         </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="input-group">
-                                                        <div class="input-group-addon"><i class="icon-main-pwd"></i><span class="text">密   码</span></div>
+                                                        <div class="input-group-addon"><i class="icon-main-pwd"></i><span class="text">密&nbsp;&nbsp;&nbsp;&nbsp;码</span></div>
                                                         <input name="password" type="password" class="form-control" placeholder="请输入密码" data-parsley-error-message="请输入8-20位字符，至少包含数字，字母，特殊符号中的两种组合！">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-addon"><i class="icon-main-querenmima01"></i><span class="text">确认密码</span></div>
-                                                        <input name="retype-password" type="password" class="form-control" placeholder="确认密码" data-parsley-error-message="您输入的两次密码不相符" data-parsley-errors-container="#error-container2" data-parsley-required="">
+                                                        <input name="retype_password" type="password" class="form-control" placeholder="确认密码" data-parsley-error-message="您输入的两次密码不相符" data-parsley-errors-container="#error-container2" data-parsley-required="">
                                                     </div>
                                                 </div>
                                                                                                 <div class="form-group hide">
@@ -199,7 +206,7 @@
                                                 </div>
                                                 <div id="error-container-mobile-register" class="form-group text-danger text-center"></div>
                                                 <div class="form-group mb0">
-                                                    <button type="button" class="btn btn-sign btn-block nm"><h4>提交注册</h4></button>
+                                                    <button type="submit" class="btn btn-sign btn-block nm"><h4>提交注册</h4></button>
                                                 </div>
                                             </form>
                                         </div>
@@ -213,7 +220,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="input-group">
-                                                        <div class="input-group-addon"><i class="icon-main-pwd"></i><span class="text">密码</span></div>
+                                                        <div class="input-group-addon"><i class="icon-main-pwd"></i><span class="text">密&nbsp;&nbsp;码</span></div>
                                                         <input name="password" type="password" class="form-control" placeholder="请输入密码" data-parsley-error-message="请输入8-20位字符，至少包含数字，字母，特殊符号中的两种组合！">
                                                     </div>
                                                 </div>
@@ -352,3 +359,15 @@
 <div></div>
 
 </html>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#getCodeBtn').click(function(){
+            var mobile = $('#mobile').val();
+            $.post("/register/getRegisterCode", {mobile: mobile}, function(data){
+                if(data.status == 'failed'){
+                    alert(data.msg);
+                }
+            });
+        });
+    });
+</script>>
