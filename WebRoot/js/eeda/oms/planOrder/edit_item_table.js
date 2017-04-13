@@ -127,7 +127,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                	if(!data)
 	                        data='';
-	                   return '<input type="text" disabled name="book_order_no" value="'+data+'" class="form-control search-control" />';
+	                  // return '<input type="text" disabled name="book_order_no" value="'+data+'" class="form-control search-control" />';
+	                	return "<a href='/bookOrder/edit?id="+full.BOOK_ORDER_ID+"'target='_blank'>"+data+"</a>";
 	                }
 	            },
 	            { "data": "JOB_ORDER_TYPE","width": "30px",
@@ -488,6 +489,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                }
 	            },
 	            { "data": "CONFIRM_SHIPMENT", "visible": false,
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
+	            },
+	            { "data": "BOOK_ORDER_ID", "visible": false,
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';

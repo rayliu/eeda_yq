@@ -153,7 +153,7 @@ public class PlanOrderController extends Controller {
 
     
     private List<Record> getPlanOrderItems(String orderId) {
-        String itemSql = "select pi.*, l_por.name por_name, l_pol.name pol_name, l_pod.name pod_name,u.name unit_name,bor.order_no book_order_no,"
+        String itemSql = "select pi.*, l_por.name por_name, l_pol.name pol_name, l_pod.name pod_name,u.name unit_name,bor.id book_order_id,bor.order_no book_order_no,"
                 + " p.abbr carrier_name "
                 + " from plan_order_item pi "
                 +" left join location l_por on pi.por=l_por.id"
