@@ -180,6 +180,10 @@ public class PlanOrderController extends Controller {
     	//回显客户信息
     	Party party = Party.dao.findById(planOrder.getLong("customer_id"));
     	setAttr("party", party);
+    	Party entrusted = Party.dao.findById(planOrder.getLong("entrusted_id"));
+    	setAttr("entrusted", entrusted);
+    	Party toEntrusted = Party.dao.findById(planOrder.getLong("to_entrusted_id"));
+    	setAttr("toEntrusted", toEntrusted);
 
     	//用户信息
     	long creator = planOrder.getLong("creator");

@@ -66,19 +66,19 @@
             <div class="simple_order_list_div">
 	            <div class="col-lg-6">
 	            	<%include("/eeda/component/form/inputCustomerField.html",
-											{ id:'entrusted', 
+											{ id:'entrusted_id', 
 											label:'委托方',  
-											value:party.id!'',
-											display_value:party.company_name!''
+											value:entrusted.id!'',
+											display_value:entrusted.company_name!''
 											}){} %>
 	             </div>
             	
            		<div class="col-lg-6">
            			<%include("/eeda/component/form/inputCustomerField.html",
-											{ id:'to_entrusted', 
+											{ id:'to_entrusted_id', 
 											label:'被委托方',  
-											value:party.id!'',
-											display_value:party.company_name!''
+											value:toEntrusted.id!'',
+											display_value:toEntrusted.company_name!''
 											}){} %>
                 </div>  
                    

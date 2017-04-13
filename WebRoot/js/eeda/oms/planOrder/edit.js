@@ -61,6 +61,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
                 customer_id: $('#customer_id').val(),
                 type: $('#type').val(),
                 remark: $('#note').val(),
+                entrusted_id: $('#entrusted_id').val(),
+                to_entrusted_id: $('#to_entrusted_id').val(),
                 status: $('#status').val()==''?'新建':$('#status').val(),
                 item_list:items_array
                 
