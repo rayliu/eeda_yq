@@ -21,6 +21,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对
           ajax: "/jobOrder/list?type="+type,
           columns: [
+				{ "width": "10px",
+				    "render": function ( data, type, full, meta ) {
+				    	if(full.STATUS!='已完成'){
+				    		return '<input type = "checkBox" name = "checkBox">';
+				    	}else{
+				    		return '<input type = "checkBox" disabled name = "checkBox">';
+				    	}
+				      
+				    }
+				},
               { "width": "30px",
                   "render": function ( data, type, full, meta ) {
                     return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
@@ -55,7 +65,52 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               
           ]
       });
+      
+      var checkNum = 0;
+      $('#eeda-table').on('click','[name=checkBox]',function(){
+    	  if(this.checked){
+    		  checkNum++;
+    	  }else{
+    		  checkNum--;
+    	  }
+    	  
+    	  if(checkNum>0){
+    		  $('#lockBtn').attr('disabled',false);
+    	  }else{
+    		  $('#lockBtn').attr('disabled',true);
+    	  }
+      });
+      
+      $('#lockBtn').on('click',function(){
+    	  checkNum = 0;
+    	  var self = this;
+    	  self.disabled = true;
+    	  
+    	  var idArray = [];
+    	  $('#eeda-table [name=checkBox]:checked').each(function(){
+    		  var id  = $(this).parent().parent().attr('id');
+    		  idArray.push(id);
+    	  });
+    	  
+    	  
+    	  $.post('/jobOrder/confirmCompleted',{id:idArray.toString()},function(data){
+    		  if(data.result){
+    			  $.scojs_message('锁单成功', $.scojs_message.TYPE_OK);
+    			  searchData();
+    		  }else{
+    			  $.scojs_message('锁单失败', $.scojs_message.TYPE_ERROR);
+    			  self.disabled = false;
+    		  }
+    		  //$.unblockUI();
+    	  }).fail(function() {
+    		  //$.unblockUI();
+    		  self.disabled = false;
+              $.scojs_message('后台出错', $.scojs_message.TYPE_ERROR);
+          });
+      });
 
+      
+      
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();

@@ -1809,9 +1809,14 @@ public class JobOrderController extends Controller {
     @Before(Tx.class)
     public void confirmCompleted(){
     	String id = getPara("id");
-    	JobOrder order = JobOrder.dao.findById(id);
-    	order.set("status", "已完成");
-    	order.update();
+    	
+    	String[] idArray = id.split(",");
+    	for (int i = 0; i < idArray.length; i++) {
+    		JobOrder order = JobOrder.dao.findById(idArray[i]);
+        	order.set("status", "已完成");
+        	order.update();
+		}
+    	
     	renderJson("{\"result\":true}");
     }
     
