@@ -306,7 +306,7 @@ public class TransOrderShortCutController extends Controller {
 						record.set("loading_wharf2", loading_wharf2);
 					}
 					if(!"".equals(back_wharf)){
-						record.set("delivery_address", back_wharf);
+						record.set("back_wharf", back_wharf);
 					}
 					if(!"".equals(cabinet_type)){
 						record.set("truck_type", cabinet_type);
