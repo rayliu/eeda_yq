@@ -44,9 +44,10 @@ public class AppControllerForMobile extends Controller {
         
     }
     
-    private boolean checkHeaderAuth(HttpServletRequest request)
+    public static boolean checkHeaderAuth(HttpServletRequest request)
             throws IOException {
 
+        boolean isAuth =false;
         String auth = request.getHeader("Authorization");
         System.out.println("auth encoded in base64 is " + getFromBASE64(auth));
 
@@ -63,17 +64,19 @@ public class AppControllerForMobile extends Controller {
             
             if (rec != null) {
                 request.getSession().setAttribute("authKey", auth);
-                return true;
+                isAuth = true;
             } else {
-                return false;
+                isAuth = false;
             }
         } else {
-            return false;
+            isAuth = false;
         }
-
+        
+        
+        return isAuth;
     }
 
-    private String getFromBASE64(String s) {
+    private static String getFromBASE64(String s) {
         if (s == null)
             return null;
         BASE64Decoder decoder = new BASE64Decoder();

@@ -1,5 +1,6 @@
 package controllers.oms.planOrder;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
+import controllers.app.AppControllerForMobile;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 
@@ -45,7 +47,15 @@ public class PlanOrderControllerForMobile extends Controller {
 	}
     
    
-    public void list() {
+    public void list() throws IOException {
+        if (!AppControllerForMobile.checkHeaderAuth(getRequest())) {
+            getResponse().setStatus(401);
+            getResponse().setHeader("Cache-Control", "no-store");
+            getResponse().setDateHeader("Expires", 0);
+            getResponse().setHeader("WWW-authenticate", "Basic Realm=\"test\"");
+            renderText("用户未登录!");
+            return;
+        }
 //        UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=1;
         
