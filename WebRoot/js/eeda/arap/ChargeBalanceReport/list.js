@@ -15,7 +15,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           },
           columns: [
       			{ "data": "ABBR", "width": "120px"},
-      			{ "data": "CHARGE_CNY", "width": "80px",
+      			{ "data": "CHARGE_CNY", "width": "100px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -23,7 +23,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "CHARGE_USD", "width": "80px"  ,
+	            { "data": "CHARGE_USD", "width": "100px"  ,
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -31,7 +31,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "CHARGE_JPY", "width": "80px",
+	            { "data": "CHARGE_JPY", "width": "100px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -39,7 +39,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "CHARGE_HKD", "width": "80px",
+	            { "data": "CHARGE_HKD", "width": "100px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -47,7 +47,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "CHARGE_RMB", "width": "100px",
+	            { "data": "CHARGE_RMB", "width": "120px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -55,7 +55,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "UNCHARGE_CNY", "width": "80px",
+	            { "data": "UNCHARGE_CNY", "width": "100px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -63,7 +63,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "UNCHARGE_USD", "width": "80px"  ,
+	            { "data": "UNCHARGE_USD", "width": "100px"  ,
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -71,7 +71,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "UNCHARGE_JPY", "width": "80px",
+	            { "data": "UNCHARGE_JPY", "width": "100px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -79,7 +79,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "UNCHARGE_HKD", "width": "80px",
+	            { "data": "UNCHARGE_HKD", "width": "100px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -87,7 +87,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "UNCHARGE_RMB", "width": "100px",
+	            { "data": "UNCHARGE_RMB", "width": "120px",
 	            	"render": function(data, type, full, meta) {
 					return '<span style="color:red;">'+eeda.numFormat(data,3)+'</span>';
 				  }
@@ -141,6 +141,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  var uncharge_jpy = parseFloat(data.UNCHARGE_JPY).toFixed(2);
         	  var uncharge_hkd = parseFloat(data.UNCHARGE_HKD).toFixed(2);
         	  var total_uncharge = parseFloat(data.TOTAL_UNCHARGE).toFixed(2);
+        	  var total=parseFloat(data.TOTAL);
         	  $('#CNY_charge_tatol').text(eeda.numFormat(charge_cny,3));
         	  $('#USD_charge_tatol').text(eeda.numFormat(charge_usd,3));
         	  $('#JPY_charge_tatol').text(eeda.numFormat(charge_jpy,3));
@@ -151,6 +152,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  $('#JPY_uncharge_tatol').text(eeda.numFormat(uncharge_jpy,3)).css('color','red');
         	  $('#HKD_uncharge_tatol').text(eeda.numFormat(uncharge_hkd,3)).css('color','red');
         	  $('#total_uncharge').text(eeda.numFormat(total_uncharge,3)).css('color','red');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(1).html("CNY:"+eeda.numFormat(charge_cny,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html("USD:"+eeda.numFormat(charge_usd,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("JPY:"+eeda.numFormat(charge_jpy,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("HKD:"+eeda.numFormat(charge_hkd,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("应收折合(RMB):"+eeda.numFormat(total_charge,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("CNY:"+eeda.numFormat(uncharge_cny,3)).css('color','red');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(7).html("USD:"+eeda.numFormat(uncharge_usd,3)).css('color','red');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(8).html("JPY:"+eeda.numFormat(uncharge_jpy,3)).css('color','red');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(9).html("HKD:"+eeda.numFormat(uncharge_hkd,3)).css('color','red');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html("未收折合(RMB):"+eeda.numFormat(total_uncharge,3)).css('color','red');
         	  
         	  var total_profit=parseFloat(total_charge-total_uncharge).toFixed(2);
         	  if(total_profit<0){

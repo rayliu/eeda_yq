@@ -33,7 +33,7 @@ public class ProfitAndPaymentRateController extends Controller {
 		render("/eeda/arap/ProfitAndPaymentRate/ProfitAndPaymentRate.html");
 	}
 	
-	public void list() {
+	public long list() {
 		String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
@@ -64,7 +64,7 @@ public class ProfitAndPaymentRateController extends Controller {
         String sqlTotal = "select count(1) total from ("+sql+") C";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
-        
+        long total = rec.getLong("total");
         List<Record> orderList = Db.find(sql);
         Map map = new HashMap();
         map.put("draw", pageIndex);
@@ -72,6 +72,7 @@ public class ProfitAndPaymentRateController extends Controller {
         map.put("recordsFiltered", rec.getLong("total"));
         map.put("data", orderList);
         renderJson(map); 
+        return total;
 		
 	}
 	
@@ -182,6 +183,8 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	AND joa.order_type = 'cost' "+condition+") total_cost";
 		
 		Record re = Db.findFirst(sql);
+		long total=list();
+		re.set("total", total);
 		renderJson(re);
 	}
 	

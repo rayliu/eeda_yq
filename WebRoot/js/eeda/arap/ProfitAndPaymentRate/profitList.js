@@ -106,12 +106,24 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  $('#HKD_cost_tatol').text(cost_hkd);
         	  $('#total_cost').text(total_cost);
         	  
+        	  
         	  var total_profit=parseFloat(total_charge-total_cost).toFixed(2);
         	  if(total_profit<0){
         		  $('#total_profit').text(total_profit).css('color','red');
         	  }else(
         		  $('#total_profit').text(total_profit)
         	  )
+        	  var total=parseFloat(data.TOTAL);
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(1).html("折合应收(RMB):"+eeda.numFormat(total_charge,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html("折合应付(RMB):"+eeda.numFormat(total_cost,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("利润率(%)");
+        	  if(total_profit<0){
+        		  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("利润(RMB):"+eeda.numFormat(total_profit,3)).css('color','red');
+        	  }else(
+        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("利润(RMB):"+eeda.numFormat(total_profit,3))
+        	  )
+        	  
 
           });
           
@@ -132,5 +144,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
          
           
       };
+      searchData();
   });
 });

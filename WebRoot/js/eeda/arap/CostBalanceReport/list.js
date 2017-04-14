@@ -16,7 +16,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               },
           columns: [
           			{ "data": "ABBR", "width": "120px"},
-          			{ "data": "COST_CNY", "width": "80px",
+          			{ "data": "COST_CNY", "width": "100px",
     	            	"render": function(data, type, full, meta) {
                 	    if(data==0){
                 	    	return '';
@@ -24,7 +24,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     					return eeda.numFormat(data,3);
     				  }
     	            },
-    	            { "data": "COST_USD", "width": "80px"  ,
+    	            { "data": "COST_USD", "width": "100px"  ,
     	            	"render": function(data, type, full, meta) {
                 	    if(data==0){
                 	    	return '';
@@ -32,7 +32,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     					return eeda.numFormat(data,3);
     				  }
     	            },
-    	            { "data": "COST_JPY", "width": "80px",
+    	            { "data": "COST_JPY", "width": "100px",
     	            	"render": function(data, type, full, meta) {
                 	    if(data==0){
                 	    	return '';
@@ -40,7 +40,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     					return eeda.numFormat(data,3);
     				  }
     	            },
-    	            { "data": "COST_HKD", "width": "80px",
+    	            { "data": "COST_HKD", "width": "100px",
     	            	"render": function(data, type, full, meta) {
                 	    if(data==0){
                 	    	return '';
@@ -56,7 +56,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     					return eeda.numFormat(data,3);
     				  }
     	            },
-    	            { "data": "UNCOST_CNY", "width": "80px",
+    	            { "data": "UNCOST_CNY", "width": "100px",
     	            	"render": function(data, type, full, meta) {
                 	    if(data==0){
                 	    	return '';
@@ -64,7 +64,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     					return eeda.numFormat(data,3);
     				  }
     	            },
-    	            { "data": "UNCOST_USD", "width": "80px"  ,
+    	            { "data": "UNCOST_USD", "width": "100px"  ,
     	            	"render": function(data, type, full, meta) {
                 	    if(data==0){
                 	    	return '';
@@ -72,7 +72,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     					return eeda.numFormat(data,3);
     				  }
     	            },
-    	            { "data": "UNCOST_JPY", "width": "80px",
+    	            { "data": "UNCOST_JPY", "width": "100px",
     	            	"render": function(data, type, full, meta) {
                 	    if(data==0){
                 	    	return '';
@@ -80,7 +80,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     					return eeda.numFormat(data,3);
     				  }
     	            },
-    	            { "data": "UNCOST_HKD", "width": "80px",
+    	            { "data": "UNCOST_HKD", "width": "100px",
     	            	"render": function(data, type, full, meta) {
                 	    if(data==0){
                 	    	return '';
@@ -150,6 +150,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
        	  $('#JPY_uncost_tatol').text(eeda.numFormat(uncost_jpy,3)).css('color','red');
        	  $('#HKD_uncost_tatol').text(eeda.numFormat(uncost_hkd,3)).css('color','red');
        	  $('#total_uncost').text(eeda.numFormat(total_uncost,3)).css('color','red');
+       	 var total=parseFloat(data.TOTAL);
+  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
+  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(1).html("CNY:"+eeda.numFormat(cost_cny,3));
+  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html("USD:"+eeda.numFormat(cost_usd,3));
+  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("JPY:"+eeda.numFormat(cost_jpy,3));
+  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("HKD:"+eeda.numFormat(cost_hkd,3));
+  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("应付折合(RMB):"+eeda.numFormat(total_cost,3));
+  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("CNY:"+eeda.numFormat(uncost_cny,3)).css('color','red');
+  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(7).html("USD:"+eeda.numFormat(uncost_usd,3)).css('color','red');
+  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(8).html("JPY:"+eeda.numFormat(uncost_jpy,3)).css('color','red');
+  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(9).html("HKD:"+eeda.numFormat(uncost_hkd,3)).css('color','red');
+  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html("未付折合(RMB):"+eeda.numFormat(total_uncost,3)).css('color','red');
        	  
        	  var total_profit=parseFloat(total_cost-total_uncost).toFixed(2);
        	  if(total_profit<0){

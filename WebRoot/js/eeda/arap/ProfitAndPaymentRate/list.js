@@ -27,7 +27,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "CHARGE_USD", "width": "80px"  ,
+	            { "data": "CHARGE_USD", "width": "100px"  ,
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -35,7 +35,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "CHARGE_JPY", "width": "80px",
+	            { "data": "CHARGE_JPY", "width": "100px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -43,7 +43,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "CHARGE_HKD", "width": "80px",
+	            { "data": "CHARGE_HKD", "width": "100px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -51,7 +51,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "COST_CNY", "width": "80px" ,
+	            { "data": "COST_CNY", "width": "100px" ,
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -59,7 +59,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "COST_USD", "width": "80px",
+	            { "data": "COST_USD", "width": "100px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -67,7 +67,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "COST_JPY", "width": "80px",
+	            { "data": "COST_JPY", "width": "100px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -75,7 +75,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "COST_HKD", "width": "80px",
+	            { "data": "COST_HKD", "width": "100px",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -149,6 +149,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  $('#JPY_cost_tatol').text(cost_jpy);
         	  $('#HKD_cost_tatol').text(cost_hkd);
         	  $('#total_cost').text(total_cost);
+        	  var total=parseFloat(data.TOTAL);
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(1).html("应收CNY"+eeda.numFormat(charge_cny,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html("应收USD"+eeda.numFormat(charge_usd,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("应收JPY"+eeda.numFormat(charge_jpy,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("应收HKD"+eeda.numFormat(charge_hkd,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("应付CNY"+eeda.numFormat(total_charge,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("应付USD"+eeda.numFormat(cost_cny,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(7).html("应付JPY"+eeda.numFormat(cost_usd,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(8).html("应付HKD"+eeda.numFormat(cost_jpy,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(9).html("折合应收(RMB)"+eeda.numFormat(cost_hkd,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html("折合应付(RMB)"+eeda.numFormat(total_cost,3));
         	  
         	  var total_profit=parseFloat(total_charge-total_cost).toFixed(2);
         	  if(total_profit<0){
@@ -176,5 +188,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
          
           
       };
+      searchData(); 
   });
 });
