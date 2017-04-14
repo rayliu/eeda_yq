@@ -32,7 +32,7 @@
 
         <div style="margin-left:12px;margin-right:12px">
             <form id="orderForm" class="form-group">
-            	<div class="row small_head"><div class="font_style">Book Order 工作单</div></div>
+            	<div class="row small_head"><div class="font_style">Booking Order</div></div>
                 <div class="row simple_small_title_div">
                 	<div class="col-lg-12">
                         <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
@@ -44,7 +44,7 @@
                             <div class="col-lg-4"><!--  三列排版  -->
                                 <%include("/eeda/component/form/inputField.html", 
                                     {   id:'order_no', 
-                                        label:'工作单号', 
+                                        label:'Booking号', 
                                         value:order.order_no!'',
                                         disabled: 'disabled'
                                     }){}%>
