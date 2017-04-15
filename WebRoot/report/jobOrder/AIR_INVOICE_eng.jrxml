@@ -399,7 +399,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="397" y="1" width="158" height="20" uuid="f76ed8ed-6975-46a3-b6c7-05a39de3bc8d"/>
-				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="397" y="25" width="158" height="37" uuid="838f806e-871d-43b2-b605-a3562590f472"/>
