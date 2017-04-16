@@ -22,7 +22,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 },
                 { "data": "ITEM_NO", 
 					"render": function ( data, type, full, meta ) {
-						return "<a href='/wmsproduct/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+						//return "<a href='/wmsproduct/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+						return data;
 					}
                 }, 
                 { "data": "ITEM_NAME" },

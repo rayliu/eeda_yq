@@ -11,15 +11,14 @@ $(document).ready(function() {
 	        $.unblockUI();
 	    },
         columns:[
-                 { "data": "QR_CODE"}, 
-                 {"data": "ITEM_NAME", 
+                 {"data": "ITEM_NO", 
                	    "render": function ( data, type, full, meta ) {
                		    return data;
                	    }
                  },
-                 { "data": "ITEM_NO"}, 
+                 { "data": "ITEM_NAME"}, 
+                 { "data": "PART_NO"},
  				{ "data": "PART_NAME"}, 
- 				{ "data": "PART_NO"}, 
  				{ "data": "SHELVES"},
  				{ "data": "QUANTITY"},
  				{ "data": "CREATE_TIME"},

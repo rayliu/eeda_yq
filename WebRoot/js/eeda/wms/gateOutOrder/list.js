@@ -19,14 +19,14 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                       return '<input type="checkBox" name="checkBox" checked disabled>';
                     }
                 },
+                { "data": "ITEM_NO"}, 
                 {"data": "ITEM_NAME", 
               	    "render": function ( data, type, full, meta ) {
               		    return data;
               	    }
                 },
-                { "data": "ITEM_NO"}, 
+                { "data": "PART_NO"}, 
 				{ "data": "PART_NAME"}, 
-				{ "data": "PART_NO"}, 
 				{ "data": "AMOUNT"},
 				{ "data": "QUANTITY"},
 				{ "data": "SHELVES"}, 
@@ -100,7 +100,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                 	}
                 }
                 
-                if(flag){
+                if(flag && data.length>0){
                 	$('#createBtn').prop('disabled',false);
                 }else{
                 	$('#createBtn').prop('disabled',true);

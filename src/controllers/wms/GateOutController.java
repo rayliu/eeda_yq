@@ -186,7 +186,7 @@ public class GateOutController extends Controller {
             String part_no = dto.get("part_no");
             
             if(StringUtils.isNotBlank(item_no)){
-            	condition += " and qr_code like '%"+item_no+"%'";
+            	condition += " and item_no like '%"+item_no+"%'";
             }
             
             if(StringUtils.isNotBlank(item_name)){
@@ -222,7 +222,7 @@ public class GateOutController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
        
-    	sql = "SELECT * from (select go.*, ifnull(u.c_name, u.user_name) creator_name,pro.id product_id,pro.item_name,pro.part_name part_name "
+    	sql = "SELECT * from (select go.*, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name "
 			+ " from gate_out go "
 			+ " left join user_login u on u.id = go.creator"
 			+ " left join wmsproduct pro on pro.part_no = go.part_no"

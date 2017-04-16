@@ -20,14 +20,14 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
                 }, 
-                {"data": "ITEM_NAME", 
+                {"data": "ITEM_NO", 
               	    "render": function ( data, type, full, meta ) {
               	    	if(!data)
-              	    		data = '';
-              	    	return "<a class='item_detail' item_no='"+full.ITEM_NO+"' data-target='#itemDetail' data-toggle='modal'>"+data+"<i class='glyphicon glyphicon-th-list'></i></a>";
+              	    		data = "<i class='glyphicon glyphicon-th-list'></i>";
+              	    	return "<a class='item_detail' item_no='"+full.ITEM_NO+"' data-target='#itemDetail' data-toggle='modal'>"+data+"</a>";
               	    }
                 },
-                { "data": "ITEM_NO"}, 
+                { "data": "ITEM_NAME"}, 
 				{ "data": "TOTAL"}
             ]
         });

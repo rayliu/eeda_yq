@@ -21,14 +21,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     }
                 },
                 { "data": "ORDER_NO"}, 
+                { "data": "ITEM_NO"}, 
                 { "data": "ITEM_NAME", 
               	    "render": function ( data, type, full, meta ) {
               		    return data;
               	    }
                 },
-                { "data": "QR_CODE"}, 
+                { "data": "PART_NO"}, 
 				{ "data": "PART_NAME"}, 
-				{ "data": "PART_NO"}, 
 				{ "data": "ACTRAL_AMOUNT"},
 				{ "data": "CREATE_TIME"},
 				{ "data": "CREATOR_NAME"}
