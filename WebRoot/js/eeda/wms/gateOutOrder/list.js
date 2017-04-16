@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 'validate_cn', 'sco','./item_list'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 'validate_cn', 'sco','./item_list', 'jq_blockui'], function ($, metisMenu) {
 	$(document).ready(function() {
     	document.title = '出库单 | '+document.title;
 
@@ -10,6 +10,9 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
             paging: true,
             serverSide: false, //不打开会出现排序不对
             //ajax: "/gateOutOrder/list",
+            "drawCallback": function( settings ) {
+		        $.unblockUI();
+		    },
             columns:[
                 { "width": "30px",
                     "render": function ( data, type, full, meta ) {
@@ -40,7 +43,9 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         		$.scojs_message('数量不规范', $.scojs_message.TYPE_FALSE);
         		return false;
         	}
-        	
+        	$.blockUI({ 
+                message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> LOADING...</h1>' 
+            });
         	
         	var itemJson = buildCondition();
         	var url = "/gateOutOrder/list?jsonStr="+JSON.stringify(itemJson);
@@ -100,25 +105,32 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                 }else{
                 	$('#createBtn').prop('disabled',true);
                 }
+                $.unblockUI();
         	}).fail(function() {
                 $.scojs_message('查询失败', $.scojs_message.TYPE_ERROR);
                 $('#searchBtn').attr('disabled', false);
+                $.unblockUI();
             });
         });
         
         $('#createBtn').click(function(){
+        	$.blockUI({ 
+                message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> COMMITTING...</h1>' 
+            });
         	var self = this;
         	self.disabled = true;
         	var item_no = $('#item_no').val();
         	var quantity = $('#quantity').val();
         	$.post('/gateOutOrder/create',{item_no:item_no,quantity:quantity,idArray:idArray.toString()},function(data){
-        	if(data){
-        		$.scojs_message('单据'+data.ORDER_NO+'创建成功', $.scojs_message.TYPE_OK);
-        		order.refleshTable();
-        	}
+	        	if(data){
+	        		$.scojs_message('单据'+data.ORDER_NO+'创建成功', $.scojs_message.TYPE_OK);
+	        		order.refleshTable();
+	        		 $.unblockUI();
+	        	}
 	        }).fail(function() {
 	            $.scojs_message('创建失败', $.scojs_message.TYPE_ERROR);
 	            self.disabled = false;
+	            $.unblockUI();
 	        });
         });
         
@@ -193,12 +205,18 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         };
       
         var searchData=function(){
+        	$.blockUI({ 
+                message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> LOADING...</h1>' 
+            });
         	var itemJson = buildCondition();
         	var url = "/gateOutOrder/list?error_flag=N&jsonStr="+JSON.stringify(itemJson);
         	dataTable.ajax.url(url).load();
         };
         
         order.refleshTable = function(){
+        	$.blockUI({ 
+                message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> LOADING...</h1>' 
+            });
         	orderTable.ajax.url("/gateOutOrder/orderList").load();
         }
         

@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'jq_blockui'], function ($, metisMenu) {
 	$(document).ready(function() {
     	document.title = '产品列表 | '+document.title;
 
@@ -10,6 +10,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             paging: true,
             serverSide: true, //不打开会出现排序不对
             ajax: "/wmsproduct/list",
+            "drawCallback": function( settings ) {
+		        $.unblockUI();
+		    },
             columns:[
                 { "width": "30px",
                     "render": function ( data, type, full, meta ) {
@@ -56,6 +59,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         };
       
         var searchData=function(){
+        	$.blockUI({ 
+                message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> LOADING...</h1>' 
+            });
         	var itemJson = buildCondition();
         	var url = "/wmsproduct/list?jsonStr="+JSON.stringify(itemJson);
         	dataTable.ajax.url(url).load();

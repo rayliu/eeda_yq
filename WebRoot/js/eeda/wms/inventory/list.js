@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 'validate_cn', 'sco','./item_list'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 'validate_cn', 'sco','./item_list', 'jq_blockui'], function ($, metisMenu) {
 	$(document).ready(function() {
     	document.title = '库存统计 | '+document.title;
 
@@ -10,6 +10,9 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
             paging: true,
             serverSide: true, //不打开会出现排序不对
             ajax: "/inventory/list",
+            "drawCallback": function( settings ) {
+		        $.unblockUI();
+		    },
             columns:[
                 { "width": "30px",
                     "render": function ( data, type, full, meta ) {
@@ -55,6 +58,9 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         };
       
         var searchData=function(showMsg){
+        	$.blockUI({ 
+                message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> LOADING...</h1>' 
+            });
         	var itemJson = buildCondition();
         	var url = "/inventory/list?jsonStr="+JSON.stringify(itemJson);
         	dataTable.ajax.url(url).load();

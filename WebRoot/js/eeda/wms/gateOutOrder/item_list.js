@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 'validate_cn', 'sco', 'jq_blockui'], function ($, metisMenu) {
 $(document).ready(function() {
 	  //datatable, 动态处理
 	var itemTable = eeda.dt({
@@ -7,6 +7,9 @@ $(document).ready(function() {
         serverSide: false, //不打开会出现排序不对
         scrollX:true,
         //ajax: "/inventory/list",
+        "drawCallback": function( settings ) {
+	        $.unblockUI();
+	    },
         columns:[
                  {"data": "ITEM_NAME", 
                	    "render": function ( data, type, full, meta ) {
@@ -28,6 +31,9 @@ $(document).ready(function() {
 	
 	
 	var searchData=function(order_id){
+		$.blockUI({ 
+            message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> LOADING...</h1>' 
+        });
      	var url = "/gateOutOrder/orderItemList?order_id="+order_id;
      	itemTable.ajax.url(url).load();
     };
