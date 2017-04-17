@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], function ($, metisMenu) { 
     $(document).ready(function() {
     	document.title = 'eBay站内信 | '+document.title;
     	
@@ -14,7 +14,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 { "data": "MESSAGE_STATUS", "width":"20px"}, 
 	              { "data": "SENDER_ID", "class":'sender_id', "width":"60px"}, 
                 { "data": "RECIPIENT_ID", "width":"60px"},
-                { "data": "SUBJECT", "width":"360px",
+                { "data": "SUBJECT", 
                   "render": function ( data, type, full, meta ) {
                       return "<a href='#' class='edit' style='cursor: pointer;'>"+data+"</a>";
                   }
@@ -38,8 +38,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       $('#importBtn').click(function(){
         $.blockUI();
            $.post('/ebayMemberMsg/importMemberMsg', {nothing: 'nothing'}, function(data, textStatus, xhr) {
-              searchData(); 
-              $.unblockUI();
+              if(data.STATUS == 'OK'){
+                $.scojs_message('同步成功', $.scojs_message.TYPE_OK);
+                searchData(); 
+                $.unblockUI();
+              }else{
+                $.scojs_message('同步失败:'+data.MSG, $.scojs_message.TYPE_ERROR);
+                $.unblockUI();
+              }
+              
            });
       });
 
@@ -54,7 +61,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
               $('#recipient_id').val(data[0].RECIPIENT_ID);
               $('#subject').val(data[0].SUBJECT);
               $('#item_id').val(data[0].ITEM_ID);
-
+              $('#msg_type').text(data[0].MESSAGE_TYPE);
               
               $('.chat').text('');
               for(var i = 0; i<data.length;i++){
@@ -66,41 +73,42 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                   var response = data[i].RESPONSE;
                   var response_date = data[i].LAST_MODIFIED_DATE;
 
-                  $('.chat').append(
-                             '<li class="left clearfix">'
-                            +'  <span class="chat-img pull-left">'
-                            +'  <img src="/images/user_chat.png" alt="User Avatar" >'
-                            +'  </span>'
-                            +'    <div class="chat-body clearfix">'
-                            +'        <div class="header">'
-                            +'            <strong class="primary-font">'+sender_id+'</strong>'
-                            +'            <small class="pull-right text-muted">'
-                            +'                <i class="fa fa-clock-o fa-fw"></i>'+creation_date
-                            +'            </small>'
-                            +'        </div><br/>'
-                            +'    <pre>'+body+'</pre>'
-                            +'    </div>'
-                            +'</li>'  
-                            );
+                  if(replay_flag=='N'){
+                      $('.chat').append(
+                               '<li class="left clearfix">'
+                              +'  <span class="chat-img pull-left">'
+                              +'  <img src="/images/user_chat.png" alt="User Avatar" >'
+                              +'  </span>'
+                              +'    <div class="chat-body clearfix">'
+                              +'        <div class="header">'
+                              +'            <strong class="primary-font">'+sender_id+'</strong>'
+                              +'            <small class="pull-right text-muted">'
+                              +'                <i class="fa fa-clock-o fa-fw"></i>'+creation_date
+                              +'            </small>'
+                              +'        </div><br/>'
+                              +'    <pre>'+body+'</pre>'
+                              +'    </div>'
+                              +'</li>'  
+                              );
+                    }else{//发送人
+                      
+                      $('.chat').append(
+                      '<li class="right clearfix">'
+                      +'<span class="chat-img pull-right">'
+                      +'    <img src="/images/user_headphone.png" alt="User Avatar" >'
+                      +'</span>'
+                      +'<div class="chat-body clearfix">'
+                      +'    <div class="header">'
+                      +'      <strong class="pull-right primary-font">'+sender_id+'</strong>'
+                      +'        <small class=" text-muted" >'
+                      +'            <i class="fa fa-clock-o fa-fw"></i>'+creation_date
+                      +'        </small>'
+                      +'    </div><br/>'
+                      +'    <pre style="float:right">'+body+'</pre>'
+                      +'</div>'
+                      +'</li>');
+                    };
 
-              	  if(response!=null){
-              		  
-                		  $('.chat').append(
-                		  '<li class="right clearfix">'
-                		  +'<span class="chat-img pull-right">'
-                		  +'    <img src="/images/user_headphone.png" alt="User Avatar" >'
-                		  +'</span>'
-                		  +'<div class="chat-body clearfix">'
-                		  +'    <div class="header">'
-                		  +'    	<strong class="pull-right primary-font">'+recipient_id+'</strong>'
-                		  +'        <small class=" text-muted" >'
-                		  +'            <i class="fa fa-clock-o fa-fw"></i>'+response_date
-                		  +'        </small>'
-                		  +'    </div><br/>'
-                		  +'    <pre style="float:right">'+response+'</pre>'
-                		  +'</div>'
-                		  +'</li>')
-                  }
             	  
               }
               $('#editMsgModal').modal('show');

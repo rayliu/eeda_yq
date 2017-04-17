@@ -3,6 +3,7 @@ package controllers.msg.ebayMsg;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -68,7 +69,7 @@ public class EbayMemberMsgController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "select * from (select * from ebay_member_msg group by item_id, sender_id, subject) A where 1=1 ";
+        String sql = "select * from (select * from ebay_member_msg group by item_id, sender_id, subject, message_status) A where 1=1 ";
 
         String condition = DbUtils.buildConditions(getParaMap());
 
@@ -78,6 +79,7 @@ public class EbayMemberMsgController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
 
         List<Record> orderList = Db.find(sql + condition
+                + " "
                 + " order by message_status desc, creation_date desc " + sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
@@ -89,18 +91,31 @@ public class EbayMemberMsgController extends Controller {
 
     public void getMemberMsg(){
         long id = getParaToLong("id");
-        long item_id = getParaToLong("item_id");
         String sender_id = getPara("sender_id");
-        //Record rec = Db.findById("ebay_member_msg", id);
-        
-        List<Record> rec = Db.find("select * from (select id, item_id, sender_id,recipient_id ,"
-        		+ " creation_date ,body, subject,'N' replay_flag, message_id, response, last_modified_date from ebay_member_msg where sender_id=?"
-//        		+ " union "
-//        		+ " select *,'Y' replay_flag, 0 message_id from ebay_member_msg_replay where recipient_id=?
-                +") A "
-        		+ " where item_id = ? ORDER BY creation_date", sender_id, item_id);
-        
-        renderJson(rec);
+        List<Record> recs = new ArrayList<Record>();
+        if(getParaToLong("item_id")!=null){
+            long item_id = getParaToLong("item_id");
+            
+            recs = Db.find("select * from (select id, item_id, message_type, sender_id,recipient_id ,"
+            		+ " creation_date ,body, subject,'N' replay_flag, message_id, response, last_modified_date"
+            		+ " from ebay_member_msg where sender_id=?"
+            		+ " union "
+            		+ " select id, item_id, '' message_type, sender_id, recipient_id, creation_date, body,"
+                    + " subject, 'Y' replay_flag, 0 message_id, body response, creation_date last_modified_date"
+            		+ " from ebay_member_msg_reply where recipient_id=?"
+                    +") A "
+            		+ " where item_id = ? ORDER BY creation_date", sender_id, sender_id, item_id);
+        }else{
+            recs = Db.find("select id, item_id, message_type, sender_id,recipient_id ,"
+                    + " creation_date, body, subject, 'N' replay_flag, message_id, response, last_modified_date"
+                    + " from ebay_member_msg emm where sender_id=?"
+                    + " union "
+                    + " select id, item_id, '' message_type, sender_id, recipient_id, creation_date, body,"
+                    + " subject,'Y' replay_flag, 0 message_id, body response, creation_date last_modified_date"
+                    + " from ebay_member_msg_reply where recipient_id=?", sender_id, sender_id);
+            
+        }
+        renderJson(recs);
     }
     
     public void importMemberMsg() {
@@ -147,54 +162,64 @@ public class EbayMemberMsgController extends Controller {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            renderText("Failed");
+            Record rec = new Record();
+            rec.set("status", "failed");
+            rec.set("msg", ex.getMessage());
+            renderJson(rec);
         }
-        renderText("OK");
+        Record rec = new Record();
+        rec.set("status", "OK");
+        rec.set("msg", "OK");
+        renderJson(rec);
     }
 
     private void handleMsg(MemberMessageExchangeType[] arrMessages) {
-        int size = arrMessages != null ? arrMessages.length : 0;
-        logger.debug("arrMessages.length="+arrMessages.length);
-        for (int i = 0; i < size; i++) {
-            Record rec = new Record();
-            MemberMessageExchangeType msg = arrMessages[i];
-            rec.set("item_id", msg.getItem().getItemID());
-            rec.set("message_id", msg.getQuestion().getMessageID());
-            
-            rec.set("seller_id", msg.getItem().getSeller().getUserID());
-            rec.set("selling_currency", msg.getItem().getSellingStatus().getCurrentPrice().getCurrencyID().value());
-            rec.set("selling_price", msg.getItem().getSellingStatus().getCurrentPrice().getValue());
-            rec.set("title", msg.getItem().getTitle());
-            rec.set("message_type", msg.getQuestion().getMessageType().value());
-            rec.set("question_type", msg.getQuestion().getQuestionType().value());
-            rec.set("display_to_public", msg.getQuestion().isDisplayToPublic()==true?"Y":"N");
-            
-            rec.set("sender_id", msg.getQuestion().getSenderID());
-            rec.set("sender_email", msg.getQuestion().getSenderEmail());
-            
-            String rId = StringUtils.join(msg.getQuestion().getRecipientID(),",");
-            rec.set("recipient_id", rId);//TODO
+        
+            int size = arrMessages != null ? arrMessages.length : 0;
+            logger.debug("arrMessages.length="+arrMessages.length);
+            for (int i = 0; i < size; i++) {
+                Record rec = new Record();
+                MemberMessageExchangeType msg = arrMessages[i];
+                if(msg.getItem()!=null){
+                    rec.set("item_id", msg.getItem().getItemID());
+                    rec.set("seller_id", msg.getItem().getSeller().getUserID());
+                    rec.set("selling_currency", msg.getItem().getSellingStatus().getCurrentPrice().getCurrencyID().value());
+                    rec.set("selling_price", msg.getItem().getSellingStatus().getCurrentPrice().getValue());
+                    rec.set("title", msg.getItem().getTitle());
+                }
+                
+                rec.set("message_id", msg.getQuestion().getMessageID());
+                rec.set("message_type", msg.getQuestion().getMessageType().value());
+                rec.set("question_type", msg.getQuestion().getQuestionType().value());
+                rec.set("display_to_public", msg.getQuestion().isDisplayToPublic()==true?"Y":"N");
+                
+                rec.set("sender_id", msg.getQuestion().getSenderID());
+                rec.set("sender_email", msg.getQuestion().getSenderEmail());
+                
+                String rId = StringUtils.join(msg.getQuestion().getRecipientID(),",");
+                rec.set("recipient_id", rId);//TODO
 
-            rec.set("subject", msg.getQuestion().getSubject());
-            rec.set("body", msg.getQuestion().getBody());
-            
-            if(msg.getResponse().length>0)
-                rec.set("response", msg.getResponse()[0]);//TODO
-            
-            rec.set("message_status", msg.getMessageStatus().value());
-            rec.set("creation_date", msg.getCreationDate().getTime());
-            rec.set("last_modified_date", msg.getLastModifiedDate().getTime());
+                rec.set("subject", msg.getQuestion().getSubject());
+                rec.set("body", msg.getQuestion().getBody());
+                
+                if(msg.getResponse().length>0)
+                    rec.set("response", msg.getResponse()[0]);//TODO
+                
+                rec.set("message_status", msg.getMessageStatus().value());
+                rec.set("creation_date", msg.getCreationDate().getTime());
+                rec.set("last_modified_date", msg.getLastModifiedDate().getTime());
 
-            Record oldRec = Db.findFirst(
-                    "select * from ebay_member_msg where message_id=?", msg
-                            .getQuestion().getMessageID());
-            if (oldRec != null) {
-                rec.set("id", oldRec.getLong("id"));
-                Db.update("ebay_member_msg", rec);
-            } else {
-                Db.save("ebay_member_msg", rec);
+                Record oldRec = Db.findFirst(
+                        "select * from ebay_member_msg where message_id=?", msg
+                                .getQuestion().getMessageID());
+                if (oldRec != null) {
+                    rec.set("id", oldRec.getLong("id"));
+                    Db.update("ebay_member_msg", rec);
+                } else {
+                    Db.save("ebay_member_msg", rec);
+                }
             }
-        }
+        
     }
 
     
@@ -217,7 +242,7 @@ public class EbayMemberMsgController extends Controller {
         rec.set("sender_id", recipient_id);
         rec.set("subject", subject);
         rec.set("creation_date", new Date());
-        Db.save("ebay_member_msg_replay", rec);
+        Db.save("ebay_member_msg_reply", rec);
         
         AddMemberMessageRTQCall api = new AddMemberMessageRTQCall(
                 this.apiContext);
@@ -232,10 +257,13 @@ public class EbayMemberMsgController extends Controller {
         
         //TODO: 发送失败应该在UI上提示失败！
         try {
-            api.addMemberMessageRTQ();
+//            api.addMemberMessageRTQ();
         } catch (Exception e) {
             e.printStackTrace();
-            renderText("Failed");
+            Record r = new Record();
+            rec.set("status", "failed");
+            rec.set("msg", e.getMessage());
+            renderJson(r);
         }
         renderJson(rec);
     }
