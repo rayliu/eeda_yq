@@ -2,9 +2,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     $(document).ready(function() {
 
 
-        var order_no=$('#order_no').val();
-        if(order_no.length>0)
-            document.title = order_no + ' | ' + document.title;
+        var Tracking_no=$('#copyTracking_no').val();
+        if(Tracking_no.length>0)
+            document.title = Tracking_no + ' | ' + document.title;
     	//已报关行按钮状态
     	$('#confirmCompleted,#passBtn,#refuseBtn,#cancelAuditBtn').click(function(){
     		var btnId = $(this).attr("id");

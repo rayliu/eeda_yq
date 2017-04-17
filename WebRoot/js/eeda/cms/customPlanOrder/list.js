@@ -33,7 +33,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
                 		  return "<a href='/customPlanOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
                 	  }
                   },
-                  { "data": "BOOKING_NO"},
+                  { "data": "TRACKING_NO"},
+                  { "data": "CUSTOMS_BILLCODE"},
                   { "data": "STATUS", 
   	            	"render": function(data, type, full, meta){
   	            		$("#waitAuditing").text(full.WAITAUDITING);
