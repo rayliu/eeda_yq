@@ -59,14 +59,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               	  		return "<span style='color:red;'>"+data+"</span>";
               	  	}	
 				}, 
-                {"data": "ITEM_NAME", 
+                {"data": "ITEM_NO", 
               	  "render": function ( data, type, full, meta ) {
               		  return "<a href='/wmsproduct/edit?id="+full.PRODUCT_ID+"'target='_blank'>"+data+"</a>";
               	  }
                 },
+                {"data": "ITEM_NAME"},
                 { "data": "QR_CODE"}, 
+                { "data": "PART_NO"}, 
 				{ "data": "PART_NAME"}, 
-				{ "data": "PART_NO"}, 
 				{ "data": "QUANTITY"},
 				{ "data": "SHELVES"},
 				{ "data": "RETURN_FLAG"},
@@ -96,14 +97,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               	  		return "<span style='color:red;'>"+data+"</span>";
               	  	}	
 				}, 
-                {"data": "ITEM_NAME", 
+                {"data": "ITEM_NO", 
               	  "render": function ( data, type, full, meta ) {
               		  return "<a href='/wmsproduct/edit?id="+full.PRODUCT_ID+"'target='_blank'>"+data+"</a>";
               	  }
                 },
+                { "data": "ITEM_NAME"}, 
                 { "data": "QR_CODE"}, 
+                { "data": "PART_NO"}, 
 				{ "data": "PART_NAME"}, 
-				{ "data": "PART_NO"}, 
 				{ "data": "QUANTITY"},
 				{ "data": "SHELVES"},
 				{ "data": "RETURN_FLAG"},
