@@ -191,20 +191,21 @@ public class InventoryController extends Controller {
             
     	}
         
-    	sql = "select gi.*, ifnull(u.c_name, u.user_name) creator_name,"
+    	sql = "select A.*,count(A.id) total from (select gi.*, ifnull(u.c_name, u.user_name) creator_name,"
     		+ " pro.item_name,ifnull(pro.item_no,'') item_no,pro.part_name part_name "
 			+ " from gate_in gi "
 			+ " left join user_login u on u.id = gi.creator"
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
 			+ " and out_flag = 'N' and error_flag = 'N'"
-			+ condition;
+			+ condition 
+			+ " group by gi.id ) A group by A.item_no";
     	
         
-        String sqlTotal = "select count(1) total from ("+sql+" group by pro.item_no"+") B";
+        String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         
-        List<Record> orderList = Db.find("select A.* , count(A.id) total from ("+sql+") A group by A.item_no" +sLimit);
+        List<Record> orderList = Db.find(sql +sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
@@ -280,7 +281,8 @@ public class InventoryController extends Controller {
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
 			+ " and out_flag = 'N' and error_flag = 'N'"
-			+ condition;
+			+ condition
+			+ " group by gi.id ";
     	
         
         String sqlTotal = "select count(1) total from ("+sql+") B";

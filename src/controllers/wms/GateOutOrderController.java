@@ -212,6 +212,7 @@ public class GateOutOrderController extends Controller {
     			+ " from gate_out_order goo "
     			+ " left join user_login u on u.id = goo.creator"
     			+ " where goo.office_id="+office_id
+    			+ " group by goo.id "
     			+ condition ;
     	
 

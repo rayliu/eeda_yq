@@ -228,6 +228,7 @@ public class GateOutController extends Controller {
 			+ " left join wmsproduct pro on pro.part_no = go.part_no"
 			+ " where go.office_id="+office_id
 			+ error_flag
+			+ " group by go.id "
 			+ " ) A where 1=1 ";
     	
         

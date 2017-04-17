@@ -195,6 +195,7 @@ public class InvCheckOrderController extends Controller {
 				+ " left join user_login u on u.id = gi.creator"
 				+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 				+ " where gi.office_id="+office_id
+				+ " group by gi.id "
 				+ " ) A where 1=1 ";
 		
 	    

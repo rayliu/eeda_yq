@@ -216,6 +216,7 @@ public class GateInController extends Controller {
 			+ out_flag
 			+ error_flag
 			+ inv_flag
+			+ " group by gi.id "
 			+ " ) A where 1=1 ";
     	
         
