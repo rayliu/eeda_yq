@@ -44,7 +44,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         		return false;
         	}
         	$.blockUI({ 
-                message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> LOADING...</h1>' 
+                message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
             });
         	
         	var itemJson = buildCondition();
@@ -115,7 +115,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         
         $('#createBtn').click(function(){
         	$.blockUI({ 
-                message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> COMMITTING...</h1>' 
+                message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> COMMITTING...</h1>' 
             });
         	var self = this;
         	self.disabled = true;
@@ -206,7 +206,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
       
         var searchData=function(){
         	$.blockUI({ 
-                message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> LOADING...</h1>' 
+                message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
             });
         	var itemJson = buildCondition();
         	var url = "/gateOutOrder/list?error_flag=N&jsonStr="+JSON.stringify(itemJson);
@@ -215,7 +215,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         
         order.refleshTable = function(){
         	$.blockUI({ 
-                message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> LOADING...</h1>' 
+                message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
             });
         	orderTable.ajax.url("/gateOutOrder/orderList").load();
         }

@@ -135,9 +135,9 @@ eeda.dt = function(opt){
     var option = {
         processing: opt.processing || true,
         searching: opt.searching || false,
-        paging: opt.paging || false,
+        paging: opt.paging || true,
         //info:  opt.info || false,
-        lengthChange: opt.lengthChange || false,
+        lengthChange: opt.lengthChange || true,
         serverSide: opt.serverSide || false, 
         
         scrollX: opt.scrollX || true,
@@ -146,8 +146,8 @@ eeda.dt = function(opt){
 
         responsive:opt.responsive || true,
         autoWidth: opt.autoWidth || false,
-        pageLength: opt.pageLength || 10,
-        aLengthMenu: [ [10, 25, 50, 100, '9999999999'], [10, 25, 50, 100, "All"] ],
+       // pageLength: opt.pageLength || 5,
+        lengthMenu: [ [10, 25, 50, 100,250,500,1000, '99999999'], [10, 25, 50, 100,250,500,1000, "All"] ],
         language: {
             "url": "/js/lib/datatables/i18n/Chinese.json"
         },

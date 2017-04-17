@@ -93,7 +93,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       
         var searchData=function(){
         	$.blockUI({ 
-                message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> LOADING...</h1>' 
+                message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
             });
         	var itemJson = buildCondition();
         	var url = "/gateOut/list?error_flag=N&jsonStr="+JSON.stringify(itemJson);
@@ -102,7 +102,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         
         order.refleshTable = function(){
         	$.blockUI({ 
-                message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> LOADING...</h1>' 
+                message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
             });
         	dataTable.ajax.url("/gateOut/list?error_flag=N").load();
         	errorTable.ajax.url("/gateOut/list?error_flag=Y").load();

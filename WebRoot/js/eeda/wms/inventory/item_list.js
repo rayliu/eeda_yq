@@ -50,7 +50,7 @@ $(document).ready(function() {
 	
 	var searchData=function(item_no){
 		$.blockUI({ 
-            message: '<h1><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> LOADING...</h1>' 
+            message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
         });
      	var itemJson = buildCondition();
      	var url = "/inventory/itemDetailList?item_no="+item_no+"&jsonStr="+JSON.stringify(itemJson);

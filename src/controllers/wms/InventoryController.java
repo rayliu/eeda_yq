@@ -204,7 +204,7 @@ public class InventoryController extends Controller {
         String sqlTotal = "select count(1) total from ("+sql+" group by pro.item_no"+") B";
         Record rec = Db.findFirst(sqlTotal);
         
-        List<Record> orderList = Db.find("select A.* , sum(A.quantity) total from ("+sql+") A group by A.item_no" +sLimit);
+        List<Record> orderList = Db.find("select A.* , count(A.id) total from ("+sql+") A group by A.item_no" +sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
