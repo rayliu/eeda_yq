@@ -49,6 +49,7 @@ define(['jquery','zTree'], function ($) {
                 childNodes[i].id = childNodes[i].ID;
                 childNodes[i].parent_id = childNodes[i].PARENT_ID;
                 childNodes[i].url = childNodes[i].URL;
+                childNodes[i].is_public = childNodes[i].IS_PUBLIC;
                 if(childNodes[i].PARENT_ID>0){
                     childNodes[i].isParent=false;
                 }
@@ -144,6 +145,12 @@ define(['jquery','zTree'], function ($) {
             $("#module_id").text(treeNode.id);
             $("#order_name").val(treeNode.name);
             $("#module_url").val(treeNode.url);
+
+            if(treeNode.is_public == 'Y'){
+                $("#is_public").prop('checked', true);
+            }else{
+                $("#is_public").prop('checked', false);
+            }
 
             $.post('/module/getOrderStructure', {module_id: treeNode.id}, function(json){
                 console.log('getOrderStructure....');
