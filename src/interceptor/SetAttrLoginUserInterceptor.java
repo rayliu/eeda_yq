@@ -24,9 +24,11 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 			UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=?",currentUser.getPrincipal());
 			if(user.get("c_name") != null && !"".equals(user.get("c_name"))){
 				ai.getController().setAttr("userId", user.get("c_name"));
+				ai.getController().setAttr("office_id", user.get("office_id"));
 			}else{
 				ai.getController().setAttr("userId", currentUser.getPrincipal());
 			}
+			
 			
 			UserOffice uo = UserOffice.dao.findFirst("select * from user_office where user_name ='"+currentUser.getPrincipal()+"' and is_main=1");
 	        if(uo != null){

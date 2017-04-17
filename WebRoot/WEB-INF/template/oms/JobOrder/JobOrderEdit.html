@@ -112,9 +112,12 @@
                                     <label class="checkbox-inline">
                                         <input type="checkbox" value='insurance'>保险
                                     </label>
+                                    <% var user_office_id = office_id;
+                                    if(user_office_id==1){%>
                                     <label class="checkbox-inline">
                                         <input type="checkbox" value='trade'>贸易
                                     </label>
+                                    <%}%>
                                     <label class="checkbox-inline">
                                         <input type="checkbox" value='express'>快递
                                     </label>

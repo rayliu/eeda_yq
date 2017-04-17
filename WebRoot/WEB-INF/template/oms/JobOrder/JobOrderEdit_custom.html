@@ -34,12 +34,15 @@
                         <div class="form-group">
                             <br>
                             <div class="row" id="entrust_or_self_custom" style="margin-left:0px">
-				               <label class="checkbox-inline">
-				                   <input type="radio" name="entrust_or_self_custom" value='entrust_custom' checked>委托报关
-				               </label>
-				               <label class="checkbox-inline">
-				                   <input type="radio" name="entrust_or_self_custom" value='self_custom'>自理报关
-				               </label>
+                            <% var user_office_id = office_id;
+                            if(user_office_id==1){%>
+    				               <label class="checkbox-inline">
+    				                   <input type="radio" name="entrust_or_self_custom" value='entrust_custom' checked>委托报关
+    				               </label>
+                           <% }%>
+    				               <label class="checkbox-inline">
+    				                   <input type="radio" name="entrust_or_self_custom" value='self_custom'>自理报关
+    				               </label>
 				           </div>
                             
                                 <div class="form-group">
