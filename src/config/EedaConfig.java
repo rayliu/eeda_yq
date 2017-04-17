@@ -143,6 +143,7 @@ import controllers.profile.UnitController;
 import controllers.report.OrderStatusController;
 import controllers.tms.jobOrder.TransJobOrderController;
 import controllers.tms.planOrder.TransPlanOrderController;
+import controllers.wms.ErrorReportController;
 import controllers.wms.GateInController;
 import controllers.wms.GateOutController;
 import controllers.wms.GateOutOrderController;
@@ -346,9 +347,8 @@ public class EedaConfig extends JFinalConfig {
         me.add("/invCheckOrder", InvCheckOrderController.class, contentPath);
         me.add("/wmsproduct", ProductController.class, contentPath);
         me.add("/inventory", InventoryController.class, contentPath);
-        
-
-        
+        me.add("/errorReport", ErrorReportController.class, contentPath);
+  
 	}
 
     @Override
