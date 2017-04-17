@@ -22,22 +22,22 @@
                                     </form><br>
                                     
                                     <div class="form-group" >
-		                                    <label>应收对账金额合计：<span style="color:#AAAAAA"></span></label>
+		                                   <label>应付对账金额合计：<span style="color:#AAAAAA"></span></label>
 		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
 		                                   <label style="color:#AAAAAA">USD:<span id="USD_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
 		                                   <label style="color:#AAAAAA">JPY:<span id="JPY_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
 		                                   <label style="color:#AAAAAA">HKD:<span id="HKD_cost_tatol" style="color:black"></span></label><nbsp><nbsp><br>
-		                                   <label>应收对账金额(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
+		                                   <label>应付对账金额(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
 		                                   <label style="color:#AAAAAA"><span id="total_cost" style="color:black"></span></label><nbsp><nbsp>
 	                                    </div><br>
 	                                
 	                                    <div class="form-group" >
-		                                   <label>未收对账金额合计：<span style="color:#AAAAAA"></span></label>
+		                                   <label>未付对账金额合计：<span style="color:#AAAAAA"></span></label>
 		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_uncost_tatol" style="color:black"></span></label><nbsp><nbsp>
 		                                   <label style="color:#AAAAAA">USD:<span id="USD_uncost_tatol" style="color:black"></span></label><nbsp><nbsp>
 		                                   <label style="color:#AAAAAA">JPY:<span id="JPY_uncost_tatol" style="color:black"></span></label><nbsp><nbsp>
 		                                   <label style="color:#AAAAAA">HKD:<span id="HKD_uncost_tatol" style="color:black"></span></label><nbsp><nbsp><br>
-		                                   <label>未收对账金额(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
+		                                   <label>未付对账金额(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
 		                                   <label style="color:#AAAAAA"><span id="total_uncost" style="color:black"></span></label><nbsp><nbsp>
 	                                    </div><br>
 
@@ -49,7 +49,7 @@
                                      <%include("/eeda/component/form/detailTableWithFoot.html", 
                                         {
                                             id:'eeda_table', 
-                                            headers:['结算公司','CNY','USD','JPY','HKD','折合应付(RMB)','CNY','USD','JPY','HKD','折合未付(RMB)','付款率（%）'
+                                            headers:['结算公司','应付CNY','应付USD','应付JPY','应付HKD','折合应付(RMB)','未付CNY','未付USD','未付JPY','未付HKD','折合未付(RMB)','付款率（%）'
                                             ]
                                         }){} %>
                 </div> <!-- /.col-lg-12 -->
