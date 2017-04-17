@@ -106,7 +106,7 @@ public class ModuleController extends Controller {
     public void searchModule() {
         String parent_id = getPara("id");
         String cons = "";
-        String sql = "select id, module_name, parent_id, office_id, seq, version, url from eeda_modules where office_id="
+        String sql = "select id, module_name, parent_id, office_id, seq, version, url, is_public from eeda_modules where office_id="
                 + LoginUserController.getLoginUser(this).get("office_id");
 
         List<Record> modules = null;
@@ -213,10 +213,11 @@ public class ModuleController extends Controller {
         Gson gson = new Gson();
         Map<String, ?> dto = gson.fromJson(jsonStr, HashMap.class);
         String module_id = (String) dto.get("module_id");
+        String is_public = ((Boolean)dto.get("is_public")==true?"Y":"N");
         String url = (String) dto.get("url");
         UserLogin user = LoginUserController.getLoginUser(this);
 
-        Db.update(" update eeda_modules set url = ? where id=?", url, module_id);
+        Db.update(" update eeda_modules set url = ?, is_public=? where id=?", url, is_public, module_id);
 
         List<Map<String, String>> permission_list = (ArrayList<Map<String, String>>) dto
                 .get("permission_list");

@@ -234,6 +234,7 @@ define(['jquery', 'dataTablesBootstrap', 'sco'], function ($) {
 
             var dto = {
                 module_id: $('#module_id').text(),
+                is_public: $("#is_public").prop('checked'),
                 permission_list: eeda.buildTableDetail('permission_table', deletedPermisstionTableIds),
                 auth_list: buildAuthTableDetail()
             };
