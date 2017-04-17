@@ -53,29 +53,20 @@ public class ImportOrder extends Controller {
 	        if(fileName.endsWith(".csv")){  
 	        	
 	        	CheckOrder checkOrder = new CheckOrder();
-	        	if("gateIn".equals(order_type)){
-	        		if(fileName.indexOf("入库")>-1){
-	        			resultMap = checkOrder.importGateInValue(csvReader, officeId);
+	        	if(fileName.indexOf("入库记录")>-1){
+	        		resultMap = checkOrder.importGateInValue(csvReader, officeId);
+	        	}else if(fileName.indexOf("出库记录")>-1){
+        			resultMap = checkOrder.importGateOutCheck(csvReader);
+	        		if(resultMap.get("result")){
+	        			resultMap = checkOrder.importGateOutValue(new CSVReader(new FileReader(file),','), officeId);
 	        		}else{
-	        			throw new Exception("文件《"+fileName+"》中未检测到\"入库\"关键字<br/>请核查此文件是否为入库记录表");
+	        			throw new Exception(resultMap.getStr("cause")+"<br/>请先导入入库信息表");
 	        		}
-	        	}else if("gateOut".equals(order_type)){
-	        		if(fileName.indexOf("出库")>-1){
-	        			resultMap = checkOrder.importGateOutCheck(csvReader);
-		        		if(resultMap.get("result")){
-		        			resultMap = checkOrder.importGateOutValue(new CSVReader(new FileReader(file),','), officeId);
-		        		}else{
-		        			throw new Exception(resultMap.getStr("cause")+"<br/>请先导入入库信息表");
-		        		}
-	        		}else{
-	        			throw new Exception("文件《"+fileName+"》中未检测到\"出库\"关键字<br/>请核查此文件是否为出库记录表");
-	        		}
-	        	}else if("invCheck".equals(order_type))
-	        		if(fileName.indexOf("盘点")>-1){
-	        			resultMap = checkOrder.importInvCheckValue(csvReader, officeId);
-	        		}else{
-	        			throw new Exception("文件《"+fileName+"》中未检测到\"盘点\"关键字<br/>请核查此文件是否为盘点单表");
-	        		}
+	        	}else if(fileName.indexOf("盘点单")>-1){
+	        		resultMap = checkOrder.importInvCheckValue(csvReader, officeId);
+	        	}else{
+                    throw new Exception("文件《"+fileName+"》中未检测到\"入库记录\"，\"出库记录\"，\"盘点单\"关键字<br/>请核查此文件是否为要导入的数据表");
+	        	}
 	        }else{
 	        	throw new Exception("导入格式有误，请导入正确的csv格式");
 	        }
