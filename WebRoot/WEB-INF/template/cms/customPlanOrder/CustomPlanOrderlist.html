@@ -3,18 +3,8 @@
 <%layout("/eeda/layout.html"){%>
 
         <div id="page-wrapper">
-            <div class="row">
+            <div class="row simple_search_div">
                 <div class="col-lg-12">
-                    <div class="btn-header">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-list fa-fw"></i>报关申请单列表                            
-                        </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             
@@ -110,7 +100,13 @@
                                 <a class="btn btn_green" href="/customPlanOrder/create">新增报关申请单</a>
                             </div> 
                             <ul id="orderTabs" class="nav nav-tabs" >
-                                <li class="active">
+                            	<li class="active">
+                                    <a href="#" data-toggle="tab" name="未完成费用确认">未完成费用确认 <span id="unConfirmFee" class="badge"></span></a>
+                                </li>
+                                <li style="text-align:center;">
+                                    <a href="#" data-toggle="tab"  name="已完成费用确认">已完成费用确认<span id="confirmFee" class="badge"></span></a>
+                                </li>
+                                <li >
                                     <a href="#" data-toggle="tab" name="全部">全部</a>
                                 </li>
                                 <li style="text-align:center;">
@@ -147,8 +143,7 @@
                             
                         </div>
                         <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
+                    
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

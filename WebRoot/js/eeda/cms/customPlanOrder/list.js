@@ -1,7 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '报关申请单查询 | '+document.title;
+    	document.title = '报关申请单列表 | '+document.title;
+    	$('#breadcrumb_li').html('报关申请单列表');
     	if(type != ""){
     		$('#menu_order').removeClass('active').find('ul').removeClass('in');
             $('#menu_todo_list').addClass('active').find('ul').addClass('in');
@@ -15,7 +16,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
             id: 'eeda-table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/customPlanOrder/list",
+            ajax: "/customPlanOrder/list?confirmFee=unConfirmFee",
             columns:[
 					{ "width": "30px",
 					    "render": function ( data, type, full, meta ) {
@@ -63,7 +64,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
   	            	}  
   	              },
 	              { "data": "TYPE"}, 
-	              { "data": "APPLICATION_COMPANY_NAME"}, 
+	              { "data": "RECEIVE_COMPANY_NAME"}, 
 	              { "data": "CREATOR_NAME"}, 
 	              { "data": "CREATE_STAMP",
 	            	  "render": function ( data, type, full, meta ) {
@@ -135,7 +136,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
       
       $('#orderTabs a').click(function(){
     	  var custom_state = $(this).attr("name");
-    	  searchData(custom_state);
+    	  
+    	  if(custom_state=="未完成费用确认"){
+    		  var url = "/customPlanOrder/list?confirmFee=unConfirmFee";
+        	  dataTable.ajax.url(url).load();
+    	  }else if(custom_state=="已完成费用确认"){
+    		  var url = "/customPlanOrder/list?confirmFee=confirmFee";
+        	  dataTable.ajax.url(url).load();
+    	  }else{
+        	  searchData(custom_state);
+    	  }
+
       })
 
     });

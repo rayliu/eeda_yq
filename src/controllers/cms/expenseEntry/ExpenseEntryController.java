@@ -95,11 +95,12 @@ public class ExpenseEntryController extends Controller {
 				+" 		) SEPARATOR '<br/>' "
 				+" 	) cost_msg "
 				+" FROM "
-				+" 	custom_plan_order_arap cpoa "
-				+" LEFT JOIN fin_item f ON f.id = cpoa.charge_id "
+				+" 	custom_plan_order_arap  cpoa"
+				
 				+" LEFT JOIN custom_plan_order cpo ON cpo.id = cpoa.order_id "
+				+" LEFT JOIN fin_item f ON f.id = cpoa.charge_id "
 				+" WHERE "
-				+" tracking_no is not null and cpo.office_id = "+office_id 
+				+" tracking_no is not null and (cpo.office_id = "+office_id+" or to_office_id="+office_id+")"
 				+" GROUP BY "
 				+" 	cpoa.order_id "
 				+" ORDER BY create_stamp desc "

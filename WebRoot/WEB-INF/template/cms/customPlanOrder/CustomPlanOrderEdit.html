@@ -3,15 +3,12 @@
 <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
 
         <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="btn-header" style="font-size:32px">报关申请单</div>
-                </div>
-            </div>
+          <div class="row simple_small_title_div">
+           <div class="col-lg-12">
             <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
             <input id="to_office_id" type="hidden" name="order_id" value="${order.to_office_id!to_office_id!''}"/>
             <input id="ref_job_order_id" type="hidden" name="ref_job_order_id" value="${order.ref_job_order_id!jobOrder.id!''}"/>
-            <div class="form-group">
+            
                 <form id="customForm">
                     <div class="row"><!--  第1行  --> 
                         <div class="col-lg-4">
@@ -163,7 +160,9 @@
                        </div>
                    </div><br>
                 </form>
-             </div>  
+               
+          </div> 
+        </div> 
 			      
 
 			<div class="row" style="margin-top:15px">

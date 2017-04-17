@@ -581,6 +581,7 @@ public class CustomPlanOrderController extends Controller {
     }
 
 	public void list() {
+		String confirmFee = getPara("confirmFee");
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
     	
@@ -591,17 +592,52 @@ public class CustomPlanOrderController extends Controller {
         }
         String sql = "";
         String condition="";
-        
-    	sql = "SELECT * from (SELECT cpo.id,cpo.to_office_id,cpo.order_no,cpo.tracking_no,cpo.customs_billCode,cpo.type,cpo.production_and_sales_input application_company_name,ul.c_name creator_name,cpo.booking_no,"
-    			+ " cpo.create_stamp,cpo.status,cpo.custom_state,(SELECT COUNT(0) from custom_plan_order cpo WHERE cpo.custom_state = '放行' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) pass,"
-    			+ " (SELECT COUNT(1) from custom_plan_order cpo WHERE cpo.custom_state = '查验' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) checked,"
-    			+ "	(SELECT COUNT(2) from custom_plan_order cpo WHERE cpo.custom_state = '异常待处理' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) handling,"
-    			+ " (SELECT COUNT(3) from custom_plan_order cpo WHERE cpo.custom_state = '异常' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) abnormal,"
-    			+ " (SELECT COUNT(4) from custom_plan_order cpo WHERE cpo.status = '待审核' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) waitAuditing"
-    			+ " FROM custom_plan_order cpo"
-    			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
-    			+ " where cpo.office_id="+office_id+" or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建')) A"
-		        + " where 1 =1 ";
+        if("unConfirmFee".equals(confirmFee)){
+        	sql = "SELECT * from (SELECT cpo.id,cpo.to_office_id,cpo.order_no,cpo.tracking_no,cpo.customs_billCode,cpo.type,cpo.receive_sent_consignee_input receive_company_name,ul.c_name creator_name,cpo.booking_no,"
+        			+ " cpo.create_stamp,cpo.status,cpo.custom_state,(SELECT COUNT(0) from custom_plan_order cpo WHERE cpo.custom_state = '放行' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) pass,"
+        			+"    (SELECT COUNT(0) total from custom_plan_order cpor "
+					+"		LEFT JOIN custom_plan_order_arap cpol on cpol.order_id = cpor.id "
+					+"		WHERE audit_flag='N' and cpor.id= cpo.id) arapTotal, "
+					+"	(SELECT GROUP_CONCAT(cpol.audit_flag) total from custom_plan_order cpor "
+					+"		LEFT JOIN custom_plan_order_arap cpol on cpol.order_id = cpor.id "
+					+"		WHERE  cpor.id= cpo.id) auditFlag,"
+        			+ " (SELECT COUNT(1) from custom_plan_order cpo WHERE cpo.custom_state = '查验' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) checked,"
+        			+ "	(SELECT COUNT(2) from custom_plan_order cpo WHERE cpo.custom_state = '异常待处理' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) handling,"
+        			+ " (SELECT COUNT(3) from custom_plan_order cpo WHERE cpo.custom_state = '异常' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) abnormal,"
+        			+ " (SELECT COUNT(4) from custom_plan_order cpo WHERE cpo.status = '待审核' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) waitAuditing"
+        			+ " FROM custom_plan_order cpo"
+        			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
+        			+ " where cpo.office_id="+office_id+" or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建')) A"
+    		        + " where 1 =1 and (arapTotal>0 or auditFlag is NULL)";
+        }else if("confirmFee".equals(confirmFee)){
+        	sql = "SELECT * from (SELECT cpo.id,cpo.to_office_id,cpo.order_no,cpo.tracking_no,cpo.customs_billCode,cpo.type,cpo.production_and_sales_input application_company_name,ul.c_name creator_name,cpo.booking_no,"
+        			+ " cpo.create_stamp,cpo.status,cpo.custom_state,(SELECT COUNT(0) from custom_plan_order cpo WHERE cpo.custom_state = '放行' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) pass,"
+        			+"    (SELECT COUNT(0) total from custom_plan_order cpor "
+					+"		LEFT JOIN custom_plan_order_arap cpol on cpol.order_id = cpor.id "
+					+"		WHERE audit_flag='N' and cpor.id= cpo.id) arapTotal, "
+					+"	(SELECT GROUP_CONCAT(cpol.audit_flag) total from custom_plan_order cpor "
+					+"		LEFT JOIN custom_plan_order_arap cpol on cpol.order_id = cpor.id "
+					+"		WHERE  cpor.id= cpo.id) auditFlag,"
+        			+ " (SELECT COUNT(1) from custom_plan_order cpo WHERE cpo.custom_state = '查验' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) checked,"
+        			+ "	(SELECT COUNT(2) from custom_plan_order cpo WHERE cpo.custom_state = '异常待处理' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) handling,"
+        			+ " (SELECT COUNT(3) from custom_plan_order cpo WHERE cpo.custom_state = '异常' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) abnormal,"
+        			+ " (SELECT COUNT(4) from custom_plan_order cpo WHERE cpo.status = '待审核' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) waitAuditing"
+        			+ " FROM custom_plan_order cpo"
+        			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
+        			+ " where cpo.office_id="+office_id+" or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建')) A"
+    		        + " where 1 =1 and (arapTotal=0 and auditFlag is not NULL)";
+        }else{
+        	sql = "SELECT * from (SELECT cpo.id,cpo.to_office_id,cpo.order_no,cpo.tracking_no,cpo.customs_billCode,cpo.type,cpo.production_and_sales_input application_company_name,ul.c_name creator_name,cpo.booking_no,"
+        			+ " cpo.create_stamp,cpo.status,cpo.custom_state,(SELECT COUNT(0) from custom_plan_order cpo WHERE cpo.custom_state = '放行' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) pass,"
+        			+ " (SELECT COUNT(1) from custom_plan_order cpo WHERE cpo.custom_state = '查验' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) checked,"
+        			+ "	(SELECT COUNT(2) from custom_plan_order cpo WHERE cpo.custom_state = '异常待处理' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) handling,"
+        			+ " (SELECT COUNT(3) from custom_plan_order cpo WHERE cpo.custom_state = '异常' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) abnormal,"
+        			+ " (SELECT COUNT(4) from custom_plan_order cpo WHERE cpo.status = '待审核' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) waitAuditing"
+        			+ " FROM custom_plan_order cpo"
+        			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
+        			+ " where cpo.office_id="+office_id+" or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建')) A"
+    		        + " where 1 =1 ";
+        }
 
         condition = DbUtils.buildConditions(getParaMap());
         
