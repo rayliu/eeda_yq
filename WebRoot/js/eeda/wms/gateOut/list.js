@@ -20,6 +20,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
                 },
+                { "data": "ORDER_NO"}, 
                 { "data": "ITEM_NO"}, 
                 {"data": "ITEM_NAME", 
               	    "render": function ( data, type, full, meta ) {
@@ -53,14 +54,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               	  		return "<span style='color:red;'>"+data+"</span>";
               	  	}	
 				}, 
-                {"data": "ITEM_NAME", 
+				{ "data": "ORDER_NO"}, 
+                {"data": "ITEM_NO", 
               	    "render": function ( data, type, full, meta ) {
               		    return data;
               	    }
                 },
+                { "data": "ITEM_NAME"}, 
                 { "data": "QR_CODE"}, 
+                { "data": "PART_NO"}, 
 				{ "data": "PART_NAME"}, 
-				{ "data": "PART_NO"}, 
 				{ "data": "QUANTITY"},
 				{ "data": "MOVE_FLAG"}, 
 				{ "data": "CREATE_TIME"},
