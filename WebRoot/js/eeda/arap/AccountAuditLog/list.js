@@ -19,11 +19,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     "render": function(data, type, full, meta) {
                     	return '<input type="checkbox" name="" value="'+full.ID+'">';
                     }
-                },
+                },//return "<a href='/transJobOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
                 {
                     "data":"ORDER_NO","width":"70px",
                     "render": function(data, type, full, meta) {
-                    	return full.ORDER_NO;
+                    	var strType = full.SOURCE_ORDER;
+                    	if(strType=="应收申请单"){
+                    		return "<a href='/chargeRequest/edit?id="+full.INVOICE_ORDER_ID+"'target='_blank'>"+full.ORDER_NO+"</a>";
+                    	}
+                    	if(strType=="应付申请单"){
+                    		return "<a href='/costRequest/edit?id="+full.INVOICE_ORDER_ID+"'target='_blank'>"+full.ORDER_NO+"</a>";
+                    	}
                     }
                 },
                 {"data":"SOURCE_ORDER"},

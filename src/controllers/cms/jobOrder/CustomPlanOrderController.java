@@ -592,7 +592,7 @@ public class CustomPlanOrderController extends Controller {
         String sql = "";
         String condition="";
         
-    	sql = "SELECT * from (SELECT cpo.id,cpo.order_no,cpo.type,cpo.production_and_sales_input application_company_name,ul.c_name creator_name,cpo.booking_no,"
+    	sql = "SELECT * from (SELECT cpo.id,cpo.to_office_id,cpo.order_no,cpo.type,cpo.production_and_sales_input application_company_name,ul.c_name creator_name,cpo.booking_no,"
     			+ " cpo.create_stamp,cpo.status,cpo.custom_state,(SELECT COUNT(0) from custom_plan_order cpo WHERE cpo.custom_state = '放行' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) pass,"
     			+ " (SELECT COUNT(1) from custom_plan_order cpo WHERE cpo.custom_state = '查验' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) checked,"
     			+ "	(SELECT COUNT(2) from custom_plan_order cpo WHERE cpo.custom_state = '异常待处理' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) handling,"
@@ -759,6 +759,14 @@ public class CustomPlanOrderController extends Controller {
 		Db.update("update custom_plan_order_arap set audit_flag = 'Y' where id = ?", id);
 		renderJson("{\"result\":true}");
 	 }
+    
+  //删除工作单据，把offfice_ID改成开发账号offfice_ID
+    @Before(Tx.class)
+    public void deleteOrder(){
+    	String id = getPara("id");
+    	Db.update("update custom_plan_order set office_id=?  where id = ?",2,id);
+    	renderJson("{\"result\":true}");
+    }
     
     @Before(Tx.class)
     public void updateShare(){

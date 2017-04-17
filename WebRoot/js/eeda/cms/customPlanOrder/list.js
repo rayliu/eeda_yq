@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], function ($, metisMenu) { 
 
     $(document).ready(function() {
     	document.title = '报关申请单查询 | '+document.title;
@@ -17,6 +17,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             serverSide: true, //不打开会出现排序不对
             ajax: "/customPlanOrder/list",
             columns:[
+					{ "width": "30px",
+					    "render": function ( data, type, full, meta ) {
+					    	var to_office_id=full.TO_OFFICE_ID;
+					    	if(to_office_id){
+					    		return '<button type="button" class="btn table_btn delete btn-xs" disabled>'+
+					            '<i class="fa fa-trash-o"></i> 删除</button>';
+					    	}
+					    		return '<button type="button" class="btn table_btn delete btn-xs" >'+
+				            '<i class="fa fa-trash-o"></i> 删除</button>';
+					    }
+				   },
                   {"data": "ORDER_NO", 
                 	  "render": function ( data, type, full, meta ) {
                 		  return "<a href='/customPlanOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
@@ -108,6 +119,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 
           dataTable.ajax.url(url).load();
       };
+      
+      $("#eeda-table").on('click', '.delete', function(){
+    	  var tr = $(this).parent().parent();
+          var id = tr.attr('id');
+          $.post('/customPlanOrder/deleteOrder', {id:id}, function(data){
+        	  $.scojs_message('单据删除成功', $.scojs_message.TYPE_OK);
+        	  tr.hide();
+          },'json').fail(function() {
+              $.scojs_message('单据删除失败', $.scojs_message.TYPE_ERROR);
+            });
+       });
       
       
       $('#orderTabs a').click(function(){
