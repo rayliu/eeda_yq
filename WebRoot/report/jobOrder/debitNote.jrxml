@@ -498,7 +498,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				<textElement>
 					<font fontName="SansSerif" size="10" pdfEncoding="Cp1252"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{currency_name}.equals("CNY")?"RMB":$F{currency_name})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{currency_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="189" y="0" width="48" height="20" uuid="3a69d325-db40-463a-abe5-e39cf8ffc13c"/>
