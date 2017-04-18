@@ -122,6 +122,8 @@ $(document).ready(function() {
         order.land_export_date =$('#land_export_date').val();
         order.take_wharf =$('#take_wharf').val();
         order.back_wharf =$('#back_wharf').val();
+        order.take_stamp =$('#take_stamp').val();
+        order.land_export_stamp =$('#land_export_stamp').val();
         order.transport_type = transport_type_str;
         
        

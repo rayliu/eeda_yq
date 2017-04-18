@@ -209,8 +209,16 @@ public class TransJobOrderController extends Controller {
    		String loadingWharf1="";
 		String loadingWharf2="";
 		String takeAddress="";
-		String deliveryAddress="";
+		String backWharf="";
 		String truckType="";
+		if(StringUtils.isNotEmpty((String) dto.get("take_wharf"))){
+			
+			takeAddress=(String) dto.get("take_wharf");
+		}
+		if(StringUtils.isNotEmpty((String) dto.get("back_wharf"))){
+			
+			backWharf=(String) dto.get("back_wharf");
+		}
 
 		//陆运
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
@@ -225,14 +233,6 @@ public class TransJobOrderController extends Controller {
 			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
 				
 				loadingWharf2=(String) map.get("LOADING_WHARF2");
-			}
-			if(StringUtils.isNotEmpty((String) map.get("TAKE_ADDRESS"))){
-				
-				takeAddress=(String) map.get("TAKE_ADDRESS");
-			}
-			if(StringUtils.isNotEmpty((String) map.get("DELIVERY_ADDRESS"))){
-				
-				deliveryAddress=(String) map.get("DELIVERY_ADDRESS");
 			}
 			if(StringUtils.isNotEmpty((String) map.get("truck_type"))){
 				
@@ -259,7 +259,7 @@ public class TransJobOrderController extends Controller {
 		
 		//获取合同费用
 		TransOrderShortCutController.checkCustomerQuotation(office_id,id,customer_id,truckType,
-				takeAddress,deliveryAddress,loadingWharf1,loadingWharf2);
+				takeAddress,backWharf,loadingWharf1,loadingWharf2);
 		
 		//相关文档
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
@@ -637,8 +637,8 @@ public class TransJobOrderController extends Controller {
     				+ " p.abbr transport_company_name,CAST(GROUP_CONCAT(tjold.id) as char ) trans_job_order_land_doc_id, GROUP_CONCAT(tjold.doc_name) doc_name,"
     				+ " p1.abbr consignor_name, p2.abbr consignee_name from trans_job_order_land_item tjol"
     				+ " left join carinfo ci on ci.id=tjol.car_no"
-    				+ " left join dockinfo d1 on d1.id=tjol.take_address"
-    				+ " left join dockinfo d2 on d2.id=tjol.delivery_address"
+    				+ " left join dockinfo d1 on d1.id=tjol.take_wharf"
+    				+ " left join dockinfo d2 on d2.id=tjol.back_wharf"
     				+ " left join dockinfo d3 on d3.id=tjol.loading_wharf1"
     				+ " left join dockinfo d4 on d4.id=tjol.loading_wharf2"
     				+ " left join party p on p.id=tjol.transport_company"

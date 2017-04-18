@@ -125,7 +125,7 @@ public class TransOrderShortCutController extends Controller {
 				tjol.set("truck_type", ci.get("cartype"));
 				tjol.set("driver", ci.get("driver"));
 				tjol.set("driver_tel", ci.get("phone"));
-				tjol.set("take_address", itemMap.get("TAKE_WHARF"));
+				tjol.set("take_wharf", itemMap.get("TAKE_WHARF"));
 				 loading_wharf1=itemMap.get("LOADING_WHARF1");
 				if(!"".equals(loading_wharf1)){
 					tjol.set("loading_wharf1", itemMap.get("LOADING_WHARF1"));
@@ -168,7 +168,7 @@ public class TransOrderShortCutController extends Controller {
 				tjol.set("truck_type", ci.get("cartype"));
 				tjol.set("driver", ci.get("driver"));
 				tjol.set("driver_tel", ci.get("phone"));
-				tjol.set("delivery_address", itemMap.get("BACK_WHARF"));
+				tjol.set("back_wharf", itemMap.get("BACK_WHARF"));
 			    loading_wharf1=itemMap.get("LOADING_WHARF1");
 				if(!"".equals(loading_wharf1)){
 					tjol.set("loading_wharf1", itemMap.get("LOADING_WHARF1"));
@@ -212,7 +212,7 @@ public class TransOrderShortCutController extends Controller {
 				String	loadingWharf1="";
 				String	loadingWharf2="";
 		 		if(!"".equals(take_wharf)){
-		 				takeWharf=" and pq.take_address= "+take_wharf;
+		 				takeWharf=" and pq.take_wharf= "+take_wharf;
 		        }
 
 		        if(!"".equals(back_wharf)){
@@ -299,15 +299,19 @@ public class TransOrderShortCutController extends Controller {
 					record.set("order_id", order_id);
 					record.set("arap_charge_id", charge_id);
 					record.set("sp_id", customer_id);
+					
+					if(!"".equals(take_wharf)){
+						record.set("take_wharf", take_wharf);
+					}
+					if(!"".equals(back_wharf)){
+						record.set("back_wharf", back_wharf);					}
+					
 					if(!"".equals(loading_wharf1)){
 						record.set("loading_wharf1", loading_wharf1);
 					}
 					if(!"".equals(loading_wharf2)){
 						record.set("loading_wharf2", loading_wharf2);
-					}
-					if(!"".equals(back_wharf)){
-						record.set("back_wharf", back_wharf);
-					}
+					}					
 					if(!"".equals(cabinet_type)){
 						record.set("truck_type", cabinet_type);
 					}
