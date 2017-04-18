@@ -505,7 +505,7 @@ public class CustomerController extends Controller {
     	}else if("customerQuotationItem".equals(type)){
     		itemSql = " SELECT pq.*,d1.dock_name take_address_name,d2.dock_name delivery_address_name,d3.dock_name loading_wharf1_name "
     				+" ,d4.dock_name loading_wharf2_name FROM party_quotation pq "
-    				+" LEFT JOIN dockinfo d1 on d1.id=pq.take_address "
+    				+" LEFT JOIN dockinfo d1 on d1.id=pq.take_wharf "
     				+" LEFT JOIN dockinfo d2 on d2.id=pq.back_wharf "
     				+" LEFT JOIN dockinfo d3 on d3.id=pq.loading_wharf1 "
     				+" LEFT JOIN dockinfo d4 on d4.id=pq.loading_wharf2 "
