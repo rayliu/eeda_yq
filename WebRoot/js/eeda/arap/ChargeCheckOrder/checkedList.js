@@ -18,7 +18,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			           	  }
 			          },
 					  { "data": "CREATE_STAMP", "width": "100px"},  
-					  { "data": "STATUS", "width": "100px"},
+					  { "data": "TOSTATUS", "width": "100px"},
 					  { "data": "SP_NAME", "width": "60px"}, 
 					  { "data": "TOTAL_AMOUNT","width": "60px","visible":false,
 				    	 "render":function(data, type, full, meta){
@@ -69,7 +69,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           var sp_name = $('#sp1_input').val().trim();
           var start_date = $("#create_stamp1_begin_time").val();
           var end_date = $("#create_stamp1_end_time").val();
-          var status = $("#status").val();
+          var toStatus = $("#status").val();
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -81,7 +81,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
                +"&sp_name="+sp_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
-               +"&status="+status;
+               +"&toStatus_equals="+toStatus;
 
           dataTable.ajax.url(url).load();
        }

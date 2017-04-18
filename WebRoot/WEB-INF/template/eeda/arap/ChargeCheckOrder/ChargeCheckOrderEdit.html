@@ -18,7 +18,7 @@
 				</div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", { id:'status',
-					label:'单据状态', value:order.status!'新建', disabled: 'disabled' }){}%>
+					label:'单据状态', value:order.audit_status!order.status!'新建', disabled: 'disabled' }){}%>
 				</div>
 				<div class="col-lg-4">
 					<%include("/eeda/component/form/inputField.html", {

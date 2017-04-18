@@ -257,7 +257,7 @@ public class ChargeCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select aco.*, p.abbr sp_name "
+        		+ " select aco.*,IFNULL(aco.audit_status,aco.status) toStatus, p.abbr sp_name "
 				+ " from arap_charge_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " where aco.office_id = "+office_id+" order by aco.create_stamp DESC "
