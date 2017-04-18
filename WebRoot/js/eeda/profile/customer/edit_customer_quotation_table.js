@@ -23,9 +23,9 @@ $(document).ready(function() {
         }); 
 
 
-        eeda.bindTableFieldCurrencyId('charge_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
-        eeda.bindTableFieldDockInfo('customer_quotation_table','TAKE_ADDRESS');
-        eeda.bindTableFieldDockInfo('customer_quotation_table','DELIVERY_ADDRESS');
+        eeda.bindTableFieldCurrencyId('customer_quotation_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
+        eeda.bindTableFieldDockInfo('customer_quotation_table','TAKE_WHARF');
+        eeda.bindTableFieldDockInfo('customer_quotation_table','BACK_WHARF');
         eeda.bindTableFieldDockInfo('customer_quotation_table','LOADING_WHARF1');
         eeda.bindTableFieldDockInfo('customer_quotation_table','LOADING_WHARF2');
     };
@@ -43,13 +43,13 @@ $(document).ready(function() {
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
             },
-            { "data": "TAKE_ADDRESS", "width": "150px", "className":"consigner_addr",
+            { "data": "TAKE_WHARF", "width": "150px", "className":"consigner_addr",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                             data='';
                         var field_html = template('table_dock_no_field_template',
                             {
-                                id: 'TAKE_ADDRESS',
+                                id: 'TAKE_WHARF',
                                 value: data,
                                 display_value: full.TAKE_ADDRESS_NAME,
                                 style:'width:180px',
@@ -88,13 +88,13 @@ $(document).ready(function() {
                         return field_html;
                     }
             },
-            { "data": "DELIVERY_ADDRESS", "width": "150px", "className":"consignee_addr",
+            { "data": "BACK_WHARF", "width": "150px", "className":"consignee_addr",
             	"render": function ( data, type, full, meta ) {
                 if(!data)
                             data='';
                         var field_html = template('table_dock_no_field_template',
                             {
-                                id: 'DELIVERY_ADDRESS',
+                                id: 'BACK_WHARF',
                                 value: data,
                                 display_value: full.DELIVERY_ADDRESS_NAME,
                                 style:'width:180px',

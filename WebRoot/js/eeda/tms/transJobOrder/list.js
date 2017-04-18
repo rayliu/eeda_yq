@@ -19,9 +19,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对
           ajax: "/transJobOrder/list?type="+type,
           columns: [
-              { "width": "30px",
+              { "width": "10px",
                   "render": function ( data, type, full, meta ) {
-                    return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled >删除</button>';
+                    return '<button type="button" class="delete btn btn-default btn-xs" style="width:30px" disabled >删除</button>';
                   }
               },
               { "data": "ORDER_NO", 
@@ -29,24 +29,41 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                       return "<a href='/transJobOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
                   }
               },
+              { "data": "CUSTOMER_NAME"},
               { "data": "TYPE",
                   "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                    	data='';
 	                    return data;
                   }
-              }, 
+              },
+              { "data": "CONTAINER_NO"}, 
+              { "data": "SO_NO"}, 
+              { "data": "CABINET_DATE", 
+            	  render: function(data){
+            		  if(data)
+            			  return data.substr(0,10);
+            		  return '';
+            	  }
+              },
               { "data": "SENT_OUT_TIME", 
             	  render: function(data){
             		  if(data)
-            			  return data;
+            			  return data.substr(0,10);
             		  return '';
             	  }
-              }, 
-              { "data": "CUSTOMER_NAME"}, 
+              },
+              { "data": "HEAD_CARRIER_NAME"},
               { "data": "CREATOR_NAME"}, 
-              { "data": "CREATE_STAMP"}, 
               { "data": "STATUS"},
+              { "data": "CREATE_STAMP",
+            	render: function(data){
+            		if(data){
+            			return data.substr(0,10);
+            		}
+            		return '';
+            	}  
+              }
               
           ]
       });

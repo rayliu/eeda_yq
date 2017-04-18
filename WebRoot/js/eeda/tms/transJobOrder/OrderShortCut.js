@@ -23,6 +23,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
             eeda.bindTableFieldDockInfo('eeda-table','LOADING_WHARF1');
             eeda.bindTableFieldDockInfo('eeda-table','LOADING_WHARF2');
             eeda.bindTableFieldCurrencyId('eeda-table','CURRENCY_ID','/serviceProvider/searchCurrency','');
+            eeda.bindTableFieldCurrencyId('eeda-table','HEAD_CARRIER','/customer/searchParty','');
 
              // eeda.bindTableLocationField('eeda-table','route_to');
      };
@@ -52,16 +53,31 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                     return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px"  >删除</button>';
                   }
               },
-              { "data": "CREATE_STAMP", 
+              { "data": "CABINET_DATE", 
                   "render": function ( data, type, full, meta ) {
                     if(!data)
                     data='';
                    var field_html = template('table_date_field_template',
                            {
-                               id: 'CREATE_STAMP',
+                               id: 'CABINET_DATE',
                                value: data,
-                               display_value: full.CREATE_STAMP,
-                               style:'width:130px'
+                               display_value: full.CABINET_DATE,
+                               style:'width:100px'
+                           }
+                       );
+                  return field_html;
+                }
+              },
+              { "data": "LAND_EXPORT_STAMP", 
+                  "render": function ( data, type, full, meta ) {
+                    if(!data)
+                    data='';
+                   var field_html = template('table_date_field_template',
+                           {
+                               id: 'LAND_EXPORT_STAMP',
+                               value: data,
+                               display_value: full.LAND_EXPORT_STAMP,
+                               style:'width:100px'
                            }
                        );
                   return field_html;
@@ -91,7 +107,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                                 value: data,
                                 display_value: full.CUSTOMER_ID_INPUT,
                                 required:'required',
-                                style:'width:200px',
+                                style:'width:100px',
                             }
                         );
                         return field_html;
@@ -101,7 +117,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    var str= '<select name="type" class="form-control search-control"  style="width:100px">'
+                    var str= '<select name="type" class="form-control search-control"  style="width:80px">'
                         +'<option value="出口柜货" '+(data=='出口柜货' ? 'selected':'')+'>出口柜货</option>'
                         +'<option value="进口柜货" '+(data=='进口柜货' ? 'selected':'')+'>进口柜货</option>'
                         +'<option value="出口散货" '+(data=='出口散货' ? 'selected':'')+'>出口散货</option>'
@@ -128,7 +144,8 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                           return '<input type="text" name="container_no" style="width:100px" value="'+data+'" class="form-control"/>';
                      }
               }, 
-              { "data": "CABINET_TYPE",
+              
+            { "data": "CABINET_TYPE",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -142,6 +159,21 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                     return str;
                 }
             },
+            { "data": "HEAD_CARRIER",
+          	  "render": function ( data, type, full, meta ) {
+                    if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'HEAD_CARRIER',
+                               value: data,
+                               display_value: full.HEAD_CARRIER_INPUT,
+                               style:'width:80px',
+                           }
+                       );
+                       return field_html;
+                   }
+              },
               { "data": "TIJIGUI_CAR_NO",
                 "render": function ( data, type, full, meta ) {
                    if(!data)
@@ -151,7 +183,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                             id: 'TIJIGUI_CAR_NO',  //component_id 便于用 #id取组件
                             value: data,
                             display_value: full.TIJIGUI_CAR_NO_INPUT,
-                            style:'width:200px'
+                            style:'width:100px'
                         }
                     );
                      return field_html;
@@ -166,7 +198,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                             id: 'SHOUZHONGGUI_CAR_NO',  //component_id 便于用 #id取组件
                             value: data,
                             display_value: full.SHOUZHONGGUI_CAR_NO_INPUT,
-                            style:'width:200px'
+                            style:'width:100px'
                         }
                     );
                      return field_html;
@@ -181,7 +213,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                             id: 'YIGUI_CAR_NO',  //component_id 便于用 #id取组件
                             value: data,
                             display_value: full.YIGUI_CAR_NO_INPUT,
-                            style:'width:200px'
+                            style:'width:100px'
                         }
                     );
                      return field_html;
@@ -196,7 +228,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                                 id: 'TAKE_WHARF',
                                 value: data,
                                 display_value: full.TAKE_WHARF_INPUT,
-                                style:'width:200px',
+                                style:'width:100px',
                             }
                         );
                         return field_html;
@@ -211,7 +243,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                                 id: 'BACK_WHARF',
                                 value: data,
                                 display_value: full.BACK_WHARF_INPUT,
-                                style:'width:200px',
+                                style:'width:100px',
                             }
                         );
                         return field_html;
@@ -226,7 +258,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                                 id: 'LOADING_WHARF1',
                                 value: data,
                                 display_value: full.LOADING_WHARF1_INPUT,
-                                style:'width:200px',
+                                style:'width:150px',
                             }
                         );
                         return field_html;
@@ -241,7 +273,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                                 id: 'LOADING_WHARF2',
                                 value: data,
                                 display_value: full.LOADING_WHARF2_INPUT,
-                                style:'width:200px',
+                                style:'width:150px',
                             }
                         );
                         return field_html;
@@ -256,19 +288,19 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                               id: 'CHARGE_ID',
                               value: data,
                               display_value: full.CHARGE_NAME_INPUT,
-                              style:'width:200px'
+                              style:'width:80px'
                           }
                       );
                       return field_html;
                   }
              },
-            { "data": "TOTAL_AMOUNT", "width": "80px","className":"currency_total_amount",
+            { "data": "TOTAL_AMOUNT", "width": "40px","className":"currency_total_amount",
               "render": function ( data, type, full, meta ) {
                 if(data)
                       var str =  parseFloat(data).toFixed(2);
                   else
                     str = '';
-                    return '<input type="text" name="total_amount" style="width:100px" value="'+str+'" class="form-control"  />';
+                    return '<input type="text" name="total_amount" style="width:60px" value="'+str+'" class="form-control"  />';
                }
             },
             { "data": "CURRENCY_ID",
@@ -303,7 +335,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
                       return '<input type="text" name="currency_total_amount" style="width:120px" value="'+str+'" class="form-control" disabled/>';
                  }
             },
-            { "data": "REMARK","width": "180px",
+            { "data": "REMARK","width": "100px",
                 "render": function ( data, type, full, meta ) {
                   if(!data)
                         data = '';
@@ -315,22 +347,29 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 
      
        $('#add_land').on('click', function(){
-          var create_stamp=$('#CREATE_STAMP').val();
-          var so_no=$('#so_no').val();
+          var cabinet_date=$('#cabinet_date').val();
+          var land_export_stamp=$('#land_export_stamp').val();
           var lading_no=$('#lading_no').val();
+          var so_no=$('#so_no').val();
           var customer_id=$('#CUSTOMER_ID').val();
+          
           var type=$('#type').val();
           var container_no=$('#container_no').val();
           var cabinet_type=$('#cabinet_type').val();
+          
+          var HEAD_CARRIER=$('#HEAD_CARRIER').val();
           var tijigui_car_no=$('#TIJIGUI_CAR_NO').val();
-          var yigui_car_no=$('#YIGUI_CAR_NO').val();
           var shouzhonggui_car_no=$('#SHOUZHONGGUI_CAR_NO').val();
+          var yigui_car_no=$('#YIGUI_CAR_NO').val();
           var take_wharf=$('#TAKE_WHARF').val();
           var back_wharf=$('#BACK_WHARF').val();
           var loading_wharf1=$('#LOADING_WHARF1').val();
           var loading_wharf2=$('#LOADING_WHARF2').val();
+          
           var remark=$('#remark').val();
+          
           var customer_id_input=$('#CUSTOMER_ID_input').val();
+          var HEAD_CARRIER_input=$('#HEAD_CARRIER_input').val();
           var tijigui_car_no_input=$('#TIJIGUI_CAR_NO_input').val();
           var yigui_car_no_input=$('#YIGUI_CAR_NO_input').val();
           var shouzhonggui_car_no_input=$('#SHOUZHONGGUI_CAR_NO_input').val();
@@ -338,13 +377,15 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           var back_wharf_input=$('#BACK_WHARF_input').val();
           var loading_wharf1_input=$('#LOADING_WHARF1_input').val();
           var loading_wharf2_input=$('#LOADING_WHARF2_input').val();
+          
           // var =$('#').val();CUSTOMER_ID_input
-          var item={"CREATE_STAMP":create_stamp,"SO_NO":so_no,"LADING_NO":lading_no,"CUSTOMER_ID":customer_id,"TYPE":type,
-                    "CONTAINER_NO":container_no,"CABINET_TYPE":cabinet_type,"TIJIGUI_CAR_NO":tijigui_car_no,"YIGUI_CAR_NO":yigui_car_no,
-                    "SHOUZHONGGUI_CAR_NO":shouzhonggui_car_no,"TAKE_WHARF":take_wharf,"BACK_WHARF":back_wharf,"REMARK":remark,
-                    "CUSTOMER_ID_INPUT":customer_id_input,"TIJIGUI_CAR_NO_INPUT":tijigui_car_no_input,"YIGUI_CAR_NO_INPUT":yigui_car_no_input,
-                    "SHOUZHONGGUI_CAR_NO_INPUT":shouzhonggui_car_no_input,"TAKE_WHARF_INPUT":take_wharf_input,"BACK_WHARF_INPUT":back_wharf_input,
-                    "LOADING_WHARF1_INPUT":loading_wharf1_input,"LOADING_WHARF2_INPUT":loading_wharf2_input,"LOADING_WHARF1":loading_wharf1,"LOADING_WHARF2":loading_wharf2,};
+          var item={"CABINET_DATE":cabinet_date,"LAND_EXPORT_STAMP":land_export_stamp,"LADING_NO":lading_no,"SO_NO":so_no,"CUSTOMER_ID":customer_id,
+                    "TYPE":type,"CONTAINER_NO":container_no,"CABINET_TYPE":cabinet_type,"HEAD_CARRIER":HEAD_CARRIER,
+                    "TIJIGUI_CAR_NO":tijigui_car_no,"SHOUZHONGGUI_CAR_NO":shouzhonggui_car_no,"YIGUI_CAR_NO":yigui_car_no,
+                    "TAKE_WHARF":take_wharf,"BACK_WHARF":back_wharf,"LOADING_WHARF1":loading_wharf1,"LOADING_WHARF2":loading_wharf2,"REMARK":remark,
+                    "CUSTOMER_ID_INPUT":customer_id_input,"HEAD_CARRIER_INPUT":HEAD_CARRIER_input,"TIJIGUI_CAR_NO_INPUT":tijigui_car_no_input,"SHOUZHONGGUI_CAR_NO_INPUT":shouzhonggui_car_no_input,
+                    "YIGUI_CAR_NO_INPUT":yigui_car_no_input,"TAKE_WHARF_INPUT":take_wharf_input,"BACK_WHARF_INPUT":back_wharf_input,
+                    "LOADING_WHARF1_INPUT":loading_wharf1_input,"LOADING_WHARF2_INPUT":loading_wharf2_input,};
           dataTable.row.add(item).draw(true);
           $('#eeda-table [type="checkbox"]');
       });
@@ -501,7 +542,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
               item.action = id.length > 0?'UPDATE':'CREATE';
               if($(row).find('[type=checkbox]').prop('checked')){
                     cargo_items_array.push(item);
-                    dataTable.row(row).remove().draw();
+//                    dataTable.row(row).remove().draw();
                  }
           }
 

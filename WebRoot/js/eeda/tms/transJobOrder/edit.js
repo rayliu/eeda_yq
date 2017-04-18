@@ -2,8 +2,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     './edit_land_table', './edit_charge_table','./edit_cost_table','./edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report',
     './edit_arap_detail'], function ($, metisMenu) {
 $(document).ready(function() {
-
-	document.title = order_no + ' | ' + document.title;
+	
+	var container_no=$('#container_no').val();
+	document.title = container_no + ' | ' + document.title;
 	$('#breadcrumb_li').text('工作单详细信息');
 	 //柜号限制输入位为11位数，
 	$("#orderForm").validate({

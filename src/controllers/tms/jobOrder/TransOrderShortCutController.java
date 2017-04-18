@@ -78,9 +78,8 @@ public class TransOrderShortCutController extends Controller {
    			String back_wharf=itemMap.get("BACK_WHARF");
    			String loading_wharf1=itemMap.get("LOADING_WHARF1");
    			String loading_wharf2=itemMap.get("LOADING_WHARF2");
-
-   			
 			transJobOrder.set("customer_id", itemMap.get("CUSTOMER_ID"));
+			transJobOrder.set("head_carrier", itemMap.get("HEAD_CARRIER"));
 			transJobOrder.set("type", itemMap.get("type"));
 			transJobOrder.set("status", "新建");
 			transJobOrder.set("remark", itemMap.get("remark"));
@@ -99,11 +98,8 @@ public class TransOrderShortCutController extends Controller {
 //			transJobOrder.set("transport_type", itemMap.get("transport_type"));
 			transJobOrder.set("order_no", order_no);
 			transJobOrder.set("creator", user.getLong("id"));
-			if(StringUtils.isNotEmpty(itemMap.get("CREATE_STAMP"))){
-				transJobOrder.set("create_stamp", itemMap.get("CREATE_STAMP"));
-			}else{
-				transJobOrder.set("create_stamp", new Date());
-			}
+			transJobOrder.set("create_stamp", new Date());
+			transJobOrder.set("land_export_stamp", itemMap.get("LAND_EXPORT_STAMP"));
 			transJobOrder.set("office_id", office_id);
 			transJobOrder.save();
 			id = transJobOrder.getLong("id").toString();
@@ -126,6 +122,7 @@ public class TransOrderShortCutController extends Controller {
 				tjol.set("driver", ci.get("driver"));
 				tjol.set("driver_tel", ci.get("phone"));
 				tjol.set("take_wharf", itemMap.get("TAKE_WHARF"));
+				tjol.set("cabinet_date", itemMap.get("CABINET_DATE"));
 				 loading_wharf1=itemMap.get("LOADING_WHARF1");
 				if(!"".equals(loading_wharf1)){
 					tjol.set("loading_wharf1", itemMap.get("LOADING_WHARF1"));

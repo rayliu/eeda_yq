@@ -420,6 +420,14 @@ eeda.refreshUrl = refreshUrl;
             tableFieldList.show();
             eeda._inputField = inputField;
             eeda._hiddenField = hiddenField;
+            if(data.length==0)
+                hiddenField.val('');
+            if(data.length==1&&data[0].ID)
+                hiddenField.val(data[0].ID);
+            if(!inputStr){
+            	if(data.length>1)
+	                hiddenField.val('');
+            }
             //tableFieldList;
   	    },'json');
 		  });
@@ -531,6 +539,15 @@ eeda.refreshUrl = refreshUrl;
 				  eeda._inputField = inputField;
 				  eeda._hiddenField = hiddenField;
 				  //tableFieldList;
+				  if(data.length==0)
+		                hiddenField.val('');
+		            if(data.length==1&&data[0].ID)
+		                hiddenField.val(data[0].ID);
+		            if(!inputStr){
+		            	if(data.length>1)
+			                hiddenField.val('');
+		            }
+		            
 			  },'json');
 		  });
 		  
@@ -760,6 +777,14 @@ eeda.refreshUrl = refreshUrl;
                   tableFieldList.show();
                   eeda._inputField = inputField;
                   eeda._hiddenField = hiddenField;
+                  if(data.length==0)
+		                hiddenField.val('');
+		            if(data.length==1&&data[0].ID)
+		                hiddenField.val(data[0].ID);
+		            if(!inputStr){
+		            	if(data.length>1)
+			                hiddenField.val('');
+		            }
               },'json');
           });
           
@@ -855,6 +880,14 @@ eeda.refreshUrl = refreshUrl;
                   tableFieldList.show();
                   eeda._inputField = inputField;
                   eeda._hiddenField = hiddenField;
+                  if(data.length==0)
+		                hiddenField.val('');
+		            if(data.length==1&&data[0].ID)
+		                hiddenField.val(data[0].ID);
+		            if(!inputStr){
+		            	if(data.length>1)
+			                hiddenField.val('');
+		            }
               },'json');
           });
 
@@ -953,6 +986,14 @@ eeda.refreshUrl = refreshUrl;
                   tableFieldList.show();
                   eeda._inputField = inputField;
                   eeda._hiddenField = hiddenField;
+                  if(data.length==0)
+		                hiddenField.val('');
+		            if(data.length==1&&data[0].ID)
+		                hiddenField.val(data[0].ID);
+		            if(!inputStr){
+		            	if(data.length>1)
+			                hiddenField.val('');
+		            }
               },'json');
           });
 
@@ -1156,6 +1197,14 @@ eeda.refreshUrl = refreshUrl;
                   tableFieldList.show();
                   eeda._inputField = inputField;
                   eeda._hiddenField = hiddenField;
+                  if(data.length==0)
+		                hiddenField.val('');
+		            if(data.length==1&&data[0].ID)
+		                hiddenField.val(data[0].ID);
+		            if(!inputStr){
+		            	if(data.length>1)
+			                hiddenField.val('');
+		            }
               },'json');
           });
 
@@ -1244,6 +1293,14 @@ eeda.refreshUrl = refreshUrl;
                   tableFieldList.show();
                   eeda._inputField = inputField;
                   eeda._hiddenField = hiddenField;
+                  if(data.length==0)
+		                hiddenField.val('');
+		            if(data.length==1&&data[0].ID)
+		                hiddenField.val(data[0].ID);
+		            if(!inputStr){
+		            	if(data.length>1)
+			                hiddenField.val('');
+		            }
               },'json');
           });
 

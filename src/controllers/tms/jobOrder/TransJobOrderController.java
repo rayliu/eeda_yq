@@ -938,13 +938,18 @@ public class TransJobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         }
         else{
-		         sql = "SELECT * from (select tjo.*,tjo.land_export_date sent_out_time,"
-		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code"
-		         		+ "	from trans_job_order tjo"
+		         sql = "SELECT * from (select distinct GROUP_CONCAT(tjol.cabinet_date)  cabinet_date,"
+		         		+ " tjo.*,tjo.land_export_stamp sent_out_time,"
+		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code, "
+		         		+ " p1.abbr head_carrier_name"
+		         		+ "	from trans_job_order tjo "
+		         		+ " LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo.id"
 		         		+ "	left join party p on p.id = tjo.customer_id"
+		         		+ "	left join party p1 on p1.id = tjo.head_carrier"
 		         		+ "	left join user_login u on u.id = tjo.creator"
 		         		+ "	where tjo.office_id="+office_id
-		         		+ "	and tjo.delete_flag = 'N'"
+		         		+ "	and tjo.delete_flag = 'N' "
+		         		+ " GROUP BY tjo.id"
 		         		+ "	) A where 1 = 1 ";
          }
         
