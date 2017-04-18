@@ -54,8 +54,10 @@ $(document).ready(function() {
                 hiddenField.val('');
             if(data.length==1&&data[0].ID)
                 hiddenField.val(data[0].ID);
-            if(data.length>1)
-                hiddenField.val('');
+            if(!inputStr){
+            	if(data.length>1)
+                    hiddenField.val('');
+            }
         },'json');
     });
     
