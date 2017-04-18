@@ -219,6 +219,10 @@ public class TransJobOrderController extends Controller {
 			
 			backWharf=(String) dto.get("back_wharf");
 		}
+		if(StringUtils.isNotEmpty((String) dto.get("cabinet_type"))){
+			
+			truckType=(String) dto.get("cabinet_type");
+		}
 
 		//陆运
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
@@ -234,10 +238,7 @@ public class TransJobOrderController extends Controller {
 				
 				loadingWharf2=(String) map.get("LOADING_WHARF2");
 			}
-			if(StringUtils.isNotEmpty((String) map.get("truck_type"))){
-				
-				truckType=(String) map.get("truck_type");
-			}
+			
 
 			
 		}
