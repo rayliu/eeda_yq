@@ -155,7 +155,6 @@ public class TransJobOrderController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
         String id = (String) dto.get("id");
-//      String planOrderItemID = (String) dto.get("plan_order_item_id");
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
         String customer_id = (String)dto.get("customer_id");
         
@@ -197,23 +196,19 @@ public class TransJobOrderController extends Controller {
    			transJobOrder.save();
    			id = transJobOrder.getLong("id").toString();
    			
-   			//创建过工作单，设置plan_order_item的字段
-//   			PlanOrderItem planOrderItem = PlanOrderItem.dao.findById(planOrderItemID);
-//   			if(planOrderItem!=null){
-//                   planOrderItem.set("is_gen_job", "Y");
-//                   planOrderItem.update();
-//   			}
    		}
+   		//常用客户保存进入历史记录
    		long customerId = Long.valueOf(dto.get("customer_id").toString());
    		saveCustomerQueryHistory(customerId);
+   		
    		String loadingWharf1="";
 		String loadingWharf2="";
-		String takeAddress="";
+		String takeWharf="";
 		String backWharf="";
 		String truckType="";
 		if(StringUtils.isNotEmpty((String) dto.get("take_wharf"))){
 			
-			takeAddress=(String) dto.get("take_wharf");
+			takeWharf=(String) dto.get("take_wharf");
 		}
 		if(StringUtils.isNotEmpty((String) dto.get("back_wharf"))){
 			
@@ -244,7 +239,8 @@ public class TransJobOrderController extends Controller {
 		}
 		
 		
-	
+		
+   		
 		
 		//费用明细，应收应付
 		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");
@@ -258,9 +254,25 @@ public class TransJobOrderController extends Controller {
 		saveFinItemQueryHistory(charge_list);
 		saveFinItemQueryHistory(chargeCost_list);
 		
+		//常用提还柜码头进入使用历史  
+		if(!"".equals(takeWharf)){
+			saveWharfQueryHistory(takeWharf);
+		}
+		if(!"".equals(backWharf)){
+			saveWharfQueryHistory(backWharf);
+		}
+		
+		//装货地点进入使用历史表
+		if(!"".equals(loadingWharf1)){
+			saveLoadingWharfQueryHistory(loadingWharf1);
+		}
+		if(!"".equals(loadingWharf2)){
+			saveLoadingWharfQueryHistory(loadingWharf2);
+		}
+
 		//获取合同费用
 		TransOrderShortCutController.checkCustomerQuotation(office_id,id,customer_id,truckType,
-				takeAddress,backWharf,loadingWharf1,loadingWharf2);
+				takeWharf,backWharf,loadingWharf1,loadingWharf2);
 		
 		//相关文档
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
@@ -285,6 +297,41 @@ public class TransJobOrderController extends Controller {
 
    		renderJson(r);
    	}
+    
+    
+    
+    //常用码头保存进入历史记录
+    private void saveWharfQueryHistory(String wharf){
+        Long userId = LoginUserController.getLoginUserId(this);
+        Record rec = Db.findFirst("select * from user_query_history where type='wharf' and ref_id=? and user_id=?", wharf, userId);
+        if(rec==null){
+            rec = new Record();
+            rec.set("ref_id", wharf);
+            rec.set("type", "wharf");
+            rec.set("user_id", userId);
+            rec.set("query_stamp", new Date());
+            Db.save("user_query_history", rec);
+        }else{
+            rec.set("query_stamp", new Date());
+            Db.update("user_query_history", rec);
+        }
+    }
+    //常用装货地点保存进入历史记录
+    private void saveLoadingWharfQueryHistory(String laodingWharf){
+        Long userId = LoginUserController.getLoginUserId(this);
+        Record rec = Db.findFirst("select * from user_query_history where type='loadingWharf' and ref_id=? and user_id=?", laodingWharf, userId);
+        if(rec==null){
+            rec = new Record();
+            rec.set("ref_id", laodingWharf);
+            rec.set("type", "loadingWharf");
+            rec.set("user_id", userId);
+            rec.set("query_stamp", new Date());
+            Db.save("user_query_history", rec);
+        }else{
+            rec.set("query_stamp", new Date());
+            Db.update("user_query_history", rec);
+        }
+    }
     
     /**
      * 保存费用模板

@@ -338,6 +338,7 @@ public class JobOrderController extends Controller {
    			}
    		}
    		long customerId = Long.valueOf(dto.get("customer_id").toString());
+   		//常用客户保存进入历史记录
    		saveCustomerQueryHistory(customerId);
 		//海运
 		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
@@ -959,7 +960,7 @@ public class JobOrderController extends Controller {
             Db.update("user_query_history", rec);
         }
     }
-    
+    //常用客户保存进入历史记录
     private void saveCustomerQueryHistory(long customerId){
         Long userId = LoginUserController.getLoginUserId(this);
         Record rec = Db.findFirst("select * from user_query_history where type='CUSTOMER' and ref_id=? and user_id=?", customerId, userId);

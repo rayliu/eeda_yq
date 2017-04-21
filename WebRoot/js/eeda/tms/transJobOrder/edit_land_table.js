@@ -75,8 +75,6 @@ $(document).ready(function() {
     	});
     	
         eeda.bindTableFieldCarInfo('land_table', 'CAR_NO');
-        eeda.bindTableFieldDockInfo('land_table','TAKE_ADDRESS');
-        eeda.bindTableFieldDockInfo('land_table','DELIVERY_ADDRESS');
         eeda.bindTableFieldDockInfo('land_table','LOADING_WHARF1');
         eeda.bindTableFieldDockInfo('land_table','LOADING_WHARF2');
     };
