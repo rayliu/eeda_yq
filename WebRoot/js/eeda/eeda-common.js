@@ -133,14 +133,15 @@ $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) {
 //dataTables builder for 1.10
 eeda.dt = function(opt){
     var option = {
-    	bSort: opt.sort || false, 
+    	  bSort: opt.sort || false, 
+        stateSave: true,
         processing: opt.processing || true,
         searching: opt.searching || false,
         paging: opt.paging || false,
-        //info:  opt.info || false,
+        info:  opt.info || true,
         lengthChange: opt.lengthChange || false,
         serverSide: opt.serverSide || false, 
-        
+        colReorder: opt.colReorder || false, 
         scrollX: opt.scrollX || true,
         scrollY: opt.scrollY || true, //"300px",
         scrollCollapse: opt.scrollCollapse || true,

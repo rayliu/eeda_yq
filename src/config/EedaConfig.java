@@ -148,6 +148,7 @@ import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import controllers.app.AppControllerForMobile;
 import controllers.cms.jobOrder.CustomJobOrderController;
 import controllers.cms.jobOrder.CustomPlanOrderController;
+import controllers.eeda.ListConfigController;
 import controllers.eeda.ModuleController;
 import controllers.msg.YqDashBoardController;
 import controllers.oms.bookOrder.BookOrderController;
@@ -254,6 +255,7 @@ public class EedaConfig extends JFinalConfig {
 		// yh project controller
         me.add("/", controllers.eeda.MainController.class, contentPath);
         me.add("/module", ModuleController.class, contentPath);
+        me.add("/listConfig", ListConfigController.class, contentPath);
         me.add("/dashBoard", YqDashBoardController.class);
         
         me.add("/tradeItem", TradeItemController.class, contentPath);

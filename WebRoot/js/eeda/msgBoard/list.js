@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder'], function ($, metisMenu) { 
     $(document).ready(function() {
     	document.title = '公告板 | '+document.title;
     	
@@ -7,7 +7,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
         var dataTable = eeda.dt({
             id: 'eeda_table',
             paging: true,
-            serverSide: true, //不打开会出现排序不对
+            serverSide: true, 
+            colReorder: true,
             ajax: "/msgBoard/list",
             columns:[
                 { "width": "80px",
@@ -28,6 +29,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 	              { "data": "UPDATE_STAMP", "width":"90px"},
             ]
         });
+
+       
       
       $('#searchBtn').click(function(){
           searchData(); 
