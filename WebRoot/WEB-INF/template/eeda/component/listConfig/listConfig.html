@@ -1,0 +1,11 @@
+<script type="text/javascript">
+  cols_config = [
+  <%for(row in listConfigList![]){ %>
+        {COL_FIELD:'${row.COL_FIELD!}', IS_SHOW: '${row.IS_SHOW!}'},
+  <%}%>
+  ];
+
+  if(cols_config.length>0){
+      $('.breadcrumb_config_icon').show();
+  } 
+</script>

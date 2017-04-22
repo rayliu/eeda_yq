@@ -145,7 +145,7 @@ eeda.dt = function(opt){
         scrollX: opt.scrollX || true,
         scrollY: opt.scrollY || true, //"300px",
         scrollCollapse: opt.scrollCollapse || true,
-
+        deferRender: opt.deferRender || true,
         responsive:opt.responsive || true,
         autoWidth: opt.autoWidth || false,
         pageLength: opt.pageLength || 10,
