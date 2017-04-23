@@ -20,16 +20,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
                 },
-                { "data": "ITEM_NO"}, 
-                {"data": "ITEM_NAME", 
+                { "data": "ITEM_NO", "class":"item_no"}, 
+                {"data": "ITEM_NAME", "class":"item_name",
               	  	"render": function ( data, type, full, meta ) {
               	  		//return "<a href='/wmsproduct/edit?id="+full.PRODUCT_ID+"'target='_blank'>"+data+"</a>";
               	  		return data;
               	  	}
                 },
                 { "data": "QR_CODE"}, 
-                { "data": "PART_NO"}, 
-				{ "data": "PART_NAME"}, 
+                { "data": "PART_NO", "class":"part_no"}, 
+				{ "data": "PART_NAME", "class":"part_name"}, 
 				{ "data": "QUANTITY"},
 				{ "data": "SHELVES"},
 				{ "data": "RETURN_FLAG"},
@@ -38,6 +38,31 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				{ "data": "CREATOR_NAME"}
             ]
         });
+        
+        
+        $('#eeda-table').on('click','.item_no',function(){
+        	var value = $(this).text();
+        	$('#item_no').val(value);
+        	$('#part_no').val("");
+        });
+        
+        $('#eeda-table').on('click','.part_no',function(){
+        	var value = $(this).text();
+        	$('#part_no').val(value);
+        	$('#item_no').val("");
+        });
+        
+/*        $('#eeda-table').on('click','.item_name',function(){
+        	var value = $(this).text();
+        	$('#item_name').val(value);
+        	$('#part_name').val("");
+        });
+        
+        $('#eeda-table').on('click','.part_name',function(){
+        	var value = $(this).text();
+        	$('#part_name').val(value);
+        	$('#item_name').val("");
+        });*/
         
         var errorTable = eeda.dt({
             id: 'error-table',
