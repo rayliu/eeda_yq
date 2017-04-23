@@ -56,12 +56,12 @@ public class ImportOrder extends Controller {
 	        	if(fileName.indexOf("入库记录")>-1){
 	        		resultMap = checkOrder.importGateInValue(csvReader, officeId);
 	        	}else if(fileName.indexOf("出库记录")>-1){
-        			resultMap = checkOrder.importGateOutCheck(csvReader);
-	        		if(resultMap.get("result")){
+//        			resultMap = checkOrder.importGateOutCheck(csvReader);
+//	        		if(resultMap.get("result")){
 	        			resultMap = checkOrder.importGateOutValue(new CSVReader(new FileReader(file),','), officeId);
-	        		}else{
-	        			throw new Exception(resultMap.getStr("cause")+"<br/>请先导入入库信息表");
-	        		}
+//	        		}else{
+//	        			throw new Exception(resultMap.getStr("cause")+"<br/>请先导入入库信息表");
+//	        		}
 	        	}else if(fileName.indexOf("盘点单")>-1){
 	        		resultMap = checkOrder.importInvCheckValue(csvReader, officeId);
 	        	}else{

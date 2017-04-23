@@ -548,7 +548,7 @@ public class CheckOrder extends Controller {
 	                			}
 	                		} else {
 	                			order.set("error_flag", "Y");
-	                			order.set("error_msg", "库存中没有此货品（未入库）");
+	                			order.set("error_msg", "未入库");
 	                		}
 	                	}
                 	}
