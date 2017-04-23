@@ -8,7 +8,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         var dataTable = eeda.dt({
             id: 'eeda-table',
             paging: true,
-            serverSide: false, //不打开会出现排序不对
+            serverSide: true, //不打开会出现排序不对
             //ajax: "/gateOutOrder/list",
             "drawCallback": function( settings ) {
 		        $.unblockUI();

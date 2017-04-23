@@ -215,5 +215,20 @@ public class ProductController extends Controller {
     }
    
     
+    public void search(){
+    	String input = getPara("input");
+    	
+    	String condition = " where 1 = 1 ";
+    	if(StringUtils.isNotBlank(input)){
+    		condition += " and item_no like '%"+input+"%'";
+    	}
+    	
+    	String sql = " select * from wmsproduct ";
+    	List<Record> re = Db.find(sql+condition + " limit 0,50");
+    	
+    	renderJson(re);
+    		
+    }
+    
 
 }
