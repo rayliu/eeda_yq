@@ -20,7 +20,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
                 },
-                { "data": "ORDER_NO"}, 
+                { "data": "ORDER_NO", "class":"item_no"}, 
                 { "data": "ITEM_NO"}, 
                 {"data": "ITEM_NAME", 
               	    "render": function ( data, type, full, meta ) {
@@ -28,13 +28,25 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               	    }
                 },
                 { "data": "QR_CODE"}, 
-                { "data": "PART_NO"}, 
+                { "data": "PART_NO", "class":"part_no"}, 
 				{ "data": "PART_NAME"}, 
 				{ "data": "QUANTITY"},
 				{ "data": "MOVE_FLAG"}, 
 				{ "data": "CREATE_TIME"},
 				{ "data": "CREATOR_NAME"}
             ]
+        });
+        
+        $('#eeda-table').on('click','.item_no',function(){
+        	var value = $(this).text();
+        	$('#item_no').val(value);
+        	$('#part_no').val("");
+        });
+        
+        $('#eeda-table').on('click','.part_no',function(){
+        	var value = $(this).text();
+        	$('#part_no').val(value);
+        	$('#item_no').val("");
         });
         
         var errorTable = eeda.dt({
