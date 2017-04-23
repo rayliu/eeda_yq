@@ -258,57 +258,15 @@ public class BookOrderController extends Controller {
         //获取office_id
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
-   		
-   		String export_date = (String)dto.get("order_export_date");
+
         String newDateStr = "";
-        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
         SimpleDateFormat sdf = new SimpleDateFormat("yy");//转换后的格式
-        try {
-            Date date=parseFormat.parse(export_date);
-            newDateStr=sdf.format(date);
-        } catch (ParseException ex) {
-            logger.debug("处理工作单出货日期出错："+ex.getMessage());
-        }
-        logger.debug("工作单出货日期："+newDateStr);
-        
-        
+        Date date=new Date();
+		newDateStr=sdf.format(date);
+   		
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			bookOrder = BookOrder.dao.findById(id);
-   			//版本(时间戳)校验，不对的话就不让更新保存
-   			Timestamp page_update_stamp = Timestamp.valueOf(dto.get("update_stamp").toString());
-   			Timestamp order_update_stamp = bookOrder.getTimestamp("update_stamp");
-   			if(!order_update_stamp.equals(page_update_stamp)){
-   			    Record rec = new Record();
-   			    rec.set("err_code", "update_stamp_not_equal");
-   			    rec.set("err_msg", "当前单据已被更改，请刷新页面获取最新数据，重新操作。");
-   			    renderJson(rec);
-   			    return;
-   			}
-   			
-   			Date old_export_date=bookOrder.get("order_export_date");
-   			String oldDateStr="";
-   			if(old_export_date != null){
-   			    oldDateStr=sdf.format(old_export_date);
-   			}
-   			logger.debug("工作单出货 旧日期："+oldDateStr);
-   			String oldOrderNo=bookOrder.get("order_no");
-   			String oldOrderNoDate = oldOrderNo.substring(3, 7);
-   			logger.debug("工作单号 旧日期："+oldOrderNoDate);
-   			if(!type.equals(bookOrder.get("type")) || 
-   			        ( 
-   			             StrKit.notBlank(oldDateStr) && 
-   			             !newDateStr.equals(oldDateStr) && 
-   			             !newDateStr.equals(oldOrderNoDate)
-   			        ) 
-   			  ){
-	   			StringBuilder sb = new StringBuilder(oldOrderNo);//构造一个StringBuilder对象
-
-	   			sb.replace(5, 6, generateBookPrefix(type));
-	   			oldOrderNo =sb.toString();
-	            bookOrder.set("order_no", oldOrderNo);
-   			}
-   			
    			DbUtils.setModelValues(dto, bookOrder);
    			bookOrder.set("updator", user.getLong("id"));
             bookOrder.set("update_stamp", new Date());
@@ -317,8 +275,6 @@ public class BookOrderController extends Controller {
    		} else {
    			//create 
    			DbUtils.setModelValues(dto, bookOrder);
-//   			String newOrder_on ="EKYZH"+generateBookPrefix(type);
-   			
    			//需后台处理的字段
    			String order_no = OrderNoGenerator.getNextOrderNo("BK", newDateStr, office_id);
    			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
@@ -340,146 +296,23 @@ public class BookOrderController extends Controller {
                    planOrderItem.update();
    			}
    		}
-   		long customerId = Long.valueOf(dto.get("customer_id").toString());
-   		saveCustomerQueryHistory(customerId);
-		//海运
-		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
-		DbUtils.handleList(shipment_detail, id, BookOrderShipment.class, "order_id");
-		
-		List<Map<String, String>> shipment_item = (ArrayList<Map<String, String>>)dto.get("shipment_list");
-		DbUtils.handleList(shipment_item, id, BookOrderShipmentItem.class, "order_id");
-		//空运
-		List<Map<String, String>> air_detail = (ArrayList<Map<String, String>>)dto.get("air_detail");
-		DbUtils.handleList(air_detail, id, BookOrderAir.class, "order_id");
-		
-		List<Map<String, String>> air_cargoDesc = (ArrayList<Map<String, String>>)dto.get("air_cargoDesc");
-		DbUtils.handleList(air_cargoDesc, id, BookOrderAirCargoDesc.class, "order_id");
-		
-		List<Map<String, String>> air_item = (ArrayList<Map<String, String>>)dto.get("air_list");
-		DbUtils.handleList(air_item, id, BookOrderAirItem.class, "order_id");
-		
-		//陆运
-		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
-		DbUtils.handleList(land_item, id, BookOrderLandItem.class, "order_id");
-		
-		//快递
-		List<Map<String, String>> express_detail = (ArrayList<Map<String, String>>)dto.get("express_detail");
-		DbUtils.handleList(express_detail, id, BookOrderExpress.class, "order_id");
-		
-		//报关
-		List<Map<String, String>> chinaCustom = (ArrayList<Map<String, String>>)dto.get("chinaCustom");
-		List<Map<String, String>> abroadCustom = (ArrayList<Map<String, String>>)dto.get("abroadCustom");
-		List<Map<String, String>> hkCustom = (ArrayList<Map<String, String>>)dto.get("hkCustom");
-		List<Map<String, String>> chinaCustom_self_item = (ArrayList<Map<String, String>>)dto.get("chinaCustom_self_item");
-		DbUtils.handleList(chinaCustom, id, BookOrderCustom.class, "order_id");
-		DbUtils.handleList(chinaCustom_self_item, "book_order_custom_china_self_item", id, "order_id");
-		DbUtils.handleList(abroadCustom, id, BookOrderCustom.class, "order_id");
-		DbUtils.handleList(hkCustom, id, BookOrderCustom.class, "order_id");
-		
-		//保险
-		List<Map<String, String>> insurance_detail = (ArrayList<Map<String, String>>)dto.get("insurance_detail");
-		DbUtils.handleList(insurance_detail, id, BookOrderInsurance.class, "order_id");
-		
-		//费用明细，应收应付
-		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");
-		DbUtils.handleList(charge_list, id, BookOrderArap.class, "order_id");
-		List<Map<String, String>> chargeCost_list = (ArrayList<Map<String, String>>)dto.get("chargeCost_list");
-		DbUtils.handleList(chargeCost_list, id, BookOrderArap.class, "order_id");
-		//记录结算公司使用历史	
-		saveAccoutCompanyQueryHistory(charge_list);
-		saveAccoutCompanyQueryHistory(chargeCost_list);
-		//记录结算费用使用历史  
-		saveFinItemQueryHistory(charge_list);
-		saveFinItemQueryHistory(chargeCost_list);
+//   		long customerId = Long.valueOf(dto.get("customer_id").toString());
+//   		saveCustomerQueryHistory(customerId);
+	
+
+//		//记录结算费用使用历史  
+//		saveFinItemQueryHistory(charge_list);
+//		saveFinItemQueryHistory(chargeCost_list);
 		
 		//相关文档
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
 		DbUtils.handleList(doc_list, id, BookOrderDoc.class, "order_id");
 
-		//贸易
-		List<Map<String, String>> trade_detail = (ArrayList<Map<String, String>>)dto.get("trade_detail");
-		DbUtils.handleList(trade_detail,"book_order_trade",id,"order_id");
-		List<Map<String, String>> trade_cost_list = (ArrayList<Map<String, String>>)dto.get("trade_cost");
-		DbUtils.handleList(trade_cost_list,"book_order_trade_cost",id,"order_id");
-		
-		Model<?> model = (Model<?>) BookOrderArap.class.newInstance();
-		List<Map<String, String>> trade_service_list = (ArrayList<Map<String, String>>)dto.get("trade_service");
-		
-		List<Map<String, String>> trade_sale_list = (ArrayList<Map<String, String>>)dto.get("trade_sale");
-		if(trade_service_list!=null){
-	        for(int i=0;i<trade_service_list.size();i++){
-	        	Map<String, String> map=trade_service_list.get(i);
-	        	DbUtils.setModelValues(map,model);
-	        	model.set("order_id", id);
-	        	model.set("type", "贸易");
-	        	model.set("order_type", "charge");
-	        	model.set("trade_fee_flag", "trade_service_fee");
-	        	if("UPDATE".equals(map.get("action"))){
-	        		model.update();
-	        	}else if("DELETE".equals(map.get("action"))){
-	        		if(map.get("id")!=null)
-	        		model.delete();
-	        	}else{
-	        		model.save();
-	        	}
-	        }
-		}
-		if(trade_sale_list!=null){
-	        for(int i=0;i<trade_sale_list.size();i++){
-	        	Map<String, String> map=trade_sale_list.get(i);
-	        	DbUtils.setModelValues(map,model);
-	        	model.set("order_id", id);
-	        	model.set("order_type", "charge");
-	        	model.set("type", "贸易");
-	        	model.set("trade_fee_flag", "trade_sale_fee");
-	        	if("UPDATE".equals(map.get("action"))){
-	        		model.update();
-	        	}else if("DELETE".equals(map.get("action"))){
-	        		if(map.get("id")!=null)
-	        		model.delete();
-	        	}else{
-	        		model.save();
-	        	}
-	        }
-		}
-
 		long creator = bookOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
    		
 		Record r = bookOrder.toRecord();
-//		System.out.println(new java.sql.Timestamp(r.getDate("update_stamp").getTime()));
-		r.set("update_stamp", new java.sql.Timestamp(r.getDate("update_stamp").getTime()));
-   		r.set("creator_name", user_name);
-   		r.set("custom",Db.findFirst("select * from book_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
-   		r.set("abroadCustom", Db.findFirst("select * from book_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
-   		r.set("hkCustom", Db.findFirst("select * from book_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
-   		r.set("customSelf", Db.findFirst("select * from book_order_custom joc where order_id = ? and custom_type = ?",id,"china_self"));
-   		r.set("shipment", getItemDetail(id,"shipment"));
-   		r.set("trade", getItemDetail(id,"trade"));
-    	r.set("air", getItemDetail(id,"air"));
-    	r.set("express", getItemDetail(id,"express"));
-   		r.set("insurance", getItemDetail(id,"insure"));
-   		
-   		//保存海运填写模板
-   		saveOceanTemplate(shipment_detail);
-   		//保存空运填写模板
-   		saveAirTemplate(air_detail);
-   		
-   	    //费用明细，应收应付
-		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
-		List<Map<String, String>> cost_template = (ArrayList<Map<String, String>>)dto.get("cost_template");
-		List<Map<String, String>> allCharge_template = (ArrayList<Map<String, String>>)dto.get("allCharge_template");
-		List<Map<String, String>> allCost_template = (ArrayList<Map<String, String>>)dto.get("allCost_template");
-   		saveArapTemplate(type,customer_id,charge_template,cost_template,allCharge_template,allCost_template);
-     	//贸易信息，应收服务，销售应收模板
-		List<Map<String, String>> chargeService_template = (ArrayList<Map<String, String>>)dto.get("chargeService_template");
-		List<Map<String, String>> allChargeService_template = (ArrayList<Map<String, String>>)dto.get("allChargeService_template");
-		saveTradeServiceTemplate(type,customer_id,chargeService_template,allChargeService_template);
-		List<Map<String, String>> chargeSale_template = (ArrayList<Map<String, String>>)dto.get("chargeSale_template");
-		List<Map<String, String>> allChargeSale_template = (ArrayList<Map<String, String>>)dto.get("allChargeSale_template");
-   		saveTradeSaleTemplate(type,customer_id,chargeSale_template,allChargeSale_template);
-   	   	   		
-	
+
    		renderJson(r);
    	}
     
@@ -935,18 +768,7 @@ public class BookOrderController extends Controller {
             }
         }
     }
-    
-    //记录结算公司使用历史
-    private void saveAccoutCompanyQueryHistory(List<Map<String, String>> list) throws InstantiationException, IllegalAccessException{
-        Long userId = LoginUserController.getLoginUserId(this);
-        
-        for (Map<String, String> rowMap : list) {//获取每一行
-            String accComId = rowMap.get("SP_ID");
-            if(StringUtils.isNotEmpty(accComId)){
-                addHistoryRecord(userId, accComId, "ARAP_COM");
-            }
-        }
-    }
+
 
     private void addHistoryRecord(long userId, String partyId, String type) {
         Record rec = Db.findFirst("select * from user_query_history where type='"+type+"' and ref_id=? and user_id=?", partyId, userId);
@@ -1355,40 +1177,10 @@ public class BookOrderController extends Controller {
     public void edit() {
     	String id = getPara("id");
     	BookOrder bookOrder = BookOrder.dao.findById(id);
+    	Long plan_order_id = bookOrder.getLong("plan_item_id");
+    	
+    	Record re = Db.findFirst("");
     	setAttr("order", bookOrder);
-
-    	//获取海运明细表信息
-    	setAttr("usedOceanInfo", getUsedOceanInfo());
-    	setAttr("shipmentList", getItems(id,"shipment"));
-    	setAttr("shipment", getItemDetail(id,"shipment"));
-    	//获取空运运明细表信息
-    	setAttr("usedAirInfo", getUsedAirInfo());
-    	setAttr("airList", getItems(id,"air"));
-    	setAttr("cargoDescList", getItems(id,"cargoDesc"));
-    	setAttr("air", getItemDetail(id,"air"));
-    	//获取陆运明细表信息
-    	setAttr("landList", getItems(id,"land"));
-    	//贸易
-    	setAttr("trade", getItemDetail(id,"trade"));
-    	setAttr("trade_cost_list", getItems(id,"trade_cost"));
-    	setAttr("trade_charge_service_list", getItems(id,"trade_service"));
-    	setAttr("trade_charge_sale_list", getItems(id,"trade_sale"));
-
-    	//报关
-    	setAttr("customItemList",getItems(id, "custom_app"));
-    	setAttr("custom",Db.findFirst("select * from book_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
-   		setAttr("abroadCustom", Db.findFirst("select * from book_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
-   		setAttr("hkCustom", Db.findFirst("select * from book_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
-   		setAttr("customSelf", Db.findFirst("select * from book_order_custom joc where order_id = ? and custom_type = ?",id,"china_self"));
-   		setAttr("customSelfItemList", getItems(id,"china_self"));
-   		setAttr("customDocList", getItems(id,"custom_doc"));
-    	//保险
-    	setAttr("insurance", getItemDetail(id,"insure"));
-    	//快递
-    	setAttr("express", getItemDetail(id,"express"));
-    	//获取费用明细
-    	setAttr("chargeList", getItems(id,"charge"));
-    	setAttr("costList", getItems(id,"cost"));
     	//相关文档
     	setAttr("docList", getItems(id,"doc"));
     	//邮件记录
@@ -1403,9 +1195,7 @@ public class BookOrderController extends Controller {
     	setAttr("user", user);
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
-    	//海运头程资料
-   		setAttr("oceanHead", Db.findFirst("select * from book_order_shipment_head where order_id = ?",id));
-   		setAttr("truckHead", Db.findFirst("select * from book_order_land_cabinet_truck where order_id = ?",id));
+
     	  
         render("/oms/bookOrder/bookOrderEdit.html");
     }
@@ -2009,6 +1799,18 @@ public class BookOrderController extends Controller {
     	}
     	recs = Db.find(sql);
     	renderJson(recs);
+    }
+    
+    //确认发送文档
+    @Before(Tx.class)
+    public void confirmSend(){
+    	String id = getPara("docId");
+    	BookOrderDoc bookOrderDoc = BookOrderDoc.dao.findById(id);
+    	
+    	
+    	
+      
+        renderJson(bookOrderDoc);
     }
 
 

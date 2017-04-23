@@ -12,7 +12,7 @@ $(document).ready(function() {
         e.preventDefault();
         var tr = $(this).parent().parent();
         var id = tr.attr('id');
-        
+        this.disabled = true;
          $.post('/bookOrder/deleteDoc', {docId:id}, function(data){
         	 if(data.result==true){
         		 docTable.row(tr).remove().draw();
@@ -28,6 +28,20 @@ $(document).ready(function() {
          });
     }); 
 
+    //文件发送-----工作单
+    $("#doc_table").on('click', '.confirmSend', function(e){
+        e.preventDefault();
+        var tr = $(this).parent().parent();
+        var id = tr.attr('id');
+        this.disabled = true;
+         $.post('/bookOrder/confirmSend', {docId:id}, function(data){
+        	 $.scojs_message('完成!', $.scojs_message.TYPE_ERROR);
+         },'json').fail(function() {
+             $.scojs_message('后台报错!', $.scojs_message.TYPE_ERROR);
+         });
+    }); 
+
+    
     //------------事件处理,文档table
     var docTable = eeda.dt({
         id: 'doc_table',
@@ -41,9 +55,10 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
 			    }
 			},
-            { "width": "30px",
+            { "width": "50px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button> ';
+                	return '<button type="button" class="delete btn table_btn delete_btn btn-xs">删除</button>'
+                	+'<button type="button" class="confirmSend btn table_btn delete_btn btn-xs">发送PC资料</button>';
                 }
             },
             { "data": "DOC_NAME","width": "280px",
@@ -72,6 +87,27 @@ $(document).ready(function() {
                     if(!data)
                         data='';
                     return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
+                }
+            },
+            { "data": "SENDER", "width": "180px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },
+            { "data": "SEND_TIME", "width": "180px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },
+            { "data": "SEND_STATUS", "width": "180px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
                 }
             }
         ]

@@ -135,7 +135,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var str = '<select name="job_order_type" class="form-control search-control">'
+	                    var str = '<select name="job_order_type" class="form-control search-control job_order_type">'
+//		                   +'<option value="出口柜货" '+(data=='出口柜货' ? 'selected':'')+'>出口柜货</option>'
+//		                   +'<option value="进口柜货" '+(data=='进口柜货' ? 'selected':'')+'>进口柜货</option>'
 		                   +'<option value="出口柜货" '+(data=='出口柜货' ? 'selected':'')+'>出口柜货</option>'
 		                   +'<option value="进口柜货" '+(data=='进口柜货' ? 'selected':'')+'>进口柜货</option>'
 		                   +'<option value="出口散货" '+(data=='出口散货' ? 'selected':'')+'>出口散货</option>'
@@ -504,6 +506,44 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            }
 	        ]
 	    });
+	    
+	   /* $('#cargo_table').on('blur','.job_order_type',function(){
+	    	var order_type = this.value;
+	    	var row = $(this).parent().parent();
+	    	if(order_type.indexOf('空运') != -1){
+	    		$(row.find('[name=CONTAINER_TYPE]')).attr('disabled',true);
+	    		$(row.find('[name=CONTAINER_AMOUNT]')).attr('disabled',true);
+	    		$(row.find('[name=TRUCK_TYPE]')).attr('disabled',true);
+	    	} else if (order_type.indexOf('出口柜货') != -1){
+	    		$(row.find('[name=PIECES]')).attr('disabled',true);
+	    		$(row.find('[name=GROSS_WEIGHT]')).attr('disabled',true);
+	    		$(row.find('[name=VOLUME]')).attr('disabled',true);
+	    		$(row.find('[name=TRUCK_TYPE]')).attr('disabled',true);	
+	    	} else if (order_type.indexOf('出口散货') != -1){
+	    		$(row.find('[name=CONTAINER_TYPE]')).attr('disabled',true);
+	    		$(row.find('[name=CONTAINER_AMOUNT]')).attr('disabled',true);
+	    	} else if (order_type.indexOf('内贸柜货') != -1){
+	    		$(row.find('[name=PIECES]')).attr('disabled',true);
+	    		$(row.find('[name=GROSS_WEIGHT]')).attr('disabled',true);
+	    		$(row.find('[name=VOLUME]')).attr('disabled',true);
+	    		$(row.find('[name=TRUCK_TYPE]')).attr('disabled',true);	
+	    	} else if (order_type.indexOf('陆运柜货') != -1){
+	    		$(row.find('[name=POD]')).attr('disabled',true);
+	    		$(row.find('[name=PIECES]')).attr('disabled',true);
+	    		$(row.find('[name=GROSS_WEIGHT]')).attr('disabled',true);
+	    		$(row.find('[name=VOLUME]')).attr('disabled',true);
+	    		$(row.find('[name=TRUCK_TYPE]')).attr('disabled',true);	
+	    		$(row.find('[name=CARGO_NAME]')).attr('disabled',true);	
+	    	} else if (order_type.indexOf('陆运散货') != -1){
+	    		
+	    	} else if (order_type.indexOf('香港头程') != -1){
+	    		
+	    	} else if (order_type.indexOf('香港游水') != -1){
+	    		
+	    	} else if (order_type.indexOf('园区游') != -1){
+	    		
+	    	} 
+	    });*/
 	    
 	    $('#cargo_table').on('click','.confirm_shipment',function(){
 	    	var self = this;
