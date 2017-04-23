@@ -41,10 +41,23 @@
                                 value: ''
                             }){}%>
                         </div>
+                        <div class="col-lg-4">
+                        	<div class="form-group">
+							    <label class="search-label">信息类型</label>
+							    <select id="error_msg" name="error_msg" class="form-control search-control" style="height:28px">
+							    	<option></option>
+							    	<%for(item in errorList){%>
+							        	<option value="${item.error_msg}">${item.error_msg}</option>
+							        <%}%>
+							    </select>
+							</div>
+						</div>
                     </div>
                     <div class="form-group button-bar" >
                         <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
                         <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
+                        <button id="checkBox" class="btn btn_white" type="button">全选</button>
+                        <button id="gateInBox" class="btn btn_white" type="button">手工入库</button>
                     </div>
                 </form>
             </div>
@@ -53,8 +66,8 @@
                 <%include("/eeda/component/form/detailTable.html", 
                 {
                     id:'eeda-table', 
-                    style:'width:1400px',
                     headers:[
+                    	'',
                     	'单据类别'	,
                     	'错误信息',
                     	'产品编码',

@@ -14,6 +14,8 @@ import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
+import models.wms.GateIn;
+import models.wms.GateOut;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -41,6 +43,20 @@ public class ErrorReportController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
+		
+		String sql = "(select distinct error_msg"
+				+ " from gate_in gi "
+				+ " where gi.error_flag = 'Y'"
+				+ " group by gi.id)"
+				+ " union"
+				+ " (select distinct error_msg "
+				+ " from gate_out gi "
+				+ " where gi.error_flag = 'Y' "
+				+ " group by gi.id)";
+
+	    List<Record> orderList = Db.find(sql);
+	    setAttr("errorList", orderList);
+		
 		render("/wms/report/error_report.html");
 	}
 	
@@ -96,42 +112,7 @@ public class ErrorReportController extends Controller {
     
     
     
-    private List<Record> getPlanOrderItems(String orderId) {
-        String itemSql = "select pi.*, l_por.name por_name, l_pol.name pol_name, l_pod.name pod_name,u.name unit_name,"
-                + " p.abbr carrier_name "
-                + " from plan_order_item pi "
-                +" left join location l_por on pi.por=l_por.id"
-                +" left join location l_pol on pi.pol=l_pol.id"
-                +" left join location l_pod on pi.pod=l_pod.id"
-                +" left join party p on pi.carrier=p.id"
-                +" left join unit u on u.id=pi.unit_id"
-                +" where order_id=?";
 
-		List<Record> itemList = Db.find(itemSql, orderId);
-		return itemList;
-	}
-    
-    @Before({EedaMenuInterceptor.class, Tx.class})
-    public void edit() {
-    	String id = getPara("id");
-    	PlanOrder planOrder = PlanOrder.dao.findById(id);
-    	setAttr("order", planOrder);
-    	
-    	//获取明细表信息
-    	setAttr("itemList", getPlanOrderItems(id));
-    	
-    	//回显客户信息
-    	Party party = Party.dao.findById(planOrder.getLong("customer_id"));
-    	setAttr("party", party);
-
-    	//用户信息
-    	long creator = planOrder.getLong("creator");
-    	UserLogin user = UserLogin.dao.findById(creator);
-    	setAttr("user", user);
-    	
-        render("/wms/error_report/edit.html");
-    }
-    
 
     
     public void list() {
@@ -151,6 +132,7 @@ public class ErrorReportController extends Controller {
             String item_name = dto.get("item_name");
             String part_name = dto.get("part_name");
             String part_no = dto.get("part_no");
+            String error_msg = dto.get("error_msg");
             
             if(StringUtils.isNotBlank(item_no)){
             	condition += " and pro.item_no like '%"+item_no+"%'";
@@ -166,6 +148,10 @@ public class ErrorReportController extends Controller {
             
             if(StringUtils.isNotBlank(part_no)){
             	condition += " and pro.part_no like '%"+part_no+"%'";
+            }
+            
+            if(StringUtils.isNotBlank(error_msg)){
+            	condition += " and gi.error_msg = '"+error_msg+"'";
             }
             
             
@@ -219,21 +205,29 @@ public class ErrorReportController extends Controller {
         renderJson(orderListMap); 
     }
     
-    //异步刷新字表
-    public void tableList(){
-    	String order_id = getPara("order_id");
-    	List<Record> list = null;
-    	list = getPlanOrderItems(order_id);
-
-    	Map BillingOrderListMap = new HashMap();
-        BillingOrderListMap.put("sEcho", 1);
-        BillingOrderListMap.put("iTotalRecords", list.size());
-        BillingOrderListMap.put("iTotalDisplayRecords", list.size());
-
-        BillingOrderListMap.put("aaData", list);
-
-        renderJson(BillingOrderListMap); 
+    public void gateIn(){
+    	String idArray = getPara("idArray");
+    	
+    	List<GateOut> reList = GateOut.dao.find("select * from gate_out where id in ("+idArray+")");
+    	for (GateOut re :reList) {
+			GateIn gi = new GateIn();
+			gi.set("office_id", re.getLong("office_id"));
+			gi.set("qr_code", re.getStr("qr_code"));
+			gi.set("part_no", re.getStr("part_no"));
+			gi.set("quantity", re.get("quantity"));
+			gi.set("shelves", re.getStr("shelves"));
+			gi.set("move_flag", re.getStr("move_flag"));
+			gi.set("creator", re.get("creator"));
+			gi.set("creator_code", re.getStr("creator_code"));
+			gi.set("create_time", new Date());
+			gi.set("self_in_flag", "Y");
+			gi.set("out_flag", "Y");
+			gi.save();
+			
+			re.set("error_flag", "N").update();
+		}
+    	
+    	renderJson(true);
     }
-   
 
 }
