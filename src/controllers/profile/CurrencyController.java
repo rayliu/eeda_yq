@@ -9,12 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 import models.ParentOfficeModel;
-import models.eeda.profile.Account;
+import models.UserLogin;
 import models.eeda.profile.Currency;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
@@ -63,7 +62,9 @@ public class CurrencyController extends Controller {
     @Before(Tx.class)
     public void save() {
         String jsonStr=getPara("params");
-        
+      //获取office_id
+   		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
         Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
         
@@ -75,12 +76,14 @@ public class CurrencyController extends Controller {
             DbUtils.setModelValues(dto, order);
             order.set("updator",LoginUserController.getLoginUserId(this));
             order.set("update_stamp",new Date());
+            order.set("office_id",office_id);
             order.update();
         } else {
             //create 
             DbUtils.setModelValues(dto, order);
             order.set("creator",LoginUserController.getLoginUserId(this));
             order.set("create_stamp",new Date());
+            order.set("office_id",office_id);
             order.save();
             id = order.getLong("id").toString();
         }
@@ -104,13 +107,16 @@ public class CurrencyController extends Controller {
     public void list() {
         String sLimit = "";
         String pageIndex = getPara("sEcho");
+      //获取office_id
+   		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
         if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
             sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
         }
 
         String sql = "select cu.*,ul.c_name creator_name from currency cu"
         		+ " left join user_login ul on ul.id = cu.creator"
-        		+ " where 1 = 1 ";
+        		+ " where 1 = 1 and cu.office_id = "+office_id;
         
         String condition = DbUtils.buildConditions(getParaMap());
 
