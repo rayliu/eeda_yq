@@ -94,7 +94,7 @@ $(document).ready(function() {
 
             },
 	        columns:[
-			{ "data":"ID","width": "30px",
+			{ "data":"ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
 			    	if(data)
 			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
@@ -102,40 +102,25 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
 			    }
 			},
-            { "width": "50px",
+            { "width": "10px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>';
+                	return '<button type="button" class="delete btn btn-default btn-xs" style="width:30px">删除</button>';
                 }
             },
-            { "data":"ID","width": "100px",
-            	"render": function ( data, type, full, meta ) {
-            		if(data)
-	            		return '<span class="btn table_btn btn-default btn-xs fileinput-button" style="width:100px">' 
-		                		+'<i class="glyphicon glyphicon-plus"></i>'
-		                		+'<span>上传签收文件</span>'
-		                		+'<input class="upload" type="file" multiple>'
-		                		+'</span>'
-		            else
-		            	return '<span class="btn table_btn btn-default btn-xs fileinput-button" style="width:100px" title="请先保存再上传文件">' 
-		                		+'<i class="glyphicon glyphicon-plus"></i>'
-		                		+'<span>上传签收文件</span>'
-		                		+'<input  class="upload" type="button" disabled>'
-		                		+'</span>'			
-            	}
-            },
-            { "data": "DOC_NAME","width": "100px",
+            
+            { "data": "DOC_NAME","width": "10px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
-                		return '<button type="button" class="btn btn-default btn-xs delete_sign_desc" style="width:100px">删除签收文件</button>';
+                		return '<button type="button" class="btn btn-default btn-xs delete_sign_desc" style="width:30px">删除签收文件</button>';
                 	else 
                 		return '';
                 }
             },
-            { "data": "UNLOAD_TYPE", "width": "100px",
+            { "data": "UNLOAD_TYPE", "width": "50px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    var str= '<select name="unload_type" class="form-control search-control"  style="width:100px">'
+                    var str= '<select name="unload_type" class="form-control search-control"  style="width:70px">'
             	   	 		   +'<option></option>'
 			                   +'<option value="提吉柜" '+ (data=='提吉柜'?'selected':'') +'>提吉柜</option>'
 			                   +'<option value="移柜" '+ (data=='移柜'?'selected':'') +'>移柜</option>'
@@ -145,7 +130,7 @@ $(document).ready(function() {
                     return str;
                 }
             },
-            { "data": "CABINET_DATE", "width": "180px",
+            { "data": "CABINET_DATE", "width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                         data='';
@@ -153,13 +138,13 @@ $(document).ready(function() {
 	                    {
 	                        id: 'CABINET_DATE',
 	                        value: data.substr(0,19),
-	                        style:'width:180px'
+	                        style:'width:120px'
 	                    }
 	                );
                     return field_html;
             	}
             },
-            { "data": "CLOSING_DATE", "width": "180px",
+            { "data": "CLOSING_DATE", "width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                         data='';
@@ -167,13 +152,13 @@ $(document).ready(function() {
 	                    {
 	                        id: 'CLOSING_DATE',
 	                        value: data.substr(0,19),
-	                        style:'width:180px'
+	                        style:'width:120px'
 	                    }
 	                );
                     return field_html;
             	}
             },
-            { "data": "LOADING_WHARF1", "width": "150px", "className":"consigner_addr",
+            { "data": "LOADING_WHARF1", "width": "120px", "className":"consigner_addr",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                             data='';
@@ -182,13 +167,13 @@ $(document).ready(function() {
                                 id: 'LOADING_WHARF1',
                                 value: data,
                                 display_value: full.LOADING_WHARF1_NAME,
-                                style:'width:180px',
+                                style:'width:140px',
                             }
                         );
                         return field_html;
                     }
             },
-            { "data": "LOADING_WHARF2", "width": "150px", "className":"consigner_addr",
+            { "data": "LOADING_WHARF2", "width": "120px", "className":"consigner_addr",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                             data='';
@@ -197,13 +182,20 @@ $(document).ready(function() {
                                 id: 'LOADING_WHARF2',
                                 value: data,
                                 display_value: full.LOADING_WHARF2_NAME,
-                                style:'width:180px',
+                                style:'width:140px',
                             }
                         );
                         return field_html;
                     }
             },
-            { "data": "CAR_NO", "width": "150px",
+            { "data": "LOADING_PLATFORM", "width": "120px", 
+            	"render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="loading_platform" value="'+data+'" class="form-control" style="width:100px" />';
+                }
+            },
+            { "data": "CAR_NO", "width": "100px",
             	"render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -212,30 +204,31 @@ $(document).ready(function() {
                             id: 'CAR_NO',  //component_id 便于用 #id取组件
                             value: data,
                             display_value: full.CAR_NO_NAME,
-                            style:'width:180px'
+                            style:'width:120px'
                         }
                     );
                     return field_html;
                 }
             },
-            { "data": "TRUCK_TYPE", "width": "70px",
+            { "data": "TRUCK_TYPE", "width": "30px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
                    var field_html = template('table_truck_type_field_template',
 	                    {
 	                        id: 'TRUCK_TYPE',
-	                        value: data
+	                        value: data,
+	                        style:'width:50px'
 	                    }
 	                );
                     return field_html;
                 }
             },
-            { "data": "TOCA_WEIGHT", "width": "80px",
+            { "data": "TOCA_WEIGHT", "width": "40px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="toca_weight" value="'+data+'" class="form-control toca_weight" style="width:100px" />';
+                    return '<input type="text" name="toca_weight" value="'+data+'" class="form-control toca_weight" style="width:60px" />';
                 }
             },
             { "width": "10px",
@@ -243,11 +236,11 @@ $(document).ready(function() {
                     return '<span aligen="center">kg</span>';
                 }
             },
-            { "data": "HEAD_WEIGHT", "width": "80px",
+            { "data": "HEAD_WEIGHT", "width": "40px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="head_weight" value="'+data+'" class="form-control head_weight" style="width:100px" />';
+                    return '<input type="text" name="head_weight" value="'+data+'" class="form-control head_weight" style="width:60px" />';
                 }
             },
             { "width": "10px",
@@ -255,21 +248,35 @@ $(document).ready(function() {
                     return '<span aligen="center">kg</span>';
                 }
             },
-            { "data": "DRIVER", "width": "80px",
+            { "data": "PIECES", "width": "60px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:80px"/>';
+            	}
+            },
+            { "data": "VOLUME", "width": "60px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:80px"/>';
+            	}
+            },
+            { "data": "DRIVER", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="driver" value="'+data+'" class="form-control driver" style="width:100px" />';
+                    return '<input type="text" name="driver" value="'+data+'" class="form-control driver" style="width:80px" />';
                 }
             },
-            { "data": "DRIVER_TEL", "width": "120px",
+            { "data": "DRIVER_TEL", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="driver_tel" value="'+data+'" class="form-control phone" style="width:120px" />';
+                    return '<input type="text" name="driver_tel" value="'+data+'" class="form-control phone" style="width:80px" />';
                 }
             },
-            { "data": "CONSIGNOR", "width": "180px",
+            { "data": "CONSIGNOR", "width": "60px",
             	"render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -278,21 +285,21 @@ $(document).ready(function() {
                             id: 'CONSIGNOR',
                             value: data,
                             display_value: full.CONSIGNOR_NAME,
-                            style:'width:180px'
+                            style:'width:80px'
                         }
                     );
                     return field_html;
                 }
             },
-            { "data": "CONSIGNOR_PHONE","width": "180px", "className":"consigner_phone",
+            { "data": "CONSIGNOR_PHONE","width": "60px", "className":"consigner_phone",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="consignor_phone" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="consignor_phone" value="'+data+'" class="form-control" style="width:80px"/>';
             	}
             },
             
-            { "data": "CONSIGNEE", "width": "180px",
+            { "data": "CONSIGNEE", "width": "60px",
             	"render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -301,17 +308,17 @@ $(document).ready(function() {
                             id: 'CONSIGNEE',
                             value: data,
                             display_value: full.CONSIGNEE_NAME,
-                            style:'width:200px'
+                            style:'width:80px'
                         }
                     );
                     return field_html;
                 }
             },
-            { "data": "CONSIGNEE_PHONE","width": "180px",  "className":"consignee_phone",
+            { "data": "CONSIGNEE_PHONE","width": "60px",  "className":"consignee_phone",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="consignee_phone" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="consignee_phone" value="'+data+'" class="form-control" style="width:80px"/>';
             	}
             },
             
@@ -322,20 +329,7 @@ $(document).ready(function() {
             		return '<input type="text" name="cargo_desc" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "PIECES", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            },
-            { "data": "VOLUME", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            },
+            
             { "data": "REQUIRED_TIME_REMARK", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
@@ -367,7 +361,23 @@ $(document).ready(function() {
             			data='';
             		return '<input type="text" name="sign_status" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
-            }, 
+            },
+            { "data":"ID","width": "50px",
+            	"render": function ( data, type, full, meta ) {
+            		if(data)
+	            		return '<span class="btn table_btn btn-default btn-xs fileinput-button" style="width:50px">' 
+		                		+'<i class="glyphicon glyphicon-plus"></i>'
+		                		+'<span>上传签收文件</span>'
+		                		+'<input class="upload" type="file" multiple>'
+		                		+'</span>'
+		            else
+		            	return '<span class="btn table_btn btn-default btn-xs fileinput-button" style="width:50px" title="请先保存再上传文件">' 
+		                		+'<i class="glyphicon glyphicon-plus"></i>'
+		                		+'<span>上传签收文件</span>'
+		                		+'<input  class="upload" type="button" disabled>'
+		                		+'</span>'			
+            	}
+            },
             { "data": "TRANSPORT_COMPANY_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)

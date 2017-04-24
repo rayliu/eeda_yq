@@ -233,12 +233,7 @@ public class TransJobOrderController extends Controller {
 				
 				loadingWharf2=(String) map.get("LOADING_WHARF2");
 			}
-			
-
-			
 		}
-		
-		
 		
    		
 		

@@ -5,7 +5,7 @@ $(document).ready(function() {
 	
 	var container_no=$('#container_no').val();
 	document.title = container_no + ' | ' + document.title;
-	$('#breadcrumb_li').text('工作单详细信息');
+	$('#breadcrumb_li').text('工作单');
 	 //柜号限制输入位为11位数，
 	$("#orderForm").validate({
 	    rules: {
@@ -125,6 +125,7 @@ $(document).ready(function() {
         order.back_wharf =$('#back_wharf').val();
         order.take_stamp =$('#take_stamp').val();
         order.land_export_stamp =$('#land_export_stamp').val();
+        order.contract_no =$('#contract_no').val();
         order.transport_type = transport_type_str;
         
        
