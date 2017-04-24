@@ -1179,7 +1179,7 @@ public class BookOrderController extends Controller {
     	BookOrder bookOrder = BookOrder.dao.findById(id);
     	Long plan_order_id = bookOrder.getLong("plan_item_id");
     	
-    	Record re = Db.findFirst("");
+//    	Record re = Db.findFirst("");
     	setAttr("order", bookOrder);
     	//相关文档
     	setAttr("docList", getItems(id,"doc"));
