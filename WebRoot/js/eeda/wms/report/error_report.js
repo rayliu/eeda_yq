@@ -16,7 +16,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				      return '<input type="checkBox" name="checkBox">';
 				    }
 				},
-                {"data": "ORDER_TYPE"},
+				{ "width": "30px",
+                    "render": function ( data, type, full, meta ) {
+                      return '<button type="button" class="btn btn-primary delete_btn btn-xs">'+
+                        '<i class="fa fa-trash-o"></i> 删除</button>';
+                    }
+                },
+                {"data": "ORDER_TYPE",'class':'order_type'},
 				{ "data": "ERROR_MSG",
 					"render": function ( data, type, full, meta ) {
 					  		return "<span style='color:red;'>"+data+"</span>";
@@ -53,6 +59,28 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	}
         });
         
+        $('#eeda-table').on('click','.delete_btn',function(){
+        	var self = this;
+        	var id = $(this).parent().parent().attr('id');
+        	var order_type = $($(this).parent().parent().find('.order_type')).text();
+        	
+        	self.disabled = true;
+        	$.post('/errorReport/delete',{id:id,order_type:order_type},function(data){
+        		if(data){
+        			$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+        			searchData();
+        			self.disabled = false;
+        		}else{
+        			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+        		}
+        	}).fail(function() {
+                $.scojs_message('后台报错', $.scojs_message.TYPE_ERROR);
+                self.disabled = false;
+            });
+        });
+        
+        
+        
         $('#gateInBox').click(function(){
         	var self = this;
         	
@@ -63,7 +91,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	});
         	
         	if(idArray.length==0){
-        		$.scojs_message('请勾选单据', $.scojs_message.TYPE_ERROR);
+        		$.scojs_message('请勾选要入库的单据', $.scojs_message.TYPE_ERROR);
         		return false;
         	}
         	
@@ -73,6 +101,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		if(data){
         			$.scojs_message('手工入库成功', $.scojs_message.TYPE_OK);
         			searchData();
+        			self.disabled = false;
         		}else{
         			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
         		}
@@ -81,6 +110,37 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 self.disabled = false;
             });
         });
+        
+        
+//        $('#deleteBox').click(function(){
+//        	var self = this;
+//        	
+//        	var idArray = [];
+//        	$('#eeda-table [name=checkBox]:checked').each(function(){
+//        		var id = $(this).parent().parent().attr('id');
+//        		idArray.push(id);
+//        	});
+//        	
+//        	if(idArray.length==0){
+//        		$.scojs_message('请勾选要删除的单据', $.scojs_message.TYPE_ERROR);
+//        		return false;
+//        	}
+//        	
+//        	self.disabled = true;
+//        	
+//        	$.post('/errorReport/delete',{idArray:idArray.toString()},function(data){
+//        		if(data){
+//        			$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+//        			searchData();
+//        			self.disabled = false;
+//        		}else{
+//        			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+//        		}
+//        	}).fail(function() {
+//                $.scojs_message('后台报错', $.scojs_message.TYPE_ERROR);
+//                self.disabled = false;
+//            });
+//        });
       
         $('#resetBtn').click(function(e){
         	$("#orderForm")[0].reset();

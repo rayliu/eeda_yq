@@ -229,5 +229,36 @@ public class ErrorReportController extends Controller {
     	
     	renderJson(true);
     }
+    
+    public void delete(){
+		String id = getPara("id");
+		String order_type = getPara("order_type");
+		
+		if("入库记录".equals(order_type)){
+			List<GateIn> reList = GateIn.dao.find("select * from gate_in where id in ("+id+") and error_flag = 'Y'");
+		    for (GateIn re :reList) {
+			   re.delete();
+		    }
+		}else{
+			List<GateOut> reList = GateOut.dao.find("select * from gate_out where id in ("+id+") and error_flag = 'Y'");
+		    for (GateOut re :reList) {
+			   re.delete();
+		    }
+		}
+	    
+	    renderJson(true);
+    }
+    
+    
+//    public void delete(){
+//    	String idArray = getPara("idArray");
+//    	
+//    	List<GateOut> reList = GateOut.dao.find("select * from gate_out where id in ("+idArray+") and error_flag = 'Y'");
+//    	for (GateOut re :reList) {
+//			re.delete();
+//		}
+//    	
+//    	renderJson(true);
+//    }
 
 }

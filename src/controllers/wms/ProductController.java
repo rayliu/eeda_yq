@@ -224,7 +224,7 @@ public class ProductController extends Controller {
     	}
     	
     	String sql = " select * from wmsproduct ";
-    	List<Record> re = Db.find(sql+condition + " limit 0,50");
+    	List<Record> re = Db.find(sql+condition + " group by item_no limit 0,100");
     	
     	renderJson(re);
     		
