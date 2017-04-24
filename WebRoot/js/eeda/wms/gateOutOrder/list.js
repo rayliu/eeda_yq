@@ -127,7 +127,8 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	self.disabled = true;
         	var item_no = $('#item_no').val();
         	var quantity = $('#quantity').val();
-        	$.post('/gateOutOrder/create',{item_no:item_no,quantity:quantity,idArray:idArray.toString()},function(data){
+        	var kt_no = $('#kt_no').val();
+        	$.post('/gateOutOrder/create',{item_no:item_no,quantity:quantity,idArray:idArray.toString(),kt_no:kt_no},function(data){
 	        	if(data){
 	        		$.scojs_message('单据'+data.ORDER_NO+'创建成功', $.scojs_message.TYPE_OK);
 	        		order.refleshTable();

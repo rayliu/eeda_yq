@@ -60,12 +60,15 @@ public class GateOutOrderController extends Controller {
 		String idArray = getPara("idArray");
 		String item_no = getPara("item_no");
 		String quantity = getPara("quantity");
+		String kt_no = getPara("kt_no");
+		
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
 		
 		Record order = new Record();
 		order.set("order_no", OrderNoGenerator.getNextOrderNo("GO", office_id));
+		order.set("kt_no", kt_no);
 		order.set("item_no", item_no);
 		order.set("item_no", item_no);
 		order.set("quantity", quantity);
