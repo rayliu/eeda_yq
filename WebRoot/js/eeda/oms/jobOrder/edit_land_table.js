@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) {
+define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu, template) {
 $(document).ready(function() {
 
     var order_id = $('#order_id').val();
@@ -85,6 +85,7 @@ $(document).ready(function() {
     //------------事件处理
 	 var cargoTable = eeda.dt({
 	        id: 'land_table',
+            colReorder: true,
 	        autoWidth: true,
 	        drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
 	        	bindFieldEvent();

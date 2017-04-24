@@ -55,6 +55,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
+import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.FileUploadUtil;
@@ -73,6 +74,12 @@ public class JobOrderController extends Controller {
 	public void index() {
 		String type = getPara("type");
 		setAttr("type",type);
+		
+		UserLogin user = LoginUserController.getLoginUser(this);
+        long user_id = user.getLong("id");
+		List<Record> configList = ListConfigController.getConfig(user_id, "/jobOrder");
+        setAttr("listConfigList", configList);
+        
 		render("/oms/JobOrder/JobOrderList.html");
 	}
 	
