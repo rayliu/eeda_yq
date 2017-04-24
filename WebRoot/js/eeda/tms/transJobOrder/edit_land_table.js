@@ -130,7 +130,7 @@ $(document).ready(function() {
                     return str;
                 }
             },
-            { "data": "CABINET_DATE", "width": "100px",
+            { "data": "CABINET_DATE", "width": "120px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                         data='';
@@ -138,13 +138,13 @@ $(document).ready(function() {
 	                    {
 	                        id: 'CABINET_DATE',
 	                        value: data.substr(0,19),
-	                        style:'width:120px'
+	                        style:'width:140px'
 	                    }
 	                );
                     return field_html;
             	}
             },
-            { "data": "CLOSING_DATE", "width": "100px",
+            { "data": "CLOSING_DATE", "width": "120px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                         data='';
@@ -152,7 +152,7 @@ $(document).ready(function() {
 	                    {
 	                        id: 'CLOSING_DATE',
 	                        value: data.substr(0,19),
-	                        style:'width:120px'
+	                        style:'width:140px'
 	                    }
 	                );
                     return field_html;
@@ -224,11 +224,11 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "TOCA_WEIGHT", "width": "40px",
+            { "data": "TOCA_WEIGHT", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="toca_weight" value="'+data+'" class="form-control toca_weight" style="width:60px" />';
+                    return '<input type="text" name="toca_weight" value="'+data+'" class="form-control toca_weight" style="width:80px" />';
                 }
             },
             { "width": "10px",
@@ -236,11 +236,11 @@ $(document).ready(function() {
                     return '<span aligen="center">kg</span>';
                 }
             },
-            { "data": "HEAD_WEIGHT", "width": "40px",
+            { "data": "HEAD_WEIGHT", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="head_weight" value="'+data+'" class="form-control head_weight" style="width:60px" />';
+                    return '<input type="text" name="head_weight" value="'+data+'" class="form-control head_weight" style="width:80px" />';
                 }
             },
             { "width": "10px",
