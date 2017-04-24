@@ -4,6 +4,7 @@ define(['jquery', 'dataTablesBootstrap'], function ($) {
         var config_dataTable = eeda.dt({
             id: 'eeda_cols_config_table',
             serverSide: true,
+            deferLoading: 10,
             info: false,
             columns:[
                 { "data": "IS_SHOW", "width": "30px",
@@ -15,8 +16,7 @@ define(['jquery', 'dataTablesBootstrap'], function ($) {
                         }
                     }
                 },
-                { "data": "COL_DISPLAY_NAME", "width":"120px"},
-                { "data": "COL_FIELD", "width":"120px"}
+                { "data": "COL_DISPLAY_NAME", "width":"120px"}
             ]
         });
 
@@ -29,7 +29,13 @@ define(['jquery', 'dataTablesBootstrap'], function ($) {
 
             config_dataTable.ajax.url(url).load();
 
+            
             $('#listConfigModal').modal('show');
+            
+        });
+
+        $('#listConfigModal').on('shown.bs.modal', function (e) {
+            config_dataTable.draw();
         });
 
         $('#listConfigConfirmBtn').click(function(event) {

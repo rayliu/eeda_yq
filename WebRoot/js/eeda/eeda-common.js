@@ -133,7 +133,8 @@ $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) {
 //dataTables builder for 1.10
 eeda.dt = function(opt){
     var option = {
-    	  bSort: opt.sort || false, 
+    	  bSort: opt.sort || false,
+        deferLoading: opt.deferLoading || null, //默认null, 一装载就call ajax
         stateSave: true,
         processing: opt.processing || true,
         searching: opt.searching || false,

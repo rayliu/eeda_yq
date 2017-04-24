@@ -73,7 +73,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           $.each(cols_config, function(index, el) {
               
               if(column.dataSrc() == el.COL_FIELD){
-                console.log(column.dataSrc()+":"+el.IS_SHOW);
+                
                 if(el.IS_SHOW == 'N'){
                   column.visible(false, false);
                 }else{
