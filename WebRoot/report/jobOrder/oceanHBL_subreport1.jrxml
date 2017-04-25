@@ -8,19 +8,8 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	CONCAT(container_no, '/', container_type,'/', seal_no) CN_no,
-	CONCAT(
-		CAST(FORMAT(pieces,0) AS CHAR),' ',
-		u.name_eng,'',ifnull(josi.pallet_desc,'')
-	) pieces,
-	CONCAT(
-		CAST(FORMAT(gross_weight,2) AS CHAR),
-		' KGS'
-	) gross_weight,
-	CONCAT(
-		CAST(FORMAT(volume,2) AS CHAR),
-		' CBM'
-	) volume,u.name_eng
+	CONCAT(container_no, '/', container_type,'/', seal_no) CN_no
+
 FROM
 	job_order_shipment_item josi
 LEFT JOIN unit u on u.id=josi.unit_id
@@ -29,18 +18,6 @@ WHERE
 	order_id = $P{order_id}]]>
 	</queryString>
 	<field name="CN_no" class="java.lang.String"/>
-	<field name="pieces" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="gross_weight" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="volume" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="name_eng" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<detail>
 		<band height="20">
 			<textField isBlankWhenNull="true">
@@ -49,27 +26,6 @@ WHERE
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CN_no}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="377" y="0" width="88" height="20" uuid="164e8956-d15c-46bf-a09e-2ddbfd4fed72"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="152" y="0" width="108" height="20" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
-				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="465" y="0" width="70" height="20" uuid="c408bb39-3bf9-4e1a-9515-ec416b4c03bb"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{volume}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
