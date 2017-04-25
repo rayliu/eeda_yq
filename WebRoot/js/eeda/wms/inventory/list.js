@@ -24,7 +24,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
               	    "render": function ( data, type, full, meta ) {
               	    	if(!data)
               	    		data = "<i class='glyphicon glyphicon-th-list'></i>";
-              	    	return "<a class='item_detail' item_no='"+full.ITEM_NO+"' data-target='#itemDetail' data-toggle='modal'>"+data+"</a>";
+              	    	return "<a class='item_detail' item_no='"+full.ITEM_NO+"' data-target='#itemDetail' data-toggle='modal' style='cursor: pointer;'>"+data+"</a>";
               	    }
                 },
                 { "data": "ITEM_NAME"}, 
