@@ -402,4 +402,11 @@
                                    }){} %>
 	                    
 		                
-					</form>
+					</form><br>
+					<div class="row">
+						<div class="col-lg-12">
+							<% if(shiro.hasPermission("customPlanOrder.audit")){%>
+		                    <button id="printCustomOrderBtn" class="btn   btn_green" >生成报关单PDF</button>
+		                     <%}%>
+						</div>
+					</div>

@@ -471,10 +471,7 @@
                     <button id="refuseBtn" class="btn btn-danger" disabled style="background-color:#d9534f">审核不通过</button>
                     <%}%>
                     <a class="btn  btn-default" href="/customPlanOrder">返回</a>
-                    <% if(shiro.hasPermission("customPlanOrder.audit")){%>
-                    <button id="printBtn" class="btn   btn_green" >生成托运单PDF</button>
-                    <button id="printCustomOrderBtn" class="btn   btn_green" >生成报关单PDF</button>
-                     <%}%>
+                    <a class="btn btn_green" href="/customPlanOrder/create" style="float:right">新增报关申请单</a>
                 </div>
             </div>
         </div>

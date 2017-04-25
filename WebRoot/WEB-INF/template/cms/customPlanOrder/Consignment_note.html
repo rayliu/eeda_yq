@@ -155,4 +155,11 @@
                                     }){} %> 
 						                   
 						            </div><!-- /.row -->
-						</form>
+						</form><br>
+						<div class="row">
+                <div class="col-lg-12">
+                    <% if(shiro.hasPermission("customPlanOrder.audit")){%>
+                    <button id="printBtn" class="btn   btn_green" >生成托运单PDF</button>
+                     <%}%>
+                </div>
+            </div>
