@@ -14,28 +14,39 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		        $.unblockUI();
 		    },
             columns:[
-                { "width": "30px",
+                { "data": "ITEM_NO", "class":"item_no", "width": "80px",
+                    "render": function ( data, type, full, meta ) {
+                        if(data){
+                         return "<a href='#'>"+data+"</a>";
+                        }else{
+                            return '';
+                        }
+                    }
+                }, 
+                {"data": "ITEM_NAME", "class":"item_name", "width": "280px"},
+                { "data": "PART_NO", "class":"part_no", "width": "120px",
+                    "render": function ( data, type, full, meta ) {
+                        if(data){
+                         return "<a href='#'>"+data+"</a>";
+                        }else{
+                            return '';
+                        }
+                    }
+                }, 
+				{ "data": "PART_NAME", "class":"part_name", "width": "320px"}, 
+				{ "data": "QUANTITY", "width": "50px"},
+				{ "data": "SHELVES", "width": "80px"},
+				{ "data": "RETURN_FLAG", "width": "80px"},
+				{ "data": "MOVE_FLAG", "width": "80px"}, 
+				{ "data": "CREATE_TIME", "width": "180px"},
+				{ "data": "CREATOR_NAME", "width": "80px"},
+                { "data": "QR_CODE", "width": "580px"}, 
+                { "width": "30px", visible: false,
                     "render": function ( data, type, full, meta ) {
                       return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
-                },
-                { "data": "ITEM_NO", "class":"item_no"}, 
-                {"data": "ITEM_NAME", "class":"item_name",
-              	  	"render": function ( data, type, full, meta ) {
-              	  		//return "<a href='/wmsproduct/edit?id="+full.PRODUCT_ID+"'target='_blank'>"+data+"</a>";
-              	  		return data;
-              	  	}
-                },
-                { "data": "QR_CODE"}, 
-                { "data": "PART_NO", "class":"part_no"}, 
-				{ "data": "PART_NAME", "class":"part_name"}, 
-				{ "data": "QUANTITY"},
-				{ "data": "SHELVES"},
-				{ "data": "RETURN_FLAG"},
-				{ "data": "MOVE_FLAG"}, 
-				{ "data": "CREATE_TIME"},
-				{ "data": "CREATOR_NAME"}
+                }
             ]
         });
         
@@ -73,33 +84,33 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		        $.unblockUI();
 		    },
             columns:[
-                { "width": "30px",
+                
+				{ "data": "ERROR_MSG", "width": "220px",
+					"render": function ( data, type, full, meta ) {
+              	  		return "<span style='color:red;'>"+data+"</span>";
+              	  	}	
+				}, 
+                {"data": "ITEM_NO", "width": "80px", 
+              	  "render": function ( data, type, full, meta ) {
+              		  return "<a href='#'>"+data+"</a>";
+              	  }
+                },
+                {"data": "ITEM_NAME", "width": "280px"},
+                { "data": "PART_NO", "width": "120px"}, 
+				{ "data": "PART_NAME", "width": "320px"}, 
+				{ "data": "QUANTITY", "width": "50px"},
+				{ "data": "SHELVES", "width": "80px"},
+				{ "data": "RETURN_FLAG", "width": "80px"},
+				{ "data": "MOVE_FLAG", "width": "80px"}, 
+				{ "data": "CREATE_TIME", "width": "120px"},
+				{ "data": "CREATOR_NAME", "width": "80px"},
+                { "data": "QR_CODE", "width": "480px"}, 
+                { "width": "30px", visible: false,
                     "render": function ( data, type, full, meta ) {
                       return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
                 },
-				{ "data": "ERROR_MSG",
-					"render": function ( data, type, full, meta ) {
-              	  		return "<span style='color:red;'>"+data+"</span>";
-              	  	}	
-				}, 
-                {"data": "ITEM_NO", 
-              	  "render": function ( data, type, full, meta ) {
-              		  //return "<a href='/wmsproduct/edit?id="+full.PRODUCT_ID+"'target='_blank'>"+data+"</a>";
-              		  return data;
-              	  }
-                },
-                {"data": "ITEM_NAME"},
-                { "data": "QR_CODE"}, 
-                { "data": "PART_NO"}, 
-				{ "data": "PART_NAME"}, 
-				{ "data": "QUANTITY"},
-				{ "data": "SHELVES"},
-				{ "data": "RETURN_FLAG"},
-				{ "data": "MOVE_FLAG"}, 
-				{ "data": "CREATE_TIME"},
-				{ "data": "CREATOR_NAME"}
             ]
         });
         
@@ -112,33 +123,32 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		        $.unblockUI();
 		    },
             columns:[
-                { "width": "30px",
+				{ "data": "INV_MSG", "width": "280px", 
+					"render": function ( data, type, full, meta ) {
+              	  		return "<span style='color:red;'>"+data+"</span>";
+              	  	}	
+				}, 
+                {"data": "ITEM_NO", "width": "80px", 
+              	  "render": function ( data, type, full, meta ) {
+              		  return "<a href='#'>"+data+"</a>";
+              	  }
+                },
+                { "data": "ITEM_NAME", "width": "280px"}, 
+                { "data": "PART_NO", "width": "120px"}, 
+				{ "data": "PART_NAME", "width": "320px"}, 
+				{ "data": "QUANTITY", "width": "50px"},
+				{ "data": "SHELVES", "width": "80px"},
+				{ "data": "RETURN_FLAG", "width": "80px"},
+				{ "data": "MOVE_FLAG", "width": "80px"}, 
+				{ "data": "CREATE_TIME", "width": "120px"},
+				{ "data": "CREATOR_NAME", "width": "80px"},
+                { "data": "QR_CODE", "width": "480px"}, 
+                { "width": "30px", visible: false,
                     "render": function ( data, type, full, meta ) {
                       return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
                 },
-				{ "data": "INV_MSG",
-					"render": function ( data, type, full, meta ) {
-              	  		return "<span style='color:red;'>"+data+"</span>";
-              	  	}	
-				}, 
-                {"data": "ITEM_NO", 
-              	  "render": function ( data, type, full, meta ) {
-              		  return data;
-              		  //return "<a href='/wmsproduct/edit?id="+full.PRODUCT_ID+"'target='_blank'>"+data+"</a>";
-              	  }
-                },
-                { "data": "ITEM_NAME"}, 
-                { "data": "QR_CODE"}, 
-                { "data": "PART_NO"}, 
-				{ "data": "PART_NAME"}, 
-				{ "data": "QUANTITY"},
-				{ "data": "SHELVES"},
-				{ "data": "RETURN_FLAG"},
-				{ "data": "MOVE_FLAG"}, 
-				{ "data": "CREATE_TIME"},
-				{ "data": "CREATOR_NAME"}
             ]
         });
       

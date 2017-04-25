@@ -50,12 +50,6 @@
             <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-fk" overwrite="true"/> 
         </target>
     
-	<target name="copy_fk_config" >
-        <copy tofile="${project.classpath}/job.properties" file="WebRoot/WEB-INF/config/job.properties" overwrite="true"/>
-        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-fk" overwrite="true"/>
-        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-fk" overwrite="true"/> 
-    </target>
-    
 	<target name="generate_js_version" >
 		<copy tofile="WebRoot/WEB-INF/template/eeda/component/form/commonJs.html"
 			file="WebRoot/WEB-INF/template/eeda/component/form/commonJs.html.template" overwrite="true"/>
