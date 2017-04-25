@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'jq_blockui'], function ($, metisMenu) {
 	$(document).ready(function() {
     	document.title = '错误报表 | '+document.title;
 
@@ -10,6 +10,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             paging: true,
             serverSide: false, //不打开会出现排序不对
             ajax: "/errorReport/list",
+            "drawCallback": function( settings ) {
+                $.unblockUI();
+            },
             columns:[
 				{ "width": "30px",
 				    "render": function ( data, type, full, meta ) {
@@ -22,27 +25,28 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
                 },
-                {"data": "ORDER_TYPE",'class':'order_type'},
-				{ "data": "ERROR_MSG",
+                {"data": "ORDER_TYPE",'class':'order_type', "width": "100px"},
+				{ "data": "ERROR_MSG", "width": "220px",
 					"render": function ( data, type, full, meta ) {
 					  		return "<span style='color:red;'>"+data+"</span>";
 					  	}	
 				}, 
-				{"data": "ITEM_NO", 
+				{"data": "ITEM_NO", "width": "80px",
 					  "render": function ( data, type, full, meta ) {
 						  //return "<a href='/wmsproduct/edit?id="+full.PRODUCT_ID+"'target='_blank'>"+data+"</a>";
 						  return data;
 					  }
 				},
-				{"data": "ITEM_NAME"},
-				{ "data": "QR_CODE"}, 
-				{ "data": "PART_NO"}, 
-				{ "data": "PART_NAME"}, 
-				{ "data": "SHELVES"},
-				{ "data": "QUANTITY"},
-				{ "data": "MOVE_FLAG"}, 
-				{ "data": "CREATE_TIME"},
-				{ "data": "CREATOR_NAME"}
+				{"data": "ITEM_NAME", "width": "280px"},
+				
+				{ "data": "PART_NO", "width": "120px"}, 
+				{ "data": "PART_NAME", "width": "320px"}, 
+				{ "data": "SHELVES", "width": "80px"},
+				{ "data": "QUANTITY", "width": "60px"},
+				{ "data": "MOVE_FLAG", "width": "60px"}, 
+				{ "data": "CREATE_TIME", "width": "120px"},
+				{ "data": "CREATOR_NAME", "width": "80px"},
+                { "data": "QR_CODE", "width": "480px"}, 
             ]
         });
         
@@ -147,6 +151,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         });
 
         $('#searchBtn').click(function(){
+            $.blockUI({ 
+                message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
+            });
         	searchData(); 
         })
  

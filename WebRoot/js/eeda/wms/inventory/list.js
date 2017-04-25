@@ -14,7 +14,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
 		        $.unblockUI();
 		    },
             columns:[
-                { "width": "30px",
+                { "width": "30px", visible: false,
                     "render": function ( data, type, full, meta ) {
                       return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
                         '<i class="fa fa-trash-o"></i> 删除</button>';

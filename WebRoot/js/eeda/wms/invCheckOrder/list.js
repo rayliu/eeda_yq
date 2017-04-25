@@ -14,12 +14,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		        $.unblockUI();
 		    },
             columns:[
-                { "width": "30px",
-                    "render": function ( data, type, full, meta ) {
-                      return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
-                        '<i class="fa fa-trash-o"></i> 删除</button>';
-                    }
-                },
+                
                 { "data": "ORDER_NO"}, 
                 { "data": "ITEM_NO"}, 
                 { "data": "ITEM_NAME", 
@@ -31,7 +26,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				{ "data": "PART_NAME"}, 
 				{ "data": "ACTRAL_AMOUNT"},
 				{ "data": "CREATE_TIME"},
-				{ "data": "CREATOR_NAME"}
+				{ "data": "CREATOR_NAME"},
+                { "width": "30px", visible: false,
+                    "render": function ( data, type, full, meta ) {
+                      return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
+                        '<i class="fa fa-trash-o"></i> 删除</button>';
+                    }
+                }
             ]
         });
       
