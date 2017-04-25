@@ -329,6 +329,8 @@ public class JobOrderReportController extends Controller {
 		
 		if("昂励制冷器材（中山）有限公司".equals(company_name)){
 			 fileName = "/report/checkOrder/SpecialTotaledReceivableDetails.jasper";
+		}else if("昂励制冷设备（上海）有限公司".equals(company_name)){
+			 fileName = "/report/checkOrder/huAngLiTotaledReceivableDetails.jasper";
 		}else{
 			 fileName = "/report/checkOrder/TotaledReceivableDetails.jasper";
 		}
