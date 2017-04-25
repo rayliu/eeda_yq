@@ -681,6 +681,7 @@ public class TradeChargeCheckOrderController extends Controller {
     @Before(Tx.class)
     public void confirm(){
 		String id = getPara("id");
+		logger.debug("ArapChargeOrder id:"+id);
 		ArapChargeOrder aco = ArapChargeOrder.dao.findById(id);
 		aco.set("status","已确认");
 		aco.set("confirm_stamp", new Date());

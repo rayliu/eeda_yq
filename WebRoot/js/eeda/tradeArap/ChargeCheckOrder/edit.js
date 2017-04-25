@@ -67,7 +67,7 @@ $(document).ready(function() {
         order.currency_list = buildCurJson();
         
         //异步向后台提交数据
-        $.post('/chargeCheckOrder/save', {params:JSON.stringify(order)}, function(data){
+        $.post('/tradeChargeCheckOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
             if(order.ID>0){
             	$("#creator_name").val(order.CREATOR_NAME);
@@ -115,7 +115,7 @@ $(document).ready(function() {
     $('#confirmBtn').click(function(){
     	$(this).attr('disabled', true);
     	var id = $("#order_id").val();
-    	 $.post('/chargeCheckOrder/confirm', {id:id}, function(data){
+    	 $.post('/tradeChargeCheckOrder/confirm', {id:id}, function(data){
     		 if(data){
     			 $('#saveBtn').attr('disabled', true);
                  $('#printBtn').attr('disabled', true);
