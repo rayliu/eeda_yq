@@ -14,7 +14,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $.unblockUI();
             },
             columns:[
-				{ "width": "30px",
+				{ "width": "5px",
 				    "render": function ( data, type, full, meta ) {
 				      return '<input type="checkBox" name="checkBox">';
 				    }
@@ -91,6 +91,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var idArray = [];
         	$('#eeda-table [name=checkBox]:checked').each(function(){
         		var id = $(this).parent().parent().attr('id');
+        		var order_type = $($(this).parent().parent().find('.order_type')).text();
+        		if(order_type!='未入库'){
+        			$.scojs_message('请勾选要入库的单据', $.scojs_message.TYPE_ERROR);
+        			return false;
+        		}
         		idArray.push(id);
         	});
         	
