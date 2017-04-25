@@ -69,7 +69,6 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                 	var part_no = row.PART_NO;
                 	var quantity = parseFloat(row.QUANTITY);//入库一箱的数量
                 	var amount = parseFloat(row.AMOUNT);//使用量
-                	//var number = parseFloat(row.NUMBER);//这一箱货品可抵扣多少个产品
                 	if(partJson[part_no]==undefined){
                 		partJson[part_no] = total*amount-quantity;
                 	}else{
@@ -87,7 +86,6 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                 	item.PART_NO = row.PART_NO;
                 	item.AMOUNT = row.AMOUNT;
                 	item.QUANTITY = row.QUANTITY;
-                	item.SHELVES = row.SHELVES;
                 	item.SHELVES = row.SHELVES;
                 	item.CREATE_TIME = row.CREATE_TIME;
                 	item.CREATOR_NAME = row.CREATOR_NAME;
@@ -126,9 +124,10 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	var self = this;
         	self.disabled = true;
         	var item_no = $('#item_no').val();
+        	var totalQuantity = $('#totalQuantity').val();
         	var quantity = $('#quantity').val();
         	var kt_no = $('#kt_no').val();
-        	$.post('/gateOutOrder/create',{item_no:item_no,quantity:quantity,idArray:idArray.toString(),kt_no:kt_no},function(data){
+        	$.post('/gateOutOrder/create',{item_no:item_no,quantity:quantity,totalQuantity:totalQuantity,idArray:idArray.toString(),kt_no:kt_no},function(data){
 	        	if(data){
 	        		$.scojs_message('单据'+data.ORDER_NO+'创建成功', $.scojs_message.TYPE_OK);
 	        		order.refleshTable();
@@ -156,6 +155,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                         '<em class="icon-print"></em> 打印</button>';
                     }
                 },
+                { "data": "KT_NO"}, 
                 {"data": "ORDER_NO", 
                 	"render": function ( data, type, full, meta ) {
               	    	if(!data)
@@ -164,6 +164,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
               	    }
                 },
 				{ "data": "ITEM_NO"}, 
+				{ "data": "TOTAL_QUANTITY"}, 
 				{ "data": "QUANTITY"}, 
 				{ "data": "CREATE_TIME"},
 				{ "data": "CREATOR_NAME"}
@@ -226,6 +227,10 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
             });
         	orderTable.ajax.url("/gateOutOrder/orderList").load();
         }
+        
+        $('#totalQuantity').on('input',function(){
+        	$('#quantity').val(this.value);
+        });
         
 	});
 });

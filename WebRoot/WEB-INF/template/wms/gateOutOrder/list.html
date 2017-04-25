@@ -28,19 +28,21 @@
 			                            	label: '产品编码'
 			                        	}){}%>
 			                        </div>
+			                    </div>
+			                    <div class="row">
+			                    	<div class="col-lg-4">
+			                        	<%include("/eeda/component/form/inputField.html", 
+			                        	{ 	id: 'totalQuantity', 
+			                            	label: '总数量', 
+			                            	value: ''
+			                        	}){}%>
+			                        </div>
 			                        <div class="col-lg-4">
 			                        	<%include("/eeda/component/form/inputField.html", 
 			                        	{ 	id: 'quantity', 
 			                            	label: '数量', 
 			                            	value: ''
 			                        	}){}%>
-			                        </div>
-			                        <div class="col-lg-4" style="display:none;">        
-			                            <%include("/eeda/component/form/inputDateQueryField.html", 
-			                            {	id:'create_time', 
-				                            label:'创建时间', 
-				                            value:''
-				                        }){} %>
 			                        </div>
 			                    </div>
 			                   
@@ -74,9 +76,11 @@
 	                    id:'order_table',
 	                    headers:[
 	                    	'',
+	                    	'kt_no',
 	                        '单号',
 	                        '产品编号',
-	                        '产品数量',
+	                        '数量',
+	                        '数量',
 	                        '创建时间',
 	                        '操作人']
 	                }){} %>

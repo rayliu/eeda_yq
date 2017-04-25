@@ -61,6 +61,7 @@ public class GateOutOrderController extends Controller {
 		String item_no = getPara("item_no");
 		String quantity = getPara("quantity");
 		String kt_no = getPara("kt_no");
+		String totalQuantity = getPara("totalQuantity");
 		
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
@@ -70,7 +71,7 @@ public class GateOutOrderController extends Controller {
 		order.set("order_no", OrderNoGenerator.getNextOrderNo("GO", office_id));
 		order.set("kt_no", kt_no);
 		order.set("item_no", item_no);
-		order.set("item_no", item_no);
+		order.set("totalQuantity", totalQuantity);
 		order.set("quantity", quantity);
 		order.set("office_id", office_id);
 		order.set("creator", LoginUserController.getLoginUserId(this));
@@ -79,12 +80,12 @@ public class GateOutOrderController extends Controller {
 		
 		String [] array = idArray.split(",");
 		for (int i = 0; i < array.length; i++) {
-			Record item = new Record();
-			item.set("order_id", order.getLong("id"));
-			item.set("item_id", array[i]);
-			Db.save("gate_out_order_item", item);
+//			Record item = new Record();
+//			item.set("order_id", order.getLong("id"));
+//			item.set("item_id", array[i]);
+//			Db.save("gate_out_order_item", item);
 			
-			Db.update("update gate_in set out_order_flag = 'Y' where id = ?",array[i]);
+			Db.update("update gate_in set out_order_flag = 'Y' and out_order_id = ? where id = ?",array[i],order.getLong("id"));
 		}
 		
         renderJson(order);
