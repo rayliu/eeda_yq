@@ -137,6 +137,7 @@ $(document).ready(function() {
         
         var order={}
         order.id = $('#order_id').val();
+        order.old_order_no=$('#old_order_no').val();
         order.update_stamp = $('#update_stamp').val();
         order.plan_order_id = $('#plan_order_id').val();
         order.plan_order_item_id = $('#plan_order_item_id').val();

@@ -299,20 +299,25 @@ public class JobOrderController extends Controller {
    			String oldOrderNo=jobOrder.get("order_no");
    			String oldOrderNoDate = oldOrderNo.substring(3, 7);
    			logger.debug("工作单号 旧日期："+oldOrderNoDate);
-   			if(!type.equals(jobOrder.get("type")) || 
-   			        ( 
+   			if(( 
    			             StrKit.notBlank(oldDateStr) && 
    			             !newDateStr.equals(oldDateStr) && 
    			             !newDateStr.equals(oldOrderNoDate)
    			        ) 
    			  ){
-	   			StringBuilder sb = new StringBuilder(oldOrderNo);//构造一个StringBuilder对象
-
-	   			sb.replace(5, 6, generateJobPrefix(type));
-	   			oldOrderNo =sb.toString();
-	            jobOrder.set("order_no", oldOrderNo);
+   				oldOrderNo = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, office_id);
+   				StringBuilder sb = new StringBuilder(oldOrderNo);//构造一个StringBuilder对象
+	   			sb.insert(5, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
+	   			oldOrderNo = sb.toString();
+	   			jobOrder.set("order_no", oldOrderNo);
+	   		}
+   			if(!type.equals(jobOrder.get("type"))){
+   				StringBuilder sb = new StringBuilder(oldOrderNo);//构造一个StringBuilder对象
+				sb.replace(5, 6, generateJobPrefix(type));
+				oldOrderNo =sb.toString();
+				jobOrder.set("order_no", oldOrderNo);
    			}
-   			
+
    			DbUtils.setModelValues(dto, jobOrder);
    			jobOrder.set("updator", user.getLong("id"));
             jobOrder.set("update_stamp", new Date());
@@ -489,7 +494,12 @@ public class JobOrderController extends Controller {
    	}
     
     
-    /**
+    private StringBuilder StringBuilder(String order_no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
      * 保存费用模板
      * @param shipment_detail
      */

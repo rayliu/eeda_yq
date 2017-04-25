@@ -70,30 +70,14 @@
                            </div>
                         </div>
                         <div class="row"><!--  第4行  -->
-                            <div class="col-lg-4">
-                                <%include("/eeda/component/form/selectField.html", 
-                                    {   id:'type', 
-                                        label:'类型', 
-                                        value:order.type!planOrderItem.JOB_ORDER_TYPE!'',
-                                        value_list:[
-                                            {code:'出口柜货', value:'出口柜货'},
-                                            {code:'进口柜货', value:'进口柜货'}, 
-                                            {code:'出口散货', value:'出口散货'},
-                                            {code:'进口散货', value:'进口散货'},
-                                            {code:'出口空运', value:'出口空运'},
-                                            {code:'进口空运', value:'进口空运'},
-                                            {code:'内贸海运', value:'内贸海运'},
-                                            {code:'香港头程', value:'香港头程'},
-                                            {code:'香港游', value:'香港游'},
-                                            {code:'陆运', value:'陆运'},
-                                            {code:'报关', value:'报关'},
-                                            {code:'快递', value:'快递'},
-                                            {code:'加贸', value:'加贸'},
-                                            {code:'贸易', value:'贸易'},
-                                            {code:'园区游', value:'园区游'}
-                                        ]
+                        	<div class="col-lg-4"><!--  三列排版  -->
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'old_order_no', 
+                                        label:'旧工作单号', 
+                                        value:order.old_order_no!''
                                     }){}%>
-                            </div><!-- /.col-lg-4 -->
+                            </div>
+                            
                             <div class="col-lg-8">
                                 <div class="form-group" id="transport_type">
                                     <label class="search-label">服务项目</label>
@@ -190,6 +174,32 @@
                                        required:'required'
                                    }){}%>
                             </div>
+                        </div>
+                        <div class ="row">
+                        	<div class="col-lg-4">
+                                <%include("/eeda/component/form/selectField.html", 
+                                    {   id:'type', 
+                                        label:'类型', 
+                                        value:order.type!planOrderItem.JOB_ORDER_TYPE!'',
+                                        value_list:[
+                                            {code:'出口柜货', value:'出口柜货'},
+                                            {code:'进口柜货', value:'进口柜货'}, 
+                                            {code:'出口散货', value:'出口散货'},
+                                            {code:'进口散货', value:'进口散货'},
+                                            {code:'出口空运', value:'出口空运'},
+                                            {code:'进口空运', value:'进口空运'},
+                                            {code:'内贸海运', value:'内贸海运'},
+                                            {code:'香港头程', value:'香港头程'},
+                                            {code:'香港游', value:'香港游'},
+                                            {code:'陆运', value:'陆运'},
+                                            {code:'报关', value:'报关'},
+                                            {code:'快递', value:'快递'},
+                                            {code:'加贸', value:'加贸'},
+                                            {code:'贸易', value:'贸易'},
+                                            {code:'园区游', value:'园区游'}
+                                        ]
+                                    }){}%>
+                            </div><!-- /.col-lg-4 -->
                         </div>
                         <div class="form-group">
                          <label>发票号</label>
