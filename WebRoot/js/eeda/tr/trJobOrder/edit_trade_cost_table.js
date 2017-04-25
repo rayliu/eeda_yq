@@ -107,18 +107,18 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "NUMBER", "width": "100px","className":"number",
+            { "data": "NUMBER", "width": "50px","className":"number",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="number" value="'+data+'" class="form-control" style="width:120px"/>';
+                    return '<input type="text" name="number" value="'+data+'" class="form-control" style="width:50px"/>';
                 }
             },
             { "data": "LEGAL_UNIT", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                         data='';
-                    var str = '<select name="legal_unit" class="form-control search-control" style="width:100px" >'
+                    var str = '<select name="legal_unit" class="form-control search-control" style="width:80px" >'
                     	+'<option value="" '+(data=='' ? 'selected':'')+'></option>'
                     	+'<option value="个" '+(data=='个' ? 'selected':'')+'>个</option>'
                         +'<option value="千克" '+(data=='千克' ? 'selected':'')+'>千克</option>'
@@ -135,7 +135,7 @@ $(document).ready(function() {
                 	return str;
             	}
             },
-            { "data": "PRICE", "width": "100px",
+            { "data": "PRICE", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		
             		if(!data)
@@ -143,14 +143,14 @@ $(document).ready(function() {
             		if(full.ID && data=='')
             			data = 0.0;
             			
-            		return '<input type="text" name="price" value="'+data+'" class="form-control" style="width:120px"/>';
+            		return '<input type="text" name="price" value="'+data+'" class="form-control" style="width:80px"/>';
             	}
             },
-            { "data": "DOMESTIC_PRICE", "width": "130px",
+            { "data": "DOMESTIC_PRICE", "width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="domestic_price" value="'+data+'" class="form-control" style="width:150px"/>';
+            		return '<input type="text" name="domestic_price" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
             { "data": "VALUE_ADDED_TAX", "width": "80px",
@@ -159,7 +159,7 @@ $(document).ready(function() {
             			data='';
             		if(full.ID && data=='')
             			data = 0.0;
-            		return '<input type="text" name="value_added_tax" value="'+data+'" class="form-control" style="width:100px"/>';
+            		return '<input type="text" name="value_added_tax" value="'+data+'" class="form-control" style="width:80px"/>';
             	}
             },
             { "data": "TAX_REFUND_RATE", "width": "80px",
@@ -168,7 +168,7 @@ $(document).ready(function() {
             			data='';
             		if(full.ID && data=='')
             			data = 0.0;
-            		return '<input type="text" name="tax_refund_rate" value="'+data+'" class="form-control" style="width:100px"/>';
+            		return '<input type="text" name="tax_refund_rate" value="'+data+'" class="form-control" style="width:80px"/>';
             	}
             },
             { "data": "TAX_REFUND_RATE_CUSTOMER", "width": "80px",//客户退税率
@@ -177,56 +177,56 @@ $(document).ready(function() {
             			data='';
             		if(full.ID && data=='')
             			data = 0.0;
-            		return '<input type="text" name="tax_refund_rate_customer" value="'+data+'" class="form-control" style="width:100px"/>';
+            		return '<input type="text" name="tax_refund_rate_customer" value="'+data+'" class="form-control" style="width:80px"/>';
             	}
             },//客户退税率
             { "data": "TAX_REFUND_AMOUNT", "width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="tax_refund_amount" value="'+data+'" class="form-control" style="width:120px" disabled/>';
+            		return '<input type="text" name="tax_refund_amount" value="'+data+'" class="form-control" style="width:100px" disabled/>';
             	}
             },
             { "data": "ADJUSTED_TAX_REFUND_AMOUNT", "width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="adjusted_tax_refund_amount" value="'+data+'" class="form-control" style="width:120px" disabled/>';
+            		return '<input type="text" name="adjusted_tax_refund_amount" value="'+data+'" class="form-control" style="width:100px" disabled/>';
             	}
             },
             { "data": "ADJUSTED_UNIT_PRICE", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="adjusted_unit_price" value="'+data+'" class="form-control" style="width:100px" disabled/>';
+            		return '<input type="text" name="adjusted_unit_price" value="'+data+'" class="form-control" style="width:80px" disabled/>';
             	}
             },
             { "data": "ADJUSTED_TOTAL_PRICE", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="adjusted_total_price" value="'+data+'" class="form-control" style="width:100px" disabled/>';
+            		return '<input type="text" name="adjusted_total_price" value="'+data+'" class="form-control" style="width:80px" disabled/>';
             	}
             },
             { "data": "CUSTOM_PRICE", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="custom_price" value="'+data+'" class="form-control" style="width:100px"/>';
+            		return '<input type="text" name="custom_price" value="'+data+'" class="form-control" style="width:80px"/>';
             	}
             },
             { "data": "NUMBER", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="number" value="'+data+'" class="form-control" style="width:100px"/>';
+                    return '<input type="text" name="number" value="'+data+'" class="form-control" style="width:80px"/>';
                 }
             },
-            { "data": "CUSTOM_AMOUNT", "width": "100px","className":"currency_total_amount",
+            { "data": "CUSTOM_AMOUNT", "width": "80px","className":"currency_total_amount",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="custom_amount" value="'+data+'" class="form-control" style="width:120px" />';
+            		return '<input type="text" name="custom_amount" value="'+data+'" class="form-control" style="width:80px" />';
             	}
             },
             { "data": "CUSTOM_CURRENCY", "width": "60px", 
@@ -262,10 +262,10 @@ $(document).ready(function() {
             					data=$('#cost_currency_rate').val();
             				}
             			}
-            		return '<input type="text" name="custom_rate" value="'+parseFloat(data).toFixed(6)+'" class="form-control" style="width:100px"/>';
+            		return '<input type="text" name="custom_rate" value="'+parseFloat(data).toFixed(6)+'" class="form-control" style="width:80px"/>';
             	}
             },
-            { "data": "CUSTOM_AMOUNT_CNY", "width": "100px",
+            { "data": "CUSTOM_AMOUNT_CNY", "width": "120px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
@@ -273,18 +273,18 @@ $(document).ready(function() {
             	}
             },
             
-            { "data": "AGENCY_RATE", "width": "100px",//代理费百分比
+            { "data": "AGENCY_RATE", "width": "120px",//代理费百分比
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
             		return '<input type="text" name="agency_rate" value="'+data+'" class="form-control" style="width:120px" />';
             	}
             },//代理费百分比
-            { "data": "AGENCY_AMOUNT_CNY", "width": "100px",//代理费金额
+            { "data": "AGENCY_AMOUNT_CNY", "width": "80px",//代理费金额
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="agency_amount_cny" value="'+data+'" class="form-control" style="width:120px" />';
+            		return '<input type="text" name="agency_amount_cny" value="'+data+'" class="form-control" style="width:80px" />';
             	}
             },//代理费金额
             

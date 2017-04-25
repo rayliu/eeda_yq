@@ -206,9 +206,9 @@ $(document).ready(function() {
                     else
                         str = '';
                     if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="price"  value="'+str+'" class="form-control notsave" disabled />';
+                        return '<input type="text" name="price"  value="'+str+'" class="form-control notsave" style="width:60px" disabled />';
                      }else{
-                        return '<input type="text" name="price" value="'+str+'" class="form-control notsave" />';
+                        return '<input type="text" name="price" value="'+str+'" class="form-control notsave" style="width:60px"/>';
                      }
                   }
             },
@@ -217,9 +217,9 @@ $(document).ready(function() {
                     if(!data)
                         data='1';
                     if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="amount"  value="'+data+'" class="form-control notsave" disabled/>';
+                        return '<input type="text" name="amount"  value="'+data+'" class="form-control notsave" style="width:60px" disabled/>';
                      }else{
-                        return '<input type="text" name="amount"  value="'+data+'" class="form-control notsave"/>';
+                        return '<input type="text" name="amount"  value="'+data+'" class="form-control notsave" style="width:60px"/>';
                     }
                 }
             },
@@ -261,7 +261,7 @@ $(document).ready(function() {
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '';
-                    return '<input type="text" name="total_amount" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                    return '<input type="text" name="total_amount" style="width:80px" value="'+str+'" class="form-control notsave" disabled />';
                     
                 }
             },
@@ -314,7 +314,7 @@ $(document).ready(function() {
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '';
-                    return '<input type="text" name="currency_total_amount" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                    return '<input type="text" name="currency_total_amount" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
               }
             },
             { "data": "EXCHANGE_CURRENCY_ID", "width":"60px","className":"cny_to_other",
@@ -366,7 +366,7 @@ $(document).ready(function() {
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '';
-                    return '<input type="text" name="exchange_total_amount" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                    return '<input type="text" name="exchange_total_amount" style="width:80px" value="'+str+'" class="form-control notsave" disabled />';
                 }
             },
             { "data": "EXCHANGE_CURRENCY_RATE_RMB", "width": "80px", "className":"exchange_currency_rate_rmb",
@@ -388,7 +388,7 @@ $(document).ready(function() {
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '';
-                    return '<input type="text" name="exchange_total_amount_rmb" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                    return '<input type="text" name="exchange_total_amount_rmb" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
                 }
             },
             { "data": "RMB_DIFFERENCE", "width": "80px","className":"rmb_difference",
@@ -397,7 +397,7 @@ $(document).ready(function() {
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '0.00';
-                    return '<input type="text" name="rmb_difference" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                    return '<input type="text" name="rmb_difference" style="width:80px" value="'+str+'" class="form-control notsave" disabled />';
                 }
             },
             { "data": "REMARK","width": "180px",

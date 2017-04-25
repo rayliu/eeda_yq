@@ -7,7 +7,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
-    $("#breadcrumb_li").text('工作单');
+    $("#breadcrumb_li").text('贸易工作单');
     
 	var loadOrderToLocalstorage=function(order_id){
         if(!!window.localStorage){//查询条件处理
