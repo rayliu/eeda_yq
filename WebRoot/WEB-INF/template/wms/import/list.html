@@ -1,0 +1,41 @@
+<%layout("/eeda/layout.html"){%>
+    <div id="page-wrapper">
+        <div class="row simple_search_div">
+            <div class="col-lg-12">
+                <form id="orderForm">
+                    <div class="form-group button-bar" >
+                        <button id="uploadBtn" class="btn btn_white" type="button">导入单据</button>
+                        <input type="file" id="toFileUpload" name="files[]" 
+						     style="position:absolute;;  opacity:0;" data-url="/importOrder/importMac?order_type=gateIn">
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+
+        
+        <div class="panel-heading">
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="false" data-backdrop="static">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body pre-scrollable">
+                    		<span id="msgLoad"></span>
+                    </div>
+                    <div class="modal-footer" id="footer" aria-hidden="true">
+                    	<button type="button" class="btn  btn-primary" id="confirm" style="display:none">确认</button>
+				  	<button type="button" class="btn  btn-primary" data-dismiss="modal" id="cancel">关闭</button>
+					</div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+<%}%>
+
+
+<script>
+	var order = {};
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/wms/importOrder/list']);
+    });
+</script>

@@ -1,5 +1,6 @@
 package controllers.wms.importOrder;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
@@ -36,7 +37,11 @@ public class ImportOrder extends Controller {
 	private Logger logger = Logger.getLogger(ImportOrder.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
-
+	@Before(EedaMenuInterceptor.class)
+	public void index() {
+	    render("/wms/import/list.html");
+	}
+	
 	//导入CSV
 	@Before(Tx.class)
 	public void importMac() throws Exception {   
