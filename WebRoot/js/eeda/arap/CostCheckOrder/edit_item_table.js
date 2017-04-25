@@ -73,7 +73,7 @@ $(document).ready(function() {
             { "data": "CREATE_STAMP", visible: false},
             { "data": "CUSTOMER_NAME"},
             { "data": "SP_NAME"},
-            { "data": "FIN_NAME"},
+            { "data": "FIN_NAME","width":"80px"},
             { "data": "CURRENCY_NAME","class":"currency_name"},
             { "data": "TOTAL_AMOUNT","class":"total_amount", 
             	"render": function ( data, type, full, meta ) {

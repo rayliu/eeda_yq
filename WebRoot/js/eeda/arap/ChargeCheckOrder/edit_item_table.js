@@ -72,7 +72,7 @@ $(document).ready(function() {
             },
             { "data": "ORDER_EXPORT_DATE", "width": "70px"},
             { "data": "SP_NAME", "width": "70px"},
-            { "data": "FIN_NAME"},
+            { "data": "FIN_NAME", "width": "80px"},
             { "data": "CURRENCY_NAME",'class':'currency_name', "width": "70px"},
 
             { "data": "TOTAL_AMOUNT",'class':'total_amount', "width": "70px",
