@@ -216,14 +216,73 @@ public class GateOutOrderController extends Controller {
     			+ " from gate_out_order goo "
     			+ " left join user_login u on u.id = goo.creator"
     			+ " where goo.office_id="+office_id
-    			+ " group by goo.id "
-    			+ condition ;
+    			+ " group by goo.id ";
     	
 
         String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         
         List<Record> orderList = Db.find(sql + " order by goo.create_time desc " +sLimit);
+   
+        Map orderListMap = new HashMap();
+        orderListMap.put("draw", pageIndex);
+        orderListMap.put("recordsTotal", rec.getLong("total"));
+        orderListMap.put("recordsFiltered", rec.getLong("total"));
+
+        orderListMap.put("data", orderList);
+
+        renderJson(orderListMap); 
+    }
+    
+    
+    public void actualList() {
+    	String sql = "";
+        String condition="";
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+
+        String jsonStr = getPara("jsonStr");
+    	if(StringUtils.isNotBlank(jsonStr)){
+    		Gson gson = new Gson(); 
+            Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class);  
+            String item_no = dto.get("item_no");
+            
+            if(StringUtils.isNotBlank(item_no)){
+            	condition += " and goo.item_no = '"+item_no+"'";
+            }
+
+            String begin_time = dto.get("create_time_begin_time");
+            if(StringUtils.isBlank(begin_time)){
+            	begin_time = "2000-01-01";
+            }
+            
+            String end_time = dto.get("create_time_end_time");
+            if(StringUtils.isBlank(end_time)){
+            	end_time = "2037-01-01";
+            }else{
+            	end_time = end_time +" 23:59:59";
+            }
+            
+            condition += " and goo.create_time between '"+begin_time+"' and '"+end_time+"'";
+    	}
+        
+    	if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+       
+    	sql = "SELECT goo.*,go.date_no, ifnull(u.c_name, u.user_name) creator_name "
+    			+ " FROM `gate_out` go"
+    			+ " LEFT JOIN gate_out_order goo on goo.order_no = go.order_no"
+    			+ " left join user_login u on u.id = go.creator"
+    			+ " GROUP BY go.date_no";
+    	
+
+        String sqlTotal = "select count(1) total from ("+sql+") B";
+        Record rec = Db.findFirst(sqlTotal);
+        
+        List<Record> orderList = Db.find(sql  +sLimit);
    
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
@@ -249,12 +308,11 @@ public class GateOutOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
        
-    	sql = "select gi.*,pro.part_name,pro.item_name from gate_out_order_item goi "
-    			+ " LEFT JOIN gate_in gi on gi.id = goi.item_id"
+    	sql = "select gi.*,pro.part_name,pro.item_name from gate_in goi "
     			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
-    			+ " where order_id ='"+order_id+"'"
+    			+ " where out_order_id ='"+order_id+"'"
     			+ condition 
-    			+" group by goi.id";
+    			+" group by gi.id";
     	
 
         String sqlTotal = "select count(1) total from ("+sql+") B";
@@ -392,5 +450,17 @@ public class GateOutOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
-
+    public void searchKT(){
+    	String kt_no = getPara("kt_no");
+    	
+    	Record re = Db.findFirst("select * from gate_out_order where kt_no = ?",kt_no);
+    	
+    	if(re==null){
+    		renderJson(true);
+    	}else{
+    		renderJson(re);
+    	}
+    	
+    }
+    
 }

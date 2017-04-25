@@ -172,6 +172,39 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         });
         
         
+        var actualTable = eeda.dt({
+            id: 'actual_table',
+            paging: true,
+            serverSide: true, //不打开会出现排序不对
+            ajax: "/gateOutOrder/actualList",
+            columns:[
+                { "width": "30px",
+                    "render": function ( data, type, full, meta ) {
+                      return '<button type="button" class="btn table_btn delete_btn btn-xs" style="display:none">'+
+                        '<i class="fa fa-trash-o"></i> 删除</button>'+
+                        '<button type="button" class="btn btn-primary btn-xs print" disabled>'+
+                        '<em class="icon-print"></em> 打印</button>';
+                    }
+                },
+                { "data": "DATE_NO"}, 
+                { "data": "KT_NO"}, 
+                {"data": "ORDER_NO", 
+                	"render": function ( data, type, full, meta ) {
+              	    	if(!data)
+              	    		data = '';
+              	    	return data;
+              	    	//return "<a class='item_detail' order_id='"+full.ID+"' data-target='#itemDetail' data-toggle='modal'>"+data+"</a>";
+              	    }
+                },
+				{ "data": "ITEM_NO"}, 
+				{ "data": "TOTAL_QUANTITY"}, 
+				{ "data": "QUANTITY"}, 
+				{ "data": "CREATE_TIME"},
+				{ "data": "CREATOR_NAME"}
+            ]
+        });
+        
+        
         //打印明细
         $("#order_table").on('click', '.print', function(e){
         	var self = this;
@@ -232,5 +265,20 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	$('#quantity').val(this.value);
         });
         
+        $('#kt_no').on('input',function(){
+        	var kt_no = $('#kt_no').val();
+        	if(kt_no.trim()=="")
+        		return;
+        	
+        	$.post('/gateOutOrder/searchKT',{kt_no:kt_no},function(data){
+        		if(data){
+        			$('#item_no').val(data.ITEM_NO);
+        			$('#totalQuantity').val(data.TOTAL_QUANTITY);
+        			$('#haveQuantity').val(data.QUANTITY);
+        		}
+        	}).fail(function() {
+                $.scojs_message('后台报错', $.scojs_message.TYPE_ERROR);
+            });
+        });
 	});
 });
