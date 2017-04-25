@@ -430,7 +430,7 @@ public class CheckOrder extends Controller {
 			}
             
 			result.set("result", false);
-			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber)
+			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber+1)
 						+ "行时出现异常:" + e.getMessage() + "<br/>导入数据已取消！");
 			//throw new ActiveRecordException(e);
 		}  finally {
@@ -472,7 +472,7 @@ public class CheckOrder extends Controller {
                 	String titleName = StringUtils.isNotBlank(title[i])?title[i].trim():null;
                 	String value = StringUtils.isNotBlank(csvRow[i])?csvRow[i].trim():null;;
                 	if(StringUtils.isNotBlank(value)){
-                		 if("qr_code".equals(titleName)){
+                		if("qr_code".equals(titleName)){
 	                		GateIn gi = GateIn.dao.findFirst("select * from gate_in where error_flag='N' and qr_code = ?",value);
 	                		if(gi == null){
 	                			errorMsg += ("数据校验至第" + (rowNumber+1) + "行时出现异常:库存中没有此货品（未入库）<br/>");
@@ -508,6 +508,8 @@ public class CheckOrder extends Controller {
 		result.set("result",true);
 		String repeatMsg = "";
 		int rowNumber = 0;
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhMMss");
+  		String c=sdf.format(new Date());   //临时单号
 		try {
 			
 			conn = DbKit.getConfig().getDataSource().getConnection();
@@ -516,7 +518,9 @@ public class CheckOrder extends Controller {
 			
 			String[] csvRow = null;//row  
             String[] title = null;
-            
+            int arrayNum = 0;
+            String this_order_no = null;
+            List<Record> reList =null;
             while ((csvRow = csvReader.readNext()) != null){    
             	if(rowNumber == 0){
             		title = csvRow;
@@ -553,10 +557,58 @@ public class CheckOrder extends Controller {
 	                	}
                 	}
                 }    
+                
+                
+                String order_no = order.getStr("order_no");
+                String qr_code = order.getStr("qr_code");
+                String part_no = order.getStr("part_no");
+                
+                
+                Record goo = Db.findFirst("select * from gate_out_order where order_no = ?",order_no);
+                if(goo != null){
+                	Long out_order_id = goo.getLong("id");
+                	GateIn gi = GateIn.dao.findFirst("SELECT"
+    						+"	gi.*"
+    						+"  FROM"
+    						+"	gate_in gi"
+    						+"  WHERE"
+    						+"	gi.out_order_id =? and gi.qr_code = ? and gi.out_flag='N'"
+    						+"  GROUP BY"
+    						+"	gi.id",out_order_id,qr_code);
+                    
+                    if(gi==null){//查无此qr_code后，再查有没产品
+                    	GateIn gi2 = GateIn.dao.findFirst("SELECT"
+        						+"	gi.*"
+        						+"  FROM"
+        						+"	gate_in gi"
+        						+"  WHERE"
+        						+"	gi.out_order_id =? and gi.part_no = ? and gi.out_flag='N'"
+        						+"  GROUP BY"
+        						+"	gi.id",out_order_id,part_no);
+                    	if(gi2==null){
+                    		//说明拿错货品了
+                    		order.set("download_msg", order_no+"里面没有此货品");
+                    	}else{
+                    		//货品对了，只是不是出库单里面的货品，要更新
+                    		gi2.set("out_order_id", out_order_id).update();
+                    		
+                    		//把原来的替换为空
+                    		GateIn re = GateIn.dao.findFirst("select * from gate_in where out_order_id = ? and out_flag='N' and part_no = ?",out_order_id,part_no);
+                    		if(re!=null)
+                    			re.set("out_order_id", null).update();
+                    	}
+                    }
+                }else{
+                	//不存在此出库单
+                	throw new Exception("出库单号不存在");
+                }
+                
                 order.set("office_id", officeId);
+                order.set("date_no", c);
                 order.save();
                 rowNumber++;
             }
+            
             conn.commit();
 			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！<br/><br/>"+repeatMsg);
 		} catch (Exception e) {
