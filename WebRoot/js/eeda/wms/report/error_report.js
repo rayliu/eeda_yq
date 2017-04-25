@@ -31,6 +31,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					  		return "<span style='color:red;'>"+data+"</span>";
 					  	}	
 				}, 
+				{ "data": "IMPORT_MSG", "width": "220px",
+					"render": function ( data, type, full, meta ) {
+				  		return "<span style='color:red;'>"+data+"</span>";
+				  	}	
+				}, 
 				{"data": "ITEM_NO", "width": "80px",
 					  "render": function ( data, type, full, meta ) {
 						  //return "<a href='/wmsproduct/edit?id="+full.PRODUCT_ID+"'target='_blank'>"+data+"</a>";
@@ -38,7 +43,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					  }
 				},
 				{"data": "ITEM_NAME", "width": "280px"},
-				
 				{ "data": "PART_NO", "width": "120px"}, 
 				{ "data": "PART_NAME", "width": "320px"}, 
 				{ "data": "SHELVES", "width": "80px"},

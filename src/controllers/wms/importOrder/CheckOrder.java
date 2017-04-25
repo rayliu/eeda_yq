@@ -587,7 +587,7 @@ public class CheckOrder extends Controller {
         						+"	gi.id",out_order_id,part_no);
                     	if(gi2==null){
                     		//说明拿错货品了
-                    		order.set("download_msg", order_no+"里面没有此货品");
+                    		order.set("import_msg", order_no+"里面没有此货品");
                     	}else{
                     		//货品对了，只是不是出库单里面的货品，要更新
                     		gi2.set("out_order_id", out_order_id).update();
@@ -620,7 +620,7 @@ public class CheckOrder extends Controller {
 			}
 			
 			result.set("result", false);
-			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber)
+			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber+1)
 						+ "行时出现异常:" + e.getMessage() + "<br/>导入数据已取消！");
 
 		} finally {

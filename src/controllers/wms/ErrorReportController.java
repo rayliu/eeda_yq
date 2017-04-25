@@ -51,7 +51,7 @@ public class ErrorReportController extends Controller {
 				+ " union"
 				+ " (select distinct error_msg "
 				+ " from gate_out gi "
-				+ " where gi.error_flag = 'Y' "
+				+ " where gi.error_flag = 'Y'"
 				+ " group by gi.id)";
 
 	    List<Record> orderList = Db.find(sql);
@@ -175,19 +175,19 @@ public class ErrorReportController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
        
-    	sql = "(select '入库记录' order_type ,gi.id,gi.error_msg,gi.qr_code,gi.shelves,gi.quantity,gi.move_flag,gi.create_time, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name,pro.part_no "
+    	sql = "(select '入库记录' order_type,'' import_msg ,gi.id,gi.error_msg,gi.qr_code,gi.shelves,gi.quantity,gi.move_flag,gi.create_time, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name,pro.part_no "
 			+ " from gate_in gi "
 			+ " left join user_login u on u.id = gi.creator"
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.error_flag = 'Y' and gi.office_id="+office_id
 			+ condition+" group by gi.id)"
 			+ " union"
-			+ " (select '出库记录' order_type  ,gi.id,gi.error_msg,gi.qr_code,gi.shelves,gi.quantity,gi.move_flag,gi.create_time, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name,pro.part_no "
+			+ " (select '出库记录' order_type ,gi.import_msg ,gi.id,gi.error_msg,gi.qr_code,gi.shelves,gi.quantity,gi.move_flag,gi.create_time, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name,pro.part_no "
 			+ " from gate_out gi "
 			+ " left join user_login u on u.id = gi.creator"
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
-			+ " where gi.error_flag = 'Y' and  gi.office_id="+office_id
-			+ condition+"  group by gi.id)";
+			+ " where (gi.error_flag = 'Y' and  gi.office_id="+office_id
+			+ condition+") or import_msg is not null group by gi.id)";
     	
         
         String sqlTotal = "select count(1) total from ("+sql+") A";
