@@ -65,39 +65,40 @@
 				<div class="tab-pane fade in active" id="home">
 	                <%include("/eeda/component/form/detailTable.html", 
 	                {
-	                    id:'eeda-table', 
+	                    id:'eeda-table',
+                        style:'width:1850px',
 	                    headers:[
-	                    	'',
 	                    	'出库单号',
 	                    	'产品编码',
 	                    	'产品名称',
-	                    	'qr code',
 	                    	'组件编码',
 	                        '组件名称',
 	                        '数量',
 	                        '是否是移库出库',
 	                        '操作时间',
-	                        '操作人']
+	                        '操作人',
+                            'QR code',
+                            '']
 	                }){} %>
 	             </div>
 	             <div class="tab-pane fade" id="ios">
 	             	<%include("/eeda/component/form/detailTable.html", 
 	                {
 	                    id:'error-table', 
-	                    style:'width:1500px;',
+	                    style:'width:1850px;',
 	                    headers:[
-	                    	'',
 	                        '出错信息',
 	                        '出库单号',
 	                    	'产品编码',
 	                    	'产品名称',
-	                    	'qr code',
 	                        '组件编码',
 	                        '组件名称',
 	                        '数量',
 	                        '是否是移库出库',
 	                        '操作时间',
-	                        '操作人']
+	                        '操作人',
+                            'QR code',
+                            '']
 	                }){} %>
 	             </div>
 	        </div>
