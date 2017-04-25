@@ -31,9 +31,7 @@ $(document).ready(function() {
 	
 	
 	var searchData=function(order_id){
-		$.blockUI({ 
-            message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
-        });
+		
      	var url = "/gateOutOrder/orderItemList?order_id="+order_id;
      	itemTable.ajax.url(url).load();
     };
