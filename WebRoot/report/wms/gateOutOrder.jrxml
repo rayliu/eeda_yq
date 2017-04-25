@@ -28,7 +28,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[select
- id ,order_no ,item_no, quantity,create_time
+*
  from
  gate_out_order
  where
@@ -37,19 +37,34 @@
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="office_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="kt_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="order_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="item_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="total_quantity" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="quantity" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="creator" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="create_time" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<variable name="chineseTotal" class="java.lang.String"/>
+	<variable name="total_quantity_1" class="java.lang.Integer" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_quantity}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -61,41 +76,28 @@
 			<frame>
 				<reportElement x="0" y="1" width="802" height="73" uuid="75a2363a-65a6-4bf2-99fd-66debf4e5dc4"/>
 				<staticText>
-					<reportElement x="621" y="13" width="70" height="17" uuid="d4ac615b-5224-4b59-9583-52cbd0b1f639"/>
+					<reportElement x="621" y="21" width="70" height="17" uuid="d4ac615b-5224-4b59-9583-52cbd0b1f639"/>
 					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font fontName="宋体" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 					</textElement>
-					<text><![CDATA[单号：]]></text>
+					<text><![CDATA[出库单号：]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="621" y="30" width="70" height="17" uuid="2bb46f73-5ff0-4d6f-a8e3-9e75839c2191"/>
+					<reportElement x="621" y="38" width="70" height="17" uuid="2bb46f73-5ff0-4d6f-a8e3-9e75839c2191"/>
 					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 					</textElement>
 					<text><![CDATA[打印日期：]]></text>
 				</staticText>
-				<staticText>
-					<reportElement x="621" y="46" width="70" height="17" uuid="6ff1ecf2-4665-4dac-b650-36068ef9796f"/>
-					<textElement textAlignment="Right" verticalAlignment="Top">
-						<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-					</textElement>
-					<text><![CDATA[]]></text>
-				</staticText>
 				<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-					<reportElement x="691" y="30" width="111" height="17" uuid="7d29efb3-3229-4b28-8721-3c45b203ff4c"/>
+					<reportElement x="691" y="38" width="111" height="17" uuid="7d29efb3-3229-4b28-8721-3c45b203ff4c"/>
 					<textElement verticalAlignment="Top">
-						<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+						<font size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="691" y="46" width="111" height="17" uuid="ff764212-c5b5-44ad-981e-6d6ed36e7993"/>
-					<textElement verticalAlignment="Top">
-						<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-					</textElement>
-				</textField>
-				<textField>
-					<reportElement x="691" y="13" width="111" height="17" uuid="8a2813e7-db41-4534-8969-3555f2c62883"/>
+					<reportElement x="691" y="20" width="111" height="17" uuid="8a2813e7-db41-4534-8969-3555f2c62883"/>
 					<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 				</textField>
 				<componentElement>
@@ -104,6 +106,25 @@
 						<jr:codeExpression><![CDATA[$F{order_no}]]></jr:codeExpression>
 					</jr:barbecue>
 				</componentElement>
+				<textField isBlankWhenNull="true">
+					<reportElement x="691" y="3" width="111" height="17" uuid="85d046ef-dd74-4320-971b-9225707826c5"/>
+					<textFieldExpression><![CDATA[$F{kt_no}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="621" y="2" width="70" height="18" uuid="3a881aaa-82c1-408e-8c08-01851d2c08b0"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font fontName="宋体" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[kt_no：]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="621" y="55" width="100" height="17" uuid="eba49f59-64ed-457c-86ae-17ff4314cf95"/>
+					<textFieldExpression><![CDATA[$F{total_quantity}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="460" y="55" width="91" height="17" uuid="68dea33a-4761-4f05-abd3-311ce278a51b"/>
+					<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+				</textField>
 			</frame>
 			<textField isStretchWithOverflow="true" pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="658" y="87" width="144" height="26" uuid="f2c6de31-d141-4cb8-9a1f-0df0cfa9405a"/>
@@ -147,16 +168,16 @@
 			<line>
 				<reportElement x="0" y="73" width="802" height="1" uuid="1b0bb327-5d69-49e3-abcb-210542900cbf"/>
 			</line>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="67" y="93" width="203" height="20" uuid="5a06de46-2344-4fa1-acd7-d6bbb90f10b5"/>
 				<textFieldExpression><![CDATA[$F{item_no}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="360" y="94" width="100" height="20" uuid="bf4f3a10-700f-47d1-8c77-29c2f79f309b"/>
 				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="658" y="94" width="144" height="20" uuid="93182074-f6fb-4ac1-aa8d-66990b806e23"/>
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="658" y="93" width="144" height="20" uuid="93182074-f6fb-4ac1-aa8d-66990b806e23"/>
 				<textFieldExpression><![CDATA[$F{create_time}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -165,6 +186,20 @@
 					<font fontName="黑体" size="28" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[出库单]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="57" width="70" height="17" uuid="25c14519-f786-49cd-9242-fb4d20d8208b"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="宋体" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[实际数量：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="551" y="56" width="70" height="17" uuid="b5db58b6-56cb-4873-bc07-964cdd5525d9"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[总数量：]]></text>
 			</staticText>
 		</band>
 	</pageHeader>

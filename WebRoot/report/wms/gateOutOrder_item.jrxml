@@ -26,63 +26,18 @@
 	<parameter name="order_id" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
-	gi.*, pro.part_name,pro.item_no,
-	pro.item_name
+	gi.part_no,gi.quantity, pro.part_name,pro.item_no,
+	pro.item_name,(select GROUP_CONCAT(shelves) from gate_in where out_flag='N' and error_flag='N' and part_no = gi.part_no GROUP BY part_no) shelves
 FROM
-	gate_out_order_item goi
-LEFT JOIN gate_in gi ON gi.id = goi.item_id
-LEFT JOIN wmsproduct pro ON pro.part_no = gi.part_no
+	gate_in gi
+left join wmsproduct pro on pro.part_no = gi.part_no
 WHERE
-	goi.order_id =$P{order_id}
-GROUP BY
-	goi.id]]>
+	gi.out_order_id =$P{order_id}]]>
 	</queryString>
-	<field name="id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="office_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="qr_code" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="part_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="quantity" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="shelves" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="return_flag" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="move_flag" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="creator" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="create_time" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="error_flag" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="error_msg" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="out_flag" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="inv_flag" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="inv_msg" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="out_order_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="part_name" class="java.lang.String">
@@ -92,6 +47,9 @@ GROUP BY
 		<fieldDescription><![CDATA[主产品SAP编码]]></fieldDescription>
 	</field>
 	<field name="item_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="shelves" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<variable name="sum_amount" class="java.lang.Double" incrementType="Report" calculation="Sum">
