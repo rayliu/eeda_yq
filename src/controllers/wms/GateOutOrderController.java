@@ -394,7 +394,7 @@ public class GateOutOrderController extends Controller {
     			+ " left join user_login u on u.id = gi.creator"
     			+ " left join wmsproduct pro on pro.part_no = gi.part_no and pro.amount>0"
     			+ " where gi.office_id="+office_id
-    			+ " and gi.error_flag = 'N' and gi.out_flag = 'N' and gi.out_order_flag = 'N'"
+    			+ " and gi.error_flag = 'N' and gi.out_flag = 'N' and gi.out_order_id is not null"
     			+ condition 
     			+ " order by gi.part_no,gi.create_time desc )"
     			+ " UNION "
