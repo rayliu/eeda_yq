@@ -902,10 +902,16 @@ NON-NEGOTIABLE]]></text>
 			</textField>
 			<staticText>
 				<reportElement x="448" y="462" width="108" height="15" uuid="e7fafa5d-11ed-44c6-88d0-c1c27ef10b57"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[SHIPPED ON BOARD]]></text>
 			</staticText>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="448" y="475" width="108" height="20" uuid="d61ce27a-94cf-4991-b8e9-c5c5e300c503"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
 			<staticText>
