@@ -271,7 +271,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         		return;
         	
         	$.post('/gateOutOrder/searchKT',{kt_no:kt_no},function(data){
-        		if(data){
+        		if(data.ITEM_NO){
         			$('#item_no').val(data.ITEM_NO);
         			$('#item_no_input').val(data.ITEM_NO);
         			$('#totalQuantity').val(data.TOTAL_QUANTITY);
