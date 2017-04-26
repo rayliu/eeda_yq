@@ -125,14 +125,14 @@
 				</textElement>
 			</textField>
 			<staticText>
-				<reportElement x="591" y="87" width="67" height="26" uuid="52cdcc58-005a-44ae-a0e7-632f58abcae7"/>
+				<reportElement x="622" y="87" width="52" height="26" uuid="52cdcc58-005a-44ae-a0e7-632f58abcae7"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[创建日期:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="87" width="67" height="26" uuid="8df73558-4a9c-42f3-b0ae-226be0c97ad4"/>
+				<reportElement x="0" y="87" width="48" height="26" uuid="8df73558-4a9c-42f3-b0ae-226be0c97ad4"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
@@ -142,11 +142,11 @@
 				<reportElement x="0" y="73" width="802" height="1" uuid="1b0bb327-5d69-49e3-abcb-210542900cbf"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="67" y="87" width="203" height="26" uuid="5a06de46-2344-4fa1-acd7-d6bbb90f10b5"/>
+				<reportElement x="51" y="93" width="113" height="20" uuid="5a06de46-2344-4fa1-acd7-d6bbb90f10b5"/>
 				<textFieldExpression><![CDATA[$F{item_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="658" y="93" width="144" height="20" uuid="93182074-f6fb-4ac1-aa8d-66990b806e23"/>
+				<reportElement x="674" y="93" width="128" height="20" uuid="93182074-f6fb-4ac1-aa8d-66990b806e23"/>
 				<textFieldExpression><![CDATA[$F{create_time}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -157,25 +157,25 @@
 				<text><![CDATA[出库单]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="440" y="87" width="70" height="26" uuid="25c14519-f786-49cd-9242-fb4d20d8208b"/>
+				<reportElement x="413" y="93" width="70" height="20" uuid="25c14519-f786-49cd-9242-fb4d20d8208b"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="宋体" size="11" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[实际数量：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="270" y="87" width="70" height="26" uuid="b5db58b6-56cb-4873-bc07-964cdd5525d9"/>
+				<reportElement x="185" y="93" width="70" height="20" uuid="b5db58b6-56cb-4873-bc07-964cdd5525d9"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[总数量：]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="340" y="87" width="100" height="26" uuid="eba49f59-64ed-457c-86ae-17ff4314cf95"/>
+				<reportElement x="255" y="93" width="100" height="20" uuid="eba49f59-64ed-457c-86ae-17ff4314cf95"/>
 				<textFieldExpression><![CDATA[$F{total_quantity}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="510" y="87" width="81" height="27" uuid="68dea33a-4761-4f05-abd3-311ce278a51b"/>
+				<reportElement x="487" y="93" width="81" height="21" uuid="68dea33a-4761-4f05-abd3-311ce278a51b"/>
 				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 			</textField>
 		</band>
