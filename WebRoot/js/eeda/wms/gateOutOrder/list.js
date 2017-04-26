@@ -77,19 +77,22 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                 		partJson[part_no] = parseFloat(partJson[part_no])-quantity;
                 	}
                 	
-                	idArray.push(row.ID);
-                	var item={};
-                	item.ID = row.ID;
-                	item.ITEM_NO = row.ITEM_NO;
-                	item.ITEM_NAME = row.ITEM_NAME;
-                	item.PART_NO = row.PART_NO;
-                	item.PART_NAME = row.PART_NAME;
-                	item.AMOUNT = row.AMOUNT;
-                	item.QUANTITY = row.QUANTITY;
-                	item.SHELVES = row.SHELVES;
-                	item.CREATE_TIME = row.CREATE_TIME;
-                	item.CREATOR_NAME = row.CREATOR_NAME;
-                	itemTable.row.add(item).draw();
+                	if(quantity>0){
+                		idArray.push(row.ID);
+                    	var item={};
+                    	item.ID = row.ID;
+                    	item.ITEM_NO = row.ITEM_NO;
+                    	item.ITEM_NAME = row.ITEM_NAME;
+                    	item.PART_NO = row.PART_NO;
+                    	item.PART_NAME = row.PART_NAME;
+                    	item.AMOUNT = row.AMOUNT;
+                    	item.QUANTITY = row.QUANTITY;
+                    	item.SHELVES = row.SHELVES;
+                    	item.CREATE_TIME = row.CREATE_TIME;
+                    	item.CREATOR_NAME = row.CREATOR_NAME;
+                    	itemTable.row.add(item).draw();
+                	}
+                	
                 }
 
                 var flag = true;
@@ -104,7 +107,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                 	}
                 }
                 
-                if(flag && data.length>0){
+                if(itemTable.rows().count()>0){
                 	$('#createBtn').prop('disabled',false);
                 }else{
                 	$('#createBtn').prop('disabled',true);

@@ -71,7 +71,7 @@ public class GateOutOrderController extends Controller {
 		order.set("order_no", OrderNoGenerator.getNextOrderNo("GO", office_id));
 		order.set("kt_no", kt_no);
 		order.set("item_no", item_no);
-		order.set("totalQuantity", totalQuantity);
+		order.set("total_quantity", totalQuantity);
 		order.set("quantity", quantity);
 		order.set("office_id", office_id);
 		order.set("creator", LoginUserController.getLoginUserId(this));
@@ -85,7 +85,7 @@ public class GateOutOrderController extends Controller {
 //			item.set("item_id", array[i]);
 //			Db.save("gate_out_order_item", item);
 			
-			Db.update("update gate_in set out_order_flag = 'Y' and out_order_id = ? where id = ?",array[i],order.getLong("id"));
+			Db.update("update gate_in set out_order_flag = 'Y' , out_order_id = ? where id = ?",order.getLong("id"),array[i]);
 		}
 		
         renderJson(order);
@@ -308,7 +308,7 @@ public class GateOutOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
        
-    	sql = "select gi.*,pro.part_name,pro.item_name from gate_in goi "
+    	sql = "select gi.*,pro.part_name,pro.item_name from gate_in gi "
     			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
     			+ " where out_order_id ='"+order_id+"'"
     			+ condition 
