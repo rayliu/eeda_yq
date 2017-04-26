@@ -682,14 +682,15 @@ public class CheckOrder extends Controller {
 	                	} 
                 	}
                 }    
-                
+
+                String checkQuantity = order.getStr("check_quantity");
                 GateIn gi = GateIn.dao.findFirst("select * from gate_in where qr_code = ? ",order.getStr("qr_code"));
                 if(gi == null){
         			gi = new GateIn();
         			gi.set("office_id", officeId);
         			gi.set("qr_code", order.getStr("qr_code"));
         			gi.set("part_no", order.getStr("part_no"));
-        			gi.set("quantity", order.getStr("quantity"));
+        			gi.set("quantity",StringUtils.isNotBlank(checkQuantity)?checkQuantity:order.getStr("quantity"));
         			gi.set("shelves", order.getStr("shelves"));
         			gi.set("creator", order.getLong("creator"));
         			gi.set("create_time", order.get("create_time"));
@@ -699,9 +700,16 @@ public class CheckOrder extends Controller {
         		} else {
         			String this_shelves = order.getStr("shelves");
         			String order_shelves = gi.getStr("shelves");
+        			String quantity = gi.getInt("quantity").toString();
         			if(!this_shelves.equals(order_shelves)){
         				gi.set("inv_msg", "盘点单号："+order.getStr("order_no")+","+order_shelves+"调整为"+this_shelves);
         				gi.set("shelves", this_shelves);
+        				gi.set("inv_flag", "Y");
+        				gi.update();
+        			}
+        			if(StringUtils.isNotBlank(checkQuantity) && !quantity.equals(checkQuantity)){
+        				gi.set("inv_msg", "盘点单号："+order.getStr("order_no")+",数量"+quantity+"调整为"+checkQuantity);
+        				gi.set("quantity", checkQuantity);
         				gi.set("inv_flag", "Y");
         				gi.update();
         			}
