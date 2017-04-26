@@ -26,7 +26,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     }
                 },
                 {"data": "ORDER_TYPE",'class':'order_type', "width": "100px"},
-				{ "data": "ERROR_MSG", "width": "220px",
+				{ "data": "ERROR_MSG", "width": "220px",'class':"error_msg",
 					"render": function ( data, type, full, meta ) {
 					  		return "<span style='color:red;'>"+data+"</span>";
 					  	}	
@@ -96,7 +96,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	$('#eeda-table [name=checkBox]:checked').each(function(){
         		var id = $(this).parent().parent().attr('id');
         		var order_type = $($(this).parent().parent().find('.order_type')).text();
-        		if(order_type!='未入库'){
+        		var error_msg = $($(this).parent().parent().find('.error_msg')).text();
+        		if(error_msg!='未入库'){
         			$.scojs_message('请勾选要入库的单据', $.scojs_message.TYPE_ERROR);
         			return false;
         		}
@@ -109,7 +110,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	}
         	
         	self.disabled = true;
-        	
         	$.post('/errorReport/gateIn',{idArray:idArray.toString()},function(data){
         		if(data){
         			$.scojs_message('手工入库成功', $.scojs_message.TYPE_OK);
