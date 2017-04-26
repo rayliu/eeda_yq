@@ -238,7 +238,7 @@ public class CheckOrder extends Controller {
 	
 	
 	/**
-	 * 销售订单内容开始导入
+	 * 产品BOM内容开始导入
 	 * @param lines
 	 * @return
 	 */
@@ -254,6 +254,9 @@ public class CheckOrder extends Controller {
 			conn = DbKit.getConfig().getDataSource().getConnection();
 			DbKit.getConfig().setThreadLocalConnection(conn);
 			conn.setAutoCommit(false);// 自动提交变成false
+			
+			//导入前先清除掉表中数据
+			Db.update("delete from wmsproduct");
 			
 			for (Map<String, String> line :lines) {
 				String item_name = line.get("maktx")==null?null:line.get("maktx").trim();
