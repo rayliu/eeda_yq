@@ -984,17 +984,23 @@ NON-NEGOTIABLE]]></text>
 			</textField>
 			<textField>
 				<reportElement x="154" y="366" width="113" height="22" uuid="cf57ea8d-158a-4d58-8fd1-9e06a27dce08"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{SUM_pieces}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="392" y="366" width="92" height="22" uuid="77e560ed-b101-4f8c-b438-5ebf066f1624"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{SUM_gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="484" y="366" width="71" height="22" uuid="a349a7d8-ce1a-4b14-8a2e-18b0cc0387cf"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{SUM_volume}]]></textFieldExpression>
 			</textField>
 		</band>
