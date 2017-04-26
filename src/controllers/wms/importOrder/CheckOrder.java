@@ -598,10 +598,11 @@ public class CheckOrder extends Controller {
                     			re.set("out_order_id", null).update();
                     	}
                     }
-                }else{
-                	//不存在此出库单
-                	throw new Exception("出库单号不存在");
                 }
+//                else{
+//                	//不存在此出库单
+//                	throw new Exception("出库单号不存在");
+//                }
                 
                 order.set("office_id", officeId);
                 order.set("date_no", c);

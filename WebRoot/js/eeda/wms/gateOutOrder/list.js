@@ -40,8 +40,9 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	$("#msgLoad").empty();
         	var total = parseFloat($('#quantity').val());
         	var item_no = $('#item_no').val();
-        	if(item_no.trim() == ''){
-        		$.scojs_message('产品编码不能为空', $.scojs_message.TYPE_FALSE);
+        	var kt_no = $('#kt_no').val();
+        	if(item_no.trim() == '' || kt_no.trim() == ''){
+        		$.scojs_message('产品编码和KT_NO不能为空', $.scojs_message.TYPE_FALSE);
         		return false;
         	}
 
