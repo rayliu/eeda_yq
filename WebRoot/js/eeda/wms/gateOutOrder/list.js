@@ -8,8 +8,8 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         var dataTable = eeda.dt({
             id: 'eeda-table',
             paging: true,
-            serverSide: true, //不打开会出现排序不对
-            //ajax: "/gateOutOrder/list",
+            serverSide: false, //不打开会出现排序不对
+            //ajax: "/gateOutOrder/numLlist",
             "drawCallback": function( settings ) {
 		        $.unblockUI();
 		    },
@@ -62,7 +62,6 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         		for(var c = 0 ;c < itemCount;c++){
         			itemTable.row(0).remove().draw();
         		}
-        		
         		idArray = [];
                 for(var i=0; i<data.length; i++){
                 	var row = data[i];
@@ -80,10 +79,10 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                 	idArray.push(row.ID);
                 	var item={};
                 	item.ID = row.ID;
-                	item.ITEM_NAME = row.ITEM_NAME;
                 	item.ITEM_NO = row.ITEM_NO;
-                	item.PART_NAME = row.PART_NAME;
+                	item.ITEM_NAME = row.ITEM_NAME;
                 	item.PART_NO = row.PART_NO;
+                	item.PART_NAME = row.PART_NAME;
                 	item.AMOUNT = row.AMOUNT;
                 	item.QUANTITY = row.QUANTITY;
                 	item.SHELVES = row.SHELVES;
