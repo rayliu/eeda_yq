@@ -316,8 +316,11 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/transJobOrder", TransJobOrderController.class, contentPath);
 		me.add("/transPlanOrder", TransPlanOrderController.class, contentPath);
 		me.add("/transOrderShortCut", TransOrderShortCutController.class, contentPath);
+		
+		me.add("/transCostConfirm", controllers.tms.arap.TransCostConfirmController.class, contentPath);
 		me.add("/transCostCheckOrder", controllers.tms.arap.TransCostCheckOrderController.class, contentPath);
-		me.add("/tmsChargeCheckOrder", controllers.tms.arap.TransChargeCheckOrderController.class, contentPath);
+		me.add("/transChargeCheckOrder", controllers.tms.arap.TransChargeCheckOrderController.class, contentPath);
+		me.add("/transChargeConfirm", controllers.tms.arap.TransChargeConfirmController.class, contentPath);
 		
 		//tr,贸易工作单
 		me.add("/trJobOrder", controllers.tr.joborder.TrJobOrderController.class, contentPath);

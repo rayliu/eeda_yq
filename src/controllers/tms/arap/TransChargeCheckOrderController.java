@@ -42,7 +42,7 @@ public class TransChargeCheckOrderController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
-		render("/tms/arap/tmsChargeCheckOrder/tmsChargeCheckOrderList.html");
+		render("/tms/arap/transChargeCheckOrder/transChargeCheckOrderList.html");
 	}
 	
 	@Before(Tx.class)
@@ -463,7 +463,7 @@ public class TransChargeCheckOrderController extends Controller {
 //		rec.set("currencyList", getCurrencyList(ids,""));
 		rec.set("company_abbr", rec.get("company_abbr"));
 		setAttr("order",rec);
-		render("/tms/arap/tmsChargeCheckOrder/tmsChargeCheckOrderEdit.html");
+		render("/tms/arap/transChargeCheckOrder/transChargeCheckOrderEdit.html");
 	}
 	
 	

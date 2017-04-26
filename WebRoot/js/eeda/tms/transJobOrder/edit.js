@@ -126,6 +126,7 @@ $(document).ready(function() {
         order.take_stamp =$('#take_stamp').val();
         order.land_export_stamp =$('#land_export_stamp').val();
         order.contract_no =$('#contract_no').val();
+        order.customer_salesman =$('#customer_salesman').val();
         order.transport_type = transport_type_str;
         
        

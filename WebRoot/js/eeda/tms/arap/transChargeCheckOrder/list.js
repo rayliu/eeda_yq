@@ -221,7 +221,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/tmsChargeCheckOrder/list?checked="+checked
+          var url = "/transChargeCheckOrder/list?checked="+checked
           	   +"&order_no="+order_no
                +"&sp_name="+sp_name
                +"&customer_name="+customer_name
