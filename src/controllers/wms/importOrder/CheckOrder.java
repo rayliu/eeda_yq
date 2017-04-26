@@ -695,7 +695,7 @@ public class CheckOrder extends Controller {
         		} else {
         			String this_shelves = order.getStr("shelves");
         			String order_shelves = gi.getStr("shelves");
-        			if(!order_shelves.equals(this_shelves)){
+        			if(!this_shelves.equals(order_shelves)){
         				gi.set("inv_msg", "盘点单号："+order.getStr("order_no")+","+order_shelves+"调整为"+this_shelves);
         				gi.set("shelves", this_shelves);
         				gi.set("inv_flag", "Y");
@@ -752,7 +752,7 @@ public class CheckOrder extends Controller {
 			}
             
 			result.set("result", false);
-			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber)
+			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber+1)
 						+ "行时出现异常:" + e.getMessage() + "<br/>导入数据已取消！");
 			//throw new ActiveRecordException(e);
 		} finally {
