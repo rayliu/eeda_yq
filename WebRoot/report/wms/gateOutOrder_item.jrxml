@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gateOutOrder_item" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="260e40d5-dc30-467f-97e2-8f3420a6c940">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
@@ -32,7 +32,7 @@ FROM
 	gate_in gi
 left join wmsproduct pro on pro.part_no = gi.part_no
 WHERE
-	gi.out_order_id =$P{order_id}]]>
+	gi.out_order_id =$P{order_id} and gi.out_flag='N' and gi.error_flag='N']]>
 	</queryString>
 	<field name="part_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
