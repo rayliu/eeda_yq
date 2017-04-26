@@ -43,10 +43,12 @@ $(document).ready(function() {
     	var items_array=[];
         $('#select_item_table input[type="checkbox"]:checked').each(function(){
   			var id = $(this).parent().parent().attr('id');
-  			var item={};
-            item.id = id;
-            item.action = 'CREATE';
-            items_array.push(item);
+  			if(id){
+  				var item={};
+  	            item.id = id;
+  	            item.action = 'CREATE';
+  	            items_array.push(item);
+  			}
         });
         return items_array;
     }

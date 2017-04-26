@@ -441,8 +441,9 @@ var checkIds=[];
 		  //全选
         $('#coR_allcheck').on('click',function(){
              var table = $('#select_item_table').DataTable();
+             var self= this;
             var selected_ids=[];
-            if($('#coR_allcheck').prop("checked")){
+            if($(self).prop("checked")){
                   table.data().each(function(item, index) {
                       selected_ids.push(item.ID);
                     });
