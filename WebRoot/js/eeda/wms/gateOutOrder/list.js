@@ -273,6 +273,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	$.post('/gateOutOrder/searchKT',{kt_no:kt_no},function(data){
         		if(data){
         			$('#item_no').val(data.ITEM_NO);
+        			$('#item_no_input').val(data.ITEM_NO);
         			$('#totalQuantity').val(data.TOTAL_QUANTITY);
         			$('#haveQuantity').val(data.QUANTITY);
         		}

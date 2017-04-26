@@ -278,7 +278,7 @@ public class CheckOrder extends Controller {
 				order.set("create_time", new Date());
 				order.set("office_id", officeId); 
 				order.save();	
-				
+				System.out.println(rowNumber+1);
 				rowNumber++;
 			}
 			conn.commit();
