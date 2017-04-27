@@ -719,7 +719,7 @@ $(document).ready(function() {
         if(rowIndex){
             application_ids.push(rowIndex);
         }else{
-            for(var i=1;i<rows.length;i++){
+            for(var i=0;i<rows.length;i++){
            if($(rows[i]).find('[type=checkbox]').prop('checked')){
                var checkBox = $(rows[i]).find('[type=checkbox]');
                 id=checkBox.val();

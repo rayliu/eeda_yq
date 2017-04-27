@@ -872,7 +872,7 @@ public class ChargeRequestController extends Controller {
 	        	
 	        	ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(id);
 	        	String payment_method = arapChargeInvoiceApplication.get("payment_method") ;
-	        	receive_bank_id = arapChargeInvoiceApplication.get("receive_bank_id") ;
+	        	receive_bank_id = arapChargeInvoiceApplication.get("deposit_bank").toString() ;
 	        	if(StringUtils.isEmpty(receive_bank_id)){
 	      			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
 	      	        Record rec = Db.findFirst(str2);
