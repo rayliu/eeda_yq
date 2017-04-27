@@ -502,7 +502,7 @@ public class TradeChargeCheckOrderController extends Controller {
     			+ " cur.id ,cur.name currency_name ,group_concat(distinct cast(joa.exchange_rate as char) SEPARATOR ';') exchange_rate ,"
     			+ " ifnull((select rc.new_rate from rate_contrast rc "
     			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),ifnull(joa.exchange_rate,1)) new_rate"
-				+ " FROM job_order_arap joa"
+				+ " FROM trade_job_order_arap joa"
 				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
 				+ " WHERE joa.id in("+ ids +") and cur.name!='CNY' group by cur.id" ;
     	List<Record> re = Db.find(sql);

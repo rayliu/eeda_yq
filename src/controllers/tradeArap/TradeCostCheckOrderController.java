@@ -61,7 +61,7 @@ public class TradeCostCheckOrderController extends Controller {
 		
 		String strAry[] = ids.split(",");
 		String id = strAry[0];
-		String sql = " select joa.sp_id,p.abbr company_abbr,p.company_name company_name from job_order_arap joa "
+		String sql = " select joa.sp_id,p.abbr company_abbr,p.company_name company_name from trade_job_order_arap joa "
 				   + " left join party p on p.id = joa.sp_id "
 				   + "  where joa.id = ? ";
 		Record spRec = Db.findFirst(sql,id);
@@ -92,7 +92,7 @@ public class TradeCostCheckOrderController extends Controller {
     			+ " cur.id ,cur.name currency_name ,group_concat(distinct cast(joa.exchange_rate as char) SEPARATOR ';') exchange_rate ,"
     			+ " ifnull((select rc.new_rate from rate_contrast rc "
     			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),cast(joa.exchange_rate as char)) new_rate"
-				+ " FROM job_order_arap joa"
+				+ " FROM trade_job_order_arap joa"
 				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
 				+ " WHERE joa.id in("+ ids +") and cur.name!='CNY' group by cur.id" ;
     	List<Record> re = Db.find(sql);

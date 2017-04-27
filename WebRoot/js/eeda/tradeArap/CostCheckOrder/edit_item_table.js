@@ -401,7 +401,7 @@ $(document).ready(function() {
                 ex_currency_name: $('#exchange_currency').val()}, function(data){
 	    	$('#exchange').attr('disabled',false);
             var order_id = $('#order_id').val();
-             var url = "/costCheckOrder/tableList?order_id="+order_id
+             var url = "/tradeCostCheckOrder/tableList?order_id="+order_id
              +"&table_type=item"
              +"&query_currency="+que_currency;
              
