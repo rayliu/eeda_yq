@@ -179,6 +179,7 @@ import controllers.tms.planOrder.TransPlanOrderController;
 import controllers.tradeArap.TradeChargeCheckOrderController;
 import controllers.tradeArap.TradeChargeRequestController;
 import controllers.tradeArap.TradeCostCheckOrderController;
+import controllers.tradeArap.TradeCostRequestController;
 
 public class EedaConfig extends JFinalConfig {
     private Logger logger = Logger.getLogger(EedaConfig.class);
@@ -331,7 +332,7 @@ public class EedaConfig extends JFinalConfig {
 		//贸易应付对账单
 		me.add("/tradeCostCheckOrder", TradeCostCheckOrderController.class, contentPath);
 		me.add("/tradeChargeRequest", TradeChargeRequestController.class, contentPath);
-		
+		me.add("/tradeCostRequest", TradeCostRequestController.class, contentPath);
 		 
 		//ar= account revenue  应收条目处理
 		me.add("/chargeRequest", controllers.arap.ar.chargeRequest.ChargeRequestController.class, contentPath);
