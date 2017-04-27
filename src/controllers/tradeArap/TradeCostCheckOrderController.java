@@ -420,13 +420,14 @@ public class TradeCostCheckOrderController extends Controller {
 			//设置已创建过对账单flag
 			String idAttr[] = ids.split(",");
 			for(int i=0 ; i<idAttr.length ; i++){
-				JobOrderArap joa = JobOrderArap.dao.findById(idAttr[i]);
+				Record joa = Db.findById("trade_job_order_arap", idAttr[i]);
 				joa.set("bill_flag", "Y");
 				String hedge_order_type = joa.getStr("order_type");
 				if("charge".equals(hedge_order_type)){
 					joa.set("hedge_flag", "Y");
                 }
-				joa.update();
+				Db.update("trade_job_order_arap", joa);
+				
 				ArapCostItem arapCostItem = new ArapCostItem();
 				arapCostItem.set("ref_order_id", idAttr[i]);
 				arapCostItem.set("cost_order_id", id);

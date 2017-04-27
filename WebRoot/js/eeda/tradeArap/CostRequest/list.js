@@ -14,7 +14,7 @@ $(document).ready(function() {
             uncheckedCostCheckOrder();
         },
         serverSide: true, 
-    	ajax: "/costRequest/applicationList?status=新建",
+    	ajax: "/tradeCostRequest/applicationList?status=新建",
 		  columns: [
 		    { "width": "10px", "orderable": false,
 			    "render": function ( data, type, full, meta ) {
@@ -41,7 +41,7 @@ $(document).ready(function() {
             },
 		    {"data":"APPLICATION_ORDER_NO",
             	 "render": function(data, type, full, meta) {
-            			return "<a href='/costRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
+            			return "<a href='/tradeCostRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
             	 }
             },
             {"data":"STATUS"},    
@@ -397,7 +397,7 @@ $(document).ready(function() {
           var confirmBegin_date_begin_time = $('#confirmBegin_date_begin_time').val();
           var confirmBegin_date_end_time = $('#confirmBegin_date_end_time').val();
 
-          var url = "/costRequest/applicationList?sp_id="+sp_id
+          var url = "/tradeCostRequest/applicationList?sp_id="+sp_id
      	   +"&payee_company_equals="+payee_company  
             +"&charge_order_no="+charge_order_no
             +"&application_order_no="+applicationOrderNo
@@ -592,7 +592,7 @@ $(document).ready(function() {
             var order_id=row.attr('id');
             var this_but=$(this);
 
-            $.get("/costRequest/checkOrder", {order_id:order_id}, function(data){
+            $.get("/tradeCostRequest/checkOrder", {order_id:order_id}, function(data){
                 if(data.ID>0){
                     $(this_but).attr('disabled',true);
                     $(this_but).next().attr('disabled',false);
@@ -624,7 +624,7 @@ $(document).ready(function() {
             var order_id=row.attr('id');
             var this_but=$(this);
 
-            $.get("/costRequest/checkOrder", {order_id:order_id,}, function(data){
+            $.get("/tradeCostRequest/checkOrder", {order_id:order_id,}, function(data){
                 if(data.ID>0){
                     $(this_but).attr('disabled',true);
                     $(this_but).next().attr('disabled',false);
@@ -661,7 +661,7 @@ $(document).ready(function() {
             }
         });
 
-      //多条复核 /costRequest/checkOrder
+      //多条复核 /tradeCostRequest/checkOrder
       $("#checked").on('click',function(){
         var order={}
         var application_ids=[];
@@ -682,7 +682,7 @@ $(document).ready(function() {
            }
 
         }
-        $.post("/costRequest/checkOrder", {ids:application_ids.toString()}, function(data){
+        $.post("/tradeCostRequest/checkOrder", {ids:application_ids.toString()}, function(data){
                 if(data.IDS){
                     var arr=data.IDS.split(',');
                     for(var j=0;j<arr.length;j++){
@@ -737,7 +737,7 @@ $(document).ready(function() {
 
           }
         }
-        $.post("/costRequest/confirmOrder", {ids:application_ids.toString(),receive_time:$('#receive_time').val()}, function(data){
+        $.post("/tradeCostRequest/confirmOrder", {ids:application_ids.toString(),receive_time:$('#receive_time').val()}, function(data){
 			        	if(data){
                             if(data.IDS.length>0){
                                 var arr=[];

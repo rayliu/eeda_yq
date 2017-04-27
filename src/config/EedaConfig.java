@@ -333,7 +333,8 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/tradeCostCheckOrder", TradeCostCheckOrderController.class, contentPath);
 		me.add("/tradeChargeRequest", TradeChargeRequestController.class, contentPath);
 		me.add("/tradeCostRequest", TradeCostRequestController.class, contentPath);
-		 
+		me.add("/tradeAccountAuditLog", controllers.arap.AccountAuditLogController.class, contentPath);
+		
 		//ar= account revenue  应收条目处理
 		me.add("/chargeRequest", controllers.arap.ar.chargeRequest.ChargeRequestController.class, contentPath);
 		me.add("/costRequest", controllers.arap.ar.costRequest.CostRequestController.class, contentPath);

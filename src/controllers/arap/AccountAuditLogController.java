@@ -35,7 +35,7 @@ public class AccountAuditLogController extends Controller {
     	
     	List<ArapAccountAuditLog> accountlist = ArapAccountAuditLog.dao.find("SELECT DISTINCT a.bank_name FROM arap_account_audit_log aaa left join fin_account a on a.id = aaa.account_id");
     	setAttr("accountList", accountlist);
-    	render("/eeda/arap/AccountAuditLog/AccountAuditLogList.html");
+    	render("/tradeArap/AccountAuditLog/AccountAuditLogList.html");
     }
 
     public void list() {
@@ -157,8 +157,8 @@ public class AccountAuditLogController extends Controller {
     	UserLogin user = LoginUserController.getLoginUser(this);
     	long office_id = user.getLong("office_id");
     	
-    	String sqlTotal = "select count(1) total from fin_account";
-    	Record rec = Db.findFirst(sqlTotal);
+    	String sqlTotal = "select count(1) total from fin_account where office_id=?";
+    	Record rec = Db.findFirst(sqlTotal, office_id);
     	 
     	String sql = " SELECT fa.office_id,fa.id,(select bank_name from fin_account where id = fa.id) bank_name,'"+ beginTime +"' date, "
     			+ " ( ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
