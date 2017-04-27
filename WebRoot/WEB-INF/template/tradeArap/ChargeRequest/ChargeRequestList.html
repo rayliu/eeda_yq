@@ -1,0 +1,194 @@
+<%layout("/eeda/layout.html"){%>
+<div id="page-wrapper">
+	<div class="row simple_search_div">
+        <div class="col-lg-12">
+						<form id="applicationForm" role="form" style="margin: 15px 15px;">
+						    <input id='back' name='back' type="hidden" value="${back!''}">
+							<div class="row search_panel">
+								<div class="col-lg-4">
+									<input id="rowIndex" type="text" hidden>
+                                    <input id="table_id" type="text" hidden>
+									<div class="form-group">
+										<%include("/eeda/component/form/inputSpField.html", { id:'sp_id', label:'结算公司',  value: '' }){} %>
+	                                </div>     
+                                    <div class="form-group">      
+                                         	<%include("/eeda/component/form/inputField.html", {id:'orderNo', label:'业务单据号'}){} %>
+									</div>
+									<div class="form-group">
+										<label class="search-label">申请单号</label>
+										<input type="text" class="form-control search-control applicationOrderNo" id="applicationOrderNo" value="">
+									</div>
+									<div class="form-group">
+										<label class="search-label">状态</label>
+										<select id="status2" class="form-control search-control status2">
+											<option value="新建">新建</option>
+											<option value="已复核">已复核</option>
+											<option value="复核不通过">复核不通过</option>
+											<option value="已收款">已收款</option>
+											<option value=""></option>
+										</select>
+									</div>
+								</div>
+								<!-- end of col-lg-6-->
+							<div class="col-lg-4">
+								<div class="form-group">
+								<label class="search-label">项目</label>
+									<select id="fee_type" class="form-control search-control ">
+										<option></option>
+										<option value="transFee">代理货运服务费</option>
+										<option value="customFee">代理报关服务费</option>
+										<option value="consultFee">咨询服务费</option>
+										<option value="internationalFee">国际货代服务费</option>
+										<option value="foreignFee">国外货款</option>
+										<option value="taxRefundFee">国税退税</option>
+									</select>
+								</div>
+								<div class="form-group">      
+		                     			<%include("/eeda/component/form/dateInputField.html", {id:'service_stamp', label:'业务发生月', value:''}){} %>
+								</div>
+								<div class="form-group">      
+                                     	<%include("/eeda/component/form/inputDateQueryField.html", {id:'check_begin_date', label:'复核时间', value:''}){} %>
+								</div>
+								<div class="form-group">      
+                                     	<%include("/eeda/component/form/inputDateQueryField.html", {id:'confirmBegin_date', label:'收款时间', value:''}){} %>
+								</div>	
+							</div>
+							<div class="col-lg-4">
+								<div class="form-group">      
+                                     	<%include("/eeda/component/form/inputDateQueryField.html", {id:'begin_date', label:'创建时间', value:''}){} %>
+								</div>
+								
+							</div>
+								
+							</div>
+							<!-- end of row-->
+					
+					<button id="searchBtn1" class="btn btn_grey" type="button">查询</button>
+                    <button id="resetBtn1" class="btn btn_white" type="button">清空条件</button>
+                    <a href="/tradeChargeRequest/create" class="btn btn_green" type="button">创建申请单</a>
+					</form>
+				</div>
+		</div>
+					
+		
+		<div class="simple_row_div">
+					<span class="badge" style='margin-top:12px;'> CNY总额: <span id="cny_totalAmountSpan">0.00</span></span>&nbsp;&nbsp;
+					<span class="badge" style='margin-top:12px;'> USD总额: <span id="usd_totalAmountSpan">0.00</span></span>&nbsp;&nbsp;
+					<span class="badge" style='margin-top:12px;'> JPY总额: <span id="jpy_totalAmountSpan">0.00</span></span>&nbsp;&nbsp;
+					<span class="badge" style='margin-top:12px;'> HKD总额: <span id="hkd_totalAmountSpan">0.00</span></span>&nbsp;&nbsp;
+					<button id="totalZero" class="badge"  style='margin-top:12px;background-color: #005BAC;'>金额清零</button>&nbsp;&nbsp;
+					<button id="checked" class="badge  btn btn_green" style="margin-top:12px;"  disabled>复核</button>
+					<button id="confirmed" class="badge btn btn_green" style="margin-top:12px;"  disabled>收款确认</button>
+					
+		</div>
+		
+		<div class="row simple_list_div">
+				<div class="form-group">
+							<ul id="orderTabs" class="nav nav-tabs">
+                                <li class="active"><a href="#unchecked" data-toggle="tab" data-src="unchecked" id="uncheckedCostCheckOrder">未选中明细</a>
+                                </li>
+                                <li class=""><a href="#checked_li" data-toggle="tab" id="checkedCostCheckOrder">已选中明细 </a>
+                                </li>                        
+                            </ul>
+					</div>
+
+				<div class="tab-content">
+					<div class="tab-pane fade active in" id="unchecked">
+                                <%include("/eeda/component/form/detailTable.html", 
+                                {
+                                    id:'application_table',
+                                    style:'width:2000px',
+                                    headers:[
+                                    '<input type="checkbox" id="allCheck">',
+                                    '操作',
+                                    '申请单号',
+                                    '状态',
+                                    '收款对象',
+                                    '发票类型',
+                                    '项目',
+                                    '业务发生月',
+                                    '申请收款(CNY)',
+                                    '申请收款(USD)',
+                                    '申请收款(JPY)',
+                                    '申请收款(HKD)',
+                                    '收款备注',
+                                    '业务单号',
+                                    '收款方式',
+                                    '创建人',
+                                    '创建时间',
+                                    '复核时间',
+                                    '收款时间',
+                                    '单据类型',
+                                    '备注'
+                                    ]
+                                }){} %>
+                      </div>
+                       <div class="tab-pane fade " id="checked_li" >
+                       		 <%include("/eeda/component/form/detailTable.html", 
+                                {
+                                    id:'checked_application_table',
+                                    style:'width:2000px',
+                                    headers:[
+                                    '<input type="checkbox" id="allCheck2">',
+                                    '操作',
+                                    '申请单号',
+                                    '状态',
+                                    '收款对象',
+                                    '发票类型',
+                                    '项目',
+                                    '业务发生月',
+                                    '申请收款(CNY)',
+                                    '申请收款(USD)',
+                                    '申请收款(JPY)',
+                                    '申请收款(HKD)',
+                                    '收款备注',
+                                    '业务单号',
+                                    '收款方式',
+                                    '创建人',
+                                    '创建时间',
+                                    '复核时间',
+                                    '收款时间',
+                                    '单据类型',
+                                    '备注'
+                                    ]
+                                }){} %>
+                       </div>
+                 </div>
+        </div>		
+</div>
+
+
+  <a id='chargeRe_table_msg_btn' data-target='#chargeRe_table_msg' data-toggle='modal' style='display:none'></a>
+  <div class="modal fade" id="chargeRe_table_msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:500px;">
+        <div class="modal-content">
+            <div class="modal-body">
+				 
+                   <div class="row">
+                        <div class="col-lg-6">
+                         <%include("/eeda/component/form/dateInputField.html",
+				                        {    id:'receive_time', 
+				                             label:'收款时间',
+				                             value:order.receive_time!''
+	                              }){} %>
+	                     </div>
+	                     <div class="col-lg-6">
+	                      	<button id="confirmBtn"  type="button" class="btn  btn-primary save" data-dismiss="modal">确定</button>
+            	 			<button type="button" class="btn  btn-default" data-dismiss="modal">返回</button>
+                       </div>
+                  </div>    
+				  <br>
+			</div>
+           
+        </div>
+    </div>
+</div>
+<%}%>
+<script>
+   var itemOrder={};
+</script>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/tradeArap/ChargeRequest/list']);
+    });
+</script>
