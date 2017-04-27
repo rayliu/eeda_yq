@@ -513,6 +513,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             dataTable.row.add(item).draw();
         }
     });
+    //将申请单位的值赋给收发企业
+    $('#receive_sent_consignee1_list').on('mousedown','a',function(){
+ 	   $('#receive_sent_consignee').val( $(this).attr('partyid'));
+ 	   $('#receive_sent_consignee_input').val( $(this).text());
+    });
 
     //当报关单号码或者提运单号为空时，隐藏费用信息
     var chargeDetail_tabShow=function(){

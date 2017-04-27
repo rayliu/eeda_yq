@@ -158,6 +158,17 @@
 			                                        value:order.tracking_no!''
 			                                    }){}%>                	
                        </div>
+                       <div class="col-lg-4">
+                                 <%include("/eeda/component/form/inputSelectArea.html", 
+				                                {   id:'receive_sent_consignee1', 
+				                                    label:'申请单企业',
+				                                    inline: false,
+				                                    display:false,
+				                                    display_value:order.receive_sent_consignee_input!'',
+				                                    value:order.receive_sent_consignee!'',
+				                                    textarea_value:order.receive_sent_consignee_info!'' 
+				                                 }){}%>
+                       </div>
                    </div><br>
                 </form>
                
@@ -405,7 +416,6 @@
 	                        </div>
 		                </div>
 	               </div>
-		            
 		            
 		            <div class="tab-pane fade in" id="customDetail">
 			            <div class="form-group">
