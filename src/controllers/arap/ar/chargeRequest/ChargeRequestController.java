@@ -703,7 +703,13 @@ public class ChargeRequestController extends Controller {
         String ids = getPara("ids");
   		String application_id=getPara("application_id");
   		String confirmVal=getPara("confirmVal");
-  		String pay_remark=(String) dto.get("pay_remark");
+  		String pay_remark="";
+  		try{
+  			 pay_remark=(String) dto.get("pay_remark");
+  		}catch(Exception e){
+  			
+  		}
+  		
         if(StringUtils.isNotEmpty(application_id)){
         	if("坏账确认".equals(confirmVal)){
         		ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(application_id);
