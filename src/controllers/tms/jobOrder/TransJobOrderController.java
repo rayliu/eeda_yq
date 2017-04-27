@@ -99,11 +99,6 @@ public class TransJobOrderController extends Controller {
     	setAttr("loginUser",LoginUserController.getLoginUserName(this));
         render("/tms/TransJobOrder/JobOrderEdit.html");
     }
-    
-
-    
-
-
 
     
     //插入派车单打印动作标记
@@ -114,9 +109,7 @@ public class TransJobOrderController extends Controller {
     	tjoli.update();
     	renderJson("{\"result\":true}");
     }
-    
 
-    
     //根据工作单类型生成不同前缀
     public String generateJobPrefix(String type){
     		String prefix = "";
