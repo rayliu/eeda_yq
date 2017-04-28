@@ -15,14 +15,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             var tr = $(this).parent().parent();
             var id = tr.attr('id');
             this.disabled = true;
+            var table_id = $($(this).parent().parent().parent().parent()).prop('id');
              $.post('/jobOrder/deleteDoc', {docId:id}, function(data){
             	 if(data.result==true){
-            		 docTable.row(tr).remove().draw();
+            		 if(table_id=='two_doc_table'){
+         			 	twoTable.row(tr).remove().draw();
+	     	         }else {
+	     	        	fourTable.row(tr).remove().draw();
+	     	         }
     	        	 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
             	 }else if(data.result==false){
             		 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
             	 }else{
-            		 docTable.row(tr).remove().draw();
+            		 if(table_id=='two_doc_table'){
+          			 	twoTable.row(tr).remove().draw();
+ 	     	         }else {
+ 	     	        	fourTable.row(tr).remove().draw();
+ 	     	         }
             		 $.scojs_message(data.result, $.scojs_message.TYPE_ERROR);
             	 }
              },'json').fail(function() {
