@@ -67,21 +67,41 @@ public class EedaMenuInterceptor implements Interceptor {
                     + " where u.user_name=ur.user_name and ur.role_id=r.id"
                     + " and u.office_id=m.office_id and m.id=p.module_id "
                     + " and rp.role_id=r.id and rp.permission_id=p.id and rp.module_id=m.id and rp.is_authorize=1"
-                    + " and rp.permission_code like '%list' "
+                    + " and p.code like '%list' "
                     + " and m.parent_id=module.id and m.office_id=? and u.user_name=?"
                 + " ) order by seq";
         List<Record> modules = Db.find(sql, office_id, username);
         for (Record module : modules) {
-            sql = "select u.office_id, u.user_name, r.name role_name, ur.role_id, m.module_name, m.id module_id, "
-                    + " p.code permission_code, p.name permission_name, rp.id rp_id, rp.is_authorize, p.url, m.seq"
-                    + " from user_login u, user_role ur, role r, eeda_modules m, permission p, role_permission rp"
-                    + " where u.user_name=ur.user_name and ur.role_id=r.id"
-                    + " and u.office_id=m.office_id and m.id=p.module_id "
-                    + " and rp.role_id=r.id and rp.permission_id=p.id and rp.module_id=m.id and rp.is_authorize=1"
-                    + " and rp.permission_code like '%list' "
-                    + " and m.parent_id=? and m.office_id=? and u.user_name=?"
-                    + " order by m.seq";
-
+            sql = "SELECT "
+                    +"    u.office_id,"
+                    +"    u.user_name,"
+                    +"    r.name role_name,"
+                    +"    ur.role_id,"
+                    +"    m.module_name,"
+                    +"    m.id module_id,"
+                    +"    p.code permission_code,"
+                    +"    p.name permission_name,"
+                    +"    rp.id rp_id,"
+                    +"    rp.is_authorize,"
+                    +"    p.url,"
+                    +"    m.seq"
+                    +" FROM"
+                    +"    eeda_modules m"
+                    +"    left join permission p on m.id = p.module_id"
+                    +"    left join user_login u on u.office_id = m.office_id"
+                    +"    left join user_role ur on u.user_name = ur.user_name"
+                    +"    left join role r on ur.role_id = r.id"
+                    +"     left join role_permission rp on rp.role_id = r.id "
+                    +"        AND rp.permission_id = p.id"
+                    +"        AND rp.module_id = m.id"
+                    +" WHERE "
+                    +"         rp.is_authorize = 1"
+                    +"        AND p.code LIKE '%list'"
+                    +"        and m.parent_id = ?"
+                    +"        AND m.office_id = ?"
+                    +"        AND u.user_name = ?"
+                    +" ORDER BY m.seq";
+            logger.debug("EedaInterceptor module_id:"+module.get("id")+", office_id:"+office_id+", username:"+username);
             List<Record> orders = Db.find(sql, module.get("id"), office_id,
                     username);
             for (Record order : orders) {

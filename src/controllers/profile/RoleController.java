@@ -149,12 +149,13 @@ public class RoleController extends Controller {
             
             String module_id = per.get("module_id").toString();
             String permission_id = per.get("permission_id").toString();
+            String permission_code = per.get("permission_code").toString();
             String role_permission_id = per.get("role_permission_id").toString();
             Boolean isCheck = (Boolean)per.get("checked");
             int isAuth = (isCheck==true?1:0);
             
             if(!StrKit.isBlank(role_permission_id)){
-                Db.update("update role_permission set is_authorize=? where id=?", isAuth, role_permission_id);
+                Db.update("update role_permission set is_authorize=?, permission_code=? where id=?", isAuth, permission_code, role_permission_id);
             }else{
                 logger.debug("role_permission_id 为空，需要新增 "
                         + "role_role_permission[role_id: "+role_id
@@ -177,6 +178,7 @@ public class RoleController extends Controller {
                     newRolePermissionRec.set("module_id", module_id);
                     newRolePermissionRec.set("role_id", role_id);
                     newRolePermissionRec.set("permission_id", permission_id);
+                    newRolePermissionRec.set("permission_code", permission_code);
                     newRolePermissionRec.set("module_role_id", moduleRoleId);
                     newRolePermissionRec.set("is_authorize", isAuth);
                     Db.save("role_permission", newRolePermissionRec);
