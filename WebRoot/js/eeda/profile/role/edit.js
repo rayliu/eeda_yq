@@ -47,11 +47,13 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', 'jq_bloc
                 var el = $(elment);
                 var module_id=el.attr('module_id');
                 var permission_id=el.attr('permission_id');
+                var permission_code=el.attr('code');
                 var role_permission_id=el.attr('role_permission_id');
                  
                 role_permisstions.push({
                     module_id: module_id,
                     permission_id: permission_id,
+                    permission_code: permission_code,
                     role_permission_id: role_permission_id,
                     checked: el.prop('checked')
                 });
