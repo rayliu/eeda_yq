@@ -36,6 +36,7 @@ import models.eeda.oms.bookOrder.BookOrderSendMail;
 import models.eeda.oms.bookOrder.BookOrderSendMailTemplate;
 import models.eeda.oms.bookOrder.BookOrderShipment;
 import models.eeda.oms.bookOrder.BookOrderShipmentItem;
+import models.eeda.oms.jobOrder.JobOrderDoc;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -859,9 +860,10 @@ public class BookOrderController extends Controller {
     	try {
             String order_id = getPara("order_id");
             List<UploadFile> fileList = getFiles("doc");
+            String type = getPara("type");
             Long userId = LoginUserController.getLoginUserId(this);
             
-            FileUploadUtil.uploadFile(fileList, order_id, userId, "book_order_doc", false);
+            uploadFile(fileList, order_id, userId, type , "book_order_doc", false);
             
             renderJson("{\"result\":true}");
         } catch (Exception e) {
@@ -876,6 +878,30 @@ public class BookOrderController extends Controller {
     	    renderJson(rec);
         }
     }
+    
+    
+	public void uploadFile(List<UploadFile> fileList, 
+	        String orderId,
+	        Long userId, String type,
+	        String tableName, boolean isLand) throws Exception {
+	    for (int i = 0; i < fileList.size(); i++) {
+            File file = fileList.get(i).getFile();
+            //file.length()/1024/1024
+            if(FileUploadUtil.getFileSize(file)>10){
+                throw new Exception("文件不能超过10M.");
+            }
+            String fileName = file.getName();
+            
+            Record r = new Record();
+            r.set("type", type);
+            r.set("order_id", orderId);
+            r.set("uploader", userId);
+            r.set("doc_name", fileName);
+            r.set("upload_time", new Date());
+            Db.save(tableName, r);
+        }
+		
+	}
     
     //报关的文档上传
     @Before(Tx.class)
@@ -1179,10 +1205,20 @@ public class BookOrderController extends Controller {
     	BookOrder bookOrder = BookOrder.dao.findById(id);
     	Long plan_order_id = bookOrder.getLong("plan_item_id");
     	
+    	Record re = Db.findFirst("select * from job_order where plan_order_item_id = ?",plan_order_id);
+    	if(re != null){
+    		setAttr("jobOrder", re);
+    	}
+    	
 //    	Record re = Db.findFirst("");
     	setAttr("order", bookOrder);
     	//相关文档
     	setAttr("docList", getItems(id,"doc"));
+    	
+    	setAttr("oneDocList", getDocItems(id,"one"));
+    	setAttr("twoDocList", getDocItems(id,"two"));
+    	setAttr("threeDocList", getDocItems(id,"three"));
+    	setAttr("fourDocList", getDocItems(id,"four"));
     	//邮件记录
     	setAttr("mailList", getItems(id,"mail"));
     	setAttr("emailTemplateInfo", getEmailTemplateInfo());
@@ -1805,12 +1841,107 @@ public class BookOrderController extends Controller {
     @Before(Tx.class)
     public void confirmSend(){
     	String id = getPara("docId");
+    	String job_order_id = getPara("job_order_id");
     	BookOrderDoc bookOrderDoc = BookOrderDoc.dao.findById(id);
+    	bookOrderDoc.set("sender", LoginUserController.getLoginUserId(this));
+    	bookOrderDoc.set("send_time", new Date());
+    	bookOrderDoc.set("send_status", "已发送");
+    	bookOrderDoc.update();
     	
-    	
-    	
+    	Record jobDoc = new Record();
+    	jobDoc.set("order_id", job_order_id);
+    	jobDoc.set("type", bookOrderDoc.getStr("type"));
+    	jobDoc.set("uploader", bookOrderDoc.getLong("uploader"));
+    	jobDoc.set("doc_name", bookOrderDoc.getStr("doc_name"));
+    	jobDoc.set("upload_time", bookOrderDoc.get("upload_time"));
+    	jobDoc.set("remark", bookOrderDoc.getStr("remark"));
+    	jobDoc.set("sender", bookOrderDoc.getLong("sender"));
+    	jobDoc.set("send_time", bookOrderDoc.get("send_time"));
+    	jobDoc.set("send_status", bookOrderDoc.getStr("send_status"));
+    	jobDoc.set("ref_doc_id", id);
+    	Db.save("job_order_doc", jobDoc);
       
         renderJson(bookOrderDoc);
+    }
+    
+    
+    public void docTableList(){
+    	String order_id = getPara("order_id");
+    	String type = getPara("type");
+    	
+    	List<Record> list = null;
+    	list = getDocItems(order_id,type);
+    	
+    	Map map = new HashMap();
+        map.put("sEcho", 1);
+        map.put("iTotalRecords", list.size());
+        map.put("iTotalDisplayRecords", list.size());
+        map.put("aaData", list);
+        renderJson(map); 
+    }
+    
+    
+    public List<Record> getDocItems(String orderId,String type){
+    	String  itemSql = "";
+    	if("one".equals(type)){
+    		 itemSql = "select jod.*,u.c_name from book_order_doc jod left join user_login u on jod.uploader=u.id "
+        			+ " where order_id=? and type=? order by jod.id";
+    	}else if("two".equals(type)){
+   		 itemSql = "select jod.*,u.c_name from book_order_doc jod left join user_login u on jod.uploader=u.id "
+     			+ " where order_id=? and type=? order by jod.id";
+    	}else if("three".equals(type)){
+   		 itemSql = "select jod.*,u.c_name from book_order_doc jod left join user_login u on jod.uploader=u.id "
+     			+ " where order_id=? and type=? order by jod.id";
+    	}else if("four".equals(type)){
+   		 itemSql = "select jod.*,u.c_name from book_order_doc jod left join user_login u on jod.uploader=u.id "
+     			+ " where order_id=? and type=? order by jod.id";
+    	}
+    	
+    	List<Record> itemList = Db.find(itemSql,orderId,type);
+    	
+    	return itemList;
+    }
+    
+    //文件下载
+    @Before(Tx.class)
+    public void downloadDoc(){
+    	String id = getPara("docId");
+    	BookOrderDoc order = BookOrderDoc.dao.findById(id);
+    	order.set("receiver", LoginUserController.getLoginUserId(this));
+    	order.set("receive_time", new Date());
+    	order.set("send_status", "已接收");
+    	order.update();
+    	
+    	Long ref_doc_id = order.getLong("ref_doc_id");
+    	JobOrderDoc refOrder = JobOrderDoc.dao.findById(ref_doc_id);
+    	if(refOrder!=null){
+    		refOrder.set("receiver", LoginUserController.getLoginUserId(this));
+    		refOrder.set("receive_time", new Date());
+    		refOrder.set("send_status", "已接收");
+    		refOrder.update();
+    	}
+        renderJson(order);
+    }
+    
+    //文件确认
+    @Before(Tx.class)
+    public void confirmDoc(){
+    	String id = getPara("docId");
+    	BookOrderDoc order = BookOrderDoc.dao.findById(id);
+    	order.set("confirm", LoginUserController.getLoginUserId(this));
+    	order.set("confirm_time", new Date());
+    	order.set("send_status", "已确认");
+    	order.update();
+    	
+    	Long ref_doc_id = order.getLong("ref_doc_id");
+    	JobOrderDoc refOrder = JobOrderDoc.dao.findById(ref_doc_id);
+    	if(refOrder!=null){
+    		refOrder.set("confirm", LoginUserController.getLoginUserId(this));
+    		refOrder.set("confirm_time", new Date());
+    		refOrder.set("send_status", "已确认");
+    		refOrder.update();
+    	}
+        renderJson(order);
     }
 
 

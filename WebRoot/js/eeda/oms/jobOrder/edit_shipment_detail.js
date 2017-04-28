@@ -136,6 +136,87 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             });
         })
         
+        //相关文档
+        $('#collapseDocInfo').on('show.bs.collapse', function () {
+          $('#collapseDocIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+        });
+        $('#collapseDocInfo').on('hide.bs.collapse', function () {
+          $('#collapseDocIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
+        });
+        
+        
+        //------------事件处理,文档table
+        var docTable = eeda.dt({
+            id: 'ocean_table',
+            autoWidth: false,
+            columns:[
+    			{ "data":"ID","width": "10px",
+    			    "render": function ( data, type, full, meta ) {
+    			    	if(data)
+    			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
+    			    	else 
+    			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
+    			    }
+    			},
+                { "width": "50px",
+                    "render": function ( data, type, full, meta ) {
+                    	return '<button type="button" class="delete btn table_btn delete_btn btn-xs">删除</button>'
+                    	+'<button type="button" class="confirmSend btn table_btn delete_btn btn-xs">发送PC资料</button>';
+                    }
+                },
+                { "data": "DOC_NAME","width": "280px",
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                    }
+                },
+                { "data": "C_NAME","width": "180px",
+                    "render": function ( data, type, full, meta ) {
+                    	if(!data)
+                            data='';
+                    	return data;
+                    }
+                },
+                { "data": "UPLOAD_TIME", "width": "180px",
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return data;
+                    }
+                },
+                { "data": "REMARK","width": "280px",
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
+                    }
+                },
+                { "data": "SENDER", "width": "180px",
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return data;
+                    }
+                },
+                { "data": "SEND_TIME", "width": "180px",
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return data;
+                    }
+                },
+                { "data": "SEND_STATUS", "width": "180px",
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return data;
+                    }
+                }
+            ]
+        });
+        
+        
         
     });
 });

@@ -37,7 +37,7 @@
                 	<div class="col-lg-12">
                         <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
                         <input id="plan_order_id" type="hidden" name="plan_order_id" value="${planOrder.id!''}"/>
-                        <input id="plan_order_item_id" type="hidden" value="${planOrderItem.id!''}"/>
+                        <input id="plan_order_item_id" type="hidden" value="${planOrderItem.id!order.plan_order_item_id!''}"/>
                         <input id="updator_id" type="hidden" name="updator_id" value="${order.updator!''}"/>
                         <input id="update_stamp" type="hidden" name="update_stamp" value="${order.update_stamp!''}"/>
                         <input id="rateExpired" type="hidden"  name="rateExpired" value="${rateExpired!''}"/>

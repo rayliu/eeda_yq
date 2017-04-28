@@ -127,6 +127,7 @@ public class PlanOrderController extends Controller {
             order.set("transport_type", item.getStr("transport_type"));
             order.set("plan_order_no", re.getStr("order_no"));
             order.set("plan_order_id", id);
+            order.set("plan_item_id", item_id);
             order.set("customer_id", re.getLong("customer_id"));
             order.set("plan_item_id", item.getLong("id"));
             order.set("pieces", item.get("pieces"));
