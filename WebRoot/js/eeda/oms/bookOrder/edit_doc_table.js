@@ -13,14 +13,26 @@ $(document).ready(function() {
         var tr = $(this).parent().parent();
         var id = tr.attr('id');
         this.disabled = true;
+        
+        var table_id = $($(this).parent().parent().parent().parent()).prop('id');
+
          $.post('/bookOrder/deleteDoc', {docId:id}, function(data){
         	 if(data.result==true){
-        		 oneTable.row(tr).remove().draw();
+        		 if(table_id=='one_doc_table'){
+        			oneTable.row(tr).remove().draw();
+    	         }else {
+    	        	threeTable.row(tr).remove().draw();
+    	         }
+        		 table.row(tr).remove().draw();
 	        	 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
         	 }else if(data.result==false){
         		 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
         	 }else{
-        		 oneTable.row(tr).remove().draw();
+        		 if(table_id=='one_doc_table'){
+     			 	oneTable.row(tr).remove().draw();
+	 	         }else {
+	 	        	threeTable.row(tr).remove().draw();
+	 	         }
         		 $.scojs_message(data.result, $.scojs_message.TYPE_ERROR);
         	 }
          },'json').fail(function() {
@@ -54,16 +66,12 @@ $(document).ready(function() {
         columns:[
 			{ "data":"ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
-			    	if(data)
-			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
-			    	else 
-			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
+			    	return '<button type="button" class="delete btn table_btn delete_btn btn-xs">删除</button>';
 			    }
 			},
             { "width": "50px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn table_btn delete_btn btn-xs">删除</button>'
-                	+'<button type="button" class="confirmSend btn table_btn delete_btn btn-xs">发送PC资料</button>';
+                	return '<button type="button" class="confirmSend btn table_btn delete_btn btn-xs">发送PC资料</button>';
                 }
             },
             { "data": "DOC_NAME","width": "280px",
@@ -238,7 +246,7 @@ $(document).ready(function() {
     //刷新明细表
     itemOrder.refleshTwoDocTable = function(order_id){
     	var url = "/bookOrder/docTableList?order_id="+order_id+"&type=two";
-    	towTable.ajax.url(url).load();
+    	twoTable.ajax.url(url).load();
     }
 
     
@@ -270,16 +278,12 @@ $(document).ready(function() {
         columns:[
 			{ "data":"ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
-			    	if(data)
-			    		return '<input type="checkbox" class="checkBox" style="width:30px">';
-			    	else 
-			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
+			    	return '<button type="button" class="delete btn table_btn delete_btn btn-xs">删除</button>';
 			    }
 			},
             { "width": "50px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn table_btn delete_btn btn-xs">删除</button>'
-                	+'<button type="button" class="confirmSend btn table_btn delete_btn btn-xs">发送PC资料</button>';
+                	return '<button type="button" class="confirmSend btn table_btn delete_btn btn-xs">发送PC资料</button>';
                 }
             },
             { "data": "DOC_NAME","width": "280px",
@@ -457,6 +461,11 @@ $(document).ready(function() {
     	var url = "/bookOrder/docTableList?order_id="+order_id+"&type=four";
     	fourTable.ajax.url(url).load();
     }
+    
+    
+    //备注更新
+    
+    
 
     
 });
