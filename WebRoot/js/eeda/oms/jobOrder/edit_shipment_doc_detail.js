@@ -153,7 +153,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       //刷新明细表
         itemOrder.refleshOneDocTable = function(order_id){
         	var url = "/jobOrder/docTableList?order_id="+order_id+"&type=one";
-        	twoTable.ajax.url(url).load();
+        	oneTable.ajax.url(url).load();
         }
         
         
