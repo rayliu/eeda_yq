@@ -79,7 +79,10 @@
 			                        		</div>
 			                        		<!-- <h3>用户可见客户 </h3> -->
 			                        		<div class = "col-md-3">
-			                        			<label>全部客户&nbsp;&nbsp; </label><input type = "checkbox" id ="selectAllCustomer">
+			                        			<label>全部客户&nbsp;&nbsp; </label><input type = "checkbox" name ="all_customer" 
+
+			                        			<% var ul= lu!'';
+			                        				if(ul!='' && ul.all_customer=='Y'){ %> checked <% } %> id ="selectAllCustomer">
 			                        		</div>
 			                          	</div>
 		                          		<table class="table table-striped table-bordered table-hover" id="customer-table" >
