@@ -1,8 +1,9 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], function ($, metisMenu) {
     $(document).ready(function() {
 
-        document.title = '登录用户查询 | '+document.title;
-     
+        document.title = '用户列表 | '+document.title;
+        $("#breadcrumb_li").text('用户列表');
+
         eeda.dt({
             id:'example',
             "ajax": "/loginUser/listUser",
@@ -10,10 +11,19 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
                 { "data": "USER_NAME", "width": "20%",
                     "render":function(data, type, full, meta){
                         return "<a  href='/loginUser/edit?id="+full.ID+"' target='_blank' >" + data + "</a>";
-                    }},
+                    }
+                },
                 { "data": "C_NAME", "width": "10%" },
-                { "data": "POSITION_NAME", "width": "10%" },
-                { "data": "ROLE_MSG", "width": "40%" },
+                { "data": "POSITION_NAME", "width": "10%",
+                    "render":function(data, type, full, meta){
+                        if(data){
+                            return "<a  href='/role/ClickRole?id="+full.ROLE_ID+"' target='_blank' >" + data + "</a>";
+                        }else{
+                            return "";
+                        }
+                    }
+                },
+                //{ "data": "ROLE_MSG", "width": "40%", "visible": false},
                 { "data": "PASSWORD_HINT","width": "15%"},
                 { 
                     "data": null, 
