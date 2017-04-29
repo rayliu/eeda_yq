@@ -100,6 +100,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	eeda.bindTableField('ocean_item_table','TOTAL_20GP_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('ocean_item_table','TOTAL_40GP_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('ocean_item_table','TOTAL_40HQ_CRC','/serviceProvider/searchCurrency','');
+	    	eeda.bindTableField('ocean_item_table','POL','/location/searchPort','');
+	    	eeda.bindTableField('ocean_item_table','POD','/location/searchPort','');
 	    };
 
 	    //------------事件处理
@@ -115,21 +117,37 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                	return '<button type="button" class="delete btn table_btn delete_btn btn-xs">'+
                         '<i class="fa fa-trash-o"></i> 删除</button>';
 	                }
-				},
-	            { "data": "POL", 
-	            	"render": function ( data, type, full, meta ) {
-	            		if(!data)
-	            			data='';
-	            		return '<input type="text" name="POL"  value="'+data+'" class="form-control" />';
-	            	}
-            	},
-            	{ "data": "POD", 
-	            	"render": function ( data, type, full, meta ) {
-	            		if(!data)
-	            			data='';
-	            		return '<input type="text" name="POD"  value="'+data+'" class="form-control" />';
-	            	}
-            	},
+				},	
+            	{ "data": "POL", "width":"80px",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'POL',
+                               value: data,
+                               display_value: full.POL_NAME,
+                               style:'width:120px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
+            	{ "data": "POD", "width":"80px",
+                    "render": function ( data, type, full, meta ) {
+                	   if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'POD',
+                               value: data,
+                               display_value: full.POD_NAME,
+                               style:'width:120px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
             	{ "data": "SERVICE_OWNER", 
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
@@ -832,7 +850,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             	{ "data": "TRUCK_40HQ_CRC_NAME", "visible": false}, 
             	{ "data": "TOTAL_20GP_CRC_NAME", "visible": false}, 
             	{ "data": "TOTAL_40GP_CRC_NAME", "visible": false}, 
-            	{ "data": "TOTAL_40HQ_CRC_NAME", "visible": false}
+            	{ "data": "TOTAL_40HQ_CRC_NAME", "visible": false}, 
+            	{ "data": "POL_NAME", "visible": false}, 
+            	{ "data": "POD_NAME", "visible": false}
 	        ]
 	    });
 

@@ -779,8 +779,9 @@ public class SupplierContractController extends Controller {
     	    				+" ,c20.name isps_20gp_crc_name,c21.name isps_40gp_crc_name,c22.name isps_40hq_crc_name,c23.name  "
     	    				+" truck_20gp_crc_name,c24.name truck_40gp_crc_name "
     	    				+" ,c25.name truck_40hq_crc_name,c26.name total_20gp_crc_name,c27.name total_40gp_crc_name,c28.name "
-    	    				+" total_40hq_crc_name  ,ul.c_name creator_name from sp_ocean_cargo_item soc "
-    	    				+"     				  left join user_login ul on ul.id = soc.creator  "
+    	    				+" total_40hq_crc_name  ,ul.c_name creator_name,l.name POL_name,l1.name POD_name "
+    	    				+ "  from sp_ocean_cargo_item soc "
+    	    				+" left join user_login ul on ul.id = soc.creator  "
     	    				+" left join currency c1 on c1.id=soc.doc_crc "
     	    				+" left join currency c2 on c2.id=soc.tlx_crc "
     	    				+" left join currency c3 on c3.id=soc.eir_crc "
@@ -809,6 +810,8 @@ public class SupplierContractController extends Controller {
     	    				+" left join currency c26 on c26.id=soc.total_20gp_crc "
     	    				+" left join currency c27 on c27.id=soc.total_40gp_crc "
     	    				+" left join currency c28 on c28.id=soc.total_40hq_crc "
+    	    				+" LEFT JOIN location l on l.id = soc.POL "
+    	    				+" LEFT JOIN location l1 on l1.id = soc.POD "
     				+ "  where soc.order_id = ?";
     	}else if(type.equals("internalTrade")){
     		sql = "select * from sp_internal_trade where order_id = ?";
@@ -817,9 +820,9 @@ public class SupplierContractController extends Controller {
     	}else if(type.equals("bulkCargoItem")){
     		sql = " select sbc.*,ul.c_name creator_name ,c1.name port_charge_crc_name,c2.name doc_crc_name,c3.name vgm_crc_name,c4.name  d_o_crc_name "
     				+" ,c5.name o_f_crc_name,c6.name handling_crc_name,c7.name cfs_crc_name,c8.name thc_crc_name,c9.name  "+" baf_crc_name "
-    				+" ,c10.name cic_crc_name,c11.name loading_fee_crc_name,c12.name total_crc_name "
+    				+" ,c10.name cic_crc_name,c11.name loading_fee_crc_name,c12.name total_crc_name,l.name POL_name,l1.name POD_name "
     				+"  from sp_bulk_cargo_item sbc "
-    				+"     				  left join user_login ul on ul.id = sbc.creator  "
+    				+"  left join user_login ul on ul.id = sbc.creator  "
     				+" left join currency c1 on c1.id=sbc.port_charge_crc "
     				+" left join currency c2 on c2.id=sbc.doc_crc "
     				+" left join currency c3 on c3.id=sbc.vgm_crc "
@@ -832,7 +835,9 @@ public class SupplierContractController extends Controller {
     				+" left join currency c10 on c10.id=sbc.cic_crc "
     				+" left join currency c11 on c11.id=sbc.loading_fee_crc "
     				+" left join currency c12 on c12.id=sbc.total_crc "
-    				+"     				  where sbc.order_id = ? ";
+    				+" LEFT JOIN location l on l.id = sbc.POL "
+    				+" LEFT JOIN location l1 on l1.id = sbc.POD "
+    				+" where sbc.order_id = ? ";
     	}else if(type.equals("landTransport")){
     		sql = "select * from sp_land_transport where order_id = ?";
     	}else if(type.equals("landTransportItem")){
