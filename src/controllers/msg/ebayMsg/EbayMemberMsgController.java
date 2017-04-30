@@ -69,18 +69,19 @@ public class EbayMemberMsgController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "select * from (select * from ebay_member_msg group by item_id, sender_id, subject, message_status) A where 1=1 ";
+        String sql = "select m.*, if("
+            +"    ("
+            +"        select count(1) reply_count from ebay_member_msg_reply where msg_id=m.message_id"
+            +"    )>0, 'Y','N') reply_status from ebay_member_msg m where 1=1 ";
 
         String condition = DbUtils.buildConditions(getParaMap());
 
-        String sqlTotal = "select count(1) total from (" + sql + condition
-                + ") B";
+        String sqlTotal = "select count(1) total from (" + sql + condition + ") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
 
         List<Record> orderList = Db.find(sql + condition
-                + " "
-                + " order by message_status desc, creation_date desc " + sLimit);
+                + " order by creation_date desc " + sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
@@ -237,6 +238,7 @@ public class EbayMemberMsgController extends Controller {
         //Record rec = Db.findById("ebay_member_msg_replay", Long.valueOf(id));
         Record rec = new Record();
         rec.set("body", msg_response);
+        rec.set("msg_id", msg_id);
         rec.set("item_id", item_id);
         rec.set("recipient_id", sender_id);
         rec.set("sender_id", recipient_id);
@@ -267,4 +269,19 @@ public class EbayMemberMsgController extends Controller {
         }
         renderJson(rec);
     }
+    
+    public void markMsgReplyed(){
+        String msg_id = getPara("msg_id");
+        Record oldRec = Db.findFirst(
+                "select * from ebay_member_msg where message_id=?", msg_id);
+        if (oldRec != null) {
+            oldRec.set("eeda_mark_flag", "replyed");
+            Db.update("ebay_member_msg", oldRec);
+        }
+        Record rec = new Record();
+        rec.set("status", "OK");
+        rec.set("msg", "OK");
+        renderJson(rec);
+    }
+   
 }

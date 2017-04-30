@@ -11,7 +11,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
             ajax: "/ebayMemberMsg/list",
             columns:[
                 { "data": "ID", visible: false}, 
-                { "data": "MESSAGE_STATUS", "width":"20px"}, 
+                { "data": "MESSAGE_ID", "width":"80px",
+                  "render": function ( data, type, full, meta ) {
+                        return '<button type="button" class="handle btn btn-default btn-xs" msg_id="'+data+'">设为已回复</button>';
+                  }
+                },
+                { "data": "REPLY_STATUS", "width":"40px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data=='Y' || full.EEDA_MARK_FLAG == 'replyed'){
+                        return "已回复";
+                      }else{
+                        return "<strong style='color:red;'>未回复</strong>";
+                      }
+                  }
+                }, 
 	              { "data": "SENDER_ID", "class":'sender_id', "width":"60px"}, 
                 { "data": "RECIPIENT_ID", "width":"60px"},
                 { "data": "SUBJECT", 
@@ -19,7 +32,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
                       return "<a href='#' class='edit' style='cursor: pointer;'>"+data+"</a>";
                   }
                 },
-                { "data": "CREATION_DATE", "width":"60px"},
+                { "data": "CREATION_DATE", "width":"120px"},
                 { "data": "ITEM_ID","class":'item_id', "width":"60px"}
             ]
         });
@@ -154,6 +167,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
             $.unblockUI();
         });
 
+      });
+
+      $('#eeda_table').on('click','.handle',function(){
+        var msg_id=$(this).attr('msg_id'); 
+        $.blockUI();
+        $.post('/ebayMemberMsg/markMsgReplyed', {msg_id:msg_id}, function(data, textStatus, xhr) {
+          var status = data.STATUS;
+          if(status=='OK'){
+            searchData(); 
+            $.unblockUI();
+          }
+        }).fail(function() {
+            $.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+            $.unblockUI();
+        });
       });
 
     });
