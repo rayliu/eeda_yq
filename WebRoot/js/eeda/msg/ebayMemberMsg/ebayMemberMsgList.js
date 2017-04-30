@@ -29,7 +29,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
                 { "data": "RECIPIENT_ID", "width":"60px"},
                 { "data": "SUBJECT", 
                   "render": function ( data, type, full, meta ) {
-                      return "<a href='#' class='edit' style='cursor: pointer;'>"+data+"</a>";
+                      return "<a href='#' class='edit' style='cursor: pointer;' msg_id="+full.MESSAGE_ID+">"+data+"</a>";
                   }
                 },
                 { "data": "CREATION_DATE", "width":"120px"},
@@ -67,9 +67,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
         var tr = $(this).parent().parent();
         $('#edit_id').val(tr.attr('id'));
         var sender_id = tr.find(".sender_id").text();
-
+        var msg_id = $(this).attr('msg_id');
+        
           $.post('/ebayMemberMsg/getMemberMsg', {id: tr.attr('id'),item_id:tr.find(".item_id").text(), sender_id:sender_id}, function(data, textStatus, xhr) {
-              $('#msg_id').val(data[0].MESSAGE_ID);
+              $('#msg_id').val(msg_id);
         	    $('#sender_id').val(data[0].SENDER_ID);
               $('#recipient_id').val(data[0].RECIPIENT_ID);
               $('#subject').val(data[0].SUBJECT);
