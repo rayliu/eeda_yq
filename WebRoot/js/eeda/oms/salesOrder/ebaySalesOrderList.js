@@ -14,7 +14,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 { "data": "ITEM_ID", "width":"100px"},
                 { "data": "GROUP_RECORD_NUMBER", "width":"80px"},
                 { "data": "SKU", "width":"120px"},
-	              { "data": "BUYER_USER_ID", "width":"120px"}, 
+	              { "data": "BUYER_USER_ID", "width":"120px",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                          return "<a href='#' class='address' buyer_name='"+full.BUYER_USER_NAME
+                            +"' buyer_address='"+full.BUYER_SHIP_ADDRESS+"' title='查看名称和地址'>" + data + "</a>";
+                      }
+                      return "";
+                    }
+                }, 
                 { "data": "SELLER_USER_ID", "width":"90px"},
                 { "data": "TOTAL", "width":"60px",
                   "render": function ( data, type, full, meta ) {
@@ -73,7 +81,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             searchData();
             $.unblockUI();
          });
-      })
+      });
     	
-});
+      $('#eeda_table').on('click', '.address', function(){
+        var name = $(this).attr('buyer_name');
+        var address = $(this).attr('buyer_address');
+        $('#buyerName').val(name);
+        $('#buyerAddress').text(address);
+
+        $('#buyerAddressModal').modal('show');
+      });
+      
+  });
 });

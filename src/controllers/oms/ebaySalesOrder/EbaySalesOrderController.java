@@ -16,6 +16,7 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 
 import com.ebay.sdk.ApiContext;
 import com.ebay.sdk.call.GetOrdersCall;
+import com.ebay.soap.eBLBaseComponents.AddressType;
 import com.ebay.soap.eBLBaseComponents.DetailLevelCodeType;
 import com.ebay.soap.eBLBaseComponents.OrderIDArrayType;
 import com.ebay.soap.eBLBaseComponents.OrderStatusCodeType;
@@ -127,6 +128,17 @@ public class EbaySalesOrderController extends Controller {
                 rec.set("total", order.getTotal().getValue());
                 rec.set("total_currency_id", order.getTotal().getCurrencyID().value());
                 rec.set("buyer_user_ID", order.getBuyerUserID());
+                AddressType addr = order.getShippingAddress();
+                rec.set("buyer_user_name", addr.getName());
+                
+                String strAddr = "Street1: "+addr.getStreet1() + "\n"
+                        + "Street2: "+addr.getStreet2() + "\n"
+                        + "CityName: "+addr.getCityName() + "\n"
+                        + "State: "+addr.getStateOrProvince() + "\n"
+                        + "CountryName: "+addr.getCountryName() + "\n"
+                        + "PostalCode: "+addr.getPostalCode();
+                rec.set("buyer_ship_address", strAddr);
+                
                 rec.set("seller_user_ID", order.getSellerUserID());
                 rec.set("order_status", order.getOrderStatus().value());
                 if(order.getShippedTime()!=null)

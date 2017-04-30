@@ -1,4 +1,7 @@
 
+.nav-tabs>li{
+    margin-bottom: -2px;
+}
 /* DataTables Overrides */
 
 table.dataTable thead .sorting,
