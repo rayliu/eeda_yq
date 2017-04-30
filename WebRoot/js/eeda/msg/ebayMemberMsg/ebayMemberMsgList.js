@@ -124,7 +124,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
         var item_id=$('#item_id').val();
         var msg_id=$('#msg_id').val(); 
 
-
+        $.blockUI();
         $.post('/ebayMemberMsg/replyMsg', {msg_id:msg_id, item_id:item_id, msg_response:msg_response,sender_id:sender_id,subject:subject, recipient_id:recipient_id}, function(data, textStatus, xhr) {
       	   var body = data.BODY;
       	   var sender_id = data.SENDER_ID;
@@ -147,9 +147,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
           		  +'</li>');
             
             $('#msg_response').val("");
-            
+            $.scojs_message('回复成功', $.scojs_message.TYPE_OK);
+            $.unblockUI();
         }).fail(function() {
             $.scojs_message('回复失败', $.scojs_message.TYPE_ERROR);
+            $.unblockUI();
         });
 
       });
