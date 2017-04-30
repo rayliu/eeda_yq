@@ -257,7 +257,7 @@ public class EbayMemberMsgController extends Controller {
         
         //TODO: 发送失败应该在UI上提示失败！
         try {
-//            api.addMemberMessageRTQ();
+            api.addMemberMessageRTQ();
         } catch (Exception e) {
             e.printStackTrace();
             Record r = new Record();
