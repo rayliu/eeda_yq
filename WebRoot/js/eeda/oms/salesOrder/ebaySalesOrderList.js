@@ -65,16 +65,41 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
         });
       
       $('#searchBtn').click(function(){
-          searchData(); 
+          var value = $('#orderTabs li.active a').text();
+          var order_type = "";
+          if(value=="全部"){
+            order_type = "all";
+          }else if(value=="未付款"){
+            order_type = "noPay";
+          }else if(value=="未发货"){
+            order_type = "noShip";
+          }
+          searchData(order_type); 
       })
 
-     var searchData=function(){
+     var searchData=function(order_type){
 
-          var url = "/ebaySalesOrder/list";
+          var url = "/ebaySalesOrder/list?order_type="+order_type;
 
           dataTable.ajax.url(url).load();
       };
       
+      $('#orderTabs a').click(function(){
+        var value = $(this).attr('name');
+        var order_type = "";
+        if(value=="全部"){
+          order_type = "all";
+        }else if(value=="未付款"){
+          order_type = "noPay";
+        }else if(value=="未发货"){
+          order_type = "noShip";
+        }
+        searchData(order_type);
+
+      });
+
+
+
       $('#importBtn').click(function(){
         $.blockUI();
          $.post('/ebaySalesOrder/importOrders', {nothing: 'nothing'}, function(data, textStatus, xhr) {

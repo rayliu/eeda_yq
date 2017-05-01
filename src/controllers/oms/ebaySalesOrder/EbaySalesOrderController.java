@@ -61,7 +61,7 @@ public class EbaySalesOrderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
 
-        String type = getPara("type");
+        String order_type = getPara("order_type");
 
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -73,8 +73,14 @@ public class EbaySalesOrderController extends Controller {
         		+ " concat(cast(sales_record_parent_number as char),'-',cast(sales_record_number as char))) group_record_number"
         		+ " from ebay_order where 1=1 ";
 
-        String condition = DbUtils.buildConditions(getParaMap());
+        String condition = "";//DbUtils.buildConditions(getParaMap());
 
+        if("noPay".equals(order_type)){
+            condition =  condition + " and paid_time is null ";
+        }else if("noShip".equals(order_type)){
+            condition =  condition + " and shipped_time is null ";
+        }
+        
         String sqlTotal = "select count(1) total from (" + sql + condition
                 + ") B";
         Record rec = Db.findFirst(sqlTotal);
