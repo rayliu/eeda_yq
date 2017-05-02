@@ -17,8 +17,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
        
         var order = {
             id: $('#id').val(),
+            account_name: $('#account_name').val(),
             bank_name: $('#bank_name').val(),
-            bank_person: $('#bank_person').val(),
             account_no: $('#account_no').val(),
             type: $('#type').val(),
             currency: $('#currency').val(),
@@ -45,31 +45,25 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
 	$('#accountFrom').validate({
         rules: {
-       	  bank_name: {
+        	account_name: {
             required: true
           },
-          bank_person: {
+          bank_name: {
             required: true
           },
           account_no:{
             required: true
-          },
-          type:{
-        	  required: true
           }
         },
         messages:{
-        	bank_name: {
+        	account_name: {
                 required: "账户名称不能为空"
               },
-              bank_person: {
-                required: "开户人姓名不能为空"
+              bank_name: {
+                required: "开户行不能为空"
               },
               account_no:{
                 required: "银行账户号码不能为空"
-              },
-              type:{
-            	  required: "账户类型不能为空"
               }
         },
         highlight: function(element) {

@@ -137,7 +137,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		 $.scojs_message('请填上面的必填字段', $.scojs_message.TYPE_ERROR);
     		  return false;
     	 }
-    	 $("#save").attr("disabled",true);
+    	 $("#save").attr("disabled",false);
     	 var order={};
     	 order.acount_json =itemOrder.buildCargoDetail();
     	 $("#acount_json").val(JSON.stringify(order));

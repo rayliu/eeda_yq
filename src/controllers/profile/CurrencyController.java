@@ -107,16 +107,14 @@ public class CurrencyController extends Controller {
     public void list() {
         String sLimit = "";
         String pageIndex = getPara("sEcho");
-      //获取office_id
-   		UserLogin user = LoginUserController.getLoginUser(this);
-   		long office_id = user.getLong("office_id");
+      
         if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
             sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
         }
 
         String sql = "select cu.*,ul.c_name creator_name from currency cu"
         		+ " left join user_login ul on ul.id = cu.creator"
-        		+ " where 1 = 1 and cu.office_id = "+office_id;
+        		+ " where 1 = 1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
 

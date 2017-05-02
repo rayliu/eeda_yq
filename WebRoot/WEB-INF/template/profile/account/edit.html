@@ -21,17 +21,17 @@
 							<input id="id" name="id" type="hidden" value="${order.id!''}">
                             <div class="col-lg-4"><!--  三列排版  -->
                                 <%include("/eeda/component/form/inputField.html", 
-                                    {   id:'bank_name', 
+                                    {   id:'account_name', 
                                         label:'账户名称', 
-                                        value:order.bank_name!'',
+                                        value:order.account_name!'',
                                         required:'required'
                                     }){}%>
                             </div>
                             <div class="col-lg-4">
                                 <%include("/eeda/component/form/inputField.html", 
-                                    {   id:'bank_person', 
-                                        label:'开户人姓名', 
-                                        value:order.BANK_PERSON!'',
+                                    {   id:'bank_name', 
+                                        label:'开户行', 
+                                        value:order.bank_name!'',
                                         required:'required'
                                     }){}%>
                             </div>
@@ -47,7 +47,7 @@
                                 <%include("/eeda/component/form/selectField.html", 
                                     {   id:'type', 
                                         label:'账户类型', 
-                                        required:'required',
+                                        
                                         value:order.type!'',
                                         value_list:[
                                             {code:'REC', value:'收款'},
@@ -59,8 +59,8 @@
                             <div class="col-lg-4">
                                 <%include("/eeda/component/form/selectField.html", 
                                     {   id:'currency', 
-                                        label:'账户类型', 
-                                        required:'required',
+                                        label:'币种类型', 
+                                       
                                         value:order.currency!'',
                                         value_list:[
                                             {code:'人民币', value:'人民币'},

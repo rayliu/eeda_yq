@@ -332,7 +332,10 @@
 	                                        	<button id="disVerification" type="button" class="btn btn-danger btn-xs" disabled>审批不通过</button>
                                         	<%}%>
                                         	<button id="marking" type="button" class="btn  btn_green">打分</button>
-                                        	<a class="btn  btn_white" href="/serviceProvider">返回</a>
+                                        	<a class="btn  btn_white" href="/serviceProvider">返回</a><br>
+                                        	 <% if(shiro.hasPermission("serviceProvider.create")){%>
+                                        	<a class="btn  btn_green" href="/serviceProvider/add" style="margin-top:10px">新增供应商</a>
+                                        	  <%}%>
                                     	</div>
 									</div>
                                     

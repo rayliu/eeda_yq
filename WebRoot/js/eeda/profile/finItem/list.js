@@ -11,7 +11,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             columns:[
                  { "data": "CODE"},          
                  { "data": "NAME"},          
-                 { "data": "NAME_ENG"},          
+                 { "data": "NAME_ENG"}, 
+                 { "data": "BINDING_CURRENCY"},
                  { "data": "REMARK"},
                  {"data": null, 
                     "render": function ( data, type, full, meta ) {

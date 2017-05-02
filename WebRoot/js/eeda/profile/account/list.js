@@ -6,7 +6,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
         id: 'eeda-table',
         ajax: "/account/list",
         columns:[
-            {  "data": "BANK_NAME", 
+            {  "data": "ACCOUNT_NAME", 
                 "render": function ( data, type, full, meta ) {
                     if(Account.isUpdate){
                         return "<a  href='/account/edit?id="+full.ID+"' target='_blank'>" + data + "</a>";
@@ -28,7 +28,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 }
         	},
             {"data":"ACCOUNT_NO"},
-            {"data":"BANK_PERSON"},
+            {"data":"BANK_NAME"},
             {"data":"CURRENCY"},
             {"data":"REMARK"},
             {

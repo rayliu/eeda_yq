@@ -106,9 +106,9 @@ public class FinItemController extends Controller {
         
         String sql = "";
         if(code==null&&name==null&&name_eng==null){
-        	sql = "SELECT id,code,name_eng,name,remark from fin_item f where 1 =1 "+office_id;
+        	sql = "SELECT * from fin_item f where 1 =1 "+office_id;
         }else{
-        	sql = "SELECT id,code,name_eng,name,remark from fin_item f where 1 =1 "+office_id
+        	sql = "SELECT * from fin_item f where 1 =1 "+office_id
         			+ " and code like '%"+code
         			+"%' and name like '%"+name
         			+"%' and name_eng like '%"+name_eng+"%'";
@@ -174,6 +174,7 @@ public class FinItemController extends Controller {
         String code = (String) dto.get("code");
         String name = (String) dto.get("name");
         String name_eng = (String) dto.get("name_eng");
+        String binding_currency = (String) dto.get("binding_currency");
         String remark = (String) dto.get("remark");
         
         if (StringUtils.isBlank(id)) {
@@ -181,6 +182,7 @@ public class FinItemController extends Controller {
         	r.set("code", code);
         	r.set("name", name);
             r.set("name_eng", name_eng);
+            r.set("binding_currency", binding_currency);
             r.set("remark", remark);
             r.set("office_id", officeId);
             r.save();
@@ -189,6 +191,7 @@ public class FinItemController extends Controller {
         	r.set("code", code);
         	r.set("name", name);
             r.set("name_eng", name_eng);
+            r.set("binding_currency", binding_currency);
             r.set("remark", remark);            
             r.update();
         }

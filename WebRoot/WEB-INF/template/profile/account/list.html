@@ -27,17 +27,17 @@
 	                </div><!-- /.row -->
 
 	                <div class="form-group button-bar" >
-	                    <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+	                    <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
 	                    <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
 	                    <% if(shiro.hasPermission("Account.create")){%>
-	                    	<a class="btn btn-success btn-sm" href="/account/create">新增</a>
+	                    	<a class="btn btn_green" href="/account/create">新增</a>
 	                    <%}%>
 	                </div>
 
 	                <%include("/eeda/component/form/detailTable.html", 
 	                    {
 	                        id:'eeda-table', 
-	                        headers:['账户名称', '账户类型', '账号', '开户人', '币种', '备注', '']
+	                        headers:['账户名称', '账户类型', '银行账号', '开户行', '币种', '备注', '']
 	                    }){} %>
 	      		</div>
 			</div>

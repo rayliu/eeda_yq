@@ -71,25 +71,25 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                		return '<button type="button" class="delete btn btn-default btn-xs" style="width:100%" >删除</button> ';
 	                }
 	            },
+	            { "data": "ACCOUNT_NAME","width": "25%",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return '<input style="width:100%"  type="text" name="ACCOUNT_NAME" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
 	            { "data": "BANK_NAME","width": "25%",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    return '<input style="width:100%"  type="text" name="BANK_NAME" value="'+data+'" class="form-control search-control" />';
+	                    return '<input type="text" name="BANK_NAME" value="'+data+'" class="form-control search-control" style="width:100%"/>';
 	                }
 	            },
 	            { "data": "ACCOUNT_NO","width": "25%",
 	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                    return '<input type="text" name="ACCOUNT_NO" value="'+data+'" class="form-control search-control" style="width:100%"/>';
-	                }
-	            },
-	            { "data": "ACCOUNT_NAME","width": "25%",
-	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
 	                	   data='';
-	                   return '<input type="text" name="ACCOUNT_NAME" value="'+data+'" class="form-control search-control" style="width:100%"/>';
+	                   return '<input type="text" name="ACCOUNT_NO" value="'+data+'" class="form-control search-control" style="width:100%"/>';
 	                }
 	            },
 	            { "data": "REMARK","width": "20%",

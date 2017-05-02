@@ -77,7 +77,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 id: $('#id').val(),
                 code: $('#code').val(),                
                 name: $('#name').val(),                
-                name_eng: $('#name_eng').val(),                
+                name_eng: $('#name_eng').val(),
+                binding_currency: $('#binding_currency').val(),
                 remark: $('#remark').val()
             };
             //异步向后台提交数据
@@ -88,6 +89,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	$("#code").val(order.CODE);
                 	$("#name").val(order.NAME);
                 	$("#name_eng").val(order.NAME_ENG);
+                	$('#binding_currency').val(order.BINDING_CURRENCY),
                 	$("#remark").val(order.REMARK);
                     eeda.contactUrl("edit?id",order.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
