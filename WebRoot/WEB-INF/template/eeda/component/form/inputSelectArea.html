@@ -48,6 +48,12 @@ $(document).ready(function() {
     inputField.on('keyup click ', function(event){
         var me = this;
         var inputStr = inputField.val().trim();
+        
+//         if(event.keyCode==8 && inputStr==""){
+        	
+//         	return ;
+//         }else{
+        	
         var url = "/customer/search_party";
         if('${url!''}'!=""){
         	url = '${url!''}';
@@ -58,6 +64,17 @@ $(document).ready(function() {
                 return;
             }
             companyList.empty();
+            if(inputStr=='' && data.length>0){
+				if(data[0].REF_ID){
+					companyList.append('<span class="search_hint">您曾经使用过的'+data.length+'行记录, 需要别的数据请输入更多查询条件</span>');
+				}else{
+					companyList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+				}
+			}else if(data.length==0){
+				companyList.append('<span class="search_hint">无记录</span>');
+			}else if(inputStr.length>0 && data.length==10){
+				companyList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+			}
             for(var i = 0; i < data.length; i++)
                 companyList.append("<li><a class='fromLocationItem popListItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' phone='"+data[i].PHONE+"' fax='"+data[i].FAX+"' partyId='"+data[i].ID+"' zip_code='"+data[i].ZIP_CODE+"' address='"+data[i].ADDRESS+"' >"+data[i].ABBR+"</a></li>");
             companyList.css({ 
@@ -68,15 +85,19 @@ $(document).ready(function() {
             eeda.hidePopList();
             companyList.show();
             //当查询结果只有一个时，自动赋值到hiddenField
-            if(data.length==0)
-                hiddenField.val('');
-            if(data.length==1&&data[0].ID)
+            if(data.length==0){
+            	hiddenField.val('');
+            }
+            if(data.length==1&&data[0].ID){
                 hiddenField.val(data[0].ID);
+            	}
             if(!inputStr){
+            	
             	if(data.length>1)
                     hiddenField.val('');
             }
         },'json');
+//       }
     });
     
     companyList.on('click', '.fromLocationItem', function(e){

@@ -17,15 +17,19 @@ $(document).ready(function() {
 	
 	//供应商查询
     //获取供应商的list，选中信息在下方展示其他信息
-    inputField.on('input click', function(){
+    inputField.on('keyup click', function(event){
     	var me = this;
 		var inputStr = inputField.val();
-		
+     if(event.keyCode==8){
+
+    	return ;
+    }else{
 		$.get('/customer/searchParty', {partyName:inputStr, type: '${type}'}, function(data){
 			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 				return;
 			}
 			spList.empty();
+			
 			for(var i = 0; i < data.length; i++){
 				var abbr = data[i].ABBR;
 				var company_name = data[i].COMPANY_NAME;
@@ -53,13 +57,17 @@ $(document).ready(function() {
 			//当查询结果只有一个时，自动赋值到hiddenField
 			if(data.length==0)
                 hiddenField.val('');
-            if(data.length==1&&data[0].ID)
-                hiddenField.val(data[0].ID);
+            if(data.length==1&&data[0].ID){
+            	hiddenField.val(data[0].ID);
+            	$('#${id}_input').val(data[0].ABBR);
+            }
+                
             if(!inputStr){
             	if(data.length>1)
                     hiddenField.val('');
             }  
 		},'json');
+     }
     });
     
     // 没选中供应商，焦点离开，隐藏列表

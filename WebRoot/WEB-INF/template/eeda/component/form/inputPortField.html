@@ -33,14 +33,20 @@ $(document).ready(function() {
     inputField.on('keyup click', function(event){
     	var me = this;
     	var inputStr = inputField.val();
-        if(cpLock)
-            return;
+        if(cpLock){
+        	return;
+        }
+            
 
     	if (event.keyCode == 40) {
             spList.find('li').first().focus();
             return false;
         }
+    	if(event.keyCode==8){
 
+        	return ;
+        }else{
+    	
 		$.get('/location/searchPort', {input:inputStr}, function(data){
 			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 				return;
@@ -77,13 +83,17 @@ $(document).ready(function() {
 			//当查询结果只有一个时，自动赋值到hiddenField
 			if(data.length==0)
                 hiddenField.val('');
-            if(data.length==1&&data[0].ID)
-                hiddenField.val(data[0].ID);
+            if(data.length==1&&data[0].ID){
+            	hiddenField.val(data[0].ID);
+            	$('#${id}_input').val(data[0].NAME);
+            }
+                
             if(!inputStr){
             	if(data.length>1)
                     hiddenField.val('');
             } 
 		},'json');
+      }
     });
     
 	//选中item

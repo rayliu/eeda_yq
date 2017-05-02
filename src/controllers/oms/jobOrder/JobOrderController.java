@@ -266,11 +266,14 @@ public class JobOrderController extends Controller {
    		
    		String export_date = (String)dto.get("order_export_date");
         String newDateStr = "";
+        String newDateStrMM = "";
         SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
         SimpleDateFormat sdf = new SimpleDateFormat("yy");//转换后的格式
+        SimpleDateFormat sdfMM = new SimpleDateFormat("MM");//转换后的格式
         try {
             Date date=parseFormat.parse(export_date);
             newDateStr=sdf.format(date);
+            newDateStrMM=sdfMM.format(date);
         } catch (ParseException ex) {
             logger.debug("处理工作单出货日期出错："+ex.getMessage());
         }
@@ -328,27 +331,52 @@ public class JobOrderController extends Controller {
    			//create 
    			DbUtils.setModelValues(dto, jobOrder);
 //   			String newOrder_on ="EKYZH"+generateJobPrefix(type);
-   			
+   			if(office_id==1){
    			//需后台处理的字段
-   			String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, office_id);
-   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
-   			sb.insert(5, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
-   			order_no = sb.toString();
-            jobOrder.set("order_no", order_no);
-   			jobOrder.set("creator", user.getLong("id"));
-   			jobOrder.set("create_stamp", new Date());
-   			jobOrder.set("updator", user.getLong("id"));
-            jobOrder.set("update_stamp", new Date());
-   			jobOrder.set("office_id", office_id);
-   			jobOrder.save();
-   			id = jobOrder.getLong("id").toString();
-   			
-   			//创建过工作单，设置plan_order_item的字段
-   			PlanOrderItem planOrderItem = PlanOrderItem.dao.findById(planOrderItemID);
-   			if(planOrderItem!=null){
-                   planOrderItem.set("is_gen_job", "Y");
-                   planOrderItem.update();
+   	   			String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, office_id);
+   	   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
+   	   			sb.insert(5, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
+   	   			order_no = sb.toString();
+   	            jobOrder.set("order_no", order_no);
+   	   			jobOrder.set("creator", user.getLong("id"));
+   	   			jobOrder.set("create_stamp", new Date());
+   	   			jobOrder.set("updator", user.getLong("id"));
+   	            jobOrder.set("update_stamp", new Date());
+   	   			jobOrder.set("office_id", office_id);
+   	   			jobOrder.save();
+   	   			id = jobOrder.getLong("id").toString();
+   	   			
+   	   			//创建过工作单，设置plan_order_item的字段
+   	   			PlanOrderItem planOrderItem = PlanOrderItem.dao.findById(planOrderItemID);
+   	   			if(planOrderItem!=null){
+   	                   planOrderItem.set("is_gen_job", "Y");
+   	                   planOrderItem.update();
+   	   			}
    			}
+   			if(office_id==6){
+   			//需后台处理的字段
+   	   			String order_no = OrderNoGenerator.getNextOrderNo("KF", newDateStr, office_id);
+   	   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
+   	   			sb.insert(2, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
+   	   			sb.insert(5, newDateStrMM);//在指定的位置1，插入指定的字符串
+   	   			order_no = sb.toString();
+   	            jobOrder.set("order_no", order_no);
+   	   			jobOrder.set("creator", user.getLong("id"));
+   	   			jobOrder.set("create_stamp", new Date());
+   	   			jobOrder.set("updator", user.getLong("id"));
+   	            jobOrder.set("update_stamp", new Date());
+   	   			jobOrder.set("office_id", office_id);
+   	   			jobOrder.save();
+   	   			id = jobOrder.getLong("id").toString();
+   	   			
+   	   			//创建过工作单，设置plan_order_item的字段
+   	   			PlanOrderItem planOrderItem = PlanOrderItem.dao.findById(planOrderItemID);
+   	   			if(planOrderItem!=null){
+   	                   planOrderItem.set("is_gen_job", "Y");
+   	                   planOrderItem.update();
+   	   			}
+   			}
+   			
    		}
    		long customerId = Long.valueOf(dto.get("customer_id").toString());
    		//常用客户保存进入历史记录
