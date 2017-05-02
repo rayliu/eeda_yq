@@ -39,6 +39,15 @@ table.dataTable thead.eeda .sorting_desc:after {
 table.dataTable thead.eeda .sorting:after {
     content: "";
 }
+
+
+table.dataTable  .item_no{
+    min-width: 80px;
+}
+
+table.dataTable  .item_name{
+    min-width: 220px;
+}
 /* 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     display: inline !important;

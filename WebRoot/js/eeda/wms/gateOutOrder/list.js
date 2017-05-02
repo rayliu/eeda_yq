@@ -19,19 +19,23 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                       return '<input type="checkBox" name="checkBox" checked disabled>';
                     }
                 },
-                { "data": "ITEM_NO"}, 
-                {"data": "ITEM_NAME", 
+                { "data": "ITEM_NO", class: "item_no", visible: false}, 
+                {"data": "ITEM_NAME", class: "item_name", visible: false, 
               	    "render": function ( data, type, full, meta ) {
+                        $('.itemShow').show();
+                        if(data){
+                            $('#productName').text(data);
+                        }
               		    return data;
               	    }
                 },
-                { "data": "PART_NO"}, 
-				{ "data": "PART_NAME"}, 
-				{ "data": "AMOUNT"},
-				{ "data": "QUANTITY"},
-				{ "data": "SHELVES"}, 
-				{ "data": "CREATE_TIME"},
-				{ "data": "CREATOR_NAME"}
+                { "data": "PART_NO", "width": "120px"}, 
+				{ "data": "PART_NAME", "width": "320px"}, 
+				{ "data": "AMOUNT", "width": "50px"},
+				{ "data": "QUANTITY", "width": "50px"},
+				{ "data": "SHELVES", "width": "80px"}, 
+				{ "data": "CREATE_TIME", "width": "120px"},
+				{ "data": "CREATOR_NAME", "width": "80px"}
             ]
         });
         
@@ -42,7 +46,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	var item_no = $('#item_no').val();
         	var kt_no = $('#kt_no').val();
         	if(item_no.trim() == '' || kt_no.trim() == ''){
-        		$.scojs_message('产品编码和KT_NO不能为空', $.scojs_message.TYPE_FALSE);
+        		$.scojs_message('KT_NO, 产品编码不能为空', $.scojs_message.TYPE_FALSE);
         		return false;
         	}
 
@@ -230,6 +234,8 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
       
         $('#resetBtn').click(function(e){
         	$("#orderForm")[0].reset();
+            $('.itemShow').hide();
+            $('#productName').text("");
         });
 
  

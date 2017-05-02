@@ -64,9 +64,16 @@
 			                </form>
 			            </div>
 			        </div>
+
+			        <div class="form-group itemShow" style="background-color:#DCDCDC;display:none" >
+				        <label>产品名称: </label>
+				        <label id="productName"></label>
+				    </div>
+
 	                <%include("/eeda/component/form/detailTable.html", 
 	                {
-	                    id:'eeda-table', 
+	                    id:'eeda-table',
+	                    style:'width:1050px',
 	                    headers:[
 	                    	'',
 	                    	'产品编码',
