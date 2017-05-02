@@ -1,0 +1,1 @@
+package models.eeda.tr.tradeJoborder;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class TradeCostApplicationOrderRel extends Model<TradeCostApplicationOrderRel> {	public static final TradeCostApplicationOrderRel dao = new TradeCostApplicationOrderRel();}

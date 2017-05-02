@@ -67,7 +67,7 @@ $(document).ready(function() {
             },
             { "data": "ORDER_NO", "width": "80px",
 		    	  "render": function ( data, type, full, meta ) {
-                      return "<a href='/jobOrder/edit?id="+full.JOB_ORDER_ID+"'target='_blank'>"+data+"</a>";
+                      return "<a href='/trJobOrder/edit?id="+full.JOB_ORDER_ID+"'target='_blank'>"+data+"</a>";
                   }
             },
             { "data": "ORDER_EXPORT_DATE", "width": "70px"},
@@ -159,7 +159,7 @@ $(document).ready(function() {
             },
               { "data": "ORDER_NO", "width": "80px",
               "render": function ( data, type, full, meta ) {
-                        return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+                        return "<a href='/trJobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
                     }
               },
               { "data": "ORDER_EXPORT_DATE", "width": "100px"},
@@ -474,7 +474,7 @@ $(document).ready(function() {
       	    	        $('#exchange').attr('disabled',false);
             	    	var order_id = $('#order_id').val();
                     
-            	    	 var url = "/chargeCheckOrder/tableList?order_id="+order_id
+            	    	 var url = "/tradeChargeCheckOrder/tableList?order_id="+order_id
             	         +"&table_type=item"
             	         +"&query_currency="+que_currency;
             	         

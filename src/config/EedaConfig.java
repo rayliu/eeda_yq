@@ -115,6 +115,14 @@ import models.eeda.tms.TransArapCostOrder;
 import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
 import models.eeda.tms.TransJobOrderLandItem;
+import models.eeda.tr.tradeJoborder.TradeArapChargeApplicationOrder;
+import models.eeda.tr.tradeJoborder.TradeArapChargeItem;
+import models.eeda.tr.tradeJoborder.TradeArapChargeOrder;
+import models.eeda.tr.tradeJoborder.TradeArapCostApplicationOrder;
+import models.eeda.tr.tradeJoborder.TradeArapCostItem;
+import models.eeda.tr.tradeJoborder.TradeArapCostOrder;
+import models.eeda.tr.tradeJoborder.TradeChargeApplicationOrderRel;
+import models.eeda.tr.tradeJoborder.TradeCostApplicationOrderRel;
 import models.eeda.tr.tradeJoborder.TradeJobOrder;
 import models.eeda.tr.tradeJoborder.TradeJobOrderArap;
 import models.eeda.tr.tradeJoborder.TradeJobOrderDoc;
@@ -569,6 +577,15 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("trade_job_order_doc", TradeJobOrderDoc.class);
         arp.addMapping("trade_job_order_sendMail", TradeJobOrderSendMail.class);
         arp.addMapping("trade_job_order_sendmail_template", TradeJobOrderSendMailTemplate.class);
+        
+        arp.addMapping("trade_arap_charge_order", TradeArapChargeOrder.class);
+        arp.addMapping("trade_arap_charge_item", TradeArapChargeItem.class);
+        arp.addMapping("trade_arap_charge_application_order", TradeArapChargeApplicationOrder.class);
+        arp.addMapping("trade_charge_application_order_rel",TradeChargeApplicationOrderRel.class);
+        arp.addMapping("trade_arap_cost_item", TradeArapCostItem.class);
+        arp.addMapping("trade_arap_cost_order", TradeArapCostOrder.class);
+        arp.addMapping("trade_cost_application_order_rel", TradeCostApplicationOrderRel.class);
+        arp.addMapping("trade_arap_cost_application_order", TradeArapCostApplicationOrder.class);
     }
 
     private void initDBconnector() {

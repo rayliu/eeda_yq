@@ -77,7 +77,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/chargeCheckOrder/checkedList?order_no="+order_no
+          var url = "/tradeChargeCheckOrder/checkedList?order_no="+order_no
                +"&sp_name="+sp_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date

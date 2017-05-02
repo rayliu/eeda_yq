@@ -9,11 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.ArapChargeItem;
-import models.ArapChargeOrder;
+import models.eeda.tr.tradeJoborder.TradeArapChargeItem;
+import models.eeda.tr.tradeJoborder.TradeArapChargeOrder;
 import models.RateContrast;
 import models.UserLogin;
-import models.eeda.oms.jobOrder.JobOrderArap;
+import models.eeda.tr.tradeJoborder.TradeJobOrderArap;
 import models.eeda.profile.Currency;
 
 import org.apache.commons.lang.StringUtils;
@@ -52,7 +52,7 @@ public class TradeChargeCheckOrderController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
-        ArapChargeOrder order = new ArapChargeOrder();
+       TradeArapChargeOrder order = new TradeArapChargeOrder();
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
@@ -60,7 +60,7 @@ public class TradeChargeCheckOrderController extends Controller {
    		
    		if (StringUtils.isNotEmpty(id)) {
    			//update
-   			order = ArapChargeOrder.dao.findById(id);
+   			order = TradeArapChargeOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, order);
    			
    			//需后台处理的字段
@@ -82,18 +82,18 @@ public class TradeChargeCheckOrderController extends Controller {
    			id = order.getLong("id").toString();
    		}
 
-   		ArapChargeItem aci = null;
+   		TradeArapChargeItem aci = null;
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
 		for(Map<String, String> item :itemList){
 			String action = item.get("action");
 			String itemId = item.get("id");
 			if("CREATE".equals(action)){
-				aci = new ArapChargeItem();
+				aci = new TradeArapChargeItem();
 				aci.set("ref_order_type", "工作单");
 				aci.set("ref_order_id", itemId);
 				aci.set("charge_order_id", id);
 				aci.save();
-                JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
+                TradeJobOrderArap jobOrderArap = TradeJobOrderArap.dao.findById(itemId);
                 jobOrderArap.set("bill_flag", "Y");
                 String hedge_order_type = jobOrderArap.getStr("order_type");
                 if("cost".equals(hedge_order_type)){
@@ -313,7 +313,7 @@ public class TradeChargeCheckOrderController extends Controller {
         
         String sql = "select * from(  "
         		+ " select aco.*,IFNULL(aco.audit_status,aco.status) toStatus, p.abbr sp_name "
-				+ " from arap_charge_order aco "
+				+ " from trade_arap_charge_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " where aco.office_id = "+office_id+" order by aco.create_stamp DESC "
 				+ " ) B where 1=1 ";
@@ -396,8 +396,8 @@ public class TradeChargeCheckOrderController extends Controller {
 						//+" left join location l on l.id=jos.fnd"
 						+" left join currency cur on cur.id=joa.currency_id"
 						+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
-						+" left join arap_charge_item aci on aci.ref_order_id = joa.id"
-					 +" left join arap_charge_order aco on aco.id = aci.charge_order_id"
+						+" left join trade_arap_charge_item aci on aci.ref_order_id = joa.id"
+					 +" left join trade_arap_charge_order aco on aco.id = aci.charge_order_id"
 					 +" where joa.id = aci.ref_order_id and aco.id = ("+order_id+")" +currenry_code
 					 +" GROUP BY joa.id"
 						+" ORDER BY aco.order_no, jo.order_no";
@@ -448,9 +448,9 @@ public class TradeChargeCheckOrderController extends Controller {
 							
 							+" left join currency cur on cur.id=joa.currency_id"
 							+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
-							+" left join charge_application_order_rel caol on caol.job_order_arap_id  = joa.id"
-							+" left join arap_charge_application_order acao on caol.application_order_id = acao.id"
-							 +" left join arap_charge_order aco on aco.id=caol.charge_order_id"
+							+" left join trade_charge_application_order_rel caol on caol.job_order_arap_id  = joa.id"
+							+" left join trade_arap_charge_application_order acao on caol.application_order_id = acao.id"
+							 +" left join trade_arap_charge_order aco on aco.id=caol.charge_order_id"
 						  +" where acao.id="+order_ids+query_fin_name
 							+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
@@ -479,8 +479,8 @@ public class TradeChargeCheckOrderController extends Controller {
 							
 							+" left join currency cur on cur.id=joa.currency_id"
 							+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
-							+" left join arap_charge_item aci on aci.ref_order_id = joa.id"
-						 +" left join arap_charge_order aco on aco.id = aci.charge_order_id"
+							+" left join trade_arap_charge_item aci on aci.ref_order_id = joa.id"
+						 +" left join trade_arap_charge_order aco on aco.id = aci.charge_order_id"
 						 +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
 							+currency_code
 							+query_exchange_currency+query_fin_name
@@ -559,10 +559,10 @@ public class TradeChargeCheckOrderController extends Controller {
 	
     @Before(EedaMenuInterceptor.class)
     public void edit(){
-		String id = getPara("id");//arap_charge_order id
-		String condition = "select ref_order_id from arap_charge_item where charge_order_id ="+id;
+		String id = getPara("id");//trade_arap_charge_order id
+		String condition = "select ref_order_id from trade_arap_charge_item where charge_order_id ="+id;
 		
-		String sql = " select aco.*,p.company_name,p.contact_person,p.id company_id,p.abbr company_abbr,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from arap_charge_order aco "
+		String sql = " select aco.*,p.company_name,p.contact_person,p.id company_id,p.abbr company_abbr,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from trade_arap_charge_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by "
    				+ " left join user_login u1 on u1.id=aco.confirm_by "
@@ -603,7 +603,7 @@ public class TradeChargeCheckOrderController extends Controller {
         +"       from  trade_job_order_arap joa "
         +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
         +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
-        +"       where joa.id in (select aci.ref_order_id from arap_charge_item aci where aci.charge_order_id="+chargeOrderId+")";
+        +"       where joa.id in (select aci.ref_order_id from trade_arap_charge_item aci where aci.charge_order_id="+chargeOrderId+")";
 		
 		Map<String, Double> exchangeTotalMap = new HashMap<String, Double>();
 		exchangeTotalMap.put("CNY", 0d);
@@ -631,12 +631,12 @@ public class TradeChargeCheckOrderController extends Controller {
             }
         }
 		
-		Record order = Db.findById("arap_charge_order", chargeOrderId);
+		Record order = Db.findById("trade_arap_charge_order", chargeOrderId);
 		for (Map.Entry<String, Double> entry : exchangeTotalMap.entrySet()) {
 		    System.out.println(entry.getKey() + " : " + entry.getValue());
 		    order.set(entry.getKey(), entry.getValue());
 		}
-		Db.update("arap_charge_order", order);
+		Db.update("trade_arap_charge_order", order);
 		return exchangeTotalMap;
     }
     
@@ -653,7 +653,7 @@ public class TradeChargeCheckOrderController extends Controller {
     	String  exchange_currency=getPara("query_exchange_currency");
     	String  fin_name=getPara("query_fin_name");
     	List<Record> list = null;
-    	String condition = "select ref_order_id from arap_charge_item where charge_order_id in ("+order_ids+") ";
+    	String condition = "select ref_order_id from trade_arap_charge_item where charge_order_id in ("+order_ids+") ";
     	
     	if("N".equals(order_id)){//应收申请单
     		if(StringUtils.isNotEmpty(appliction_id)){
@@ -681,8 +681,8 @@ public class TradeChargeCheckOrderController extends Controller {
     @Before(Tx.class)
     public void confirm(){
 		String id = getPara("id");
-		logger.debug("ArapChargeOrder id:"+id);
-		ArapChargeOrder aco = ArapChargeOrder.dao.findById(id);
+		logger.debug("TradeArapChargeOrder id:"+id);
+		TradeArapChargeOrder aco = TradeArapChargeOrder.dao.findById(id);
 		aco.set("status","已确认");
 		aco.set("confirm_stamp", new Date());
 		aco.set("confirm_by", LoginUserController.getLoginUserId(this));
@@ -691,7 +691,7 @@ public class TradeChargeCheckOrderController extends Controller {
 		//设置y，已生成对账单o
 		String itemList=aco.get("ref_order_id");
 		String sql="UPDATE trade_job_order_arap joa set billConfirm_flag='Y' "
-					+"where joa.id in (select aci.ref_order_id FROM arap_charge_item aci where charge_order_id="+id+" )";
+					+"where joa.id in (select aci.ref_order_id FROM trade_arap_charge_item aci where charge_order_id="+id+" )";
 		Db.update(sql);
 		
 		Record r = aco.toRecord();
@@ -703,12 +703,12 @@ public class TradeChargeCheckOrderController extends Controller {
     	String itemList= getPara("charge_itemlist");
     	String[] itemArray =  itemList.split(",");
     	String chargeOrderId=getPara("order_id");
-    	ArapChargeItem aci = null;
+    	TradeArapChargeItem aci = null;
     	
     	if(chargeOrderId != null){
     		for(String itemId:itemArray){
-    			aci = new ArapChargeItem();
-	    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
+    			aci = new TradeArapChargeItem();
+	    		 TradeJobOrderArap jobOrderArap = TradeJobOrderArap.dao.findById(itemId);
 
 	             jobOrderArap.set("bill_flag", "Y");
 	             String hedge_order_type = jobOrderArap.getStr("order_type");
@@ -719,7 +719,7 @@ public class TradeChargeCheckOrderController extends Controller {
 				aci.set("ref_order_id", itemId);
 				aci.set("charge_order_id", chargeOrderId);
 				aci.save();
-//        	String sql="INSERT into arap_charge_item (ref_order_id,charge_order_id) "
+//        	String sql="INSERT into trade_arap_charge_item (ref_order_id,charge_order_id) "
 //        				+ "VALUES ("+itemId+","+order_id+")";
     		}
     		
@@ -736,12 +736,12 @@ public class TradeChargeCheckOrderController extends Controller {
     	String chargeOrderId=getPara("order_id");
     	String itemid=getPara("charge_itemid");
     	if(itemid !=null&& chargeOrderId!=null){
-    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
+    		 TradeJobOrderArap jobOrderArap = TradeJobOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("bill_flag", "N");
     		 jobOrderArap.set("hedge_flag", "N");
              jobOrderArap.update();
 //             String sql="delete from  where ref_order_id="+itemid+"and charge_order_id="+chargeOrderId;
-             Db.deleteById("arap_charge_item","ref_order_id,charge_order_id",itemid,chargeOrderId);
+             Db.deleteById("trade_arap_charge_item","ref_order_id,charge_order_id",itemid,chargeOrderId);
     	}
     	//计算结算汇总
     			Map<String, Double> exchangeTotalMap = updateExchangeTotal(chargeOrderId);

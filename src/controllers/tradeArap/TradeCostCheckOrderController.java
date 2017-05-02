@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.ArapCostItem;
-import models.ArapCostOrder;
 import models.RateContrast;
 import models.UserLogin;
-import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.profile.Currency;
+import models.eeda.tr.tradeJoborder.TradeArapCostItem;
+import models.eeda.tr.tradeJoborder.TradeArapCostOrder;
+import models.eeda.tr.tradeJoborder.TradeJobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -153,8 +153,8 @@ public class TradeCostCheckOrderController extends Controller {
 	                + " left join party p1 on p1.id=jo.customer_id "
 	                + " left join currency cur on cur.id=joa.currency_id "
 	                + " left join currency cur1 on cur1.id=joa.exchange_currency_id "
-	                + " left join arap_cost_item aci on aci.ref_order_id = joa.id"
-					+ " left join arap_cost_order aco on aco.id = aci.cost_order_id "
+	                + " left join trade_arap_cost_item aci on aci.ref_order_id = joa.id"
+					+ " left join trade_arap_cost_order aco on aco.id = aci.cost_order_id "
 					+ " left join fin_item fi on joa.charge_id = fi.id "
 					+ " where joa.id = aci.ref_order_id and aco.id in ("+order_id+")"+currency_code
 	                + " GROUP BY joa.id "
@@ -203,9 +203,9 @@ public class TradeCostCheckOrderController extends Controller {
 							+" left join party p1 on p1.id=jo.customer_id"
 							+" left join currency cur on cur.id=joa.currency_id"
 							+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
-							+" left join cost_application_order_rel caol on caol.job_order_arap_id  = joa.id"
-							+" left join arap_cost_application_order acao on caol.application_order_id = acao.id"
-							 +" left join arap_cost_order aco on aco.id=caol.cost_order_id"
+							+" left join trade_cost_application_order_rel caol on caol.job_order_arap_id  = joa.id"
+							+" left join trade_arap_cost_application_order acao on caol.application_order_id = acao.id"
+							 +" left join trade_arap_cost_order aco on aco.id=caol.cost_order_id"
 						  +" where acao.id="+order_ids+query_fin_name
 							+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
@@ -232,8 +232,8 @@ public class TradeCostCheckOrderController extends Controller {
 							+" left join party p1 on p1.id=jo.customer_id"
 							+" left join currency cur on cur.id=joa.currency_id"
 							+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
-							+" left join arap_cost_item aci on aci.ref_order_id = joa.id"
-						    +" left join arap_cost_order aco on aco.id = aci.cost_order_id"
+							+" left join trade_arap_cost_item aci on aci.ref_order_id = joa.id"
+						    +" left join trade_arap_cost_order aco on aco.id = aci.cost_order_id"
 						    +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
 						    +currency_code
 						    +query_exchange_currency+query_fin_name
@@ -364,7 +364,7 @@ public class TradeCostCheckOrderController extends Controller {
         
         String sql = "select * from(  "
         		+ " select aco.*,p.abbr sp_name"
-				+ " from arap_cost_order aco "
+				+ " from trade_arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " where aco.office_id = "+ office_id
 				+ " order by aco.id desc"
@@ -394,13 +394,13 @@ public class TradeCostCheckOrderController extends Controller {
         String id = (String) dto.get("id");
         String ids = (String) dto.get("ids");
         
-        ArapCostOrder aco = new ArapCostOrder();
+        TradeArapCostOrder aco = new TradeArapCostOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
    		
    		if (StringUtils.isNotEmpty(id)) {
    			//update
-   			aco = ArapCostOrder.dao.findById(id);
+   			aco = TradeArapCostOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, aco);
    			aco.update();
    			
@@ -428,7 +428,7 @@ public class TradeCostCheckOrderController extends Controller {
                 }
 				Db.update("trade_job_order_arap", joa);
 				
-				ArapCostItem arapCostItem = new ArapCostItem();
+				TradeArapCostItem arapCostItem = new TradeArapCostItem();
 				arapCostItem.set("ref_order_id", idAttr[i]);
 				arapCostItem.set("cost_order_id", id);
 				arapCostItem.save();
@@ -467,7 +467,7 @@ public class TradeCostCheckOrderController extends Controller {
 			}	
 		}
    		
-   		String sql = " select aco.*, p.company_name company_name, u.c_name creator_name from arap_cost_order aco "
+   		String sql = " select aco.*, p.company_name company_name, u.c_name creator_name from trade_arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by"
    				+ " where aco.id = ? ";
@@ -478,15 +478,15 @@ public class TradeCostCheckOrderController extends Controller {
 	
 	@Before(EedaMenuInterceptor.class)
 	public void edit(){
-		String id = getPara("id");//arap_cost_order id
-		String sql = " select aco.*,p.id company_id,p.company_name,p.abbr company_abbr,u.c_name creator_name,u1.c_name confirm_by_name from arap_cost_order aco "
+		String id = getPara("id");//trade_arap_cost_order id
+		String sql = " select aco.*,p.id company_id,p.company_name,p.abbr company_abbr,u.c_name creator_name,u1.c_name confirm_by_name from trade_arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by "
    				+ " left join user_login u1 on u1.id=aco.confirm_by "
    				+ " where aco.id = ? ";
 		Record order = Db.findFirst(sql,id);
 		
-//		String condition = "select ref_order_id from arap_cost_item where cost_order_id ="+id;
+//		String condition = "select ref_order_id from trade_arap_cost_item where cost_order_id ="+id;
 //		order.set("currencylist", getCurrencyList(condition,id));
 		order.set("item_list", getItemList("",id,""));
 		setAttr("order", order);
@@ -515,7 +515,7 @@ public class TradeCostCheckOrderController extends Controller {
         +"       from  trade_job_order_arap joa "
         +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
         +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
-        +"       where joa.id in(select aci.ref_order_id from arap_cost_item aci where aci.cost_order_id="+costOrderId+")";
+        +"       where joa.id in(select aci.ref_order_id from trade_arap_cost_item aci where aci.cost_order_id="+costOrderId+")";
 		
 		Map<String, Double> exchangeTotalMap = new HashMap<String, Double>();
 		exchangeTotalMap.put("CNY", 0d);
@@ -543,19 +543,19 @@ public class TradeCostCheckOrderController extends Controller {
             }
         }
 		
-		Record order = Db.findById("arap_cost_order", costOrderId);
+		Record order = Db.findById("trade_arap_cost_order", costOrderId);
 		for (Map.Entry<String, Double> entry : exchangeTotalMap.entrySet()) {
 		    System.out.println(entry.getKey() + " : " + entry.getValue());
 		    order.set(entry.getKey(), entry.getValue());
 		}
-		Db.update("arap_cost_order", order);
+		Db.update("trade_arap_cost_order", order);
 		return exchangeTotalMap;
     }
 	
 	@Before(Tx.class)
 	public void confirm(){
 		String id = getPara("id");
-		ArapCostOrder aco = ArapCostOrder.dao.findById(id);
+		TradeArapCostOrder aco = TradeArapCostOrder.dao.findById(id);
 		aco.set("status","已确认");
 		aco.set("confirm_stamp", new Date());
 		aco.set("confirm_by", LoginUserController.getLoginUserId(this));
@@ -563,7 +563,7 @@ public class TradeCostCheckOrderController extends Controller {
 		
 		//设置y，已生成对账单o
 		String sql="UPDATE trade_job_order_arap joa set billConfirm_flag='Y' "
-					+"where joa.id in (select aci.ref_order_id FROM arap_cost_item aci where cost_order_id="+id+" )";
+					+"where joa.id in (select aci.ref_order_id FROM trade_arap_cost_item aci where cost_order_id="+id+" )";
 		Db.update(sql);
 		Record r = aco.toRecord();
 		r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
@@ -609,12 +609,12 @@ public class TradeCostCheckOrderController extends Controller {
     	String itemList= getPara("cost_itemlist");
     	String[] itemArray =  itemList.split(",");
     	String costOrderId=getPara("order_id");
-    	ArapCostItem aci = null;
+    	TradeArapCostItem aci = null;
     	
     	if(costOrderId != null){
     		for(String itemId:itemArray){
-    			aci = new ArapCostItem();
-	    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
+    			aci = new TradeArapCostItem();
+	    		 TradeJobOrderArap jobOrderArap = TradeJobOrderArap.dao.findById(itemId);
 	             jobOrderArap.set("bill_flag", "Y");
 	             String hedge_order_type = jobOrderArap.getStr("order_type");
 					if("charge".equals(hedge_order_type)){
@@ -638,12 +638,12 @@ public class TradeCostCheckOrderController extends Controller {
     	String costOrderId=getPara("order_id");
     	String itemid=getPara("cost_itemid");
     	if(itemid !=null&& costOrderId!=null){
-    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
+    		 TradeJobOrderArap jobOrderArap = TradeJobOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("bill_flag", "N");
     		 jobOrderArap.set("hedge_flag", "N");
              jobOrderArap.update();
 //             String sql="delete from  where ref_order_id="+itemid+"and cost_order_id="+costOrderId;
-             Db.deleteById("arap_cost_item","ref_order_id,cost_order_id",itemid,costOrderId);
+             Db.deleteById("trade_arap_cost_item","ref_order_id,cost_order_id",itemid,costOrderId);
     	}
     	//计算结算汇总
 		Map<String, Double> exchangeTotalMap = updateExchangeTotal(costOrderId);
