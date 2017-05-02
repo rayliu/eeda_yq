@@ -14,14 +14,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		        $.unblockUI();
 		    },
             columns:[
-                { "data": "ORDER_NO", "class":"item_no", "width": "120px"}, 
-                { "data": "ITEM_NO", "width": "80px"}, 
-                {"data": "ITEM_NAME", "width": "280px", 
+                { "data": "ORDER_NO", "class":"order_no", "width": "120px"}, 
+                { "data": "ITEM_NO", "width": "80px","class":"item_no", 
               	    "render": function ( data, type, full, meta ) {
-              		    return data;
+              	    	if(data){
+                        	return "<a href='#'>"+data+"</a>";
+                        }else{
+                            return '';
+                        }
               	    }
-                },
-                { "data": "PART_NO", "class":"part_no", "width": "120px"}, 
+                }, 
+                {"data": "ITEM_NAME", "width": "280px"},
+                { "data": "PART_NO", "class":"part_no", "width": "120px", 
+              	    "render": function ( data, type, full, meta ) {
+              	    	if(data){
+                        	return "<a href='#'>"+data+"</a>";
+                        }else{
+                            return '';
+                        }
+              	    }
+                },  
 				{ "data": "PART_NAME", "width": "320px"}, 
 				{ "data": "QUANTITY", "width": "50px"},
 				{ "data": "MOVE_FLAG", "width": "80px"}, 
@@ -41,12 +53,24 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var value = $(this).text();
         	$('#item_no').val(value);
         	$('#part_no').val("");
+        	searchData();
         });
         
         $('#eeda-table').on('click','.part_no',function(){
         	var value = $(this).text();
+        	var item_no = $(this).parent().find('.item_no').text()
         	$('#part_no').val(value);
         	$('#item_no').val("");
+        	
+        	var table = $('#eeda-table').dataTable();
+          	table.fnSetColumnVis(1, false);
+          	table.fnSetColumnVis(2, false);
+          	
+          	$('.itemShow').show();
+          	if(item_no){
+          		$('#orderText').text(item_no);
+          	}
+        	searchData();
         });
         
         var errorTable = eeda.dt({
@@ -89,6 +113,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         });
 
         $('#searchBtn').click(function(){
+        	var table = $('#eeda-table').dataTable();
+          	table.fnSetColumnVis(1, true);
+          	table.fnSetColumnVis(2, true);
+          	$('.itemShow').hide();
         	searchData(); 
         })
  

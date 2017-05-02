@@ -15,14 +15,25 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		    },
             columns:[
                 
-                { "data": "ITEM_NO", 
-					"render": function ( data, type, full, meta ) {
-						//return "<a href='/wmsproduct/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
-						return data;
-					}
+                { "data": "ITEM_NO","class":"item_no", 
+              	    "render": function ( data, type, full, meta ) {
+              	    	if(data){
+                        	return "<a href='#'>"+data+"</a>";
+                        }else{
+                            return '';
+                        }
+              	    }
                 }, 
                 { "data": "ITEM_NAME" },
-                { "data": "PART_NO" },
+                { "data": "PART_NO" ,"class":"part_no", 
+              	    "render": function ( data, type, full, meta ) {
+              	    	if(data){
+                        	return "<a href='#'>"+data+"</a>";
+                        }else{
+                            return '';
+                        }
+              	    }
+                }, 
                 { "data": "PART_NAME" },
 				{ "data": "UNIT"}, 
 				{ "data": "AMOUNT"}, 
@@ -36,12 +47,40 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 }
             ]
         });
+        
+        $('#eeda-table').on('click','.item_no',function(){
+        	var value = $(this).text();
+        	$('#item_no').val(value);
+        	$('#part_no').val("");
+        	searchData();
+        });
+        
+        $('#eeda-table').on('click','.part_no',function(){
+        	var value = $(this).text();
+        	var item_no = $(this).parent().find('.item_no').text()
+        	$('#part_no').val(value);
+        	$('#item_no').val("");
+        	
+        	var table = $('#eeda-table').dataTable();
+          	table.fnSetColumnVis(0, false);
+          	table.fnSetColumnVis(1, false);
+          	
+          	$('.itemShow').show();
+          	if(item_no){
+          		$('#orderText').text(item_no);
+          	}
+        	searchData();
+        });
       
         $('#resetBtn').click(function(e){
         	$("#orderForm")[0].reset();
         });
 
         $('#searchBtn').click(function(){
+        	var table = $('#eeda-table').dataTable();
+          	table.fnSetColumnVis(0, true);
+          	table.fnSetColumnVis(1, true);
+          	$('.itemShow').hide();
         	searchData(); 
         })
  

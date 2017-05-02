@@ -4,6 +4,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
     	$("#breadcrumb_li").text('入库记录');
 
+
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda-table',
@@ -17,7 +18,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 { "data": "ITEM_NO", "class":"item_no", "width": "80px",
                     "render": function ( data, type, full, meta ) {
                         if(data){
-                         return "<a href='#'>"+data+"</a>";
+                        	return "<a href='#'>"+data+"</a>";
                         }else{
                             return '';
                         }
@@ -55,25 +56,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var value = $(this).text();
         	$('#item_no').val(value);
         	$('#part_no').val("");
+        	searchData();
         });
         
         $('#eeda-table').on('click','.part_no',function(){
         	var value = $(this).text();
+        	var item_no = $(this).parent().find('.item_no').text()
         	$('#part_no').val(value);
         	$('#item_no').val("");
+        	
+        	var table = $('#eeda-table').dataTable();
+          	table.fnSetColumnVis(0, false);
+          	table.fnSetColumnVis(1, false);
+          	
+          	$('.itemShow').show();
+          	if(item_no){
+          		$('#orderText').text(item_no);
+          	}
+        	searchData();
         });
         
-/*        $('#eeda-table').on('click','.item_name',function(){
-        	var value = $(this).text();
-        	$('#item_name').val(value);
-        	$('#part_name').val("");
-        });
-        
-        $('#eeda-table').on('click','.part_name',function(){
-        	var value = $(this).text();
-        	$('#part_name').val(value);
-        	$('#item_name').val("");
-        });*/
+
         
         var errorTable = eeda.dt({
             id: 'error-table',
@@ -157,6 +160,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         });
 
         $('#searchBtn').click(function(){
+        	var table = $('#eeda-table').dataTable();
+          	table.fnSetColumnVis(0, true);
+          	table.fnSetColumnVis(1, true);
+          	$('.itemShow').hide();
         	searchData(); 
         })
  
