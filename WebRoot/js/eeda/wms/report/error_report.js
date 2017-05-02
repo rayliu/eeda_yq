@@ -25,16 +25,24 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
                 },
-                {"data": "ORDER_TYPE",'class':'order_type', "width": "100px"},
+                {"data": "ORDER_TYPE",'class':'order_type', "width": "70px"},
 				{ "data": "ERROR_MSG", "width": "220px",'class':"error_msg",
 					"render": function ( data, type, full, meta ) {
-					  		return "<span style='color:red;'>"+data+"</span>";
+                            if(data){
+					  		   return "<span style='color:red;'>"+data+"</span>";
+                            }else{
+                                return '';
+                            }
 					  	}	
 				}, 
 				{ "data": "IMPORT_MSG", "width": "220px",
 					"render": function ( data, type, full, meta ) {
-				  		return "<span style='color:red;'>"+data+"</span>";
-				  	}	
+				  		if(data){
+                               return "<span style='color:red;'>"+data+"</span>";
+                            }else{
+                                return '';
+                            }
+				  	}
 				}, 
 				{"data": "ITEM_NO", "width": "80px",
 					  "render": function ( data, type, full, meta ) {
@@ -46,9 +54,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				{ "data": "PART_NO", "width": "120px"}, 
 				{ "data": "PART_NAME", "width": "320px"}, 
 				{ "data": "SHELVES", "width": "80px"},
-				{ "data": "QUANTITY", "width": "60px"},
-				{ "data": "MOVE_FLAG", "width": "60px"}, 
-				{ "data": "CREATE_TIME", "width": "120px"},
+				{ "data": "QUANTITY", "width": "50px"},
+				{ "data": "MOVE_FLAG", "width": "80px"}, 
+				{ "data": "CREATE_TIME", "width": "150px"},
 				{ "data": "CREATOR_NAME", "width": "80px"},
                 { "data": "QR_CODE", "width": "480px"}, 
             ]
