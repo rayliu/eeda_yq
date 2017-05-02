@@ -13,7 +13,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             id: 'accountAuditLog-table',
             paging: true,
             serverSide: true, 
-            ajax: "/accountAuditLog/list?beginTime="+$("#beginTime_filter").val(),
+            ajax: "/tradeAccountAuditLog/list?beginTime="+$("#beginTime_filter").val(),
             columns:[
                 {   "width":"30px",
                     "render": function(data, type, full, meta) {
@@ -61,7 +61,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             id: 'account-table',
             paging: true,
             serverSide: true, 
-            ajax: "/accountAuditLog/accountList?beginTime="+ $("#beginTime_filter").val(),
+            ajax: "/tradeAccountAuditLog/accountList?beginTime="+ $("#beginTime_filter").val(),
             columns:[
                 { "data": null, "sWidth":"30px",
                   "render": function(data, type, full, meta) {
@@ -110,10 +110,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
        	    var ids = idArr.toString();
        		var beginTime = ev.date.getFullYear()+'-'+(ev.date.getMonth()+1);
 
-       		var accoutUrl = "/accountAuditLog/accountList?beginTime="+beginTime;
+       		var accoutUrl = "/tradeAccountAuditLog/accountList?beginTime="+beginTime;
        		accountTable.ajax.url(accoutUrl).load();
        		
-       		var accountAuditLogUrl = "/accountAuditLog/list?ids="+ids+"&beginTime="+beginTime;
+       		var accountAuditLogUrl = "/tradeAccountAuditLog/list?ids="+ids+"&beginTime="+beginTime;
        		accountAuditLogTable.ajax.url(accountAuditLogUrl).load();
         });
         
@@ -127,7 +127,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
        	    var ids = idArr.toString();
        		var beginTime =$("#beginTime_filter").val();
        		
-       		var url= "/accountAuditLog/list?ids="+ids+"&beginTime="+beginTime;
+       		var url= "/tradeAccountAuditLog/list?ids="+ids+"&beginTime="+beginTime;
             accountAuditLogTable.ajax.url(url).load();
         });
 
@@ -158,7 +158,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var endTime = $('#endTime').val();
         	var bankName = $('#bankName').val();
         	var money = $('#money').val();
-        	var url = "/accountAuditLog/list?source_order="+source_order
+        	var url = "/tradeAccountAuditLog/list?source_order="+source_order
     										            +"&orderNo="+orderNo
     										            +"&bankName="+bankName
     										            +"&money="+money

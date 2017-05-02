@@ -94,7 +94,7 @@ $(document).ready(function() {
 		}
 		var order = buildOrder();
 		$("#saveBtn").attr("disabled", true);
-		$.get('/costRequest/save',{params:JSON.stringify(order)}, function(data){
+		$.get('/tradeCostRequest/save',{params:JSON.stringify(order)}, function(data){
 			$("#saveBtn").attr("disabled", false);
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
@@ -142,7 +142,7 @@ $(document).ready(function() {
 		  	var invoice_no = $("#invoice_no").val();
 		  	
 		  
-			$.get("/costRequest/checkOrder", {order_id:$('#order_id').val(),selfId:selfId,order_no:order_no,creator_name:creator_name,invoice_no:invoice_no}, function(data){
+			$.get("/tradeCostRequest/checkOrder", {order_id:$('#order_id').val(),selfId:selfId,order_no:order_no,creator_name:creator_name,invoice_no:invoice_no}, function(data){
 				if(data.ID>0){
 					$("#check_name").val(data.CHECK_NAME);
 					$("#check_stamp").val(data.CHECK_STAMP);
@@ -237,7 +237,7 @@ $(document).ready(function() {
 			order.receive_bank_id=$('#deposit_bank').val();
 			order.payment_method = $('#payment_method').val();
 			order.pay_remark = $('#pay_remark').val();
-			$.get("/costRequest/confirmOrder", {params:JSON.stringify(order),application_id:$('#order_id').val()}, function(data){
+			$.get("/tradeCostRequest/confirmOrder", {params:JSON.stringify(order),application_id:$('#order_id').val()}, function(data){
 				if(data){
 					$("#status").val('已付款');
 					$("#returnBtn").attr("disabled", true);

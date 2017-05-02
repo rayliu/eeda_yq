@@ -12,15 +12,16 @@ import java.util.List;
 import java.util.Map;
 
 import models.AppInvoiceDoc;
-import models.ArapAccountAuditLog;
-import models.ArapCostApplication;
-import models.ArapCostOrder;
 //import models.CostAppOrderRel;
-import models.CostApplicationOrderRel;
 import models.Office;
 import models.Party;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrderArap;
+import models.eeda.tr.tradeJoborder.TradeArapAccountAuditLog;
+import models.eeda.tr.tradeJoborder.TradeArapCostApplicationOrder;
+import models.eeda.tr.tradeJoborder.TradeArapCostOrder;
+import models.eeda.tr.tradeJoborder.TradeCostApplicationOrderRel;
+import models.eeda.tr.tradeJoborder.TradeJobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -76,7 +77,7 @@ public class TradeCostRequestController extends Controller {
         		+ " sum(ifnull(c.paid_cny,0)) paid_cny,"
         		+ " sum(ifnull(c.paid_hkd,0)) paid_hkd,"
         		+ " sum(ifnull(c.paid_jpy,0)) paid_jpy,"
-        		+ " group_concat((select concat(order_no,'-',status) from arap_cost_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
+        		+ " group_concat((select concat(order_no,'-',status) from trade_arap_cost_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
 				+ " from trade_arap_cost_order aco "
 				+ " left join trade_cost_application_order_rel c on c.cost_order_id=aco.id"
 				+ " left join party p on p.id=aco.sp_id "
@@ -195,7 +196,7 @@ public class TradeCostRequestController extends Controller {
         				+" 	),"
         				+" 	0"
         				+" ) paid_hkd,"
-        				+" group_concat(DISTINCT (select concat(order_no,'-',status) from arap_cost_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
+        				+" group_concat(DISTINCT (select concat(order_no,'-',status) from trade_arap_cost_application_order where id = c.application_order_id) SEPARATOR '<br/>') app_msg"
         				+" from trade_arap_cost_order aco"
         				+" left join trade_cost_application_order_rel c on c.cost_order_id=aco.id"
         				+" left join party p on p.id=aco.sp_id "
@@ -257,7 +258,7 @@ public class TradeCostRequestController extends Controller {
         String sql = "select * from(  "
         		+ " select p.abbr payee_company,acao.*, acao.order_no application_order_no,CAST(CONCAT(acao.begin_time,'到',acao.end_time) AS CHAR) service_stamp, "
         		+ " '申请单' order_type,aco.order_no cost_order_no,u.c_name "
-				+ " from arap_cost_application_order acao "
+				+ " from trade_arap_cost_application_order acao "
 				+ " left join trade_cost_application_order_rel caor on caor.application_order_id = acao.id "
 				+ " left join trade_arap_cost_order aco on aco.id = caor.cost_order_id"
 				+ " left join user_login u on u.id = acao.create_by"
@@ -387,7 +388,7 @@ public class TradeCostRequestController extends Controller {
 					+" ) wait_hkd"
 					+"  FROM trade_arap_cost_order aco "
 					+"  LEFT JOIN trade_cost_application_order_rel caor on caor.cost_order_id = aco.id"
-					+"  LEFT JOIN arap_cost_application_order acao on acao.id = caor.application_order_id"
+					+"  LEFT JOIN trade_arap_cost_application_order acao on acao.id = caor.application_order_id"
 					+"  LEFT JOIN party p ON p.id = aco.sp_id"
 					+"  LEFT JOIN user_login ul ON ul.id = aco.create_by"
 					+"  where acao.id="+application_id
@@ -414,7 +415,7 @@ public class TradeCostRequestController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
-        ArapCostApplication order = new ArapCostApplication();
+        TradeArapCostApplicationOrder order = new TradeArapCostApplicationOrder();
    		String id = (String) dto.get("id");
    		String ids=(String) dto.get("ids");
    		String status = (String) dto.get("status");
@@ -427,7 +428,7 @@ public class TradeCostRequestController extends Controller {
    		
    		if (StringUtils.isNotEmpty(id)) {
    			//update
-   			order = ArapCostApplication.dao.findById(id);
+   			order = TradeArapCostApplicationOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, order); 
    			
    			//需后台处理的字段
@@ -456,13 +457,13 @@ public class TradeCostRequestController extends Controller {
    			id = order.getLong("id").toString();
    			
 			String itemId="";
-	   		CostApplicationOrderRel caor = null;
+	   		TradeCostApplicationOrderRel caor = null;
 	   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
 			for(Map<String, String> item :itemList){
 				String action = item.get("action");
 					   itemId = item.get("id");
 				if("CREATE".equals(action)){
-					caor = new CostApplicationOrderRel();
+					caor = new TradeCostApplicationOrderRel();
 					caor.set("application_order_id", id);
 					caor.set("job_order_arap_id", itemId);
 					Record aci = Db.findFirst("select * from trade_arap_cost_item where ref_order_id=?",itemId);
@@ -471,8 +472,8 @@ public class TradeCostRequestController extends Controller {
 					caor.set("order_type", "应付对账单");
 					caor.save();
 					
-					ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
-					arapCostOrder.set("audit_status", "付款申请中").update();
+					TradeArapCostOrder tradeArapCostOrder = TradeArapCostOrder.dao.findById(cost_order_id);
+					tradeArapCostOrder.set("audit_status", "付款申请中").update();
 			            
 			          }
 				}
@@ -500,7 +501,7 @@ public class TradeCostRequestController extends Controller {
   	@Before(EedaMenuInterceptor.class)
   	public void edit() throws ParseException {
 		String id = getPara("id");
-		ArapCostApplication order = ArapCostApplication.dao.findById(id);
+		TradeArapCostApplicationOrder order = TradeArapCostApplicationOrder.dao.findById(id);
 		
 		Party p  = Party.dao.findById(order.getLong("sp_id"));
 		if(p != null){
@@ -600,7 +601,7 @@ public class TradeCostRequestController extends Controller {
         List<Record> res = null;
         Record re1=new Record();
         if(StringUtils.isNotEmpty(application_id)){
-		    	 ArapCostApplication order = ArapCostApplication.dao.findById(application_id);
+		    	 TradeArapCostApplicationOrder order = TradeArapCostApplicationOrder.dao.findById(application_id);
 		    	 if("cancelcheckBtn".equals(selfId)){
 		    		 order.set("status", "复核不通过");
 		    		 order.set("invoice_no", invoice_no);
@@ -622,7 +623,7 @@ public class TradeCostRequestController extends Controller {
         	String[] arr= ids.split(",");
         	for(int i=0;i<arr.length;i++){
         		String id=arr[i];
-	        	ArapCostApplication order = ArapCostApplication.dao.findById(id);
+	        	TradeArapCostApplicationOrder order = TradeArapCostApplicationOrder.dao.findById(id);
 		         order.set("status", "已复核");
 		         order.set("check_by", LoginUserController.getLoginUserId(this));
 		         order.set("check_stamp", new Date()).update();
@@ -637,8 +638,8 @@ public class TradeCostRequestController extends Controller {
   			String order_type = re.getStr("order_type");
 
   			if("应付对账单".equals(order_type)){
-			    ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
-				arapCostOrder.set("audit_status", "已复核").update();
+			    TradeArapCostOrder tradeArapCostOrder = TradeArapCostOrder.dao.findById(id);
+				tradeArapCostOrder.set("audit_status", "已复核").update();
 			}
   		}
   		renderJson(re1);
@@ -671,7 +672,7 @@ public class TradeCostRequestController extends Controller {
       	        	receive_bank_id = rec.getLong("id").toString();
       	        }
       		}
-        	ArapCostApplication arapCostInvoiceApplication = ArapCostApplication.dao.findById(application_id);
+        	TradeArapCostApplicationOrder arapCostInvoiceApplication = TradeArapCostApplicationOrder.dao.findById(application_id);
 	          arapCostInvoiceApplication.set("status", "已付款");
 	          arapCostInvoiceApplication.set("receive_time", receive_time);
 	          arapCostInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
@@ -691,7 +692,7 @@ public class TradeCostRequestController extends Controller {
 	    			String order_type = re.getStr("order_type");
 
 	    			if(order_type.equals("应付对账单")){
-	  				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
+	  				TradeArapCostOrder arapCostOrder = TradeArapCostOrder.dao.findById(cost_order_id);
 	                  Double usd = arapCostOrder.getDouble("usd");
 	                  Double cny = arapCostOrder.getDouble("cny");
 	                  Double hkd = arapCostOrder.getDouble("hkd");
@@ -762,7 +763,7 @@ public class TradeCostRequestController extends Controller {
 	        	String receive_time =getPara("receive_time");
 	        	String receive_bank_id = "";
         	
-	        	ArapCostApplication arapCostInvoiceApplication = ArapCostApplication.dao.findById(id);
+	        	TradeArapCostApplicationOrder arapCostInvoiceApplication = TradeArapCostApplicationOrder.dao.findById(id);
 	        	String payment_method = arapCostInvoiceApplication.get("payment_method") ;
 	        	receive_bank_id = arapCostInvoiceApplication.get("receive_bank_id") ;
 	        	if(StringUtils.isEmpty(receive_bank_id)){
@@ -788,7 +789,7 @@ public class TradeCostRequestController extends Controller {
 	    			String order_type = re.getStr("order_type");
 	
 	    			if(order_type.equals("应付对账单")){
-	  				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
+	  				TradeArapCostOrder arapCostOrder = TradeArapCostOrder.dao.findById(cost_order_id);
 	                  Double usd = arapCostOrder.getDouble("usd");
 	                  Double cny = arapCostOrder.getDouble("cny");
 	                  Double hkd = arapCostOrder.getDouble("hkd");
@@ -865,9 +866,9 @@ public class TradeCostRequestController extends Controller {
         //新建日记账表数据\
   		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
-		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
+		TradeArapAccountAuditLog auditLog = new TradeArapAccountAuditLog();
         auditLog.set("payment_method", payment_method);
-        auditLog.set("payment_type", ArapAccountAuditLog.TYPE_COST);
+        auditLog.set("payment_type", TradeArapAccountAuditLog.TYPE_COST);
         auditLog.set("currency_code", currency_code);
         auditLog.set("amount", pay_amount);
         auditLog.set("creator", LoginUserController.getLoginUserId(this));
@@ -992,7 +993,7 @@ public class TradeCostRequestController extends Controller {
             }
         }
 		
-		Record order = Db.findById("arap_cost_application_order", appOrderId);
+		Record order = Db.findById("trade_arap_cost_application_order", appOrderId);
 		for (Map.Entry<String, Double> entry : exchangeTotalMap.entrySet()) {
 		    System.out.println(entry.getKey() + " : " + entry.getValue());
 		    order.set(entry.getKey(), entry.getValue());
@@ -1002,7 +1003,7 @@ public class TradeCostRequestController extends Controller {
 		}else{
 			order.set("return_confirm_stamp", new Date());
 		}
-		Db.update("arap_cost_application_order", order);
+		Db.update("trade_arap_cost_application_order", order);
 		return exchangeTotalMap;
     }
     //添加明细的查询
@@ -1021,22 +1022,23 @@ public class TradeCostRequestController extends Controller {
         	 sql = "select * from(  "
         			+ " select joa.order_type sql_type, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
               		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type, "
-              		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
-              		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
+              		+ " p.abbr sp_name,p1.abbr customer_name,"
+//              		+ "l.name fnd,joai.destination,jos.mbl_no,jos.hbl_no, "
+//              		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
               		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
               		+ " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"
               		+ " ) after_total,"
               		+ " ifnull( ( SELECT rc.new_rate FROM rate_contrast rc "
               		+ " WHERE rc.currency_id = joa.currency_id AND rc.order_id = '' ), ifnull(joa.exchange_rate, 1) ) * ifnull(joa.total_amount, 0)"
               		+ " after_rate_total,ifnull(f.name,f.name_eng) fee_name,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
-      				+ " from job_order jo "
+      				+ " from trade_job_order jo "
       				+ " left join trade_job_order_arap joa on jo.id=joa.order_id "
-      				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
-      				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
-      				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
+//      				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
+//      				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
+//      				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
       				+ " left join party p on p.id=joa.sp_id "
       				+ " left join party p1 on p1.id=jo.customer_id "
-      				+ " left join location l on l.id=jos.fnd "
+//      				+ " left join location l on l.id=jos.fnd "
       				+ " left join currency cur on cur.id=joa.currency_id "
       				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
       				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
@@ -1048,8 +1050,9 @@ public class TradeCostRequestController extends Controller {
         		 sql = "select * from(  "
                  		+ " select ifnull(f.name,f.name_eng) fee_name, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
                  		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type, "
-                 		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
-                 		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
+                 		+ " p.abbr sp_name,p1.abbr customer_name,"
+//                 		+ " jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
+//                 		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
                  		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
                  		+ " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"
                  		+ " ) after_total,"
@@ -1058,12 +1061,12 @@ public class TradeCostRequestController extends Controller {
                  		+ " after_rate_total,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"
          				+ " from trade_job_order jo "
          				+ " left join trade_job_order_arap joa on jo.id=joa.order_id "
-         				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
-         				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
-         				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
+//         				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
+//         				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
+//         				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
          				+ " left join party p on p.id=joa.sp_id "
          				+ " left join party p1 on p1.id=jo.customer_id "
-         				+ " left join location l on l.id=jos.fnd "
+//         				+ " left join location l on l.id=jos.fnd "
          				+ " left join currency cur on cur.id=joa.currency_id "
          				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
          				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
@@ -1094,11 +1097,11 @@ public class TradeCostRequestController extends Controller {
     	String itemList= getPara("cost_itemlist");
     	String[] itemArray =  itemList.split(",");
     	String appOrderId=getPara("order_id");
-    	ArapCostApplication order = ArapCostApplication.dao.findById(appOrderId);
+    	TradeArapCostApplicationOrder order = TradeArapCostApplicationOrder.dao.findById(appOrderId);
     	
-   		CostApplicationOrderRel caor = null;
+   		TradeCostApplicationOrderRel caor = null;
 		for(String item :itemArray){
-				caor = new CostApplicationOrderRel();
+				caor = new TradeCostApplicationOrderRel();
 				caor.set("application_order_id", appOrderId);
 				caor.set("job_order_arap_id", item);
 				Record re = Db.findFirst("select * from trade_arap_cost_item where ref_order_id=?",item);
@@ -1107,10 +1110,10 @@ public class TradeCostRequestController extends Controller {
 				caor.set("order_type", "应付对账单");
 				caor.save();
 				
-				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
+				TradeArapCostOrder arapCostOrder = TradeArapCostOrder.dao.findById(cost_order_id);
 				arapCostOrder.set("audit_status", "收款申请中").update();
 				//更新job_order_arap的create_flag
-				JobOrderArap joa=JobOrderArap.dao.findById(item);
+				TradeJobOrderArap joa=TradeJobOrderArap.dao.findById(item);
 				joa.set("create_flag", "Y");
 				joa.update();
 		}
@@ -1126,10 +1129,10 @@ public class TradeCostRequestController extends Controller {
     		 Db.deleteById("trade_cost_application_order_rel","job_order_arap_id,application_order_id",itemid,appOrderId);
     		 Record re = Db.findFirst("select * from trade_arap_cost_item where ref_order_id=?",itemid);
 			 Long cost_order_id=re.getLong("cost_order_id");
-    		 ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
-			 arapCostOrder.set("audit_status", "新建").update();
+    		 TradeArapCostOrder arapCostOrder = TradeArapCostOrder.dao.findById(cost_order_id);
+    		 arapCostOrder.set("audit_status", "新建").update();
     		 
-    		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
+    		 TradeJobOrderArap jobOrderArap = TradeJobOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("create_flag", "N");
              jobOrderArap.update();
     	}

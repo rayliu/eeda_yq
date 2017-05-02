@@ -115,6 +115,7 @@ import models.eeda.tms.TransArapCostOrder;
 import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
 import models.eeda.tms.TransJobOrderLandItem;
+import models.eeda.tr.tradeJoborder.TradeArapAccountAuditLog;
 import models.eeda.tr.tradeJoborder.TradeArapChargeApplicationOrder;
 import models.eeda.tr.tradeJoborder.TradeArapChargeItem;
 import models.eeda.tr.tradeJoborder.TradeArapChargeOrder;
@@ -184,10 +185,12 @@ import controllers.report.OrderStatusController;
 import controllers.tms.jobOrder.TransJobOrderController;
 import controllers.tms.jobOrder.TransOrderShortCutController;
 import controllers.tms.planOrder.TransPlanOrderController;
+import controllers.tradeArap.TradeAccountAuditLogController;
 import controllers.tradeArap.TradeChargeCheckOrderController;
 import controllers.tradeArap.TradeChargeRequestController;
 import controllers.tradeArap.TradeCostCheckOrderController;
 import controllers.tradeArap.TradeCostRequestController;
+import controllers.tradeArap.TradeJobOrderReportController;
 
 public class EedaConfig extends JFinalConfig {
     private Logger logger = Logger.getLogger(EedaConfig.class);
@@ -341,7 +344,8 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/tradeCostCheckOrder", TradeCostCheckOrderController.class, contentPath);
 		me.add("/tradeChargeRequest", TradeChargeRequestController.class, contentPath);
 		me.add("/tradeCostRequest", TradeCostRequestController.class, contentPath);
-		me.add("/tradeAccountAuditLog", controllers.arap.AccountAuditLogController.class, contentPath);
+		me.add("/tradeAccountAuditLog", TradeAccountAuditLogController.class, contentPath);
+		me.add("/tradeJobOrderReport", TradeJobOrderReportController.class, contentPath);
 		
 		//ar= account revenue  应收条目处理
 		me.add("/chargeRequest", controllers.arap.ar.chargeRequest.ChargeRequestController.class, contentPath);
@@ -586,6 +590,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("trade_arap_cost_order", TradeArapCostOrder.class);
         arp.addMapping("trade_cost_application_order_rel", TradeCostApplicationOrderRel.class);
         arp.addMapping("trade_arap_cost_application_order", TradeArapCostApplicationOrder.class);
+        arp.addMapping("trade_arap_account_audit_log", TradeArapAccountAuditLog.class);
     }
 
     private void initDBconnector() {
