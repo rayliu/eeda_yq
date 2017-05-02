@@ -27,10 +27,8 @@ $(document).ready(function() {
     });
 	
 	$("#eeda-table").on('click', '.item_detail', function(e){
-      	var item_no = $(this).attr("item_no");
-//      	itemTable.fnSettings().sAjaxSource = "/inventory/itemDetailList?item_no="+item_no;
-//      	itemTable.fnDraw();
-      	searchData(item_no);
+      	var part_no = $(this).attr("part_no");
+      	searchData(part_no);
     });
 	
 	buildCondition=function(){
@@ -48,12 +46,12 @@ $(document).ready(function() {
         return item;
     };
 	
-	var searchData=function(item_no){
+	var searchData=function(part_no){
 		$.blockUI({ 
             message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
         });
      	var itemJson = buildCondition();
-     	var url = "/inventory/itemDetailList?item_no="+item_no+"&jsonStr="+JSON.stringify(itemJson);
+     	var url = "/inventory/itemDetailList?part_no="+part_no+"&jsonStr="+JSON.stringify(itemJson);
      	itemTable.ajax.url(url).load();
     };
 

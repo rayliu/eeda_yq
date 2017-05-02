@@ -14,22 +14,32 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
 		        $.unblockUI();
 		    },
             columns:[
-                { "width": "30px", visible: false,
-                    "render": function ( data, type, full, meta ) {
-                      return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
-                        '<i class="fa fa-trash-o"></i> 删除</button>';
-                    }
-                }, 
                 {"data": "ITEM_NO", 
               	    "render": function ( data, type, full, meta ) {
               	    	if(!data)
               	    		data = "<i class='glyphicon glyphicon-th-list'></i>";
-              	    	return "<a class='item_detail' item_no='"+full.ITEM_NO+"' data-target='#itemDetail' data-toggle='modal' style='cursor: pointer;'>"+data+"</a>";
+              	    	return "<a class='partDetail' item_no='"+full.ITEM_NO+"' >"+data+"</a>";
+              	    	//return "<a class='item_detail' item_no='"+full.ITEM_NO+"' data-target='#itemDetail' data-toggle='modal' style='cursor: pointer;'>"+data+"</a>";
               	    }
                 },
                 { "data": "ITEM_NAME"}, 
+                { "data": "PART_NO","visible":false,
+                	 "render": function ( data, type, full, meta ) {
+               	    	if(!data)
+               	    		data = "<i class='glyphicon glyphicon-th-list'></i>";
+               	    	return "<a class='item_detail' part_no='"+full.PART_NO+"' data-target='#itemDetail' data-toggle='modal' style='cursor: pointer;'>"+data+"</a>";
+               	    }
+                }, 
+                { "data": "PART_NAME","visible":false}, 
 				{ "data": "TOTAL"}
             ]
+        });
+        
+        
+    	$("#eeda-table").on('click', '.partDetail', function(e){
+          	var item_no = $(this).attr("item_no");
+
+          	searchPartData(item_no);
         });
         
         
@@ -39,7 +49,15 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         });
 
         $('#searchBtn').click(function(){
-        	searchData(); 
+        	var item_no = $('#item_no').val();
+        	var item_name = $('#item_name').val();
+        	var part_no = $('#part_no').val();
+        	var part_name = $('#part_name').val();
+        	if(part_no !='' || part_name!=''){
+        		searchPartData(item_no); 
+        	}else{
+        		searchData(); 
+        	}
         })
  
         buildCondition=function(){
@@ -57,12 +75,35 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
 	        return item;
         };
       
-        var searchData=function(showMsg){
+        var searchData=function(){
         	$.blockUI({ 
                 message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
             });
+        	var table = $('#eeda-table').dataTable();
+          	table.fnSetColumnVis(0, true);
+          	table.fnSetColumnVis(1, true);
+          	table.fnSetColumnVis(2, false);
+          	table.fnSetColumnVis(3, false);
+        	
         	var itemJson = buildCondition();
         	var url = "/inventory/list?jsonStr="+JSON.stringify(itemJson);
+        	dataTable.ajax.url(url).load();
+        };
+        
+        
+        var searchPartData=function(item_no){
+        	$.blockUI({ 
+                message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
+            });
+        	
+        	var table = $('#eeda-table').dataTable();
+          	table.fnSetColumnVis(0, false);
+          	table.fnSetColumnVis(1, false);
+          	table.fnSetColumnVis(2, true);
+          	table.fnSetColumnVis(3, true);
+        	
+        	var itemJson = buildCondition();
+        	var url = "/inventory/partList?item_no="+item_no+"&jsonStr="+JSON.stringify(itemJson);
         	dataTable.ajax.url(url).load();
         };
         
