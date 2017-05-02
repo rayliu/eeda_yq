@@ -1429,9 +1429,10 @@ public class JobOrderController extends Controller {
     	String id = getPara("id");
     	JobOrder jobOrder = JobOrder.dao.findById(id);
     	setAttr("order", jobOrder);
-    	
+    	UserLogin user1 = LoginUserController.getLoginUser(this);
+        long office_id=user1.getLong("office_id");
     	//获取汇率日期信息
-    	Record r = Db.findFirst("SELECT * from ( SELECT min(to_stamp) min_stamp FROM currency_rate) A WHERE min_stamp > now()");
+    	Record r = Db.findFirst("SELECT * from ( SELECT min(to_stamp) min_stamp,office_id FROM currency_rate where office_id=?) A WHERE min_stamp > now() ",office_id);
     	if(r==null){
     		setAttr("rateExpired", "Y");
     	}
