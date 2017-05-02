@@ -50,6 +50,8 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
       
         $('#resetBtn').click(function(e){
         	$("#orderForm")[0].reset();
+            $('.itemShow').hide();
+            $('#orderText').text("");
         });
 
         $('#searchBtn').click(function(){
