@@ -643,9 +643,10 @@ public class ServiceProviderController extends Controller {
     	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     	String d = sf.format(new Date());
     	List<Record> recs = null;
-    	
-    	String sql = "select c.id,c.code,c.name,cast( if(cr.from_stamp<'"+d+"' and cr.to_stamp>'"+d+"',cr.rate,'') as char ) rate from currency c"
-    			+ " left join currency_rate cr on cr.currency_code = c.code where 1=1 ";
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
+    	String sql = "select cr.office_id,c.id,c.code,c.name,cast( if(cr.from_stamp<'"+d+"' and cr.to_stamp>'"+d+"',cr.rate,'') as char ) rate from currency c"
+    			+ " left join currency_rate cr on cr.currency_code = c.code where 1=1 and cr.office_id= "+office_id;
     	if(!StringUtils.isBlank(input)){
     		sql+=" and (c.name like '%" + input + "%' or c.english_name like '%" + input + "%' or c.code like '%" + input + "%') ";
     	}
