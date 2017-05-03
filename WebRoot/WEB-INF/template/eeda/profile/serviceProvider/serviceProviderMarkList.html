@@ -1,10 +1,8 @@
-<a id='mark_table_msg_btn' data-target='#charge_table_msg' data-toggle='modal' style='display:none'></a>
-<div class="modal fade" id="charge_table_msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-thead head_style"><label class="font_style">供应商评分</label></div>
-            <div class="modal-body">
-                  <div class="row">
+<%layout("/eeda/layout.html"){%>
+		<div id="page-wrapper">
+		
+                  <input id="user_id" name="user_id" type="hidden" value="${user.ID!''}">
+                  <div class="row col-lg-12">
                         <div class="col-lg-6">
                               <%include("/eeda/component/form/inputSpField.html", {
                                id:'markCustomer',
@@ -30,17 +28,18 @@
                       headers:['','项目','分数值(数值只能输入数字)','说明','考评人','考评时间']
                   }){} %>
             
-            </div>
-           <div class="modal-footer">
+            
+          <div class="row col-lg-12">
+           <div class="button-bar">
                <button id="save_mark" type="button" class="btn btn_green save" data-dismiss="modal">保存</button>
                <button type="button" class="btn  btn_white" data-dismiss="modal">返回</button>
             </div>
-        </div>
-    </div>
-</div>
-
+          </div>
+	</div>
+<%}%>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function () {
         requirejs(['app/profile/serviceProvider/mark']);
     });
+    var itemOrder={};
 </script>

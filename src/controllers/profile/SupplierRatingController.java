@@ -48,6 +48,8 @@ public class SupplierRatingController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void index() {
+
+        setAttr("user", LoginUserController.getLoginUser(this));
         render("/eeda/profile/serviceProvider/serviceProviderMarkList.html");
     }
     

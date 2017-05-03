@@ -123,6 +123,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 "render": function ( data, type, full, meta ) {
                   if(!data)
                     data='';
+                  if(!full.CREATOR_NAME){
+                	  return '<input type="text" disabled name="creator"  class="form-control" />';
+                  }
                   return '<input type="text" disabled name="creator"   value="'+full.CREATOR_NAME+'" class="form-control" />';
                 }
               },
