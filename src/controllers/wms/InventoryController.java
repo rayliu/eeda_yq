@@ -228,13 +228,6 @@ public class InventoryController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
        
-
-        String item_no = getPara("item_no");
-        if(StringUtils.isNotBlank(item_no)){
-        	condition += " and pro.item_no = '"+item_no+"'";
-        }else{
-        	condition += " and pro.item_no is null";
-        }
         
         String jsonStr = getPara("jsonStr");
     	if(StringUtils.isNotBlank(jsonStr)){
@@ -244,6 +237,16 @@ public class InventoryController extends Controller {
             String part_no = dto.get("part_no");
             if(StringUtils.isNotBlank(part_no)){
             	condition += " and gi.part_no = '"+part_no+"'";
+            }
+            
+            //处理无法识别item_no的数据
+            String item_no = getPara("item_no");
+            if(StringUtils.isNotBlank(item_no)){
+            	condition += " and pro.item_no = '"+item_no+"'";
+            }else{
+            	if(StringUtils.isBlank(part_no)){
+            		condition += " and pro.item_no is null";
+            	}
             }
             
             String begin_time = dto.get("create_time_begin_time");
