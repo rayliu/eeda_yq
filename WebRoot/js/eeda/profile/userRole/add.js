@@ -25,7 +25,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
             "columns": [
                 { "data": null, "width": "7%"	,
                 	"render": function(data, type, full, meta) {
-                        return '<input type="checkbox" name="roleCheck" class="unChecked" value="'+full.ID+'">';
+                        return '<input type="checkbox" name="roleCheck" class="unChecked" role_id="'+full.ID+'">';
                     }
                 },
                 //{ "data": "CODE"},
@@ -35,20 +35,17 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
         });
 
         queryUser();
-        
-    	var role=[];
-    	 $("#eeda-table").on('click','.unChecked',function(){
-    		 role.splice(0,role.length);
-    		 $("input[name='roleCheck']").each(function(){
-    	        	if($(this).prop('checked') == true){
-    	        		role.push($(this).val());
-    	        	}
-    	     });
-    		 
-    	  });
+       
         $('#saveBtn').click(function(e){
             e.preventDefault();
             var username = $("#user_filter").val();
+
+            var role=[];
+            $("input[name='roleCheck']").each(function(index, el){
+                    if($(el).prop('checked') == true){
+                        role.push($(el).attr('role_id'));
+                    }
+             });
             var roles = role.toString();
             
             if(username != ""&&role.length!=0){
@@ -68,13 +65,6 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
             }
            
         });
-        
-        var alerMsg='<div id="message_trigger_err" class="alert alert-danger alert-dismissable"  style="display:none">'+
-    			    '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'+
-    			    'Lorem ipsum dolor sit amet, consectetur adipisicing elit. <a href="#" class="alert-link">Alert Link</a>.'+
-    			    '</div>';
-        $('body').append(alerMsg);
-       
 
     });
 });

@@ -90,15 +90,15 @@ public class RoleController extends Controller {
 			        + getPara("iDisplayLength");
 		}
 		//获取总公司的ID
-		Long parentID = pom.getParentOfficeId();
+		Long officeId = pom.getParentOfficeId();
 		// 获取总条数
 		String totalWhere = "";
-		String sql = "select count(1) total from role where (code is null or code!='admin') and (office_id is null or office_id = " + parentID +")";
-		Record rec = Db.findFirst(sql + totalWhere);
+		String sql = "select * from role where office_id = ?";
+		Record rec = Db.findFirst("select count(1) total from ("+sql+") B " + totalWhere, officeId);
 		logger.debug("total records:" + rec.getLong("total"));
 
 		// 获取当前页的数据
-		List<Record> orders = Db.find("select * from role where (code is null or code!='admin') and (office_id is null or office_id = ?)",parentID);
+		List<Record> orders = Db.find(sql, officeId);
 		Map orderMap = new HashMap();
 		orderMap.put("sEcho", pageIndex);
 		orderMap.put("iTotalRecords", rec.getLong("total"));
