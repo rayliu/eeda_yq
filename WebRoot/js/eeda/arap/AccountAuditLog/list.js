@@ -32,6 +32,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     	}
                     }
                 },
+                {"data":"ABBR"},
                 {"data":"SOURCE_ORDER"},
                 {"data":"CHARGE_AMOUNT",
                     "render": function(data, type, full, meta) {

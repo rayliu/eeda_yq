@@ -106,7 +106,13 @@ public class AccountAuditLogController extends Controller {
         
         String sql = "";
         if(true){
-        	sql = " select * from (select aaal.*,ifnull(ul.c_name, ul.user_name) user_name, fa.bank_name,"
+        	sql = " select * from (select aaal.*,"
+        			+" if(aaal.payment_type='charge',(SELECT p.abbr from arap_charge_application_order aco  "
+        			+" 					LEFT JOIN  party p on p.id=aco.sp_id where aco.id=aaal.invoice_order_id), "
+        			+" 			(SELECT p.abbr from arap_cost_application_order aco  "
+        			+" 					LEFT JOIN  party p on p.id=aco.sp_id where aco.id=aaal.invoice_order_id) "
+        			+"  ) abbr, "
+        			+ " ifnull(ul.c_name, ul.user_name) user_name, fa.bank_name,"
         			+ " (CASE "
         			+ " WHEN aaal.source_order = '应收申请单' "
 				    + " THEN "
