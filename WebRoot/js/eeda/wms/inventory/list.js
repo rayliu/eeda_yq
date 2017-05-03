@@ -3,7 +3,6 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
     	document.title = '库存统计 | '+document.title;
 
     	$("#breadcrumb_li").text('库存统计 ');
-
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda-table',
@@ -16,8 +15,10 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
             columns:[
                 {"data": "ITEM_NO", 
               	    "render": function ( data, type, full, meta ) {
-              	    	if(!data)
+              	    	if(!data){
               	    		data = "<i class='glyphicon glyphicon-th-list'></i>";
+              	    	}
+              	    	$('#orderText').text(full.ITEM_NO);
               	    	return "<a class='partDetail' item_no='"+full.ITEM_NO+"' style='cursor: pointer;'>"+data+"</a>";
               	    }
                 },
@@ -42,7 +43,6 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
           	if(item_no){
           		$('#orderText').text(item_no);
           	}
-          	
           	searchPartData(item_no);
         });
         
@@ -52,6 +52,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	$("#orderForm")[0].reset();
             $('.itemShow').hide();
             $('#orderText').text("");
+            searchData();
         });
 
         $('#searchBtn').click(function(){
@@ -61,7 +62,10 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	var part_name = $('#part_name').val();
         	if(part_no !='' || part_name!=''){
         		searchPartData(item_no); 
+        		$('.itemShow').show();
         	}else{
+        		$('.itemShow').hide();
+        		$('#orderText').text('')
         		searchData(); 
         	}
         })
@@ -112,19 +116,6 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	var url = "/inventory/partList?item_no="+item_no+"&jsonStr="+JSON.stringify(itemJson);
         	dataTable.ajax.url(url).load();
         };
-        
-        $('#showBtn').on('click',function(){
-        	var showMsg = this.textContent;
-        	if(showMsg=='显示明细'){
-        		//执行明细信息
-        		this.textContent='显示汇总';
-        	}else{
-        		//执行汇总信息
-        		this.textContent='显示明细';
-        	}
-        	
-        	searchData(showMsg);
-        	
-        });
+
 	});
 });

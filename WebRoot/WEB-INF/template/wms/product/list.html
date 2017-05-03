@@ -41,14 +41,13 @@
                     <button id="resetBtn" class="btn btn-default" type="button">清空条件</button>
                     <button id="uploadBtn" class="btn btn-default" type="button">导入</button>
                     <input type="file" id="toFileUpload" name="files[]" 
-		     		style="position:absolute;;  opacity:0;" data-url="/importOrder/importOrder?order_type=product">
+		     		style="position:absolute;  opacity:0;" data-url="/importOrder/importOrder?order_type=product">
                 </div>
             </div>
         </div>
         
-        <div class="form-group itemShow" style="background-color:#DCDCDC;display:none" >
-        	<label>产品编码</label>
-        	<label id="orderText"></label>
+        <div class="form-group itemShow" style="display:none" >
+        	<h4>产品编码: <span id="orderText"></span></h4>
         </div>
         
         <div class="row simple_list_div">

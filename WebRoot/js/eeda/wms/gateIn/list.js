@@ -4,7 +4,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
     	$("#breadcrumb_li").text('入库记录');
 
-
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda-table',
@@ -18,6 +17,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 { "data": "ITEM_NO", "class":"item_no", "width": "80px",
                     "render": function ( data, type, full, meta ) {
                         if(data){
+                        	$('#orderText').text(data);
                         	return "<a href='#'>"+data+"</a>";
                         }else{
                             return '';
@@ -64,19 +64,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var item_no = $(this).parent().find('.item_no').text()
         	$('#part_no').val(value);
         	$('#item_no').val("");
+        	if(item_no){
+        		$('#orderText').text(item_no);
+        	}
         	
-        	var table = $('#eeda-table').dataTable();
-          	table.fnSetColumnVis(0, false);
-          	table.fnSetColumnVis(1, false);
-          	
-          	$('.itemShow').show();
-          	if(item_no){
-          		$('#orderText').text(item_no);
-          	}
         	searchData();
         });
         
-
+        $('#searchBtn').click(function(){
+        	searchData(); 
+        })
+ 
         
         var errorTable = eeda.dt({
             id: 'error-table',
@@ -157,18 +155,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       
         $('#resetBtn').click(function(e){
         	$("#orderForm")[0].reset();
-            $('.itemShow').hide();
-            $('#orderText').text("");
+            searchData(); 
         });
 
-        $('#searchBtn').click(function(){
-        	var table = $('#eeda-table').dataTable();
-          	table.fnSetColumnVis(0, true);
-          	table.fnSetColumnVis(1, true);
-          	$('.itemShow').hide();
-        	searchData(); 
-        })
- 
+       
         buildCondition=function(){
 	      	var item = {};
 	      	var orderForm = $('#orderForm input,select');
@@ -188,6 +178,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	$.blockUI({ 
                 message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
             });
+        	
+        	var item_no = $('#item_no').val();
+        	var item_name = $('#item_name').val();
+        	var part_no = $('#part_no').val();
+        	var part_name = $('#part_name').val();
+        	var table = $('#eeda-table').dataTable();
+        	if(part_no.trim()=='' && part_name.trim()==''){
+              	table.fnSetColumnVis(0, true);
+              	table.fnSetColumnVis(1, true);
+              	$('.itemShow').hide();
+              	$('#orderText').text('');
+        	}else {
+              	table.fnSetColumnVis(0, false);
+              	table.fnSetColumnVis(1, false);
+              	$('.itemShow').show();
+        	} 
+        	
         	var itemJson = buildCondition();
         	var url = "/gateIn/list?error_flag=N&jsonStr="+JSON.stringify(itemJson);
         	dataTable.ajax.url(url).load();
