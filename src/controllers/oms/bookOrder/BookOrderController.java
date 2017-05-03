@@ -1210,6 +1210,30 @@ public class BookOrderController extends Controller {
     		setAttr("jobOrder", re);
     	}
     	
+    	//获取预约到达时间
+    	Long job_order_id = re.getLong("id");
+    	Record jobland = Db.findFirst("select * from job_order_land_item where order_id = ?",job_order_id);
+    	if(jobland!=null){
+    		if(StringUtils.isNotBlank(jobland.get("eta").toString())){
+        		Record joblandcab = Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",job_order_id);
+        		if(joblandcab != null){
+        			setAttr("job_eta", joblandcab.get("cabinet_arrive_date"));
+        		}
+        	}else{
+        		setAttr("job_eta", jobland.get("eta"));
+        	}
+    	}
+    	
+    	
+    	Record jobcustom = Db.findFirst("select * from job_order_custom_china_self_item where order_id = ?",job_order_id);
+    	if(jobcustom != null){
+    		String custom_order_no = jobcustom.getStr("custom_order_no");
+    		String status = jobcustom.getStr("status");
+    		setAttr("job_custom_order_no", custom_order_no);
+    		setAttr("job_status", status);
+    	}
+    	
+    	
 //    	Record re = Db.findFirst("");
     	setAttr("order", bookOrder);
     	//相关文档

@@ -67,6 +67,51 @@
 	               		 </div>
                     </div>
                 </div>
+                
+                <div class="row simple_search_div" style="margin-top:18px">
+                	<div class="col-lg-12">
+                		<div style="width:10%;float:left;text-align:center;">
+							<h4>Booking</h4>
+						</div>
+                		<div style="width:10%;float:left;text-align:center;">
+                			<h4>—————></h4>
+						</div>
+                		<div style="width:10%;float:left;text-align:center;">
+                			<h4>派车</h4>
+                			<% if(job_eta!'' != null && job_eta!'' !=''){%>
+                				<span id="sendCar">预计${job_eta!''}到厂</span>
+                			<%}%>
+						</div>
+                		<div style="width:10%;float:left;text-align:center;">
+                			<h4>—————></h4>
+						</div>
+                		<div style="width:10%;float:left;text-align:center;">
+							<h4>报关</h4>
+							<% if(job_custom_order_no!'' != null && job_custom_order_no!'' !=''){%>
+							<label id="custom">报关单号：</label>${job_custom_order_no!''}
+							<%}%>
+							<% if(job_status!'' != null && job_status!'' !=''){%>
+							<br/>
+							<label id="custom">状态：</label>${job_status!''}
+							<%}%>
+						</div>
+                		<div style="width:10%;float:left;text-align:center;">
+                			<h4>—————></h4>
+						</div>
+                		<div style="width:10%;float:left;text-align:center;">
+							<h4>上船</h4>
+							<span id="boarding"></span>
+						</div>
+                		<div style="width:10%;float:left;text-align:center;">
+                			<h4>—————></h4>
+						</div>
+                		<div style="width:10%;float:left;text-align:center;">
+							<h4>到港</h4>
+							<span id="arrival"></span>
+						</div>
+                	</div>
+                </div>
+                
                    
                  <div style="margin-left:15px; margin-top:15px">
 	                 <div class="row small_head" ><div class="font_style">货品信息</div></div>
