@@ -25,7 +25,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     }
                 }, 
                 {"data": "ITEM_NAME", "class":"item_name", "width": "280px"},
-                { "data": "PART_NO", "class":"part_no", "width": "120px",
+                { "data": "PART_NO", "class":"part_no", "width": "140px",
                     "render": function ( data, type, full, meta ) {
                         if(data){
                          return "<a href='#'>"+data+"</a>";
@@ -99,7 +99,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               	  }
                 },
                 {"data": "ITEM_NAME", "width": "280px"},
-                { "data": "PART_NO", "width": "120px"}, 
+                { "data": "PART_NO", "width": "140px"}, 
 				{ "data": "PART_NAME", "width": "320px"}, 
 				{ "data": "QUANTITY", "width": "50px"},
 				{ "data": "SHELVES", "width": "80px"},
