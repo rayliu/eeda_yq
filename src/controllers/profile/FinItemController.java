@@ -136,6 +136,8 @@ public class FinItemController extends Controller {
         FinItem u = FinItem.dao.findById(id);
         setAttr("order", u);
         
+        List<Record> currency = Db.find("select * from currency");
+		setAttr("currencyList", currency);
         render("/eeda/profile/finItem/finItemEdit.html");
         
     }

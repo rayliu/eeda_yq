@@ -38,11 +38,16 @@
                     </div>
                     <div class="row">
                     	 <div class="col-lg-4"><!--  三列排版  -->
-                            <%include("/eeda/component/form/inputField.html", 
-                                {   id:'binding_currency', 
-                                    label:'绑定常用币制', 
-                                    value:order.binding_currency!''
-                                }){}%>
+                           
+                             <div class="form-group">
+                                <label class="search-label">绑定常用币制</label>
+                                <select class="form-control search-control" name="binding_currency" id="binding_currency" >
+			                        	   		<option></option>
+			                             		<%for(currency in currencyList){ %>
+			                             		<option value="${currency.CODE!''}" <%if(order.binding_currency!''==currency.CODE!){%>selected<% }%>>${currency.CODE!''}</option>
+			                             		<%}%>
+			                     </select>
+			                 </div>
                         </div>
                          <div class="col-lg-8">
                             <%include("/eeda/component/form/inputField.html", 
