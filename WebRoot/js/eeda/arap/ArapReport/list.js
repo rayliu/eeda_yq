@@ -50,6 +50,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             			return parseFloat(data).toFixed(2);
             		}	
 	            },
+	            { "data": "CHECK_ORDER_NO", "width": "100px",
+			    	  "render": function ( data, type, full, meta ) {
+			    		  var str="";
+			    		  if(!data)
+			    			  data='';
+	            			if(full.ORDER_TYPE=="charge"){
+	            				str="<a href='/chargeCheckOrder/edit?id="+full.CHECK_ORDER_ID+"'target='_blank'>"+data+"</a>";
+	            			}else if(full.ORDER_TYPE=="cost"){
+	            				str="<a href='/costCheckOrder/edit?id="+full.CHECK_ORDER_ID+"'target='_blank'>"+data+"</a>";
+	            			}
+	                      return str;
+	                  }
+	            },
 	            { "data": "CREATE_STAMP", "width": "100px"}
 	          ]
 	      });
