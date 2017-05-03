@@ -8,7 +8,7 @@ $(document).ready(function() {
     	id: 'application_table',
     	autoWidth: false,
         // paging: true,
-        scrollY: 530,
+//        scrollY: 530,
         scrollCollapse: true,
         drawCallback: function( settings ) {
             uncheckedCostCheckOrder();

@@ -6,7 +6,7 @@ $(document).ready(function() {
     var application_table = eeda.dt({
         id: 'application_table',
         autoWidth: false,
-        scrollY: 530,
+//        scrollY: 530,
         
         scrollCollapse: true,
 //        paging: true,
@@ -182,7 +182,7 @@ $(document).ready(function() {
                 return strcheck;
             }
           },
-          { "width": "100px",
+          { "width": "100px","visible": false,
                 "render": function ( data, type, full, meta ) {
                     var str="<nobr>";
                     if(full.STATUS=="新建"){
