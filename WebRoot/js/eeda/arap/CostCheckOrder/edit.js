@@ -77,6 +77,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                     $('#saveBtn').attr('disabled', false);
                     $('#confirmBtn').attr('disabled', false);
                     $('#exchange').attr('disabled',false);
+                    $('#printBtn').attr('disabled',false);
                     //异步刷新明细表
                     itemOrder.refleshTable(order.ID);
                 }else{

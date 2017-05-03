@@ -549,15 +549,16 @@ public class CostRequestController extends Controller {
     	String mailContent = "付款申请单为<a href=\"http://www.esimplev.com/costRequest/edit?id="+order_id+"\">"+order_no+"</a>";
     	
     	Office office=Office.dao.findById(userlogin.get("office_id"));
-        MultiPartEmail email = new MultiPartEmail();  
+        
+        
+        try{
+    	MultiPartEmail email = new MultiPartEmail();  
         /*smtp.exmail.qq.com*/
         String HostName = office.getStr("host_name");
         int SmtpPort = office.getInt("smtp_port");
         email.setHostName(HostName);
         email.setSmtpPort(SmtpPort);
-        //反查公司信息
-        
-        try{
+            //反查公司信息
         /*输入公司的邮箱和密码*/
         email.setAuthenticator(new DefaultAuthenticator(office.getStr("email"), office.getStr("emailPassword")));        
         email.setSSLOnConnect(true);
