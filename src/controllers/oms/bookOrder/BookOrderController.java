@@ -4,8 +4,6 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
-import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,22 +18,12 @@ import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.bookOrder.BookOrder;
-import models.eeda.oms.bookOrder.BookOrderLandItem;
-import models.eeda.oms.bookOrder.BookOrderShipment;
-import models.eeda.oms.bookOrder.BookOrder;
-import models.eeda.oms.bookOrder.BookOrderAir;
-import models.eeda.oms.bookOrder.BookOrderAirCargoDesc;
-import models.eeda.oms.bookOrder.BookOrderAirItem;
 import models.eeda.oms.bookOrder.BookOrderArap;
-import models.eeda.oms.bookOrder.BookOrderCustom;
 import models.eeda.oms.bookOrder.BookOrderDoc;
-import models.eeda.oms.bookOrder.BookOrderExpress;
-import models.eeda.oms.bookOrder.BookOrderInsurance;
 import models.eeda.oms.bookOrder.BookOrderLandItem;
 import models.eeda.oms.bookOrder.BookOrderSendMail;
 import models.eeda.oms.bookOrder.BookOrderSendMailTemplate;
 import models.eeda.oms.bookOrder.BookOrderShipment;
-import models.eeda.oms.bookOrder.BookOrderShipmentItem;
 import models.eeda.oms.jobOrder.JobOrderDoc;
 
 import org.apache.commons.lang.StringUtils;
@@ -52,7 +40,6 @@ import sun.misc.BASE64Encoder;
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
@@ -1208,29 +1195,29 @@ public class BookOrderController extends Controller {
     	Record re = Db.findFirst("select * from job_order where plan_order_item_id = ?",plan_order_id);
     	if(re != null){
     		setAttr("jobOrder", re);
-    	}
     	
-    	//获取预约到达时间
-    	Long job_order_id = re.getLong("id");
-    	Record jobland = Db.findFirst("select * from job_order_land_item where order_id = ?",job_order_id);
-    	if(jobland!=null){
-    		if(StringUtils.isNotBlank(jobland.get("eta").toString())){
-        		Record joblandcab = Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",job_order_id);
-        		if(joblandcab != null){
-        			setAttr("job_eta", joblandcab.get("cabinet_arrive_date"));
-        		}
-        	}else{
-        		setAttr("job_eta", jobland.get("eta"));
-        	}
-    	}
-    	
-    	
-    	Record jobcustom = Db.findFirst("select * from job_order_custom_china_self_item where order_id = ?",job_order_id);
-    	if(jobcustom != null){
-    		String custom_order_no = jobcustom.getStr("custom_order_no");
-    		String status = jobcustom.getStr("status");
-    		setAttr("job_custom_order_no", custom_order_no);
-    		setAttr("job_status", status);
+	    	//获取预约到达时间
+	    	Long job_order_id = re.getLong("id");
+	    	Record jobland = Db.findFirst("select * from job_order_land_item where order_id = ?",job_order_id);
+	    	if(jobland!=null){
+	    		if(jobland.get("eta")==null){
+	        		Record joblandcab = Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",job_order_id);
+	        		if(joblandcab != null){
+	        			setAttr("job_eta", joblandcab.get("cabinet_arrive_date"));
+	        		}
+	    		}else{
+	        		setAttr("job_eta", jobland.get("eta"));
+	        	}
+	    	}
+	    	
+	    	
+	    	Record jobcustom = Db.findFirst("select * from job_order_custom_china_self_item where order_id = ?",job_order_id);
+	    	if(jobcustom != null){
+	    		String custom_order_no = jobcustom.getStr("custom_order_no");
+	    		String status = jobcustom.getStr("status");
+	    		setAttr("job_custom_order_no", custom_order_no);
+	    		setAttr("job_status", status);
+	    	}
     	}
     	
     	

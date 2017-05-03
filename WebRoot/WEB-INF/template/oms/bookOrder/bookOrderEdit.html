@@ -118,6 +118,13 @@
 			         <div class="row simple_small_title_div">
 			         <div style="margin-left:15px">
 			             <div class="row">
+			             	<div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'factory_loading_time', 
+	                                                    label:'收货人', 
+	                                                    value:jobOrder.factory_loading_time!''
+	                                                }){}%>
+	                        </div>
 	                        <div class="col-lg-4">
 	                            <%include("/eeda/component/form/inputField.html", 
 	                                                {   id:'order_export_date', 
@@ -125,29 +132,9 @@
 	                                                    value:jobOrder.order_export_date!''
 	                                                }){}%>
 	                        </div> 
-	                        <div class="col-lg-4">
-	                            <%include("/eeda/component/form/inputField.html", 
-	                                                {   id:'pickup_addr', 
-	                                                    label:'提货地点', 
-	                                                    value:jobOrder.pickup_addr!''
-	                                                }){}%>
-	                        </div>
-	                        <div class="col-lg-4">
-	                            <%include("/eeda/component/form/inputField.html", 
-	                                                {   id:'pol', 
-	                                                    label:'起运港', 
-	                                                    value:jobOrder.pol!''
-	                                                }){}%>
-	                        </div>
+	                         
                     	</div>
                     	<div class="row">
-	                        <div class="col-lg-4">
-	                            <%include("/eeda/component/form/inputField.html", 
-	                                                {   id:'factory_loading_time', 
-	                                                    label:'目的港', 
-	                                                    value:order.factory_loading_time!''
-	                                                }){}%>
-	                        </div> 
 	                        <div class="col-lg-4">
 	                            <%include("/eeda/component/form/inputField.html", 
 	                                                {   id:'pieces', 
@@ -162,15 +149,49 @@
 	                                                    value:jobOrder.gross_weight!''
 	                                                }){}%>
 	                        </div>
-                    	</div>
-                    	<div class="row">
 	                        <div class="col-lg-4">
 	                            <%include("/eeda/component/form/inputField.html", 
 	                                                {   id:'volume', 
 	                                                    label:'体积', 
 	                                                    value:jobOrder.volume!''
 	                                                }){}%>
-	                        </div> 
+	                        </div>
+	                        
+                    	</div>
+                    	<div class="row">
+	                        
+	                        <div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'pol', 
+	                                                    label:'起运港', 
+	                                                    value:jobOrder.pol!''
+	                                                }){}%>
+	                        </div>
+	                        <div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'factory_loading_time', 
+	                                                    label:'目的港', 
+	                                                    value:order.factory_loading_time!''
+	                                                }){}%>
+	                        </div>
+	                        <div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'pickup_addr', 
+	                                                    label:'船东/航空公司', 
+	                                                    value:jobOrder.pickup_addr!''
+	                                                }){}%>
+	                        </div>
+	                        
+	                        
+                    	</div>
+                    	<div class="row">
+	                    	<div class="col-lg-4">
+		                            <%include("/eeda/component/form/inputField.html", 
+		                                                {   id:'pol', 
+		                                                    label:'船名航次/航班信息', 
+		                                                    value:jobOrder.pol!''
+		                                                }){}%>
+		                    </div> 
 	                        <div class="col-lg-4">
 	                            <%include("/eeda/component/form/inputField.html", 
 	                                                {   id:'pickup_addr', 
@@ -185,29 +206,7 @@
 	                                                    value:jobOrder.pol!''
 	                                                }){}%>
 	                        </div>
-                    	</div>
-                    	<div class="row">
-	                        <div class="col-lg-4">
-	                            <%include("/eeda/component/form/inputField.html", 
-	                                                {   id:'factory_loading_time', 
-	                                                    label:'收货人', 
-	                                                    value:jobOrder.factory_loading_time!''
-	                                                }){}%>
-	                        </div> 
-	                        <div class="col-lg-4">
-	                            <%include("/eeda/component/form/inputField.html", 
-	                                                {   id:'pickup_addr', 
-	                                                    label:'船东/航空公司', 
-	                                                    value:jobOrder.pickup_addr!''
-	                                                }){}%>
-	                        </div>
-	                        <div class="col-lg-4">
-	                            <%include("/eeda/component/form/inputField.html", 
-	                                                {   id:'pol', 
-	                                                    label:'船名航次/航班信息', 
-	                                                    value:jobOrder.pol!''
-	                                                }){}%>
-	                        </div>
+	                        
                     	</div>
                     	<div class="row">
 	                        <div class="col-lg-4">
@@ -233,6 +232,13 @@
 	                        </div>
                     	</div>
                     	<div class="row">
+                    		<div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'pickup_addr', 
+	                                                    label:'提货地点', 
+	                                                    value:jobOrder.pickup_addr!''
+	                                                }){}%>
+	                        </div>
 	                        <div class="col-lg-4">
 	                            <%include("/eeda/component/form/inputField.html", 
 	                                                {   id:'factory_loading_time', 
@@ -254,20 +260,11 @@
 	                                                    value:jobOrder.pol!''
 	                                                }){}%>
 	                        </div>
-                    	</div>
-                    	<div class="row">
 	                        <div class="col-lg-4">
 	                            <%include("/eeda/component/form/inputField.html", 
 	                                                {   id:'factory_loading_time', 
 	                                                    label:'尺寸', 
 	                                                    value:jobOrder.factory_loading_time!''
-	                                                }){}%>
-	                        </div> 
-	                        <div class="col-lg-4">
-	                            <%include("/eeda/component/form/inputField.html", 
-	                                                {   id:'pickup_addr', 
-	                                                    label:'报关状态', 
-	                                                    value:jobOrder.pickup_addr!''
 	                                                }){}%>
 	                        </div>
 	                        <div class="col-lg-4">
@@ -276,7 +273,7 @@
 	                                                    label:'货物动态', 
 	                                                    value:jobOrder.pol!''
 	                                                }){}%>
-	                        </div>
+	                        </div> 
                     	</div>
 			         </div>
 			         </div>
