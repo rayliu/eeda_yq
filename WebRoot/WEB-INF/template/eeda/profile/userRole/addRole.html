@@ -1,0 +1,72 @@
+<%layout("/eeda/layout.html"){%>
+<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet">
+        <div id="page-wrapper">
+
+           <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+					<div class="row">
+                         <div class="col-lg-6">
+                             <div class="form-group">
+                                 <label >用户(必选)</label>
+                                 <select id="user_filter" class="form-control search-control user_filter " name="user_filter"></select>
+                                 
+                              </div>                                        
+                         </div>
+                    </div>
+                    <div class="panel panel-default">                              
+                        <div class="panel-heading">
+                               <i class="fa fa-list fa-fw"></i>用户岗位编辑
+                        </div>
+						 
+                        <div class="panel-body">
+                              <table class="table table-striped table-bordered table-hover" id="eeda-table" style="width: 100%;">
+                                  <thead>
+                                      <tr> 
+                                      	<th></th>
+                                        <th>岗位名称</th>
+                                        <th>岗位备注</th>
+                                      </tr>
+                                  </thead>
+                                 <tbody>
+                                     
+                                 </tbody>
+                             </table>
+                        
+ 							              <div class="row">
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <div class="controls">
+                                            <a id="saveBtn" class="btn  btn-sm btn-primary" >保存</a>
+                                            <a class="btn  btn-sm btn-primary" href="/userRole">返回</a>
+                                          </div>
+                                      </div>
+                                  </div>
+                            </div>
+                            
+                       		<div class="form-group">
+                            	<p>操作小助手：</p>
+                            	<p>保存成功后可以继续给未有岗位的新用户分配岗位</p>
+                            	<p>同时也可以返回到用户岗位列表查看和编辑用户岗位</p>
+                            </div>
+                           
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+          
+        </div>
+       
+
+<%}%>
+
+
+<script>
+  //app根目录在WebRoot/js/
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/profile/userRole/add']);
+    });
+</script>
