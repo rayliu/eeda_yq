@@ -70,6 +70,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 },
                 {"data":"BANK_NAME"},
+                {"data":"CURRENCY_CODE"},
                 {"data":"DATE"},
                 {"data": "INIT_AMOUNT",  //期初
                     "render": function(data, type, full, meta) {

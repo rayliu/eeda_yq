@@ -163,40 +163,44 @@ public class AccountAuditLogController extends Controller {
     	UserLogin user = LoginUserController.getLoginUser(this);
     	long office_id = user.getLong("office_id");
     	
-    	String sqlTotal = "select count(1) total from fin_account where office_id=?";
-    	Record rec = Db.findFirst(sqlTotal, office_id);
+//    	String sqlTotal = "select count(1) total from fin_account where office_id=?";
+//    	Record rec = Db.findFirst(sqlTotal, office_id);
     	 
-    	String sql = " SELECT fa.office_id,fa.id,(select bank_name from fin_account where id = fa.id) bank_name,'"+ beginTime +"' date, "
+    	String sql = "SELECT * FROM "
+    			+ " ( SELECT fa.office_id,fa.id,aal.currency_code,(select bank_name from fin_account where id = fa.id) bank_name,'"+ beginTime +"' date, "
     			+ " ( ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
     			+ " FROM arap_account_audit_log aa"
-    			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+(month-1)+"-31 23:59:59' AND aa.payment_type = 'CHARGE' ) "
+    			+ " WHERE aa.account_id = fa.id AND aa.currency_code=aal.currency_code and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+(month-1)+"-31 23:59:59' AND aa.payment_type = 'CHARGE' ) "
     			+ " - "
     			+ " ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
     			+ " FROM arap_account_audit_log aa"
-    			+ " WHERE account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+(month-1)+"-31 23:59:59' AND aa.payment_type = 'COST'"
+    			+ " WHERE account_id = fa.id AND aa.currency_code=aal.currency_code and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+(month-1)+"-31 23:59:59' AND aa.payment_type = 'COST'"
     			+ " ) ) init_amount,"
     			+ " ( ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
     			+ " FROM arap_account_audit_log aa "
-    			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '"+year+"-"+month+"-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'CHARGE'"
+    			+ " WHERE aa.account_id = fa.id AND aa.currency_code=aal.currency_code and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '"+year+"-"+month+"-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'CHARGE'"
     			+ " ) ) total_charge,"
     			+ " ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
     			+ " FROM arap_account_audit_log aa"
-    			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '"+year+"-"+month+"-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'COST'"
+    			+ " WHERE aa.account_id = fa.id AND aa.currency_code=aal.currency_code and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '"+year+"-"+month+"-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'COST'"
     			+ " ) total_cost,"
     			+ " ( ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
     			+ " FROM arap_account_audit_log aa"
-    			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'CHARGE'  )"
+    			+ " WHERE aa.account_id = fa.id AND aa.currency_code=aal.currency_code and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'CHARGE'  )"
     			+ "  - "
     			+ " ( SELECT ROUND(ifnull(sum(amount), 0), 2) FROM arap_account_audit_log aa  "
-    			+ " WHERE aa.account_id = fa.id and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'COST'"
+    			+ " WHERE aa.account_id = fa.id AND aa.currency_code=aal.currency_code and aa.office_id = "+office_id+" AND aa.create_date BETWEEN '2015-01-01' AND '"+year+"-"+month+"-31 23:59:59' AND aa.payment_type = 'COST'"
     			+ " ) ) balance_amount"
     			+ " FROM arap_account_audit_log aal"
     			+ " right JOIN fin_account fa ON fa.id = aal.account_id"
     			+ " where fa.office_id="+office_id
-    			+ " GROUP BY fa.id ";
+    			+ " GROUP BY fa.id ,  aal.currency_code"
+    			+ " ) B WHERE B.init_amount !=0 or B.total_charge !=0 or B.total_cost !=0 or B.balance_amount !=0 ";
     	
     	List<Record> BillingOrders = Db.find(sql+sLimit);
-    	
+    	 String sqlTotal = "select count(1) total from ("+sql+") C";
+    	 Record rec = Db.findFirst(sqlTotal);
+    	 
     	Map BillingOrderListMap = new HashMap();
     	BillingOrderListMap.put("sEcho", pageIndex);
     	BillingOrderListMap.put("iTotalRecords", rec.getLong("total"));
