@@ -378,7 +378,7 @@ var itemIds=[];
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/chargeRequest/itemList?checked="+checked
+          var url = "/tradeChargeRequest/itemList?checked="+checked
                +"&order_no="+order_no
                +"&sp_name="+sp_name
                +"&customer_name="+customer_name
@@ -405,7 +405,7 @@ var itemIds=[];
           if(charge_itemlist.length==0){
             $('#add_charge_item').attr('disabled',true);
           }
-          $.post('/chargeRequest/insertChargeItem',{order_id:order_id,charge_itemlist:charge_itemlist.toString()},function(data){
+          $.post('/tradeChargeRequest/insertChargeItem',{order_id:order_id,charge_itemlist:charge_itemlist.toString()},function(data){
                 refleshCreateTable(data.appOrderId);
                  $('#modal_cny').val((parseFloat(data.MODAL_CNY)).toFixed(2));
                  $('#modal_usd').val((parseFloat(data.MODAL_USD)).toFixed(2));
@@ -484,7 +484,7 @@ var itemIds=[];
       $('#select_item_table').on('click',".delete",function(){
             var id=$(this).parent().parent().attr('id');
             var order_id=$('#order_id').val();
-             $.post('/chargeRequest/deleteChargeItem', {charge_itemid:id,order_id:order_id},function(data){
+             $.post('/tradeChargeRequest/deleteChargeItem', {charge_itemid:id,order_id:order_id},function(data){
                  refleshCreateTable(data.appOrderId);
                  $('#modal_cny').val((parseFloat(data.MODAL_CNY)).toFixed(2));
                  $('#modal_usd').val((parseFloat(data.MODAL_USD)).toFixed(2));

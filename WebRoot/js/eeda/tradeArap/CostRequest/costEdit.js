@@ -125,7 +125,7 @@ $(document).ready(function() {
     //打印应付申请单
 	 $("#printBtn").on('click',function(){
 	    	var order_id = $("#order_id").val();
-		    	$.post('/jobOrderReport/costApplicationBill', {order_id:order_id}, function(data){
+		    	$.post('/tradeJobOrderReport/costApplicationBill', {order_id:order_id}, function(data){
 		    		if(data){
 		                window.open(data);
 		             }else{

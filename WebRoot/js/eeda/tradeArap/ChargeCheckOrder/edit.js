@@ -139,7 +139,7 @@ $(document).ready(function() {
     //打印应收对账明细
     $('#printBtn').click(function(){
     	var order_id = $('#order_id').val();
-    	$.post('/jobOrderReport/printReceiveDetailPDF',{order_id:order_id},function(data){
+    	$.post('/tradeJobOrderReport/printReceiveDetailPDF',{order_id:order_id},function(data){
     		if(data){
     			window.open(data);
     		}else{
@@ -151,7 +151,7 @@ $(document).ready(function() {
     $('#printTotaledBtn').click(function(){
     	var order_id = $('#order_id').val();
     	var company_name = $('#company_name').val();
-    	$.post('/jobOrderReport/printTotaledReceiveDetailPDF',{order_id:order_id,company_name:company_name},function(data){
+    	$.post('/tradeJobOrderReport/printTotaledReceiveDetailPDF',{order_id:order_id,company_name:company_name},function(data){
     		if(data){
     			window.open(data);
     		}else{

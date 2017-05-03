@@ -311,7 +311,7 @@ public class TradeJobOrderReportController extends Controller {
 	//打印应收对账单
 	public void printReceiveDetailPDF(){
 		String order_id = getPara("order_id");
-		String fileName = "/report/checkOrder/ReceivableDetails.jasper";
+		String fileName = "/report/trade/ReceivableDetails.jasper";
 		String outFileName = "/download/应收对账单PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
@@ -328,11 +328,11 @@ public class TradeJobOrderReportController extends Controller {
 		String fileName = "";
 		
 		if("昂励制冷器材（中山）有限公司".equals(company_name)){
-			 fileName = "/report/checkOrder/SpecialTotaledReceivableDetails.jasper";
+			 fileName = "/report/trade/SpecialTotaledReceivableDetails.jasper";
 		}else if("昂励制冷设备（上海）有限公司".equals(company_name)){
-			 fileName = "/report/checkOrder/huAngLiTotaledReceivableDetails.jasper";
+			 fileName = "/report/trade/huAngLiTotaledReceivableDetails.jasper";
 		}else{
-			 fileName = "/report/checkOrder/TotaledReceivableDetails.jasper";
+			 fileName = "/report/trade/TotaledReceivableDetails.jasper";
 		}
 		String outFileName = "/download/应收对账单(合计版)PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
@@ -347,7 +347,7 @@ public class TradeJobOrderReportController extends Controller {
 	//打印应付对账单PDF
 	public void payableDetailPDF(){
 		String order_id = getPara("order_id");
-		String fileName = "/report/checkOrder/payableDetails.jasper";
+		String fileName = "/report/trade/payableDetails.jasper";
 		String outFileName = "/download/应付对账单PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
@@ -360,7 +360,7 @@ public class TradeJobOrderReportController extends Controller {
 	//打印应付申请单PDF
 	public void costApplicationBill(){
 		String order_id = getPara("order_id");
-		String fileName = "/report/checkOrder/costApplicationBill.jasper";
+		String fileName = "/report/trade/costApplicationBill.jasper";
 		String outFileName = "/download/应付申请单PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);

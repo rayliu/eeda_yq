@@ -123,7 +123,7 @@ $(document).ready(function() {
 	 $("#printBtn").on('click',function(){
 	    	var order_no = $("#application_no").val();
 	    	if(order_no != null && order_no != ""){
-		    	$.post('/report/printPayMent', {order_no:order_no}, function(data){
+		    	$.post('/tradeJobOrderReport/printPayMent', {order_no:order_no}, function(data){
 		    		if(data.indexOf(",")>=0){
 						var file = data.substr(0,data.length-1);
 		    			var str = file.split(",");

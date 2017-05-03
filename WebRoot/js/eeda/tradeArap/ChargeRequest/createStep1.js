@@ -10,7 +10,7 @@
 	    autoWidth: true,
 	    paging: true,
 	    serverSide: true, //不打开会出现排序不对 
-	    ajax: "/chargeRequest/OrderList",
+	    ajax: "/tradeChargeRequest/OrderList",
 	    columns: [
 				{ 
 				    "render": function(data, type, full, meta) {
@@ -238,7 +238,7 @@
 	    var start_date = $("#create_stamp_begin_time").val();
 	    var end_date = $("#create_stamp_end_time").val();
    
-        var url = "/chargeRequest/OrderList?sp_id="+sp
+        var url = "/tradeChargeRequest/OrderList?sp_id="+sp
       	   +"&order_no="+order_no
            +"&status="+status
            +"&order_type="+orderType
@@ -271,7 +271,7 @@
           var confirmBegin_date_begin_time = $("#confirmBegin_date_begin_time").val();
           var confirmBegin_date_end_time = $("#confirmBegin_date_end_time").val();
    
-          var url = "/chargeRequest/applicationList?sp_id="+sp_id
+          var url = "/tradeChargeRequest/applicationList?sp_id="+sp_id
                +"&order_no="+order_no
                +"&application_order_no="+applicationOrderNo
                +"&STATUS="+status2
@@ -328,7 +328,7 @@
 	
 	
     var refleshSelectTable = function(){
-	    var url = "/chargeRequest/OrderList";
+	    var url = "/tradeChargeRequest/OrderList";
 	    costAccept_table.ajax.url(url).load();
     }
 

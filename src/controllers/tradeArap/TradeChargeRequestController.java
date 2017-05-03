@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 import models.AppInvoiceDoc;
-import models.ArapAccountAuditLog;
 //import models.ChargeAppOrderRel;
 import models.Office;
 import models.Party;
 import models.UserLogin;
+import models.eeda.tr.tradeJoborder.TradeArapAccountAuditLog;
 import models.eeda.tr.tradeJoborder.TradeArapChargeApplicationOrder;
 import models.eeda.tr.tradeJoborder.TradeArapChargeOrder;
 import models.eeda.tr.tradeJoborder.TradeChargeApplicationOrderRel;
@@ -976,9 +976,9 @@ public class TradeChargeRequestController extends Controller {
         //新建日记账表数据
   		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
-		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
+		TradeArapAccountAuditLog auditLog = new TradeArapAccountAuditLog();
         auditLog.set("payment_method", payment_method);
-        auditLog.set("payment_type", ArapAccountAuditLog.TYPE_CHARGE);
+        auditLog.set("payment_type", TradeArapAccountAuditLog.TYPE_CHARGE);
         auditLog.set("currency_code", currency_code);
         auditLog.set("amount", pay_amount);
         auditLog.set("creator", LoginUserController.getLoginUserId(this));

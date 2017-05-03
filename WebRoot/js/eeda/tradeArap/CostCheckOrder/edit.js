@@ -130,7 +130,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
         //应付对账单打印明细
         $('#printBtn').click(function(){
         	var order_id = $('#order_id').val();
-        	$.post('/jobOrderReport/payableDetailPDF',{order_id:order_id},function(data){
+        	$.post('/tradeJobOrderReport/payableDetailPDF',{order_id:order_id},function(data){
         		if(data){
         			window.open(data);
         		}else{
