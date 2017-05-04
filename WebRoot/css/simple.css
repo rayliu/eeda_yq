@@ -163,7 +163,7 @@ body ::-webkit-scrollbar-corner {
     border-radius: 0px;
     height: 25px;
     font-size: 10px;
-    padding: 6px 8px;
+    padding: 0px 8px;
 }
 
 .form-control{
