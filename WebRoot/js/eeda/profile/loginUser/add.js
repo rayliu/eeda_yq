@@ -264,6 +264,7 @@ $(document).ready(function(){
                 //异步刷新明细表
                 eeda.contactUrl("edit?id",order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+                $("#assigning_role").show();
                 $('#saveBtn').attr('disabled', false);
             }else{
                 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
