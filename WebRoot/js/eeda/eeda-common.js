@@ -101,6 +101,7 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
     });
 
     $(document).ready(function() {
+      $('#version_no').text(eeda_version);
       //需要TODO时才加载TODO.js
       var moudleUrl = window.location.pathname.split('/')[1];
       if(moudleUrl.length>0 && location.search.indexOf('type')>0){
