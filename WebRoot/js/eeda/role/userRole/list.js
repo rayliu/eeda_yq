@@ -33,10 +33,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 			                          			"<i class='fa fa-edit fa-fw'></i>编辑</a> ";
 			   	        		  }  
 				   	         }
-			   	        	 if(userRole.query){
-			   	        		 str = str + "<a target='_blank' class='btn  btn-sm btn-primary' href='/userRole/userPermissionRender?username="+data.USER_NAME+"' > "
-			   	        				   + "<i class='fa fa-search fa-fw'></i>查看</a>";
-			   	        	 }
 			   	        	return str + "</nobr>" ;
 			   	         }
 			   	 	}
