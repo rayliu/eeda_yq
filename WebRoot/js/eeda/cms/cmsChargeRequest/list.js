@@ -41,7 +41,7 @@ $(document).ready(function() {
             			return "<a href='/cmsChargeRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
             	 }
             },
-            {"data":"STATUS"},
+            {"data":"STATUS","class":"status"},
             {"data":"PAYEE_COMPANY","class":"SP_NAME"},
             {"data":"BILL_TYPE",
             	"render": function(data,type,full,mate){
@@ -318,7 +318,7 @@ $(document).ready(function() {
             var status='';
             var checkbox=$(rows[i]).find('[type=checkbox]');
            if($(checkbox).prop('checked')){
-                status=$(checkbox).parent().next().next().next().html();
+                status=$(checkbox).parent().parent().find('.status').html();
                 if(status=='新建') $('#checked').attr('disabled',false);
                 if(status=='已复核') $('#confirmed').attr('disabled',false);
                 i=rows.length;
@@ -374,7 +374,7 @@ $(document).ready(function() {
                     // application_table.ajax.url(url).load(currenryTotalAmount);
                     $(this_but).attr('disabled',true);
                     $(this_but).next().attr('disabled',false);
-                    td.next().next().html(data.STATUS);
+                    td.parent().find('.status').html(data.STATUS);
                     
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
                 }else{
@@ -425,7 +425,7 @@ $(document).ready(function() {
                                         var btn0=$(rows[i]).find('[type=button]').eq(1);
                                         if($(td).val()==arr[j]){
                                              $(btn0).attr('disabled',true);
-                                             $(btn0).parent().parent().next().next().html("已收款");
+                                             $(btn0).parent().parent().parent().find('.status').html("已收款");
                                         }
                                     }
                                 }
@@ -433,7 +433,7 @@ $(document).ready(function() {
                                 var td=$(rows).find('.confirmBtn');
                                 var rowIndex = $('#rowIndex').val();
                                 $(td[rowIndex]).attr('disabled',true);
-                                $(td[rowIndex]).parent().parent().next().next().html(data.STATUS);
+                                $(td[rowIndex]).parent().parent().parent().find('.status').html(data.STATUS);
                             }
                             $.scojs_message('收款成功', $.scojs_message.TYPE_OK);
                             $('#confirmed').attr('disabled',true);
@@ -468,7 +468,7 @@ $(document).ready(function() {
                             if($(td).val()==arr[j]){
                                  $(btn0).attr('disabled',true);
                                  $(btn0).next().attr('disabled',false);
-                                 $(btn0).parent().parent().next().next().html("已复核");
+                                 $(btn0).parent().parent().parent().find('.status').html("已复核");
                             }
                         }
                     }

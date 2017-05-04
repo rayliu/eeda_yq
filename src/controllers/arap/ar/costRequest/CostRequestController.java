@@ -765,7 +765,7 @@ public class CostRequestController extends Controller {
         	
 	        	ArapCostApplication arapCostInvoiceApplication = ArapCostApplication.dao.findById(id);
 	        	String payment_method = arapCostInvoiceApplication.get("payment_method") ;
-	        	receive_bank_id = arapCostInvoiceApplication.get("deposit_bank").toString() ;
+	        	receive_bank_id = arapCostInvoiceApplication.get("deposit_bank");
 	        	if(StringUtils.isEmpty(receive_bank_id)){
 	      			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
 	      	        Record rec = Db.findFirst(str2);

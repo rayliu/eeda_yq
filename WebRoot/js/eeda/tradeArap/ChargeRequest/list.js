@@ -45,7 +45,7 @@ $(document).ready(function() {
                         return "<a href='/tradeChargeRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
                  }
             },
-            {"data":"STATUS"},
+            {"data":"STATUS","class":"status"},
             {"data":"PAYEE_COMPANY","class":"SP_NAME"},
             {"data":"BILL_TYPE",
                 "render": function(data,type,full,mate){
@@ -204,7 +204,7 @@ $(document).ready(function() {
                         return "<a href='/tradeChargeRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
                  }
             },
-            {"data":"STATUS"},
+            {"data":"STATUS","class":"status"},
             {"data":"PAYEE_COMPANY","class":"SP_NAME"},
             {"data":"BILL_TYPE",
                 "render": function(data,type,full,mate){
@@ -509,7 +509,7 @@ $(document).ready(function() {
             totalMoney();
             $("#allCheck2").prop('checked',true)
             $('#checked_application_table .dataTables_empty').remove();
-            status=$(this).parent().next().next().next().html();
+            status=$(this).parent().parent().find('.status').html();
                 if(status=='新建') $('#checked').attr('disabled',false);
                 if(status=='已复核') $('#confirmed').attr('disabled',false);
             tr.remove();
@@ -524,7 +524,7 @@ $(document).ready(function() {
         var error=0;
         if(this.checked==true){
             $("#application_table .checkBox").each(function(){
-                    var statu= $(this).parent().next().next().next().html();
+                    var statu= $(this).parent().parent().find('.status').html();
                     if(status[0]==''||status[0]==undefined){
                         status.push(statu);
                     }else if(status[0]!=statu){
@@ -594,7 +594,7 @@ $(document).ready(function() {
                 if(data.ID>0){
                     $(this_but).attr('disabled',true);
                     $(this_but).next().attr('disabled',false);
-                    td.next().next().html(data.STATUS);
+                    td.parent().find('.status').html(data.STATUS);
                     row.find('[type=checkbox]').prop('checked',false);
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
                     totalMoney();
@@ -625,7 +625,7 @@ $(document).ready(function() {
                 if(data.ID>0){
                     $(this_but).attr('disabled',true);
                     $(this_but).next().attr('disabled',false);
-                    td.next().next().html(data.STATUS);
+                    td.parent().find('.status').html(data.STATUS);
                     row.find('[type=checkbox]').prop('checked',false);
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
                     totalMoney();
@@ -684,7 +684,7 @@ $(document).ready(function() {
                             if($(td).val()==arr[j]){
                                  $(btn0).attr('disabled',true);
                                  $(btn0).next().attr('disabled',false);
-                                 $(btn0).parent().parent().next().next().html("已复核");
+                                 $(btn0).parent().parent().parent().find('.status').html("已复核");
                             }
                         }
                     }
@@ -741,7 +741,10 @@ $(document).ready(function() {
                                         var btn0=$(rows[i]).find('[type=button]').eq(1);
                                         if($(td).val()==arr[j]){
                                              $(btn0).attr('disabled',true);
-                                             $(btn0).parent().parent().next().next().html("已收款");
+                                             $(btn0).parent().parent().parent().find('.status').html("已收款");
+                                            if(arr.length==1){
+                                                $(btn0).parent().parent().parent().find(".checkBox").prop('checked',false)                                    
+                                                }
                                         }
                                     }
                                 }
@@ -749,7 +752,7 @@ $(document).ready(function() {
                                 var td=$(rows).find('.confirmBtn');
                                 var rowIndex = $('#rowIndex').val();
                                 $(td[rowIndex]).attr('disabled',true);
-                                $(td[rowIndex]).parent().parent().next().next().html(data.STATUS);
+                                $(td[rowIndex]).parent().parent().parent().find('.status').html(data.STATUS);
                             }
                             $.scojs_message('收款成功', $.scojs_message.TYPE_OK);                            
                             totalMoney();
@@ -767,7 +770,7 @@ $(document).ready(function() {
             totalMoney();
             $("#checked_application_table .checkBox").each(function(){
                 $(this).prop('checked',true);
-                var status= $(this).parent().next().next().next().html();
+                var status= $(this).parent().parent().find('.status').html();
                 if(status=='新建') $('#checked').attr('disabled',false);
                  if(status=='已复核') $('#confirmed').attr('disabled',false);
             });
