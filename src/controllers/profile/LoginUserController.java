@@ -137,11 +137,12 @@ public class LoginUserController extends Controller {
         String name = getPara("chineseName");
         String pass = getPara("password");
         String user_phone = getPara("user_phone");
-        String sha1Pwd = MD5Util.encode("SHA1", pass);
+        
         if (id != "") {
         	UserLogin user = UserLogin.dao.findById(id);
-        	if(pass != null && !"".equals(sha1Pwd)){
-        		user.set("password", sha1Pwd);
+        	if(pass != null && !"".equals(pass)){
+                       String sha1Pwd = MD5Util.encode("SHA1", pass);
+        	     user.set("password", sha1Pwd);
         	}
             user.set("password_hint", getPara("pw_hint"));
             user.set("user_tel", getPara("user_tel"));
@@ -161,7 +162,7 @@ public class LoginUserController extends Controller {
     	String username=getPara("username");
         String id = getPara("userId");
         String name = getPara("name");
-        String officeids = getPara("officeIds");
+        //String officeids = getPara("officeIds");
         String customerids = getPara("customerIds");
         String user_phone = getPara("user_phone");
         //String wechat_no = getPara("wechat_no");
@@ -184,11 +185,16 @@ public class LoginUserController extends Controller {
         if (id != "") {
             user.update();
         } else {
+            UserLogin current_user = LoginUserController.getLoginUser(this);
+            long office_id = current_user.getLong("office_id");
+            user.set("office_id",office_id);
             user.save();
         }
-        saveOffice(user,officeids);
+        //saveOffice(user,officeids);
         saveUserCustomer(user,customerids);
-        addDefaultOffice(user, id);
+        
+        
+        //addDefaultOffice(user, id);
         
         setAttr("lu", user);
         render("/eeda/profile/loginUser/EditUser.html");

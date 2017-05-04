@@ -247,6 +247,7 @@ $(document).ready(function(){
 		$("#customerIds").val(customerIds.toString());
 		
 		$("#leadsForm").submit();
+                $("#assigning_role").show();
 		
 	});
 	if($("#userId").val() != "" && $("#userId").val() != null){
