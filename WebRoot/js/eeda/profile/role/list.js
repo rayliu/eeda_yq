@@ -23,11 +23,13 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
 								+ "编辑"
 								+ "</a> ";
 						}
-						if(role_del_permission){
-							str += "<a class='btn  btn-sm btn-danger' href='/role/deleteRole/"+full.ID+"'>"
-								+ "<i class='fa fa-trash-o fa-fw'></i> "
-								+ "删除"
-								+ "</a>";
+						if(data.CODE != "admin"){
+							if(role_del_permission){
+								str += "<a class='btn  btn-sm btn-danger' href='/role/deleteRole/"+full.ID+"'>"
+									+ "<i class='fa fa-trash-o fa-fw'></i> "
+									+ "删除"
+									+ "</a>";
+							}
 						}
 						return str +="</nobr>";
                   }
