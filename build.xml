@@ -51,6 +51,12 @@
         <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-uat" overwrite="true"/>
         <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-uat" overwrite="true"/> 
     </target>
+	
+	<target name="copy_gsell_config" >
+	        <copy tofile="${project.classpath}/job.properties" file="WebRoot/WEB-INF/config/job.properties" overwrite="true"/>
+	        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-gsell" overwrite="true"/>
+	        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-gsell" overwrite="true"/> 
+	    </target>
     
 	<target name="generate_js_version" >
 		<copy tofile="WebRoot/WEB-INF/template/eeda/component/form/commonJs.html"
