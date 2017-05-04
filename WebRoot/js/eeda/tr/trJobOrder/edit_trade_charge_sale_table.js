@@ -71,7 +71,8 @@ $(document).ready(function() {
 
     //------------事件处理
     var bindFieldEvent=function(){  
-        eeda.bindTableField('trade_sale_table','CHARGE_ID','/finItem/search','');
+        // eeda.bindTableField('trade_sale_table','CHARGE_ID','/finItem/search','');
+         eeda.bindTableFieldChargeId('trade_sale_table','CHARGE_ID','/finItem/search','');
         eeda.bindTableField('trade_sale_table','SP_ID','/serviceProvider/searchCompany','');
         eeda.bindTableFieldCurrencyId('trade_sale_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
         eeda.bindTableFieldCurrencyId('trade_sale_table','exchange_currency_id','/serviceProvider/searchCurrency','');

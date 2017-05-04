@@ -354,7 +354,7 @@ public class TrJobOrderController extends Controller {
    		r.set("creator_name", user_name);
    		r.set("trade", getItemDetail(id,"trade"));
     	   		
-   	    //费用明细，应收应付
+   	    //费用明细，应收应付模版
 		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
 		List<Map<String, String>> cost_template = (ArrayList<Map<String, String>>)dto.get("cost_template");
 		List<Map<String, String>> allCharge_template = (ArrayList<Map<String, String>>)dto.get("allCharge_template");
