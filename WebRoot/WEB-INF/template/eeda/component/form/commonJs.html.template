@@ -1,6 +1,7 @@
 <script>
+    window.eeda_version='@version@';
     requirejs.config({
-        urlArgs: 'v=@verion@',
+        urlArgs: 'v=@version@',
         baseUrl: '/js/lib',
         paths: {
             app: '../eeda',
