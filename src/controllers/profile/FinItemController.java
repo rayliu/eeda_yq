@@ -80,6 +80,11 @@ public class FinItemController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void create() {
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        Long officeId = user.getLong("office_id");
+        
+        List<Record> currency = Db.find("select * from currency where office_id=?",officeId);
+		setAttr("currencyList", currency);
         render("/eeda/profile/finItem/finItemEdit.html");
     }
     
@@ -135,8 +140,10 @@ public class FinItemController extends Controller {
         String id = getPara("id");
         FinItem u = FinItem.dao.findById(id);
         setAttr("order", u);
+        UserLogin user = LoginUserController.getLoginUser(this);
+        Long officeId = user.getLong("office_id");
         
-        List<Record> currency = Db.find("select * from currency");
+        List<Record> currency = Db.find("select * from currency where office_id=?",officeId);
 		setAttr("currencyList", currency);
         render("/eeda/profile/finItem/finItemEdit.html");
         
