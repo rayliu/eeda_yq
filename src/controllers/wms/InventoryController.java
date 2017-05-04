@@ -191,7 +191,7 @@ public class InventoryController extends Controller {
             
     	}
         
-    	sql = "select A.*,count(A.id) total from (select gi.*, ifnull(u.c_name, u.user_name) creator_name,"
+    	sql = "select A.*,count(A.id) totalBox,sum(A.quantity) totalPiece from (select gi.*, ifnull(u.c_name, u.user_name) creator_name,"
     		+ " pro.item_name,ifnull(pro.item_no,'') item_no,pro.part_name part_name "
 			+ " from gate_in gi "
 			+ " left join user_login u on u.id = gi.creator"
@@ -264,7 +264,7 @@ public class InventoryController extends Controller {
             condition += " and gi.create_time between '"+begin_time+"' and '"+end_time+"'";
     	}
         
-    	sql = "select A.*,count(A.id) total from (select gi.*,"
+    	sql = "select A.*,count(A.id) totalBox,sum(A.quantity) totalPiece from (select gi.*,"
     		+ " pro.item_name,ifnull(pro.item_no,'') item_no,pro.part_name part_name "
 			+ " from gate_in gi "
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"

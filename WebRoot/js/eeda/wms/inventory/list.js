@@ -13,37 +13,38 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
 		        $.unblockUI();
 		    },
             columns:[
-                {"data": "ITEM_NO", 
+                {"data": "ITEM_NO","class":"item_no",
               	    "render": function ( data, type, full, meta ) {
               	    	if(!data){
               	    		data = "<i class='glyphicon glyphicon-th-list'></i>";
               	    	}
-              	    	$('#orderText').text(full.ITEM_NO);
-              	    	return "<a class='partDetail' item_no='"+full.ITEM_NO+"' style='cursor: pointer;'>"+data+"</a>";
+              	    	return "<a class='itemDetail' item_no='"+full.ITEM_NO+"' style='cursor: pointer;'>"+data+"</a>";
               	    }
                 },
-                { "data": "ITEM_NAME"}, 
-                { "data": "PART_NO","visible":false,
+                { "data": "ITEM_NAME","class":"item_name"}, 
+                { "data": "PART_NO","visible":false,"class":"part_no",
                 	 "render": function ( data, type, full, meta ) {
                	    	if(!data)
                	    		data = "<i class='glyphicon glyphicon-th-list'></i>";
-               	    	return "<a class='item_detail' part_no='"+full.PART_NO+"' data-target='#itemDetail' data-toggle='modal' style='cursor: pointer;'>"+data+"</a>";
+               	    	return "<a class='partDetail' part_no='"+full.PART_NO+"' data-target='#partDetail' data-toggle='modal' style='cursor: pointer;'>"+data+"</a>";
                	    }
                 }, 
-                { "data": "PART_NAME","visible":false}, 
-				{ "data": "TOTAL"}
+                { "data": "PART_NAME","visible":false,"class":"part_name"}, 
+				{ "data": "TOTALBOX","class":"totalBox"},
+                { "data": "TOTALPIECE","class":"totalPiece"}
             ]
         });
         
         
-    	$("#eeda-table").on('click', '.partDetail', function(e){
-          	var item_no = $(this).attr("item_no");
-
+    	$("#eeda-table").on('click', '.itemDetail', function(e){
+          	var value = $(this).attr("item_no");
+          	var name = $($(this).parent().parent()).find('.item_name').text();
           	$('.itemShow').show();
           	if(item_no){
-          		$('#orderText').text(item_no);
+          		$('#orderText').text("产品编码："+value);
+            	$('#partText').text("产品名称："+name);
           	}
-          	searchPartData(item_no);
+          	searchPartData(value);
         });
         
         

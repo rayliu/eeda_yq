@@ -13,27 +13,43 @@ $(document).ready(function() {
         columns:[
                  {"data": "ITEM_NO", visible: false,
                	    "render": function ( data, type, full, meta ) {
-                      $('#itemNo').text(data);
                		    return data;
                	    }
                  },
                  { "data": "ITEM_NAME", visible: false,
                     "render": function ( data, type, full, meta ) {
-                      $('#itemName').text(data);
                       return data;
                     }
-                  }, 
-                 { "data": "PART_NO"},
-         				{ "data": "PART_NAME"}, 
-         				{ "data": "SHELVES"},
-         				{ "data": "QUANTITY"},
-         				{ "data": "CREATE_TIME"},
-         				{ "data": "CREATOR_NAME"}
+                 }, 
+                 { "data": "PART_NO", visible: false,
+                      "render": function ( data, type, full, meta ) {
+                          $('#partNo').text(data);
+                          return data;
+                       }
+                 }, 
+ 				 { "data": "PART_NAME", visible: false,
+	                  "render": function ( data, type, full, meta ) {
+	                      $('#partName').text(data);
+	                      return data;
+	                  }
+                 }, 
+ 				 { "data": "SHELVES"},
+ 				 { "data": "QUANTITY"},
+ 				 { "data": "CREATE_TIME"},
+ 				 { "data": "CREATOR_NAME"}
         ]
     });
 	
-	$("#eeda-table").on('click', '.item_detail', function(e){
+	$("#eeda-table").on('click', '.partDetail', function(e){
       	var part_no = $(this).attr("part_no");
+      	var part_name = $($(this).parent().parent()).find('.part_name').text();
+      	var totalBox = $($(this).parent().parent()).find('.totalBox').text();
+      	var totalPiece = $($(this).parent().parent()).find('.totalPiece').text();
+      	$('#partNo').text(part_no);
+      	$('#partName').text(part_name);
+      	$('#totalBox').text(totalBox);
+      	$('#totalPiece').text(totalPiece);
+      	
       	searchData(part_no);
     });
 	
