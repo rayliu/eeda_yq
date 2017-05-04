@@ -18,14 +18,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 { "data": "ITEM_NO","class":"item_no",
                     "render": function ( data, type, full, meta ) {
                         if(data){
-                        	$('#orderText').text(data);
                         	return "<a href='#'>"+data+"</a>";
                         }else{
                             return '';
                         }
                     }
                 },  
-                { "data": "ITEM_NAME"},
+                { "data": "ITEM_NAME","class":"item_name"},
                 { "data": "PART_NO","class":"part_no",
                     "render": function ( data, type, full, meta ) {
                         if(data){
@@ -35,7 +34,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                         }
                     }
                 },  
-				{ "data": "PART_NAME"}, 
+				{ "data": "PART_NAME","class":"part_name"}, 
 				{ "data": "ACTRAL_AMOUNT"},
 				{ "data": "CREATE_TIME"},
 				{ "data": "CREATOR_NAME"},
@@ -51,24 +50,57 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         $('#eeda-table').on('click','.item_no',function(){
         	var value = $(this).text();
         	$('#item_no').val(value);
+        	var name = $(this).parent().find('.item_name').text();
         	$('#part_no').val("");
+        	
+        	$('#orderText').text("产品编码："+value);
+        	$('#partText').text("产品名称："+name);
+        	showText();
         	searchData();
         });
         
         $('#eeda-table').on('click','.part_no',function(){
         	var value = $(this).text();
-        	var item_no = $(this).parent().find('.item_no').text()
+        	var item_no = $(this).parent().find('.item_no').text();
+        	var name = $(this).parent().find('.part_name').text();
         	$('#part_no').val(value);
         	$('#item_no').val("");
-          	if(item_no){
-          		$('#orderText').text(item_no);
-          	}
+        	$('#orderText').text("组件编码："+value);
+        	$('#partText').text("组件名称："+name);
+        	showText();
         	searchData();
         });
+        
+        var showText = function(){
+        	var item_no = $('#item_no').val();
+        	var item_name = $('#item_name').val();
+        	var part_no = $('#part_no').val();
+        	var part_name = $('#part_name').val();
+        	var table = $('#eeda-table').dataTable();
+        	if(part_no.trim()!='' || part_name.trim()!=''){
+              	table.fnSetColumnVis(0, false);
+              	table.fnSetColumnVis(1, false);
+              	table.fnSetColumnVis(2, false);
+              	table.fnSetColumnVis(3, false);
+              	$('.itemShow').show();
+        	}else if(item_no.trim()!='' || item_name.trim()!='') {
+              	table.fnSetColumnVis(0, false);
+              	table.fnSetColumnVis(1, false);
+              	$('.itemShow').show();
+        	}else{
+        		table.fnSetColumnVis(0, true);
+              	table.fnSetColumnVis(1, true);
+              	table.fnSetColumnVis(2, true);
+              	table.fnSetColumnVis(3, true);
+              	$('.itemShow').hide();
+              	$('#orderText').text("");
+        	} 
+        }
         
       
         $('#resetBtn').click(function(e){
         	$("#orderForm")[0].reset();
+        	showText();
         	searchData(); 
         });
 
@@ -96,21 +128,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
             });
         	
-        	var item_no = $('#item_no').val();
-        	var item_name = $('#item_name').val();
-        	var part_no = $('#part_no').val();
-        	var part_name = $('#part_name').val();
-        	var table = $('#eeda-table').dataTable();
-        	if(part_no.trim()=='' && part_name.trim()==''){
-              	table.fnSetColumnVis(1, true);
-              	table.fnSetColumnVis(2, true);
-              	$('.itemShow').hide();
-              	$('#orderText').text('');
-        	}else {
-              	table.fnSetColumnVis(1, false);
-              	table.fnSetColumnVis(2, false);
-              	$('.itemShow').show();
-        	} 
         	
         	var itemJson = buildCondition();
         	var url = "/invCheckOrder/list?jsonStr="+JSON.stringify(itemJson);
