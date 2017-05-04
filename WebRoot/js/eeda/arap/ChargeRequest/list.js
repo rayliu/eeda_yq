@@ -664,7 +664,7 @@ $(document).ready(function() {
         var application_ids=[];
         var id='';
         var rows=$('#checked_application_table tr');
-        for(var i=1;i<rows.length;i++){
+        for(var i=0;i<rows.length;i++){
            if($(rows[i]).find('[type=checkbox]').prop('checked')){
                var checkBox = $(rows[i]).find('[type=checkbox]');
                 id=checkBox.val();
