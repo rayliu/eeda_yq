@@ -85,7 +85,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       		$('#usd_totalAmountSpan').html((Math.round(usd_total*100)/100).toFixed(2));
       		$('#hkd_totalAmountSpan').html((Math.round(hkd_total*100)/100).toFixed(2));
       		$('#jpy_totalAmountSpan').html((Math.round(jpy_total*100)/100).toFixed(2));
-      		$('#totalAmountSpan').html((Math.round(total_amount*100)/100).toFixed(2)); 
+      		if(isNaN(total_amount)){
+      			$('#totalAmountSpan').html("转成人民币金额列，有空值"); 
+      		}else{
+      			$('#totalAmountSpan').html((Math.round(total_amount*100)/100).toFixed(2)); 
+      		}
+      		
           }
       };
 

@@ -156,12 +156,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html("USD:"+eeda.numFormat(cost_usd,3));
   	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("JPY:"+eeda.numFormat(cost_jpy,3));
   	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("HKD:"+eeda.numFormat(cost_hkd,3));
-  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("应付折合(RMB):"+eeda.numFormat(total_cost,3));
+  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("应付折合(CNY):"+eeda.numFormat(total_cost,3));
   	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("CNY:"+eeda.numFormat(uncost_cny,3)).css('color','red');
   	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(7).html("USD:"+eeda.numFormat(uncost_usd,3)).css('color','red');
   	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(8).html("JPY:"+eeda.numFormat(uncost_jpy,3)).css('color','red');
   	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(9).html("HKD:"+eeda.numFormat(uncost_hkd,3)).css('color','red');
-  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html("未付折合(RMB):"+eeda.numFormat(total_uncost,3)).css('color','red');
+  	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html("未付折合(CNY):"+eeda.numFormat(total_uncost,3)).css('color','red');
        	  
        	  var total_profit=parseFloat(total_cost-total_uncost).toFixed(2);
        	  if(total_profit<0){
