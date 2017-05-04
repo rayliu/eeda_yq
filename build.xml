@@ -40,7 +40,7 @@
         <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-fk" overwrite="true"/>
     </target>
 
-	<target name="prod" depends="clean, compile">
+	<target name="prod" depends="clean, compile, generate_js_version">
         <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-prod" overwrite="true"/>
         <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-prod" overwrite="true"/>
     </target>
