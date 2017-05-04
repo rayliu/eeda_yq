@@ -11,14 +11,20 @@ $(document).ready(function() {
 	        $.unblockUI();
 	    },
         columns:[
-                 {"data": "ITEM_NAME", 
+                 {"data": "ITEM_NAME", "visible":false,
                	    "render": function ( data, type, full, meta ) {
+               	    	$('#itemName').text(data);
                		    return data;
                	    }
                  },
-                 { "data": "ITEM_NO"}, 
+                { "data": "ITEM_NO", "visible":false,
+            	    "render": function ( data, type, full, meta ) {
+            	    	$('#itemNo').text(data);
+               		    return data;
+               	    }
+                }, 
+                { "data": "PART_NO"}, 
  				{ "data": "PART_NAME"}, 
- 				{ "data": "PART_NO"}, 
  				{ "data": "SHELVES"},
  				{ "data": "QUANTITY"}
         ]

@@ -125,18 +125,24 @@
 		    <div class="modal-content">
 		      	<div class="modal-header">出库单明细列表</div>
 		      	<div class="modal-body">
-					<div class="row">
-					</div>
-					<div class="">  
+		      		<div class="form-group" >
+	                    <div class="col-lg-6">
+	                    	<h4>产品编码: <span id="itemNo"></span></h4>
+	                    </div>
+	                    <div class="col-lg-6">
+            				<h4>产品名称: <span id="itemName"></span></h4>
+	                    </div>
+                    </div>
+					<div class="form-group">  
 						 <%include("/eeda/component/form/detailTable.html", 
                         { 
 						id:'item_table', 
-						style:'width:1300px',
+						style:'width:1000px',
 						headers:[
 		                    	'产品名称',
 		                    	'产品编码',
+		                    	'组件编码',
 		                        '组件名称',
-		                        '组件编码',
 		                        '库位',
 		                        '数量']
 						}){} %>        

@@ -308,7 +308,7 @@ public class GateOutOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
        
-    	sql = "select gi.*,pro.part_name,pro.item_name from gate_in gi "
+    	sql = "select gi.*,pro.part_name,pro.item_no,pro.item_name from gate_in gi "
     			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
     			+ " where out_order_id ='"+order_id+"'"
     			+ condition 
