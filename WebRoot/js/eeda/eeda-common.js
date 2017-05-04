@@ -1387,4 +1387,145 @@ eeda.refreshUrl = refreshUrl;
               }
           }).find('li').first().focus();
       };
+      
+      eeda.bindTableFieldChargeId = function(table_id, el_name,url,para) {
+		  var tableFieldList = $('#table_fin_item_field_list');
+		  $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
+			  
+			  var me = this;
+			  var inputField = $(this);
+			  var hiddenField = $(this).parent().find('input[name='+el_name+']');
+			  var inputStr = inputField.val();
+			  
+			  if (event.keyCode == 40) {
+				  tableFieldList.find('li').first().focus();
+				  return false;
+			  }
+			  
+			  $.get(url, {input:inputStr,para:para}, function(data){
+				  if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+					  return;
+				  }
+				  tableFieldList.empty();
+				  for(var i = 0; i < data.length; i++)
+					  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID
+							  +"' charge_name='"+data[i].NAME+"' currency_id='"+data[i].CURRENCY_ID
+							  +"' currency_code='"+data[i].CURRENCY_CODE+"' currency_rate='"+data[i].RATE+"' >"+data[i].NAME+"</a></li>");
+				  tableFieldList.css({ 
+					  left:$(me).offset().left+"px", 
+					  top:$(me).offset().top+28+"px" 
+				  });
+				  tableFieldList.show();
+				  eeda._inputField = inputField;
+				  eeda._hiddenField = hiddenField;
+				  //tableFieldList;
+				  if(data.length==0)
+		                hiddenField.val('');
+		            if(data.length==1&&data[0].ID)
+		                hiddenField.val(data[0].ID);
+		            if(!inputStr){
+		            	if(data.length>1)
+			                hiddenField.val('');
+		            }
+			  },'json');
+		  });
+		  
+		  tableFieldList.on('click', '.fromLocationItem', function(e){
+			  var inputField = eeda._inputField;
+			  var hiddenField = eeda._hiddenField;
+			  inputField.val($(this).text());//名字
+			  tableFieldList.hide();
+			  var dataId = $(this).attr('dataId');
+			  hiddenField.val(dataId);//id
+			  
+			  //某条费用对应某币制			  
+			  var td = inputField.parent().parent();
+
+			  var charge_id = $(this).attr('dataId');
+			  var charge_name = $(this).attr('charge_name');
+			  var currency_id = $(this).attr('currency_id');
+			  var currency_code = $(this).attr('currency_code');
+			  var currency_rate = $(this).attr('currency_rate');
+			  td.parent().find('input[name=CHARGE_ID] ').val(charge_id);
+			  td.parent().find('input[name=CHARGE_ID_input] ').val(charge_name);
+			  if(currency_id!='undefined' && currency_id!='null'){
+				  td.parent().find('input[name=CURRENCY_ID] ').val(currency_id);	
+				  td.parent().find('input[name=CURRENCY_ID_input] ').val(currency_code);
+				  td.parent().find('input[name=exchange_currency_id] ').val(currency_id);
+				  td.parent().find('input[name=exchange_currency_id_input] ').val(currency_code);
+			  }
+			  if(currency_rate!='undefined' && currency_rate!='null'){
+				  td.parent().find('input[name=exchange_rate] ').val(currency_rate);
+				  td.parent().find('input[name= exchange_currency_rate] ').val(1.000000);
+				  td.parent().find('input[name= exchange_currency_rate_rmb] ').val(currency_rate);
+			  }        
+                         
+		  });
+		  
+		  tableFieldList.on('keydown', 'li', function(e){
+              if (e.keyCode == 13) {
+                  var inputField = eeda._inputField;
+                  var hiddenField = eeda._hiddenField;
+                  inputField.val($(this).text());//名字
+                  tableFieldList.hide();
+                  var $a = $(this).find('a');
+                  var dataId = $a.attr('dataId');
+                  hiddenField.val(dataId);//id
+
+                  //datatable里按照   币制，汇率，转换后金额 相邻排列
+                  var td = inputField.parent().parent();
+                  var class_name = td.attr('class');
+                  var currency_rate = $a.attr('currency_rate');
+
+                  var nextTdInput = td.next().children();
+                  nextTdInput.val(currency_rate);//选择币制则填入汇率
+                  nextTdInput.focus();
+
+                  if(class_name=='cny_to_other'){
+                	  var total = td.parent().find('.cny_total_amount input').val();
+                  }else{
+                	  var total = td.parent().find('.currency_total_amount input').val();//此币种的金额
+                  }
+                  if(currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
+                	  if(class_name==' cny_to_other'){
+                		  td.next().next().children().val((total/currency_rate).toFixed(3));//转换后的金额
+                	  }else{
+                		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
+                	  }
+                  }
+              }
+          });
+		  
+		  // 1 没选中客户，焦点离开，隐藏列表
+		  $(document).on('click', function(event){
+			  if (tableFieldList.is(':visible') ){
+				  var clickedEl = $(this);
+				  var hiddenField = eeda._hiddenField;
+				  if ($(this).find('a').val().trim().length ==0) {
+					  hiddenField.val('');
+				  };
+				  tableFieldList.hide();
+			  }
+		  });
+		  
+		  // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
+		  tableFieldList.on('mousedown', function(){
+			  return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+		  });
+		  
+		  tableFieldList.on('focus', 'li', function() {
+			  $this = $(this);
+			  $this.addClass('active').siblings().removeClass();
+			  // $this.closest('div.container').scrollTop($this.index() * $this.outerHeight());
+		  }).on('keydown', 'li', function(e) {
+			  $this = $(this);
+			  if (e.keyCode == 40) {
+				  $this.next().focus();
+				  return false;
+			  } else if (e.keyCode == 38) {
+				  $this.prev().focus();
+				  return false;
+			  }
+		  }).find('li').first().focus();
+	  };
 });

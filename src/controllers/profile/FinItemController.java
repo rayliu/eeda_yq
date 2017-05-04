@@ -36,24 +36,41 @@ public class FinItemController extends Controller {
         
         List<Record> finItems = Collections.EMPTY_LIST;
         if(StrKit.isBlank(input)){//从历史记录查找
-            String sql = "select h.ref_id, f.id, f.name from user_query_history h, fin_item f "
-                    + "where h.ref_id=f.id and h.type='ARAP_FIN' and h.user_id=?";
+            String sql = "SELECT * from( SELECT	h.ref_id,h.query_stamp,	f.id,	f. NAME,c.id currency_id,c.`code` currency_code,cr.rate "
+					+" FROM	user_query_history h "
+					+" LEFT JOIN	fin_item f on h.ref_id = f.id "
+					+" LEFT JOIN currency c on c.id=f.binding_currency and c.office_id=f.office_id "
+					+" LEFT JOIN currency_rate cr on cr.currency_id =c.id and cr.office_id=c.office_id "
+                    + " where h.ref_id=f.id and h.type='ARAP_FIN' and h.user_id=? ) B"
+                    + " where currency_id is not null or currency_code is not null or rate is not null ";
             finItems = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
             if(finItems.size()==0){
-                finItems = Db.find("select * from fin_item f where f.office_id=? and f.name like '%"+input+"%' "
+                finItems = Db.find("SELECT	f.*,c.id currency_id,c.`code` currency_code,cr.rate FROM 	fin_item f "
+						+" LEFT JOIN currency c on c.office_id = f.office_id		AND c.`code` = f.binding_currency "
+						+" LEFT JOIN currency_rate cr ON cr.currency_id = c.id		AND cr.office_id = c.office_id "
+						+" WHERE	f.office_id = ?  "
+                		+ " and f.name like '%"+input+"%' "
                         + " order by convert(f.name using gb2312) asc limit 10", officeId);
             }
-            renderJson(finItems);
         }else{
             if (input !=null && input.trim().length() > 0) {
-                finItems = Db.find("select * from fin_item f where f.office_id=? and f.name like '%"+input+"%' "
-                        + " order by convert(name using gb2312) asc limit 10", officeId);
+                finItems = Db.find("SELECT	f.*,c.id currency_id,c.`code` currency_code,cr.rate FROM 	fin_item f "
+						+" LEFT JOIN currency c on c.office_id = f.office_id		AND c.`code` = f.binding_currency "
+						+" LEFT JOIN currency_rate cr ON cr.currency_id = c.id		AND cr.office_id = c.office_id "
+						+" WHERE	f.office_id = ?  "
+                		+ " and f.name like '%"+input+"%' "
+                        + " order by convert(f.name using gb2312) asc limit 10", officeId);
             }else{
-                finItems = Db.find("select * from fin_item f where f.office_id=? "
-                        + "order by convert(name using gb2312) asc limit 10", officeId);
+                finItems = Db.find("SELECT	f.*,c.id currency_id,c.`code` currency_code,cr.rate FROM 	fin_item f "
+						+" LEFT JOIN currency c on c.office_id = f.office_id		AND c.`code` = f.binding_currency "
+						+" LEFT JOIN currency_rate cr ON cr.currency_id = c.id		AND cr.office_id = c.office_id "
+						+" WHERE	f.office_id = ?   "
+                        + "order by convert(f.name using gb2312) asc limit 10", officeId);
             }
-            renderJson(finItems);
+            
         }
+        
+        renderJson(finItems);
     }
     
     //查询费用英文名称
@@ -98,11 +115,19 @@ public class FinItemController extends Controller {
         long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         String	office_id="";
-        if(officeId==2){
-        	office_id="";
-        }else{
-        	office_id="and f.office_id="+officeId;
+        String que_code="";
+        String que_name="";
+        String que_name_eng="";
+        if(code !=null && code.trim().length() > 0){
+        	que_code= " and code like '%"+code+"%' ";
         }
+        if(name !=null && name.trim().length() > 0){
+        	que_name= " and name like '%"+name+"%' ";
+        }
+        if(name_eng !=null && name_eng.trim().length() > 0){
+        	que_name_eng= " and name_eng like '%"+name_eng+"%' ";
+        }
+        office_id="and f.office_id="+officeId;
         String sLimit = "";
         String pageIndex = getPara("sEcho");
         if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
@@ -114,9 +139,9 @@ public class FinItemController extends Controller {
         	sql = "SELECT * from fin_item f where 1 =1 "+office_id;
         }else{
         	sql = "SELECT * from fin_item f where 1 =1 "+office_id
-        			+ " and code like '%"+code
-        			+"%' and name like '%"+name
-        			+"%' and name_eng like '%"+name_eng+"%'";
+        			+que_code
+        			+que_name
+        			+que_name_eng;
         }
 
         String sqlTotal = "select count(1) total from ("+sql+") B";

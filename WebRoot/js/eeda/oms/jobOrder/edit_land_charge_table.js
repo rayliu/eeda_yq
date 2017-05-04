@@ -304,7 +304,8 @@ $(document).ready(function() {
   //弹出此陆运相关的费用
 	var bindFieldEvent=function(){
     	eeda.bindTableField('land_charge_table','SP_ID','/serviceProvider/searchCompany','');
-        eeda.bindTableField('land_charge_table','CHARGE_ID','/finItem/search','');
+        // eeda.bindTableField('land_charge_table','CHARGE_ID','/finItem/search','');
+        eeda.bindTableFieldChargeId('land_charge_table','CHARGE_ID','/finItem/search','');
         eeda.bindTableField('land_charge_table','CHARGE_ENG_ID','/finItem/search_eng','');
         eeda.bindTableField('land_charge_table','UNIT_ID','/serviceProvider/searchChargeUnit','');
         eeda.bindTableFieldCurrencyId('land_charge_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
