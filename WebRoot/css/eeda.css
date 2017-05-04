@@ -50,6 +50,12 @@ table.dataTable thead.eeda .sorting:after {
 /*1.10   Ray   end*/
 /* Circle Buttons */
 
+.version{
+    margin-top: 10px;
+    margin-left: 15px;
+    color: #ccc;
+}
+
  .btn-circle {
     width: 30px;
     height: 30px;

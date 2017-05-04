@@ -57,8 +57,8 @@
 			file="WebRoot/WEB-INF/template/eeda/component/form/commonJs.html.template" overwrite="true"/>
 		<echo>生成的js version：${touch.time}</echo>
 		<replace file ="WebRoot/WEB-INF/template/eeda/component/form/commonJs.html"
-			  token="urlArgs: 'v=@verion@'," 
-			  value="urlArgs: 'v=${touch.time}',"
+			  token="@version@" 
+			  value="${touch.time}"
 		/>
     </target>
    <target name="clean"> 
