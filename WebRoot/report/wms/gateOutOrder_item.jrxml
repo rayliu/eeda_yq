@@ -236,7 +236,7 @@ and pro.item_no = (select item_no from gate_out_order where id = $P{order_id})
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="120" y="0" width="155" height="20" uuid="50aabb5a-ea6a-430a-94f4-d62496d87782"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{part_name}]]></textFieldExpression>
 			</textField>
