@@ -110,7 +110,7 @@ $(document).ready(function() {
             //     flash();
             // },
             ajax:{
-                //url: "/tmsChargeCheckOrder/list",
+                //url: "/transChargeCheckOrder/list",
                 type: 'POST'
             }, 
             columns:[
@@ -248,7 +248,7 @@ $(document).ready(function() {
     
     //刷新明细表
     itemOrder.refleshTable = function(order_id){
-    	var url = "/tmsChargeCheckOrder/tableList?order_id="+order_id
+    	var url = "/transChargeCheckOrder/tableList?order_id="+order_id
         +"&table_type=item";
     	itemTable.ajax.url(url).load(function(){
         cal();
@@ -370,7 +370,7 @@ $(document).ready(function() {
   	    	return;
   	    }
   	    
-  	    $.post('/tmsChargeCheckOrder/exchange_currency', 
+  	    $.post('/transChargeCheckOrder/exchange_currency', 
              {   charge_order_id: $('#order_id').val(),
                  ids:ids.toString(), 
                  rate:rate, 
@@ -378,7 +378,7 @@ $(document).ready(function() {
       	    	        $('#exchange').attr('disabled',false);
             	    	var order_id = $('#order_id').val();
                     
-            	    	 var url = "/tmsChargeCheckOrder/tableList?order_id="+order_id
+            	    	 var url = "/transChargeCheckOrder/tableList?order_id="+order_id
             	         +"&table_type=item"
             	         +"&query_currency="+que_currency;
             	         
@@ -413,7 +413,7 @@ $(document).ready(function() {
            *_status =
            时间字段需成双定义  *_begin_time *_end_time   between
        */
-       var url = "/tmsChargeCheckOrder/tableList?order_id="+order_id
+       var url = "/transChargeCheckOrder/tableList?order_id="+order_id
        +"&table_type=item"
        +"&query_currency="+que_currency;
        
@@ -467,7 +467,7 @@ $(document).ready(function() {
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/tmsChargeCheckOrder/list?checked="+checked
+          var url = "/transChargeCheckOrder/list?checked="+checked
                +"&order_no="+order_no
                +"&sp_name="+sp_name
                +"&customer_name="+customer_name
@@ -494,7 +494,7 @@ $(document).ready(function() {
           if(charge_itemlist.length==0){
             $('#add_charge_item').attr('disabled',true);
           }
-          $.post('/tmsChargeCheckOrder/insertChargeItem',{order_id:order_id,charge_itemlist:charge_itemlist.toString()},function(data){
+          $.post('/transChargeCheckOrder/insertChargeItem',{order_id:order_id,charge_itemlist:charge_itemlist.toString()},function(data){
                 itemOrder.refleshTable(data.chargeOrderId.toString());
                  $('#cny').val((parseFloat(data.CNY)).toFixed(2));
                  $('#usd').val((parseFloat(data.USD)).toFixed(2));
@@ -542,7 +542,7 @@ $(document).ready(function() {
       $('#eeda-table').on('click',".delete",function(){
             var id=$(this).parent().parent().attr('id');
             var order_id=$('#order_id').val();
-             $.post('/tmsChargeCheckOrder/deleteChargeItem', {charge_itemid:id,order_id:order_id},function(data){
+             $.post('/transChargeCheckOrder/deleteChargeItem', {charge_itemid:id,order_id:order_id},function(data){
                  itemOrder.refleshTable(data.chargeOrderId.toString());
                  $('#cny').val((parseFloat(data.CNY)).toFixed(2));
                  $('#usd').val((parseFloat(data.USD)).toFixed(2));

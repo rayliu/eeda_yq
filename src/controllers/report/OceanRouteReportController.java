@@ -20,6 +20,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 
 @RequiresAuthentication
@@ -30,6 +31,11 @@ public class OceanRouteReportController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void index() {
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long user_id = user.getLong("id");
+		List<Record> configList = ListConfigController.getConfig(user_id, "/oceanRouteReport");
+		setAttr("listConfigList", configList);
+		
     	render("eeda/report/oceanRouteReport/list.html");
     }
    
