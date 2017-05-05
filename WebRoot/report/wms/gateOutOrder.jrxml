@@ -97,14 +97,14 @@ group by goo.id]]>
 				<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 					<reportElement x="695" y="3" width="99" height="17" uuid="7d29efb3-3229-4b28-8721-3c45b203ff4c"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="黑体" size="10"/>
+						<font fontName="黑体" size="10" pdfEncoding="Identity-H"/>
 					</textElement>
 					<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="62" y="3" width="111" height="17" uuid="8a2813e7-db41-4534-8969-3555f2c62883"/>
 					<textElement>
-						<font fontName="黑体"/>
+						<font fontName="黑体" pdfEncoding="Identity-H"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 				</textField>
@@ -141,7 +141,7 @@ group by goo.id]]>
 				<textField isBlankWhenNull="true">
 					<reportElement x="62" y="20" width="111" height="17" uuid="6ef289f9-944a-49ef-ae8f-cf8bba97d056"/>
 					<textElement>
-						<font fontName="黑体"/>
+						<font fontName="黑体" pdfEncoding="Identity-H"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{kt_no}]]></textFieldExpression>
 				</textField>
@@ -173,14 +173,14 @@ group by goo.id]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="50" y="75" width="191" height="18" uuid="5a06de46-2344-4fa1-acd7-d6bbb90f10b5"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="黑体"/>
+					<font fontName="黑体" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{item_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="674" y="75" width="128" height="21" uuid="93182074-f6fb-4ac1-aa8d-66990b806e23"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="黑体"/>
+					<font fontName="黑体" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{create_time}]]></textFieldExpression>
 			</textField>
@@ -208,21 +208,21 @@ group by goo.id]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="311" y="74" width="100" height="20" uuid="eba49f59-64ed-457c-86ae-17ff4314cf95"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="黑体"/>
+					<font fontName="黑体" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total_quantity}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="491" y="75" width="81" height="19" uuid="68dea33a-4761-4f05-abd3-311ce278a51b"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="黑体"/>
+					<font fontName="黑体" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="50" y="94" width="300" height="20" uuid="97bd6b6e-2bfc-46a7-b26d-d8fbdd7644d4"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="黑体"/>
+					<font fontName="黑体" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{item_name}]]></textFieldExpression>
 			</textField>
