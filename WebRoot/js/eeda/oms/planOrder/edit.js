@@ -1,5 +1,5 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 
-        'validate_cn', 'sco', 'datetimepicker_CN', 'jq_blockui'], function ($, metisMenu) { 
+        'validate_cn', 'sco', 'datetimepicker_CN', 'jq_blockui', 'dtColReorder'], function ($, metisMenu) { 
     // $.blockUI({ 
     //     message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/></h4>' 
     // });

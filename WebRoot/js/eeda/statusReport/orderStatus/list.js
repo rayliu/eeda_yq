@@ -38,6 +38,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 }
           ]
       });
+  
+     //base on config hide cols
+      dataTable.columns().eq(0).each( function(index) {
+          var column = dataTable.column(index);
+          $.each(cols_config, function(index, el) {
+              
+              if(column.dataSrc() == el.COL_FIELD){
+                
+                if(el.IS_SHOW == 'N'){
+                  column.visible(false, false);
+                }else{
+                  column.visible(true, false);
+                }
+              }
+          });
+      });
 
       var orderUrl = function(data){
     	  var array = [];
