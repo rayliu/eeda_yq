@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
   	document.title = 'Booking查询   | '+document.title;
 
@@ -17,6 +17,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	//datatable, 动态处理
       var dataTable = eeda.dt({
           id: 'eeda-table',
+          colReorder: true,
           paging: true,
           serverSide: true, //不打开会出现排序不对
           ajax: "/bookOrder/list?type="+type,

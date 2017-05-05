@@ -1,10 +1,11 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
   	document.title = '应收应付利润率分析表  | '+document.title;
   	  $('#menu_cost').addClass('active').find('ul').removeClass('in');
   	  
       var dataTable = eeda.dt({
           id: 'eeda_table',
+          colReorder: true,
           paging: true,
           serverSide: true, //不打开会出现排序不对 
           ajax: "/billProfitAndPayment/list",
