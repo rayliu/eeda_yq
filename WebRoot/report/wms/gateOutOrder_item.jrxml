@@ -40,7 +40,7 @@ from (SELECT
 	pro.amount,
 	(
 		SELECT
-			GROUP_CONCAT(DISTINCT shelves )
+			GROUP_CONCAT(DISTINCT shelves SEPARATOR '    ')
 		FROM
 			gate_in
 		WHERE
@@ -126,14 +126,14 @@ and pro.item_no = (select item_no from gate_out_order where id = $P{order_id})
 				<text><![CDATA[序号]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" x="35" y="0" width="93" height="40" uuid="4f85bb1b-b6e5-4ea8-9e27-da5d69284070"/>
+				<reportElement style="table_TD" x="35" y="0" width="85" height="40" uuid="4f85bb1b-b6e5-4ea8-9e27-da5d69284070"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[组件编码]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" x="128" y="0" width="144" height="40" uuid="9f7ce009-359b-41fc-a081-f9a17faa50dc"/>
+				<reportElement style="table_TD" x="120" y="0" width="155" height="40" uuid="9f7ce009-359b-41fc-a081-f9a17faa50dc"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
@@ -147,7 +147,7 @@ and pro.item_no = (select item_no from gate_out_order where id = $P{order_id})
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" x="272" y="0" width="227" height="40" uuid="353a8575-0b7f-4862-8485-80825efa21ab"/>
+				<reportElement style="table_TD" x="275" y="0" width="224" height="40" uuid="353a8575-0b7f-4862-8485-80825efa21ab"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
@@ -196,11 +196,11 @@ and pro.item_no = (select item_no from gate_out_order where id = $P{order_id})
 				<text><![CDATA[组件件数]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" x="657" y="0" width="34" height="40" uuid="8e94cbc2-befa-4f55-bbea-7500a3250a31"/>
+				<reportElement style="table_TD" x="657" y="0" width="44" height="40" uuid="8e94cbc2-befa-4f55-bbea-7500a3250a31"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[应出组件数量]]></text>
+				<text><![CDATA[应备组件数量]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -227,23 +227,23 @@ and pro.item_no = (select item_no from gate_out_order where id = $P{order_id})
 				<textFieldExpression><![CDATA[$V{count}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="35" y="0" width="93" height="20" uuid="b06a53d5-ef87-4a5d-89e0-bd521a599fc2"/>
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="35" y="0" width="85" height="20" uuid="b06a53d5-ef87-4a5d-89e0-bd521a599fc2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="微软雅黑" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{part_no}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="128" y="0" width="144" height="20" uuid="50aabb5a-ea6a-430a-94f4-d62496d87782"/>
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="120" y="0" width="155" height="20" uuid="50aabb5a-ea6a-430a-94f4-d62496d87782"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<font fontName="微软雅黑" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{part_name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="272" y="0" width="227" height="20" uuid="57160360-1b80-4610-a975-0856dd7f71d4"/>
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="275" y="0" width="224" height="20" uuid="57160360-1b80-4610-a975-0856dd7f71d4"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
-					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="微软雅黑" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					<paragraph lineSpacing="Single" leftIndent="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{shelves}]]></textFieldExpression>
@@ -270,7 +270,7 @@ and pro.item_no = (select item_no from gate_out_order where id = $P{order_id})
 				<textFieldExpression><![CDATA[$F{this_piece}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="657" y="0" width="34" height="20" uuid="fc9ff586-1f6a-4c5d-b076-e6fb5482fe79"/>
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="657" y="0" width="44" height="20" uuid="fc9ff586-1f6a-4c5d-b076-e6fb5482fe79"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
