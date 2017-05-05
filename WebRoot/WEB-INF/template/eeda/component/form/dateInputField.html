@@ -1,4 +1,5 @@
 <div class="form-group" >
+<input id="type" value="${type!''}" type="hidden">
 	<div id="${id}_div" class="input-append date">
         <%if(inline!true){%>
         <label class="search-label">
@@ -27,7 +28,7 @@
 $(document).ready(function() {
 	//时间控件
 	$('#${id}_div').datetimepicker({  
-	    format: 'yyyy-MM-dd hh:MM:ss',  
+	    format: $('#type').val()=='time'?'yyyy-MM-dd hh:MM:ss':'yyyy-MM-dd',  
 	    language: 'zh-CN'
 	}).on('changeDate', function(ev){
 	    $(".bootstrap-datetimepicker-widget").hide();   
@@ -37,7 +38,7 @@ $(document).ready(function() {
     //回显
     var dateValue = '${value}';
     if(dateValue){
-        $('#${id}').val(dateValue.substr(0,10));
+        $('#${id}').val(dateValue.substr(0,$('#type').val()=='time'?19:10));
     }
 });
 </script>
