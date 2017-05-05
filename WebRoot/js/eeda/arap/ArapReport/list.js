@@ -14,7 +14,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                      return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
 	                  }
 	            },
-	            { "data": "ORDER_EXPORT_DATE", "width": "100px"},
+	            { "data": "CREATE_STAMP", "width": "100px"},
 	            { "data": "CUSTOMER_NAME", "width": "60px"},
 	            { "data": "SP_NAME", "width": "60px" },
 	            { "data": "ORDER_TYPE", "width": "40px",
@@ -66,21 +66,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "CREATE_STAMP", "width": "100px"}
 	          ]
 	      });
- //base on config hide cols
-      dataTable.columns().eq(0).each( function(index) {
-          var column = dataTable.column(index);
-          $.each(cols_config, function(index, el) {
-              
-              if(column.dataSrc() == el.COL_FIELD){
-                
-                if(el.IS_SHOW == 'N'){
-                  column.visible(false, false);
-                }else{
-                  column.visible(true, false);
-                }
-              }
-          });
-      });
+
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();

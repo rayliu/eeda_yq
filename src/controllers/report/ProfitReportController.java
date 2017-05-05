@@ -20,7 +20,6 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
-import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 
 @RequiresAuthentication
@@ -31,10 +30,6 @@ public class ProfitReportController extends Controller {
     long total=0;
     @Before(EedaMenuInterceptor.class)
     public void index() {
-    	UserLogin user = LoginUserController.getLoginUser(this);
-        long user_id = user.getLong("id");
-		List<Record> configList = ListConfigController.getConfig(user_id, "/profitReport");
-        setAttr("listConfigList", configList);
     	render("eeda/statusReport/profitReport.html");
     }
 

@@ -19,7 +19,6 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
-import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 
@@ -31,11 +30,7 @@ public class OrderStatusController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void index() {
-    	UserLogin user = LoginUserController.getLoginUser(this);
-        long user_id = user.getLong("id");
-		List<Record> configList = ListConfigController.getConfig(user_id, "/orderStatus");
-		setAttr("listConfigList", configList);
-		render("eeda/statusReport/orderStatus.html");
+    	render("eeda/statusReport/orderStatus.html");
     }
 
     public void list() {

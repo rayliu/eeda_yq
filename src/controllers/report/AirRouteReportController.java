@@ -20,7 +20,6 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
-import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 
 @RequiresAuthentication
@@ -31,11 +30,7 @@ public class AirRouteReportController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void index() {
-    	UserLogin user = LoginUserController.getLoginUser(this);
-        long user_id = user.getLong("id");
-		List<Record> configList = ListConfigController.getConfig(user_id, "/airRouteReport");
-		setAttr("listConfigList", configList);
-		render("eeda/report/airRouteReport/list.html");
+    	render("eeda/report/airRouteReport/list.html");
     }
    
     public long list() {

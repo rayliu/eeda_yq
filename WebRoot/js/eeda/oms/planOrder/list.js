@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
 
     $(document).ready(function() {
     	document.title = '计划订单查询 | '+document.title;
@@ -16,7 +16,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda-table',
-            colReorder: true,
             paging: true,
             serverSide: true, //不打开会出现排序不对
             ajax: "/planOrder/list?type="+type,
@@ -75,22 +74,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             ]
         });
       
-      //base on config hide cols
-      dataTable.columns().eq(0).each( function(index) {
-          var column = dataTable.column(index);
-          $.each(cols_config, function(index, el) {
-              
-              if(column.dataSrc() == el.COL_FIELD){
-                
-                if(el.IS_SHOW == 'N'){
-                  column.visible(false, false);
-                }else{
-                  column.visible(true, false);
-                }
-              }
-          });
-      });
-
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });

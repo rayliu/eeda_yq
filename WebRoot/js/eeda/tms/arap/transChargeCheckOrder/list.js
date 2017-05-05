@@ -23,7 +23,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           	    flash();
     	    },
             ajax:{
-                //url: "/transChargeCheckOrder/list",
+                //url: "/tmsChargeCheckOrder/list",
                 type: 'POST'
             }, 
             columns:[

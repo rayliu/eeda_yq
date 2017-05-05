@@ -10,11 +10,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
             paging: true,
             scrollX:false,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/transChargeCheckOrder/checkedList",
+            ajax: "/tmsChargeCheckOrder/checkedList",
             columns:[	                
 					  { "data": "ORDER_NO", "width": "100px",
 			            	 "render": function ( data, type, full, meta ) {
-			           		  return "<a href='/transChargeCheckOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+			           		  return "<a href='/tmsChargeCheckOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
 			           	  }
 			          },
 					  { "data": "CREATE_STAMP", "width": "100px"},  
@@ -85,7 +85,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/transChargeCheckOrder/checkedList?order_no="+order_no
+          var url = "/tmsChargeCheckOrder/checkedList?order_no="+order_no
                +"&sp_name="+sp_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
