@@ -71,7 +71,7 @@ FROM
 WHERE
  pro.amount>0
 and pro.item_no = (select item_no from gate_out_order where id = $P{order_id})
-) A group by A.part_no]]>
+) A group by A.part_no ORDER BY A.shelves desc]]>
 	</queryString>
 	<field name="part_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
