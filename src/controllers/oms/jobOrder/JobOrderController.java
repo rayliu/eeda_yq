@@ -94,7 +94,7 @@ public class JobOrderController extends Controller {
     		PlanOrder planOrder = PlanOrder.dao.findById(order_id);
         	setAttr("planOrder", planOrder);
         	//客户回显
-        	Party party = Party.dao.findById(planOrder.get("customer_id"));
+        	Party party = Party.dao.findById(planOrder.get("entrusted_id"));
         	setAttr("party", party);
     	}
 
