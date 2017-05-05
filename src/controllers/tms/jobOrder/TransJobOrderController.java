@@ -200,15 +200,12 @@ public class TransJobOrderController extends Controller {
 		String backWharf="";
 		String truckType="";
 		if(StringUtils.isNotEmpty((String) dto.get("take_wharf"))){
-			
 			takeWharf=(String) dto.get("take_wharf");
 		}
 		if(StringUtils.isNotEmpty((String) dto.get("back_wharf"))){
-			
 			backWharf=(String) dto.get("back_wharf");
 		}
 		if(StringUtils.isNotEmpty((String) dto.get("cabinet_type"))){
-			
 			truckType=(String) dto.get("cabinet_type");
 		}
 
@@ -216,20 +213,15 @@ public class TransJobOrderController extends Controller {
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
 		DbUtils.handleList(land_item, id, TransJobOrderLandItem.class, "order_id");
 		for(int i=0;i<land_item.size();i++){
-			
 			Map<String, ?> map=land_item.get(i);
 			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
-				
 				loadingWharf1=(String) map.get("LOADING_WHARF1");
 			}
 			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
-				
 				loadingWharf2=(String) map.get("LOADING_WHARF2");
 			}
 		}
-		
-   		
-		
+	
 		//费用明细，应收应付
 		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");
 		DbUtils.handleList(charge_list, id, TransJobOrderArap.class, "order_id");
@@ -973,7 +965,7 @@ public class TransJobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         }
         else{
-		         sql = "SELECT * from (select distinct GROUP_CONCAT(tjol.cabinet_date)  cabinet_date,"
+		         sql = "SELECT * from (select tjol.cabinet_date  cabinet_date,"
 		         		+ " tjo.*,tjo.land_export_stamp sent_out_time,"
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code, "
 		         		+ " p1.abbr head_carrier_name"
