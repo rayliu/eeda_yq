@@ -228,17 +228,17 @@ and pro.item_no = (select item_no from gate_out_order where id = $P{order_id})
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="35" y="0" width="85" height="20" uuid="b06a53d5-ef87-4a5d-89e0-bd521a599fc2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{part_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[' '+$F{part_no}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="120" y="0" width="155" height="20" uuid="50aabb5a-ea6a-430a-94f4-d62496d87782"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{part_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[' '+$F{part_name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="275" y="0" width="224" height="20" uuid="57160360-1b80-4610-a975-0856dd7f71d4"/>
