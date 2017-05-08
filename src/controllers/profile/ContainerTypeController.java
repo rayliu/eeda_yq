@@ -10,6 +10,7 @@ import java.util.Map;
 import models.Office;
 import models.ParentOfficeModel;
 import models.Toll;
+import models.UserLogin;
 import models.UserOffice;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.truckOrder.TruckOrder;
@@ -30,6 +31,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.eeda.ListConfigController;
 import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
 import controllers.util.PermissionConstant;
@@ -48,6 +50,10 @@ public class ContainerTypeController extends Controller {
 
     @Before(EedaMenuInterceptor.class)
     public void index() {
+		UserLogin user = LoginUserController.getLoginUser(this);
+        long user_id = user.getLong("id");
+		List<Record> configList = ListConfigController.getConfig(user_id, "/containerType");
+        setAttr("listConfigList", configList);
         render("/profile/containerType/list.html");
     }
     

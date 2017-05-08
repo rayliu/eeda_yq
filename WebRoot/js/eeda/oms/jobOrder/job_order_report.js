@@ -353,20 +353,7 @@ $(document).ready(function() {
 			}
 			$('#head_startPlace').val(loginUserName);
 			$('#head_date').val(eeda.getDate());
-			
-			
-			 //把提柜码头和还柜码头带到table中
-//			   $('#take_wharf,#back_wharf').keyup(function(){
-//				   if($('#take_wharf').val()!=''){
-//					   $($("#land_table tr:eq(1) td:nth-child(7)").find('input')).val($('#take_wharf').val());
-//				   }
-//				   if($('#back_wharf').val()!=''){
-//					   $($("#land_table tr:eq(2) td:nth-child(8)").find('input')).val($('#back_wharf').val());
-//				   }
-//			   
-//			   });
-			
-			   
+			  
 			   
 			var container_type =  $($("#ocean_cargo_table tr:eq(1) td:nth-child(4)").find('[name=container_type]')).val();
 			var por_input = $("#por_input").val();

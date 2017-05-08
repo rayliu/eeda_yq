@@ -12,10 +12,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           pageLength: 25,
           ajax: "/airRouteReport/list",
           columns: [
-              { "data": "ORDER_EXPORT_DATE" },
-              { "data": "CUSTOMER_NAME"},
-              { "data": "ROUTE"},
-              { "data": "PIECES", 
+              { "data": "ORDER_EXPORT_DATE","class":"order_export_date" },
+              { "data": "CUSTOMER_NAME","class":"customer_name"},
+              { "data": "ROUTE","class":"route"},
+              { "data": "PIECES","class":"pieces", 
                 "render": function ( data, type, full, meta ) {
                   if(data){
                     return "<span class=''>"+data + "</span>";
@@ -24,7 +24,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               },
-              { "data": "VOLUME", 
+              { "data": "VOLUME","class":"volume", 
                 "render": function ( data, type, full, meta ) {
                   if(data){
                     return "<span class=''>"+(data).toFixed(2) + "</span>";
@@ -33,7 +33,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               },
-              { "data": "ARI_KG",
+              { "data": "ARI_KG","class":"ari_kg",
                 "render": function ( data, type, full, meta ) {
                     if(data){
                       return "<span class=''>"+(data).toFixed(2) + "</span>";
@@ -99,11 +99,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  var volume_total = parseFloat(data.VOLUME_TOTAL);
         	  var ari_kg_total = parseFloat(data.ARI_KG_TOTAL);
         	  var total=parseFloat(data.TOTAL);
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html(eeda.numFormat(pieces_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html(eeda.numFormat(gross_weight_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html(eeda.numFormat(volume_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html(eeda.numFormat(ari_kg_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=order_export_date]').html('共'+total+'项汇总：');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=pieces]').html(eeda.numFormat(pieces_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=volume]').html(eeda.numFormat(volume_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=ari_kg]').html(eeda.numFormat(ari_kg_total,3));
 
           });
          
