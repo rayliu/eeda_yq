@@ -131,6 +131,7 @@ public class EbayReturnController extends Controller {
             Response response = OkHttpUtil.execute(request);
             if (response.isSuccessful()) {
                 String responseStr = response.body().string();
+                logger.debug(responseStr);
                 handleResponse(responseStr, office_id, token);
             } else {
                 throw new IOException("Unexpected code " + response);
@@ -297,6 +298,11 @@ public class EbayReturnController extends Controller {
                     rec.set("seller_return_address_city", address.get("city"));
                     rec.set("seller_return_address_postal_code", address.get("postalCode"));
                     rec.set("seller_return_address_country", address.get("country"));
+                }
+                
+                if(attributes.get("updatedTrackingNumber")!=null){
+                    rec.set("tracking_number", attributes.get("updatedTrackingNumber"));
+                    rec.set("carrier", attributes.get("updatedCarrier"));
                 }
             }
             

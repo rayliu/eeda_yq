@@ -95,10 +95,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 var activity = data[i].ACTIVITY;
                 var creation_date = data[i].CREATION_DATE;
                 var notes = data[i].NOTES;
+                var tracking_number = data[i].TRACKING_NUMBER;
+                var carrier = data[i].CARRIER;
+
                 if(notes==null)
                   notes='';
 
+                var trackStr='';
+                if(tracking_number){
+                  trackStr='            <br><br><strong class="primary-font">Tracking No.:</strong> '+tracking_number
+                          +' &nbsp;&nbsp;&nbsp;&nbsp;<strong class="primary-font">Carrier:</strong> '+carrier;
+                }
+
                 if(type=='BUYER'){
+
                   $('.chat').append(
                            '<li class="left clearfix">'
                           +'  <span class="chat-img pull-left">'
@@ -107,16 +117,25 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                           +'    <div class="chat-body clearfix">'
                           +'        <div class="header">'
                           +'            <strong class="primary-font">'+buyer_login_name+'</strong> '+activity
+                          + trackStr
                           +'            <small class="pull-right text-muted">'
                           +'                <i class="fa fa-clock-o fa-fw"></i>'+creation_date
                           +'            </small>'
                           +'        </div><br/>'
-                          +'    <pre>'+notes+'</pre>'
+                          +(activity=='BUYER_PROVIDE_TRACKING_INFO'?'':'    <pre>'+notes+'</pre>')
                           +'    </div>'
                           +'</li>'  
                           );
                 }else{//发送人
                   
+                  var notes_str= '    <pre>'+notes+'</pre>';
+                  if(activity=='SELLER_APPROVE_REQUEST' ||
+                    activity=='SELLER_PROVIDE_RMA' ||
+                    activity=='REMINDER_FOR_SHIPPING'){
+                      notes_str='';
+                  }
+
+
                   $('.chat').append(
                   '<li class="right clearfix">'
                   +'<span class="chat-img pull-right">'
@@ -130,7 +149,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                   +'            <i class="fa fa-clock-o fa-fw"></i>'+creation_date
                   +'        </small>'
                   +'    </div><br/>'
-                  +'    <pre style="float:right">'+notes+'</pre>'
+                  +notes_str
                   +'</div>'
                   +'</li>')
                 };

@@ -1,5 +1,6 @@
 package controllers.msg.ebayMsg;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,4 +84,37 @@ public class MsgController4App extends Controller {
         renderText("OK");
     }
 
+    public void getMemberMsg(){
+
+        String sender_id = getPara("sender_id");
+        List<Record> recs = new ArrayList<Record>();
+        if(getParaToLong("item_id")!=null){
+            long item_id = getParaToLong("item_id");
+            
+            recs = Db.find("select * from (select id, item_id, message_type, sender_id,recipient_id ,"
+                    + " creation_date ,body, subject,'N' replay_flag, message_id, response, last_modified_date"
+                    + " from ebay_member_msg where sender_id=?"
+                    + " union "
+                    + " select id, item_id, '' message_type, sender_id, recipient_id, creation_date, body,"
+                    + " subject, 'Y' replay_flag, 0 message_id, body response, creation_date last_modified_date"
+                    + " from ebay_member_msg_reply where recipient_id=?"
+                    +") A "
+                    + " where item_id = ? ORDER BY creation_date", sender_id, sender_id, item_id);
+        }else{
+            recs = Db.find("select id, item_id, message_type, sender_id,recipient_id ,"
+                    + " creation_date, body, subject, 'N' replay_flag, message_id, response, last_modified_date"
+                    + " from ebay_member_msg emm where sender_id=?"
+                    + " union "
+                    + " select id, item_id, '' message_type, sender_id, recipient_id, creation_date, body,"
+                    + " subject,'Y' replay_flag, 0 message_id, body response, creation_date last_modified_date"
+                    + " from ebay_member_msg_reply where recipient_id=?", sender_id, sender_id);
+            
+        }
+        Map map = new HashMap();
+        map.put("draw", 1);
+        map.put("recordsTotal", 1);
+        map.put("recordsFiltered", 1);
+        map.put("data", recs);
+        renderJson(map);
+    }
 }
