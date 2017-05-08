@@ -103,7 +103,7 @@ public class CurrencyController extends Controller {
     }
 
     // 列出金融账户信息
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_A_LIST})
+//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_A_LIST}) 去这个文件里面读取权限
     public void list() {
         String sLimit = "";
         String pageIndex = getPara("sEcho");
