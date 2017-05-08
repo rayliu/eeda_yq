@@ -35,6 +35,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
+import controllers.eeda.ListConfigController;
 import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
 
@@ -49,6 +50,10 @@ public class CustomerController extends Controller {
     
     @Before(EedaMenuInterceptor.class) 
     public void index() {
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long user_id = user.getLong("id");
+		List<Record> configList = ListConfigController.getConfig(user_id, "/customer");
+        setAttr("listConfigList", configList);
             render("/eeda/profile/customer/CustomerList.html");
     }
     

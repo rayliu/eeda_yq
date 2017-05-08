@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',  'dtColReorder'], function ($, metisMenu) { 
 
     $(document).ready(function() {
     	document.title = '单位查询 | '+document.title;
@@ -7,6 +7,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda-table',
+            colReorder: true,
             ajax: "/unit/list",
             columns:[
 	              { "data": "CODE"},          
@@ -21,6 +22,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                     }
                	  },
             ]
+        });
+      //base on config hide cols
+        dataTable.columns().eq(0).each( function(index) {
+            var column = dataTable.column(index);
+            $.each(cols_config, function(index, el) {
+                
+                if(column.dataSrc() == el.COL_FIELD){
+                  
+                  if(el.IS_SHOW == 'N'){
+                    column.visible(false, false);
+                  }else{
+                    column.visible(true, false);
+                  }
+                }
+            });
         });
       
       $('#resetBtn').click(function(e){

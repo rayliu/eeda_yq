@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn',  'dtColReorder'], function ($, metisMenu) {
 
     $(document).ready(function() {
     	document.title = '客户查询 | '+document.title;
@@ -8,6 +8,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
 
         var dataTable = eeda.dt({
             id: 'eeda-table',
+            colReorder: true,
             paging: true,
             serverSide: true, //不打开会出现排序不对
             ajax: "/customer/list",
@@ -74,7 +75,21 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
             ]
         });
     	
-        
+        //base on config hide cols
+        dataTable.columns().eq(0).each( function(index) {
+            var column = dataTable.column(index);
+            $.each(cols_config, function(index, el) {
+                
+                if(column.dataSrc() == el.COL_FIELD){
+                  
+                  if(el.IS_SHOW == 'N'){
+                    column.visible(false, false);
+                  }else{
+                    column.visible(true, false);
+                  }
+                }
+            });
+        });
       //条件筛选
     	$("#searchBtn").on('click', function () {    	 	
           	var COMPANY_NAME = $.trim($("#COMPANY_NAME").val());

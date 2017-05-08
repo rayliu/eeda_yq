@@ -49,6 +49,10 @@ public class ServiceProviderController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void index() {
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long user_id = user.getLong("id");
+		List<Record> configList = ListConfigController.getConfig(user_id, "/serviceProvider");
+        setAttr("listConfigList", configList);
         render("/eeda/profile/serviceProvider/serviceProviderList.html");
     }
     
