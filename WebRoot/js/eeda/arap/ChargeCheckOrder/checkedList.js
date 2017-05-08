@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColReorder','validate_cn'], function ($, metisMenu) { 
 
     $(document).ready(function() {
     	
@@ -7,6 +7,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda-tableChecked',
+            colReorder: true,
             paging: true,
             scrollX:false,
             serverSide: true, //不打开会出现排序不对

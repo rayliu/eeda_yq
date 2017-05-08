@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder', 'sco'], function ($, metisMenu) { 
 
     $(document).ready(function() {
     	document.title = '报关申请单列表 | '+document.title;
@@ -75,6 +75,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
                 	  }
 	              }
             ]
+        });
+
+        //base on config hide cols
+        dataTable.columns().eq(0).each( function(index) {
+            var column = dataTable.column(index);
+            $.each(cols_config, function(index, el) {
+                
+                if(column.dataSrc() == el.COL_FIELD){
+                  
+                  if(el.IS_SHOW == 'N'){
+                    column.visible(false, false);
+                  }else{
+                    column.visible(true, false);
+                  }
+                }
+            });
         });
       
       $('#resetBtn').click(function(e){

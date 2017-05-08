@@ -29,6 +29,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
+import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
@@ -41,6 +42,10 @@ public class CostCheckOrderController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
+		UserLogin user = LoginUserController.getLoginUser(this);
+        long user_id = user.getLong("id");
+		List<Record> configList = ListConfigController.getConfig(user_id, "/costCheckOrder");
+        setAttr("listConfigList", configList);
 		render("/eeda/arap/CostCheckOrder/CostCheckOrder.html");
 	}
 	

@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco' ], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn',  'dtColReorder','sco' ], function ($, metisMenu) {
 $(document).ready(function() {
 	document.title = '派车单查询   | '+document.title;
     $('#menu_truck').addClass('active').find('ul').addClass('in');
@@ -7,6 +7,7 @@ $(document).ready(function() {
     //datatable, 动态处理
 	var dataTable = eeda.dt({
 	    id: 'truck_table',
+        colReorder: true,
         paging: true,
 	    serverSide: true, //不打开会出现排序不对
 	    ajax: "/truckOrder/list",
@@ -37,7 +38,22 @@ $(document).ready(function() {
 	            { "data": "SIGN_STATUS","width":"180px"}
 	        ]
 	    });
-
+	
+      //base on config hide cols
+      dataTable.columns().eq(0).each( function(index) {
+          var column = dataTable.column(index);
+          $.each(cols_config, function(index, el) {
+              
+              if(column.dataSrc() == el.COL_FIELD){
+                
+                if(el.IS_SHOW == 'N'){
+                  column.visible(false, false);
+                }else{
+                  column.visible(true, false);
+                }
+              }
+          });
+      });
     
     $('#resetBtn').click(function(e){
         $("#orderForm")[0].reset();
