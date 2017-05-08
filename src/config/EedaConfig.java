@@ -181,6 +181,7 @@ import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.TradeItemController;
 import controllers.profile.UnitController;
+import controllers.profile.mailConfig.MailConfigController;
 import controllers.report.OrderStatusController;
 import controllers.tms.jobOrder.TransJobOrderController;
 import controllers.tms.jobOrder.TransOrderShortCutController;
@@ -272,6 +273,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/module", ModuleController.class, contentPath);
         me.add("/listConfig", ListConfigController.class, contentPath);
         me.add("/dashBoard", YqDashBoardController.class);
+        me.add("/mailConfig", MailConfigController.class);
         
         me.add("/tradeItem", TradeItemController.class, contentPath);
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
