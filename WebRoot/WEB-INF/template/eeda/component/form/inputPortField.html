@@ -67,11 +67,10 @@ $(document).ready(function() {
 
 			for(var i = 0; i < data.length; i++){
 				var portName = data[i].NAME;
-				
 				if(portName == null) 
 					portName = '';
 				
-				spList.append("<li tabindex='"+i+"'><a class='fromLocationItem' portId='"+data[i].ID+"'   >"+portName+"</a></li>");
+				spList.append("<li tabindex='"+i+"'><a class='fromLocationItem' portId='"+data[i].ID+"'   >"+portName+" -"+data[i].CODE+"</a></li>");
 			}
 			spList.css({ 
 	        	left:$(me).position().left+"px", 
