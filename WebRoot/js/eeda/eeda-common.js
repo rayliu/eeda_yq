@@ -5,7 +5,8 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
     //     return this.href == url;
     // }).addClass('active').parent().parent().addClass('in').parent();
     var element = $('ul.nav a').filter(function() {
-        return this.href == url;
+        var pathname = '/'+url.pathname.split('/')[1];
+        return this.href.indexOf(pathname)>0;
     }).addClass('active').parent();
 
     while (true) {
