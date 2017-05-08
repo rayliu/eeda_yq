@@ -214,11 +214,12 @@
                        </div>
                        <div class="row">
                             <div class="col-lg-6">
-                               <%include("/eeda/component/form/dateInputField.html", 
+                                <%include("/eeda/component/form/dateInputField.html", 
                                {   id:'cabinet_arrive_date', 
-                                   label:'预约柜货到达时间', 
+                                   label:'预约柜货到达时间',
                                    inline:false,
-                                   value:truckHead.cabinet_arrive_date!''
+                                   value:truckHead.cabinet_arrive_date!'',
+                                   type:'time'
                                }){}%>
                            </div>
                        </div>
