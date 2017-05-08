@@ -3,6 +3,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
     $(document).ready(function() {
     	document.title = '费用条目查询 | '+document.title;
     	$('#menu_profile').addClass('active').find('ul').addClass('in');
+    	$('#breadcrumb_li').text('费用列表');
 
     	//datatable, 动态处理
         var dataTable = eeda.dt({

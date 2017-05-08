@@ -2,17 +2,8 @@
 
 
 <div id="page-wrapper">
-	<div class="row">
-	      <div class="col-lg-12">
-	            <div class="btn-header">
-	            	
-				</div>
-			<div class="panel panel-default">
-					<div class="panel-heading">
-	                 	<i class="fa fa-list fa-fw"></i>汇率列表
-	            	</div>
-	            <div class="panel-body">
-	            	<div class="">  <!--  form row  -->
+	            <div class="row simple_search_div">
+        			<div class="col-lg-12">
 	                    <form id="orderForm">
 	                        <div class="row"><!--  第1行  -->
 	                            <div class="col-lg-4"><!--  三列排版  -->
@@ -23,8 +14,7 @@
 	                                    }){}%>
 	                            </div>
 	                        </div><!-- /.row-->
-	                    </form>
-	                </div><!-- /.row -->
+	                    
 
 	                <div class="form-group button-bar" >
 	                    <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
@@ -33,7 +23,11 @@
 	                    	<a class="btn btn-success btn-sm" href="/currencyRate/create">新增</a>
 	                    <%}%>
 	                </div><br>
-	                <span style="color:#AAAAAA">* 注：汇率为：外币兑换成成人民币的汇率</span>
+	               </form>
+	           </div><!-- /.row -->
+	        </div><!-- /.row --> 
+	        <div class="row simple_list_div"><br>
+	                <span style="color:#AAAAAA">* 注：汇率为：外币兑换成成人民币的汇率</span><br><br>
 
 	                <%include("/eeda/component/form/detailTable.html", 
 	                    {
@@ -41,9 +35,6 @@
 	                        headers:[ '货币', '汇率','开始日期','结束日期', '创建人', '创建时间', '备注', '']
 	                    }){} %>
 	      		</div>
-			</div>
-	 	</div>
-	</div>
 </div>
 
 

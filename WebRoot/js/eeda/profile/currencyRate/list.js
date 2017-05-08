@@ -1,6 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], function ($, metisMenu) {
 
 	document.title = '汇率查询 | '+document.title;
+	$('#breadcrumb_li').text('汇率列表');
 
 	var dataTable = eeda.dt({
         id: 'eeda-table',
