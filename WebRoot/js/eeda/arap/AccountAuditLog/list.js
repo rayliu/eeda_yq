@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN',  'dtColReorder'], function ($, metisMenu) {
     $(document).ready(function() {
     	document.title = '出纳日记账查询 | '+document.title;
         $("#breadcrumb_li").text('出纳日记账');
@@ -11,6 +11,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         var checkedIds = [];
         var accountAuditLogTable = eeda.dt({
             id: 'accountAuditLog-table',
+            colReorder: true,
             paging: true,
             serverSide: true, 
             ajax: "/accountAuditLog/list?beginTime="+$("#beginTime_filter").val(),
@@ -55,11 +56,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 {"data":"USER_NAME"}
             ]
         });
-        
+      
         
         //上
         var accountTable = eeda.dt({
             id: 'account-table',
+            colReorder: true,
             paging: true,
             serverSide: true, 
             ajax: "/accountAuditLog/accountList?beginTime="+ $("#beginTime_filter").val(),
@@ -94,7 +96,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 }
             ]
         });
-        
+      //base on config hide cols
+        accountTable.columns().eq(0).each( function(index) {
+            var column = accountTable.column(index);
+            $.each(cols_config, function(index, el) {
+                
+                if(column.dataSrc() == el.COL_FIELD){
+                  
+                  if(el.IS_SHOW == 'N'){
+                    column.visible(false, false);
+                  }else{
+                    column.visible(true, false);
+                  }
+                }
+            });
+        });
         $('#datetimepicker').datetimepicker({  
             format: 'yyyy-MM',
             viewMode: "months",

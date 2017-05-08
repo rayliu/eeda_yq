@@ -20,6 +20,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 
 @RequiresAuthentication
@@ -35,6 +36,10 @@ public class AccountAuditLogController extends Controller {
     	
     	List<ArapAccountAuditLog> accountlist = ArapAccountAuditLog.dao.find("SELECT DISTINCT a.bank_name FROM arap_account_audit_log aaa left join fin_account a on a.id = aaa.account_id");
     	setAttr("accountList", accountlist);
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long user_id = user.getLong("id");
+		List<Record> configList = ListConfigController.getConfig(user_id, "/accountAuditLog");
+        setAttr("listConfigList", configList);
     	render("/eeda/arap/AccountAuditLog/AccountAuditLogList.html");
     }
 
