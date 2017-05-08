@@ -50,7 +50,7 @@ $(document).ready(function() {
     		alert+='收货港 POR<br><br>';
     	}
     	if($('#pol').val()==''){
-    		alert+='装货港 POL<br><br>';
+    		alert+='启运港 POL<br><br>';
     	}
     	if($('#pod').val()==''){
     		alert+='卸货港 POD<br><br>';
@@ -115,7 +115,7 @@ $(document).ready(function() {
     		alert+='收货港 POR<br><br>';
     	}
     	if($('#pol').val()==''){
-    		alert+='装货港 POL<br><br>';
+    		alert+='启运港 POL<br><br>';
     	}
     	if($('#pod').val()==''){
     		alert+='卸货港 POD<br><br>';
@@ -186,7 +186,7 @@ $(document).ready(function() {
     		alert+='收货港 POR<br><br>';
     	}
     	if($('#pol').val()==''){
-    		alert+='装货港 POL<br><br>';
+    		alert+='启运港 POL<br><br>';
     	}
     	if($('#pod').val()==''){
     		alert+='卸货港 POD<br><br>';
@@ -261,7 +261,7 @@ $(document).ready(function() {
     		alert+='收货港 POR<br><br>';
     	}
     	if($('#pol').val()==''){
-    		alert+='装货港 POL<br><br>';
+    		alert+='启运港 POL<br><br>';
     	}
     	if($('#pod').val()==''){
     		alert+='卸货港 POD<br><br>';
