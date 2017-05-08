@@ -95,7 +95,7 @@ public class TransCostCheckOrderController extends Controller {
     			+ " cur.id ,cur.name currency_name ,group_concat(distinct cast(joa.exchange_rate as char) SEPARATOR ';') exchange_rate ,"
     			+ " ifnull((select rc.new_rate from rate_contrast rc "
     			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),cast(joa.exchange_rate as char)) new_rate"
-				+ " FROM job_order_arap joa"
+				+ " FROM trans_job_order_arap joa"
 				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
 				+ " WHERE joa.id in("+ ids +") and cur.name!='CNY' group by cur.id" ;
     	List<Record> re = Db.find(sql);
@@ -185,13 +185,12 @@ public class TransCostCheckOrderController extends Controller {
 			if("create".equals(bill_flag)){
 				sql = " select joa.id,joa.create_flag,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
 						+" aco.order_no check_order_no, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
-							+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
+							+" p.abbr sp_name,p1.abbr customer_name,"
 							+" ifnull((select rc.new_rate from rate_contrast rc"
 							    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
 							    +" (ifnull(joa.total_amount,0)*ifnull(joa.exchange_rate,1)) after_total,"
 							    +"  ifnull((select rc.new_rate from rate_contrast rc"
 							    +" where rc.currency_id = joa.currency_id and rc.order_id = aco.id),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
-							+" GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount,"
 							
 							+ " fi.name fin_name,"
 							+" cur.name currency_name,"
@@ -199,17 +198,14 @@ public class TransCostCheckOrderController extends Controller {
 							+" ifnull(cur1.NAME, cur.NAME) exchange_currency_name,"
 							+" ifnull(joa.exchange_currency_rate, 1) exchange_currency_rate,"
 							+" ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, "
-							+" from job_order jo"
-							+" left join job_order_arap joa on jo.id=joa.order_id"
+							+" from trans_job_order jo"
+							+" left join trans_job_order_arap joa on jo.id=joa.order_id"
 							+" left join fin_item fi on joa.charge_id = fi.id"
-							+" left join job_order_shipment jos on jos.order_id=joa.order_id"
-							+" left join job_order_shipment_item josi on josi.order_id=joa.order_id"
-							+" left join job_order_air_item joai on joai.order_id=joa.order_id"
 							+" left join party p on p.id=joa.sp_id"
 							+" left join party p1 on p1.id=jo.customer_id"
-							+" left join location l on l.id=jos.fnd"
 							+" left join currency cur on cur.id=joa.currency_id"
 							+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
+							//tms申请单需新建rel表
 							+" left join cost_application_order_rel caol on caol.job_order_arap_id  = joa.id"
 							+" left join arap_cost_application_order acao on caol.application_order_id = acao.id"
 							 +" left join arap_cost_order aco on aco.id=caol.cost_order_id"
@@ -220,29 +216,25 @@ public class TransCostCheckOrderController extends Controller {
 			}else{
 				sql = " select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
 						+" aco.order_no check_order_no, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
-							+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
+							+" p.abbr sp_name,p1.abbr customer_name,"
 							+" ifnull((select rc.new_rate from rate_contrast rc"
 							    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
 							    +" (ifnull(joa.total_amount,0)*ifnull(joa.exchange_rate,1)) after_total,"
 							    +"  ifnull((select rc.new_rate from rate_contrast rc"
 							    +" where rc.currency_id = joa.currency_id and rc.order_id = aco.id),ifnull(joa.exchange_rate,1))*ifnull(joa.total_amount,0) after_rate_total,"
-							+" GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount,"
 							+ " fi.name fin_name,"
 							+" cur.name currency_name,"
 							+" ifnull(cur1.NAME, cur.NAME) exchange_currency_name,"
 							+" ifnull(joa.exchange_currency_rate, 1) exchange_currency_rate,"
 							+" ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount, "
-							+" from job_order jo"
-							+" left join job_order_arap joa on jo.id=joa.order_id"
+							+" from trans_job_order jo"
+							+" left join trans_job_order_arap joa on jo.id=joa.order_id"
 							+" left join fin_item fi on joa.charge_id = fi.id"
-							+" left join job_order_shipment jos on jos.order_id=joa.order_id"
-							+" left join job_order_shipment_item josi on josi.order_id=joa.order_id"
-							+" left join job_order_air_item joai on joai.order_id=joa.order_id"
 							+" left join party p on p.id=joa.sp_id"
 							+" left join party p1 on p1.id=jo.customer_id"
-							+" left join location l on l.id=jos.fnd"
 							+" left join currency cur on cur.id=joa.currency_id"
 							+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
+							
 							+" left join arap_cost_item aci on aci.ref_order_id = joa.id"
 						    +" left join arap_cost_order aco on aco.id = aci.cost_order_id"
 						    +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
@@ -274,17 +266,12 @@ public class TransCostCheckOrderController extends Controller {
 		}
 		
 		String sql = " select joa.id,joa.type,joa.sp_id,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
-				+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
-				+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
+				+ " p.abbr sp_name,p1.abbr customer_name, "
 				+ " cur.name currency_name "
-				+ " from job_order_arap joa "
-				+ " left join job_order jo on jo.id=joa.order_id "
-				+ " left join job_order_shipment jos on jos.order_id=joa.order_id "
-				+ " left join job_order_shipment_item josi on josi.order_id=joa.order_id "
-				+ " left join job_order_air_item joai on joai.order_id=joa.order_id "
+				+ " from trans_job_order_arap joa "
+				+ " left join trans_job_order jo on jo.id=joa.order_id "
 				+ " left join party p on p.id=joa.sp_id "
 				+ " left join party p1 on p1.id=jo.customer_id "
-				+ " left join location l on l.id=jos.fnd "
 				+ " left join currency cur on cur.id=joa.currency_id "
 				+ " where joa.id in ( "+ids+" ) "
 				+ " GROUP BY joa.id ";
@@ -581,7 +568,7 @@ public class TransCostCheckOrderController extends Controller {
 		Currency c = Currency.dao.findFirst("select id from currency where code = ?", ex_currency_name);
 		Long ex_currency_id = c.getLong("id");
 		String rate = getPara("rate");
-		Db.update("update job_order_arap set exchange_currency_id="+ex_currency_id+" , exchange_currency_rate="+rate+","
+		Db.update("update trans_job_order_arap set exchange_currency_id="+ex_currency_id+" , exchange_currency_rate="+rate+","
 				+ " exchange_total_amount=("+rate+"*total_amount)  where id in ("+ids+") and total_amount!=''");
 		
 		//计算结算汇总

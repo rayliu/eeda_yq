@@ -487,7 +487,7 @@ public class TransChargeCheckOrderController extends Controller {
 		rec.set("company_id", rec.get("company_id"));
 		rec.set("company_abbr", rec.get("company_abbr"));
 		setAttr("order",rec);
-		render("/tms/arap/tmsChargeCheckOrder/tmsChargeCheckOrderEdit.html");
+		render("/tms/arap/transChargeCheckOrder/transChargeCheckOrderEdit.html");
 	}
 
     
