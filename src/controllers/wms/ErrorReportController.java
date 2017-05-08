@@ -236,21 +236,31 @@ public class ErrorReportController extends Controller {
     }
     
     public void delete(){
-		String id = getPara("id");
-		String order_type = getPara("order_type");
+		String jsonArray = getPara("jsonArray");
 		
-		if("入库记录".equals(order_type)){
-			List<GateIn> reList = GateIn.dao.find("select * from gate_in where id in ("+id+") and error_flag = 'Y'");
-		    for (GateIn re :reList) {
-			   re.delete();
-		    }
-		}else{
-			List<GateOut> reList = GateOut.dao.find("select * from gate_out where id in ("+id+") and error_flag = 'Y'");
-		    for (GateOut re :reList) {
-			   re.delete();
-		    }
-		}
-	    
+		Gson gson = new Gson(); 
+		Map<String, ?> dto= gson.fromJson(jsonArray, HashMap.class);  
+        List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("array");
+        
+        for(Map<String, String>  array: itemList){
+        	String id = array.get("id");
+        	String order_type = array.get("order_type");
+        	
+    		if("入库记录".equals(order_type)){
+				List<GateIn> reList = GateIn.dao.find("select * from gate_in where id =? and error_flag = 'Y'",id);
+			    for (GateIn re :reList) {
+				    //re.delete();
+			    	re.set("office_id", 2).update();
+			    }
+			}else{
+				List<GateOut> reList = GateOut.dao.find("select * from gate_out where id =? and error_flag = 'Y'",id);
+			    for (GateOut re :reList) {
+				    //re.delete();
+			    	re.set("office_id", 2).update();
+			    }
+			}
+        }
+		
 	    renderJson(true);
     }
     
