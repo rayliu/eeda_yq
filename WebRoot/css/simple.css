@@ -300,10 +300,7 @@ select.form-control{
 
 .simple_search_div{
     background-color: #fff;
-    padding-top: 15px;
-    padding-bottom: 15px;
     border-radius: 10px;
-    
 }
 
 
@@ -633,4 +630,16 @@ h4.panel-title  {
 
 div.dataTables_wrapper div.dataTables_info {
     padding-left: 10px;
+}
+
+.simple_search_div .panel{
+    margin-bottom: 0px;
+    border: 0px solid transparent; 
+    border-radius: 10px;
+}
+
+.simple_search_div .panel-default>.panel-heading{
+    border-radius: 10px;
+    background-color: #fff; 
+    border-color: #fff; 
 }

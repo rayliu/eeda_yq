@@ -6,86 +6,100 @@
 	      var boolOrder= orderPermission;
     	%>
             <div class="row simple_search_div">
-                <div class="col-lg-12">
-                    <form id="orderForm">
-                        <div class="row"><!--  第1行  -->
-                            <div class="col-lg-4"><!--  三列排版  -->
-                                <%include("/eeda/component/form/inputField.html", 
-                                                    {   id: 'sono', 
-                                                        label: 'SO号', 
-                                                        value: ''
-                                                    }){}%>
-                            </div>
-                            <div class="col-lg-4"><!--  三列排版  -->
-                                <%include("/eeda/component/form/inputField.html", 
-                                                    {   id: 'container_no', 
-                                                        label: '柜号', 
-                                                        value: ''
-                                                    }){}%>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+                            <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询                                       </a>
+                        </h4>
+                    </div>
+                    <div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                        <div class="panel-body" id="ChargeDiv">
+                            <div class="col-lg-12">
+                                <form id="orderForm">
+                                    <div class="row"><!--  第1行  -->
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'sono', 
+                                                                    label: 'SO号', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'container_no', 
+                                                                    label: '柜号', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                    </div>
+                                    <div class="row"><!--  第1行  -->
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'order_no', 
+                                                                    label: '工作单号', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                                                {   id: 'sent_out_time', 
+                                                                    label: '出货时间', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                            {   id:'create_stamp', 
+                                                label:'创建时间', 
+                                                value:''
+                                            }){} %>
+                                        </div><!-- /.col-lg-2 -->
+                                    </div><!-- /.row-->
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                             <%include("/eeda/component/form/selectField.html", 
+                                                    {   id:'status', 
+                                                        label:'状态', 
+                                                        value: '',
+                                                        value_list:[
+                                                            {code:'', value:''},
+                                                            {code:'新建', value:'新建'},
+                                                            {code:'已完成', value:'已完成'}
+                                                        ]
+                                                    }
+                                                 ){} %>
+                                        </div>
+                                        <div class="col-lg-4">
+                                          <%include("/eeda/component/form/inputField.html", 
+                                                              {   id: 'customer_code', 
+                                                                  label: '客户代码', 
+                                                                  value: ''
+                                                              }){}%>
+                                        </div>
+                                        <div class="col-lg-4">
+                                          <%include("/eeda/component/form/inputField.html", 
+                                                              {   id: 'customer_name', 
+                                                                  label: '客户名称', 
+                                                                  value: ''
+                                                              }){}%>
+                                        </div>
+                                    </div>
+                                    <div class="form-group table_btn_bar" >
+                                        <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+                                        <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
+                                        <a href="/jobOrder/create" class="btn btn_green" type="button">创建工作单</a>
+                                        <%if(boolOrder){%>
+                                        <button id="lockBtn" class="btn btn_green" style="float:right" type="button" disabled>工作单锁单</button>
+                                        <%}%>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="row"><!--  第1行  -->
-                            <div class="col-lg-4"><!--  三列排版  -->
-                                <%include("/eeda/component/form/inputField.html", 
-                                                    {   id: 'order_no', 
-                                                        label: '工作单号', 
-                                                        value: ''
-                                                    }){}%>
-                            </div>
-                            <div class="col-lg-4"><!--  三列排版  -->
-                                <%include("/eeda/component/form/inputDateQueryField.html", 
-                                                    {   id: 'sent_out_time', 
-                                                        label: '出货时间', 
-                                                        value: ''
-                                                    }){}%>
-                            </div>
-                            <div class="col-lg-4">
-                                <%include("/eeda/component/form/inputDateQueryField.html", 
-                                {   id:'create_stamp', 
-                                    label:'创建时间', 
-                                    value:''
-                                }){} %>
-                            </div><!-- /.col-lg-2 -->
-                        </div><!-- /.row-->
-                        <div class="row">
-                            <div class="col-lg-4">
-                                 <%include("/eeda/component/form/selectField.html", 
-                                        {   id:'status', 
-                                            label:'状态', 
-                                            value: '',
-                                            value_list:[
-                                                {code:'', value:''},
-                                                {code:'新建', value:'新建'},
-                                                {code:'已完成', value:'已完成'}
-                                            ]
-                                        }
-                                     ){} %>
-                            </div>
-                            <div class="col-lg-4">
-                              <%include("/eeda/component/form/inputField.html", 
-                                                  {   id: 'customer_code', 
-                                                      label: '客户代码', 
-                                                      value: ''
-                                                  }){}%>
-                            </div>
-                            <div class="col-lg-4">
-                              <%include("/eeda/component/form/inputField.html", 
-                                                  {   id: 'customer_name', 
-                                                      label: '客户名称', 
-                                                      value: ''
-                                                  }){}%>
-                            </div>
-                        </div>
-                        <div class="form-group table_btn_bar" >
-                            <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
-                            <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
-                            <a href="/jobOrder/create" class="btn btn_green" type="button">创建工作单</a>
-                            <%if(boolOrder){%>
-                            <button id="lockBtn" class="btn btn_green" style="float:right" type="button" disabled>工作单锁单</button>
-                        	<%}%>
-                        </div>
-                    </form>
+                   </div>
                 </div>
+
+                
             </div><!-- /.row 查询条件 结束-->
             <div class="row simple_list_div">
                 
