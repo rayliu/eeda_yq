@@ -125,19 +125,19 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            },
 	            { "data": "BOOK_ORDER_NO","width": "70px",
 	                "render": function ( data, type, full, meta ) {
-	                	if(!data)
-	                        data='';
+	                	if(!data){
+	                		data='';
+	                		return "<span style='width:90'></span>";
+	                	}  
 	                  // return '<input type="text" disabled name="book_order_no" value="'+data+'" class="form-control search-control" />';
 	                	return "<a style='width:90'  href='/bookOrder/edit?id="+full.BOOK_ORDER_ID+"'target='_blank'>"+data+"</a>";
 	                }
 	            },
-	            { "data": "JOB_ORDER_TYPE","width": "60px",
+	            { "data": "JOB_ORDER_TYPE","width": "50px",
 	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var str = '<select name="job_order_type" class="form-control search-control job_order_type">'
-//		                   +'<option value="出口柜货" '+(data=='出口柜货' ? 'selected':'')+'>出口柜货</option>'
-//		                   +'<option value="进口柜货" '+(data=='进口柜货' ? 'selected':'')+'>进口柜货</option>'
+	                    var str = '<select style="width:70px" name="job_order_type" class="form-control search-control job_order_type">'
 		                   +'<option value="出口柜货" '+(data=='出口柜货' ? 'selected':'')+'>出口柜货</option>'
 		                   +'<option value="进口柜货" '+(data=='进口柜货' ? 'selected':'')+'>进口柜货</option>'
 		                   +'<option value="出口散货" '+(data=='出口散货' ? 'selected':'')+'>出口散货</option>'
@@ -157,40 +157,42 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return str;
 	                }
 	            },
-	            { "data": "FACTORY_LOADING_TIME" ,"width": "80px",
+	            { "data": "FACTORY_LOADING_TIME" ,"width": "50px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    var field_html = template('table_date_field_template',
 		                    {
 		                        id: 'FACTORY_LOADING_TIME',
-		                        value: data.substr(0,10)
+		                        value: data.substr(0,10),
+		                        style:'width:70px'
 		                    }
 		                );
 	                    return field_html;
 	                }
 	            },
-	            { "data": "ETA","width": "80px",
+	            { "data": "ETA","width": "50px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    var field_html = template('table_date_field_template',
 		                    {
 		                        id: 'ETA',
-		                        value: data.substr(0,10)
+		                        value: data.substr(0,10),
+		                        style:'width:70px'
 		                    }
 		                );
 	                    return field_html;
 	                }
 	            },
-	            { "data": "PICKUP_ADDR","width": "150px",
+	            { "data": "PICKUP_ADDR","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="PICKUP_ADDR" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:120px" type="text" name="PICKUP_ADDR" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "POL" ,"width": "110px",
+	            { "data": "POL" ,"width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
@@ -198,13 +200,14 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                    {
 		                        id: 'POL',
 		                        value: data,
-		                        display_value: full.POL_NAME
+		                        display_value: full.POL_NAME,
+		                        style:'width:100px'
 		                    }
 		                );
 	                    return field_html;
 	                }
 	            },
-	            { "data": "POD","width": "110px",
+	            { "data": "POD","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
@@ -212,62 +215,63 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                    {
 		                        id: 'POD',
 		                        value: data,
-		                        display_value: full.POD_NAME
+		                        display_value: full.POD_NAME,
+		                        style:'width:100px'
 		                    }
 		                );
 	                    return field_html;
 	                }
 	            },
-	            { "data": "PIECES" ,"width": "40px",
+	            { "data": "PIECES" ,"width": "30px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="PIECES" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:50px" type="text" name="PIECES" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "GROSS_WEIGHT","width": "40px",
+	            { "data": "GROSS_WEIGHT","width": "50px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="GROSS_WEIGHT" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:70px" type="text" name="GROSS_WEIGHT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "VOLUME","width": "40px",
+	            { "data": "VOLUME","width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="VOLUME" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:80px" type="text" name="VOLUME" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "CONTAINER_TYPE","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                	if(!data)
 	                        data='';
-	                   return '<input type="text" name="CONTAINER_TYPE" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:120px" type="text" name="CONTAINER_TYPE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "CONTAINER_AMOUNT","width": "30px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="CONTAINER_AMOUNT" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:50px" type="text" name="CONTAINER_AMOUNT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "TRUCK_TYPE","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="TRUCK_TYPE" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:120px" type="text" name="TRUCK_TYPE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "CARGO_NAME","width": "80px",
+	            { "data": "CARGO_NAME","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="CARGO_NAME" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:120px" type="text" name="CARGO_NAME" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "CARRIER","width": "80px",
+	            { "data": "CARRIER","width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
@@ -275,64 +279,68 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                    {
 		                        id: 'CARRIER',
 		                        value: data,
-		                        display_value: full.CARRIER_NAME
+		                        display_value: full.CARRIER_NAME,
+		                        style:'width:80px'
 		                    }
 		                );
 	                    return field_html;
 	                }
 	            },
-	            { "data": "VESSEL","width": "100px",
+	            { "data": "VESSEL","width": "80px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="VESSEL" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:100px" type="text" name="VESSEL" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "VOYAGE" ,"width": "100px",
+	            { "data": "VOYAGE" ,"width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="VOYAGE" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:80px" type="text" name="VOYAGE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "ETA","width": "80px",
+	            { "data": "ETA","width": "50px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    var field_html = template('table_date_field_template',
 		                    {
 		                        id: 'ETA',
-		                        value: data.substr(0,10)
+		                        value: data.substr(0,10),
+		                        style:'width:70px'
+		                        
 		                    }
 		                );
 	                    return field_html;
 	                }
 	            },
-	            { "data": "ETD","width": "80px",
+	            { "data": "ETD","width": "50px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    var field_html = template('table_date_field_template',
 		                    {
 		                        id: 'ETD',
-		                        value: data.substr(0,10)
+		                        value: data.substr(0,10),
+		                        style:'width:70px'
 		                    }
 		                );
 	                    return field_html;
 	                }
 	            },
-	            { "data": "NET_WEIGHT","width": "45px",
+	            { "data": "NET_WEIGHT","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="NET_WEIGHT" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:120px" type="text" name="NET_WEIGHT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "TRANSPORT_TYPE","width": "100px",
+	            { "data": "TRANSPORT_TYPE","width": "50px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var str = '<select name="transport_type" class="form-control search-control">'
+	                    var str = '<select style="width:70px" name="transport_type" class="form-control search-control">'
                 			+'<option></option>'
 		                   +'<option value="ocean" '+(data=='ocean' ? 'selected':'')+'>海运</option>'
 		                   +'<option value="land" '+(data=='land' ? 'selected':'')+'>陆运</option>'
@@ -342,11 +350,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                }
 	            },
 	            
-	            { "data": "LOAD_TYPE","width": "100px",
+	            { "data": "LOAD_TYPE","width": "50px",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
 	                	   data='';
-	                   var str= '<select name="load_type" class="form-control search-control">'
+	                   var str= '<select style="width:70px" name="load_type" class="form-control search-control">'
 	                	   	 	+'<option></option>'
 			                   +'<option value="FCL" '+ (data=='FCL'?'selected':'') +'>FCL</option>'
 			                   +'<option value="LCL" '+ (data=='LCL'?'selected':'') +'>LCL</option>'
@@ -356,7 +364,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 			           return str;
 	                }
 	            },
-	            { "data": "UNIT_ID","width": "50px",
+	            { "data": "UNIT_ID","width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                	if(!data)
 	                        data='';
@@ -365,37 +373,37 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                            id: 'UNIT_ID',
 	                            value: data,
 	                            display_value: full.UNIT_NAME,
-	                            style: 'margin-top: 10px;'
+	                            style: 'margin-top: 10px;width:80px'
 	                        }
 	                    );
 	                    return field_html;
 	                }
 	            },
 	            
-	            { "data": "NET_WEIGHT","width": "45px",
+	            { "data": "NET_WEIGHT","width": "50px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="NET_WEIGHT" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:70px" type="text" name="NET_WEIGHT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            
-	            { "data": "VGM","width": "40px",
+	            { "data": "VGM","width": "60px",
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input type="text" name="VGM" value="'+data+'" class="form-control search-control" />';
+	            		return '<input style="width:80px" type="text" name="VGM" value="'+data+'" class="form-control search-control" />';
 	            	}
 	            },
 	            
-	            { "data": "DILVERY_ADDR","width": "130px",
+	            { "data": "DILVERY_ADDR","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input type="text" name="DILVERY_ADDR" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:120px" type="text" name="DILVERY_ADDR" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "POR" ,"width": "100px",
+	            { "data": "POR" ,"width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
@@ -403,31 +411,33 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                    {
 		                        id: 'POR',
 		                        value: data,
-		                        display_value: full.POR_NAME
+		                        display_value: full.POR_NAME,
+		                        style:'width:80px'
 		                    }
 		                );
 	                    return field_html;
 	                }
 	            },
 	            
-	            { "data": "CLS","width": "80px",
+	            { "data": "CLS","width": "50px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    var field_html = template('table_date_field_template',
 		                    {
 		                        id: 'CLS',
-		                        value: data.substr(0,10)
+		                        value: data.substr(0,10),
+		                        style:'width:70px'
 		                    }
 		                );
 	                    return field_html;
 	                }
 	            },
-	            { "data": "CUSTOMS_TYPE","width": "80px",
+	            { "data": "CUSTOMS_TYPE","width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
 	                	   data='';
-	                   var str= '<select name="customs_type" class="form-control search-control">'
+	                   var str= '<select style="width:80px" name="customs_type" class="form-control search-control">'
 	                	   	 	+'<option></option>'
 			                   +'<option value="代理报关" '+ (data=='代理报关'?'selected':'') +'>代理报关</option>'
 			                   +'<option value="自理报关" '+ (data=='自理报关'?'selected':'') +'>自理报关</option>'
@@ -435,14 +445,15 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 			           return str;
 	                }
 	            },
-	            { "data": "CUSTOMS_DATA","width": "80px",
+	            { "data": "CUSTOMS_DATA","width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    var field_html = template('table_date_field_template',
 		                    {
 		                        id: 'CUSTOMS_DATA',
-		                        value: data.substr(0,10)
+		                        value: data.substr(0,10),
+		                        style:'width:80px'
 		                    }
 		                );
 	                    return field_html;
