@@ -61,6 +61,7 @@
                     	'产品名称',
                     	'组件编码',
                     	'组件名称',
+                        '图像',
                         '单位',
                         '数量',
                         '操作时间',
@@ -92,7 +93,7 @@
 	<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;">LOADING...</h1>
 </div>
 <script>
-    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/wms/product/list','app/wms/product/upload']);
     });
 </script>

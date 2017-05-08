@@ -12,13 +12,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             ajax: "/wmsproduct/list",
             "drawCallback": function( settings ) {
 		        $.unblockUI();
+                $('.product_img').popover({
+                    html: true,
+                    container: 'body',
+                    placement: 'right',
+                    trigger: 'hover'
+                });
 		    },
             columns:[
                 
                 { "data": "ITEM_NO","class":"item_no", 
               	    "render": function ( data, type, full, meta ) {
               	    	if(data){
-                        	return "<a href='#'>"+data+"</a>";
+                        	return "<a href='#'>"+data+"</a> ";
                         }else{
                             return '';
                         }
@@ -35,6 +41,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               	    }
                 }, 
                 { "data": "PART_NAME" ,"class":"part_name"},
+                { "data": "IMG_PATH", "class":"product", 
+                    "render": function ( data, type, full, meta ) {
+                        if(data){
+                            //<img src=&quot;/images/product/no_photo.jpg&quot; height=&quot;250&quot;>
+                            return '<img class="product_img" src="'+data+'" height="35" '
+                                +' data-content="<img src=&quot;'+data+'&quot;  width=&quot;250&quot;>" >';
+                        }else{
+                            return '<img class="product_img" src="/images/product/no_photo.jpg" height="35" '
+                                +' data-content="<img src=&quot;/images/product/no_photo.jpg&quot;  width=&quot;250&quot;>" >';
+                        }
+                    }
+                }, 
 				{ "data": "UNIT"}, 
 				{ "data": "AMOUNT"}, 
 				{ "data": "CREATE_TIME"}, 
@@ -47,6 +65,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 }
             ]
         });
+
+        
         
         $('#eeda-table').on('click','.item_no',function(){
         	var value = $(this).text();
