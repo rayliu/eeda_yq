@@ -48,6 +48,7 @@ import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
@@ -63,6 +64,10 @@ public class SupplierContractController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void index() {
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long user_id = user.getLong("id");
+		List<Record> configList = ListConfigController.getConfig(user_id, "/supplierContract");
+        setAttr("listConfigList", configList);
         render("/eeda/contractManagement/supplierContractList.html");
     }
     

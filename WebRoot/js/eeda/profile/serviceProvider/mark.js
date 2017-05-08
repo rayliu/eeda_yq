@@ -1,65 +1,13 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) { 
 
   $(document).ready(function() {
 
     var deletedTableIds=[];
   		
 
-      itemOrder.buildItemList=function(){
-        var cargo_table_rows = $("#mark_table tr");
-          var cargo_items_array=[];
-          for(var index=0; index<cargo_table_rows.length; index++){
-              if(index==0)
-                  continue;
-
-              var row = cargo_table_rows[index];
-              var empty = $(row).find('.dataTables_empty').text();
-              if(empty)
-                continue;
-              
-              var id = $(row).attr('id');
-              if(!id){
-                  id='';
-              }
-              
-              var item={}
-              
-              item.id = id;
-             
-              for(var i = 1; i < row.childNodes.length; i++){
-                var name = $(row.childNodes[i]).find('input,select').attr('name');
-                var value = $(row.childNodes[i]).find('input,select').val();
-                if(name=="creator")continue;
-                if(name){
-                  item[name] = value;
-                }
-              }
-              item.action = id.length > 0?'UPDATE':'CREATE';
-              if(!id.length>0){
-                var d = new Date();
-                var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-                item.mark_date = str;
-                item.creator=$('#user_id').val();
-              }
-              
-              cargo_items_array.push(item);
-          }
-
-          //add deleted items
-          for(var index=0; index<deletedTableIds.length; index++){
-              var id = deletedTableIds[index];
-              var item={
-                  id: id,
-                  action: 'DELETE'
-              };
-              cargo_items_array.push(item);
-          }
-          deletedTableIds = [];
-          return cargo_items_array;
-      };
-
   		var dataTable = eeda.dt({
             id: 'mark_table',
+            colReorder: true,
             // ajax:{
             //     url: "/serviceProvider/markCustormerList?sp_id="+$('#markCustomer').val(),
             //     type: 'POST'
@@ -138,6 +86,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               }
             ]
         });
+  		
+  	//base on config hide cols
+        dataTable.columns().eq(0).each( function(index) {
+            var column = dataTable.column(index);
+            $.each(cols_config, function(index, el) {
+                
+                if(column.dataSrc() == el.COL_FIELD){
+                  
+                  if(el.IS_SHOW == 'N'){
+                    column.visible(false, false);
+                  }else{
+                    column.visible(true, false);
+                  }
+                }
+            });
+        });
 
   	$('#markCustomer_input').on('blur',function(){
   		if($('#markCustomer').val()!=null&&$('#markCustomer').val()!=''){
@@ -190,6 +154,60 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           	calculate();
           });
   	 }
+
+     itemOrder.buildItemList=function(){
+       var cargo_table_rows = $("#mark_table tr");
+         var cargo_items_array=[];
+         for(var index=0; index<cargo_table_rows.length; index++){
+             if(index==0)
+                 continue;
+
+             var row = cargo_table_rows[index];
+             var empty = $(row).find('.dataTables_empty').text();
+             if(empty)
+               continue;
+             
+             var id = $(row).attr('id');
+             if(!id){
+                 id='';
+             }
+             
+             var item={}
+             
+             item.id = id;
+            
+             for(var i = 1; i < row.childNodes.length; i++){
+               var name = $(row.childNodes[i]).find('input,select').attr('name');
+               var value = $(row.childNodes[i]).find('input,select').val();
+               if(name=="creator")continue;
+               if(name){
+                 item[name] = value;
+               }
+             }
+             item.action = id.length > 0?'UPDATE':'CREATE';
+             if(!id.length>0){
+               var d = new Date();
+               var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+               item.mark_date = str;
+               item.creator=$('#user_id').val();
+             }
+             
+             cargo_items_array.push(item);
+         }
+
+         //add deleted items
+         for(var index=0; index<deletedTableIds.length; index++){
+             var id = deletedTableIds[index];
+             var item={
+                 id: id,
+                 action: 'DELETE'
+             };
+             cargo_items_array.push(item);
+         }
+         deletedTableIds = [];
+         return cargo_items_array;
+     };
+
   	 //计算总分
   	 var calculate=function(){
   	 	var totalscore=80;

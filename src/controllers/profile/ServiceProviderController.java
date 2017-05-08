@@ -34,6 +34,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
+import controllers.eeda.ListConfigController;
 import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
 

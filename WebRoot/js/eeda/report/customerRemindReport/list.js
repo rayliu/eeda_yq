@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn',  'dtColReorder'], function ($, metisMenu) {
 
     $(document).ready(function() {
     	document.title = '重要客户提醒 | '+document.title;
