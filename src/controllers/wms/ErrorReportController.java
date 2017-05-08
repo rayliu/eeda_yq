@@ -207,27 +207,32 @@ public class ErrorReportController extends Controller {
     
     public void gateIn(){
     	String idArray = getPara("idArray");
-    	
+    	boolean result = true;
     	List<GateOut> reList = GateOut.dao.find("select * from gate_out where id in ("+idArray+")");
     	for (GateOut re :reList) {
-			GateIn gi = new GateIn();
-			gi.set("office_id", re.getLong("office_id"));
-			gi.set("qr_code", re.getStr("qr_code"));
-			gi.set("part_no", re.getStr("part_no"));
-			gi.set("quantity", re.get("quantity"));
-			gi.set("shelves", re.getStr("shelves"));
-			gi.set("move_flag", re.getStr("move_flag"));
-			gi.set("creator", re.get("creator"));
-			gi.set("creator_code", re.getStr("creator_code"));
-			gi.set("create_time", new Date());
-			gi.set("self_in_flag", "Y");
-			gi.set("out_flag", "Y");
-			gi.save();
-			
-			re.set("error_flag", "N").update();
+    		String error_flag = re.getStr("error_flag");
+    		if("Y".equals(error_flag)){
+    			GateIn gi = new GateIn();
+    			gi.set("office_id", re.getLong("office_id"));
+    			gi.set("qr_code", re.getStr("qr_code"));
+    			gi.set("part_no", re.getStr("part_no"));
+    			gi.set("quantity", re.get("quantity"));
+    			gi.set("shelves", re.getStr("shelves"));
+    			gi.set("move_flag", re.getStr("move_flag"));
+    			gi.set("creator", re.get("creator"));
+    			gi.set("creator_code", re.getStr("creator_code"));
+    			gi.set("create_time", new Date());
+    			gi.set("self_in_flag", "Y");
+    			gi.set("out_flag", "Y");
+    			gi.save();
+    			
+    			re.set("error_flag", "N").update();
+    		}else{
+    			result = false;
+    		}
 		}
     	
-    	renderJson(true);
+    	renderJson(result);
     }
     
     public void delete(){

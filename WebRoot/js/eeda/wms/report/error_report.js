@@ -80,6 +80,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var id = $(this).parent().parent().attr('id');
         	var order_type = $($(this).parent().parent().find('.order_type')).text();
         	
+        	
+        	if(!confirm('是否确认删除')){
+        		return false;
+        	}
         	self.disabled = true;
         	$.post('/errorReport/delete',{id:id,order_type:order_type},function(data){
         		if(data){
@@ -90,8 +94,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
         		}
         	}).fail(function() {
-                $.scojs_message('后台报错', $.scojs_message.TYPE_ERROR);
+                $.scojs_message('后台报错,三秒后自动刷新页面', $.scojs_message.TYPE_ERROR);
                 self.disabled = false;
+                window.setTimeout(function(){
+               	   location.reload();
+                },3000); 
             });
         });
         
@@ -117,6 +124,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		return false;
         	}
         	
+        	
+        	if(!confirm('是否确认入库')){
+        		return false;
+        	}
         	self.disabled = true;
         	$.post('/errorReport/gateIn',{idArray:idArray.toString()},function(data){
         		if(data){
@@ -124,7 +135,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         			searchData();
         			self.disabled = false;
         		}else{
-        			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+        			$.scojs_message('操作失败,三秒后自动刷新页面', $.scojs_message.TYPE_ERROR);
+        			window.setTimeout(function(){
+                    	 location.reload();
+                    },3000); 
         		}
         	}).fail(function() {
                 $.scojs_message('后台报错', $.scojs_message.TYPE_ERROR);
