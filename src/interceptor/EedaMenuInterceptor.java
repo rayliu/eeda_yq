@@ -101,7 +101,7 @@ public class EedaMenuInterceptor implements Interceptor {
                     +"        AND m.office_id = ?"
                     +"        AND u.user_name = ?"
                     +" ORDER BY m.seq";
-            logger.debug("EedaInterceptor module_id:"+module.get("id")+", office_id:"+office_id+", username:"+username);
+            //logger.debug("EedaInterceptor module_id:"+module.get("id")+", office_id:"+office_id+", username:"+username);
             List<Record> orders = Db.find(sql, module.get("id"), office_id,
                     username);
             for (Record order : orders) {
