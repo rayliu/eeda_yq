@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
   	document.title = '客户应收账龄分析表  | '+document.title;
   	  $("#breadcrumb_li").text('客户应收账龄分析表');
@@ -11,6 +11,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	  var total_amount = 0.0;
       var dataTable = eeda.dt({
           id: 'eeda_table',
+          colReorder: true,
           paging: true,
           pageLength: 200,
           serverSide: false, //不打开会出现排序不对 
@@ -45,7 +46,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            }
 	          ]
 	  });
-      
+    //base on config hide cols
+      dataTable.columns().eq(0).each( function(index) {
+          var column = dataTable.column(index);
+          $.each(cols_config, function(index, el) {
+              
+              if(column.dataSrc() == el.COL_FIELD){
+                
+                if(el.IS_SHOW == 'N'){
+                  column.visible(false, false);
+                }else{
+                  column.visible(true, false);
+                }
+              }
+          });
+      });
       var calc_amount = function(){
     	  cny_total = 0.0;
     	  hkd_total = 0.0;

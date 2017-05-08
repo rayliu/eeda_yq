@@ -19,6 +19,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 
@@ -30,6 +31,10 @@ public class ProfitAndPaymentRateController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
+		UserLogin user = LoginUserController.getLoginUser(this);
+        long user_id = user.getLong("id");
+		List<Record> configList = ListConfigController.getConfig(user_id, "/profitAndPaymentRate");
+        setAttr("listConfigList", configList);
 		render("/eeda/arap/ProfitAndPaymentRate/ProfitAndPaymentRate.html");
 	}
 	

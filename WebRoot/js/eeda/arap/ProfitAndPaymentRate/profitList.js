@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
   	document.title = '利润率分析表  | '+document.title;
   	  $("#breadcrumb_li").text('利润率分析表');
@@ -6,6 +6,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	  
       var dataTable = eeda.dt({
           id: 'eeda_table',
+          colReorder: true,
           paging: false,
           serverSide: true, //不打开会出现排序不对 
 //          ajax: "/profitAndPaymentRate/list",
