@@ -1411,6 +1411,7 @@ eeda.refreshUrl = refreshUrl;
 				  for(var i = 0; i < data.length; i++)
 					  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID
 							  +"' charge_name='"+data[i].NAME+"' currency_id='"+data[i].CURRENCY_ID
+							  +"' charge_name_eng='"+data[i].NAME_ENG
 							  +"' currency_code='"+data[i].CURRENCY_CODE+"' currency_rate='"+data[i].RATE+"' >"+data[i].NAME+"</a></li>");
 				  tableFieldList.css({ 
 					  left:$(me).offset().left+"px", 
@@ -1444,11 +1445,14 @@ eeda.refreshUrl = refreshUrl;
 
 			  var charge_id = $(this).attr('dataId');
 			  var charge_name = $(this).attr('charge_name');
+			  var charge_name_eng = $(this).attr('charge_name_eng');
 			  var currency_id = $(this).attr('currency_id');
 			  var currency_code = $(this).attr('currency_code');
 			  var currency_rate = $(this).attr('currency_rate');
 			  td.parent().find('input[name=CHARGE_ID] ').val(charge_id);
 			  td.parent().find('input[name=CHARGE_ID_input] ').val(charge_name);
+			  td.parent().find('input[name=CHARGE_ENG_ID] ').val(charge_id);
+			  td.parent().find('input[name=CHARGE_ENG_ID_input] ').val(charge_name_eng);
 			  if(currency_id!='undefined' && currency_id!='null'){
 				  td.parent().find('input[name=CURRENCY_ID] ').val(currency_id);	
 				  td.parent().find('input[name=CURRENCY_ID_input] ').val(currency_code);

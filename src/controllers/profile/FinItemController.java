@@ -36,7 +36,7 @@ public class FinItemController extends Controller {
         
         List<Record> finItems = Collections.EMPTY_LIST;
         if(StrKit.isBlank(input)){//从历史记录查找
-            String sql = "SELECT * from( SELECT	h.ref_id,h.query_stamp,	f.id,	f. NAME,c.id currency_id,c.`code` currency_code,cr.rate "
+            String sql = "SELECT * from( SELECT	h.ref_id,h.query_stamp,	f.id,	f. NAME,f.name_eng,c.id currency_id,c.`code` currency_code,cr.rate "
 					+" FROM	user_query_history h "
 					+" LEFT JOIN	fin_item f on h.ref_id = f.id "
 					+" LEFT JOIN currency c on c.id=f.binding_currency  "

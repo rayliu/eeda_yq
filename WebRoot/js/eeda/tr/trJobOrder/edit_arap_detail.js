@@ -39,6 +39,9 @@ $(document).ready(function() {
         						+'exchange_currency_rate="'+json_obj[j].exchange_currency_rate+'" '
         						+'exchange_rate="'+json_obj[j].exchange_rate+'" '
         						+'exchange_total_amount="'+json_obj[j].exchange_total_amount+'" '
+                                +'exchange_currency_rate_rmb="'+json_obj[j].exchange_currency_rate_rmb+'" '
+                                +'exchange_total_amount_rmb="'+json_obj[j].exchange_total_amount_rmb+'" '
+                                +'rmb_difference="'+json_obj[j].rmb_difference+'" '
         						+'order_type="'+json_obj[j].order_type+'" '
         						+'price="'+json_obj[j].price+'" '
         						+'remark="'+json_obj[j].remark+'" '
@@ -125,6 +128,9 @@ $(document).ready(function() {
         	item.EXCHANGE_CURRENCY_ID= row.attr('exchange_currency_id');
         	item.EXCHANGE_CURRENCY_RATE= row.attr('exchange_currency_rate');
         	item.EXCHANGE_TOTAL_AMOUNT= row.attr('exchange_total_amount');
+            item.EXCHANGE_CURRENCY_RATE_RMB= row.attr('exchange_currency_rate_rmb');
+            item.EXCHANGE_TOTAL_AMOUNT_RMB= row.attr('exchange_total_amount_rmb');
+            item.RMB_DIFFERENCE= row.attr('rmb_difference');
         	item.REMARK= row.attr('remark');
         	item.SP_NAME=row.attr('sp_name');
         	item.CHARGE_NAME=row.attr('charge_name');

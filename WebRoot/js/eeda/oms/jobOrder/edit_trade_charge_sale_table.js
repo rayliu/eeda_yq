@@ -303,9 +303,9 @@ $(document).ready(function() {
                     else
                         str = '';
                 if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control" disabled />';
+                        return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control notsave" disabled />';
                 }else{
-                        return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control" />';
+                        return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control notsave" />';
                }
               }
             },
@@ -355,9 +355,9 @@ $(document).ready(function() {
                     else
                         str = '';
                     if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control" disabled />';
+                        return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control notsave" disabled />';
                     }else{
-                        return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control" />';
+                        return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control notsave" />';
                     }
                 }
             },
@@ -377,9 +377,9 @@ $(document).ready(function() {
                     else
                         str = '';
                     if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:100px" value="'+str+'" class="form-control" disabled />';
+                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:100px" value="'+str+'" class="form-control notsave" disabled />';
                     }else{
-                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:100px" value="'+str+'" class="form-control" />';
+                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:100px" value="'+str+'" class="form-control notsave" />';
                     }
                 }
             },
@@ -406,11 +406,11 @@ $(document).ready(function() {
                     if(full.AUDIT_FLAG == 'Y'){
                         if(!data)
                             data='';
-                        return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" disabled />';
+                        return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" disabled />';
                     }else{
                         if(!data)
                             data='';
-                        return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" />';
+                        return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" />';
                     }
                 }
             }, { "data": "SP_NAME", "visible": false,

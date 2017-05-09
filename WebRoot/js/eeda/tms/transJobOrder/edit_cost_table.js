@@ -233,7 +233,7 @@ $(document).ready(function() {
             { "data": "TYPE","width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
-                		var str = '<select name="type" class="form-control search-control" style="width:100px" disabled>'
+                		var str = '<select name="type" class="form-control search-control  notsave" style="width:100px" disabled>'
 	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
 	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
 	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
@@ -242,7 +242,7 @@ $(document).ready(function() {
 	                        +'</select>';
 	                	return str;
                 	}else{
-	                	var str = '<select name="type" class="form-control search-control" style="width:100px">'
+	                	var str = '<select name="type" class="form-control search-control notsave" style="width:100px">'
 	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
 	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
 	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
@@ -320,9 +320,9 @@ $(document).ready(function() {
                     else
                     	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
-                    		return '<input type="text" name="price" style="width:80px" value="'+str+'" class="form-control" disabled />';
+                    		return '<input type="text" name="price" style="width:80px" value="'+str+'" class="form-control notsave" disabled />';
                      }else{
-                 			return '<input type="text" name="price" style="width:80px" value="'+str+'" class="form-control" />';
+                 			return '<input type="text" name="price" style="width:80px" value="'+str+'" class="form-control notsave" />';
                      }
                }
             },
@@ -331,9 +331,9 @@ $(document).ready(function() {
                 	if(!data)
                         data='1.0';
                 	if(full.AUDIT_FLAG == 'Y'){
-                        	return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control" disabled />';
+                        	return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control notsave" disabled />';
                      }else{
-                         	return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control" />';
+                         	return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control notsave" />';
 	                 }
               }
             },
@@ -374,9 +374,9 @@ $(document).ready(function() {
                     else
                     	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
-                        	return '<input type="text" name="total_amount" style="width:100px" value="'+str+'" class="form-control" disabled />';
+                        	return '<input type="text" name="total_amount" style="width:100px" value="'+str+'" class="form-control notsave" disabled />';
                 	}else{
-                        	return '<input type="text" name="total_amount" style="width:100px" value="'+str+'" class="form-control" disabled/>';
+                        	return '<input type="text" name="total_amount" style="width:100px" value="'+str+'" class="form-control notsave" disabled/>';
                 	}
                 }
             },
@@ -419,9 +419,9 @@ $(document).ready(function() {
                     else
                     	str = '1.000000';
                 if(full.AUDIT_FLAG == 'Y'){
-                    	return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control" disabled />';
+                    	return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control notsave" disabled />';
                 }else{
-                    	return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control" />';
+                    	return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control notsave" />';
                }
               }
             },
@@ -432,9 +432,9 @@ $(document).ready(function() {
                     else
                     	str = '';
 	                if(full.AUDIT_FLAG == 'Y'){
-	                    	return '<input type="text" name="currency_total_amount" style="width:120px" value="'+str+'" class="form-control" disabled />';
+	                    	return '<input type="text" name="currency_total_amount" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
 	                }else{
-	                    	return '<input type="text" name="currency_total_amount" style="width:120px" value="'+str+'" class="form-control" disabled />';
+	                    	return '<input type="text" name="currency_total_amount" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
 	                }
               }
             },
@@ -443,11 +443,11 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
 	                    if(!data)
 	                        data='';
-	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control " disabled />';
+	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave " disabled />';
 	                }else{
 	            	   if(!data)
 	                       data='';
-	                   return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" />';
+	                   return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" />';
 	                }
                }
             }, 

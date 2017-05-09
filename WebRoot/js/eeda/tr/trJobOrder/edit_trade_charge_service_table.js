@@ -305,9 +305,9 @@ $(document).ready(function() {
                     else
                         str = '';
                 if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control" disabled />';
+                        return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control notsave" disabled />';
                 }else{
-                        return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control" />';
+                        return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control notsave" />';
                }
               }
             },
@@ -357,9 +357,9 @@ $(document).ready(function() {
                     else
                         str = '';
                     if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control" disabled />';
+                        return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control notsave" disabled />';
                     }else{
-                        return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control" />';
+                        return '<input type="text" name="exchange_currency_rate" style="width:100px" value="'+str+'" class="form-control notsave" />';
                     }
                 }
             },
@@ -379,9 +379,9 @@ $(document).ready(function() {
                     else
                         str = '';
                     if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:120px" value="'+str+'" class="form-control" disabled />';
+                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
                     }else{
-                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:120px" value="'+str+'" class="form-control" />';
+                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:120px" value="'+str+'" class="form-control notsave" />';
                     }
                 }
             },
@@ -408,11 +408,11 @@ $(document).ready(function() {
                     if(full.AUDIT_FLAG == 'Y'){
                         if(!data)
                             data='';
-                        return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" disabled />';
+                        return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" disabled />';
                     }else{
                         if(!data)
                             data='';
-                        return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control" />';
+                        return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" />';
                     }
                 }
             }, { "data": "SP_NAME", "visible": false,
@@ -613,11 +613,14 @@ $(document).ready(function() {
                         for(var j = 0;j<json_obj.length;j++){
                             li +='<li '
                                 +' sp_name="'+json_obj[j].sp_name+'" '
+                                +'charge_eng_id="'+json_obj[j].CHARGE_ENG_ID+'" '
                                 +'charge_id="'+json_obj[j].CHARGE_ID+'" '
                                 +'currency_id="'+json_obj[j].CURRENCY_ID+'" '
                                 +'sp_id="'+json_obj[j].SP_ID+'" '
                                 +'unit_id="'+json_obj[j].UNIT_ID+'" '
+                                +'amount="'+json_obj[j].amount+'" '
                                 +'charge_name="'+json_obj[j].charge_name+'" '
+                                +'charge_name_eng="'+json_obj[j].charge_eng_name+'" '
                                 +'currency_name="'+json_obj[j].currency_name+'" '
                                 +'currency_total_amount="'+json_obj[j].currency_total_amount+'" '
                                 +'exchange_currency_id="'+json_obj[j].exchange_currency_id+'" '
@@ -629,8 +632,11 @@ $(document).ready(function() {
                                 +'exchange_total_amount_rmb="'+json_obj[j].exchange_total_amount_rmb+'" '
                                 +'rmb_difference="'+json_obj[j].rmb_difference+'" '
                                 +'order_type="'+json_obj[j].order_type+'" '
+                                +'price="'+json_obj[j].price+'" '
+                                +'remark="'+json_obj[j].remark+'" '
                                 +'total_amount="'+json_obj[j].total_amount+'" '
                                 +'type="'+json_obj[j].type+'" '
+                                +'unit_name="'+json_obj[j].unit_name+'" '
                                 +'></li>';
                             li_val += '<span></span> '+json_obj[j].sp_name+' , '+json_obj[j].charge_name+' , '+json_obj[j].total_amount+' , '+json_obj[j].currency_name+'<br/>';
                         }
