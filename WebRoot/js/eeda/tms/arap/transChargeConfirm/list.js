@@ -32,6 +32,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 					},
 					{ "data": "CREATE_STAMP", "width": "60px"},
 					{ "data": "CONTAINER_NO", "width": "60px"},
+					{ "data": "CABINET_TYPE", "width": "60px"},
 					{ "data": "SO_NO", "width": "80px"},
 					{ "data": "AUDIT_FLAG", "width": "40px",
 					"render": function ( data, type, full, meta ) {

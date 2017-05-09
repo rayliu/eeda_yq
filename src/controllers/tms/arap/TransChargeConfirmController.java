@@ -45,7 +45,8 @@ public class TransChargeConfirmController extends Controller {
         long office_id=user.getLong("office_id");
      
         String sql = "select * from( "
-        		+ " select tjoa.*,tjo.order_no,tjo.id jobid,tjo.container_no,tjo.so_no,tjo.create_stamp,tjo.customer_id,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
+        		+ " select tjoa.*,tjo.order_no,tjo.id jobid,tjo.container_no,tjo.so_no,tjo.create_stamp,tjo.customer_id,tjo.cabinet_type,"
+        		+ " p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
 				+ " from trans_job_order_arap tjoa "
 				+ " left join trans_job_order tjo on tjo.id=tjoa.order_id "
 				+ " left join party p on p.id=tjo.customer_id "

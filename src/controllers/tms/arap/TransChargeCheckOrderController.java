@@ -158,7 +158,7 @@ public class TransChargeCheckOrderController extends Controller {
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
         	 sql = "select * from(  "
         			+ " select joa.order_type sql_type,joa.remark, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
-              		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.land_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type,jo.so_no,jo.container_no, "
+              		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.land_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type,jo.so_no,jo.container_no,jo.cabinet_type, "
               		+ " p.abbr sp_name,p1.abbr customer_name, "
               		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
               		+ " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"
@@ -180,7 +180,7 @@ public class TransChargeCheckOrderController extends Controller {
         	}else{
         		 sql = "select * from(  "
                  		+ " select ifnull(f.name,f.name_eng) fee_name,joa.remark, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
-                 		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.land_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type,jo.so_no,jo.container_no, "
+                 		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.land_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type,jo.so_no,jo.container_no,jo.cabinet_type, "
                  		+ " p.abbr sp_name,p1.abbr customer_name, "
                  		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
                  		+ " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"

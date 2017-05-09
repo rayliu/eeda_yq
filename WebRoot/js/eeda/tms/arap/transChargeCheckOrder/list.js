@@ -45,6 +45,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            },
 	            { "data": "CREATE_STAMP", "width": "100px"},
 	            { "data": "CONTAINER_NO", "width": "60px"},
+	            { "data": "CABINET_TYPE", "width": "60px"},
 	            { "data": "SO_NO", "width": "60px"},
 	            { "data": "CUSTOMER_NAME", "width": "100px"},
 	            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
