@@ -331,7 +331,7 @@ public class JobOrderController extends Controller {
    			//create 
    			DbUtils.setModelValues(dto, jobOrder);
 //   			String newOrder_on ="EKYZH"+generateJobPrefix(type);
-   			if(office_id==1){
+   			if(office_id!=6){
    			//需后台处理的字段
    	   			String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, office_id);
    	   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
