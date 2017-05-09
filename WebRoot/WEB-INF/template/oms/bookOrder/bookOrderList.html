@@ -1,6 +1,16 @@
 <%layout("/eeda/layout.html"){%>
         <div id="page-wrapper">
-            <div class="row simple_search_div">
+        
+          <div class="row simple_search_div">
+             <div class="panel panel-default">
+            	<div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+                            <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
+                        </h4>
+                 </div>
+             <div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+              <div class="panel-body" id="ChargeDiv">
                 <div class="col-lg-12">
                     <form id="orderForm">
                         <div class="row"><!--  第1行  -->
@@ -62,6 +72,9 @@
                         </div>
                     </form>
                 </div>
+                </div>
+			 </div> 
+			</div>
             </div><!-- /.row 查询条件 结束-->
             <div class="row simple_list_div">
                 
@@ -104,7 +117,7 @@
                         }){} %>
                 
             </div><!-- /.row 列表结束-->
-
+		
         </div><!-- end of  .page-wrapper-->
         
         <!-- 删除单据的原因 -->
