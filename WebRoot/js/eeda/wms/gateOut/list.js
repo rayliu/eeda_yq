@@ -3,6 +3,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	document.title = '出库记录 | '+document.title;
 
     	$("#breadcrumb_li").text('出库记录列表 ');
+    	
+    	$('#eeda-table').on('mouseover','.part_no',function(body){////body可以随便
+   		 //var value = $($(this).find('.part_no')).text();
+   		 var value = $(this).text();
+   		 var tooltip = '<div id="c" style="position: absolute; z-index: 10;">'
+   			 +'<img src="/download/'+value+'.png" height="200" width="300" onerror="javascript:this.src=\'/download/nophoto.png\'"/>'
+   			 +'</div>';
+            $("body").append(tooltip);
+            $("#c").css({
+                "top": body.pageY+'px', "left": body.pageX+'px'//这里body要和上面的一致
+            }).show("fast");
+       }).mouseout(function() {
+           $("#c").remove();
+       });
 
     	//datatable, 动态处理
         var dataTable = eeda.dt({

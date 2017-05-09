@@ -23,13 +23,13 @@ $(document).ready(function() {
                  }, 
                  { "data": "PART_NO", visible: false,
                       "render": function ( data, type, full, meta ) {
-                          $('#partNo').text(data);
+                          //$('#partNo').text(data);
                           return data;
                        }
                  }, 
  				 { "data": "PART_NAME", visible: false,
 	                  "render": function ( data, type, full, meta ) {
-	                      $('#partName').text(data);
+	                      //$('#partName').text(data);
 	                      return data;
 	                  }
                  }, 
@@ -49,6 +49,7 @@ $(document).ready(function() {
       	$('#partName').text(part_name);
       	$('#totalBox').text(totalBox);
       	$('#totalPiece').text(totalPiece);
+      	$('#photo').html('<img src="/download/'+part_no+'.png" height="70%" width="70%" border="1px solid #F00" onerror="javascript:this.src=\'/download/nophoto.png\'"/>');
       	
       	searchData(part_no);
     });
