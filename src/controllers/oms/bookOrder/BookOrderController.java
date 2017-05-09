@@ -1230,7 +1230,7 @@ public class BookOrderController extends Controller {
     	setAttr("order", bookOrder);
     	//相关文档
     	setAttr("docList", getItems(id,"doc"));
-    	
+    	setAttr("zeroDocList", getDocItems(id,"zero"));
     	setAttr("oneDocList", getDocItems(id,"one"));
     	setAttr("twoDocList", getDocItems(id,"two"));
     	setAttr("threeDocList", getDocItems(id,"three"));
@@ -1899,19 +1899,8 @@ public class BookOrderController extends Controller {
     
     public List<Record> getDocItems(String orderId,String type){
     	String  itemSql = "";
-    	if("one".equals(type)){
-    		 itemSql = "select jod.*,u.c_name from book_order_doc jod left join user_login u on jod.uploader=u.id "
+    	itemSql = "select jod.*,u.c_name from book_order_doc jod left join user_login u on jod.uploader=u.id "
         			+ " where order_id=? and type=? order by jod.id";
-    	}else if("two".equals(type)){
-   		 itemSql = "select jod.*,u.c_name from book_order_doc jod left join user_login u on jod.uploader=u.id "
-     			+ " where order_id=? and type=? order by jod.id";
-    	}else if("three".equals(type)){
-   		 itemSql = "select jod.*,u.c_name from book_order_doc jod left join user_login u on jod.uploader=u.id "
-     			+ " where order_id=? and type=? order by jod.id";
-    	}else if("four".equals(type)){
-   		 itemSql = "select jod.*,u.c_name from book_order_doc jod left join user_login u on jod.uploader=u.id "
-     			+ " where order_id=? and type=? order by jod.id";
-    	}
     	
     	List<Record> itemList = Db.find(itemSql,orderId,type);
     	

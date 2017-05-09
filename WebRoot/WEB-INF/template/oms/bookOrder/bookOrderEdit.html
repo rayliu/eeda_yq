@@ -289,7 +289,21 @@
                     </ul>
                     <div class="form-group">
                         	<div class="col-lg-12"> 
-                        		<div class="row simple_rectangle_title_div"><div class="font_style">第一步，接受P/C资料上传</div></div>
+                        		<div class="row simple_rectangle_title_div"><div class="font_style">第一步，接受头程资料</div></div>
+					        	<div class="from-group">
+					        		<%include("/eeda/component/form/detailTable.html", 
+	                                    {
+	                                        id:'zero_doc_table',
+	                                        class:'item',
+	                                        style:'width:1400px',
+	                                        headers:['','操作', '文档名称', '上传人', '上传时间', '备注',
+	                                        '发送人','发送时间','文件状态'],
+	                                        field_list:['id','', 'doc_name','c_name','upload_time', 'remark','sender','send_time','send_status'],
+	                                        value_list: zeroDocList![]
+	                                 }){} %>
+					        	</div>
+					        	 <br>
+                        		<div class="row simple_rectangle_title_div"><div class="font_style">第二步，接受P/C资料上传</div></div>
                         		<div class="from-group">
 					        		<span class="btn btn_grey btn-xs fileinput-button" id="fileuploadSpan"> 
                                     <i class="glyphicon glyphicon-plus"></i> 
@@ -308,7 +322,7 @@
 	                                    }){} %>
 						        </div>
 						        <br>
-						        <div class="row simple_rectangle_title_div"><div class="font_style">第二步，B/L文件下载，接受被委托方资料</div></div>
+						        <div class="row simple_rectangle_title_div"><div class="font_style">第三步，B/L文件下载，接受被委托方资料</div></div>
 					        	<div class="from-group">
 					        		<%include("/eeda/component/form/detailTable.html", 
 	                                    {
@@ -321,7 +335,8 @@
 	                                        value_list: twoDocList![]
 	                                 }){} %>
 					        	</div>
-					        	<div class="row simple_rectangle_title_div"><div class="font_style">第三步，盖章保函资料上传，将文件发送给呗委托方</div></div>
+					        	 <br>
+					        	<div class="row simple_rectangle_title_div"><div class="font_style">第四步，盖章保函资料上传，将文件发送给呗委托方</div></div>
 					        	<div class="from-group">
 					        		<span class="btn btn_grey btn-xs fileinput-button" id=""> 
                                     <i class="glyphicon glyphicon-plus"></i> 
@@ -339,7 +354,8 @@
 	                                        value_list: threeDocList![]
 	                                    }){} %>
 					        	</div>
-					        	<div class="row simple_rectangle_title_div"><div class="font_style">第四步，接收下载</div></div>
+					        	 <br>
+					        	<div class="row simple_rectangle_title_div"><div class="font_style">第五步，接收下载</div></div>
 					        	<div class="from-group">
 					        		<%include("/eeda/component/form/detailTable.html", 
 	                                    {

@@ -349,7 +349,6 @@ $(document).ready(function() {
 
     //第4部
   //删除一行
-
     //------------事件处理,文档table
     var fourTable = eeda.dt({
         id: 'four_doc_table',
@@ -463,10 +462,118 @@ $(document).ready(function() {
     }
     
     
-    //备注更新
-    
-    
-
-    
+    //第zero部
+    //删除一行
+      //------------事件处理,文档table
+      var zeroTable = eeda.dt({
+          id: 'zero_doc_table',
+          autoWidth: false,
+          columns:[
+                   { "width": "50px",
+                       "render": function ( data, type, full, meta ) {
+                       	return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="display:none">删除</button>'
+                       	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">文件下载</a></button>';
+                       }
+                   },
+                   { "width": "50px",
+                       "render": function ( data, type, full, meta ) {
+                       	return '<button type="button" class="confirmDoc btn table_btn delete_btn btn-xs">确认</button>';
+                       }
+                   },
+              { "data": "DOC_NAME","width": "280px",
+                  "render": function ( data, type, full, meta ) {
+                      if(!data)
+                          data='';
+                      return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                  }
+              },
+              { "data": "C_NAME","width": "180px",
+                  "render": function ( data, type, full, meta ) {
+                  	if(!data)
+                          data='';
+                  	return data;
+                  }
+              },
+              { "data": "UPLOAD_TIME", "width": "180px",
+                  "render": function ( data, type, full, meta ) {
+                      if(!data)
+                          data='';
+                      return data;
+                  }
+              },
+              { "data": "REMARK","width": "280px",
+                  "render": function ( data, type, full, meta ) {
+                      if(!data)
+                          data='';
+                      return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
+                  }
+              },
+              { "data": "SENDER", "width": "180px",
+                  "render": function ( data, type, full, meta ) {
+                      if(!data)
+                          data='';
+                      return data;
+                  }
+              },
+              { "data": "SEND_TIME", "width": "180px",
+                  "render": function ( data, type, full, meta ) {
+                      if(!data)
+                          data='';
+                      return data;
+                  }
+              },
+              { "data": "SEND_STATUS", "width": "180px",
+                  "render": function ( data, type, full, meta ) {
+                      if(!data)
+                          data='';
+                      return data;
+                  }
+              }
+          ]
+      });
+      
+      
+    //文件下载-----工作单
+      $("#zero_doc_table").on('click', '.downloadDoc', function(e){
+          e.preventDefault();
+          var self = this;
+          var tr = $(this).parent().parent();
+          var id = tr.attr('id');
+          this.disabled = true;
+           $.post('/bookOrder/downloadDoc', {docId:id}, function(data){
+          	 if(data){
+          		 $.scojs_message('下载完成!', $.scojs_message.TYPE_OK);
+          		 self.disabled = false;
+          		 itemOrder.refleshFourDocTable(data.ORDER_ID);
+          	 }
+          	 
+           },'json').fail(function() {
+               $.scojs_message('后台报错!', $.scojs_message.TYPE_ERROR);
+           }); 
+      }); 
+      
+      
+      //文件确认-----工作单
+      $("#zero_doc_table").on('click', '.confirmDoc', function(e){
+          e.preventDefault();
+          var tr = $(this).parent().parent();
+          var id = tr.attr('id');
+          this.disabled = true;
+           $.post('/bookOrder/confirmDoc', {docId:id}, function(data){
+          	 if(data){
+          		 $.scojs_message('确认成功!', $.scojs_message.TYPE_OK);
+          		 itemOrder.refleshZeroDocTable(data.ORDER_ID);
+          	 }
+          	 
+           },'json').fail(function() {
+               $.scojs_message('后台报错!', $.scojs_message.TYPE_ERROR);
+           });
+      }); 
+      
+      
+      itemOrder.refleshZeroDocTable = function(order_id){
+      	var url = "/bookOrder/docTableList?order_id="+order_id+"&type=zero";
+      	zeroTable.ajax.url(url).load();
+      }
 });
 });
