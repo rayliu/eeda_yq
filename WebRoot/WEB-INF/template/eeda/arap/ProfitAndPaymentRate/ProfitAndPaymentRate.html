@@ -1,6 +1,15 @@
 <%layout("/eeda/layout.html"){%>
-        <div id="page-wrapper">
-            <div class="row simple_search_div">
+<div id="page-wrapper">
+    <div class="row simple_search_div">
+  	  <div class="panel panel-default">
+      	<div class="panel-heading">
+                 <h4 class="panel-title">
+                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+                     <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
+                 </h4>
+           </div>
+	        <div id="collapseChargeInfo" class="panel-collapse collapse in" aria-expanded="false" style="height: auto;">
+	           <div class="panel-body" id="ChargeDiv">
             	<div class="col-lg-12">
             			<form id="orderForm">
                 	
@@ -52,9 +61,12 @@
 		                                    <label style="color:#AAAAAA"><span id="total_profit" style="color:black"></span></label><nbsp><nbsp>
 	                                    </div><br>
 	                                    
-	          	</form>  
-	          </div>
-            </div><!-- /.row 查询条件 结束-->  
+		          	</form>  
+		          </div>
+	            </div><!-- /.row 查询条件 结束--> 
+	         </div>
+	      </div>
+	  </div> 
 	                <div class="row simple_list_div">               
                                      <%include("/eeda/component/form/detailTableWithFoot.html", 
                                         {
