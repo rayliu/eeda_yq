@@ -34,7 +34,7 @@ define(['jquery', 'file_upload' ,'sco'], function ($, metisMenu) {
 				    url: '/jobOrder/saveDocFile?order_id='+order_id+'&type=two',
 				    dataType: 'json',
 			        done: function (e, data) {
-		        		if(data.result.result){
+		        		if(data.result){
 				    		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
 				    		//异步刷新显示上传的文档信息
 				    		itemOrder.refleshTwoDocTable(order_id);
@@ -57,10 +57,34 @@ define(['jquery', 'file_upload' ,'sco'], function ($, metisMenu) {
 				    url: '/jobOrder/saveDocFile?order_id='+order_id+'&type=four',
 				    dataType: 'json',
 			        done: function (e, data) {
-		        		if(data.result.result){
+		        		if(data.result){
 				    		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
 				    		//异步刷新显示上传的文档信息
 				    		itemOrder.refleshFourDocTable(order_id);
+				    	}else{
+				    		$.scojs_message('上传失败:'+data.result.ERRMSG, $.scojs_message.TYPE_ERROR);
+				    	}
+				     },
+			        error: function () {
+			            alert('上传的时候出现了错误！');
+			        }
+			});
+		})
+		
+		
+		$('#zeroUpload').click(function(){
+			var order_id = $('#order_id').val();
+		
+			$('#zeroUpload').fileupload({
+					validation: {allowedExtensions: ['doc','docx']},
+					autoUpload: true, 
+				    url: '/jobOrder/saveDocFile?order_id='+order_id+'&type=zero',
+				    dataType: 'json',
+			        done: function (e, data) {
+		        		if(data.result){
+				    		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
+				    		//异步刷新显示上传的文档信息
+				    		itemOrder.refleshZeroDocTable(order_id);
 				    	}else{
 				    		$.scojs_message('上传失败:'+data.result.ERRMSG, $.scojs_message.TYPE_ERROR);
 				    	}
