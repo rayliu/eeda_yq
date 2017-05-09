@@ -38,16 +38,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			        	return strcheck;
 				    }
 			      },
-      			{ "data": "ORDER_NO", "width": "100px",
+      			{ "data": "ORDER_NO", "width": "80px",
 			    	  "render": function ( data, type, full, meta ) {
 	                      return "<a href='/transJobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
 	                  }
 	            },
-	            { "data": "CREATE_STAMP", "width": "100px"},
+	            { "data": "CREATE_STAMP", "width": "70px"},
 	            { "data": "CONTAINER_NO", "width": "60px"},
 	            { "data": "CABINET_TYPE", "width": "60px"},
 	            { "data": "SO_NO", "width": "60px"},
-	            { "data": "CUSTOMER_NAME", "width": "100px"},
 	            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
             	{ "data": "FEE_NAME", "width": "70px"},
 	            { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
@@ -60,7 +59,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            },
 	            { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
 	            { "data": "EXCHANGE_RATE", "width": "60px" },
-	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'AFTER_TOTAL',
+	            { "data": "AFTER_TOTAL", "width": "80px" ,'class':'AFTER_TOTAL',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
 		            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
@@ -68,7 +67,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	                  }
 	            },	
-	            { "data": "REMARK", "width": "100px"}
+	            { "data": "REMARK", "width": "80px"}
 	          ]
 	      });
 
