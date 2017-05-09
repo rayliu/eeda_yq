@@ -11,9 +11,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对
           ajax: "/profitReport/list",
           columns: [
-              { "data": "ORDER_EXPORT_DATE","width":"60px" },
-              { "data": "CUSTOMER_NAME","width":"60px"},
-              { "data": "PIECES","width":"50px",
+              { "data": "ORDER_EXPORT_DATE","width":"60px","class":"order_export_date" },
+              { "data": "CUSTOMER_NAME","width":"60px","class":"customer_name"},
+              { "data": "PIECES","width":"50px","class":"pieces",
                 "render": function ( data, type, full, meta ) {
                   if(data){
                     return "<span class=''>" + eeda.numFormat(data,3) + "</span>";
@@ -22,7 +22,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               }, 
-              { "data": "GROSS_WEIGHT","width":"90px",
+              { "data": "GROSS_WEIGHT","width":"90px","class":"gross_weight",
                 "render": function ( data, type, full, meta ) {
                   if(data){
                     return "<span class='' >" + eeda.numFormat(data.toFixed(2),3) + "</span>";
@@ -31,7 +31,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               }, 
-              { "data": "VOLUME","width":"90px",
+              { "data": "VOLUME","width":"90px","class":"volume",
                 "render": function ( data, type, full, meta ) {
                   if(data){
                     return "<span class=''>" + eeda.numFormat(data.toFixed(2),3) + "</span>";
@@ -40,7 +40,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               },
-              { "data": "OCEAN_FCL_TEU","width":"90px",
+              { "data": "OCEAN_FCL_TEU","width":"90px","class":"ocean_fcl_teu",
                 "render": function ( data, type, full, meta ) {
                     if(data){
                       return "<span class=''>"+eeda.numFormat(data.toFixed(0),3) + "</span>";
@@ -49,7 +49,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               },
-              { "data": "OCEAN_FCL_BILL","width":"120px",
+              { "data": "OCEAN_FCL_BILL","width":"120px","class":"ocean_fcl_bill",
                   "render": function ( data, type, full, meta ) {
                       if(data){
                         return "<span class=''>"+eeda.numFormat(data.toFixed(0),3) + "</span>";
@@ -58,7 +58,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     }
                   }
                 },
-              { "data": "OCEAN_LCL_CBM","width":"100px",
+              { "data": "OCEAN_LCL_CBM","width":"100px","class":"ocean_lcl_cbm",
                 "render": function ( data, type, full, meta ) {
                     if(data){
                       return "<span class=''>"+eeda.numFormat(data.toFixed(2),3) + "</span>";
@@ -67,7 +67,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     }
                 }
               }, 
-              { "data": "OCEAN_LCL_BILL","width":"120px",
+              { "data": "OCEAN_LCL_BILL","width":"120px","class":"ocean_lcl_bill",
                   "render": function ( data, type, full, meta ) {
                       if(data){
                         return "<span class=''>"+eeda.numFormat(data.toFixed(0),3) + "</span>";
@@ -76,7 +76,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                       }
                   }
                 },
-              { "data": "ARI_KG","width":"100px",
+              { "data": "ARI_KG","width":"100px","class":"ari_kg",
                 "render": function ( data, type, full, meta ) {
                     if(data){
                       return "<span class=''>"+eeda.numFormat(data.toFixed(2),3) + "</span>";
@@ -85,7 +85,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     }
                 }
               },
-              { "data": "ARI_KG_BILL","width":"120px",
+              { "data": "ARI_KG_BILL","width":"120px","class":"ari_kg_bill",
                   "render": function ( data, type, full, meta ) {
                       if(data){
                         return "<span class=''>"+eeda.numFormat(data.toFixed(0),3)+ "</span>";
@@ -94,7 +94,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                       }
                   }
                 }, 
-              { "data": "TRUCK_TYPE"}
+              { "data": "TRUCK_TYPE","class":"truck_type"}
           ]
       });
       
@@ -179,16 +179,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  var ari_kg_total = parseFloat(data.ARI_KG_TOTAL);
         	  var ari_kg_bill_total = parseFloat(data.ARI_KG_BILL_TOTAL);
         	  var total=parseFloat(data.TOTAL);
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html(eeda.numFormat(pieces_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html(eeda.numFormat(gross_weight_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html(eeda.numFormat(volume_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html(eeda.numFormat(ocean_fcl_teu_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html(eeda.numFormat(ocean_fcl_bill_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(7).html(eeda.numFormat(ocean_lcl_cbm_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(8).html(eeda.numFormat(ocean_lcl_bill_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(9).html(eeda.numFormat(ari_kg_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html(eeda.numFormat(ari_kg_bill_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=order_export_date]').html('共'+total+'项汇总：');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=pieces]').html(eeda.numFormat(pieces_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=gross_weight]').html(eeda.numFormat(gross_weight_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=volume]').html(eeda.numFormat(volume_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=ocean_fcl_teu]').html(eeda.numFormat(ocean_fcl_teu_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=ocean_fcl_bill]').html(eeda.numFormat(ocean_fcl_bill_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=ocean_lcl_cbm]').html(eeda.numFormat(ocean_lcl_cbm_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=ocean_lcl_bill]').html(eeda.numFormat(ocean_lcl_bill_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=ari_kg]').html(eeda.numFormat(ari_kg_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=ari_kg_bill]').html(eeda.numFormat(ari_kg_bill_total,3));
 
           });
           

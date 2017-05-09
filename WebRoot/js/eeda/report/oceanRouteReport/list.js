@@ -13,10 +13,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           pageLength: 25,
           ajax: "/oceanRouteReport/list",
           columns: [
-              { "data": "ORDER_EXPORT_DATE" },
-              { "data": "CUSTOMER_NAME"},
-              { "data": "ROUTE"},
-              { "data": "PIECES", 
+              { "data": "ORDER_EXPORT_DATE" ,"class":"order_export_date"},
+              { "data": "CUSTOMER_NAME","class":"customer_name"},
+              { "data": "ROUTE","class":"route"},
+              { "data": "PIECES","class":"pieces", 
                 "render": function ( data, type, full, meta ) {
                   if(data){
                     return "<span class=''>"+eeda.numFormat(data,3) + "</span>";
@@ -25,7 +25,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               }, 
-              { "data": "GROSS_WEIGHT",
+              { "data": "GROSS_WEIGHT","class":"gross_weight", 
                 "render": function ( data, type, full, meta ) {
                   if(data){
                     return "<span class=''>"+eeda.numFormat(data.toFixed(2),3) + "</span>";
@@ -34,7 +34,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               }, 
-              { "data": "VOLUME", 
+              { "data": "VOLUME", "class":"volume", 
                 "render": function ( data, type, full, meta ) {
                   if(data){
                     return "<span class=''>"+eeda.numFormat(data.toFixed(2),3) + "</span>";
@@ -43,7 +43,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               },
-              { "data": "OCEAN_FCL_TEU",
+              { "data": "OCEAN_FCL_TEU","class":"ocean_fcl_teu", 
                 "render": function ( data, type, full, meta ) {
                     if(data){
                       return "<span class=''>"+eeda.numFormat(data.toFixed(0),3) + "</span>";
@@ -52,7 +52,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
                 }
               },
-              { "data": "OCEAN_LCL_CBM",
+              { "data": "OCEAN_LCL_CBM","class":"ocean_lcl_cbm", 
                 "render": function ( data, type, full, meta ) {
                     if(data){
                       return "<span class=''>"+eeda.numFormat(data.toFixed(2),3) + "</span>";
@@ -120,12 +120,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  var ocean_lcl_cbm_total = parseFloat(data.OCEAN_LCL_CBM_TOTAL);
 
         	  var total=parseFloat(data.TOTAL);
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html(eeda.numFormat(pieces_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html(eeda.numFormat(gross_weight_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html(eeda.numFormat(volume_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html(eeda.numFormat(ocean_fcl_teu_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(7).html(eeda.numFormat(ocean_lcl_cbm_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=order_export_date]').html('共'+total+'项汇总：');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=pieces]').html(eeda.numFormat(pieces_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=gross_weight]').html(eeda.numFormat(gross_weight_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=volume]').html(eeda.numFormat(volume_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=ocean_fcl_teu]').html(eeda.numFormat(ocean_fcl_teu_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=ocean_lcl_cbm]').html(eeda.numFormat(ocean_lcl_cbm_total,3));
           });
   
           
