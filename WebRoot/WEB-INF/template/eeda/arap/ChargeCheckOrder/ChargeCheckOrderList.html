@@ -11,9 +11,18 @@
                         </li>
                     </ul>
 
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane fade active in" id="unselected">
-                            <div class="row simple_search_div">
+               <div class="tab-content">
+                   <div role="tabpanel" class="tab-pane fade active in" id="unselected">
+                       <div class="row simple_search_div">
+			        	 <div class="panel panel-default">
+			            	<div class="panel-heading">
+			                       <h4 class="panel-title">
+			                           <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+			                           <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
+			                       </h4>
+			                 </div>
+			          <div id="collapseChargeInfo" class="panel-collapse collapse in" aria-expanded="false" style="height: auto;">
+			              <div class="panel-body" id="ChargeDiv">
                             	<div class="col-lg-12">
                                  <form id="orderForm">
                                     <div class="row">
@@ -134,6 +143,9 @@
 		                               </div>
                                 	</form>
                                 </div>
+							</div>
+						</div>
+					</div>
                             
                                 <div class="col-lg-12">
                                 	<form id="billForm" action="/chargeCheckOrder/create" method="post">
@@ -177,8 +189,17 @@
                            </div>
                         </div>
                         
-                        <div role="tabpanel" class="tab-pane fade in" id="charge_check_order">
-                            <div class="row simple_search_div">
+                  <div role="tabpanel" class="tab-pane fade in" id="charge_check_order">
+                      <div class="row simple_search_div">
+			        	 <div class="panel panel-default">
+			            	<div class="panel-heading">
+			                       <h4 class="panel-title">
+			                           <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo2" aria-expanded="false" class="collapsed">
+			                           <i id="collapseChargeIcon2" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
+			                       </h4>
+			                 </div>
+			          <div id="collapseChargeInfo2" class="panel-collapse collapse in" aria-expanded="false" style="height: auto;">
+			              <div class="panel-body" id="ChargeDiv2">
                             	<div class="col-lg-12">
                              		<form id="orderSearchForm">
 		                               <div class="row"><!--  第1行  -->
@@ -228,6 +249,9 @@
                             		</form>
                             	</div>
                          </div>
+                        </div>
+                     </div>
+                  </div>
 
                          <div class="row simple_list_div">
                                 <%include("/eeda/component/form/detailTable.html", 

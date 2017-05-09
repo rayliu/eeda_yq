@@ -1,76 +1,65 @@
-
-
 <%layout("/eeda/layout.html"){%>
-<!-- <link href="/yh/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-<link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet"> -->
-<!-- <link href="/yh/js/plugins/datatables-1.10.9/css/jquery.dataTables.min.css" rel="stylesheet"> -->
-
         <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-list fa-fw"></i>派车单列表                            
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            
-                            <div class="">  <!--  form row  -->
-                                <form id="orderForm">
-                                    <div class="row"><!--  第1行  -->
-                                        <div class="col-lg-4"><!--  三列排版  -->
-                                            <%include("/eeda/component/form/inputField.html", 
-                                                                {   id: 'order_no', 
-                                                                    label: '工作单号', 
-                                                                    value: ''
-                                                                }){}%>
-                                        </div>
-                                        <div class="col-lg-4"> 
-                                            <%include("/eeda/component/form/selectField.html", 
-                                                    {   id:'status', 
-                                                        label:'状态', 
-                                                        value: '',
-                                                        value_list:[
-                                                            {code:'', value:''},
-								                            {code:'待发车', value:'待发车'},
-								                            {code:'已发车', value:'已发车'},
-								                            {code:'已完成', value:'已完成'}
-                                                        ]
-                                                    }
-                                                 ){} %>
-                                        </div><!-- /.col-lg-4 -->
-                                        <div class="col-lg-4">        
-                                            <%include("/eeda/component/form/inputDateQueryField.html", {id:'create_stamp', label:'创建时间', value:''}){} %>
-                                        </div><!-- /.col-lg-4 -->
-                                       
-                                    </div><!-- /.row-->
-
-                                   
-
-                                    
-                                </form>
-                            </div><!-- /.row -->
-
-                            <div class="form-group button-bar" >
-                                <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
-                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
-                            </div> 
-
-                            <%include("/eeda/component/form/detailTable.html", 
-                                    {
-                                        id:'truck_table',
-                                        style:'width:3600px',
-                                        headers:['工作单号','创建时间','状态','收卸货类型', '运输公司', '司机', '司机电话', '车型','车牌','发货人','发货人电话', '发货地点','收货人','收货人电话', '收货地点', '预约到达时间', '货品信息','运输及时间要求','签收文件描述','签收状态']
-                                    }){} %>
-                            
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
+            <div class="row simple_search_div">
+				<div class="panel panel-default">
+		            	<div class="panel-heading">
+	                        <h4 class="panel-title">
+	                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+	                            <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
+	                        </h4>
+		                 </div>
+		          <div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+	                <div class="panel-body" id="ChargeDiv">
+		                <div class="col-lg-12">
+		                                <form id="orderForm">
+		                                    <div class="row"><!--  第1行  -->
+		                                        <div class="col-lg-4"><!--  三列排版  -->
+		                                            <%include("/eeda/component/form/inputField.html", 
+		                                                                {   id: 'order_no', 
+		                                                                    label: '工作单号', 
+		                                                                    value: ''
+		                                                                }){}%>
+		                                        </div>
+		                                        <div class="col-lg-4"> 
+		                                            <%include("/eeda/component/form/selectField.html", 
+		                                                    {   id:'status', 
+		                                                        label:'状态', 
+		                                                        value: '',
+		                                                        value_list:[
+		                                                            {code:'', value:''},
+										                            {code:'待发车', value:'待发车'},
+										                            {code:'已发车', value:'已发车'},
+										                            {code:'已完成', value:'已完成'}
+		                                                        ]
+		                                                    }
+		                                                 ){} %>
+		                                        </div><!-- /.col-lg-4 -->
+		                                        <div class="col-lg-4">        
+		                                            <%include("/eeda/component/form/inputDateQueryField.html", {id:'create_stamp', label:'创建时间', value:''}){} %>
+		                                        </div><!-- /.col-lg-4 -->
+		                                    </div>
+		
+		                            <div class="form-group button-bar" >
+		                                <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+		                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+		                            </div> 
+		                </form>
+		
+					</div>
+				</div>
+               </div>
             </div>
-          
+		 </div>
+			<!-- /.row 查询条件 结束-->
+            <div class="row simple_list_div">
+		                            <%include("/eeda/component/form/detailTable.html", 
+		                                    {
+		                                        id:'truck_table',
+		                                        style:'width:3600px',
+		                                        headers:['工作单号','创建时间','状态','收卸货类型', '运输公司', '司机', '司机电话', '车型','车牌','发货人','发货人电话', '发货地点','收货人','收货人电话', '收货地点', '预约到达时间', '货品信息','运输及时间要求','签收文件描述','签收状态']
+		                                    }){} %>
+		                            
+		                        </div>
         </div><!-- end of  .page-wrapper-->
 
 <%}%>
