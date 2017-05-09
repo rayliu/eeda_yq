@@ -6,7 +6,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
    		 //var value = $($(this).find('.part_no')).text();
    		 var value = $(this).text();
    		 var tooltip = '<div id="c" style="position: absolute; z-index: 10;">'
-   			 +'<img src="/download/'+value+'.png" height="200" width="300" onerror="javascript:this.src=\'/download/nophoto.png\'"/>'
+   			 +'<img src="/images/product/'+value+'.png" height="200" width="300" onerror="javascript:this.src=\'/images/product/no_photo.png\'"/>'
    			 +'</div>';
             $("body").append(tooltip);
             $("#c").css({

@@ -49,7 +49,7 @@ $(document).ready(function() {
       	$('#partName').text(part_name);
       	$('#totalBox').text(totalBox);
       	$('#totalPiece').text(totalPiece);
-      	$('#photo').html('<img src="/download/'+part_no+'.png" height="70%" width="70%" border="1px solid #F00" onerror="javascript:this.src=\'/download/nophoto.png\'"/>');
+      	$('#photo').html('<img src="/images/product/'+part_no+'.png" height="70%" width="70%" border="1px solid #F00" onerror="javascript:this.src=\'/images/product/no_photo.png\'"/>');
       	
       	searchData(part_no);
     });
