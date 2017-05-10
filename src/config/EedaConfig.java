@@ -385,6 +385,7 @@ public class EedaConfig extends JFinalConfig {
         
         //合同管理
         me.add("/supplierContract", controllers.contractManagement.SupplierContractController.class, contentPath);
+        me.add("/customerContract", controllers.contractManagement.CustomerContractController.class, contentPath);
         
         //应付报销单
         //ßme.add("/costReimbursement", controllers.arap.ap.CostReimbursementOrder.class, contentPath);
