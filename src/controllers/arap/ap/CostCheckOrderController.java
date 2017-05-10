@@ -139,6 +139,7 @@ public class CostCheckOrderController extends Controller {
 	                + " left join currency cur1 on cur1.id=joa.exchange_currency_id "
 	                +" left join fin_item fi on joa.charge_id = fi.id "
 	                + " where joa.audit_flag='Y' and joa.bill_flag='N' and joa.id in("+ids+") "
+	                + " and jo.delete_flag = 'N'"
 	                + " GROUP BY joa.id"
 	                + " ORDER BY jo.order_no";	
 		}else{
@@ -170,6 +171,7 @@ public class CostCheckOrderController extends Controller {
 					+ " left join arap_cost_order aco on aco.id = aci.cost_order_id "
 					+ " left join fin_item fi on joa.charge_id = fi.id "
 					+ " where joa.id = aci.ref_order_id and aco.id in ("+order_id+")"+currency_code
+					+ " and jo.delete_flag = 'N'"
 	                + " GROUP BY joa.id "
 	                + " ORDER BY aco.order_no, jo.order_no ";
 		}
@@ -226,6 +228,7 @@ public class CostCheckOrderController extends Controller {
 							+" left join arap_cost_application_order acao on caol.application_order_id = acao.id"
 							 +" left join arap_cost_order aco on aco.id=caol.cost_order_id"
 						  +" where acao.id="+order_ids+query_fin_name
+						  + " and jo.delete_flag = 'N'"
 							+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
 				
@@ -260,6 +263,7 @@ public class CostCheckOrderController extends Controller {
 						    +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
 						    +currency_code
 						    +query_exchange_currency+query_fin_name
+						    + " and jo.delete_flag = 'N'"
 							+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
 			}		
@@ -299,6 +303,7 @@ public class CostCheckOrderController extends Controller {
 				+ " left join location l on l.id=jos.fnd "
 				+ " left join currency cur on cur.id=joa.currency_id "
 				+ " where joa.id in ( "+ids+" ) "
+				+ " and jo.delete_flag = 'N'"
 				+ " GROUP BY joa.id ";
 				
 		
@@ -354,6 +359,7 @@ public class CostCheckOrderController extends Controller {
       				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
       				+ " left join fin_item f on f.id = joa.charge_id"
       				+ " where joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
+      				+ " and jo.delete_flag = 'N'"
       				+ " GROUP BY joa.id "
     				+ " ) B where 1=1 ";
        	 
@@ -379,6 +385,7 @@ public class CostCheckOrderController extends Controller {
 	 				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
 	 				+ " left join fin_item f on f.id = joa.charge_id"
 	 				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' and jo.office_id = "+office_id
+	 				+ " and jo.delete_flag = 'N'"
 	 				+ " GROUP BY joa.id "
 	 				+ " ) B where 1=1 ";
        	}

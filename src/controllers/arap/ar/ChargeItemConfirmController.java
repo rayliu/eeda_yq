@@ -69,7 +69,9 @@ public class ChargeItemConfirmController extends Controller {
 				+ " left join fin_item f on f.id=joa.charge_id "
 				+ " left join unit u on u.id=joa.unit_id "
 				+ " left join currency c on c.id=joa.currency_id "
-				+ " where joa.order_type='charge') A where 1=1 ";
+				+ " where joa.order_type='charge'"
+				+ " and jo.delete_flag = 'N'"
+				+ ") A where 1=1 ";
 		
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";

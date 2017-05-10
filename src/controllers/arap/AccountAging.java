@@ -82,7 +82,8 @@ public class AccountAging extends Controller {
         		+ " where joa.order_type = 'charge' and ifnull(acao.status,'') !='已收款' "
         		+ " and jor.office_id = "+office_id+" and joa.type != '贸易' and jor.order_export_date<date_format(curdate(),'%Y-%m')"
         		+ condition
-        		+ " GROUP BY joa.id "
+        		+ " and jor.delete_flag = 'N'"
+				+ " GROUP BY joa.id "
         		+ " 	) a "
         		+ " GROUP BY "
         		+ " 	sp_id, "
@@ -115,7 +116,8 @@ public class AccountAging extends Controller {
         		+ " where joa.order_type = 'charge' and ifnull(acao.status,'') !='已收款' "
         		+ " and jor.office_id = "+office_id+" and joa.type != '贸易' and jor.order_export_date<date_format(curdate(),'%Y-%m')"
         		+ condition
-        		+ " GROUP BY joa.id "
+        		+ " and jor.delete_flag = 'N'"
+				+ " GROUP BY joa.id "
         		+ " 	) a "
         		+ " GROUP BY "
         		+ " 	sp_id, "

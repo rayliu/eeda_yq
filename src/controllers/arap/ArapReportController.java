@@ -80,7 +80,8 @@ public class ArapReportController extends Controller {
  				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
  				+ " left join fin_item f on f.id=joa.charge_id "
  				+ " where  jo.office_id = "+office_id
- 				+ " GROUP BY joa.id "
+ 				+ " and jo.delete_flag = 'N'"
+				+ " GROUP BY joa.id "
  				+ " ) B where 1=1 ";
 		
         String sqlTotal = "select count(1) total from ("+sql+ condition+") C";

@@ -72,7 +72,8 @@ public class ChargeBalanceReportController extends Controller {
         		+ " LEFT JOIN job_order_arap joa ON jo.id = joa.order_id"
         		+ " LEFT JOIN party p ON p.id = joa.sp_id"
         		+ " WHERE jo.office_id =" +office_id+" "+condition
-        		+ " ) A"
+        		+ " and jo.delete_flag = 'N'"
+				+ " ) A"
         		+ " WHERE A.sp_id IS NOT NULL AND A.charge_rmb!=0"
         		+ " GROUP BY A.sp_id"
         		+ " ORDER BY uncharge_rmb desc";
@@ -126,6 +127,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'charge' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) charge_cny,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -133,6 +135,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'charge' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) charge_usd,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -140,6 +143,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'charge' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) charge_jpy,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -147,6 +151,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'charge' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) charge_hkd,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -154,6 +159,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'charge' and pay_flag!='Y'  "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) uncharge_cny,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -161,6 +167,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) uncharge_usd,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -168,6 +175,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) uncharge_jpy,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -175,19 +183,24 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) uncharge_hkd, "
 			+"	(SELECT "
 			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
 			+"	FROM  job_order jo "
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"	WHERE 	jo.office_id = "+office_id
-			+"	AND joa.order_type = 'charge' "+condition+") total_charge,"
+			+"	AND joa.order_type = 'charge' "+condition+""
+			+ " and jo.delete_flag = 'N'"
+			+ ") total_charge,"
 			+"	(SELECT "
 			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
 			+"	FROM  job_order jo "
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"	WHERE 	jo.office_id = "+office_id
-			+"	AND joa.order_type = 'charge' and pay_flag!='Y' "+condition+") total_uncharge";
+			+"	AND joa.order_type = 'charge' and pay_flag!='Y' "+condition
+			+ " and jo.delete_flag = 'N'"
+			+") total_uncharge";
 		
 		
 		Record re = Db.findFirst(sql);

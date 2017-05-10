@@ -56,12 +56,14 @@ public class BillProfitAndPaymentController extends Controller {
             		+" ifnull((SELECT SUM(currency_total_amount) from  job_order_arap joa "
             		+" LEFT JOIN job_order jor on joa.order_id = jor.id "
             		+" WHERE joa.order_type = 'cost' and jor.id = jo.id "+condition
-            		+" ),0) cost_rmb"
+            		+ " and jor.delete_flag = 'N'"
+    				+" ),0) cost_rmb"
             		+"  from job_order jo "
             		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
             		+"  LEFT JOIN party p on p.id = jo.customer_id"
             		+"  WHERE jo.office_id ="+office_id+" and joa.order_type = 'charge' "+condition
-            		+" GROUP BY jo.id"
+            		+ " and jo.delete_flag = 'N'"
+    				+" GROUP BY jo.id"
             		+" ) A where 1=1 and (charge_rmb-cost_rmb)<0 ORDER BY abbr";
         }else{
         	sql = " SELECT * FROM ("
@@ -69,12 +71,14 @@ public class BillProfitAndPaymentController extends Controller {
             		+" ifnull((SELECT SUM(currency_total_amount) from  job_order_arap joa "
             		+" LEFT JOIN job_order jor on joa.order_id = jor.id "
             		+" WHERE joa.order_type = 'cost' and jor.id = jo.id "+condition
-            		+" ),0) cost_rmb"
+            		+ " and jor.delete_flag = 'N'"
+    				+" ),0) cost_rmb"
             		+"  from job_order jo "
             		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
             		+"  LEFT JOIN party p on p.id = jo.customer_id"
             		+"  WHERE jo.office_id ="+office_id+" and joa.order_type = 'charge' "+condition
-            		+" GROUP BY jo.id"
+            		+ " and jo.delete_flag = 'N'"
+    				+" GROUP BY jo.id"
             		+" ) A where 1=1  ORDER BY abbr";
         }
         String sqlTotal = "select count(1) total from ("+sql+") C";
@@ -125,6 +129,7 @@ public class BillProfitAndPaymentController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'charge' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) charge_cny,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -133,6 +138,7 @@ public class BillProfitAndPaymentController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'charge' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) charge_usd,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -141,6 +147,7 @@ public class BillProfitAndPaymentController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'charge' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) charge_jpy,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -149,6 +156,7 @@ public class BillProfitAndPaymentController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'charge' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) charge_hkd,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -157,6 +165,7 @@ public class BillProfitAndPaymentController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'cost' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) cost_cny,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -165,6 +174,7 @@ public class BillProfitAndPaymentController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'cost' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) cost_usd,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -173,6 +183,7 @@ public class BillProfitAndPaymentController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'cost' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) cost_jpy,"
 			+"	(SELECT "
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
@@ -181,6 +192,7 @@ public class BillProfitAndPaymentController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'cost' "+condition
+			+ " and jo.delete_flag = 'N'"
 			+"	) cost_hkd ";
 		
 		Record re = Db.findFirst(sql);
