@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.Office;
 import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
@@ -57,6 +58,11 @@ public class PlanOrderController extends Controller {
 	
 	@Before(EedaMenuInterceptor.class)
     public void create() {
+		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+   		Office office = Office.dao.findById(office_id);
+   		setAttr("office", office);
+		
         render("/oms/PlanOrder/PlanOrderEdit.html");
     }
     
@@ -187,15 +193,20 @@ public class PlanOrderController extends Controller {
     	//回显客户信息
     	Party party = Party.dao.findById(planOrder.getLong("customer_id"));
     	setAttr("party", party);
-    	Party entrusted = Party.dao.findById(planOrder.getLong("entrusted_id"));
+    	Office entrusted = Office.dao.findById(planOrder.getLong("entrusted_id"));
     	setAttr("entrusted", entrusted);
-    	Party toEntrusted = Party.dao.findById(planOrder.getLong("to_entrusted_id"));
+    	Office toEntrusted = Office.dao.findById(planOrder.getLong("to_entrusted_id"));
     	setAttr("toEntrusted", toEntrusted);
 
+    	
     	//用户信息
     	long creator = planOrder.getLong("creator");
     	UserLogin user = UserLogin.dao.findById(creator);
     	setAttr("user", user);
+    	
+    	long office_id = user.getLong("office_id");
+   		Office office = Office.dao.findById(office_id);
+   		setAttr("office", office);
     	
         render("/oms/PlanOrder/PlanOrderEdit.html");
     }
@@ -439,5 +450,15 @@ public class PlanOrderController extends Controller {
     	}
     }
     
+    
+    @Before(Tx.class)
+    public void submitOrder(){
+    	String order_id = getPara("order_id");
+    	PlanOrder po = PlanOrder.dao.findById(order_id);
+    	po.set("submit_flag", "Y");
+    	po.update();
+    	
+    	renderJson(true);
+    }
 
 }

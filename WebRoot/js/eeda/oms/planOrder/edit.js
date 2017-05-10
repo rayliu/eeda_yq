@@ -121,6 +121,33 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
         	
         	location.href ="/jobOrder/create?order_id="+order_id+"&itemIds="+itemIds;
         })
+        
+        
+         $('#submitBtn').click(function(){
+        	 this.disabled = true;
+         	 var order_id = $('#order_id').val();
+         	 var to_entrusted_id =  $('#to_entrusted_id').val();
+         	 if(to_entrusted_id==''){
+         		 $.scojs_message('被委托方不能为空', $.scojs_message.TYPE_ERROR);
+         		 this.disabled = false;
+         		 return false;
+         	 }
+         	 
+         	 $.blockUI({ 
+                 message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
+             });
+         	 $.post('/planOrder/submitOrder',{order_id:order_id},function(data){
+         		 if(data){
+         			 $.scojs_message('提交成功', $.scojs_message.TYPE_OK);
+         			 $.unblockUI();
+         		 }
+         	 }).fail(function() {
+                 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+                 $('#saveBtn').attr('disabled', false);
+                 $.unblockUI();
+             });
+        	 
+         })
 
 
      });

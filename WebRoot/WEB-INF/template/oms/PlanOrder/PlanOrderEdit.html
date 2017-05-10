@@ -65,16 +65,17 @@
            
             <div class="simple_order_list_div">
 	            <div class="col-lg-6">
-	            	<%include("/eeda/component/form/inputCustomerField.html",
+	            	<%include("/eeda/component/form/inputOfficeField.html",
 											{ id:'entrusted_id', 
 											label:'委托方',  
-											value:entrusted.id!'',
-											display_value:entrusted.company_name!''
+											value:entrusted.id!office.id,
+											display_value:entrusted.company_name!office.office_name,
+											'disabled':'disabled'
 											}){} %>
 	             </div>
             	
            		<div class="col-lg-6">
-           			<%include("/eeda/component/form/inputCustomerField.html",
+           			<%include("/eeda/component/form/inputOfficeField.html",
 											{ id:'to_entrusted_id', 
 											label:'被委托方',  
 											value:toEntrusted.id!'',
@@ -109,7 +110,7 @@
                     
                     <div class="button-bar">
                         <a id='saveBtn' class="btn btn_green" href="#">保存</a>
-                        <button id='submitBtn' class="btn btn_green" href="#">提交</button>
+                        <button id='submitBtn' class="btn btn_green" <%if(order.submit_flag=='Y'){%>disabled<%}%>>提交</button>
                         <%if(boolOrder){%>
                         <button id="confirmCompleted" class="btn btn-primary">计划订单锁单</button>
                         <%}%>
