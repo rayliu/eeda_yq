@@ -26,6 +26,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.mysql.jdbc.StringUtils;
 
 import controllers.util.ParentOffice;
 import controllers.util.PermissionConstant;
@@ -304,5 +305,17 @@ public class OfficeController extends Controller {
     	renderJson(result);
     }
     
+    public void search(){
+    	String officeName = getPara("officeName");
+    	String conditions = " where 1=1 ";
+    	String sql = "select * from office ";
+    	if(org.apache.commons.lang.StringUtils.isNotBlank("officeName")){
+    		conditions += " and office_name like '%"+officeName+"%'";
+    	}
 
+    	List<Record> re = Db.find(sql+conditions);
+    	
+    	renderJson(re);
+    }
+    
 }
