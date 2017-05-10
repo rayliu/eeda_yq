@@ -11,7 +11,13 @@ $(document).ready(function() {
 	    rules: {
 		      container_no: {
 		    	  rangelength: [11,11]
-		      }
+		      },
+              take_wharf_input: {
+                  required: true
+              },
+              back_wharf_input: {
+                  required: true
+              }
 	    }
 	});
 	 //按钮状态
