@@ -117,7 +117,8 @@
                         <div class="col-lg-4">
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'container_no', 
-                                    label:'柜号', 
+                                    label:'柜号',
+                                    required:'required', 
                                     value: order.container_no!''
                                 }){}%>
                         </div>
@@ -125,6 +126,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'so_no', 
                                     label:'SO号', 
+                                    required:'required',
                                     value: order.so_no!''
                                 }){}%>
                         </div>
@@ -149,6 +151,7 @@
 					                    {   id:'head_carrier',
 					                        type:'head_car',
 					                        label:'头程船公司', 
+                                            required:'required',
 					                        value: head.head_carrier!'',
 					                        display_value:head.abbr!''
 					                    }){}%>
@@ -166,6 +169,7 @@
 			                  <%include("/eeda/component/form/inputDockField.html", 
 			                    {   id:'take_wharf', 
 			                        label:'提柜码头', 
+                                     required:'required',
 			                        value:order.take_wharf!'',
                                     display_value:order.take_wharf_name!''
 			                    }){}%>
@@ -174,6 +178,7 @@
 			                  <%include("/eeda/component/form/inputDockField.html", 
 			                    {   id:'back_wharf', 
 			                        label:'还柜码头', 
+                                    required:'required',
 			                        value:order.back_wharf!'',
                                     display_value:order.back_wharf_name!''
 			                    }){}%>

@@ -147,6 +147,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 
      var searchData=function(type){
           var order_no = $.trim($("#order_no").val()); 
+          var old_order_no = $.trim($("#old_order_no").val()); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var sent_out_time_begin_time = $("#sent_out_time_begin_time").val();
@@ -159,6 +160,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           var transport_type = type;
           //增加出口日期查询
           var url = "/jobOrder/list?order_no="+order_no
+               +"&old_order_no="+old_order_no
           	   +"&status="+status
                +"&sono_like="+sono
                +"&container_no="+container_no

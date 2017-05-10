@@ -50,7 +50,7 @@ $(document).ready(function() {
 	$('#saveBtn').click(function(e){
         //提交前，校验数据
     	if(!$('#orderForm').valid()){
-    		$.scojs_message('客户为必填字段未填', $.scojs_message.TYPE_ERROR);
+    		$.scojs_message('有必填字段未填', $.scojs_message.TYPE_ERROR);
     		return false;
         }
     	
