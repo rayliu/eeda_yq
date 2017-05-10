@@ -13,12 +13,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
       //按钮状态
     	var id = $('#order_id').val();
     	var status = $('#status').val();
+    	var submit_flag = $('#submit_flag').val();
         if(id==''){
         	$('#confirmCompleted').attr('disabled', true);
         }else{
     		if(status=='已完成'){
     			$('#confirmCompleted').attr('disabled', true);
     			$('#saveBtn').attr('disabled', true);
+    		}
+    		if(submit_flag=='Y'){
+    			$('#saveBtn').attr('disabled', true);
+    			$('#submitBtn').attr('disabled', true);
     		}
         }
 
