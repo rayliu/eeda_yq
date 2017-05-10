@@ -232,7 +232,7 @@ public class PlanOrderController extends Controller {
         			+ " LEFT JOIN plan_order_item poi ON po.id = poi.order_id "
         			+ " left join party p on p.id = po.customer_id "
         			+ " left join user_login u on u.id = po.creator "
-        			+ " WHERE po.office_id="+office_id+" and is_gen_job='N' AND factory_loading_time is not NULL "
+        			+ " WHERE (po.office_id="+office_id+" or (ifnull(po.to_entrusted_id,'')="+office_id+" and po.submit_flag='Y')) and is_gen_job='N' AND factory_loading_time is not NULL "
         			+ " AND datediff(factory_loading_time, now())<=5"
         			+ " and po.delete_flag = 'N'";
         }else if ("customwaitPlan".equals(type)){
@@ -243,7 +243,7 @@ public class PlanOrderController extends Controller {
         			+ " LEFT JOIN user_login u ON u.id = po.creator"
         			+ " LEFT JOIN party p ON p.id = po.customer_id"
         			+ " WHERE"
-        			+ " po.office_id="+office_id+" and poi.customs_type = '自理报关'"
+        			+ " (po.office_id="+office_id+" or (ifnull(po.to_entrusted_id,'')="+office_id+" and po.submit_flag='Y'))  and poi.customs_type = '自理报关'"
         			+ " AND poi.is_gen_job = 'N'"
         			+ " and po.delete_flag = 'N'"
         			+ " GROUP BY poi.id ";
@@ -252,8 +252,8 @@ public class PlanOrderController extends Controller {
     			+ " from plan_order po "
     			+ " left join party p on p.id = po.customer_id "
     			+ " left join user_login u on u.id = po.creator"
-    			+ " where po.office_id="+office_id
-    			+ " and po.delete_flag = 'N'"
+    			+ " where (po.office_id="+office_id
+    			+ " or (ifnull(po.to_entrusted_id,'')="+office_id+" and po.submit_flag='Y')) and po.delete_flag = 'N'"
     			+ " ) A where 1=1 ";
         }
         condition = DbUtils.buildConditions(getParaMap());

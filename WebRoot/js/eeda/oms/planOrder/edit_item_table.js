@@ -99,7 +99,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             columns:[
 				{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
-				    	if(full.IS_GEN_JOB == 'N')
+				    	if(full.CONFIRM_SHIPMENT == 'N')
 				    		return '<input type="checkbox" confirm_shipment="'+full.CONFIRM_SHIPMENT+'" class="checkBox">';
 				    	else 
 				    		return '<input type="checkbox" confirm_shipment="'+full.CONFIRM_SHIPMENT+'" class="checkBox" disabled>';
@@ -107,7 +107,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 				},
 	            {"width": "10px",
 	                "render": function ( data, type, full, meta ) {
-	                	if(full.IS_GEN_JOB == 'Y'){
+	                	if(full.CONFIRM_SHIPMENT == 'Y'){
 	                		return '<button type="button" class="delete btn table_btn btn-default btn-xs" disabled>删除</button> ';
 	                	}else{
 	                		return '<button type="button" class="delete btn table_btn btn-default btn-xs">删除</button> ';

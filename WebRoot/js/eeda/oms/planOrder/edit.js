@@ -143,12 +143,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
              });
          	 $.post('/planOrder/submitOrder',{order_id:order_id},function(data){
          		 if(data){
+         			 $('#saveBtn').attr('disabled', true);
          			 $.scojs_message('提交成功', $.scojs_message.TYPE_OK);
          			 $.unblockUI();
          		 }
          	 }).fail(function() {
                  $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-                 $('#saveBtn').attr('disabled', false);
+                 $('#submitBtn').attr('disabled', false);
                  $.unblockUI();
              });
         	 
