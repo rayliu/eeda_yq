@@ -22,6 +22,7 @@ define(['jquery', 'dataTablesBootstrap'], function($){
         error: function (xhr, e) {
             if(xhr.responseText.indexOf('忘记密码')>0){
               alert( '您未登录, 请重新登录.' );
+              window.location.href="/";
             }
             // if (x.status == 403) {
             //     window.location.reload(); 
@@ -31,6 +32,7 @@ define(['jquery', 'dataTablesBootstrap'], function($){
            //console.log("ajaxSetup textStatus:"+textStatus);
            if(XMLHttpRequest.responseText.indexOf('忘记密码')>0){
               alert( '您未登录, 请重新登录.' );
+              window.location.href="/";
             }
            // var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus"); //通过XMLHttpRequest取得响应头，sessionstatus，  
            // if(sessionstatus=="timeout"){
