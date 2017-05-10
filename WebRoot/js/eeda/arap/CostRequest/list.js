@@ -23,29 +23,20 @@ $(document).ready(function() {
 			    	return strcheck;
 			    }
 		    },
-            { "width": "100px",
-                "render": function ( data, type, full, meta ) {
-                    var str="<nobr>";
-                    if(full.STATUS=="新建"){
-                        str+= '<button type="button" class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
-                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
-                    }else if(full.STATUS=="已复核"){
-                             str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
-                             str+= '<button type="button" class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
-                         }else if(full.STATUS=="已付款"){
-                            str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
-                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
-                                }
-                    str +="</nobr>";
-                    return str;
-                }
-            },
-		    {"data":"APPLICATION_ORDER_NO",
-            	 "render": function(data, type, full, meta) {
-            			return "<a href='/costRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
-            	 }
-            },
-            {"data":"STATUS","class":"status"},    
+            {"data":"STATUS","class":"status","width":"30px",
+		    	"render": function(data,type,full,mate){
+	                  var status = data;
+	                  if(data=="已复核"){
+	                	  $($('#application_table').find("tr")[mate.row+1]).css("background-color","#FFFFDF");
+	                     
+	                  }else if(data=="已收款"){
+	                	  $($('#application_table').find("tr")[mate.row+1]).css("background-color","#DFFFDF");
+	                  }else{
+	                	  $($('#application_table').find("tr")[mate.row+1]).css("background-color","#FFFFFF");
+	                  }
+	                  return '<span style="width:50px">'+data+'</span>';
+	              }
+            },    
             {"data":"PAYEE_COMPANY"},
             {"data":"BILL_TYPE",
             	"render": function(data,type,full,mate){
@@ -61,7 +52,6 @@ $(document).ready(function() {
 	        		}else if(data=="HKINVbill"){
 	        			strBillType="HK INV";
 	        		}
-	        			
 	        		return strBillType;
         		}	
             },
@@ -123,6 +113,28 @@ $(document).ready(function() {
             	}
             },
             {"data":"PAY_REMARK"},
+            { "width": "100px",
+                "render": function ( data, type, full, meta ) {
+                    var str="<nobr>";
+                    if(full.STATUS=="新建"){
+                        str+= '<button type="button" class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
+                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
+                    }else if(full.STATUS=="已复核"){
+                             str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
+                             str+= '<button type="button" class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
+                         }else if(full.STATUS=="已付款"){
+                            str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
+                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
+                                }
+                    str +="</nobr>";
+                    return str;
+                }
+            },
+		    {"data":"APPLICATION_ORDER_NO",
+            	 "render": function(data, type, full, meta) {
+            			return "<a href='/costRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
+            	 }
+            },
             {"data":"COST_ORDER_NO"},
             {"data":"PAYMENT_METHOD",
             	"render": function(data, type, full, meta) {
@@ -186,28 +198,7 @@ $(document).ready(function() {
                 return strcheck;
             }
           },
-          { "width": "100px",
-                "render": function ( data, type, full, meta ) {
-                    var str="<nobr>";
-                    if(full.STATUS=="新建"){
-                        str+= '<button type="button" class="checkBtn btn table_btn btn_green btn-xs " style="width:60px" >复核</button>&nbsp';
-                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">收款确认</button> '; 
-                    }else if(full.STATUS=="已复核"){
-                             str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
-                             str+= '<button type="button" class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">收款确认</button> '; 
-                         }else if(full.STATUS=="已收款"){
-                            str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
-                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">收款确认</button> '; 
-                                }
-                    str +="</nobr>";
-                    return str;
-                }
-            },
-            {"data":"APPLICATION_ORDER_NO",
-                 "render": function(data, type, full, meta) {
-                        return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
-                 }
-            },
+          
             {"data":"STATUS","class":"status"},
             {"data":"PAYEE_COMPANY","class":"SP_NAME"},
             {"data":"BILL_TYPE",
@@ -278,6 +269,28 @@ $(document).ready(function() {
                 }
             },
             {"data":"PAY_REMARK"},
+            { "width": "100px",
+                "render": function ( data, type, full, meta ) {
+                    var str="<nobr>";
+                    if(full.STATUS=="新建"){
+                        str+= '<button type="button" class="checkBtn btn table_btn btn_green btn-xs " style="width:60px" >复核</button>&nbsp';
+                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">收款确认</button> '; 
+                    }else if(full.STATUS=="已复核"){
+                             str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
+                             str+= '<button type="button" class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">收款确认</button> '; 
+                         }else if(full.STATUS=="已收款"){
+                            str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
+                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">收款确认</button> '; 
+                                }
+                    str +="</nobr>";
+                    return str;
+                }
+            },
+            {"data":"APPLICATION_ORDER_NO",
+                 "render": function(data, type, full, meta) {
+                        return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
+                 }
+            },
             {"data":"CHARGE_ORDER_NO"},
             {"data":"PAYMENT_METHOD",'class':'payment_method',
                 "render": function(data, type, full, meta) {
@@ -355,6 +368,17 @@ $(document).ready(function() {
      
      
      var uncheckedCostCheckOrder = function(){
+    	//表格颜色表更
+    	 for(var i=0;i<=$('#application_table tr:has(td)').size();i++){
+    		 var status= $($('#application_table tr:has(td)')[i-1]).find(".status").text();
+        	 if(status=="已复核"){
+		      	  $($('#application_table').find("tr")[i]).css("background-color","#FFFFDF"); 
+		        }else if(status=="已付款"){
+	          	  $($('#application_table').find("tr")[i]).css("background-color","#DFFFDF");
+	            }else{
+	              $($('#application_table').find("tr")[i]).css("background-color","#FFFFFF");	
+	            }
+    	 }
     	 $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
      }
   //返回标记
@@ -723,6 +747,7 @@ $(document).ready(function() {
                                  $(btn0).attr('disabled',true);
                                  $(btn0).next().attr('disabled',false);
                                  $(btn0).parent().parent().parent().find('.status').html("已复核");
+                                 $(rows[i]).css("background-color","#FFFFDF"); 
                             }
                         }
                     }
@@ -782,6 +807,8 @@ $(document).ready(function() {
                                             if(arr.length==1){
                                                 $(btn0).parent().parent().parent().find(".checkBox").prop('checked',false)                                    
                                                 }
+                                            $(rows[i]).remove();
+                                            $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
                                         }
                                     }
                                 }
