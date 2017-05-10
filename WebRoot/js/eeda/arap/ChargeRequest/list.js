@@ -24,7 +24,7 @@ $(document).ready(function() {
                 return strcheck;
             }
           },
-            {"data":"STATUS","class":"status",
+            {"data":"STATUS","class":"status","width":"40px",
         	  "render": function(data,type,full,mate){
                   var status = data;
                   if(data=="已复核"){
@@ -174,7 +174,16 @@ $(document).ready(function() {
                 }
             },
             {"data":"ORDER_TYPE"},
-            {"data":"INVOICE_NO"}
+            {"data":"INVOICE_NO","width":"200px",
+            	"render":function(data, type, full, meta){
+            		if(data){
+            			return '<span style="width:220px">'+data+'</span>';
+            		}else{
+            			return '';
+            		} 
+                        
+            	}
+            }
         ]      
     });
     //base on config hide cols

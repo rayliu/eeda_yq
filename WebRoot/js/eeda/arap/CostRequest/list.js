@@ -23,7 +23,7 @@ $(document).ready(function() {
 			    	return strcheck;
 			    }
 		    },
-            {"data":"STATUS","class":"status","width":"30px",
+            {"data":"STATUS","class":"status","width":"40px",
 		    	"render": function(data,type,full,mate){
 	                  var status = data;
 	                  if(data=="已复核"){
@@ -34,7 +34,7 @@ $(document).ready(function() {
 	                  }else{
 	                	  $($('#application_table').find("tr")[mate.row+1]).css("background-color","#FFFFFF");
 	                  }
-	                  return '<span style="width:50px">'+data+'</span>';
+	                  return '<span style="width:60px">'+data+'</span>';
 	              }
             },    
             {"data":"PAYEE_COMPANY"},
@@ -175,7 +175,14 @@ $(document).ready(function() {
     			}
         	},
         	{"data":"ORDER_TYPE"},
-            {"data":"INVOICE_NO"}
+            {"data":"INVOICE_NO","width":"200px",
+        		"render":function(data, type, full, meta){
+        			if(!data){
+        				return '';
+        			}
+        			return "<span style='width:220px'>"+data+"</span>";
+        		}
+            }
 		]      
     });
 
@@ -652,6 +659,7 @@ $(document).ready(function() {
                     $(this_but).next().attr('disabled',false);
                     td.parent().find('.status').html(data.STATUS);
                     row.find('[type=checkbox]').prop('checked',false);
+                    $(row).css("background-color","#FFFFDF");
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
                     totalMoney();
                 }else{
@@ -684,6 +692,7 @@ $(document).ready(function() {
                     $(this_but).next().attr('disabled',false);
                     td.parent().find('.status').html(data.STATUS);
                     row.find('[type=checkbox]').prop('checked',false);
+                    $(row).css("background-color","#FFFFDF");
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
                     totalMoney();
                 }else{
