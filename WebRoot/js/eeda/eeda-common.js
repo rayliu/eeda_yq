@@ -192,6 +192,22 @@ eeda.dt = function(opt){
     return dataTable;
 }
 
+//根据config来显示/隐藏列头
+eeda.showCols=function(dataTable, cols_config){
+    dataTable.columns().eq(0).each( function(index) {
+        var column = dataTable.column(index);
+        $.each(cols_config, function(index, el) {
+            if(column.dataSrc() == el.COL_FIELD){
+              if(el.IS_SHOW == 'N'){
+                column.visible(false, false);
+              }else{
+                column.visible(true, false);
+              }
+            }
+        });
+    });
+};
+
 eeda.hidePopList=function(){
     var listArr=$(".dropdown-menu");
     $(listArr).each(function(i, el) {
