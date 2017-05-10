@@ -153,7 +153,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           var sent_out_time_end_time = $("#sent_out_time_end_time").val();
           var status = $('#status').val();
           var customer_code = $("#customer_code").val().trim();
-          var customer_name = $("#customer_name").val().trim();
+          var customer_name = $("#customer_name_input").val().trim();
           var sono = $("#sono").val().trim();
           var container_no = $("#container_no").val().trim();
           var transport_type = type;

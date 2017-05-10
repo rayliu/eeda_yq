@@ -79,7 +79,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var sent_out_time_end_time = $("#sent_out_time_end_time").val();
           var status = $('#status').val();
           var customer_code = $("#customer_code").val().trim();
-          var customer_name = $("#customer_name").val().trim();
+          var customer_name = $("#customer_name_input").val().trim();
           var transport_type = type;
           //增加出口日期查询
           var url = "/trJobOrder/list?order_no="+order_no

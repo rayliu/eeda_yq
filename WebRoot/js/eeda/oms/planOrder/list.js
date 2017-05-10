@@ -109,7 +109,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var customer_code = $("#customer_code").val().trim();
-          var customer_name = $("#customer_name").val().trim();
+          var customer_name = $("#customer_name_input").val().trim();
           
           /*  
               查询规则：参数对应DB字段名
