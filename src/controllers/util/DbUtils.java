@@ -25,7 +25,7 @@ public class DbUtils {
             String filterValue = entry.getValue()[0];
             
             if(StringUtils.isNotEmpty(filterValue) && !"undefined".equals(filterValue)){
-            	logger.debug(key + ":" + filterValue);
+//            	logger.debug(key + ":" + filterValue);
             	if(key.endsWith("_equals")){
             		condition += " and " + key.replace("_equals", "") + " = '" + filterValue + "' ";
             		continue;
@@ -214,7 +214,7 @@ public class DbUtils {
             	String value = String.valueOf(entry.getValue()).trim();
             	//忽略  action 字段
             	if(!"action".equals(key)){
-            		logger.debug(key+":"+value);
+//            		logger.debug(key+":"+value);
             		if(StringUtils.isEmpty(value)){
                         value=null;
                     }
