@@ -11,10 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.Office;
 import models.ParentOfficeModel;
 import models.UserLogin;
-import models.UserOffice;
 import models.yh.profile.OfficeCofig;
 
 import org.apache.commons.lang.StringUtils;
@@ -74,13 +72,13 @@ public class MainController extends Controller {
         }
         setAttr("userId", currentUser.getPrincipal());
         // timeout:-1000ms 这样设置才能永不超时 
-    	currentUser.getSession().setTimeout(-1000L);
+    	//currentUser.getSession().setTimeout(-1000L);
     	
         return true;
     }
     @Before(EedaMenuInterceptor.class)
     public void index() {
-    	setSysTitle();
+        setSysTitle();
         if (isAuthenticated()) {
         	UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=?", currentUser.getPrincipal());
         	
@@ -170,10 +168,10 @@ public class MainController extends Controller {
         String errMsg = "";
         try {
             currentUser.login(token);
-            if (getPara("remember") != null && "Y".equals(getPara("remember"))){
-                // timeout:-1000ms 这样设置才能永不超时 
-            	currentUser.getSession().setTimeout(-1000L);
-            }
+//            if (getPara("remember") != null && "Y".equals(getPara("remember"))){
+//                // timeout:-1000ms 这样设置才能永不超时 
+//            	currentUser.getSession().setTimeout(-1000L);
+//            }
 
         } catch (UnknownAccountException uae) {
             errMsg = "用户名不存在";
@@ -193,12 +191,13 @@ public class MainController extends Controller {
 
         if (errMsg.length()==0) {
         	
-        	UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=? and (is_stop = 0 or is_stop is null)",currentUser.getPrincipal());
+        	UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=? and (is_stop = 0 or is_stop is null)", username);
         	
         	
         	if(user==null){
             	errMsg = "用户名不存在或已被停用";
             	setAttr("errMsg", errMsg);
+            	logger.debug(errMsg);
             	render("/eeda/login.html");
             }else if(user.get("c_name") != null && !"".equals(user.get("c_name"))){
             	setAttr("userId", user.get("c_name"));
@@ -215,6 +214,7 @@ public class MainController extends Controller {
             
         } else {
             setAttr("errMsg", errMsg);
+            logger.debug(errMsg);
             render("/eeda/login.html");
         }
     }
@@ -230,11 +230,11 @@ public class MainController extends Controller {
         	of.set("system_title", "易达物流");
         	of.set("logo", "/eeda/img/eeda_logo.ico");
         }
-        UserOffice uo = UserOffice.dao.findFirst("select * from user_office where user_name ='"+currentUser.getPrincipal()+"' and is_main=1");
-        if(uo != null){
-            Office office = Office.dao.findById(uo.get("office_id"));
-            setAttr("office_name", office.get("office_name"));
-        }
+//        UserOffice uo = UserOffice.dao.findFirst("select * from user_office where user_name ='"+userName+"' and is_main=1");
+//        if(uo != null){
+//            Office office = Office.dao.findById(uo.get("office_id"));
+//            setAttr("office_name", office.get("office_name"));
+//        }
         setAttr("SYS_CONFIG", of);
 	}
 
