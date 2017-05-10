@@ -21,7 +21,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           columns: [
               { "width": "10px",
                   "render": function ( data, type, full, meta ) {
-                    return '<button type="button" class="delete btn btn-default btn-xs" style="width:30px" disabled >删除</button>';
+                    return '<button type="button" class="btn table_btn delete btn-xs" >'+
+                          '<i class="fa fa-trash-o"></i> 删除</button>';
                   }
               },
               { "data": "ORDER_NO", 
