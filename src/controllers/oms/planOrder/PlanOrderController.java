@@ -31,6 +31,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.eeda.ListConfigController;
+import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
@@ -314,10 +315,128 @@ public class PlanOrderController extends Controller {
     		item.update();
     		
     		createBookOrder(item,item.getLong("order_id").toString());
+    		createJobOrder(item);
 		}
     	
     	
     	renderJson("{\"result\":true}");
+    }
+    
+    
+    @Before(Tx.class)
+    public void createJobOrder(PlanOrderItem item){
+    	Long plan_order_item_id = item.getLong("id");
+    	Long plan_order_id = item.getLong("order_id");
+    	JobOrder order  = JobOrder.dao.findFirst("select * from job_order where plan_order_item_id = ? ",plan_order_item_id);
+    	UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+   		
+   		String transport_type = "";
+    	String truct_type = item.getStr("truck_type");
+    	String container_type = item.getStr("container_type");
+    	if(StringUtils.isNotBlank(truct_type)){
+    		if(StringUtils.isBlank(transport_type)){
+    			transport_type += "land";
+    		}else{
+    			transport_type += ",land";
+    		}
+    	}
+    	if(StringUtils.isNotBlank(container_type)){
+    		if(StringUtils.isBlank(transport_type)){
+    			transport_type += "ocean";
+    		}else{
+    			transport_type += ",ocean";
+    		}
+    	}
+   		
+    	if(order==null){
+    		PlanOrder re = PlanOrder.dao.findById(plan_order_id);
+       		order  = new JobOrder();
+       		
+            String newDateStr = "";
+            SimpleDateFormat sdf = new SimpleDateFormat("yy");//转换后的格式
+            Date date= item.get("factory_loading_time");
+            newDateStr=sdf.format(date);
+       		String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, office_id);
+   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
+   			sb.insert(5, JobOrderController.generateJobPrefix(item.getStr("job_order_type")));//在指定的位置1，插入指定的字符串
+   			order_no = sb.toString();
+   			order.set("order_no", order_no);
+        	order.set("creator", user.getLong("id"));
+        	order.set("create_stamp", new Date());
+        	order.set("updator", user.getLong("id"));
+        	order.set("update_stamp", new Date());
+            order.set("office_id", office_id);
+            
+            order.set("type", item.getStr("job_order_type"));
+            order.set("order_export_date", item.get("factory_loading_time"));
+            order.set("transport_type", item.getStr("transport_type"));
+            order.set("plan_order_no", re.getStr("order_no"));
+            order.set("plan_order_id", plan_order_id);
+            order.set("customer_id", re.getLong("customer_id"));
+            order.set("plan_order_item_id", plan_order_item_id);
+            order.set("pieces", item.get("pieces"));
+            order.set("net_weight", item.get("net_weight"));
+            order.set("gross_weight", item.get("gross_weight"));
+            order.set("volume", item.get("volume"));
+            order.set("transport_type", transport_type);
+            
+            //-----------默认
+            order.set("billing_method", "perWeight");
+            order.set("trans_clause", "CFS-CFS");
+            order.set("trade_type", "FOB");
+
+            order.save();
+            
+            //从表默认选项
+            if(StringUtils.isNotBlank(container_type)){
+            	String[] array = container_type.split(",");
+            	for (int i = 0; i < array.length; i++) {
+            		String[] ctypeMsg = array[i].split("X");
+            		String con_type = ctypeMsg[0];
+            		String number = ctypeMsg[1];
+            		for (int j = 0; j < Integer.parseInt(number); j++) {
+            			Record landItem = new Record();
+            			landItem.set("order_id", order.get("id"));
+            			landItem.set("container_type", con_type);
+            			Db.save("job_order_shipment_item", landItem);
+					}
+            		
+            	}
+        		
+        		
+        		
+        	}
+        	if(StringUtils.isNotBlank(truct_type)){
+        		String[] array = truct_type.split(",");
+            	for (int i = 0; i < array.length; i++) {
+            		String[] ctypeMsg = array[i].split("X");
+            		String tr_type = ctypeMsg[0];
+            		String number = ctypeMsg[1];
+            		for (int j = 0; j < Integer.parseInt(number); j++) {
+            			Record oceanItem = new Record();
+            			oceanItem.set("order_id", order.get("id"));
+            			oceanItem.set("status", "待发车");
+            			oceanItem.set("truck_type", tr_type);
+            			Db.save("job_order_land_item", oceanItem);
+					}
+            	}
+            	
+            	Record oceanDetail = new Record();
+            	oceanDetail.set("order_id", order.get("id"));
+            	oceanDetail.set("pol", item.get("pol"));
+            	oceanDetail.set("pod", item.get("pod"));
+            	
+            	oceanDetail.set("carrier", item.get("carrier"));
+            	oceanDetail.set("vessel", item.get("vessel"));
+            	oceanDetail.set("voyage", item.get("voyage"));
+            	oceanDetail.set("eta", item.get("eta"));
+            	oceanDetail.set("etd", item.get("etd"));
+            	//oceanDetail.set("SONO", item.get("SONO"));
+    			Db.save("job_order_shipment", oceanDetail);
+            	
+        	}
+    	}
     }
     
 

@@ -217,7 +217,7 @@ public class JobOrderController extends Controller {
     }
     
     //根据工作单类型生成不同前缀
-    public String generateJobPrefix(String type){
+    public static String generateJobPrefix(String type){
     		String prefix = "";
 			if(type.equals("出口柜货")||type.equals("进口柜货")||type.equals("出口散货")||type.equals("内贸海运")){
 				prefix+="O";
