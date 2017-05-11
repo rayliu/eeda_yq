@@ -151,21 +151,85 @@ public class TransJobOrderController extends Controller {
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
         String customer_id = (String)dto.get("customer_id");
         
-//        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");//转换后的格式
-        String jobOrderDate = sdf.format(new Date()).toString();
+//      SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//转换后的格式
+        String newDateStrMM = "";
+        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyyMMdd");//分析日期
         
+        
+        String loadingWharf1="";
+		String loadingWharf2="";
+		String takeWharf="";
+		String backWharf="";
+		String truckType="";
+		String CABINET_DATE="";
+		if(StringUtils.isNotEmpty((String) dto.get("take_wharf"))){
+			takeWharf=(String) dto.get("take_wharf");
+		}
+		if(StringUtils.isNotEmpty((String) dto.get("back_wharf"))){
+			backWharf=(String) dto.get("back_wharf");
+		}
+		if(StringUtils.isNotEmpty((String) dto.get("cabinet_type"))){
+			truckType=(String) dto.get("cabinet_type");
+		}
+
+		//陆运
+		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
+		
+		for(int i=0;i<land_item.size();i++){
+			Map<String, ?> map=land_item.get(i);
+			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
+				loadingWharf1=(String) map.get("LOADING_WHARF1");
+			}
+			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
+				loadingWharf2=(String) map.get("LOADING_WHARF2");
+			}
+			if(StringUtils.isNotEmpty((String) map.get("CABINET_DATE"))){
+				CABINET_DATE=(String) map.get("CABINET_DATE");
+			}
+		}
+		if(StringUtils.isEmpty(CABINET_DATE)){
+			Record rec = new Record();
+			rec.set("err_msg", "提柜日期不能为空");
+		    renderJson(rec);
+		    return;
+		}
+		Date date = sdf.parse(CABINET_DATE);
+		String jobOrderDate = parseFormat.format(date).toString();
+		
+		
         TransJobOrder transJobOrder = new TransJobOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			transJobOrder = TransJobOrder.dao.findById(id);
+//   		    //版本(时间戳)校验，不对的话就不让更新保存
+//   			Timestamp page_update_stamp = Timestamp.valueOf(dto.get("update_stamp").toString());
+//   			Timestamp order_update_stamp = transJobOrder.getTimestamp("update_stamp");
+//   			if(!order_update_stamp.equals(page_update_stamp)){
+//   			    Record rec = new Record();
+//   			    rec.set("err_code", "update_stamp_not_equal");
+//   			    rec.set("err_msg", "当前单据已被更改，请刷新页面获取最新数据，重新操作。");
+//   			    renderJson(rec);
+//   			    return;
+//   			}
 
-   			if(!type.equals(transJobOrder.get("type"))){
-	   			String order_no = OrderNoGenerator.getNextOrderNo("HT", office_id);
+   			String oldOrderNo=transJobOrder.get("order_no");
+   			String oldOrderNoDate = oldOrderNo.substring(2, 10);
+   			logger.debug("工作单提柜 旧日期："+oldOrderNoDate);
+   			if(( 
+   			             
+   			             !jobOrderDate.equals(oldOrderNoDate)
+   			        ) 
+   			  ){
+   			   //需后台处理的字段
+   	   			String order_no = "";
+   	   			StringBuilder sb = new StringBuilder(oldOrderNo);//构造一个StringBuilder对象
+   	   			sb.replace(2, 10, jobOrderDate);
+   	   			order_no =sb.toString();
 	   			transJobOrder.set("order_no", order_no);
-   			}
+	   		}
             
    			transJobOrder.set("updator", user.getLong("id"));
    			transJobOrder.set("update_stamp", new Date());
@@ -188,40 +252,13 @@ public class TransJobOrderController extends Controller {
    			transJobOrder.set("office_id", office_id);
    			transJobOrder.save();
    			id = transJobOrder.getLong("id").toString();
-   			
    		}
    		//常用客户保存进入历史记录
    		long customerId = Long.valueOf(dto.get("customer_id").toString());
    		saveCustomerQueryHistory(customerId);
    		
-   		String loadingWharf1="";
-		String loadingWharf2="";
-		String takeWharf="";
-		String backWharf="";
-		String truckType="";
-		if(StringUtils.isNotEmpty((String) dto.get("take_wharf"))){
-			takeWharf=(String) dto.get("take_wharf");
-		}
-		if(StringUtils.isNotEmpty((String) dto.get("back_wharf"))){
-			backWharf=(String) dto.get("back_wharf");
-		}
-		if(StringUtils.isNotEmpty((String) dto.get("cabinet_type"))){
-			truckType=(String) dto.get("cabinet_type");
-		}
-
-		//陆运
-		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
-		DbUtils.handleList(land_item, id, TransJobOrderLandItem.class, "order_id");
-		for(int i=0;i<land_item.size();i++){
-			Map<String, ?> map=land_item.get(i);
-			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
-				loadingWharf1=(String) map.get("LOADING_WHARF1");
-			}
-			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
-				loadingWharf2=(String) map.get("LOADING_WHARF2");
-			}
-		}
-	
+   		//陆运明细保存
+   		DbUtils.handleList(land_item, id, TransJobOrderLandItem.class, "order_id");
 		//费用明细，应收应付
 		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");
 		DbUtils.handleList(charge_list, id, TransJobOrderArap.class, "order_id");

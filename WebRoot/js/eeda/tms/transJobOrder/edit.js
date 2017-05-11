@@ -209,7 +209,11 @@ $(document).ready(function() {
                 itemOrder.refleshCostTable(order.ID);
                 $.unblockUI();
             }else{
-                $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+            	if(order.ERR_MSG){
+            		 $.scojs_message(order.ERR_MSG, $.scojs_message.TYPE_ERROR);
+            	}else{
+            		 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+            	}
                 $('#saveBtn').attr('disabled', false);
                 $.unblockUI();
             }
