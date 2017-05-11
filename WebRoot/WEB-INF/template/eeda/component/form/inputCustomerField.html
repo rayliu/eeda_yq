@@ -69,15 +69,18 @@ $(document).ready(function() {
 		    });
 
 		    eeda.hidePopList();
-	        companyList.show(); 
+	        companyList.show();
+
 			//当查询结果只有一个时，自动赋值到hiddenField
-	        if(data.length==0)
+	        if(data.length==0){
                 hiddenField.val('');
-            if(data.length==1&&data[0].ID)
+            }
+            if(data.length==1 && data[0].ID){
                 hiddenField.val(data[0].ID);
-            if(!inputStr){
-            	if(data.length>1)
-                    hiddenField.val('');
+                companyList.hide();
+            }
+            if(!inputStr && data.length>1){
+                hiddenField.val('');
             }   
 	    },'json');
 	});
@@ -126,6 +129,10 @@ $(document).ready(function() {
 		    };
 		    companyList.hide();
 	    }
+
+        if(hiddenField.val()==''){
+            inputField.val('');
+        }
     });
     
 });
