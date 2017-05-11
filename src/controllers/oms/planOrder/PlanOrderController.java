@@ -380,7 +380,14 @@ public class PlanOrderController extends Controller {
             SimpleDateFormat sdf = new SimpleDateFormat("yy");//转换后的格式
             Date date= item.get("factory_loading_time");
             newDateStr=sdf.format(date);
-       		String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, office_id);
+            
+            Long officeNo = null;//生成单号要用到的office_id
+            Record office = Db.findFirst("select office_id from party where ref_order_id = ?",office_id);
+            if(office != null){
+            	officeNo = office.getLong("office_id");
+            }
+            	
+       		String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, officeNo==null?office_id:officeNo);
    			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
    			sb.insert(5, JobOrderController.generateJobPrefix(item.getStr("job_order_type")));//在指定的位置1，插入指定的字符串
    			order_no = sb.toString();
