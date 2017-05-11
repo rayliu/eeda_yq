@@ -21,7 +21,7 @@ define(['jquery', 'dataTablesBootstrap'], function($){
         //contentType:"application/x-www-form-urlencoded;charset=utf-8",
         error: function (xhr, e) {
             if(xhr.responseText.indexOf('忘记密码')>0){
-              alert( '您未登录, 请重新登录.' );
+              alert( 'error: 您未登录, 请重新登录.' );
               window.location.href="/";
             }
             // if (x.status == 403) {
@@ -31,7 +31,7 @@ define(['jquery', 'dataTablesBootstrap'], function($){
         complete:function(XMLHttpRequest, textStatus){
            //console.log("ajaxSetup textStatus:"+textStatus);
            if(XMLHttpRequest.responseText.indexOf('忘记密码')>0){
-              alert( '您未登录, 请重新登录.' );
+              alert( '超时退出, 请重新登录.' );
               window.location.href="/";
             }
            // var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus"); //通过XMLHttpRequest取得响应头，sessionstatus，  
@@ -450,11 +450,11 @@ eeda.refreshUrl = refreshUrl;
             if(data.length==0)
                 hiddenField.val('');
             if(data.length==1&&data[0].ID){
-            	inputField.val(data[0].NAME);
+            	  inputField.val(data[0].NAME);
                 hiddenField.val(data[0].ID);
+                tableFieldList.hide();
             }
-            if(!inputStr){
-            	if(data.length>1)
+            if(!inputStr && data.length>1){
 	                hiddenField.val('');
             }
             //tableFieldList;
@@ -498,21 +498,17 @@ eeda.refreshUrl = refreshUrl;
                   nextTdInput=null;
               }
           }
-
-          //sandbox 禁止模拟按键触发
-          // var event = $.Event("keydown", {keyCode: 9});// key 'tab'
-          // inputField.focus().trigger(event);
-
         }
       });
 
 		  // 1 没选中客户，焦点离开，隐藏列表
 		  $(document).on('click', function(event){
+        console.log("tableFieldList.is(':visible') == "+tableFieldList.is(':visible'));
           if (tableFieldList.is(':visible') ){
               var clickedEl = $(this);
               var hiddenField = eeda._hiddenField;
               if ($(this).find('a').val().trim().length ==0) {
-                hiddenField.val('');
+                  hiddenField.val('');
               };
               tableFieldList.hide();
           }
