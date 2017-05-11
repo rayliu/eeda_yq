@@ -89,13 +89,16 @@ public class JobOrderReportController extends Controller {
 		if("printOceanHBL".equals(printHBL)){
 			 fileName = "/report/jobOrder/oceanHBL.jasper";
 			 outFileName = "/download/"+hbl_no;
+			//打印的同事保存到相关信息文档
+			savePDF(order_id,hbl_no,"two");
 		}else if("prinTelextOceanHBL".equals(printHBL)){
 			 fileName = "/report/jobOrder/oceanTelexHBL.jasper";
 			 outFileName = "/download/"+hbl_no;
+			//打印的同事保存到相关信息文档
+			savePDF(order_id,hbl_no,"four");
 		}
 		
-		//打印的同事保存到相关信息文档
-		savePDF(order_id,hbl_no,"two");
+		
 		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
@@ -189,6 +192,9 @@ public class JobOrderReportController extends Controller {
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		
+		//打印的同时保存到相关信息文档
+		savePDF(order_id,(outFileName + order_id),"zero");
 		
 		Record rec =new Record();
 		rec.set("oceanHeadId", jsh.get("id"));
