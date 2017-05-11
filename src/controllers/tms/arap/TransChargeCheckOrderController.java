@@ -175,7 +175,8 @@ public class TransChargeCheckOrderController extends Controller {
       				+ " left join trans_job_order_land_item joli on joli.order_id=joa.order_id "
       				+ " left join fin_item f on f.id = joa.charge_id"
       				+ " where joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
-      				+ " GROUP BY joa.id "
+      				 + " and jo.delete_flag = 'N'"
+     				+ " GROUP BY joa.id "
     				+ " ) B where 1=1 ";
         	}else{
         		 sql = "select * from(  "
@@ -197,6 +198,7 @@ public class TransChargeCheckOrderController extends Controller {
          				+ " left join trans_job_order_land_item joli on joli.order_id=joa.order_id "
          				+ " left join fin_item f on f.id = joa.charge_id"
          				+ " where joa.order_type='charge' and joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
+         				 + " and jo.delete_flag = 'N'"
          				+ " GROUP BY joa.id "
          				+ " ) B where 1=1 ";
         			}
@@ -295,7 +297,8 @@ public class TransChargeCheckOrderController extends Controller {
     			+ "	left join party p1 on p1.id=joa.sp_id "
     			+ "	where joa.audit_flag='Y' "
     			+ " and joa.id in("+ids+")"
-    			+ " GROUP BY joa.id";
+    			 + " and jo.delete_flag = 'N'"
+ 				+ " GROUP BY joa.id";
 			}else{				
 			sql = " select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,joa.remark,"
 					+" aco.order_no check_order_no, jo.id job_order_id, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
@@ -321,7 +324,8 @@ public class TransChargeCheckOrderController extends Controller {
 						+" left join trans_arap_charge_item aci on aci.ref_order_id = joa.id"
 					 +" left join trans_arap_charge_order aco on aco.id = aci.charge_order_id"
 					 +" where joa.id = aci.ref_order_id and aco.id = ("+order_id+")" +currenry_code
-					 +" GROUP BY joa.id"
+					 + " and jo.delete_flag = 'N'"
+						+" GROUP BY joa.id"
 						+" ORDER BY aco.order_no, jo.order_no";
 				
 				
@@ -372,6 +376,7 @@ public class TransChargeCheckOrderController extends Controller {
 							+" left join arap_charge_application_order acao on caol.application_order_id = acao.id"
 							 +" left join trans_arap_charge_order aco on aco.id=caol.charge_order_id"
 						  +" where acao.id="+order_ids+query_fin_name
+						  + " and jo.delete_flag = 'N'"
 							+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
 				
@@ -401,7 +406,8 @@ public class TransChargeCheckOrderController extends Controller {
 						 +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
 							+currency_code
 							+query_exchange_currency+query_fin_name
-							+" GROUP BY joa.id"
+							 + " and jo.delete_flag = 'N'"
+								+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
 			}		
 			

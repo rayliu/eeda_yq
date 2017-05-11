@@ -56,7 +56,8 @@ public class TransCostConfirmController extends Controller {
 				+ " left join currency c on c.id=tjoa.currency_id "
 				+ " LEFT JOIN currency c1 ON c1.id = tjoa.exchange_currency_id"
 				+ " where tjoa.order_type='cost' and tjo.office_id = "+office_id
-				+ " ) A where 1=1 ";
+				 + " and tjo.delete_flag = 'N'"
+					+ " ) A where 1=1 ";
 		
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
