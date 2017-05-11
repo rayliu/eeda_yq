@@ -1,0 +1,183 @@
+<%layout("/eeda/layout.html"){%>
+	<div class="container">
+		<div class="row">
+			<div class=" col-md-offset-3 col-lg-6">
+				<div class="login-panel panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">新用户注册</h3>
+					</div>
+					<div class="panel-body" >
+						<!-- p>您好，易达物流信息平台 处于邀请试用阶段。</p>
+						<p>业务实施流程</p>
+						<p>如果您对我们的系统有兴趣，请先返回 <a href='http://www.eeda123.com/#footer'>首页</a> 并发送留言给我们，谢谢！</p> -->
+						 <form action="/register/saveRegistrant" method="post" id="registerForm" class="form-horizontal" >
+								<div class="row col-md-offset-1">
+									<div class=" form-group form-group-lg">
+										<label class="col-md-3 control-label">管理员账号<span style ="color:red">*</span></label>
+										<div class=" col-md-6">
+											<input class="form-control" type="text" id = "username" name="username" placeholder="请输入您的管理员账号(邮箱地址)">
+										</div>
+									</div>
+									<div class=" form-group form-group-lg">
+										<label class="col-md-3 control-label">登录密码<span style ="color:red">*</span></label>
+										<div class=" col-md-6">
+											<input class="form-control" type="password" id="password" name="password"  placeholder="请输入您的登录密码">
+										</div>
+										
+									</div>
+									<div class=" form-group form-group-lg">
+										<label class="col-md-3 control-label">确认密码<span style ="color:red">*</span></label>
+										<div class=" col-md-6">
+											<input class="form-control" type="password" id="affirmPass" name="affirmPass" placeholder="请再次输入您的登录密码">
+										</div>
+										
+									</div>
+									
+								</div>
+								<div class="row col-md-offset-1" id="officeInformation" >
+										<div class=" form-group form-group-lg">
+											<label class="col-md-3 control-label">公司名称<span style ="color:red">*</span></label>
+											<div class=" col-md-6">
+												<input class="form-control" type="text" id="officeName" name ="officeName"placeholder="请输入公司名称">
+											</div>
+											
+										</div>
+										<div class=" form-group form-group-lg">
+											<label class="col-md-3 control-label">公司联系人<span style ="color:red">*</span></label>
+											<div class=" col-md-6">
+												<input class="form-control" type="text" id="contact_name" name="contact_name"placeholder="请输入公司联系人">
+											</div>
+										</div>
+										<div class=" form-group form-group-lg">
+											<label class="col-md-3 control-label">联系人电话<span style ="color:red">*</span></label>
+											<div class=" col-md-6">
+												<input class="form-control" type="text" id="contact_phone" name="contact_phone"placeholder="请输入联系人的电话">
+											</div>
+										</div>
+										<div class=" form-group form-group-lg" style ="display:none">
+											<label class="col-md-3 control-label">公司邮件</label>
+											<div class=" col-md-6">
+												<input class="form-control" type="text" id="email" name="email">
+											</div>
+										</div>
+										<div class=" form-group form-group-lg" >
+											<label class="col-md-3 control-label"></label>
+											<div class=" col-md-6">
+												<button type="submit" class="btn btn-default btn-success col-md-8">提   交</button>
+											</div>
+										</div>
+								</div>
+								
+						 </form>
+						 
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+<%}%>
+    <!-- Core Scripts - Include with every page -->
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101116610" data-redirecturi="http://56.eeda123.com" charset="utf-8"></script>
+    <script src="/yh/js/jquery-1.10.2.js"></script>
+    <script src="/yh/js/bootstrap.min.js"></script>
+    <script src="/yh/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/yh/js/jquery.validate.min.js"></script>
+    <script src="/yh/js/jvalidate.messages_cn.js"></script>
+    <!-- SB Admin Scripts - Include with every page -->
+    <script src="/yh/js/sb-admin.js"></script>
+    
+<script type="text/javascript">
+$(document).ready(function() {
+		$("#username").on('blur',function(){
+			$("#email").val($("#username").val());
+		});
+		 $('#registerForm').validate({
+		            rules: {
+		            	username: {
+			                required: true,
+			                email:true,
+			                minlength: 6,
+			                remote:{
+			                	url: "/register/checkUserNameExist", //后台处理程序    
+	                            type: "post",  //数据发送方式   
+	                            dataType: "json",       //接受数据格式       
+	                            data:  {                     //要传递的数据   
+	                            	username: function() {   
+	                                    return $("#username").val();   
+	                                  }   
+	  
+	                            }   
+	            
+	                        } 
+						},
+		              password:{
+		                required: true,
+		                minlength: 6
+		              },
+		              affirmPass: { 
+		            	  required: true, 
+		            	  minlength: 6, 
+		            	  equalTo: "#password" 
+		            	  } ,
+	           		officeName:{
+	           			required:true,
+	           			remote:{
+		                	url: "/register/checkOfficeNameExist", //后台处理程序    
+                            type: "post",  //数据发送方式   
+                            dataType: "json",       //接受数据格式       
+                            data:  {                     //要传递的数据   
+                            	officeName: function() {   
+                                    return $("#officeName").val();   
+                                  }   
+  
+                            } 
+	           			}
+	           		},
+	           		contact_name:{
+	           			required:true
+	           		},
+	           		contact_phone:{
+	           			required:true
+	           		}
+		         },
+	             messages:{
+	            	 username:{
+	            		 required:"管理员账号不能为空",
+	            		 email:"管理员账号格式不正确",
+	            		 remote:"管理员账号已注册"
+	            	 },
+	            	 password:{
+	            		 required:"登录密码不能为空",
+	            		 minlength:"登录密码至少为6位"
+	            	 },
+	            	 affirmPass:{
+	            		 required:"确认密码不能为空",
+	            		 equalTo:"密码不一致",
+	            		minlength:"确认密码至少为6位"
+	            	 },
+	            	 officeName:{
+	            		 required:"公司名不能为空",
+	            		 remote:"公司名已注册"
+	            	 },
+	            	 contact_name:{
+		           			required:"联系人不能为空"
+	           		},
+	           		contact_phone:{
+	           			required:"联系人电话不能为空"
+	           		}
+	           	},
+	            highlight: function(element) {
+	            	$(element).parent().parent().closest('.form-group').removeClass('has-success').addClass('has-error');
+	            },
+	            success: function(element) {
+	            	element.parent().parent().removeClass('has-error').addClass('has-success');
+	            	element.detach();
+	            	
+	            }
+	        });
+		/* window.history.forward(1); */
+	});
+		
+</script>
+</html>

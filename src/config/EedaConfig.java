@@ -287,8 +287,9 @@ public class EedaConfig extends JFinalConfig {
         me.add("/dockInfo", controllers.profile.DockInfoController.class, contentPath);
         me.add("/containerType", ContainerTypeController.class, contentPath);
         //register loginUser
-//        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
+        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
         me.add("/reset",controllers.profile.ResetPassWordController.class,contentPath);
+        
         me.add("/role", controllers.profile.RoleController.class, contentPath);
         me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
         me.add("/customer", controllers.profile.CustomerController.class, contentPath);

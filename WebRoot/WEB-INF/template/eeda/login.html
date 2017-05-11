@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -71,9 +68,9 @@
                 Esimplev Supply Management
             </div>
             <div class="login_form_cn_title">
-                检单供应链管理平台
+                检单供应链管理平台 <span style="display: none;">- 注册新用户</span>
             </div>
-            <form role="form" action="/login" id="login" method="post">
+            <form role="form" action="/login" id="loginForm" method="post" >
                 <fieldset>
                     <div class="form-group" >
                         <input class="form-control" placeholder="Email / 用户名" id="username" name="username" type="text" autofocus value="" autocomplete="on">
@@ -86,10 +83,11 @@
                     </div>
                     <div class="form-group">
 	                        <input id="remUserSelect"  type='checkBox' style="display: none;" 记住用户名></input>
-	                        
 	                        <a href ="/reset" style = "float:right; padding-right: 0px;">忘记密码?</a>
                     </div>
-                    
+                    <div class="form-group" style = "display: none; clear:both;float:right; padding-right: 0px;margin-top: 10px;">
+                            还没账号？<a href ="#" id="registerBtn">注册</a>
+                    </div>
                     
                     <div class="form-group SNSSignIn" style="display: none;">
                         社交帐号登录
@@ -100,6 +98,29 @@
                             <a title="QQ 登录" class="js-bindqq" href="#"><i class="fa fa-qq"></i></a>
                         </div>
 
+
+                    </div>
+                </fieldset>
+            </form>
+            <form role="form" id="registerForm" method="post" style="display: none;">
+                <fieldset>
+                    <div class="form-group" >
+                        <input class="form-control" placeholder="邮箱" id="username" name="username" type="text" autofocus value="" autocomplete="on">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="密码" id="password" name="password" type="password" value="">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="再次输入密码" id="password" name="password" type="password" value="">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn">Sign Up 提交</button>
+                    </div>
+                    <div class="form-group" style = "clear:both;float:right; padding-right: 0px;margin-top: 10px;">
+                            已有账号？<a href ="#" id="registerBtn">登录</a>
+                    </div>
+                    
+                    
 
                     </div>
                 </fieldset>
@@ -126,7 +147,7 @@
           // btnId:"qqLoginBtn"    //插入按钮的节点id
         //});
 
-        $('#login').validate({
+        $('#loginForm').validate({
             rules: {
             username: {//form 中company_name为必填, 注意input 中定义的id, name都要为company_name
                 required: true
