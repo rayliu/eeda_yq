@@ -19,6 +19,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 },
                 { "data": "TYPE", "width": "10%"}, 
                 { "data": "CUSTOMER_NAME", "width": "10%"}, 
+                { "data": "CUSTOMER_NAME", "width": "10%"}, 
                 { "data": "CREATOR", "width": "10%"}, 
                 { "data": "CREATE_TIME", "width": "10%"},
                 { "data": "STATUS" ,"width": "5%"},

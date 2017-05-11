@@ -68,21 +68,19 @@ public class SupplierContractController extends Controller {
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/supplierContract");
         setAttr("listConfigList", configList);
-        render("/eeda/contractManagement/supplierContractList.html");
+//        render("/eeda/contractManagement/supplierContractList.html");
+        render("/eeda/contractManagement/sp/list.html");
     }
     
     public void list() {
-    	Long parentID = pom.getParentOfficeId();
+        UserLogin user = LoginUserController.getLoginUser(this);
         
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = " select * from (select p.* from party p"
-                    + " left join office o on o.id = p.office_id"
-                    + " where p.type='SP' and (o.id = " + parentID + " or o.belong_office = " + parentID + ")"
-                    + " ) A where 1=1";
+        String sql = " select * from customer_contract where office_id="+user.getOfficeId();
       
         String condition = DbUtils.buildConditions(getParaMap());
 
@@ -101,7 +99,7 @@ public class SupplierContractController extends Controller {
     public void add() {
         setAttr("saveOK", false);
         setAttr("user", LoginUserController.getLoginUser(this));
-            render("/eeda/contractManagement/supplierContractEdit.html");
+            render("/eeda/contractManagement/sp/edit.html");
     }
     
     @Before(EedaMenuInterceptor.class)
@@ -134,24 +132,10 @@ public class SupplierContractController extends Controller {
         setAttr("order", order);
         setAttr("user", LoginUserController.getLoginUser(this));
      
-        render("/eeda/contractManagement/supplierContractEdit.html");
+        render("/eeda/contractManagement/sp/edit.html");
     }
     
-    public void delete() {
-       
-        String id = getPara();
-        
-        Party party = Party.dao.findById(id);
-        
-        Object obj = party.get("is_stop");
-        if(obj == null || "".equals(obj) || obj.equals(false) || obj.equals(0)){
-        	party.set("is_stop", true);
-        }else{
-        	party.set("is_stop", false);
-        }
-        party.update();
-        redirect("/serviceProvider");
-    }
+   
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_P_CREATE, PermissionConstant.PERMSSION_P_UPDATE}, logical=Logical.OR)
     public void save() throws InstantiationException, IllegalAccessException {
         String jsonStr=getPara("params");
