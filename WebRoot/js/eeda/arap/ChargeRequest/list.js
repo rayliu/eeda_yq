@@ -38,7 +38,11 @@ $(document).ready(function() {
                   return data;
               }   
             },
-            {"data":"PAYEE_COMPANY","class":"SP_NAME"},
+            {"data":"PAYEE_COMPANY","class":"SP_NAME",
+                "render": function(data, type, full, meta) {
+                    return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
+                }
+            },
             {"data":"BILL_TYPE",
                 "render": function(data,type,full,mate){
                     var strBillType = "无发票";
@@ -222,7 +226,11 @@ $(document).ready(function() {
             }
           },
             {"data":"STATUS","class":"status"},
-            {"data":"PAYEE_COMPANY","class":"SP_NAME"},
+            {"data":"PAYEE_COMPANY","class":"SP_NAME",
+                "render": function(data, type, full, meta) {
+                    return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
+                }
+            },
             {"data":"BILL_TYPE",
                 "render": function(data,type,full,mate){
                     var strBillType = "无发票";
