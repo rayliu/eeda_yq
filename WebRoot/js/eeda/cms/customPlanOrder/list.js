@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder', 'sco'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder','validate_cn', 'sco'], function ($, metisMenu) { 
 
     $(document).ready(function() {
     	document.title = '报关申请单列表 | '+document.title;
@@ -138,18 +138,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
           dataTable.ajax.url(url).load();
       };
       
-      $("#eeda-table").on('click', '.delete', function(){
-    	  var tr = $(this).parent().parent();
-          var id = tr.attr('id');
-          $.post('/customPlanOrder/deleteOrder', {id:id}, function(data){
-        	  $.scojs_message('单据删除成功', $.scojs_message.TYPE_OK);
-        	  tr.hide();
-          },'json').fail(function() {
-              $.scojs_message('单据删除失败', $.scojs_message.TYPE_ERROR);
-            });
-       });
-      
-      
       $('#orderTabs a').click(function(){
     	  var custom_state = $(this).attr("name");
     	  
@@ -163,7 +151,32 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
         	  searchData(custom_state);
     	  }
 
+      });
+
+      $("#eeda-table").on('click', '.delete', function(){
+        var tr = $(this).parent().parent();
+          var id = tr.attr('id');
+        $('#delete_id').val(id);
+        $('#deleteReasonDetailAlert').click();
       })
+      $("#deleteReasonDetail").on('click', '.deleteReason', function(){
+        $('#deleteReason').val($(this).val());
+      })
+       $("#deleteReasonDetail").on('click', '.confirm', function(){
+         if(!$("#deleteReasonDetailForm").valid()){
+               return;
+           }
+         var id = $('#delete_id').val();
+           var deleteReason = $('#deleteReason').val();
+           var tr = $('#'+id+'');
+          $.post('/customPlanOrder/deleteOrder', {id:id,delete_reason:deleteReason}, function(data){
+            $('#deleteReasonDetail .return').click();
+            tr.hide();
+            $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+          },'json').fail(function() {
+              $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+          });
+      });
 
     });
 });

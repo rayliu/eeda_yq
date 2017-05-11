@@ -804,7 +804,13 @@ public class CustomPlanOrderController extends Controller {
     @Before(Tx.class)
     public void deleteOrder(){
     	String id = getPara("id");
-    	Db.update("update custom_plan_order set office_id=?  where id = ?",2,id);
+    	String delete_reason = getPara("delete_reason");
+    	Long deletor = LoginUserController.getLoginUserId(this);
+    	Date date = new Date();
+    	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	String delete_stamp = sf.format(date);
+    	Db.update("update custom_plan_order set delete_flag='Y', deletor='"+deletor+"', delete_stamp='"+delete_stamp+"',"
+    			+ " delete_reason='"+delete_reason+"' where id = ?  ",id);
     	renderJson("{\"result\":true}");
     }
     

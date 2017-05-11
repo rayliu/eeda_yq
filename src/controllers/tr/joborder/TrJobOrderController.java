@@ -1650,7 +1650,7 @@ public class TrJobOrderController extends Controller {
     	Date date = new Date();
     	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	String delete_stamp = sf.format(date);
-    	Db.update("update job_order set delete_flag='Y', deletor='"+deletor+"', delete_stamp='"+delete_stamp+"',"
+    	Db.update("update trade_job_order set delete_flag='Y', deletor='"+deletor+"', delete_stamp='"+delete_stamp+"',"
     			+ " delete_reason='"+delete_reason+"' where id = ?  ",id);
     	renderJson("{\"result\":true}");
     }
