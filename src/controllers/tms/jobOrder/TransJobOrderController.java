@@ -884,90 +884,13 @@ public class TransJobOrderController extends Controller {
         			+ " WHERE jor.office_id="+office_id
         			+ " and jor.type = '出口柜货' AND jos.SONO IS NULL AND jor.transport_type LIKE '%ocean%'"
         			+ " and jor.delete_flag = 'N'";        	
-        }else if("truckorderwait".equals(type)){
-        	 sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, ifnull(jos.export_date,joa.export_date) sent_out_time"
-        			+ " FROM job_order_land_item joli"
-        			+ " left join job_order jor on jor.id = joli.order_id"
-        			+ " left join job_order_shipment jos on jos.order_id = jor.id"
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
-        			+ " left join party p on p.id = jor.customer_id"
-        			+ " left join user_login u on u.id = jor.creator"
-        			+ " WHERE jor.office_id="+office_id
-        			+ " and datediff(joli.eta, now()) <= 3 AND (joli.truckorder_flag != 'Y' OR joli.truckorder_flag IS NULL)"
-        			+ " AND jor.transport_type LIKE '%land%'"
-        			+ " and jor.delete_flag = 'N'";
-        	
-        	
-        } else if("siwait".equals(type)){
-        	 sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, ifnull(jos.export_date,joa.export_date) sent_out_time"
-        	 		+ " FROM job_order_shipment jos"
-        	 		+ " left join job_order jor on jos.order_id = jor.id"
-        	 		+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
-        	 		+ " left join party p on p.id = jor.customer_id"
-        	 		+ " left join user_login u on u.id = jor.creator "
-        	 		+ " WHERE jor.office_id="+office_id
-                    + " and TO_DAYS(jos.export_date)=TO_DAYS(now())"
-                    + " and jor.delete_flag = 'N'";
-        	
-        } else if("mblwait".equals(type)){
-        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, ifnull(jos.export_date,jos.export_date) sent_out_time"
-        			+ " FROM job_order_shipment jos "
-        			+ " left join job_order jor on jos.order_id = jor.id"
-        			+ " left join party p on p.id = jor.customer_id"
-        			+ " left join user_login u on u.id = jor.creator"
-        			+ " WHERE jor.office_id="+office_id
-                    + " and  jos.si_flag = 'Y' and (jos.mbl_flag != 'Y' or jos.mbl_flag is null)"
-                    + " and jor.delete_flag = 'N'";
-        	
-        } else if("customwait".equals(type)){
-        	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,ifnull(jos.export_date,joa.export_date) sent_out_time "
-        			+ " from job_order jor "
-        			+ " LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
-        			+ " left join job_order_shipment jos on jos.order_id = jor.id"
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
-        			+ " left join party p on p.id = jor.customer_id"
-        			+ " left join user_login u on u.id = jor.creator"
-        			+ " where jor.office_id="+office_id
-                    + "  and  jor.transport_type LIKE '%custom%'"
-        			+ "  and ifnull(joc.customs_broker,'') = ''"
-        			+ " and jor.delete_flag = 'N'";
-        	
-        } else if("insurancewait".equals(type)){
-        	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, ifnull(jos.export_date,joa.export_date) sent_out_time"
-        			+ " FROM job_order jor LEFT JOIN job_order_insurance joi ON jor.id = joi.order_id"
-        			+ " left join job_order_shipment jos on jos.order_id = jor.id"
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jor.id"
-        			+ " left join party p on p.id = jor.customer_id"
-        			+ " left join user_login u on u.id = jor.creator"
-        			+ " WHERE jor.office_id="+office_id
-                    + " and  jor.transport_type LIKE '%insurance%' and joi.insure_no is NULL"
-                    + " and jor.delete_flag = 'N'";
-        } else if("overseacustomwait".equals(type)){
-        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, ifnull(jos.export_date,joa.export_date) sent_out_time"
-        			+ " FROM job_order_shipment jos "
-        			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jo.id"
-        			+ " left join party p on p.id = jor.customer_id"
-        			+ " left join user_login u on u.id = jor.creator"
-        			+ " WHERE jor.office_id="+office_id
-                    + " and (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
-        			+ " and timediff(now(),jos.etd)<TIME('48:00:00') "
-        			+ " and jor.delete_flag = 'N'";
-        } else if("tlxOrderwait".equals(type)){
-        	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name, ifnull(jos.export_date,joa.export_date) sent_out_time"
-        			+ " FROM job_order_shipment jos"
-        			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
-        			+ " LEFT JOIN job_order_air joa on joa.order_id = jo.id"
-        			+ " left join party p on p.id = jor.customer_id"
-        			+ " left join user_login u on u.id = jor.creator"
-        			+ " WHERE jor.office_id="+office_id
-                    + " and TO_DAYS(jos.etd)= TO_DAYS(now())"
-                    + " and jor.delete_flag = 'N'";
         }
         else{
 		         sql = "SELECT * from (select tjol.cabinet_date  cabinet_date,"
 		         		+ " tjo.*,tjo.land_export_stamp sent_out_time,"
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code, "
+		         		+ " (SELECT SUM(tjoa.currency_total_amount) from trans_job_order_arap tjoa WHERE tjoa.order_id=tjo.id and tjoa.order_type='CHARGE' and tjoa.charge_id= " 
+						+"			(SELECT id FROM fin_item f WHERE f.name='运费'  and f.office_id="+office_id+")) yunfei, "
 		         		+ " p1.abbr head_carrier_name"
 		         		+ "	from trans_job_order tjo "
 		         		+ " LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo.id"

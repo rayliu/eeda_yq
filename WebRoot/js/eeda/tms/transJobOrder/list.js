@@ -54,17 +54,25 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             		  return '';
             	  }
               },
-              { "data": "HEAD_CARRIER_NAME"},
-              { "data": "CREATOR_NAME"}, 
-              { "data": "STATUS"},
+              { "data": "HEAD_CARRIER_NAME"}, 
+              { "data": "YUNFEI",
+                  "render": function ( data, type, full, meta ) {
+                    if(data)
+                      return eeda.numFormat(parseFloat(data).toFixed(2),3)
+                    else
+                      return '';
+                    }
+              },
+              { "data": "CREATOR_NAME"},
               { "data": "CREATE_STAMP",
             	render: function(data){
             		if(data){
             			return data.substr(0,10);
             		}
             		return '';
-            	}  
-              }
+            	   }  
+              }, 
+              { "data": "STATUS"}
               
           ]
       });
