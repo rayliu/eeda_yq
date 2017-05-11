@@ -65,6 +65,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
   	              },
 	              { "data": "TYPE"}, 
 	              { "data": "RECEIVE_COMPANY_NAME"}, 
+                { "data": "CUSTOM_DAILIFEI",
+                  "render": function ( data, type, full, meta ) {
+                    if(data)
+                      return eeda.numFormat(parseFloat(data).toFixed(2),3)
+                    else
+                      return '';
+                    }
+                },
 	              { "data": "CREATOR_NAME"}, 
 	              { "data": "CREATE_STAMP",
 	            	  "render": function ( data, type, full, meta ) {
