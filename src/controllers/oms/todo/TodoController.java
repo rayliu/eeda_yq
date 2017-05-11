@@ -36,13 +36,15 @@ public class TodoController extends Controller {
             +"    FROM job_order jo LEFT JOIN job_order_shipment jos ON jo.id=jos.order_id "
             +"    WHERE jo.type='出口柜货' and jos.SONO is null and jo.transport_type LIKE '%ocean%' "
             +"    and jo.office_id ="+office_id 
-            +") SOTodoCount, "
+            + " and jo.delete_flag = 'N'"
+			+") SOTodoCount, "
             +"( "
             +"    SELECT count(1) total "
             +"        FROM job_order_land_item joli LEFT JOIN job_order jo on jo.id = joli.order_id "
             +"        WHERE datediff(eta,now() )<=3 and jo.send_truckorder_flag != 'Y'  "
             +"        and jo.transport_type LIKE '%land%' and jo.office_id ="+office_id
-            +") TruckOrderTodoCount, "
+            + " and jo.delete_flag = 'N'"
+			+") TruckOrderTodoCount, "
             +"( "
             +"    SELECT count(1) total "
             +"        FROM job_order_shipment jos  "
@@ -55,8 +57,9 @@ public class TodoController extends Controller {
             +"        FROM job_order_shipment jos "
             +"        LEFT JOIN job_order jo on jo.id = jos.order_id "
             +"        WHERE jos.si_flag = 'Y' and (jos.mbl_flag != 'Y' or jos.mbl_flag is null) "
-            + "and jo.office_id ="+office_id 
-            +") MBLTodoCount, "
+            + " and jo.office_id ="+office_id 
+            + " and jo.delete_flag = 'N'"
+			+") MBLTodoCount, "
             +"( "
             +"    select count(1) total from plan_order por "
             +"        LEFT JOIN plan_order_item poi on poi.order_id = por.id "
@@ -76,7 +79,8 @@ public class TodoController extends Controller {
             +"        FROM job_order jo LEFT JOIN job_order_insurance joi ON jo.id = joi.order_id  "
             +"        WHERE transport_type LIKE '%insurance%' and joi.insure_no is NULL "
             +"        and jo.office_id="+office_id 
-            +") WaitBuyInsuranceTodoCount, "
+            + " and jo.delete_flag = 'N'"
+			+") WaitBuyInsuranceTodoCount, "
             +"( "
             +"    SELECT COUNT(1) total "
             +"        FROM job_order_shipment jos  "
@@ -84,14 +88,16 @@ public class TodoController extends Controller {
             +"        WHERE  (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y'  "
             +"        and timediff(now(),jos.etd)<TIME('48:00:00')  "
             +"        and jo.office_id="+office_id 
-            +") WaitOverseaCustomTodoCount, "
+            + " and jo.delete_flag = 'N'"
+			 +") WaitOverseaCustomTodoCount, "
             +"( "
             +"    SELECT count(1) total "
             +"       FROM job_order_shipment jos "
             +"       LEFT JOIN job_order jo on jo.id = jos.order_id "
             +"       WHERE TO_DAYS(jos.etd)= TO_DAYS(now()) and (jos.in_line_flag != 'Y' or jos.in_line_flag is null) "
             +"       and jo.office_id="+office_id
-            +") TlxOrderTodoCount; ";
+            + " and jo.delete_flag = 'N'"
+			 +") TlxOrderTodoCount; ";
          Record rec = Db.findFirst(sql);
          renderJson(rec);
     }

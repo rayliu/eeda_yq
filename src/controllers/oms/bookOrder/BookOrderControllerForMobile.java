@@ -151,7 +151,8 @@ public class BookOrderControllerForMobile extends Controller {
 
         } else if ("insurancewait".equals(type)) {
             sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
-                    + " FROM job_order jor LEFT JOIN job_order_insurance joi ON jor.id = joi.order_id"
+                    + " FROM job_order jor "
+                    + " LEFT JOIN job_order_insurance joi ON jor.id = joi.order_id"
                     + " left join party p on p.id = jor.customer_id"
                     + " left join user_login u on u.id = jor.creator"
                     + " WHERE jor.office_id="

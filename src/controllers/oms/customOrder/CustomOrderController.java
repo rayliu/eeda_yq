@@ -63,7 +63,9 @@ public class CustomOrderController extends Controller {
                 + " left join party p on p.id = jo.customer_id"
                 + " left join user_login u on u.id = jo.creator"
                 + " left join job_order_custom joc on joc.order_id = jo.id"
-                + " where jo.transport_type like '%custom%' ";
+                + " where jo.transport_type like '%custom%' "
+                + " and jo.delete_flag = 'N'"
+				+ "";
         
         String condition = DbUtils.buildConditions(getParaMap());
 

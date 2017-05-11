@@ -124,7 +124,8 @@ public class TruckOrderController extends Controller {
         String sql = "SELECT * from ( select jol.*,jo.order_no,jo.create_stamp"
     			+ "  from job_order_land_item jol "
     			+ "  left join job_order jo on jo.id=jol.order_id"
-    			+ "   ) A where 1 =1";
+    			 + " and jo.delete_flag = 'N'"
+ 				+ "   ) A where 1 =1";
         
         String condition = DbUtils.buildConditions(getParaMap());
 

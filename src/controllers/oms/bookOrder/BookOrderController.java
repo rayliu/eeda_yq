@@ -1197,7 +1197,7 @@ public class BookOrderController extends Controller {
     	BookOrder bookOrder = BookOrder.dao.findById(id);
     	Long plan_order_id = bookOrder.getLong("plan_item_id");
     	
-    	Record re = Db.findFirst("select * from job_order where plan_order_item_id = ?",plan_order_id);
+    	Record re = Db.findFirst("select * from job_order where plan_order_item_id = ? and delete_flag = 'N'",plan_order_id);
     	if(re != null){
     		setAttr("jobOrder", re);
     	
