@@ -151,7 +151,8 @@ public class BalanceReportController extends Controller {
     			+ " LEFT JOIN party p ON p.id = joa.sp_id"
     			+ " WHERE p.abbr IN ("+ sp_name_con +") and jor.office_id="+office_id
     			+ condition
-    			+ "  group by "
+    			 + " and jor.delete_flag = 'N'"
+ 				+ "  group by "
     			+ group_condition
     			+ " , joa.type"
     			+ "	order by cast(CONCAT( YEAR (jor.create_stamp), '-', MONTH (jor.create_stamp) ) AS CHAR ),joa.type";

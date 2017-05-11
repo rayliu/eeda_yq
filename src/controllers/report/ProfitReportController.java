@@ -146,7 +146,8 @@ public class ProfitReportController extends Controller {
     			+ " left join party p on p.id = jo.customer_id"
     			+ " WHERE jo.office_id="+office_id
     			+ condition
-    			+ " ) A where 1=1"
+    			 + " and jo.delete_flag = 'N'"
+ 				+ " ) A where 1=1"
     			+ " GROUP BY A.order_export_date,A.customer_id"
     			+ " )B ORDER BY B.customer_id , B.order_export_date"
     			+ "  ";
@@ -273,7 +274,8 @@ public class ProfitReportController extends Controller {
     			+ " left join party p on p.id = jo.customer_id"
     			+ " WHERE jo.office_id="+office_id
     			+ condition
-    			+ " ) A where 1=1"
+    			 + " and jo.delete_flag = 'N'"
+ 				+ " ) A where 1=1"
     			+ " GROUP BY A.order_export_date,A.customer_id"
     			+ " )B ORDER BY B.customer_id , B.order_export_date"
     			+ "  ";

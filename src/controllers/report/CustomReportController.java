@@ -60,7 +60,8 @@ public class CustomReportController extends Controller {
     			+ " LEFT JOIN job_order jor on jor.id = joa.order_id" 
     			+ " where joa.type = '报关' "
     			+ " and jor.office_id="+office_id
-    			+ " )A where 1=1" ;
+    			 + " and jor.delete_flag = 'N'"
+ 				+ " )A where 1=1" ;
     	
     	String condition = DbUtils.buildConditions(getParaMap());
         

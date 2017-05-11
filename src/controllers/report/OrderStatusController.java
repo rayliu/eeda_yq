@@ -86,7 +86,9 @@ public class OrderStatusController extends Controller {
     			+ " ) cost_app_no"
     			+ " from job_order jor"
     			+ " LEFT JOIN party p on p.id = jor.customer_id"
-    			+ " where jor.office_id = "+ office_id+") a where 1 = 1";
+    			+ " where jor.office_id = "+ office_id
+    			 + " and jor.delete_flag = 'N'"
+ 				+") a where 1 = 1";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
     	

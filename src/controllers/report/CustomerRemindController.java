@@ -63,7 +63,8 @@ public class CustomerRemindController extends Controller{
         		+" 		AND p.type = 'CUSTOMER' "
         		+" 		and p.customer_remind = "+customer_remind
         		+" 		and (o.id = " + parentID + " or o.belong_office = " + parentID + ") "
-        		+" 	) A "
+        		 + " and jor.delete_flag = 'N'"
+ 				+" 	) A "
         		+" WHERE 1 = 1 ";
       
         String condition = DbUtils.buildConditions(getParaMap());

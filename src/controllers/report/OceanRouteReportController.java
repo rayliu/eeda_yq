@@ -148,7 +148,8 @@ public class OceanRouteReportController extends Controller {
                 + "        WHERE jo.type in ('出口柜货', '进口柜货','出口散货', '进口散货') "
                 + "           and jo.office_id="+office_id
                 + condition
-                + " ) A where 1=1"
+                + " and jo.delete_flag = 'N'"
+				+ " ) A where 1=1"
                 + " GROUP BY A.order_export_date,A.customer_id, A.route"
                 + " ORDER BY A.customer_id , A.order_export_date";
         
@@ -273,7 +274,8 @@ public class OceanRouteReportController extends Controller {
                 + "        WHERE jo.type in ('出口柜货', '进口柜货','出口散货', '进口散货') "
                 + "           and jo.office_id="+office_id
                 + condition
-                + " ) A where 1=1"
+                + " and jo.delete_flag = 'N'"
+				+ " ) A where 1=1"
                 + " GROUP BY A.order_export_date,A.customer_id, A.route"
                 + " ORDER BY A.customer_id , A.order_export_date"
                 + " )B";

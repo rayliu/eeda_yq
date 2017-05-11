@@ -138,7 +138,8 @@ public class AirRouteReportController extends Controller {
                 + "     WHERE jo.type in ('出口空运', '进口空运')"
                 + "           and jo.office_id="+office_id
                 + condition
-                + " ) A where 1=1"
+                + " and jo.delete_flag = 'N'"
+				+ " ) A where 1=1"
                 + " GROUP BY A.order_export_date,A.customer_id, A.route"
                 + " ORDER BY A.customer_id , A.order_export_date";
         
@@ -253,7 +254,8 @@ public class AirRouteReportController extends Controller {
                 + "     WHERE jo.type in ('出口空运', '进口空运')"
                 + "           and jo.office_id="+office_id
                 + condition
-                + " ) A where 1=1"
+                + " and jo.delete_flag = 'N'"
+				+ " ) A where 1=1"
                 + " GROUP BY A.order_export_date,A.customer_id, A.route"
                 + " ORDER BY A.customer_id , A.order_export_date"
                 + ") B";
