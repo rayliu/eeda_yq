@@ -315,8 +315,10 @@ public class CustomJobOrderController extends Controller {
 	    }else if("plan_doc".equals(type)){
 	    	itemSql = "select jod.*,u.c_name from custom_plan_order_doc jod "
 	    			+ " left join user_login u on jod.uploader=u.id "
-	    			+ " left join custom_job_order cjo on cjo.plan_order_id=jod.order_id"
-	    			+ " where cjo.id=? order by jod.id";
+	    			+ " left join custom_job_order cjo on cjo.plan_order_id=jod.order_id "
+	    			+ " where cjo.id=? "
+	    			+ " and cjo.delete_flag = 'N'"
+					+ " order by jod.id";
 	    	itemList = Db.find(itemSql, orderId);
 	    }else if("mail".equals(type)){
 	    	itemSql = "select * from custom_job_order_sendMail where order_id=? order by id";
@@ -338,7 +340,9 @@ public class CustomJobOrderController extends Controller {
     	String sql = "select c.*,u.c_name,p.abbr from custom_job_order c "
     			+ " left join user_login u on u.id = c.creator"
     			+ " left join party p on p.id = c.customer_id"
-    			+ " where c.id = ?";
+    			+ " where c.id = ?"
+    			+ " and c.delete_flag = 'N'"
+				+ "";
     	Record r = Db.findFirst(sql,id);
     	setAttr("order", r);
     	//报关
@@ -477,7 +481,8 @@ public class CustomJobOrderController extends Controller {
     			+ " left join party p on p.id = jo.customer_id"
     			+ " left join user_login u on u.id = jo.creator"
     			+ " where jo.office_id="+office_id
-         	    + " ) A where 1=1 ";
+    			+ " and jo.delete_flag = 'N'"
+				+ " ) A where 1=1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
 
