@@ -19,10 +19,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
         }else{
     		if(status=='已完成'){
     			$('#confirmCompleted').attr('disabled', true);
-    			$('#saveBtn').attr('disabled', true);
+//    			$('#saveBtn').attr('disabled', true);
     		}
     		if(submit_flag=='Y'){
-    			$('#saveBtn').attr('disabled', true);
+//    			$('#saveBtn').attr('disabled', true);
     			$('#submitBtn').attr('disabled', true);
     		}
         }

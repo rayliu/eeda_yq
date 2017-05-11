@@ -1733,7 +1733,7 @@ public class JobOrderController extends Controller {
         }
         String sql = "";
         String ref_office = "";
-        Record relist = Db.findFirst("select DISTINCT group_concat(ref_office_id) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
         if(relist!=null){
         	ref_office = " or jor.office_id in ("+relist.getStr("office_id")+")";
         }

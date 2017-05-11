@@ -171,13 +171,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return field_html;
 	                }
 	            },
-	            { "data": "ETA","width": "60px",
+	            { "data": "DELIVERY","width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    var field_html = template('table_date_field_template',
 		                    {
-		                        id: 'ETA',
+		                        id: 'DELIVERY',
 		                        value: data.substr(0,10),
 		                        style:'width:80px'
 		                    }
