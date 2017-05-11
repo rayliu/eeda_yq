@@ -101,7 +101,8 @@ public class ExpenseEntryController extends Controller {
 				+" LEFT JOIN fin_item f ON f.id = cpoa.charge_id "
 				+" WHERE "
 				+" tracking_no is not null and (cpo.office_id = "+office_id+" or to_office_id="+office_id+")"
-				+" GROUP BY "
+				 +" and cpo.delete_flag='N' "
+				 +" GROUP BY "
 				+" 	cpoa.order_id "
 				+" ORDER BY create_stamp desc "
 				+" )A where 1=1 ";

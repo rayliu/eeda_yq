@@ -128,6 +128,7 @@ public class CmsChargeCheckOrderController extends Controller {
 			 +" LEFT JOIN party p on p.id = cpoa.sp_id "
 			 +" where 1 = 1 "
 			 + checkCondition
+			 +" and cpo.delete_flag='N' "
 			 + " and cpoa.audit_flag='Y' and cpoa.bill_flag='N'  and cpo.office_id = "+office_id
 			 +"  GROUP BY cpoa.id " 
 			 + " ) B "
@@ -214,7 +215,9 @@ public class CmsChargeCheckOrderController extends Controller {
 		   				 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
 		   				 +" LEFT JOIN fin_item f on f.id = cpoa.charge_id "
 		   				 +" LEFT JOIN party p on p.id = cpoa.sp_id "
-		   				 +" where cpoa.id in("+ids+")";
+		   				 +" where cpoa.id in("+ids+")"
+		   				 +" and cpo.delete_flag='N' "
+		   				 + "";
 				}else{
 			   		 sql = "SELECT cpo.order_no,cpoa.id id,cpo.id order_id,cpo.date_custom,cpo.booking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
 		   				 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
@@ -223,7 +226,9 @@ public class CmsChargeCheckOrderController extends Controller {
 		   				 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
 		   				 +" LEFT JOIN fin_item f on f.id = cpoa.charge_id "
 		   				 +" LEFT JOIN party p on p.id = cpoa.sp_id "
-		   				 +" where caci.custom_charge_order_id ="+order_id;
+		   				 +" where caci.custom_charge_order_id ="+order_id
+		   				 +" and cpo.delete_flag='N' "
+		   				 ;
 						}	
     	List<Record> re = Db.find(sql);
     	return re;
@@ -240,7 +245,8 @@ public class CmsChargeCheckOrderController extends Controller {
 				+ " LEFT JOIN custom_plan_order cpo on cpo.id=cpoa.order_id "
 				+ " left join party p on p.id = cpo.application_unit "
 				+ " WHERE cpoa.id in("+ ids +")"
-				+ " group by cpoa.order_id";
+				 +" and cpo.delete_flag='N' "
+				 + " group by cpoa.order_id";
 		Record rec =Db.findFirst(sql);
 		rec.set("total_amount", total_amount);
 		rec.set("itemList", getItemList(ids,""));
@@ -419,7 +425,8 @@ public class CmsChargeCheckOrderController extends Controller {
 						+" 							 left join custom_arap_charge_application_order acao on caol.application_order_id = acao.id "
 						+" 							  left join custom_arap_charge_order aco on aco.id=caol.charge_order_id "
 						+" 						   where acao.id="+order_ids+query_fin_name
-						+" 							 GROUP BY cpoa.id "
+						 +" and cpo.delete_flag='N' "
+						 +" 							 GROUP BY cpoa.id "
 						+" 							 ORDER BY aco.order_no, cpo.order_no";
 				
 			}else{
@@ -440,7 +447,8 @@ public class CmsChargeCheckOrderController extends Controller {
 						+" 						  where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
 							+currency_code
 							+query_exchange_currency+query_fin_name
-							+" GROUP BY joa.id"
+							 +" and cpo.delete_flag='N' "
+							 +" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
 			}		
 			

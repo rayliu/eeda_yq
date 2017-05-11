@@ -833,7 +833,8 @@ public class CustomChargeReuqestrController extends Controller {
 						+" 							 left join custom_arap_charge_application_order acao on caol.application_order_id = acao.id "
 						+" 							  left join custom_arap_charge_order aco on aco.id=caol.charge_order_id "
 						+ " where  cpoa.audit_flag='Y' and cpoa.billconfirm_flag = 'Y'  and cpoa.create_flag='N'  and cpo.office_id = "+office_id
-      				+ " GROUP BY cpoa.id "
+						 +" and cpo.delete_flag='N' "
+						 + " GROUP BY cpoa.id "
     				+ " ) B where 1=1 ";
         	}else{
         		 sql = "select * from(  "
@@ -852,7 +853,8 @@ public class CustomChargeReuqestrController extends Controller {
 						+" 							 left join custom_arap_charge_application_order acao on caol.application_order_id = acao.id "
 						+" 						  left join custom_arap_charge_order aco on aco.id=caol.charge_order_id "
 						+ " where cpoa.order_type='charge' and cpoa.audit_flag='Y' and cpoa.billconfirm_flag = 'Y' and cpoa.create_flag='N' and cpo.office_id = "+office_id
-         				+ " GROUP BY cpoa.id "
+						 +" and cpo.delete_flag='N' "
+						 + " GROUP BY cpoa.id "
          				+ " ) B where 1=1 ";
         			}
         

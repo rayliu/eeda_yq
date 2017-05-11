@@ -1404,7 +1404,7 @@ public class JobOrderController extends Controller {
 	        itemSql = "select cpo.ref_job_order_id, jocd.id,jocd.doc_name,jocd.upload_time,jocd.remark,"
 	                + " ul.c_name c_name,jocd.uploader, jocd.share_flag ,null share_flag from job_order_custom_doc jocd"
                     + " LEFT JOIN user_login ul on ul.id = jocd.uploader"
-                    + " LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id and jocd.share_flag = 'Y'"
+                    + " LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id and jocd.share_flag = 'Y' and cpo.delete_flag='N'"
                     + " where jocd.order_id =?"
                     + " union all"
                     + " select cpo.ref_job_order_id, null id ,jod.doc_name,jod.upload_time,jod.remark,u.c_name c_name,"
@@ -1412,7 +1412,7 @@ public class JobOrderController extends Controller {
                     + " from custom_plan_order_doc jod "
                     + " left join custom_plan_order cpo on cpo.id = jod.order_id"
                     + " left join user_login u on jod.uploader=u.id "
-                    + " where cpo.ref_job_order_id=?";
+                    + " where cpo.ref_job_order_id=? and cpo.delete_flag='N'";
 	    	itemList = Db.find(itemSql, orderId, orderId);
 	    }else if("custom_app".equals(type)){
 	    	itemList = Db.find("SELECT"
@@ -1423,7 +1423,7 @@ public class JobOrderController extends Controller {
 	    			+ " LEFT JOIN user_login ul ON ul.id = cjo.creator"
 	    			+ " LEFT JOIN user_login ul2 ON ul2.id = cjo.fill_by"
 	    			+ " left join office o on o.id = cjo.to_office_id"
-	    			+ " WHERE cjo.ref_job_order_id = ? ",orderId);
+	    			+ " WHERE cjo.ref_job_order_id = ?  and cjo.delete_flag='N'",orderId);
 	    }
 		return itemList;
 	}
