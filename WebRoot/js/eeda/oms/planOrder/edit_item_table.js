@@ -133,11 +133,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                	return "<a style='width:90'  href='/bookOrder/edit?id="+full.BOOK_ORDER_ID+"'target='_blank'>"+data+"</a>";
 	                }
 	            },
-	            { "data": "JOB_ORDER_TYPE","width": "50px",
+	            { "data": "JOB_ORDER_TYPE","width": "60px",
 	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var str = '<select style="width:70px" name="job_order_type" class="form-control search-control job_order_type">'
+	                    var str = '<select style="width:80px" name="job_order_type" class="form-control search-control job_order_type">'
 		                   +'<option value="出口柜货" '+(data=='出口柜货' ? 'selected':'')+'>出口柜货</option>'
 		                   +'<option value="进口柜货" '+(data=='进口柜货' ? 'selected':'')+'>进口柜货</option>'
 		                   +'<option value="出口散货" '+(data=='出口散货' ? 'selected':'')+'>出口散货</option>'
@@ -157,7 +157,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return str;
 	                }
 	            },
-	            { "data": "FACTORY_LOADING_TIME" ,"width": "50px",
+	            { "data": "FACTORY_LOADING_TIME" ,"width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
@@ -165,13 +165,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                    {
 		                        id: 'FACTORY_LOADING_TIME',
 		                        value: data.substr(0,10),
-		                        style:'width:70px'
+		                        style:'width:80px'
 		                    }
 		                );
 	                    return field_html;
 	                }
 	            },
-	            { "data": "ETA","width": "50px",
+	            { "data": "ETA","width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
@@ -179,7 +179,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                    {
 		                        id: 'ETA',
 		                        value: data.substr(0,10),
-		                        style:'width:70px'
+		                        style:'width:80px'
 		                    }
 		                );
 	                    return field_html;
@@ -300,7 +300,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                   return '<input style="width:80px" type="text" name="VOYAGE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "ETA","width": "50px",
+	            { "data": "ETA","width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
@@ -308,14 +308,14 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                    {
 		                        id: 'ETA',
 		                        value: data.substr(0,10),
-		                        style:'width:70px'
+		                        style:'width:80px'
 		                        
 		                    }
 		                );
 	                    return field_html;
 	                }
 	            },
-	            { "data": "ETD","width": "50px",
+	            { "data": "ETD","width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
@@ -323,7 +323,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                    {
 		                        id: 'ETD',
 		                        value: data.substr(0,10),
-		                        style:'width:70px'
+		                        style:'width:80px'
 		                    }
 		                );
 	                    return field_html;
