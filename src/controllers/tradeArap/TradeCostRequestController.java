@@ -1044,7 +1044,8 @@ public class TradeCostRequestController extends Controller {
       				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
       				+ " left join fin_item f on f.id = joa.charge_id"
       				+ " where  joa.audit_flag='Y' and joa.billconfirm_flag = 'Y'  and joa.create_flag='N'  and jo.office_id = "+office_id
-      				+ " GROUP BY joa.id "
+      				 + " and jo.delete_flag = 'N'"
+     				+ " GROUP BY joa.id "
     				+ " ) B where 1=1 ";
         	}else{
         		 sql = "select * from(  "
@@ -1072,6 +1073,7 @@ public class TradeCostRequestController extends Controller {
          				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
          				+ " left join fin_item f on f.id = joa.charge_id"
          				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.billconfirm_flag = 'Y' and joa.create_flag='N' and jo.office_id = "+office_id
+         				 + " and jo.delete_flag = 'N'"
          				+ " GROUP BY joa.id "
          				+ " ) B where 1=1 ";
         			}

@@ -130,7 +130,8 @@ public class TradeCostCheckOrderController extends Controller {
 	                + " left join currency cur1 on cur1.id=joa.exchange_currency_id "
 	                +" left join fin_item fi on joa.charge_id = fi.id "
 	                + " where joa.audit_flag='Y' and joa.bill_flag='N' and joa.id in("+ids+") "
-	                + " GROUP BY joa.id"
+	                + " and jo.delete_flag = 'N'"
+					+ " GROUP BY joa.id"
 	                + " ORDER BY jo.order_no";	
 		}else{
 			sql = " select joa.id,joa.type,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
@@ -157,7 +158,8 @@ public class TradeCostCheckOrderController extends Controller {
 					+ " left join trade_arap_cost_order aco on aco.id = aci.cost_order_id "
 					+ " left join fin_item fi on joa.charge_id = fi.id "
 					+ " where joa.id = aci.ref_order_id and aco.id in ("+order_id+")"+currency_code
-	                + " GROUP BY joa.id "
+					 + " and jo.delete_flag = 'N'"
+						+ " GROUP BY joa.id "
 	                + " ORDER BY aco.order_no, jo.order_no ";
 		}
     	
@@ -207,6 +209,7 @@ public class TradeCostCheckOrderController extends Controller {
 							+" left join trade_arap_cost_application_order acao on caol.application_order_id = acao.id"
 							 +" left join trade_arap_cost_order aco on aco.id=caol.cost_order_id"
 						  +" where acao.id="+order_ids+query_fin_name
+						  + " and jo.delete_flag = 'N'"
 							+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
 				
@@ -237,6 +240,7 @@ public class TradeCostCheckOrderController extends Controller {
 						    +" where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
 						    +currency_code
 						    +query_exchange_currency+query_fin_name
+						    + " and jo.delete_flag = 'N'"
 							+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
 			}		
@@ -266,7 +270,8 @@ public class TradeCostCheckOrderController extends Controller {
 				+ " left join party p1 on p1.id=jo.customer_id "
 				+ " left join currency cur on cur.id=joa.currency_id "
 				+ " where joa.id in ( "+ids+" ) "
-				+ " GROUP BY joa.id ";
+				 + " and jo.delete_flag = 'N'"
+					+ " GROUP BY joa.id ";
 				
 		
 		String sqlTotal = "select count(1) total from ("+sql+") C";
@@ -316,7 +321,8 @@ public class TradeCostCheckOrderController extends Controller {
       				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
       				+ " left join fin_item f on f.id = joa.charge_id"
       				+ " where joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
-      				+ " GROUP BY joa.id "
+      				 + " and jo.delete_flag = 'N'"
+     				+ " GROUP BY joa.id "
     				+ " ) B where 1=1 ";
        	 
        	}else{
@@ -336,6 +342,7 @@ public class TradeCostCheckOrderController extends Controller {
 	 				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
 	 				+ " left join fin_item f on f.id = joa.charge_id"
 	 				+ " where joa.order_type='cost' and joa.audit_flag='Y' and joa.bill_flag='N' and jo.office_id = "+office_id
+	 				 + " and jo.delete_flag = 'N'"
 	 				+ " GROUP BY joa.id "
 	 				+ " ) B where 1=1 ";
        	}
