@@ -64,10 +64,12 @@ public class PlanOrderController extends Controller {
    		setAttr("office", office);
    		
    		Record re = Db.findFirst("select * from party where type='SP' and ref_office_id is not null and office_id = ?",office_id);
-   		Long ref_office_id = re.getLong("ref_office_id");
-   		Office ref_office = Office.dao.findById(ref_office_id);
-   		setAttr("ref_office", ref_office);
-   		setAttr("ref_office",ref_office);
+   		if(re!=null){
+   			Long ref_office_id = re.getLong("ref_office_id");
+   	   		Office ref_office = Office.dao.findById(ref_office_id);
+   	   		setAttr("ref_office", ref_office);
+   		}
+   		
 		
         render("/oms/PlanOrder/PlanOrderEdit.html");
     }
@@ -382,9 +384,16 @@ public class PlanOrderController extends Controller {
             newDateStr=sdf.format(date);
             
             Long officeNo = null;//生成单号要用到的office_id
-            Record office = Db.findFirst("select office_id from party where ref_order_id = ?",office_id);
+            Record office = Db.findFirst("select office_id from party where ref_office_id = ?",office_id);
             if(office != null){
             	officeNo = office.getLong("office_id");
+            }else{
+            	try {
+					throw new Exception("不存在ref_customer");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
             	
        		String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, officeNo==null?office_id:officeNo);
