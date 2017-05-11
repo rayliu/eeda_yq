@@ -107,8 +107,8 @@ public class MainController extends Controller {
             if(savedRequestUrl!=null){
                 System.out.println("111111");
             	setSessionAttr(ShiroKit.getSavedRequestKey(), null);
-            	int index = savedRequestUrl.indexOf("/edit");
-                if(index>0){
+                if(savedRequestUrl.split("/").length>2){
+                    int index = savedRequestUrl.lastIndexOf("/");
                     savedRequestUrl = savedRequestUrl.substring(0, index);
                 }
             	redirect(savedRequestUrl);

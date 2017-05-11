@@ -22,7 +22,7 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
         error: function (xhr, e) {
           
             if(xhr.responseText.indexOf('忘记密码')>0){
-              alert( '您未登录, 请重新登录.' );
+              alert( 'error: 您未登录, 请重新登录.' );
             }
             // if (x.status == 403) {
             //     window.location.reload(); 
@@ -32,7 +32,7 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
           
            //console.log("ajaxSetup textStatus:"+textStatus);
            if(XMLHttpRequest.responseText.indexOf('忘记密码')>0){
-              alert( '您未登录, 请重新登录.' );
+              alert( '超时退出, 请重新登录.' );
             }
            // var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus"); //通过XMLHttpRequest取得响应头，sessionstatus，  
            // if(sessionstatus=="timeout"){
@@ -426,6 +426,9 @@ eeda.refreshUrl = refreshUrl;
             tableFieldList.show();
             eeda._inputField = inputField;
             eeda._hiddenField = hiddenField;
+            	  inputField.val(data[0].NAME);
+                tableFieldList.hide();
+            if(!inputStr && data.length>1){
             //tableFieldList;
   	    },'json');
 		  });
@@ -466,21 +469,17 @@ eeda.refreshUrl = refreshUrl;
                   nextTdInput=null;
               }
           }
-
-          //sandbox 禁止模拟按键触发
-          // var event = $.Event("keydown", {keyCode: 9});// key 'tab'
-          // inputField.focus().trigger(event);
-
         }
       });
 
 		  // 1 没选中客户，焦点离开，隐藏列表
 		  $(document).on('click', function(event){
+        console.log("tableFieldList.is(':visible') == "+tableFieldList.is(':visible'));
           if (tableFieldList.is(':visible') ){
               var clickedEl = $(this);
               var hiddenField = eeda._hiddenField;
               if ($(this).find('a').val().trim().length ==0) {
-                hiddenField.val('');
+                  hiddenField.val('');
               };
               tableFieldList.hide();
           }
