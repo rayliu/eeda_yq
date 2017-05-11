@@ -93,6 +93,9 @@ public class JobOrderReportController extends Controller {
 			 outFileName = "/download/"+hbl_no;
 		}
 		
+		//打印的同事保存到相关信息文档
+		//savePDF(order_id,outFileName);
+		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
         fileName = getContextPath() + fileName;
@@ -100,6 +103,23 @@ public class JobOrderReportController extends Controller {
 		String file = myPrint(fileName, outFileName,hm);
 		renderText(file.substring(file.indexOf("download")-1));
 	}
+	
+	
+//	public void savePDF(String order_id,String outFileName){
+//		Record jobDoc = new Record();
+//    	jobDoc.set("order_id", order_id);
+//    	jobDoc.set("type", bookOrderDoc.getStr("type"));
+//    	jobDoc.set("uploader", bookOrderDoc.getLong("uploader"));
+//    	jobDoc.set("doc_name", outFileName);
+//    	jobDoc.set("upload_time", bookOrderDoc.get("upload_time"));
+//    	jobDoc.set("remark", bookOrderDoc.getStr("remark"));
+//    	jobDoc.set("sender", bookOrderDoc.getLong("sender"));
+//    	jobDoc.set("send_time", bookOrderDoc.get("send_time"));
+//    	jobDoc.set("send_status", bookOrderDoc.getStr("send_status"));
+//    	jobDoc.set("ref_doc_id", id);
+//    	Db.save("job_order_doc", jobDoc);
+//	}
+	
 
 	public void printOceanBooking() {
 		

@@ -62,6 +62,12 @@ public class PlanOrderController extends Controller {
    		long office_id = user.getLong("office_id");
    		Office office = Office.dao.findById(office_id);
    		setAttr("office", office);
+   		
+   		Record re = Db.findFirst("select * from party where type='SP' and ref_office_id is not null and office_id = ?",office_id);
+   		Long ref_office_id = re.getLong("ref_office_id");
+   		Office ref_office = Office.dao.findById(ref_office_id);
+   		setAttr("ref_office", ref_office);
+   		setAttr("ref_office",ref_office);
 		
         render("/oms/PlanOrder/PlanOrderEdit.html");
     }
@@ -92,7 +98,13 @@ public class PlanOrderController extends Controller {
    			DbUtils.setModelValues(dto, planOrder);
    			
    			//需后台处理的字段
-   			planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("JH", office_id));
+   			if(office_id==8){
+   				planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("XXJH", office_id));
+   			}else if(office_id==1){
+   				planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("YQJH", office_id));
+   			}
+   			
+   			
    			planOrder.set("creator", user.getLong("id"));
    			planOrder.set("create_stamp", new Date());
    			planOrder.set("office_id", office_id);
@@ -379,12 +391,20 @@ public class PlanOrderController extends Controller {
         	order.set("update_stamp", new Date());
             order.set("office_id", office_id);
             
+            Long entrusted_id = re.getLong("entrusted_id");
+            if(StringUtils.isNotBlank(entrusted_id.toString())){
+            	Record customer = Db.findFirst("select * from party where type='CUSTOMER' and ref_office_id = ? ",entrusted_id);
+            	if(customer!=null){
+            		Long customer_id = customer.getLong("id");
+            		order.set("customer_id", customer_id);
+            	}
+            }
+            
             order.set("type", item.getStr("job_order_type"));
             order.set("order_export_date", item.get("factory_loading_time"));
             order.set("transport_type", item.getStr("transport_type"));
             order.set("plan_order_no", re.getStr("order_no"));
             order.set("plan_order_id", plan_order_id);
-            order.set("customer_id", re.getLong("customer_id"));
             order.set("plan_order_item_id", plan_order_item_id);
             order.set("pieces", item.get("pieces"));
             order.set("net_weight", item.get("net_weight"));
