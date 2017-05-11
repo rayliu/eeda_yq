@@ -409,7 +409,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
-                        return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                        if(full.REMARK=='自动生成'){
+                        	return '<a class="doc_name" href="/download/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                        }else{
+                        	return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                        }
                     }
                 },
                 { "data": "C_NAME","width": "180px",
@@ -502,7 +506,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                       "render": function ( data, type, full, meta ) {
                           if(!data)
                               data='';
-                          return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                          if(full.REMARK=='自动生成'){
+                          	return '<a class="doc_name" href="/download/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                          }else{
+                          	return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                          }
                       }
                   },
                   { "data": "C_NAME","width": "180px",
