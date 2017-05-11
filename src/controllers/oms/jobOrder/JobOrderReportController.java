@@ -2,6 +2,7 @@ package controllers.oms.jobOrder;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,7 @@ public class JobOrderReportController extends Controller {
 		}
 		
 		//打印的同事保存到相关信息文档
-		//savePDF(order_id,outFileName);
+		savePDF(order_id,hbl_no,"two");
 		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
@@ -105,20 +106,17 @@ public class JobOrderReportController extends Controller {
 	}
 	
 	
-//	public void savePDF(String order_id,String outFileName){
-//		Record jobDoc = new Record();
-//    	jobDoc.set("order_id", order_id);
-//    	jobDoc.set("type", bookOrderDoc.getStr("type"));
-//    	jobDoc.set("uploader", bookOrderDoc.getLong("uploader"));
-//    	jobDoc.set("doc_name", outFileName);
-//    	jobDoc.set("upload_time", bookOrderDoc.get("upload_time"));
-//    	jobDoc.set("remark", bookOrderDoc.getStr("remark"));
-//    	jobDoc.set("sender", bookOrderDoc.getLong("sender"));
-//    	jobDoc.set("send_time", bookOrderDoc.get("send_time"));
-//    	jobDoc.set("send_status", bookOrderDoc.getStr("send_status"));
-//    	jobDoc.set("ref_doc_id", id);
-//    	Db.save("job_order_doc", jobDoc);
-//	}
+	public void savePDF(String order_id,String outFileName,String level){
+		Record jobDoc = new Record();
+    	jobDoc.set("order_id", order_id);
+    	jobDoc.set("type", level);
+    	jobDoc.set("uploader", LoginUserController.getLoginUserId(this));
+    	jobDoc.set("doc_name", outFileName+".pdf");
+    	jobDoc.set("upload_time", new Date());
+    	jobDoc.set("remark", "自动生成");
+    	jobDoc.set("send_status", "新建");
+    	Db.save("job_order_doc", jobDoc);
+	}
 	
 
 	public void printOceanBooking() {
