@@ -88,6 +88,12 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    })
 	    
 
+	    var submit_flag = $('#submit_flag').val();
+	    
+	    var show='';
+	    if(submit_flag=='Y'){
+	    	show = 'disabled';
+	    }
 	    //------------事件处理
 	    var cargoTable = eeda.dt({
             id: 'cargo_table',
@@ -137,7 +143,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            	"render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var str = '<select style="width:80px" name="job_order_type" class="form-control search-control job_order_type">'
+	                    
+	                    var str = '<select style="width:80px" name="job_order_type" '+show+' class="form-control search-control job_order_type">'
 		                   +'<option value="出口柜货" '+(data=='出口柜货' ? 'selected':'')+'>出口柜货</option>'
 		                   +'<option value="进口柜货" '+(data=='进口柜货' ? 'selected':'')+'>进口柜货</option>'
 		                   +'<option value="出口散货" '+(data=='出口散货' ? 'selected':'')+'>出口散货</option>'
@@ -165,7 +172,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                    {
 		                        id: 'FACTORY_LOADING_TIME',
 		                        value: data.substr(0,10),
-		                        style:'width:80px'
+		                        style:'width:80px',
+		                        disabled:show
 		                    }
 		                );
 	                    return field_html;
@@ -179,7 +187,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                    {
 		                        id: 'DELIVERY',
 		                        value: data.substr(0,10),
-		                        style:'width:80px'
+		                        style:'width:80px',
+		                        disabled:show
 		                    }
 		                );
 	                    return field_html;
@@ -189,7 +198,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input style="width:120px" type="text" name="PICKUP_ADDR" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:120px" type="text" '+show+' name="PICKUP_ADDR" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "POL" ,"width": "80px",
@@ -201,7 +210,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                        id: 'POL',
 		                        value: data,
 		                        display_value: full.POL_NAME,
-		                        style:'width:100px'
+		                        style:'width:100px',
+		                        disabled:show
 		                    }
 		                );
 	                    return field_html;
@@ -216,7 +226,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                        id: 'POD',
 		                        value: data,
 		                        display_value: full.POD_NAME,
-		                        style:'width:100px'
+		                        style:'width:100px',
+		                        disabled:show
 		                    }
 		                );
 	                    return field_html;
@@ -226,49 +237,49 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input style="width:50px" type="text" name="PIECES" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:50px" type="text" '+show+' name="PIECES" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "GROSS_WEIGHT","width": "50px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input style="width:70px" type="text" name="GROSS_WEIGHT" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:70px" type="text" '+show+' name="GROSS_WEIGHT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "VOLUME","width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input style="width:80px" type="text" name="VOLUME" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:80px" type="text" '+show+' name="VOLUME" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "CONTAINER_TYPE","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                	if(!data)
 	                        data='';
-	                   return '<input style="width:120px" type="text" name="CONTAINER_TYPE" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:120px" type="text" '+show+' name="CONTAINER_TYPE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "CONTAINER_AMOUNT","width": "30px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input style="width:50px" type="text" name="CONTAINER_AMOUNT" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:50px" type="text" '+show+' name="CONTAINER_AMOUNT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "TRUCK_TYPE","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input style="width:120px" type="text" name="TRUCK_TYPE" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:120px" type="text" '+show+' name="TRUCK_TYPE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "CARGO_NAME","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input style="width:120px" type="text" name="CARGO_NAME" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:120px" type="text" '+show+' name="CARGO_NAME" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "CARRIER","width": "60px",
