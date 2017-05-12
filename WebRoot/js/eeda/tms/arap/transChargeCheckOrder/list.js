@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validate_cn', 'dtColReorder'], function ($, metisMenu) { 
 
     $(document).ready(function() {
     	document.title = '应收对账单查询 | '+document.title;
@@ -70,7 +70,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            { "data": "REMARK", "width": "80px"}
 	          ]
 	      });
-
+		
+			  
+        //base on config hide cols
+      dataTable.columns().eq(0).each( function(index) {
+          var column = dataTable.column(index);
+          $.each(cols_config, function(index, el) {
+              
+              if(column.dataSrc() == el.COL_FIELD){
+                
+                if(el.IS_SHOW == 'N'){
+                  column.visible(false, false);
+                }else{
+                  column.visible(true, false);
+                }
+              }
+          });
+      });
 
 		//选择是否是同一个结算公司
 		$('#uncheckedEeda-table').on('click',"input[name='order_check_box']",function () {
