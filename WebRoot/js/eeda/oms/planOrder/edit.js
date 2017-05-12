@@ -38,7 +38,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
     		$.post('/planOrder/confirmCompleted', {id:id}, function(data){
     	            $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
     	            $('#saveBtn').attr('disabled', true);
-                    $.unblockUI();
+    	            salesOrder.refleshTabl(id);
     	    },'json').fail(function() {
     	        $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
     	        $('#confirmCompleted').attr('disabled', false);
@@ -147,7 +147,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
          		 if(data){
          			 $('#saveBtn').attr('disabled', true);
          			 $.scojs_message('提交成功', $.scojs_message.TYPE_OK);
-         			 $.unblockUI();
+         			 salesOrder.refleshTabl(order_id);
          		 }
          	 }).fail(function() {
                  $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
