@@ -22,6 +22,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	     }
       var dataTable = eeda.dt({
           id: 'eeda_table',
+            colReorder: true,
           serverSide: true, //不打开会出现排序不对
           ajax:{
                 //url: "/transCostCheckOrder/list",
