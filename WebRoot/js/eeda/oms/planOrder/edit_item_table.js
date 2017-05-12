@@ -91,7 +91,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    var submit_flag = $('#submit_flag').val();
 	    
 	    var show='';
-	    if(submit_flag=='Y'){
+	    if(submit_flag=='Y' ){
 	    	show = 'disabled';
 	    }
 	    //------------事件处理
@@ -523,6 +523,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
+	                    if(full.CONFIRM_SHIPMENT == 'Y'){
+	                		$($($('#cargo_table tr')[meta.row+1]).find('input,select')).attr('disabled',true)
+	                    }
 	                    return data;
 	                }
 	            }
