@@ -14,6 +14,7 @@
         	   	<div class="col-lg-12">
 						<form id="applicationForm" role="form">
 						    <input id='back' name='back' type="hidden" value="${back!''}">
+                <input id="confirmVal" type="hidden">
 							<div class="row search_panel">
 								<div class="col-lg-4">
 									<input id="rowIndex" type="text" hidden>
@@ -77,7 +78,7 @@
 					
 					<button id="searchBtn1" class="btn btn_grey" type="button">查询</button>
                     <button id="resetBtn1" class="btn btn_white" type="button">清空条件</button>
-                 <input id="confirmVal" type="hidden">   
+                    
 					</form>
 				</div>
 		    	</div>
@@ -190,7 +191,7 @@
 	                              }){} %>
 	                     </div>
                   </div> 
-                  <div class="row" id="pay_remark_hide" style="">
+                  <div class="row">
                         <div class="col-lg-8">
                             <label>备注</label>
                            <textarea id='pay_remark' class="form-control" rows="3" name="pay_remark">${order.pay_remark!''}</textarea>

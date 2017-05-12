@@ -688,6 +688,7 @@ $(document).ready(function() {
     //弹出下拉框 确认收款时间
       $("#application_table").on('click','.confirmBtn',function(){
             $('#chargeRe_table_msg_btn').click();           
+            $('#confirmVal').val('');
             var checkbox1=$(this).parent().parent().parent().find('[type=checkbox]');
             $('#table_id').val($(this).parent().parent().parent().parent().parent().attr("id"));
             $('#rowIndex').val(checkbox1.val());
@@ -718,6 +719,7 @@ $(document).ready(function() {
 
     //弹出下拉框 确认收款时间
       $("#checked_application_table").on('click','.confirmBtn',function(){
+            $('#confirmVal').val('');
             $('#chargeRe_table_msg_btn').click();           
             var checkbox1=$(this).parent().parent().parent().find('[type=checkbox]');
             $('#table_id').val($(this).parent().parent().parent().parent().parent().attr("id"));
@@ -845,18 +847,14 @@ $(document).ready(function() {
                                         }
                                     }
                                 }
-                            }else{
-                                var td=$(rows).find('.confirmBtn');
-                                var rowIndex = $('#rowIndex').val();
-                                $(td[rowIndex]).attr('disabled',true);
-                                $(td[rowIndex]).parent().parent().parent().find('.status').html(data.STATUS);
+                                if(confirmVal=="坏账确认"){
+                                     $("#status").val('该笔为坏账');
+                                     $.scojs_message('确认坏账成功', $.scojs_message.TYPE_OK);
+                                 }else{
+                                     $.scojs_message('收款成功', $.scojs_message.TYPE_OK);     
+                                } 
                             }
-                            if(confirmVal=="坏账确认"){
-                                 $("#status").val('该笔为坏账');
-                                    $.scojs_message('确认坏账成功', $.scojs_message.TYPE_OK);
-                            }else{
-                             $.scojs_message('收款成功', $.scojs_message.TYPE_OK);     
-                            }                       
+                                                  
                             totalMoney();
                             $('#rowIndex').val('');
                              $('#confirmed').attr('disabled',true);

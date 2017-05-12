@@ -315,7 +315,7 @@ var checkIds=[];
          };
 
 //添加明细
-      if($("#status").val()=='已复核' || $("#status").val()=='已收款'){
+      if($("#status").val()=='已复核' || $("#status").val()=='已收款' || $("#status").val()=='该笔为坏账'){
         $('#add_cost').attr('disabled',true);
       }
 

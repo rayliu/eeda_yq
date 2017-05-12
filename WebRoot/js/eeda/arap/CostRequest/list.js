@@ -29,15 +29,19 @@ $(document).ready(function() {
 	                  if(data=="已复核"){
 	                	  $($('#application_table').find("tr")[mate.row+1]).css("background-color","#FFFFDF");
 	                     
-	                  }else if(data=="已收款"){
+	                  }else if(data=="已付款"){
 	                	  $($('#application_table').find("tr")[mate.row+1]).css("background-color","#DFFFDF");
 	                  }else{
 	                	  $($('#application_table').find("tr")[mate.row+1]).css("background-color","#FFFFFF");
 	                  }
-	                  return '<span style="width:60px">'+data+'</span>';
+	                  return data;
 	              }
             },    
-            {"data":"PAYEE_COMPANY"},
+            {"data":"PAYEE_COMPANY",
+                 "render": function(data, type, full, meta) {
+                        return "<a href='/costRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
+                 }
+             },
             {"data":"BILL_TYPE",
             	"render": function(data,type,full,mate){
             		var strBillType = "无发票";
@@ -122,7 +126,7 @@ $(document).ready(function() {
                     }else if(full.STATUS=="已复核"){
                              str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
                              str+= '<button type="button" class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
-                         }else if(full.STATUS=="已付款"){
+                         }else if(full.STATUS=="已付款"||full.STATUS=="该笔为坏账"){
                             str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
                             str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
                                 }
@@ -281,13 +285,13 @@ $(document).ready(function() {
                     var str="<nobr>";
                     if(full.STATUS=="新建"){
                         str+= '<button type="button" class="checkBtn btn table_btn btn_green btn-xs " style="width:60px" >复核</button>&nbsp';
-                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">收款确认</button> '; 
+                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
                     }else if(full.STATUS=="已复核"){
                              str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
-                             str+= '<button type="button" class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">收款确认</button> '; 
-                         }else if(full.STATUS=="已收款"){
+                             str+= '<button type="button" class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
+                         }else if(full.STATUS=="已付款"){
                             str+= '<button type="button" disabled class="checkBtn btn table_btn btn_green btn-xs" style="width:60px" >复核</button>&nbsp';
-                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">收款确认</button> '; 
+                            str+= '<button type="button" disabled class="confirmBtn btn table_btn btn_green btn-xs" data-toggle="modal" data-target=".bs-example-modal-sm" style="width:60px">付款确认</button> '; 
                                 }
                     str +="</nobr>";
                     return str;
@@ -561,6 +565,7 @@ $(document).ready(function() {
         e.preventDefault();
         $('#checked').attr('disabled',true);
         $('#confirmed').attr('disabled',true);
+        $('#badBtn').attr('disabled',true);
 
         if(this.checked){
             var tr=$(this).parent().parent();
@@ -571,7 +576,10 @@ $(document).ready(function() {
             $('#checked_application_table .dataTables_empty').remove();
             status=$(this).parent().parent().find('.status').html();
                 if(status=='新建') $('#checked').attr('disabled',false);
-                if(status=='已复核') $('#confirmed').attr('disabled',false);
+                 if(status=='已复核'){
+                     $('#confirmed').attr('disabled',false);
+                     $('#badBtn').attr('disabled',false);
+                 }
             tr.remove();
              $(this).prop('checked',true);
         }
@@ -603,8 +611,11 @@ $(document).ready(function() {
                      tr.remove();
     
                     if(status=='新建') $('#checked').attr('disabled',false);
-                     if(status=='已复核') $('#confirmed').attr('disabled',false);
-                 });
+                    if(status=='已复核'){
+                        $('#confirmed').attr('disabled',false);
+                        $('#badBtn').attr('disabled',false);
+                     }
+                    });
                 $('#allCheck2').prop('checked',true);
                 totalMoney();
             }
@@ -618,6 +629,7 @@ $(document).ready(function() {
             $('#jpy_totalAmountSpan').text(0);
              $('#checked').attr('disabled',true);
             $('#confirmed').attr('disabled',true);
+             $('#badBtn').attr('disabled',true);
         }
         $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
         $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
@@ -671,6 +683,7 @@ $(document).ready(function() {
     //弹出下拉框 确认付款时间
       $("#application_table").on('click','.confirmBtn',function(){
             $('#cost_table_msg_btn').click();
+             $('#confirmVal').val('');
             var checkbox1=$(this).parent().parent().parent().find('[type=checkbox]');
             $('#table_id').val($(this).parent().parent().parent().parent().parent().attr("id"));
             $('#rowIndex').val(checkbox1.val());
@@ -701,8 +714,9 @@ $(document).ready(function() {
             },'json');
         });
 
-    //弹出下拉框 确认收款时间
+    //弹出下拉框 确认付款时间
       $("#checked_application_table").on('click','.confirmBtn',function(){
+             $('#confirmVal').val('');
             $('#cost_table_msg_btn').click();           
             var checkbox1=$(this).parent().parent().parent().find('[type=checkbox]');
             $('#table_id').val($(this).parent().parent().parent().parent().parent().attr("id"));
@@ -763,6 +777,7 @@ $(document).ready(function() {
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
                     $('#checked').attr('disabled',true);
                     $('#confirmed').attr('disabled',false);
+                    $('#badBtn').attr('disabled',false);
                 }else{
                     $.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
                 }
@@ -770,10 +785,13 @@ $(document).ready(function() {
       });
 
     //多条付款确认
-    $("#confirmed").on('click',function(){
+    $("#confirmed,#badBtn").on('click',function(){
+        $('#confirmVal').val($(this).text());
+
         $('#cost_table_msg_btn').click();
         $('#confirmBtn').attr('disabled',true);
         $('#receive_time').val('');
+        $('#pay_remark').val('');
     });
 
     //付款确认
@@ -782,6 +800,11 @@ $(document).ready(function() {
         var application_ids=[];
         var rowIndex=$('#rowIndex').val();
         var table=$('#table_id').val();
+        var confirmVal =$('#confirmVal').val();
+        if(confirmVal=='坏账确认'){
+                var pay_remark =$('#pay_remark').val()+'\n 这笔为坏账'
+                $('#pay_remark').html(pay_remark);              
+               }
         if(table){
             var rows =$('#'+table+' tr');
           }else{
@@ -801,7 +824,7 @@ $(document).ready(function() {
 
           }
         }
-        $.post("/costRequest/confirmOrder", {ids:application_ids.toString(),receive_time:$('#receive_time').val()}, function(data){
+        $.post("/costRequest/confirmOrder", {ids:application_ids.toString(),receive_time:$('#receive_time').val(),confirmVal:confirmVal,pay_remark:$('#pay_remark').val()}, function(data){
 			        	if(data){
                             if(data.IDS.length>0){
                                 var arr=[];
@@ -812,7 +835,12 @@ $(document).ready(function() {
                                         var btn0=$(rows[i]).find('[type=button]').eq(1);
                                         if($(td).val()==arr[j]){
                                              $(btn0).attr('disabled',true);
-                                             $(btn0).parent().parent().parent().find('.status').html("已付款");
+                                             if(confirmVal=="坏账确认"){
+                                                  $(btn0).parent().parent().parent().find('.status').html('该笔为坏账');
+
+                                              }else{
+                                                 $(btn0).parent().parent().parent().find('.status').html("已付款");
+                                             }
                                             if(arr.length==1){
                                                 $(btn0).parent().parent().parent().find(".checkBox").prop('checked',false)                                    
                                                 }
@@ -820,12 +848,19 @@ $(document).ready(function() {
                                             $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
                                         }
                                     }
-                                }
+                                  }
+                                if(confirmVal=="坏账确认"){
+                                    $("#status").val('该笔为坏账');
+                                    $.scojs_message('确认坏账成功', $.scojs_message.TYPE_OK);
+                                }else{
+                                     $.scojs_message('付款成功', $.scojs_message.TYPE_OK);     
+                                } 
                             }
-			            	$.scojs_message('付款成功', $.scojs_message.TYPE_OK);
+                            
                             totalMoney();
                             $('#rowIndex').val('');
                              $('#confirmed').attr('disabled',true);
+                             $('#badBtn').attr('disabled',true);
 			            }else{
                             
                             $.scojs_message('付款失败', $.scojs_message.TYPE_FALSE);
@@ -840,7 +875,10 @@ $(document).ready(function() {
                 $(this).prop('checked',true);
                 var status= $(this).parent().parent().find('.status').html();
                 if(status=='新建') $('#checked').attr('disabled',false);
-                 if(status=='已复核') $('#confirmed').attr('disabled',false);
+                 if(status=='已复核'){
+                     $('#confirmed').attr('disabled',false);
+                     $('#badBtn').attr('disabled',false);
+                    }
             });
          }else{
             $("#checked_application_table .checkBox").each(function(){
@@ -855,8 +893,9 @@ $(document).ready(function() {
             $('#usd_totalAmountSpan').text(0);
             $('#hkd_totalAmountSpan').text(0);
             $('#jpy_totalAmountSpan').text(0);
-             $('#checked').attr('disabled',true);
+            $('#checked').attr('disabled',true);
             $('#confirmed').attr('disabled',true);
+            $('#badBtn').attr('disabled',true);
         }
         $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
         $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
@@ -873,6 +912,7 @@ $(document).ready(function() {
         if($('#checked_application_table tr:has(td)').size()==0){
             $('#checked').attr('disabled',true);
             $('#confirmed').attr('disabled',true);
+            $('#badBtn').attr('disabled',true);
         }
         totalMoney();
     });

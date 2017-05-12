@@ -156,6 +156,7 @@ $(document).ready(function() {
 						$("#saveBtn").attr("disabled", false);
 						$("#returnBtn").attr("disabled", true);
 						$("#confirmBtn").attr("disabled", true);
+						$("#badBtn").attr("disabled", true);
 						$("#add_cost").attr("disabled", false);
 						$('#select_item_table .delete').attr("disabled", false);
 					}else{
@@ -165,6 +166,7 @@ $(document).ready(function() {
 						$("#checkBtn").attr("disabled", true);
 						$("#saveBtn").attr("disabled", true);
 						$("#confirmBtn").attr("disabled", false);
+						$("#badBtn").attr("disabled", false);
 						$("#add_cost").attr("disabled", true);
 						$('#select_item_table .delete').attr("disabled", true);
 						$("#returnBtn").attr("disabled", false);
@@ -187,6 +189,7 @@ $(document).ready(function() {
 					$("#checkBtn").attr("disabled", false);
 				  	$("#saveBtn").attr("disabled", false);
 				  	$("#confirmBtn").attr("disabled", true);
+				  	$("#badBtn").attr("disabled", true);
 				}else{
 					$("#returnBtn").attr("disabled", false);
 					$.scojs_message('退回失败', $.scojs_message.TYPE_FALSE);
@@ -218,36 +221,55 @@ $(document).ready(function() {
 	  
 	  
 	  //付款确认
-	  $("#confirmBtn").on('click',function(){
-		  	$("#confirmBtn").attr("disabled", true);
-		  	if(!$('#receive_time').val().trim()){
-		  		$.scojs_message('付款时间为必填', $.scojs_message.TYPE_FALSE);
-		  		$("#confirmBtn").attr("disabled", false);
-		  		return;
-		  	}
-//		  	if($("#receive_type").val()=='transfers'){
-//				if($("#receive_bank").val()==''){
-//					$.scojs_message('付款银行不能为空', $.scojs_message.TYPE_FALSE);
-//					return false;
-//				}
-//			}
+	  $("#confirmBtn,#badBtn").on('click',function(){
+		  	var confirmVal =$(this).text();
+		  	if(confirmVal=='坏账确认'){
+		    	var pay_remark =$('#pay_remark').val()+'\n 这笔为坏账'
+		    	$('#pay_remark').html(pay_remark);		    	
+		      }	
+	        $("#badBtn").attr("disabled", true);  
+	    	$("#confirmBtn").attr("disabled", true);  
+	       
+		    var formRequired=0;
+	        $('form').each(function(){
+	            if(!$(this).valid()){
+	                formRequired++;
+	            }
+	        })
+		    if($('#receive_time').val()==''){
+	        	 formRequired++;
+	        }
+	        if(formRequired>0){
+	            $.scojs_message('确认时间为必填字段', $.scojs_message.TYPE_ERROR);
+	            $("#confirmBtn").attr("disabled", false);
+	            $("#badBtn").attr("disabled", false);
+	            return;
+	        }
+
+
 			var order={};
 			order.id=$('#order_id').val();
 			order.receive_time=$('#receive_time').val();
 			order.receive_bank_id=$('#deposit_bank').val();
 			order.payment_method = $('#payment_method').val();
 			order.pay_remark = $('#pay_remark').val();
-			$.get("/costRequest/confirmOrder", {params:JSON.stringify(order),application_id:$('#order_id').val()}, function(data){
+			$.get("/costRequest/confirmOrder", {params:JSON.stringify(order),application_id:$('#order_id').val(),confirmVal:confirmVal}, function(data){
 				if(data){
-					$("#status").val('已付款');
 					$("#returnBtn").attr("disabled", true);
 					$("#returnConfirmBtn").attr("disabled", false);
 					$("#deleteBtn").attr("disabled", true);
 					$("#confirm_name").val(data.CONFIRM_NAME);
-					$.scojs_message('确认付款成功', $.scojs_message.TYPE_OK);
+					if(confirmVal=="坏账确认"){
+						$("#status").val('该笔为坏账');
+						$.scojs_message('确认坏账成功', $.scojs_message.TYPE_OK);
+					}else{
+						$("#status").val('已付款');
+						$.scojs_message('确认付款成功', $.scojs_message.TYPE_OK);
+					}
 				}else{
 					$("#confirmBtn").attr("disabled", false);
-					$.scojs_message('确认付款失败', $.scojs_message.TYPE_FALSE);
+					$("#badBtn").attr("disabled", false);
+					$.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
 				}
 			},'json');
 		});
@@ -261,6 +283,7 @@ $(document).ready(function() {
 					if(data.success){
 						$.scojs_message('撤回成功', $.scojs_message.TYPE_OK);
 					  	$("#confirmBtn").attr("disabled", false);
+					  	$("#badBtn").attr("disabled", false);
 					  	$("#deleteBtn").attr("disabled", false);
 					}else{
 						$("#returnConfirmBtn").attr("disabled", false);
@@ -315,6 +338,7 @@ $(document).ready(function() {
 			$("#checkBtn").attr("disabled", true);
 			$("#saveBtn").attr("disabled", true);
 			$("#confirmBtn").attr("disabled", false);
+			$("#badBtn").attr("disabled", false);
 			$("#add_cost").attr("disabled", true);
 			$('#select_item_table .delete').attr("disabled", true);
 			$("#returnBtn").attr("disabled", false);
@@ -324,6 +348,7 @@ $(document).ready(function() {
 			$("#saveBtn").attr("disabled", false);
 			$("#returnBtn").attr("disabled", true);
 			$("#confirmBtn").attr("disabled", true);
+			$("#badBtn").attr("disabled", true);
 			$("#add_cost").attr("disabled", false);
 			$('#select_item_table .delete').attr("disabled", false);
 		}

@@ -9,11 +9,12 @@
                     
 	                 </h4>
 	           </div>
-	        <div id="collapseChargeInfo" class="panel-collapse collapse " aria-expanded="false" style="height: auto;">
+	        <div id="collapseChargeInfo" class="panel-collapse collapse in" aria-expanded="false" style="height: auto;">
 	            <div class="panel-body" id="ChargeDiv">
         		  <div class="col-lg-12">
 						<form id="applicationForm" role="form" >
 							 <input id='back' name='back' type="hidden" value="${back!''}">
+                			<input id="confirmVal" type="hidden">
 							<div class="row search_panel">
 								<div class="col-lg-4">
 								<input id="rowIndex" type="text" hidden>
@@ -35,6 +36,7 @@
 											<option value="已复核">已复核</option>
 											<option value="复核不通过">复核不通过</option>
 											<option value="已付款">已付款</option>
+                     						 <option value="该笔为坏账">该笔为坏账</option>
 											<option value=""></option>
 										</select>
 									</div>
@@ -89,6 +91,7 @@
 					<button id="totalZero" class="badge" style='display:none;margin-top:12px;margin-right:10px;background-color: #005BAC;'>金额清零</button>
 					<button id="checked" class="btn  btn btn_green" style="margin-top:12px;"  disabled>复核</button>
 					<button id="confirmed" class="btn btn btn_green" style="margin-top:12px;"  disabled>付款确认</button>
+					<button id="badBtn" type="button" class="btn btn-danger btn-xs" style="display:none;background-color:#d9534f;margin-top:12px;	"  disabled="disabled" >坏账确认</button>
 					<a href="/costRequest/create" class="btn btn_green" type="button" style="margin-left:55px;margin-top:12px;">创建申请单</a>
 				  </div>
 					<div class="row simple_list_div">
@@ -178,19 +181,28 @@
         <div class="modal-content">
             <div class="modal-body">
 				 
-                   <div class="row">
+                 	<div class="row">
                         <div class="col-lg-6">
                          <%include("/eeda/component/form/dateInputField.html",
 				                        {    id:'receive_time', 
-				                             label:'付款时间',
+				                             label:'确认时间',
 				                             value:order.receive_time!''
 	                              }){} %>
 	                     </div>
+                  </div> 
+                  <div class="row" id="pay_remark_hide" style="">
+                        <div class="col-lg-8">
+                            <label>备注</label>
+                           <textarea id='pay_remark' class="form-control" rows="3" name="pay_remark">${order.pay_remark!''}</textarea>
+                        </div>                    
+                 </div>  
+                   <div class="row" style="margin-top:15px;">
 	                     <div class="col-lg-6">
-	                      	<button id="confirmBtn"  type="button" class="btn  btn-primary save" data-dismiss="modal">确定</button>
-            	 			<button type="button" class="btn  btn-default" data-dismiss="modal">返回</button>
+	                      	 <button id="confirmBtn"  type="button" class="btn  btn-primary save" data-dismiss="modal">确定</button>
+            	 			       <button type="button" class="btn  btn-default" data-dismiss="modal">返回</button>
                        </div>
-                  </div>    
+                  </div>
+
 				  <br>
 			</div>
            
