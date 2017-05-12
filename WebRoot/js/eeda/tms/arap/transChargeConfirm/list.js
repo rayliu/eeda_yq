@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColReorder'], function ($, metisMenu) { 
 
     $(document).ready(function() {
     	document.title = '应收明细查询 | '+document.title;
@@ -9,6 +9,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 
         var dataTable = eeda.dt({
             id: 'eeda_table',
+            colReorder: true,
             paging: true,
             serverSide: false, //不打开会出现排序不对 
             ajax: "/transChargeConfirm/list?audit_flag="+$("#audit_flag").val(),
@@ -56,6 +57,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
             ]
         });
         
+        //base on config hide cols
+      dataTable.columns().eq(0).each( function(index) {
+          var column = dataTable.column(index);
+          $.each(cols_config, function(index, el) {
+              
+              if(column.dataSrc() == el.COL_FIELD){
+                
+                if(el.IS_SHOW == 'N'){
+                  column.visible(false, false);
+                }else{
+                  column.visible(true, false);
+                }
+              }
+          });
+      });
+      
         //全选
         $('#AllCheck').click(function(){
       	  var ischeck = this.checked;
