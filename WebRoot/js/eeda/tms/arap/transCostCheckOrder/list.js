@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'template'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'template', 'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
   	document.title = '应付对账单查询  | '+document.title;
   	  $('#menu_cost').addClass('active').find('ul').removeClass('in');
@@ -76,6 +76,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	          ]
 	      });
 
+      //base on config hide cols
+      dataTable.columns().eq(0).each( function(index) {
+          var column = dataTable.column(index);
+          $.each(cols_config, function(index, el) {
+              
+              if(column.dataSrc() == el.COL_FIELD){
+                
+                if(el.IS_SHOW == 'N'){
+                  column.visible(false, false);
+                }else{
+                  column.visible(true, false);
+                }
+              }
+          });
+      });
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
