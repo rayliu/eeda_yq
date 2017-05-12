@@ -1,11 +1,12 @@
 
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'dtColReorder'], function ($, metisMenu) {
 $(document).ready(function() {
 	document.title = '应付申请单| '+document.title;
 	$("#breadcrumb_li").text('应付申请单');
                 
     var application_table = eeda.dt({
     	id: 'application_table',
+          colReorder: true,
     	autoWidth: false,
         // paging: true,
         scrollY: 530,
@@ -165,9 +166,26 @@ $(document).ready(function() {
             {"data":"INVOICE_NO"}
 		]      
     });
+    
+    //base on config hide cols
+      application_table.columns().eq(0).each( function(index) {
+          var column = application_table.column(index);
+          $.each(cols_config, function(index, el) {
+              
+              if(column.dataSrc() == el.COL_FIELD){
+                
+                if(el.IS_SHOW == 'N'){
+                  column.visible(false, false);
+                }else{
+                  column.visible(true, false);
+                }
+              }
+          });
+      });
 
      var checked_application_table = eeda.dt({
         id: 'checked_application_table',
+        colReorder: true,
         autoWidth: false,
         scrollY: 530,
         scrollCollapse: true,
@@ -321,7 +339,21 @@ $(document).ready(function() {
         ]      
     });
 
-     
+     //base on config hide cols
+      checked_application_table.columns().eq(0).each( function(index) {
+          var column = checked_application_table.column(index);
+          $.each(cols_config, function(index, el) {
+              
+              if(column.dataSrc() == el.COL_FIELD){
+                
+                if(el.IS_SHOW == 'N'){
+                  column.visible(false, false);
+                }else{
+                  column.visible(true, false);
+                }
+              }
+          });
+      });
      
      
      var uncheckedCostCheckOrder = function(){

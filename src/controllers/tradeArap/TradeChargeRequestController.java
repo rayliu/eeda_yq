@@ -38,6 +38,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
+import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
@@ -52,6 +53,10 @@ public class TradeChargeRequestController extends Controller {
     public void index() {
     	String back =getPara("back");
     	setAttr("back",back);
+		UserLogin user = LoginUserController.getLoginUser(this);
+        long user_id = user.getLong("id");
+		List<Record> configList = ListConfigController.getConfig(user_id, "/tradeChargeRequest");
+        setAttr("listConfigList", configList);
     	render("/tradeArap/ChargeRequest/ChargeRequestList.html");
     }
     
