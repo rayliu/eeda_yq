@@ -154,6 +154,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
              });
         	 
          })
+         
+         
+         //按钮控制
+         var office_id = $('#office_id').val();
+         if(office_id == 1){
+        	 $('#allShipmentBtn').hide();
+        	 $('#submitBtn').hide();
+        	 $('.delete').hide();
+        	 $('.confirm_shipment').hide();
+         }
+         
 
 
      });
