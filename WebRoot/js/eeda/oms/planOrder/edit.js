@@ -67,6 +67,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
                 type: $('#type').val(),
                 remark: $('#note').val(),
                 entrusted_id: $('#entrusted_id').val(),
+                begin_plan_time: $('#plan_time_begin_time').val(),
+                end_plan_time: $('#plan_time_end_time').val(),
                 to_entrusted_id: $('#to_entrusted_id').val(),
                 status: $('#status').val()==''?'新建':$('#status').val(),
                 item_list:items_array

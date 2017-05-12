@@ -48,9 +48,10 @@
                         </div>
                        <div class="col-lg-4">
                              <%include("/eeda/component/form/inputDateQueryField.html", 
-                             {	id:'create_stamp', 
+                             {	id:'plan_time', 
                              	label:'本计划时间段', 
-                             	value:''
+                             	begin_value:order.begin_plan_time!'',
+                             	end_value:order.end_plan_time!''
                              }){} %>
                        </div><!-- /.col-lg-4 -->
                     </div>
