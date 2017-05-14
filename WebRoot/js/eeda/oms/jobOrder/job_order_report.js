@@ -151,7 +151,7 @@ $(document).ready(function() {
 	
 	
 	//生成海运HBL PDF
-    $('#printOceanHBL,#prinTelextOceanHBL').click(function(){
+    $('#printOceanHBL,#prinTelextOceanHBL,#printKFHBL,#printKFAgentHBL').click(function(){
     	//数据不足提示
     	var alert = '';
     

@@ -1,0 +1,1062 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="445"/>
+	<parameter name="order_id" class="java.lang.String">
+		<property name="order_no" value="$P{order_id}"/>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+cast(
+ifnull(
+	(
+		SELECT
+			GROUP_CONCAT(abc SEPARATOR ' ; ')
+		FROM
+			(
+				SELECT
+					CONCAT('SAY ONE (',
+						count(josi.container_type),
+						'x',
+						josi.container_type,') CONTAINER ONLY'
+					) abc
+				FROM
+					job_order_shipment_item josi
+				LEFT JOIN job_order jo ON jo.id = josi.order_id
+				WHERE
+					jo.id = $P{order_id}
+				GROUP BY
+					josi.container_type
+			) A
+	),concat('SAY ',josi.pieces,' ',un.name_eng,' ONLY')) as char ) container_type_count,
+	jo.*,josi.*, jos.*, Upper(lo. NAME) por_name,p.abbr,ifnull(p1.company_name_eng,p1.company_name) oversea_agentName,
+	Upper(lo1. NAME) pol_name,
+	Upper(lo2. NAME) pod_name,
+	Upper(lo3. NAME) fnd_name,
+	CONCAT(
+		CAST(FORMAT(SUM(josi.pieces),0) AS CHAR),' ',
+		GROUP_CONCAT(distinct u1.name_eng)
+	) SUM_pieces,
+   CONCAT(
+		CAST(FORMAT(SUM(josi.gross_weight),2) AS CHAR),' ',
+		' KGS'
+	) SUM_gross_weight,
+   CONCAT(
+		CAST(FORMAT(SUM(josi.volume),2) AS CHAR),' ',
+		' CBM'
+	) SUM_volume,
+
+	o.logo_path,
+	u.c_name,
+  	UPPER(ifnull(p.company_name_eng,p.company_name)) HBLconsigneeName,
+	UPPER(ifnull(p2.company_name_eng,p2.company_name)) HBLshipperName,
+	UPPER(ifnull(p3.company_name_eng,p3.company_name)) HBLnotify_partyName,
+	jos.oversea_agent versea_agent,
+	(
+		SELECT
+			GROUP_CONCAT(CN_no SEPARATOR ' ; ')
+		FROM
+			(
+				SELECT
+					CONCAT(
+						josi.container_no,
+						'/',
+						josi.seal_no
+					) CN_no,
+					'CN_no' flag
+				FROM
+					job_order_shipment_item josi
+				LEFT JOIN job_order jo ON jo.id = josi.order_id
+				WHERE
+					jo.id = $P{order_id}
+				GROUP BY
+					CN_no
+			) A
+		GROUP BY
+			A.flag
+	) CN_NO,
+   (SELECT CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage
+		FROM job_order_shipment jos where jos.order_id= $P{order_id}) vessel_voyage
+
+FROM
+	job_order_shipment jos
+LEFT JOIN job_order jo ON jo.id = jos.order_id
+LEFT JOIN office o on o.id=jo.office_id
+LEFT JOIN user_login u ON u.id = jo.creator
+LEFT JOIN job_order_shipment_item josi ON jo.id = josi.order_id
+LEFT JOIN unit u1 on u1.id=josi.unit_id
+LEFT JOIN location lo ON lo.id = jos.por
+LEFT JOIN location lo1 ON lo1.id = jos.pol
+LEFT JOIN location lo2 ON lo2.id = jos.pod
+LEFT JOIN location lo3 ON lo3.id = jos.fnd
+left join party p on p.id=jos.HBLconsignee
+left join party p2 on p2.id=jos.HBLshipper
+left join party p3 on p3.id=jos.HBLnotify_party
+left join party p1 on p1.id=jos.oversea_agent
+left join unit un on un.id = josi.unit_id
+where jos.order_id=$P{order_id}]]>
+	</queryString>
+	<field name="container_type_count" class="java.lang.String"/>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="customer_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="old_order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[旧单号]]></fieldDescription>
+	</field>
+	<field name="type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plan_order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plan_order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="status" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="creator" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="create_stamp" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="updator" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="update_stamp" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="transport_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="remark" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gross_weight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="net_weight" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="volume" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pieces" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="billing_method" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ref_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="flag" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="si_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="afr_ams_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mbl_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_chargeRMB" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_chargeUSD" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_profitTotalCharge" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_costRMB" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_costUSD" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_profitTotalCost" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_profitRMB" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_profitUSD" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_profitTotalRMB" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trans_clause" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trade_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="land_export_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="office_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="entrust_or_self_custom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="deletor" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="delete_stamp" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="delete_reason" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="delete_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="custom_type" class="java.lang.String">
+		<fieldDescription><![CDATA[报关标记位]]></fieldDescription>
+	</field>
+	<field name="order_export_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="custom_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="send_truckorder_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[派车单标记位]]></fieldDescription>
+	</field>
+	<field name="order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trans_type" class="java.lang.String">
+		<fieldDescription><![CDATA[海运；空运；陆运；]]></fieldDescription>
+	</field>
+	<field name="plan_order_item_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="load_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="container_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="container_amount" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="container_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="seal_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cargo_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unit_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pallet_desc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vgm" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MBLshipper" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MBLshipper_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MBLconsignee" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MBLconsignee_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MBLnotify_party" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MBLnotify_party_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HBLshipper" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HBLshipper_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HBLconsignee" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HBLconsignee_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HBLnotify_party" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HBLnotify_party_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="booking_agent" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="head_carrier" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="carrier" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bl_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hbl_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hbl_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mbl_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mbl_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vessel" class="java.lang.String">
+		<fieldDescription><![CDATA[船名]]></fieldDescription>
+	</field>
+	<field name="voyage" class="java.lang.String">
+		<fieldDescription><![CDATA[船次]]></fieldDescription>
+	</field>
+	<field name="route" class="java.lang.String">
+		<fieldDescription><![CDATA[航线]]></fieldDescription>
+	</field>
+	<field name="schedule_from" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="schedule_to" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="por" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pol" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pod" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fnd" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="etd" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="eta" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="booking_mark" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="shipping_mark" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cargo_desc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hub" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="prepaid" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="release_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="oversea_agent" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="oversea_agent_info" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SONO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="export_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="wait_overseaCustom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="in_line_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="closing_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="por_name" class="java.lang.String"/>
+	<field name="abbr" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="oversea_agentName" class="java.lang.String"/>
+	<field name="pol_name" class="java.lang.String"/>
+	<field name="pod_name" class="java.lang.String"/>
+	<field name="fnd_name" class="java.lang.String"/>
+	<field name="SUM_pieces" class="java.lang.String"/>
+	<field name="SUM_gross_weight" class="java.lang.String"/>
+	<field name="SUM_volume" class="java.lang.String"/>
+	<field name="logo_path" class="java.lang.String">
+		<fieldDescription><![CDATA[logo路径]]></fieldDescription>
+	</field>
+	<field name="c_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HBLconsigneeName" class="java.lang.String"/>
+	<field name="HBLshipperName" class="java.lang.String"/>
+	<field name="HBLnotify_partyName" class="java.lang.String"/>
+	<field name="versea_agent" class="java.lang.Long"/>
+	<field name="CN_NO" class="java.lang.String"/>
+	<field name="vessel_voyage" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<staticText>
+				<reportElement x="-2" y="354" width="11" height="136" uuid="514d198d-fdda-4af6-946f-4db1e2f2d65c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="Left">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pariculars Farmished by Merchants]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="2" width="255" height="83" uuid="fe0d8278-47cb-4180-a86d-6c80cc157f02"/>
+				<text><![CDATA[  Shipper(complete name and address)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="86" width="255" height="84" uuid="bc644153-821d-4fcd-b231-cc315c882ab3"/>
+				<text><![CDATA[  Consignee(complete name and address)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="170" width="255" height="79" uuid="42ed5a52-b167-4ff6-9e15-9b97fe5a5038"/>
+				<text><![CDATA[  Notify Party(complete name and address)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="5" width="37" height="16" uuid="b2c81a27-d772-446e-bde6-5eda6fc12abe"/>
+				<text><![CDATA[B/L No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="271" y="86" width="285" height="19" uuid="bb4edfbb-4af9-41b1-a99d-6fe1ce1d1f2a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[SHANGHAI KAIFU INTERNATIONAL LOGISTICS CO.,LTD.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="271" y="132" width="285" height="53" forecolor="#000000" uuid="6751569c-4f19-485f-b605-c193fd9a0cd8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ORIGINAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="274" y="184" width="282" height="58" uuid="d2a78534-502a-4696-b09a-60b3732fb244"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[RECEIVED in external apparent good order and condition except as other-
+Wise noted. The total number of packages or unites stuffed in the container,
+The description of the goods and the weights shown in this Bill of Lading are
+Furnished by the Merchants, and which the carrier has no reasonable means
+Of checking and is not a part of this Bill of Lading ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="251" width="133" height="12" uuid="ee7d4839-c7be-4bfb-be67-d125b2f4310b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[  Pre-carriage by]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="275" width="133" height="12" uuid="1fae731d-8596-4c60-b711-c83a0b914b5b"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[  Ocean Vessel / Voy.No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="301" width="133" height="12" uuid="0f438754-fa32-499b-b641-7fe41ba46bfb"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[  Port of Discharge]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="250" width="120" height="12" uuid="361016e2-7c92-42a9-af42-53ab441a46ee"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[  Place of Receipt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="276" width="120" height="12" uuid="10d16dc9-7550-468d-8f79-c97ae798c2c4"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[  Port of Loading]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="301" width="120" height="12" uuid="48238110-5e45-4dd6-98ed-8030c0a70629"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[  Place of Delivery]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="328" width="137" height="15" uuid="7d45dcd3-44ff-4ca3-8ec8-5a396ae2f299"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[  Container No.& Seal No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="342" width="137" height="15" uuid="05205eff-e5f4-455a-8643-5b40f31b035f"/>
+				<textElement textAlignment="Left">
+					<font size="9" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[  Marks & Numbers]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="153" y="328" width="76" height="29" uuid="86285e0a-ba49-46c4-9a67-d24e59a9b64d"/>
+				<textElement textAlignment="Left">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Number & kind of Package]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="229" y="328" width="144" height="15" uuid="f96eb501-490d-42c4-adc7-d78f333eb1e2"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Description of Packages goods]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="378" y="328" width="91" height="15" uuid="09b40c83-82c1-4946-8978-26baa4f87700"/>
+				<textElement textAlignment="Left">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[  Gross Weight(kgs.)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="471" y="328" width="84" height="15" uuid="cc5416b5-e464-4c4f-aa60-0908d9c6ddae"/>
+				<textElement textAlignment="Left">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[  Measurement(m³)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="21" y="496" width="169" height="14" uuid="8e725392-8285-4746-a2da-ba2a6c568f8d"/>
+				<textElement textAlignment="Left">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Total NO. OF CONTAINERS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="21" y="509" width="169" height="15" uuid="b360860d-bbce-4b2c-ae23-af03d0244def"/>
+				<textElement textAlignment="Left">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[OR PACKAGES(IN WORDS)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="525" width="136" height="15" uuid="1eb71a97-1643-442f-97ee-f50cf9a86798"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[  Freight and Charges]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="524" width="87" height="14" uuid="589c1202-7b6c-4057-b8ce-af13471a3bbb"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Revenue Tons]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="525" width="53" height="15" uuid="41b43f64-c4ca-4c22-bdd9-c8f3858c13d3"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Rate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="291" y="524" width="54" height="15" uuid="221a18c6-d0b6-41d2-a785-52845947ac5c"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Per]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="346" y="524" width="91" height="15" uuid="ddbe3d48-e0c6-4b88-9ad9-76db5370c230"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Prepaid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="442" y="525" width="114" height="14" uuid="c0d0c63d-7745-48ba-a1a8-f9638a691565"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[  Collect]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="667" width="58" height="40" uuid="8ef0a281-d875-41b1-bfb3-79f2051b5538"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Exchange Rate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="99" y="688" width="135" height="12" uuid="3cc92dc5-0cb7-4d1b-b276-bc8a4112fcdc"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Prepaid at]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="99" y="713" width="135" height="12" uuid="0b56da61-2666-4259-9827-fb2ff8d27a77"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Total Prepaid ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="713" width="135" height="12" uuid="55c33a64-2748-4916-8240-14d968216060"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No. of original B(s)/L ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="689" width="138" height="12" uuid="cabc5ff6-62a3-4c99-b606-7cf50724eb5a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Payable at]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="378" y="688" width="178" height="12" uuid="137de7ad-36d7-494d-b0fa-9f17b3e88612"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Place and Date of Issue]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="378" y="729" width="170" height="72" uuid="b887fe60-327c-4058-8c2b-811d37eb64c4"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="378" y="714" width="172" height="15" uuid="eb5106bd-a804-4830-8e48-2bceef8d9afc"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[  Signed for the Carrier]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="738" width="173" height="15" uuid="3adffe33-04c8-43ac-b6f4-6d07701d33e1"/>
+				<textElement textAlignment="Left">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[LADEN ON BOARD THE VESSEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="193" y="785" width="45" height="15" uuid="3b6a1715-6305-415c-af5a-a61aab489bca"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[ BY:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="15" y="1" width="255" height="1" uuid="02c8acc8-263d-4f6c-838b-f1e282adc744"/>
+			</line>
+			<line>
+				<reportElement x="15" y="326" width="540" height="1" uuid="a7e05a07-9bb4-45a2-ac79-d40bf2aefe0b"/>
+			</line>
+			<line>
+				<reportElement x="15" y="495" width="540" height="1" uuid="ddf30bb4-3d7f-4051-a489-168357e7c926"/>
+			</line>
+			<line>
+				<reportElement x="15" y="524" width="540" height="1" uuid="705577f9-1197-4e76-8f7d-0292963e0415"/>
+			</line>
+			<line>
+				<reportElement x="95" y="688" width="460" height="1" uuid="6dc040bf-66a7-4bf9-8c12-c00c63246913"/>
+			</line>
+			<line>
+				<reportElement x="15" y="85" width="255" height="1" uuid="54bd4c50-07aa-487e-a60f-f4ab9dd0eb51"/>
+			</line>
+			<line>
+				<reportElement x="15" y="170" width="255" height="1" uuid="9b55fd76-fc8e-4ff1-8278-94075c76fb96"/>
+			</line>
+			<line>
+				<reportElement x="15" y="250" width="255" height="1" uuid="9c37910f-2731-418e-979c-6e406fd7afa9"/>
+			</line>
+			<line>
+				<reportElement x="15" y="275" width="255" height="1" uuid="47460890-b545-442f-a49d-935a64225933"/>
+			</line>
+			<line>
+				<reportElement x="15" y="300" width="535" height="1" uuid="27e5be5e-1b32-4df7-9f23-11fbc317731f"/>
+			</line>
+			<line>
+				<reportElement x="95" y="667" width="1" height="71" uuid="0f7efab1-1ee1-45d8-9bd6-56914a68ec37"/>
+			</line>
+			<line>
+				<reportElement x="233" y="689" width="1" height="49" uuid="f65de2ca-75e0-4f68-86d0-d59338311af8"/>
+			</line>
+			<line>
+				<reportElement x="375" y="667" width="1" height="135" uuid="e3805458-38b8-4c7f-809a-c9cafd98eaf0"/>
+			</line>
+			<line>
+				<reportElement x="15" y="738" width="360" height="1" uuid="d92e4b63-4d67-42e1-81e5-d85348d2dc33"/>
+			</line>
+			<line>
+				<reportElement x="96" y="712" width="459" height="1" uuid="8494a119-f0fe-4802-a38d-76ae4618441e"/>
+			</line>
+			<line>
+				<reportElement x="148" y="251" width="1" height="11" uuid="37b1fabb-7196-4369-a5b9-15934cc68949"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="21" y="37" width="244" height="49" uuid="d8acf056-abac-4f8d-b976-9b783e7d731e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HBLshipper_info}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="20" y="120" width="245" height="50" uuid="fe342d77-2c0d-4ee3-a255-3cfe73b9c8c5"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HBLconsignee_info}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="238" y="727" width="135" height="12" uuid="462afe09-e1aa-4235-89cf-0fb675b3edcf"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="451" y="5" width="104" height="16" uuid="ef0abb56-7319-4ffc-9c9c-134ab6624aa7"/>
+				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="154" y="260" width="116" height="16" uuid="c2b5278a-fc31-46fb-97bd-4c6af9594889"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{por_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="153" y="286" width="117" height="14" uuid="18969407-0dbb-48f6-bf8e-121db6616839"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="15" y="432" width="133" height="30" uuid="4c693fdb-2ca0-4a70-9c4e-70776935a829"/>
+				<subreportParameter name="order_id">
+					<subreportParameterExpression><![CDATA[$F{order_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["KFHBL_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+			<textField isBlankWhenNull="true">
+				<reportElement x="15" y="357" width="111" height="75" uuid="1bafa8fb-827f-4962-a29e-c34446288817"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{shipping_mark}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="242" y="388" width="128" height="107" uuid="efcca246-ec09-48a8-87a0-3be004d0249e"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cargo_desc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="20" y="312" width="128" height="15" uuid="a04e7ec4-d75f-4c35-910a-a64dcccc2f2a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pod_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="153" y="312" width="117" height="15" uuid="52165661-62d1-41c4-8978-0efa4d9e2d71"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fnd_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="239" y="783" width="135" height="15" uuid="1ed17896-d32f-4c17-90d9-93feef0068e7"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="496" width="365" height="28" uuid="634292dd-8936-4422-8941-af87cecfcda1"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{container_type_count}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="412" y="36" width="143" height="1" uuid="a3100411-ce72-47f2-835b-3bf9f89a3adf"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="412" y="0" width="1" height="36" uuid="a83b3ec2-017c-4ee4-b614-cad0addecc36"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="17" y="285" width="131" height="16" uuid="4efec50a-c420-4e9b-868e-897a90b2d39b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vessel_voyage}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="270" y="116" width="285" height="16" uuid="bf2c48a2-7715-41d3-8e24-bbd92a43ca98"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[COMBINED TRANSPORTATION BILL OF LADING]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="21" y="15" width="244" height="22" uuid="d2b5f60f-9d5b-4233-8bd6-ee6979e86776"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HBLshipperName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="20" y="98" width="245" height="22" uuid="0c3c8a07-5b45-4524-a055-71ea5373d022"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HBLconsigneeName}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="241" y="343" width="129" height="45" uuid="640a5a17-8cd8-4cd9-916a-e1f6e2975e60"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{container_type_count}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="20" y="183" width="245" height="23" uuid="4c8a17fe-7af1-41d0-a7bf-f566edb8a990"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HBLnotify_partyName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="20" y="206" width="245" height="44" uuid="4fb4a45a-82e7-4ce2-b31f-11e30aa4344b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HBLnotify_party_info}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="153" y="366" width="76" height="22" uuid="cf57ea8d-158a-4d58-8fd1-9e06a27dce08"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUM_pieces}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="382" y="366" width="89" height="22" uuid="77e560ed-b101-4f8c-b438-5ebf066f1624"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUM_gross_weight}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="480" y="366" width="71" height="22" uuid="a349a7d8-ce1a-4b14-8a2e-18b0cc0387cf"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUM_volume}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="4" y="327" width="1" height="34" uuid="15024c47-2e12-4fe7-9304-ffeae51edaa8"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="5" y="524" width="9" height="1" uuid="f3fec85d-66d6-49e1-b13e-b1ed8918845b"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="5" y="326" width="9" height="1" uuid="447bc030-317c-4db4-9db2-3cdedf53aae9"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="437" y="525" width="1" height="141" uuid="5cb62277-5fb3-43d6-b943-ab07ddd8503c"/>
+			</line>
+			<line>
+				<reportElement x="148" y="326" width="1" height="28" uuid="23ad23a8-e9e6-4f4e-99f9-bee783a3f655"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="229" y="326" width="1" height="28" uuid="c75e4bc0-f4c2-4959-9b4a-f574c68dd7f0"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="377" y="328" width="1" height="26" uuid="d43fe2c2-03a8-4d5a-b284-c420c6c2831d"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="472" y="327" width="1" height="27" uuid="b50b73f6-251e-49a1-acd6-ee0d5d51c1c8"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="554" y="1" width="1" height="35" uuid="4942fd24-97f1-41b0-be03-e4c8589b6ed5"/>
+			</line>
+			<staticText>
+				<reportElement x="370" y="301" width="181" height="12" uuid="c0f6daa0-399d-4256-9639-7db4379d931f"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[  Final Destination for the Merchant's reference]]></text>
+			</staticText>
+			<line>
+				<reportElement x="148" y="276" width="1" height="11" uuid="69ef8a30-749d-4a45-9027-5ed1aecc4d33"/>
+			</line>
+			<line>
+				<reportElement x="148" y="301" width="1" height="12" uuid="881fc6a8-7e67-44f1-8a0f-f430831e02cd"/>
+			</line>
+			<line>
+				<reportElement x="412" y="0" width="143" height="1" uuid="78237683-a956-43fc-a558-0b6bc472fbf0"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="274" y="251" width="282" height="49" uuid="460292e4-aeb2-4a44-bce9-37960aacb9cb"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[the shipper and the consignee and other Merchants agree to be bound by the
+terms And conditions of this Bill of Lading as if each had personally signed
+this Bill of Lading.]]></text>
+			</staticText>
+			<image>
+				<reportElement x="346" y="58" width="117" height="29" uuid="671c76de-beb9-4b5e-9bd1-4b8f903f08c2"/>
+				<imageExpression><![CDATA["kaifubiao.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="4" y="491" width="1" height="33" uuid="b0ec3932-ef48-49e0-89ae-05c2dbd32603"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="344" y="527" width="1" height="139" uuid="bf6363d2-3285-48f8-8c62-9d013ae52323"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="78" y="645" width="266" height="20" uuid="ef07736b-de86-4ef2-94b7-df5668983f53"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SHIPPER’S LOAD COUNT & SEAL]]></text>
+			</staticText>
+			<line>
+				<reportElement x="15" y="666" width="540" height="1" uuid="00dab895-6103-4656-bb0c-68b985f60425"/>
+			</line>
+			<staticText>
+				<reportElement x="96" y="666" width="135" height="12" uuid="95915eb7-7cdc-4048-8cf4-8876613b9ce9"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Deciared Value]]></text>
+			</staticText>
+			<line>
+				<reportElement x="240" y="798" width="135" height="1" uuid="c894fc52-0481-4075-98da-9dc4f0f90b66"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="15" y="801" width="539" height="1" uuid="b2afc4dc-f46d-4e65-bcd6-c74cbf251cff"/>
+			</line>
+			<image>
+				<reportElement x="278" y="0" width="134" height="50" uuid="52b93b2f-9607-440e-aff5-885a9e0621e5"/>
+				<imageExpression><![CDATA["KFLOGO.png"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="443" y="699" width="112" height="14" uuid="1676d237-d5b0-4a05-b4f8-2b9b26ac9db7"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="378" y="699" width="61" height="14" uuid="9a9ee083-7a56-4344-879d-cc92d39278ba"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

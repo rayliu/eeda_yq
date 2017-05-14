@@ -89,15 +89,23 @@ public class JobOrderReportController extends Controller {
 		if("printOceanHBL".equals(printHBL)){
 			 fileName = "/report/jobOrder/oceanHBL.jasper";
 			 outFileName = "/download/"+hbl_no;
-			//打印的同事保存到相关信息文档
+			//打印的同时保存到相关信息文档
 			savePDF(order_id,hbl_no,"two");
 		}else if("prinTelextOceanHBL".equals(printHBL)){
 			 fileName = "/report/jobOrder/oceanTelexHBL.jasper";
 			 outFileName = "/download/"+hbl_no;
-			//打印的同事保存到相关信息文档
+			//打印的同时保存到相关信息文档
 			savePDF(order_id,hbl_no,"four");
 		}
-		
+		if("printKFHBL".equals(printHBL)){
+			 fileName = "/report/jobOrder/KF_doc/KFHBL.jasper";
+			 outFileName = "/download/"+hbl_no;
+			//打印的同时保存到相关信息文档
+			savePDF(order_id,hbl_no,"two");
+		}else if("printKFAgentHBL".equals(printHBL)){
+			 fileName = "/report/jobOrder/KF_doc/KFAgentHBL.jasper";
+			 outFileName = "/download/"+hbl_no;
+		}
 		
 		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
