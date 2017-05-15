@@ -45,6 +45,21 @@
                      </div>
 			           </div>
 			           <div class="col-lg-6">
+			           
+		                    <div class="form-group ">
+		                    
+				                <label class="control-label">车辆所属</label><br>
+		                       		<% 
+		                       			var car_owned=lu.car_owned!'';
+		                       		 %>
+		                       		<div >
+                                       <input type="checkbox" name="gongsiche" style="margin-left:5px;" value="公司车" <%if(car_owned=='公司车'){%>checked<%}%> >公司车
+                                  
+                                       <input type="checkbox" name="jieche" style="margin-left:5px;" value="街车"	<%if(car_owned=='街车'){%>checked<%}%>>街车
+                                   
+                                    </div>
+				                
+				            </div>
                             <div class="form-group">
                                 <label class="control-label">车型</label>
                                 <select class="form-control" id="ctype" name="ctype">

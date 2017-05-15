@@ -12,6 +12,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                         return "<a href='/carInfo/edit/"+full.ID+"'target='_blank'>"+full.CAR_NO+"</a>";  
                     }
                 },
+                { "data":"CAR_OWNED","width":"55px"},
                 { "data":"DRIVER"},
                 { "data":"PHONE"},
                 { "data":"CARTYPE"},
@@ -39,5 +40,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 }
             },'json');
         });
+        
+       
     });
 });
