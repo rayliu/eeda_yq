@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="445"/>
+	<property name="ireport.y" value="422"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -30,7 +30,7 @@ ifnull(
 					josi.container_type
 			) A
 	),concat('SAY ',josi.pieces,' ',un.name_eng,' ONLY')) as char ) container_type_count,
-	jo.*,josi.*, jos.*, Upper(lo. NAME) por_name,p.abbr,ifnull(p1.company_name_eng,p1.company_name) oversea_agentName,
+	jo.*,josi.*, jos.*, Upper(lo. NAME) por_name,p.abbr,
 	Upper(lo1. NAME) pol_name,
 	Upper(lo2. NAME) pod_name,
 	Upper(lo3. NAME) fnd_name,
@@ -52,7 +52,7 @@ ifnull(
   	UPPER(ifnull(p.company_name_eng,p.company_name)) HBLconsigneeName,
 	UPPER(ifnull(p2.company_name_eng,p2.company_name)) HBLshipperName,
 	UPPER(ifnull(p3.company_name_eng,p3.company_name)) HBLnotify_partyName,
-	jos.oversea_agent versea_agent,
+	UPPER(ifnull(p1.company_name_eng,p1.company_name)) HBLOverseaAgentName,
 	(
 		SELECT
 			GROUP_CONCAT(CN_no SEPARATOR ' ; ')
@@ -111,6 +111,9 @@ where jos.order_id=$P{order_id}]]>
 		<fieldDescription><![CDATA[旧单号]]></fieldDescription>
 	</field>
 	<field name="type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plan_order_item_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="plan_order_id" class="java.lang.Long">
@@ -241,9 +244,6 @@ where jos.order_id=$P{order_id}]]>
 	</field>
 	<field name="trans_type" class="java.lang.String">
 		<fieldDescription><![CDATA[海运；空运；陆运；]]></fieldDescription>
-	</field>
-	<field name="plan_order_item_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="load_type" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -408,7 +408,6 @@ where jos.order_id=$P{order_id}]]>
 	<field name="abbr" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="oversea_agentName" class="java.lang.String"/>
 	<field name="pol_name" class="java.lang.String"/>
 	<field name="pod_name" class="java.lang.String"/>
 	<field name="fnd_name" class="java.lang.String"/>
@@ -424,7 +423,7 @@ where jos.order_id=$P{order_id}]]>
 	<field name="HBLconsigneeName" class="java.lang.String"/>
 	<field name="HBLshipperName" class="java.lang.String"/>
 	<field name="HBLnotify_partyName" class="java.lang.String"/>
-	<field name="versea_agent" class="java.lang.Long"/>
+	<field name="HBLOverseaAgentName" class="java.lang.String"/>
 	<field name="CN_NO" class="java.lang.String"/>
 	<field name="vessel_voyage" class="java.lang.String"/>
 	<background>
@@ -802,7 +801,7 @@ Of checking and is not a part of this Bill of Lading ]]></text>
 				<textFieldExpression><![CDATA[$F{shipping_mark}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="242" y="388" width="128" height="107" uuid="efcca246-ec09-48a8-87a0-3be004d0249e"/>
+				<reportElement x="242" y="342" width="128" height="107" uuid="efcca246-ec09-48a8-87a0-3be004d0249e"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 				</textElement>
@@ -869,13 +868,6 @@ Of checking and is not a part of this Bill of Lading ]]></text>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{HBLconsigneeName}]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="241" y="343" width="129" height="45" uuid="640a5a17-8cd8-4cd9-916a-e1f6e2975e60"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{container_type_count}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="20" y="183" width="245" height="23" uuid="4c8a17fe-7af1-41d0-a7bf-f566edb8a990"/>
@@ -1047,6 +1039,34 @@ this Bill of Lading.]]></text>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="242" y="457" width="128" height="13" uuid="7c553599-57f3-43d0-abbc-ef84a6251c4d"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{trans_clause}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="242" y="470" width="128" height="13" uuid="87e9ab28-02dc-43ab-8eee-74cfbc8d882c"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{prepaid}.equals("Y")?"FREIGHT PREPAID":"FREIGHT COLLECT")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="376" y="422" width="180" height="74" uuid="e151954e-34a0-4ad0-8c6f-b5f7275b2b92"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{oversea_agent_info}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="376" y="394" width="180" height="28" uuid="0027af74-fce7-4917-ae89-5f792894f313"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{HBLOverseaAgentName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
