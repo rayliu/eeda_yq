@@ -391,11 +391,14 @@ $(document).ready(function() {
     	}
     	oceanHead.id = $('#oceanHeadId').val();
     	oceanHead.order_id = $('#order_id').val();
+    	oceanHead.hbl_no = $('#hbl_no').val();
     	
 		$.post('/jobOrderReport/printOceanHead', {params:JSON.stringify(oceanHead)}, function(data){
 				$("#oceanHeadId").val(data.OCEANHEADID);
 				if(data){
 	                window.open(data.DOWN_URL);
+                    var order_id = $('#order_id').val();
+                    itemOrder.refleshZeroDocTable(order_id);
 	             }else{
 	               $.scojs_message('生成海运头程资料失败', $.scojs_message.TYPE_ERROR);
 	             }
@@ -757,7 +760,7 @@ $(document).ready(function() {
 		
     });
     	
-    	
+    
 //    	
 //		$.post('/jobOrderReport/printCabinetTruck', {params:JSON.stringify(truckHead)}, function(data){
 //				$("#truckHeadId").val(data.TRUCKHEADID);
