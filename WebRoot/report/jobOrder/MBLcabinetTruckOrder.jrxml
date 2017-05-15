@@ -31,7 +31,8 @@ LEFT JOIN party p4 on p4.id = joli.transport_company
 LEFT JOIN party p on p.id = jos.head_carrier
 LEFT JOIN party p1 on p1.id = jos.carrier
 LEFT JOIN party p2 on p2.id = jos.HBLshipper
-LEFT JOIN office o on o.id = p.office_id
+LEFT JOIN job_order jo on jo.id = jos.order_id
+LEFT JOIN office o on o.id = jo.office_id
 left join location lo on lo.id=jos.por
 left join location lo1 on lo1.id=jos.pol
 left join location lo2 on lo2.id=jos.pod
@@ -277,6 +278,12 @@ where joli.id=$P{item_id}]]>
 	</field>
 	<field name="cabinet_arrive_remark" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mbl_no_land" class="java.lang.String">
+		<fieldDescription><![CDATA[MBL号]]></fieldDescription>
+	</field>
+	<field name="SONO_land" class="java.lang.String">
+		<fieldDescription><![CDATA[SO号]]></fieldDescription>
 	</field>
 	<field name="transport_company_name" class="java.lang.String"/>
 	<field name="head_company" class="java.lang.String"/>
