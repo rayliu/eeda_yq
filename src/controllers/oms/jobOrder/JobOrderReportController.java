@@ -86,6 +86,8 @@ public class JobOrderReportController extends Controller {
 		String printHBL = getPara("printHBL");
 		String fileName = "";
 		String outFileName ="";
+		
+		String outFileName2 ="";
 		if("printOceanHBL".equals(printHBL)){
 			 fileName = "/report/jobOrder/oceanHBL.jasper";
 			 outFileName = "/download/"+hbl_no;
@@ -93,9 +95,10 @@ public class JobOrderReportController extends Controller {
 			savePDF(order_id,hbl_no,"two");
 		}else if("prinTelextOceanHBL".equals(printHBL)){
 			 fileName = "/report/jobOrder/oceanTelexHBL.jasper";
-			 outFileName = "/download/"+hbl_no;
+			 outFileName = "/download/"+hbl_no+"电放";
+			 outFileName2 = "/upload/doc/"+hbl_no+"电放";
 			//打印的同时保存到相关信息文档
-			savePDF(order_id,hbl_no,"four");
+			savePDF(order_id,(hbl_no+"电放"),"four");
 		}
 		if("printKFHBL".equals(printHBL)){
 			 fileName = "/report/jobOrder/KF_doc/KFHBL.jasper";
@@ -106,12 +109,18 @@ public class JobOrderReportController extends Controller {
 			 fileName = "/report/jobOrder/KF_doc/KFAgentHBL.jasper";
 			 outFileName = "/download/"+hbl_no;
 		}
-
+		
+		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
         fileName = getContextPath() + fileName;
         outFileName = getContextPath() + outFileName ;
 		String file = myPrint(fileName, outFileName,hm);
+		//复制到工作单 相关文档的上传目录
+		if(StringUtils.isNotEmpty(outFileName2)){
+			outFileName2 = getContextPath() + outFileName2 ;
+			String file2 = myPrint(fileName, outFileName2,hm);
+		}
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	
