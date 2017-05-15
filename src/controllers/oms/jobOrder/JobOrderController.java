@@ -138,7 +138,8 @@ public class JobOrderController extends Controller {
     	setAttr("usedOceanInfo", getUsedOceanInfo());
     	setAttr("usedAirInfo", getUsedAirInfo());
     	setAttr("emailTemplateInfo", getEmailTemplateInfo());
-    	setAttr("loginUser",LoginUserController.getLoginUserName(this));
+    	//当前登陆用户
+    	setAttr("loginUser", LoginUserController.getLoginUser(this));
         render("/oms/JobOrder/JobOrderEdit.html");
     }
     
