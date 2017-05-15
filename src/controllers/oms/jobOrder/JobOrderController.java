@@ -1491,7 +1491,7 @@ public class JobOrderController extends Controller {
     	UserLogin user = UserLogin.dao.findById(creator);
     	setAttr("user", user);
     	//当前登陆用户
-    	setAttr("loginUser", LoginUserController.getLoginUserName(this));
+    	setAttr("loginUser", LoginUserController.getLoginUser(this));
     	//海运头程资料
    		setAttr("oceanHead", Db.findFirst("select * from job_order_shipment_head where order_id = ?",id));
    		setAttr("truckHead", Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",id));

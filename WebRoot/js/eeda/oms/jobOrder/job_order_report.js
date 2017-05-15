@@ -723,6 +723,11 @@ $(document).ready(function() {
 		}
 		$('#truck_head_end_place').val($('#ocean_HBLshipper_input').val());
 		$('#truck_head_start_place').val(loginUserName);
+		var truck_head_tel=$('#truck_head_tel').val();
+		if(!truck_head_tel){
+			$('#truck_head_tel').val(loginUserPhone);
+		}
+		
 		$('#truck_head_date').val(eeda.getDate());
 	})
     $('#printCabinetTruck').click(function(){
