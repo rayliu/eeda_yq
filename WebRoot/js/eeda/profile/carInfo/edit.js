@@ -35,6 +35,15 @@ define(['jquery', 'metisMenu', 'sb_admin', 'validate_cn', 'sco'], function ($, m
                 element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
             }
         });
-
+        
+        $("[name=gongsiche],[name=jieche]").on('click',function(){
+        	if(this.checked){
+        		if(this.name=='gongsiche'){
+        			$("[name=jieche]").prop('checked',false);
+        		}else{
+        			$("[name=gongsiche]").prop('checked',false);
+        		}
+        	}
+        });
     });
 });
