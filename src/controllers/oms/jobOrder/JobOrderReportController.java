@@ -61,7 +61,26 @@ public class JobOrderReportController extends Controller {
 		return outFileName;
    }
 	
-	
+	public String saveDocumentPdf(String fileName,String outFileName,HashMap<String, Object> hm){		
+        File file = new File("WebRoot/upload/doc");
+        if(!file.exists()){
+       	 file.mkdir();
+        }
+//        Date date = new Date();
+//        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        
+        outFileName +=  ".pdf";
+		try {
+			JasperPrint print = JasperFillManager.fillReport(fileName, hm, DbKit.getConfig().getConnection());
+			JasperExportManager.exportReportToPdfFile(print, outFileName);
+		} catch (JRException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return outFileName;
+   }
 	
 	
 	//海运电放保涵word
@@ -119,7 +138,7 @@ public class JobOrderReportController extends Controller {
 		//复制到工作单 相关文档的上传目录
 		if(StringUtils.isNotEmpty(outFileName2)){
 			outFileName2 = getContextPath() + outFileName2 ;
-			String file2 = myPrint(fileName, outFileName2,hm);
+			String file2 = saveDocumentPdf(fileName, outFileName2,hm);
 		}
 		renderText(file.substring(file.indexOf("download")-1));
 	}
