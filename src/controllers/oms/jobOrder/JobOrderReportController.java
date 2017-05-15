@@ -61,28 +61,7 @@ public class JobOrderReportController extends Controller {
 		return outFileName;
    }
 	
-	public String saveDocumentPdf(String fileName,String outFileName,HashMap<String, Object> hm){		
-        File file = new File("WebRoot/upload/doc");
-        if(!file.exists()){
-       	 file.mkdir();
-        }
-//        Date date = new Date();
-//        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        
-        outFileName +=  ".pdf";
-		try {
-			JasperPrint print = JasperFillManager.fillReport(fileName, hm, DbKit.getConfig().getConnection());
-			JasperExportManager.exportReportToPdfFile(print, outFileName);
-		} catch (JRException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		
-		return outFileName;
-   }
-	
-	
 	//海运电放保涵word
 	public void printOceanWord(){
 		
@@ -105,8 +84,6 @@ public class JobOrderReportController extends Controller {
 		String printHBL = getPara("printHBL");
 		String fileName = "";
 		String outFileName ="";
-		
-		String outFileName2 ="";
 		if("printOceanHBL".equals(printHBL)){
 			 fileName = "/report/jobOrder/oceanHBL.jasper";
 			 outFileName = "/download/"+hbl_no;
@@ -115,7 +92,6 @@ public class JobOrderReportController extends Controller {
 		}else if("prinTelextOceanHBL".equals(printHBL)){
 			 fileName = "/report/jobOrder/oceanTelexHBL.jasper";
 			 outFileName = "/download/"+hbl_no+"电放";
-			 outFileName2 = "/upload/doc/"+hbl_no+"电放";
 			//打印的同时保存到相关信息文档
 			savePDF(order_id,(hbl_no+"电放"),"four");
 		}
@@ -135,11 +111,6 @@ public class JobOrderReportController extends Controller {
         fileName = getContextPath() + fileName;
         outFileName = getContextPath() + outFileName ;
 		String file = myPrint(fileName, outFileName,hm);
-		//复制到工作单 相关文档的上传目录
-		if(StringUtils.isNotEmpty(outFileName2)){
-			outFileName2 = getContextPath() + outFileName2 ;
-			String file2 = saveDocumentPdf(fileName, outFileName2,hm);
-		}
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	

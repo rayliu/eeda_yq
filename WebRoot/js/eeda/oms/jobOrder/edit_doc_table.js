@@ -48,10 +48,14 @@ $(document).ready(function() {
             },
             { "data": "DOC_NAME","width": "280px",
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
+                	if(!data)
                         data='';
-                    return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
-                }
+                    if(full.REMARK=='自动生成'){
+                    	return '<a class="doc_name" href="/download/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                    }else{
+                    	return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                    }
+               }
             },
             { "data": "C_NAME","width": "180px",
                 "render": function ( data, type, full, meta ) {
