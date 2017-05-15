@@ -358,10 +358,10 @@ $(document).ready(function() {
             		return '<input type="text" name="required_time_remark" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "DOC_NAME", "width": "180px",
+            { "data": "DOC_NAME", "width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(!data){
-            			return '<span style="width:200px;"><span/>';
+            			return '<span style="width:120px;"><span/>';
             		}
             		else{
             			var arr = data.split(",");

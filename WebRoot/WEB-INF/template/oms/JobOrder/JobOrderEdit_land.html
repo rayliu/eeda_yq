@@ -131,9 +131,19 @@
     <div class="modal fade" id="cabinet_truck_detail">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">生成柜货派车单PDF详情</div>
+          <div class="modal-header">生成柜货派车单PDF详情
+          		<div align="center" style = "margin-top:-17px">          
+                     <label class="radio-inline">
+                         <input type="radio" name="comType" value="SP" checked>显示so号
+                     </label><nbsp>
+                     <label class="radio-inline">
+                         <input type="radio" name="comType"  value="CUSTOMER" >显示MBL号
+                     </label>
+		        </div>
+          </div>
             <div class="modal-body">
             <input type="hidden" value="${truckHead.id!truckHeadId!''}" id="truckHeadId">
+
             <form id = "truckHeadForm">
                 <div class="form-group">
                         <div class="row">
@@ -191,6 +201,20 @@
                                    {   id:'truck_head_fax', 
                                        label:'FAX',
                                        value:truckHead.head_fax!''
+                                   }){}%>
+                           </div>
+                           <div class="col-lg-6">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'SONO_land', 
+                                       label:'so号',
+                                       value:shipment.SONO!truckHead.SONO_land!''
+                                   }){}%>
+                           </div>
+                           <div class="col-lg-6" style="display:none">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'mbl_no_land', 
+                                       label:'MBL号',
+                                       value:shipment.mbl_no!truckHead.mbl_no_land!''
                                    }){}%>
                            </div>
                         </div>
