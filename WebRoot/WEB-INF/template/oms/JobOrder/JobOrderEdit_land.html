@@ -134,10 +134,10 @@
           <div class="modal-header">生成柜货派车单PDF详情
           		<div align="center" style = "margin-top:-17px">          
                      <label class="radio-inline">
-                         <input type="radio" name="comType" value="SP" checked>显示so号
+                         <input type="radio" name="noType" value="so_no" checked>显示so号
                      </label><nbsp>
                      <label class="radio-inline">
-                         <input type="radio" name="comType"  value="CUSTOMER" >显示MBL号
+                         <input type="radio" name="noType"  value="mbl_no" >显示MBL号
                      </label>
 		        </div>
           </div>
@@ -203,14 +203,14 @@
                                        value:truckHead.head_fax!''
                                    }){}%>
                            </div>
-                           <div class="col-lg-6">
+                           <div class="col-lg-6" id="SONOLand">
                                 <%include("/eeda/component/form/inputField.html", 
                                    {   id:'SONO_land', 
-                                       label:'so号',
+                                       label:'SO NO',
                                        value:shipment.SONO!truckHead.SONO_land!''
                                    }){}%>
                            </div>
-                           <div class="col-lg-6" style="display:none">
+                           <div class="col-lg-6" id="mblNoLand" style="display:none">
                                 <%include("/eeda/component/form/inputField.html", 
                                    {   id:'mbl_no_land', 
                                        label:'MBL号',

@@ -213,6 +213,7 @@ public class JobOrderReportController extends Controller {
 	@Before(Tx.class)
 	public void printCabinetTruck() {
 		String jsonStr=getPara("params");
+		String noType=getPara("noType");
 		
 		Gson gson = new Gson();  
 		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
@@ -220,6 +221,16 @@ public class JobOrderReportController extends Controller {
 		String id = (String) dto.get("id");
 		String order_id = (String) dto.get("order_id");
 		String item_id = (String) dto.get("item_id");
+		String SONO = (String) dto.get("SONO_land");
+		String mbl_no = (String) dto.get("mbl_no_land");
+		
+		
+		
+		Record rOcean =new Record();
+		rOcean =Db.findFirst("SELECT * from job_order_shipment WHERE order_id = ?",order_id);
+		rOcean.set("SONO", SONO);
+		rOcean.set("mbl_no", mbl_no);
+		Db.update("job_order_shipment", rOcean);
 		Record r =new Record();
 		if (StringUtils.isNotEmpty(id)) {
 			//update
@@ -232,8 +243,13 @@ public class JobOrderReportController extends Controller {
 			Db.save("job_order_land_cabinet_truck", r);
 			id = r.getLong("id").toString();
 		}
+		String fileName = "";
+		if("so_no".equals(noType)){
+			 fileName = "/report/jobOrder/cabinetTruckOrder.jasper";
+		}else if("mbl_no".equals(noType)){
+			 fileName = "/report/jobOrder/MBLcabinetTruckOrder.jasper";
+		}
 		
-		String fileName = "/report/jobOrder/cabinetTruckOrder.jasper";
 		String outFileName = "/download/工作单陆运柜货派车单"+item_id+",";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("item_id", item_id);

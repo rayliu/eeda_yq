@@ -739,14 +739,14 @@ $(document).ready(function() {
     			truckHead[name] = value;
     		}
     	}
-    	 	
+    	var noType = $('#cabinet_truck_detail input[type="radio"]:checked').val();
     	var k = 0;
 		$('#land_table input[type="checkbox"]:checked').each(function(){
 				truckHead.item_id = $(this).parent().parent().attr('id');
 				truckHead.id = $('#truckHeadId').val();
 		    	truckHead.order_id = $('#order_id').val(); 
 				k++;
-				$.post('/jobOrderReport/printCabinetTruck', {params:JSON.stringify(truckHead)}, function(data){
+				$.post('/jobOrderReport/printCabinetTruck', {params:JSON.stringify(truckHead),noType:noType}, function(data){
 					$("#truckHeadId").val(data.TRUCKHEADID);
 					if(data){
 		                window.open(data.DOWN_URL);

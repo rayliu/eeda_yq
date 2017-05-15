@@ -533,6 +533,18 @@ $(document).ready(function() {
         	}
         };
     };
+    //so号、mbl号的显示和隐藏
+    $('#cabinet_truck_detail input[type="radio"]').change(function(){
+     	var type = $(this).val();
+     	if(type == 'so_no'){
+     		$('#SONOLand').show()
+     		$('#mblNoLand').hide()
+     	}else if(type == 'mbl_no'){
+     		$('#SONOLand').hide()
+     		$('#mblNoLand').show()
+     	}
+     });
+    
 
 });
 });
