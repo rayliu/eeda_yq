@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="660"/>
+	<property name="ireport.y" value="468"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -848,7 +848,7 @@ where jos.order_id=$P{order_id}]]>
 				<textFieldExpression><![CDATA[$F{shipping_mark}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="239" y="388" width="153" height="107" uuid="efcca246-ec09-48a8-87a0-3be004d0249e"/>
+				<reportElement x="238" y="357" width="153" height="75" uuid="efcca246-ec09-48a8-87a0-3be004d0249e"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 				</textElement>
@@ -930,13 +930,6 @@ where jos.order_id=$P{order_id}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{oversea_agentName}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="238" y="343" width="154" height="45" uuid="640a5a17-8cd8-4cd9-916a-e1f6e2975e60"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{container_type_count}]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="20" y="183" width="245" height="23" uuid="4c8a17fe-7af1-41d0-a7bf-f566edb8a990"/>
 				<textElement verticalAlignment="Bottom">
@@ -952,21 +945,21 @@ where jos.order_id=$P{order_id}]]>
 				<textFieldExpression><![CDATA[$F{HBLnotify_party_info}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="153" y="432" width="76" height="22" uuid="cf57ea8d-158a-4d58-8fd1-9e06a27dce08"/>
+				<reportElement x="155" y="357" width="74" height="22" uuid="cf57ea8d-158a-4d58-8fd1-9e06a27dce08"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{SUM_pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="394" y="432" width="89" height="22" uuid="77e560ed-b101-4f8c-b438-5ebf066f1624"/>
+				<reportElement x="397" y="357" width="89" height="22" uuid="77e560ed-b101-4f8c-b438-5ebf066f1624"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{SUM_gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="487" y="432" width="71" height="22" uuid="a349a7d8-ce1a-4b14-8a2e-18b0cc0387cf"/>
+				<reportElement x="487" y="357" width="71" height="22" uuid="a349a7d8-ce1a-4b14-8a2e-18b0cc0387cf"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
@@ -1091,6 +1084,20 @@ where jos.order_id=$P{order_id}]]>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="239" y="447" width="128" height="13" uuid="0de2f9e6-3e66-400b-a45f-659062526d84"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{trans_clause}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="238" y="432" width="128" height="13" uuid="f7498239-e263-49f2-a6aa-b28be6f08d6d"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{prepaid}.equals("Y")?"FREIGHT PREPAID":"FREIGHT COLLECT")]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
