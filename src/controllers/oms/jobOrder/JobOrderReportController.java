@@ -106,8 +106,7 @@ public class JobOrderReportController extends Controller {
 			 fileName = "/report/jobOrder/KF_doc/KFAgentHBL.jasper";
 			 outFileName = "/download/"+hbl_no;
 		}
-		
-		
+
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
         fileName = getContextPath() + fileName;
