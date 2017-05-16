@@ -182,7 +182,7 @@ public class JobOrderReportController extends Controller {
             
    		String id = (String) dto.get("id");
    		String order_id = (String) dto.get("order_id");
-		String hbl_no = (String) dto.get("hbl_no");
+		String SONO = (String) dto.get("hbl_no");
    		
    		JobOrderShipmentHead jsh = new JobOrderShipmentHead();
    		
@@ -198,18 +198,18 @@ public class JobOrderReportController extends Controller {
    		}
     	
     	String fileName = "/report/jobOrder/oceanHead.jasper";
-		String outFileName = "/download/头程资料-"+hbl_no;
-		
-		
+		String outFileName = "/download/头程资料-"+SONO;
+		String FileName = outFileName;
 		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName ;
 		String file = myPrint(fileName, outFileName,hm);
+		
 		//打印的同时保存到相关信息文档
 		outFileName = file.substring(file.indexOf("download")-1);
-		String FileName = outFileName;
+		
 		savePDF(order_id,FileName ,"zero");
 		Record rec =new Record();
 		rec.set("oceanHeadId", jsh.get("id"));
