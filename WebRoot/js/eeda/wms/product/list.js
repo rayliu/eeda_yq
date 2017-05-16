@@ -41,16 +41,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               	    }
                 }, 
                 { "data": "PART_NAME" ,"class":"part_name"},
-                { "data": "IMG_PATH", "class":"product", visible: false,
+                { "data": "IMG_PATH", "class":"product", 
                     "render": function ( data, type, full, meta ) {
-                        if(data){
-                            //<img src=&quot;/images/product/no_photo.jpg&quot; height=&quot;250&quot;>
-                            return '<img class="product_img" src="'+data+'" height="35" '
-                                +' data-content="<img src=&quot;'+data+'&quot;  width=&quot;250&quot;>" >';
-                        }else{
-                            return '<img class="product_img" src="/images/product/no_photo.jpg" height="35" '
-                                +' data-content="<img src=&quot;/images/product/no_photo.jpg&quot;  width=&quot;250&quot;>" >';
-                        }
+                    	return '<img class="product_img" src="/images/product/'+full.PART_NO+'.jpg" onerror="javascript:this.src=\'/images/product/no_photo.jpg\'"  width="50" '
+                        +' data-content="<img src=&quot;/images/product/'+full.PART_NO+'.jpg&quot; onerror=&quot;javascript:this.src=\'/images/product/no_photo.jpg\'&quot;'
+                        +' height=&quot;140&quot; >" >';
                     }
                 }, 
 				{ "data": "UNIT"}, 
