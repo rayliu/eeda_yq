@@ -200,14 +200,15 @@ public class JobOrderReportController extends Controller {
     	String fileName = "/report/jobOrder/oceanHead.jasper";
 		String outFileName = "/download/头程资料-"+hbl_no;
 		
-		//打印的同时保存到相关信息文档
-		savePDF(order_id,outFileName ,"zero");
+		
+		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName ;
 		String file = myPrint(fileName, outFileName,hm);
-		
+		//打印的同时保存到相关信息文档
+		savePDF(order_id,file.substring(file.indexOf("download")-1) ,"zero");
 		Record rec =new Record();
 		rec.set("oceanHeadId", jsh.get("id"));
 		rec.set("down_url", file.substring(file.indexOf("download")-1));
