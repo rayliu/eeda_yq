@@ -41,7 +41,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               	    }
                 }, 
                 { "data": "PART_NAME" ,"class":"part_name"},
-                { "data": "IMG_PATH", "class":"product", 
+                { "data": "IMG_PATH", "class":"product", visible: false,
                     "render": function ( data, type, full, meta ) {
                         if(data){
                             //<img src=&quot;/images/product/no_photo.jpg&quot; height=&quot;250&quot;>
