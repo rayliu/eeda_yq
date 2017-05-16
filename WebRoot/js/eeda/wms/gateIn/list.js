@@ -8,7 +8,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
    		 //var value = $($(this).find('.part_no')).text();
    		 var value = $(this).text();
    		 var tooltip = '<div id="c" style="position: absolute; z-index: 10; box-shadow:0 0 20px #4F4F4F;">'
-   			 +'<img src="/images/product/'+value+'.jpg" height="200" width="300" onerror="javascript:this.src=\'/images/product/no_photo.jpg\'"/>'
+   			 +'<img src="/images/product/'+value+'.jpg" height="200" onerror="javascript:this.src=\'/images/product/no_photo.jpg\'"/>'
    			 +'</div>';
             $("body").append(tooltip);
             $("#c").css({
@@ -126,7 +126,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             id: 'error-table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/gateIn/list?error_flag=Y",
             "drawCallback": function( settings ) {
 		        $.unblockUI();
 		    },
@@ -165,7 +164,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             id: 'inv-table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/gateIn/list?inv_flag=Y",
             "drawCallback": function( settings ) {
 		        $.unblockUI();
 		    },
@@ -229,6 +227,24 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var url = "/gateIn/list?error_flag=N&jsonStr="+JSON.stringify(itemJson);
         	dataTable.ajax.url(url).load();
         };
+        
+        
+        var errorFlag = 0;
+        $('#errorTab').on('click',function(){
+        	if(errorFlag==0){
+        		errorTable.ajax.url("/gateIn/list?error_flag=Y").load();
+        		errorFlag = 1;
+        	}
+        	
+        });
+        
+        var invFlag = 0;
+        $('#invTab').on('click',function(){
+        	if(invFlag==0){
+        		invTable.ajax.url("/gateIn/list?inv_flag=Y").load();
+        		invFlag = 1;
+        	}
+        });
         
         order.refleshGateInTable = function(){
         	dataTable.ajax.url("/gateIn/list?error_flag=N").load();
