@@ -193,15 +193,17 @@ public class JobOrderReportController extends Controller {
    		}
     	
     	String fileName = "/report/jobOrder/oceanHead.jasper";
-		String outFileName = "/download/头程资料"+hbl_no;
-		//打印的同时保存到相关信息文档
-		savePDF(order_id,("头程资料" + hbl_no),"zero");
+		String outFileName = "/download/工作单海运头程资料";
+		
 		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		
+		//打印的同时保存到相关信息文档
+		savePDF(order_id,(outFileName + order_id),"zero");
 		
 		
 		Record rec =new Record();
