@@ -391,100 +391,20 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("module_role", ModuleRole.class);
         arp.addMapping("unit", Unit.class);
         arp.addMapping("country", Country.class);
-        arp.addMapping("trade_item", TradeItem.class);
-        arp.addMapping("fin_item", FinItem.class);
-        arp.addMapping("custom", Custom.class);
-        arp.addMapping("container_type", ContainerType.class);
+       
         arp.addMapping("party", Party.class);
-        arp.addMapping("party_mark", PartyMark.class);
-//        arp.addMapping("contact", Contact.class);       
+
         arp.addMapping("route", Route.class);
-        arp.addMapping("product", Product.class);
         arp.addMapping("category", Category.class);
         arp.addMapping("location", Location.class);
         arp.addMapping("order_no_seq", OrderNoSeq.class);
-        arp.addMapping("carinfo", Carinfo.class);
+        
         //基本数据用户网点
         arp.addMapping("user_office", UserOffice.class);
         arp.addMapping("user_customer", UserCustomer.class);
         
-        arp.addMapping("customize_field", CustomizeField.class);
         arp.addMapping("office_config", OfficeCofig.class);
-        
-        //中转仓
-        arp.addMapping("warehouse", Warehouse.class);
-        arp.addMapping("fin_account", Account.class);
-        arp.addMapping("arap_account_audit_log", ArapAccountAuditLog.class);
-        
-
-        //oms
-        arp.addMapping("plan_order", PlanOrder.class);
-        arp.addMapping("plan_order_item", PlanOrderItem.class);
-        
-        arp.addMapping("job_order", JobOrder.class);
-        arp.addMapping("job_order_shipment_item", JobOrderShipmentItem.class);
-        arp.addMapping("job_order_arap", JobOrderArap.class);
-        arp.addMapping("job_order_shipment", JobOrderShipment.class);
-        arp.addMapping("job_order_doc", JobOrderDoc.class);
-        arp.addMapping("job_order_air", JobOrderAir.class);
-        arp.addMapping("job_order_air_item", JobOrderAirItem.class);
-        arp.addMapping("job_order_air_cargodesc", JobOrderAirCargoDesc.class);
-        arp.addMapping("job_order_land_item", JobOrderLandItem.class);
-        arp.addMapping("job_order_custom", JobOrderCustom.class);
-        arp.addMapping("job_order_insurance", JobOrderInsurance.class);
-        arp.addMapping("job_order_sendMail", JobOrderSendMail.class);
-        arp.addMapping("job_order_shipment_head", JobOrderShipmentHead.class);
-        arp.addMapping("job_order_ocean_template", JobOrderOceanTemplate.class);
-        arp.addMapping("job_order_sendmail_template", JobOrderSendMailTemplate.class);
-        arp.addMapping("job_order_express", JobOrderExpress.class);
-        
-        arp.addMapping("truck_order", TruckOrder.class);
-        arp.addMapping("truck_order_arap", TruckOrderArap.class);
-        arp.addMapping("truck_order_cargo", TruckOrderCargo.class);
-        arp.addMapping("currency", Currency.class);
-        arp.addMapping("currency_rate", CurrencyRate.class);
-        
-        //财务
-        arp.addMapping("arap_cost_order", ArapCostOrder.class);
-        arp.addMapping("arap_cost_item", ArapCostItem.class);
-        arp.addMapping("arap_misc_cost_order", ArapMiscCostOrder.class);
-        arp.addMapping("arap_cost_application_order", ArapCostApplication.class);
-        arp.addMapping("cost_application_order_rel", CostApplicationOrderRel.class);
-        arp.addMapping("arap_charge_order", ArapChargeOrder.class);
-        arp.addMapping("arap_charge_item", ArapChargeItem.class);
-        arp.addMapping("arap_charge_invoice", ArapChargeInvoice.class);
-        arp.addMapping("arap_charge_application_order", ArapChargeApplication.class);
-        arp.addMapping("charge_application_order_rel", ChargeApplicationOrderRel.class);
-        arp.addMapping("app_invoice_doc", AppInvoiceDoc.class);
-        arp.addMapping("rate_contrast", RateContrast.class);
-        
-        //cms 报关管理		
-        arp.addMapping("custom_plan_order", CustomPlanOrder.class);
-        arp.addMapping("custom_plan_order_item", CustomPlanOrderItem.class);
-        arp.addMapping("custom_arap_charge_order", CustomArapChargeOrder.class);
-        arp.addMapping("custom_arap_charge_item", CustomArapChargeItem.class);
-        arp.addMapping("custom_plan_order_arap", CustomPlanOrderArap.class);
-        
-        //tms 车队管理
-        arp.addMapping("trans_job_order", TransJobOrder.class);
-        arp.addMapping("trans_job_order_land_item", TransJobOrderLandItem.class);
-        arp.addMapping("trans_job_order_arap", TransJobOrderArap.class);
-        
-        //保险供应商
-        arp.addMapping("sp_ocean_cargo", SpOceanCargo.class);
-        arp.addMapping("sp_ocean_cargo_item", SpOceanCargoItem.class);
-        arp.addMapping("sp_internal_trade", SpInternalTrade.class);
-        arp.addMapping("sp_bulk_cargo_item", SpBulkCargoItem.class);
-        arp.addMapping("sp_bulk_cargo", SpBulkCargo.class);  
-        
-        arp.addMapping("sp_land_transport", SpLandTransport.class); 
-        arp.addMapping("sp_land_transport_item", SpLandTransportItem.class); 
-        arp.addMapping("sp_storage", SpStorage.class);  
-        arp.addMapping("sp_air_transport", SpAirTransport.class);  
-        arp.addMapping("sp_air_transport_item", SpAirTransportItem.class);  
-        arp.addMapping("sp_custom", SpCustom.class);  
-        arp.addMapping("sp_picking_crane", SpPickingCrane.class);  
-        arp.addMapping("sp_cargo_insurance", SpCargoInsurance.class); 
+      
         
         //仓库管理模块wms
         arp.addMapping("wmsproduct", Wmsproduct.class); 
