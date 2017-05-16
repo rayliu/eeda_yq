@@ -391,7 +391,7 @@ $(document).ready(function() {
     	}
     	oceanHead.id = $('#oceanHeadId').val();
     	oceanHead.order_id = $('#order_id').val();
-    	oceanHead.hbl_no = $('#hbl_no').val();
+    	oceanHead.hbl_no = $('#SONO').val();
     	
 		$.post('/jobOrderReport/printOceanHead', {params:JSON.stringify(oceanHead)}, function(data){
 				$("#oceanHeadId").val(data.OCEANHEADID);
