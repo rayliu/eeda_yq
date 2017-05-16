@@ -8,7 +8,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     jos.*,josi.*,josh.*,p.company_name head_company,p1.company_name carrier_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
+     o.logo_path,jos.*,josi.*,josh.*,p.company_name head_company,p1.company_name carrier_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
 ifnull(
 (select GROUP_CONCAT(CN_no SEPARATOR '  ;  ') from
 (SELECT
@@ -27,49 +27,54 @@ left join job_order_shipment_head josh on josh.order_id=jos.order_id
 LEFT JOIN party p on p.id = jos.head_carrier
 LEFT JOIN party p1 on p1.id = jos.carrier
 LEFT JOIN party p2 on p2.id = jos.HBLshipper
+LEFT JOIN job_order jo on jo.id = jos.order_id
+LEFT JOIN office o on o.id = jo.office_id
 left join location lo on lo.id=jos.por
 left join location lo1 on lo1.id=jos.pol
 left join location lo2 on lo2.id=jos.pod
 left join location lo3 on lo3.id=jos.fnd
 where jos.order_id=$P{order_id}]]>
 	</queryString>
+	<field name="logo_path" class="java.lang.String">
+		<fieldDescription><![CDATA[logo路径]]></fieldDescription>
+	</field>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="order_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="MBLshipper" class="java.lang.Integer">
+	<field name="MBLshipper" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="MBLshipper_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="MBLconsignee" class="java.lang.Integer">
+	<field name="MBLconsignee" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="MBLconsignee_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="MBLnotify_party" class="java.lang.Integer">
+	<field name="MBLnotify_party" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="MBLnotify_party_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="HBLshipper" class="java.lang.String">
+	<field name="HBLshipper" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="HBLshipper_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="HBLconsignee" class="java.lang.String">
+	<field name="HBLconsignee" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="HBLconsignee_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="HBLnotify_party" class="java.lang.String">
+	<field name="HBLnotify_party" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="HBLnotify_party_info" class="java.lang.String">
@@ -78,10 +83,10 @@ where jos.order_id=$P{order_id}]]>
 	<field name="booking_agent" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="head_carrier" class="java.lang.String">
+	<field name="head_carrier" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="carrier" class="java.lang.String">
+	<field name="carrier" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="bl_type" class="java.lang.String">
@@ -120,16 +125,16 @@ where jos.order_id=$P{order_id}]]>
 	<field name="schedule_to" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="por" class="java.lang.String">
+	<field name="por" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pol" class="java.lang.String">
+	<field name="pol" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pod" class="java.lang.String">
+	<field name="pod" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="fnd" class="java.lang.String">
+	<field name="fnd" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="etd" class="java.sql.Timestamp">
@@ -171,7 +176,7 @@ where jos.order_id=$P{order_id}]]>
 	<field name="release_type" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="oversea_agent" class="java.lang.String">
+	<field name="oversea_agent" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="oversea_agent_info" class="java.lang.String">
@@ -467,7 +472,7 @@ where jos.order_id=$P{order_id}]]>
 			</textField>
 			<image>
 				<reportElement x="0" y="-14" width="200" height="55" uuid="2822a4ec-e64c-4543-9a4d-2840063ece01"/>
-				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="true">
 				<reportElement x="153" y="324" width="402" height="20" uuid="22b56d9b-b74f-4a25-b012-2d9866d57479"/>
