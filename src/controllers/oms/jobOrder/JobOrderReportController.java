@@ -208,7 +208,8 @@ public class JobOrderReportController extends Controller {
 		outFileName = getContextPath() + outFileName ;
 		String file = myPrint(fileName, outFileName,hm);
 		//打印的同时保存到相关信息文档
-		savePDF(order_id,file.substring(file.indexOf("download")-1) ,"zero");
+		outFileName = file.substring(file.indexOf("download")-1);
+		savePDF(order_id,outFileName ,"zero");
 		Record rec =new Record();
 		rec.set("oceanHeadId", jsh.get("id"));
 		rec.set("down_url", file.substring(file.indexOf("download")-1));
