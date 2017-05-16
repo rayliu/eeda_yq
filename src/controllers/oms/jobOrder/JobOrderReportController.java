@@ -77,42 +77,7 @@ public class JobOrderReportController extends Controller {
 	}
 
 	
-	public void printOceanHBL() {
-		
-		String order_id = getPara("order_id");
-		String hbl_no = getPara("hbl_no");
-		String printHBL = getPara("printHBL");
-		String fileName = "";
-		String outFileName ="";
-		if("printOceanHBL".equals(printHBL)){
-			 fileName = "/report/jobOrder/oceanHBL.jasper";
-			 outFileName = "/download/"+hbl_no;
-			//打印的同时保存到相关信息文档
-			savePDF(order_id,hbl_no,"two");
-		}else if("prinTelextOceanHBL".equals(printHBL)){
-			 fileName = "/report/jobOrder/oceanTelexHBL.jasper";
-			 outFileName = "/download/"+hbl_no+"电放";
-			//打印的同时保存到相关信息文档
-			savePDF(order_id,(hbl_no+"电放"),"four");
-		}
-		if("printKFHBL".equals(printHBL)){
-			 fileName = "/report/jobOrder/KF_doc/KFHBL.jasper";
-			 outFileName = "/download/"+hbl_no;
-			//打印的同时保存到相关信息文档
-			savePDF(order_id,hbl_no,"two");
-		}else if("printKFAgentHBL".equals(printHBL)){
-			 fileName = "/report/jobOrder/KF_doc/KFAgentHBL.jasper";
-			 outFileName = "/download/"+hbl_no;
-		}
-		
-		
-		HashMap<String, Object> hm = new HashMap<String, Object>();
-		hm.put("order_id", order_id);
-        fileName = getContextPath() + fileName;
-        outFileName = getContextPath() + outFileName ;
-		String file = myPrint(fileName, outFileName,hm);
-		renderText(file.substring(file.indexOf("download")-1));
-	}
+	
 	
 	
 	public void savePDF(String order_id,String outFileName,String level){
@@ -168,6 +133,46 @@ public class JobOrderReportController extends Controller {
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	
+	
+	public void printOceanHBL() {
+		
+		String order_id = getPara("order_id");
+		String hbl_no = getPara("hbl_no");
+		String printHBL = getPara("printHBL");
+		String fileName = "";
+		String outFileName ="";
+		if("printOceanHBL".equals(printHBL)){
+			 fileName = "/report/jobOrder/oceanHBL.jasper";
+			 outFileName = "/download/"+hbl_no;
+			//打印的同时保存到相关信息文档
+			savePDF(order_id,hbl_no,"two");
+		}else if("prinTelextOceanHBL".equals(printHBL)){
+			 fileName = "/report/jobOrder/oceanTelexHBL.jasper";
+			 outFileName = "/download/"+hbl_no+"电放";
+			//打印的同时保存到相关信息文档
+			savePDF(order_id,(hbl_no+"电放"),"four");
+		}
+		if("printKFHBL".equals(printHBL)){
+			 fileName = "/report/jobOrder/KF_doc/KFHBL.jasper";
+			 outFileName = "/download/"+hbl_no;
+			//打印的同时保存到相关信息文档
+			savePDF(order_id,hbl_no,"two");
+		}else if("printKFAgentHBL".equals(printHBL)){
+			 fileName = "/report/jobOrder/KF_doc/KFAgentHBL.jasper";
+			 outFileName = "/download/"+hbl_no;
+		}
+		
+		
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+        fileName = getContextPath() + fileName;
+        outFileName = getContextPath() + outFileName ;
+		String file = myPrint(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
+	
+	
+	
 	@Before(Tx.class)
 	public void printOceanHead() {
 		String jsonStr=getPara("params");
@@ -193,14 +198,14 @@ public class JobOrderReportController extends Controller {
    		}
     	
     	String fileName = "/report/jobOrder/oceanHead.jasper";
-		String outFileName = "/download/工作单海运头程资料";
+		String outFileName = "/download/头程资料-"+hbl_no;
 		
 		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
 		fileName = getContextPath() + fileName;
-		outFileName = getContextPath() + outFileName + order_id;
-		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		outFileName = getContextPath() + outFileName ;
+		String file = myPrint(fileName, outFileName,hm);
 		
 		//打印的同时保存到相关信息文档
 		savePDF(order_id,(outFileName + order_id),"zero");
