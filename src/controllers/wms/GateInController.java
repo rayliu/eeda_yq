@@ -216,7 +216,7 @@ public class GateInController extends Controller {
 			+ out_flag
 			+ error_flag
 			+ inv_flag
-			+ " group by gi.id "
+			+ " order by create_time desc "
 			+ " ) A where 1=1 ";
     	
         
@@ -224,7 +224,7 @@ public class GateInController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by create_time desc " +sLimit);
+        List<Record> orderList = Db.find(sql+ condition +sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
