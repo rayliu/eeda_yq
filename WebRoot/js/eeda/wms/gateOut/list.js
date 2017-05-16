@@ -183,6 +183,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	dataTable.ajax.url(url).load();
         };
         
+        
+        var errorFlag = 0;
+        $('#errorTab').on('click',function(){
+        	if(errorFlag==0){
+        		errorTable.ajax.url("/gateOut/list?error_flag=Y").load();
+        		errorFlag = 1;
+        	}
+        	
+        });
+        
         order.refleshTable = function(){
         	$.blockUI({ 
                 message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
