@@ -117,7 +117,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             id: 'error-table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/gateOut/list?error_flag=Y",
+            //ajax: "/gateOut/list?error_flag=Y",
             columns:[
                 
 				{ "data": "ERROR_MSG", "width": "220px",

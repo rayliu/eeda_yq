@@ -152,7 +152,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
             id: 'order_table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/gateOutOrder/orderList",
+            //ajax: "/gateOutOrder/orderList",
             columns:[
                 { "width": "30px",
                     "render": function ( data, type, full, meta ) {
@@ -183,7 +183,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
             id: 'actual_table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/gateOutOrder/actualList",
+            //ajax: "/gateOutOrder/actualList",
             columns:[
                 { "width": "30px",
                     "render": function ( data, type, full, meta ) {
@@ -262,6 +262,24 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	var url = "/gateOutOrder/list?error_flag=N&jsonStr="+JSON.stringify(itemJson);
         	dataTable.ajax.url(url).load();
         };
+        
+        var orderFlag = 0;
+        $('#orderTab').on('click',function(){
+        	if(orderFlag==0){
+        		orderTable.ajax.url("/gateOutOrder/orderList").load();
+        		orderFlag = 1;
+        	}
+        	
+        });
+        
+        var gateOutFlag = 0;
+        $('#gateOutTab').on('click',function(){
+        	if(gateOutFlag==0){
+        		actualTable.ajax.url("/gateOutOrder/actualList").load();
+             	gateOutFlag = 1;
+        	}
+        });
+        
         
         order.refleshTable = function(){
         	$.blockUI({ 
