@@ -172,19 +172,19 @@ public class GateInController extends Controller {
             String part_no = dto.get("part_no");
             
             if(StringUtils.isNotBlank(item_no)){
-            	condition += " and item_no like '%"+item_no+"%'";
+            	condition += " and pro.item_no like '%"+item_no+"%'";
             }
             
             if(StringUtils.isNotBlank(item_name)){
-            	condition += " and item_name like '%"+item_name+"%'";
+            	condition += " and pro.item_name like '%"+item_name+"%'";
             }
             
             if(StringUtils.isNotBlank(part_name)){
-            	condition += " and part_name like '%"+part_name+"%'";
+            	condition += " and pro.part_name like '%"+part_name+"%'";
             }
             
             if(StringUtils.isNotBlank(part_no)){
-            	condition += " and part_no like '%"+part_no+"%'";
+            	condition += " and gi.part_no like '%"+part_no+"%'";
             }
             
             
@@ -200,15 +200,26 @@ public class GateInController extends Controller {
             	end_time = end_time +" 23:59:59";
             }
             
-            condition += " and create_time between '"+begin_time+"' and '"+end_time+"'";
+            condition += " and gi.create_time between '"+begin_time+"' and '"+end_time+"'";
             
     	}
         
     	if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+    	
+    	String sqlTotal= "select  count(1) total from ( "
+			+ " select gi.id from gate_in gi "
+			+ " left join user_login u on u.id = gi.creator"
+			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+			+ " where gi.office_id="+office_id
+			+ out_flag
+			+ error_flag
+			+ inv_flag
+			+ condition
+			+ " group by gi.id ) B ";
        
-    	sql = "SELECT * from (select gi.*, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name "
+    	sql = "select gi.*, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name "
 			+ " from gate_in gi "
 			+ " left join user_login u on u.id = gi.creator"
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
@@ -216,15 +227,14 @@ public class GateInController extends Controller {
 			+ out_flag
 			+ error_flag
 			+ inv_flag
-			+ " order by create_time desc "
-			+ " ) A where 1=1 ";
+			+ condition
+			+ " group by gi.id  ";
     	
         
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition +sLimit);
+        List<Record> orderList = Db.find(sql +sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
