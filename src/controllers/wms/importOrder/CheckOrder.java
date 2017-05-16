@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -379,6 +380,8 @@ public class CheckOrder extends Controller {
 	@Before(Tx.class)
 	public Record importGateInValue(CSVReader csvReader, long officeId) {
 		System.out.println("gateIn import begin--------------");
+		long start = Calendar.getInstance().getTimeInMillis();
+		
 		Connection conn = null;
 		Record result = new Record();
 		result.set("result",true);
@@ -426,9 +429,11 @@ public class CheckOrder extends Controller {
                 order.set("import_time", new Date());
                 order.save();
                 rowNumber++;
-                System.out.println("import "+ rowNumber +" row-------------");
             }
             conn.commit();
+            long end = Calendar.getInstance().getTimeInMillis();
+            long time = (end- start)/1000;
+            System.out.println("导入完成,耗时"+time+"秒");
 			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！<br/><br/>"+repeatMsg);
 		} catch (Exception e) {
 			try {
@@ -513,6 +518,7 @@ public class CheckOrder extends Controller {
 	@Before(Tx.class)
 	public Record importGateOutValue(CSVReader csvReader, long officeId) {
 		System.out.println("gateOut import begin--------------");
+		long start = Calendar.getInstance().getTimeInMillis();
 		Connection conn = null;
 		Record result = new Record();
 		result.set("result",true);
@@ -620,10 +626,12 @@ public class CheckOrder extends Controller {
                 order.set("import_time", new Date());
                 order.save();
                 rowNumber++;
-                System.out.println("import "+ rowNumber +" row-------------");
             }
             
             conn.commit();
+            long end = Calendar.getInstance().getTimeInMillis();
+            long time = (end- start)/1000;
+            System.out.println("导入完成,耗时"+time+"秒");
 			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！<br/><br/>"+repeatMsg);
 		} catch (Exception e) {
 			try {
@@ -660,6 +668,7 @@ public class CheckOrder extends Controller {
 	@Before(Tx.class)
 	public Record importInvCheckValue(CSVReader csvReader, long officeId) {
 		System.out.println("import invCheckOrder begin--------------");
+		long start = Calendar.getInstance().getTimeInMillis();
 		Connection conn = null;
 		Record result = new Record();
 		result.set("result",true);
@@ -731,7 +740,6 @@ public class CheckOrder extends Controller {
                 order.set("import_time", new Date());
                 order.save();
                 rowNumber++;
-                System.out.println("import "+rowNumber+" row----------");
                 order_no = order.getStr("order_no");    
             }
             
@@ -767,6 +775,9 @@ public class CheckOrder extends Controller {
             
             
 			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！<br/>");
+			long end = Calendar.getInstance().getTimeInMillis();
+            long time = (end- start)/1000;
+            System.out.println("导入完成,耗时"+time+"秒");
 			conn.commit();
 		} catch (Exception e) {
 			try {
