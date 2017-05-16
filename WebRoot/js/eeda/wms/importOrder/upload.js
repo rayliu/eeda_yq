@@ -14,9 +14,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	        done: function (e,data) {
 	        	$("#footer").show();
 	        	$("#msgLoad").empty().append('<h4>'+data.result.CAUSE+'</h4>');
-	        	setTimeout(function(){
-	        		//order.refleshGateInTable();
-	        	},1000); 
 	        },
 	        progressall: function (e, data) {//设置上传进度事件的回调函数  
 	        	str=null;
