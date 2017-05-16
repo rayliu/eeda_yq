@@ -58,6 +58,7 @@ import models.eeda.cms.CustomArapChargeOrder;
 import models.eeda.cms.CustomPlanOrder;
 import models.eeda.cms.CustomPlanOrderArap;
 import models.eeda.cms.CustomPlanOrderItem;
+import models.eeda.contract.customer.CustomerContract;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.bookOrder.BookOrder;
@@ -595,6 +596,9 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("trade_cost_application_order_rel", TradeCostApplicationOrderRel.class);
         arp.addMapping("trade_arap_cost_application_order", TradeArapCostApplicationOrder.class);
         arp.addMapping("trade_arap_account_audit_log", TradeArapAccountAuditLog.class);
+        
+        //合同管理
+        arp.addMapping("customer_contract", CustomerContract.class);
     }
 
     private void initDBconnector() {

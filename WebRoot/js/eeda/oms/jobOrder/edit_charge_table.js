@@ -679,7 +679,8 @@ $(document).ready(function() {
 	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" />';
 	                }
                 }
-            }, { "data": "SP_NAME", "visible": false,
+            }, 
+            { "data": "SP_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';

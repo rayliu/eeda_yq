@@ -4,8 +4,6 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,37 +11,19 @@ import java.util.List;
 import java.util.Map;
 
 import models.Location;
-import models.ParentOfficeModel;
 import models.Party;
-import models.SpAirTransport;
-import models.SpAirTransportItem;
-import models.SpBulkCargo;
-import models.SpBulkCargoItem;
-import models.SpCargoInsurance;
-import models.SpCustom;
-import models.SpInternalTrade;
-import models.SpLandTransport;
-import models.SpLandTransportItem;
-import models.SpOceanCargo;
-import models.SpOceanCargoItem;
-import models.SpPickingCrane;
-import models.SpStorage;
 import models.UserLogin;
-import models.eeda.oms.PlanOrder;
-import models.eeda.oms.PlanOrderItem;
+import models.eeda.contract.customer.CustomerContract;
 import models.yh.profile.ProviderChargeType;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
-import com.jfinal.ext.interceptor.LogInterceptor;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -51,7 +31,7 @@ import com.jfinal.plugin.activerecord.Record;
 import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
-import controllers.util.ParentOffice;
+import controllers.util.OrderNoGenerator;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -98,37 +78,48 @@ public class CustomerContractController extends Controller {
         render("/eeda/contractManagement/customer/edit.html");
     }
     
+  //根据合同类型生成不同前缀
+    public static String generateJobPrefix(String type){
+    		String prefix = "";
+			if(type.equals("出口柜货")||type.equals("进口柜货")||type.equals("出口散货")||type.equals("内贸海运")){
+				prefix+="O";
+			}
+			else if(type.equals("出口空运")||type.equals("进口空运")){
+				prefix+="A";
+			}
+			else if(type.equals("香港头程")||type.equals("香港游")||type.equals("进口散货")){
+				prefix+="L";
+			}
+			else if(type.equals("加贸")||type.equals("园区游")){
+				prefix+="P";
+			}
+			else if(type.equals("陆运")){
+				prefix+="T";
+			}
+			else if(type.equals("报关")){
+				prefix+="C";
+			}
+			else if(type.equals("快递")){
+				prefix+="E";
+			}
+			else if(type.equals("贸易")){
+				prefix+="B";
+			}
+			return prefix;
+    }
+    
     @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
-        Party party = Party.dao.findById(id);
+        UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+   		CustomerContract  customerContract= new CustomerContract();
         
-        String code = party.get("location");
-
-        Record re = Db.findFirst("select get_loc_full_name('"+code+"') as loc_name");
-        setAttr("location", re.getStr("loc_name"));
-
-        setAttr("party", party);
         
-        Record order = new Record();
-        order.set("oceanCargoList", getItems("oceanCargo",id));
-        order.set("oceanCargoItemList", getItems("oceanCargoItem",id));
-        order.set("internalTradeList", getItems("internalTrade",id));
-        order.set("bulkCargoItemList", getItems("bulkCargoItem",id));
-        order.set("pickingCraneList", getItems("pickingCrane",id));
-        order.set("landTransportList", getItems("landTransport",id));
-        order.set("landTransportItemList", getItems("landTransportItem",id));
-        order.set("storageList", getItems("storage",id));
-        order.set("airTransportList", getItems("airTransport",id));
-        order.set("airTransportItemList", getItems("airTransportItem",id));
-        order.set("customList", getItems("custom",id));
-        order.set("bulkCargoList", getItems("bulkCargo",id));
-        order.set("cargoInsuranceList", getItems("cargoInsurance",id));
-        
-        setAttr("order", order);
         setAttr("user", LoginUserController.getLoginUser(this));
-     
-        render("/eeda/contractManagement/supplierContractEdit.html");
+   		setAttr("order", Db.findFirst("select *,p.abbr  from customer_contract cc "
+   				+ " LEFT JOIN party p on p.id = cc.customer_id  where cc.id = ? ",id));
+        render("/eeda/contractManagement/customer/edit.html");
     }
     
     public void delete() {
@@ -153,17 +144,84 @@ public class CustomerContractController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
-        Party party = new Party();
-   		String id = (String) dto.get("id");
+        
+   		
+   		String type = (String) dto.get("type");//根据合同类型生成不同前缀
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
-      
-        
-     
+   		CustomerContract  customerContract= new CustomerContract();
+   		String id = (String) dto.get("order_id");
+
+        String newDateStr = "";
+        	
+        String newDateStrMM = "";
+        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMM");//转换后的格式
+        	newDateStr = sdf.format(new Date());
+   		
+   		if (StringUtils.isNotEmpty(id)) {
+   			//update
+   			customerContract = CustomerContract.dao.findById(id);
+   			
+   			String oldOrderNo=customerContract.get("order_no");
+   			
+   			if(!type.equals(customerContract.get("type"))){
+   				StringBuilder sb = new StringBuilder(oldOrderNo);//构造一个StringBuilder对象
+				sb.replace(5, 6, generateJobPrefix(type));
+				oldOrderNo =sb.toString();
+				customerContract.set("order_no", oldOrderNo);
+   			}
+   			DbUtils.setModelValues(dto, customerContract);
+   			customerContract.set("updator", user.getLong("id"));
+   			customerContract.set("update_stamp", new Date());
+            
+   			customerContract.update();
+   		} else {
+   			//create 
+   			DbUtils.setModelValues(dto, customerContract);
+//   			String newOrder_on ="EKYZH"+generateJobPrefix(type);
+   			if(office_id!=6){
+   			//需后台处理的字段
+   	   			String contract_no = OrderNoGenerator.getNextOrderNo("EK", newDateStr, office_id);
+   	   			StringBuilder sb = new StringBuilder(contract_no);//构造一个StringBuilder对象
+   	   			sb.insert(2, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
+   	   			contract_no = sb.toString();
+   	   		customerContract.set("contract_no", contract_no);
+   	   		customerContract.set("creator", user.getLong("id"));
+   	   		customerContract.set("create_date", new Date());
+   	   		customerContract.set("status", "新建");
+   	   		customerContract.set("updator", user.getLong("id"));
+   	   		customerContract.set("update_stamp", new Date());
+   	   		customerContract.set("office_id", office_id);
+   	   		customerContract.save();
+   	   		id = customerContract.getLong("id").toString();
+   			}
+   			if(office_id==6){
+   			//需后台处理的字段
+   	   			String contract_no = OrderNoGenerator.getNextOrderNo("KF", newDateStr, office_id);
+   	   			StringBuilder sb = new StringBuilder(contract_no);//构造一个StringBuilder对象
+   	   			sb.insert(2, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
+   	   			contract_no = sb.toString();
+   	   		customerContract.set("contract_no", contract_no);
+   	   		customerContract.set("creator", user.getLong("id"));
+   	   		customerContract.set("create_date", new Date());
+   	   		customerContract.set("status", "新建");
+   	   		customerContract.set("updator", user.getLong("id"));
+   	   		customerContract.set("update_stamp", new Date());
+   	   		customerContract.set("office_id", office_id);
+   	   		customerContract.save();
+   	   		id = customerContract.getLong("id").toString();
+   	   			
+   			}
+   			
+   		}
+   		Record rcon = new Record();
+   		rcon= Db.findFirst("select * from customer_contract joc where id = ? ",id);
+       
         setAttr("saveOK", true);
         //redirect("/serviceProvider");
-        renderJson(party);
+        renderJson(rcon);
     }
 
     private void setContact(Party contact) {

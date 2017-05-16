@@ -2,13 +2,15 @@
 
         
         <div class="button-bar">
-        <button class="btn btn_green btn-xs" id="add_charge_cost">添加费用</button>
+        <button class="btn btn_green btn-xs" id="add_charge_fee">添加费用</button>
         
         </div>
         <%include("/eeda/component/form/detailTable.html", 
             {
-                id:'cost_table',
-                style:'width:1050px',
-                headers:['','操作',  '费用名称', 'POL', 'POD', '单位', '单价', '数量', '币制'],
+                id:'charge_table',
+                
+                headers:['<input type="checkBox">','操作','POL', 'POD','费用名称', '币制' , '单位', '单价', '数量',
+                		 'pol_id','pod_id','fee_id','currency_id','uom'],
                 field_list:[]
             }){} %>
+		
