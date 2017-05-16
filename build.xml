@@ -58,13 +58,7 @@
 			  token="@version@" 
 			  value="${touch.time}"
 		/>
-		<copy tofile="WebRoot/js/common.js"
-			file="WebRoot/js/common.js.template" overwrite="true"/>
-		<echo>生成的js version：${touch.time}</echo>
-		<replace file ="WebRoot/js/common.js"
-			  token="urlArgs: 'v=@verion@'," 
-			  value="urlArgs: 'v=${touch.time}',"
-		/>
+		
     </target>
    <target name="clean"> 
        <delete includeEmptyDirs="true" failonerror="false"> 
