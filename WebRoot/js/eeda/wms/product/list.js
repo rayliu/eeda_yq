@@ -79,7 +79,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	$('#eeda-table').on('mouseover','.part_no',function(body){////body可以随便
     		 //var value = $($(this).find('.part_no')).text();
     		 var value = $(this).text();
-    		 var tooltip = '<div id="c" style="position: absolute; z-index: 10;">'
+    		 var tooltip = '<div id="c" style="position: absolute; z-index: 10; box-shadow:0 0 20px #4F4F4F;">'
     			 +'<img src="/images/product/'+value+'.jpg" height="200" width="300" onerror="javascript:this.src=\'/images/product/no_photo.jpg\'"/>'
     			 +'</div>';
              $("body").append(tooltip);
