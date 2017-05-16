@@ -4,10 +4,10 @@
 	        <span style='color:red; display:initial;'>*</span>
 	    <%}%>
     </label>
-	<input type="text" class="form-control search-control" 
-	id="${id}_input" AUTOCOMPLETE="off" 
+	<input type="text" class="form-control search-control " 
+	id="${id}_input" AUTOCOMPLETE="off" list ="${list!''}"
 	placeholder="${placeholder!'请选择'}"  value="${display_value!''}">
-	<ul id='${id}_list' class="pull-right dropdown-menu default dropdown-scroll" tabindex="-1" style="top: 35%; left: 2%;">
+	<ul id='${id}_list' class="pull-right dropdown-menu default dropdown-scroll " tabindex="-1" style="top: 35%; left: 2%;">
 </ul>
 </div>
 <input id="${id}" style="display: none;" name="${id}" value="${value!''}"/>
@@ -20,6 +20,7 @@ $(document).ready(function() {
 	var hiddenField = $('#${id}');
 	
 	//处理中文输入法, 没完成前不触发查询
+	
 	var cpLock = false;
     inputField.on('compositionstart', function () {
         cpLock = true;
@@ -70,25 +71,35 @@ $(document).ready(function() {
 			spList.show();
 			
 			//当查询结果只有一个时，自动赋值到hiddenField
-			if(data.length==0)
-                hiddenField.val('');
-            if(data.length==1&&data[0].ID)
-                hiddenField.val(data[0].ID);
+			if(data.length==0){
+				hiddenField.val('');
+			}
+            if(data.length==1&&data[0].ID){
+            	 hiddenField.val(data[0].ID);
+            }
+               
+            	
             if(!inputStr){
-            	if(data.length>1)
-                    hiddenField.val('');
+            	if(data.length>1){
+            		hiddenField.val('');
+            	}     
             }
 		},'json');
     });
     
     // 没选中供应商，焦点离开，隐藏列表
 	inputField.on('blur', function(){
-		if (inputField.val().trim().length ==0) {
-			hiddenField.val('');
-		};
-		if (hiddenField.val().trim().length ==0) {
-			inputField.val('');
-		};
+		var list = inputField.attr("list");
+		
+			if (inputField.val().trim().length ==0) {
+				hiddenField.val('');
+			};	
+		}
+		if(!list){
+			if (hiddenField.val().trim().length ==0) {
+				inputField.val('');
+			};
+		}
 		spList.hide();
  	});
 

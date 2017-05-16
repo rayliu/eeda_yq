@@ -452,7 +452,7 @@ eeda.refreshUrl = refreshUrl;
             if(data.length==1&&data[0].ID){
             	  inputField.val(data[0].NAME);
                 hiddenField.val(data[0].ID);
-                tableFieldList.hide();
+//                tableFieldList.hide();
             }
             if(!inputStr && data.length>1){
 	                hiddenField.val('');
