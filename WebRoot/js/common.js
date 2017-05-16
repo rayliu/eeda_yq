@@ -1,6 +1,6 @@
 
 requirejs.config({
-    urlArgs: 'v=170515.0226',
+    urlArgs: 'v=170516.1023',
     baseUrl: '/js/lib',
     waitSeconds: 200,
     paths: {

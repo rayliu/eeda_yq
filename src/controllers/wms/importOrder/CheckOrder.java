@@ -33,6 +33,8 @@ import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
+import controllers.profile.LoginUserController;
+
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -376,6 +378,7 @@ public class CheckOrder extends Controller {
 	 */
 	@Before(Tx.class)
 	public Record importGateInValue(CSVReader csvReader, long officeId) {
+		System.out.println("gateIn import begin--------------");
 		Connection conn = null;
 		Record result = new Record();
 		result.set("result",true);
@@ -419,8 +422,11 @@ public class CheckOrder extends Controller {
                 	}
                 }    
                 order.set("office_id", officeId);
+                order.set("import_by", LoginUserController.getLoginUserId(this));
+                order.set("import_time", new Date());
                 order.save();
                 rowNumber++;
+                System.out.println("import "+ rowNumber +" row-------------");
             }
             conn.commit();
 			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！<br/><br/>"+repeatMsg);
@@ -506,6 +512,7 @@ public class CheckOrder extends Controller {
 	 */
 	@Before(Tx.class)
 	public Record importGateOutValue(CSVReader csvReader, long officeId) {
+		System.out.println("gateOut import begin--------------");
 		Connection conn = null;
 		Record result = new Record();
 		result.set("result",true);
@@ -609,8 +616,11 @@ public class CheckOrder extends Controller {
                 
                 order.set("office_id", officeId);
                 order.set("date_no", c);
+                order.set("import_by", LoginUserController.getLoginUserId(this));
+                order.set("import_time", new Date());
                 order.save();
                 rowNumber++;
+                System.out.println("import "+ rowNumber +" row-------------");
             }
             
             conn.commit();
@@ -649,6 +659,7 @@ public class CheckOrder extends Controller {
 	 */
 	@Before(Tx.class)
 	public Record importInvCheckValue(CSVReader csvReader, long officeId) {
+		System.out.println("import invCheckOrder begin--------------");
 		Connection conn = null;
 		Record result = new Record();
 		result.set("result",true);
@@ -716,9 +727,11 @@ public class CheckOrder extends Controller {
         		}
             	
                 order.set("office_id", officeId);
+                order.set("import_by", LoginUserController.getLoginUserId(this));
+                order.set("import_time", new Date());
                 order.save();
                 rowNumber++;
-                
+                System.out.println("import "+rowNumber+" row----------");
                 order_no = order.getStr("order_no");    
             }
             
