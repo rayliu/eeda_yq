@@ -182,7 +182,7 @@ public class JobOrderReportController extends Controller {
             
    		String id = (String) dto.get("id");
    		String order_id = (String) dto.get("order_id");
-		String SONO = (String) dto.get("hbl_no");
+		String SONO = (String) dto.get("SONO");
    		
    		JobOrderShipmentHead jsh = new JobOrderShipmentHead();
    		
