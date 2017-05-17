@@ -18,6 +18,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           paging: true,
           serverSide: true, //不打开会出现排序不对
           ajax: "/transJobOrder/list?type="+type,
+          "drawCallback": function( settings ) {
+              $('.other').popover({
+                  html: true,
+                  container: 'body',
+                  placement: 'right',
+                  trigger: 'hover'
+              });
+		  },
           columns: [
               { "width": "10px",
                   "render": function ( data, type, full, meta ) {
@@ -63,6 +71,36 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                       return '';
                     }
               },
+              { "data": null,
+                  "render": function ( data, type, full, meta ) {
+                      //return '<button class="other" value="'+full.ID+'"><i class="glyphicon glyphicon-th"></i></button>';
+                	  var cost = full.COST;
+                	  var charge = full.CHARGE;
+                	  var costShow="";
+                	  var chargeShow="";
+                	  if(cost){
+                		  var costArray = cost.split(',');
+                		  costShow='<h5><strong>应付费用</strong></h5>';
+                		  for (var i = 0; i < costArray.length; i++) {
+                			  costShow += '<li>'+costArray[i]+'</li>';
+						  }
+                	  }
+                	  if(charge){
+                		  chargeShow='<h5><strong>应收费用</strong></h5>';
+                		  var chargeArray = charge.split(',');
+                		  for (var i = 0; i < chargeArray.length; i++) {
+                			  chargeShow += '<li>'+chargeArray[i]+'</li>';
+  							
+						  }
+                	  }
+                	  
+                	  return '<div class="other" width="50" '
+                      +' data-content="<div'
+                      +' height=&quot;140&quot; >'+chargeShow+costShow+'</div>" ><button><i class="glyphicon glyphicon-th"></i></button></div>';
+                      
+                	  
+                  }
+              },
               { "data": "CREATOR_NAME"},
               { "data": "CREATE_STAMP",
             	render: function(data){
@@ -76,8 +114,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               
           ]
       });
-
       
+
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
