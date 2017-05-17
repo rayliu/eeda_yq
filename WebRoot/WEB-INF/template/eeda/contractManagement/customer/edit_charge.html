@@ -10,7 +10,9 @@
                 id:'charge_table',
                 
                 headers:['<input type="checkBox">','操作','POL', 'POD','费用名称', '币制' , '单位', '单价', '数量',
-                		 'pol_id','pod_id','fee_id','currency_id','uom'],
-                field_list:[]
+                		 'pol_name','pod_name','fee_name','currency_name','uom'],
+                field_list:['id','','pol_id','pod_id','fee_id','currency_id','uom','price','amount',
+                		'pol_name','pod_name','fee_name','currency_name','uom_name'],
+                value_list: charge_items![]
             }){} %>
 		

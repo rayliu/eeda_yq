@@ -1439,11 +1439,11 @@ public class JobOrderController extends Controller {
         long office_id=user1.getLong("office_id");
         
         //判断工作单与登陆用户的office_id是否一致
-        if(job_office_id!=office_id){
-        	renderError(403);// no permission
-            return;
-
-        }
+//        if(job_office_id!=office_id){
+//        	renderError(403);// no permission
+//            return;
+//
+//        }
     	//获取汇率日期信息
     	Record r = Db.findFirst("SELECT * from ( SELECT min(to_stamp) min_stamp,office_id FROM currency_rate where office_id=?) A WHERE min_stamp > now() ",office_id);
     	if(r==null){

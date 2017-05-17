@@ -48,7 +48,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	     			$.scojs_message('数据有误', $.scojs_message.TYPE_ERROR);
 	     			$("#saveBtn").attr("disabled",false);
 	     		}
-//	        	itemOrder.refleshItemTable(data.ID);
+	        	itemOrder.refleshItemTable(data.ID);
 	        },'json').fail(function() {
 	            $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 	            $('#saveBtn').attr('disabled', false);
@@ -56,6 +56,12 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        });
 	        
 	  });
+	  
+	  
+	  
+	  
+	  
+	  
 
     });
 });

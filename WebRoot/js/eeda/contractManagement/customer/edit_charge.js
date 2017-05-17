@@ -171,35 +171,35 @@ $(document).ready(function() {
 	                    return '<input type="text" name="amount" style="width:100px" value = "'+data+'" class="form-control notsave" >';
                 }
             },
-            { "data": "POL_ID", "visible": false,
+            { "data": "POL_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return data;
                 }
             }, 
-            { "data": "POD_ID", "visible": false,
+            { "data": "POD_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return data;
                 }
             },
-            { "data": "FEE_ID", "visible": false,
+            { "data": "FEE_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return data;
                 }
             }, 
-            { "data": "CURRENCY_ID", "visible": false,
+            { "data": "CURRENCY_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return data;
                 }
             },
-            { "data": "UOM", "visible": false,
+            { "data": "UOM_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -216,10 +216,10 @@ $(document).ready(function() {
     
     //刷新明细表
     itemOrder.refleshItemTable = function(contract_id){
-    	var url = "/customerContract/tableList?contract_id="+contract_id+"&type=charge";
+    	var url = "/customerContract/tableList?contract_id="+contract_id;
     	cargoTable.ajax.url(url).load();
     }
-    
+
 
 });
 });
