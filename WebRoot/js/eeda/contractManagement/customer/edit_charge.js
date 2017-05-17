@@ -163,12 +163,12 @@ $(document).ready(function() {
 	                    return '<input type="text" style="width:100px" name="price" value = "'+data+'" class="form-control notsave" >';
                 }
             },
-            { "data": "de", "width": "80px",
+            { "data": "AMOUNT", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	 if(!data)
 	                        data='';
 	                    
-	                    return '<input type="text" name="price" style="width:100px" value = "'+data+'" class="form-control notsave" >';
+	                    return '<input type="text" name="amount" style="width:100px" value = "'+data+'" class="form-control notsave" >';
                 }
             },
             { "data": "POL_ID", "visible": false,
@@ -215,8 +215,8 @@ $(document).ready(function() {
     });
     
     //刷新明细表
-    itemOrder.refleshItemTable = function(order_id){
-    	var url = "/customerContract/tableList?order_id="+order_id+"&type=charge";
+    itemOrder.refleshItemTable = function(contract_id){
+    	var url = "/customerContract/tableList?contract_id="+contract_id+"&type=charge";
     	cargoTable.ajax.url(url).load();
     }
     

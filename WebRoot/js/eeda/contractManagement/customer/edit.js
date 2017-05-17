@@ -5,7 +5,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	  //主表构造json
 	  var buildOrder = function(){
 		  var item = {};
-		  item.id = $('#order_id').val();
+		  item.id = $('#contract_id').val();
 		  var orderForm = $('#orderForm input,#orderForm select,#orderForm textarea');
 		  for(var i= 0;i< orderForm.length;i++){
 			  var name = orderForm[i].id;
@@ -37,9 +37,12 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        
 	        $.post("/customerContract/save",{params:JSON.stringify(order)},function(data){
 	        	if(data.ID != null && data.ID != ""){
+	        		$('#contract_no').val(data.CONTRACT_NO);
+	        		$('#status').val(data.STATUS);
+	        		$('#create_date').val(data.CREATE_DATE);
 	     			eeda.contactUrl("edit?id",data.ID);
 	     			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-	     			$("#order_id").val(data.ID);
+	     			$("#contract_id").val(data.ID);
 	     			$("#saveBtn").attr("disabled",false);
 	     		}else{
 	     			$.scojs_message('数据有误', $.scojs_message.TYPE_ERROR);
