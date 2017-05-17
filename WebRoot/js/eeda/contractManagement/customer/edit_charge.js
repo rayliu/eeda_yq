@@ -134,7 +134,7 @@ $(document).ready(function() {
 		                    {
 		                        id: 'CURRENCY_ID',
 		                        value: data,
-		                        diaplay_value:full.CURRENCY_NAME,
+		                        display_value:full.CURRENCY_NAME,
 		                        style:'width:70px'
 		                    }
 		                );
@@ -149,7 +149,7 @@ $(document).ready(function() {
         				{
 		            			id: 'UOM',
 		                        value: data,
-		                        diaplay_value:full.UOM_NAME,
+		                        display_value:full.UOM_NAME,
 		                        style:'width:100px'
         				});
             		return field_html;
