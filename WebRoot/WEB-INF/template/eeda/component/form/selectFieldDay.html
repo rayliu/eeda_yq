@@ -1,0 +1,47 @@
+<div class="form-group">
+    <label class="search-label">${label}
+    <%if(required!'' =='required'){%>
+        <span style='color:red; display:initial;'>*</span>
+    <%}%></label>
+    <select id="${id}" name="${id}" class="${class!'form-control search-control'}"  ${disabled!''}>
+			<option value="1">1 号</option>
+			<option value="2">2 号</option>
+			<option value="3">3 号</option>
+			<option value="4">4 号</option>
+			<option value="5">5 号</option>
+			<option value="6">6 号</option>
+			<option value="7">7 号</option>
+			<option value="8">8 号</option>
+			<option value="9">9 号</option>
+			<option value="10">10 号</option>
+			<option value="11">11 号</option>
+			<option value="12">12 号</option>
+			<option value="13">13 号</option>
+			<option value="14">14 号</option>
+			<option value="15">15 号</option> 
+			<option value="16">16 号</option>
+			<option value="17">17 号</option>
+			<option value="18">18 号</option>
+			<option value="19">19 号</option>
+			<option value="20">20 号</option>
+			<option value="21">21 号</option>
+			<option value="22">23 号</option>
+			<option value="23">23 号</option>
+			<option value="24">24 号</option>
+			<option value="25">25 号</option>
+			<option value="26">26 号</option>
+			<option value="27">27 号</option>
+			<option value="28">28 号</option>
+			<option value="29">29 号</option>
+			<option value="30">30 号</option>
+			<option value="31">31 号</option>
+    </select>
+</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var value= '${value!''}';
+		if(value){
+			$('#${id}').val(value);
+		}
+	});
+</script>
