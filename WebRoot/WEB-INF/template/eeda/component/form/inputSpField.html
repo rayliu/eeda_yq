@@ -91,10 +91,10 @@ $(document).ready(function() {
 	inputField.on('blur', function(){
 		var list = inputField.attr("list");
 		
-			if (inputField.val().trim().length ==0) {
-				hiddenField.val('');
-			};	
-		}
+		if (inputField.val().trim().length ==0) {
+			hiddenField.val('');
+		};	
+		
 		if(!list){
 			if (hiddenField.val().trim().length ==0) {
 				inputField.val('');
