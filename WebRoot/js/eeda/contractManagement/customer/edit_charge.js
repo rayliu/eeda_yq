@@ -163,14 +163,6 @@ $(document).ready(function() {
 	                    return '<input type="text" style="width:100px" name="price" value = "'+data+'" class="form-control notsave" >';
                 }
             },
-            { "data": "AMOUNT", "width": "80px",
-                "render": function ( data, type, full, meta ) {
-                	 if(!data)
-	                        data='';
-	                    
-	                    return '<input type="text" name="amount" style="width:100px" value = "'+data+'" class="form-control notsave" >';
-                }
-            },
             { "data": "POL_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
