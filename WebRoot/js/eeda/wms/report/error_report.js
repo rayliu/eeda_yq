@@ -8,7 +8,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         var dataTable = eeda.dt({
             id: 'eeda-table',
             paging: true,
-            serverSide: false, //不打开会出现排序不对
+            serverSide: true, //不打开会出现排序不对
             ajax: "/errorReport/list",
             "drawCallback": function( settings ) {
                 $.unblockUI();
@@ -209,8 +209,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	          		item[name] = value;
 	          	}
 	      	}
+	      	item.order_type = $('[name=optionsRadios]:checked').val();
 	        return item;
         };
+        
+        $('[name=optionsRadios]').on('change',function(){
+        	searchData();
+        })
       
         var searchData=function(){
         	var itemJson = buildCondition();

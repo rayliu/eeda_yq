@@ -122,7 +122,8 @@ public class ErrorReportController extends Controller {
         String pageIndex = getPara("draw");
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
-        
+        String order_type=null;
+        		
         String jsonStr = getPara("jsonStr");
     	if(StringUtils.isNotBlank(jsonStr)){
     		Gson gson = new Gson(); 
@@ -133,6 +134,7 @@ public class ErrorReportController extends Controller {
             String part_name = dto.get("part_name");
             String part_no = dto.get("part_no");
             String error_msg = dto.get("error_msg");
+            order_type = dto.get("order_type");
             
             if(StringUtils.isNotBlank(item_no)){
             	condition += " and pro.item_no like '%"+item_no+"%'";
@@ -174,27 +176,42 @@ public class ErrorReportController extends Controller {
     	if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-       
-    	sql = "(select '入库记录' order_type,'' import_msg ,gi.id,gi.error_msg,gi.qr_code,gi.shelves,gi.quantity,gi.move_flag,gi.create_time, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name,pro.part_no "
-			+ " from gate_in gi "
-			+ " left join user_login u on u.id = gi.creator"
-			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
-			+ " where gi.error_flag = 'Y' and gi.office_id="+office_id
-			+ condition+" group by gi.id)"
-			+ " union"
-			+ " (select '出库记录' order_type ,gi.import_msg ,gi.id,gi.error_msg,gi.qr_code,gi.shelves,gi.quantity,gi.move_flag,gi.create_time, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name,pro.part_no "
-			+ " from gate_out gi "
-			+ " left join user_login u on u.id = gi.creator"
-			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
-			+ " where (gi.error_flag = 'Y' and  gi.office_id="+office_id
-			+ condition+") or import_msg is not null group by gi.id)";
+        
+    	String sqlTotal = "";
+    	if("gateOut".equals(order_type)){
+    		sqlTotal = "select count(1) total from (select gi.id "
+    				+ " from gate_out gi "
+    				+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+    				+ " where (gi.error_flag = 'Y' and  gi.office_id="+office_id
+    				+ condition+") or import_msg is not null group by gi.id) A ";
+    		
+    		
+    		sql = "select '出库记录' order_type ,gi.import_msg ,gi.id,gi.error_msg,gi.qr_code,gi.shelves,gi.quantity,gi.move_flag,gi.create_time, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name,pro.part_no "
+    				+ " from gate_out gi "
+    				+ " left join user_login u on u.id = gi.creator"
+    				+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+    				+ " where (gi.error_flag = 'Y' and  gi.office_id="+office_id
+    				+ condition+") or import_msg is not null group by gi.id ";
+    	}else{
+    		sqlTotal = "select count(1) total from (select gi.id"
+    				+ " from gate_in gi "
+    				+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+    				+ " where gi.error_flag = 'Y' and gi.office_id="+office_id
+    				+ condition+" group by gi.id ) A";
+    		sql = "select '入库记录' order_type,'' import_msg ,gi.id,gi.error_msg,gi.qr_code,gi.shelves,gi.quantity,gi.move_flag,gi.create_time, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name,pro.part_no "
+    				+ " from gate_in gi "
+    				+ " left join user_login u on u.id = gi.creator"
+    				+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+    				+ " where gi.error_flag = 'Y' and gi.office_id="+office_id
+    				+ condition+" group by gi.id ";
+    	}
     	
         
-        String sqlTotal = "select count(1) total from ("+sql+") A";
+       
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find("select * from(" + sql + ") A order by create_time desc " +sLimit);
+        List<Record> orderList = Db.find(sql +sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
