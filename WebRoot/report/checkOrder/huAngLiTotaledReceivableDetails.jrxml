@@ -422,7 +422,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="45" y="1" width="60" height="12" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
+				<reportElement x="45" y="1" width="65" height="12" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
