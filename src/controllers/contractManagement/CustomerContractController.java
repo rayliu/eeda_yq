@@ -53,7 +53,12 @@ public class CustomerContractController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = " select * from customer_contract where office_id="+user.getOfficeId();
+        String sql = " select cc.*,p.abbr customer_name,u.c_name creator_name ,"
+        		+ " CONCAT(substring(cc.contract_begin_time,1,10),' 到 ',substring(cc.contract_end_time,1,10)) contract_period"
+        		+ " from customer_contract cc "
+        		+" LEFT JOIN party p ON p.id = cc.customer_id "
+        		+" LEFT JOIN user_login u on u.id = cc.creator "
+        		+ " where cc.office_id ="+user.getOfficeId();
       
         String condition = DbUtils.buildConditions(getParaMap());
 
