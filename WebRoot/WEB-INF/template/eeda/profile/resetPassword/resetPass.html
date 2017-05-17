@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>易达物流信息平台</title>
+
+    <!-- Core CSS - Include with every page -->
+    <link href="/yh/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/yh/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <!-- SB Admin CSS - Include with every page -->
+    <link href="/yh/css/sb-admin.css" rel="stylesheet">
+
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+
+			<div class="col-md-5 col-md-offset-4">
+
+				<div class="login-panel panel panel-default"
+					style="position: absolute">
+					<div class="panel-heading">
+						<h3 class="panel-title">忘记密码?</h3>
+					</div>
+					<div class="panel-body">
+						<form class="form-inline" role="form" id="resetForm" action="/reset/sendMail" method="post">
+							<div>
+								<div class="form-group has-feedback">
+									 <label class="control-label">Email邮箱</label>
+									 <input type="text" class="form-control" id="userEmail" name="userEmail"> 
+									 <span class="glyphicon form-control-feedback"></span>	
+								</div>
+							</div>
+							<button type="submit" class="btn btn-default btn-success col-sm-4 col-md-offset-4">确定</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <script src="/yh/js/jquery-1.10.2.js"></script>
+    <script src="/yh/js/bootstrap.min.js"></script>
+    <script src="/yh/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/yh/js/jquery.validate.min.js"></script>
+    <script src="/yh/js/jvalidate.messages_cn.js"></script>
+    <script src="/yh/js/sb-admin.js"></script>
+    
+	<script>
+	    $(document).ready(function() {
+			$('#resetForm').validate({
+			         rules: {
+			        	 userEmail: {
+			                required: true,
+			                email:true,
+			                remote:{
+			                	url: "/reset/checkEmailExist", //后台处理程序    
+	                            type: "post",  //数据发送方式  
+	                            data:  {                     //要传递的数据   
+	                            	email: function() {   
+	                                    return $("#userEmail").val();   
+	                                }   
+	  
+	                            }   
+	            
+	                        } 
+			        	 }
+					},
+					 messages:{
+						 userEmail:{
+		            		 required:"邮箱不为空",
+					 	     email:"格式不正确",
+		            		 remote:"邮箱不存在"
+		            	 }
+		             },
+		             highlight: function(element) {
+		            	$(element).parent().removeClass('has-success').addClass('has-error');
+		            	//$(element).next().removeClass('glyphicon-ok').addClass('glyphicon-remove');
+		            },
+		            success: function(element) {
+		            	/*  glyphicon-ok */
+		            	element.parent().removeClass('has-error').addClass('has-success');
+		            	//element.next().remove('glyphicon-remove').addClass('glyphicon-ok');
+		            }
+			         
+			  });	
+			window.history.forward(1);
+	    });
+    </script>
+</body>
+
+</html>
