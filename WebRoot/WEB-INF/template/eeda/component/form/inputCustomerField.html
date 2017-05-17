@@ -65,7 +65,7 @@ $(document).ready(function() {
 	            
 	        companyList.css({ 
 		    	left:$(me).position().left+"px", 
-		    	top:$(me).position().top+28+"px" 
+		    	top:$(me).position().top+26+"px" 
 		    });
 
 		    eeda.hidePopList();
@@ -120,21 +120,20 @@ $(document).ready(function() {
 	companyList.on('mousedown', function(){
 	    return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
 	});
+
 	// 没选中item，焦点离开，隐藏列表
 	$(document).on('click', function(event){
-	    if (companyList.is(':visible') ){
-		    var clickedEl = $(this);
-		    // var hiddenField = eeda._hiddenField;
-		    if ($(this).find('a').val().trim().length ==0) {
-			    hiddenField.val('');
-		    };
+        var clickedEl_id = $(event.target).attr('id');
+        var inputField_id = inputField.attr('id');
+
+	    if (clickedEl_id!=inputField_id && companyList.is(':visible') ){
 		    companyList.hide();
 	    }
 
-        if(hiddenField.val()==''){
+        if(clickedEl_id!=inputField_id && hiddenField.val()==''){
             inputField.val('');
         }
     });
-    
+
 });
 </script>
