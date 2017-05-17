@@ -190,6 +190,15 @@ public class InventoryController extends Controller {
             condition += " and gi.create_time between '"+begin_time+"' and '"+end_time+"'";
             
     	}
+    	
+    	String sqlTotal = "select count(1) total from (select A.id from (select gi.id,pro.item_no "
+			+ " from gate_in gi "
+			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+			+ " where gi.office_id="+office_id
+			+ " and out_flag = 'N' and error_flag = 'N'"
+			+ condition 
+			+ " group by gi.id ) A group by A.item_no) B";
+    	
         
     	sql = "select A.*,count(A.id) totalBox,sum(A.quantity) totalPiece from (select gi.*, ifnull(u.c_name, u.user_name) creator_name,"
     		+ " pro.item_name,ifnull(pro.item_no,'') item_no,pro.part_name part_name "
@@ -202,7 +211,7 @@ public class InventoryController extends Controller {
 			+ " group by gi.id ) A group by A.item_no";
     	
         
-        String sqlTotal = "select count(1) total from ("+sql+") B";
+        
         Record rec = Db.findFirst(sqlTotal);
         
         List<Record> orderList = Db.find(sql +sLimit);
@@ -263,6 +272,14 @@ public class InventoryController extends Controller {
             
             condition += " and gi.create_time between '"+begin_time+"' and '"+end_time+"'";
     	}
+    	
+    	String sqlTotal = "select count(1) total from (select A.id from (select gi.id,gi.part_no"
+			+ " from gate_in gi "
+			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+			+ " where gi.office_id="+office_id
+			+ " and out_flag = 'N' and error_flag = 'N'"
+			+ condition 
+			+ " group by gi.id ) A group by A.part_no) B";
         
     	sql = "select A.*,count(A.id) totalBox,sum(A.quantity) totalPiece from (select gi.*,"
     		+ " pro.item_name,ifnull(pro.item_no,'') item_no,pro.part_name part_name "
@@ -274,7 +291,6 @@ public class InventoryController extends Controller {
 			+ " group by gi.id ) A group by A.part_no";
     	
         
-        String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         
         List<Record> orderList = Db.find(sql +sLimit);

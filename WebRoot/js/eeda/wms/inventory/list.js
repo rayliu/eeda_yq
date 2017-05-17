@@ -3,7 +3,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
     	document.title = '库存统计 | '+document.title;
     	
     	$('#eeda-table').on('mouseover','.part_no',function(body){////body可以随便
-   		 //var value = $($(this).find('.part_no')).text();
+
    		 var value = $(this).text();
    		 var tooltip = '<div id="c" style="position: absolute; z-index: 10; box-shadow:0 0 20px #4F4F4F;">'
    			 +'<img src="/images/product/'+value+'.jpg" height="200" width="300" onerror="javascript:this.src=\'/images/product/no_photo.jpg\'"/>'
@@ -70,7 +70,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
             searchData();
         });
 
-        $('#searchBtn').click(function(){
+        $('#searchBtn').click(function(e){
         	var item_no = $('#item_no').val();
         	var item_name = $('#item_name').val();
         	var part_no = $('#part_no').val();
@@ -83,7 +83,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         		$('#orderText').text('')
         		searchData(); 
         	}
-        })
+        });
  
         buildCondition=function(){
 	      	var item = {};
@@ -115,18 +115,18 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	dataTable.ajax.url(url).load();
         };
         
-        
         var searchPartData=function(item_no){
         	$.blockUI({ 
                 message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
             });
+        	
         	
         	var table = $('#eeda-table').dataTable();
           	table.fnSetColumnVis(0, false);
           	table.fnSetColumnVis(1, false);
           	table.fnSetColumnVis(2, true);
           	table.fnSetColumnVis(3, true);
-        	
+          	
         	var itemJson = buildCondition();
         	var url = "/inventory/partList?item_no="+item_no+"&jsonStr="+JSON.stringify(itemJson);
         	dataTable.ajax.url(url).load();
