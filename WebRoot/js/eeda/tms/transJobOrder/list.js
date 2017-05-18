@@ -73,6 +73,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               },
               { "data": null,
                   "render": function ( data, type, full, meta ) {
+                	  if(data){
+                		  data = '';
+                	  }
+                	  
                 	  var cost = full.COST;
                 	  var charge = full.CHARGE;
                 	  var costShow="";
@@ -92,14 +96,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   							
 						  }
                 	  }
-                	  
-                	  if(cost || charge){
-                		  return '<div class="other" width="50" '
+                	  if(cost){
+                		  data += '<div class="other" width="50" '
                           +' data-content="<div'
-                          +' height=&quot;140&quot; >'+chargeShow+costShow+'</div>" ><button><i class="glyphicon glyphicon-th"></i></button></div>';
-                	  }else{
-                		  return '';
-                	  }  
+                          +' height=&quot;140&quot; >'+costShow+'</div>" ><span class="badge" style="">￥付</span></div>';
+                	  }
+                	  if(charge){
+                		  data += '<div class="other" width="50" '
+                              +' data-content="<div'
+                              +' height=&quot;140&quot; >'+chargeShow+'</div>" ><span class="badge" style="">￥收</span></div>';
+                	  }
+                	  return data;
                   }
               },
               { "data": "CREATOR_NAME"},
