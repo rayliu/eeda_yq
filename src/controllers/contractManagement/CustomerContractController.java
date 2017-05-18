@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.Party;
 import models.UserLogin;
 import models.eeda.contract.customer.CustomerContract;
 
@@ -59,7 +58,7 @@ public class CustomerContractController extends Controller {
         		+ " from customer_contract cc "
         		+" LEFT JOIN party p ON p.id = cc.customer_id "
         		+" LEFT JOIN user_login u on u.id = cc.creator "
-        		+ " where cc.office_id ="+user.getOfficeId();
+        		+ " where  cc.office_id ="+user.getOfficeId();
       
         String condition = DbUtils.buildConditions(getParaMap());
 
@@ -131,16 +130,16 @@ public class CustomerContractController extends Controller {
        
         String id = getPara();
         
-        Party party = Party.dao.findById(id);
+        CustomerContract customerContract = CustomerContract.dao.findById(id);
         
-        Object obj = party.get("is_stop");
-        if(obj == null || "".equals(obj) || obj.equals(false) || obj.equals(0)){
-        	party.set("is_stop", true);
+        String obj = customerContract.get("is_stop");
+        if(obj == null || "".equals(obj) || "N".equals(obj) || obj.equals(0)){
+        	customerContract.set("is_stop", "Y");
         }else{
-        	party.set("is_stop", false);
+        	customerContract.set("is_stop", "N");
         }
-        party.update();
-        redirect("/serviceProvider");
+        customerContract.update();
+        redirect("/customerContract");
     }
     
     
