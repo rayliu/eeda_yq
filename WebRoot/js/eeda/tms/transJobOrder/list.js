@@ -73,7 +73,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               },
               { "data": null,
                   "render": function ( data, type, full, meta ) {
-                      //return '<button class="other" value="'+full.ID+'"><i class="glyphicon glyphicon-th"></i></button>';
                 	  var cost = full.COST;
                 	  var charge = full.CHARGE;
                 	  var costShow="";
@@ -94,11 +93,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 						  }
                 	  }
                 	  
-                	  return '<div class="other" width="50" '
-                      +' data-content="<div'
-                      +' height=&quot;140&quot; >'+chargeShow+costShow+'</div>" ><button><i class="glyphicon glyphicon-th"></i></button></div>';
-                      
-                	  
+                	  if(cost || charge){
+                		  return '<div class="other" width="50" '
+                          +' data-content="<div'
+                          +' height=&quot;140&quot; >'+chargeShow+costShow+'</div>" ><button><i class="glyphicon glyphicon-th"></i></button></div>';
+                	  }else{
+                		  return '';
+                	  }  
                   }
               },
               { "data": "CREATOR_NAME"},
