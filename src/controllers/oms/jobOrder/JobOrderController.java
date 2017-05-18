@@ -1748,7 +1748,7 @@ public class JobOrderController extends Controller {
         }
         
         if("sowait".equals(type)){
-        	sql=" SELECT jor.*,ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	sql=" SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag,ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
         			+ " FROM job_order jor "
         			+ " LEFT JOIN job_order_shipment jos on jor.id = jos.order_id "
         			+ " left join party p on p.id = jor.customer_id"
@@ -1757,7 +1757,7 @@ public class JobOrderController extends Controller {
         			+ " and jor.type = '出口柜货' AND jos.SONO IS NULL AND jor.transport_type LIKE '%ocean%'"
         			+ " and jor.delete_flag = 'N'";        	
         }else if("truckorderwait".equals(type)){
-        	 sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	 sql = "SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
         			+ " FROM job_order_land_item joli"
         			+ " left join job_order jor on jor.id = joli.order_id"
         			+ " left join party p on p.id = jor.customer_id"
@@ -1769,7 +1769,7 @@ public class JobOrderController extends Controller {
         	
         	
         } else if("siwait".equals(type)){
-        	 sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	 sql = " SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
         	 		+ " FROM job_order_shipment jos"
         	 		+ " left join job_order jor on jos.order_id = jor.id"
         	 		+ " left join party p on p.id = jor.customer_id"
@@ -1779,7 +1779,7 @@ public class JobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         	
         } else if("mblwait".equals(type)){
-        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	sql = "SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
         			+ " FROM job_order_shipment jos "
         			+ " left join job_order jor on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
@@ -1789,7 +1789,7 @@ public class JobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         	
         } else if("customwait".equals(type)){
-        	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	sql = " SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
         			+ " from job_order jor "
         			+ " LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
@@ -1802,7 +1802,7 @@ public class JobOrderController extends Controller {
         			+ " GROUP BY jor.id";
         	
         } else if("insurancewait".equals(type)){
-        	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	sql = " SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
         			+ " FROM job_order jor LEFT JOIN job_order_insurance joi ON jor.id = joi.order_id"
         			+ " left join party p on p.id = jor.customer_id"
         			+ " left join user_login u on u.id = jor.creator"
@@ -1810,7 +1810,7 @@ public class JobOrderController extends Controller {
                     + " and  jor.transport_type LIKE '%insurance%' and joi.insure_no is NULL"
                     + " and jor.delete_flag = 'N'";
         } else if("overseacustomwait".equals(type)){
-        	sql = "SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	sql = "SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
         			+ " FROM job_order_shipment jos "
         			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
@@ -1820,7 +1820,7 @@ public class JobOrderController extends Controller {
         			+ " and timediff(now(),jos.etd)<TIME('48:00:00') "
         			+ " and jor.delete_flag = 'N'";
         } else if("tlxOrderwait".equals(type)){
-        	sql = " SELECT jor.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
+        	sql = " SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name"
         			+ " FROM job_order_shipment jos"
         			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
         			+ " left join party p on p.id = jor.customer_id"
@@ -1830,7 +1830,7 @@ public class JobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         }
         else{
-		         sql = "SELECT * from (select jor.*,jos.sono, "
+		         sql = "SELECT * from (select jor.*,jos.sono,if(jor.office_id != "+office_id+",'other','self') other_flag,"
 		        		 +" (SELECT GROUP_CONCAT(josi.container_no SEPARATOR '<br>' ) "
 		        		 +" FROM  job_order_shipment_item josi  "
 		        		 +" LEFT JOIN job_order jo on jo.id=josi.order_id "
