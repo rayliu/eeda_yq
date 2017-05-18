@@ -160,6 +160,7 @@ import controllers.cms.jobOrder.CustomJobOrderController;
 import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.ListConfigController;
 import controllers.eeda.ModuleController;
+import controllers.msg.MailBoxController;
 import controllers.msg.YqDashBoardController;
 import controllers.oms.bookOrder.BookOrderController;
 import controllers.oms.customOrder.CustomOrderController;
@@ -410,6 +411,7 @@ public class EedaConfig extends JFinalConfig {
         //发布公告
         me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
         me.add("/orderStatus", OrderStatusController.class, contentPath);
+        me.add("/mailBox", MailBoxController.class, contentPath);
 	}
 
     @Override
