@@ -329,6 +329,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/cmsAccountAuditLog", controllers.cms.CustomAccountAuditLogController.class, contentPath);
 		me.add("/cmsChargeRequest", controllers.arap.cmsAr.CustomChargeReuqestrController.class, contentPath);
 		me.add("/cmsCostRequest", controllers.arap.cmsAr.CustomCostReuqestrController.class, contentPath);  
+//		me.add("/cmsArapReport", controllers.tr.arap.TradeArapReportController.class, contentPath);
 		
 		//tms 车队系统
 		me.add("/transJobOrder", TransJobOrderController.class, contentPath);
@@ -351,6 +352,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/tradeCostRequest", TradeCostRequestController.class, contentPath);
 		me.add("/tradeAccountAuditLog", TradeAccountAuditLogController.class, contentPath);
 		me.add("/tradeJobOrderReport", TradeJobOrderReportController.class, contentPath);
+		me.add("/tradeArapReport", controllers.tr.arap.TradeArapReportController.class, contentPath);
 		
 		//ar= account revenue  应收条目处理
 		me.add("/chargeRequest", controllers.arap.ar.chargeRequest.ChargeRequestController.class, contentPath);

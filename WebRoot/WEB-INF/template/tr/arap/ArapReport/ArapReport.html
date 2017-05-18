@@ -1,0 +1,100 @@
+﻿<%layout("/eeda/layout.html"){%>
+    <div id="page-wrapper">
+      <div class="row simple_search_div">
+			<div class="panel panel-default">
+	            	<div class="panel-heading">
+	                        <h4 class="panel-title">
+	                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+	                            <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
+	                        </h4>
+	                 </div>
+	          <div id="collapseChargeInfo" class="panel-collapse collapse in" aria-expanded="false" style="height: auto;">
+               <div class="panel-body" id="ChargeDiv">
+                 <div class="col-lg-12">
+                                     <form id="orderForm">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <%include("/eeda/component/form/inputField.html", 
+                                                                    {   id: 'order_no', 
+                                                                        label: '工作单号', 
+                                                                        value: ''
+                                                                    }){}%>
+                                            </div>
+                                            <div class="col-lg-4">
+                                            <%include("/eeda/component/form/inputCustomerField.html", 
+                                                                {   id: 'customer', 
+                                                                    label: '客户', 
+                                                                    value: ''
+                                                                }){}%>
+                                        	</div>
+                                            <div class="col-lg-4">
+                                                <%include("/eeda/component/form/inputSpField.html", 
+                                                                    {   id: 'sp', 
+                                                                        label: '结算公司', 
+                                                                        value: ''
+                                                                    }){}%>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+	                                        
+	                                        <div class="col-lg-4">
+		                                        <%include("/eeda/component/form/inputFinItem.html", 
+								                                        {   id:'fin_item', 
+								                                            label:'费用名称', 
+								                                            value:''
+								                                        }){} %>
+		                                	</div>
+		                                	<div class="col-lg-4">
+		                                        <div class="form-group">
+		    									<label class="search-label">费用状态</label>
+		    										<select id="flag" class="form-control search-control ">
+		    											<option></option>
+		    											<option value="费用未确认">费用未确认</option>
+		    											<option value="费用已确认">费用已确认</option>
+		    											<option value="费用已创建对账单">费用已创建对账单</option>
+		    											<option value="费用已创建对账单并已确认">费用已创建对账单并已确认</option>
+		    		                                    <option value="费用已创建申请单">费用已创建申请单</option>
+		    		                                    <option value="费用已结算" >费用已结算</option>
+		    										</select>
+		    									</div>
+	    									</div>
+	                                        <div class="col-lg-4">
+		                                        <%include("/eeda/component/form/inputDateQueryField.html", 
+								                                        {   id:'order_export_date', 
+								                                            label:'出货时间', 
+								                                            value:''
+								                                        }){} %>
+		                                	</div>
+                                      </div>
+
+                                    <div class="form-group button-bar" >
+                                        <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+                                        <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+                                    </div>
+                                   </form>
+						</div>
+					</div>
+				</div>
+               </div>
+            </div>
+			
+			<!-- /.row 查询条件 结束-->
+            <div class="row simple_list_div">
+                                     <%include("/eeda/component/form/detailTable.html", 
+                                        {
+                                            id:'eeda_table', 
+                                            style: 'width:2200px',
+                                            headers:['工作单号','出货时间','客户','结算公司','费用类型','状态','类型','费用名称','货币类型','金额','对(CNY)汇率',
+                                            	'金额（CNY）','结算币制','结算汇率','结算金额','对账单号','申请单号','创建时间'
+                                            ]
+                                        }){} %>
+                                </div>
+          
+        </div><!-- end of  .page-wrapper-->
+
+<%}%>
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/tr/arap/ArapReport/list']);
+    });
+</script>
