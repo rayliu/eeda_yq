@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','./edit_charge','./airEdit_charge','./landEdit_charge'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','./oceanEdit_charge','./airEdit_charge','./landEdit_charge'], function ($, metisMenu) { 
 
     $(document).ready(function() {
 	  $("#breadcrumb_li").text('客户合同');
@@ -32,7 +32,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        
 	        var order={};
 	        order = buildOrder();
-	        order.itemList = itemOrder.buildItem();
+	        order.itemOceanList = itemOrder.buildOceanItem();
 	        order.itemAirList = itemOrder.buildAirItem();
 	        order.itemLandList = itemOrder.buildLandItem();
 	        $("#saveBtn").attr("disabled",true);
@@ -50,7 +50,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	     			$.scojs_message('数据有误', $.scojs_message.TYPE_ERROR);
 	     			$("#saveBtn").attr("disabled",false);
 	     		}
-	        	itemOrder.refleshItemTable(data.ID);
+	        	itemOrder.refleshOceanItemTable(data.ID);
 	        	itemOrder.refleshAirItemTable(data.ID);
 	        	itemOrder.refleshLandItemTable(data.ID);
 	        },'json').fail(function() {

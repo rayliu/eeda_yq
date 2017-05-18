@@ -3,14 +3,14 @@ $(document).ready(function() {
 
 	var deletedTableIds=[];
     //删除一行
-    $("#charge_table").on('click', '.delete', function(){
+    $("#charge_ocean_table").on('click', '.delete', function(){
         var tr = $(this).parent().parent();
         tr.css("display","none");
         deletedTableIds.push(tr.attr('id'))
     }); 
     
-    itemOrder.buildItem=function(){
-        var cargo_table_rows = $("#charge_table tr");
+    itemOrder.buildOceanItem=function(){
+        var cargo_table_rows = $("#charge_ocean_table tr");
         var cargo_items_array=[];
         for(var index=0; index<cargo_table_rows.length; index++){
             if(index==0)
@@ -28,6 +28,7 @@ $(document).ready(function() {
             
             var item={}
             item.id = id;
+            item.contract_type = "ocean";
             for(var i = 1; i < row.childNodes.length; i++){
             	var el = $(row.childNodes[i]).find('input, select');
             	var name = el.attr('name'); //name='abc'
@@ -56,16 +57,16 @@ $(document).ready(function() {
 
     var bindFieldEvent=function(){
     	
-        eeda.bindTableField('charge_table','POL_ID','/location/searchPort','');
-        eeda.bindTableField('charge_table','POD_ID','/location/searchPort','');
-        eeda.bindTableFieldChargeId('charge_table','FEE_ID','/finItem/search','');
-        eeda.bindTableFieldCurrencyId('charge_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
-        eeda.bindTableField('charge_table','UOM','/serviceProvider/searchUnit','');
+        eeda.bindTableField('charge_ocean_table','POL_ID','/location/searchPort','');
+        eeda.bindTableField('charge_ocean_table','POD_ID','/location/searchPort','');
+        eeda.bindTableFieldChargeId('charge_ocean_table','FEE_ID','/finItem/search','');
+        eeda.bindTableFieldCurrencyId('charge_ocean_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
+        eeda.bindTableField('charge_ocean_table','UOM','/serviceProvider/searchUnit','');
         
     };
     //------------事件处理
     var cargoTable = eeda.dt({
-	    id: 'charge_table',
+	    id: 'charge_ocean_table',
 	    autoWidth: false,
 	    drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
 	        bindFieldEvent();
@@ -201,13 +202,13 @@ $(document).ready(function() {
         ]
     });
 
-    $('#add_charge_fee').on('click', function(){
+    $('#add_ocean_charge_fee').on('click', function(){
         var item={};
         cargoTable.row.add(item).draw(true);
     });
     
     //刷新明细表
-    itemOrder.refleshItemTable = function(contract_id){
+    itemOrder.refleshOceanItemTable = function(contract_id){
     	var url = "/customerContract/tableList?contract_id="+contract_id+"&type=ocean";
     	cargoTable.ajax.url(url).load();
     }

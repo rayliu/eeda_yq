@@ -154,25 +154,25 @@ public class CustomerContractController extends Controller {
 					+" LEFT JOIN location l1 on l1.id = cci.pod_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
-					+" WHERE cci.contract_id = ? ";
+					+" WHERE cci.contract_id = ? and cci.contract_type='ocean' ";
     	}else if("air".equals(type)){
     		sql = " SELECT cci.*,fi.name fee_name,l.name pol_name,l1.name pod_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
-					+" from customer_contract_air_item cci"
+					+" from customer_contract_item cci"
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
 					+" LEFT JOIN location l on l.id = cci.pol_id"
 					+" LEFT JOIN location l1 on l1.id = cci.pod_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
-					+" WHERE cci.contract_id = ? ";
+					+" WHERE cci.contract_id = ? and cci.contract_type='air' ";
     	}else if("land".equals(type)){
     		sql = " SELECT cci.*,fi.name fee_name,l.name pol_name,l1.name pod_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
-					+" from customer_contract_land_item cci"
+					+" from customer_contract_item cci"
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
 					+" LEFT JOIN location l on l.id = cci.pol_id"
 					+" LEFT JOIN location l1 on l1.id = cci.pod_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
-					+" WHERE cci.contract_id = ? ";
+					+" WHERE cci.contract_id = ?  and cci.contract_type='land'";
     	}
     	
     	
@@ -264,14 +264,14 @@ public class CustomerContractController extends Controller {
    			
    		}
    		//海运费用明细保存
-   		List<Map<String,String>> charge_items = (ArrayList<Map<String, String>>) dto.get("itemList");
+   		List<Map<String,String>> charge_items = (ArrayList<Map<String, String>>) dto.get("itemOceanList");
    		DbUtils.handleList(charge_items, "customer_contract_item", id,"contract_id");
    		
    		List<Map<String,String>> charge_air_items = (ArrayList<Map<String, String>>) dto.get("itemAirList");
-   		DbUtils.handleList(charge_air_items, "customer_contract_air_item", id,"contract_id");
+   		DbUtils.handleList(charge_air_items, "customer_contract_item", id,"contract_id");
    		
-   		List<Map<String,String>> charge_Land_items = (ArrayList<Map<String, String>>) dto.get("itemLandList");
-   		DbUtils.handleList(charge_Land_items, "customer_contract_land_item", id,"contract_id");
+   		List<Map<String,String>> charge_land_items = (ArrayList<Map<String, String>>) dto.get("itemLandList");
+   		DbUtils.handleList(charge_land_items, "customer_contract_item", id,"contract_id");
    		
 //		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
 //		DbUtils.handleList(shipment_detail, id, JobOrderShipment.class, "order_id");

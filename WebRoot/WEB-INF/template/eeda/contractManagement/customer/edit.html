@@ -161,7 +161,7 @@
             <div class="simple_order_list_div">
                 <ul id="orderTabs" class="nav nav-tabs">
                     <li class="active">
-                        <a id='chargeTab' href="#oceanChargeDetail" data-toggle="tab">海运合同报价单</a>
+                        <a id='chargeOceanTab' href="#oceanChargeDetail" data-toggle="tab">海运合同报价单</a>
                     </li>
                     <li >
                         <a id='chargeAirTab' href="#airChargeDetail" data-toggle="tab">空运合同报价单</a>
@@ -174,7 +174,7 @@
                     <div class="tab-pane fade active in" id="oceanChargeDetail">
                         <div class="form-group">
                             <div class="col-lg-12">
-                                <%include("/eeda/contractManagement/customer/edit_charge.html", {}){} %>
+                                <%include("/eeda/contractManagement/customer/ocaenEdit_charge.html", {}){} %>
                             </div>
                         </div>
                     </div>
