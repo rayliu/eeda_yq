@@ -33,6 +33,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        var order={};
 	        order = buildOrder();
 	        order.itemList = itemOrder.buildItem();
+	        order.itemAirList = itemOrder.buildAirItem();
+	        order.itemLandList = itemOrder.buildLandItem();
 	        $("#saveBtn").attr("disabled",true);
 	        
 	        $.post("/customerContract/save",{params:JSON.stringify(order)},function(data){
@@ -49,6 +51,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	     			$("#saveBtn").attr("disabled",false);
 	     		}
 	        	itemOrder.refleshItemTable(data.ID);
+	        	itemOrder.refleshAirItemTable(data.ID);
+	        	itemOrder.refleshLandItemTable(data.ID);
 	        },'json').fail(function() {
 	            $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 	            $('#saveBtn').attr('disabled', false);

@@ -3,14 +3,14 @@ $(document).ready(function() {
 
 	var deletedTableIds=[];
     //删除一行
-    $("#charge_table").on('click', '.delete', function(){
+    $("#charge_air_table").on('click', '.delete', function(){
         var tr = $(this).parent().parent();
         tr.css("display","none");
         deletedTableIds.push(tr.attr('id'))
     }); 
     
-    itemOrder.buildItem=function(){
-        var cargo_table_rows = $("#charge_table tr");
+    itemOrder.buildAirItem=function(){
+        var cargo_table_rows = $("#charge_air_table tr");
         var cargo_items_array=[];
         for(var index=0; index<cargo_table_rows.length; index++){
             if(index==0)
@@ -56,16 +56,16 @@ $(document).ready(function() {
 
     var bindFieldEvent=function(){
     	
-        eeda.bindTableField('charge_table','POL_ID','/location/searchPort','');
-        eeda.bindTableField('charge_table','POD_ID','/location/searchPort','');
-        eeda.bindTableFieldChargeId('charge_table','FEE_ID','/finItem/search','');
-        eeda.bindTableFieldCurrencyId('charge_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
-        eeda.bindTableField('charge_table','UOM','/serviceProvider/searchUnit','');
+        eeda.bindTableField('charge_air_table','POL_ID','/location/searchPort','');
+        eeda.bindTableField('charge_air_table','POD_ID','/location/searchPort','');
+        eeda.bindTableFieldChargeId('charge_air_table','FEE_ID','/finItem/search','');
+        eeda.bindTableFieldCurrencyId('charge_air_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
+        eeda.bindTableField('charge_air_table','UOM','/serviceProvider/searchUnit','');
         
     };
     //------------事件处理
     var cargoTable = eeda.dt({
-	    id: 'charge_table',
+	    id: 'charge_air_table',
 	    autoWidth: false,
 	    drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
 	        bindFieldEvent();
@@ -201,14 +201,14 @@ $(document).ready(function() {
         ]
     });
 
-    $('#add_charge_fee').on('click', function(){
+    $('#add_air_charge_fee').on('click', function(){
         var item={};
         cargoTable.row.add(item).draw(true);
     });
     
     //刷新明细表
-    itemOrder.refleshItemTable = function(contract_id){
-    	var url = "/customerContract/tableList?contract_id="+contract_id+"&type=ocean";
+    itemOrder.refleshAirItemTable = function(contract_id){
+    	var url = "/customerContract/tableList?contract_id="+contract_id+"&type=air";
     	cargoTable.ajax.url(url).load();
     }
 

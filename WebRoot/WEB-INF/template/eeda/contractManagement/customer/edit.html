@@ -157,22 +157,6 @@
 
              </form>
           </div>
-          <div class="form-group">
-               <label>合同报价类型</label>
-               
-               <input type="hidden" id="sp_qualification_type" value="${party.sp_qualification_type!''}">
-               <div class="checkbox"  id="sp_qualification_type_val">
-                   <label class="checkbox-inline">
-                       <input name="sp_type_ocean_shipment" type="checkbox" value="ocean_shipment" >海运合同报价
-                   </label> 
-                   <label class="checkbox-inline">
-                       <input  name="sp_type_internal_trade" type="checkbox" value="internal_trade" >空运合同报价
-                   </label> 
-                   <label class="checkbox-inline">
-                       <input  name="sp_type_ocean_bulkCargo" type="checkbox" value="ocean_bulkCargo" >陆运合同报价
-                   </label>    
-               </div>
-           </div>     
             
             <div class="simple_order_list_div">
                 <ul id="orderTabs" class="nav nav-tabs">
@@ -180,10 +164,10 @@
                         <a id='chargeTab' href="#oceanChargeDetail" data-toggle="tab">海运合同报价单</a>
                     </li>
                     <li >
-                        <a id='chargeTab' href="#airChargeDetail" data-toggle="tab">空运合同报价单</a>
+                        <a id='chargeAirTab' href="#airChargeDetail" data-toggle="tab">空运合同报价单</a>
                     </li>
                     <li >
-                        <a id='chargeTab' href="#landLhargeDetail" data-toggle="tab">陆运合同报价单</a>
+                        <a id='chargeLandTab' href="#landChargeDetail" data-toggle="tab">陆运合同报价单</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -212,7 +196,7 @@
                 </div>
                 
                 <div class="button-bar" style = "margin-top:130px" >
-                    <a id='saveBtn' class="btn btn_green" href="#">保存</a>
+                    <a id='saveBtn' class="btn btn_green" >保存</a>
                     <a class="btn btn_white" href="/customerContract">返回</a>
                     <a href="/customerContract/add" class="btn btn_green" style="margin-left:200px" type="button">创建新合同</a>
                 </div>

@@ -34,7 +34,7 @@ public class OrderNoGenerator {
 		return orderNo;
 	}
 	
-
+	//按照年流水号生成单号
     private static String generateNo(String orderPrefix, long officeId,
             String dateStr) {
         String orderNo;
@@ -45,8 +45,8 @@ public class OrderNoGenerator {
             String seq = "0000";
             String lastOrderNo = orderSeq.get("last_order_no");
             //不管前缀长度，后面的数字长度是 11， 1101001
-            String ym = StringUtils.right(lastOrderNo, 6).substring(0, 2); // 获取年月字符串
-            if(ym.equals(dateStr)){//如果年月 =今天， 获取流水号
+            String ym = StringUtils.right(lastOrderNo, 6).substring(0, 2); // 获取年字符串
+            if(ym.equals(dateStr)){//如果年 =今年， 获取流水号
                 seq = StringUtils.right(lastOrderNo, 4); // 获取流水号
             }
             orderNo = orderPrefix +dateStr+ getNo(seq);

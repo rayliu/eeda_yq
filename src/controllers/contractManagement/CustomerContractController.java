@@ -23,6 +23,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
@@ -118,7 +119,9 @@ public class CustomerContractController extends Controller {
         
         
         setAttr("user", LoginUserController.getLoginUser(this));
-        setAttr("charge_items", getItems(id));
+        setAttr("charge_items", getItems(id,"ocean"));
+        setAttr("charge_air_items", getItems(id,"air"));
+        setAttr("charge_land_items", getItems(id,"land"));
    		setAttr("order", Db.findFirst("select cc.*,p.abbr  from customer_contract cc "
    				+ " LEFT JOIN party p on p.id = cc.customer_id  where cc.id = ? ",id));
         render("/eeda/contractManagement/customer/edit.html");
@@ -141,8 +144,10 @@ public class CustomerContractController extends Controller {
     }
     
     
-    public List<Record> getItems(String contract_id){
-    	String sql = " SELECT cci.*,fi.name fee_name,l.name pol_name,l1.name pod_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+    public List<Record> getItems(String contract_id,String type){
+    	String sql = "";
+    	if("ocean".equals(type)){
+    		sql = " SELECT cci.*,fi.name fee_name,l.name pol_name,l1.name pod_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
 					+" from customer_contract_item cci"
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
 					+" LEFT JOIN location l on l.id = cci.pol_id"
@@ -150,7 +155,25 @@ public class CustomerContractController extends Controller {
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
 					+" WHERE cci.contract_id = ? ";
-    	
+    	}else if("air".equals(type)){
+    		sql = " SELECT cci.*,fi.name fee_name,l.name pol_name,l1.name pod_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+					+" from customer_contract_air_item cci"
+					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
+					+" LEFT JOIN location l on l.id = cci.pol_id"
+					+" LEFT JOIN location l1 on l1.id = cci.pod_id"
+					+" LEFT JOIN unit u on u.id = cci.uom"
+					+" LEFT JOIN currency c on c.id= cci.currency_id"
+					+" WHERE cci.contract_id = ? ";
+    	}else if("land".equals(type)){
+    		sql = " SELECT cci.*,fi.name fee_name,l.name pol_name,l1.name pod_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+					+" from customer_contract_land_item cci"
+					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
+					+" LEFT JOIN location l on l.id = cci.pol_id"
+					+" LEFT JOIN location l1 on l1.id = cci.pod_id"
+					+" LEFT JOIN unit u on u.id = cci.uom"
+					+" LEFT JOIN currency c on c.id= cci.currency_id"
+					+" WHERE cci.contract_id = ? ";
+    	}
     	
     	
     	List<Record> re = Db.find(sql,contract_id);
@@ -158,7 +181,7 @@ public class CustomerContractController extends Controller {
     }
     
     
-
+    @Before(Tx.class)
     public void save() throws InstantiationException, IllegalAccessException {
         String jsonStr=getPara("params");
        	
@@ -178,9 +201,10 @@ public class CustomerContractController extends Controller {
         	
         String newDateStrMM = "";
         SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMM");//转换后的格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yy");//转换后的格式
+        SimpleDateFormat sdfMM = new SimpleDateFormat("MM");//转换后的格式
         	newDateStr = sdf.format(new Date());
-   		
+        	newDateStrMM = sdfMM.format(new Date());
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			customerContract = CustomerContract.dao.findById(id);
@@ -207,7 +231,8 @@ public class CustomerContractController extends Controller {
    			//需后台处理的字段
    	   			String contract_no = OrderNoGenerator.getNextOrderNo("EK", newDateStr, office_id);
    	   			StringBuilder sb = new StringBuilder(contract_no);//构造一个StringBuilder对象
-   	   			sb.insert(2, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
+   	   			sb.insert(2, generateJobPrefix(type));//在指定的位置，插入指定的字符串（类型代表）
+   	   			sb.insert(5, newDateStrMM);//在指定的位置，插入指定的字符串(月份)
    	   			contract_no = sb.toString();
    	   		customerContract.set("contract_no", contract_no);
    	   		customerContract.set("creator", user.getLong("id"));
@@ -238,16 +263,22 @@ public class CustomerContractController extends Controller {
    			}
    			
    		}
-   		//费用明细保存
+   		//海运费用明细保存
    		List<Map<String,String>> charge_items = (ArrayList<Map<String, String>>) dto.get("itemList");
    		DbUtils.handleList(charge_items, "customer_contract_item", id,"contract_id");
+   		
+   		List<Map<String,String>> charge_air_items = (ArrayList<Map<String, String>>) dto.get("itemAirList");
+   		DbUtils.handleList(charge_air_items, "customer_contract_air_item", id,"contract_id");
+   		
+   		List<Map<String,String>> charge_Land_items = (ArrayList<Map<String, String>>) dto.get("itemLandList");
+   		DbUtils.handleList(charge_Land_items, "customer_contract_land_item", id,"contract_id");
    		
 //		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
 //		DbUtils.handleList(shipment_detail, id, JobOrderShipment.class, "order_id");
    		
    		Record rcon = new Record();
    		rcon= Db.findFirst("select * from customer_contract joc where id = ? ",id);
-   		rcon.set("charge_items", getItems(id));
+//   		rcon.set("charge_items", getItems(id));
        
         setAttr("saveOK", true);
         //redirect("/serviceProvider");
@@ -260,9 +291,9 @@ public class CustomerContractController extends Controller {
     //异步刷新字表
     public void tableList(){
     	String contract_id = getPara("contract_id");
-    	
+    	String type = getPara("type");
     	List<Record> list = null;
-    	list = getItems(contract_id);
+    	list = getItems(contract_id,type);
 
     	Map BillingOrderListMap = new HashMap();
         BillingOrderListMap.put("sEcho", 1);
