@@ -97,14 +97,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 						  }
                 	  }
                 	  if(cost){
-                		  data += '<div class="other" width="50" '
+                		  data += '<span class="other" width="50" '
                           +' data-content="<div'
-                          +' height=&quot;140&quot; >'+costShow+'</div>" ><span class="badge" style="">￥付</span></div>';
+                          +' height=&quot;140&quot; >'+costShow+'</div>" ><span class="badge" style="">￥付</span></span>';
                 	  }
                 	  if(charge){
-                		  data += '<div class="other" width="50" '
+                		  data += ' <span class="other" width="50" '
                               +' data-content="<div'
-                              +' height=&quot;140&quot; >'+chargeShow+'</div>" ><span class="badge" style="">￥收</span></div>';
+                              +' height=&quot;140&quot; >'+chargeShow+'</div>" ><span class="badge" style="">￥收</span></span>';
                 	  }
                 	  return data;
                   }
