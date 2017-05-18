@@ -68,7 +68,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     }
                 }, 
 	              { "data": "CUSTOMER_NAME"}, 
-	              { "data": "STATUS"}, 
+	              { "data": "ORDER_STATUS"}, 
+	              {"data": "ITEM_STATUS" },
 	              { "data": ""}, 
 	              { "data": "CREATOR_NAME"}, 
 	              { "data": "CREATE_STAMP"}

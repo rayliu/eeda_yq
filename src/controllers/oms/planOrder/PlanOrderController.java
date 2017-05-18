@@ -241,7 +241,8 @@ public class PlanOrderController extends Controller {
         String sql = "";
         String condition="";
         if("todo".equals(type)){
-        	sql =" SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name "
+        	sql =" SELECT "
+        			+ " po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name "
         			+ " FROM plan_order po "
         			+ " LEFT JOIN plan_order_item poi ON po.id = poi.order_id "
         			+ " left join party p on p.id = po.customer_id "
@@ -250,7 +251,8 @@ public class PlanOrderController extends Controller {
         			+ " AND datediff(factory_loading_time, now())<=5"
         			+ " and po.delete_flag = 'N'";
         }else if ("customwaitPlan".equals(type)){
-        	sql =" SELECT po.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p. CODE"
+        	sql =" SELECT "
+        			+ " po.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p. CODE"
         			+ " FROM"
         			+ "	plan_order po"
         			+ " LEFT JOIN plan_order_item poi ON poi.order_id = po.id"
@@ -262,12 +264,22 @@ public class PlanOrderController extends Controller {
         			+ " and po.delete_flag = 'N'"
         			+ " GROUP BY poi.id ";
         }else{
-        	sql = "SELECT * from (select po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name,p.code customer_code"
+        	sql = "SELECT * from (select"
+        			+ " (GROUP_CONCAT(CONCAT(ifnull(poi.factory_loading_time,'<span style=\"color:red;\">无出货时间</span>'), "
+        			+ " IF (poi.confirm_shipment = 'Y',' 已确认出货',' 新建')) SEPARATOR '<br/>')) item_status,"
+        			+ " if(((select count(1) from plan_order_item "
+        			+ " where order_id = po.id and confirm_shipment = 'Y')=count(poi.id) and count(poi.id)!=0),'已完成',"
+        			+ " if(po.submit_flag='N' and "
+        			+ " (select count(1) from plan_order_item where order_id = po.id and confirm_shipment = 'Y')=0,"
+        			+ " '新建','处理中')) order_status,"
+        			+ " po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name,p.code customer_code"
     			+ " from plan_order po "
+    			+ " LEFT JOIN plan_order_item poi on poi.order_id = po.id"
     			+ " left join party p on p.id = po.customer_id "
     			+ " left join user_login u on u.id = po.creator"
     			+ " where (po.office_id="+office_id
     			+ " or (ifnull(po.to_entrusted_id,'')="+office_id+" and po.submit_flag='Y')) and po.delete_flag = 'N'"
+    			+ "	group by po.id"
     			+ " ) A where 1=1 ";
         }
         condition = DbUtils.buildConditions(getParaMap());
