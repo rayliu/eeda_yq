@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap','sco','validate_cn','./edit_item_table','./edit_receiptItem_table'], function ($, metisMenu) { 
 
 $(document).ready(function() {
 
