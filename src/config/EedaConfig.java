@@ -121,6 +121,7 @@ import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
 import controllers.issue.ebay.cacellation.EbayCancellationController;
+import controllers.msg.MailBoxController;
 import controllers.issue.ebay.ebayNotReceive.EbayNotReceiveController;
 import controllers.issue.ebay.ebayReturn.EbayReturnController;
 import controllers.msg.EwmsDashBoardController;
@@ -379,6 +380,7 @@ public class EedaConfig extends JFinalConfig {
         //发布公告
        
         me.add("/orderStatus", OrderStatusController.class, contentPath);
+        me.add("/mailBox", MailBoxController.class, contentPath);
 	}
 
     @Override
