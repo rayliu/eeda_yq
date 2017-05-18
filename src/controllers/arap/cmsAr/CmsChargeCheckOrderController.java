@@ -410,7 +410,7 @@ public class CmsChargeCheckOrderController extends Controller {
 			query_fin_name=" and fi.id="+fin_name;
 		}
 			if("create".equals(bill_flag)){
-				sql = " select cpoa.*,aco.order_no check_order_no,cpo.customs_billcode ,cpo.order_no,cpo.create_stamp,cpo.customer_id,cpo.volume,cpo.type,  "
+				sql = " select cpoa.*,aco.order_no check_order_no,cpo.customs_billcode ,cpo.order_no,cpo.create_stamp,cpo.carrier customer_id,cpo.type,  "
 						+" 							 p.abbr sp_name,p1.abbr customer_name, "
 						+" 							 fi.name fin_name, "
 						+" 							 cur.name currency_name "
@@ -419,7 +419,7 @@ public class CmsChargeCheckOrderController extends Controller {
 						+" 							 left join fin_item fi on cpoa.charge_id = fi.id "
 						+" 							 left join custom_plan_order_shipping_item josi on josi.order_id=cpoa.order_id "
 						+" 							 left join party p on p.id=cpoa.sp_id "
-						+" 							 left join party p1 on p1.id=cpo.customer_id "
+						+" 							 left join party p1 on p1.id=cpo.carrier "
 						+" 							 left join currency cur on cur.id=cpoa.currency_id "
 						+" 							 left join custom_charge_application_order_rel caol on caol.job_order_arap_id  = cpoa.id "
 						+" 							 left join custom_arap_charge_application_order acao on caol.application_order_id = acao.id "
@@ -431,7 +431,7 @@ public class CmsChargeCheckOrderController extends Controller {
 				
 			}else{
 				sql = "  select joa.*,aco.order_no check_order_no, jo.order_no,jo.customs_billcode , "
-						+" jo.create_stamp,jo.customer_id,jo.volume,jo.type,  "
+						+" jo.create_stamp,jo.carrier customer_id,jo.type,  "
 						+" 							 p.abbr sp_name,p1.abbr customer_name, "
 						+" 							  fi.name fin_name, "
 						+" 							 cur.name currency_name "
@@ -440,14 +440,14 @@ public class CmsChargeCheckOrderController extends Controller {
 						+" 							 left join fin_item fi on joa.charge_id = fi.id "
 						+" 							 left join custom_plan_order_shipping_item josi on josi.order_id=joa.order_id "
 						+" 							 left join party p on p.id=joa.sp_id "
-						+" 							 left join party p1 on p1.id=jo.customer_id "
+						+" 							 left join party p1 on p1.id=jo.carrier "
 						+" 							 left join currency cur on cur.id=joa.currency_id "
 						+" 							 left join custom_arap_charge_item aci on aci.ref_order_id = joa.id "
 						+" 						  left join custom_arap_charge_order aco on aco.id = aci.custom_charge_order_id "
 						+" 						  where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
 							+currency_code
 							+query_exchange_currency+query_fin_name
-							 +" and cpo.delete_flag='N' "
+							 +" and jo.delete_flag='N' "
 							 +" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
 			}		
