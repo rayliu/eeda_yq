@@ -198,8 +198,9 @@ public class JobOrderReportController extends Controller {
    		}
     	
     	String fileName = "/report/jobOrder/oceanHead.jasper";
+    	
 		String outFileName = "/download/头程资料-"+SONO;
-		String FileName = outFileName;
+		String FileName = "头程资料-"+SONO;
 		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
