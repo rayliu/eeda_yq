@@ -136,10 +136,10 @@ $(document).ready(function() {
     })
     
     
-    //打印应收对账明细
-    $('#printBtn').click(function(){
+    //下载应收对账明细
+    $('#exportBtn').click(function(){
     	var order_id = $('#order_id').val();
-    	$.post('/jobOrderReport/printReceiveDetailPDF',{order_id:order_id},function(data){
+    	$.post('/transChargeCheckOrder/downloadList',{order_id:order_id},function(data){
     		if(data){
     			window.open(data);
     		}else{

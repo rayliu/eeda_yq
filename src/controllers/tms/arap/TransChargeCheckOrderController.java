@@ -33,6 +33,7 @@ import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
+import controllers.util.PoiUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -668,5 +669,16 @@ public class TransChargeCheckOrderController extends Controller {
     			exchangeTotalMap.put("chargeOrderId", Double.parseDouble(chargeOrderId));
     	    	renderJson(exchangeTotalMap);
     }  
-
+    
+    public void downloadList(){
+        UserLogin user = LoginUserController.getLoginUser(this);
+        String exportSql = "select * from user_login  where office_id="+user.getOfficeId();
+        
+        //List<String> headers = new ArrayList<String>();
+        String[] headers = new String[]{"ID号", "登录名", "中文名"};
+        String[] fields = new String[]{"ID", "USER_NAME", "C_NAME"};
+        String fileName = PoiUtils.generateExcel(headers, fields, exportSql);
+        renderText(fileName);
+    }
+    
 }

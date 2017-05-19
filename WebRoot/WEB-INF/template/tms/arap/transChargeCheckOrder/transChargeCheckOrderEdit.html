@@ -217,7 +217,7 @@
                                 style:'width:1400px',
                                 headers:[
                                 	'<input type="checkbox" id="allcheck">','操作','工作单号','创建时间','柜号',
-                                	'so号','客户','结算公司','费用名称','对账币制',
+                                	'SO号','客户','结算公司','费用名称','对账币制',
                                 	'对账金额','对人民币汇率','对账金额（CNY）','备注' ,'',''                           
                                 ],
 					field_list:['id','','order_no','create_stamp','container_no',
@@ -232,8 +232,7 @@
 			<br>
 			<button id='saveBtn' class="btn  btn_green" disabled >保存</button> 
 			<button id='confirmBtn' class="btn  btn_green" disabled >确认</button> 
-			<button id="printBtn" type="button" class="btn  btn_white" disabled >打印</button>
-			<button id="printTotaledBtn" type="button" class="btn  btn_white" disabled >打印(合计版本)</button>
+			<button id="exportBtn" type="button" class="btn  btn_white" >导出Excel</button>
 			<a class="btn  btn_white" href="/chargeCheckOrder">返回</a>
 		</div>
 		<!-- /.col-lg-12 -->
@@ -310,7 +309,7 @@
     var itemOrder = {};
 </script>
 <script>
-    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/tms/arap/transChargeCheckOrder/edit']);
     });
 </script>

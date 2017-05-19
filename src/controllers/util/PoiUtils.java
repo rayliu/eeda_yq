@@ -7,11 +7,15 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
@@ -19,6 +23,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 
 public class PoiUtils {
 	static SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -310,4 +317,59 @@ public class PoiUtils {
 		}
 		
 	}
+	
+	/**
+     * 写内容到excel中
+     * @throws IOException 
+     */
+    @SuppressWarnings("deprecation")
+    public static String generateExcel(String[] headers, String[] fields, String sql){
+        String fileName="";
+        try {
+            System.out.println("generateExcel begin...");
+            String filePath = "WebRoot/download/list";//"/home/default/ROOT/download/list";
+            File file = new File(filePath);
+            if(!file.exists()){
+             file.mkdir();
+            }
+            Date date = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            String outFileName = "Result-" + format.format(date) + ".xls";
+            //String filename = srcFilePath;//"C:/NewExcelFile.xls" ;
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            HSSFSheet sheet = workbook.createSheet("FirstSheet");  
+
+            HSSFRow rowhead = sheet.createRow((short)0);
+            for (int i = 0; i < headers.length; i++) {
+                rowhead.createCell((short)i).setCellValue(headers[i]);
+            }
+
+            List<Record> recs = Db.find(sql);
+            if(recs!=null){
+                for (int j = 1; j <= recs.size(); j++) {
+                    HSSFRow row = sheet.createRow((short)j);
+                    Record rec = recs.get(j-1);
+                    for (int k = 0; k < fields.length;k++){
+                        Object obj = rec.get(fields[k]);
+                        String strValue = "";
+                        if(obj != null){
+                            strValue =obj.toString();
+                        }
+                        row.createCell((short)k).setCellValue(strValue);
+                    }
+                }
+            }
+
+            fileName = filePath+"/"+outFileName;
+            System.out.println("fileName: "+fileName);
+            FileOutputStream fileOut = new FileOutputStream(fileName);
+            workbook.write(fileOut);
+            fileOut.close();
+            System.out.println("Your excel file has been generated!");
+            fileName = "/download/list/"+outFileName;
+        } catch ( Exception ex ) {
+            ex.printStackTrace();
+        }
+        return fileName;
+    }
 }
