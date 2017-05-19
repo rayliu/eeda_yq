@@ -16,11 +16,11 @@
                 <div class="row small_head"><div class="font_style">合同信息</div></div>
                 <div class="row simple_small_title_div">
                     <div class="col-lg-12">
-                        <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
+                        <input id="contract_id" type="hidden" name="contract_id" value="${order.id!''}"/>
                         <input id="updator_id" type="hidden" name="updator_id" value="${order.updator!''}"/>
                         <input id="update_stamp" type="hidden" name="update_stamp" value="${order.update_stamp!''}"/>
                         
-                        <div class="row"><!--  第1行  -->
+                       <div class="row"><!--  第1行  -->
                             <div class="col-lg-4"><!--  三列排版  -->
                                 <%include("/eeda/component/form/inputField.html", 
                                     {   id:'contract_no', 
@@ -33,7 +33,7 @@
                                 <%include("/eeda/component/form/selectField.html", 
                                     {   id:'type', 
                                         label:'合同类型', 
-                                        value:order.type!planOrderItem.JOB_ORDER_TYPE!'',
+                                        value:order.type!'',
                                         value_list:[
                                             {code:'出口柜货', value:'出口柜货'},
                                             {code:'进口柜货', value:'进口柜货'}, 
@@ -54,13 +54,13 @@
                                     }){}%>
                             </div><!-- /.col-lg-4 -->
                             <div class="col-lg-4">
-                                <%include("/eeda/component/form/inputSpField.html", 
+                                <%include("/eeda/component/form/inputCustomerField.html", 
                                     {
                                         id:'customer_id', 
-                                        label:'供应商', 
+                                        label:'客户', 
                                         required:'required',
-                                        value:order.customer_id!planOrder.entrusted_id!'',
-                                        display_value:party.abbr!''
+                                        value:order.customer_id!'',
+                                        display_value:order.abbr!''
                                     }){} %>
                            </div>
                         </div>
@@ -69,16 +69,18 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <%include("/eeda/component/form/inputField.html", 
-                                    {   id:'status', 
+                                    {   id:'period', 
                                         label:'账期', 
                                         value:order.period!''
                                     }){}%>
                             </div>
                             <div class="col-lg-4">
-                                  <%include("/eeda/component/form/inputField.html", 
+                                  <%include("/eeda/component/form/selectFieldDay.html", 
                                     {   id:'check_order_sumit_date', 
                                         label:'对账单提交日', 
-                                        value:order.check_order_sumit_date!''
+                                        value:order.check_order_sumit_date!'',
+                                        value_list:[
+                                        ]
                                     }){}%>
                             </div>
                             <div class="col-lg-4">
@@ -93,24 +95,30 @@
                         </div>
                         <div class ="row">
                             <div class="col-lg-4">
-                                <%include("/eeda/component/form/inputField.html", 
+                                <%include("/eeda/component/form/selectFieldDay.html", 
                                     {   id:'check_order_confirm_date', 
-                                        label:'确认账期', 
-                                        value:order.check_order_confirm_date!''
+                                        label:'确认对账日', 
+                                        value:order.check_order_confirm_date!'',
+                                        value_list:[
+                                        ]
                                     }){}%>
                             </div>
                             <div class="col-lg-4">
-                                  <%include("/eeda/component/form/inputField.html", 
+                                  <%include("/eeda/component/form/selectFieldDay.html", 
                                     {   id:'invoice_issue_date', 
                                         label:'开票日', 
-                                        value:order.invoice_issue_date!''
+                                        value:order.invoice_issue_date!'',
+                                        value_list:[
+                                        ]
                                     }){}%>
                             </div>
                             <div class="col-lg-4">
-                                  <%include("/eeda/component/form/inputField.html", 
+                                  <%include("/eeda/component/form/selectFieldDay.html", 
                                     {   id:'revenue_confirm_date', 
-                                        label:'开票日', 
-                                        value:order.revenue_confirm_date!''
+                                        label:'收款日', 
+                                        value:order.revenue_confirm_date!'',
+                                        value_list:[
+                                        ]
                                     }){}%>
                             </div>
                         </div>
@@ -127,15 +135,15 @@
                                 <%include("/eeda/component/form/inputField.html", 
                                     {   id:'creator_name', 
                                         label:'创建人', 
-                                        value:user.c_name!'', 
+                                        value:user.C_NAME!'', 
                                         disabled: 'disabled'
                                     }){}%>
                             </div>
                             <div class="col-lg-4">
                                 <%include("/eeda/component/form/inputField.html", 
-                                    {   id:'create_stamp', 
+                                    {   id:'create_date', 
                                         label:'创建时间', 
-                                        value:order.create_stamp!'', 
+                                        value:order.CREATE_DATE!'', 
                                         disabled: 'disabled'
                                     }){}%>
                             </div>
@@ -149,29 +157,48 @@
 
              </form>
           </div>
-                
             
             <div class="simple_order_list_div">
                 <ul id="orderTabs" class="nav nav-tabs">
                     <li class="active">
-                        <a id='chargeTab' href="#chargeDetail" data-toggle="tab">费用明细</a>
+                        <a id='chargeOceanTab' href="#oceanChargeDetail" data-toggle="tab">海运合同报价单</a>
+                    </li>
+                    <li >
+                        <a id='chargeAirTab' href="#airChargeDetail" data-toggle="tab">空运合同报价单</a>
+                    </li>
+                    <li >
+                        <a id='chargeLandTab' href="#landChargeDetail" data-toggle="tab">陆运合同报价单</a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane fade active in" id="chargeDetail">
+                    <div class="tab-pane fade active in" id="oceanChargeDetail">
                         <div class="form-group">
                             <div class="col-lg-12">
-                                <%include("/eeda/contractManagement/customer/edit_charge.html", {}){} %>
+                                <%include("/eeda/contractManagement/sp/ocaenEdit_charge.html", {}){} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade  in" id="airChargeDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/eeda/contractManagement/sp/airEdit_charge.html", {}){} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade  in" id="landChargeDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/eeda/contractManagement/sp/landEdit_charge.html", {}){} %>
                             </div>
                         </div>
                     </div>
 
                 </div>
                 
-                <div class="button-bar" >
-                    <a id='saveBtn' class="btn btn_green" href="#">保存</a>
-                    <a class="btn btn_white" href="/customerContract">返回</a>
-                    <a href="/supplierContract/add" class="btn btn_green" style="float:right" type="button">创建新合同</a>
+                <div class="button-bar" style = "margin-top:130px" >
+                    <a id='saveBtn' class="btn btn_green" >保存</a>
+                    <a class="btn btn_white" href="/supplierContract">返回</a>
+                    <a href="/supplierContract/add" class="btn btn_green" style="margin-left:200px" type="button">创建新合同</a>
                 </div>
             </div><!-- end of .simple_order_list_div-->
 
@@ -188,6 +215,7 @@
 <%include("/eeda/component/jsTemplate/tableInputFinItemField.js",{}){} %>
 
 
+<%include("/eeda/component/jsTemplate/tableInputDockInfoField.js",{}){} %>
 
 <script>
 
@@ -211,7 +239,7 @@
 </script>
 
 <script>
-var order = {};
+var itemOrder = {};
     requirejs(['/js/eeda/eeda-common.js'], 
         function (common) {
             requirejs(['app/contractManagement/sp/edit']);

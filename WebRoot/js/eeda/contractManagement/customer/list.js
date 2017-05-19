@@ -35,7 +35,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                          //}
                         
                           if(full.IS_STOP != "Y"){
-                        	  debugger
                               str = str +"<a class='btn table_btn  btn-danger btn-sm ' href='/customerContract/delete/"+full.ID+"'>"+
                                            "<i class='fa fa-trash-o fa-edit'></i>停用</a>";
                           }else{

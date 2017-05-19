@@ -59,6 +59,7 @@ import models.eeda.cms.CustomPlanOrder;
 import models.eeda.cms.CustomPlanOrderArap;
 import models.eeda.cms.CustomPlanOrderItem;
 import models.eeda.contract.customer.CustomerContract;
+import models.eeda.contract.customer.SupplierContract;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.bookOrder.BookOrder;
@@ -604,6 +605,7 @@ public class EedaConfig extends JFinalConfig {
         
         //合同管理
         arp.addMapping("customer_contract", CustomerContract.class);
+        arp.addMapping("supplier_contract", SupplierContract.class);
     }
 
     private void initDBconnector() {

@@ -54,7 +54,7 @@ public class CustomerContractController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = " select cc.*,p.abbr customer_name,u.c_name creator_name ,"
-        		+ " CONCAT(substring(cc.contract_begin_time,1,10),' 到 ',substring(cc.contract_end_time,1,10)) contract_period"
+        		+ " cast(CONCAT(substring(cc.contract_begin_time,1,10),' 到 ',substring(cc.contract_end_time,1,10))  as char) contract_period"
         		+ " from customer_contract cc "
         		+" LEFT JOIN party p ON p.id = cc.customer_id "
         		+" LEFT JOIN user_login u on u.id = cc.creator "
@@ -164,11 +164,11 @@ public class CustomerContractController extends Controller {
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
 					+" WHERE cci.contract_id = ? and cci.contract_type='air' ";
     	}else if("land".equals(type)){
-    		sql = " SELECT cci.*,fi.name fee_name,l.name pol_name,l1.name pod_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+    		sql = " SELECT cci.*,fi.name fee_name,l.dock_name pol_name,l1.dock_name pod_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
 					+" from customer_contract_item cci"
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
-					+" LEFT JOIN location l on l.id = cci.pol_id"
-					+" LEFT JOIN location l1 on l1.id = cci.pod_id"
+					+" LEFT JOIN dockinfo l on l.id = cci.pol_id"
+					+" LEFT JOIN dockinfo l1 on l1.id = cci.pod_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
 					+" WHERE cci.contract_id = ?  and cci.contract_type='land'";

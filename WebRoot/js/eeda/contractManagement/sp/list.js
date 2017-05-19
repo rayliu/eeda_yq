@@ -1,8 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn',  'dtColReorder'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '供应商合同 | '+document.title;
-        $("#breadcrumb_li").text('供应商合同');
+    	document.title = '客户合同 | '+document.title;
+        $("#breadcrumb_li").text('客户合同');
 
     	//datatable, 动态处理
         var dataTable = eeda.dt({
@@ -14,14 +14,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             columns:[
                 { "data": "CONTRACT_NO","width": "10%",
                     "render": function ( data, type, full, meta ) {
-                        return "<a href='/customerContract/edit?id="+full.ID+"' target='_blank'>" + data+ "</a>";
+                        return "<a href='/supplierContract/edit?id="+full.ID+"' target='_blank'>" + data+ "</a>";
                     }
                 },
                 { "data": "TYPE", "width": "10%"}, 
                 { "data": "CUSTOMER_NAME", "width": "10%"}, 
-                { "data": "CUSTOMER_NAME", "width": "10%"}, 
-                { "data": "CREATOR", "width": "10%"}, 
-                { "data": "CREATE_TIME", "width": "10%"},
+                { "data": "CONTRACT_PERIOD", "width": "15%"}, 
+                { "data": "CREATOR_NAME", "width": "10%"}, 
+                { "data": "CREATE_DATE", "width": "10%"},
                 { "data": "STATUS" ,"width": "5%"},
                 { 
                     "data": null, 
@@ -34,11 +34,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                                 "编辑"+"</a> ";
                          //}
                         
-                            
-                            str += "<a class='btn table_btn btn-danger btn-sm' href='/supplierContract/delete/"+full.ID+"'>"+
-                                 "<i class='fa fa-trash-o fa-fw'></i>"+ 
-                                 "删除"+
-                                 "</a>";
+                          if(full.IS_STOP != "Y"){
+                              str = str +"<a class='btn table_btn  btn-danger btn-sm ' href='/supplierContract/delete/"+full.ID+"'>"+
+                                           "<i class='fa fa-trash-o fa-edit'></i>停用</a>";
+                          }else{
+                              str = str + "<a class='btn table_btn  btn_green btn-xs dropdown-toggle' href='/supplierContract/delete/"+full.ID+"'>"+
+                                           "<i class='fa fa-trash-o fa-edit'></i>启用 </a>";
+                          }
                          
                          return str +="</nobr>";
                     }

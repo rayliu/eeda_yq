@@ -1,0 +1,1 @@
+package models.eeda.contract.customer;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class SupplierContract extends Model<SupplierContract> {	public static final SupplierContract dao = new SupplierContract();}
