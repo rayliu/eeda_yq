@@ -57,8 +57,8 @@ $(document).ready(function() {
 
     var bindFieldEvent=function(){
     	
-        eeda.bindTableField('charge_land_table','POL_ID','/location/searchPort','');
-        eeda.bindTableField('charge_land_table','POD_ID','/location/searchPort','');
+        eeda.bindTableFieldDockInfo('charge_land_table','POL_ID');
+        eeda.bindTableFieldDockInfo('charge_land_table','POD_ID');
         eeda.bindTableFieldChargeId('charge_land_table','FEE_ID','/finItem/search','');
         eeda.bindTableFieldCurrencyId('charge_land_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
         eeda.bindTableField('charge_land_table','UOM','/serviceProvider/searchUnit','');
@@ -87,7 +87,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
             	   if(!data)
                        data='';
-                   var field_html = template('table_dropdown_template',
+                   var field_html = template('table_dock_no_field_template',
                        {
                            id: 'POL_ID',
                            value: data,
@@ -102,7 +102,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    var field_html = template('table_dropdown_template',
+                    var field_html = template('table_dock_no_field_template',
                     {
                     	id:'POD_ID',
                     	value:data,
