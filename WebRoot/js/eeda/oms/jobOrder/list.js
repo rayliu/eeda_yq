@@ -90,17 +90,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
               }
                     }
                     if(cost){
-                      data += '<span class="feiyong" width="50" '
+                      data += '<span class="other" width="50" '
                           +' data-content="<div'
                           +' height=&quot;140&quot; >'+costShow+'</div>" ><span class="badge" style="">￥付</span></span>';
                     }
                     if(charge){
-                      data += ' <span class="feiyong" width="50" '
+                      data += ' <span class="other" width="50" '
                               +' data-content="<div'
                               +' height=&quot;140&quot; >'+chargeShow+'</div>" ><span class="badge" style="">￥收</span></span>';
                     }
 
-                    $('.feiyong').popover({
+                    $('.other').popover({
                         html: true,
                         container: 'body',
                         placement: 'right',
@@ -118,21 +118,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 
 
 
-      // //base on config hide cols
-      // dataTable.columns().eq(0).each( function(index) {
-      //     var column = dataTable.column(index);
-      //     $.each(cols_config, function(index, el) {
+      //base on config hide cols
+      dataTable.columns().eq(0).each( function(index) {
+          var column = dataTable.column(index);
+          $.each(cols_config, function(index, el) {
               
-      //         if(column.dataSrc() == el.COL_FIELD){
+              if(column.dataSrc() == el.COL_FIELD){
                 
-      //           if(el.IS_SHOW == 'N'){
-      //             column.visible(false, false);
-      //           }else{
-      //             column.visible(true, false);
-      //           }
-      //         }
-      //     });
-      // });
+                if(el.IS_SHOW == 'N'){
+                  column.visible(false, false);
+                }else{
+                  column.visible(true, false);
+                }
+              }
+          });
+      });
       
       var checkNum = 0;
       $('#eeda-table').on('click','[name=checkBox]',function(){
