@@ -21,6 +21,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           paging: true,
           serverSide: true, //不打开会出现排序不对
           ajax: "/jobOrder/list?type="+type,
+           "drawCallback": function( settings ) {
+                $('.other').popover({
+                    html: true,
+                    container: 'body',
+                    placement: 'right',
+                    trigger: 'hover'
+                });
+        },
           columns: [
 				{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {

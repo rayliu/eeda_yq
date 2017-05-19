@@ -21,6 +21,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           paging: true,
           serverSide: true, //不打开会出现排序不对
           ajax: "/trJobOrder/list?type="+type,
+          "drawCallback": function( settings ) {
+              $('.other').popover({
+                  html: true,
+                  container: 'body',
+                  placement: 'right',
+                  trigger: 'hover'
+              });
+      },
           columns: [
               { "width": "30px",
                   "render": function ( data, type, full, meta ) {
@@ -74,17 +82,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               }
                     }
                     if(cost){
-                      data += '<span class="feiyong" width="50" '
+                      data += '<span class="other" width="50" '
                           +' data-content="<div'
                           +' height=&quot;140&quot; >'+costShow+'</div>" ><span class="badge" style="">￥付</span></span>';
                     }
                     if(charge){
-                      data += ' <span class="feiyong" width="50" '
+                      data += ' <span class="other" width="50" '
                               +' data-content="<div'
                               +' height=&quot;140&quot; >'+chargeShow+'</div>" ><span class="badge" style="">￥收</span></span>';
                     }
 
-                    $('.feiyong').popover({
+                    $('.other').popover({
                         html: true,
                         container: 'body',
                         placement: 'right',
