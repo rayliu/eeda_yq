@@ -175,15 +175,61 @@ public class ProductController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
        
+    	sql = "SELECT DISTINCT pro.item_no,pro.item_name,count(pro.part_no) partamount"
+    			+ " FROM wmsproduct pro"
+    			+ " WHERE pro.office_id = "+office_id + condition
+    			+ " GROUP BY item_no";
+    	
+    	String sqlTotal = "select count(1) total from ("+sql+") B";
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        
+        List<Record> orderList = Db.find(sql  +sLimit);
+        Map orderListMap = new HashMap();
+        orderListMap.put("draw", pageIndex);
+        orderListMap.put("recordsTotal", rec.getLong("total"));
+        orderListMap.put("recordsFiltered", rec.getLong("total"));
+
+        orderListMap.put("data", orderList);
+
+        renderJson(orderListMap); 
+    }
+    
+    
+    public void itemList() {
+    	String sql = "";
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        
+        String condition=" where pro.office_id="+office_id;
+        String jsonStr = getPara("jsonStr");
+        String item_no = getPara("item_no");
+        if(StringUtils.isNotBlank(item_no)){
+        	condition += " and item_no = '"+item_no+"'";
+        }
+        
+    	if(StringUtils.isNotBlank(jsonStr)){
+    		Gson gson = new Gson(); 
+            Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class);  
+            String part_no = dto.get("part_no");
+            if(StringUtils.isNotBlank(part_no)){
+            	condition += " and part_no like '%"+part_no+"%'";
+            }
+    	}
+        
+    	if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+       
     	sql = "select pro.*, ifnull(u.c_name, u.user_name) creator_name "
 			+ " from wmsproduct pro "
-			+ " left join user_login u on u.id = pro.creator"
-			+ " where pro.office_id="+office_id;
+			+ " left join user_login u on u.id = pro.creator";
     	
         
     	String totalSql = "select count(1) total"
-			+ " from wmsproduct pro "
-			+ " where pro.office_id="+office_id + condition;
+			+ " from wmsproduct pro " + condition;
         Record rec = Db.findFirst(totalSql);
         logger.debug("total records:" + rec.getLong("total"));
         
