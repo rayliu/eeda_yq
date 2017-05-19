@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="375"/>
+	<property name="ireport.y" value="192"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -34,9 +34,20 @@ ifnull(
 	Upper(lo1. NAME) pol_name,
 	Upper(lo2. NAME) pod_name,
 	Upper(lo3. NAME) fnd_name,
-	SUM(josi.pieces),
-	SUM(josi.gross_weight),
-	SUM(josi.volume),
+
+	CONCAT(
+		CAST(FORMAT(SUM(josi.pieces),0) AS CHAR),' ',
+		GROUP_CONCAT(distinct u1.name_eng)
+	) SUM_pieces,
+   CONCAT(
+		CAST(FORMAT(SUM(josi.gross_weight),2) AS CHAR),' ',
+		' KGS'
+	) SUM_gross_weight,
+   CONCAT(
+		CAST(FORMAT(SUM(josi.volume),2) AS CHAR),' ',
+		' CBM'
+	) SUM_volume,
+	o.logo_path,
 	u.c_name,
   	UPPER(ifnull(p.company_name_eng,p.company_name)) HBLconsigneeName,
 	UPPER(ifnull(p2.company_name_eng,p2.company_name)) HBLshipperName,
@@ -71,12 +82,14 @@ ifnull(
 FROM
 	job_order_shipment jos
 LEFT JOIN job_order jo ON jo.id = jos.order_id
+LEFT JOIN office o on o.id=jo.office_id
 LEFT JOIN user_login u ON u.id = jo.creator
 LEFT JOIN job_order_shipment_item josi ON jo.id = josi.order_id
 LEFT JOIN location lo ON lo.id = jos.por
 LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo2 ON lo2.id = jos.pod
 LEFT JOIN location lo3 ON lo3.id = jos.fnd
+LEFT JOIN unit u1 on u1.id=josi.unit_id
 left join party p on p.id=jos.HBLconsignee
 left join party p2 on p2.id=jos.HBLshipper
 left join party p3 on p3.id=jos.HBLnotify_party
@@ -829,7 +842,7 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="20" y="366" width="535" height="42" uuid="4c693fdb-2ca0-4a70-9c4e-70776935a829"/>
+				<reportElement x="20" y="366" width="133" height="42" uuid="4c693fdb-2ca0-4a70-9c4e-70776935a829"/>
 				<subreportParameter name="order_id">
 					<subreportParameterExpression><![CDATA[$F{order_id}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -961,6 +974,27 @@ NON-NEGOTIABLE]]></text>
 				<reportElement x="120" y="414" width="159" height="63" uuid="1e574cfa-f365-4806-835c-6cb4f019d3d5"/>
 				<imageExpression><![CDATA["Telex.jpg"]]></imageExpression>
 			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="154" y="367" width="113" height="22" uuid="949fc55c-2a71-4fd4-956f-d4aaed08647a"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUM_pieces}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="392" y="365" width="92" height="22" uuid="028dde89-2fa0-47bf-a14c-76e1cadb15c6"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUM_gross_weight}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="483" y="365" width="71" height="22" uuid="c2bd001b-76c4-4890-9c7e-a44d852e974e"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUM_volume}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
