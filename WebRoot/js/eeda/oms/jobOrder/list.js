@@ -64,6 +64,51 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
               { "data": "CUSTOMER_NAME"}, 
               { "data": "SONO"},
               { "data": "CONTAINER_NO"},
+              { "data": null,
+                  "render": function ( data, type, full, meta ) {
+                    if(data){
+                      data = '';
+                    }
+                    
+                    var cost = full.COST;
+                    var charge = full.CHARGE;
+                    var costShow="";
+                    var chargeShow="";
+                    if(cost){
+                      var costArray = cost.split(',');
+                      costShow='<h5><strong>应付费用</strong></h5>';
+                      for (var i = 0; i < costArray.length; i++) {
+                        costShow += '<li>'+costArray[i]+'</li>';
+              }
+                    }
+                    if(charge){
+                      chargeShow='<h5><strong>应收费用</strong></h5>';
+                      var chargeArray = charge.split(',');
+                      for (var i = 0; i < chargeArray.length; i++) {
+                        chargeShow += '<li>'+chargeArray[i]+'</li>';
+                
+              }
+                    }
+                    if(cost){
+                      data += '<span class="feiyong" width="50" '
+                          +' data-content="<div'
+                          +' height=&quot;140&quot; >'+costShow+'</div>" ><span class="badge" style="">￥付</span></span>';
+                    }
+                    if(charge){
+                      data += ' <span class="feiyong" width="50" '
+                              +' data-content="<div'
+                              +' height=&quot;140&quot; >'+chargeShow+'</div>" ><span class="badge" style="">￥收</span></span>';
+                    }
+
+                    $('.feiyong').popover({
+                        html: true,
+                        container: 'body',
+                        placement: 'right',
+                        trigger: 'hover'
+                    });
+                    return data;
+                  }
+              },
               { "data": "CREATOR_NAME"}, 
               { "data": "CREATE_STAMP"}, 
               { "data": "STATUS"},
@@ -71,21 +116,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           ]
       });
 
-      //base on config hide cols
-      dataTable.columns().eq(0).each( function(index) {
-          var column = dataTable.column(index);
-          $.each(cols_config, function(index, el) {
+
+
+      // //base on config hide cols
+      // dataTable.columns().eq(0).each( function(index) {
+      //     var column = dataTable.column(index);
+      //     $.each(cols_config, function(index, el) {
               
-              if(column.dataSrc() == el.COL_FIELD){
+      //         if(column.dataSrc() == el.COL_FIELD){
                 
-                if(el.IS_SHOW == 'N'){
-                  column.visible(false, false);
-                }else{
-                  column.visible(true, false);
-                }
-              }
-          });
-      });
+      //           if(el.IS_SHOW == 'N'){
+      //             column.visible(false, false);
+      //           }else{
+      //             column.visible(true, false);
+      //           }
+      //         }
+      //     });
+      // });
       
       var checkNum = 0;
       $('#eeda-table').on('click','[name=checkBox]',function(){
