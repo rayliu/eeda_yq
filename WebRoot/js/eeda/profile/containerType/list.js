@@ -1,9 +1,9 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '箱型查询 | '+document.title;
+    	document.title = '箱型列表 | '+document.title;
     	$('#menu_profile').addClass('active').find('ul').addClass('in');
-
+    	$("#breadcrumb_li").text('箱型列表');
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda-table',

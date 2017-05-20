@@ -2,6 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     $(document).ready(function() {
 
         $('#menu_profile').addClass('active').find('ul').addClass('in');
+        $("#breadcrumb_li").text('海关');
         //------------save
         $('#saveBtn').click(function(e){        	
         	

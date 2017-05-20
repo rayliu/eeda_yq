@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
-	document.title = '银行账户查询 | '+document.title;
+	document.title = '银行账户信息 | '+document.title;
 	$('#menu_profile').addClass('active').find('ul').addClass('in');
-
+	$("#breadcrumb_li").text('银行账户信息');
 	var dataTable = eeda.dt({
         id: 'eeda-table',
         ajax: "/account/list",

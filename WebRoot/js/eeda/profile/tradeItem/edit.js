@@ -2,6 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     $(document).ready(function() {
 
         $('#menu_profile').addClass('active').find('ul').addClass('in');
+        $('#breadcrumb_li').text('贸易商品信息');
         
         //校验是否已存在此费用
         $('#orderForm').validate({

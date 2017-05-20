@@ -1,8 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) {
 	    $(document).ready(function(){
 	  	 
-	    document.title = '用户岗位查询 | '+document.title;
-	    $('#breadcrumb_li').text('岗位列表');
+	    document.title = '用户岗位列表 | '+document.title;
+	    $('#breadcrumb_li').text('用户岗位列表');
 	    $('#menu_sys_profile').addClass('active').find('ul').addClass('in');
 	  //------------事件处理
 	    var cargoTable =eeda.dt({

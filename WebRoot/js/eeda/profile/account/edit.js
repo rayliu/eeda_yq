@@ -3,6 +3,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		document.title = bank_name +' | '+document.title;
 	}
 	$('#menu_profile').addClass('active').find('ul').addClass('in');
+	$("#breadcrumb_li").text('银行账户信息');
 
 	$('#saveBtn').click(function(e){
         //阻止a 的默认响应行为，不需要跳转

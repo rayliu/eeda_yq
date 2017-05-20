@@ -1,8 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn',  'dtColReorder'], function ($, metisMenu) {
 
     $(document).ready(function() {
-    	document.title = '客户查询 | '+document.title;
-        $("#breadcrumb_li").text('客户列表');
+    	document.title = '客户基本信息列表 | '+document.title;
+        $("#breadcrumb_li").text('客户基本信息列表');
 
     	$('#menu_profile').addClass('active').find('ul').addClass('in');
 

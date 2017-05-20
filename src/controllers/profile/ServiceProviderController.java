@@ -108,8 +108,8 @@ public class ServiceProviderController extends Controller {
         
         String code = party.get("location");
 
-        Record re = Db.findFirst("select get_loc_full_name('"+code+"') as loc_name");
-        setAttr("location", re.getStr("loc_name"));
+//        Record re = Db.findFirst("select get_loc_full_name('"+code+"') as loc_name");
+//        setAttr("location", re.getStr("loc_name"));
         
         setAttr("party", party);
         setAttr("user", LoginUserController.getLoginUser(this));

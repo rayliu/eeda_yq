@@ -1,9 +1,9 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu) {
 
     $(document).ready(function() {
-    	document.title = '计划订单查询 | '+document.title;
+    	document.title = '计划订单列表 | '+document.title;
 
-      $("#breadcrumb_li").text('计划订单');
+      $("#breadcrumb_li").text('计划订单列表');
 
     	if(type != ""){
     		$('#menu_order').removeClass('active').find('ul').removeClass('in');

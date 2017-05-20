@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '单据状态  | '+document.title;
-  	$("#breadcrumb_li").text('单据状态查询');
+  	document.title = '单据流转  | '+document.title;
+  	$("#breadcrumb_li").text('单据流转查询');
   	//datatable, 动态处理
       var dataTable = eeda.dt({
           id: 'eeda-table',

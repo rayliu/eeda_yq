@@ -1,8 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], function ($, metisMenu) {
     $(document).ready(function() {
 
-        document.title = '用户列表 | '+document.title;
-        $("#breadcrumb_li").text('用户列表');
+        document.title = '登陆用户列表 | '+document.title;
+        $("#breadcrumb_li").text('登陆用户列表');
 
         eeda.dt({
             id:'example',

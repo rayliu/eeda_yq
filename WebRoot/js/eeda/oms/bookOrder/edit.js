@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 $(document).ready(function() {
 
 	document.title = order_no + ' | ' + document.title;
-    $("#breadcrumb_li").text('Booking Order');
+    $("#breadcrumb_li").text('Booking');
     
 
 

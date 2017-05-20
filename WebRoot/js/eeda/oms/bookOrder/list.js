@@ -1,8 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = 'Booking查询   | '+document.title;
+  	document.title = 'Booking列表| '+document.title;
 
-    $("#breadcrumb_li").text('Booking Order');
+    $("#breadcrumb_li").text('Booking列表');
     
   	  if(type!=""){
   		  $('#menu_todo_list').addClass('active').find('ul').addClass('in');

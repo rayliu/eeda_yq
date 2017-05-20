@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
     $(document).ready(function() {
   
         $('#menu_profile').addClass('active').find('ul').addClass('in');
-
+        $("#breadcrumb_li").text('客户基本信息');
         var cname = $("#company_name").val();
         var sname = $("#abbr").val();
         $('#customerForm').validate({
