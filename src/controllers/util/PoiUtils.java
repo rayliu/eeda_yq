@@ -384,7 +384,7 @@ public class PoiUtils {
 		    String fileName="";
 		    try {
 		        System.out.println("generateExcel begin...");
-		        String filePath = "download";//"/home/default/ROOT/download/list";
+		        String filePath = "WebRoot/download/list";//"/home/default/ROOT/download/list";
 		        File file = new File(filePath);
 		        if(!file.exists()){
 		         file.mkdir();
@@ -423,7 +423,7 @@ public class PoiUtils {
 		        workbook.write(fileOut);
 		        fileOut.close();
 		        System.out.println("Your excel file has been generated!");
-		        fileName = "/download/"+outFileName;
+		        fileName = "/download/list/"+outFileName;
 		    } catch ( Exception ex ) {
 		        ex.printStackTrace();
 		    }
