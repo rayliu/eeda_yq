@@ -384,7 +384,7 @@ public class PoiUtils {
 		    String fileName="";
 		    try {
 		        System.out.println("generateExcel begin...");
-		        String filePath = "WebRoot/download/list";//"/home/default/ROOT/download/list";
+		        String filePath = "download";//"/home/default/ROOT/download/list";
 		        File file = new File(filePath);
 		        if(!file.exists()){
 		         file.mkdir();
