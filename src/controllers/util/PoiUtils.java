@@ -372,4 +372,63 @@ public class PoiUtils {
         }
         return fileName;
     }
+
+
+
+		/**
+		 * 写内容到excel中
+		 * @throws IOException 
+		 */
+		@SuppressWarnings("deprecation")
+		public static String generateExcel(String[] headers, String[] fields, String sql,String company_name){
+		    String fileName="";
+		    try {
+		        System.out.println("generateExcel begin...");
+		        String filePath = "download";//"/home/default/ROOT/download/list";
+		        File file = new File(filePath);
+		        if(!file.exists()){
+		         file.mkdir();
+		        }
+		        Date date = new Date();
+		        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		        String outFileName = company_name+"-" + format.format(date) + ".xls";
+		        //String filename = srcFilePath;//"C:/NewExcelFile.xls" ;
+		        HSSFWorkbook workbook = new HSSFWorkbook();
+		        HSSFSheet sheet = workbook.createSheet("FirstSheet");  
+		
+		        HSSFRow rowhead = sheet.createRow((short)0);
+		        for (int i = 0; i < headers.length; i++) {
+		            rowhead.createCell((short)i).setCellValue(headers[i]);
+		        }
+		
+		        List<Record> recs = Db.find(sql);
+		        if(recs!=null){
+		            for (int j = 1; j <= recs.size(); j++) {
+		                HSSFRow row = sheet.createRow((short)j);
+		                Record rec = recs.get(j-1);
+		                for (int k = 0; k < fields.length;k++){
+		                    Object obj = rec.get(fields[k]);
+		                    String strValue = "";
+		                    if(obj != null){
+		                        strValue =obj.toString();
+		                    }
+		                    row.createCell((short)k).setCellValue(strValue);
+		                }
+		            }
+		        }
+		
+		        fileName = filePath+"/"+outFileName;
+		        System.out.println("fileName: "+fileName);
+		        FileOutputStream fileOut = new FileOutputStream(fileName);
+		        workbook.write(fileOut);
+		        fileOut.close();
+		        System.out.println("Your excel file has been generated!");
+		        fileName = "/download/list/"+outFileName;
+		    } catch ( Exception ex ) {
+		        ex.printStackTrace();
+		    }
+		    return fileName;
+		}
 }
+
+

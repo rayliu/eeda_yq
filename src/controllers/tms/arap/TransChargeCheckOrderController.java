@@ -671,13 +671,50 @@ public class TransChargeCheckOrderController extends Controller {
     }  
     
     public void downloadList(){
-        UserLogin user = LoginUserController.getLoginUser(this);
-        String exportSql = "select * from user_login  where office_id="+user.getOfficeId();
+    	String order_id = getPara("order_id");
+    	String company_name = getPara("company_name");
+//        UserLogin user = LoginUserController.getLoginUser(this);
+        String exportSql = " SELECT tjo.id, tjo.order_no,tjo.lading_no lading_no, "
+        		+"   (SELECT GROUP_CONCAT(tjoli.cabinet_date) from trans_job_order_land_item tjoli  "
+        		+" 	LEFT JOIN trans_job_order tjor on tjoli.order_id = tjor.id  WHERE tjor.id = tjo.id ) cabinet_date, "
+        		+" (SELECT py.abbr   from trans_job_order_arap tjoa "
+        		+" 	LEFT JOIN trans_job_order tjor on tjoa.order_id = tjor.id "
+        		+"   LEFT JOIN party py on py.id = tjoa.sp_id  WHERE tjor.id = tjo.id and tjoa.charge_id= 173 ) customer_name, "
+        		+" (SELECT GROUP_CONCAT(tjoli.unload_type)  from trans_job_order_land_item tjoli  "
+        		+" 	LEFT JOIN trans_job_order tjor on tjoli.order_id = tjor.id  WHERE tjor.id = tjo.id ) unload_type, "
+        		+"   d.dock_name, tjo.container_no,tjo.cabinet_type, "
+        		+" (SELECT GROUP_CONCAT(co.car_no)  from trans_job_order_land_item tjoli  "
+        		+" 	LEFT JOIN trans_job_order tjor on tjoli.order_id = tjor.id "
+        		+"   LEFT JOIN carinfo co on co.id = tjoli.car_no WHERE tjor.id = tjo.id ) car_no, "
+        		+" (SELECT tjoa.total_amount  from trans_job_order_arap tjoa "
+        		+" 	LEFT JOIN trans_job_order tjor on tjoa.order_id = tjor.id  WHERE tjor.id = tjo.id and tjoa.charge_id= 173 ) total_amount, "
+        		+"(SELECT GROUP_CONCAT(CONCAT(fm.name,':',tjoa.total_amount) SEPARATOR ';')  from trans_job_order_arap tjoa "
+        		+"	LEFT JOIN trans_job_order tjor on tjoa.order_id = tjor.id "
+        		+"  LEFT JOIN fin_item fm on fm.id = tjoa.charge_id   WHERE tjor.id = tjo.id and tjoa.charge_id != 173 and  tjoa.order_type = 'charge' ) other_amount, "
+        		+" (SELECT cy. NAME   from trans_job_order_arap tjoa "
+        		+" 	LEFT JOIN trans_job_order tjor on tjoa.order_id = tjor.id "
+        		+"   LEFT JOIN currency cy on cy.id = tjoa.currency_id  WHERE tjor.id = tjo.id and tjoa.charge_id= 173 ) currency_name, "
+        		+" 	tjo.remark "
+        		+" FROM "
+        		+" trans_arap_charge_order taco "
+        		+" LEFT JOIN trans_arap_charge_item taci ON taco.id = taci.charge_order_id "
+        		+" LEFT JOIN trans_job_order_arap tjoa ON taci.ref_order_id = tjoa.id "
+        		+" LEFT JOIN trans_job_order tjo ON tjo.id = tjoa.order_id "
+        		+" LEFT JOIN dockinfo d on d.id = tjo.take_wharf "
+        		+" WHERE "
+        		+" 	tjoa.id = taci.ref_order_id "
+        		+" AND taco.id = ("+order_id+") "
+        		+" AND tjo.delete_flag = 'N' "
+        		+" GROUP BY "
+        		+" 	tjoa.id "
+        		+" ORDER BY "
+        		+" 	taco.order_no, "
+        		+" 	tjo.order_no " ;
         
         //List<String> headers = new ArrayList<String>();
-        String[] headers = new String[]{"ID号", "登录名", "中文名"};
-        String[] fields = new String[]{"ID", "USER_NAME", "C_NAME"};
-        String fileName = PoiUtils.generateExcel(headers, fields, exportSql);
+        String[] headers = new String[]{"提单号", "提柜日期", "客户", "方式", "提柜地址", "柜号", "尺码", "拖车号", "应收运费", "币制","应收其他费用", "发票号"};
+        String[] fields = new String[]{"LADING_NO", "CABINET_DATE", "CUSTOMER_NAME", "UNLOAD_TYPE", "DOCK_NAME", "CONTAINER_NO", "CABINET_TYPE", "CAR_NO", "TOTAL_AMOUNT", "CURRENCY_NAME","OTHER_AMOUNT",  "REMARK"};
+        String fileName = PoiUtils.generateExcel(headers, fields, exportSql,company_name);
         renderText(fileName);
     }
     
