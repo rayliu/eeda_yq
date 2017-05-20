@@ -5,7 +5,7 @@ $(document).ready(function() {
 	
 	var container_no=$('#container_no').val();
 	document.title = container_no + ' | ' + document.title;
-	$('#breadcrumb_li').text('工作单');
+	$('#breadcrumb_li').text('托运工作单');
 	 //柜号限制输入位为11位数，
 	$("#orderForm").validate({
 	    rules: {

@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '工作单查询   | '+document.title;
-  	$('#breadcrumb_li').text('工作单列表');
+  	document.title = '托运工作单列表   | '+document.title;
+  	$('#breadcrumb_li').text('托运工作单列表');
   	  if(type!=""){
   		  $('#menu_todo_list').addClass('active').find('ul').addClass('in');
   		  $('#menu_order').removeClass('active').find('ul').removeClass('in');

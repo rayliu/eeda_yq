@@ -1,8 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '应收应付查询  | '+document.title;
+  	document.title = '费用明细查询  | '+document.title;
   	  $('#menu_cost').addClass('active').find('ul').removeClass('in');
-  	 $("#breadcrumb_li").text('应收应付查询');
+  	 $("#breadcrumb_li").text('费用明细查询');
   	 
       var dataTable = eeda.dt({
           id: 'eeda_table',

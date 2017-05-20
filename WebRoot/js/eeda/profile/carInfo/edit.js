@@ -1,6 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'validate_cn', 'sco'], function ($, metisMenu) {
     $(document).ready(function() {
-        document.title = '车辆信息 | '+document.title;
+        document.title = '车辆司机信息 | '+document.title;
+        $("#breadcrumb_li").text('车辆司机信息');
 
         var car_no = $("#car_number").val();
         if(car_no){

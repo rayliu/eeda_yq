@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
 
   $(document).ready(function() {
-	  $("#breadcrumb_li").text('码头管理');
+	  $("#breadcrumb_li").text('码头');
 	  
 	  
         $('#customerForm').validate({
