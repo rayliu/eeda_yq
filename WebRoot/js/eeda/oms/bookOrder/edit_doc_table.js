@@ -484,7 +484,15 @@ $(document).ready(function() {
                   "render": function ( data, type, full, meta ) {
                       if(!data)
                           data='';
-                      return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                      var str='';
+                      if(full.SEND_STATUS=='已发送'){
+                       str='<span class="badge" style="background-color:white;color:red;margin-left:5px;">新</span>';                        
+                      }
+                      if(full.REMARK=='自动生成'){
+                      	return '<a class="doc_name" href="/download/'+data+'" style="width:300px" target="_blank">'+data+str+'</a>';
+                      }else{
+                      	return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+str+'</a>';
+                      }
                   }
               },
               { "data": "C_NAME","width": "180px",
@@ -536,6 +544,7 @@ $(document).ready(function() {
     //文件下载-----工作单
       $("#zero_doc_table").on('click', '.downloadDoc', function(e){
           e.preventDefault();
+          $(this).parents('tr').find('.doc_name').click();
           var self = this;
           var tr = $(this).parent().parent();
           var id = tr.attr('id');
