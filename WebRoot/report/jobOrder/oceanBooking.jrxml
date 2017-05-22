@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="554"/>
+	<property name="ireport.y" value="296"/>
 	<parameter name="order_no" class="java.lang.String">
 		<property name="order_no" value="$P{order_no}"/>
 	</parameter>
@@ -744,20 +744,22 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="143" y="260" width="136" height="20" uuid="9d46cd8f-195a-41d5-84c1-c8c802e3953c"/>
 				<textElement textAlignment="Left">
-					<font size="8"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="284" y="260" width="133" height="20" uuid="2f3ad4dd-8365-4a75-aec7-9cd593e03dc0"/>
 				<textElement textAlignment="Left">
-					<font size="8"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pod_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="421" y="260" width="134" height="20" uuid="1fff4b0f-f92a-43a0-993b-7c3d387023f6"/>
-				<textElement textAlignment="Left"/>
+				<textElement textAlignment="Left">
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{fnd_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -934,7 +936,7 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="5" y="260" width="132" height="20" uuid="494876b7-601f-4b52-b305-0c9ec48242a5"/>
 				<textElement>
-					<font size="8"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{por_name}]]></textFieldExpression>
 			</textField>
@@ -976,7 +978,7 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="67" y="350" width="484" height="18" uuid="6aacc4e6-6cd0-4d00-b5ca-729ffff96761"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{trans_clause}]]></textFieldExpression>
 			</textField>
@@ -997,7 +999,7 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="71" y="368" width="484" height="16" uuid="5682e753-9cc7-4313-8be6-6af460068afc"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{trade_type}]]></textFieldExpression>
 			</textField>
@@ -1045,6 +1047,9 @@ WHERE
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="126" y="536" width="421" height="18" uuid="93757cf2-260b-4549-bf5f-b4c6ed39b354"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{CN_NO}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -1091,6 +1096,9 @@ WHERE
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="69" y="316" width="100" height="17" uuid="ab7d9a75-7e6b-43a3-833a-a14a1ddcd876"/>
+				<textElement>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
