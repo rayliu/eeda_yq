@@ -192,28 +192,14 @@ group by goo.id]]>
 				<text><![CDATA[备件清单]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="417" y="75" width="70" height="18" uuid="25c14519-f786-49cd-9242-fb4d20d8208b"/>
+				<reportElement x="287" y="75" width="70" height="18" uuid="25c14519-f786-49cd-9242-fb4d20d8208b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[实际数量：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="241" y="74" width="70" height="20" uuid="b5db58b6-56cb-4873-bc07-964cdd5525d9"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[总数量：]]></text>
+				<text><![CDATA[数量：]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="311" y="74" width="100" height="20" uuid="eba49f59-64ed-457c-86ae-17ff4314cf95"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="黑体" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{total_quantity}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="491" y="75" width="81" height="19" uuid="68dea33a-4761-4f05-abd3-311ce278a51b"/>
+				<reportElement x="361" y="75" width="81" height="19" uuid="68dea33a-4761-4f05-abd3-311ce278a51b"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="黑体" pdfEncoding="Identity-H"/>
 				</textElement>
