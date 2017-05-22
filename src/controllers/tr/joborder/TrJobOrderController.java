@@ -1364,7 +1364,7 @@ public class TrJobOrderController extends Controller {
         }        
         else{
 		         sql = "SELECT * from ("
-		         		+ " select jo.*, ,if(jo.office_id != "+office_id+",'other','self') other_flag,"
+		         		+ " select jo.*, if(jo.office_id != "+office_id+",'other','self') other_flag,"
 		         		 + " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount)) from trade_job_order_arap joa"
 							+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
 							+ " WHERE joa.order_id=jo.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
@@ -1375,7 +1375,7 @@ public class TrJobOrderController extends Controller {
 		         		+ "	from trade_job_order jo"
 		         		+ "	left join party p on p.id = jo.customer_id"
 		         		+ "	left join user_login u on u.id = jo.creator"
-		         		+ "	where jo.office_id="+office_id
+		         		+ "	where (jo.office_id="+office_id+ref_office+ ")"
 		         	    + " and jo.delete_flag = 'N'"
 		         	    + " GROUP BY jo.id "
 		         	    + " ) A where 1 = 1 ";

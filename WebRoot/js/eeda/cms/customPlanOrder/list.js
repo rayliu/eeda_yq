@@ -39,7 +39,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 				   },
                   {"data": "ORDER_NO", 
                 	  "render": function ( data, type, full, meta ) {
-                		  return "<a href='/customPlanOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+                		  var other = '';
+                    	  if(full.OTHER_FLAG=='other'){
+                    		  other = ' <span class="badge">外</span>';
+                    	  }
+                		  return "<a href='/customPlanOrder/edit?id="+full.ID+"'target='_blank'>"+data+other+"</a>";
                 	  }
                   },
                   { "data": "TRACKING_NO"},

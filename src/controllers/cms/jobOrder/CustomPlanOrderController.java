@@ -596,8 +596,15 @@ public class CustomPlanOrderController extends Controller {
         }
         String sql = "";
         String condition="";
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or cpo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
         if("unConfirmFee".equals(confirmFee)){
         	sql = "SELECT * from (SELECT cpo.id,cpo.to_office_id,cpo.order_no,cpo.tracking_no,cpo.customs_billCode,cpo.type,cpo.receive_sent_consignee_input receive_company_name,ul.c_name creator_name,cpo.booking_no,"
+        			+ " if(cpo.office_id != "+office_id+",'other','self') other_flag,"
         			+ " cpo.create_stamp,cpo.status,cpo.custom_state,(SELECT COUNT(0) from custom_plan_order cpo WHERE cpo.custom_state = '放行' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+")) pass,"
         			+"    (SELECT COUNT(0) total from custom_plan_order cpor "
 					+"		LEFT JOIN custom_plan_order_arap cpol on cpol.order_id = cpor.id "
@@ -619,7 +626,8 @@ public class CustomPlanOrderController extends Controller {
 							+ " WHERE joa.order_id=cpo.id and joa.order_type='charge' and fi.name!='运费' group by joa.order_type) as char) charge "
         			+ " FROM custom_plan_order cpo"
         			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
-        			+ " where cpo.office_id="+office_id+" and cpo.delete_flag='N'  or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建' "
+        			+ " where (cpo.office_id="+office_id+ref_office+ ")"
+        			+" and cpo.delete_flag='N'  or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建' "
         			+" and cpo.delete_flag='N' )) A"
     		        + " where 1 =1 and (arapTotal>0 or auditFlag is NULL)";
         }else if("confirmFee".equals(confirmFee)){
@@ -645,7 +653,8 @@ public class CustomPlanOrderController extends Controller {
 							+ " WHERE joa.order_id=cpo.id and joa.order_type='charge' and fi.name!='运费' group by joa.order_type) as char) charge "
         			+ " FROM custom_plan_order cpo"
         			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
-        			+ " where cpo.office_id="+office_id+" and cpo.delete_flag='N'  or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建'"
+        			+ " where (cpo.office_id="+office_id+ref_office+ ")"
+        			+" and cpo.delete_flag='N'  or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建'"
         			+" and cpo.delete_flag='N' )) A"
     		        + " where 1 =1 and (arapTotal=0 and auditFlag is not NULL)";
         }else{
@@ -665,7 +674,8 @@ public class CustomPlanOrderController extends Controller {
 							+ " WHERE joa.order_id=cpo.id and joa.order_type='charge' and fi.name!='运费' group by joa.order_type) as char) charge "
         			+ " FROM custom_plan_order cpo"
         			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
-        			+ " where cpo.office_id="+office_id+" and cpo.delete_flag='N'  or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建'"
+        			+ " where (cpo.office_id="+office_id+ref_office+ ")"
+        			+" and cpo.delete_flag='N'  or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建'"
         			+" and cpo.delete_flag='N' "
         			+ ")"
         			+ ") A"
