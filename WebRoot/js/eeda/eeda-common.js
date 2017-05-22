@@ -556,12 +556,6 @@ eeda.refreshUrl = refreshUrl;
 				  return false;
 			  }
 			  
-		  if(event.keyCode==8){
-	        	if(inputStr==''){
-	        		hiddenField.val('');
-	        	}
-	        	return ;
-	        }else{ 
 			  $.get(url, {input:inputStr,para:para}, function(data){
 				  if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 					  return;
@@ -580,18 +574,14 @@ eeda.refreshUrl = refreshUrl;
 				  //tableFieldList;
 				  if(data.length==0)
 		                hiddenField.val('');
-		            if(data.length==1&&data[0].ID){
-		            	 hiddenField.val(data[0].ID);
-		            	 inputField.val(data[0].NAME);
-		            }
-		               
+		            if(data.length==1&&data[0].ID)
+		                hiddenField.val(data[0].ID);
 		            if(!inputStr){
 		            	if(data.length>1)
 			                hiddenField.val('');
 		            }
 		            
 			  },'json');
-	        }
 		  });
 		  
 		  tableFieldList.on('click', '.fromLocationItem', function(e){
