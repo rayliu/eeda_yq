@@ -166,7 +166,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
               	    }
                 },
 				{ "data": "ITEM_NO"}, 
-				{ "data": "TOTAL_QUANTITY"}, 
+				/*{ "data": "TOTAL_QUANTITY"}, */
 				{ "data": "QUANTITY"}, 
 				{ "data": "CREATE_TIME"},
 				{ "data": "CREATOR_NAME"}

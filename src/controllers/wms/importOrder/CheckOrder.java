@@ -704,19 +704,33 @@ public class CheckOrder extends Controller {
                 }    
 
                 String checkQuantity = order.getStr("check_quantity");
-                GateIn gi = GateIn.dao.findFirst("select * from gate_in where qr_code = ? ",order.getStr("qr_code"));
+                GateIn gi = GateIn.dao.findFirst("select * from gate_in where qr_code = ? and error_flag='N' and out_flag='N'",order.getStr("qr_code"));
                 if(gi == null){
-        			gi = new GateIn();
-        			gi.set("office_id", officeId);
-        			gi.set("qr_code", order.getStr("qr_code"));
-        			gi.set("part_no", order.getStr("part_no"));
-        			gi.set("quantity",StringUtils.isNotBlank(checkQuantity)?checkQuantity:order.getStr("quantity"));
-        			gi.set("shelves", order.getStr("shelves"));
-        			gi.set("creator", order.getLong("creator"));
-        			gi.set("create_time", order.get("create_time"));
-        			gi.set("inv_flag", "Y");
-        			gi.set("inv_msg", "盘点单号："+order.getStr("order_no")+",盘点入库");
-        			gi.save();
+                	//先盘点后入库    导入的时候先导入出库，再导入盘点处理
+                	Record go = Db.findFirst("select * from gate_out where qr_code = ? and error_flag='N' order by id desc",order.getStr("qr_code"));
+
+                	Long a = null;
+                	if(go != null){
+                		Record compareTime = Db.findFirst("select ?>? result;",go.get("create_time"),order.get("create_time"));
+                    	a = compareTime.getLong("result"); //判断 出库单时间>盘点单时间
+                	}
+                	
+                	if("1".equals(a)){
+                		//符合以上说的情况，所以无需再盘点入库，因为已经出了
+
+                	}else{
+                		gi = new GateIn();
+            			gi.set("office_id", officeId);
+            			gi.set("qr_code", order.getStr("qr_code"));
+            			gi.set("part_no", order.getStr("part_no"));
+            			gi.set("quantity",StringUtils.isNotBlank(checkQuantity)?checkQuantity:order.getStr("quantity"));
+            			gi.set("shelves", order.getStr("shelves"));
+            			gi.set("creator", order.getLong("creator"));
+            			gi.set("create_time", order.get("create_time"));
+            			gi.set("inv_flag", "Y");
+            			gi.set("inv_msg", "盘点单号："+order.getStr("order_no")+",盘点入库");
+            			gi.save();
+                	}
         		} else {
         			String this_shelves = order.getStr("shelves");
         			String order_shelves = gi.getStr("shelves");

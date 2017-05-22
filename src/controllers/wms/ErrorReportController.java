@@ -252,6 +252,7 @@ public class ErrorReportController extends Controller {
     	renderJson(result);
     }
     
+    @Before(Tx.class)
     public void delete(){
 		String jsonArray = getPara("jsonArray");
 		
