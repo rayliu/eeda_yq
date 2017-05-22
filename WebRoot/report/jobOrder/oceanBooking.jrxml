@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="824"/>
+	<property name="ireport.y" value="393"/>
 	<parameter name="order_no" class="java.lang.String">
 		<property name="order_no" value="$P{order_no}"/>
 	</parameter>
@@ -744,35 +744,35 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="143" y="260" width="136" height="20" uuid="9d46cd8f-195a-41d5-84c1-c8c802e3953c"/>
 				<textElement textAlignment="Left">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="284" y="260" width="133" height="20" uuid="2f3ad4dd-8365-4a75-aec7-9cd593e03dc0"/>
 				<textElement textAlignment="Left">
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pod_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="421" y="260" width="134" height="20" uuid="1fff4b0f-f92a-43a0-993b-7c3d387023f6"/>
 				<textElement textAlignment="Left">
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font pdfFontName=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fnd_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="144" y="295" width="65" height="20" uuid="a4b93379-2f76-4e64-8143-10668c113104"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font pdfFontName=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{vessel}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="210" y="295" width="67" height="20" uuid="2253a8c0-ebf5-4945-b4e2-ce35c4236b56"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font pdfFontName="" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{voyage}]]></textFieldExpression>
 			</textField>
@@ -936,7 +936,7 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="5" y="260" width="132" height="20" uuid="494876b7-601f-4b52-b305-0c9ec48242a5"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font size="8" pdfFontName=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{por_name}]]></textFieldExpression>
 			</textField>
@@ -1041,14 +1041,14 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="126" y="521" width="422" height="16" uuid="37fc2891-560c-4e78-b08e-67906909f55a"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font pdfFontName=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_type_count}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="126" y="536" width="421" height="18" uuid="93757cf2-260b-4549-bf5f-b4c6ed39b354"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font pdfFontName=""/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CN_NO}]]></textFieldExpression>
 			</textField>
@@ -1101,7 +1101,7 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="6" y="295" width="100" height="20" uuid="9103abdd-8b3f-4940-b3b0-4216e4cd0afb"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="UniKS-UCS2-V"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{head_carrier}]]></textFieldExpression>
 			</textField>
