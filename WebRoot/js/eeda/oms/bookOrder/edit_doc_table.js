@@ -488,11 +488,12 @@ $(document).ready(function() {
                       if(full.SEND_STATUS=='已发送'){
                        str='<span class="badge" style="background-color:white;color:red;margin-left:5px;">新</span>';                        
                       }
-                      if(full.REMARK=='自动生成'){
-                      	return '<a class="doc_name" href="/download/'+data+'" style="width:300px" target="_blank">'+data+str+'</a>';
-                      }else{
-                      	return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+str+'</a>';
-                      }
+
+                    if(full.REMARK=='自动生成'){
+                        return '<a class="doc_name" href="/download/'+data+'" style="width:300px" target="_blank">'+data+str+'</a>';
+                    }else{
+                        return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+str+'</a>';
+                    }
                   }
               },
               { "data": "C_NAME","width": "180px",
@@ -547,6 +548,8 @@ $(document).ready(function() {
           $(this).parents('tr').find('.doc_name').click();
           var self = this;
           var tr = $(this).parent().parent();
+           var href=tr.find('.doc_name').attr('href');
+          window.open(href);
           var id = tr.attr('id');
           this.disabled = true;
            $.post('/bookOrder/downloadDoc', {docId:id}, function(data){
