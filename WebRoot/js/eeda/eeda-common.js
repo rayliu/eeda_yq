@@ -213,6 +213,12 @@ eeda.hidePopList=function(){
     $(listArr).each(function(i, el) {
         if($(el).is(':visible')){
           $(el).hide();
+          var inputField = eeda._inputField;
+		  var hiddenField = eeda._hiddenField;
+		  if(inputField.val()=='' || hiddenField.val()==''){
+			  inputField.val('');
+			  hiddenField.val('');
+		  }
         }
     });
 };
@@ -513,6 +519,7 @@ eeda.refreshUrl = refreshUrl;
               tableFieldList.hide();
           }
 		  });
+		  
 
 		  // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
 		  tableFieldList.on('mousedown', function(){
