@@ -806,6 +806,7 @@
             <%include("/eeda/component/form/detailTable.html", 
                 {
                     id:'ocean_cargo_table',
+                    style:'width:150px',
                     headers:   ['', '', '负载方式', '柜型', '柜号', '封条号', '件数','单位','托板描述', '毛重(KG)', '体积(CBM)', '总重量VGM','unit_name'],
                     field_list:['id', '', 'load_type', 'container_type', 'container_no', 'seal_no', 'pieces','unit_id','pallet_desc', 'gross_weight', 'volume', 'vgm','unit_name'],
                     value_list: shipmentList![]

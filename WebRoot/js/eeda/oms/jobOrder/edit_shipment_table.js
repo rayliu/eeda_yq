@@ -98,7 +98,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
-                        var str = '<select name="container_type" class="form-control search-control" style="width:100px">'
+                        var str = '<select name="container_type" class="form-control search-control" style="width:70px">'
                         			+'<option></option>'
     			                   +'<option value="20\'GP" '+(data=='20\'GP' ? 'selected':'')+'>20GP</option>'
     			                   +'<option value="40\'GP" '+(data=='40\'GP' ? 'selected':'')+'>40GP</option>'
@@ -112,14 +112,14 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
-                        return '<input type="text" name="container_no" value="'+data+'" class="form-control" style="width:200px"/>';
+                        return '<input type="text" name="container_no" value="'+data+'" class="form-control" style="width:120px"/>';
                     }
                 },
                 { "data": "SEAL_NO","width": "180px",  
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
-                        return '<input type="text" name="seal_no" value="'+data+'" class="form-control" style="width:200px"/>';
+                        return '<input type="text" name="seal_no" value="'+data+'" class="form-control" style="width:120px"/>';
                     }
                 },
                 { "data": "PIECES", "width": "80px",
@@ -138,7 +138,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                                 id: 'UNIT_ID',
                                 value: data,
                                 display_value: full.UNIT_NAME,
-                                style:'width:200px'
+                                style:'width:120px'
                             }
                         );
                         return field_html;
