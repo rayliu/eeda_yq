@@ -227,11 +227,11 @@ where jo.order_no=$P{order_no}]]>
 				<text><![CDATA[BOOKING CONFIRMATION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="20" width="280" height="70" uuid="90d2e6bd-f954-4b76-a09d-96ad16a8cd94"/>
+				<reportElement x="8" y="20" width="272" height="70" uuid="90d2e6bd-f954-4b76-a09d-96ad16a8cd94"/>
 				<textElement>
-					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[  Shipper(Complete name and address) 托运人(名称和地址)]]></text>
+				<text><![CDATA[Shipper(Complete name and address) 托运人(名称和地址)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="280" y="20" width="275" height="23" uuid="23c01f61-1049-45ba-816e-9cfc47062764"/>
@@ -241,21 +241,19 @@ where jo.order_no=$P{order_no}]]>
 				<text><![CDATA[ Booking No: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="90" width="280" height="80" uuid="e2b0860f-987a-484a-98f3-19f45f817393"/>
+				<reportElement x="8" y="90" width="271" height="80" uuid="e2b0860f-987a-484a-98f3-19f45f817393"/>
 				<textElement>
-					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[  Consignee(Complete name and address) 收货人(名称和
-  地址)
+				<text><![CDATA[Consignee(Complete name and address) 收货人(名称和地址)
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="170" width="280" height="75" uuid="83885c1d-1f1a-4d13-a295-170c6e03fb8c"/>
+				<reportElement x="8" y="170" width="266" height="75" uuid="83885c1d-1f1a-4d13-a295-170c6e03fb8c"/>
 				<textElement>
-					<font size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[  Notify Party(Complete name and address.tel.fax)通知人
-  (名称.地址.电话,传真)
+				<text><![CDATA[Notify Party(Complete name and address.tel.fax)通知人(名称.地址.电话,传真)
 ]]></text>
 			</staticText>
 			<staticText>
@@ -277,42 +275,42 @@ where jo.order_no=$P{order_no}]]>
 			<staticText>
 				<reportElement x="0" y="245" width="140" height="15" uuid="29db6fe4-556f-4afa-8b87-7d06c039cbf1"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[  Place of receipt 收货地点]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="140" y="245" width="140" height="15" uuid="73ba8a99-bc69-4f20-b59f-c623c7caa217"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[  Port of loading 起运港]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="280" y="245" width="137" height="15" uuid="c9a6e8f4-aaba-462b-804d-f56fea303ded"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[  Port of discharge卸货港]]></text>
+				<text><![CDATA[  Port of discharge目的港]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="417" y="245" width="138" height="15" uuid="051007c0-fb39-4448-b71e-52ee6ed6bd8d"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[  Place of Delivery 目的地]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="280" width="140" height="15" uuid="6f0e6341-aee1-47d0-bbf8-44816b2cfb56"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[  Pre-carriage 头程运输]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="140" y="280" width="140" height="15" uuid="c5645d3e-83a0-48b0-acfb-115b1d40b537"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[  Voyage航次]]></text>
 			</staticText>
