@@ -407,23 +407,23 @@
             <div class="col-lg-4">
               <% if(boolOcean){ %> 
                 <%include("/eeda/component/form/inputField.html", 
-                    {   id:'route', 
-                        label:'航线',
-                        value:shipment.route!''
-                    }){}%>
-               <%}else{%>
-              		<label class="search-label">航线</label> <span class='search-control'>${shipment.route!''}</span>
-               <%}%>
-            </div>
-            <div class="col-lg-4">
-              <% if(boolOcean){ %> 
-                <%include("/eeda/component/form/inputField.html", 
                     {   id:'voyage', 
                         label:'航次',
                         value:shipment.voyage!planOrderItem.voyage!''
                     }){}%>
                <%}else{%>
-              		<label class="search-label">航次</label> <span class='search-control'>${shipment.voyage!planOrderItem.voyage!''}</span>
+                    <label class="search-label">航次</label> <span class='search-control'>${shipment.voyage!planOrderItem.voyage!''}</span>
+               <%}%>
+            </div>
+            <div class="col-lg-4">
+               <% if(boolOcean){ %> 
+                <%include("/eeda/component/form/inputField.html", 
+                    {   id:'route', 
+                        label:'航线',
+                        value:shipment.route!''
+                    }){}%>
+               <%}else{%>
+                    <label class="search-label">航线</label> <span class='search-control'>${shipment.route!''}</span>
                <%}%>
             </div>  
          </div>
