@@ -709,10 +709,10 @@ public class CheckOrder extends Controller {
                 	//先盘点后入库    导入的时候先导入出库，再导入盘点处理
                 	Record go = Db.findFirst("select * from gate_out where qr_code = ? and error_flag='N' order by id desc",order.getStr("qr_code"));
 
-                	Long a = null;
+                	String a = null;
                 	if(go != null){
                 		Record compareTime = Db.findFirst("select ?>? result;",go.get("create_time"),order.get("create_time"));
-                    	a = compareTime.getLong("result"); //判断 出库单时间>盘点单时间
+                    	a = compareTime.getLong("result").toString(); //判断 出库单时间>盘点单时间
                 	}
                 	
                 	if("1".equals(a)){
@@ -726,6 +726,7 @@ public class CheckOrder extends Controller {
             			gi.set("quantity",StringUtils.isNotBlank(checkQuantity)?checkQuantity:order.getStr("quantity"));
             			gi.set("shelves", order.getStr("shelves"));
             			gi.set("creator", order.getLong("creator"));
+            			gi.set("creator_code", order.getStr("creator_code"));
             			gi.set("create_time", order.get("create_time"));
             			gi.set("inv_flag", "Y");
             			gi.set("inv_msg", "盘点单号："+order.getStr("order_no")+",盘点入库");
