@@ -537,6 +537,19 @@ $(document).ready(function() {
                           data='';
                       return data;
                   }
+              },
+               {"data": null,"visible":'false',
+                    "render": function ( data, type, full, meta ) {
+                        var str='';
+                      if(full.NEW_COUNT>0){
+                        str='<span class="badge" style="background-color:white;color:red;margin-left:5px;">新</span>';
+                        $($('.simple_rectangle_title_div .font_style')[0]).html('第一步，接受头程资料'+str);
+                      }else{
+                        $($('.simple_rectangle_title_div .font_style')[0]).html('第一步，接受头程资料'+str);
+                      
+                      }
+                      return "";
+                    }
               }
           ]
       });

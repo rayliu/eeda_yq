@@ -1901,10 +1901,16 @@ public class BookOrderController extends Controller {
     
     public List<Record> getDocItems(String orderId,String type){
     	String  itemSql = "";
-    	itemSql = "select jod.*,u.c_name from book_order_doc jod left join user_login u on jod.uploader=u.id "
-        			+ " where order_id=? and type=? order by jod.id";
+    	itemSql = "SELECT * ,"
+    			+ " (SELECT  count(jod0.id) FROM book_order_doc jod0 WHERE "
+    			+ " jod0.order_id ="+orderId+" 	AND jod0.type ='"+type+"' and   jod0.send_status='已发送' ) new_count"
+    			+ " FROM("
+    			+ " select jod.*,u.c_name "
+    			+ " from book_order_doc jod left join user_login u on jod.uploader=u.id "
+        			+ " where jod.order_id="+orderId+" and jod.type='"+type+"' order by jod.id"
+        			+ ")B WHERE 1=1 ";
     	
-    	List<Record> itemList = Db.find(itemSql,orderId,type);
+    	List<Record> itemList = Db.find(itemSql);
     	
     	return itemList;
     }
