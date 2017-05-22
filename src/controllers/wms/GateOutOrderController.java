@@ -69,7 +69,16 @@ public class GateOutOrderController extends Controller {
 		
 		Record order = new Record();
 		order.set("order_no", OrderNoGenerator.getNextOrderNo("GO", office_id));
-		order.set("kt_no", kt_no);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+		String timeString = sdf.format(new Date());
+		
+		if(StringUtils.isBlank(kt_no)){
+			order.set("kt_no", timeString);
+		}else{
+			order.set("kt_no", kt_no);
+		}
+		
 		order.set("item_no", item_no);
 		order.set("total_quantity", totalQuantity);
 		order.set("quantity", quantity);

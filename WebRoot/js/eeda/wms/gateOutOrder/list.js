@@ -45,11 +45,6 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	var total = parseFloat($('#quantity').val());
         	var item_no = $('#item_no').val();
         	var kt_no = $('#kt_no').val();
-        	if(item_no.trim() == '' || kt_no.trim() == ''){
-        		$.scojs_message('KT_NO, 产品编码不能为空', $.scojs_message.TYPE_FALSE);
-        		return false;
-        	}
-
         	if(!total){
         		$.scojs_message('数量不规范', $.scojs_message.TYPE_FALSE);
         		return false;

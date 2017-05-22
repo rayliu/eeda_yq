@@ -17,34 +17,10 @@
 			                <form id="orderForm">
 			                    <div class="row">
 			                    	<div class="col-lg-4">
-			                        	<%include("/eeda/component/form/inputField.html", 
-			                        	{ 	id: 'kt_no', 
-			                            	label: '参考编号', 
-			                            	value: ''
-			                        	}){}%>
-			                        </div>
-			                    	<div class="col-lg-4">
 			                        	<%include("/eeda/component/form/inputItemNo.html", 
 			                        	{ 	id: 'item_no', 
 			                            	label: '产品编码',
 			                            	value:''
-			                        	}){}%>
-			                        </div>
-			                    </div>
-			                    <div class="row">
-			                    	<div class="col-lg-4">
-			                        	<%include("/eeda/component/form/inputField.html", 
-			                        	{ 	id: 'totalQuantity', 
-			                            	label: '总数量', 
-			                            	value: ''
-			                        	}){}%>
-			                        </div>
-			                        <div class="col-lg-4">
-			                        	<%include("/eeda/component/form/inputField.html", 
-			                        	{ 	id: 'haveQuantity', 
-			                            	label: '已出数量', 
-			                            	value: '',
-			                            	disabled:'disabled'
 			                        	}){}%>
 			                        </div>
 			                        <div class="col-lg-4">
@@ -54,7 +30,16 @@
 			                            	value: ''
 			                        	}){}%>
 			                        </div>
+			                        <div class="col-lg-4">
+			                        	<%include("/eeda/component/form/inputField.html", 
+			                        	{ 	id: 'kt_no', 
+			                            	label: '参考编号', 
+			                            	value: ''
+			                        	}){}%>
+			                        </div>
+			                        
 			                    </div>
+			                   
 			                   
 			                    <div class="form-group button-bar" >
 			                        <button id="searchBtn" class="btn btn-default" type="button">查询</button>
