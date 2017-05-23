@@ -8,8 +8,9 @@
                     <form id="orderForm">
                         <div class="row">
                             <div class="col-lg-4">
-                                <%include("/eeda/component/form/inputCustomerField.html", 
-                                                    {   id: 'customer', 
+                                <%include("/eeda/component/form/inputSpField.html", 
+                                                    {   id: 'customer',
+                                                    	list:'list', 
                                                         label: '客户', 
                                                         value: ''
                                                     }){}%>
@@ -18,7 +19,8 @@
                                 <%include("/eeda/component/form/inputSpField.html", 
                                     {
                                         id:'sp', 
-                                        label:'结算公司', 
+                                        label:'结算公司',
+                                        list:'list', 
                                         value: ''
                                     }){} %>
                             </div>

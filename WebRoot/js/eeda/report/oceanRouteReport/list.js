@@ -90,6 +90,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
           var customer_id = $("#customer_id").val();
+          var customer_name = $("#customer_name_input").val();
           var date_type = $('[name=type]:checked').val();
           var begin_date = '';
           var end_date = '';
@@ -133,6 +134,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var url = "/oceanRouteReport/list?order_no="+order_no
           	    +"&customer_id="+customer_id
           	    +"&date_type="+date_type
+          	    +"&customer_name_like="+customer_name
           		+"&begin_date="+begin_date
           		+"&end_date="+end_date;
 

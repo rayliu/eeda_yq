@@ -101,15 +101,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 
       var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
-          var customer = $("#customer").val(); 
-          var sp = $("#sp").val(); 
+          var customer = $("#customer").val();
+          var customer_name = $("#customer_input").val(); 
+          var sp_name = $("#sp_name").val(); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var audit_flag = $("#audit_flag").val();
        
           var url = "/transChargeConfirm/list?order_no="+order_no
 			           +"&customer_id="+customer
+			           +"&customer_name_like="+customer_name
 			           +"&sp_id="+sp
+			           +"&sp_name_like="+sp_name
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date
           			   +"&audit_flag="+audit_flag;

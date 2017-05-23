@@ -42,8 +42,11 @@
                                 id:'year', label:'统计日期', value:'',date_type:'year'}){} %>
                             </div>
 							<div class="col-lg-4">
-								<%include("/eeda/component/form/inputCustomerField.html", {
-								id:'customer_id', label:'客户名称', value: '' }){} %>
+								<%include("/eeda/component/form/inputSpField.html", {
+								id:'customer_id', 
+								label:'客户名称',
+								list:'list', 
+								value: '' }){} %>
 							</div>
 						</div>
 						<div class="form-group button-bar" >

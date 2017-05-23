@@ -90,7 +90,7 @@ public class PlanOrderController extends Controller {
    			//update
    			planOrder = PlanOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, planOrder);
-   			
+
    			//需后台处理的字段
    			planOrder.set("updator", user.getLong("id"));
    			planOrder.set("update_stamp", new Date());
@@ -102,6 +102,8 @@ public class PlanOrderController extends Controller {
    			//需后台处理的字段
    			if(office_id==8){
    				planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("XXJH", office_id));
+   			}else if (office_id==9){
+   				planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("XXHKJH", office_id));
    			}else if(office_id==1){
    				planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("YQJH", office_id));
    			}

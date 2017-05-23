@@ -32,7 +32,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			    		return '已确认';
 			    }
             },
-            { "data": "CUSTOMER", "width": "100px"},
+            { "data": "CUSTOMER_NAME", "width": "100px"},
             { "data": "TYPE", "width": "60px"},
             { "data": "SP_NAME", "width": "100px"},
             { "data": "CHARGE_NAME", "width": "60px"},
@@ -82,8 +82,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
           var order_export_date_end_time = $("#order_export_date_end_time").val();
           
-          var customer = $("#customer").val(); 
-          var sp = $("#sp").val(); 
+          var customer = $("#customer").val();
+          var customer_name = $("#customer_input").val().trim(); 
+          var sp = $("#sp").val();
+          var sp_name = $("#sp_input").val().trim(); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var audit_flag = $("#audit_flag").val();
@@ -98,7 +100,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           			   +"&order_export_date_begin_time="+order_export_date_begin_time
           			   +"&order_export_date_end_time="+order_export_date_end_time
 			           +"&customer_id="+customer
+			           +"&customer_name_like="+customer_name
 			           +"&sp_id="+sp
+			           +"&sp_name_like="+sp_name
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date
           			   +"&audit_flag="+audit_flag;
