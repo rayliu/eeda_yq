@@ -274,10 +274,11 @@ public class PlanOrderController extends Controller {
         			+ " if(po.submit_flag='N' and "
         			+ " (select count(1) from plan_order_item where order_id = po.id and confirm_shipment = 'Y')=0,"
         			+ " '新建','处理中')) order_status,"
-        			+ " po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name,p.code customer_code"
+        			+ " (GROUP_CONCAT((poi.job_order_type) SEPARATOR '<br>')) job_order_type,"
+        			+ " po.*, ifnull(u.c_name, u.user_name) creator_name ,o.office_abbr sp_name"
     			+ " from plan_order po "
     			+ " LEFT JOIN plan_order_item poi on poi.order_id = po.id"
-    			+ " left join party p on p.id = po.customer_id "
+    			+ " LEFT JOIN office o ON o.id = po.to_entrusted_id "
     			+ " left join user_login u on u.id = po.creator"
     			+ " where (po.office_id="+office_id
     			+ " or (ifnull(po.to_entrusted_id,'')="+office_id+" and po.submit_flag='Y')) and po.delete_flag = 'N'"

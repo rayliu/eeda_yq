@@ -1586,13 +1586,14 @@ public class BookOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         }
         else{
-		         sql = "SELECT * from (select jo.*,"
-		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code"
-		         		+ "	from book_order jo"
-		         		+ "	left join party p on p.id = jo.customer_id"
-		         		+ "	left join user_login u on u.id = jo.creator"
-		         		+ "	where jo.office_id="+office_id
-		         	    + " and jo.delete_flag = 'N'"
+		         sql = "SELECT * from (select bo.*,"
+		         		+ " ifnull(u.c_name, u.user_name) creator_name,o.office_abbr sp_name"
+		         		+ "	from book_order bo"
+		         		+ "	LEFT JOIN plan_order po on po.id = bo.plan_order_id"
+		         		+ "	LEFT JOIN office o on o.id = po.to_entrusted_id"
+		         		+ "	left join user_login u on u.id = bo.creator"
+		         		+ "	where bo.office_id="+office_id
+		         	    + " and bo.delete_flag = 'N'"
 		         	    + " ) A where 1 = 1 ";
          }
         

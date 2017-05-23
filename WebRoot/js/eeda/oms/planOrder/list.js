@@ -32,42 +32,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               		  return "<a href='/planOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
               	  }
                 },
-	              { "data": "TYPE",
+	              { "data": "JOB_ORDER_TYPE",
                     "render": function ( data, type, full, meta ) {
-                      var str = '';
-                      if(data == '出口散货'){
-                    	str = '出口散货'; 
-                      }else if(data == '出口柜货'){
-                        str = '出口柜货'; 
-                      }else if(data == '进口柜货'){
-                        str = '进口柜货';
-                      }else if(data == '进口散货'){
-                        str = '进口散货';
-                      }else if(data == '进口散货'){
-                        str = '出口空运';
-                      }else if(data == '进口空运'){
-                        str = '进口空运'; 
-                      }else if(data == '香港头程'){
-                        str = '香港头程';
-                      }else if(data == '香港游'){
-                        str = '香港游';
-                      }else if(data == '陆运'){
-                        str = '陆运';
-                      }else if(data == '报关'){
-                        str = '报关'; 
-                      }else if(data == '快递'){
-                        str = '快递';
-                      }else if(data == '加贸'){
-                        str = '加贸';
-                      }else if(data == '贸易'){
-                        str = '贸易';
-                      }else if(data == '园区游'){
-                        str = '园区游';
+                      if(!data){
+                    	 return ''; 
                       }
-                      return str;
+                      return data;
                     }
                 }, 
-	              { "data": "CUSTOMER_NAME"}, 
+	              { "data": "SP_NAME"}, 
 	              { "data": "ORDER_STATUS"}, 
 	              {"data": "ITEM_STATUS" },
 	              { "data": ""}, 
