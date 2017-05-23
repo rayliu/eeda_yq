@@ -553,6 +553,14 @@
                   	  <input id=prepaid type="checkbox" disabled>预付
                     <%}%>
                   </label>
+                  <input type="hidden" id="hidden_agent_prepaid" value="${shipment.agent_prepaid!''}">
+                  <label class="checkbox-inline"> 
+                    <%if(boolOcean){%>                 
+                      <input id="agent_prepaid" type="checkbox" >代理预付
+                    <%}else{%>
+                      <input id="agent_prepaid" type="checkbox" disabled>代理预付
+                    <%}%>
+                  </label>
                </div>      
 
            </div>

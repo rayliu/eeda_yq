@@ -7,6 +7,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	item['id'] = $('#shipment_id').val();
         	item['release_type'] = $('#shipmentForm input[type="radio"]:checked').val();
         	item['prepaid'] = $('#prepaid').val($('#prepaid').prop('checked')==true?'Y':'N');
+            item['agent_prepaid'] = $('#agent_prepaid').val($('#agent_prepaid').prop('checked')==true?'Y':'N');
         	item['wait_overseaCustom'] = $('#wait_overseaCustom').val($('#wait_overseaCustom').prop('checked')==true?'Y':'N');
         	var shipmentForm = $('#shipmentForm input,#shipmentForm select,#shipmentForm textarea');
         	for(var i = 0; i < shipmentForm.length; i++){
@@ -41,6 +42,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         }
         else{
         	$('#prepaid').attr("checked",false);
+        }
+        //代理预付回显
+        var checkBoxVal = $('#hidden_agent_prepaid').val();
+        if(checkBoxVal=='Y'){
+            $('#agent_prepaid').attr("checked",true);     
+        }
+        else{
+            $('#agent_prepaid').attr("checked",false);
         }
         //待海外报关回显
         var checkBoxVal = $('#hidden_wait_overseaCustom').val();
