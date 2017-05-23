@@ -83,7 +83,7 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="office_fax" class="java.lang.String">
-		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
+		<fieldDescription><![CDATA[公司传真]]></fieldDescription>
 	</field>
 	<field name="container_type_count" class="java.lang.String"/>
 	<field name="company_name" class="java.lang.String">
@@ -922,8 +922,8 @@ WHERE
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="311" y="204" width="241" height="22" uuid="78c279e0-42ea-4994-9b58-9ea3cfe6287a"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="311" y="208" width="241" height="19" uuid="78c279e0-42ea-4994-9b58-9ea3cfe6287a"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bookingAgent_name}]]></textFieldExpression>
