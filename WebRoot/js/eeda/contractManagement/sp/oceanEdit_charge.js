@@ -57,8 +57,8 @@ $(document).ready(function() {
 
     var bindFieldEvent=function(){
     	
-        eeda.bindTableField('charge_ocean_table','POL_ID','/location/searchPort','');
-        eeda.bindTableField('charge_ocean_table','POD_ID','/location/searchPort','');
+        eeda.bindTableField('charge_ocean_table','POL_ID','/location/searchPort','port');
+        eeda.bindTableField('charge_ocean_table','POD_ID','/location/searchPort','port');
         eeda.bindTableFieldChargeId('charge_ocean_table','FEE_ID','/finItem/search','');
         eeda.bindTableFieldCurrencyId('charge_ocean_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
         eeda.bindTableField('charge_ocean_table','UOM','/serviceProvider/searchUnit','');

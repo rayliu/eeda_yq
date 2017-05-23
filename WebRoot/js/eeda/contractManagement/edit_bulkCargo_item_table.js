@@ -65,9 +65,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    
 	    var bindFieldEvent=function(){
 	    	eeda.bindTableField('bulkCargo_item_table','UNIT_ID','/serviceProvider/searchUnit','');
-	    	eeda.bindTableField('bulkCargo_item_table','POR','/location/searchPort','');
-	    	eeda.bindTableField('bulkCargo_item_table','POL','/location/searchPort','');
-	    	eeda.bindTableField('bulkCargo_item_table','POD','/location/searchPort','');
+	    	eeda.bindTableField('bulkCargo_item_table','POR','/location/searchPort','port');
+	    	eeda.bindTableField('bulkCargo_item_table','POL','/location/searchPort','port');
+	    	eeda.bindTableField('bulkCargo_item_table','POD','/location/searchPort','port');
 	    	eeda.bindTableField('bulkCargo_item_table','CARRIER','/serviceProvider/searchCarrier','');	    	
 	    	eeda.bindTableField('bulkCargo_item_table','PORT_CHARGE_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('bulkCargo_item_table','DOC_CRC','/serviceProvider/searchCurrency','');
@@ -81,8 +81,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	eeda.bindTableField('bulkCargo_item_table','CIC_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('bulkCargo_item_table','LOADING_FEE_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('bulkCargo_item_table','TOTAL_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableField('ocean_item_table','POL','/location/searchPort','');
-	    	eeda.bindTableField('ocean_item_table','POD','/location/searchPort','');
+	    	eeda.bindTableField('ocean_item_table','POL','/location/searchPort','port');
+	    	eeda.bindTableField('ocean_item_table','POD','/location/searchPort','port');
 
 	    };
 

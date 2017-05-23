@@ -100,8 +100,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	eeda.bindTableField('ocean_item_table','TOTAL_20GP_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('ocean_item_table','TOTAL_40GP_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('ocean_item_table','TOTAL_40HQ_CRC','/serviceProvider/searchCurrency','');
-	    	eeda.bindTableField('ocean_item_table','POL','/location/searchPort','');
-	    	eeda.bindTableField('ocean_item_table','POD','/location/searchPort','');
+	    	eeda.bindTableField('ocean_item_table','POL','/location/searchPort','port');
+	    	eeda.bindTableField('ocean_item_table','POD','/location/searchPort','port');
 	    };
 
 	    //------------事件处理

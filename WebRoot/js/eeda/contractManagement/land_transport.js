@@ -50,9 +50,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    
 	    var bindFieldEvent=function(){
 	    	eeda.bindTableField('cargo_table','UNIT_ID','/serviceProvider/searchUnit','');
-	    	eeda.bindTableField('cargo_table','POR','/location/searchPort','');
-	    	eeda.bindTableField('cargo_table','POL','/location/searchPort','');
-	    	eeda.bindTableField('cargo_table','POD','/location/searchPort','');
+	    	eeda.bindTableField('cargo_table','POR','/location/searchPort','port');
+	    	eeda.bindTableField('cargo_table','POL','/location/searchPort','port');
+	    	eeda.bindTableField('cargo_table','POD','/location/searchPort','port');
 	    	eeda.bindTableField('cargo_table','CARRIER','/serviceProvider/searchCarrier','');
 	    };
 

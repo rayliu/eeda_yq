@@ -73,7 +73,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	
 	    	
 	    	eeda.bindTableField('cargo_table','UNIT_ID','/serviceProvider/searchUnit','');
-	    	eeda.bindTableField('cargo_table','POR','/location/searchPort','');
+	    	eeda.bindTableField('cargo_table','POR','/location/searchPort','port');
 	    	eeda.bindTableField('air_transport_item_table','45KG_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('air_transport_item_table','100KG_CRC','/serviceProvider/searchCurrency','');
 	    	eeda.bindTableField('air_transport_item_table','300KG_CRC','/serviceProvider/searchCurrency','');
