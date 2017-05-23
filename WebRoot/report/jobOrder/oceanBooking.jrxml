@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="order_no" class="java.lang.String">
 		<property name="order_no" value="$P{order_no}"/>
 	</parameter>
@@ -52,6 +52,7 @@
 		CN_no) A
 	GROUP BY
 		A.flag) CN_NO,
+ifnull(p4.company_name_eng,p3.company_name) bookingAgent_name,
 ifnull(p3.company_name_eng,p3.company_name) HBLshipper_name,
 ifnull(p1.company_name_eng,p1.company_name) HBLconsignee_name, ifnull(p2.company_name_eng,p2.company_name) HBLnotify_party_name
 FROM
@@ -68,6 +69,7 @@ LEFT JOIN party p on jos.head_carrier = p.id
 left join party p3 on p3.id = jos.HBLshipper
 left join party p1 on p1.id = jos.HBLconsignee
 left join party p2 on p2.id = jos.HBLnotify_party
+LEFT JOIN party p4 on p4.id = jos.booking_agent
 WHERE
 	jo.order_no = $P{order_no}]]>
 	</queryString>
@@ -81,7 +83,7 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="office_fax" class="java.lang.String">
-		<fieldDescription><![CDATA[公司传真]]></fieldDescription>
+		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
 	</field>
 	<field name="container_type_count" class="java.lang.String"/>
 	<field name="company_name" class="java.lang.String">
@@ -404,6 +406,7 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="CN_NO" class="java.lang.String"/>
+	<field name="bookingAgent_name" class="java.lang.String"/>
 	<field name="HBLshipper_name" class="java.lang.String"/>
 	<field name="HBLconsignee_name" class="java.lang.String"/>
 	<field name="HBLnotify_party_name" class="java.lang.String"/>
@@ -467,7 +470,7 @@ WHERE
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="280" y="204" width="275" height="40" uuid="eaecbb0b-f1ca-4d54-85a5-8ac5988bc630"/>
+				<reportElement x="280" y="205" width="275" height="40" uuid="eaecbb0b-f1ca-4d54-85a5-8ac5988bc630"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -914,16 +917,16 @@ WHERE
 			<textField isBlankWhenNull="true">
 				<reportElement x="352" y="24" width="198" height="15" uuid="6c65cbe9-a4d0-4614-a9ce-15730bca34a2"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="311" y="204" width="239" height="15" uuid="78c279e0-42ea-4994-9b58-9ea3cfe6287a"/>
+				<reportElement x="311" y="204" width="241" height="22" uuid="78c279e0-42ea-4994-9b58-9ea3cfe6287a"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{booking_agent}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bookingAgent_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="329" y="289" width="88" height="15" uuid="b8dc2cc8-68e3-4ff9-af57-9c998a2ae283"/>
