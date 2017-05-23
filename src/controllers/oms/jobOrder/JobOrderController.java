@@ -385,7 +385,12 @@ public class JobOrderController extends Controller {
 		//海运
 		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
 		DbUtils.handleList(shipment_detail, id, JobOrderShipment.class, "order_id");
-		
+		//当hbl为空时，赋值为order_no
+		JobOrderShipment jos=JobOrderShipment.dao.findFirst("select * from job_order_shipment where order_id="+id);
+		if(jos!=null && StringUtils.isEmpty((String) jos.get("hbl_no"))){
+			jos.set("hbl_no", jobOrder.get("order_no"));
+			jos.update();
+		}
 		List<Map<String, String>> shipment_item = (ArrayList<Map<String, String>>)dto.get("shipment_list");
 		DbUtils.handleList(shipment_item, id, JobOrderShipmentItem.class, "order_id");
 		//空运

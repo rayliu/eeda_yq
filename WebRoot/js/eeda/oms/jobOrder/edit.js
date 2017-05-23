@@ -260,6 +260,7 @@ $(document).ready(function() {
                 }
                 if(server_back_order.SHIPMENT){
                 	$("#shipment_id").val(server_back_order.SHIPMENT.ID);
+                    $("#hbl_no").val(server_back_order.SHIPMENT.HBL_NO);
                 }
                 if(server_back_order.INSURANCE){
                 	$("#insurance_id").val(server_back_order.INSURANCE.ID);
