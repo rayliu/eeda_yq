@@ -468,7 +468,7 @@ $(document).ready(function() {
           var begin_date_end_time = $('#begin_date_end_time').val();
           
           var check_begin_date_begin_time = $('#check_begin_date_begin_time').val();
-          var check_begin_date_end_time = $('#check_begin_end_begin_time').val();
+          var check_begin_date_end_time = $('#check_begin_date_end_time').val();
           
           var confirmBegin_date_begin_time = $('#confirmBegin_date_begin_time').val();
           var confirmBegin_date_end_time = $('#confirmBegin_date_end_time').val();
@@ -487,8 +487,8 @@ $(document).ready(function() {
             +"&check_stamp_begin_time="+check_begin_date_begin_time
             +"&check_stamp_end_time="+check_begin_date_end_time
             
-            +"&pay_time_begin_time="+confirmBegin_date_begin_time
-            +"&pay_time_end_time="+confirmBegin_date_end_time;
+            +"&receive_time_begin_time="+confirmBegin_date_begin_time
+            +"&receive_time_end_time="+confirmBegin_date_end_time;
        application_table.ajax.url(url).load();
        saveConditions();
     };
