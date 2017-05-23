@@ -1035,7 +1035,7 @@ public class ChargeRequestController extends Controller {
  
     }
   	
-  	
+  	@Before(Tx.class)
   	private void createAuditLog(String application_id, String payment_method,
             String receive_bank_id, String receive_time, String pay_amount, String currency_code) {
         //新建日记账表数据
