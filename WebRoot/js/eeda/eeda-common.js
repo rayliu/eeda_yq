@@ -215,10 +215,12 @@ eeda.hidePopList=function(){
           $(el).hide();
           var inputField = eeda._inputField;
 		  var hiddenField = eeda._hiddenField;
-		  if(inputField.val()=='' || hiddenField.val()==''){
-			  inputField.val('');
-			  hiddenField.val('');
-		  }
+      if(inputField!='undefined'){
+    		  if(inputField.val()=='' || hiddenField.val()==''){
+    			  inputField.val('');
+    			  hiddenField.val('');
+    		  }
+        }
         }
     });
 };
