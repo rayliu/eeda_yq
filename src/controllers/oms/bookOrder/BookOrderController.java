@@ -1199,7 +1199,45 @@ public class BookOrderController extends Controller {
     	BookOrder bookOrder = BookOrder.dao.findById(id);
     	Long plan_order_id = bookOrder.getLong("plan_item_id");
     	
-    	Record re = Db.findFirst("select * from job_order where plan_order_item_id = ? and delete_flag = 'N'",plan_order_id);
+    	String sqlString=" SELECT *,IFNULL(vessel_voyage,air_flight_no_voyage_no)vessel_voyage_or_flight_no_voyage_no FROM ("
+    			+ " SELECT "
+    			+" 	jos.id,jo.order_export_date,jo.pieces,jo.gross_weight, "
+    			+" 	jo.volume, "
+    			+" 	CONCAT(lo1. NAME, ' -', lo1. CODE) pol_name, "
+    			+" 	CONCAT(lo2. NAME, ' -', lo2. CODE) pod_name, "
+    			+ " CONCAT_WS('-',jos.vessel,jos.voyage) vessel_voyage,"
+    			+" 	p9.abbr HBLconsignee_name,IFNULL(p4.abbr,pa.abbr) carrier_or_air_company_name, "
+    			+" 	IFNULL(CONCAT_WS('-',jos.vessel,jos.voyage), "
+    			+" 			GROUP_CONCAT(CONCAT_WS('-',joai.flight_no,joai.voyage_no) )) vessel_voyage_or_air_info, "
+    			+" 	(SELECT GROUP_CONCAT(CONCAT_WS('-',joai2.flight_no,joai2.voyage_no) )  FROM  job_order_air_item joai2  "
+    			+" 		        		 WHERE joai2.order_id =jo.id ) air_flight_no_voyage_no, "
+    			+" 	(SELECT GROUP_CONCAT(josi2.container_no )  FROM  job_order_shipment_item josi2  "
+    			+" 									 WHERE josi2.order_id =jo.id ) ship_container_no, "
+    			+" 	(SELECT GROUP_CONCAT(josi2.seal_no )  FROM  job_order_shipment_item josi2  "
+    			+" 									 WHERE josi2.order_id =jo.id ) ship_seal_no, "
+    			+" 	jos.closing_date,jos.etd,jos.eta, "
+    			+" 	(SELECT GROUP_CONCAT(joli2.take_address )  FROM  job_order_land_item joli2  "
+    			+" 									 WHERE joli2.order_id =jo.id ) take_address, "
+    			+" 	(SELECT GROUP_CONCAT(joli2.truck_type )  FROM  job_order_land_item joli2  "
+    			+" 									 WHERE joli2.order_id =jo.id ) truck_type, "
+    			+" 		(SELECT COUNT(truck_type)  FROM  job_order_land_item joli2  "
+    			+" 									 WHERE joli2.order_id =jo.id  ) truck_count "
+    			+" 	FROM "
+    			+" 		job_order jo "
+    			+" LEFT JOIN job_order_shipment jos ON jos.order_id = jo.id "
+    			+" LEFT JOIN job_order_air_item joai ON joai.order_id = jo.id "
+    			+" left join party pa on pa.id=joai.air_company "
+    			+" left join party p4 on p4.id=jos.carrier "
+    			+" left join party p9 on p9.id= jos.HBLconsignee "
+    			+" LEFT JOIN job_order_shipment_item josi on josi.order_id = jo.id "
+    			+" LEFT JOIN job_order_land_item joli on joli.order_id = jo.id "
+    			+" LEFT JOIN location lo1 ON lo1.id = jos.pol "
+    			+" LEFT JOIN location lo2 ON lo2.id = jos.pod "
+    			+" WHERE  "
+    			+" 	jo.plan_order_item_id =  "+plan_order_id
+    			+"  AND jo.delete_flag = 'N' "
+    			+ " )B";
+    	Record re = Db.findFirst(sqlString);
     	if(re != null){
     		setAttr("jobOrder", re);
     	
