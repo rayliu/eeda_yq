@@ -1,8 +1,8 @@
 
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'dtColReorder'], function ($, metisMenu) {
 $(document).ready(function() {
-	document.title = '应付申请单| '+document.title;
-	$("#breadcrumb_li").text('应付申请单');
+	document.title = '付款申请单列表| '+document.title;
+	$("#breadcrumb_li").text('付款申请单列表');
                 
     var application_table = eeda.dt({
     	id: 'application_table',
