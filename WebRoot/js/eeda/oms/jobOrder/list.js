@@ -84,13 +84,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                     var chargeShow="";
                     if(cost){
                       var costArray = cost.split(',');
-                      costShow='<h5><strong>应付费用</strong></h5>';
+                      costShow='<h5><strong>应付费用</strong>  <strong>对账币制</strong></h5>';
                       for (var i = 0; i < costArray.length; i++) {
                         costShow += '<li>'+costArray[i]+'</li>';
               }
                     }
                     if(charge){
-                      chargeShow='<h5><strong>应收费用</strong></h5>';
+                      chargeShow='<h5><strong>应收费用</strong>  <strong>对账币制</strong></h5>';
                       var chargeArray = charge.split(',');
                       for (var i = 0; i < chargeArray.length; i++) {
                         chargeShow += '<li>'+chargeArray[i]+'</li>';
