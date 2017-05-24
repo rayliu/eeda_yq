@@ -438,6 +438,7 @@ $(document).ready(function() {
 
     var refreshData=function(back){
     	 var sp_id = $('#sp_id').val();
+          var sp_code = $('#sp_code').val();
     	  var payee_company = $('#sp_id_input').val().trim();
     	  
           var charge_order_no = $('#orderNo').val().trim(); 
@@ -463,6 +464,7 @@ $(document).ready(function() {
           var confirmBegin_date_end_time = $('#confirmBegin_date_end_time').val();
 
           var url = "/costRequest/applicationList?sp_id="+sp_id
+            +"&code_like="+sp_code  
      	   +"&payee_company_equals="+payee_company  
             +"&charge_order_no="+charge_order_no
             +"&application_order_no="+applicationOrderNo
