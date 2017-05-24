@@ -127,6 +127,14 @@ $(document).ready(function() {
                     return field_html; 
                 }
             },
+            { "data": "PRICE", "width": "80px",
+                "render": function ( data, type, full, meta ) {
+                	 if(!data)
+	                        data='';
+	                    
+	                    return '<input type="text" style="width:100px" name="price" value = "'+data+'" class="form-control notsave" >';
+                }
+            },
             { "data": "CURRENCY_ID", "width": "50px",
             	"render": function ( data, type, full, meta ) {
             		 if(!data)
@@ -156,12 +164,34 @@ $(document).ready(function() {
             		return field_html;
             	}
             },
-            { "data": "PRICE", "width": "80px",
-                "render": function ( data, type, full, meta ) {
-                	 if(!data)
+            
+            { "data": "VOLUME", "width": "60px",
+            	"render": function ( data, type, full, meta ) {
+            		 if(!data)
 	                        data='';
-	                    
-	                    return '<input type="text" style="width:100px" name="price" value = "'+data+'" class="form-control notsave" >';
+	                    return '<input text="type" name="volume" value="'+data+'" class="form-control" style= "width:80px" >';
+            	}
+            },
+            { "data": "GROSS_WEIGHT", "width": "60px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		
+            		return '<input type="type" name="gross_weight" value="'+data+'" class="form-control" style="width:80px">';
+            	}
+            },
+            { "data": "TRUCK_TYPE", "width": "70px",
+                "render": function ( data, type, full, meta ) {
+                	if(!data)
+                        data='';
+                   var field_html = template('table_truck_type_field_template',
+	                    {
+	                        id: 'TRUCK_TYPE',
+	                        value: data,
+                            style:"width:90px"
+	                    }
+	                );
+                    return field_html;
                 }
             },
             { "data": "POL_NAME", "visible": false,

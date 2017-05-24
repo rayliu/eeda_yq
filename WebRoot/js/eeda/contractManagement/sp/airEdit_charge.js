@@ -126,6 +126,14 @@ $(document).ready(function() {
                     });
                     return field_html; 
                 }
+            },  
+            { "data": "PRICE", "width": "80px",
+                "render": function ( data, type, full, meta ) {
+                	 if(!data)
+	                        data='';
+	                    
+	                    return '<input type="text" style="width:100px" name="price" value = "'+data+'" class="form-control notsave" >';
+                }
             },
             { "data": "CURRENCY_ID", "width": "50px",
             	"render": function ( data, type, full, meta ) {
@@ -156,12 +164,26 @@ $(document).ready(function() {
             		return field_html;
             	}
             },
-            { "data": "PRICE", "width": "80px",
+            
+            { "data": "VOLUME", "width": "60px",
+            	"render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:80px"/>';
+                }
+            },
+            { "data": "GROSS_WEIGHT", "width": "60px",
                 "render": function ( data, type, full, meta ) {
-                	 if(!data)
-	                        data='';
-	                    
-	                    return '<input type="text" style="width:100px" name="price" value = "'+data+'" class="form-control notsave" >';
+                	if(!data)
+                        data='';
+                   var field_html = template('table_air_kg_field_template',
+	                    {
+	                        id: 'GROSS_WEIGHT',
+	                        value: data,
+                            style:"width:80px"
+	                    }
+	                );
+                    return field_html;
                 }
             },
             { "data": "POL_NAME", "visible": false,

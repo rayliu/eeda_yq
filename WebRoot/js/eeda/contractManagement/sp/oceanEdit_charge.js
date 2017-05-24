@@ -127,6 +127,14 @@ $(document).ready(function() {
                     return field_html; 
                 }
             },
+            { "data": "PRICE", "width": "80px",
+                "render": function ( data, type, full, meta ) {
+                	 if(!data)
+	                        data='';
+	                    
+	                    return '<input type="text" style="width:100px" name="price" value = "'+data+'" class="form-control notsave" >';
+                }
+            },
             { "data": "CURRENCY_ID", "width": "50px",
             	"render": function ( data, type, full, meta ) {
             		 if(!data)
@@ -156,14 +164,36 @@ $(document).ready(function() {
             		return field_html;
             	}
             },
-            { "data": "PRICE", "width": "80px",
+            
+            { "data": "CONTAINER_TYPE", "width": "50px",
+            	"render": function ( data, type, full, meta ) {
+            		 if(!data)
+	                        data='';
+	                    var str = '<select name= "container_type" class="form-control search-control" style="width:70px">'
+	                    		  +'<option></option>'
+	                    		  +'<option value = "20GP" '+(data=='20GP'?'selected':'')+'>20GP</option>'
+	                    		  +'<option value = "20GP"'+(data=='40GP'?'selected':'')+'>40GP</option>'
+	                    		  +'<option value = "20GP" '+(data=='40HQ'?'selected':'')+'>40HQ</option>'
+	                    		  +'<option value = "20GP"'+(data=='45GP'?'selected':'')+'>45GP</option>'
+	                    		  +'<select>';
+	                    return str;
+            	}
+            },
+            { "data": "VOLUME", "width": "60px",
+            	"render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:80px"/>';
+                }
+            },
+            { "data": "GROSS_WEIGHT", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                 	 if(!data)
 	                        data='';
 	                    
-	                    return '<input type="text" style="width:100px" name="price" value = "'+data+'" class="form-control notsave" >';
+	                    return '<input type="text" style="width:80px" name="gross_weight" value = "'+data+'" class="form-control notsave" >';
                 }
-            },
+            },          
             { "data": "POL_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
