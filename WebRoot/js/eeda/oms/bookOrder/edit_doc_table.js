@@ -102,7 +102,7 @@ $(document).ready(function() {
                     return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
                 }
             },
-            { "data": "SENDER", "width": "180px",
+            { "data": "SENDER_NAME", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -180,7 +180,7 @@ $(document).ready(function() {
                     return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
                 }
             },
-            { "data": "SENDER", "width": "180px",
+            { "data": "SENDER_NAME", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -314,7 +314,7 @@ $(document).ready(function() {
                     return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
                 }
             },
-            { "data": "SENDER", "width": "180px",
+            { "data": "SENDER_NAME", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -393,7 +393,7 @@ $(document).ready(function() {
                     return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
                 }
             },
-            { "data": "SENDER", "width": "180px",
+            { "data": "SENDER_NAME", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -517,7 +517,7 @@ $(document).ready(function() {
                       return '<input type="text" name="remark" value="'+data+'" class="form-control" style="width:300px"/>';
                   }
               },
-              { "data": "SENDER", "width": "180px",
+              { "data": "SENDER_NAME", "width": "180px",
                   "render": function ( data, type, full, meta ) {
                       if(!data)
                           data='';
