@@ -674,7 +674,7 @@ public class TransChargeCheckOrderController extends Controller {
     	String order_id = getPara("order_id");
     	String company_name = getPara("company_name");
 //        UserLogin user = LoginUserController.getLoginUser(this);
-        String exportSql = " SELECT tjo.id, tjo.order_no,tjo.lading_no lading_no, "
+        String exportSql = " SELECT tjo.id, tjo.order_no,tjo.lading_no lading_no,tjo.type, "
         		+"   (SELECT GROUP_CONCAT(tjoli.cabinet_date) from trans_job_order_land_item tjoli  "
         		+" 	LEFT JOIN trans_job_order tjor on tjoli.order_id = tjor.id  WHERE tjor.id = tjo.id ) cabinet_date, "
         		+" (SELECT py.abbr   from trans_job_order_arap tjoa "
@@ -713,7 +713,7 @@ public class TransChargeCheckOrderController extends Controller {
         
         //List<String> headers = new ArrayList<String>();
         String[] headers = new String[]{"提单号", "提柜日期", "客户", "方式", "提柜地址", "柜号", "尺码", "拖车号", "应收运费", "币制","应收其他费用", "发票号"};
-        String[] fields = new String[]{"LADING_NO", "CABINET_DATE", "CUSTOMER_NAME", "UNLOAD_TYPE", "DOCK_NAME", "CONTAINER_NO", "CABINET_TYPE", "CAR_NO", "TOTAL_AMOUNT", "CURRENCY_NAME","OTHER_AMOUNT",  "REMARK"};
+        String[] fields = new String[]{"LADING_NO", "CABINET_DATE", "CUSTOMER_NAME", "TYPE", "DOCK_NAME", "CONTAINER_NO", "CABINET_TYPE", "CAR_NO", "TOTAL_AMOUNT", "CURRENCY_NAME","OTHER_AMOUNT",  "REMARK"};
         String fileName = PoiUtils.generateExcel(headers, fields, exportSql,company_name);
         renderText(fileName);
     }
