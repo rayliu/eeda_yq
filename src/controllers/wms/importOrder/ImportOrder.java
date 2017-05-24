@@ -58,41 +58,52 @@ public class ImportOrder extends Controller {
         Long officeId = user.getLong("office_id");
 		Record resultMap = new Record();
 		CSVReader csvReader = null;  
+		
+		String doc_name = null;
+		String[] fileArray = fileName.split("_");
+		doc_name =fileArray[0]+fileArray[1]+fileArray[2].substring(0, 6)+fileName.subSequence(fileName.length()-4, fileName.length());
+		
 	    try {  
-	        csvReader = new CSVReader(new FileReader(file),',');//importFile为要导入的文本格式逗号分隔的csv文件，提供getXX/setXX方法    
-	        if(fileName.endsWith(".csv")){  
-	        	
-	        	Record re = new Record();
-	        	re.set("office_id", officeId);
-	        	re.set("doc_name", fileName);
-	        	re.set("creator", user.get("id"));
-	        	re.set("create_time", new Date());
-	        	long start = Calendar.getInstance().getTimeInMillis();
-	        	
-	        	
-	        	CheckOrder checkOrder = new CheckOrder();
-	        	if(fileName.indexOf("入库记录")>-1){
-	        		resultMap = checkOrder.importGateInValue(csvReader, officeId);
-	        	}else if(fileName.indexOf("出库记录")>-1){
-//        			resultMap = checkOrder.importGateOutCheck(csvReader);
-//	        		if(resultMap.get("result")){
-	        			resultMap = checkOrder.importGateOutValue(new CSVReader(new FileReader(file),','), officeId);
-//	        		}else{
-//	        			throw new Exception(resultMap.getStr("cause")+"<br/>请先导入入库信息表");
-//	        		}
-	        	}else if(fileName.indexOf("盘点单")>-1){
-	        		resultMap = checkOrder.importInvCheckValue(csvReader, officeId);
-	        	}else{
-                    throw new Exception("文件《"+fileName+"》中未检测到\"入库记录\"，\"出库记录\"，\"盘点单\"关键字<br/>请核查此文件是否为要导入的数据表");
-	        	}
-	        	long end = Calendar.getInstance().getTimeInMillis();
-	            long time = (end- start)/1000;
-	        	re.set("complete_time", new Date());
-	        	re.set("import_time", time);
-	        	Db.save("import_log", re);
-	        }else{
-	        	throw new Exception("导入格式有误，请导入正确的csv格式");
-	        }
+	    	Record import_log = Db.findFirst("select * from import_log where doc_name = ?",doc_name);
+			if(import_log == null){
+		        csvReader = new CSVReader(new FileReader(file),',');//importFile为要导入的文本格式逗号分隔的csv文件，提供getXX/setXX方法    
+		        if(fileName.endsWith(".csv")){  
+		        	
+		        	Record re = new Record();
+		        	re.set("office_id", officeId);
+		        	re.set("doc_name", doc_name);
+		        	re.set("creator", user.get("id"));
+		        	re.set("create_time", new Date());
+		        	long start = Calendar.getInstance().getTimeInMillis();
+		        	
+		        	
+		        	CheckOrder checkOrder = new CheckOrder();
+		        	if(fileName.indexOf("入库记录")>-1){
+		        		resultMap = checkOrder.importGateInValue(csvReader, officeId);
+		        	}else if(fileName.indexOf("出库记录")>-1){
+	//        			resultMap = checkOrder.importGateOutCheck(csvReader);
+	//	        		if(resultMap.get("result")){
+		        			resultMap = checkOrder.importGateOutValue(new CSVReader(new FileReader(file),','), officeId);
+	//	        		}else{
+	//	        			throw new Exception(resultMap.getStr("cause")+"<br/>请先导入入库信息表");
+	//	        		}
+		        	}else if(fileName.indexOf("盘点单")>-1){
+		        		resultMap = checkOrder.importInvCheckValue(csvReader, officeId);
+		        	}else{
+	                    throw new Exception("文件《"+fileName+"》中未检测到\"入库记录\"，\"出库记录\"，\"盘点单\"关键字<br/>请核查此文件是否为要导入的数据表");
+		        	}
+		        	long end = Calendar.getInstance().getTimeInMillis();
+		            long time = (end- start)/1000;
+		        	re.set("complete_time", new Date());
+		        	re.set("import_time", time);
+		        	Db.save("import_log", re);
+		        }else{
+		        	throw new Exception("导入格式有误，请导入正确的csv格式");
+		        }
+			}else{
+				resultMap.set("result", false);
+				resultMap.set("cause", "导入失败，相同文件不可重复导入");
+			}
 	    } catch (Exception e) {  
 	        e.printStackTrace(); 
 	        resultMap.set("result", false);
