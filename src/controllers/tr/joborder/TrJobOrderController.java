@@ -1370,7 +1370,7 @@ public class TrJobOrderController extends Controller {
 							+ " WHERE joa.order_id=jo.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
 							+ "cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount)) from trade_job_order_arap joa"
 							+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-							+ " WHERE joa.order_id=jo.id and joa.order_type='charge' and fi.name!='运费' group by joa.order_type) as char) charge, "
+							+ " WHERE joa.order_id=jo.id and joa.order_type='charge'  group by joa.order_type) as char) charge, "
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code"
 		         		+ "	from trade_job_order jo"
 		         		+ "	left join party p on p.id = jo.customer_id"
