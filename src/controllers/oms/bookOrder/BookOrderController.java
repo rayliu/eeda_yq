@@ -1202,7 +1202,7 @@ public class BookOrderController extends Controller {
     	String sqlString=" SELECT *,IFNULL(vessel_voyage,air_flight_no_voyage_no)vessel_voyage_or_flight_no_voyage_no "
     			+ " ,IFNULL(abbr,air_company) carrier_or_air_company FROM ("
     			+ " SELECT "
-    			+" 	jos.id,jo.order_export_date,jo.pieces,jo.gross_weight, "
+    			+" 	jo.id,jo.order_no,jo.order_export_date,jo.pieces,jo.gross_weight, "
     			+" 	jo.volume, "
     			+" 	CONCAT(lo1. NAME, ' -', lo1. CODE) pol_name, "
     			+" 	CONCAT(lo2. NAME, ' -', lo2. CODE) pod_name, "
