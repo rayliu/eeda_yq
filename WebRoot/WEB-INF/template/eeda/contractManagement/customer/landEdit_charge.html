@@ -8,10 +8,10 @@
         <%include("/eeda/component/form/detailTable.html", 
             {
                 id:'charge_land_table',
-                style:'width:850px',
-                headers:['<input type="checkBox">','操作','起始地', '目的地','费用名称', '币制' , '单位', '单价', 
+                style:'width:1000px',
+                headers:['<input type="checkBox">','操作','起始地', '目的地','费用名称','单价', '币制' , '单位', '体积(CBM)','重量(KG)','车型', 
                 		 'POL_NAME','POD_NAME','FEE_NAME','CURRENCY_NAME','UOM_NAME'],
-                field_list:['id','','pol_id','pod_id','fee_id','currency_id','uom','price',
+                field_list:['id','','pol_id','pod_id','fee_id','price','currency_id','uom','volume','gross_weight','truck_type',
                 		'POL_NAME','POD_NAME','FEE_NAME','CURRENCY_NAME','UOM_NAME'],
                 value_list: charge_land_items![]
             }){} %>
