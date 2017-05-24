@@ -4,7 +4,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
     	$("#breadcrumb_li").text('导入数据');
 
-    	
+    	//datatable, 动态处理
+        var dataTable = eeda.dt({
+            id: 'eeda-table',
+            paging: true,
+            serverSide: true, //不打开会出现排序不对
+            ajax: "/importOrder/list",
+            "drawCallback": function( settings ) {
+		        $.unblockUI();
+		    },
+            columns:[
+                { "data": "DOC_NAME"}, 
+                { "data": "USER_NAME"},  
+                { "data": "COMPLETE_TIME"},
+                { "data": "IMPORT_TIME"}
+            ]
+        });
         
+        
+        order.refleshTable = function(){
+        	dataTable.ajax.url("/importOrder/list").load();
+        }
 	});
 });

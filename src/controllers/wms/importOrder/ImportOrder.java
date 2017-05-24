@@ -6,6 +6,9 @@ import interceptor.SetAttrLoginUserInterceptor;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +23,10 @@ import org.apache.shiro.subject.Subject;
 
 import au.com.bytecode.opencsv.CSVReader;
 
+import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
@@ -44,7 +49,7 @@ public class ImportOrder extends Controller {
 	
 	//导入CSV
 	@Before(Tx.class)
-	public void importMac() throws Exception {   
+	public void importMac() {   
 		String order_type = getPara("order_type");
 		UploadFile uploadFile = getFile();
 		File file = uploadFile.getFile();
@@ -56,6 +61,14 @@ public class ImportOrder extends Controller {
 	    try {  
 	        csvReader = new CSVReader(new FileReader(file),',');//importFile为要导入的文本格式逗号分隔的csv文件，提供getXX/setXX方法    
 	        if(fileName.endsWith(".csv")){  
+	        	
+	        	Record re = new Record();
+	        	re.set("office_id", officeId);
+	        	re.set("doc_name", fileName);
+	        	re.set("creator", user.get("id"));
+	        	re.set("create_time", new Date());
+	        	long start = Calendar.getInstance().getTimeInMillis();
+	        	
 	        	
 	        	CheckOrder checkOrder = new CheckOrder();
 	        	if(fileName.indexOf("入库记录")>-1){
@@ -72,6 +85,11 @@ public class ImportOrder extends Controller {
 	        	}else{
                     throw new Exception("文件《"+fileName+"》中未检测到\"入库记录\"，\"出库记录\"，\"盘点单\"关键字<br/>请核查此文件是否为要导入的数据表");
 	        	}
+	        	long end = Calendar.getInstance().getTimeInMillis();
+	            long time = (end- start)/1000;
+	        	re.set("complete_time", new Date());
+	        	re.set("import_time", time);
+	        	Db.save("import_log", re);
 	        }else{
 	        	throw new Exception("导入格式有误，请导入正确的csv格式");
 	        }
@@ -139,5 +157,84 @@ public class ImportOrder extends Controller {
 
 		renderJson(resultMap);
 	}
+	
+	
+	public void list() {
+    	String sql = "";
+        String condition="";
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
 
+        String jsonStr = getPara("jsonStr");
+    	if(StringUtils.isNotBlank(jsonStr)){
+    		Gson gson = new Gson(); 
+            Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class);  
+            //condition = DbUtils.buildConditions(dto);
+            String item_no = dto.get("item_no");
+            String item_name = dto.get("item_name");
+            String part_name = dto.get("part_name");
+            String part_no = dto.get("part_no");
+            
+            if(StringUtils.isNotBlank(item_no)){
+            	condition += " and pro.item_no like '%"+item_no+"%'";
+            }
+            
+            if(StringUtils.isNotBlank(item_name)){
+            	condition += " and pro.item_name like '%"+item_name+"%'";
+            }
+            
+            if(StringUtils.isNotBlank(part_name)){
+            	condition += " and pro.part_name like '%"+part_name+"%'";
+            }
+            
+            if(StringUtils.isNotBlank(part_no)){
+            	condition += " and gi.part_no like '%"+part_no+"%'";
+            }
+            
+            
+            String begin_time = dto.get("create_time_begin_time");
+            if(StringUtils.isBlank(begin_time)){
+            	begin_time = "2000-01-01";
+            }
+            
+            String end_time = dto.get("create_time_end_time");
+            if(StringUtils.isBlank(end_time)){
+            	end_time = "2037-01-01";
+            }else{
+            	end_time = end_time +" 23:59:59";
+            }
+            
+            condition += " and create_time between '"+begin_time+"' and '"+end_time+"'";
+            
+    	}
+        
+    	if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+    	
+    	String sqlTotal= "select  count(1) total from ( "
+			+ " select * from import_log il where il.office_id="+office_id
+			+ " ) B ";
+       
+    	sql = "select il.*,ul.c_name user_name from import_log il"
+    		+ "	left join user_login ul on ul.id = il.creator"
+			+ " where il.office_id="+office_id 
+			+ " order by il.id desc";
+    	
+        
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        
+        List<Record> orderList = Db.find(sql +sLimit);
+        Map orderListMap = new HashMap();
+        orderListMap.put("draw", pageIndex);
+        orderListMap.put("recordsTotal", rec.getLong("total"));
+        orderListMap.put("recordsFiltered", rec.getLong("total"));
+
+        orderListMap.put("data", orderList);
+
+        renderJson(orderListMap); 
+    }
 }

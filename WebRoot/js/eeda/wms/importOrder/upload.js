@@ -12,6 +12,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		$('#toFileUpload').fileupload({
 	        dataType: 'json',
 	        done: function (e,data) {
+	        	alert("导入成功");
+	        	order.refleshTable();
 	        	$("#footer").show();
 	        	$("#msgLoad").empty().append('<h4>'+data.result.CAUSE+'</h4>');
 	        },
