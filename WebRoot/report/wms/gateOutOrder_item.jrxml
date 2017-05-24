@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gateOutOrder_item" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="260e40d5-dc30-467f-97e2-8f3420a6c940">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gateOutOrder_item" language="groovy" pageWidth="573" pageHeight="842" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="573" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="260e40d5-dc30-467f-97e2-8f3420a6c940">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -51,7 +51,7 @@ from (SELECT
 FROM
 	gate_in gi
 LEFT JOIN wmsproduct pro ON pro.part_no = gi.part_no
- LEFT JOIN gate_out_order goo on goo.item_no = pro.item_no
+left join gate_out_order goo on goo.item_no = pro.item_no
 WHERE
  goo.id = $P{order_id}
 AND gi.out_flag = 'N'
@@ -68,9 +68,9 @@ SELECT
 	null shelves
 FROM
 	wmsproduct pro
-LEFT JOIN gate_out_order goo on goo.item_no = pro.item_no
+left join gate_out_order goo on goo.item_no = pro.item_no
 WHERE
- pro.amount>0 and goo.id = $P{order_id}
+ pro.amount>0 and  goo.id = $P{order_id}
 ) A group by A.part_no ORDER BY A.shelves desc]]>
 	</queryString>
 	<field name="part_no" class="java.lang.String">
@@ -116,49 +116,49 @@ WHERE
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement style="table_TD" x="0" y="0" width="35" height="20" uuid="6d5682c2-0192-4525-9882-450787805622"/>
+				<reportElement style="table_TD" x="0" y="0" width="18" height="20" uuid="6d5682c2-0192-4525-9882-450787805622"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[序号]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" x="35" y="0" width="85" height="20" uuid="4f85bb1b-b6e5-4ea8-9e27-da5d69284070"/>
+				<reportElement style="table_TD" x="18" y="0" width="84" height="20" uuid="4f85bb1b-b6e5-4ea8-9e27-da5d69284070"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[组件编码]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" x="120" y="0" width="155" height="20" uuid="9f7ce009-359b-41fc-a081-f9a17faa50dc"/>
+				<reportElement style="table_TD" x="102" y="0" width="165" height="20" uuid="9f7ce009-359b-41fc-a081-f9a17faa50dc"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[组件名称]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" x="701" y="0" width="101" height="20" uuid="b5694ae9-4ded-44c4-8731-e6f2e9af0041"/>
+				<reportElement style="table_TD" x="534" y="0" width="39" height="20" uuid="b5694ae9-4ded-44c4-8731-e6f2e9af0041"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" x="275" y="0" width="275" height="20" uuid="353a8575-0b7f-4862-8485-80825efa21ab"/>
+				<reportElement style="table_TD" x="267" y="0" width="177" height="20" uuid="353a8575-0b7f-4862-8485-80825efa21ab"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[库位]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" x="550" y="0" width="89" height="20" uuid="1fba0863-1bd3-47c5-8f3d-64aeb841326a"/>
+				<reportElement style="table_TD" x="444" y="0" width="51" height="20" uuid="1fba0863-1bd3-47c5-8f3d-64aeb841326a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[仓库组件总数]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table_TD" x="639" y="0" width="62" height="20" uuid="f4b38410-5275-4a2c-8dff-d757c75ecdda"/>
+				<reportElement style="table_TD" x="495" y="0" width="39" height="20" uuid="f4b38410-5275-4a2c-8dff-d757c75ecdda"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" size="8" isBold="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
@@ -169,34 +169,34 @@ WHERE
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="676" y="0" width="126" height="20" uuid="3644e81d-b238-4b0e-8fe5-04470d92cda4"/>
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="534" y="0" width="39" height="20" uuid="3644e81d-b238-4b0e-8fe5-04470d92cda4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="0" y="0" width="35" height="20" uuid="2ea600f1-8ddc-4d35-b206-253f78a8941f"/>
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="0" y="0" width="18" height="20" uuid="2ea600f1-8ddc-4d35-b206-253f78a8941f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{count}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="35" y="0" width="85" height="20" uuid="b06a53d5-ef87-4a5d-89e0-bd521a599fc2"/>
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="18" y="0" width="84" height="20" uuid="b06a53d5-ef87-4a5d-89e0-bd521a599fc2"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[' '+$F{part_no}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="120" y="0" width="155" height="20" uuid="50aabb5a-ea6a-430a-94f4-d62496d87782"/>
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="102" y="0" width="165" height="20" uuid="50aabb5a-ea6a-430a-94f4-d62496d87782"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[' '+$F{part_name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="275" y="0" width="275" height="20" uuid="57160360-1b80-4610-a975-0856dd7f71d4"/>
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="267" y="0" width="177" height="20" uuid="57160360-1b80-4610-a975-0856dd7f71d4"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					<paragraph lineSpacing="Single" leftIndent="8"/>
@@ -204,14 +204,14 @@ WHERE
 				<textFieldExpression><![CDATA[$F{shelves}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="550" y="0" width="89" height="20" uuid="47e163d8-d24b-4ae1-a642-70c7dce08ee5"/>
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="444" y="0" width="51" height="20" uuid="47e163d8-d24b-4ae1-a642-70c7dce08ee5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{shelves_total_piece}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="639" y="0" width="62" height="20" uuid="fc9ff586-1f6a-4c5d-b076-e6fb5482fe79"/>
+				<reportElement style="table_TD" stretchType="RelativeToBandHeight" x="495" y="0" width="39" height="20" uuid="fc9ff586-1f6a-4c5d-b076-e6fb5482fe79"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
