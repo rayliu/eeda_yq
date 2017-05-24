@@ -6,6 +6,9 @@
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
+	<parameter name="login_user_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
 cast(
@@ -82,8 +85,9 @@ ifnull(
 FROM
 	job_order_shipment jos
 LEFT JOIN job_order jo ON jo.id = jos.order_id
-LEFT JOIN office o on o.id=jo.office_id
-LEFT JOIN user_login u ON u.id = jo.creator
+
+LEFT JOIN user_login u ON u.id = $P{login_user_id}
+LEFT JOIN office o on o.id=u.office_id
 LEFT JOIN job_order_shipment_item josi ON jo.id = josi.order_id
 LEFT JOIN unit u1 on u1.id=josi.unit_id
 LEFT JOIN location lo ON lo.id = jos.por

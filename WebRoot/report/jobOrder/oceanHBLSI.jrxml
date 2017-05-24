@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="451"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -26,6 +26,9 @@
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
+	<parameter name="login_user_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
     josi.*,jos.*,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
@@ -44,8 +47,8 @@ left join location lo on lo.id=jos.por
 left join location lo1 on lo1.id=jos.pol
 left join location lo2 on lo2.id=jos.pod
 left join location lo3 on lo3.id=jos.fnd
-LEFT JOIN user_login ul on ul.id = jo.creator
-LEFT JOIN office oe on oe.id = jo.office_id
+LEFT JOIN user_login ul on ul.id = $P{login_user_id}
+LEFT JOIN office oe on oe.id = ul.office_id
 left join party p on p.id = jos.HBLshipper
 left join party p1 on p1.id = jos.HBLconsignee
 left join party p2 on p2.id = jos.HBLnotify_party
@@ -691,13 +694,6 @@ where jos.order_id=$P{order_id}]]>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement style="table" x="293" y="10" width="46" height="21" uuid="5f5cdafc-cb10-45e3-a853-fba46cd1a8c7"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

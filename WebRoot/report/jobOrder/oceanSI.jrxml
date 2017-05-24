@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="236"/>
+	<property name="ireport.x" value="163"/>
+	<property name="ireport.y" value="287"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -26,6 +26,9 @@
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
+	<parameter name="login_user_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
     jos.*,josi.container_no josi_container_no,josi.container_type josi_container_type,josi.seal_no josi_seal_no,josi.pieces josi_pieces,josi.volume josi_volume,josi.gross_weight josi_gross_weight,concat(jos.vessel,'/',jos.voyage) vessel_voyage,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
@@ -45,8 +48,8 @@ left join location lo on lo.id=jos.por
 left join location lo1 on lo1.id=jos.pol
 left join location lo2 on lo2.id=jos.pod
 left join location lo3 on lo3.id=jos.fnd
-LEFT JOIN user_login ul on ul.id = jo.creator
-LEFT JOIN office oe on oe.id = jo.office_id
+LEFT JOIN user_login ul on ul.id = $P{login_user_id}
+LEFT JOIN office oe on oe.id = ul.office_id
 left join party p on p.id = jos.MBLshipper
 left join party p1 on p1.id = jos.MBLconsignee
 left join party p2 on p2.id = jos.MBLnotify_party
@@ -59,37 +62,37 @@ where jos.order_id=$P{order_id}]]>
 	<field name="order_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="MBLshipper" class="java.lang.Integer">
+	<field name="MBLshipper" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="MBLshipper_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="MBLconsignee" class="java.lang.Integer">
+	<field name="MBLconsignee" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="MBLconsignee_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="MBLnotify_party" class="java.lang.Integer">
+	<field name="MBLnotify_party" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="MBLnotify_party_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="HBLshipper" class="java.lang.String">
+	<field name="HBLshipper" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="HBLshipper_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="HBLconsignee" class="java.lang.String">
+	<field name="HBLconsignee" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="HBLconsignee_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="HBLnotify_party" class="java.lang.String">
+	<field name="HBLnotify_party" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="HBLnotify_party_info" class="java.lang.String">
@@ -98,10 +101,10 @@ where jos.order_id=$P{order_id}]]>
 	<field name="booking_agent" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="head_carrier" class="java.lang.String">
+	<field name="head_carrier" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="carrier" class="java.lang.String">
+	<field name="carrier" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="bl_type" class="java.lang.String">
@@ -140,16 +143,16 @@ where jos.order_id=$P{order_id}]]>
 	<field name="schedule_to" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="por" class="java.lang.String">
+	<field name="por" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pol" class="java.lang.String">
+	<field name="pol" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pod" class="java.lang.String">
+	<field name="pod" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="fnd" class="java.lang.String">
+	<field name="fnd" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="etd" class="java.sql.Timestamp">
@@ -191,7 +194,7 @@ where jos.order_id=$P{order_id}]]>
 	<field name="release_type" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="oversea_agent" class="java.lang.String">
+	<field name="oversea_agent" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="oversea_agent_info" class="java.lang.String">
@@ -219,6 +222,9 @@ where jos.order_id=$P{order_id}]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="closing_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="agent_prepaid" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="josi_container_no" class="java.lang.String"/>

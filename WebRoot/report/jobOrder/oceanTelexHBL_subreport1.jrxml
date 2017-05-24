@@ -50,27 +50,6 @@ WHERE
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CN_no}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="377" y="0" width="88" height="20" uuid="164e8956-d15c-46bf-a09e-2ddbfd4fed72"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="152" y="0" width="108" height="20" uuid="dba5c8bf-7934-4706-8006-fd0112c14593"/>
-				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="465" y="0" width="70" height="20" uuid="c408bb39-3bf9-4e1a-9515-ec416b4c03bb"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{volume}]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 </jasperReport>
