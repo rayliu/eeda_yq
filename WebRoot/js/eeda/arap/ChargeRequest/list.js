@@ -454,12 +454,12 @@ $(document).ready(function() {
           
           var charge_order_no = $('#orderNo').val().trim(); 
           var applicationOrderNo = $('#applicationOrderNo').val();
-          if(back=="true"){
-              $('#status2').val("新建");
-            }
-          if(back=="confirmTrue"){
-              $('#status2').val("已复核");
-            }
+//          if(back=="true"){
+//              $('#status2').val("新建");
+//            }
+//          if(back=="confirmTrue"){
+//              $('#status2').val("已复核");
+//            }
           var status2 = $('#status2').val().trim();
           
           var service_stamp = $('#service_stamp').val();
