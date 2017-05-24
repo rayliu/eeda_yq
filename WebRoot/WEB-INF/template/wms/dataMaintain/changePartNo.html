@@ -1,0 +1,29 @@
+<%layout("/eeda/layout.html"){%>
+    <div id="page-wrapper">
+        <div class="row simple_search_div">
+            <div class="col-lg-6">
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label>组件编码（可批量更改，part_no和part_no之间需要英文格式逗号隔开,例如：INB504-T01-1-002,INB536-T01-1-001）</label>
+                        <textarea id='part_no' class="form-control" rows="5" name="part_no"></textarea>
+                    </div>
+                    <div class="form-group button-bar" >
+                        <button id="changeBtn" class="btn btn-default" type="button">手动加A</button>
+                        <button id="resetBtn" class="btn btn-default" type="button">清空条件</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<%}%>
+<div class="blockUI" style="display:none"></div>
+<div class="blockUI blockOverlay" style="z-index: 1000; border: none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(0, 0, 0); opacity: 0.6; cursor: wait; position: fixed;">222</div>
+<div class="blockUI blockMsg blockPage" style="z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; color: rgb(0, 0, 0); border: 3px solid rgb(170, 170, 170); background-color: rgb(255, 255, 255); cursor: wait;">
+	<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;">LOADING...</h1>
+</div>
+<script>
+	var order = {};
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/wms/dataMaintain/changePartNo']);
+    });
+</script>

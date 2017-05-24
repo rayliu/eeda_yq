@@ -158,14 +158,14 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                     }
                 },
                 { "data": "KT_NO"}, 
-                {"data": "ORDER_NO", 
+                {"data": "ORDER_NO",
                 	"render": function ( data, type, full, meta ) {
               	    	if(!data)
               	    		data = '';
               	    	return "<a class='item_detail' order_id='"+full.ID+"' data-target='#itemDetail' data-toggle='modal'>"+data+"</a>";
               	    }
                 },
-				{ "data": "ITEM_NO"}, 
+				{ "data": "ITEM_NO","class":"item_no"}, 
 				/*{ "data": "TOTAL_QUANTITY"}, */
 				{ "data": "QUANTITY"}, 
 				{ "data": "CREATE_TIME"},
@@ -213,8 +213,8 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	self.disabled = true;
         	
         	var order_id = $(self).parent().parent().attr("id");
-        	
-        	$.post('/gateOutOrder/printDetailPDF',{order_id:order_id},function(data){
+        	var item_no = $($(self).parent().parent().find(".item_no")).text();
+        	$.post('/gateOutOrder/printDetailPDF',{order_id:order_id,item_no:item_no},function(data){
         		if(data){
         			window.open(data);
         		}else{
