@@ -113,10 +113,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 },
                 { "data": "DOC_NAME","width": "280px",
                     "render": function ( data, type, full, meta ) {
-                        if(!data)
-                            data='';
-                        return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                      if(!data)
+                          data='';
+                      var str='';
+                      if(full.SEND_STATUS=='已发送'){
+                       str='<span class="badge" style="background-color:white;color:red;margin-left:5px;">新</span>';                        
+                      }
+
+                    if(full.REMARK=='自动生成'){
+                        return '<a class="doc_name" href="/download/'+data+'" style="width:300px" target="_blank">'+data+str+'</a>';
+                    }else{
+                        return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+str+'</a>';
                     }
+                  }
                 },
                 { "data": "C_NAME","width": "180px",
                     "render": function ( data, type, full, meta ) {
@@ -335,10 +344,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 },
                 { "data": "DOC_NAME","width": "280px",
                     "render": function ( data, type, full, meta ) {
-                        if(!data)
-                            data='';
-                        return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                      if(!data)
+                          data='';
+                      var str='';
+                      if(full.SEND_STATUS=='已发送'){
+                       str='<span class="badge" style="background-color:white;color:red;margin-left:5px;">新</span>';                        
+                      }
+
+                    if(full.REMARK=='自动生成'){
+                        return '<a class="doc_name" href="/download/'+data+'" style="width:300px" target="_blank">'+data+str+'</a>';
+                    }else{
+                        return '<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+str+'</a>';
                     }
+                  }
                 },
                 { "data": "C_NAME","width": "180px",
                     "render": function ( data, type, full, meta ) {
