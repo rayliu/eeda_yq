@@ -31,6 +31,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     	if(strType=="应付申请单"){
                     		return "<a href='/costRequest/edit?id="+full.INVOICE_ORDER_ID+"'target='_blank'>"+full.ORDER_NO+"</a>";
                     	}
+                    	if(strType=="报关应收对账单"){
+                    		return "<a href='/cmsChargeCheckOrder/edit?id="+full.INVOICE_ORDER_ID+"'target='_blank'>"+full.ORDER_NO+"</a>";
+                    	}
+                    	if(strType=="报关应付对账单"){
+                    		return "<a href='/cmsCostCheckOrder/edit?id="+full.INVOICE_ORDER_ID+"'target='_blank'>"+full.ORDER_NO+"</a>";
+                    	}
                     }
                 },
                 {"data":"ABBR"},
