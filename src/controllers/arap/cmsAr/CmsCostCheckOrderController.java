@@ -184,7 +184,7 @@ public class CmsCostCheckOrderController extends Controller {
         String sql = "select * from(  "
         		+ " select aco.*, p.abbr party_name,ul.c_name creator_name,ul2.c_name confirm_name "
 				+ " from custom_arap_cost_order aco "
-				+ " left join party p on p.id=party_id "
+				+ " left join party p on p.id=aco.sp_id "
 				+ " left join user_login ul on ul.id = aco.create_by"
 				+ " left join user_login ul2 on ul2.id = aco.confirm_by"
 				+ " where aco.office_id = "+office_id

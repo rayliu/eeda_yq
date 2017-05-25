@@ -128,7 +128,7 @@ public class AccountAuditLogController extends Controller {
 					+"		 WHEN aaal.source_order = '报关应付对账单'  "
 				   +"   THEN  "
 				   +"   (select p.abbr FROM custom_arap_cost_order aco  "
-        			+" 					LEFT JOIN  party p on p.id=aco.party_id where aco.id = aaal.invoice_order_id ) "
+        			+" 					LEFT JOIN  party p on p.id=aco.sp_id where aco.id = aaal.invoice_order_id ) "
 				   +"   end ) abbr, "
         			+"  ifnull(ul.c_name, ul.user_name) user_name, fa.bank_name, "
         			+"  (CASE  "
