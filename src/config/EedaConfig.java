@@ -55,6 +55,7 @@ import models.UserOffice;
 import models.UserRole;
 import models.eeda.cms.CustomArapChargeItem;
 import models.eeda.cms.CustomArapChargeOrder;
+import models.eeda.cms.CustomArapChargeReceiveItem;
 import models.eeda.cms.CustomPlanOrder;
 import models.eeda.cms.CustomPlanOrderArap;
 import models.eeda.cms.CustomPlanOrderItem;
@@ -550,6 +551,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("custom_plan_order_item", CustomPlanOrderItem.class);
         arp.addMapping("custom_arap_charge_order", CustomArapChargeOrder.class);
         arp.addMapping("custom_arap_charge_item", CustomArapChargeItem.class);
+        arp.addMapping("custom_arap_charge_receive_item", CustomArapChargeReceiveItem.class);
         arp.addMapping("custom_arap_cost_order", CustomArapCostOrder.class);
         arp.addMapping("custom_arap_cost_item", CustomArapCostItem.class);
         arp.addMapping("custom_plan_order_arap", CustomPlanOrderArap.class);

@@ -6,6 +6,7 @@
 	   <div class="col-lg-12">
 		<form id="orderForm">
 			<input id="sp_id" type="hidden" name="sp_id" value="${order.sp_id!''}" />
+			<input id="user_id" type="hidden" name="user_id" value="${user.id!''}" />
 			<input id="declare_unit_id" type="hidden" name="declare_unit_id" value="${order.declare_unit_id!''}" />
 			<div class="row">
 				<div class="col-lg-4">
@@ -108,12 +109,12 @@
 	              </h4>
 	          </div>
 	        <div id="collapseChargeInfo" class="panel-collapse collapse in" aria-expanded="false" style="height: auto;">
-                                <form id="confirmForm" style="display:none">
+                                <form id="confirmForm">
                                     <!-- <div class="search_panel"> -->
 		                              <div class="col-lg-4">
 
-										<%include("/eeda/component/form/inputField.html", { id:'status',
-													label:'状态', value:order.status!'未处理',disabled:'disabled'
+										<%include("/eeda/component/form/inputField.html", { id:'audit_status',
+													label:'状态', value:order.audit_status!'未处理',disabled:'disabled'
 													}){}%>
 		                              </div>
 		                            <div class="col-lg-4">
@@ -199,12 +200,12 @@
 		                        <div class=" form-group">
 			                            <div class="col-lg-4">
 			                                <%include("/eeda/component/form/inputField.html", { id:'modal_cny',
-			                                label:'本次收款CNY', value:order.modal_cny!''
+			                                label:'本次收款CNY', value:residual_cny!''
 			                                }){}%>
 			                            </div>
 			                            <div class="col-lg-4" >
-				                            <%include("/eeda/component/form/inputField.html", { id:'modal_usd',
-				                            label:'未收余额CNY', value:order.modal_usd!'',disabled:'disabled'
+				                            <%include("/eeda/component/form/inputField.html", { id:'residual_cny',
+				                            label:'未收余额CNY', value:residual_cny!'',disabled:'disabled'
 				                            }){}%>
 			                            </div>
 			                         
@@ -225,7 +226,7 @@
 				                        </div>
 				                     </div>
                                     <div class="button-bar col-lg-12" style = "margin-bottom:15px" >
-										<button id='confirmBtn' class="btn  btn_green" disabled >收款确认</button> 							            
+										<button id='confirmBtn' type="button" class="btn  btn_green" disabled >收款确认</button> 							            
 									</div>
                                 </form>                        
 		                  	 </div>
@@ -260,9 +261,9 @@
                             {
                                 id:'receip-table', 
                                 style:'width:700px',
-                               headers:['币制','应收金额','已收金额','剩余金额','收款时间','确认收款人'],
-								field_list:['id','order_no','date_custom','booking_no','abbr_name','abbr_name'], 
-								value_list: order.itemList!item_list![] 
+                               headers:['币制','应收总金额','上次收款金额','剩余应收金额','收款时间','确认收款人'],
+								field_list:['currency_name','total_amount','receive_cny','residual_cny','receive_time','receive_name'], 
+								value_list: order.receive_itemList!receive_itemList![] 
 							}){} %>
 			    </div>
 			</div>

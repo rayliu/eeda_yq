@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 $(document).ready(function() {
 	var tableName = 'receip-table';
 	
-	itemOrder.buildItemDetail=function(){
+	itemOrder.buildReceipItemDetail=function(){
         var item_table_rows = $("#"+tableName+" tr");
         var items_array=[];
         for(var index=0; index<item_table_rows.length; index++){
@@ -44,12 +44,12 @@ $(document).ready(function() {
             	cnames = [];
             },
             columns:[
-            { "data": "DATE_CUSTOM", "width": "100px"},
-            { "data": "BOOKING_NO", "width": "180px"},
-            { "data": "ABBR_NAME", "width": "120px"},
-            { "data": "FIN_NAME", "width": "200px"},
-            { "data": "AMOUNT", "width": "80px"},
-            { "data": "PRICE", "width": "80px"}
+            { "data": "currency_name", "width": "100px"},
+            { "data": "total_amount", "width": "180px"},
+            { "data": "receive_cny", "width": "120px"},
+            { "data": "residual_cny", "width": "200px"},
+            { "data": "receive_time", "width": "80px"},
+            { "data": "receive_name", "width": "80px"}
             ]
     }); 
        
@@ -136,9 +136,8 @@ $(document).ready(function() {
     
     
     //刷新明细表
-    itemOrder.refleshTable = function(order_id){
-    	var url = "/cmsChargeCheckOrder/tableList?order_id="+order_id
-        +"&table_type=item";
+    itemOrder.refleshReciveTable = function(order_id){
+    	var url = "/cmsChargeCheckOrder/getReceiveItemList?order_id="+order_id;
     	itemTable.ajax.url(url).load();
     }
     

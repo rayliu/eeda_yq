@@ -9,9 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.ArapAccountAuditLog;
+import models.ArapChargeApplication;
+import models.ArapChargeOrder;
 import models.UserLogin;
 import models.eeda.cms.CustomArapChargeItem;
 import models.eeda.cms.CustomArapChargeOrder;
+import models.eeda.cms.CustomArapChargeReceiveItem;
 import models.eeda.profile.Currency;
 
 import org.apache.commons.lang.StringUtils;
@@ -233,11 +237,22 @@ public class CmsChargeCheckOrderController extends Controller {
     	List<Record> re = Db.find(sql);
     	return re;
     }
-
+    //报关例外，获取每次收款的记录
+    public List<Record> getReceiveItemList(String order_id){
+    	String sql = null;
+   		 sql = "  SELECT caci.*,c.`name` currency_name ,ul.user_name receive_name"
+   				+" from custom_arap_charge_order caco  "
+   				+" left join custom_arap_charge_receive_item caci on caci.custom_charge_order_id = caco.id "
+   				+" LEFT JOIN currency c on c.id=caci.currency_id "
+   				+ "  LEFT JOIN user_login ul ON ul.id = caci.confirm_by"
+   				+" where caci.custom_charge_order_id ="+order_id;
+    	List<Record> re = Db.find(sql);
+    	return re;
+    }
     
     @Before(EedaMenuInterceptor.class)
 	public void create(){
-		String ids = getPara("idsArray");//job_order_arap ids
+		String ids = getPara("idsArray");//custom_plan_order_arap ids
 		String total_amount = getPara("totalAmount");
 		
 		String sql = "SELECT p.phone,p.contact_person,p.address,p.company_name declare_unit,cpo.application_unit declare_unit_id,cpoa.sp_id"
@@ -264,11 +279,19 @@ public class CmsChargeCheckOrderController extends Controller {
 		Long confirm_by = order.getLong("confirm_by");
 		UserLogin ul = UserLogin.dao.findById(create_by);
 		UserLogin ul2 = UserLogin.dao.findById(confirm_by);
+		UserLogin u3=LoginUserController.getLoginUser(this);
 		
+		String sqlString="SELECT * FROM custom_arap_charge_receive_item WHERE custom_charge_order_id="+id+" ORDER BY id DESC";
+		Record rec2 = Db.findFirst(sqlString);
 		Record rec = order.toRecord(); 
+		rec.set("user", u3);
 		rec.set("creator_name", ul.getStr("c_name"));
-		rec.set("confirm_name", ul2==null?"":ul2.getStr("c_name"));
+		rec.set("confirm_name", ul2==null?"":ul2.getStr("c_name"));//
 		rec.set("itemList", getItemList("",id));
+		rec.set("receive_itemList", getReceiveItemList(id));
+		if(rec2!=null){
+			rec.set("residual_cny", rec2.get("residual_cny"));
+		}
 		setAttr("order",rec);
 		render("/eeda/cmsArap/cmsChargeCheckOrder/cmsChargeCheckOrderEdit.html");
 	}
@@ -282,7 +305,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		Currency c = Currency.dao.findFirst("select id from currency where code = ?", ex_currency_name);
 		Long ex_currency_id = c.getLong("id");
 		String rate = getPara("rate");
-		Db.update("update job_order_arap set exchange_currency_id="+ex_currency_id+" , exchange_currency_rate="+rate+","
+		Db.update("update custom_plan_order_arap set exchange_currency_id="+ex_currency_id+" , exchange_currency_rate="+rate+","
 				+ " exchange_total_amount=("+rate+"*total_amount)  where id in ("+ids+") and total_amount!=''");
 		
 		//计算结算汇总
@@ -293,7 +316,7 @@ public class CmsChargeCheckOrderController extends Controller {
     private Map<String, Double> updateExchangeTotal(String chargeOrderId) {
         String sql="select joa.order_type, ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
         +"       ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount "
-        +"       from  job_order_arap joa "
+        +"       from  custom_plan_order_arap joa "
         +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
         +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
         +"       where joa.id in (select aci.ref_order_id from custom_arap_charge_item aci where aci.custom_charge_order_id="+chargeOrderId+")";
@@ -421,9 +444,9 @@ public class CmsChargeCheckOrderController extends Controller {
 						+" 							 left join party p on p.id=cpoa.sp_id "
 						+" 							 left join party p1 on p1.id=cpo.carrier "
 						+" 							 left join currency cur on cur.id=cpoa.currency_id "
-						+" 							 left join custom_charge_application_order_rel caol on caol.job_order_arap_id  = cpoa.id "
+						+" 							 left join custom_charge_application_order_rel caol on caol.custom_plan_order_arap_id  = cpoa.id "
 						+" 							 left join custom_arap_charge_application_order acao on caol.application_order_id = acao.id "
-						+" 							  left join custom_arap_charge_order aco on aco.id=caol.charge_order_id "
+						+" 							  left join custom_arap_charge_order aco on aco.id=caol.custom_charge_order_id "
 						+" 						   where acao.id="+order_ids+query_fin_name
 						 +" and cpo.delete_flag='N' "
 						 +" 							 GROUP BY cpoa.id "
@@ -457,5 +480,170 @@ public class CmsChargeCheckOrderController extends Controller {
     	
     	return re;
     }
-
+    
+    
+    //收款确认
+   	@Before(Tx.class)
+ 	public void confirmOrder(){
+   		 UserLogin user = LoginUserController.getLoginUser(this);
+   		String jsonStr=getPara("params");
+  
+        	Gson gson = new Gson();  
+         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+         String id=(String)dto.get("id");
+   		
+   		String pay_remark="";
+   			 pay_remark=(String) dto.get("pay_remark");
+   		
+   		CustomArapChargeReceiveItem cacritem=new CustomArapChargeReceiveItem();
+   		String receive_time = (String) dto.get("receive_time");
+   		String receive_bank_id = "";
+     	String payment_method = (String) dto.get("payment_method");
+     	
+     	if(dto.get("receive_bank_id")!=null){
+   			 receive_bank_id =  dto.get("receive_bank_id").toString();
+   		}else{
+   			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
+   	        Record rec = Db.findFirst(str2);
+   	        if(rec!=null){
+   	        	receive_bank_id = rec.getLong("id").toString();
+   	        }
+   		}
+     	//当收款不为空时
+//   			cacritem.set("custom_charge_order_id", dto.get("id"));
+//   			cacritem.set("receive_cny", dto.get("receive_cny"));
+//   			cacritem.set("receive_time", dto.get("receive_time"));
+//   			cacritem.set("payment_method", dto.get("payment_method"));
+//   			cacritem.set("bill_type", dto.get("bill_type"));
+//   			cacritem.set("deposit_bank", dto.get("deposit_bank"));
+//   			cacritem.set("deposit_bank_input", dto.get("deposit_bank_input"));
+//   			cacritem.set("confirm_by", user.get("id"));
+//   			if(StringUtils.isNotEmpty(pay_remark)){
+//   				cacritem.set("pay_remark", pay_remark);
+//             }
+   			DbUtils.setModelValues(dto, cacritem); 
+   			cacritem.save();
+//   			String itemid=cacritem.get("id");
+             	//申请单的cny,hkd，新建表代替申请单custom_arap_charge_receive_item
+             	
+//             	ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(application_id);
+//                 arapChargeInvoiceApplication.set("status", "已收款");
+                 
+                
+                 List<Record> res = Db.find("select * from custom_arap_charge_item where custom_charge_order_id = ?",id);
+                 if(res!=null){
+                	 for (Record re : res) {
+           			Long custom_charge_order_id = re.getLong("custom_charge_order_id");
+//           			String order_type = cacritem.getStr("order_type");
+//           			if(order_type.equals("应收对账单")){
+         				CustomArapChargeOrder arapChargeOrder = CustomArapChargeOrder.dao.findById(custom_charge_order_id);
+         				String sql1 = "SELECT "
+                         		+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_receive_item aci on joa.id = aci.ref_order_id"
+                 				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =3 and aci.custom_charge_order_id="+custom_charge_order_id
+                 				+" ),0) cny,"
+                 				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_receive_item aci on joa.id = aci.ref_order_id"
+                 				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =6 and aci.custom_charge_order_id="+custom_charge_order_id
+                 				+" ),0) usd,"
+                 				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_receive_item aci on joa.id = aci.ref_order_id"
+                 				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =8 and aci.custom_charge_order_id="+custom_charge_order_id
+                 				+" ),0) jpy,"
+                 				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_receive_item aci on joa.id = aci.ref_order_id"
+                 				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =9 and aci.custom_charge_order_id="+custom_charge_order_id
+                 				+" ),0) hkd ";
+                            
+                         Record r1 = Db.findFirst(sql1);                  
+                         Double cny = r1.getDouble("cny");     
+                         Double usd = r1.getDouble("usd");
+                         Double jpy = r1.getDouble("jpy");
+                         Double hkd = r1.getDouble("hkd");
+                         
+                         String sql = "SELECT "
+                         		+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
+                 				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =3 and aci.custom_charge_order_id="+custom_charge_order_id
+                 				+" ),0) paid_cny,"
+                 				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
+                 				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =6 and aci.custom_charge_order_id="+custom_charge_order_id
+                 				+" ),0) paid_usd,"
+                 				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
+                 				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =8 and aci.custom_charge_order_id="+custom_charge_order_id
+                 				+" ),0) paid_jpy,"
+                 				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
+                 				+" where joa.create_flag = 'Y' AND joa.exchange_currency_id =9 and aci.custom_charge_order_id="+custom_charge_order_id
+                 				+" ),0) paid_hkd ";
+                            
+                            Record r = Db.findFirst(sql);
+                            Double paid_cny = r.getDouble("paid_cny");//greate_flay=Y的arap item 汇总金额
+                            Double paid_usd = r.getDouble("paid_usd");
+                            Double paid_jpy = r.getDouble("paid_jpy");
+                            Double paid_hkd = r.getDouble("paid_hkd");
+                 
+         				if(cny>paid_cny||usd>paid_usd||jpy>paid_jpy||hkd>paid_hkd){
+         					arapChargeOrder.set("audit_status", "部分已收款").update();
+         				}else{
+         					arapChargeOrder.set("audit_status", "已收款").update();
+         				}
+//         			}
+           		}
+                 }
+               //新建日记账表数据
+//           		String cny_pay_amount = "0.0"; 
+//           		if(dto.get("modal_cny")!=null)
+//           			cny_pay_amount =dto.get("modal_cny").toString();
+           		if(!"0.0".equals(dto.get("modal_cny"))&&StringUtils.isNotEmpty((String) dto.get("modal_cny"))){
+           			createAuditLog(id, payment_method, receive_bank_id, receive_time, (String)dto.get("modal_cny"), "CNY");
+           		}
+           		
+//                 String usd_pay_amount ="0.0"; 
+//                 if(dto.get("modal_usd")!=null)
+//                 	usd_pay_amount =dto.get("modal_usd").toString();
+                 if(!"0.0".equals(dto.get("modal_usd"))&&StringUtils.isNotEmpty((String)dto.get("modal_usd"))){
+                 	createAuditLog(id, payment_method, receive_bank_id, receive_time,(String) dto.get("modal_usd"), "USD");
+                 }
+                 
+//                 String jpy_pay_amount ="0.0"; 
+//                 if(dto.get("modal_jpy")!=null)
+//                 	jpy_pay_amount =dto.get("modal_jpy").toString();
+                 if(!"0.0".equals(dto.get("modal_jpy"))&&StringUtils.isNotEmpty((String) dto.get("modal_jpy"))){
+                 	createAuditLog(id, payment_method, receive_bank_id, receive_time,(String) dto.get("modal_jpy"), "JPY");
+                 }
+                 
+//                 String hkd_pay_amount ="0.0"; 
+//                 if(dto.get("modal_hkd")!=null)
+//                 	hkd_pay_amount =dto.get("modal_hkd").toString();
+                 if(!"0.0".equals(dto.get("modal_hkd"))&&StringUtils.isNotEmpty((String)dto.get("modal_hkd"))){
+                 	createAuditLog(id, payment_method, receive_bank_id, receive_time, (String)dto.get("modal_hkd"), "HKD");
+                 }
+         
+         Record r = new Record();
+ 		r.set("confirm_name", LoginUserController.getUserNameById(LoginUserController.getLoginUserId(this)));
+ 		r.set("status", "已收款");
+ 		r.set("ids", id);
+         renderJson(r);
+  
+     }
+   	
+	@Before(Tx.class)
+  	private void createAuditLog(String application_id, String payment_method,
+            String receive_bank_id, String receive_time, String pay_amount, String currency_code) {
+        //新建日记账表数据
+//  		UserLogin user = LoginUserController.getLoginUser(this);
+//        long office_id = user.getLong("office_id");
+//		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
+//        auditLog.set("payment_method", payment_method);
+//        auditLog.set("payment_type", ArapAccountAuditLog.TYPE_CHARGE);
+//        auditLog.set("currency_code", currency_code);
+//        auditLog.set("amount", pay_amount);
+//        auditLog.set("creator", LoginUserController.getLoginUserId(this));
+//        auditLog.set("create_date", receive_time);
+//        auditLog.set("office_id", office_id);
+//        if(receive_bank_id!=null && !("").equals(receive_bank_id)){
+//        		auditLog.set("account_id", receive_bank_id);
+//        	}else{
+//        		auditLog.set("account_id", 4);
+//        	}
+//        auditLog.set("source_order", "应收申请单");
+//        auditLog.set("invoice_order_id", application_id);
+//        auditLog.save();
+    }
+   	
 }
