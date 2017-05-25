@@ -1,4 +1,4 @@
-//本文件应用于tms  jobOrder的选择车牌带出对应的司机, 电话
+
 <script id="table_dock_no_field_template" type="text/html">
         <div class="form-group">
             <input type="text" name="{{id}}" value="{{value}}"  style="display:none;"/>
