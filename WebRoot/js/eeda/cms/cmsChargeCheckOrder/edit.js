@@ -45,25 +45,11 @@ $(document).ready(function() {
         
         $(this).attr('disabled', true);
 
-        if($('#check_time_begin_time').val()==""||$('#check_time_end_time').val()==""){
-                $.scojs_message('业务发生月不能为空', $.scojs_message.TYPE_FALSE);
-                $("#createSave").attr("disabled", false);
-                return false;
-                
-        }
-        if($("#payment_method").val()=='transfers'||$("#payment_method").val()=='checkTransfers'){
-            if($("#deposit_bank").val()=='' && $("#account_no").val()==''&& $("#account_name").val()==''){
-                $.scojs_message('转账的信息不能为空', $.scojs_message.TYPE_FALSE);
-                return false;
-            }
-        }
-
+        
         var order = buildOrder();
         order.have_invoice = $('input[type="radio"]:checked').val();
         order.id = $('#order_id').val();
         order.item_list = itemOrder.buildItemDetail();
-        order.item_list = itemOrder.buildReceipItemDetail();
-        return;
         //异步向后台提交数据
         $.post('/cmsChargeCheckOrder/save', {params:JSON.stringify(order)}, function(data){
             var order = data;
@@ -258,10 +244,7 @@ $(document).ready(function() {
                 }
             },'json');
         });
-    // $(function(){residual_cny
-    //     var total_amount=$('#total_amount').val();
-    //     $('#receive_cny').val(total_amount);
-    // })
+    
 
      //构造主表json
     var buildConfirmFormOrder = function(){
