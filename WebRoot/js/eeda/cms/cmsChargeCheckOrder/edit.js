@@ -247,7 +247,8 @@ $(document).ready(function() {
                         $("#status").val('该笔为坏账');
                         $.scojs_message('确认坏账成功', $.scojs_message.TYPE_OK);
                     }else{
-                        $("#status").val('已付款');
+                        $("#status").val(data.STATUS);
+                        $("#audit_status").val(data.STATUS);
                         $.scojs_message('确认付款成功', $.scojs_message.TYPE_OK);
                     }
                 }else{

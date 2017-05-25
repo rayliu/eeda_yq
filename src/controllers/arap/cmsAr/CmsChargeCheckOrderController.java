@@ -534,16 +534,16 @@ public class CmsChargeCheckOrderController extends Controller {
                          
                          	//求每张应收对账单的总金额
                          String sql = "SELECT "
-                         		+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
+                         		+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
                  				+" where  joa.currency_id =3 and aci.custom_charge_order_id="+id
                  				+" ),0) cny,"
-                 				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
+                 				+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
                  				+" where  joa.currency_id =6 and aci.custom_charge_order_id="+id
                  				+" ),0) usd,"
-                 				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
+                 				+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
                  				+" where  joa.currency_id =8 and aci.custom_charge_order_id="+id
                  				+" ),0) jpy,"
-                 				+" IFNULL((SELECT SUM(joa.exchange_total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
+                 				+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
                  				+" where  joa.currency_id =9 and aci.custom_charge_order_id="+id
                  				+" ),0) hkd ";
                             
@@ -574,7 +574,7 @@ public class CmsChargeCheckOrderController extends Controller {
          
          Record r11 = new Record();
  		r11.set("confirm_name", LoginUserController.getUserNameById(LoginUserController.getLoginUserId(this)));
- 		r11.set("status", "已收款");
+ 		r11.set("status", arapChargeOrder.get("audit_status"));
  		r11.set("ids", id);
          renderJson(r11);
   
