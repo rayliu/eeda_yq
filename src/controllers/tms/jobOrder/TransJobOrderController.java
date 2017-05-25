@@ -724,10 +724,10 @@ public class TransJobOrderController extends Controller {
     				+ " where tjor.order_id=? and order_type=? order by tjor.id";
     		itemList = Db.find(itemSql, orderId,"charge");
     	}else if("cost".equals(type)){
-	    	itemSql = " select tjor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name ,"
+	    	itemSql = " select tjor.*, co.car_no sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name ,"
 	    			+ " c1.name exchange_currency_id_name"
 	    			+ " from trans_job_order_arap tjor"
-	    			+ "	left join party pr on pr.id=tjor.sp_id"
+	    			+ "	left join carinfo co on co.id=tjor.sp_id"
 	    			+ "	left join fin_item f on f.id=tjor.charge_id"
 	    			+ "	left join unit u on u.id=tjor.unit_id"
 	    			+ " left join currency c on c.id=tjor.currency_id"

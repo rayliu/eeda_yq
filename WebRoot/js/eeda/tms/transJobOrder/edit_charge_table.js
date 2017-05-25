@@ -286,28 +286,28 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" style="width:30px" disabled>';
 			    }
 			},
-            { "width": "110px",
+            { "width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
                 	if(full&&full.AUDIT_FLAG == 'Y'){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn_green" style="width:50px"  disabled>确认</button> '; 
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>&nbsp';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>确认</button> '; 
                 		}
                 	else if(full.ID){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" id="chargeConfirm" class=" btn btn_green" style="width:50px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>&nbsp';
+                		str+= '<button type="button" id="chargeConfirm" class=" btn table_btn btn_green btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
                 	}else{
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn_green" style="width:50px"  disabled>确认</button> ';
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px">删除</button>&nbsp';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;
                 }
             },
-            { "data": "TYPE", "width": "80px", 
+            { "data": "TYPE", "width": "50px", 
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
-                		var str = '<select name="type" class="form-control search-control notsave" style="width:100px" disabled>'
+                		var str = '<select name="type" class="form-control search-control notsave" style="width:70px" disabled>'
 	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
 	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
 	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
@@ -316,7 +316,7 @@ $(document).ready(function() {
 	                        +'</select>';
 	                	return str;
                 	}else{
-                    var str = '<select name="type" class="form-control search-control notsave" style="width:100px">'
+                    var str = '<select name="type" class="form-control search-control notsave" style="width:70px">'
                                +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
                                +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
                                +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
@@ -327,7 +327,7 @@ $(document).ready(function() {
                   }
                 }
             },
-            { "data": "SP_ID", "width": "180px",
+            { "data": "SP_ID", "width": "100px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
@@ -337,7 +337,7 @@ $(document).ready(function() {
                                 id: 'SP_ID',
                                 value: data,
                                 display_value: full.SP_NAME,
-                                style:'width:200px',
+                                style:'width:120px',
                                 disabled:'disabled'
                             }
                         );
@@ -356,6 +356,7 @@ $(document).ready(function() {
                         {
                             id: 'SP_ID',
                             value: data,//对应数据库字段
+                            style:'width:120px',
                             display_value: full.SP_NAME
                         }
                      );
@@ -364,7 +365,7 @@ $(document).ready(function() {
                   }
                 }
             },
-            { "data": "CHARGE_ID", "width": "180px",
+            { "data": "CHARGE_ID", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
@@ -374,7 +375,7 @@ $(document).ready(function() {
                                 id: 'CHARGE_ID',
                                 value: data,
                                 display_value: full.CHARGE_NAME,
-                                style:'width:200px',
+                                style:'width:100px',
                                 disabled:'disabled'
                             }
                         );
@@ -387,7 +388,7 @@ $(document).ready(function() {
                             id: 'CHARGE_ID',//对应数据库字段
                             value: data,
                             display_value: full.CHARGE_NAME,
-                            style:'width:200px'
+                            style:'width:100px'
                         }
                     );
                     return field_html;
@@ -434,8 +435,10 @@ $(document).ready(function() {
                         );
                         return field_html;
                    }else{
-	                	if(!data)
-	                        data='';
+	                	if(!data){
+	                		data='33';
+                            full.UNIT_NAME="B/L";
+	                	}
 	                    var field_html = template('table_dropdown_template',
 	                        {
 	                            id: 'UNIT_ID',                            

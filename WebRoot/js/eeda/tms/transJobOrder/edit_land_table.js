@@ -102,9 +102,9 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" class="checkBox" style="width:30px" disabled>';
 			    }
 			},
-            { "width": "10px",
+            { "width": "30px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn btn-default btn-xs" style="width:30px">删除</button>';
+                	return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px">删除</button>';
                 }
             },
             
@@ -231,7 +231,7 @@ $(document).ready(function() {
                     return '<input type="text" name="toca_weight" value="'+data+'" class="form-control toca_weight" style="width:80px" />';
                 }
             },
-            { "width": "10px",
+            { "width": "30px",
                 "render": function ( data, type, full, meta ) {
                     return '<span aligen="center">kg</span>';
                 }
@@ -243,7 +243,7 @@ $(document).ready(function() {
                     return '<input type="text" name="head_weight" value="'+data+'" class="form-control head_weight" style="width:80px" />';
                 }
             },
-            { "width": "10px",
+            { "width": "30px",
                 "render": function ( data, type, full, meta ) {
                     return '<span aligen="center">kg</span>';
                 }

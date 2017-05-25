@@ -187,12 +187,13 @@ $(document).ready(function() {
     
     //------------事件处理
     var bindFieldEvent=function(){	
-        eeda.bindTableField('cost_table','SP_ID','/serviceProvider/searchCompany','');
+//        eeda.bindTableField('cost_table','SP_ID','/serviceProvider/searchCompany','');
         eeda.bindTableField('cost_table','CHARGE_ID','/finItem/search','');
         eeda.bindTableField('cost_table','CHARGE_ENG_ID','/finItem/search_eng','');
         eeda.bindTableField('cost_table','UNIT_ID','/serviceProvider/searchChargeUnit','');
         eeda.bindTableFieldCurrencyId('cost_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
         eeda.bindTableFieldCurrencyId('cost_table','exchange_currency_id','/serviceProvider/searchCurrency','');
+        eeda.bindTableFieldCarInfo('cost_table', 'SP_ID');
     };
     
     var costTable = eeda.dt({
@@ -212,19 +213,19 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" style="width:30px" disabled>';
 			    }
 			},
-			{ "width": "110px",
+			{ "width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
                 	if(full&&full.AUDIT_FLAG == 'Y'){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" disabled>删除</button>&nbsp';
-                		str+= '<button type="button" class="costConfirm btn btn_green" style="width:50px"  disabled>确认</button> '; 
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>&nbsp';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>确认</button> '; 
                 		}
                 	else if(full.ID){
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" class="costConfirm btn btn_green" style="width:50px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>&nbsp';
+                		str+= '<button type="button" id="chargeConfirm" class=" btn table_btn btn_green btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
                 	}else{
-                		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:50px">删除</button>&nbsp';
-                		str+= '<button type="button" class="costConfirm btn btn_green" style="width:50px"  disabled>确认</button> ';
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px">删除</button>&nbsp';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;
@@ -233,37 +234,35 @@ $(document).ready(function() {
             { "data": "TYPE","width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
-                		var str = '<select name="type" class="form-control search-control  notsave" style="width:100px" disabled>'
-	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
-	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
-	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
-	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
-	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
+                		var str = '<select name="type" class="form-control search-control notsave" style="width:70px" disabled>'
+	                        +'<option value="提吉柜" '+(data=='提吉柜' ? 'selected':'')+'>提吉柜</option>'
+	                        +'<option value="收重柜" '+(data=='收重柜' ? 'selected':'')+'>收重柜</option>'
+	                        +'<option value="移柜" '+(data=='移柜' ? 'selected':'')+'>移柜</option>'
+	                        +'<option value="全程" '+(data=='全程' ? 'selected':'')+'>全程</option>'
 	                        +'</select>';
 	                	return str;
                 	}else{
-	                	var str = '<select name="type" class="form-control search-control notsave" style="width:100px">'
-	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'>陆运</option>'
-	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'>空运</option>'
-	                        +'<option value="海运" '+(data=='海运' ? 'selected':'')+'>海运</option>'
-	                        +'<option value="报关" '+(data=='报关' ? 'selected':'')+'>报关</option>'
-	                        +'<option value="保险" '+(data=='保险' ? 'selected':'')+'>保险</option>'
-	                        +'</select>';
-	                	return str;
+                    var str = '<select name="type" class="form-control search-control notsave" style="width:70px">'
+		                	+'<option value="提吉柜" '+(data=='提吉柜' ? 'selected':'')+'>提吉柜</option>'
+		                    +'<option value="收重柜" '+(data=='收重柜' ? 'selected':'')+'>收重柜</option>'
+		                    +'<option value="移柜" '+(data=='移柜' ? 'selected':'')+'>移柜</option>'
+		                    +'<option value="全程" '+(data=='全程' ? 'selected':'')+'>全程</option>'
+                            +'</select>';
+                    return str;
                 	}
                 }
             },
-            { "data": "SP_ID","width": "180px",
+            { "data": "SP_ID","width": "100px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
                             data='';
-                        var field_html = template('table_dropdown_template',
+                        var field_html = template('table_car_no_field_template',
                             {
                                 id: 'SP_ID',
                                 value: data,
                                 display_value: full.SP_NAME,
-                                style:'width:200px',
+                                style:'width:120px',
                                 disabled:'disabled'
                             }
                         );
@@ -271,19 +270,19 @@ $(document).ready(function() {
                      }else{
                     if(!data)
                         data='';
-                    var field_html = template('table_dropdown_template',
+                    var field_html = template('table_car_no_field_template',
                         {
                             id: 'SP_ID',
                             value: data,
                             display_value: full.SP_NAME,
-                            style:'width:200px'
+                            style:'width:120px'
                         }
                     );
                     return field_html;
                  }
                }
             },
-            { "data": "CHARGE_ID","width": "180px",
+            { "data": "CHARGE_ID","width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
@@ -293,7 +292,7 @@ $(document).ready(function() {
                                 id: 'CHARGE_ID',
                                 value: data,
                                 display_value: full.CHARGE_NAME,
-                                style:'width:200px',
+                                style:'width:100px',
                                 disabled:'disabled'
                             }
                         );
@@ -306,7 +305,7 @@ $(document).ready(function() {
                             id: 'CHARGE_ID',//对应数据库字段
                             value: data,
                             display_value: full.CHARGE_NAME,
-                            style:'width:200px'
+                            style:'width:100px'
                         }
                     );
                     return field_html;
@@ -353,8 +352,10 @@ $(document).ready(function() {
                      );
                      return field_html;
                 }else{
-            	   if(!data)
-                       data='';
+            	   if(!data){
+	               		data='33';
+	                    full.UNIT_NAME="B/L";
+	            	}
                    var field_html = template('table_dropdown_template',
                        {
                            id: 'UNIT_ID',
