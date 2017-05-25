@@ -1500,6 +1500,10 @@ public class JobOrderController extends Controller {
     	//客户回显
     	Party party = Party.dao.findById(jobOrder.get("customer_id"));
     	setAttr("party", party);
+    	//回显计量单位
+    	long job_unit = jobOrder.get("job_unit");
+    	
+    	setAttr("unit", Db.findFirst("SELECT CONCAT(name,name_eng) job_unit_name from unit WHERE id = ?",job_unit));
     	//工作单创建人
     	long creator = jobOrder.getLong("creator");
     	UserLogin user = UserLogin.dao.findById(creator);

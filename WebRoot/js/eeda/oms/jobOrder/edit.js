@@ -151,6 +151,7 @@ $(document).ready(function() {
         order.net_weight = $("#net_weight").val();
         order.volume = $("#volume").val();
         order.pieces = $("#pieces").val();
+        order.job_unit = $("#job_unit").val();
         order.billing_method = $('#billing_method input[type="radio"]:checked').val();
         order.ref_no = $("#ref_no").val();
         order.trans_clause = $("#trans_clause").val();
