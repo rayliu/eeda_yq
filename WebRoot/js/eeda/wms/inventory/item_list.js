@@ -40,16 +40,18 @@ $(document).ready(function() {
         ]
     });
 	
-	$("#eeda-table").on('click', '.partDetail', function(e){
+	$("#part-table").on('click', '.partDetail', function(e){
       	var part_no = $(this).attr("part_no");
       	var part_name = $($(this).parent().parent()).find('.part_name').text();
+      	var item_nos = $($(this).parent().parent()).find('.item_nos').text();
       	var totalBox = $($(this).parent().parent()).find('.totalBox').text();
       	var totalPiece = $($(this).parent().parent()).find('.totalPiece').text();
       	$('#partNo').text(part_no);
       	$('#partName').text(part_name);
+      	$('#itemNos').text(item_nos);
       	$('#totalBox').text(totalBox);
       	$('#totalPiece').text(totalPiece);
-      	$('#photo').html('<img src="/images/product/'+part_no+'.jpg" height="70%" width="70%" border="1px solid #F00" onerror="javascript:this.src=\'/images/product/no_photo.jpg\'"/>');
+      	$('#photo').html('<img src="/images/product/'+part_no+'.jpg" width="70%" style="box-shadow:0 0 20px #4F4F4F"  border="1px solid #F00" onerror="javascript:this.src=\'/images/product/no_photo.jpg\'"/>');
       	
       	searchData(part_no);
     });

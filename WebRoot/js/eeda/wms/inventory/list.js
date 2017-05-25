@@ -35,17 +35,31 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
               	    	return "<a class='itemDetail' item_no='"+full.ITEM_NO+"' style='cursor: pointer;'>"+data+"</a>";
               	    }
                 },
-                { "data": "ITEM_NAME","class":"item_name"}, 
-                { "data": "PART_NO","visible":false,"class":"part_no",
+                { "data": "ITEM_NAME","class":"item_name"}
+            ]
+        });
+        
+        
+        var partTable = eeda.dt({
+            id: 'part-table',
+            paging: true,
+            serverSide: true, //不打开会出现排序不对
+            ajax: "/inventory/list",
+            "drawCallback": function( settings ) {
+		        $.unblockUI();
+		    },
+            columns:[
+                { "data": "PART_NO","class":"part_no",
                 	 "render": function ( data, type, full, meta ) {
                	    	if(!data)
                	    		data = "<i class='glyphicon glyphicon-th-list'></i>";
                	    	return "<a class='partDetail' part_no='"+full.PART_NO+"' data-target='#partDetail' data-toggle='modal' style='cursor: pointer;'>"+data+"</a>";
                	    }
                 }, 
-                { "data": "PART_NAME","visible":false,"class":"part_name"}, 
+                { "data": "USEFOR","class":"item_nos"}, 
+                { "data": "PART_NAME","class":"part_name"}, 
 				{ "data": "TOTALBOX","class":"totalBox"},
-                { "data": "TOTALPIECE","class":"totalPiece"}
+                { "data": "TOTALPIECE","class":"totalPiece","visible":false}
             ]
         });
         
@@ -54,6 +68,8 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
           	var value = $(this).attr("item_no");
           	var name = $($(this).parent().parent()).find('.item_name').text();
           	$('.itemShow').show();
+          	$('#eedaTable').hide();
+          	$('#partTable').show();
           	if(item_no){
           		$('#orderText').text("产品编码："+value);
             	$('#partText').text("产品名称："+name);
@@ -66,23 +82,11 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         $('#resetBtn').click(function(e){
         	$("#orderForm")[0].reset();
             $('.itemShow').hide();
-            $('#orderText').text("");
             searchData();
         });
 
         $('#searchBtn').click(function(e){
-        	var item_no = $('#item_no').val();
-        	var item_name = $('#item_name').val();
-        	var part_no = $('#part_no').val();
-        	var part_name = $('#part_name').val();
-        	if(part_no !='' || part_name!=''){
-        		searchPartData(item_no); 
-        		$('.itemShow').show();
-        	}else{
-        		$('.itemShow').hide();
-        		$('#orderText').text('')
-        		searchData(); 
-        	}
+    		searchData(); 	
         });
  
         buildCondition=function(){
@@ -104,11 +108,10 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	$.blockUI({ 
                 message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
             });
-        	var table = $('#eeda-table').dataTable();
-          	table.fnSetColumnVis(0, true);
-          	table.fnSetColumnVis(1, true);
-          	table.fnSetColumnVis(2, false);
-          	table.fnSetColumnVis(3, false);
+        	$('.itemShow').hide();
+            $('#orderText').text("");
+            $('#eedaTable').show();
+          	$('#partTable').hide();
         	
         	var itemJson = buildCondition();
         	var url = "/inventory/list?jsonStr="+JSON.stringify(itemJson);
@@ -120,16 +123,10 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                 message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
             });
         	
-        	
-        	var table = $('#eeda-table').dataTable();
-          	table.fnSetColumnVis(0, false);
-          	table.fnSetColumnVis(1, false);
-          	table.fnSetColumnVis(2, true);
-          	table.fnSetColumnVis(3, true);
-          	
+
         	var itemJson = buildCondition();
         	var url = "/inventory/partList?item_no="+item_no+"&jsonStr="+JSON.stringify(itemJson);
-        	dataTable.ajax.url(url).load();
+        	partTable.ajax.url(url).load();
         };
 
 	});

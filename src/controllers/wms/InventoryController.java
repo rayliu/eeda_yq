@@ -43,6 +43,14 @@ public class InventoryController extends Controller {
 	public void index() {
 		String type=getPara("type");
 		setAttr("type", type);
+		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+		Record re = Db.findFirst("select count(1) total from gate_in gi where gi.out_flag = 'N' "
+				+ " and error_flag='N' and office_id = ?",office_id);
+		if(re != null){
+			setAttr("totalLabel", re.get("total"));
+		}
+		
 		
 		render("/wms/inventory/list.html");
 	}
@@ -191,24 +199,22 @@ public class InventoryController extends Controller {
             
     	}
     	
-    	String sqlTotal = "select count(1) total from (select A.id from (select gi.id,pro.item_no "
+    	String sqlTotal = "select count(1) total from (select pro.id "
 			+ " from gate_in gi "
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
 			+ " and out_flag = 'N' and error_flag = 'N'"
 			+ condition 
-			+ " group by gi.id ) A group by A.item_no) B";
+			+ " group by pro.item_no) B";
     	
         
-    	sql = "select A.*,count(A.id) totalBox,sum(A.quantity) totalPiece from (select gi.*, ifnull(u.c_name, u.user_name) creator_name,"
-    		+ " pro.item_name,ifnull(pro.item_no,'') item_no,pro.part_name part_name "
+    	sql = "select pro.item_no,pro.item_name "
 			+ " from gate_in gi "
-			+ " left join user_login u on u.id = gi.creator"
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
 			+ " and out_flag = 'N' and error_flag = 'N'"
 			+ condition 
-			+ " group by gi.id ) A group by A.item_no";
+			+ " group by pro.item_no";
     	
         
         
@@ -282,7 +288,8 @@ public class InventoryController extends Controller {
 			+ " group by gi.id ) A group by A.part_no) B";
         
     	sql = "select A.*,count(A.id) totalBox,sum(A.quantity) totalPiece from (select gi.*,"
-    		+ " pro.item_name,ifnull(pro.item_no,'') item_no,pro.part_name part_name "
+    		+ " pro.item_name,ifnull(pro.item_no,'') item_no,pro.part_name part_name ,"
+    		+ " (select GROUP_CONCAT(item_no SEPARATOR ' , ') from wmsproduct where part_no = gi.part_no) usefor"
 			+ " from gate_in gi "
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
