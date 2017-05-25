@@ -61,7 +61,7 @@ public class ImportOrder extends Controller {
 		
 		String doc_name = null;
 		String[] fileArray = fileName.split("_");
-		doc_name =fileArray[0]+fileArray[1]+fileArray[2].substring(0, 6)+fileName.subSequence(fileName.length()-4, fileName.length());
+		doc_name =fileArray[0]+"_"+fileArray[1]+"_"+fileArray[2].substring(0, 6)+fileName.subSequence(fileName.length()-4, fileName.length());
 		
 	    try {  
 	    	Record import_log = Db.findFirst("select * from import_log where doc_name = ?",doc_name);
@@ -92,11 +92,15 @@ public class ImportOrder extends Controller {
 		        	}else{
 	                    throw new Exception("文件《"+fileName+"》中未检测到\"入库记录\"，\"出库记录\"，\"盘点单\"关键字<br/>请核查此文件是否为要导入的数据表");
 		        	}
-		        	long end = Calendar.getInstance().getTimeInMillis();
-		            long time = (end- start)/1000;
-		        	re.set("complete_time", new Date());
-		        	re.set("import_time", time);
-		        	Db.save("import_log", re);
+		        	
+		        	if(resultMap.get("result")){
+		        		long end = Calendar.getInstance().getTimeInMillis();
+			            long time = (end- start)/1000;
+			        	re.set("complete_time", new Date());
+			        	re.set("import_time", time);
+			        	Db.save("import_log", re);
+		        	}
+		        	
 		        }else{
 		        	throw new Exception("导入格式有误，请导入正确的csv格式");
 		        }
