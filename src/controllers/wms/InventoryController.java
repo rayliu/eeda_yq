@@ -256,7 +256,7 @@ public class InventoryController extends Controller {
             
             //处理无法识别item_no的数据
             String item_no = getPara("item_no");
-            if(StringUtils.isNotBlank(item_no)){
+            if(StringUtils.isNotBlank(item_no) && !"null".equals(item_no)){
             	condition += " and pro.item_no = '"+item_no+"'";
             }else{
             	if(StringUtils.isBlank(part_no)){

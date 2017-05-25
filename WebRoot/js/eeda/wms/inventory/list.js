@@ -30,7 +30,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
                 {"data": "ITEM_NO","class":"item_no",
               	    "render": function ( data, type, full, meta ) {
               	    	if(!data){
-              	    		data = "<i class='glyphicon glyphicon-th-list'></i>";
+              	    		data = "<i class='glyphicon glyphicon-th-list itemDetail'></i>";
               	    	}
               	    	return "<a class='itemDetail' item_no='"+full.ITEM_NO+"' style='cursor: pointer;'>"+data+"</a>";
               	    }
@@ -67,10 +67,11 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
     	$("#eeda-table").on('click', '.itemDetail', function(e){
           	var value = $(this).attr("item_no");
           	var name = $($(this).parent().parent()).find('.item_name').text();
-          	$('.itemShow').show();
+          	
           	$('#eedaTable').hide();
           	$('#partTable').show();
           	if(item_no){
+          		$('.itemShow').show();
           		$('#orderText').text("产品编码："+value);
             	$('#partText').text("产品名称："+name);
           	}
@@ -122,7 +123,6 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	$.blockUI({ 
                 message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
             });
-        	
 
         	var itemJson = buildCondition();
         	var url = "/inventory/partList?item_no="+item_no+"&jsonStr="+JSON.stringify(itemJson);
