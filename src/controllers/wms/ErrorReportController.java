@@ -186,7 +186,7 @@ public class ErrorReportController extends Controller {
     				+ condition+") or import_msg is not null group by gi.id) A ";
     		
     		
-    		sql = "select '出库记录' order_type ,gi.import_msg ,gi.id,gi.error_msg,gi.qr_code,gi.shelves,gi.quantity,gi.move_flag,gi.create_time, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name,pro.part_no "
+    		sql = "select '出库记录' order_type ,gi.import_msg ,gi.id,gi.error_msg,gi.qr_code,gi.shelves,gi.quantity,gi.move_flag,gi.create_time, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name,gi.part_no "
     				+ " from gate_out gi "
     				+ " left join user_login u on u.id = gi.creator"
     				+ " left join wmsproduct pro on pro.part_no = gi.part_no"
