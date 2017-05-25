@@ -60,8 +60,10 @@ $(document).ready(function() {
 				companyList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
 			}
 
-	        for(var i = 0; i < data.length; i++)
-	            companyList.append("<li tabindex='"+i+"'><a class='fromLocationItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' partyId='"+data[i].ID+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].ABBR+"</a></li>");
+	        for(var i = 0; i < data.length; i++){
+	        	companyList.append("<li tabindex='"+i+"'><a class='fromLocationItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' partyId='"+data[i].ID+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].ABBR+"</a></li>");
+	        }
+	            
 	            
 	        companyList.css({ 
 		    	left:$(me).position().left+"px", 
@@ -92,6 +94,7 @@ $(document).ready(function() {
 	    var companyId = $(this).attr('partyId');
 	    hiddenField.val(companyId);
 	});
+
 	//回车处理
  	companyList.on('keydown', 'li', function(e){
         if (e.keyCode == 13) {

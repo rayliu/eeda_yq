@@ -220,6 +220,14 @@
                                     }){}%>
                             </div>
                             <div class="col-lg-4">
+                                <%include("/eeda/component/form/inputUnitItem.html", 
+                                    {   id:'job_unit', 
+                                        label:'计量单位', 
+                                        value: order.job_unit!planOrderItem.job_unit!'',
+                                        placeholder:'请选择计量单位'
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4">
                                 <%include("/eeda/component/form/inputField.html", 
                                     {   id:'net_weight', 
                                         label:'净重(KG)', 
@@ -227,7 +235,9 @@
                                         placeholder:'请输入数字'
                                     }){}%>
                             </div>
-                            <div class="col-lg-4">
+                        </div>
+                        <div class="row">
+                        	<div class="col-lg-4">
                                 <%include("/eeda/component/form/inputField.html", 
                                     {   id:'gross_weight', 
                                         label:'毛重(KG)', 
@@ -235,8 +245,6 @@
                                         placeholder:'请输入数字'
                                     }){}%>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-lg-4">
                                 <%include("/eeda/component/form/inputField.html", 
                                     {   id:'volume', 
@@ -245,14 +253,14 @@
                                         placeholder:'请输入数字'
                                     }){}%>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-4">
                                 <div class="form-group" id="billing_method">
                                 <input type="hidden" id="hidden_billing_method" value="${order.billing_method!''}">
                                     <label class="search-label">计费方式</label>
-                                    <label class="checkbox-inline">
-                                        <input type="radio" name='billing_method' value='perWeight' checked>重货(按重量)
+                                    <label class="checkbox-inline" style="margin-right:0px;">
+                                        <input type="radio" name='billing_method' value='perWeight' checked style="margin-left:-10px;">重货(按重量)
                                     </label>
-                                    <label class="checkbox-inline">
+                                    <label class="checkbox-inline" style="margin-right:0px;">
                                         <input type="radio" name='billing_method' value='perVolume'>泡货(按体积)
                                     </label>
                                 </div>
