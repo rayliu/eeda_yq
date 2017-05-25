@@ -298,6 +298,7 @@ public class CmsCostCheckOrderController extends Controller {
 		String sqlString="SELECT  residual_cny FROM custom_arap_cost_receive_item WHERE custom_charge_order_id="+id+" ORDER BY id DESC";
 		Record rec2 = Db.findFirst(sqlString);
 		Record rec = order.toRecord(); 
+		rec.set("user", u3);
 		rec.set("creator_name", ul.getStr("c_name"));
 		rec.set("confirm_name", ul2==null?"":ul2.getStr("c_name"));
 		rec.set("itemList", getItemList("",id));
