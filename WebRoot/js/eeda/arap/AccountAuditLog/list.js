@@ -45,16 +45,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     "render": function(data, type, full, meta) {
                         if(data!=null)
                             return "<p >"+eeda.numFormat(parseFloat(data).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
+                        else if(full.SOURCE_ORDER=='报关应收对账单'&&full.CUSTOM_CHARGE_AMOUNT!='')
+                            return "<p >"+eeda.numFormat(parseFloat(full.CUSTOM_CHARGE_AMOUNT).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
                         else
-                            return data;
+                             return data;
                     }
                 },
                 {"data":"COST_AMOUNT",
                     "render": function(data, type, full, meta) {
                         if(data!=null)
                             return "<p >"+eeda.numFormat(parseFloat(data).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
+                        else if(full.SOURCE_ORDER=='报关应付对账单'&&full.CUSTOM_COST_AMOUNT!='')
+                            return "<p >"+eeda.numFormat(parseFloat(full.CUSTOM_COST_AMOUNT).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
                         else
-                            return data;
+                             return data;
                     }
                 },
                 {"data":"BANK_NAME"},

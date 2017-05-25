@@ -501,16 +501,16 @@ public class CmsChargeCheckOrderController extends Controller {
 		   		
 		   		CustomArapChargeReceiveItem cacritem=new CustomArapChargeReceiveItem();
 		   		String receive_time = (String) dto.get("receive_time");
-		   		String receive_bank_id = "";
+		   		String deposit_bank = "";
 		     	String payment_method = (String) dto.get("payment_method");
 		     	
-		     	if(dto.get("receive_bank_id")!=null){
-		   			 receive_bank_id =  dto.get("receive_bank_id").toString();
+		     	if(dto.get("deposit_bank")!=null){
+		   			 deposit_bank =  dto.get("deposit_bank").toString();
 		   		}else{
 		   			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
 		   	        Record rec = Db.findFirst(str2);
 		   	        if(rec!=null){
-		   	        	receive_bank_id = rec.getLong("id").toString();
+		   	        	deposit_bank = rec.getLong("id").toString();
 		   	        }
 		   		}
 		   			DbUtils.setModelValues(dto, cacritem); 
@@ -560,16 +560,16 @@ public class CmsChargeCheckOrderController extends Controller {
          				}
                //新建日记账表数据
            		if(!"0.0".equals(dto.get("receive_cny"))&&StringUtils.isNotEmpty((String) dto.get("receive_cny"))){
-           			createAuditLog(id, payment_method, receive_bank_id, receive_time, (String)dto.get("receive_cny"), "CNY");
+           			createAuditLog(id, payment_method, deposit_bank, receive_time, (String)dto.get("receive_cny"), "CNY");
            		}
 	             if(!"0.0".equals(dto.get("receive_usd"))&&StringUtils.isNotEmpty((String)dto.get("receive_usd"))){
-	             	createAuditLog(id, payment_method, receive_bank_id, receive_time,(String) dto.get("receive_usd"), "USD");
+	             	createAuditLog(id, payment_method, deposit_bank, receive_time,(String) dto.get("receive_usd"), "USD");
 	             }
 	             if(!"0.0".equals(dto.get("receive_jpy"))&&StringUtils.isNotEmpty((String) dto.get("receive_jpy"))){
-	             	createAuditLog(id, payment_method, receive_bank_id, receive_time,(String) dto.get("receive_jpy"), "JPY");
+	             	createAuditLog(id, payment_method, deposit_bank, receive_time,(String) dto.get("receive_jpy"), "JPY");
 	             }
 	             if(!"0.0".equals(dto.get("receive_hkd"))&&StringUtils.isNotEmpty((String)dto.get("receive_hkd"))){
-	             	createAuditLog(id, payment_method, receive_bank_id, receive_time, (String)dto.get("receive_hkd"), "HKD");
+	             	createAuditLog(id, payment_method, deposit_bank, receive_time, (String)dto.get("receive_hkd"), "HKD");
 	             }
          
          Record r11 = new Record();
