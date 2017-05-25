@@ -28,7 +28,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		        $.unblockUI();
 		    },
             columns:[
-                { "data": "ITEM_NO", "class":"item_no", "width": "80px",
+                { "data": "ITEM_NO", "class":"item_no", "width": "100px",
                     "render": function ( data, type, full, meta ) {
                         if(data){
                         	return "<a href='#'>"+data+"</a>";
@@ -37,7 +37,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                         }
                     }
                 }, 
-                {"data": "ITEM_NAME", "class":"item_name", "width": "280px"},
+                {"data": "ITEM_NAME", "class":"item_name", "width": "290px"},
                 { "data": "PART_NO", "class":"part_no", "width": "140px",
                     "render": function ( data, type, full, meta ) {
                         if(data){
@@ -136,7 +136,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               	  		return "<span style='color:red;'>"+data+"</span>";
               	  	}	
 				}, 
-                {"data": "ITEM_NO", "width": "80px", 
+                {"data": "ITEM_NO", "width": "100px", 
               	  "render": function ( data, type, full, meta ) {
               		  return "<a href='#'>"+data+"</a>";
               	  }
@@ -173,7 +173,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               	  		return "<span style='color:red;'>"+data+"</span>";
               	  	}	
 				}, 
-                {"data": "ITEM_NO", "width": "80px", 
+                {"data": "ITEM_NO", "width": "100px", 
               	  "render": function ( data, type, full, meta ) {
               		  return "<a href='#'>"+data+"</a>";
               	  }
