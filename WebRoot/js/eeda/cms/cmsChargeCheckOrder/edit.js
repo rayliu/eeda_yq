@@ -7,7 +7,12 @@ $(document).ready(function() {
     $('#menu_charge').addClass('active').find('ul').addClass('in');
     $('#menu_charge').addClass('active').find('ul').addClass('in');
     $("#breadcrumb_li").text('报关模块应收对账单');
-    
+    $(function(){
+      if(!$('#receive_cny').val()){
+            $('#receive_cny').val($('#total_amount').val());
+            $('#residual_cny').val($('#total_amount').val());
+        }
+    });
     //构造主表json
     var buildOrder = function(){
     	var item = {};
@@ -170,9 +175,9 @@ $(document).ready(function() {
             });
         });
     
-    $('#modal_cny').on('click keyup',function(){
-            var modal_cny=$(this).val().trim();
-            if(modal_cny){
+    $('#receive_cny').on('click keyup',function(){
+            var receive_cny=$(this).val().trim();
+            if(receive_cny){
                $('#confirmBtn').attr('disabled',false);
             }else{
                 $('#confirmBtn').attr('disabled',true);
@@ -226,9 +231,13 @@ $(document).ready(function() {
             // order.payment_method = $('#payment_method').val();
             // order.pay_remark = $('#pay_remark').val();
             order=buildConfirmFormOrder();
-            return;
             $.get("/cmsChargeCheckOrder/confirmOrder", {params:JSON.stringify(order),application_id:$('#order_id').val(),confirmVal:confirmVal}, function(data){
                 if(data){
+                    var residual_cny=$('#residual_cny').val();//未收
+                    var receive_cny=$('#receive_cny').val();
+                    $('#residual_cny').val(parseFloat(residual_cny - receive_cny).toFixed(2));
+                    $('#receive_cny').val(parseFloat(residual_cny - receive_cny).toFixed(2));
+
                     $("#returnBtn").attr("disabled", true);
                     $("#returnConfirmBtn").attr("disabled", false);
                     $("#deleteBtn").attr("disabled", true);
@@ -250,7 +259,7 @@ $(document).ready(function() {
         });
     // $(function(){residual_cny
     //     var total_amount=$('#total_amount').val();
-    //     $('#modal_cny').val(total_amount);
+    //     $('#receive_cny').val(total_amount);
     // })
 
      //构造主表json
@@ -258,7 +267,7 @@ $(document).ready(function() {
         var item = {};
         item.custom_charge_order_id = $('#order_id').val();
         item.total_amount=$('#total_amount').val();
-        item.user_id=$('#user_id').val();
+        item.confirm_by=$('#user_id').val();
         // item.selected_ids = $('#selected_ids').val();
         item.status='新建';
         item.currency_id=3;
@@ -273,6 +282,9 @@ $(document).ready(function() {
                     name = "end_time"
                 }
                 item[name] = value;
+                if(name.indexOf("residual_cny")!=-1){
+                    item[name]=$('#residual_cny').val()-$('#receive_cny').val();
+                }
             }
         }
         return item;

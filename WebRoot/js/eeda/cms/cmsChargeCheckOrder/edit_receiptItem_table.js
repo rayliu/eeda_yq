@@ -37,20 +37,16 @@ $(document).ready(function() {
     var itemIds=[];
     var cnames = [];
     //------------事件处理
-        var itemTable = eeda.dt({
-            id: 'receip-table',
-            initComplete: function( settings ) {
-            	ids = [];
-            	cnames = [];
-            },
-            columns:[
-            { "data": "currency_name", "width": "100px"},
-            { "data": "total_amount", "width": "180px"},
-            { "data": "receive_cny", "width": "120px"},
-            { "data": "residual_cny", "width": "200px"},
-            { "data": "receive_time", "width": "80px"},
-            { "data": "receive_name", "width": "80px"}
-            ]
+    var reciveitemTable = eeda.dt({
+        id: 'receip-table',
+        columns:[
+        { "data": "CURRENCY_NAME", "width": "100px"},
+        { "data": "TOTAL_AMOUNT", "width": "180px"},
+        { "data": "RECEIVE_CNY", "width": "120px"},
+        { "data": "RESIDUAL_CNY", "width": "200px"},
+        { "data": "RECEIVE_TIME", "width": "80px"},
+        { "data": "RECEIVE_NAME", "width": "80px"}
+        ]
     }); 
        
       //计算总额
@@ -59,7 +55,7 @@ $(document).ready(function() {
             var USD_cost=0, USD_charge=0;
             var HKD_cost=0, HKD_charge=0;
             var JPY_cost=0, JPY_charge=0;
-            itemTable.data().each(function(item, index) {
+            reciveitemTable.data().each(function(item, index) {
                 //dom 对象的checkbox 是否勾上了？
                 var id = item.CPOID;
 
@@ -137,8 +133,9 @@ $(document).ready(function() {
     
     //刷新明细表
     itemOrder.refleshReciveTable = function(order_id){
-    	var url = "/cmsChargeCheckOrder/getReceiveItemList?order_id="+order_id;
-    	itemTable.ajax.url(url).load();
+    	var url = "/cmsChargeCheckOrder/tableList?order_id="+order_id
+        +"&table_type=receive";
+    	reciveitemTable.ajax.url(url).load();
     }
     
     

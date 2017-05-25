@@ -240,12 +240,12 @@ public class CmsChargeCheckOrderController extends Controller {
     //报关例外，获取每次收款的记录
     public List<Record> getReceiveItemList(String order_id){
     	String sql = null;
-   		 sql = "  SELECT caci.*,c.`name` currency_name ,ul.user_name receive_name"
+   		 sql = "  SELECT caci.*,c.`name` currency_name ,ul.c_name receive_name"
    				+" from custom_arap_charge_order caco  "
    				+" left join custom_arap_charge_receive_item caci on caci.custom_charge_order_id = caco.id "
    				+" LEFT JOIN currency c on c.id=caci.currency_id "
    				+ "  LEFT JOIN user_login ul ON ul.id = caci.confirm_by"
-   				+" where caci.custom_charge_order_id ="+order_id;
+   				+" where caci.custom_charge_order_id ="+order_id+" order by caci.id desc";
     	List<Record> re = Db.find(sql);
     	return re;
     }
@@ -281,7 +281,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		UserLogin ul2 = UserLogin.dao.findById(confirm_by);
 		UserLogin u3=LoginUserController.getLoginUser(this);
 		
-		String sqlString="SELECT * FROM custom_arap_charge_receive_item WHERE custom_charge_order_id="+id+" ORDER BY id DESC";
+		String sqlString="SELECT  residual_cny FROM custom_arap_charge_receive_item WHERE custom_charge_order_id="+id+" ORDER BY id DESC";
 		Record rec2 = Db.findFirst(sqlString);
 		Record rec = order.toRecord(); 
 		rec.set("user", u3);
@@ -383,6 +383,11 @@ public class CmsChargeCheckOrderController extends Controller {
 	    		}
     	}else{//应收对账单
     		    list = getItemList(condition,order_id);
+    	}
+    	String  type=getPara("table_type");
+    	if(order_id!=""&&"receive".equals(type)){
+    		list=getReceiveItemList(order_id);
+    		setAttr("receive_itemList",list);
     	}
 
     	Map BillingOrderListMap = new HashMap();
@@ -523,13 +528,6 @@ public class CmsChargeCheckOrderController extends Controller {
 //             }
    			DbUtils.setModelValues(dto, cacritem); 
    			cacritem.save();
-//   			String itemid=cacritem.get("id");
-             	//申请单的cny,hkd，新建表代替申请单custom_arap_charge_receive_item
-             	
-//             	ArapChargeApplication arapChargeInvoiceApplication = ArapChargeApplication.dao.findById(application_id);
-//                 arapChargeInvoiceApplication.set("status", "已收款");
-                 
-                
                  List<Record> res = Db.find("select * from custom_arap_charge_item where custom_charge_order_id = ?",id);
                  if(res!=null){
                 	 for (Record re : res) {
