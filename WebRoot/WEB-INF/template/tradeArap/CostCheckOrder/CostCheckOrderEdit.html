@@ -250,15 +250,17 @@
 	                               </div>
                                 
                                 <!-- /.panel-body -->
-                          <div class="form-group">
-                                <div class="col-lg-12">
-                                    <br>    
-                                    <button id="saveBtn" type="button" class="btn  btn_green" disabled>保存</button> 
-                                    <button id="confirmBtn" type="button" class="btn btn_green" disabled>确认</button>
-							        <button id="printBtn"  type="button" class="btn btn_white" disabled>打印</button>
-                                    <a class="btn btn_white" href="/tradeCostCheckOrder">返回</a>
-                                </div>
-                         </div>
+          <div class="form-group">
+                <div class="col-lg-12">
+                    <br>    
+                    <button id="saveBtn" type="button" class="btn  btn_green" disabled>保存</button> 
+                    <% if(shiro.hasPermission("tradeCostCheckOrder.confirm")){%>
+                        <button id="confirmBtn" type="button" class="btn btn_green" disabled>确认</button>
+                 <%}%>
+                <button id="printBtn"  type="button" class="btn btn_white" disabled>打印</button>
+                    <a class="btn btn_white" href="/tradeCostCheckOrder">返回</a>
+                </div>
+         </div>
         </div>
         <!-- /#page-wrapper -->
         <a id='cost_table_msg_btn' data-target='#cost_table_msg' data-toggle='modal' style='display:none'></a>
