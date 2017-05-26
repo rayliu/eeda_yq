@@ -24,6 +24,7 @@
                     <div class="form-group button-bar" >
                         <button id="searchBtn" class="btn btn-default" type="button">查询</button>
                         <button id="resetBtn" class="btn btn-default" type="button">清空条件</button>
+                        <a id="returnBtn" href="#location" class="btn btn-default" type="button">返回上页</a>
                         <div style="float:right;margin-right:50px;">
                         	<label>仓库总框数:</label>
                         	<span id = "totalLabel">${totalLabel!''}</span>
@@ -90,7 +91,7 @@
 	                    		</div>
 	                    </div>
                     </div>
-					<div class="">  
+					<div style="margin-bottom: 20px">  
 						 <%include("/eeda/component/form/detailTable.html", 
                         { 
 						id:'item_table',

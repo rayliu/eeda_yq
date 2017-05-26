@@ -69,6 +69,8 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
     	$("#eeda-table").on('click', '.itemDetail', function(e){
           	var value = $(this).attr("item_no");
           	var name = $($(this).parent().parent()).find('.item_name').text();
+            this.id = 'location'+value;
+            $('#returnBtn').attr('href','#location'+value);
           	
           	$('#eedaTable').hide();
           	$('#partTable').show();
@@ -84,8 +86,15 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
       
         $('#resetBtn').click(function(e){
         	$("#orderForm")[0].reset();
-            $('.itemShow').hide();
             searchData();
+        });
+        
+        $('#returnBtn').click(function(e){
+        	$("#orderForm")[0].reset();
+        	$('.itemShow').hide();
+            $('#orderText').text("");
+            $('#eedaTable').show();
+          	$('#partTable').hide();
         });
 
         $('#searchBtn').click(function(e){

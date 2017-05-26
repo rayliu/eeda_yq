@@ -6,6 +6,7 @@ $(document).ready(function() {
         paging: true,
         serverSide: false, //不打开会出现排序不对
         scrollX:true,
+        pageLength:100,
         //ajax: "/inventory/list",
         "drawCallback": function( settings ) {
 	        $.unblockUI();
