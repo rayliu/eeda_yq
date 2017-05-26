@@ -114,8 +114,10 @@ import models.eeda.profile.Unit;
 import models.eeda.profile.Warehouse;
 import models.eeda.tms.TransArapChargeItem;
 import models.eeda.tms.TransArapChargeOrder;
+import models.eeda.tms.TransArapChargeReceiveItem;
 import models.eeda.tms.TransArapCostItem;
 import models.eeda.tms.TransArapCostOrder;
+import models.eeda.tms.TransArapCostReceiveItem;
 import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
 import models.eeda.tms.TransJobOrderLandItem;
@@ -570,6 +572,8 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("trans_job_order_arap", TransJobOrderArap.class);
         arp.addMapping("trans_arap_cost_order", TransArapCostOrder.class);
         arp.addMapping("trans_arap_cost_item", TransArapCostItem.class);
+        arp.addMapping("trans_arap_cost_receive_item", TransArapCostReceiveItem.class);
+        arp.addMapping("trans_arap_charge_receive_item", TransArapChargeReceiveItem.class);
         
         arp.addMapping("trans_arap_charge_order", TransArapChargeOrder.class);
         arp.addMapping("trans_arap_charge_item", TransArapChargeItem.class);

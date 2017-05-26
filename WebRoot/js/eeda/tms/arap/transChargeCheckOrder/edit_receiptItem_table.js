@@ -133,7 +133,7 @@ $(document).ready(function() {
     
     //刷新明细表
     itemOrder.refleshReciveTable = function(order_id){
-    	var url = "/cmsChargeCheckOrder/tableList?order_id="+order_id
+    	var url = "/transChargeCheckOrder/tableList?order_id="+order_id
         +"&table_type=receive";
     	reciveitemTable.ajax.url(url).load();
     }

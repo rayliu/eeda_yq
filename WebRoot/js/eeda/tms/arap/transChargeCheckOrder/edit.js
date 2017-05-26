@@ -181,9 +181,9 @@ $(document).ready(function() {
     $('#receive_cny').on('click keyup',function(){
             var receive_cny=$(this).val().trim();
             if(receive_cny){
-               $('#confirmBtn').attr('disabled',false);
+               $('#charge_confirmBtn').attr('disabled',false);
             }else{
-                $('#confirmBtn').attr('disabled',true);
+                $('#charge_confirmBtn').attr('disabled',true);
             }
     });
     //付款方式回显（1）
@@ -201,14 +201,14 @@ $(document).ready(function() {
     })
 
       //付款确认
-      $("#confirmBtn,#badBtn").on('click',function(){
+      $("#charge_confirmBtn,#badBtn").on('click',function(){
             var confirmVal =$(this).text();
             if(confirmVal=='坏账确认'){
                 var pay_remark =$('#pay_remark').val()+'\n 这笔为坏账'
                 $('#pay_remark').html(pay_remark);              
               } 
             $("#badBtn").attr("disabled", true);  
-            $("#confirmBtn").attr("disabled", true);  
+            $("#charge_confirmBtn").attr("disabled", true);  
            
             var formRequired=0;
             $('form').each(function(){
@@ -221,7 +221,7 @@ $(document).ready(function() {
             }
             if(formRequired>0){
                 $.scojs_message('收款时间为必填字段', $.scojs_message.TYPE_ERROR);
-                $("#confirmBtn").attr("disabled", false);
+                $("#charge_confirmBtn").attr("disabled", false);
                 $("#badBtn").attr("disabled", false);
                 return;
             }
@@ -234,7 +234,7 @@ $(document).ready(function() {
             // order.payment_method = $('#payment_method').val();
             // order.pay_remark = $('#pay_remark').val();
             order=buildConfirmFormOrder();
-            $.get("/cmsChargeCheckOrder/confirmOrder", {params:JSON.stringify(order),application_id:$('#order_id').val(),confirmVal:confirmVal}, function(data){
+            $.get("/transChargeCheckOrder/confirmOrder", {params:JSON.stringify(order),application_id:$('#order_id').val(),confirmVal:confirmVal}, function(data){
                 if(data){
                     var residual_cny=$('#residual_cny').val();//未收
                     var receive_cny=$('#receive_cny').val();
@@ -244,7 +244,7 @@ $(document).ready(function() {
                     $("#returnBtn").attr("disabled", true);
                     $("#returnConfirmBtn").attr("disabled", false);
                     $("#deleteBtn").attr("disabled", true);
-                    $("#confirm_name").val(data.CONFIRM_NAME);
+                    $("#charge_confirm_name").val(data.CONFIRM_NAME);
                     itemOrder.refleshReciveTable($('#order_id').val());
                     if(confirmVal=="坏账确认"){
                         $("#status").val('该笔为坏账');
@@ -254,8 +254,8 @@ $(document).ready(function() {
                         $("#audit_status").val(data.STATUS);
                         $.scojs_message('确认付款成功', $.scojs_message.TYPE_OK);
                     }
-                }else{
-                    $("#confirmBtn").attr("disabled", false);
+            }else{
+                    $("#charge_confirmBtn").attr("disabled", false);
                     $("#badBtn").attr("disabled", false);
                     $.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
                 }
@@ -266,7 +266,7 @@ $(document).ready(function() {
      //构造主表json
     var buildConfirmFormOrder = function(){
         var item = {};
-        item.custom_charge_order_id = $('#order_id').val();
+        item.charge_order_id = $('#order_id').val();
         item.total_amount=$('#total_amount').val();
         item.confirm_by=$('#user_id').val();
         // item.selected_ids = $('#selected_ids').val();
