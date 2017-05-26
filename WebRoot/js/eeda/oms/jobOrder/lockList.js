@@ -33,12 +33,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           columns: [
 				{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
+              $('[name=allCheckBox]').attr("checked",true);
 				    	if(full.STATUS!='已完成'){
-				    		return '<input type = "checkBox" name = "checkBox">';
+				    		return '<input type = "checkBox" name = "checkBox" checked>';
 				    	}else{
 				    		return '<input type = "checkBox" disabled name = "checkBox">';
 				    	}
-				      
+
 				    }
 				},
               { "width": "30px",
@@ -124,7 +125,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
               
           ]
       });
-
+          $('#eeda-table').on('click',' [type=checkBox]',function(){
+              $('[name=allCheckBox]').prop("checked",$('#eeda-table tbody [type=checkBox]:unchecked').size()==0)
+              //全选
+              if($('#eeda-table tbody [type=checkBox]:checked').size()>0){
+                  $('#lockBtn').attr('disabled',false);
+              }else{
+                $('#lockBtn').attr('disabled',true);
+              }
+          });
+          $('#eeda-table [name=allCheckBox]').on('click',function(){
+                  $('#eeda-table [type=checkBox]').prop('checked',this.checked);
+                  if($('#eeda-table tbody [type=checkBox]').size()>0){
+                        $('#lockBtn').attr('disabled',!this.checked);
+                  }
+          });
 
 
       //base on config hide cols
@@ -143,20 +158,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           });
       });
       
-      var checkNum = 0;
-      $('#eeda-table').on('click','[name=checkBox]',function(){
-    	  if(this.checked){
-    		  checkNum++;
-    	  }else{
-    		  checkNum--;
-    	  }
-    	  
-    	  if(checkNum>0){
-    		  $('#lockBtn').attr('disabled',false);
-    	  }else{
-    		  $('#lockBtn').attr('disabled',true);
-    	  }
-      });
+     
       
       $('#lockBtn').on('click',function(){
     	  checkNum = 0;
