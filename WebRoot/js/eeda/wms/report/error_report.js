@@ -16,15 +16,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             columns:[
 				{ "width": "5px",
 				    "render": function ( data, type, full, meta ) {
-				      return '<input type="checkBox" name="checkBox">';
+				      return '<input type="checkBox" name="checkBtn">';
 				    }
 				},
-//				{ "width": "30px",
-//                    "render": function ( data, type, full, meta ) {
-//                      return '<button type="button" class="btn btn-primary delete_btn btn-xs">'+
-//                        '<i class="fa fa-trash-o"></i> 删除</button>';
-//                    }
-//                },
                 {"data": "ORDER_TYPE",'class':'order_type', "width": "70px"},
 				{ "data": "ERROR_MSG", "width": "220px",'class':"error_msg",
 					"render": function ( data, type, full, meta ) {
@@ -46,7 +40,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				}, 
 				{"data": "ITEM_NO", "width": "80px",
 					  "render": function ( data, type, full, meta ) {
-						  //return "<a href='/wmsproduct/edit?id="+full.PRODUCT_ID+"'target='_blank'>"+data+"</a>";
 						  return data;
 					  }
 				},
@@ -62,45 +55,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             ]
         });
         
-        $('#checkBox').click(function(){
+        $('#checkBtn').click(function(){
         	var self = this;
         	var btn = $(self).text();
         	
         	if(btn == '全选'){
         		$(self).text('取消选中');
-        		$('#eeda-table [name=checkBox]').prop('checked',true);
+        		$('#eeda-table [name=checkBtn]').prop('checked',true);
         	}else{
         		$(self).text('全选');
-        		$('#eeda-table [name=checkBox]').prop('checked',false);
+        		$('#eeda-table [name=checkBtn]').prop('checked',false);
         	}
         });
         
-        $('#eeda-table').on('click','.delete_btn',function(){
-        	var self = this;
-        	var id = $(this).parent().parent().attr('id');
-        	var order_type = $($(this).parent().parent().find('.order_type')).text();
-        	
-        	
-        	if(!confirm('是否确认删除')){
-        		return false;
-        	}
-        	self.disabled = true;
-        	$.post('/errorReport/delete',{id:id,order_type:order_type},function(data){
-        		if(data){
-        			$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
-        			searchData();
-        			self.disabled = false;
-        		}else{
-        			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
-        		}
-        	}).fail(function() {
-                $.scojs_message('后台报错,三秒后自动刷新页面', $.scojs_message.TYPE_ERROR);
-                self.disabled = false;
-                window.setTimeout(function(){
-               	   location.reload();
-                },3000); 
-            });
-        });
+
         
         
         
@@ -108,7 +76,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var self = this;
         	
         	var idArray = [];
-        	$('#eeda-table [name=checkBox]:checked').each(function(){
+        	$('#eeda-table [name=checkBtn]:checked').each(function(){
         		var id = $(this).parent().parent().attr('id');
         		var order_type = $($(this).parent().parent().find('.order_type')).text();
         		var error_msg = $($(this).parent().parent().find('.error_msg')).text();
@@ -131,12 +99,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	self.disabled = true;
         	$.post('/errorReport/gateIn',{idArray:idArray.toString()},function(data){
         		if(data){
+        			$('#checkBtn').text('全选');
         			$.scojs_message('手工入库成功', $.scojs_message.TYPE_OK);
         			searchData();
         			self.disabled = false;
         		}else{
         			$.scojs_message('操作失败,三秒后自动刷新页面', $.scojs_message.TYPE_ERROR);
         			window.setTimeout(function(){
+        				$('#checkBtn').text('全选');
                     	 location.reload();
                     },3000); 
         		}
@@ -152,7 +122,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	
         	var jsonArray = {};
         	var idArray = [];
-        	$('#eeda-table [name=checkBox]:checked').each(function(){
+        	$('#eeda-table [name=checkBtn]:checked').each(function(){
         		var id = $(this).parent().parent().attr('id');
         		var order_type = $($(this).parent().parent().find('.order_type')).text();
         		var group = {}
@@ -174,11 +144,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	self.disabled = true;
         	$.post('/errorReport/delete',{jsonArray:JSON.stringify(jsonArray)},function(data){
         		if(data){
+        			$('#checkBtn').text('全选');
         			$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
         			searchData();
         			self.disabled = false;
         		}else{
-        			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+        			$.scojs_message('操作失败,三秒后自动刷新页面', $.scojs_message.TYPE_ERROR);
+        			window.setTimeout(function(){
+        				$('#checkBtn').text('全选');
+                    	 location.reload();
+                    },3000); 
         		}
         	}).fail(function() {
                 $.scojs_message('后台报错', $.scojs_message.TYPE_ERROR);
@@ -214,6 +189,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         };
         
         $('[name=optionsRadios]').on('change',function(){
+        	var value = this.value;
+        	if(value=='gateOut'){
+        		$('#gateInBtn').show();
+        		$('#deleteBtn').hide();
+        	}else{
+        		$('#gateInBtn').hide();
+        		$('#deleteBtn').show();
+        	}
+        	
         	searchData();
         })
       
@@ -222,7 +206,5 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var url = "/errorReport/list?jsonStr="+JSON.stringify(itemJson);
         	dataTable.ajax.url(url).load();
         };
-        
-        
 	});
 });
