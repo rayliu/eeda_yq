@@ -22,6 +22,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
             id: 'eeda-table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
+            pageLength:100,
             ajax: "/inventory/list",
             "drawCallback": function( settings ) {
 		        $.unblockUI();
@@ -32,7 +33,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
               	    	if(!data){
               	    		data = "<i class='glyphicon glyphicon-th-list itemDetail'></i>";
               	    	}
-              	    	return "<a class='itemDetail' item_no='"+full.ITEM_NO+"' style='cursor: pointer;'>"+data+"</a>";
+              	    	return "<a class='itemDetail' href='#' item_no='"+full.ITEM_NO+"' style='cursor: pointer;'>"+data+"</a>";
               	    }
                 },
                 { "data": "ITEM_NAME","class":"item_name"}
@@ -49,17 +50,18 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
 		        $.unblockUI();
 		    },
             columns:[
-                { "data": "PART_NO","class":"part_no",
+                { "data": "PART_NO","class":"part_no","width":"80px",
                 	 "render": function ( data, type, full, meta ) {
                	    	if(!data)
                	    		data = "<i class='glyphicon glyphicon-th-list'></i>";
                	    	return "<a class='partDetail' part_no='"+full.PART_NO+"' data-target='#partDetail' data-toggle='modal' style='cursor: pointer;'>"+data+"</a>";
                	    }
                 }, 
-                { "data": "USEFOR","class":"item_nos"}, 
-                { "data": "PART_NAME","class":"part_name"}, 
-				{ "data": "TOTALBOX","class":"totalBox"},
-                { "data": "TOTALPIECE","class":"totalPiece","visible":false}
+                { "data": "USEFOR","class":"item_nos","width":"200px"}, 
+                { "data": "PART_NAME","class":"part_name","width":"200px"}, 
+                { "data": "TOTALPIECE","class":"totalPiece","width":"80px"},
+				{ "data": "TOTALBOX","class":"totalBox","width":"80px"}
+                
             ]
         });
         

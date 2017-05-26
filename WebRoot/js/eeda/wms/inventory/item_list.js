@@ -11,32 +11,11 @@ $(document).ready(function() {
 	        $.unblockUI();
 	    },
         columns:[
-                 {"data": "ITEM_NO", visible: false,
-               	    "render": function ( data, type, full, meta ) {
-               		    return data;
-               	    }
-                 },
-                 { "data": "ITEM_NAME", visible: false,
-                    "render": function ( data, type, full, meta ) {
-                      return data;
-                    }
-                 }, 
-                 { "data": "PART_NO", visible: false,
-                      "render": function ( data, type, full, meta ) {
-                          //$('#partNo').text(data);
-                          return data;
-                       }
-                 }, 
- 				 { "data": "PART_NAME", visible: false,
-	                  "render": function ( data, type, full, meta ) {
-	                      //$('#partName').text(data);
-	                      return data;
-	                  }
-                 }, 
- 				 { "data": "SHELVES"},
- 				 { "data": "QUANTITY"},
- 				 { "data": "CREATE_TIME"},
- 				 { "data": "CREATOR_NAME"}
+ 				 { "data": "SHELVES","width":"100px"},
+ 				 { "data": "QUANTITY","width":"100px"},
+ 				 { "data": "QR_CODE","width":"300px"},
+ 				 { "data": "CREATE_TIME","width":"100px"},
+ 				 { "data": "CREATOR_NAME","width":"100px"}
         ]
     });
 	

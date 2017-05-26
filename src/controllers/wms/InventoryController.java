@@ -251,7 +251,7 @@ public class InventoryController extends Controller {
             
             String part_no = dto.get("part_no");
             if(StringUtils.isNotBlank(part_no)){
-            	condition += " and gi.part_no = '"+part_no+"'";
+            	condition += " and pro.part_no = '"+part_no+"'";
             }
             
             //处理无法识别item_no的数据
@@ -264,19 +264,6 @@ public class InventoryController extends Controller {
             	}
             }
             
-            String begin_time = dto.get("create_time_begin_time");
-            if(StringUtils.isBlank(begin_time)){
-            	begin_time = "2000-01-01";
-            }
-            
-            String end_time = dto.get("create_time_end_time");
-            if(StringUtils.isBlank(end_time)){
-            	end_time = "2037-01-01";
-            }else{
-            	end_time = end_time +" 23:59:59";
-            }
-            
-            condition += " and gi.create_time between '"+begin_time+"' and '"+end_time+"'";
     	}
     	
     	String sqlTotal = "select count(1) total from (select A.id from (select gi.id,gi.part_no"
@@ -285,9 +272,15 @@ public class InventoryController extends Controller {
 			+ " where gi.office_id="+office_id
 			+ " and out_flag = 'N' and error_flag = 'N'"
 			+ condition 
-			+ " group by gi.id ) A group by A.part_no) B";
+			+ " group by gi.id "
+			+ " union"
+			+ " select pro.id,pro.part_no from wmsproduct pro"
+			+ " where amount>0"
+			+ condition 
+			+ " ) A group by A.part_no) B";
         
-    	sql = "select A.*,count(A.id) totalBox,sum(A.quantity) totalPiece from (select gi.*,"
+    	sql = "select A.*,if(quantity=0,0,count(A.id)) totalBox,sum(A.quantity) totalPiece from ("
+    	    + "select gi.id, gi.quantity,gi.part_no,"
     		+ " pro.item_name,ifnull(pro.item_no,'') item_no,pro.part_name part_name ,"
     		+ " (select GROUP_CONCAT(item_no SEPARATOR ' , ') from wmsproduct where part_no = gi.part_no) usefor"
 			+ " from gate_in gi "
@@ -295,7 +288,14 @@ public class InventoryController extends Controller {
 			+ " where gi.office_id="+office_id
 			+ " and out_flag = 'N' and error_flag = 'N'"
 			+ condition 
-			+ " group by gi.id ) A group by A.part_no";
+			+ " group by gi.id "
+			+ " union"
+			+ " select pro.id,0 quantity,pro.part_no,pro.item_name,pro.item_no,pro.part_name,"
+			+ " (select GROUP_CONCAT(item_no SEPARATOR ' , ') from wmsproduct where part_no = pro.part_no) usefor"
+			+ " from wmsproduct pro"
+			+ " where amount>0"
+			+ condition 
+			+ " ) A group by A.part_no order by A.part_no";
     	
         
         Record rec = Db.findFirst(sqlTotal);
