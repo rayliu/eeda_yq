@@ -179,8 +179,14 @@ public class TradeItemController extends Controller {
         	r.set("commodity_name", commodity_name);
         	r.set("unit_name", unit_name);
             r.set("unit_name_eng", unit_name_eng);
+            if(!VAT_rate.equals("")){
+            	Long.parseLong(VAT_rate);
+            }
+            if(!rebate_rate.equals("")){
+            	Long.parseLong(rebate_rate);
+            }
             r.set("VAT_rate", VAT_rate);
-            r.set("rebate_rate", rebate_rate);
+            r.set("rebate_rate",rebate_rate);
             r.set("remark", remark);
             r.set("office_id", officeId);
             r.save();

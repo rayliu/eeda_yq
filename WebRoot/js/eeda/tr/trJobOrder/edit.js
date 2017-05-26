@@ -411,7 +411,86 @@ $(document).ready(function() {
     	$('#land_sendTruck').attr('disabled', true);
     }
 
-    
+        $('#add_tradeItem').click(function(){
+            $('#charge_table_msg_btn').click();
+      });
+
+        //新增贸易商品条目
+        //校验是否已存在此费用
+        $('#orderForm_tradeItem').validate({
+                rules: {
+                    commodity_name: {
+                        required: true,
+                        remote:{
+                            url: "/tradeItem/checkCommodityNameExist",
+                            type: "post",
+                            data:  {
+                                commodity_name: function() { 
+                                      return $("#commodity_name").val();
+                                }
+                            }
+                        }
+                    }
+                },
+                messages:{
+                    commodity_name:{
+                        remote:"此商品名称已存在"
+                    }
+                },
+                highlight: function(element) {
+                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                },
+                success: function(element) {
+                    element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
+                }
+        });
+
+        //------------save
+        $('#saveBtn_tradeItem').click(function(e){
+            //阻止a 的默认响应行为，不需要跳转
+            e.preventDefault();
+            //提交前，校验数据
+            if(!$("#orderForm_tradeItem").valid()){
+                return false;
+            }            
+            $(this).attr('disabled', true);
+            var order = {
+                commodity_name: $('#commodity_name_tradeItem').val().trim(),                
+                unit_name: $('#unit_name_tradeItem').val(),                
+                unit_name_eng: $('#unit_name_eng_tradeItem').val(),
+                VAT_rate: $('#VAT_rate_tradeItem').val(),                
+                rebate_rate: $('#rebate_rate_tradeItem').val(),   
+                remark: $('#remark_tradeItem').val()
+            };
+            $.post('/tradeItem/checkCommodityNameExist', {commodity_name:$("#commodity_name_tradeItem").val().trim()},function(data){
+                if(!data){
+                    $('.shangping_daishan').remove();
+                    $("#commodity_name_tradeItem").after("<font class='shangping_daishan' style='color:red;'>此商品名称已存在</b> ");
+                    $('#saveBtn_tradeItem').attr('disabled', false);
+                   $("#commodity_name_tradeItem").closest('.form-group').removeClass('has-success').addClass('has-error');
+                   $("#commodity_name_tradeItem").addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
+                    return;
+                }else{
+                    //异步向后台提交数据
+                        $.post('/tradeItem/save', {params:JSON.stringify(order)}, function(data){
+                            var order = data;
+                            if(order.ID>0){
+                                $.scojs_message('新增贸易商品条目成功', $.scojs_message.TYPE_OK);
+                                $('#orderForm_tradeItem input, #orderForm_tradeItem textarea').val('')
+                                $('#saveBtn_tradeItem').attr('disabled', false);
+                            }else{
+                                $.scojs_message('新增失败', $.scojs_message.TYPE_ERROR);
+                                $('#saveBtn_tradeItem').attr('disabled', false);
+                            }
+                        },'json').fail(function() {
+                            $.scojs_message('新增失败', $.scojs_message.TYPE_ERROR);
+                            $('#saveBtn_tradeItem').attr('disabled', false);
+                        });
+                }
+
+            });
+            
+        });
     
     
 });
