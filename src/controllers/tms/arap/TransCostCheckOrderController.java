@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.ArapAccountAuditLog;
 import models.ArapCostItem;
 import models.ArapCostOrder;
 import models.RateContrast;
@@ -851,24 +852,24 @@ public class TransCostCheckOrderController extends Controller {
   	private void createAuditLog(String application_id, String payment_method,
             String receive_bank_id, String receive_time, String pay_amount, String currency_code) {
         //新建日记账表数据
-//  		UserLogin user = LoginUserController.getLoginUser(this);
-//        long office_id = user.getLong("office_id");
-//		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
-//        auditLog.set("payment_method", payment_method);
-//        auditLog.set("payment_type", ArapAccountAuditLog.TYPE_CUSTOMCOST);
-//        auditLog.set("currency_code", currency_code);
-//        auditLog.set("amount", pay_amount);
-//        auditLog.set("creator", LoginUserController.getLoginUserId(this));
-//        auditLog.set("create_date", receive_time);
-//        auditLog.set("office_id", office_id);
-//        if(receive_bank_id!=null && !("").equals(receive_bank_id)){
-//        		auditLog.set("account_id", receive_bank_id);
-//        	}else{
-//        		auditLog.set("account_id", 4);
-//        	}
-//        auditLog.set("source_order", "报关应付对账单");
-//        auditLog.set("invoice_order_id", application_id);
-//        auditLog.save();
+  		UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
+		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
+        auditLog.set("payment_method", payment_method);
+        auditLog.set("payment_type", ArapAccountAuditLog.TYPE_TRANSCOST);
+        auditLog.set("currency_code", currency_code);
+        auditLog.set("amount", pay_amount);
+        auditLog.set("creator", LoginUserController.getLoginUserId(this));
+        auditLog.set("create_date", receive_time);
+        auditLog.set("office_id", office_id);
+        if(receive_bank_id!=null && !("").equals(receive_bank_id)){
+        		auditLog.set("account_id", receive_bank_id);
+        	}else{
+        		auditLog.set("account_id", 4);
+        	}
+        auditLog.set("source_order", "豪通应付对账单");
+        auditLog.set("invoice_order_id", application_id);
+        auditLog.save();
     }
     
 }

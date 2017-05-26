@@ -37,6 +37,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     	if(strType=="报关应付对账单"){
                     		return "<a href='/cmsCostCheckOrder/edit?id="+full.INVOICE_ORDER_ID+"'target='_blank'>"+full.ORDER_NO+"</a>";
                     	}
+                        if(strType=="豪通应收对账单"){
+                            return "<a href='/transChargeCheckOrder/edit?id="+full.INVOICE_ORDER_ID+"'target='_blank'>"+full.ORDER_NO+"</a>";
+                        }
+                        if(strType=="豪通应付对账单"){
+                            return "<a href='/transCostCheckOrder/edit?id="+full.INVOICE_ORDER_ID+"'target='_blank'>"+full.ORDER_NO+"</a>";
+                        }
                     }
                 },
                 {"data":"ABBR"},
@@ -47,6 +53,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                             return "<p >"+eeda.numFormat(parseFloat(data).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
                         else if(full.SOURCE_ORDER=='报关应收对账单'&&full.CUSTOM_CHARGE_AMOUNT!='')
                             return "<p >"+eeda.numFormat(parseFloat(full.CUSTOM_CHARGE_AMOUNT).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
+                        else if(full.SOURCE_ORDER=='豪通应收对账单'&&full.TRANS_CHARGE_AMOUNT!='')
+                            return "<p >"+eeda.numFormat(parseFloat(full.TRANS_CHARGE_AMOUNT).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
                         else
                              return data;
                     }
@@ -57,6 +65,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                             return "<p >"+eeda.numFormat(parseFloat(data).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
                         else if(full.SOURCE_ORDER=='报关应付对账单'&&full.CUSTOM_COST_AMOUNT!='')
                             return "<p >"+eeda.numFormat(parseFloat(full.CUSTOM_COST_AMOUNT).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
+                        else if(full.SOURCE_ORDER=='豪通应付对账单'&&full.CUSTOM_COST_AMOUNT!='')
+                            return "<p >"+eeda.numFormat(parseFloat(full.TRANS_COST_AMOUNT).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
                         else
                              return data;
                     }

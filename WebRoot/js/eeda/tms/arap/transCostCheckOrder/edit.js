@@ -189,7 +189,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
                  formRequired++;
             }
             if(formRequired>0){
-                $.scojs_message('收款时间为必填字段', $.scojs_message.TYPE_ERROR);
+                $.scojs_message('付款时间为必填字段', $.scojs_message.TYPE_ERROR);
                 $("#charge_confirmBtn").attr("disabled", false);
                 $("#badBtn").attr("disabled", false);
                 return;
