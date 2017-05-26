@@ -34,7 +34,9 @@ $(document).ready(function() {
 		if(!confirm("是否确认手工出库")){
 			return false;
 		}
-		
+		$.blockUI({ 
+            message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
+        });
 		self.disabled = true;
     	$.post('/inventory/gateOut',{id:id},function(data){
     		if(data){
@@ -48,10 +50,12 @@ $(document).ready(function() {
     			$.scojs_message('出库失败', $.scojs_message.TYPE_ERROR);
     			searchData(page_part_no);
     		}
+    		$.unblockUI();
     	}).fail(function() {
             $.scojs_message('后台报错', $.scojs_message.TYPE_ERROR);
             self.disabled = false;
             searchData(page_part_no);
+            $.unblockUI();
         });
 		
 	});
