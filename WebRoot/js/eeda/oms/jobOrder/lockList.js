@@ -44,7 +44,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 				},
               { "width": "30px",
                   "render": function ( data, type, full, meta ) {
-                    return '<button type="button" class="btn table_btn delete btn-xs" >'+
+                    var str=""
+                    if(full.STATUS=='已完成') str="disabled";
+                    return '<button type="button" class="btn table_btn delete btn-xs" '+ str+'>'+
                           '<i class="fa fa-trash-o"></i> 删除</button>';
                   }
               },
@@ -234,7 +236,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           	   +"&order_export_date_begin_time="+sent_out_time_begin_time
           	   +"&order_export_date_end_time="+sent_out_time_end_time;
 
-          dataTable.ajax.url(url).load();
+          dataTable.ajax.url(url).load(function(){
+             // if($('#eeda-table tbody [type=checkBox]:checked').size()>0){
+             //      $('#lockBtn').attr('disabled',false);
+             //  }else{
+             //    $('#lockBtn').attr('disabled',true);
+             //  }
+          });
       };
       
       $('#orderTabs a').click(function(){

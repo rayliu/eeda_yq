@@ -20,17 +20,25 @@ $(document).ready(function() {
     };
 
 	 //按钮状态
-	var id = $('#order_id').val();
-	var status = $('#status').val();
-    if(id==''){
-    	$('#confirmCompleted').attr('disabled', true);
-    }else{
-        loadOrderToLocalstorage(id);//数据恢复
-		if(status=='已完成'){
-			$('#confirmCompleted').attr('disabled', true);
-			$('#saveBtn').attr('disabled', true);
-		}
-    }
+     $(function(){
+            var id = $('#order_id').val();
+            var status = $('#status').val();
+            if(id==''){
+                $('#confirmCompleted').attr('disabled', true);
+            }else{
+                loadOrderToLocalstorage(id);//数据恢复
+                if(status=='已完成'){
+                    // $('#confirmCompleted').attr('disabled', true);
+                    $('#saveBtn').css('display',"none");
+                    // $('#add_charge').attr('disabled', true);
+                    // $('#add_charge_cost').attr('disabled', true);
+                    $('input').attr('disabled',true);
+                    $('select').attr('disabled',true);
+                    $('button').attr('disabled',true);
+                }
+            }
+     })
+	
      
 	
 	//已完成工作单确认
