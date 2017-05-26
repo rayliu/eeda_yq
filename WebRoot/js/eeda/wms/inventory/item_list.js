@@ -14,7 +14,7 @@ $(document).ready(function() {
 	    },
         columns:[
  				 { "data": "SHELVES","width":"100px"},
- 				 { "data": "QUANTITY","width":"100px"},
+ 				 { "data": "QUANTITY","width":"100px","class":'quantity'},
  				 { "data": "QR_CODE","width":"400px"},
  				 { "data": "CREATE_TIME","width":"120px"},
  				 { "data":null,"width":"50px",
@@ -30,6 +30,7 @@ $(document).ready(function() {
 	$("#item_table").on('click', '.gateOut', function(e){
 		var self= this;
 		var id = $(this).parent().parent().attr('id');
+		var quantity = $($(this).parent().parent().find('.quantity')).text();
 		if(!confirm("是否确认手工出库")){
 			return false;
 		}
@@ -41,6 +42,8 @@ $(document).ready(function() {
     			searchData(page_part_no);
     			self.disabled = false;
     			$('#totalLabel').text($('#totalLabel').text()-1);
+    			$('#totalBox').text($('#totalBox').text()-1);
+    			$('#totalPiece').text($('#totalPiece').text()-quantity);
     		}else{
     			$.scojs_message('出库失败', $.scojs_message.TYPE_ERROR);
     			searchData(page_part_no);
