@@ -20,7 +20,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     			if(data){
     				$.scojs_message('更新成功', $.scojs_message.TYPE_OK);
     			}else{
-    				$.scojs_message('更新失败', $.scojs_message.TYPE_ERROR);
+    				$.scojs_message('更新失败,请检查系统BOM中是否存在'+part_no+'A此part_no', $.scojs_message.TYPE_ERROR);
     			}
     			$('#changeBtn').attr('disabled', false);
     			$.unblockUI();
@@ -31,6 +31,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             });
     			
     	});
+    	
+
+        $('#resetBtn').click(function(e){
+        	$("#orderForm")[0].reset();
+        });
+        
 
     	$.unblockUI();
         
