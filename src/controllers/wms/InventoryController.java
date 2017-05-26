@@ -279,7 +279,7 @@ public class InventoryController extends Controller {
 			+ condition 
 			+ " ) A group by A.part_no) B";
         
-    	sql = "select A.*,if(quantity=0,0,count(A.id)) totalBox,sum(A.quantity) totalPiece from ("
+    	sql = "select A.*,count(IF (quantity = 0, null,A.id)) totalBox,sum(A.quantity) totalPiece from ("
     	    + "select gi.id, gi.quantity,gi.part_no,"
     		+ " pro.item_name,ifnull(pro.item_no,'') item_no,pro.part_name part_name ,"
     		+ " (select GROUP_CONCAT(item_no SEPARATOR ' , ') from wmsproduct where part_no = gi.part_no) usefor"

@@ -90,7 +90,6 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         });
         
         $('#returnBtn').click(function(e){
-        	$("#orderForm")[0].reset();
         	$('.itemShow').hide();
             $('#orderText').text("");
             $('#eedaTable').show();

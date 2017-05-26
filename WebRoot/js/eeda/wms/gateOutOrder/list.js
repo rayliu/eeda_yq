@@ -245,6 +245,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
 	          			value = value.trim();
 	          		item[name] = value;
 	          	}
+		      	item.item_no=$('#item_no_input').val();
 	      	}
 	        return item;
         };
