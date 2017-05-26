@@ -14,6 +14,8 @@ import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
+import models.wms.GateIn;
+import models.wms.GateOut;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -399,6 +401,19 @@ public class InventoryController extends Controller {
         renderJson(BillingOrderListMap); 
     }
    
+    @Before(Tx.class)
+    public void gateOut(){
+    	String id = getPara("id");
+    	
+    	GateIn gi = GateIn.dao.findById(id);
+    	gi.set("out_flag", "Y");
+    	gi.set("self_out_flag", "Y");
+    	gi.set("out_time",new Date());
+    	gi.update();
+    	
+    	
+    	renderJson(gi);
+    }
     
 
 }

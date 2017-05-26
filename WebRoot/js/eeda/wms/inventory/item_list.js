@@ -1,6 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 'validate_cn', 'sco', 'jq_blockui'], function ($, metisMenu) {
 $(document).ready(function() {
 	  //datatable, 动态处理
+	var page_part_no = null;
 	var itemTable = eeda.dt({
         id: 'item_table',
         paging: true,
@@ -14,14 +15,48 @@ $(document).ready(function() {
         columns:[
  				 { "data": "SHELVES","width":"100px"},
  				 { "data": "QUANTITY","width":"100px"},
- 				 { "data": "QR_CODE","width":"300px"},
- 				 { "data": "CREATE_TIME","width":"100px"},
- 				 { "data": "CREATOR_NAME","width":"100px"}
+ 				 { "data": "QR_CODE","width":"400px"},
+ 				 { "data": "CREATE_TIME","width":"120px"},
+ 				 { "data":null,"width":"50px",
+                     "render": function ( data, type, full, meta ) {
+                       return '<button type="button" class="btn btn-default btn-xs gateOut">'+
+                         '<i class="fa fa-trash-o"></i>手工出库</button>';
+                     }
+                 }
         ]
     });
 	
+	
+	$("#item_table").on('click', '.gateOut', function(e){
+		var self= this;
+		var id = $(this).parent().parent().attr('id');
+		if(!confirm("是否确认手工出库")){
+			return false;
+		}
+		
+		self.disabled = true;
+    	$.post('/inventory/gateOut',{id:id},function(data){
+    		if(data){
+    			$.scojs_message('出库成功', $.scojs_message.TYPE_OK);
+    			searchData(page_part_no);
+    			self.disabled = false;
+    			$('#totalLabel').text($('#totalLabel').text()-1);
+    		}else{
+    			$.scojs_message('出库失败', $.scojs_message.TYPE_ERROR);
+    			searchData(page_part_no);
+    		}
+    	}).fail(function() {
+            $.scojs_message('后台报错', $.scojs_message.TYPE_ERROR);
+            self.disabled = false;
+            searchData(page_part_no);
+        });
+		
+	});
+	
+	
 	$("#part-table").on('click', '.partDetail', function(e){
       	var part_no = $(this).attr("part_no");
+      	page_part_no = part_no;
       	var part_name = $($(this).parent().parent()).find('.part_name').text();
       	var item_nos = $($(this).parent().parent()).find('.item_nos').text();
       	var totalBox = $($(this).parent().parent()).find('.totalBox').text();
