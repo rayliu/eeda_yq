@@ -2,6 +2,7 @@
     <div id="page-wrapper">
         <div class="row simple_search_div">
             <div class="col-lg-12">
+            	<input type="hidden" id="partNoHidden">
                 <form id="orderForm">
                     <div class="row">
                     	<div class="col-lg-4">
@@ -120,6 +121,7 @@
 	<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;">LOADING...</h1>
 </div>
 <script>
+	var order = {};
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/wms/inventory/list']);
     });

@@ -68,6 +68,8 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         
     	$("#eeda-table").on('click', '.itemDetail', function(e){
           	var value = $(this).attr("item_no");
+          	$('#partNoHidden').val(value);
+          	
           	var name = $($(this).parent().parent()).find('.item_name').text();
             this.id = 'location'+value;
             $('#returnBtn').attr('href','#location'+value);
@@ -79,7 +81,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
           		$('#orderText').text("产品编码："+value);
             	$('#partText').text("产品名称："+name);
           	}
-          	searchPartData(value);
+          	order.searchPartData(value);
         });
         
         
@@ -129,7 +131,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	dataTable.ajax.url(url).load();
         };
         
-        var searchPartData=function(item_no){
+        order.searchPartData=function(item_no){
         	$.blockUI({ 
                 message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
             });

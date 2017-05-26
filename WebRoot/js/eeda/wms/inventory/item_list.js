@@ -42,6 +42,7 @@ $(document).ready(function() {
     		if(data){
     			$.scojs_message('出库成功', $.scojs_message.TYPE_OK);
     			searchData(page_part_no);
+    			order.searchPartData($('#partNoHidden').val());
     			self.disabled = false;
     			$('#totalLabel').text($('#totalLabel').text()-1);
     			$('#totalBox').text($('#totalBox').text()-1);
