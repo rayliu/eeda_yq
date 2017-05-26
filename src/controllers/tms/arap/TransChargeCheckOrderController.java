@@ -502,8 +502,6 @@ public class TransChargeCheckOrderController extends Controller {
 		Record rec =Db.findFirst(sql,id);
 
 		UserLogin u3=LoginUserController.getLoginUser(this);
-		
-
 		rec.set("user", u3);
 		String sqlString="SELECT  residual_cny FROM trans_arap_charge_receive_item WHERE charge_order_id="+id+" ORDER BY id DESC";
 		Record rec2 = Db.findFirst(sqlString);

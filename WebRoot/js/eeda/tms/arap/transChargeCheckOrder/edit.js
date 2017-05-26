@@ -252,7 +252,7 @@ $(document).ready(function() {
                     }else{
                         $("#status").val(data.STATUS);
                         $("#audit_status").val(data.STATUS);
-                        $.scojs_message('确认付款成功', $.scojs_message.TYPE_OK);
+                        $.scojs_message('确认收款成功', $.scojs_message.TYPE_OK);
                     }
             }else{
                     $("#charge_confirmBtn").attr("disabled", false);
