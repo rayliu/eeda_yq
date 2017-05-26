@@ -162,83 +162,7 @@ public class CheckOrder extends Controller {
     }  
 	
 	
-	/**
-	 * 数据产品校验
-	 * @param lines
-	 * @return
-	 */
-	@Before(Tx.class)
-	public Record importProductCheck( List<Map<String, String>> lines) {
-		System.out.println("一共要导入"+lines.size()+"行数据");
-		Record result = new Record();
-		result.set("result",true);
-		String errorMsg = "";
-		int rowNumber = 1;
-		try {
-			for (Map<String, String> line :lines) {
-				String item_name = line.get("注塑件名称")==null?null:line.get("注塑件名称").trim();
-				String item_no = line.get("注塑件编码")==null?null:line.get("注塑件编码").trim();
-				String part_no = line.get("组件编码")==null?null:line.get("组件编码").trim();
-				String part_name = line.get("组件名称")==null?null:line.get("组件名称").trim();
-				String amount = line.get("数量")==null?null:line.get("数量").trim();
-				String unit = line.get("Un")==null?null:line.get("Un").trim();
-				String node = line.get("节点")==null?null:line.get("节点").trim();
-				
-				
-				if(StringUtils.isNotBlank(item_no)){
-					if(!checkItemNo(item_no)){
-						errorMsg += ("数据校验至第" + (rowNumber+1) + "行时出现异常:此【注塑件编码】("+item_no+")已存在，请核实是否有重复导入<br/><br/>");
-					}
-				}else{
-					errorMsg += ("数据校验至第" + (rowNumber+1) + "行时出现异常:【注塑件编码】不能为空<br/><br/>");
-				}
-				
-				if(StringUtils.isEmpty(item_name)){
-					errorMsg += ("数据校验至第" + (rowNumber+1) + "行时出现异常:【注塑件名称】不能为空<br/><br/>");
-				}
-				
-				if(StringUtils.isEmpty(part_no)){
-					errorMsg += ("数据校验至第" + (rowNumber+1) + "行时出现异常:【组件编码】不能为空<br/><br/>");
-				}
-				
-				if(StringUtils.isEmpty(part_name)){
-					errorMsg += ("数据校验至第" + (rowNumber+1) + "行时出现异常:【组件名称】不能为空<br/><br/>");
-				}
-				
-				if(StringUtils.isNotBlank(amount)){
-					if(!checkDouble(amount)){
-						errorMsg += ("数据校验至第" + (rowNumber+1) + "行时出现异常:【数量】("+amount+")格式类型有误<br/><br/>");
-					}
-				}else{
-					errorMsg += ("数据校验至第" + (rowNumber+1) + "行时出现异常:【数量】不能为空<br/><br/>");
-				}
-				
-				if(StringUtils.isEmpty(unit)){
-					errorMsg += ("数据校验至第" + (rowNumber+1) + "行时出现异常:【Un】不能为空<br/><br/>");
-				}
-				
-				if(StringUtils.isEmpty(node)){
-					errorMsg += ("数据校验至第" + (rowNumber+1) + "行时出现异常:【节点】不能为空<br/><br/>");
-				}
-				
-				rowNumber++;
-				System.out.println("校验完"+(rowNumber)+"行");
-			}
-			
-			if(StringUtils.isNotBlank(errorMsg)){
-				throw new Exception(errorMsg);
-			}
-			
-		} catch (Exception e) {
-			System.out.println("校验操作异常！");
-			System.out.println(e.getMessage());
-			
-			result.set("result", false);
-			result.set("cause", e.getMessage());	
-		} 
-		return result;
-	}
-	
+
 	
 	/**
 	 * 产品BOM内容开始导入
@@ -269,7 +193,6 @@ public class CheckOrder extends Controller {
 				String amount = line.get("bdmng")==null?null:line.get("bdmng").trim();
 				String unit = line.get("meins")==null?null:line.get("meins").trim();
 				String node = line.get("pid")==null?null:line.get("pid").trim();
-		
 
 				//默认值带入
 				Wmsproduct order = new Wmsproduct();
@@ -324,55 +247,7 @@ public class CheckOrder extends Controller {
 		return result;
 	}
 	
-	/**
-	 * 数据产品校验
-	 * @param lines
-	 * @return
-	 */
-	@Before(Tx.class)
-	public Record importGateInCheck( List<Map<String, String>> lines) {
-		System.out.println("一共要导入"+lines.size()+"行数据");
-		Record result = new Record();
-		result.set("result",true);
-		String errorMsg = "";
-		int rowNumber = 1;
-		try {
-			for (Map<String, String> line :lines) {
-				String qr_code = line.get("qr_code")==null?null:line.get("qr_code").trim();
-				String part_no = line.get("part_no")==null?null:line.get("part_no").trim();
-				String quantity = line.get("quantity")==null?null:line.get("quantity").trim();
-				String shelves = line.get("shelves")==null?null:line.get("shelves").trim();
-				String return_flag = line.get("return_flag")==null?null:line.get("return_flag").trim();
-				String move_flag = line.get("move_flag")==null?null:line.get("move_flag").trim();
-				String creator = line.get("creator")==null?null:line.get("creator").trim();
-				String create_time = line.get("create_time")==null?null:line.get("create_time").trim();
-				
-				
-				if(StringUtils.isNotBlank(qr_code)){
-					if(!checkItemNo(qr_code)){
-						errorMsg += ("数据校验至第" + (rowNumber+1) + "行时出现异常:此【注塑件编码】("+qr_code+")已存在，请核实是否有重复导入<br/><br/>");
-					}
-				}else{
-					errorMsg += ("数据校验至第" + (rowNumber+1) + "行时出现异常:【注塑件编码】不能为空<br/><br/>");
-				}
-				
-				rowNumber++;
-				System.out.println("校验完"+(rowNumber)+"行");
-			}
-			
-			if(StringUtils.isNotBlank(errorMsg)){
-				throw new Exception(errorMsg);
-			}
-			
-		} catch (Exception e) {
-			System.out.println("校验操作异常！");
-			System.out.println(e.getMessage());
-			
-			result.set("result", false);
-			result.set("cause", e.getMessage());	
-		} 
-		return result;
-	}
+
 	
 	
 	/**
@@ -389,7 +264,9 @@ public class CheckOrder extends Controller {
 		Record result = new Record();
 		result.set("result",true);
 		String repeatMsg = "";
-		int rowNumber = 0;
+		int rowNumber = 0;  //成功导入数量
+		int totalRow = 0;   //文件总数量
+		int updateRow = 0;   //更新数量
 		try {
 			conn = DbKit.getConfig().getDataSource().getConnection();
 			DbKit.getConfig().setThreadLocalConnection(conn);
@@ -397,36 +274,71 @@ public class CheckOrder extends Controller {
 			
 			String[] csvRow = null;//row  
             String[] title = null;
-            
+            Long creator_id = null;
             while ((csvRow = csvReader.readNext()) != null){    
+            	totalRow ++;
             	if(rowNumber == 0){
             		title = csvRow;
             		rowNumber++;
             		continue;
             	}
-
+            	
+            	String creator = null;
             	GateIn order = new GateIn();
                 for (int i =0; i<csvRow.length; i++){
                 	String titleName = StringUtils.isNotBlank(title[i])?title[i].trim():null;
-                	String value = StringUtils.isNotBlank(csvRow[i])?csvRow[i].trim():null;;
+                	String value = StringUtils.isNotBlank(csvRow[i])?csvRow[i].trim():null;
+                	
                 	if(StringUtils.isNotBlank(value)){
-                		if(!"id".equals(titleName) && !"creator".equals(titleName) && !"qr_code".equals(titleName)){
+                		if(!"id".equals(titleName) && !"creator".equals(titleName)){
 		                    order.set(titleName, value);
-	                	}else if("creator".equals(titleName)){
-	                		UserLogin ul = UserLogin.dao.findFirst("select * from user_login where c_name = ?",value);
-	                		if(ul != null)
-	                			order.set(titleName, ul.getLong("id"));
-	                		order.set("creator_code", value);
-	                	}else if("qr_code".equals(titleName)){
-	                		order.set(titleName, value);
-	                		GateIn gi = GateIn.dao.findFirst("select * from gate_in where qr_code = ? and move_flag = ? and return_flag = ?",value,order.getStr("move_flag"),order.getStr("return_flag"));
-	                		if(gi != null){
-	                			order.set("error_flag", "Y");
-	                			order.set("error_msg", "货架上已经存在此货品，不能重复入库");
+	                	}else{
+	                		if("creator".equals(titleName)){
+	                			creator = value;
+	                			order.set("creator_code", value);
 	                		}
 	                	}
+                	}	
+                } 
+                
+                if(totalRow==2){
+                	UserLogin ul = UserLogin.dao.findFirst("select * from user_login where user_name = ?",creator);
+                	if(ul != null){
+                		order.set("creator", ul.getLong("id"));
+                		creator_id = ul.getLong("id");
                 	}
-                }    
+                }else{
+                	order.set("creator", creator_id);
+                }
+                
+                String qr_code = order.getStr("qr_code");
+                if(StringUtils.isNotBlank(qr_code)){
+            		GateIn gi = GateIn.dao.findFirst("select * from gate_in where out_flag = 'N' and qr_code = ? and move_flag = ? and return_flag = ?",qr_code,order.getStr("move_flag"),order.getStr("return_flag"));
+            		if(gi != null){
+            			String order_timeStr = gi.get("create_time").toString();
+            			String order_time = order_timeStr.substring(0,order_timeStr.length()-2);
+            			String this_time = order.getStr("create_time");
+            			String order_shelves = gi.getStr("shelves");
+            			String this_shelves = order.getStr("shelves");
+            			
+            			
+            			if(!this_time.equals(order_time) || !this_shelves.equals(order_shelves)){
+            				String import_msg = gi.getStr("import_msg")==null?"":gi.getStr("import_msg");
+            				if(!this_shelves.equals(order_shelves)){
+                				gi.set("shelves", this_shelves);
+                				gi.set("import_msg",import_msg+ "库位更新;");
+                			}
+                			if(!this_time.equals(order_time)){
+                				gi.set("create_time", this_time);
+                				gi.set("import_msg",import_msg+ "日期更新;");
+                			}
+                			gi.update();
+                			updateRow++;
+            			}
+            			continue;
+            		}
+            	}
+                
                 order.set("office_id", officeId);
                 order.set("import_by", LoginUserController.getLoginUserId(this));
                 order.set("import_time", new Date());
@@ -437,7 +349,7 @@ public class CheckOrder extends Controller {
             long end = Calendar.getInstance().getTimeInMillis();
             long time = (end- start)/1000;
             System.out.println("导入完成,耗时"+time+"秒");
-			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！<br/><br/>"+repeatMsg);
+			result.set("cause",(totalRow-1)+"条数据中成功导入( "+(rowNumber-1)+" )条数据,更新了"+updateRow+"条数据<br/><br/>"+repeatMsg);
 		} catch (Exception e) {
 			try {
 				if (null != conn)
@@ -461,54 +373,6 @@ public class CheckOrder extends Controller {
 				DbKit.getConfig().removeThreadLocalConnection();
 			}
 		}
-		return result;
-	}
-	
-	
-	
-	@Before(Tx.class)
-	public Record importGateOutCheck(CSVReader csvReader) {
-
-		Record result = new Record();
-		result.set("result",true);
-		String errorMsg = "";
-		int rowNumber = 0;
-		
-		try {
-			
-			String[] csvRow = null;//row  
-            String[] title = null;
-            
-            while ((csvRow = csvReader.readNext()) != null){    
-            	if(rowNumber == 0){
-            		title = csvRow;
-            		rowNumber++;
-            		continue;
-            	}
-                for (int i =0; i<csvRow.length; i++){
-                	String titleName = StringUtils.isNotBlank(title[i])?title[i].trim():null;
-                	String value = StringUtils.isNotBlank(csvRow[i])?csvRow[i].trim():null;;
-                	if(StringUtils.isNotBlank(value)){
-                		if("qr_code".equals(titleName)){
-	                		GateIn gi = GateIn.dao.findFirst("select * from gate_in where error_flag='N' and qr_code = ?",value);
-	                		if(gi == null){
-	                			errorMsg += ("数据校验至第" + (rowNumber+1) + "行时出现异常:库存中没有此货品（未入库）<br/>");
-	                		} 
-	                	}
-                	}
-                }    
-                rowNumber++;
-            }
-            if(StringUtils.isNotBlank(errorMsg)){
-            	result.set("result", false);
-            	result.set("cause", errorMsg);
-            }
-		} catch (Exception e) {
-            
-			result.set("result", false);
-			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber)
-						+ "行时出现异常:" + e.getMessage() + "<br/>导入数据已取消！");
-		} 
 		return result;
 	}
 
@@ -618,10 +482,6 @@ public class CheckOrder extends Controller {
                     	}
                     }
                 }
-//                else{
-//                	//不存在此出库单
-//                	throw new Exception("出库单号不存在");
-//                }
                 
                 order.set("office_id", officeId);
                 order.set("date_no", c);
