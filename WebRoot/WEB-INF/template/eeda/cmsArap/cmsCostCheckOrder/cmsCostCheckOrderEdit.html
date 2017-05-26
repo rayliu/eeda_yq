@@ -107,7 +107,7 @@
 			<div class="panel-heading">
 	              <h4 class="panel-title">
 	                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
-	                  <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 收款确认                                       </a>
+	                  <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 付款确认                                       </a>
 	              </h4>
 	          </div>
 	        <div id="collapseChargeInfo" class="panel-collapse collapse in" aria-expanded="false" style="height: auto;">
@@ -121,7 +121,7 @@
 		                              </div>
 		                            <div class="col-lg-4">
 		                            	<div class="form-group">
-		                                    <label class="search-label">收款方式</label>
+		                                    <label class="search-label">付款方式</label>
 		                                    <input type="hidden" id="payment_method_show" value="${order.payment_method!''}"/>
 		                                	<select id="payment_method" class="form-control search-control payment_method" name="payment_method" >
 		                                    <option value=""></option>
@@ -140,7 +140,7 @@
 											
 											<%include("/eeda/component/form/inputField.html", 
 											{ id:'account_no',
-											label:'收款账号', value:order.account_no!''
+											label:'付款账号', value:order.account_no!''
 											}){}%>
 											
 											<%include("/eeda/component/form/inputField.html", 
@@ -194,7 +194,7 @@
 		                       
 									<div class="form-group">
 										<div class="col-lg-12">
-											<h4>收款金额汇总</h4>
+											<h4>付款金额汇总</h4>
 										</div>
 									</div>
 							   
@@ -202,12 +202,12 @@
 		                        <div class=" form-group">
 			                            <div class="col-lg-4">
 			                                <%include("/eeda/component/form/inputField.html", { id:'receive_cny',
-			                                label:'本次收款CNY', value:order.residual_cny!''
+			                                label:'本次付款CNY', value:order.residual_cny!''
 			                                }){}%>
 			                            </div>
 			                            <div class="col-lg-4" >
 				                            <%include("/eeda/component/form/inputField.html", { id:'residual_cny',
-				                            label:'未收余额CNY', value:order.residual_cny!'',disabled:'disabled'
+				                            label:'未付余额CNY', value:order.residual_cny!'',disabled:'disabled'
 				                            }){}%>
 			                            </div>
 			                         
@@ -215,20 +215,20 @@
 		                            <div class=" form-group">
 			                       		<div class="col-lg-4">
 			                           		<%include("/eeda/component/form/inputField.html", { id:'confirm_name',
-											label:'	确认收款人', value:order.confirm_name!'',disabled:'disabled'
+											label:'	确认付款人', value:order.confirm_name!'',disabled:'disabled'
 											}){}%>
 								       </div>
 								       <div class="col-lg-4">
 				                            <%include("/eeda/component/form/dateInputField.html",
 							                        {    id:'receive_time', 
-							                             label:'收款时间',
+							                             label:'付款时间',
 							                             
 							                             value:order.receive_time!''
 				                              }){} %>
 				                        </div>
 				                     </div>
                                     <div class="button-bar col-lg-12" style = "margin-bottom:15px" >
-										<button id='confirmBtn' type="button" class="btn  btn_green" disabled >收款确认</button> 							            
+										<button id='confirmBtn' type="button" class="btn  btn_green" disabled >付款确认</button> 							            
 									</div>
                                 </form>                        
 		                  	 </div>
@@ -241,7 +241,7 @@
 			<li class="active"><a href="#itemDetail" data-toggle="tab"
 				id="costCheckOrderItem">明细信息</a></li>
 			<li ><a href="#receiptDetail" data-toggle="tab"
-				id="costCheckreceipt">收款明细信息</a></li>
+				id="costCheckreceipt">付款明细信息</a></li>
 		</ul>
 
 		<div class="tab-content">
@@ -266,7 +266,7 @@
                             {
                                 id:'receip-table', 
                                 style:'width:700px',
-                               headers:['币制','应收总金额','上次收款金额','剩余应收金额','收款时间','确认收款人'],
+                               headers:['币制','应付总金额','上次付款金额','剩余应付金额','付款时间','确认付款人'],
 								field_list:['currency_name','total_amount','receive_cny','residual_cny','receive_time','receive_name'], 
 								value_list: order.receive_itemList!receive_itemList![] 
 							}){} %>
