@@ -18,9 +18,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
       var dataTable = eeda.dt({
           id: 'eeda-table',
           colReorder: true,
-          paging: true,
+          paging: false,
+          // "pagingType":"full_numbers",
           serverSide: true, //不打开会出现排序不对
-          ajax: "/jobOrder/list",
+//          ajax: "/jobOrder/list",
            "drawCallback": function( settings ) {
                 $('.other').popover({
                     html: true,

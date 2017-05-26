@@ -11,7 +11,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             cargoTable.row(tr).remove().draw();
         }); 
 
-        itemOrder.buildOceanItem = function(){
+        itemOrder.buildOceanTotalItem = function(){
             var cargo_table_rows = $("#oceanTotal_cargo_table tr");
             var cargo_items_array=[];
             for(var index=0; index<cargo_table_rows.length; index++){
