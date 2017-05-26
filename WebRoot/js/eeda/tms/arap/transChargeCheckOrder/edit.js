@@ -1,11 +1,16 @@
-define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table','./edit_receiptItem_table',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
 
 $(document).ready(function() {
 
 	document.title = '创建应收对账单 | ' + document.title;
 	$("#breadcrumb_li").text('应收对账单');
     $('#menu_charge').addClass('active').find('ul').addClass('in');
-    
+    $(function(){
+      if(!$('#receive_cny').val()){
+            $('#receive_cny').val($('#total_amount').val());
+            $('#residual_cny').val($('#total_amount').val());
+        }
+    });
     
     //构造主表json
     var buildOrder = function(){
@@ -173,6 +178,120 @@ $(document).ready(function() {
     	}
     });
    
+    $('#receive_cny').on('click keyup',function(){
+            var receive_cny=$(this).val().trim();
+            if(receive_cny){
+               $('#confirmBtn').attr('disabled',false);
+            }else{
+                $('#confirmBtn').attr('disabled',true);
+            }
+    });
+    //付款方式回显（1）
+    $('#payment_method').change(function(){
+        var type = $(this).val();
+        if(type == 'cash'||type==""){
+            $('#transfers_massage').hide();
+            $('#receive_type_massage').hide();
+            $('#transfers_massage_pay').hide();
+        }else{
+            $('#transfers_massage').show();
+            $('#receive_type_massage').show();
+            $('#transfers_massage_pay').show();
+        }
+    })
+
+      //付款确认
+      $("#confirmBtn,#badBtn").on('click',function(){
+            var confirmVal =$(this).text();
+            if(confirmVal=='坏账确认'){
+                var pay_remark =$('#pay_remark').val()+'\n 这笔为坏账'
+                $('#pay_remark').html(pay_remark);              
+              } 
+            $("#badBtn").attr("disabled", true);  
+            $("#confirmBtn").attr("disabled", true);  
+           
+            var formRequired=0;
+            $('form').each(function(){
+                if(!$(this).valid()){
+                    formRequired++;
+                }
+            })
+            if($('#receive_time').val()==''){
+                 formRequired++;
+            }
+            if(formRequired>0){
+                $.scojs_message('收款时间为必填字段', $.scojs_message.TYPE_ERROR);
+                $("#confirmBtn").attr("disabled", false);
+                $("#badBtn").attr("disabled", false);
+                return;
+            }
+
+
+            var order={};
+            // // order.id=$('#order_id').val();
+            // order.receive_time=$('#receive_time').val();
+            // order.receive_bank_id=$('#deposit_bank').val();
+            // order.payment_method = $('#payment_method').val();
+            // order.pay_remark = $('#pay_remark').val();
+            order=buildConfirmFormOrder();
+            $.get("/cmsChargeCheckOrder/confirmOrder", {params:JSON.stringify(order),application_id:$('#order_id').val(),confirmVal:confirmVal}, function(data){
+                if(data){
+                    var residual_cny=$('#residual_cny').val();//未收
+                    var receive_cny=$('#receive_cny').val();
+                    $('#residual_cny').val(parseFloat(residual_cny - receive_cny).toFixed(2));
+                    $('#receive_cny').val(parseFloat(residual_cny - receive_cny).toFixed(2));
+
+                    $("#returnBtn").attr("disabled", true);
+                    $("#returnConfirmBtn").attr("disabled", false);
+                    $("#deleteBtn").attr("disabled", true);
+                    $("#confirm_name").val(data.CONFIRM_NAME);
+                    itemOrder.refleshReciveTable($('#order_id').val());
+                    if(confirmVal=="坏账确认"){
+                        $("#status").val('该笔为坏账');
+                        $.scojs_message('确认坏账成功', $.scojs_message.TYPE_OK);
+                    }else{
+                        $("#status").val(data.STATUS);
+                        $("#audit_status").val(data.STATUS);
+                        $.scojs_message('确认付款成功', $.scojs_message.TYPE_OK);
+                    }
+                }else{
+                    $("#confirmBtn").attr("disabled", false);
+                    $("#badBtn").attr("disabled", false);
+                    $.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
+                }
+            },'json');
+        });
+    
+
+     //构造主表json
+    var buildConfirmFormOrder = function(){
+        var item = {};
+        item.custom_charge_order_id = $('#order_id').val();
+        item.total_amount=$('#total_amount').val();
+        item.confirm_by=$('#user_id').val();
+        // item.selected_ids = $('#selected_ids').val();
+        item.status='新建';
+        item.currency_id=3;
+        var orderForm = $('#confirmForm input,select,textarea');
+        for(var i = 0; i < orderForm.length; i++){
+            var name = orderForm[i].id;
+            var value =orderForm[i].value;
+            if(name){
+                if(name.indexOf("check_time_begin") != -1){
+                    name = "begin_time";
+                }else if(name.indexOf("check_time_end") != -1){
+                    name = "end_time"
+                }
+                item[name] = value;
+                if(name.indexOf("residual_cny")!=-1){
+                    item[name]=$('#residual_cny').val()-$('#receive_cny').val();
+                }
+            }
+        }
+        return item;
+    }
+
+
   
 });
 });
