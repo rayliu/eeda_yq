@@ -808,14 +808,14 @@
     <div class="form-group">
     	<ul id="custom_type_Tabs" class="nav nav-tabs">
                  <li>
-                     <a id='oceanTotalItemTab' href="#oceanTotalItem" data-toggle="tab" >箱量汇总</a>
+                     <a id='oceanTotalItemTab' href="#oceanTotalItem" data-toggle="tab" style = "display:none" >箱量汇总</a>
                  </li>
                  <li class="active">
                      <a id='oceanItemTab' href="#oceanItem" data-toggle="tab" >箱量明细</a>
                  </li>
 		</ul>
 		<div class="tab-content">
-				<div class="tab-pane fade" id="oceanTotalItem">
+				<div class="tab-pane fade" id="oceanTotalItem" style="dispaly:none">
 					<div class="form-group"><br>
 						<div class="col-lg-12">
 				          <% if(boolOcean){ %>
@@ -828,7 +828,7 @@
 				                    id:'oceanTotal_cargo_table',
 				                    style:'width:1150px',
 				                    headers:   ['', '', '负载方式', '箱型','箱数', '件数','单位', '毛重(KG)', '体积(CBM)', '总重量VGM','托板描述','unit_name'],
-				                    field_list:['id', '', 'load_type', 'container_type', 'container_no', 'seal_no', 'pieces','unit_id', 'gross_weight', 'volume', 'vgm','pallet_desc','unit_name'],
+				                    field_list:['id', '', 'load_type', 'container_type', 'container_no', 'pieces','unit_id', 'gross_weight', 'volume', 'vgm','pallet_desc','unit_name'],
 				                    value_list: shipmentList![]
 				                }){} %>
 				        </div>
