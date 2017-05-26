@@ -192,7 +192,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var value = this.value;
         	if(value=='gateOut'){
         		$('#gateInBtn').show();
-        		$('#deleteBtn').hide();
         	}else{
         		$('#gateInBtn').hide();
         		$('#deleteBtn').show();
