@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_doc_table', './edit_customer_quotation_table'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_doc_table', './edit_customer_quotation_table','./add_dock_item_table'], function ($, metisMenu) { 
     $(document).ready(function() {
   
         $('#menu_profile').addClass('active').find('ul').addClass('in');
@@ -226,6 +226,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             order.docItem = buildDocItem();
             		
             order.customer_quotationItem=itemOrder.buildCustomerQuotationDetail();
+            order.dock_Item=itemOrder.buildDockItem();
         	$('#saveBtn').attr('disabled', true);
         	$.post('/customer/save', {params:JSON.stringify(order)}, function(data){
         		eeda.contactUrl("edit?id",data.ID);

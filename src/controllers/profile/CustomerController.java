@@ -101,6 +101,7 @@ public class CustomerController extends Controller {
     			+ " where party_id=? order by jod.id";
         setAttr("docList", Db.find(sql,id));
         setAttr("customerQuotationList", getItems(id, "customerQuotationItem"));
+        setAttr("itemList", getItems(id, "dock"));
         render("/eeda/profile/customer/CustomerEdit.html");
     }
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_DELETE})
@@ -181,6 +182,9 @@ public class CustomerController extends Controller {
 		DbUtils.handleList(itemList, "party_doc", id, "party_id");
 		List<Map<String, String>> customerQuotationItemList = (ArrayList<Map<String, String>>)dto.get("customer_quotationItem");
 		DbUtils.handleList(customerQuotationItemList,  "party_quotation", id, "party_id");
+		//客户的工厂地点dock
+		List<Map<String, String>> dock_Item = (ArrayList<Map<String, String>>)dto.get("dock_Item");
+		DbUtils.handleList(dock_Item,  "dockinfo", id, "party_id");
     	renderJson(party);
     }
 
@@ -505,7 +509,7 @@ public class CustomerController extends Controller {
     	List<Record> itemList = null;
     	 if("docItem".equals(type)){
     		itemSql = "select jod.*,u.c_name from party_doc jod left join user_login u on jod.uploader=u.id "
-        			+ " where party_id=? order by jod.id";
+        			+ " where jod.party_id=? order by jod.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("customerQuotationItem".equals(type)){
     		itemSql = " SELECT pq.*,c.`name` currency_name,d1.dock_name take_address_name,d2.dock_name delivery_address_name,d3.dock_name loading_wharf1_name "
@@ -515,7 +519,10 @@ public class CustomerController extends Controller {
     				+" LEFT JOIN dockinfo d2 on d2.id=pq.back_wharf "
     				+" LEFT JOIN dockinfo d3 on d3.id=pq.loading_wharf1 "
     				+" LEFT JOIN dockinfo d4 on d4.id=pq.loading_wharf2 "
-    				+ " where party_id=? order by pq.id";
+    				+ " where pq.party_id=? order by pq.id";
+    		itemList = Db.find(itemSql, orderId);
+    	}else if("dock".equals(type)){
+    		itemSql = "SELECT d.* FROM dockinfo d WHERE  d.party_type='customer' and d.party_id=? order by d.id";
     		itemList = Db.find(itemSql, orderId);
     	}
 		return itemList;
