@@ -60,12 +60,25 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        });
 	        
 	  });
-	  
-	  
-	  
-	  
-	  
-	  
 
-    });
+	  $('#orderForm').validate({
+	        rules: {
+	        	period: {
+	        		number:true
+	        	}
+	        }, 
+	        messages:{
+	        	period: {
+	              
+	            }
+	        },
+	        highlight: function(element) {
+	            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+	        },
+	        success: function(element) {
+	            element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
+	        }
+	    });
+	 	   
+    }); 
 });
