@@ -53,20 +53,37 @@ public class ChangePartNoController extends Controller {
    		String dataStr=getPara("part_no");
        	
    		String[] dataArray = dataStr.split(",");
+   		String succ = "";
+   		String errs = "";
    		boolean result = true;
        	for (int i = 0; i < dataArray.length; i++) {
-			String part_no = dataArray[i];
+			String part_no = dataArray[i].trim();
 			Record re = Db.findFirst("select * from wmsproduct where part_no = ?",part_no+'A');
 			if(re != null){
+				succ += part_no+",";
 				Db.update("update gate_in set part_no = CONCAT(part_no,'A'),add_flag = 'Y' where part_no = ?",part_no);
 				Db.update("update gate_out set part_no = CONCAT(part_no,'A'),add_flag = 'Y' where part_no = ?",part_no);
 				Db.update("update inv_check_order set part_no = CONCAT(part_no,'A'),add_flag = 'Y' where part_no = ?",part_no);
 			}else{
+				errs += part_no+",";
 				result = false;
 			}
 		}
+       	
+       	String cause = "";
+       	if(StringUtils.isNotBlank(succ)){
+       		cause += succ +"更新成功;  ";
+       	}
+       	if(StringUtils.isNotBlank(errs)){
+       		cause += errs +"更新失败";;
+       	}
+       	
+       	
+       	Record res = new Record();
+       	res.set("result", result);
+       	res.set("cause", cause);
 
-   		renderJson(result);
+   		renderJson(res);
    	}
       
 

@@ -17,10 +17,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		
     		$('#changeBtn').attr('disabled', true);
     		$.post('/changePartNo/update',{part_no:part_no.trim()},function(data){
-    			if(data){
+    			if(data.RESULT){
     				$.scojs_message('更新成功', $.scojs_message.TYPE_OK);
     			}else{
-    				$.scojs_message('更新失败,请检查系统BOM中是否存在'+part_no+'A此part_no', $.scojs_message.TYPE_ERROR);
+    				alert(data.CAUSE +',请检查系统BOM中是否存在加A后的part_no', $.scojs_message.TYPE_ERROR);
     			}
     			$('#changeBtn').attr('disabled', false);
     			$.unblockUI();

@@ -401,9 +401,6 @@ public class CheckOrder extends Controller {
 			
 			String[] csvRow = null;//row  
             String[] title = null;
-            int arrayNum = 0;
-            String this_order_no = null;
-            List<Record> reList =null;
             while ((csvRow = csvReader.readNext()) != null){    
             	if(rowNumber == 0){
             		title = csvRow;
