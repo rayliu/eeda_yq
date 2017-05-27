@@ -15,7 +15,21 @@ $(document).ready(function() {
     //添加一行
     $('#add_land_shipment').on('click', function(){
         var item={};
-        cargoTable.row.add(item).draw(true);
+        var customer=$('#customer_id_input').val().trim();
+        if(customer!=''&&customer!=null){
+         	$.get('/serviceProvider/searchTruckOut', {input:customer}, function(data){
+         		if(data.length>0){
+         			item={"CONSIGNOR_NAME":data[0].NAME,"CONSIGNOR":data[0].ID
+         				,"CONSIGNOR_PHONE":data[0].PHONE,"TAKE_ADDRESS":data[0].ADDRESS
+         			};
+         		}
+            	 cargoTable.row.add(item).draw(true);
+         	});
+        }else{
+        	 $.scojs_message('请先选择客户', $.scojs_message.TYPE_ERROR);
+        	 return;
+        }
+       
     });
     
 
