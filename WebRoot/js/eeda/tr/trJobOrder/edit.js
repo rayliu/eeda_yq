@@ -476,6 +476,7 @@ $(document).ready(function() {
                             var order = data;
                             if(order.ID>0){
                                 $.scojs_message('新增贸易商品条目成功', $.scojs_message.TYPE_OK);
+                                $('.shangping_daishan').remove();
                                 $('#orderForm_tradeItem input, #orderForm_tradeItem textarea').val('')
                                 $('#saveBtn_tradeItem').attr('disabled', false);
                             }else{
