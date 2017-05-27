@@ -230,6 +230,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
         	$('#saveBtn').attr('disabled', true);
         	$.post('/customer/save', {params:JSON.stringify(order)}, function(data){
         		eeda.contactUrl("edit?id",data.ID);
+        		itemOrder.refleshTable("data.ID")
         		$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
         		$('#partyId').val(data.ID);
         		$('#saveBtn').attr('disabled', false);
