@@ -410,6 +410,8 @@ public class JobOrderController extends Controller {
 		//陆运
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
 		DbUtils.handleList(land_item, id, JobOrderLandItem.class, "order_id");
+		List<Map<String, String>> land_shipment_item = (ArrayList<Map<String, String>>)dto.get("land_shipment_list");
+		DbUtils.handleList(land_shipment_item, id, JobOrderLandItem.class, "order_id");
 		
 		//快递
 		List<Map<String, String>> express_detail = (ArrayList<Map<String, String>>)dto.get("express_detail");
@@ -1343,7 +1345,18 @@ public class JobOrderController extends Controller {
     				+ " left join party p2 on p2.id=jol.consignee"
     				+ " left join job_order_land_doc jold on jold.land_id=jol.id"
     				+ " left join unit u on u.id=jol.unit_id"
-    				+ " where order_id=? GROUP BY jol.id order by jol.id";
+    				+ " where order_id=? and jol.land_type='bulk_car' GROUP BY jol.id order by jol.id";
+    		itemList = Db.find(itemSql, orderId);
+    	}else if("landShipment".equals(type)){
+    		itemSql = "select jol.*, p.abbr transport_company_name,CAST(GROUP_CONCAT(jold.id) as char ) job_order_land_doc_id, GROUP_CONCAT(jold.doc_name) doc_name,"
+    		        + " p1.abbr consignor_name, p2.abbr consignee_name, CONCAT(u.name,u.name_eng) unit_name "
+    		        + " from job_order_land_item jol "
+    				+ " left join party p on p.id=jol.transport_company"
+    				+ " left join party p1 on p1.id=jol.consignor"
+    				+ " left join party p2 on p2.id=jol.consignee"
+    				+ " left join job_order_land_doc jold on jold.land_id=jol.id"
+    				+ " left join unit u on u.id=jol.unit_id"
+    				+ " where order_id=? and jol.land_type='cabinet_car' GROUP BY jol.id order by jol.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
     		itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
@@ -1469,6 +1482,7 @@ public class JobOrderController extends Controller {
     	setAttr("air", getItemDetail(id,"air"));
     	//获取陆运明细表信息
     	setAttr("landList", getItems(id,"land"));
+    	setAttr("landShipmentList", getItems(id,"landShipment"));
     	//贸易
     	setAttr("trade", getItemDetail(id,"trade"));
     	setAttr("trade_cost_list", getItems(id,"trade_cost"));

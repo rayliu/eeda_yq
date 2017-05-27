@@ -5,7 +5,7 @@ $(document).ready(function() {
 	var deletedTableIds=[];
 	
     //删除一行
-    $("#land_table").on('click', '.delete', function(e){
+    $("#land_shipment_table").on('click', '.delete', function(e){
         e.preventDefault();
         var tr = $(this).parent().parent();
         deletedTableIds.push(tr.attr('id'))
@@ -13,14 +13,14 @@ $(document).ready(function() {
         cargoTable.row(tr).remove().draw();
     }); 
     //添加一行
-    $('#add_land').on('click', function(){
+    $('#add_land_shipment').on('click', function(){
         var item={};
         cargoTable.row.add(item).draw(true);
     });
     
 
-    itemOrder.buildLoadItem=function(){
-        var cargo_table_rows = $("#land_table tr");
+    itemOrder.buildLoadShipmentItem=function(){
+        var cargo_table_rows = $("#land_shipment_table tr");
         var cargo_items_array=[];
         for(var index=0; index<cargo_table_rows.length; index++){
             if(index==0)
@@ -38,7 +38,7 @@ $(document).ready(function() {
             
             var item={}
             item.id = id;
-            item.land_type = "bulk_car";
+            item.land_type = "cabinet_car";
             item.status = '待发车';//默认待发车
             for(var i = 1; i < row.childNodes.length; i++){
             	var el = $(row.childNodes[i]).find('input,select');
@@ -76,16 +76,16 @@ $(document).ready(function() {
     	    $(el).trigger('keyup');
     	});
     	
-    	eeda.bindTableField('land_table','TRANSPORT_COMPANY','/serviceProvider/searchTruckCompany','truck');
-        eeda.bindTableFieldTruckOut('land_table', 'CONSIGNOR');
-        eeda.bindTableFieldTruckIn('land_table', 'CONSIGNEE');
-        eeda.bindTableField('land_table','UNIT_ID','/serviceProvider/searchUnit','');
-//        eeda.bindTableLocationField('land_table','ROUTE_FROM');
-//        eeda.bindTableLocationField('land_table','ROUTE_TO');
+    	eeda.bindTableField('land_shipment_table','TRANSPORT_COMPANY','/serviceProvider/searchTruckCompany','truck');
+        eeda.bindTableFieldTruckOut('land_shipment_table', 'CONSIGNOR');
+        eeda.bindTableFieldTruckIn('land_shipment_table', 'CONSIGNEE');
+        eeda.bindTableField('land_shipment_table','UNIT_ID','/serviceProvider/searchUnit','');
+//        eeda.bindTableLocationField('land_shipment_table','ROUTE_FROM');
+//        eeda.bindTableLocationField('land_shipment_table','ROUTE_TO');
     };
     //------------事件处理
 	 var cargoTable = eeda.dt({
-	        id: 'land_table',
+	        id: 'land_shipment_table',
             colReorder: true,
 	        autoWidth: true,
 	        drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
@@ -174,41 +174,6 @@ $(document).ready(function() {
                     return '<input type="text" name="trans_no" value="'+data+'" class="form-control" style="width:120px" />';
                 }
             },
-            { "data": "DRIVER", "width": "80px",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="driver" value="'+data+'" class="form-control" style="width:100px" />';
-                }
-            },
-            { "data": "DRIVER_TEL", "width": "100px",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:100px" />';
-                }
-            },
-            { "data": "TRUCK_TYPE", "width": "70px",
-                "render": function ( data, type, full, meta ) {
-                	if(!data)
-                        data='';
-                   var field_html = template('table_truck_type_field_template',
-	                    {
-	                        id: 'TRUCK_TYPE',
-	                        value: data,
-                            style:"width:90px"
-	                    }
-	                );
-                    return field_html;
-                }
-            },
-            { "data": "CAR_NO", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="car_no" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            },
             { "data": "CONSIGNOR", "width": "180px",
             	"render": function ( data, type, full, meta ) {
                     if(!data)
@@ -238,35 +203,6 @@ $(document).ready(function() {
             		return '<input type="text" name="take_address" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "CONSIGNEE", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    var field_html = template('table_truck_in_template',
-                        {
-                            id: 'CONSIGNEE',
-                            value: data,
-                            display_value: full.CONSIGNEE_NAME,
-                            style:'width:200px'
-                        }
-                    );
-                    return field_html;
-                }
-            },
-            { "data": "CONSIGNEE_PHONE","width": "180px",  "className":"consignee_phone",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="consignee_phone" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            },
-            { "data": "DELIVERY_ADDRESS", "width": "180px", "className":"consignee_addr",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="delivery_address" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            },
             { "data": "ETA", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
@@ -279,84 +215,6 @@ $(document).ready(function() {
 	                    }
 	                );
                     return field_html;
-            	}
-            },
-            { "data": "CARGO_DESC", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="cargo_desc" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            },
-            { "data": "LAND_CONTAINER_TYPE","width": "80px", 
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    var str = '<select name="land_container_type" class="form-control search-control" style="width:100px">'
-                    			+'<option></option>'
-			                   +'<option value="20\'GP" '+(data=='20\'GP' ? 'selected':'')+'>20GP</option>'
-			                   +'<option value="40\'GP" '+(data=='40\'GP' ? 'selected':'')+'>40GP</option>'
-                               +'<option value="40\'HQ" '+(data=='40\'HQ' ? 'selected':'')+'>40HQ</option>'
-			                   +'<option value="45\'GP" '+(data=='45\'GP' ? 'selected':'')+'>45GP</option>'
-			                   +'</select>';
-                    return str;
-                }
-            },
-            { "data": "LAND_CONTAINER_NO","width": "180px",  
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="land_container_no" value="'+data+'" class="form-control" style="width:200px"/>';
-                }
-            },
-            { "data": "LAND_SEAL_NO","width": "180px",  
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="land_seal_no" value="'+data+'" class="form-control" style="width:200px"/>';
-                }
-            },
-            { "data": "PIECES", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            },
-            { "data": "UNIT_ID", "width": "180px",
-                "render": function ( data, type, full, meta ) {
-                	if(!data)
-                        data='';
-                    var field_html = template('table_dropdown_template',
-                        {
-                            id: 'UNIT_ID',
-                            value: data,
-                            display_value: full.UNIT_NAME,
-                            style:'width:200px'
-                        }
-                    );
-                    return field_html;
-                }
-            },
-            { "data": "GROSS_WEIGHT", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="gross_weight" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            },
-            { "data": "VOLUME", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            },
-            { "data": "REQUIRED_TIME_REMARK", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="required_time_remark" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
             { "data": "DOC_NAME", "width": "100px",
@@ -377,13 +235,6 @@ $(document).ready(function() {
             		}
             	}
             },
-            { "data": "SIGN_STATUS", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="sign_status" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
-            }, 
             { "data": "TRANSPORT_COMPANY_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
@@ -419,14 +270,14 @@ $(document).ready(function() {
 
     //刷新明细表
     itemOrder.refleshLandItemTable = function(order_id){
-    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=land";
+    	var url = "/jobOrder/tableList?order_id="+order_id+"&type=landShipment";
     	cargoTable.ajax.url(url).load();
     }
     
   //checkbox选中则button可点击
-    $('#land_table').on('click','input[type="checkbox"]',function(){
+    $('#land_shipment_table').on('click','input[type="checkbox"]',function(){
     	var hava_check = 0;
-    	$('#land_table input[type="checkbox"]:checked').each(function(){	
+    	$('#land_shipment_table input[type="checkbox"]:checked').each(function(){	
     		hava_check++;
     	})
     	if(hava_check>0){
@@ -441,13 +292,13 @@ $(document).ready(function() {
     });
     
     //全选
-    $('#allCheckOfLand').click(function(){
-	    $("#land_table .checkBox").prop("checked",this.checked);
+    $('#allCheckOfLand2').click(function(){
+	    $("#land_shipment_table .checkBox").prop("checked",this.checked);
 	    var hava_check = 0;
-    	$('#land_table input[type="checkbox"]:checked').each(function(){	
+    	$('#land_shipment_table input[type="checkbox"]:checked').each(function(){	
     		hava_check++;
     	})
-	    if(this.checked==true&&$('#land_table td').length>1&&hava_check>0){
+	    if(this.checked==true&&$('#land_shipment_table td').length>1&&hava_check>0){
 	    	$('#truckOrderPDF').attr('disabled',false);
 	    	$('#cabinet_truck').attr('disabled',false);
 	    	$('#land_print_debit_note').attr('disabled',false);
@@ -458,12 +309,12 @@ $(document).ready(function() {
 	    }
     });
     
-    $("#land_table").on('click','.checkBox',function(){
-		  $("#allCheckOfLand").prop("checked",$("#land_table .checkBox").length == $("#land_table .checkBox:checked").length ? true : false);
+    $("#land_shipment_table").on('click','.checkBox',function(){
+		  $("#allCheckOfLand2").prop("checked",$("#land_shipment_table .checkBox").length == $("#land_shipment_table .checkBox:checked").length ? true : false);
     });
     
     //一起删除签收文件
-    $("#land_table").on('click', '.delete_sign_desc', function(){
+    $("#land_shipment_table").on('click', '.delete_sign_desc', function(){
     	var tr = $(this).parent().parent();
     	var id = tr.attr('id');
     	var order_id = $('#order_id').val();
@@ -475,7 +326,7 @@ $(document).ready(function() {
 	     });
     });
     //单个删除签收文件
-    $("#land_table").on('click', '.delete_icon_of_sign_desc', function(){
+    $("#land_shipment_table").on('click', '.delete_icon_of_sign_desc', function(){
     	var name = $(this).prev().text();
     	var id = $(this).attr('id');
     	var order_id = $('#order_id').val();
@@ -487,7 +338,7 @@ $(document).ready(function() {
 	     });
     })
 	//上传签收文件
-    $("#land_table").on('click', '.upload', function(){
+    $("#land_shipment_table").on('click', '.upload', function(){
 		var id = $(this).parent().parent().parent().attr('id');
 		var order_id = $('#order_id').val();
 			$(this).fileupload({
@@ -509,7 +360,7 @@ $(document).ready(function() {
 	});
     
     var self;
-    $('#land_table').on('click','[name=required_time_remark]',function(){
+    $('#land_shipment_table').on('click','[name=required_time_remark]',function(){
     	self = $(this);
     	$('#land_showNote').val(self.val());
     	$('#land_showNote_btn').click();
@@ -521,7 +372,7 @@ $(document).ready(function() {
     
     if(truck_type_hidden!=null && truck_type_hidden!=""){
     	var arrays = truck_type_hidden.split(",");
-        var landtable = $('#land_table').DataTable();
+        var landtable = $('#land_shipment_table').DataTable();
         for(var i = 0; i < arrays.length; i++){
         	
         	var array = arrays[i].split("X");

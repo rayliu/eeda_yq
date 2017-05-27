@@ -728,6 +728,30 @@ $(document).ready(function() {
                
             });
     })
+    //柜货派车信息表
+    $('#land_shipment_table').on('click','.land_charge',function(){
+		var land_item_id = $(this).parent().parent().attr('id');
+        $('#landcollapseChargeInfo').removeClass('in');
+		$('#land_item_id').val(land_item_id);
+		var order_id = $('#order_id').val();
+		var url = "/jobOrder/tableListOfLandCharge?order_id="+order_id+"&land_item_id="+land_item_id;
+    	chargeTable.ajax.url(url).load();
+    	$('#land_charge_table_msg_btn').click();
+    	
+    	//费用明细确认按钮动作
+        $("#land_charge_table").on('click', '.chargeConfirm', function(){
+        	var id = $(this).parent().parent().parent().attr('id');
+        	$.post('/jobOrder/feeConfirm',{id:id},function(data){
+        		var url = "/jobOrder/tableListOfLandCharge?order_id="+order_id+"&land_item_id="+land_item_id;
+            	chargeTable.ajax.url(url).load();
+        		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+        		itemOrder.refleshChargeTable(order_id);
+        	},'json').fail(function() {
+                $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+           });
+           
+        });
+})
    
   //数量和单价自动补零
     $('#land_charge_table').on('blur','[name=price],[name=amount]',function(){
