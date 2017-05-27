@@ -668,6 +668,7 @@ public class CheckOrder extends Controller {
             	for(GateIn re:gateInList){
             		re.set("inv_flag", "Y");
             		re.set("out_flag", "Y");
+            		re.set("out_time", new Date());
             		re.set("inv_msg", "盘点单号:"+order_no+",盘点出库");
             		re.update();
             	}
