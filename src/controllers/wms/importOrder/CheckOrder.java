@@ -302,7 +302,7 @@ public class CheckOrder extends Controller {
                 } 
                 
                 if(totalRow==2){
-                	UserLogin ul = UserLogin.dao.findFirst("select * from user_login where user_name = ?",creator);
+                	UserLogin ul = UserLogin.dao.findFirst("select * from user_login where user_name = ? and office_id = ?",creator,officeId);
                 	if(ul != null){
                 		order.set("creator", ul.getLong("id"));
                 		creator_id = ul.getLong("id");
@@ -313,7 +313,8 @@ public class CheckOrder extends Controller {
                 
                 String qr_code = order.getStr("qr_code");
                 if(StringUtils.isNotBlank(qr_code)){
-            		GateIn gi = GateIn.dao.findFirst("select * from gate_in where out_flag = 'N' and qr_code = ? and move_flag = ? and return_flag = ?",qr_code,order.getStr("move_flag"),order.getStr("return_flag"));
+            		GateIn gi = GateIn.dao.findFirst("select * from gate_in where out_flag = 'N' and qr_code = ? "
+            				+ " and move_flag = ? and return_flag = ? and office_id = ?",qr_code,order.getStr("move_flag"),order.getStr("return_flag"),officeId);
             		if(gi != null){
             			String order_timeStr = gi.get("create_time").toString();
             			String order_time = order_timeStr.substring(0,order_timeStr.length()-2);
@@ -391,6 +392,8 @@ public class CheckOrder extends Controller {
 		result.set("result",true);
 		String repeatMsg = "";
 		int rowNumber = 0;
+		int totalRow = 0;   //文件总数量
+		int updateRow = 0;   //更新数量
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhMMss");
   		String c=sdf.format(new Date());   //临时单号
 		try {
@@ -401,83 +404,100 @@ public class CheckOrder extends Controller {
 			
 			String[] csvRow = null;//row  
             String[] title = null;
+            Long creator_id = null;
             while ((csvRow = csvReader.readNext()) != null){    
+            	totalRow ++;
             	if(rowNumber == 0){
             		title = csvRow;
             		rowNumber++;
             		continue;
             	}
+            	
+            	String creator = null;
             	GateOut order = new GateOut();
                 for (int i =0; i<csvRow.length; i++){
                 	String titleName = StringUtils.isNotBlank(title[i])?title[i].trim():null;
-                	String value = StringUtils.isNotBlank(csvRow[i])?csvRow[i].trim():null;;
+                	String value = StringUtils.isNotBlank(csvRow[i])?csvRow[i].trim():null;
+                	
                 	if(StringUtils.isNotBlank(value)){
-                		if(!"id".equals(titleName) && !"creator".equals(titleName) && !"qr_code".equals(titleName)){
+                		if(!"id".equals(titleName) && !"creator".equals(titleName)){
 		                    order.set(titleName, value);
-	                	}else if("creator".equals(titleName)){
-	                		UserLogin ul = UserLogin.dao.findFirst("select * from user_login where c_name = ?",value);
-	                		if(ul != null)
-	                			order.set(titleName, ul.getLong("id"));
-	                		order.set("creator_code", value);
-	                	}else if("qr_code".equals(titleName)){
-	                		order.set(titleName, value);
-	                		GateIn gi = GateIn.dao.findFirst("select * from gate_in where error_flag='N' and qr_code = ? and move_flag = ?",value,order.getStr("move_flag"));
-	                		if(gi != null){
-	                			String out_flag = gi.getStr("out_flag");
-	                			if("Y".equals(out_flag)){
-	                				order.set("error_flag", "Y");
-		                			order.set("error_msg", "此货品已经出库");
-	                			}else{
-	                				gi.set("out_flag", "Y").update();
-	                			}
-	                		} else {
-	                			order.set("error_flag", "Y");
-	                			order.set("error_msg", "未入库");
+	                	}else{
+	                		if("creator".equals(titleName)){
+	                			creator = value;
+	                			order.set("creator_code", value);
 	                		}
 	                	}
+                	}	
+                } 
+                
+                if(totalRow==2){
+                	UserLogin ul = UserLogin.dao.findFirst("select * from user_login where user_name = ? and office_id = ?",creator,officeId);
+                	if(ul != null){
+                		order.set("creator", ul.getLong("id"));
+                		creator_id = ul.getLong("id");
                 	}
-                }    
-                
-                
-                String order_no = order.getStr("order_no");
+                }else{
+                	order.set("creator", creator_id);
+                }
+            	
+            	
                 String qr_code = order.getStr("qr_code");
+                if(StringUtils.isNotBlank(qr_code)){
+            		GateIn gi = GateIn.dao.findFirst("select * from gate_in where error_flag = 'N' and qr_code = ? and office_id = ?",qr_code,officeId);
+            		if(gi != null){
+            			String this_time = order.getStr("create_time");//这次出库时间
+            			String out_flag = gi.getStr("out_flag");
+            			if("Y".equals(out_flag)){
+                			String order_time = null;
+                			if(gi.get("out_time")!=null){
+                				String order_timeStr = gi.get("out_time").toString();
+                				order_time = order_timeStr.substring(0,order_timeStr.length()-2);//系统单据时间
+                			}else{
+                				order_time = "2017-01-01 00:00:00";
+                			}
+                			
+                    		Record compareTime = Db.findFirst("select ?>? result;",this_time,order_time);
+                        	String a = compareTime.getLong("result").toString(); //判断 这次出库时间>系统单据时间
+                        	if("1".equals(a)){//2
+                        		gi.set("out_time", this_time);
+                				gi.set("out_creator_code", order.get("creator_code"));
+                				gi.set("out_creator", creator_id).update();
+                        	}
+            			}else{
+            				gi.set("out_flag", "Y");
+            				gi.set("out_time", this_time);
+            				gi.set("out_creator_code", order.get("creator_code"));
+            				gi.set("out_creator", creator_id).update();
+            			}
+            			continue;
+            		}else{//仓库里并没有这个记录
+            			GateOut go = GateOut.dao.findFirst("select * from gate_out where error_flag = 'Y' and qr_code = ? and office_id = ?",qr_code,officeId);
+            			if(go != null){
+            				//重复导入，直接跳过
+            				continue;
+            			}else{
+            				order.set("error_flag", "Y");
+                			order.set("error_msg", "未入库");
+            			}
+            		}
+            	}
+
+                String order_no = order.getStr("order_no");
                 String part_no = order.getStr("part_no");
-                
-                
-                Record goo = Db.findFirst("select * from gate_out_order where order_no = ?",order_no);
+                Record goo = Db.findFirst("select * from gate_out_order where order_no = ? and office_id = ?",order_no,officeId);
                 if(goo != null){
                 	Long out_order_id = goo.getLong("id");
-                	GateIn gi = GateIn.dao.findFirst("SELECT"
-    						+"	gi.*"
-    						+"  FROM"
-    						+"	gate_in gi"
-    						+"  WHERE"
-    						+"	gi.out_order_id =? and gi.qr_code = ? and gi.out_flag='N'"
-    						+"  GROUP BY"
-    						+"	gi.id",out_order_id,qr_code);
-                    
-                    if(gi==null){//查无此qr_code后，再查有没产品
-                    	GateIn gi2 = GateIn.dao.findFirst("SELECT"
-        						+"	gi.*"
-        						+"  FROM"
-        						+"	gate_in gi"
-        						+"  WHERE"
-        						+"	gi.out_order_id =? and gi.part_no = ? and gi.out_flag='N'"
-        						+"  GROUP BY"
-        						+"	gi.id",out_order_id,part_no);
-                    	if(gi2==null){
+                	String item_no = goo.getStr("item_no");
+                    	Record re = Db.findFirst("select * from wmsproduct where item_no =? and part_no = ? and office_id = ?",item_no,part_no,officeId);
+                    	if(re==null){
                     		//说明拿错货品了
                     		order.set("import_msg", order_no+"里面没有此货品");
+                    		order.set("out_order_id", out_order_id).update();
                     	}else{
                     		//货品对了，只是不是出库单里面的货品，要更新
-                    		gi2.set("out_order_id", out_order_id).update();
-                    		
-                    		//把原来的替换为空
-                    		GateIn re = GateIn.dao.findFirst("select * from gate_in where out_order_id = ? and out_flag='N' and part_no = ?",out_order_id,part_no);
-                    		if(re!=null)
-                    			re.set("out_order_id", null).update();
+                    		order.set("out_order_id", out_order_id).update();
                     	}
-                    }
                 }
                 
                 order.set("office_id", officeId);
@@ -532,7 +552,9 @@ public class CheckOrder extends Controller {
 		Connection conn = null;
 		Record result = new Record();
 		result.set("result",true);
-		int rowNumber = 0;
+		int rowNumber = 0;  //成功导入数量
+		int totalRow = 0;   //文件总数量
+		int updateRow = 0;   //更新数量
 		try {
 			conn = DbKit.getConfig().getDataSource().getConnection();
 			DbKit.getConfig().setThreadLocalConnection(conn);
@@ -541,12 +563,15 @@ public class CheckOrder extends Controller {
 			String[] csvRow = null;//row  
             String[] title = null;
             String order_no = null;
+            Long creator_id = null;
             while ((csvRow = csvReader.readNext()) != null){    
+            	totalRow ++;
             	if(rowNumber == 0){
             		title = csvRow;
             		rowNumber++;
             		continue;
             	}
+            	String creator = null;
             	InvCheckOrder order = new InvCheckOrder();
                 for (int i =0; i<csvRow.length; i++){
                 	String titleName = StringUtils.isNotBlank(title[i])?title[i].trim():null;
@@ -554,31 +579,43 @@ public class CheckOrder extends Controller {
                 	if(StringUtils.isNotBlank(value)){
                 		if(!"id".equals(titleName) && !"creator".equals(titleName)){
 		                    order.set(titleName, value);
-	                	} else if("creator".equals(titleName)){
-	                		UserLogin ul = UserLogin.dao.findFirst("select * from user_login where c_name = ?",value);
-	                		if(ul != null)
-	                			order.set(titleName, ul.getLong("id"));
-	                		order.set("creator_code", value);
-	                	} 
+	                	}else{
+	                		if("creator".equals(titleName)){
+	                			creator = value;
+	                			order.set("creator_code", value);
+	                		}
+	                	}
                 	}
                 }    
+                
+                if(totalRow==2){
+                	UserLogin ul = UserLogin.dao.findFirst("select * from user_login where user_name = ? and office_id = ?",creator,officeId);
+                	if(ul != null){
+                		order.set("creator", ul.getLong("id"));
+                		creator_id = ul.getLong("id");
+                	}
+                }else{
+                	order.set("creator", creator_id);
+                }
 
                 String checkQuantity = order.getStr("check_quantity");
-                GateIn gi = GateIn.dao.findFirst("select * from gate_in where qr_code = ? and error_flag='N' and out_flag='N'",order.getStr("qr_code"));
-                if(gi == null){
+                String qr_code = order.getStr("qr_code");
+                GateIn gi = GateIn.dao.findFirst("select * from gate_in where qr_code = ? and error_flag='N' and out_flag='N' and office_id = ?",qr_code,officeId);
+                if(gi == null){  //表示库存并没有这个qr_code 或者 这个qr_cdoe 已经出库
                 	//先盘点后入库    导入的时候先导入出库，再导入盘点处理
-                	Record go = Db.findFirst("select * from gate_out where qr_code = ? and error_flag='N' order by id desc",order.getStr("qr_code"));
+                	
+                	Record go = Db.findFirst("select * from gate_out where qr_code = ? and error_flag='N' and office_id = ? order by id desc",qr_code,officeId);
 
                 	String a = null;
-                	if(go != null){
+                	if(go != null){  //说明这个qr_code正常已经出库了
                 		Record compareTime = Db.findFirst("select ?>? result;",go.get("create_time"),order.get("create_time"));
-                    	a = compareTime.getLong("result").toString(); //判断 出库单时间>盘点单时间
+                    	a = compareTime.getLong("result").toString(); //判断 系统单据出库时间>盘点单时间
                 	}
                 	
                 	if("1".equals(a)){
-                		//符合以上说的情况，所以无需再盘点入库，因为已经出了
+                		//符合以上说的情况，所以无需再盘点入库，因为已经手工入库出库了
 
-                	}else{
+                	}else{//说明在盘点之前就已经正常出库的了，现在盘点 有，所以要补上入库
                 		gi = new GateIn();
             			gi.set("office_id", officeId);
             			gi.set("qr_code", order.getStr("qr_code"));
@@ -590,6 +627,7 @@ public class CheckOrder extends Controller {
             			gi.set("create_time", order.get("create_time"));
             			gi.set("inv_flag", "Y");
             			gi.set("inv_msg", "盘点单号："+order.getStr("order_no")+",盘点入库");
+            			gi.set("inv_check_no", order.get("order_no"));
             			gi.save();
                 	}
         		} else {
@@ -600,14 +638,14 @@ public class CheckOrder extends Controller {
         				gi.set("inv_msg", "盘点单号："+order.getStr("order_no")+","+order_shelves+"调整为"+this_shelves);
         				gi.set("shelves", this_shelves);
         				gi.set("inv_flag", "Y");
-        				gi.update();
         			}
-        			if(StringUtils.isNotBlank(checkQuantity) && !quantity.equals(checkQuantity)){
+        			if(StringUtils.isNotBlank(checkQuantity) && !quantity.equals(checkQuantity)){//有争议
         				gi.set("inv_msg", "盘点单号："+order.getStr("order_no")+",数量"+quantity+"调整为"+checkQuantity);
         				gi.set("quantity", checkQuantity);
         				gi.set("inv_flag", "Y");
-        				gi.update();
         			}
+        			gi.set("inv_check_no", order.get("order_no"));
+        			gi.update();
         		}
             	
                 order.set("office_id", officeId);
@@ -619,34 +657,52 @@ public class CheckOrder extends Controller {
             }
             
             //过滤掉库存中不存在的货品（多出来的货品）
-            List<Record> invList = Db.find("SELECT shelves,GROUP_CONCAT(qr_code SEPARATOR ',') qr_codes,count(qr_code) amount FROM `inv_check_order` where order_no = ? GROUP BY shelves",order_no);
-            List<Record> gateInList = Db.find("SELECT GROUP_CONCAT(qr_code SEPARATOR ',') qr_codes,shelves,count(qr_code) amount FROM `gate_in` where out_flag='N' and error_flag='N'"
-        			+ "  GROUP BY shelves");
+            
+            //这次盘点以库位为单位分组
+            List<Record> invList = Db.find("SELECT shelves FROM"
+            		+ " `inv_check_order` where order_no = ? and office_id=? GROUP BY shelves",order_no,officeId);
             for(Record invR : invList){
             	String invShelves = invR.getStr("shelves");
-            	Long invQuantity = invR.getLong("amount");
-            	
-            	for(Record giR : gateInList){
-            		String giShelves = giR.getStr("shelves");
-                	Long giQuantity = giR.getLong("amount");
-                	
-                	if(invShelves.equals(giShelves)){
-                		if(invQuantity != giQuantity){
-                			String inv_qrCode = invR.getStr("qr_codes");
-                			String [] invArray = inv_qrCode.split(",");
-                			String gi_qrCode = giR.getStr("qr_codes");
-                			String [] giArray = gi_qrCode.split(",");
-                			
-                			for (int i = 0; i < giArray.length; i++) {
-                				if(!useList(invArray,giArray[i])){
-                					String qr_code = giArray[i];//多出来的
-            						Db.update("update gate_in set inv_flag = 'Y',out_flag='Y', inv_msg = '盘点单号:"+order_no+",盘点出库' where qr_code = ?",qr_code);
-                				}
-							}
-                		}
-                	}
+            	List<GateIn> gateInList = GateIn.dao.find("select * from gate_in where out_flag='N'"
+            			+ " and error_flag='N' and shelves = ? and office_id=? and inv_check_no is null",invShelves,officeId);
+            	for(GateIn re:gateInList){
+            		re.set("inv_flag", "Y");
+            		re.set("out_flag", "Y");
+            		re.set("inv_msg", "盘点单号:"+order_no+",盘点出库");
+            		re.update();
             	}
             }
+            
+          //这次盘点以库位为单位分组
+//            List<Record> invList = Db.find("SELECT shelves,GROUP_CONCAT(qr_code SEPARATOR ',') qr_codes,count(qr_code) amount FROM"
+//            		+ " `inv_check_order` where order_no = ? and office_id=? GROUP BY shelves",order_no,officeId);
+//            List<Record> gateInList = Db.find("SELECT GROUP_CONCAT(qr_code SEPARATOR ',') qr_codes,shelves,count(qr_code) amount FROM `gate_in` where out_flag='N' and error_flag='N'  and office_id=?"
+//        			+ "  GROUP BY shelves",officeId);
+//            for(Record invR : invList){
+//            	String invShelves = invR.getStr("shelves");
+//            	Long invQuantity = invR.getLong("amount");
+//            	
+//            	for(Record giR : gateInList){
+//            		String giShelves = giR.getStr("shelves");
+//                	Long giQuantity = giR.getLong("amount");
+//                	
+//                	if(invShelves.equals(giShelves)){
+//                		if(invQuantity != giQuantity){	
+//                			String inv_qrCode = invR.getStr("qr_codes");
+//                			String [] invArray = inv_qrCode.split(",");
+//                			String gi_qrCode = giR.getStr("qr_codes");
+//                			String [] giArray = gi_qrCode.split(",");
+//                			
+//                			for (int i = 0; i < giArray.length; i++) {
+//                				if(!useList(invArray,giArray[i])){
+//                					String qr_code = giArray[i];//多出来的
+//            						Db.update("update gate_in set inv_flag = 'Y',out_flag='Y', inv_msg = '盘点单号:"+order_no+",盘点出库' where qr_code = ? and office_id = ?",qr_code,officeId);
+//                				}
+//							}
+//                		}
+//                	}
+//            	}
+//            }
             
             
 			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！<br/>");
