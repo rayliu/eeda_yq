@@ -159,6 +159,10 @@ $(document).ready(function() {
         order.net_weight = $("#net_weight").val();
         order.volume = $("#volume").val();
         order.pieces = $("#pieces").val();
+        order.amount_20gp = $("#amount_20gp").val();
+        order.amount_40gp = $("#amount_40gp").val();
+        order.amount_45gp = $("#amount_45gp").val();
+        order.amount_45hp = $("#amount_45hp").val();
         order.job_unit = $("#job_unit").val();
         order.billing_method = $('#billing_method input[type="radio"]:checked').val();
         order.ref_no = $("#ref_no").val();
