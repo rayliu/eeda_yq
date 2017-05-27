@@ -263,17 +263,19 @@
           <div class="row" style="margin-top:15px;">
                <div class="col-lg-12"> 
                 <ul  class="nav nav-tabs">
-                    <li >
+                    <li class="active">
                         <a id='document_info' href="#documentInfo" data-toggle="tab" >文档信息</a>
                     </li>
-                    <li class="active">
+                     <% if(shiro.hasPermission("customer.transOffer")){%>
+                    <li >
                         <a id='customer_quotation' href="#customerQuotation" data-toggle="tab" >客户报价表</a>
                     </li>
+                    <%}%>
                 </ul>
                </div>
          </div>
          <div class="tab-content">
-                <div class="tab-pane fade " id="documentInfo">
+                <div class="tab-pane fade active in" id="documentInfo">
                     <div class="form-group"> 
                      <div class="col-lg-12"> 
                         <span class="btn btn-success btn-xs fileinput-button" id="fileuploadSpan"> 
@@ -292,7 +294,7 @@
                           </div>
                         </div>      
                 </div>
-                <div class="tab-pane fade active in" id="customerQuotation">
+                <div class="tab-pane fade " id="customerQuotation">
                     <div class="form-group"> 
                      <div class="col-lg-12"> 
                        <button id="add_customerQuotation" type="button" class="btn btn_blue btn-xs">添加</button>
