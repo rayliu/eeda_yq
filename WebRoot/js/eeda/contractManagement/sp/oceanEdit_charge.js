@@ -172,9 +172,9 @@ $(document).ready(function() {
 	                    var str = '<select name= "container_type" class="form-control search-control" style="width:70px">'
 	                    		  +'<option></option>'
 	                    		  +'<option value = "20GP" '+(data=='20GP'?'selected':'')+'>20GP</option>'
-	                    		  +'<option value = "20GP"'+(data=='40GP'?'selected':'')+'>40GP</option>'
-	                    		  +'<option value = "20GP" '+(data=='40HQ'?'selected':'')+'>40HQ</option>'
-	                    		  +'<option value = "20GP"'+(data=='45GP'?'selected':'')+'>45GP</option>'
+	                    		  +'<option value = "40GP"'+(data=='40GP'?'selected':'')+'>40GP</option>'
+	                    		  +'<option value = "40HQ" '+(data=='40HQ'?'selected':'')+'>40HQ</option>'
+	                    		  +'<option value = "45GP"'+(data=='45GP'?'selected':'')+'>45GP</option>'
 	                    		  +'<select>';
 	                    return str;
             	}
