@@ -134,6 +134,7 @@ public class ImportOrder extends Controller {
 			} else if (fileName.endsWith(".xlsx")) {
 				title = ReaderXlSX.getXlsTitle(file);
 				content = ReaderXlSX.getXlsContent(file);
+				System.out.println("read content successful!!!");
 			} else {
 				resultMap.set("result", false);
 				resultMap.set("cause", "导入失败，请选择正确的excel文件（xls/xlsx）");

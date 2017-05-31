@@ -68,6 +68,7 @@ public class ReaderXlSX {
      * @return Map 包含单元格数据内容的Map对象
      */
     private List<Map<String,String>> readExcelContent(InputStream is) throws Exception{
+    	System.out.println("gate in readExcelContent（） method---------");
         //String str = "";
     	xlsxContent = new ArrayList<Map<String,String>>();
         try {
@@ -78,12 +79,14 @@ public class ReaderXlSX {
         sheet = wb.getSheetAt(0);
         // 得到总行数
         int rowNum = sheet.getLastRowNum();
+        System.out.println("total row"+rowNum);
         row = sheet.getRow(0);
         /*
         getPhysicalNumberOfCells 是获取不为空的列个数。 
         getLastCellNum 是获取最后一个不为空的列是第几个。
         */
         int colNum = row.getPhysicalNumberOfCells();
+        System.out.println("total col "+colNum);
         // 正文内容应该从第二行开始,第一行为表头的标题
         for (int i = 1; i <= rowNum; i++) {
         	Map<String, String> rowData = new HashMap<String, String>();
@@ -97,6 +100,7 @@ public class ReaderXlSX {
             }
             xlsxContent.add(rowData);
         }
+        System.out.println("end add to array");
         
         int ss = xlsxContent.size()-1;
         for (int j = ss; j >=0; j--) {
@@ -162,7 +166,7 @@ public class ReaderXlSX {
     
     //读取Excel表格标题
     public static String[] getXlsTitle(File xlsFile) throws Exception {
-    	
+    	System.out.println("read title''''''''''''''''''''''");
     	InputStream is = new FileInputStream(xlsFile);
     	ReaderXlSX excelReader = new ReaderXlSX();
         excelReader.readExcelTitle(is);
@@ -171,11 +175,13 @@ public class ReaderXlSX {
     
     //读取Excel表格内容
     public static List<Map<String,String>> getXlsContent(File xlsFile) throws Exception {
+    	System.out.println("read content''''''''''''''''''''''");
     	InputStream is = new FileInputStream(xlsFile);
     	ReaderXlSX excelReader = new ReaderXlSX();
     	xlsxContent = excelReader.readExcelContent(is);
     	return xlsxContent;
     }
+    
     //获取xls文件内容
     public static Map<String, Object> readerXLS(File xlsFile) throws Exception {
     	Map<String, Object> xlsData = new HashMap<String, Object>();
