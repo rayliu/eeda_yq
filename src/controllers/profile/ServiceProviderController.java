@@ -90,9 +90,15 @@ public class ServiceProviderController extends Controller {
     
     
     //返回对象	
-    private List<Record> getItemDetail(String id){
+    private List<Record> getItemDetail(String id,String type){
+     	String itemSql = "";
     	List<Record> itemList = null;
-    	itemList = Db.find("SELECT * FROM fin_account WHERE order_id = ?",id);
+    	if("contacts".equals(type)){
+    		itemSql = "SELECT * FROM contacts_item WHERE party_id=?";
+    		itemList = Db.find(itemSql, id);
+    	}else {
+    		itemList = Db.find("SELECT * FROM fin_account WHERE order_id = ?",id);
+		}
 		return itemList;
     }
     
@@ -113,7 +119,8 @@ public class ServiceProviderController extends Controller {
         
         setAttr("party", party);
         setAttr("user", LoginUserController.getLoginUser(this));
-        setAttr("itemList", getItemDetail(id));
+        setAttr("itemList", getItemDetail(id,""));
+        setAttr("contacts_itemList", getItemDetail(id,"contacts"));
         render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
     }
     
@@ -210,6 +217,8 @@ public class ServiceProviderController extends Controller {
         String order_id = party.get("id").toString();
         List<Map<String, String>> acount = (ArrayList<Map<String, String>>)dto.get("acount_json");
 		DbUtils.handleList(acount, order_id, FinAccount.class, "order_id");
+		List<Map<String, String>> contacts = (ArrayList<Map<String, String>>)dto.get("contacts_json");
+		DbUtils.handleList(contacts, "contacts_item", order_id, "party_id");
         setAttr("saveOK", true);
         //redirect("/serviceProvider");
         renderJson(party);

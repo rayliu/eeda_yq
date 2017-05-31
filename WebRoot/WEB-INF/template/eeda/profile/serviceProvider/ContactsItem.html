@@ -1,0 +1,15 @@
+
+				<form id="Custom_noteForm">
+	                    <button class="btn  btn_green" id="add_contacts" type="button">添加联系人</button> 
+                               <br>
+                               <%include("/eeda/component/form/detailTable.html", 
+                                   {
+                                       id:'contacts_table',
+                                       style:'width:100%',
+                                       headers:['','职位','姓名', '手机','电子邮箱','办公电话'],
+                                       field_list:['id','position','full_name','mobile_phone','email','office_phone'],
+                                       value_list: contacts_itemList![]
+                                   }){} %>
+	                    
+		                
+					</form>
