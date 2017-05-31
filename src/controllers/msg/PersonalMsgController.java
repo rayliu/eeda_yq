@@ -37,7 +37,7 @@ public class PersonalMsgController extends Controller {
 	    UserLogin user = LoginUserController.getLoginUser(this);
 	    long user_id = user.getLong("id");
 	    
-	    List<Record> configList = ListConfigController.getConfig(user_id, "/msgBoard");
+	    List<Record> configList = ListConfigController.getConfig(user_id, "/personalMsg");
 	    
 	    setAttr("listConfigList", configList);
 		render("/eeda/personalMsg/list.html");
