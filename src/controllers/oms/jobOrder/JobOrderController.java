@@ -1466,8 +1466,12 @@ public class JobOrderController extends Controller {
 //            return;
 //
 //        }
+        Date today = new Date();  
+        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
+        String date=parseFormat.format(today);
+        
     	//获取汇率日期信息
-    	Record r = Db.findFirst("SELECT * from ( SELECT min(to_stamp) min_stamp,office_id FROM currency_rate where office_id=?) A WHERE min_stamp > now() ",office_id);
+    	Record r = Db.findFirst("SELECT * from ( SELECT min(to_stamp) min_stamp,office_id FROM currency_rate where office_id=?) A WHERE min_stamp >= ? ",office_id,date);
     	if(r==null){
     		setAttr("rateExpired", "Y");
     	}

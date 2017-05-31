@@ -17,8 +17,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
                 }
             },
             {"data":"RATE"},
-            {"data":"FROM_STAMP"},
-            {"data":"TO_STAMP"},
+            {"data":"FROM_STAMP",
+            	"render":function(data,type,full,meta){
+            		
+            		return '<span>'+data.substr(0, 10)+'</>';
+            	}
+            },
+            {"data":"TO_STAMP",
+            	"render":function(data,type,full,meta){
+            		
+            		return '<span>'+data.substr(0, 10)+'</>';
+            	}
+            },
             {"data":"CREATOR_NAME"},
             {"data":"CREATE_STAMP"},
             {"data":"REMARK"},
