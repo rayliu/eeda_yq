@@ -127,9 +127,13 @@ public class ServiceProviderController extends Controller {
   //异步刷新字表
     public void tableList(){
     	String order_id = getPara("order_id");
+    	String type = getPara("type");
     	List<Record> list = null;
     	list = Db.find("SELECT * FROM fin_account WHERE order_id = ?",order_id);
     	
+    	if("contacts".equals(type)){
+    		list=getItemDetail(order_id, type);
+    	}
     	Map map = new HashMap();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
