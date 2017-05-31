@@ -18,7 +18,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
       var dataTable = eeda.dt({
           id: 'eeda-table',
           colReorder: true,
-          paging: false,
           // "pagingType":"full_numbers",
           serverSide: true, //不打开会出现排序不对
 //          ajax: "/jobOrder/list",
@@ -223,7 +222,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           var container_no = $("#container_no").val().trim();
           var transport_type = type;
           //增加出口日期查询
-          var url = "/jobOrder/list?order_no="+order_no
+          var url = "/jobOrder/list?order_no="+order_no+"&type=lock"
                +"&old_order_no="+old_order_no
           	   +"&status="+status
                +"&sono_like="+sono

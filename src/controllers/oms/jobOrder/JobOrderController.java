@@ -1764,8 +1764,11 @@ public class JobOrderController extends Controller {
     	
         String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null &&!getPara("start").equals("0") && getPara("length") != null) {
+        if (getPara("start") != null  && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+            if("lock".equals(type)){
+            	sLimit = "";
+            }
         }
         String sql = "";
         String ref_office = "";
