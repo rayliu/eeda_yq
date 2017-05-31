@@ -708,7 +708,8 @@ public class ServiceProviderController extends Controller {
         long office_id = user.getLong("office_id");
         String name = getPara("input");
         List<Record> rec = null;
-        String sql = "select p.id,p.abbr name, p.phone, p.address from party p where office_id="+office_id;
+        String sql = "select p.id,p.abbr name, p.phone, p.address,CONCAT(IFNULL(p.address,''),',',GROUP_CONCAT(di.dock_name)) dock_names from party p LEFT JOIN dockinfo di on di.party_id=p.id "
+        			+" where p.office_id="+office_id;
         if(!StringUtils.isBlank(name)){
             sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
         }

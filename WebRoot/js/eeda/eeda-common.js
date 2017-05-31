@@ -218,7 +218,8 @@ eeda.hidePopList=function(){
       if(inputField!=undefined){
     		  if(inputField.val()=='' || hiddenField.val()==''){
     			  inputField.val('');
-    			  hiddenField.val('');
+            if(hiddenField)
+    			    hiddenField.val('');
     		  }
         }
         }
@@ -550,6 +551,78 @@ eeda.refreshUrl = refreshUrl;
           }
       }).find('li').first().focus();
 	  };
+	  
+	  //dataTable里的下拉列表，查询参数为input,url,添加的参数para,下拉显示的数据库字段
+	   eeda.bindTableSelectField = function(table_id, el_name,url,para) {
+			  var tableFieldList = $('#table_select_field_list');
+
+      $('#'+table_id+' select[name='+el_name+']').on('keyup click', function(event){
+
+        var me = this;
+        var inputField = $(this);
+        
+        // var hiddenField = $(this).parent().find('select[name='+el_name+']');
+        var inputStr =$(this).parents('tr').find('[name=CONSIGNOR_input]').val();//发货人的名称 
+
+        $.get(url, {input:inputStr,para:para}, function(data){
+            // if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+            //   return;
+            // }
+            tableFieldList.empty();
+            if(inputStr=='' && data.length>0){
+              if(data[0].REF_ID){
+                tableFieldList.append('<span style="font-size: 10px;color: gray;">您曾经使用过的'+data.length+'行记录, 需要别的数据请输入查询条件</span>');
+              }else{
+                tableFieldList.append('<span style="font-size: 10px;color: gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+              }
+            }else if(data.length==0){
+              tableFieldList.append('<span style="font-size: 10px;color: gray;">无记录</span>');
+            }else if(inputStr.length>0 && data.length==10){
+              tableFieldList.append('<span style="font-size: 10px;color: gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+            }
+
+              if(data[0].DOCK_NAMES){
+                  docks=data[0].DOCK_NAMES.split(',');
+                  for(d in docks){
+                    tableFieldList.append("<option class='fromLocationItem' value="+docks[d]+" tabindex='"+d+"'><a class='fromLocationItem' >"+docks[d]+"</a></option>");
+                 }
+              }
+
+            tableFieldList.css({ 
+                left:$(me).offset().left+"px", 
+                top:$(me).offset().top+28+"px" 
+            });
+            tableFieldList.show();
+            eeda._inputField = inputField;
+        },'json');
+        // }
+      });
+
+      tableFieldList.on('click', '.fromLocationItem', function(e){
+        var inputField = eeda._inputField;
+        // var hiddenField = eeda._hiddenField;
+        inputField.empty();
+        inputField.append('<option selected>'+$(this).text()+'</option>');//名字
+        tableFieldList.hide();
+        var dataId = $(this).attr('dataId');
+        // hiddenField.val(dataId);//id
+      });
+
+      tableFieldList.on('focus', 'li', function() {
+          $this = $(this);
+          $this.addClass('active').siblings().removeClass();
+          // $this.closest('div.container').scrollTop($this.index() * $this.outerHeight());
+      }).on('keydown', 'li', function(e) {
+          $this = $(this);
+          if (e.keyCode == 40) {
+              $this.next().focus();
+              return false;
+          } else if (e.keyCode == 38) {
+              $this.prev().focus();
+              return false;
+          }
+      }).find('li').first().focus();
+	   }
 	  
 	  eeda.bindTableFieldCurrencyId = function(table_id, el_name,url,para) {
 		  var tableFieldList = $('#table_currency_input_field_list');
