@@ -114,50 +114,35 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" style="width:30px" disabled>';
 			    }
 			},
-            { "width": "30px",
+            { "width": "10px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="delete btn table_btn delete_btn btn-xs" >删除</button>';
+                	return '<button type="button" style="width:30px" class="delete btn table_btn delete_btn btn-xs" >删除</button>';
                 }
             },
-            { "width": "30px",
+            { "width": "10px",
             	"render": function ( data, type, full, meta ) {
             		if(full.ID){
-            			return '<button type="button" class="land_charge btn table_btn btn_green btn-xs" >费用</button>';	
+            			return '<button type="button" style="width:30px" class="land_charge btn table_btn btn_green btn-xs" >费用</button>';	
             		}else{
-            			return '<button type="button" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>';
+            			return '<button type="button" style="width:30px" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>';
             		}
             	}
             },
-            { "data":"ID","width": "30px",
-            	"render": function ( data, type, full, meta ) {
-            		if(data)
-	            		return '<span class="btn table_btn btn-success btn-xs fileinput-button" >' 
-		                		+'<i class="glyphicon glyphicon-plus"></i>'
-		                		+'<span>上传签收文件</span>'
-		                		+'<input class="upload" type="file" multiple>'
-		                		+'</span>'
-		            else
-		            	return '<span class="btn table_btn btn-default btn-xs fileinput-button" title="请先保存再上传文件">' 
-		                		+'<i class="glyphicon glyphicon-plus"></i>'
-		                		+'<span>上传签收文件</span>'
-		                		+'<input  class="upload" type="button" disabled>'
-		                		+'</span>'			
-            	}
-            },
-            { "data": "DOC_NAME","width": "30px",
+            
+            { "data": "DOC_NAME","width": "10px",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
-                		return '<button type="button" class="btn btn-default btn-xs delete_sign_desc" style="width:100px">删除签收文件</button>';
+                		return '<button type="button" class="btn btn-default btn-xs delete_sign_desc" style="width:50px">删除签收文件</button>';
                 	else 
                 		return '';
                 }
             },
            
-            { "data": "UNLOAD_TYPE", "width": "50px",
+            { "data": "UNLOAD_TYPE", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    var str= '<select name="unload_type" class="form-control search-control"  style="width:100px">'
+                    var str= '<select name="unload_type" class="form-control search-control"  style="width:80px">'
             	   	 		   +'<option></option>'
 			                   +'<option value="卸货" '+ (data=='卸货'?'selected':'') +'>卸货</option>'
 			                   +'<option value="收货" '+ (data=='收货'?'selected':'') +'>收货</option>'
@@ -181,11 +166,11 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "TRANS_NO", "width": "100px",
+            { "data": "TRANS_NO", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="trans_no" value="'+data+'" class="form-control" style="width:120px" />';
+                    return '<input type="text" name="trans_no" value="'+data+'" class="form-control" style="width:100px" />';
                 }
             },
             { "data": "DRIVER", "width": "80px",
@@ -195,14 +180,14 @@ $(document).ready(function() {
                     return '<input type="text" name="driver" value="'+data+'" class="form-control" style="width:100px" />';
                 }
             },
-            { "data": "DRIVER_TEL", "width": "100px",
+            { "data": "DRIVER_TEL", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:100px" />';
                 }
             },
-            { "data": "TRUCK_TYPE", "width": "70px",
+            { "data": "TRUCK_TYPE", "width": "50px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
@@ -210,20 +195,20 @@ $(document).ready(function() {
 	                    {
 	                        id: 'TRUCK_TYPE',
 	                        value: data,
-                            style:"width:90px"
+                            style:"width:70px"
 	                    }
 	                );
                     return field_html;
                 }
             },
-            { "data": "CAR_NO", "width": "180px",
+            { "data": "CAR_NO", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="car_no" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="car_no" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
-            { "data": "CONSIGNOR", "width": "180px",
+            { "data": "CONSIGNOR", "width": "80px",
             	"render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -232,17 +217,17 @@ $(document).ready(function() {
                             id: 'CONSIGNOR',
                             value: data,
                             display_value: full.CONSIGNOR_NAME,
-                            style:'width:200px'
+                            style:'width:100px'
                         }
                     );
                     return field_html;
                 }
             },
-            { "data": "CONSIGNOR_PHONE","width": "180px", "className":"consigner_phone",
+            { "data": "CONSIGNOR_PHONE","width": "80px", "className":"consigner_phone",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="consignor_phone" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="consignor_phone" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
             { "data": "TAKE_ADDRESS", "width": "180px", "className":"consigner_addr",
@@ -252,7 +237,7 @@ $(document).ready(function() {
             		return '<input type="text" name="take_address" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "CONSIGNEE", "width": "180px",
+            { "data": "CONSIGNEE", "width": "80px",
             	"render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -261,17 +246,17 @@ $(document).ready(function() {
                             id: 'CONSIGNEE',
                             value: data,
                             display_value: full.CONSIGNEE_NAME,
-                            style:'width:200px'
+                            style:'width:100px'
                         }
                     );
                     return field_html;
                 }
             },
-            { "data": "CONSIGNEE_PHONE","width": "180px",  "className":"consignee_phone",
+            { "data": "CONSIGNEE_PHONE","width": "80px",  "className":"consignee_phone",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="consignee_phone" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="consignee_phone" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
             { "data": "DELIVERY_ADDRESS", "width": "180px", "className":"consignee_addr",
@@ -281,7 +266,7 @@ $(document).ready(function() {
             		return '<input type="text" name="delivery_address" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "ETA", "width": "180px",
+            { "data": "ETA", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                         data='';
@@ -289,7 +274,7 @@ $(document).ready(function() {
 	                    {
 	                        id: 'ETA',
 	                        value: data.substr(0,19),
-	                        style:'width:180px'
+	                        style:'width:100px'
 	                    }
 	                );
                     return field_html;
@@ -302,11 +287,11 @@ $(document).ready(function() {
             		return '<input type="text" name="cargo_desc" value="'+data+'" class="form-control" style="width:200px"/>';
             	}
             },
-            { "data": "LAND_CONTAINER_TYPE","width": "80px", 
+            { "data": "LAND_CONTAINER_TYPE","width": "40px", 
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    var str = '<select name="land_container_type" class="form-control search-control" style="width:100px">'
+                    var str = '<select name="land_container_type" class="form-control search-control" style="width:60px">'
                     			+'<option></option>'
 			                   +'<option value="20\'GP" '+(data=='20\'GP' ? 'selected':'')+'>20GP</option>'
 			                   +'<option value="40\'GP" '+(data=='40\'GP' ? 'selected':'')+'>40GP</option>'
@@ -316,28 +301,28 @@ $(document).ready(function() {
                     return str;
                 }
             },
-            { "data": "LAND_CONTAINER_NO","width": "180px",  
+            { "data": "LAND_CONTAINER_NO","width": "80px",  
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="land_container_no" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="land_container_no" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
-            { "data": "LAND_SEAL_NO","width": "180px",  
+            { "data": "LAND_SEAL_NO","width": "80px",  
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="land_seal_no" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="land_seal_no" value="'+data+'" class="form-control" style="width:100px"/>';
                 }
             },
-            { "data": "PIECES", "width": "180px",
+            { "data": "PIECES", "width": "60px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:80px"/>';
             	}
             },
-            { "data": "UNIT_ID", "width": "180px",
+            { "data": "UNIT_ID", "width": "80px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
@@ -346,37 +331,53 @@ $(document).ready(function() {
                             id: 'UNIT_ID',
                             value: data,
                             display_value: full.UNIT_NAME,
-                            style:'width:200px'
+                            style:'width:100px'
                         }
                     );
                     return field_html;
                 }
             },
-            { "data": "GROSS_WEIGHT", "width": "180px",
+            { "data": "GROSS_WEIGHT", "width": "60px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="gross_weight" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="gross_weight" value="'+data+'" class="form-control" style="width:80px"/>';
             	}
             },
-            { "data": "VOLUME", "width": "180px",
+            { "data": "VOLUME", "width": "60px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:80px"/>';
             	}
             },
-            { "data": "REQUIRED_TIME_REMARK", "width": "180px",
+            { "data": "REQUIRED_TIME_REMARK", "width": "130px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="required_time_remark" value="'+data+'" class="form-control" style="width:200px"/>';
+            		return '<input type="text" name="required_time_remark" value="'+data+'" class="form-control" style="width:150px"/>';
             	}
             },
-            { "data": "DOC_NAME", "width": "100px",
+            { "data":"ID","width": "80px",
+            	"render": function ( data, type, full, meta ) {
+            		if(data)
+	            		return '<span class="btn table_btn btn-success btn-xs fileinput-button" style="100px" >' 
+		                		+'<i class="glyphicon glyphicon-plus"></i>'
+		                		+'<span>上传签收文件</span>'
+		                		+'<input class="upload" type="file" multiple>'
+		                		+'</span>'
+		            else
+		            	return '<span class="btn table_btn btn-default btn-xs fileinput-button" title="请先保存再上传文件">' 
+		                		+'<i class="glyphicon glyphicon-plus"></i>'
+		                		+'<span>上传签收文件</span>'
+		                		+'<input  class="upload" type="button" disabled>'
+		                		+'</span>'			
+            	}
+            },
+            { "data": "DOC_NAME", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data){
-            			return '<span style="width:120px;"><span/>';
+            			return '<span style="width:100px;"><span/>';
             		}
             		else{
             			var arr = data.split(",");
@@ -387,7 +388,7 @@ $(document).ready(function() {
 		            		str += '<a href="/upload/doc/'+arr[i]+'" target="_blank">'+arr[i]+'</a>&nbsp;&nbsp;'
 		            			  +'<a id="'+idArr[i]+'" class="glyphicon glyphicon-remove delete_icon_of_sign_desc" style="margin-right:15px;" role="menuitem" tabindex="-10"></a>'
 	            		}
-	            		return '<span style="width:200px;" >'+str+'</span>';
+	            		return '<span style="width:100px;" >'+str+'</span>';
             		}
             	}
             },

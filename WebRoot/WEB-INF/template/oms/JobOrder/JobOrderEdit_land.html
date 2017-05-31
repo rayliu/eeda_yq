@@ -64,7 +64,7 @@
 			                                        style:'width:3100px',
 			                                        headers:[
 			                                            '<input id="allCheckOfLand" type="checkbox" style="width:30px">',
-			                                            '','',  '',    '',  '收卸货类型', 
+			                                            '','',     '',  '收卸货类型', 
 			                                            '运输公司', '运单号','司机', '司机电话','车型',
 			                                            '车牌',
 			                                            '发货人',
@@ -83,12 +83,13 @@
 			                                            '毛重(KG)',
 			                                            '体积(CBM)',
 			                                            '运输及时间要求',
+			                                            '', 
 			                                            '签收文件描述', 
 			                                            '签收状态',
 			                                            'TRANSPORT_COMPANY_NAME','CONSIGNOR_NAME',  'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID'],
 			                                        field_list:[
 			                                            'id',
-			                                            '','',  'id',  'doc_name','unload_type', 
+			                                            '','',   'doc_name','unload_type', 
 			                                            'transport_company','trans_no','driver','driver_tel','truck_type',
 			                                            'car_no',
 			                                            'consignor',
@@ -104,6 +105,7 @@
 			                                            'land_seal_no',
 			                                            'pieces', 'unit_id','gross_weight','volume',
 			                                            'required_time_remark',
+			                                            'id', 
 			                                            'doc_name',
 			                                            'sign_status',
 			                                            'TRANSPORT_COMPANY_NAME','CONSIGNOR_NAME',   'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID'],
@@ -120,18 +122,18 @@
 										<%include("/eeda/component/form/detailTable.html", 
 			                                    {
 			                                        id:'land_shipment_table',
-			                                        style:'width:3100px',
+			                                        style:'width:1800px',
 			                                        headers:[
 			                                            '<input id="allCheckOfLand2" type="checkbox" style="width:30px">',
-			                                            '','',  '',    '',  '收卸货类型', 
+			                                            '','',      '',  '收卸货类型', 
 			                                            '运输公司', '运单号','发货人','发货人电话','发货地点',
-			                                            '预约到达时间','签收文件描述', 
+			                                            '预约到达时间','','签收文件描述', 
 			                                            'TRANSPORT_COMPANY_NAME','CONSIGNOR_NAME',  'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID'],
 			                                        field_list:[
 			                                            'id',
-			                                            '','',  'id',  'doc_name','unload_type', 
+			                                            '','',    'doc_name','unload_type', 
 			                                            'transport_company','trans_no','consignor','consignor_phone','take_address',
-			                                            'eta','doc_name',
+			                                            'eta','id','doc_name',
 			                                            'TRANSPORT_COMPANY_NAME','CONSIGNOR_NAME',   'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID'],
 			                                        value_list: landShipmentList![]
 			                                    }){} %>
