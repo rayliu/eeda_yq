@@ -1,0 +1,103 @@
+<%layout("/eeda/layout.html"){%>
+        <div id="page-wrapper">
+            
+            <div class="row simple_search_div">
+                <div class="col-lg-12">
+                    <form id="orderForm">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <%include("/eeda/component/form/inputField.html", 
+                                                        {   id: 'creator', 
+                                                            label: '发布人', 
+                                                            value: ''
+                                                        }){}%>
+                                </div>
+                                <div class="col-lg-4">
+                                    <%include("/eeda/component/form/inputDateQueryField.html", 
+                                    {   id:'create_stamp', 
+                                        label:'发布时间', 
+                                        value:''
+                                    }){} %>
+                                </div>
+                            </div>
+                        <div class="form-group button-bar" >
+                            <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+                            <button id="resetBtn" class="btn btn_white" type="reset">清空条件</button>
+                        </div>
+                   </form>
+                </div>
+            </div><!-- /.row -->
+            <div class="row simple_list_div">
+                <div class="col-lg-12">
+		            <%include("/eeda/component/form/detailTable.html", 
+                        {
+                            id:'eeda_table',
+                            headers:['', 
+                                '状态',
+                                '消息',
+                                '时间']
+                        }){} %>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.row -->
+        </div><!-- end of  .page-wrapper-->
+        
+<!-- 拟态框 ,添加公告-->
+<div class="modal fade" id="addRadioDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width:1000px;">
+    <div class="modal-content">
+      <div class="modal-header">发送公告详情</div>
+            <form action="/msgBoard/saveOfMsgBoard" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                          <label>公告标题</label>
+                          <input type="text" id="radioTitle" name="radioTitle" class="form-control" required><br>
+                          <label>公告正文</label>
+                          <textarea id="radioContent" name="radioContent" class="form-control" rows="5" required></textarea><br>
+                    </div>   
+                </div>
+                <div class="modal-footer">
+                    <button id="addRadioBtn" class="btn btn-primary" type="submit">发布公告</button>
+                    <button id="returnBtn" class="btn  btn-default" data-dismiss="modal">返回</button>
+                </div>
+            </form>
+    </div>
+  </div>
+</div>
+
+<!-- 拟态框，编辑修改公告 -->
+<% if(shiro.hasPermission("msg.create")){%>
+  <a data-target='#editRadioDetail' data-toggle='modal'>
+        <button id="editRadio" style="display:none" ></button>
+  </a>
+<%}%>
+<div class="modal fade" id="editRadioDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width:1000px;">
+    <div class="modal-content">
+      <div class="modal-header">发送公告详情</div>
+            <form action="/msgBoard/edit" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                          <input type="hidden" id="edit_id" name="edit_id">
+                          <label>公告标题</label>
+                          <input type="text" id="edit_radioTitle" name="edit_radioTitle" class="form-control" required><br>
+                          <label>公告正文</label>
+                          <textarea id="edit_radioContent" name="edit_radioContent" class="form-control" rows="5" required></textarea><br>
+                    </div>   
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">修改</button>
+                    <button class="btn btn-default" data-dismiss="modal">返回</button>
+                </div>
+            </form>
+    </div>
+  </div>
+</div>
+
+<%}%>
+
+
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['app/personalMsg/list']);
+    });
+</script>
