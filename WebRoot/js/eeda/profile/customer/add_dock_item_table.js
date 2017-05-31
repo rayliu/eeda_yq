@@ -4,7 +4,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    var deletedTableIds=[];
 
 	    //删除一行
-	    $("#cargo_table").on('click', '.delete', function(e){
+	    $("#dock_table").on('click', '.delete', function(e){
 	        e.preventDefault();
 	        var tr = $(this).parent().parent();
 	        deletedTableIds.push(tr.attr('id'));
@@ -14,7 +14,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    
 	    //构造函数，获得json
 	    itemOrder.buildDockItem=function(){
-	    	var cargo_table_rows = $("#cargo_table tr");
+	    	var cargo_table_rows = $("#dock_table tr");
 	        var cargo_items_array=[];
 	        for(var index=0; index<cargo_table_rows.length; index++){
 	            if(index==0)
@@ -61,7 +61,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 
 	    //------------事件处理
 	    var cargoTable = eeda.dt({
-            id: 'cargo_table',
+            id: 'dock_table',
             autoWidth: false,
             "drawCallback": function( settings ) {
 		        
@@ -112,7 +112,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    
 	    //刷新明细表
 	    itemOrder.refleshTable = function(order_id){
-	    	var url = "/customer/tableList?order_id="+order_id+"&type='dock'";
+	    	var url = "/customer/tableList?order_id="+order_id+"&type=dock";
 	    	cargoTable.ajax.url(url).load();
 	    }
 	    
