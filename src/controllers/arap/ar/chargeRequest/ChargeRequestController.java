@@ -308,7 +308,10 @@ public class ChargeRequestController extends Controller {
         
         String sql = "select * from(  "
         		+ " select p.abbr payee_company,p.code,acao.*, acao.order_no application_order_no,CAST(CONCAT(acao.begin_time,'到',acao.end_time) AS CHAR) service_stamp, "
-        		+ " '申请单' order_type,aco.order_no charge_order_no,u.c_name "
+        		+ " '申请单' order_type,aco.order_no charge_order_no,u.c_name"
+        		+ " ,EXISTS (SELECT	joa.order_type FROM job_order_arap joa "
+        		+ " LEFT JOIN charge_application_order_rel caor ON caor.job_order_arap_id = joa.id"
+        		+ " WHERE	caor.application_order_id = acao.id	AND joa.order_type = 'cost' ) hedge_flag"
 				+ " from arap_charge_application_order acao "
 				+ " left join charge_application_order_rel caor on caor.application_order_id = acao.id "
 				+ " left join arap_charge_order aco on aco.id = caor.charge_order_id"

@@ -40,7 +40,11 @@ $(document).ready(function() {
             },
             {"data":"PAYEE_COMPANY","class":"SP_NAME",
                 "render": function(data, type, full, meta) {
-                    return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
+                	var other ='';
+	               	 if(full.HEDGE_FLAG){
+	               		 other = ' <span class="badge">冲</span>';
+	              	  	}
+                    return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_self'>"+data+other+"</a>";
                 }
             },
             {"data":"BILL_TYPE",

@@ -39,7 +39,11 @@ $(document).ready(function() {
             },    
             {"data":"PAYEE_COMPANY",
                  "render": function(data, type, full, meta) {
-                        return "<a href='/costRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
+                	 	var other ='';
+	                	 if(full.HEDGE_FLAG){
+	                		 other = ' <span class="badge">冲</span>';
+	               	  	}
+                        return "<a href='/costRequest/edit?id="+full.ID+"'target='_self'>"+data+other+"</a>";
                  }
              },
             {"data":"BILL_TYPE",
@@ -443,12 +447,12 @@ $(document).ready(function() {
     	  
           var charge_order_no = $('#orderNo').val().trim(); 
           var applicationOrderNo = $('#applicationOrderNo').val();
-          if(back=="true"){
-          	  $('#status2').val("新建");
-            }
-          if(back=="confirmTrue"){
-          	  $('#status2').val("已复核");
-            }
+//          if(back=="true"){
+//          	  $('#status2').val("新建");
+//            }
+//          if(back=="confirmTrue"){
+//          	  $('#status2').val("已复核");
+//            }
           var status2 = $('#status2').val().trim();
           var fee_type = $('#fee_type').val();
           
