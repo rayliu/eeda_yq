@@ -569,22 +569,11 @@ eeda.refreshUrl = refreshUrl;
             //   return;
             // }
             tableFieldList.empty();
-            if(inputStr=='' && data.length>0){
-              if(data[0].REF_ID){
-                tableFieldList.append('<span style="font-size: 10px;color: gray;">您曾经使用过的'+data.length+'行记录, 需要别的数据请输入查询条件</span>');
-              }else{
-                tableFieldList.append('<span style="font-size: 10px;color: gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
-              }
-            }else if(data.length==0){
-              tableFieldList.append('<span style="font-size: 10px;color: gray;">无记录</span>');
-            }else if(inputStr.length>0 && data.length==10){
-              tableFieldList.append('<span style="font-size: 10px;color: gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
-            }
-
+            
               if(data[0].DOCK_NAMES){
                   docks=data[0].DOCK_NAMES.split(',');
                   for(d in docks){
-                    tableFieldList.append("<option class='fromLocationItem' value="+docks[d]+" tabindex='"+d+"'><a class='fromLocationItem' >"+docks[d]+"</a></option>");
+                    inputField.append("<option class='fromLocationItem' value="+docks[d]+" tabindex='"+d+"'><a class='fromLocationItem' >"+docks[d]+"</a></option>");
                  }
               }
 
