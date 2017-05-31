@@ -51,6 +51,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 },  
 				{ "data": "PART_NAME","class":"part_name"}, 
 				{ "data": "ACTRAL_AMOUNT"},
+				{ "data": "SHELVES"},
 				{ "data": "CREATE_TIME"},
 				{ "data": "CREATOR_NAME"},
                 { "width": "30px", visible: false,
