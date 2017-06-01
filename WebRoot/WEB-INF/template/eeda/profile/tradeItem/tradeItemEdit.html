@@ -41,6 +41,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'VAT_rate', 
                                     label:'增值税率', 
+                                    required:'required',
                                     value:order.VAT_rate!''
                                 }){}%>
                         </div>
@@ -48,6 +49,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'rebate_rate', 
                                     label:'退税率', 
+                                    required:'required',
                                     value:order.rebate_rate!''
                                 }){}%>
                         </div>
