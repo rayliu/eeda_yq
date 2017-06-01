@@ -7,17 +7,29 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <%include("/eeda/component/form/inputField.html", 
-                                                        {   id: 'creator', 
-                                                            label: '发布人', 
+                                                        {   id: 'msg_order_no', 
+                                                            label: '单号', 
                                                             value: ''
                                                         }){}%>
                                 </div>
                                 <div class="col-lg-4">
                                     <%include("/eeda/component/form/inputDateQueryField.html", 
                                     {   id:'create_stamp', 
-                                        label:'发布时间', 
+                                        label:'创建时间', 
                                         value:''
                                     }){} %>
+                                </div>
+                                <div class="col-lg-4">
+                                    <%include("/eeda/component/form/selectField.html", 
+                                                        {   id: 'msg_status', 
+                                                            label: '消息状态', 
+                                                            value: '',
+                                                            value_list:[
+                                                            	{code:'', value:''},
+	                                                            {code:'未读', value:'未读'},
+	                                                            {code:'已读', value:'已读'}
+                                                            ]
+                                                        }){}%>
                                 </div>
                             </div>
                         <div class="form-group button-bar" >

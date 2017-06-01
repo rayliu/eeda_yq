@@ -147,8 +147,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
          		 if(data){
          			 $('#saveBtn').attr('disabled', true);
          			 $.scojs_message('提交成功', $.scojs_message.TYPE_OK);
-         			 salesOrder.refleshTabl(order_id);
+         			 salesOrder.refleshTable(order_id);
          		 }
+         		$.unblockUI();
          	 }).fail(function() {
                  $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                  $('#submitBtn').attr('disabled', false);
