@@ -433,7 +433,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="15" splitType="Stretch">
+		<band height="13" splitType="Stretch">
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="631" y="0" width="54" height="12" uuid="1573c8f3-5e65-409b-be9c-a02fc6ce86a8"/>
 				<textElement textAlignment="Center">
