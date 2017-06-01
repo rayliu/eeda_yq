@@ -498,7 +498,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{HBL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="377" y="0" width="90" height="15" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
+				<reportElement stretchType="RelativeToBandHeight" x="377" y="0" width="90" height="12" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
