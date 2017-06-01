@@ -94,6 +94,9 @@ $(document).ready(function() {
         eeda.bindTableFieldTruckOut('land_table', 'CONSIGNOR');
         eeda.bindTableFieldTruckIn('land_table', 'CONSIGNEE');
         eeda.bindTableField('land_table','UNIT_ID','/serviceProvider/searchUnit','');
+        
+        eeda.bindTableAddressField('land_table', 'TAKE_ADDRESS','/serviceProvider/searchTruckOut','CONSIGNOR');
+        eeda.bindTableAddressField('land_table', 'DELIVERY_ADDRESS','/serviceProvider/searchTruckOut','CONSIGNEE');
 //        eeda.bindTableLocationField('land_table','ROUTE_FROM');
 //        eeda.bindTableLocationField('land_table','ROUTE_TO');
     };
@@ -234,7 +237,15 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="take_address" value="'+data+'" class="form-control" style="width:200px"/>';
+            		var field_html = template('table_address_template',
+                            {
+                                id: 'TAKE_ADDRESS',
+                                value: data,
+                                style:'width:200px',
+                                display_value: full.TAKE_ADDRESS
+                            }
+                        );
+                        return field_html;
             	}
             },
             { "data": "CONSIGNEE", "width": "80px",
@@ -263,7 +274,15 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="delivery_address" value="'+data+'" class="form-control" style="width:200px"/>';
+            		var field_html = template('table_address_template',
+                            {
+                                id: 'DELIVERY_ADDRESS',
+                                value: data,
+                                style:'width:200px',
+                                display_value: full.DELIVERY_ADDRESS
+                            }
+                        );
+                        return field_html;
             	}
             },
             { "data": "ETA", "width": "80px",
