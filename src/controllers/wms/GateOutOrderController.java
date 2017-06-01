@@ -337,10 +337,14 @@ public class GateOutOrderController extends Controller {
   		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhMMss");
   		String c=sdf.format(new Date());
   		String order_id = getPara("order_id");
+  		Record re = Db.findById("gate_out_order", order_id);
+  		
   		String fileName = "/report/wms/gateOutOrder.jasper";
   		String outFileName = "/download/出库单"+c;
   		HashMap<String, Object> hm = new HashMap<String, Object>();
   		hm.put("order_id", order_id);
+  		hm.put("orderNo", re.getStr("order_no"));
+  		hm.put("totalQuantity", re.get("quantity"));
   		fileName = getContextPath() + fileName;
   		outFileName = getContextPath() + outFileName + order_id;
   		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
