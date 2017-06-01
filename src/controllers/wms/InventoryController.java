@@ -164,40 +164,23 @@ public class InventoryController extends Controller {
     		Gson gson = new Gson(); 
             Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class); 
             String item_no = dto.get("item_no");
-            String item_name = dto.get("item_name");
-            String part_name = dto.get("part_name");
             String part_no = dto.get("part_no");
+            String shelves = dto.get("shelves");
             
             if(StringUtils.isNotBlank(item_no)){
             	condition += " and pro.item_no like '%"+item_no+"%'";
-            }
-            
-            if(StringUtils.isNotBlank(item_name)){
-            	condition += " and pro.item_name like '%"+item_name+"%'";
-            }
-            
-            if(StringUtils.isNotBlank(part_name)){
-            	condition += " and pro.part_name like '%"+part_name+"%'";
             }
             
             if(StringUtils.isNotBlank(part_no)){
             	condition += " and pro.part_no like '%"+part_no+"%'";
             }
             
-            
-            String begin_time = dto.get("create_time_begin_time");
-            if(StringUtils.isBlank(begin_time)){
-            	begin_time = "2000-01-01";
+            if(StringUtils.isNotBlank(shelves)){
+            	condition += " and gi.shelves like '%"+shelves+"%'";
             }
             
-            String end_time = dto.get("create_time_end_time");
-            if(StringUtils.isBlank(end_time)){
-            	end_time = "2037-01-01";
-            }else{
-            	end_time = end_time +" 23:59:59";
-            }
+  
             
-            condition += " and gi.create_time between '"+begin_time+"' and '"+end_time+"'";
             
     	}
     	
@@ -236,6 +219,7 @@ public class InventoryController extends Controller {
     public void partList() {
     	String sql = "";
         String condition="";
+        String proCondition="";
         String sLimit = "";
         String pageIndex = getPara("draw");
         UserLogin user = LoginUserController.getLoginUser(this);
@@ -250,19 +234,25 @@ public class InventoryController extends Controller {
     	if(StringUtils.isNotBlank(jsonStr)){
     		Gson gson = new Gson(); 
             Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class); 
-            
+            String shelves = dto.get("shelves");
             String part_no = dto.get("part_no");
             if(StringUtils.isNotBlank(part_no)){
             	condition += " and pro.part_no = '"+part_no+"'";
+            	proCondition += " and pro.part_no = '"+part_no+"'";
+            }
+            if(StringUtils.isNotBlank(shelves)){
+            	condition += " and gi.shelves like '"+shelves+"'";
             }
             
             //处理无法识别item_no的数据
             String item_no = getPara("item_no");
             if(StringUtils.isNotBlank(item_no) && !"null".equals(item_no)){
             	condition += " and pro.item_no = '"+item_no+"'";
+            	proCondition += " and pro.item_no = '"+item_no+"'";
             }else{
             	if(StringUtils.isBlank(part_no)){
             		condition += " and pro.item_no is null";
+            		proCondition += " and pro.item_no is null";
             	}
             }
             
@@ -277,8 +267,8 @@ public class InventoryController extends Controller {
 			+ " group by gi.id "
 			+ " union"
 			+ " select pro.id,pro.part_no from wmsproduct pro"
-			+ " where amount>0"
-			+ condition 
+			+ " where amount>0 and pro.office_id="+office_id
+			+ proCondition 
 			+ " ) A group by A.part_no) B";
         
     	sql = "select A.*,count(IF (quantity = 0, null,A.id)) totalBox,sum(A.quantity) totalPiece from ("
@@ -295,8 +285,8 @@ public class InventoryController extends Controller {
 			+ " select pro.id,0 quantity,pro.part_no,pro.item_name,pro.item_no,pro.part_name,"
 			+ " (select GROUP_CONCAT(item_no SEPARATOR ' , ') from wmsproduct where part_no = pro.part_no) usefor"
 			+ " from wmsproduct pro"
-			+ " where amount>0"
-			+ condition 
+			+ " where amount>0 and pro.office_id="+office_id
+			+ proCondition 
 			+ " ) A group by A.part_no order by A.part_no";
     	
         
@@ -335,30 +325,10 @@ public class InventoryController extends Controller {
     		Gson gson = new Gson(); 
             Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class); 
             
-            String item_name = dto.get("item_name");
-            String part_name = dto.get("part_name");
-            if(StringUtils.isNotBlank(item_name)){
-            	condition += " and pro.item_name like '%"+item_name+"%'";
+            String shelves = dto.get("shelves");
+            if(StringUtils.isNotBlank(shelves)){
+            	condition += " and gi.shelves like '%"+shelves+"%'";
             }
-            
-            if(StringUtils.isNotBlank(part_name)){
-            	condition += " and pro.part_name like '%"+part_name+"%'";
-            }
-
-            String begin_time = dto.get("create_time_begin_time");
-            if(StringUtils.isBlank(begin_time)){
-            	begin_time = "2000-01-01";
-            }
-            
-            String end_time = dto.get("create_time_end_time");
-            if(StringUtils.isBlank(end_time)){
-            	end_time = "2037-01-01";
-            }else{
-            	end_time = end_time +" 23:59:59";
-            }
-            
-            condition += " and gi.create_time between '"+begin_time+"' and '"+end_time+"'";
-            
     	}
         
     	sql = "select gi.*, ifnull(u.c_name, u.user_name) creator_name,"
