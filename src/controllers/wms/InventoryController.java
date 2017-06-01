@@ -3,6 +3,8 @@ package controllers.wms;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +21,9 @@ import models.wms.GateOut;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
@@ -33,6 +38,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
+import controllers.util.PoiUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -384,6 +390,97 @@ public class InventoryController extends Controller {
     	
     	renderJson(gi);
     }
+    
+    @Before(Tx.class)
+    public void downloadList(){
+    	String sql = null;
+    	String conditions = "";
+    	
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        
+        
+        String jsonStr = getPara("jsonStr");
+    	if(StringUtils.isNotBlank(jsonStr)){
+    		Gson gson = new Gson(); 
+            Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class); 
+            String item_no = dto.get("item_no");
+	    	if(StringUtils.isNotBlank(item_no)){
+	    		conditions += " and pro.item_no = '"+item_no+"'";
+	    	}
+    	}
+    	
+		sql = "select A.*,sum(A.quantity) total_quantity from ("
+		    + " select gi.part_no,gi.quantity "
+			+ " from gate_in gi "
+			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+			+ " where gi.office_id="+office_id
+			+ " and out_flag = 'N' and error_flag = 'N'"
+			+ conditions
+			+ " group by gi.id "
+			+ " union"
+			+ " select pro.part_no,0 quantity"
+			+ " from wmsproduct pro"
+			+ " where amount>0 and pro.office_id="+office_id
+			+ conditions 
+			+ " ) A group by A.part_no "; 
+    	
+        String exportSql = sql;
+        String[] headers = new String[]{"part_no", "total_quantity"};
+        String[] fields = new String[]{"part_no", "total_quantity"};
+        String fileName = generateExcel(headers, fields, exportSql);
+        renderText(fileName);
+    }
+    
+    @SuppressWarnings("deprecation")
+    public String generateExcel(String[] headers, String[] fields, String sql){
+	    String fileName="";
+	    try {
+	        System.out.println("generateExcel begin...");
+	        String filePath = getRequest( ).getServletContext().getRealPath("/") + "/download/inventory";
+	        File file = new File(filePath);
+	        if(!file.exists()){ 
+	            file.mkdir();
+	        }
+	        Date date = new Date();
+	        SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmss");
+	        String outFileName = "库存统计-" + format.format(date) + ".xls";
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            HSSFSheet sheet = workbook.createSheet("FirstSheet");  
+
+            HSSFRow rowhead = sheet.createRow((short)0);
+            for (int i = 0; i < headers.length; i++) {
+                rowhead.createCell((short)i).setCellValue(headers[i]);
+            }
+
+            List<Record> recs = Db.find(sql);
+            if(recs!=null){
+                for (int j = 1; j <= recs.size(); j++) {
+                    HSSFRow row = sheet.createRow((short)j);
+                    Record rec = recs.get(j-1);
+                    for (int k = 0; k < fields.length;k++){
+                        Object obj = rec.get(fields[k]);
+                        String strValue = "";
+                        if(obj != null){
+                            strValue =obj.toString();
+                        }
+                        row.createCell((short)k).setCellValue(strValue);
+                    }
+                }
+            }
+
+            fileName = filePath+"/"+outFileName;
+            System.out.println("fileName: "+fileName);
+            FileOutputStream fileOut = new FileOutputStream(fileName);
+            workbook.write(fileOut);
+            fileOut.close();
+            System.out.println("Your excel file has been generated!");
+            fileName = "download/inventory/"+outFileName;
+        } catch ( Exception ex ) {
+            ex.printStackTrace();
+        }
+	    return fileName;
+	}
     
 
 }

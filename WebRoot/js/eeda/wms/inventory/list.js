@@ -140,6 +140,15 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	var url = "/inventory/partList?item_no="+item_no+"&jsonStr="+JSON.stringify(itemJson);
         	partTable.ajax.url(url).load();
         };
+        
+        $('#downloadBtn').click(function(e){
+	        var itemJson = buildCondition();
+	        var url = "/inventory/downloadList?jsonStr="+JSON.stringify(itemJson);
+	        $.post(url, function(data){
+	            if(data)
+	                window.open(data);
+	        });
+	    });
 
 	});
 });
