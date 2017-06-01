@@ -32,7 +32,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            
 	            var item={}
 	            item.id = id;
-	            item.party_id= $('#partyId').val();
 	           
 	            for(var i = 1; i < row.childNodes.length; i++){
 	            	var name = $(row.childNodes[i]).find('input,select').attr('name');
