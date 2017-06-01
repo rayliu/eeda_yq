@@ -477,7 +477,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="343" y="-1" width="47" height="15" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
+				<reportElement x="343" y="0" width="47" height="12" uuid="b6fdb062-4b49-4295-8a98-b111afb6008b"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
@@ -540,7 +540,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{ref_no}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="bottomLine" stretchType="RelativeToBandHeight" x="0" y="-1" width="800" height="16" uuid="f5ee74a4-0050-466b-a169-c8b05a19a718"/>
+				<reportElement style="bottomLine" stretchType="RelativeToBandHeight" x="0" y="0" width="800" height="12" uuid="f5ee74a4-0050-466b-a169-c8b05a19a718"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 		</band>
