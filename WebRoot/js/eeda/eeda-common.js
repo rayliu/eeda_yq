@@ -552,67 +552,7 @@ eeda.refreshUrl = refreshUrl;
       }).find('li').first().focus();
 	  };
 	  
-	  //dataTable里的下拉列表，查询参数为input,url,添加的参数para,下拉显示的数据库字段
-	   eeda.bindTableSelectField = function(table_id, el_name,url,para) {
-			  var tableFieldList = $('#table_select_field_list');
-
-      $('#'+table_id+' select[name='+el_name+']').on('keyup click', function(event){
-
-        var me = this;
-        var inputField = $(this);
-        
-        // var hiddenField = $(this).parent().find('select[name='+el_name+']');
-        var inputStr =$(this).parents('tr').find('[name=CONSIGNOR_input]').val();//发货人的名称 
-
-        $.get(url, {input:inputStr,para:para}, function(data){
-            // if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
-            //   return;
-            // }
-            tableFieldList.empty();
-            
-              if(data[0].DOCK_NAMES){
-                  docks=data[0].DOCK_NAMES.split(',');
-                  for(d in docks){
-                    inputField.append("<option class='fromLocationItem' value="+docks[d]+" tabindex='"+d+"'><a class='fromLocationItem' >"+docks[d]+"</a></option>");
-                 }
-              }
-
-            tableFieldList.css({ 
-                left:$(me).offset().left+"px", 
-                top:$(me).offset().top+28+"px" 
-            });
-            tableFieldList.show();
-            eeda._inputField = inputField;
-        },'json');
-        // }
-      });
-
-      tableFieldList.on('click', '.fromLocationItem', function(e){
-        var inputField = eeda._inputField;
-        // var hiddenField = eeda._hiddenField;
-        inputField.empty();
-        inputField.append('<option selected>'+$(this).text()+'</option>');//名字
-        tableFieldList.hide();
-        var dataId = $(this).attr('dataId');
-        // hiddenField.val(dataId);//id
-      });
-
-      tableFieldList.on('focus', 'li', function() {
-          $this = $(this);
-          $this.addClass('active').siblings().removeClass();
-          // $this.closest('div.container').scrollTop($this.index() * $this.outerHeight());
-      }).on('keydown', 'li', function(e) {
-          $this = $(this);
-          if (e.keyCode == 40) {
-              $this.next().focus();
-              return false;
-          } else if (e.keyCode == 38) {
-              $this.prev().focus();
-              return false;
-          }
-      }).find('li').first().focus();
-	   }
-	  
+		  
 	  eeda.bindTableFieldCurrencyId = function(table_id, el_name,url,para) {
 		  var tableFieldList = $('#table_currency_input_field_list');
 		  $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
@@ -1641,4 +1581,161 @@ eeda.refreshUrl = refreshUrl;
 			  }
 		  }).find('li').first().focus();
 	  };
+	  
+	  
+	  eeda.bindTableAddressField = function(table_id, el_name,url,para) {
+		  var tableFieldList = $('#table_address_input_field_list');
+
+	      //处理中文输入法, 没完成前不触发查询
+	      var cpLock = false;
+	      $('#'+table_id+' input[name='+el_name+'_input]').on('compositionstart', function () {
+	          cpLock = true;
+	      }).on('compositionend', function () {
+	          cpLock = false;
+	      });
+
+			  $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
+
+				  var me = this;
+				  var inputField = $(this);
+				  var hiddenField = $(this).parent().find('input[name='+el_name+']');
+				  var inputStr = $(this).parents('tr').find('[name='+para+'_input]').val();
+           var  addressInputStr=inputField.val();
+
+	        if(cpLock)
+	            return;
+
+	        if (event.keyCode == 40) {
+	            tableFieldList.find('li').first().focus();
+	            return false;
+	        }
+	        if(event.keyCode==8){
+	        	if(inputStr==''){
+	        		hiddenField.val('');
+	        	}
+	        	return ;
+	        }else{
+				  $.get(url, {input:inputStr,addressInputStr:addressInputStr}, function(data){
+	  				  // if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+	  					 //  return;
+	  				  // }
+	  				  tableFieldList.empty();
+
+	            if(inputStr=='' && data.length>0){
+	              if(data[0].REF_ID){
+	                tableFieldList.append('<span style="font-size: 10px;color: gray;">您曾经使用过的'+data.length+'行记录, 需要别的数据请输入查询条件</span>');
+	              }else{
+	                tableFieldList.append('<span style="font-size: 10px;color: gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+	              }
+	            }else if(data.length==0){
+	              tableFieldList.append('<span style="font-size: 10px;color: gray;">无记录</span>');
+	            }else if(inputStr.length>0 && data.length==10){
+	              tableFieldList.append('<span style="font-size: 10px;color: gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+	            }
+
+	            
+              for(var i = 0; i < data.length; i++){
+                 var aa=data[i].DOCK_NAMES.split(',')
+                 if(aa!=undefined && aa!=''){
+                     for (d in aa) {
+                       tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+aa[d]+"' >"+aa[d]+"</a></li>");
+                     };
+                  }
+              }
+
+			        tableFieldList.css({ 
+				          left:$(me).offset().left+"px", 
+	                top:$(me).offset().top+28+"px" 
+	            });
+	            tableFieldList.show();
+	            eeda._inputField = inputField;
+	            eeda._hiddenField = hiddenField;
+//	            if(data.length==0)
+//	                hiddenField.val('');
+// 	            if(data.length==1&&data[0].ID){
+// 	            	  inputField.val(data[0].NAME);
+// //	                hiddenField.val(data[0].ID);
+// //	                tableFieldList.hide();
+// 	            }
+//	            if(!inputStr && data.length>1){
+//		                hiddenField.val('');
+//	            }
+	            //tableFieldList;
+	  	    },'json');
+	        }
+			  });
+
+			  tableFieldList.on('click', '.fromLocationItem', function(e){
+				  var inputField = eeda._inputField;
+				  var hiddenField = eeda._hiddenField;
+				  inputField.val($(this).text());//名字
+				  tableFieldList.hide();
+				  var dataId = $(this).attr('dataId');
+				  hiddenField.val(dataId);//id
+			  });
+
+	      tableFieldList.on('keydown', 'li', function(e){
+	        e.preventDefault();
+	        if (e.keyCode == 13) {//enter
+	          var inputField = eeda._inputField;
+	          var hiddenField = eeda._hiddenField;
+	          inputField.val($(this).text());//名字
+	          tableFieldList.hide();
+	          var dataId = $(this).find('a').attr('dataId');
+	          hiddenField.val(dataId);//id
+
+	          var td = inputField.parent().parent();
+	          var row = td.parent();
+	          var colCount = row.find('td').length;
+
+	          var nextTdInput, nextTd=td;
+	          var index = 0;
+	          while(!nextTdInput && index<colCount){
+	              nextTd = nextTd.next();
+	              index = nextTd.index();
+	              nextTdInput = nextTd.find('input:last');
+	              if(nextTdInput && !nextTdInput.prop('disabled')){
+	                  nextTdInput.focus();
+	                  break;
+	              }else{
+	                  nextTdInput=null;
+	              }
+	          }
+	        }
+	      });
+
+			  // 1 没选中客户，焦点离开，隐藏列表
+			  $(document).on('click', function(event){
+	        console.log("tableFieldList.is(':visible') == "+tableFieldList.is(':visible'));
+	          if (tableFieldList.is(':visible') ){
+	              var clickedEl = $(this);
+	              var hiddenField = eeda._hiddenField;
+	              if ($(this).find('a').val().trim().length ==0) {
+	                  hiddenField.val('');
+	              };
+	              tableFieldList.hide();
+	          }
+			  });
+			  
+
+			  // 2 当用户只点击了滚动条，没选客户，再点击页面别的地方时，隐藏列表
+			  tableFieldList.on('mousedown', function(){
+				  return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+			  });
+
+	      tableFieldList.on('focus', 'li', function() {
+	          $this = $(this);
+	          $this.addClass('active').siblings().removeClass();
+	          // $this.closest('div.container').scrollTop($this.index() * $this.outerHeight());
+	      }).on('keydown', 'li', function(e) {
+	          $this = $(this);
+	          if (e.keyCode == 40) {
+	              $this.next().focus();
+	              return false;
+	          } else if (e.keyCode == 38) {
+	              $this.prev().focus();
+	              return false;
+	          }
+	      }).find('li').first().focus();
+		  };
 });

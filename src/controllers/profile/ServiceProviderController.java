@@ -720,11 +720,25 @@ public class ServiceProviderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
         String name = getPara("input");
+        String addressInputStr = getPara("addressInputStr");
+        String addStr="";
+        if(StringUtils.isNotEmpty(addressInputStr)){
+        	addStr=" and dock_name like '%"+addressInputStr+"%' ";
+        }
         List<Record> rec = null;
-        String sql = "select p.id,p.abbr name, p.phone, p.address,CONCAT(IFNULL(p.address,''),',',GROUP_CONCAT(di.dock_name)) dock_names from party p LEFT JOIN dockinfo di on di.party_id=p.id "
-        			+" where p.office_id="+office_id;
+        String sql = " SELECT "
+        		+" 	p.id,p.abbr NAME,p.phone, "
+        		+" 	p.address, "
+        		+" 	CONCAT( "
+        		+" 		IFNULL(p.address, ''), "
+        		+" 		',',IFNULL((SELECT GROUP_CONCAT(di.dock_name) from dockinfo di WHERE di.party_id=p.id "+addStr+"),'') "
+        		+" 	) dock_names "
+        		+" FROM "
+        		+" 	party p "
+        		+" WHERE "
+        		+" 	p.office_id ="+office_id;
         if(!StringUtils.isBlank(name)){
-            sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
+            sql+="  and ( p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ) ";
         }
         rec = Db.find(sql);
         renderJson(rec);

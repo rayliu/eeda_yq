@@ -95,7 +95,7 @@ $(document).ready(function() {
         eeda.bindTableFieldTruckIn('land_shipment_table', 'CONSIGNEE');
         eeda.bindTableField('land_shipment_table','UNIT_ID','/serviceProvider/searchUnit','');
 
-        eeda.bindTableSelectField('land_shipment_table', 'TAKE_ADDRESS','/serviceProvider/searchTruckOut','');
+        eeda.bindTableAddressField('land_shipment_table', 'TAKE_ADDRESS','/serviceProvider/searchTruckOut','CONSIGNOR');
 //        eeda.bindTableLocationField('land_shipment_table','ROUTE_FROM');
 //        eeda.bindTableLocationField('land_shipment_table','ROUTE_TO');
     };
@@ -200,11 +200,12 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		var field_html = template('table_select_dropdown_template',
+            		var field_html = template('table_address_template',
                         {
                             id: 'TAKE_ADDRESS',
                             value: data,
-                            style:'width:200px'
+                            style:'width:200px',
+                            display_value: full.TAKE_ADDRESS
                         }
                     );
                     return field_html;
