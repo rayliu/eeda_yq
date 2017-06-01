@@ -285,7 +285,7 @@ $(document).ready(function() {
                         return field_html;
             	}
             },
-            { "data": "ETA", "width": "80px",
+            { "data": "ETA", "width": "130px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                         data='';
@@ -293,7 +293,7 @@ $(document).ready(function() {
 	                    {
 	                        id: 'ETA',
 	                        value: data.substr(0,19),
-	                        style:'width:100px'
+	                        style:'width:150px'
 	                    }
 	                );
                     return field_html;
