@@ -24,19 +24,22 @@
 		</box>
 	</style>
 	<parameter name="order_id" class="java.lang.String"/>
+	<parameter name="itemNo" class="java.lang.String"/>
+	<parameter name="totalQuantity" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select A.*,
-(select ifnull(sum(gi.quantity),0) from gate_in gi
-where gi.part_no = A.part_no and gi.out_flag = 'N' AND gi.error_flag = 'N') shelves_total_piece
-from (SELECT
-	gi.part_no,
-	gi.quantity,
-	pro.part_name,
-	pro.item_no,
-	pro.item_name,
-	pro.amount,
-	(goo.quantity*pro.amount) act_quantity,
+		<![CDATA[SELECT
+	A.*, sum(ifnull(A.quantity, 0)) shelves_total_piece
+FROM
 	(
+		SELECT
+			gi.part_no,
+			gi.quantity,
+			pro.part_name,
+			pro.item_no,
+			pro.item_name,
+			pro.amount,
+			( $P{totalQuantity} * pro.amount) act_quantity,
+		(
 		SELECT
 			GROUP_CONCAT(DISTINCT shelves SEPARATOR '    ')
 		FROM
@@ -44,34 +47,40 @@ from (SELECT
 		WHERE
 			out_flag = 'N'
 		AND error_flag = 'N'
+		and office_id = 1
 		AND part_no = gi.part_no
 		GROUP BY
 			part_no
-	) shelves
-FROM
-	gate_in gi
-LEFT JOIN wmsproduct pro ON pro.part_no = gi.part_no
-left join gate_out_order goo on goo.item_no = pro.item_no
-WHERE
- goo.id = $P{order_id}
-AND gi.out_flag = 'N'
-AND gi.error_flag = 'N'
-union all
-SELECT
-	pro.part_no,
-	null quantity,
-	pro.part_name,
-	pro.item_no,
-	pro.item_name,
-	pro.amount,
- (goo.quantity*pro.amount) act_quantity,
-	null shelves
-FROM
-	wmsproduct pro
-left join gate_out_order goo on goo.item_no = pro.item_no
-WHERE
- pro.amount>0 and  goo.id = $P{order_id}
-) A group by A.part_no ORDER BY A.shelves desc]]>
+		) shelves
+		FROM
+			gate_in gi
+		LEFT JOIN wmsproduct pro ON pro.part_no = gi.part_no
+		WHERE
+			gi.out_flag = 'N'
+		AND gi.error_flag = 'N'
+		AND gi.office_id = 1
+		AND pro.item_no = $P{itemNo}
+		GROUP BY
+			gi.id
+		UNION ALL
+			SELECT
+				pro.part_no,
+				NULL quantity,
+				pro.part_name,
+				pro.item_no,
+				pro.item_name,
+				pro.amount,
+				( $P{totalQuantity} * pro.amount) act_quantity,
+				'' shelves
+			FROM
+				wmsproduct pro
+			WHERE
+				pro.amount > 0
+			AND pro.office_id = 1
+			AND pro.item_no = $P{itemNo}
+	) A
+GROUP BY
+	A.part_no]]>
 	</queryString>
 	<field name="part_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -91,7 +100,7 @@ WHERE
 	<field name="amount" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="act_quantity" class="java.math.BigDecimal"/>
+	<field name="act_quantity" class="java.lang.Double"/>
 	<field name="shelves" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
