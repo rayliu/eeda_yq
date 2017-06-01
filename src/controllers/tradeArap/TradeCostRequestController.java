@@ -268,7 +268,7 @@ public class TradeCostRequestController extends Controller {
 				+ " left join trade_arap_cost_order aco on aco.id = caor.cost_order_id"
 				+ " left join user_login u on u.id = acao.create_by"
 				+ " LEFT JOIN party p on p.id=acao.sp_id"
-				+ "	where acao.office_id = "+office_id
+				+ " where (acao.office_id = "+office_id+ " or acao.office_id in (select office_id from user_office where user_name='"+ user.getStr("user_name")+ "' ))"
 				+ " group by acao.id"
 				+ " order by acao.create_stamp desc"
 				+ " ) B where 1=1 ";
@@ -661,23 +661,26 @@ public class TradeCostRequestController extends Controller {
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
         String ids = getPara("ids");
   		String application_id=getPara("application_id");
-        
+  		String application_office_id = "";
+  		
   		if(StringUtils.isNotEmpty(application_id)){
   			String receive_time = (String) dto.get("receive_time");
         	String pay_remark=(String) dto.get("pay_remark");
         	String receive_bank_id = "";
         	String payment_method = (String) dto.get("payment_method");
         	
+        	TradeArapCostApplicationOrder arapCostInvoiceApplication = TradeArapCostApplicationOrder.dao.findById(application_id);
+        	application_office_id = arapCostInvoiceApplication.get("office_id").toString();
         	if(dto.get("receive_bank_id")!=null){
       			 receive_bank_id =  dto.get("receive_bank_id").toString();
       		}else{
-      			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
+      			String str2="select id from fin_account where bank_name='现金' and office_id="+application_office_id;
       	        Record rec = Db.findFirst(str2);
       	        if(rec!=null){
       	        	receive_bank_id = rec.getLong("id").toString();
       	        }
       		}
-        	TradeArapCostApplicationOrder arapCostInvoiceApplication = TradeArapCostApplicationOrder.dao.findById(application_id);
+        	
 	          arapCostInvoiceApplication.set("status", "已付款");
 	          arapCostInvoiceApplication.set("receive_time", receive_time);
 	          arapCostInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
@@ -739,26 +742,26 @@ public class TradeCostRequestController extends Controller {
 	      		if(arapCostInvoiceApplication.getDouble("modal_cny")!=null)
 	      			cny_pay_amount=arapCostInvoiceApplication.getDouble("modal_cny").toString();
 	      		if(!"0.0".equals(cny_pay_amount)&&StringUtils.isNotEmpty(cny_pay_amount)){
-	      			createAuditLog(application_id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY");
+	      			createAuditLog(application_id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY", application_office_id);
 	      		}
 	            String usd_pay_amount = "0.0"; 
 	            if(arapCostInvoiceApplication.getDouble("modal_usd")!=null)
 	            	usd_pay_amount =arapCostInvoiceApplication.getDouble("modal_usd").toString();
 	            if(!"0.0".equals(usd_pay_amount)&&StringUtils.isNotEmpty(usd_pay_amount)){
-	            	createAuditLog(application_id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD");
+	            	createAuditLog(application_id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD", application_office_id);
 	            }
 	            
 	            String jpy_pay_amount = "0.0";
 	            if(arapCostInvoiceApplication.getDouble("modal_jpy")!=null)
 	            	jpy_pay_amount =arapCostInvoiceApplication.getDouble("modal_jpy").toString();
 	            if(!"0.0".equals(jpy_pay_amount)&&StringUtils.isNotEmpty(jpy_pay_amount)){
-	            	createAuditLog(application_id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY");
+	            	createAuditLog(application_id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY", application_office_id);
 	            }
 	            String hkd_pay_amount = "0.0";
 	            if(arapCostInvoiceApplication.getDouble("modal_hkd")!=null)
 	            	hkd_pay_amount =arapCostInvoiceApplication.getDouble("modal_hkd").toString();
 	            if(!"0.0".equals(hkd_pay_amount)&&StringUtils.isNotEmpty(hkd_pay_amount)){
-	            	createAuditLog(application_id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD");
+	            	createAuditLog(application_id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD", application_office_id);
 	            }
   		}
   		if(StringUtils.isNotEmpty(ids)){
@@ -769,10 +772,11 @@ public class TradeCostRequestController extends Controller {
 	        	String receive_bank_id = "";
         	
 	        	TradeArapCostApplicationOrder arapCostInvoiceApplication = TradeArapCostApplicationOrder.dao.findById(id);
+	        	application_office_id = arapCostInvoiceApplication.get("office_id").toString();
 	        	String payment_method = arapCostInvoiceApplication.get("payment_method") ;
 	        	receive_bank_id = arapCostInvoiceApplication.get("receive_bank_id") ;
 	        	if(StringUtils.isEmpty(receive_bank_id)){
-	      			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
+	      			String str2="select id from fin_account where bank_name='现金' and office_id="+application_office_id;
 	      	        Record rec = Db.findFirst(str2);
 	      	        if(rec!=null){
 	      	        	receive_bank_id = rec.getLong("id").toString();
@@ -836,26 +840,26 @@ public class TradeCostRequestController extends Controller {
 	      		if(arapCostInvoiceApplication.getDouble("modal_cny")!=null)
 	      			cny_pay_amount=arapCostInvoiceApplication.getDouble("modal_cny").toString();
 	      		if(!"0.0".equals(cny_pay_amount)&&StringUtils.isNotEmpty(cny_pay_amount)){
-	      			createAuditLog(id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY");
+	      			createAuditLog(id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY", application_office_id);
 	      		}
 	            String usd_pay_amount = "0.0"; 
 	            if(arapCostInvoiceApplication.getDouble("modal_usd")!=null)
 	            	usd_pay_amount =arapCostInvoiceApplication.getDouble("modal_usd").toString();
 	            if(!"0.0".equals(usd_pay_amount)&&StringUtils.isNotEmpty(usd_pay_amount)){
-	            	createAuditLog(id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD");
+	            	createAuditLog(id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD", application_office_id);
 	            }
 	            
 	            String jpy_pay_amount = "0.0";
 	            if(arapCostInvoiceApplication.getDouble("modal_jpy")!=null)
 	            	jpy_pay_amount =arapCostInvoiceApplication.getDouble("modal_jpy").toString();
 	            if(!"0.0".equals(jpy_pay_amount)&&StringUtils.isNotEmpty(jpy_pay_amount)){
-	            	createAuditLog(id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY");
+	            	createAuditLog(id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY", application_office_id);
 	            }
 	            String hkd_pay_amount = "0.0";
 	            if(arapCostInvoiceApplication.getDouble("modal_hkd")!=null)
 	            	hkd_pay_amount =arapCostInvoiceApplication.getDouble("modal_hkd").toString();
 	            if(!"0.0".equals(hkd_pay_amount)&&StringUtils.isNotEmpty(hkd_pay_amount)){
-	            	createAuditLog(id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD");
+	            	createAuditLog(id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD", application_office_id);
 	            }
 	        }
   		}
@@ -867,10 +871,9 @@ public class TradeCostRequestController extends Controller {
     }
   	
   	private void createAuditLog(String application_id, String payment_method,
-            String receive_bank_id, String receive_time, String pay_amount, String currency_code) {
-        //新建日记账表数据\
-  		UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id = user.getLong("office_id");
+            String receive_bank_id, String receive_time, String pay_amount, 
+            String currency_code, String application_office_id) {
+        //新建日记账表数据
 		TradeArapAccountAuditLog auditLog = new TradeArapAccountAuditLog();
         auditLog.set("payment_method", payment_method);
         auditLog.set("payment_type", TradeArapAccountAuditLog.TYPE_COST);
@@ -878,7 +881,7 @@ public class TradeCostRequestController extends Controller {
         auditLog.set("amount", pay_amount);
         auditLog.set("creator", LoginUserController.getLoginUserId(this));
         auditLog.set("create_date", receive_time);
-        auditLog.set("office_id", office_id);
+        auditLog.set("office_id", application_office_id);
         if(receive_bank_id!=null && !("").equals(receive_bank_id)){
         		auditLog.set("account_id", receive_bank_id);
         	}else{
