@@ -311,11 +311,11 @@ $(document).ready(function() {
     		hava_check++;
     	})
     	if(hava_check>0){
-    		$('#truckOrderPDF').attr('disabled',false);
+    		// $('#truckOrderPDF').attr('disabled',false);
 	    	$('#cabinet_truck').attr('disabled',false);
 	    	$('#land_print_debit_note').attr('disabled',false);
     	}else{
-    		$('#truckOrderPDF').attr('disabled',true);
+    		// $('#truckOrderPDF').attr('disabled',true);
 	    	$('#cabinet_truck').attr('disabled',true);
 	    	$('#land_print_debit_note').attr('disabled',true);
     	}
@@ -329,11 +329,11 @@ $(document).ready(function() {
     		hava_check++;
     	})
 	    if(this.checked==true&&$('#land_shipment_table td').length>1&&hava_check>0){
-	    	$('#truckOrderPDF').attr('disabled',false);
+	    	// $('#truckOrderPDF').attr('disabled',false);
 	    	$('#cabinet_truck').attr('disabled',false);
 	    	$('#land_print_debit_note').attr('disabled',false);
 	    }else{
-	    	$('#truckOrderPDF').attr('disabled',true);
+	    	// $('#truckOrderPDF').attr('disabled',true);
 	    	$('#cabinet_truck').attr('disabled',true);
 	    	$('#land_print_debit_note').attr('disabled',true);
 	    }
