@@ -433,7 +433,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="13" splitType="Stretch">
+		<band height="15" splitType="Stretch">
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement x="631" y="0" width="54" height="12" uuid="1573c8f3-5e65-409b-be9c-a02fc6ce86a8"/>
 				<textElement textAlignment="Center">
@@ -498,7 +498,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{HBL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="377" y="0" width="90" height="12" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
+				<reportElement stretchType="RelativeToBandHeight" x="377" y="0" width="90" height="15" uuid="58c8f0f1-8320-4948-a91a-00abef8a58dc"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
@@ -540,7 +540,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{ref_no}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="bottomLine" stretchType="RelativeToBandHeight" x="0" y="0" width="800" height="12" uuid="f5ee74a4-0050-466b-a169-c8b05a19a718"/>
+				<reportElement style="bottomLine" stretchType="RelativeToBandHeight" x="0" y="0" width="800" height="14" uuid="f5ee74a4-0050-466b-a169-c8b05a19a718"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 		</band>
