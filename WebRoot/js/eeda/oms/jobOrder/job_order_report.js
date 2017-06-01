@@ -703,6 +703,10 @@ $(document).ready(function() {
 		var arrStr = $('#ocean_HBLshipper_info').val();
 		var arry = arrStr.split("\n");
 		$('#truck_head_attn').val(arry[1]);
+        var cabinet_arrive_date=$('#land_shipment_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=ETA]').val();
+        if(!$('#cabinet_arrive_date').val()){
+            $('#cabinet_arrive_date').val(cabinet_arrive_date);
+        }
 		if(arry.length>=2){
 			var arr = arry[2].split(" "); 
 			if(arr.length>=1){
