@@ -41,7 +41,8 @@ public class ImportOrder extends Controller {
 
 	private Logger logger = Logger.getLogger(ImportOrder.class);
 	Subject currentUser = SecurityUtils.getSubject();
-
+	public static boolean isImporting = false;
+	
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
 	    render("/wms/import/list.html");
@@ -64,6 +65,10 @@ public class ImportOrder extends Controller {
 		doc_name =fileArray[0]+"_"+fileArray[1]+"_"+fileArray[2].substring(0, 6)+fileName.subSequence(fileName.length()-4, fileName.length());
 		
 	    try {  
+	    	if(isImporting){
+	    		throw new Exception("有文件正在上传，请稍等1~2分钟。。。");
+	    	}
+	    	
 	    	Record import_log = Db.findFirst("select * from import_log where doc_name = ?",doc_name);
 			if(import_log == null){
 		        csvReader = new CSVReader(new FileReader(file),',');//importFile为要导入的文本格式逗号分隔的csv文件，提供getXX/setXX方法    
@@ -75,7 +80,7 @@ public class ImportOrder extends Controller {
 		        	re.set("creator", user.get("id"));
 		        	re.set("create_time", new Date());
 		        	long start = Calendar.getInstance().getTimeInMillis();
-		        	
+		        	isImporting = true;
 		        	
 		        	CheckOrder checkOrder = new CheckOrder();
 		        	if(fileName.indexOf("入库记录")>-1){
@@ -94,6 +99,7 @@ public class ImportOrder extends Controller {
 			        	re.set("complete_time", new Date());
 			        	re.set("import_time", time);
 			        	Db.save("import_log", re);
+			        	isImporting = false;
 		        	}
 		        	
 		        }else{
@@ -107,6 +113,7 @@ public class ImportOrder extends Controller {
 	        e.printStackTrace(); 
 	        resultMap.set("result", false);
 	        resultMap.set("cause", e.getMessage());
+	        isImporting = false;
 	    } 
 	    renderJson(resultMap);
 	}  

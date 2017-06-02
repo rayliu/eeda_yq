@@ -263,7 +263,6 @@ public class CheckOrder extends Controller {
 		Connection conn = null;
 		Record result = new Record();
 		result.set("result",true);
-		String repeatMsg = "";
 		int rowNumber = 0;  //成功导入数量
 		int totalRow = 0;   //文件总数量
 		int updateRow = 0;   //更新数量
@@ -350,7 +349,7 @@ public class CheckOrder extends Controller {
             long end = Calendar.getInstance().getTimeInMillis();
             long time = (end- start)/1000;
             System.out.println("导入完成,耗时"+time+"秒");
-			result.set("cause",(totalRow-1)+"条数据中成功导入( "+(rowNumber-1)+" )条数据,更新了"+updateRow+"条数据<br/><br/>"+repeatMsg);
+			result.set("cause",(totalRow-1)+"条数据中成功导入( "+(rowNumber-1)+" )条数据");
 		} catch (Exception e) {
 			try {
 				if (null != conn)
@@ -390,7 +389,6 @@ public class CheckOrder extends Controller {
 		Connection conn = null;
 		Record result = new Record();
 		result.set("result",true);
-		String repeatMsg = "";
 		int rowNumber = 0;
 		int totalRow = 0;   //文件总数量
 		int updateRow = 0;   //更新数量
@@ -470,7 +468,6 @@ public class CheckOrder extends Controller {
             				gi.set("out_creator_code", order.get("creator_code"));
             				gi.set("out_creator", creator_id).update();
             			}
-            			continue;
             		}else{//仓库里并没有这个记录
             			GateOut go = GateOut.dao.findFirst("select * from gate_out where error_flag = 'Y' and qr_code = ? and office_id = ?",qr_code,officeId);
             			if(go != null){
@@ -512,7 +509,7 @@ public class CheckOrder extends Controller {
             long end = Calendar.getInstance().getTimeInMillis();
             long time = (end- start)/1000;
             System.out.println("导入完成,耗时"+time+"秒");
-			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！<br/><br/>"+repeatMsg);
+			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！");
 		} catch (Exception e) {
 			try {
 				if (null != conn)
@@ -575,7 +572,7 @@ public class CheckOrder extends Controller {
             	InvCheckOrder order = new InvCheckOrder();
                 for (int i =0; i<csvRow.length; i++){
                 	String titleName = StringUtils.isNotBlank(title[i])?title[i].trim():null;
-                	String value = StringUtils.isNotBlank(csvRow[i])?csvRow[i].trim():null;;
+                	String value = StringUtils.isNotBlank(csvRow[i])?csvRow[i].trim():null;
                 	if(StringUtils.isNotBlank(value)){
                 		if(!"id".equals(titleName) && !"creator".equals(titleName)){
 		                    order.set(titleName, value);
