@@ -21,6 +21,10 @@ import models.wms.GateOut;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -399,19 +403,17 @@ public class InventoryController extends Controller {
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         
-        
-        String jsonStr = getPara("jsonStr");
-    	if(StringUtils.isNotBlank(jsonStr)){
-    		Gson gson = new Gson(); 
-            Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class); 
-            String item_no = dto.get("item_no");
-	    	if(StringUtils.isNotBlank(item_no)){
-	    		conditions += " and pro.item_no = '"+item_no+"'";
-	    	}
+        String excelName = "ALL";
+        String item_no = getPara("item_no");
+    	if(StringUtils.isNotBlank(item_no)){
+    		
+    		excelName = item_no;
+    		conditions += " and pro.item_no = '"+item_no+"'";
     	}
     	
+    	
 		sql = "select A.*,sum(A.quantity) total_quantity from ("
-		    + " select gi.part_no,gi.quantity "
+		    + " select gi.part_no,pro.part_name,gi.quantity "
 			+ " from gate_in gi "
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
@@ -419,21 +421,21 @@ public class InventoryController extends Controller {
 			+ conditions
 			+ " group by gi.id "
 			+ " union"
-			+ " select pro.part_no,0 quantity"
+			+ " select pro.part_no,pro.part_name,0 quantity"
 			+ " from wmsproduct pro"
 			+ " where amount>0 and pro.office_id="+office_id
 			+ conditions 
 			+ " ) A group by A.part_no "; 
     	
         String exportSql = sql;
-        String[] headers = new String[]{"part_no", "total_quantity"};
-        String[] fields = new String[]{"part_no", "total_quantity"};
-        String fileName = generateExcel(headers, fields, exportSql);
+        String[] headers = new String[]{"part_no", "part_name","total_quantity","A&P"};
+        String[] fields = new String[]{"part_no", "part_name", "total_quantity",""};
+        String fileName = generateExcel(headers, fields, exportSql,excelName);
         renderText(fileName);
     }
     
     @SuppressWarnings("deprecation")
-    public String generateExcel(String[] headers, String[] fields, String sql){
+    public String generateExcel(String[] headers, String[] fields, String sql,String name){
 	    String fileName="";
 	    try {
 	        System.out.println("generateExcel begin...");
@@ -443,8 +445,8 @@ public class InventoryController extends Controller {
 	            file.mkdir();
 	        }
 	        Date date = new Date();
-	        SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmss");
-	        String outFileName = "库存统计-" + format.format(date) + ".xls";
+	        SimpleDateFormat formatDate = new SimpleDateFormat("yyyyMMdd");
+	        String outFileName = "库存统计-"+ name +"-" + formatDate.format(date) + ".xls";
             HSSFWorkbook workbook = new HSSFWorkbook();
             HSSFSheet sheet = workbook.createSheet("FirstSheet");  
 
@@ -453,10 +455,29 @@ public class InventoryController extends Controller {
                 rowhead.createCell((short)i).setCellValue(headers[i]);
             }
 
+            // 设置字体
+//            HSSFFont font = workbook.createFont();
+//            //font.setFontHeightInPoints((short) 40); //字体高度
+//            font.setColor(HSSFFont.COLOR_NORMAL); //字体颜色
+//            font.setFontName("宋体"); //字体
+//            font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD); //加粗
+//            font.setItalic(false); //是否使用斜体
+//            
+//            
+//          
+//	          // 设置单元格类型
+//	        HSSFCellStyle cellStyle = workbook.createCellStyle();
+//	        //cellStyle.setFont(font);
+//	        cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); //水平布局：居中
+//	        cellStyle.setWrapText(true);
+            
             List<Record> recs = Db.find(sql);
             if(recs!=null){
                 for (int j = 1; j <= recs.size(); j++) {
+                	//HSSFDataFormat format = workbook.createDataFormat();
+                	
                     HSSFRow row = sheet.createRow((short)j);
+                    
                     Record rec = recs.get(j-1);
                     for (int k = 0; k < fields.length;k++){
                         Object obj = rec.get(fields[k]);
@@ -464,7 +485,10 @@ public class InventoryController extends Controller {
                         if(obj != null){
                             strValue =obj.toString();
                         }
-                        row.createCell((short)k).setCellValue(strValue);
+                        HSSFCell cell = row.createCell((short) k);
+                        //cell.setCellStyle(cellStyle);
+                        cell.setCellValue(strValue);
+                        sheet.autoSizeColumn((short)k);
                     }
                 }
             }

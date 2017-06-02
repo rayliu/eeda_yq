@@ -68,8 +68,8 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         
     	$("#eeda-table").on('click', '.itemDetail', function(e){
           	var value = $(this).attr("item_no");
-          	$('#partNoHidden').val(value);
-          	
+          	$('#itemNoHidden').val(value);
+          	$('#downloadBtn').text("导出SP");
           	var name = $($(this).parent().parent()).find('.item_name').text();
             this.id = 'location'+value;
             $('#returnBtn').attr('href','#location'+value);
@@ -88,6 +88,8 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
       
         $('#resetBtn').click(function(e){
         	$("#orderForm")[0].reset();
+        	$('#itemNoHidden').val("");
+        	$('#downloadBtn').text("导出全部");
             searchData();
         });
         
@@ -96,10 +98,12 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
             $('#orderText').text("");
             $('#eedaTable').show();
           	$('#partTable').hide();
+          	$('#itemNoHidden').val("");
+          	$('#downloadBtn').text("导出全部");
         });
 
         $('#searchBtn').click(function(e){
-    		searchData(); 	
+    		searchData(); 
         });
  
         buildCondition=function(){
@@ -142,8 +146,8 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         };
         
         $('#downloadBtn').click(function(e){
-	        var itemJson = buildCondition();
-	        var url = "/inventory/downloadList?jsonStr="+JSON.stringify(itemJson);
+	        var item_no = $('#itemNoHidden').val();
+	        var url = "/inventory/downloadList?item_no="+item_no;
 	        $.post(url, function(data){
 	            if(data)
 	                window.open(data);
