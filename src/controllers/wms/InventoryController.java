@@ -420,7 +420,7 @@ public class InventoryController extends Controller {
 			+ " and out_flag = 'N' and error_flag = 'N'"
 			+ conditions
 			+ " group by gi.id "
-			+ " union"
+			+ " union all"
 			+ " select pro.part_no,pro.part_name,0 quantity"
 			+ " from wmsproduct pro"
 			+ " where amount>0 and pro.office_id="+office_id
@@ -472,12 +472,13 @@ public class InventoryController extends Controller {
 //	        cellStyle.setWrapText(true);
             
             List<Record> recs = Db.find(sql);
+            System.out.println("sql finish!");
+            HSSFRow row = null;
+            HSSFCell cell = null;
             if(recs!=null){
                 for (int j = 1; j <= recs.size(); j++) {
                 	//HSSFDataFormat format = workbook.createDataFormat();
-                	
-                    HSSFRow row = sheet.createRow((short)j);
-                    
+                	row = sheet.createRow((short)j);
                     Record rec = recs.get(j-1);
                     for (int k = 0; k < fields.length;k++){
                         Object obj = rec.get(fields[k]);
@@ -485,11 +486,12 @@ public class InventoryController extends Controller {
                         if(obj != null){
                             strValue =obj.toString();
                         }
-                        HSSFCell cell = row.createCell((short) k);
+                        cell = row.createCell((short) k);
                         //cell.setCellStyle(cellStyle);
+                        //sheet.autoSizeColumn((short)k);
                         cell.setCellValue(strValue);
-                        sheet.autoSizeColumn((short)k);
                     }
+                    System.out.println(j);
                 }
             }
 
