@@ -1261,7 +1261,7 @@ eeda.refreshUrl = refreshUrl;
                   if(data.length==0)
 		                hiddenField.val('');
 		            if(data.length==1&&data[0].ID){
-                     inputField.val(data[0].DOCK_NAME);
+//                     inputField.val(data[0].DOCK_NAME);
 		                  hiddenField.val(data[0].ID);
                     }
 		            if(!inputStr && data.length>1){
