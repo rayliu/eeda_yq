@@ -491,7 +491,6 @@ public class InventoryController extends Controller {
                         //sheet.autoSizeColumn((short)k);
                         cell.setCellValue(strValue);
                     }
-                    System.out.println(j);
                 }
             }
 
