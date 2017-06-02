@@ -7,8 +7,8 @@ $(document).ready(function() {
     $('#menu_charge').addClass('active').find('ul').addClass('in');
     $(function(){
       if(!$('#receive_cny').val()){
-            $('#receive_cny').val($('#total_amount').val());
-            $('#residual_cny').val($('#total_amount').val());
+            $('#receive_cny').val($('#cny').val());
+            $('#residual_cny').val($('#cny').val());
         }
     });
     
@@ -180,7 +180,7 @@ $(document).ready(function() {
    
     $('#receive_cny').on('click keyup',function(){
             var receive_cny=$(this).val().trim();
-            if(receive_cny){
+            if(receive_cny&&receive_cny>0&&$('#status').val()=='已确认'){
                $('#charge_confirmBtn').attr('disabled',false);
             }else{
                 $('#charge_confirmBtn').attr('disabled',true);
@@ -189,6 +189,7 @@ $(document).ready(function() {
     //付款方式回显（1）
     $('#payment_method').change(function(){
         var type = $(this).val();
+        var status=$('#status').val();
         if(type == 'cash'||type==""){
             $('#transfers_massage').hide();
             $('#receive_type_massage').hide();
