@@ -61,7 +61,7 @@ $(document).ready(function() {
                     }
             },
             { "data": "DATE_CUSTOM", "width": "100px"},
-            { "data": "BOOKING_NO", "width": "180px"},
+            { "data": "TRACKING_NO", "width": "180px"},
             { "data": "ABBR_NAME", "width": "120px"},
             { "data": "FIN_NAME", "width": "200px"},
             { "data": "AMOUNT", "width": "80px"},

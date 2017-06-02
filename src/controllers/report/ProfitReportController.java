@@ -108,7 +108,7 @@ public class ProfitReportController extends Controller {
         condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
         
         
-    	String sql = "select B.*, get_truck_type(B.truck_order_ids) truck_type "
+    	String sql = "select B.*, '' truck_type "  //get_truck_type(B.truck_order_ids)''
     	        + " from (select order_export_date,customer_id,"
     			+ " sum(ifnull(pieces,0)) pieces,"
     			+ " sum(ifnull(gross_weight,0)) gross_weight, "

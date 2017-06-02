@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import models.ArapAccountAuditLog;
-import models.ArapChargeApplication;
-import models.ArapChargeOrder;
 import models.UserLogin;
 import models.eeda.cms.CustomArapChargeItem;
 import models.eeda.cms.CustomArapChargeOrder;
@@ -124,7 +122,7 @@ public class CmsChargeCheckOrderController extends Controller {
         }
 
 		sql = "select B.* from(  "
-			+" SELECT cpo.order_no,cpoa.order_type ,cpoa.id arap_id,cpo.id order_id,cpo.date_custom,cpo.booking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
+			+" SELECT cpo.order_no,cpoa.order_type ,cpoa.id arap_id,cpo.id order_id,cpo.date_custom,cpo.tracking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
 			 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
 			 +" from custom_plan_order_arap cpoa "
 			 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
@@ -133,7 +131,7 @@ public class CmsChargeCheckOrderController extends Controller {
 			 +" where 1 = 1 "
 			 + checkCondition
 			 +" and cpo.delete_flag='N' "
-			 + " and cpoa.audit_flag='Y' and cpoa.bill_flag='N'  and cpo.office_id = "+office_id
+			 + " and cpoa.audit_flag='Y' and cpoa.bill_flag='N'  and (cpo.office_id = "+office_id+ " or cpo.to_office_id="+office_id+")"
 			 +"  GROUP BY cpoa.id " 
 			 + " ) B "
 			 +" where 1=1 ";
@@ -145,7 +143,7 @@ public class CmsChargeCheckOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition  +sLimit);
+        List<Record> orderList = Db.find(sql+ condition  );
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
@@ -213,7 +211,7 @@ public class CmsChargeCheckOrderController extends Controller {
     public List<Record> getItemList(String ids,String order_id){
     	String sql = null;
 		if(StringUtils.isEmpty(order_id)){
-			 sql = "SELECT cpo.order_no,cpoa.id id,cpo.id order_id,cpo.date_custom,cpo.booking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
+			 sql = "SELECT cpo.order_no,cpoa.id id,cpo.id order_id,cpo.date_custom,cpo.tracking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
 		   				 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
 		   				 +" from custom_plan_order_arap cpoa "
 		   				 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
@@ -223,7 +221,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		   				 +" and cpo.delete_flag='N' "
 		   				 + "";
 				}else{
-			   		 sql = "SELECT cpo.order_no,cpoa.id id,cpo.id order_id,cpo.date_custom,cpo.booking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
+			   		 sql = "SELECT cpo.order_no,cpoa.id id,cpo.id order_id,cpo.date_custom,cpo.tracking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
 		   				 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
 		   				 +" from custom_plan_order_arap cpoa "
 		   				 +" left join custom_arap_charge_item caci on caci.ref_order_id = cpoa.id"

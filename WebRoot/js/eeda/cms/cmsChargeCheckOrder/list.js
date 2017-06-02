@@ -14,8 +14,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
         var dataTable = eeda.dt({
             id: 'uncheckedEeda-table',
             // paging: true,
-            serverSide: false,
-            ajax: "/cmsChargeCheckOrder/list",
+            serverSide: true,
+//            ajax: "/cmsChargeCheckOrder/list",
+            ajax:{
+                //url: "/chargeCheckOrder/list",
+                type: 'POST'
+            },
             columns:[
 			      { "width": "10px", "orderable": false,
 				    "render": function ( data, type, full, meta ) {
@@ -34,7 +38,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	                  }
 	            },
 	            { "data": "DATE_CUSTOM", "width": "100px"},
-	            { "data": "BOOKING_NO", "width": "180px"},
+	            { "data": "TRACKING_NO", "width": "180px"},
 	            { "data": "ABBR_NAME", "width": "120px","class":"SP_NAME"},
 	            { "data": "FIN_NAME", "width": "200px"},
 	            { "data": "AMOUNT", "width": "80px"},
@@ -128,16 +132,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
     	 if($('#checkOrderAll').prop('checked')==true){
     		 checked = 'Y';
     	 }
-    	 
+    	  
           var order_no = $("#order_no").val().trim(); 
-          var customer_name = $('#customer_input').val().trim();
+          var sp_name = $('#sp_input').val().trim();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
- 
+          if(!sp_name){
+              $.scojs_message('请选择结算公司', $.scojs_message.TYPE_ERROR);
+              return;
+          }
 
           var url = "/cmsChargeCheckOrder/list?checked="+checked
           	   +"&order_no="+order_no
-               +"&abbr_name="+customer_name
+               +"&abbr_name="+sp_name
 	           +"&create_stamp_begin_time="+start_date
 	           +"&create_stamp_end_time="+end_date;
 
