@@ -480,11 +480,13 @@ public class TransChargeCheckOrderController extends Controller {
 		rec.set("address", rec.get("address"));
 		rec.set("customer", rec.get("contact_person"));
 		rec.set("phone", rec.get("phone"));
-		rec.set("user", LoginUserController.getLoginUserName(this));
+//		rec.set("user", LoginUserController.getLoginUserName(this));
 		rec.set("itemList", getItemList(ids,"",""));
 //		rec.set("currencyList", getCurrencyList(ids,""));
 		rec.set("company_abbr", rec.get("company_abbr"));
 		setAttr("order",rec);
+		UserLogin u3=LoginUserController.getLoginUser(this);
+		setAttr("user",u3);
 		render("/tms/arap/transChargeCheckOrder/transChargeCheckOrderEdit.html");
 	}
 	
@@ -517,6 +519,7 @@ public class TransChargeCheckOrderController extends Controller {
 			rec.set("residual_cny", rec2.get("residual_cny"));
 		}
 		setAttr("order",rec);
+		setAttr("user",u3);
 		render("/tms/arap/transChargeCheckOrder/transChargeCheckOrderEdit.html");
 	}
 

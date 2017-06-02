@@ -2,7 +2,7 @@
 <div id="page-wrapper">
 	<input id="order_id" type="hidden" name="order_id" value="${order.id!''}" />
 	<input id="company_id" type="hidden" name="company_id" value="${order.company_id!''}" />
-	<input id="user_id" type="hidden" name="user_id" value="${order.user.id!''}" />
+	<input id="user_id" type="hidden" name="user_id" value="${user.id!''}" />
 	<input id="company_abbr" type="hidden" name="company_abbr" value="${order.company_abbr!''}" />
 	<div class="row simple_search_div">
         <div class="col-lg-12">
@@ -282,7 +282,7 @@
 		                            <div class=" form-group">
 			                       		<div class="col-lg-4">
 			                           		<%include("/eeda/component/form/inputField.html", { id:'charge_confirm_name',
-											label:'	确认收款人', value:order.user.c_name!'',disabled:'disabled'
+											label:'	确认收款人', value:user.c_name!'',disabled:'disabled'
 											}){}%>
 								       </div>
 								       <div class="col-lg-4">
