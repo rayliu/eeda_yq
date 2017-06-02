@@ -343,7 +343,7 @@ public class GateOutOrderController extends Controller {
   		String outFileName = "/download/出库单"+c;
   		HashMap<String, Object> hm = new HashMap<String, Object>();
   		hm.put("order_id", order_id);
-  		hm.put("orderNo", re.getStr("order_no"));
+  		hm.put("itemNo", re.getStr("item_no"));
   		hm.put("totalQuantity", re.get("quantity"));
   		fileName = getContextPath() + fileName;
   		outFileName = getContextPath() + outFileName + order_id;
