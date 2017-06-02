@@ -6,9 +6,12 @@ $(document).ready(function() {
 	$("#breadcrumb_li").text('应收对账单');
     $('#menu_charge').addClass('active').find('ul').addClass('in');
     $(function(){
+        var receive_cny=$('#receive_cny').val().trim();
       if(!$('#receive_cny').val()){
             $('#receive_cny').val($('#cny').val());
             $('#residual_cny').val($('#cny').val());
+        }else if(receive_cny&&receive_cny>0&&$('#status').val()=='已确认'){
+            $('#charge_confirmBtn').attr('disabled',false);
         }
     });
     
@@ -128,6 +131,10 @@ $(document).ready(function() {
                  $('#add_charge').attr('disabled', true);
 
                  $("#status").val('已确认');
+                 var receive_cny=$('#receive_cny').val().trim();
+                 if(receive_cny&&receive_cny>0&&$('#status').val()=='已确认'){
+                    $('#charge_confirmBtn').attr('disabled',false);
+                }
                  $('#printTotaledBtn').attr('disabled', false);
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
     			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
