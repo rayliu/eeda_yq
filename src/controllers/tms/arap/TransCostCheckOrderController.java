@@ -92,7 +92,8 @@ public class TransCostCheckOrderController extends Controller {
 		order.set("item_list", getItemList(ids,"",""));
 		order.set("currencyList", getCurrencyList(ids,""));
 		setAttr("order", order);
-		
+		UserLogin u3=LoginUserController.getLoginUser(this);
+		setAttr("user",u3);		
 		render("/tms/arap/transCostCheckOrder/tmsCostCheckOrderEdit.html");
 	}
 	
@@ -582,7 +583,10 @@ public class TransCostCheckOrderController extends Controller {
 		Record order = Db.findFirst(sql,id);
 		UserLogin u3=LoginUserController.getLoginUser(this);
 		order.set("user", u3);
-		String sqlString="SELECT  residual_cny FROM trans_arap_cost_receive_item WHERE charge_order_id="+id+" ORDER BY id DESC";
+		String sqlString="SELECT  (aco.cny-SUM(tacri.receive_cny))residual_cny FROM trans_arap_cost_receive_item tacri "
+				 +" LEFT JOIN trans_arap_cost_order aco on aco.id=tacri.charge_order_id "
+				 +" WHERE tacri.charge_order_id="+id+" ORDER BY tacri.id DESC ";
+		
 		Record rec2 = Db.findFirst(sqlString);
 		if(rec2!=null){
 			order.set("residual_cny", rec2.get("residual_cny"));
@@ -590,6 +594,7 @@ public class TransCostCheckOrderController extends Controller {
 		order.set("receive_itemList", getReceiveItemList(id));
 		order.set("item_list", getItemList("",id,""));
 		setAttr("order", order);
+		setAttr("user",u3);
 		render("/tms/arap/transCostCheckOrder/tmsCostCheckOrderEdit.html");
 	}
 	
