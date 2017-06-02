@@ -703,6 +703,7 @@ $(document).ready(function() {
 		var arrStr = $('#ocean_HBLshipper_info').val();
 		var arry = arrStr.split("\n");
 		$('#truck_head_attn').val(arry[1]);
+        $('#truck_head_customer_tel').val(arry[2]);
         var cabinet_arrive_date=$('#land_shipment_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=ETA]').val();
         if(!$('#cabinet_arrive_date').val()){
             $('#cabinet_arrive_date').val(cabinet_arrive_date);
@@ -741,7 +742,7 @@ $(document).ready(function() {
     	}
     	var noType = $('#cabinet_truck_detail input[type="radio"]:checked').val();
     	var k = 0;
-		$('#land_table input[type="checkbox"]:checked').each(function(){
+		$('#land_shipment_table input[type="checkbox"]:checked').each(function(){
 				truckHead.item_id = $(this).parent().parent().attr('id');
 				truckHead.id = $('#truckHeadId').val();
 		    	truckHead.order_id = $('#order_id').val(); 
