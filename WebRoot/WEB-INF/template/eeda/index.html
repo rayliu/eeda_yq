@@ -86,39 +86,7 @@
 			                        <!-- /.panel-body -->
 			                    </div>
 			                    <!-- /.panel -->
-			                    <% 
-			                        var isShowProfitChart = permissionMap.Index_showProfitChart;
-			                        if(nvl(isShowProfitChart, '') != ""){
-			                    %>
-				               <div class="row head_style"><div class="font_style">运营报表</div></div>
-					         		<div class="row simple_title_div">
-				                        <div class="panel-body">
-					                        <div class="col-lg-4" style="margin:0px 0px 0px 80px;">
-			                                     <%include("/eeda/component/form/inputCustomerField.html", 
-			                                                {
-			                                                    id:'customer_id', 
-			                                                    label:'客户名称', 
-			                                                    value: ''
-			                                                }){} %>
-			                                </div>
-			                                <div class="col-lg-4">        
-		                                            <%include("/eeda/component/form/yearsInputField.html",
-		                                            		{
-		                                            			id:'years_date', 
-		                                            			label:'时间', 
-		                                            			value:''
-		                                            		}){} %>
-		                                    </div>
-		                                    <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
-						                    <div id="profit_chart" style="height:400px"></div>
-						                    <script>
-                                                requirejs([], function () {
-                                                    requirejs(['app/index/index_profit_charts']);
-                                                });
-                                            </script>
-				                    	</div>
-				                    </div>
-			                    <%}%>
+			                    
 			                </div>
 			            </div>
 			           </div>
