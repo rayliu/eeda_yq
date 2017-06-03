@@ -108,7 +108,15 @@ public class ProfitReportController extends Controller {
         condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
         
         
-    	String sql = "select B.*, '' truck_type "  //get_truck_type(B.truck_order_ids)''
+    	String sql = "select B.*, "
+    	        + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '40HQ') hq40_count, "
+    	        + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '40GP') gp40_count,"
+                + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '20GP') gp20_count,"
+                + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '1.5T') t1p5_count,"
+                + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '3T') t3_count,"
+                + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '5T') t5_count,"
+                + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '8T') t8_count,"
+                + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '10T') t10_count "  //get_truck_type(B.truck_order_ids)''
     	        + " from (select order_export_date,customer_id,"
     			+ " sum(ifnull(pieces,0)) pieces,"
     			+ " sum(ifnull(gross_weight,0)) gross_weight, "

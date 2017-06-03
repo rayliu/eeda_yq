@@ -94,7 +94,40 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                       }
                   }
                 }, 
-              { "data": "TRUCK_TYPE","class":"truck_type"}
+              { "data": null,  "class":"truck_type",
+                  "render": function ( data, type, full, meta ) {
+                      if(data){
+                        var str='';
+                        if(full.HQ40_COUNT>0){
+                          str='40HQ('+full.HQ40_COUNT+')';
+                        }
+                        if(full.GP40_COUNT>0){
+                          str+=' 40GP('+full.GP40_COUNT+')';
+                        }
+                        if(full.GP20_COUNT>0){
+                          str+=' 20GP('+full.GP20_COUNT+')';
+                        }
+                        if(full.T1P5_COUNT>0){
+                          str+=' 1.5T('+full.T1P5_COUNT+')';
+                        }
+                        if(full.T3_COUNT>0){
+                          str+=' 3T('+full.T3_COUNT+')';
+                        }
+                        if(full.T5_COUNT>0){
+                          str+=' 5T('+full.T5_COUNT+')';
+                        }
+                        if(full.T8_COUNT>0){
+                          str+=' 8T('+full.T8_COUNT+')';
+                        }
+                        if(full.T10_COUNT>0){
+                          str+=' 10T('+full.T10_COUNT+')';
+                        }
+                        return str;
+                      } else{
+                        return '';
+                      }
+                  }
+              }
           ]
       });
       
