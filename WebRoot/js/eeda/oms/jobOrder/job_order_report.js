@@ -709,9 +709,9 @@ $(document).ready(function() {
             $('#cabinet_arrive_date').val(cabinet_arrive_date);
         }
 		if(arry.length>=2){
-			var arr = arry[2].split(" "); 
+			var arr = arry[1].split(" ");
 			if(arr.length>=1){
-				$('#truck_head_customerTel').val(arr[0].replace("TEL:",""));
+				$('#truck_head_customer_tel').val(arr[0].replace("TEL:",""));
 			}
 			if(arr.length>=2){
 				$('#truck_head_fax').val(arr[1].replace("FAX:",""));

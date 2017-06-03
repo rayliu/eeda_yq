@@ -256,7 +256,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		String sql = "SELECT p.phone,p.contact_person,p.address,p.company_name declare_unit,cpo.application_unit declare_unit_id,cpoa.sp_id"
 				+ " FROM custom_plan_order_arap cpoa"
 				+ " LEFT JOIN custom_plan_order cpo on cpo.id=cpoa.order_id "
-				+ " left join party p on p.id = cpo.application_unit "
+				+ " left join party p on p.id = cpoa.sp_id "
 				+ " WHERE cpoa.id in("+ ids +")"
 				 +" and cpo.delete_flag='N' "
 				 + " group by cpoa.order_id";
