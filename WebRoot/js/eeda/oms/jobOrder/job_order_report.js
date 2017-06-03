@@ -742,7 +742,7 @@ $(document).ready(function() {
     	}
     	var noType = $('#cabinet_truck_detail input[type="radio"]:checked').val();
     	var k = 0;
-		$('#land_shipment_table input[type="checkbox"]:checked').each(function(){
+		$('#land_table input[type="checkbox"]:checked').each(function(){
 				truckHead.item_id = $(this).parent().parent().attr('id');
 				truckHead.id = $('#truckHeadId').val();
 		    	truckHead.order_id = $('#order_id').val(); 
