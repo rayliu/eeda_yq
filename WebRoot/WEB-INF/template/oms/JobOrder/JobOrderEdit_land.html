@@ -46,15 +46,15 @@
 		                          </div>
  <div class="row" style="margin-top:25px;">             
 		          <ul id="land_type_Tabs" class="nav nav-tabs">
-		                 <li>
+		                 <li class="active">
 		                     <a id='landCarItemTab' href="#land_Car_TotalItem" data-toggle="tab"  >派车信息</a>
 		                 </li>
-		                 <li class="active">
-		                     <a id='landCarTotalItemTab' href="#land_Car_shipment_Item" data-toggle="tab"  >柜货派车信息</a>
+		                 <li >
+		                     <a id='landCarTotalItemTab' href="#land_Car_shipment_Item" data-toggle="tab" style="display:none" >柜货派车信息</a>
 		                 </li>
 					</ul>
                      <div class="tab-content">
-		                     <div class="tab-pane fade  " id="land_Car_TotalItem">
+		                     <div class="tab-pane  active" id="land_Car_TotalItem">
 									<div class="form-group">
                                		<button class="btn btn_green" id="add_land" style="margin-top:15px;margin-left:15px;">添加陆运</button> 
 										<div class="col-lg-12">
@@ -115,7 +115,7 @@
 					                    </div>
 									</div>
 									
-							<div class="tab-pane  active" id="land_Car_shipment_Item" >
+							<div class="tab-pane fade  " id="land_Car_shipment_Item" >
 								<div class="form-group">
                                 <button class="btn btn_green" id="add_land_shipment" style="margin-top:15px;margin-left:15px;">添加陆运</button> 
 									<div class="col-lg-12">
