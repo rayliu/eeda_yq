@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.ArapAccountAuditLog;
+import models.Party;
 import models.UserLogin;
 import models.eeda.cms.CustomArapChargeItem;
 import models.eeda.cms.CustomArapChargeOrder;
@@ -253,7 +254,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		String ids = getPara("idsArray");//custom_plan_order_arap ids
 		String total_amount = getPara("totalAmount");
 		
-		String sql = "SELECT p.phone,p.contact_person,p.address,p.company_name declare_unit,cpo.application_unit declare_unit_id,cpoa.sp_id"
+		String sql = "SELECT p.phone,p.contact_person,p.address,p.company_name ,cpoa.sp_id"
 				+ " FROM custom_plan_order_arap cpoa"
 				+ " LEFT JOIN custom_plan_order cpo on cpo.id=cpoa.order_id "
 				+ " left join party p on p.id = cpoa.sp_id "
@@ -275,9 +276,12 @@ public class CmsChargeCheckOrderController extends Controller {
 		CustomArapChargeOrder order = CustomArapChargeOrder.dao.findById(id);
 		Long create_by = order.getLong("create_by");
 		Long confirm_by = order.getLong("confirm_by");
+		Long sp_id = order.getLong("sp_id");
 		UserLogin ul = UserLogin.dao.findById(create_by);
 		UserLogin ul2 = UserLogin.dao.findById(confirm_by);
 		UserLogin u3=LoginUserController.getLoginUser(this);
+		
+		Party sp = Party.dao.findById(sp_id);
 		
 		String sqlString="SELECT  residual_cny FROM custom_arap_charge_receive_item WHERE custom_charge_order_id="+id+" ORDER BY id DESC";
 		Record rec2 = Db.findFirst(sqlString);
@@ -285,7 +289,9 @@ public class CmsChargeCheckOrderController extends Controller {
 		rec.set("user", u3);
 		rec.set("creator_name", ul.getStr("c_name"));
 		rec.set("confirm_name", ul2==null?"":ul2.getStr("c_name"));//
+		rec.set("company_name", sp==null?"":sp.getStr("company_name"));//
 		rec.set("itemList", getItemList("",id));
+		
 		rec.set("receive_itemList", getReceiveItemList(id));
 		if(rec2!=null){
 			rec.set("residual_cny", rec2.get("residual_cny"));
@@ -595,7 +601,14 @@ public class CmsChargeCheckOrderController extends Controller {
         if(receive_bank_id!=null && !("").equals(receive_bank_id)){
         		auditLog.set("account_id", receive_bank_id);
         	}else{
-        		auditLog.set("account_id", 4);
+        		Record rLog = Db.findFirst("select * from fin_account where bank_name = '现金' and office_id = "+office_id);
+        		if(rLog!=null){
+        			String account_id = rLog.getLong("id").toString();
+	        		if(StringUtils.isNotEmpty(account_id)){
+	        			auditLog.set("account_id", account_id);
+	        		}
+        		}
+        		
         	}
         auditLog.set("source_order", "报关应收对账单");
         auditLog.set("invoice_order_id", application_id);

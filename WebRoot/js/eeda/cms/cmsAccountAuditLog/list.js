@@ -21,16 +21,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     }
                 },
                 {
-                    "data":"ORDER_NO","width":"70px",
+                    "data":"INVOICE_ORDER_NO","width":"70px",
                     "render": function(data, type, full, meta) {
-                    	return full.ORDER_NO;
+                    	return data;
                     }
                 },
                 {"data":"SOURCE_ORDER"},
                 {"data":"CHARGE_AMOUNT",
                     "render": function(data, type, full, meta) {
                         if(data!=null)
-                            return "<p align='right'>"+eeda.numFormat(parseFloat(data).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
+                            return eeda.numFormat(parseFloat(data).toFixed(2),3)+' ' +full.CURRENCY_CODE;
                         else
                             return data;
                     }
@@ -38,7 +38,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 {"data":"COST_AMOUNT",
                     "render": function(data, type, full, meta) {
                         if(data!=null)
-                            return "<p align='right'>"+eeda.numFormat(parseFloat(data).toFixed(2),3)+' ' +full.CURRENCY_CODE+"</p>";
+                            return eeda.numFormat(parseFloat(data).toFixed(2),3)+' ' +full.CURRENCY_CODE;
                         else
                             return data;
                     }

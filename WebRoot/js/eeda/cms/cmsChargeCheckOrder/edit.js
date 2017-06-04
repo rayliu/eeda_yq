@@ -100,6 +100,7 @@ $(document).ready(function() {
     	 $.post('/cmsChargeCheckOrder/confirm', {id:id}, function(data){
     		 if(data){
     			 $('#saveBtn').attr('disabled', true);
+    			 $('#confirmBtn').attr('disabled', false);
     			 $("#status").val('已确认');
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
     			 $("#confirm_time").val(data.CONFIRM_STAMP); 
@@ -161,14 +162,17 @@ $(document).ready(function() {
             });
         });
     
-    $('#receive_cny').on('click keyup',function(){
-            var receive_cny=$(this).val().trim();
-            if(receive_cny){
-               $('#confirmBtn').attr('disabled',false);
-            }else{
-                $('#confirmBtn').attr('disabled',true);
-            }
-    });
+    //显示收款确认
+    var status = $("#status").val();
+    var audit_status = $("#audit_status").val();
+      if(status!="新建"){
+    	  if(audit_status!="已收款"){
+                 $('#confirmBtn').attr('disabled',false);
+              }else{
+                  $('#confirmBtn').attr('disabled',true);
+              }
+    	  }
+            
     //付款方式回显（1）
     $('#payment_method').change(function(){
         var type = $(this).val();
