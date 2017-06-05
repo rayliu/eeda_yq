@@ -819,8 +819,10 @@ public class TransChargeCheckOrderController extends Controller {
                  
          				if(cny>paid_cny||usd>paid_usd||jpy>paid_jpy||hkd>paid_hkd){
          					arapChargeOrder.set("audit_status", "部分已收款").update();
+         					arapChargeOrder.set("status", "部分已收款").update();
          				}else{
          					arapChargeOrder.set("audit_status", "已收款").update();
+         					arapChargeOrder.set("status", "部分已收款").update();
          				}
                //新建日记账表数据
            		if(!"0.0".equals(dto.get("receive_cny"))&&StringUtils.isNotEmpty((String) dto.get("receive_cny"))){
@@ -860,10 +862,8 @@ public class TransChargeCheckOrderController extends Controller {
         auditLog.set("office_id", office_id);
         if(receive_bank_id!=null && !("").equals(receive_bank_id)){
         		auditLog.set("account_id", receive_bank_id);
-        	}else{
-        		auditLog.set("account_id", 4);
         	}
-        auditLog.set("source_order", "豪通应收对账单");
+        auditLog.set("source_order", "运输应收对账单");
         auditLog.set("invoice_order_id", application_id);
         auditLog.save();
     }

@@ -6,11 +6,14 @@ $(document).ready(function() {
 	$("#breadcrumb_li").text('应收对账单');
     $('#menu_charge').addClass('active').find('ul').addClass('in');
     $(function(){
+        if($('#status').val()!='新建'){
+            $('#add_charge').attr('disabled', true);
+        }
         var receive_cny=$('#receive_cny').val().trim();
       if(!$('#receive_cny').val()){
             $('#receive_cny').val($('#cny').val());
             $('#residual_cny').val($('#cny').val());
-        }else if(receive_cny&&receive_cny>0&&$('#status').val()=='已确认'){
+        }else if(receive_cny&&receive_cny>0&&$('#status').val()!='新建'){
             $('#charge_confirmBtn').attr('disabled',false);
         }
     });
@@ -114,7 +117,7 @@ $(document).ready(function() {
     		$('#confirmBtn').attr('disabled', false);
     		$('#printTotaledBtn').attr('disabled', false);
     		$('#printBtn').attr('disabled', false);    		
-    	}else if(status=='已确认'){
+    	}else if(status!='新建'){
             $('#printTotaledBtn').attr('disabled', false);
         }
     }
@@ -132,7 +135,7 @@ $(document).ready(function() {
 
                  $("#status").val('已确认');
                  var receive_cny=$('#receive_cny').val().trim();
-                 if(receive_cny&&receive_cny>0&&$('#status').val()=='已确认'){
+                 if(receive_cny&&receive_cny>0&&$('#status').val()!='新建'){
                     $('#charge_confirmBtn').attr('disabled',false);
                 }
                  $('#printTotaledBtn').attr('disabled', false);
@@ -187,7 +190,7 @@ $(document).ready(function() {
    
     $('#receive_cny').on('click keyup',function(){
             var receive_cny=$(this).val().trim();
-            if(receive_cny&&receive_cny>0&&$('#status').val()=='已确认'){
+            if(receive_cny&&receive_cny>0&&$('#status').val()!='新建'){
                $('#charge_confirmBtn').attr('disabled',false);
             }else{
                 $('#charge_confirmBtn').attr('disabled',true);
@@ -275,7 +278,7 @@ $(document).ready(function() {
     var buildConfirmFormOrder = function(){
         var item = {};
         item.charge_order_id = $('#order_id').val();
-        item.total_amount=$('#total_amount').val();
+        item.total_amount=$('#cny').val();
         item.confirm_by=$('#user_id').val();
         // item.selected_ids = $('#selected_ids').val();
         item.status='新建';

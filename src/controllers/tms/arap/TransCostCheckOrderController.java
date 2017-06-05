@@ -869,10 +869,8 @@ public class TransCostCheckOrderController extends Controller {
         auditLog.set("office_id", office_id);
         if(receive_bank_id!=null && !("").equals(receive_bank_id)){
         		auditLog.set("account_id", receive_bank_id);
-        	}else{
-        		auditLog.set("account_id", 4);
         	}
-        auditLog.set("source_order", "豪通应付对账单");
+        auditLog.set("source_order", "运输应付对账单");
         auditLog.set("invoice_order_id", application_id);
         auditLog.save();
     }
