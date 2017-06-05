@@ -355,7 +355,7 @@ public class InventoryController extends Controller {
         String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         
-        List<Record> orderList = Db.find(sql +sLimit);
+        List<Record> orderList = Db.find(sql+ "order by gi.qr_code " +sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
