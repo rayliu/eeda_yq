@@ -717,7 +717,15 @@ $(document).ready(function() {
 				$('#truck_head_fax').val(arr[1].replace("FAX:",""));
 			}
 		}
-		$('#truck_head_end_place').val($('#ocean_HBLshipper_input').val());
+        //海运hbl
+        var ocean_HBLshipper=$('#ocean_HBLshipper_input').val();
+        //陆运勾选的第一条,发货人
+        var consignor_input=$('#land_table tbody tr').has('input[type=checkbox]:checked').first().find('[name=CONSIGNOR_input]').val();
+		if(ocean_HBLshipper){
+            $('#truck_head_end_place').val(ocean_HBLshipper);
+        }else{
+            $('#truck_head_end_place').val(consignor_input);
+        }
 		$('#truck_head_start_place').val(loginUserName);
 		var truck_head_tel=$('#truck_head_tel').val();
 		if(!truck_head_tel){

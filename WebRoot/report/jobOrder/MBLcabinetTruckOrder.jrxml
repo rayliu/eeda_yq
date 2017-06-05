@@ -21,8 +21,9 @@ where josi.order_id=$P{order_id}
 GROUP BY
 	CN_no
 ) A
-),'码头自动配柜') CN_SN,(SELECT CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage from job_order_shipment jos WHERE jos.order_id=$P{order_id}) Vessel_voyage
-
+),'码头自动配柜') CN_SN,(SELECT CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage
+from job_order_shipment jos WHERE jos.order_id=$P{order_id}) Vessel_voyage
+,joli.take_address
 FROM  job_order_shipment jos
 left join job_order_shipment_item josi on josi.order_id=jos.order_id
 left join job_order_land_cabinet_truck josh on josh.order_id=jos.order_id
@@ -295,6 +296,7 @@ where joli.id=$P{item_id}]]>
 	<field name="fnd_name" class="java.lang.String"/>
 	<field name="CN_SN" class="java.lang.String"/>
 	<field name="Vessel_voyage" class="java.lang.String"/>
+	<field name="take_address" class="java.lang.String"/>
 	<columnHeader>
 		<band height="802" splitType="Stretch">
 			<staticText>
@@ -476,15 +478,8 @@ where joli.id=$P{item_id}]]>
 				</textElement>
 				<text><![CDATA[请安排吉柜于]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="221" y="323" width="332" height="47" uuid="cef7875b-2560-459a-8cb1-156a4f47997e"/>
-				<textElement>
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[工厂地址]]></text>
-			</staticText>
-			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="138" y="323" width="68" height="20" uuid="f3f7d41b-92cf-4f72-a3e4-c08ab99f74e7"/>
+			<textField pattern="yyyy-MM-dd HH.mm.ss" isBlankWhenNull="true">
+				<reportElement x="138" y="323" width="131" height="20" uuid="f3f7d41b-92cf-4f72-a3e4-c08ab99f74e7"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -531,21 +526,21 @@ where joli.id=$P{item_id}]]>
 				<text><![CDATA[TO:发货人公司]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="59" y="257" width="93" height="23" uuid="c92986bc-b7cf-42e2-a00e-6d66e25eca5f"/>
+				<reportElement x="59" y="257" width="93" height="29" uuid="c92986bc-b7cf-42e2-a00e-6d66e25eca5f"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[联系人：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="305" y="257" width="70" height="23" uuid="9b923bb4-6b67-44ee-bbaf-890fd26e7fd5"/>
+				<reportElement x="305" y="257" width="70" height="29" uuid="9b923bb4-6b67-44ee-bbaf-890fd26e7fd5"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[电话：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="206" y="323" width="15" height="20" uuid="08071dba-87a0-4e38-83f2-618076f508e0"/>
+				<reportElement x="269" y="323" width="15" height="20" uuid="08071dba-87a0-4e38-83f2-618076f508e0"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -558,6 +553,27 @@ where joli.id=$P{item_id}]]>
 				</textElement>
 				<text><![CDATA[备注：]]></text>
 			</staticText>
+			<textField pattern="yyyy-MM-dd HH.mm.ss" isBlankWhenNull="true">
+				<reportElement x="284" y="323" width="248" height="20" uuid="78d370e5-13c0-4824-8bd9-b3a4bd83dd7f"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{take_address}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="150" y="257" width="152" height="29" uuid="a31d50be-12d1-4eb9-b4f7-f748744f1aff"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{head_attn}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="376" y="257" width="152" height="29" uuid="690f291a-3794-4242-b693-5b7286624d7a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{head_customer_tel}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 </jasperReport>
