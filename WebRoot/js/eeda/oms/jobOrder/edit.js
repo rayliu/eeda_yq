@@ -141,8 +141,11 @@ $(document).ready(function() {
         var custom_type_str = this_custom_type.toString();
         
         //自理报关还是委托报关
-        var entrust_or_self_custom_str = $('#entrust_or_self_custom input[type="radio"]:checked').val();
-        
+        var entrust_or_self_custom_str = "";
+        if($('#entrust_or_self_custom input[type="radio"]:checked').length>0){
+            entrust_or_self_custom_str=$('#entrust_or_self_custom input[type="radio"]:checked').val();
+            
+        }
         var order={}
         order.id = $('#order_id').val();
         order.old_order_no=$('#old_order_no').val();
