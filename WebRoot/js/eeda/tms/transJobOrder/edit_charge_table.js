@@ -96,7 +96,7 @@ $(document).ready(function() {
     });
     
     //费用明细确认按钮动作
-    $("#charge_table").on('click', '#chargeConfirm', function(e){
+    $("#charge_table").on('click', '.chargeConfirm_btn', function(e){
     	e.preventDefault();
     	var id = $(this).val();
     	$.post('/transJobOrder/feeConfirm',{id:id},function(joa){
@@ -295,7 +295,7 @@ $(document).ready(function() {
                 		}
                 	else if(full.ID){
                 		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" id="chargeConfirm" class=" btn table_btn btn_green btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button"  class=" btn table_btn chargeConfirm_btn btn_green btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
                 	}else{
                 		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px">删除</button>&nbsp';
                 		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>确认</button> ';
