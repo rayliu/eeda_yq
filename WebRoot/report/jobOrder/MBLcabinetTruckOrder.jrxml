@@ -478,7 +478,7 @@ where joli.id=$P{item_id}]]>
 				</textElement>
 				<text><![CDATA[请安排吉柜于]]></text>
 			</staticText>
-			<textField pattern="yyyy-MM-dd HH.mm.ss" isBlankWhenNull="true">
+			<textField pattern="yyyy-MM-dd HH:mm:ss" isBlankWhenNull="true">
 				<reportElement x="138" y="323" width="131" height="20" uuid="f3f7d41b-92cf-4f72-a3e4-c08ab99f74e7"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
@@ -488,20 +488,32 @@ where joli.id=$P{item_id}]]>
 			<staticText>
 				<reportElement x="249" y="-10" width="261" height="33" uuid="2d88b98b-db90-44e9-9774-241b891c3053"/>
 				<textElement verticalAlignment="Bottom">
-					<font size="18"/>
+					<font fontName="黑体" size="18" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[上海凯福国际物流有限公司]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="249" y="24" width="261" height="19" uuid="115e0d0f-1248-4f76-8716-5c64ab60a87d"/>
+				<reportElement mode="Transparent" x="249" y="24" width="261" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="115e0d0f-1248-4f76-8716-5c64ab60a87d"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom" rotation="None" markup="none">
+					<font fontName="黑体" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
 				<text><![CDATA[地址：上海市杨浦区昆明路572号荣广商务中心B区518室]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="249" y="42" width="124" height="20" uuid="3649309f-da71-4391-98e3-f0ef9d7cbce7"/>
+				<reportElement mode="Transparent" x="249" y="42" width="124" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="3649309f-da71-4391-98e3-f0ef9d7cbce7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="黑体" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
 				<text><![CDATA[电话：0086-21-51521879]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="373" y="43" width="137" height="20" uuid="c83dd1cf-a2e7-4f1f-8477-1d647df41b2c"/>
+				<reportElement mode="Transparent" x="373" y="43" width="137" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c83dd1cf-a2e7-4f1f-8477-1d647df41b2c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="黑体" size="10" isBold="false" isItalic="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
 				<text><![CDATA[传真：0086-021-51721548]]></text>
 			</staticText>
 			<staticText>
