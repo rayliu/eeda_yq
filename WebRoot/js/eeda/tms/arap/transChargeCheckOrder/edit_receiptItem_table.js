@@ -137,45 +137,7 @@ $(document).ready(function() {
         +"&table_type=receive";
     	reciveitemTable.ajax.url(url).load();
     }
-    
-    
-//    if($('#order_id').val()==''){
-//   	 $('#exchange').attr('disabled',true);
-//   }
-//   
-//   if($('#exchange_rate').val()==''){
-//  	 $('#exchange').attr('disabled',true);
-//  }
-//   
-//   
-//   $('#exchange_rate').on('keyup',function(){
-//   	 $('#exchange').attr('disabled',false);
-//   });
-   
-   //选择是否是同一结算公司
-	$('#eeda-table').on('click',"input[type=checkbox]",function () {
-//			var cname = $(this).parent().siblings('.currency_name')[0].textContent;
-			var id=$(this).val();
-			if($(this).prop('checked')==true){	
-//				if(cnames.length > 0 ){
-//					if(cnames[0]==cname){
-//						cnames.push(cname);
-//						ids.push(id);
-//					}else{
-//						$.scojs_message('请选择同一结算公司', $.scojs_message.TYPE_ERROR);
-//						$(this).attr('checked',false);
-//						return false;
-//					}
-//				}else{
-//					cnames.push(cname);
-					ids.push(id);
-//				}
-			}else{
-//				cnames.pop(cname);
-				ids.splice($.inArray(id, ids), 1);
-			}
-			calcTotal();
-	}); 
+ 
     
 } );    
 } );

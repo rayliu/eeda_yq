@@ -144,6 +144,10 @@ $(document).ready(function() {
                  $('#printTotaledBtn').attr('disabled', false);
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
     			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
+
+                  $("#total_amount").val($('#cny').val());
+                 $("#receive_cny").val($('#cny').val());
+                 $("#residual_cny").val($('#cny').val());
     			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
  			 
     		 }
