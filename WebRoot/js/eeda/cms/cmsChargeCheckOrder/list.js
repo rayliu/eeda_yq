@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '报关应收对账单查询 | '+document.title;
+    	document.title = '报关应收对账单 | '+document.title;
     	$("#breadcrumb_li").text('报关应收对账单');
 
     	$('#menu_charge').addClass('active').find('ul').addClass('in');

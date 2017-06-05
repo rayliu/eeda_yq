@@ -13,8 +13,6 @@ import models.ArapAccountAuditLog;
 import models.CustomArapCostItem;
 import models.CustomArapCostOrder;
 import models.UserLogin;
-import models.eeda.cms.CustomArapChargeOrder;
-import models.eeda.cms.CustomArapChargeReceiveItem;
 import models.eeda.cms.CustomArapCostReceiveItem;
 import models.eeda.profile.Currency;
 
@@ -123,7 +121,7 @@ public class CmsCostCheckOrderController extends Controller {
         }
 
 		sql = "select B.* from(  "
-			+" SELECT cpo.order_no,cpoa.order_type ,cpoa.id arap_id,cpo.id order_id,cpo.date_custom,cpo.booking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
+			+" SELECT cpo.order_no,cpoa.order_type ,cpoa.id arap_id,cpo.id order_id,cpo.date_custom,cpo.tracking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
 			 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
 			 +" from custom_plan_order_arap cpoa "
 			 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
@@ -143,7 +141,7 @@ public class CmsCostCheckOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition  +sLimit);
+        List<Record> orderList = Db.find(sql+ condition  );
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
@@ -211,7 +209,7 @@ public class CmsCostCheckOrderController extends Controller {
     public List<Record> getItemList(String ids,String order_id){
     	String sql = null;
 		if(StringUtils.isEmpty(order_id)){
-			 sql = "SELECT cpo.order_no,cpoa.id id,cpo.id order_id,cpo.date_custom,cpo.booking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
+			 sql = "SELECT cpo.order_no,cpoa.id id,cpo.id order_id,cpo.date_custom,cpo.tracking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
 		   				 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
 		   				 +" from custom_plan_order_arap cpoa "
 		   				 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
@@ -221,7 +219,7 @@ public class CmsCostCheckOrderController extends Controller {
 		   				 +" and cpo.delete_flag='N' "
 		   				 + "";
 				}else{
-			   		 sql = "SELECT cpo.order_no,cpoa.id id,cpo.id order_id,cpo.date_custom,cpo.booking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
+			   		 sql = "SELECT cpo.order_no,cpoa.id id,cpo.id order_id,cpo.date_custom,cpo.tracking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
 		   				 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
 		   				 +" from custom_plan_order_arap cpoa "
 		   				 +" left join custom_arap_cost_item caci on caci.ref_order_id = cpoa.id"
@@ -268,10 +266,10 @@ public class CmsCostCheckOrderController extends Controller {
 		String ids = getPara("idsArray");//job_order_arap ids
 		String total_amount = getPara("totalAmount");
 		
-		String sql = "SELECT p.phone,p.contact_person,p.address,p.company_name declare_unit,cpo.application_unit declare_unit_id,cpoa.sp_id"
+		String sql = "SELECT p.phone,p.contact_person,p.address,p.company_name ,cpoa.sp_id"
 				+ " FROM custom_plan_order_arap cpoa"
 				+ " LEFT JOIN custom_plan_order cpo on cpo.id=cpoa.order_id "
-				+ " left join party p on p.id = cpo.application_unit "
+				+ " left join party p on p.id = cpoa.sp_id "
 				+ " WHERE cpoa.id in("+ ids +")"
 				 +" and cpo.delete_flag='N' "
 				 + " group by cpoa.order_id";
@@ -608,8 +606,6 @@ public class CmsCostCheckOrderController extends Controller {
         auditLog.set("office_id", office_id);
         if(receive_bank_id!=null && !("").equals(receive_bank_id)){
         		auditLog.set("account_id", receive_bank_id);
-        	}else{
-        		auditLog.set("account_id", 4);
         	}
         auditLog.set("source_order", "报关应付对账单");
         auditLog.set("invoice_order_id", application_id);

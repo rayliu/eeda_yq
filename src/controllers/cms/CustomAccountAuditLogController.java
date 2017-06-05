@@ -106,7 +106,7 @@ public class CustomAccountAuditLogController extends Controller {
         
         String sql = "";
         if(true){
-        	sql = " select * from (select aaal.*,ifnull(ul.c_name, ul.user_name) user_name,caco.order_no invoice_order_no, fa.bank_name,"
+        	sql = " select * from (select aaal.*,ifnull(ul.c_name, ul.user_name) user_name, fa.bank_name,"
         			+ " (CASE "
         			+ " WHEN aaal.source_order = '报关应收对账单' "
 				    + " THEN "
@@ -114,12 +114,12 @@ public class CustomAccountAuditLogController extends Controller {
 				    + " WHEN aaal.source_order = '报关应付对账单' "
 				    + " THEN "
 				    + " (select aco.order_no FROM custom_arap_cost_order aco where aco.id = aaal.invoice_order_id )"
-				    + " end ) order_no,"
+				    + " end ) invoice_order_no,"
 				    + " (select amount from arap_account_audit_log where id=aaal.id and payment_type='CUSTOMCOST') cost_amount,"
 				    + " (select amount from arap_account_audit_log where id=aaal.id and payment_type='CUSTOMCHARGE') charge_amount"
 				    + " from arap_account_audit_log aaal"
         			+ " left join user_login ul on ul.id = aaal.creator"
-				    + " LEFT JOIN custom_arap_charge_order caco ON caco.id = aaal.invoice_order_id"
+				   
         			+ " left join fin_account fa on aaal.account_id = fa.id "
         			+ " ) A where office_id="+office_id;        	
         }
