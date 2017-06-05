@@ -187,7 +187,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         });
 
         //刷新明细表
-        itemOrder.refleshOceanTable = function(order_id){
+        itemOrder.refleshOceanTotalTable = function(order_id){
         	var url = "/jobOrder/tableList?order_id="+order_id+"&type=shipment";
         	cargoTable.ajax.url(url).load();
         }
