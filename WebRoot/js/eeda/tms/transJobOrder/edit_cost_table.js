@@ -187,13 +187,13 @@ $(document).ready(function() {
     
     //------------事件处理
     var bindFieldEvent=function(){	
-//        eeda.bindTableField('cost_table','SP_ID','/serviceProvider/searchCompany','');
+       eeda.bindTableField('cost_table','SP_ID','/serviceProvider/searchCompany','');
         eeda.bindTableField('cost_table','CHARGE_ID','/finItem/search','');
         eeda.bindTableField('cost_table','CHARGE_ENG_ID','/finItem/search_eng','');
         eeda.bindTableField('cost_table','UNIT_ID','/serviceProvider/searchChargeUnit','');
         eeda.bindTableFieldCurrencyId('cost_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
         eeda.bindTableFieldCurrencyId('cost_table','exchange_currency_id','/serviceProvider/searchCurrency','');
-        eeda.bindTableFieldCarInfo('cost_table', 'SP_ID');
+        eeda.bindTableFieldCarInfo('cost_table', 'CAR_ID');
     };
     
     var costTable = eeda.dt({
@@ -257,7 +257,7 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
                             data='';
-                        var field_html = template('table_car_no_field_template',
+                        var field_html = template('table_dropdown_template',
                             {
                                 id: 'SP_ID',
                                 value: data,
@@ -270,7 +270,7 @@ $(document).ready(function() {
                      }else{
                     if(!data)
                         data='';
-                    var field_html = template('table_car_no_field_template',
+                    var field_html = template('table_dropdown_template',
                         {
                             id: 'SP_ID',
                             value: data,
@@ -280,6 +280,21 @@ $(document).ready(function() {
                     );
                     return field_html;
                  }
+               }
+            },
+            { "data": "CAR_ID","width": "100px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    var field_html = template('table_car_no_field_template',
+                        {
+                            id: 'CAR_ID',
+                            value: data,
+                            display_value: full.CAR_NAME,
+                            style:'width:120px'
+                        }
+                    );
+                    return field_html;
                }
             },
             { "data": "CHARGE_ID","width": "80px",
@@ -459,6 +474,13 @@ $(document).ready(function() {
                     return data;
                 }
             }, 
+            { "data": "CAR_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            },  
             { "data": "CHARGE_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
