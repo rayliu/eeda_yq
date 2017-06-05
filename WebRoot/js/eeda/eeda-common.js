@@ -148,7 +148,7 @@ eeda.dt = function(opt){
 
         responsive:opt.responsive || true,
         autoWidth: opt.autoWidth || false,
-        pageLength: opt.pageLength || 10,
+        pageLength: opt.pageLength || 100,
         lengthMenu: [ [10, 25, 50, 100,250,500,1000, '99999999'], [10, 25, 50, 100,250,500,1000, "All"] ],
         language: {
             "url": "/js/lib/datatables/i18n/Chinese.json"
