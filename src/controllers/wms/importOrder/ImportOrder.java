@@ -213,8 +213,8 @@ public class ImportOrder extends Controller {
 				Db.update("delete from wmsproduct");
 				BigXlsxHandleUitl.processFile(strFile);
 				conn.commit();
-				result.set("result", true);
-				result.set("cause","导入成功！");
+				resultMap.set("result", true);
+				resultMap.set("cause","导入成功！");
 			} else {
 				resultMap.set("result", false);
 				resultMap.set("cause", "导入失败，目前只支持（xlsx）格式文件");
