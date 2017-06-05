@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Date;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -25,6 +26,11 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
+
+import controllers.profile.LoginUserController;
 
 /**
  * A rudimentary XLSX -> CSV processor modeled on the
@@ -59,6 +65,8 @@ public class BigXlsxHandleUitl {
         private boolean firstCellOfRow = false;
         private int currentRow = -1;
         private int currentCol = -1;
+        public String[] titleArray = new String[14];
+        Record order  = new Record();
         
         private void outputMissingRows(int number) {
             for (int i=0; i<number; i++) {
@@ -83,27 +91,32 @@ public class BigXlsxHandleUitl {
         public void endRow(int rowNum) {
 //            System.out.println("currentRow:"+currentRow+", rowNum:"+rowNum);
             // Ensure the minimum number of columns
-            for (int i=currentCol; i<minColumns; i++) {
-                output.append(',');
-            }
-            output.append('\n');
-            if(currentRow>100)
-                return;
+//            for (int i=currentCol; i<minColumns; i++) {
+//                output.append(',');
+//            }
+//            output.append('\n');
+            order = new Record();
+            if((currentRow)%1000==0){
+				System.out.println(currentRow);
+			}
+//            if(currentRow>100)
+//                return;
         }
 
+        
         @Override
         public void cell(String cellReference, String formattedValue,
                 XSSFComment comment) {
             //currentRow =0,  titles
-            
-            if(currentRow>100)
-                return;
-            
-            if (firstCellOfRow) {
-                firstCellOfRow = false;
-            } else {
-                output.append(',');
-            }
+        	
+//            if(currentRow>100)
+//                return;
+//            
+//            if (firstCellOfRow) {
+//                firstCellOfRow = false;
+//            } else {
+//                output.append(',');
+//            }
 
             // gracefully handle missing CellRef here in a similar way as XSSFCell does
             if(cellReference == null) {
@@ -112,24 +125,102 @@ public class BigXlsxHandleUitl {
 
             // Did we miss any cells?
             int thisCol = (new CellReference(cellReference)).getCol();
-            int missedCols = thisCol - currentCol - 1;
-            for (int i=0; i<missedCols; i++) {
-                output.append(',');
-            }
-            currentCol = thisCol;
+//            int missedCols = thisCol - currentCol - 1;
+//            for (int i=0; i<missedCols; i++) {
+//                output.append(',');
+//            }
+//            currentCol = thisCol;
+//            
+//            // Number or string?
+//            try {
+//                //noinspection ResultOfMethodCallIgnored
+//                Double.parseDouble(formattedValue);
+//                output.append(formattedValue);
+//            } catch (NumberFormatException e) {
+//                output.append('"');
+//                output.append(formattedValue);
+//                output.append('"');
+//            }
             
-            // Number or string?
-            try {
-                //noinspection ResultOfMethodCallIgnored
-                Double.parseDouble(formattedValue);
-                output.append(formattedValue);
-            } catch (NumberFormatException e) {
-                output.append('"');
-                output.append(formattedValue);
-                output.append('"');
-            }
+            if(currentRow == 0){
+            	if("maktx".equals(formattedValue)){
+            		formattedValue = "item_name";
+            		titleArray[thisCol] = formattedValue;
+            	}else if("matnr".equals(formattedValue)){
+            		formattedValue = "item_no";
+            		titleArray[thisCol] = formattedValue;
+            	}else if("idnrk".equals(formattedValue)){
+            		formattedValue = "part_no";
+            		titleArray[thisCol] = formattedValue;
+            	}else if("ojtxp".equals(formattedValue)){
+            		formattedValue = "part_name";
+            		titleArray[thisCol] = formattedValue;
+            	}else if("bdmng".equals(formattedValue)){
+            		formattedValue = "amount";
+            		titleArray[thisCol] = formattedValue;
+            	}else if("meins".equals(formattedValue)){
+            		formattedValue = "unit";
+            		titleArray[thisCol] = formattedValue;
+            	}else if("pid".equals(formattedValue)){
+            		formattedValue = "node";
+            		titleArray[thisCol] = formattedValue;
+            	}
+        	}else{
+        		String title = titleArray[thisCol];
+        		if(thisCol == 13){
+        			order.set("creator", 67); 
+        			order.set("create_time", new Date());
+    				order.set("office_id", 1); 
+    				Db.save("wmsproduct", order);
+        		}else{
+        			if(title != null){
+            			order.set(title, formattedValue);
+            		}
+        		}
+        	}
+        	
             
         }
+        
+//        @Override
+//        public void cell(String cellReference, String formattedValue,
+//                XSSFComment comment) {
+//            //currentRow =0,  titles
+//            
+//            if(currentRow>100)
+//                return;
+//            
+//            if (firstCellOfRow) {
+//                firstCellOfRow = false;
+//            } else {
+//                output.append(',');
+//            }
+//
+//            // gracefully handle missing CellRef here in a similar way as XSSFCell does
+//            if(cellReference == null) {
+//                cellReference = new CellAddress(currentRow, currentCol).formatAsString();
+//            }
+//
+//            // Did we miss any cells?
+//            int thisCol = (new CellReference(cellReference)).getCol();
+//            int missedCols = thisCol - currentCol - 1;
+//            for (int i=0; i<missedCols; i++) {
+//                output.append(',');
+//            }
+//            currentCol = thisCol;
+//            
+//            // Number or string?
+//            try {
+//                //noinspection ResultOfMethodCallIgnored
+//                Double.parseDouble(formattedValue);
+//                output.append(formattedValue);
+//            } catch (NumberFormatException e) {
+//                output.append('"');
+//                output.append(formattedValue);
+//                output.append('"');
+//            }
+//            
+//        }
 
         @Override
         public void headerFooter(String text, boolean isHeader, String tagName) {
@@ -242,6 +333,6 @@ public class BigXlsxHandleUitl {
     }
     
     public static void main(String[] args) throws Exception {
-        processFile("/Users/a13570610691/Downloads/SapBomMay31.xlsx");
+        processFile("C:/Users/Administrator/Desktop/product数据/SAP BOM May 31.xlsx");
     }
 }
