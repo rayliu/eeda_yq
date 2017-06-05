@@ -6,7 +6,7 @@ $(document).ready(function() {
 	$("#breadcrumb_li").text('应收对账单');
     $('#menu_charge').addClass('active').find('ul').addClass('in');
     $(function(){
-        if($('#status').val()!='新建'){
+        if($('#status').val()!='新建'||!$('#order_id').val()){
             $('#add_charge').attr('disabled', true);
         }
         var receive_cny=$('#receive_cny').val().trim();
@@ -88,6 +88,9 @@ $(document).ready(function() {
                 $("#status").val(order.STATUS);
                 eeda.contactUrl("edit?id",order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+                if($('#status').val()=='新建'&&$('#order_id').val()){
+                     $('#add_charge').attr('disabled', false);
+                }
                 $('#saveBtn').attr('disabled', false);
                 $('#confirmBtn').attr('disabled', false);
                 $('#printTotaledBtn').attr('disabled', false);

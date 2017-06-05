@@ -687,7 +687,6 @@ public class TransChargeCheckOrderController extends Controller {
     	if(itemid !=null&& chargeOrderId!=null){
     		TransJobOrderArap jobOrderArap = TransJobOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("bill_flag", "N");
-    		 jobOrderArap.set("hedge_flag", "N");
              jobOrderArap.update();
 //             String sql="delete from  where ref_order_id="+itemid+"and charge_order_id="+chargeOrderId;
              Db.deleteById("trans_arap_charge_item","ref_order_id,charge_order_id",itemid,chargeOrderId);
