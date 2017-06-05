@@ -96,7 +96,9 @@ public class ServiceProviderController extends Controller {
     	if("contacts".equals(type)){
     		itemSql = "SELECT * FROM contacts_item WHERE party_id=?";
     		itemList = Db.find(itemSql, id);
-    	}else {
+    	}else if("cars".equals(type)){
+    		itemList = Db.find("SELECT * FROM supplier_cars_item WHERE party_id = ?",id);
+		}else {
     		itemList = Db.find("SELECT * FROM fin_account WHERE order_id = ?",id);
 		}
 		return itemList;
@@ -129,11 +131,10 @@ public class ServiceProviderController extends Controller {
     	String order_id = getPara("order_id");
     	String type = getPara("type");
     	List<Record> list = null;
-    	list = Db.find("SELECT * FROM fin_account WHERE order_id = ?",order_id);
+//    	list = Db.find("SELECT * FROM fin_account WHERE order_id = ?",order_id);
     	
-    	if("contacts".equals(type)){
-    		list=getItemDetail(order_id, type);
-    	}
+    	list=getItemDetail(order_id, type);
+    	
     	Map map = new HashMap();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
@@ -223,6 +224,9 @@ public class ServiceProviderController extends Controller {
 		DbUtils.handleList(acount, order_id, FinAccount.class, "order_id");
 		List<Map<String, String>> contacts = (ArrayList<Map<String, String>>)dto.get("contacts_json");
 		DbUtils.handleList(contacts, "contacts_item", order_id, "party_id");
+		//保存公司车辆信息
+		List<Map<String, String>> cars = (ArrayList<Map<String, String>>)dto.get("cars_json");
+		DbUtils.handleList(cars, "supplier_cars_item", order_id, "party_id");
         setAttr("saveOK", true);
         //redirect("/serviceProvider");
         renderJson(party);

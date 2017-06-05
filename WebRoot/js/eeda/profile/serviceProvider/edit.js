@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','./account_item_table','./contacts_item_table'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','./account_item_table','./contacts_item_table','./car_item_table'], function ($, metisMenu) { 
 
   $(document).ready(function() {
 	  $("#breadcrumb_li").text('供应商基本信息');
@@ -141,6 +141,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	 var order={};
     	 order.acount_json =itemOrder.buildCargoDetail();
     	 order.contacts_json =itemOrder.buildContactsDetail();
+    	 order.cars_json =itemOrder.buildCarsDetail();
     	 $("#acount_json").val(JSON.stringify(order));
     	 $.post("/serviceProvider/save", $("#customerForm").serialize(),function(data){
     		if(data=='abbrError'){
@@ -167,6 +168,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		if(data!='abbrError'){
     			itemOrder.refleshTable(data.ID);
     			itemOrder.refleshContactsTable(data.ID);
+    			itemOrder.refleshCarsTable(data.ID);
     		}
     		
          });

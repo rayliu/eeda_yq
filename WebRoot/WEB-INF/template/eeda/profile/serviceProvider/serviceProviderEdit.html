@@ -255,6 +255,15 @@
                                        </div>
                                        
                                        <div class="col-lg-12">
+											<h4>联系信息</h4>
+                                       </div>
+                                       <div class="form-group">
+						                 <div class="col-lg-12">
+			                                <%include("/eeda/profile/serviceProvider/ContactsItem.html",{}){}%>
+			                            </div>
+						               </div>
+						               
+						                <div class="col-lg-12">
 											<h4>公司车辆信息</h4>
                                        </div>
                                        <div class="form-group">
@@ -266,22 +275,11 @@
 							                                   {
 							                                       id:'cars_table',
 							                                       style:'width:100%',
-							                                       headers:['','车牌','司机', '司机电话','司机电话（短号）','车型'],
-							                                       field_list:['id','position','full_name','mobile_phone','email','office_phone'],
-							                                       value_list: contacts_itemList![]
+							                                       headers:['','车牌','司机', '司机电话','司机电话（短号）'
+							                                       ,'车型 ','车长  ','百公里标准油耗']
+							                                      
 							                                   }){} %>
-								                    
-		                
 												</form>
-			                            </div>
-						               </div>
-						               
-						               <div class="col-lg-12">
-											<h4>联系信息</h4>
-                                       </div>
-                                       <div class="form-group">
-						                 <div class="col-lg-12">
-			                                <%include("/eeda/profile/serviceProvider/CarsItem.html",{}){}%>
 			                            </div>
 						               </div>
                                        <div class="col-lg-12">
