@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gateOutOrder_item" language="groovy" pageWidth="573" pageHeight="842" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="573" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="260e40d5-dc30-467f-97e2-8f3420a6c940">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gateOutOrder_item" language="groovy" pageWidth="573" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="573" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="260e40d5-dc30-467f-97e2-8f3420a6c940">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -38,7 +38,7 @@ FROM
 			pro.item_no,
 			pro.item_name,
 			pro.amount,
-			( $P{totalQuantity} * pro.amount) act_quantity,
+			( 5 * pro.amount) act_quantity,
 		(
 		SELECT
 			GROUP_CONCAT(DISTINCT shelves SEPARATOR '    ')
@@ -59,7 +59,7 @@ FROM
 			gi.out_flag = 'N'
 		AND gi.error_flag = 'N'
 		AND gi.office_id = 1
-		AND pro.item_no = $P{itemNo}
+		AND pro.item_no = 'WH1003-SP01'
 		GROUP BY
 			gi.id
 		UNION ALL
@@ -70,14 +70,14 @@ FROM
 				pro.item_no,
 				pro.item_name,
 				pro.amount,
-				( $P{totalQuantity} * pro.amount) act_quantity,
+				( 5 * pro.amount) act_quantity,
 				'' shelves
 			FROM
 				wmsproduct pro
 			WHERE
 				pro.amount > 0
 			AND pro.office_id = 1
-			AND pro.item_no = $P{itemNo}
+			AND pro.item_no = 'WH1003-SP01'
 	) A
 GROUP BY
 	A.part_no]]>
