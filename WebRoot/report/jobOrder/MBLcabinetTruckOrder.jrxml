@@ -304,7 +304,7 @@ where joli.id=$P{item_id}]]>
 				<textElement verticalAlignment="Top">
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[FROM:登陆人]]></text>
+				<text><![CDATA[FROM:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="303" y="159" width="73" height="30" uuid="da432cbc-7e71-45ee-9fc1-708d39e258c7"/>
@@ -523,7 +523,7 @@ where joli.id=$P{item_id}]]>
 				<textElement verticalAlignment="Top">
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[TO:发货人公司]]></text>
+				<text><![CDATA[TO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="59" y="257" width="93" height="29" uuid="c92986bc-b7cf-42e2-a00e-6d66e25eca5f"/>
