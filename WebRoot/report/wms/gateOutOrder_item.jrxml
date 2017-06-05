@@ -24,8 +24,12 @@
 		</box>
 	</style>
 	<parameter name="order_id" class="java.lang.String"/>
-	<parameter name="itemNo" class="java.lang.String"/>
-	<parameter name="totalQuantity" class="java.lang.String"/>
+	<parameter name="itemNo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{itemNo}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totalQuantity" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{totalQuantity}]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
 	A.*, sum(ifnull(A.quantity, 0)) shelves_total_piece
@@ -38,7 +42,7 @@ FROM
 			pro.item_no,
 			pro.item_name,
 			pro.amount,
-			( 5 * pro.amount) act_quantity,
+			($P{totalQuantity}* pro.amount) act_quantity,
 		(
 		SELECT
 			GROUP_CONCAT(DISTINCT shelves SEPARATOR '    ')
@@ -59,7 +63,7 @@ FROM
 			gi.out_flag = 'N'
 		AND gi.error_flag = 'N'
 		AND gi.office_id = 1
-		AND pro.item_no = 'WH1003-SP01'
+		AND pro.item_no = $P{itemNo}
 		GROUP BY
 			gi.id
 		UNION ALL
@@ -70,14 +74,14 @@ FROM
 				pro.item_no,
 				pro.item_name,
 				pro.amount,
-				( 5 * pro.amount) act_quantity,
+				( $P{totalQuantity} * pro.amount) act_quantity,
 				'' shelves
 			FROM
 				wmsproduct pro
 			WHERE
 				pro.amount > 0
 			AND pro.office_id = 1
-			AND pro.item_no = 'WH1003-SP01'
+			AND pro.item_no = $P{itemNo}
 	) A
 GROUP BY
 	A.part_no]]>

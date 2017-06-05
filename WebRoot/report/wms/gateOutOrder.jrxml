@@ -191,7 +191,7 @@ group by goo.id]]>
 				<textFieldExpression><![CDATA[$F{create_time}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="216" y="-1" width="129" height="41" uuid="19c720f7-6f4f-4317-8bc3-ef04714cbcee"/>
+				<reportElement x="216" y="0" width="129" height="41" uuid="19c720f7-6f4f-4317-8bc3-ef04714cbcee"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="黑体" size="28" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
@@ -205,7 +205,7 @@ group by goo.id]]>
 				<text><![CDATA[数量：]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="273" y="67" width="24" height="19" uuid="68dea33a-4761-4f05-abd3-311ce278a51b"/>
+				<reportElement x="274" y="67" width="24" height="19" uuid="68dea33a-4761-4f05-abd3-311ce278a51b"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="黑体" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -231,6 +231,12 @@ group by goo.id]]>
 		<band height="41" splitType="Stretch">
 			<subreport>
 				<reportElement x="0" y="1" width="575" height="40" uuid="2be426ab-76d2-4b1b-a09b-58aa38445a71"/>
+				<subreportParameter name="totalQuantity">
+					<subreportParameterExpression><![CDATA[$F{quantity}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="itemNo">
+					<subreportParameterExpression><![CDATA[$F{item_no}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="order_id">
 					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
 				</subreportParameter>
