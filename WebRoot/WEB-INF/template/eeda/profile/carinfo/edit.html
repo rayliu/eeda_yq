@@ -12,12 +12,12 @@
             		</div> -->
             		<div class="panel-body">
             			<div class="row-fluid">
-            				<form lass="form-horizontal" id='leadsForm' name="leadsForm" action="/carInfo/save" method="post">
+            				<form  id='leadsForm' name="leadsForm" role="form" method="post">
 						<input id="carId" name="carId" type="hidden" value="${lu.id!''}">
 					<div class="col-lg-6">
                         <div class="form-group ">
                              <label class="control-label">车牌</label>
-                             <input type="text" class="form-control" id="car_number" name="car_number" value="${lu.car_no!''}">
+                             <input type="text" class="form-control" id="car_no" name="car_no" value="${lu.car_no!''}">
                         </div>
 						<div class="form-group ">
 			                 <label class="control-label">司机</label>
@@ -167,7 +167,7 @@
 			            
 			            </div>
 			            <div class="col-lg-7">
-			             	<button type="submit" class="btn  btn-primary">保存</button>
+			             	<button id="save" type="button" class="btn  btn-primary">保存</button>
 				            <a class="btn  btn-primary" href="/carInfo">返回</a>
 				        </div>
 			         </form>
