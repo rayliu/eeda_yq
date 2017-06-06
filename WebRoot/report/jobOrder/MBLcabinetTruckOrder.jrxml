@@ -11,7 +11,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     o.logo_path,jos.*,josi.*,josh.*,IFNULL(p4.company_name,p4.company_name_eng) transport_company_name,p.company_name head_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
+     o.logo_path,jos.*,josi.*,josh.*,IFNULL(p4.company_name,p4.company_name_eng) transport_company_name,p4.phone transport_company_attn,p4.contact_person transport_company_tel,p.company_name head_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
 ifnull(
 (select GROUP_CONCAT(CN_no SEPARATOR '  ;  ') from
 (SELECT
@@ -297,6 +297,8 @@ where joli.id=$P{item_id}]]>
 	<field name="CN_SN" class="java.lang.String"/>
 	<field name="Vessel_voyage" class="java.lang.String"/>
 	<field name="take_address" class="java.lang.String"/>
+	<field name="transport_company_attn" class="java.lang.String"/>
+	<field name="transport_company_tel" class="java.lang.String"/>
 	<columnHeader>
 		<band height="802" splitType="Stretch">
 			<staticText>
@@ -451,7 +453,7 @@ where joli.id=$P{item_id}]]>
 				<textElement verticalAlignment="Top">
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{head_end_place}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{transport_company_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="152" y="160" width="152" height="29" uuid="2007e9ec-c4f3-4feb-a821-d9e5aad93aca"/>
@@ -573,18 +575,18 @@ where joli.id=$P{item_id}]]>
 				<textFieldExpression><![CDATA[$F{take_address}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="150" y="257" width="152" height="29" uuid="a31d50be-12d1-4eb9-b4f7-f748744f1aff"/>
+				<reportElement x="151" y="257" width="152" height="29" uuid="a31d50be-12d1-4eb9-b4f7-f748744f1aff"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{head_attn}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{transport_company_attn}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="376" y="257" width="152" height="29" uuid="690f291a-3794-4242-b693-5b7286624d7a"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{head_customer_tel}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{transport_company_tel}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
