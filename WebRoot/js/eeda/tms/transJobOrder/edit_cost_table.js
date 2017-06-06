@@ -286,6 +286,17 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
+                    if(full.AUDIT_FLAG == 'Y'){
+                        var field_html = template('table_car_no_field_template',
+                            {
+                                id: 'CAR_ID',
+                                value: data,
+                                display_value: full.CAR_NAME,
+                                style:'width:120px',
+                                disabled:'disabled'
+                            }
+                        );                        
+                     }else{
                     var field_html = template('table_car_no_field_template',
                         {
                             id: 'CAR_ID',
@@ -294,8 +305,8 @@ $(document).ready(function() {
                             style:'width:120px'
                         }
                     );
-                    return field_html;
                }
+                return field_html;
             },
             { "data": "CHARGE_ID","width": "80px",
                 "render": function ( data, type, full, meta ) {

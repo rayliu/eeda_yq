@@ -2,7 +2,7 @@
 <script id="table_car_no_field_template" type="text/html">
         <div class="form-group">
             <input type="text" name="{{id}}" value="{{value}}" car_id="" field_type='car_id' style="display:none;"/>
-            <input type="text" class="form-control search-control" 
+            <input type="text" {{disabled}}  class="form-control search-control" 
                    name="{{id}}_input" placeholder="请选择" value="{{display_value}}">
         </div> 
 </script>
