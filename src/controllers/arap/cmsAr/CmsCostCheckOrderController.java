@@ -12,6 +12,7 @@ import java.util.Map;
 import models.ArapAccountAuditLog;
 import models.CustomArapCostItem;
 import models.CustomArapCostOrder;
+import models.Party;
 import models.UserLogin;
 import models.eeda.cms.CustomArapCostReceiveItem;
 import models.eeda.profile.Currency;
@@ -289,9 +290,12 @@ public class CmsCostCheckOrderController extends Controller {
 		CustomArapCostOrder order = CustomArapCostOrder.dao.findById(id);
 		Long create_by = order.getLong("create_by");
 		Long confirm_by = order.getLong("confirm_by");
+		Long sp_id = order.getLong("sp_id");
 		UserLogin ul = UserLogin.dao.findById(create_by);
 		UserLogin ul2 = UserLogin.dao.findById(confirm_by);
 		UserLogin u3=LoginUserController.getLoginUser(this);
+		
+		Party sp = Party.dao.findById(sp_id);
 		
 		String sqlString="SELECT  residual_cny FROM custom_arap_cost_receive_item WHERE custom_charge_order_id="+id+" ORDER BY id DESC";
 		Record rec2 = Db.findFirst(sqlString);
@@ -299,6 +303,7 @@ public class CmsCostCheckOrderController extends Controller {
 		rec.set("user", u3);
 		rec.set("creator_name", ul.getStr("c_name"));
 		rec.set("confirm_name", ul2==null?"":ul2.getStr("c_name"));
+		rec.set("company_name", sp==null?"":sp.getStr("company_name"));//
 		rec.set("itemList", getItemList("",id));
 		rec.set("receive_itemList", getReceiveItemList(id));
 		if(rec2!=null){
