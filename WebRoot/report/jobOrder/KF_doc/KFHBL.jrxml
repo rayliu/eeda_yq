@@ -38,17 +38,20 @@ ifnull(
 	Upper(lo2. NAME) pod_name,
 	Upper(lo3. NAME) fnd_name,
 	CONCAT(
-		CAST(FORMAT(SUM(josi.pieces),0) AS CHAR),' ',
-		GROUP_CONCAT(distinct u1.name_eng)
-	) SUM_pieces,
-   CONCAT(
-		CAST(FORMAT(SUM(josi.gross_weight),2) AS CHAR),' ',
+		CAST(IFNULL(jo.pieces,FORMAT(SUM(josi.pieces),0)) AS CHAR),' ',
+		IFNULL(GROUP_CONCAT(distinct u1.name_eng),'')
+	)
+   SUM_pieces,
+  CONCAT(
+		CAST(FORMAT(IFNULL(jo.gross_weight,SUM(josi.gross_weight)),2) AS CHAR),' ',
 		' KGS'
-	) SUM_gross_weight,
+	)
+	 SUM_gross_weight,
    CONCAT(
-		CAST(FORMAT(SUM(josi.volume),2) AS CHAR),' ',
+		CAST(FORMAT(IFNULL(jo.volume,SUM(josi.volume)),2) AS CHAR),' ',
 		' CBM'
-	) SUM_volume,
+	)
+ SUM_volume,
 
 	o.logo_path,
 	u.c_name,
