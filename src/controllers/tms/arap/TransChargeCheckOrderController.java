@@ -723,6 +723,8 @@ public class TransChargeCheckOrderController extends Controller {
         		 +" 	if(tjoa.charge_id = 263,tjoa.total_amount,'') night_fee, "
         		 +" 	if(tjoa.charge_id = 262,tjoa.total_amount,'') high_speed_fee, "
         		 +" 	if(tjoa.charge_id = 174,tjoa.total_amount,'') call_fee, "
+        		 +" 	if(tjoa.charge_id = 302,tjoa.total_amount,'') empty_in_out_fee, "
+        		 +" 	if(tjoa.charge_id = 497,tjoa.total_amount,'') advance_fee, "
         		 +" 	tjo.remark "
         		 +" FROM trans_arap_charge_order taco "
         		 +" LEFT JOIN trans_arap_charge_item taci ON taco.id = taci.charge_order_id  "
@@ -743,9 +745,9 @@ public class TransChargeCheckOrderController extends Controller {
         
         //List<String> headers = new ArrayList<String>();
         String[] headers = new String[]{"提单号", "提柜日期", "客户", "方式", "提柜地址", "柜号", "尺码", "拖车号", "应收运费", "币制",
-        								"高速费","过磅费","压夜费","吉出吉入费", "发票号"};
+        								"打单费","高速费","过磅费","压夜费","吉进吉出","代垫费", "发票号"};
         String[] fields = new String[]{"LADING_NO", "CABINET_DATE", "CUSTOMER_NAME", "TYPE", "DOCK_NAME", "CONTAINER_NO", "CABINET_TYPE", "CAR_NO", "FREIGHT", "CURRENCY_NAME",
-        								"WEIGHING_FEE","NIGHT_FEE","HIGH_SPEED_FEE","CALL_FEE",  "REMARK"};
+        								"CALL_FEE","HIGH_SPEED_FEE","WEIGHING_FEE","NIGHT_FEE","EMPTY_IN_OUT_FEE","ADVANCE_FEE",  "REMARK"};
         String fileName = PoiUtils.generateExcel(headers, fields, exportSql,company_name);
         renderText(fileName);
     }
