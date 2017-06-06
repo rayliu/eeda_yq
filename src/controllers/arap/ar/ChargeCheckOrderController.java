@@ -160,6 +160,13 @@ public class ChargeCheckOrderController extends Controller {
         
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
         	 sql = "select * from(  "
@@ -185,7 +192,7 @@ public class ChargeCheckOrderController extends Controller {
       				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
       				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
       				+ " left join fin_item f on f.id = joa.charge_id"
-      				+ " where joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
+      				+ " where joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id+ ref_office
       				+ " and jo.delete_flag = 'N'"
       				+ " GROUP BY joa.id "
     				+ " ) B where 1=1 ";
@@ -213,7 +220,7 @@ public class ChargeCheckOrderController extends Controller {
          				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
          				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
          				+ " left join fin_item f on f.id = joa.charge_id"
-         				+ " where joa.order_type='charge' and joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
+         				+ " where joa.order_type='charge' and joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id+ ref_office
          				+ " and jo.delete_flag = 'N'"
          				+ " GROUP BY joa.id "
          				+ " ) B where 1=1 ";
