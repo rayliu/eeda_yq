@@ -6,16 +6,8 @@ $(document).ready(function() {
 	$("#breadcrumb_li").text('应收对账单');
     $('#menu_charge').addClass('active').find('ul').addClass('in');
     $(function(){
-        if($('#status').val()!='新建'||!$('#order_id').val()){
-            $('#add_charge').attr('disabled', true);
-        }
-        var receive_cny=$('#receive_cny').val().trim();
-      if(!$('#receive_cny').val()){
-            $('#receive_cny').val($('#cny').val());
-            $('#residual_cny').val($('#cny').val());
-        }else if(receive_cny&&receive_cny>0&&$('#status').val()!='新建'){
-            $('#charge_confirmBtn').attr('disabled',false);
-        }
+            var status=$('#status').val();
+            charge_confirmBtn(status);
     });
     
     //构造主表json
@@ -137,10 +129,14 @@ $(document).ready(function() {
                  $('#add_charge').attr('disabled', true);
 
                  $("#status").val('已确认');
-                 var receive_cny=$('#receive_cny').val().trim();
-                 if(receive_cny&&receive_cny>0&&$('#status').val()!='新建'){
-                    $('#charge_confirmBtn').attr('disabled',false);
-                }
+                 $('#confirmOrder_div').show();
+                 $('#costCheckreceipt').show();
+                 //赋值给本次付款，收款余额
+                 var cny=$('#cny').val().trim();
+                 $('#receive_cny').val(cny);
+                 $('#residual_cny').val(cny);
+                 $('#charge_confirmBtn').attr('disabled',false);
+
                  $('#printTotaledBtn').attr('disabled', false);
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
     			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
@@ -194,15 +190,7 @@ $(document).ready(function() {
     		$('#invoice_flag').hide();
     	}
     });
-   
-    $('#receive_cny').on('click keyup',function(){
-            var receive_cny=$(this).val().trim();
-            if(receive_cny&&receive_cny>0&&$('#status').val()!='新建'){
-               $('#charge_confirmBtn').attr('disabled',false);
-            }else{
-                $('#charge_confirmBtn').attr('disabled',true);
-            }
-    });
+  
     //付款方式回显（1）
     $('#payment_method').change(function(){
         var type = $(this).val();
@@ -225,15 +213,24 @@ $(document).ready(function() {
                 var pay_remark =$('#pay_remark').val()+'\n 这笔为坏账'
                 $('#pay_remark').html(pay_remark);              
               } 
-            $("#badBtn").attr("disabled", true);  
-            $("#charge_confirmBtn").attr("disabled", true);  
+            // $("#badBtn").attr("disabled", true);  
+            // $("#charge_confirmBtn").attr("disabled", true);  
            
             var formRequired=0;
-            $('form').each(function(){
-                if(!$(this).valid()){
-                    formRequired++;
-                }
-            })
+            var receive_cny=$('#receive_cny').val();//本次收款CNY大于0
+            var residual_cny=$('#residual_cny').val();//未收余额CNY大于0
+            if(receive_cny<=0 ){
+                $.scojs_message('收款金额应大于0', $.scojs_message.TYPE_ERROR);
+                return;
+            }
+            if(receive_cny> residual_cny){
+                $.scojs_message('本次收款金额CNY大于未收的余额CNY', $.scojs_message.TYPE_ERROR);
+                return;
+            }
+            if(residual_cny==0 ){
+                $.scojs_message('该账单已完成收款', $.scojs_message.TYPE_ERROR);
+                return;
+            }
             if($('#receive_time').val()==''){
                  formRequired++;
             }
@@ -309,6 +306,28 @@ $(document).ready(function() {
         return item;
     }
 
+      var charge_confirmBtn=function(status){
+       var cny=$('#receive_cny').val();
+       if(status=='新建'){
+           $('#charge_confirmBtn').attr('disabled',true);
+           $('#add_charge').attr('disabled', false);
+       }else if(status=='已确认'){
+           $('#charge_confirmBtn').attr('disabled',false);
+           $('#add_charge').attr('disabled', true);
+           $('#confirmOrder_div').show();
+           $('#costCheckreceipt').show();
+       }else if(status=='部分已收款'){
+           $('#charge_confirmBtn').attr('disabled',false);
+           $('#add_charge').attr('disabled', true);
+           $('#confirmOrder_div').show();
+           $('#costCheckreceipt').show();
+       }else if(status=='已收款'){
+           $('#charge_confirmBtn').attr('disabled',true);
+           $('#add_charge').attr('disabled',true );
+           $('#confirmOrder_div').show();
+           $('#costCheckreceipt').show();
+       }
+    }
 
   
 });
