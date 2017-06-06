@@ -129,7 +129,7 @@ public class CmsCostCheckOrderController extends Controller {
 			 +" LEFT JOIN party p on p.id = cpoa.sp_id "
 			 +" where 1 = 1 "
 			 + checkCondition
-			 + " and cpoa.audit_flag='Y' and cpoa.bill_flag='N'  and cpo.office_id = "+office_id
+			 + " and cpoa.audit_flag='Y' and cpoa.bill_flag='N'  and (cpo.office_id = "+office_id+ " or cpo.to_office_id="+office_id+")"
 			 +" and cpo.delete_flag='N' "
 			 +"  GROUP BY cpoa.id " 
 			 + " ) B "

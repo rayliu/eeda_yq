@@ -1345,7 +1345,7 @@ public class JobOrderController extends Controller {
     				+ " left join party p2 on p2.id=jol.consignee"
     				+ " left join job_order_land_doc jold on jold.land_id=jol.id"
     				+ " left join unit u on u.id=jol.unit_id"
-    				+ " where order_id=? and jol.land_type='bulk_car' GROUP BY jol.id order by jol.id";
+    				+ " where order_id=?  GROUP BY jol.id order by jol.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("landShipment".equals(type)){
     		itemSql = "select jol.*,CONCAT(IFNULL(p1.address,''),',',GROUP_CONCAT(di.dock_name)) dock_names, p.abbr transport_company_name,CAST(GROUP_CONCAT(jold.id) as char ) job_order_land_doc_id, GROUP_CONCAT(jold.doc_name) doc_name,"
