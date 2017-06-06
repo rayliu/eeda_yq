@@ -5,11 +5,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
         var carTable = eeda.dt({
             id: 'car_table',
             autoWidth: false,
+            paging:true,
             ajax: "/carInfo/list",
             columns:[
                 { "data":"CAR_NO",
                     "render": function ( data, type, full, meta ) {
-                        return "<a href='/carInfo/edit/"+full.ID+"'target='_blank'>"+full.CAR_NO+"</a>";  
+                        return "<a href='/carInfo/edit?id="+full.ID+"'target='_blank'>"+full.CAR_NO+"</a>";  
                     }
                 },
                 { "data":"CAR_OWNED","width":"55px"},
@@ -40,6 +41,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 }
             },'json');
         });
+        
+        $('#resetBtn').click(function(){
+        	$('#query_dock_name').val('');
+        	$("#query_quick_search_code").val('');
+        	$("#query_dock_region").val('');
+        });
+        $('#searchBtn').click(function(){
+            searchData(); 
+        });
+
+       var searchData=function(){
+            var car_no = $('#query_car_no').val().trim();
+            var driver = $("#query_driver").val().trim();
+            var cartype = $("#query_cartype").val().trim();
+            
+            var url = "/carInfo/list?car_no="+car_no
+            	   +"&driver_like="+driver
+                 +"&cartype_equals="+cartype;
+
+            carTable.ajax.url(url).load();
+          }
         
        
     });
