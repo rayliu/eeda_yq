@@ -6,8 +6,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       var dataTable = eeda.dt({
           id: 'eeda_table',
           colReorder: true,
-          serverSide: false, //不打开会出现排序不对 
-          ajax: "/costConfirmList/list?audit_flag="+$("#audit_flag").val(),
+          serverSide: true, //不打开会出现排序不对 
+//          paging: true,
+//          length:500,
+//          ajax: "/costConfirmList/list?audit_flag="+$("#audit_flag").val(),
           columns: [
 			{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
@@ -45,10 +47,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
             { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px"},
             { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px" },
-            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px",
-            		
-            },
-            { "data": "REMARK", "width": "180px"},
+            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px"},
+            { "data": "REMARK", "width": "180px"}
           ]
       });
     //base on config hide cols
