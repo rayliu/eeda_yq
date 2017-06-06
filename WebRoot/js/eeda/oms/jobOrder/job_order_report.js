@@ -323,22 +323,31 @@ $(document).ready(function() {
     		$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
 			$('#pdfAlert').click();
 		}else{
-			var arrStr = $('#ocean_HBLshipper_info').val();
-			var arry = arrStr.split("\n");
-			if(arry.length>=2){
-				if($('#head_attn').val()==""||$('#head_attn').val()==undefined){
-					$('#head_attn').val(arry[1]);
-				}
-			}
-			if(arry.length>=3){
-				var arr = arry[2].split(" ");
-			}
-			if(arr!=undefined&&arr.length>=1){
-				$('#head_customerTel').val(arr[0].replace("TEL:",""));
-			}
-			if(arr!=undefined&&arr.length>=2){
-				$('#head_fax').val(arr[1].replace("FAX:",""));
-			}
+			//取HBL发货人信息
+//			var arrStr = $('#ocean_HBLshipper_info').val();
+//			var arry = arrStr.split("\n");
+//			if(arry.length>=2){
+//				if($('#head_attn').val()==""||$('#head_attn').val()==undefined){
+//					$('#head_attn').val(arry[1]);
+//				}
+//			}
+//			if(arry.length>=3){
+//				var arr = arry[2].split(" ");
+//			}
+//			if(arr!=undefined&&arr.length>=1){
+//				$('#head_customerTel').val(arr[0].replace("TEL:",""));
+//			}
+//			if(arr!=undefined&&arr.length>=2){
+//				$('#head_fax').val(arr[1].replace("FAX:",""));
+//			}
+			var customer_id = $('#customer_id').val();
+			
+			$.post('/customer/search_party_id', {customer_id:customer_id}, function(data){
+				$('#head_endPlace').val(data.ABBR);
+				$('#head_attn').val(data.CONTACT_PERSON);
+				$('#head_customer_tel').val(data.PHONE);
+				$('#head_fax').val(data.FAX);
+			});
 			if($('#head_endPlace').val()==""||$('#head_endPlace').val()==undefined){
     			$('#head_endPlace').val($('#ocean_HBLshipper_input').val());
 			}
@@ -350,9 +359,9 @@ $(document).ready(function() {
 			var por_input = $("#por_input").val();
 			var pod_input = $("#pod_input").val();
 			var head_title = $('#head_title').val();
-
+			var container_amount = $('#ocean_cargo_table tr:has(td)').size();
 			if(head_title==""){
-			    head_title = '1X'+container_type+' FM '+por_input+' TO '+pod_input;
+			    head_title = container_amount+'X'+container_type+' FM '+por_input+' TO '+pod_input;
 				$('#head_title').val(head_title);
 			}
 				
@@ -363,7 +372,6 @@ $(document).ready(function() {
 		    	head_remark = "请安排 "+order_export_date+" 西域港报关出口";
 		    	$("#head_remark").val(head_remark)
 		    }
-		    	
 
 			$('#oceanHeadDetailBtn1').click();
 		}
@@ -517,7 +525,7 @@ $(document).ready(function() {
     	});
 
     //打印生成陆运派车单truckOrderPDF
-    $('#truckOrderPDF,#cabinet_truck').click(function(){
+    $('#truckOrderPDF').click(function(){
     	//判断table是否添加了一行
     	var btnId = $(this).attr("id");
     	if($('#land_table td').length==1){

@@ -418,6 +418,30 @@ public class CustomerController extends Controller {
         }
     }
     
+    // 列出指定party名称，客户
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
+    public void search_party_id() {
+        String customer_id = getPara("customer_id");
+       
+        if(StringUtils.isEmpty(customer_id)){
+        	customer_id = "";
+        }
+        Record resultFirst = new Record();
+        String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+                + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code from party p where  "
+                + " p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
+                        
+            if (customer_id.trim().length() > 0) {
+                sql +=" and p.id =" + customer_id ;
+            }
+            resultFirst = Db.findFirst(sql);
+
+            renderJson(resultFirst);
+        
+    }
+    
+    
+    
     // 列出所有party名称,供应商
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})
     public void searchParty() {
