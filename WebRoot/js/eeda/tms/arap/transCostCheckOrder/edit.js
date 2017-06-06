@@ -157,15 +157,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
         	});
         	
         });
-        
-//        $('#receive_cny').on('click keyup',function(){
-//        	 var receive_cny=$(this).val().trim();
-//             if(receive_cny&&receive_cny>0&&$('#status').val()!='新建'){
-//                $('#charge_confirmBtn').attr('disabled',false);
-//             }else{
-//                 $('#charge_confirmBtn').attr('disabled',true);
-//             }
-//    });
+
     //付款方式回显（1）
     $('#payment_method').change(function(){
         var type = $(this).val();
@@ -195,6 +187,10 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
             var residual_cny=$('#residual_cny').val();//未付余额CNY大于0
             if(receive_cny<=0 ){
             	$.scojs_message('付款金额应大于0', $.scojs_message.TYPE_ERROR);
+            	return;
+            }
+            if(receive_cny> residual_cny){
+            	$.scojs_message('本次付款金额CNY大于未付的余额CNY', $.scojs_message.TYPE_ERROR);
             	return;
             }
             if(residual_cny==0 ){
