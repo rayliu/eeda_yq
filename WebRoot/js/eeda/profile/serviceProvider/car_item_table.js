@@ -62,6 +62,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    var carsTable = eeda.dt({
             id: 'cars_table',
             autoWidth: false,
+            paging:true,
             "drawCallback": function( settings ) {
 		        	
 		    },
@@ -93,13 +94,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                   return '<input type="text" name="phone" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "SHORT_PHONE","width": "150px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                    return '<input   type="text" name="short_phone" value="'+data+'" class="form-control search-control" />';
-	                }
-	            },
 	            { "data": "CARTYPE","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
@@ -114,11 +108,22 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                   return '<input type="text" name="length" placeholder="请输入数字" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "HUNDRED_FUEL_STANDARD","width": "100px",
+	            { "data": "TOCA_NUM","width": "100px",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
 	                	   data='';
-	                   return '<input type="text" name="hundred_fuel_standard" placeholder="请输入数字" value="'+data+'" class="form-control search-control" />';
+	                   return '<input type="text" name="toca_num" placeholder="请输入整数" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            { "data": "CAR_OWNED","width": "100px",
+	                "render": function ( data, type, full, meta ) {
+	                   if(!data)
+	                	   data='';
+	                   var str = '<select name="car_owned" class="form-control search-control notsave" style="width:75px">'  
+               				+'<option value="公司车" '+(data=='公司车' ? 'selected':'')+'> 公司车 </option>'
+	                        +'<option value="街车" '+(data=='街车' ? 'selected':'')+'> 街车 </option>'
+	                        +'</select>';
+	                	return str;
 	                }
 	            }
 	        ]

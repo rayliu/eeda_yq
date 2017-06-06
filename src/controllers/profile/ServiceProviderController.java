@@ -97,7 +97,7 @@ public class ServiceProviderController extends Controller {
     		itemSql = "SELECT * FROM contacts_item WHERE party_id=?";
     		itemList = Db.find(itemSql, id);
     	}else if("cars".equals(type)){
-    		itemList = Db.find("SELECT * FROM supplier_cars_item WHERE party_id = ?",id);
+    		itemList = Db.find("SELECT * FROM carinfo WHERE parent_id = ?",id);
 		}else {
     		itemList = Db.find("SELECT * FROM fin_account WHERE order_id = ?",id);
 		}
@@ -226,7 +226,7 @@ public class ServiceProviderController extends Controller {
 		DbUtils.handleList(contacts, "contacts_item", order_id, "party_id");
 		//保存公司车辆信息
 		List<Map<String, String>> cars = (ArrayList<Map<String, String>>)dto.get("cars_json");
-		DbUtils.handleList(cars, "supplier_cars_item", order_id, "party_id");
+		DbUtils.handleList(cars, "carinfo", order_id, "parent_id");
         setAttr("saveOK", true);
         //redirect("/serviceProvider");
         renderJson(party);
