@@ -73,13 +73,10 @@ $(document).ready(function() {
                 }
             }
         });
-        $('#cost_table [name=SP_ID],#cost_table [name=CURRENCY_ID]').each(function(index,item){
+        $('#cost_table [name=CURRENCY_ID]').each(function(index,item){
             if(!item.value){
                 error_data++;
-                if(item.name=='SP_ID'){
-                    $.scojs_message('费用明细;应付信息表第'+(Math.ceil((parseInt(index)+1)/2))+'行的结算公司还没有填好', $.scojs_message.TYPE_ERROR);
-                     // return;
-                }else if(item.name=='CURRENCY_ID'){
+               if(item.name=='CURRENCY_ID'){
                     $.scojs_message('费用明细;应付信息表第'+(Math.ceil((parseInt(index)+1)/2))+'行的币制为必填', $.scojs_message.TYPE_ERROR);
                 }
             }

@@ -54,6 +54,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "SO_NO", "width": "60px"},
 	            { "data": "CUSTOMER_NAME", "width": "100px"},
 	            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
+	            { "data": "CAR_NO", "width": "100px","class":"CAR_NO"},
             	{ "data": "FEE_NAME", "width": "180px"},
 	            { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
 	            	"render": function ( data, type, full, meta ) {
@@ -115,11 +116,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var order_no = $.trim($("#order_no").val()); 
           var customer = $("#customer").val(); 
           var customer_input = $("#customer_input").val().trim(); 
-          var sp = $("#sp").val();
+          var sp = $("#sp").val().trim();
 
           var sp_input = $("#sp_input").val().trim(); 
-          if(!sp_input){
-              $.scojs_message('请选择结算公司', $.scojs_message.TYPE_ERROR);
+          var car_no_input = $("#car_no_input").val().trim();
+          if(!sp_input&&!car_no_input){
+              $.scojs_message('请选择结算公司或这结算车牌', $.scojs_message.TYPE_ERROR);
               return;
           }
           var type = $("#type").val(); 
@@ -129,6 +131,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var land_export_date_end_time = $("#land_export_date_end_time").val();
           
           var container_no = $("#container_no").val().trim(); 
+          var car_no = $("#car_no").val().trim();
           var so_no = $("#so_no").val().trim(); 
           /*  
               查询规则：参数对应DB字段名
@@ -142,8 +145,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           			   +"&customer_id="+customer
 			           +"&customer_id="+customer
 			           +"&customer_name_like="+customer_input
-			           +"&sp_id= "+sp
+			           +"&sp_id="+sp
 			           +"&sp_name_like="+sp_input
+		               +"&car_no_like="+car_no_input
 			           +"&type_equals="+type
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date

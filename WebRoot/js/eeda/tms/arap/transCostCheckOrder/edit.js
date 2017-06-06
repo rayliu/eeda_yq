@@ -54,6 +54,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
                 total_amount: 0,//parseFloat($('#total_amount').val()).toFixed(2),
                 cost_amount: 0,//$('#cost_amount').val(),
                 sp_id: $('#sp_id').val(),
+                car_id: $('#car_id').val(),
                 begin_time:$('#audit_begin_time').val(),
                 end_time:$('#audit_end_time').val(),
                 usd:$('#usd').val(),
@@ -260,6 +261,13 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
         return item;
     }
 
-        
+    var charge_confirmBtn=function(status){
+ 	   var cny=$('#receive_cny').val();
+ 	   if(status=='新建'){
+ 		   $('#charge_confirmBtn').attr('disabled',true);
+ 	   }else if(cny && cny>0){
+ 		   $('#charge_confirmBtn').attr('disabled',true);
+ 	   }
+    }
 });
 });

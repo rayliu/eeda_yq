@@ -16,6 +16,7 @@
                                         	<input id="id" type="hidden" value="${order.id!''}"/>
                                         	<input id="ids" type="hidden"  value="${order.ids!''}"/>
                                         	<input id="sp_id" type="hidden"  value="${order.sp_id!''}"/>
+                                        	<input id="car_id" type="hidden"  value="${order.car_id!''}"/>
                                         <div class="col-lg-4">
                                             <%include("/eeda/component/form/inputField.html", 
                                                                 {   id:'order_no', 
@@ -69,6 +70,14 @@
                                                                 {   id:'sp_name', 
                                                                     label:'结算公司', 
                                                                     value: order.company_name!'',
+                                                                    disabled: 'disabled'
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id:'car_no_name', 
+                                                                    label:'结算车牌', 
+                                                                    value: order.car_no_name!'',
                                                                     disabled: 'disabled'
                                                                 }){}%>
                                         </div>

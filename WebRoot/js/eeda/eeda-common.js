@@ -1021,8 +1021,8 @@ eeda.refreshUrl = refreshUrl;
                               +" phone='"+data[i].PHONE+"' "
                               +" toca_weight='"+data[i].TOCA_WEIGHT+"' "
                               +" head_weight='"+data[i].HEAD_WEIGHT+"' "
-                              +" belong_company='"+data[i].BELONG_COMPANY+"' "
-                              +" belong_company_input='"+data[i].BELONG_COMPANY_INPUT+"' "
+                              +" parent_id='"+data[i].PARENT_ID+"' "
+                              +" sp_name='"+data[i].SP_NAME+"' "
                               +" driver='"+data[i].DRIVER+"' >"+data[i].CAR_NO
                               +"</a></li>");
                   tableFieldList.css({ 
@@ -1058,9 +1058,12 @@ eeda.refreshUrl = refreshUrl;
               row.find('input.phone').val($(this).attr('phone'));
               row.find('input.toca_weight').val(toca_weight);
               row.find('input.head_weight').val(head_weight);
-              if($(this).attr('belong_company')!='null'&&$(this).attr('belong_company')!=''){
-                  row.find('input[name=SP_ID]').val($(this).attr('belong_company'));
-                  row.find('input[name=SP_ID_input]').val($(this).attr('belong_company_input'));
+              if($(this).attr('parent_id')!='null'){
+                  row.find('input[name=SP_ID]').val($(this).attr('parent_id'));
+                  row.find('input[name=SP_ID_input]').val($(this).attr('sp_name'));
+              }else{
+                  row.find('input[name=SP_ID]').val('');
+                  row.find('input[name=SP_ID_input]').val('');            	  
               }
               if($(this).attr('toca_weight').indexOf('k')!=-1)
                 row.find('input.toca_weight').val(toca_weight.substring(0,toca_weight.indexOf('k',0)+1));

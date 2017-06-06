@@ -275,7 +275,8 @@ $(document).ready(function() {
                             id: 'SP_ID',
                             value: data,
                             display_value: full.SP_NAME,
-                            style:'width:120px'
+                            style:'width:120px',
+                            disabled:'disabled'
                         }
                     );
                     return field_html;
@@ -307,6 +308,7 @@ $(document).ready(function() {
                     );
                }
                 return field_html;
+                }
             },
             { "data": "CHARGE_ID","width": "80px",
                 "render": function ( data, type, full, meta ) {

@@ -73,12 +73,13 @@ public class TransCostCheckOrderController extends Controller {
 		
 		String strAry[] = ids.split(",");
 		String id = strAry[0];
-		String sql = " select joa.sp_id,p.abbr company_abbr,p.company_name company_name from trans_job_order_arap joa "
+		String sql = " select joa.sp_id,joa.car_id,p.abbr company_abbr,p.company_name company_name from trans_job_order_arap joa "
 				   + " left join party p on p.id = joa.sp_id "
 				   + "  where joa.id = ? ";
 		Record spRec = Db.findFirst(sql,id);
 		Record order = new Record();
 		order.set("sp_id", spRec.get("sp_id"));
+		order.set("car_id", spRec.get("car_id"));
 		order.set("company_name", spRec.get("company_name"));
 		order.set("company_abbr",spRec.get("company_abbr"));
 		order.set("total_amount",totalAmount);
@@ -362,7 +363,7 @@ public class TransCostCheckOrderController extends Controller {
         			+" 			ifnull(f. NAME, f.name_eng) fee_name,	"
         			+" 			cur1. NAME exchange_currency_name,	"
         			+" 			joa.exchange_currency_rate,	"
-        			+" 			joa.exchange_total_amount	"
+        			+" 			joa.exchange_total_amount,c.car_no	"
         			+" 		FROM	"
         			+" 			trans_job_order_arap joa	"
         			+" 		LEFT JOIN trans_job_order jo ON jo.id = joa.order_id	"
@@ -372,6 +373,7 @@ public class TransCostCheckOrderController extends Controller {
         			+" 		LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id "
         			+" 		LEFT JOIN trans_job_order_land_item joli ON joli.order_id = joa.order_id "
         			+" 		LEFT JOIN fin_item f ON f.id = joa.charge_id "
+        			+ " 	LEFT JOIN carinfo c on c.id=joa.car_id "
         			+" 		WHERE "
         			+"   joa.audit_flag = 'Y' "
         			+" 		AND joa.bill_flag = 'N' "
@@ -414,7 +416,7 @@ public class TransCostCheckOrderController extends Controller {
 	        		 +" 			ifnull(f. NAME, f.name_eng) fee_name,	"
 	        		 +" 			cur1. NAME exchange_currency_name,	"
 	        		 +" 			joa.exchange_currency_rate,	"
-	        		 +" 			joa.exchange_total_amount	"
+	        		 +" 			joa.exchange_total_amount,c.car_no	"
 	        		 +" 		FROM	"
 	        		 +" 			trans_job_order_arap joa	"
 	        		 +" 		LEFT JOIN trans_job_order jo ON jo.id = joa.order_id	"
@@ -424,6 +426,7 @@ public class TransCostCheckOrderController extends Controller {
 	        		 +" 		LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id "
 	        		 +" 		LEFT JOIN trans_job_order_land_item joli ON joli.order_id = joa.order_id "
 	        		 +" 		LEFT JOIN fin_item f ON f.id = joa.charge_id "
+	        		 + " 		LEFT JOIN carinfo c on c.id=joa.car_id "
 	        		 +" 		WHERE "
 	        		 +" 			joa.order_type = 'cost' "
 	        		 +" 		AND joa.audit_flag = 'Y' "
@@ -575,9 +578,10 @@ public class TransCostCheckOrderController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void edit(){
 		String id = getPara("id");//arap_cost_order id
-		String sql = " select aco.*,p.id company_id,p.company_name,p.abbr company_abbr,u.c_name creator_name,u1.c_name confirm_by_name from trans_arap_cost_order aco "
+		String sql = " select aco.*,p.id company_id,p.company_name,p.abbr company_abbr,p2.abbr car_no_name,u.c_name creator_name,u1.c_name confirm_by_name from trans_arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by "
+   				+ " left join party p2 on p2.id=aco.car_id  "
    				+ " left join user_login u1 on u1.id=aco.confirm_by "
    				+ " where aco.id = ? ";
 		Record order = Db.findFirst(sql,id);

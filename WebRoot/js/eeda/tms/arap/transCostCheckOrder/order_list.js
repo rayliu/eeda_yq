@@ -20,6 +20,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "CREATE_STAMP"},
             { "data": "STATUS"},
             { "data": "SP_NAME"},
+            { "data": "CAR_NO"},
             { "data": "TOTAL_AMOUNT","visible":false},
             { "data": "CNY",
                 "render":function(data,type,full,meta){
@@ -59,7 +60,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      var searchData=function(){
     	  var order_no = $("#order_no1").val().trim(); 
           var sp = $("#sp1").val(); 
-          var sp1_input = $("#sp1_input").val().trim(); 
+          var sp1_input = $("#sp1_input").val().trim();
+          var car_no_input = $("#car_no2_input").val().trim();
           var start_date = $("#create_stamp1_begin_time").val();
           var end_date = $("#create_stamp1_end_time").val();
           var land_export_date_begin_time = $("#land_export_date1_begin_time").val();
@@ -75,6 +77,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var url = "/transCostCheckOrder/orderList?order_no="+order_no
 			           +"&sp_id="+sp
 			           +"&sp_name_like="+sp1_input
+			           +"&car_no_like="+car_no_input
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date
 		               +"&land_export_date_begin_time="+land_export_date_begin_time
