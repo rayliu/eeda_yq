@@ -132,6 +132,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
 	    			 $('#confirm_stamp').val(data.CONFIRM_STAMP);
                      $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
             		 $('#confirmOrder_div').show();
+           		   	 $('#costCheckreceipt').show();
             		 //赋值给本次付款，收款余额
                      var cny=$('#cny').val().trim();
                      $('#receive_cny').val(cny);
@@ -284,14 +285,17 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
  		   $('#charge_confirmBtn').attr('disabled',false);
  		   $('#add_cost').attr('disabled', true);
  		   $('#confirmOrder_div').show();
+ 		   $('#costCheckreceipt').show();
  	   }else if(status=='部分已付款'){
  		   $('#charge_confirmBtn').attr('disabled',false);
   		   $('#add_cost').attr('disabled', true);
   		   $('#confirmOrder_div').show();
+ 		   $('#costCheckreceipt').show();
  	   }else if(status=='已付款'){
  		   $('#charge_confirmBtn').attr('disabled',true);
   		   $('#add_cost').attr('disabled',true );
   		   $('#confirmOrder_div').show();
+ 		   $('#costCheckreceipt').show();
  	   }
     }
 });

@@ -505,9 +505,9 @@ public class TransChargeCheckOrderController extends Controller {
 
 		UserLogin u3=LoginUserController.getLoginUser(this);
 		rec.set("user", u3);
-		String sqlString="SELECT  (aco.cny-SUM(tacri.receive_cny))residual_cny FROM trans_arap_charge_receive_item tacri "
-				 +" LEFT JOIN trans_arap_charge_order aco on aco.id=tacri.charge_order_id "
-				 +" WHERE tacri.charge_order_id="+id+" ORDER BY tacri.id DESC ";
+		String sqlString="SELECT  (aco.cny-IFNULL(SUM(tacri.receive_cny),0))residual_cny FROM trans_arap_charge_order aco  "
+				 +" LEFT JOIN trans_arap_charge_receive_item tacri on aco.id=tacri.charge_order_id "
+				 +" WHERE aco.id ="+id+" ORDER BY tacri.id DESC ";
 		Record rec2 = Db.findFirst(sqlString);
 		rec.set("address", rec.get("address"));
 		rec.set("customer", rec.get("contact_person"));

@@ -588,9 +588,9 @@ public class TransCostCheckOrderController extends Controller {
 		Record order = Db.findFirst(sql,id);
 		UserLogin u3=LoginUserController.getLoginUser(this);
 		order.set("user", u3);
-		String sqlString="SELECT  (aco.cny-SUM(tacri.receive_cny))residual_cny FROM trans_arap_cost_receive_item tacri "
-				 +" LEFT JOIN trans_arap_cost_order aco on aco.id=tacri.charge_order_id "
-				 +" WHERE tacri.charge_order_id="+id+" ORDER BY tacri.id DESC ";
+		String sqlString="SELECT  (aco.cny-IFNULL(SUM(tacri.receive_cny),0))residual_cny FROM trans_arap_cost_order aco "
+				 +" LEFT JOIN  trans_arap_cost_receive_item tacri  on aco.id=tacri.charge_order_id "
+				 +" WHERE aco.id ="+id+" ORDER BY tacri.id DESC ";
 		
 		Record rec2 = Db.findFirst(sqlString);
 		if(rec2!=null){
