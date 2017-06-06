@@ -11,17 +11,12 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
         $("#breadcrumb_li").text('应付对账单');
         
         $(function(){
-	            if($('#status').val()!='新建'||!$('#order_id').val()){
-	                $('#add_charge').attr('disabled', true);
-	            }
-	            
-	          if($('#receive_cny').val()==''){
-	                $('#receive_cny').val($('#cny').val());
-	                $('#residual_cny').val($('#cny').val());
-	            }
-	          if($('#receive_cny').val()>0&&$('#status').val()!='新建'){
-	                $('#charge_confirmBtn').attr('disabled',false);
-	            }
+	            var status=$('#status').val();
+	            charge_confirmBtn(status);
+//	          if($('#receive_cny').val()==''){
+//	                $('#receive_cny').val($('#cny').val());
+//	                $('#residual_cny').val($('#cny').val());
+//	            }
        
           });
         
@@ -136,10 +131,12 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
 	    			 $('#confirm_name').val(data.CONFIRM_BY_NAME);
 	    			 $('#confirm_stamp').val(data.CONFIRM_STAMP);
                      $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
-                     var receive_cny=$('#receive_cny').val().trim();
-                     if(receive_cny&&receive_cny>0&&$('#status').val()!='新建'){
-                        $('#charge_confirmBtn').attr('disabled',false);
-                    }
+            		 $('#confirmOrder_div').show();
+            		 //赋值给本次付款，收款余额
+                     var cny=$('#cny').val().trim();
+                     $('#receive_cny').val(cny);
+                     $('#residual_cny').val(cny);
+                     $('#charge_confirmBtn').attr('disabled',false);
         		 }
 	         },'json').fail(function() {
 	        	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
@@ -160,14 +157,14 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
         	
         });
         
-        $('#receive_cny').on('click keyup',function(){
-        	 var receive_cny=$(this).val().trim();
-             if(receive_cny&&receive_cny>0&&$('#status').val()!='新建'){
-                $('#charge_confirmBtn').attr('disabled',false);
-             }else{
-                 $('#charge_confirmBtn').attr('disabled',true);
-             }
-    });
+//        $('#receive_cny').on('click keyup',function(){
+//        	 var receive_cny=$(this).val().trim();
+//             if(receive_cny&&receive_cny>0&&$('#status').val()!='新建'){
+//                $('#charge_confirmBtn').attr('disabled',false);
+//             }else{
+//                 $('#charge_confirmBtn').attr('disabled',true);
+//             }
+//    });
     //付款方式回显（1）
     $('#payment_method').change(function(){
         var type = $(this).val();
@@ -189,15 +186,20 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
                 var pay_remark =$('#pay_remark').val()+'\n 这笔为坏账'
                 $('#pay_remark').html(pay_remark);              
               } 
-            $("#badBtn").attr("disabled", true);  
-            $("#charge_confirmBtn").attr("disabled", true);  
+//            $("#badBtn").attr("disabled", true);  
+//            $("#charge_confirmBtn").attr("disabled", true);  
            
             var formRequired=0;
-            $('form').each(function(){
-                if(!$(this).valid()){
-                    formRequired++;
-                }
-            })
+            var receive_cny=$('#receive_cny').val();//本次付款CNY大于0
+            var residual_cny=$('#residual_cny').val();//未付余额CNY大于0
+            if(receive_cny<=0 ){
+            	$.scojs_message('付款金额应大于0', $.scojs_message.TYPE_ERROR);
+            	return;
+            }
+            if(residual_cny==0 ){
+            	$.scojs_message('该账单已完成付款', $.scojs_message.TYPE_ERROR);
+            	return;
+            }
             if($('#receive_time').val()==''){
                  formRequired++;
             }
@@ -277,8 +279,19 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
  	   var cny=$('#receive_cny').val();
  	   if(status=='新建'){
  		   $('#charge_confirmBtn').attr('disabled',true);
- 	   }else if(cny && cny>0){
+ 		   $('#add_cost').attr('disabled', false);
+ 	   }else if(status=='已确认'){
+ 		   $('#charge_confirmBtn').attr('disabled',false);
+ 		   $('#add_cost').attr('disabled', true);
+ 		   $('#confirmOrder_div').show();
+ 	   }else if(status=='部分已付款'){
+ 		   $('#charge_confirmBtn').attr('disabled',false);
+  		   $('#add_cost').attr('disabled', true);
+  		   $('#confirmOrder_div').show();
+ 	   }else if(status=='已付款'){
  		   $('#charge_confirmBtn').attr('disabled',true);
+  		   $('#add_cost').attr('disabled',true );
+  		   $('#confirmOrder_div').show();
  	   }
     }
 });
