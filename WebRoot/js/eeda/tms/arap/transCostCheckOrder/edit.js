@@ -11,10 +11,18 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
         $("#breadcrumb_li").text('应付对账单');
         
         $(function(){
-            if(!$('#receive_cny').val()){
-                  $('#receive_cny').val($('#total_amount').val());
-                  $('#residual_cny').val($('#total_amount').val());
-              }
+	            if($('#status').val()!='新建'||!$('#order_id').val()){
+	                $('#add_charge').attr('disabled', true);
+	            }
+	            
+	          if($('#receive_cny').val()==''){
+	                $('#receive_cny').val($('#cny').val());
+	                $('#residual_cny').val($('#cny').val());
+	            }
+	          if($('#receive_cny').val()>0&&$('#status').val()!='新建'){
+	                $('#charge_confirmBtn').attr('disabled',false);
+	            }
+       
           });
         
         var buildCurJson = function(){
@@ -128,6 +136,10 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
 	    			 $('#confirm_name').val(data.CONFIRM_BY_NAME);
 	    			 $('#confirm_stamp').val(data.CONFIRM_STAMP);
                      $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+                     var receive_cny=$('#receive_cny').val().trim();
+                     if(receive_cny&&receive_cny>0&&$('#status').val()!='新建'){
+                        $('#charge_confirmBtn').attr('disabled',false);
+                    }
         		 }
 	         },'json').fail(function() {
 	        	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
@@ -149,12 +161,12 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
         });
         
         $('#receive_cny').on('click keyup',function(){
-            var receive_cny=$(this).val().trim();
-            if(receive_cny){
-               $('#charge_confirmBtn').attr('disabled',false);
-            }else{
-                $('#charge_confirmBtn').attr('disabled',true);
-            }
+        	 var receive_cny=$(this).val().trim();
+             if(receive_cny&&receive_cny>0&&$('#status').val()!='新建'){
+                $('#charge_confirmBtn').attr('disabled',false);
+             }else{
+                 $('#charge_confirmBtn').attr('disabled',true);
+             }
     });
     //付款方式回显（1）
     $('#payment_method').change(function(){
