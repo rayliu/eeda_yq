@@ -137,6 +137,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           var sp_name = $('#sp_input').val().trim();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
+          var sp_name = $('#sp_input').val().trim();
+          var custom_start_date = $("#date_custom_begin_time").val();
+          var custom_end_date = $("#date_custom_end_time").val();
           if(!sp_name){
               $.scojs_message('请选择结算公司', $.scojs_message.TYPE_ERROR);
               return;
@@ -146,7 +149,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           	   +"&order_no="+order_no
                +"&abbr_name="+sp_name
 	           +"&create_stamp_begin_time="+start_date
-	           +"&create_stamp_end_time="+end_date;
+	           +"&create_stamp_end_time="+end_date
+	           +"&date_custom_begin_time="+custom_start_date
+	           +"&date_custom_end_time="+custom_end_date;
 
           dataTable.ajax.url(url).load();
         }
