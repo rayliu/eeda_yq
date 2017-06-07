@@ -401,7 +401,7 @@ $(document).ready(function() {
                 }
               }
             },
-            { "data": "CHARGE_ENG_ID",
+            { "data": "CHARGE_ENG_ID","visible":false,
             	"render": function ( data, type, full, meta ) {
             		if(full.AUDIT_FLAG == 'Y'){
             			if(!data)

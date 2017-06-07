@@ -206,7 +206,7 @@ $(document).ready(function() {
                 }
               }
             },
-            { "data": "CHARGE_ENG_ID","width": "100px",
+            { "data": "CHARGE_ENG_ID","width": "100px","visible":false,
             	"render": function ( data, type, full, meta ) {
             		if(full.AUDIT_FLAG == 'Y'){
             			if(!data)
