@@ -267,7 +267,7 @@ public class PlanOrderController extends Controller {
         			+ " GROUP BY poi.id ";
         }else{
         	sql = "SELECT * from (select"
-        			+ " (GROUP_CONCAT(CONCAT(ifnull(poi.factory_loading_time,'<span style=\"color:red;\">无出货时间</span>'), "
+        			+ " (GROUP_CONCAT(CONCAT(ifnull(cast(poi.factory_loading_time as char),'<span style=\"color:red;\">无出货时间</span>'), "
         			+ " IF (poi.confirm_shipment = 'Y',' 已确认出货',' 新建')) SEPARATOR '<br/>')) item_status,"
         			+ " if(((select count(1) from plan_order_item "
         			+ " where order_id = po.id and confirm_shipment = 'Y')=count(poi.id) and count(poi.id)!=0),'已完成',"

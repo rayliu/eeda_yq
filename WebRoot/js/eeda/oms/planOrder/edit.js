@@ -166,6 +166,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
         	 $('#submitBtn').hide();
         	 $('.delete').hide();
         	 $('.confirm_shipment').hide();
+             $('#confirmCompleted').hide();
+             $('#add_cargo').hide();
          }
          
 
