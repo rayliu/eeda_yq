@@ -165,6 +165,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
       });
 
       $('#searchBtn').click(function(){
+    	  $('#orderTabs .active').removeClass('active');
           searchData(); 
       })
 
