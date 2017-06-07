@@ -82,6 +82,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $('#sp_type_manufacturer').attr('checked', 'checked');
             }else if(checkSpType == 'traders'){
                 $('#sp_type_traders').attr('checked', 'checked');
+            }else if(checkSpType == 'port_supervision'){
+                $('#sp_type_port_supervision').attr('checked', 'checked');
+            }else if(checkSpType == 'wharf'){
+                $('#sp_type_wharf').attr('checked', 'checked');
             }
             
         };
