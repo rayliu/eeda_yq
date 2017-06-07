@@ -41,37 +41,35 @@
 	</style>
 	<parameter name="order_id" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[
-select * ,(IFNULL(GKJSF,0)+IFNULL(GWF,0)+IFNULL(MTF,0)+IFNULL(CZGF,0)+IFNULL(DCF,0)+IFNULL(ZKCLF,0)+IFNULL(DBZF,0)+IFNULL(ZGZXF,0)+IFNULL(NFPTF,0)+IFNULL(TYDDY,0)+IFNULL(WLDLF,0)+IFNULL(AC,0)+IFNULL(ZHF,0)+IFNULL(XDF,0)+IFNULL(BGDZLR,0)+IFNULL(BGDZSC,0)+IFNULL(BGDDLF,0)) as total from(
+		<![CDATA[select * ,(IFNULL(GKJSF,0)+IFNULL(GWF,0)+IFNULL(MTF,0)+IFNULL(CZGF,0)+IFNULL(DCF,0)+IFNULL(ZKCLF,0)+IFNULL(DBZF,0)+IFNULL(ZGZXF,0)+IFNULL(NFPTF,0)+IFNULL(TYDDY,0)+IFNULL(WLDLF,0)+IFNULL(AC,0)+IFNULL(ZHF,0)+IFNULL(XDF,0)+IFNULL(BGDZLR,0)+IFNULL(BGDZSC,0)+IFNULL(BGDDLF,0)) as total from(
 							  SELECT cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,cpo.tracking_no tracking_no,cpo.cabinet_no,
 								cpo.container_no container_no,cpo.container_type container_type,p.abbr company_abbr,p.fax fax,
 									p.company_name company_name,p.contact_person contact_person ,p.phone phone,p.email email,
 
-							  sum(iF(cpoa.charge_id=167,cpoa.total_amount,null )) GKJSF,
-							  sum(iF(cpoa.charge_id=219,cpoa.total_amount,null)) GWF,
-							  sum(iF(cpoa.charge_id=164,cpoa.total_amount,null)) MTF,
-							  sum(iF(cpoa.charge_id=220,cpoa.total_amount,null)) CZGF,
-							  sum(iF(cpoa.charge_id=221,cpoa.total_amount,null)) DCF,
-							  sum(iF(cpoa.charge_id=222,cpoa.total_amount,null)) ZKCLF,
-							  sum(iF(cpoa.charge_id=223,cpoa.total_amount,null)) DBZF,
-							  sum(iF(cpoa.charge_id=224,cpoa.total_amount,null)) ZGZXF,
-							  sum(iF(cpoa.charge_id=225,cpoa.total_amount,null)) NFPTF,
-							  sum(iF(cpoa.charge_id=226,cpoa.total_amount,null)) TYDDY,
-							  sum(iF(cpoa.charge_id=179,cpoa.total_amount,null)) WLDLF,
-							  sum(iF(cpoa.charge_id=181,cpoa.total_amount,null)) AC,
-							  sum(iF(cpoa.charge_id=166,cpoa.total_amount,null)) ZHF,
-							  sum(iF(cpoa.charge_id=178,cpoa.total_amount,null)) XDF,
-							  sum(iF(cpoa.charge_id=229,cpoa.total_amount,null)) BGDZLR,
-								sum(iF(cpoa.charge_id=230,cpoa.total_amount,null)) BGDZSC,
+							 sum(iF(fi.`code`='GKJSF',cpoa.total_amount,null )) GKJSF,
+							  sum(iF(fi.`code`='GWF',cpoa.total_amount,null)) GWF,
+							  sum(iF(fi.`code`='MTF',cpoa.total_amount,null)) MTF,
+							  sum(iF(fi.`code`='CZGF',cpoa.total_amount,null)) CZGF,
+							  sum(iF(fi.`code`='DCF',cpoa.total_amount,null)) DCF,
+							  sum(iF(fi.`code`='ZKCLF',cpoa.total_amount,null)) ZKCLF,
+							  sum(iF(fi.`code`='DBZF',cpoa.total_amount,null)) DBZF,
+							  sum(iF(fi.`code`='ZGZXF',cpoa.total_amount,null)) ZGZXF,
+							  sum(iF(fi.`code`='NFPTF',cpoa.total_amount,null)) NFPTF,
+							  sum(iF(fi.`code`='TYDDY',cpoa.total_amount,null)) TYDDY,
+							  sum(iF(fi.`code`='WLDLF',cpoa.total_amount,null)) WLDLF,
+							  sum(iF(fi.`code`='AC',cpoa.total_amount,null)) AC,
+							  sum(iF(fi.`code`='ZHF',cpoa.total_amount,null)) ZHF,
+							  sum(iF(fi.`code`='XDF',cpoa.total_amount,null)) XDF,
+							  sum(iF(fi.`code`='BGDZLR',cpoa.total_amount,null)) BGDZLR,
+								sum(iF(fi.`code`='BGDZSC',cpoa.total_amount,null)) BGDZSC,
 
-								sum(iF(cpoa.charge_id=231,cpoa.total_amount,null)) BGDDLF
-
+								sum(iF(fi.`code`='BGDDLF',cpoa.total_amount,null)) BGDDLF
 							  FROM custom_arap_charge_order caco
 							  left join custom_arap_charge_item caci on caci.custom_charge_order_id=caco.id
 							  left join custom_plan_order_arap cpoa on cpoa.id=caci.ref_order_id
 							  LEFT JOIN custom_plan_order cpo on cpo.id=cpoa.order_id
 					      LEFT JOIN party p on p.id=cpo.application_unit
-								where cpo.order_no is not NULL and  caco.id=$P{order_id}
+									LEFT JOIN fin_item fi on fi.id=cpoa.charge_id and caco.office_id=fi.office_id						where cpo.order_no is not NULL and  caco.id=$P{order_id}
 
 			 				  GROUP BY cpoa.order_id
 
