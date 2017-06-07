@@ -146,7 +146,7 @@ $(document).ready(function() {
                 	}
                 }
             },
-            { "data": "SP_ID","width": "180px",
+            { "data": "SP_ID","width": "100px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
@@ -156,7 +156,7 @@ $(document).ready(function() {
                                 id: 'SP_ID',
                                 value: data,
                                 display_value: full.SP_NAME,
-                                style:'width:200px',
+                                style:'width:120px',
                                 disabled:'disabled'
                             }
                         );
@@ -169,14 +169,14 @@ $(document).ready(function() {
                             id: 'SP_ID',
                             value: data,
                             display_value: full.SP_NAME,
-                            style:'width:200px'
+                            style:'width:120px'
                         }
                     );
                     return field_html;
                  }
                }
             },
-            { "data": "CHARGE_ID","width": "180px",
+            { "data": "CHARGE_ID","width": "100px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
@@ -186,7 +186,7 @@ $(document).ready(function() {
                                 id: 'CHARGE_ID',
                                 value: data,
                                 display_value: full.CHARGE_NAME,
-                                style:'width:200px',
+                                style:'width:120px',
                                 disabled:'disabled'
                             }
                         );
@@ -199,14 +199,14 @@ $(document).ready(function() {
                             id: 'CHARGE_ID',//对应数据库字段
                             value: data,
                             display_value: full.CHARGE_NAME,
-                            style:'width:200px'
+                            style:'width:120px'
                         }
                     );
                     return field_html;
                 }
               }
             },
-            { "data": "CHARGE_ENG_ID","width": "180px",
+            { "data": "CHARGE_ENG_ID","width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(full.AUDIT_FLAG == 'Y'){
             			if(!data)
@@ -216,7 +216,7 @@ $(document).ready(function() {
             				id: 'CHARGE_ENG_ID',
             				value: data,
             				display_value: full.CHARGE_NAME_ENG,
-            				style:'width:200px',
+            				style:'width:120px',
             				disabled:'disabled'
             					}
             			);
@@ -229,7 +229,7 @@ $(document).ready(function() {
             				id: 'CHARGE_ENG_ID',
             				value: data,
             				display_value: full.CHARGE_NAME_ENG,
-            				style:'width:200px',
+            				style:'width:120px',
             				disabled:'disabled'
             					}
             			);

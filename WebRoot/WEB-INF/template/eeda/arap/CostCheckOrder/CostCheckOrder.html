@@ -19,6 +19,7 @@
 					                       <h4 class="panel-title">
 					                           <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
 					                           <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
+					                           <span style="color:#AAAAAA;padding-left:10px" >* 注：请输入查询条件获取已确认的费用明细数据，其中结算公司为必填</span>
 					                       </h4>
 					                 </div>
 					          <div id="collapseChargeInfo" class="panel-collapse collapse in" aria-expanded="false" style="height: auto;">
@@ -177,8 +178,6 @@
                                     
 		                            
                                     <div class="row simple_list_div">
-                                     <span style="color:#AAAAAA">* 注：请输入查询条件获取已确认的费用明细数据，其中结算公司为必填</span>
-                                     <br/><br/>
                                      <%include("/eeda/component/form/detailTable.html", 
                                         {
                                             id:'eeda_table', 

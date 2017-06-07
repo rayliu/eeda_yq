@@ -284,7 +284,7 @@ $(document).ready(function() {
             bindFieldEvent();
         },
         columns:[
-			{"data": "HIDE_FLAG", "width": "30px", visible: is_show_hide_charge_col,
+			{"data": "HIDE_FLAG", "width": "50px", visible: is_show_hide_charge_col,
 		    	"render": function ( data, type, full, meta ) {
                     if(full.HIDE_FLAG=='N')
                         return '<input type="checkbox" class="checkBox" name="hide_flag">';
@@ -332,7 +332,7 @@ $(document).ready(function() {
                   }
                 }
             },
-            { "data": "SP_ID", "width": "180px",
+            { "data": "SP_ID", "width": "100px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
@@ -342,7 +342,7 @@ $(document).ready(function() {
                                 id: 'SP_ID',
                                 value: data,
                                 display_value: full.SP_NAME,
-                                style:'width:200px',
+                                style:'width:120px',
                                 disabled:'disabled'
                             }
                         );
@@ -354,7 +354,7 @@ $(document).ready(function() {
                                     id: 'SP_ID',//对应数据库字段
                                     value: $('#sp').val(),
                                     display_value: $('#sp_input').val(),
-                                    style:'width:200px'
+                                    style:'width:120px'
                                 }
                        );
                     }else{
@@ -363,7 +363,7 @@ $(document).ready(function() {
                                   id: 'SP_ID',//对应数据库字段
                                   value: data,
                                   display_value: full.SP_NAME,
-                                  style:'width:200px'
+                                  style:'width:120px'
                               }
                           );
                   }
@@ -371,7 +371,7 @@ $(document).ready(function() {
                 }
               }
             },
-            { "data": "CHARGE_ID", "width": "180px",
+            { "data": "CHARGE_ID", "width": "100px","visible":false,
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
@@ -380,8 +380,8 @@ $(document).ready(function() {
                             {
                                 id: 'CHARGE_ID',
                                 value: data,
-                                display_value: full.CHARGE_NAME,
-                                style:'width:200px',
+                                display_value: full.CHARGE_NAME+'aaa',
+                                style:'width:120px',
                                 disabled:'disabled'
                             }
                         );
@@ -394,14 +394,14 @@ $(document).ready(function() {
                             id: 'CHARGE_ID',//对应数据库字段
                             value: data,
                             display_value: full.CHARGE_NAME,
-                            style:'width:200px'
+                            style:'width:120px'
                         }
                     );
                     return field_html;
                 }
               }
             },
-            { "data": "CHARGE_ENG_ID", "width": "180px",
+            { "data": "CHARGE_ENG_ID","visible":false,
             	"render": function ( data, type, full, meta ) {
             		if(full.AUDIT_FLAG == 'Y'){
             			if(!data)
@@ -410,8 +410,8 @@ $(document).ready(function() {
             					{
             				id: 'CHARGE_ENG_ID',
             				value: data,
-            				display_value: full.CHARGE_NAME_ENG,
-            				style:'width:200px',
+            				display_value: full.CHARGE_NAME_ENG+'aaa',
+            				style:'width:120px',
             				disabled:'disabled'
             					}
             			);
@@ -424,7 +424,7 @@ $(document).ready(function() {
             				id: 'CHARGE_ENG_ID',
             				value: data,
             				display_value: full.CHARGE_NAME_ENG,
-            				style:'width:200px',
+            				style:'width:120px',
             				disabled:'disabled'
             					}
             			);
