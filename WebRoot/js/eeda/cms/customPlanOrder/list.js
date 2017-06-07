@@ -124,6 +124,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
                       return data;
                     }
                 },
+                  { "data": "DATE_CUSTOM",
+                	"render":function(data,type,full,meta){
+                		if(data){
+                			return data.substring(0,10);
+                		}
+                		return '';
+                	}
+                  }, 
 	              { "data": "CREATOR_NAME"}, 
 	              { "data": "CREATE_STAMP",
 	            	  "render": function ( data, type, full, meta ) {
@@ -167,16 +175,24 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
           var custom_state = $('#custom_state').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
+          var custom_start_date = $("#date_custom_begin_time").val();
+          var custom_end_date = $("#date_custom_end_time").val();
           var booking_no = $("#booking_no").val().trim();
           var type = $("#type").val();
-          if(paraStr=="待审核"&&paraStr!=undefined){
-        	  status = paraStr;
+          var confirmFee = "";
+          if(paraStr=="unConfirmFee"||paraStr=="confirmFee"){
+            confirmFee =paraStr;
           }else{
-        	  
-	    	  if(paraStr!='全部'&&paraStr!=undefined){
-	    		  custom_state=paraStr;
-	    	  }
+        	  if(paraStr=="待审核"&&paraStr!=undefined){
+            	  status = paraStr;
+              }else{
+            	  
+    	    	  if(paraStr!='全部'&&paraStr!=undefined){
+    	    		  custom_state=paraStr;
+    	    	  }
+              }
           }
+          
           
           /*  
               查询规则：参数对应DB字段名
@@ -192,8 +208,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
                +"&application_company_name="+customer_name
                +"&type_equals="+type
                +"&create_stamp_begin_time="+start_date
-               +"&create_stamp_end_time="+end_date;
-
+               +"&create_stamp_end_time="+end_date
+               +"&date_custom_begin_time="+custom_start_date
+               +"&date_custom_end_time="+custom_end_date
+               +"&date_custom_end_time="+custom_end_date
+               +"&confirmFee="+confirmFee;
           dataTable.ajax.url(url).load();
       };
       
@@ -201,11 +220,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
     	  var custom_state = $(this).attr("name");
     	  
     	  if(custom_state=="未完成费用确认"){
-    		  var url = "/customPlanOrder/list?confirmFee=unConfirmFee";
-        	  dataTable.ajax.url(url).load();
+    		  var confirmFee="unConfirmFee";
+    		  searchData(confirmFee);
+        	  
     	  }else if(custom_state=="已完成费用确认"){
-    		  var url = "/customPlanOrder/list?confirmFee=confirmFee";
-        	  dataTable.ajax.url(url).load();
+    		  var confirmFee="confirmFee";
+    		  searchData(confirmFee);
     	  }else{
         	  searchData(custom_state);
     	  }
