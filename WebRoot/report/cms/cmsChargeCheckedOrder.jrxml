@@ -41,12 +41,12 @@
 	</style>
 	<parameter name="order_id" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select * ,(IFNULL(GKJSF,0)+IFNULL(GWF,0)+IFNULL(MTF,0)+IFNULL(CZGF,0)+IFNULL(DCF,0)+IFNULL(ZKCLF,0)+IFNULL(DBZF,0)+IFNULL(ZGZXF,0)+IFNULL(NFPTF,0)+IFNULL(TYDDY,0)+IFNULL(WLDLF,0)+IFNULL(AC,0)+IFNULL(ZHF,0)+IFNULL(XDF,0)+IFNULL(BGDZLR,0)+IFNULL(BGDZSC,0)+IFNULL(BGDDLF,0)) as total from(
+		<![CDATA[select * ,(IFNULL(GKJSF,0)+IFNULL(GWF,0)+IFNULL(MTF,0)+IFNULL(CZGF,0)+IFNULL(DCF,0)+IFNULL(ZKCLF,0)+IFNULL(DBZF,0)+IFNULL(ZGZXF,0)+IFNULL(NFPTF,0)+IFNULL(TYDDYF,0)+IFNULL(WLDLF,0)+IFNULL(AC,0)+IFNULL(ZHF,0)+IFNULL(XDF,0)+IFNULL(BGDZLRF,0)+IFNULL(BGDSCF,0)+IFNULL(BGDDLF,0)) as total from(
 							  SELECT cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,cpo.tracking_no tracking_no,cpo.cabinet_no,
 								cpo.container_no container_no,cpo.container_type container_type,p.abbr company_abbr,p.fax fax,
 									p.company_name company_name,p.contact_person contact_person ,p.phone phone,p.email email,
 
-							 sum(iF(fi.`code`='GKJSF',cpoa.total_amount,null )) GKJSF,
+	sum(iF(fi.`code`='GKJSF',cpoa.total_amount,null )) GKJSF,
 							  sum(iF(fi.`code`='GWF',cpoa.total_amount,null)) GWF,
 							  sum(iF(fi.`code`='MTF',cpoa.total_amount,null)) MTF,
 							  sum(iF(fi.`code`='CZGF',cpoa.total_amount,null)) CZGF,
@@ -55,16 +55,15 @@
 							  sum(iF(fi.`code`='DBZF',cpoa.total_amount,null)) DBZF,
 							  sum(iF(fi.`code`='ZGZXF',cpoa.total_amount,null)) ZGZXF,
 							  sum(iF(fi.`code`='NFPTF',cpoa.total_amount,null)) NFPTF,
-							  sum(iF(fi.`code`='TYDDY',cpoa.total_amount,null)) TYDDY,
+							  sum(iF(fi.`code`='TYDDYF',cpoa.total_amount,null)) TYDDYF,
 							  sum(iF(fi.`code`='WLDLF',cpoa.total_amount,null)) WLDLF,
 							  sum(iF(fi.`code`='AC',cpoa.total_amount,null)) AC,
 							  sum(iF(fi.`code`='ZHF',cpoa.total_amount,null)) ZHF,
 							  sum(iF(fi.`code`='XDF',cpoa.total_amount,null)) XDF,
-							  sum(iF(fi.`code`='BGDZLR',cpoa.total_amount,null)) BGDZLR,
-								sum(iF(fi.`code`='BGDZSC',cpoa.total_amount,null)) BGDZSC,
+							  sum(iF(fi.`code`='BGDZLRF',cpoa.total_amount,null)) BGDZLRF,
+								sum(iF(fi.`code`='BGDSCF',cpoa.total_amount,null)) BGDSCF,
 
-								sum(iF(fi.`code`='BGDDLF',cpoa.total_amount,null)) BGDDLF
-							  FROM custom_arap_charge_order caco
+								sum(iF(fi.`code`='BGDLF',cpoa.total_amount,null)) BGDLF							  FROM custom_arap_charge_order caco
 							  left join custom_arap_charge_item caci on caci.custom_charge_order_id=caco.id
 							  left join custom_plan_order_arap cpoa on cpoa.id=caci.ref_order_id
 							  LEFT JOIN custom_plan_order cpo on cpo.id=cpoa.order_id
@@ -122,13 +121,13 @@
 	<field name="DBZF" class="java.lang.Double"/>
 	<field name="ZGZXF" class="java.lang.Double"/>
 	<field name="NFPTF" class="java.lang.Double"/>
-	<field name="TYDDY" class="java.lang.Double"/>
+	<field name="TYDDYF" class="java.lang.Double"/>
 	<field name="WLDLF" class="java.lang.Double"/>
 	<field name="AC" class="java.lang.Double"/>
 	<field name="ZHF" class="java.lang.Double"/>
 	<field name="XDF" class="java.lang.Double"/>
-	<field name="BGDZLR" class="java.lang.Double"/>
-	<field name="BGDZSC" class="java.lang.Double"/>
+	<field name="BGDZLRF" class="java.lang.Double"/>
+	<field name="BGDSCF" class="java.lang.Double"/>
 	<field name="BGDDLF" class="java.lang.Double"/>
 	<field name="total" class="java.lang.Double"/>
 	<variable name="SUM_GKJSF" class="java.lang.Double" calculation="Sum">
@@ -158,8 +157,8 @@
 	<variable name="SUM_NFPTF" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{NFPTF}]]></variableExpression>
 	</variable>
-	<variable name="SUM_TYDDY" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{TYDDY}]]></variableExpression>
+	<variable name="SUM_TYDDYF" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{TYDDYF}]]></variableExpression>
 	</variable>
 	<variable name="SUM_WLDLF" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{WLDLF}]]></variableExpression>
@@ -173,11 +172,11 @@
 	<variable name="SUM_XDF" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{XDF}]]></variableExpression>
 	</variable>
-	<variable name="SUM_BGDZLR" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{BGDZLR}]]></variableExpression>
+	<variable name="SUM_BGDZLRF" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{BGDZLRF}]]></variableExpression>
 	</variable>
-	<variable name="SUM_BGDZSC" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{BGDZSC}]]></variableExpression>
+	<variable name="SUM_BGDSCF" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{BGDSCF}]]></variableExpression>
 	</variable>
 	<variable name="SUM_BGDDLF" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{BGDDLF}]]></variableExpression>
@@ -507,7 +506,7 @@
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[报关单证上传]]></text>
+				<text><![CDATA[报关单上传]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="right-border" mode="Transparent" x="635" y="82" width="35" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="83e6ca18-4c9d-4176-a166-6dcc0f32b96e"/>
@@ -573,7 +572,7 @@
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{BGDZLR}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{BGDZLRF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement style="r_l_border" mode="Transparent" x="0" y="0" width="40" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="3512196d-f5c9-4c4f-bf9d-35288b99e69e"/>
@@ -645,7 +644,7 @@
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{BGDZSC}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{BGDSCF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" mode="Transparent" x="729" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="5d315ed5-63d2-4388-8224-3c05edbd5303"/>
@@ -677,7 +676,7 @@
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{TYDDY}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TYDDYF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" mode="Transparent" x="401" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="b9f5e5f5-02e9-4ad1-ab8f-3fc1865b4b5c"/>
@@ -830,7 +829,7 @@
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SUM_TYDDY}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_TYDDYF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="488" y="0" width="29" height="22" uuid="71d7cfac-04f7-4ad1-b09e-0831db358822"/>
@@ -858,7 +857,7 @@
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SUM_BGDZLR}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_BGDZLRF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="729" y="0" width="29" height="22" uuid="b9fb3f22-d6b1-4ee3-88a2-88f579bcb61f"/>
@@ -879,7 +878,7 @@
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SUM_BGDZSC}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUM_BGDSCF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00">
 				<reportElement x="-287" y="-162" width="29" height="22" uuid="a391c3a7-f179-42e4-958d-b47b873dbb20"/>
