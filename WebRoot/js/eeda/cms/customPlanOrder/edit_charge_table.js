@@ -287,9 +287,9 @@ $(document).ready(function() {
 			{"data": "HIDE_FLAG", "width": "50px", visible: is_show_hide_charge_col,
 		    	"render": function ( data, type, full, meta ) {
                     if(full.HIDE_FLAG=='N')
-                        return '<input type="checkbox" class="checkBox" name="hide_flag">';
+                        return '<input type="checkbox" class="checkBox" style="width:70px" name="hide_flag">';
                     else
-                        return '<input type="checkbox" class="checkBox" name="hide_flag" checked>';
+                        return '<input type="checkbox" class="checkBox" style="width:70px" name="hide_flag" checked>';
                 }
 			},
             {"data": "ID", "width": "70px",

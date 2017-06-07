@@ -103,12 +103,12 @@ $(document).ready(function() {
             $.unblockUI();
         },
         columns:[
-			{"data": "HIDE_FLAG", "width": "30px", visible: is_show_hide_charge_col,
+			{"data": "HIDE_FLAG", "width": "50px", visible: is_show_hide_charge_col,
 			    "render": function ( data, type, full, meta ) {
                     if(full.HIDE_FLAG=='Y')
-			    	    return '<input type="checkbox" class="checkBox" name="hide_flag" checked>';
+			    	    return '<input type="checkbox" class="checkBox" style="width:70px" name="hide_flag" checked>';
                     else
-                        return '<input type="checkbox" class="checkBox" name="hide_flag">';
+                        return '<input type="checkbox" class="checkBox" style="width:70px" name="hide_flag">';
 			    }
 			},
 			{ "data": "ID","width": "70px",
