@@ -160,8 +160,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
          
          
          //按钮控制
-         var office_type = $('#office_type').val();
-         if(office_type == 'forwarderCompany'){
+         var login_office_type = $('#login_office_type').val();
+         if(login_office_type == 'forwarderCompany'){
         	 $('#allShipmentBtn').hide();
         	 $('#submitBtn').hide();
              $('#confirmCompleted').hide();

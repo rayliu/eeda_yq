@@ -113,9 +113,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 				},
 	            {"width": "10px",
 	                "render": function ( data, type, full, meta ) {
-	                	var office_id = $('#office_id').val();
+	                	var login_office_type = $('#login_office_type').val();
 	                	var str='';
-	                	if(office_id == 1){
+	                	if(login_office_type  == 'forwarderCompany'){
 	                		str=' style="display:none;"';
 						 }
 	                	if(full.CONFIRM_SHIPMENT == 'Y'){
@@ -127,15 +127,15 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            },
 	            {"width": "30px",
 	                "render": function ( data, type, full, meta ) {
-	                	var office_id = $('#office_id').val();
+	                	var login_office_type = $('#login_office_type').val();
 	                	var str='';
-	                	if(office_id == 1){
+	                	if(login_office_type == 'forwarderCompany'){
 	                		str=' style="display:none;"';
 						 }
-	                	if(full.CONFIRM_SHIPMENT == 'N'){
-	                		return '<button type="button" class="btn table_btn btn_green btn-xs confirm_shipment" '+str+'>确认出货</button>';
+	                	if(full.CONFIRM_SHIPMENT == 'Y'){
+	                		return '<button type="button" class="btn table_btn btn_green btn-xs confirm_shipment" '+str+' disabled>确认出货</button>';
 	                	}else{
-	                		return '<button type="button" class="btn table_btn btn_green btn-xs confirm_shipment"'+str+' disabled>确认出货</button> ';
+	                		return '<button type="button" class="btn table_btn btn_green btn-xs confirm_shipment"'+str+' >确认出货</button> ';
 	                	}
 	                }
 	            },
