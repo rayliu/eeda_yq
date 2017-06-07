@@ -41,6 +41,8 @@ $(document).ready(function() {
         						+'total_amount="'+json_obj[j].total_amount+'" '
         						+'type="'+json_obj[j].type+'" '
         						+'unit_name="'+json_obj[j].unit_name+'" '
+                                +'car_id="'+json_obj[j].CAR_ID+'" '
+                                +'car_name="'+json_obj[j].car_name+'" '
         						+'></li>';
         					li_val += '<span></span> '+json_obj[j].sp_name+' , '+json_obj[j].charge_name+' , '+json_obj[j].price+'<br/>';
         				}
@@ -125,6 +127,8 @@ $(document).ready(function() {
         	item.UNIT_NAME=row.attr('unit_name');
         	item.CURRENCY_NAME=row.attr('currency_name');
         	item.AUDIT_FLAG='';
+            item.CAR_ID=row.attr('car_id');
+            item.CAR_NAME=row.attr('car_name');
         	dataTable.row.add(item).draw();
         }
     });
