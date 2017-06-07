@@ -29,7 +29,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 },
                 {"data": "ORDER_NO", 
               	  "render": function ( data, type, full, meta ) {
-              		  return "<a href='/planOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+                     var office_type = $('#office_type').val();
+                     var str='';
+                     if(office_type == 'forwarderCompany' && full.NEW_SUBMIT_FLAG=='Y'){
+                       str='<span class="badge" style="background-color:white;color:red;margin-left:5px;">新</span>';;
+                     }
+              		  return "<a name='order_no' href='/planOrder/edit?id="+full.ID+"'target='_blank'>"+data+str+"</a>";
               	  }
                 },
 	              { "data": "JOB_ORDER_TYPE",
@@ -127,6 +132,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           });
       });
       
+      $('#eeda-table').on('click','[name=order_no]',function(){
+           $(this).children().remove('.badge');
+      });
+
     	
     });
 });

@@ -160,12 +160,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
          
          
          //按钮控制
-         var office_id = $('#office_id').val();
-         if(office_id == 1){
+         var office_type = $('#office_type').val();
+         if(office_type == 'forwarderCompany'){
         	 $('#allShipmentBtn').hide();
         	 $('#submitBtn').hide();
-        	 $('.delete').hide();
-        	 $('.confirm_shipment').hide();
              $('#confirmCompleted').hide();
              $('#add_cargo').hide();
          }

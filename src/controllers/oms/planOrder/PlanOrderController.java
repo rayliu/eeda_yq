@@ -51,6 +51,10 @@ public class PlanOrderController extends Controller {
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
         long user_id = user.getLong("id");
+   		long office_id = user.getLong("office_id");
+   		Office office = Office.dao.findById(office_id);
+   		setAttr("office", office);
+        
 		List<Record> configList = ListConfigController.getConfig(user_id, "/planOrder");
         setAttr("listConfigList", configList);
 		render("/oms/PlanOrder/PlanOrderList.html");
@@ -223,7 +227,14 @@ public class PlanOrderController extends Controller {
     	long office_id = user.getLong("office_id");
    		Office office = Office.dao.findById(office_id);
    		setAttr("office", office);
-    	
+		//forwarderCompany货代公司打开该单时，new_submit_flag标志为n
+   		UserLogin login_user = LoginUserController.getLoginUser(this);
+   		Office office2=Office.dao.findById(login_user.getLong("office_id"));
+   		if(office2.getStr("type").equals("forwarderCompany")){
+   			planOrder.set("new_submit_flag", "N");
+   			planOrder.update();
+   		}
+   		
         render("/oms/PlanOrder/PlanOrderEdit.html");
     }
     
@@ -232,7 +243,7 @@ public class PlanOrderController extends Controller {
     public void list() {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
-        
+
     	String type=getPara("type");
     	
         String sLimit = "";
@@ -507,6 +518,7 @@ public class PlanOrderController extends Controller {
     	String order_id = getPara("order_id");
     	PlanOrder po = PlanOrder.dao.findById(order_id);
     	po.set("submit_flag", "Y");
+    	po.set("new_submit_flag", "Y");
     	po.update();
     	
     	renderJson(true);
