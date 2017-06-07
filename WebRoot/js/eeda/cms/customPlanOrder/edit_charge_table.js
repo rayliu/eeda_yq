@@ -371,7 +371,7 @@ $(document).ready(function() {
                 }
               }
             },
-            { "data": "CHARGE_ID", "width": "100px","visible":false,
+            { "data": "CHARGE_ID", "width": "100px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
@@ -380,7 +380,7 @@ $(document).ready(function() {
                             {
                                 id: 'CHARGE_ID',
                                 value: data,
-                                display_value: full.CHARGE_NAME+'aaa',
+                                display_value: full.CHARGE_NAME,
                                 style:'width:120px',
                                 disabled:'disabled'
                             }
@@ -401,7 +401,7 @@ $(document).ready(function() {
                 }
               }
             },
-            { "data": "CHARGE_ENG_ID","visible":false,
+            { "data": "CHARGE_ENG_ID",
             	"render": function ( data, type, full, meta ) {
             		if(full.AUDIT_FLAG == 'Y'){
             			if(!data)
@@ -410,7 +410,7 @@ $(document).ready(function() {
             					{
             				id: 'CHARGE_ENG_ID',
             				value: data,
-            				display_value: full.CHARGE_NAME_ENG+'aaa',
+            				display_value: full.CHARGE_NAME_ENG,
             				style:'width:120px',
             				disabled:'disabled'
             					}
