@@ -302,7 +302,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                        value: data,
 		                        display_value: full.CARRIER_NAME,
 		                        style:'width:80px',
-		                        disabled:full.CONFIRM_SHIPMENT=='Y'?'disabled':''
+		                        disabled:(full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':''
 		                    }
 		                );
 	                    return field_html;
@@ -312,14 +312,14 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input style="width:100px" type="text"  '+(full.CONFIRM_SHIPMENT=='Y'?'disabled':'')+'  name="VESSEL" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:100px" type="text"  '+((full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':'')+'  name="VESSEL" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "VOYAGE" ,"width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input style="width:80px" type="text" '+(full.CONFIRM_SHIPMENT=='Y'?'disabled':'')+'  name="VOYAGE" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:80px" type="text" '+((full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':'')+'  name="VOYAGE" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "ETA","width": "60px",
@@ -331,7 +331,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                        id: 'ETA',
 		                        value: data.substr(0,10),
 		                        style:'width:80px',
-		                        disabled:full.CONFIRM_SHIPMENT=='Y'?'disabled':''
+		                        disabled:(full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':''
 		                        
 		                    }
 		                );
@@ -347,7 +347,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                        id: 'ETD',
 		                        value: data.substr(0,10),
 		                        style:'width:80px',
-		                        disabled:full.CONFIRM_SHIPMENT=='Y'?'disabled':''
+		                        disabled:(full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':''
 		                    }
 		                );
 	                    return field_html;
@@ -357,14 +357,14 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input style="width:120px" type="text" '+(full.CONFIRM_SHIPMENT=='Y'?'disabled':'')+'  name="NET_WEIGHT" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:120px" type="text" '+((full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':'')+'  name="NET_WEIGHT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "TRANSPORT_TYPE","width": "50px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var str = '<select style="width:70px" name="transport_type" '+(full.CONFIRM_SHIPMENT=='Y'?'disabled':'')+'  class="form-control search-control">'
+	                    var str = '<select style="width:70px" name="transport_type" '+((full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':'')+'  class="form-control search-control">'
                 			+'<option></option>'
 		                   +'<option value="ocean" '+(data=='ocean' ? 'selected':'')+'>海运</option>'
 		                   +'<option value="land" '+(data=='land' ? 'selected':'')+'>陆运</option>'
@@ -378,7 +378,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
 	                	   data='';
-	                   var str= '<select style="width:70px" name="load_type" '+(full.CONFIRM_SHIPMENT=='Y'?'disabled':'')+'  class="form-control search-control">'
+	                   var str= '<select style="width:70px" name="load_type" '+((full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':'')+'  class="form-control search-control">'
 	                	   	 	+'<option></option>'
 			                   +'<option value="FCL" '+ (data=='FCL'?'selected':'') +'>FCL</option>'
 			                   +'<option value="LCL" '+ (data=='LCL'?'selected':'') +'>LCL</option>'
@@ -398,7 +398,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                            value: data,
 	                            display_value: full.UNIT_NAME,
 	                            style: 'margin-top: 10px;width:80px',
-		                        disabled:full.CONFIRM_SHIPMENT=='Y'?'disabled':''
+		                        disabled:(full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':''
 	                        }
 	                    );
 	                    return field_html;
@@ -409,7 +409,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input style="width:70px" type="text" '+(full.CONFIRM_SHIPMENT=='Y'?'disabled':'')+'  name="NET_WEIGHT" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:70px" type="text" '+((full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':'')+'  name="NET_WEIGHT" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            
@@ -417,7 +417,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            	"render": function ( data, type, full, meta ) {
 	            		if(!data)
 	            			data='';
-	            		return '<input style="width:80px" type="text" '+(full.CONFIRM_SHIPMENT=='Y'?'disabled':'')+'  name="VGM" value="'+data+'" class="form-control search-control" />';
+	            		return '<input style="width:80px" type="text" '+((full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':'')+'  name="VGM" value="'+data+'" class="form-control search-control" />';
 	            	}
 	            },
 	            
@@ -425,7 +425,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                   return '<input style="width:120px" type="text" '+(full.CONFIRM_SHIPMENT=='Y'?'disabled':'')+' name="DILVERY_ADDR" value="'+data+'" class="form-control search-control" />';
+	                   return '<input style="width:120px" type="text" '+((full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':'')+' name="DILVERY_ADDR" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
 	            { "data": "POR" ,"width": "60px",
@@ -438,7 +438,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                        value: data,
 		                        display_value: full.POR_NAME,
 		                        style:'width:80px',
-		                        disabled:full.CONFIRM_SHIPMENT=='Y'?'disabled':''
+		                        disabled:(full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':''
 		                    }
 		                );
 	                    return field_html;
@@ -454,7 +454,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                        id: 'CLS',
 		                        value: data.substr(0,10),
 		                        style:'width:70px',
-		                        disabled:full.CONFIRM_SHIPMENT=='Y'?'disabled':''
+		                        disabled:(full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':''
 		                    }
 		                );
 	                    return field_html;
@@ -464,7 +464,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
 	                	   data='';
-	                   var str= '<select style="width:80px" name="customs_type" '+(full.CONFIRM_SHIPMENT=='Y'?'disabled':'')+' class="form-control search-control">'
+	                   var str= '<select style="width:80px" name="customs_type" '+((full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':'')+' class="form-control search-control">'
 	                	   	 	+'<option></option>'
 			                   +'<option value="代理报关" '+ (data=='代理报关'?'selected':'') +'>代理报关</option>'
 			                   +'<option value="自理报关" '+ (data=='自理报关'?'selected':'') +'>自理报关</option>'
@@ -481,7 +481,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		                        id: 'CUSTOMS_DATA',
 		                        value: data.substr(0,10),
 		                        style:'width:80px',
-		                        disabled:full.CONFIRM_SHIPMENT=='Y'?'disabled':''
+		                        disabled:(full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':''
 		                    }
 		                );
 	                    return field_html;
