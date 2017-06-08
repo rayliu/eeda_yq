@@ -47,93 +47,6 @@ public class InvCheckOrderController extends Controller {
 		render("/wms/invCheckOrder/list.html");
 	}
 	
-	@Before(EedaMenuInterceptor.class)
-    public void create() {
-        render("/wms/invCheckOrder/edit.html");
-    }
-    
-    @Before(Tx.class)
-   	public void save() throws Exception {		
-   		String jsonStr=getPara("params");
-       	
-       	Gson gson = new Gson();  
-        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
-            
-        PlanOrder planOrder = new PlanOrder();
-   		String id = (String) dto.get("id");
-   		
-   		UserLogin user = LoginUserController.getLoginUser(this);
-   		long office_id = user.getLong("office_id");
-   		if (StringUtils.isNotBlank(id)) {
-   			//update
-   			planOrder = PlanOrder.dao.findById(id);
-   			DbUtils.setModelValues(dto, planOrder);
-   			
-   			//需后台处理的字段
-   			planOrder.set("updator", user.getLong("id"));
-   			planOrder.set("update_stamp", new Date());
-   			planOrder.update();
-   		} else {
-   			//create 
-   			DbUtils.setModelValues(dto, planOrder);
-   			
-   			//需后台处理的字段
-   			planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("JH", office_id));
-   			planOrder.set("creator", user.getLong("id"));
-   			planOrder.set("create_stamp", new Date());
-   			planOrder.set("office_id", office_id);
-   			planOrder.save();
-   			
-   			id = planOrder.getLong("id").toString();
-   		}
-   		
-   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-		DbUtils.handleList(itemList, id, PlanOrderItem.class, "order_id");
-
-		long creator = planOrder.getLong("creator");
-   		String user_name = LoginUserController.getUserNameById(creator);
-		Record r = planOrder.toRecord();
-   		r.set("creator_name", user_name);
-   		renderJson(r);
-   	}
-    
-    
-    private List<Record> getPlanOrderItems(String orderId) {
-        String itemSql = "select pi.*, l_por.name por_name, l_pol.name pol_name, l_pod.name pod_name,u.name unit_name,"
-                + " p.abbr carrier_name "
-                + " from plan_order_item pi "
-                +" left join location l_por on pi.por=l_por.id"
-                +" left join location l_pol on pi.pol=l_pol.id"
-                +" left join location l_pod on pi.pod=l_pod.id"
-                +" left join party p on pi.carrier=p.id"
-                +" left join unit u on u.id=pi.unit_id"
-                +" where order_id=?";
-
-		List<Record> itemList = Db.find(itemSql, orderId);
-		return itemList;
-	}
-    
-    @Before({EedaMenuInterceptor.class, Tx.class})
-    public void edit() {
-    	String id = getPara("id");
-    	PlanOrder planOrder = PlanOrder.dao.findById(id);
-    	setAttr("order", planOrder);
-    	
-    	//获取明细表信息
-    	setAttr("itemList", getPlanOrderItems(id));
-    	
-    	//回显客户信息
-    	Party party = Party.dao.findById(planOrder.getLong("customer_id"));
-    	setAttr("party", party);
-
-    	//用户信息
-    	long creator = planOrder.getLong("creator");
-    	UserLogin user = UserLogin.dao.findById(creator);
-    	setAttr("user", user);
-    	
-        render("/wms/invCheckOrder/edit.html");
-    }
-    
 
     public void list() {
 		String sql = "";
@@ -194,18 +107,23 @@ public class InvCheckOrderController extends Controller {
 		if (getPara("start") != null && getPara("length") != null) {
 	        sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
 	    }
+		
+		 String sqlTotal ="select count(1) total from(select gi.id "
+				+ " from inv_check_order gi "
+				+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+				+ " where gi.office_id="+office_id
+				+ condition
+				+ " group by gi.id ) A";
 	   
-		sql = "SELECT * from (select gi.*,ifnull(gi.quantity,gi.check_quantity) actral_amount, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name "
+		sql = "select gi.*,ifnull(gi.quantity,gi.check_quantity) actral_amount, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name "
 				+ " from inv_check_order gi "
 				+ " left join user_login u on u.id = gi.creator"
 				+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 				+ " where gi.office_id="+office_id
 				+ condition
-				+ " group by gi.id "
-				+ " ) A where 1=1 ";
+				+ " group by gi.id ";
 		
 	    
-	    String sqlTotal = "select count(1) total from ("+sql+") B";
 	    Record rec = Db.findFirst(sqlTotal);
 	    logger.debug("total records:" + rec.getLong("total"));
 	    
@@ -219,31 +137,5 @@ public class InvCheckOrderController extends Controller {
 	
 	    renderJson(orderListMap); 
 	}
-    
-    //异步刷新字表
-    public void tableList(){
-    	String order_id = getPara("order_id");
-    	List<Record> list = null;
-    	list = getPlanOrderItems(order_id);
-
-    	Map BillingOrderListMap = new HashMap();
-        BillingOrderListMap.put("sEcho", 1);
-        BillingOrderListMap.put("iTotalRecords", list.size());
-        BillingOrderListMap.put("iTotalDisplayRecords", list.size());
-
-        BillingOrderListMap.put("aaData", list);
-
-        renderJson(BillingOrderListMap); 
-    }
-   
-    
-    //确认已完成计划单
-    public void confirmCompleted(){
-    	String id = getPara("id");
-    	PlanOrder order = PlanOrder.dao.findById(id);
-    	order.set("status", "已完成");
-    	renderJson("{\"result\":true}");
-    }
-    
 
 }
