@@ -30,7 +30,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               },
               { "data": "ORDER_NO", 
                   "render": function ( data, type, full, meta ) {
-                      return "<a href='/bookOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+                    var str='';
+                    if(full.NEW_COUNT>0){
+                      str='<span class="badge" style="background-color:white;color:red;margin-left:5px;">新</span>';
+                    }
+                    return "<a href='/bookOrder/edit?id="+full.ID+"'target='_blank' >"+data+str+"</a>";
                   }
               },
               { "data": "TYPE",

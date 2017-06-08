@@ -49,8 +49,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
               { "data": "ORDER_NO", 
                   "render": function ( data, type, full, meta ) {
                 	  var other = '';
+                    var new_count='';
+                    if(full.NEW_COUNT>0){
+                      new_count='style="background-color:white;color:red;"';
+                    }
                 	  if(full.OTHER_FLAG=='other'){
-                		  other = ' <span class="badge">外</span>';
+                		  other = ' <span class="badge" '+new_count+'>外</span>';
                 	  }
                       return "<a href='/jobOrder/edit?id="+full.ID+"'target='_blank'>"+data+other+"</a>";
                   }
@@ -120,7 +124,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
               { "data": "CREATOR_NAME"}, 
               { "data": "CREATE_STAMP"}, 
               { "data": "STATUS"},
-              
+              {"data": "NEW_COUNT","visible":false}
           ]
       });
 

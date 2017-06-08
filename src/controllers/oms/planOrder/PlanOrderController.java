@@ -289,7 +289,7 @@ public class PlanOrderController extends Controller {
         }else{
         	sql = "SELECT * from (select"
         			+ " (GROUP_CONCAT(CONCAT(ifnull(cast(poi.factory_loading_time as char),'<span style=\"color:red;\">无出货时间</span>'), "
-        			+ " IFNULL(if((poi.CARRIER is not null or poi.VESSEL is not null or poi.VOYAGE is not null)and poi.confirm_shipment = 'N',' <span style=\"color:#00FF7F;\">已定仓</span>',null),IF (poi.confirm_shipment = 'Y',' 已确认出货',' 新建'))) SEPARATOR '<br/>')) item_status,"
+        			+ " IFNULL(if((poi.CARRIER is not null or poi.VESSEL is not null or poi.VOYAGE is not null)and poi.confirm_shipment = 'N',' <span style=\"color:#4caf50;\">已定仓</span>',null),IF (poi.confirm_shipment = 'Y',' 已确认出货',' 新建'))) SEPARATOR '<br/>')) item_status,"
         			+ " if(((select count(1) from plan_order_item "
         			+ " where order_id = po.id and confirm_shipment = 'Y')=count(poi.id) and count(poi.id)!=0),'已完成',"
         			+ " if(po.submit_flag='N' and "

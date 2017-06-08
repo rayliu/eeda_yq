@@ -1792,6 +1792,7 @@ public class JobOrderController extends Controller {
         
         if("sowait".equals(type)){
         	sql=" SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag,ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
+	         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three')  and   jod0.send_status='已发送' ) new_count,"
         			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
 					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
 					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
@@ -1809,6 +1810,7 @@ public class JobOrderController extends Controller {
         			+ " and jor.delete_flag = 'N'";        	
         }else if("truckorderwait".equals(type)){
         	 sql = "SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
+		         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
         			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
 					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
 					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
@@ -1829,6 +1831,7 @@ public class JobOrderController extends Controller {
         	
         } else if("siwait".equals(type)){
         	 sql = " SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
+		         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
         			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
 					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
 					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
@@ -1847,6 +1850,7 @@ public class JobOrderController extends Controller {
         	
         } else if("mblwait".equals(type)){
         	sql = "SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
+	         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
         			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
 					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
 					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
@@ -1865,6 +1869,7 @@ public class JobOrderController extends Controller {
         	
         } else if("customwait".equals(type)){
         	sql = " SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
+	         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id  and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
         			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
 					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
 					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
@@ -1886,6 +1891,7 @@ public class JobOrderController extends Controller {
         	
         } else if("insurancewait".equals(type)){
         	sql = " SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
+	         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
         			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
 					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
 					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
@@ -1903,6 +1909,7 @@ public class JobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         } else if("overseacustomwait".equals(type)){
         	sql = "SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
+	         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
         			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
 					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
 					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
@@ -1921,6 +1928,7 @@ public class JobOrderController extends Controller {
         			+ " and jor.delete_flag = 'N'";
         } else if("tlxOrderwait".equals(type)){
         	sql = " SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,"
+	         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
         			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
 					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
 					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
@@ -1939,6 +1947,7 @@ public class JobOrderController extends Controller {
         }
         else{
 		         sql = "SELECT * from (select jor.*,jos.sono,if(jor.office_id != "+office_id+",'other','self') other_flag,"
+		         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
 		        		 +" (SELECT GROUP_CONCAT(josi.container_no SEPARATOR '<br>' ) "
 		        		 +" FROM  job_order_shipment_item josi  "
 		        		 +" LEFT JOIN job_order jo on jo.id=josi.order_id "
