@@ -917,7 +917,8 @@ public class TransJobOrderController extends Controller {
         }
         else{
 		         sql = "SELECT * from (select tjol.cabinet_date  cabinet_date,"
-		         		+ " tjo.*,tjo.land_export_stamp sent_out_time,"
+		         		+ " substring(tjo.create_stamp,1,10) create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjo.container_no,tjo.so_no,tjo.head_carrier"
+		         		+ " ,tjo.land_export_stamp sent_out_time,"
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code, "
 		         		+ " (SELECT SUM(tjoa.currency_total_amount) from trans_job_order_arap tjoa WHERE tjoa.order_id=tjo.id and tjoa.order_type='CHARGE' and tjoa.charge_id= " 
 						+"			(SELECT id FROM fin_item f WHERE f.name='运费'  and f.office_id="+office_id+")) yunfei, "
