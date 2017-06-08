@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
 
 	$(document).ready(function() {
 		document.title = '岗位查询 | '+document.title;
-		$('#menu_sys_profile').addClass('active').find('ul').addClass('in');
+		$("#breadcrumb_li").text('岗位列表');
 
 	var dataTable = eeda.dt({
 			id: 'example',
@@ -23,11 +23,13 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
 								+ "编辑"
 								+ "</a> ";
 						}
-						if(role_del_permission){
-							str += "<a class='btn  btn-sm btn-danger' href='/role/deleteRole/"+full.ID+"'>"
-								+ "<i class='fa fa-trash-o fa-fw'></i> "
-								+ "删除"
-								+ "</a>";
+						if(data.CODE != "admin"){
+							if(role_del_permission){
+								str += "<a class='btn  btn-sm btn-danger' href='/role/deleteRole/"+full.ID+"'>"
+									+ "<i class='fa fa-trash-o fa-fw'></i> "
+									+ "删除"
+									+ "</a>";
+							}
 						}
 						return str +="</nobr>";
                   }
