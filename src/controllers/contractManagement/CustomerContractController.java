@@ -201,7 +201,7 @@ public class CustomerContractController extends Controller {
                     +" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
                     +" LEFT JOIN unit u on u.id = cci.uom"
                     +" LEFT JOIN currency c on c.id= cci.currency_id"
-                    +" WHERE cci.contract_id = ?  and cci.contract_type='trade'";
+                    +" WHERE cci.contract_id = ?  and cci.contract_type='tour'";
         }
     	
     	
