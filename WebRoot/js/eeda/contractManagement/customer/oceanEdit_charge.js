@@ -207,7 +207,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                 bindLocationFieldEvent();
             },
             columns:[
-                {  "width": "30px",
+                {  "width": "40px",
                     "render": function ( data, type, full, meta ) {
                         return '<button type="button" class="delete btn table_btn delete_btn btn-xs" ><i class="fa fa-trash-o"></i> 删除</button></button>';
                     }
