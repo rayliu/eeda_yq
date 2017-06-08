@@ -72,6 +72,9 @@
                 	<div class="col-lg-12">
                 		<div style="width:10%;float:left;text-align:center;">
 							<h4>Booking</h4>
+							<% if(order.create_stamp!'' != null && order.create_stamp!'' !=''){%>
+                				<span>创建时间：<br>${order.create_stamp!''}</span>
+                			<%}%>
 						</div>
                 		<div style="width:10%;float:left;text-align:center;">
                 			<h4>—————></h4>
