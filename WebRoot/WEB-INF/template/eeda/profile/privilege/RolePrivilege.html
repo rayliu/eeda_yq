@@ -1,0 +1,86 @@
+<%layout("/eeda/layout.html"){%>
+<link href="/yh/js/plugins/sco/css/sco.message.css" rel="stylesheet">
+        <div id="page-wrapper">
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-header"style="font-size: 32px">分配岗位权限 </div>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+           <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+					<div class="row">
+                         <div class="col-lg-6">
+                         	<form  id="roleForm" method="post">
+	                             <div class="form-group">
+	                                 <label >岗位(必选)</label>
+										<!-- <input type="text" style="cursor: default;" readonly="readonly" class="form-control search-control sp_filter" name ="rolename" id="role_filter" placeholder="请选择岗位">
+			                             <ul id='roleList' class="pull-right dropdown-menu default dropdown-scroll" tabindex="-1" style="top: 32%; left: 2%;">
+										</ul> -->
+										<select id="role_filter" name="rolename" class="form-control search-control role_filter " name="rolename"></select>
+	                              </div>  
+                              </form>                                      
+                         </div>
+                    </div>
+                    <div class="panel panel-default">                              
+                        <div class="panel-heading">
+                               <i class="fa fa-list fa-fw"></i>岗位权限
+                               <input type="checkbox" class="allCheck" name="allCheck" id = "allCheck"> 全选
+                        </div>
+						 
+                        <div class="panel-body">
+                        	
+                          <div class="table-responsive">
+                              <table class="table table-striped table-bordered table-hover" id="eeda-table"  style="width: 1237px;">
+                                  <thead>
+                                      <tr>
+                                      	<th>权限模块</th>
+                                      	<th>权限名称</th>
+                                      </tr>
+                                  </thead>
+                                 <tbody>
+                                     
+                                 </tbody>
+                             </table>
+                        	</div>
+ 							<div class="row">
+                                  <div class="col-lg-6">
+                                      <div class="form-group">
+                                          <div class="controls">
+                                          	<button type="submit" id = "saveBtn" class="btn btn-primary  btn-sm">保存</button>
+                                            
+                                            <a class="btn  btn-primary btn-sm" href="/privilege">返回</a>
+                                          </div>
+                                      </div>
+                                  </div>
+                            </div>
+                         <div class="form-group">
+                             <p>操作小助手：</p>
+                             <p>小助手悄悄的告诉你：“提示保存成功后，你可以继续为没有权限的新岗位分配权限。”</p>
+                             <p>“同时你也可以点击返回，到岗位权限列表查看和编辑岗位权限”</p>
+                         </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+          
+        </div>
+       
+
+<%}%>
+<script src="/yh/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="/yh/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="/yh/js/plugins/sco/js/sco.message.js"></script>
+<script src="/yh/js/jquery.validate.min.js"></script>
+<script src="/yh/js/jvalidate.messages_cn.js"></script>
+<script src="/yh/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<!-- SB Admin Scripts - Include with every page -->
+<script src="/yh/js/sb-admin.js"></script>
+
+<script src="/yh/js/profile/privilege/add.js"></script>
