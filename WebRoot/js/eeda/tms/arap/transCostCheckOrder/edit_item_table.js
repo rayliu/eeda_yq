@@ -72,6 +72,13 @@ $(document).ready(function() {
             { "data": "CREATE_STAMP", "width": "70px"},
             { "data": "CONTAINER_NO", "width": "70px"},
             { "data": "SO_NO", "width": "70px"},
+            { "data": "CABINET_DATE", "width": "70px", 
+              render: function(data){
+                if(data)
+                  return data.substr(0,10);
+                return '';
+              }
+            },
             { "data": "CUSTOMER_NAME", "width": "70px"},
             { "data": "SP_NAME", "width": "70px"},
             { "data": "FIN_NAME", "width": "70px"},
