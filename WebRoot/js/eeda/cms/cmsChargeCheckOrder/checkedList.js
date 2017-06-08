@@ -46,7 +46,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 
      var searchData=function(){
           var order_no = $("#order_no1").val();
-          var sp_name = $('#sp_input').val().trim();
+          var sp_name = $('#sp1_input').val().trim();
           var start_date = $("#create_stamp1_begin_time").val();
           var end_date = $("#create_stamp1_end_time").val();
           
