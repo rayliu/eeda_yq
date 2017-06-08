@@ -120,7 +120,6 @@ public class GateInController extends Controller {
     	
     	String sqlTotal= "select  count(1) total from ( "
 			+ " select gi.id from gate_in gi "
-			+ " left join user_login u on u.id = gi.creator"
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
 			+ out_flag
@@ -144,7 +143,7 @@ public class GateInController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql +sLimit);
+        List<Record> orderList = Db.find(sql+ "order by gi.id desc "+sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
