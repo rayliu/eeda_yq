@@ -7,62 +7,41 @@ $(document).ready(function() {
         var tr = $(this).parent().parent();
         tr.css("display","none");
         deletedTableIds.push(tr.attr('id'))
+    });
+
+    //删除location 一行
+    var deletedLoactionTableIds=[];
+
+    $("#land_location_table").on('click', '.delete', function(){
+        var tr = $(this).parent().parent();
+        tr.css("display","none");
+        deletedLoactionTableIds.push(tr.attr('id'))
     }); 
     
+    //注意使用通用的方法 buildTableDetail
     itemOrder.buildLandItem=function(){
-        var cargo_table_rows = $("#charge_land_table tr");
-        var cargo_items_array=[];
-        for(var index=0; index<cargo_table_rows.length; index++){
-            if(index==0)
-                continue;
-
-            var row = cargo_table_rows[index];
-            var empty = $(row).find('.dataTables_empty').text();
-            if(empty)
-            	continue;
-            
-            var id = $(row).attr('id');
-            if(!id){
-                id='';
-            }
-            
-            var item={}
-            item.id = id;
+        var items = eeda.buildTableDetail("charge_land_table", deletedTableIds);
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
             item.contract_type = "land";
-            for(var i = 1; i < row.childNodes.length; i++){
-            	var el = $(row.childNodes[i]).find('input, select');
-            	var name = el.attr('name'); //name='abc'
-            	
-            	if(el && name){
-                	var value = el.val();//元素的值
-                	item[name] = value;
-            	}
-            }
-            item.action = id.length > 0?'UPDATE':'CREATE';
-            cargo_items_array.push(item);
         }
-
-        //add deleted items
-        for(var index=0; index<deletedTableIds.length; index++){
-            var id = deletedTableIds[index];
-            var item={
-                id: id,
-                action: 'DELETE'
-            };
-            cargo_items_array.push(item);
-        }
-        deletedTableIds = [];
-        return cargo_items_array;
+        return items;
     };
 
+    itemOrder.buildLandLocItem=function(){
+        var items = eeda.buildTableDetail("land_location_table", deletedLoactionTableIds);
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            item.type = "land_loc";
+        }
+        return items;
+    };
+    
+
     var bindFieldEvent=function(){
-    	
-        eeda.bindTableFieldDockInfo('charge_land_table','POL_ID');
-        eeda.bindTableFieldDockInfo('charge_land_table','POD_ID');
         eeda.bindTableFieldChargeId('charge_land_table','FEE_ID','/finItem/search','');
         eeda.bindTableFieldCurrencyId('charge_land_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
         eeda.bindTableField('charge_land_table','UOM','/serviceProvider/searchUnit','');
-        
     };
     //------------事件处理
     var cargoTable = eeda.dt({
@@ -72,44 +51,10 @@ $(document).ready(function() {
 	        bindFieldEvent();
 	    },
 	    columns:[
-            { "data": "ID","width": "10px",
-                "render": function ( data, type, full, meta ) {
-                	return '<input type="checkbox" class="checkBox">';
-                }
-            },
             {  "width": "30px",
                 "render": function ( data, type, full, meta ) {
                    
                     return '<button type="button" class="delete btn table_btn delete_btn btn-xs" ><i class="fa fa-trash-o"></i> 删除</button></button>';
-                }
-            },
-            { "data": "POL_ID", "width":"130px",
-                "render": function ( data, type, full, meta ) {
-            	   if(!data)
-                       data='';
-                   var field_html = template('table_dock_no_field_template',
-                       {
-                           id: 'POL_ID',
-                           value: data,
-                           display_value: full.POL_NAME,
-                           style:'width:150px'
-                       }
-                   );
-                   return field_html; 
-                }
-            },
-            { "data": "POD_ID", "width": "130px",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    var field_html = template('table_dock_no_field_template',
-                    {
-                    	id:'POD_ID',
-                    	value:data,
-                    	display_value:full.POD_NAME,
-                    	style:'width:150px'
-                    });
-                    return field_html; 
                 }
             },
             { "data": "FEE_ID", "width": "80px",
@@ -194,20 +139,6 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "POL_NAME", "visible": false,
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return data;
-                }
-            }, 
-            { "data": "POD_NAME", "visible": false,
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return data;
-                }
-            },
             { "data": "FEE_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
@@ -243,6 +174,75 @@ $(document).ready(function() {
     	cargoTable.ajax.url(url).load();
     }
 
+        var bindLocationFieldEvent=function(){
+            eeda.bindTableFieldDockInfo('land_location_table','POL_ID');
+            eeda.bindTableFieldDockInfo('land_location_table','POD_ID');
+        };
 
+        //------------事件处理
+        var locationTable = eeda.dt({
+            id: 'land_location_table',
+            autoWidth: false,
+            paging: false,
+            info: false,
+            drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
+                bindLocationFieldEvent();
+            },
+            columns:[
+                {  "width": "30px",
+                    "render": function ( data, type, full, meta ) {
+                        return '<button type="button" class="delete btn table_btn delete_btn btn-xs" ><i class="fa fa-trash-o"></i> 删除</button></button>';
+                    }
+                },
+                { "data": "POL_ID", "width":"130px",
+                    "render": function ( data, type, full, meta ) {
+                    if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'POL_ID',
+                               value: data,
+                               display_value: full.POL_NAME,
+                               style:'width:150px'
+                           }
+                       );
+                       return field_html; 
+                    }
+                },
+                { "data": "POD_ID", "width": "130px",
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        var field_html = template('table_dropdown_template',
+                        {
+                         id:'POD_ID',
+                         value:data,
+                         display_value:full.POD_NAME,
+                         style:'width:150px'
+                        });
+                        return field_html; 
+                    }
+                },
+                { "data": "POL_NAME", "visible": false,
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return data;
+                    }
+                }, 
+                { "data": "POD_NAME", "visible": false,
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return data;
+                    }
+                }
+            ]
+        });
+
+        $('#add_land_location').on('click', function(){
+            var item={};
+            locationTable.row.add(item).draw(true);
+        });
 });
 });

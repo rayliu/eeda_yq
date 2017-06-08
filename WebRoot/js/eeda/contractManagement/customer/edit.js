@@ -35,6 +35,10 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        order.itemOceanList = itemOrder.buildOceanItem();
 	        order.itemAirList = itemOrder.buildAirItem();
 	        order.itemLandList = itemOrder.buildLandItem();
+
+	        order.itemOceanLocList = itemOrder.buildOceanLocItem();
+	        order.itemAirLocList = itemOrder.buildAirLocItem();
+	        order.itemLandLocList = itemOrder.buildLandLocItem();
 	        $("#saveBtn").attr("disabled",true);
 	        
 	        $.post("/customerContract/save",{params:JSON.stringify(order)},function(data){
@@ -79,6 +83,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
 	        }
 	    });
-	 	   
+	 
+	   
     }); 
 });
