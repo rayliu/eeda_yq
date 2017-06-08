@@ -136,8 +136,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var order_no = $.trim($("#order_no").val()); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
-          var sent_out_time_begin_time = $("#sent_out_time_begin_time").val();
-          var sent_out_time_end_time = $("#sent_out_time_end_time").val();
+          var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
+          var cabinet_date_end_time = $("#cabinet_date_end_time").val();
           var status = $('#status').val();
           var customer_code = $("#customer_code").val().trim();
           var customer_name = $("#customer_name").val().trim();
@@ -148,8 +148,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                +"&customer_name_like="+customer_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
-          	   +"&sent_out_time_begin_time="+sent_out_time_begin_time
-          	   +"&sent_out_time_end_time="+sent_out_time_end_time;
+          	   +"&cabinet_date_begin_time="+cabinet_date_begin_time
+          	   +"&cabinet_date_end_time="+cabinet_date_end_time;
           
           dataTable.ajax.url(url).load();
       };
