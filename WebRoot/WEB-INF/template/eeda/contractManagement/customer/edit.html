@@ -162,13 +162,19 @@
             <div class="simple_order_list_div">
                 <ul id="orderTabs" class="nav nav-tabs">
                     <li class="active">
-                        <a id='chargeOceanTab' href="#oceanChargeDetail" data-toggle="tab">海运合同报价</a>
+                        <a id='chargeOceanTab' href="#oceanChargeDetail" data-toggle="tab">海运</a>
                     </li>
                     <li >
-                        <a id='chargeAirTab' href="#airChargeDetail" data-toggle="tab">空运合同报价</a>
+                        <a id='chargeAirTab' href="#airChargeDetail" data-toggle="tab">空运</a>
                     </li>
                     <li >
-                        <a id='chargeLandTab' href="#landChargeDetail" data-toggle="tab">陆运合同报价</a>
+                        <a id='chargeLandTab' href="#landChargeDetail" data-toggle="tab">陆运</a>
+                    </li>
+                    <li >
+                        <a id='tradeTab' href="#tradeChargeDetail" data-toggle="tab">加工贸易</a>
+                    </li>
+                    <li >
+                        <a id='tourTab' href="#tourChargeDetail" data-toggle="tab">园区游</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -193,7 +199,20 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="tab-pane fade  in" id="tradeChargeDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/eeda/contractManagement/customer/edit_charge_trade.html", {}){} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade  in" id="tourChargeDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/eeda/contractManagement/customer/edit_charge_tour.html", {}){} %>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="button-bar" style = "margin-top:130px" >

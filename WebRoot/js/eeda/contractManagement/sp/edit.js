@@ -1,4 +1,5 @@
-define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','./oceanEdit_charge','./airEdit_charge','./landEdit_charge'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',
+	'./oceanEdit_charge','./airEdit_charge','./landEdit_charge'], function ($, metisMenu) { 
 
     $(document).ready(function() {
 	  $("#breadcrumb_li").text('客户合同');

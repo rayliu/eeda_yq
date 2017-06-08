@@ -3,7 +3,7 @@ $(document).ready(function() {
 
 	var deletedTableIds=[];
     //删除一行
-    $("#charge_land_table").on('click', '.delete', function(){
+    $("#charge_tour_table").on('click', '.delete', function(){
         var tr = $(this).parent().parent();
         tr.css("display","none");
         deletedTableIds.push(tr.attr('id'))
@@ -12,40 +12,40 @@ $(document).ready(function() {
     //删除location 一行
     var deletedLoactionTableIds=[];
 
-    $("#land_location_table").on('click', '.delete', function(){
+    $("#tour_location_table").on('click', '.delete', function(){
         var tr = $(this).parent().parent();
         tr.css("display","none");
         deletedLoactionTableIds.push(tr.attr('id'))
     }); 
     
     //注意使用通用的方法 buildTableDetail
-    itemOrder.buildLandItem=function(){
-        var items = eeda.buildTableDetail("charge_land_table", deletedTableIds);
+    itemOrder.buildTourItem=function(){
+        var items = eeda.buildTableDetail("charge_tour_table", deletedTableIds);
         for (var i = 0; i < items.length; i++) {
             var item = items[i];
-            item.contract_type = "land";
+            item.contract_type = "tour";
         }
         return items;
     };
 
-    itemOrder.buildLandLocItem=function(){
-        var items = eeda.buildTableDetail("land_location_table", deletedLoactionTableIds);
+    itemOrder.buildTourLocItem=function(){
+        var items = eeda.buildTableDetail("tour_location_table", deletedLoactionTableIds);
         for (var i = 0; i < items.length; i++) {
             var item = items[i];
-            item.type = "land_loc";
+            item.type = "tour_loc";
         }
         return items;
     };
     
 
     var bindFieldEvent=function(){
-        eeda.bindTableFieldChargeId('charge_land_table','FEE_ID','/finItem/search','');
-        eeda.bindTableFieldCurrencyId('charge_land_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
-        eeda.bindTableField('charge_land_table','UOM','/serviceProvider/searchUnit','');
+        eeda.bindTableFieldChargeId('charge_tour_table','FEE_ID','/finItem/search','');
+        eeda.bindTableFieldCurrencyId('charge_tour_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
+        eeda.bindTableField('charge_tour_table','UOM','/serviceProvider/searchUnit','');
     };
     //------------事件处理
     var cargoTable = eeda.dt({
-	    id: 'charge_land_table',
+	    id: 'charge_tour_table',
 	    autoWidth: false,
 	    drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
 	        bindFieldEvent();
@@ -109,22 +109,6 @@ $(document).ready(function() {
             		return field_html;
             	}
             },
-            
-            { "data": "VOLUME", "width": "60px",
-            	"render": function ( data, type, full, meta ) {
-            		 if(!data)
-	                        data='';
-	                    return '<input text="type" name="volume" value="'+data+'" class="form-control" style= "width:80px" >';
-            	}
-            },
-            { "data": "GROSS_WEIGHT", "width": "60px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		
-            		return '<input type="type" name="gross_weight" value="'+data+'" class="form-control" style="width:80px">';
-            	}
-            },
             { "data": "TRUCK_TYPE", "width": "70px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
@@ -163,25 +147,25 @@ $(document).ready(function() {
         ]
     });
 
-    $('#add_land_charge_fee').on('click', function(){
+    $('#add_tour_charge_fee').on('click', function(){
         var item={};
         cargoTable.row.add(item).draw(true);
     });
     
     //刷新明细表
     itemOrder.refleshLandItemTable = function(contract_id){
-    	var url = "/customerContract/tableList?contract_id="+contract_id+"&type=land";
+    	var url = "/customerContract/tableList?contract_id="+contract_id+"&type=tour";
     	cargoTable.ajax.url(url).load();
     }
 
         var bindLocationFieldEvent=function(){
-            eeda.bindTableFieldDockInfo('land_location_table','POL_ID');
-            eeda.bindTableFieldDockInfo('land_location_table','POD_ID');
+            eeda.bindTableFieldDockInfo('tour_location_table','POL_ID');
+            eeda.bindTableFieldDockInfo('tour_location_table','POD_ID');
         };
 
         //------------事件处理
         var locationTable = eeda.dt({
-            id: 'land_location_table',
+            id: 'tour_location_table',
             autoWidth: false,
             paging: false,
             info: false,
@@ -240,7 +224,7 @@ $(document).ready(function() {
             ]
         });
 
-        $('#add_land_location').on('click', function(){
+        $('#add_tour_location').on('click', function(){
             var item={};
             locationTable.row.add(item).draw(true);
         });

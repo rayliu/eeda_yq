@@ -121,6 +121,9 @@ public class CustomerContractController extends Controller {
         setAttr("air_locations", getItems(id,"air_loc"));
         setAttr("charge_land_items", getItems(id,"land"));
         setAttr("land_locations", getItems(id,"land_loc"));
+        setAttr("trade_charge_items", getItems(id,"trade"));
+        setAttr("tour_charge_items", getItems(id,"tour"));
+        setAttr("tour_locations", getItems(id,"tour_loc"));
         
    		setAttr("order", Db.findFirst("select cc.*,p.abbr  from customer_contract cc "
    				+ " LEFT JOIN party p on p.id = cc.customer_id  where cc.id = ? ",id));
@@ -148,17 +151,13 @@ public class CustomerContractController extends Controller {
     	String sql = "";
     	if("ocean".equals(type)){
     		sql = " SELECT cci.*, fi.name fee_name, "
-    		        + " CONCAT(l.name,' -', l.code) pol_name, "
-    		        + " CONCAT(l1.name,' -', l1.code) pod_name, "
     		        + " CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
 					+" from customer_contract_item cci"
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
-					+" LEFT JOIN location l on l.id = cci.pol_id"
-					+" LEFT JOIN location l1 on l1.id = cci.pod_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
 					+" WHERE cci.contract_id = ? and cci.contract_type='ocean' ";
-    	}else if("land_loc".equals(type)){
+    	}else if("land_loc".equals(type) || "tour_loc".equals(type)){
             sql = " SELECT ccl.*, "
                     + " l.dock_name pol_name, "
                     + " l1.dock_name pod_name"
@@ -176,26 +175,34 @@ public class CustomerContractController extends Controller {
                         +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' ";	
     	}else if("air".equals(type)){
     		sql = " SELECT cci.*,fi.name fee_name, "
-    		        + " CONCAT(l.name,' -', l.code) pol_name, "
-                    + " CONCAT(l1.name,' -', l1.code) pod_name, "
     		        + "CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
 					+" from customer_contract_item cci"
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
-					+" LEFT JOIN location l on l.id = cci.pol_id"
-					+" LEFT JOIN location l1 on l1.id = cci.pod_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
 					+" WHERE cci.contract_id = ? and cci.contract_type='air' ";
     	}else if("land".equals(type)){
-    		sql = " SELECT cci.*,fi.name fee_name,l.dock_name pol_name,l1.dock_name pod_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+    		sql = " SELECT cci.*,fi.name fee_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
 					+" from customer_contract_item cci"
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
-					+" LEFT JOIN dockinfo l on l.id = cci.pol_id"
-					+" LEFT JOIN dockinfo l1 on l1.id = cci.pod_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
 					+" WHERE cci.contract_id = ?  and cci.contract_type='land'";
-    	}
+    	}else if("trade".equals(type)){
+            sql = " SELECT cci.*,fi.name fee_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+                    +" from customer_contract_item cci"
+                    +" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
+                    +" LEFT JOIN unit u on u.id = cci.uom"
+                    +" LEFT JOIN currency c on c.id= cci.currency_id"
+                    +" WHERE cci.contract_id = ?  and cci.contract_type='trade'";
+        }else if("tour".equals(type)){
+            sql = " SELECT cci.*,fi.name fee_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+                    +" from customer_contract_item cci"
+                    +" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
+                    +" LEFT JOIN unit u on u.id = cci.uom"
+                    +" LEFT JOIN currency c on c.id= cci.currency_id"
+                    +" WHERE cci.contract_id = ?  and cci.contract_type='trade'";
+        }
     	
     	
     	List<Record> re = Db.find(sql,contract_id);
@@ -288,24 +295,27 @@ public class CustomerContractController extends Controller {
    		//海运费用明细保存
    		List<Map<String,String>> charge_items = (ArrayList<Map<String, String>>) dto.get("itemOceanList");
    		DbUtils.handleList(charge_items, "customer_contract_item", id,"contract_id");
-   		//海运地点明细保存
    		List<Map<String,String>> oceanLocs = (ArrayList<Map<String, String>>) dto.get("itemOceanLocList");
         DbUtils.handleList(oceanLocs, "customer_contract_location", id,"contract_id");
         
    		List<Map<String,String>> charge_air_items = (ArrayList<Map<String, String>>) dto.get("itemAirList");
    		DbUtils.handleList(charge_air_items, "customer_contract_item", id,"contract_id");
-   		
-   		//空运地点明细保存
         List<Map<String,String>> airLocs = (ArrayList<Map<String, String>>) dto.get("itemAirLocList");
         DbUtils.handleList(airLocs, "customer_contract_location", id,"contract_id");
    		
    		List<Map<String,String>> charge_land_items = (ArrayList<Map<String, String>>) dto.get("itemLandList");
    		DbUtils.handleList(charge_land_items, "customer_contract_item", id,"contract_id");
-   		
-   		//陆运地点明细保存
         List<Map<String,String>> landLocs = (ArrayList<Map<String, String>>) dto.get("itemLandLocList");
         DbUtils.handleList(landLocs, "customer_contract_location", id,"contract_id");
    		
+        List<Map<String,String>> charge_trade_items = (ArrayList<Map<String, String>>) dto.get("itemTradeList");
+        DbUtils.handleList(charge_trade_items, "customer_contract_item", id,"contract_id");
+        
+        List<Map<String,String>> charge_tour_items = (ArrayList<Map<String, String>>) dto.get("itemTourList");
+        DbUtils.handleList(charge_tour_items, "customer_contract_item", id,"contract_id");
+        List<Map<String,String>> tourLocs = (ArrayList<Map<String, String>>) dto.get("itemTourLocList");
+        DbUtils.handleList(tourLocs, "customer_contract_location", id,"contract_id");
+        
    		Record rcon = new Record();
    		rcon= Db.findFirst("select * from customer_contract joc where id = ? ",id);
 //   		rcon.set("charge_items", getItems(id));
