@@ -168,7 +168,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                             data='';
                         return data;
                     }
-                }
+                },
+                {"data": "NEW_COUNT","visible":false},
+                {"data": null,"visible":'false',
+                    "render": function ( data, type, full, meta ) {
+                        var str='';
+                      if(full.NEW_COUNT>0){
+                        str='<span class="badge" style="background-color:white;color:red;margin-left:5px;">新</span>';
+                        $($('.simple_rectangle_title_div .font_style')[1]).html('第二步，接受P/C资料上传'+str);
+                      }else{
+                        $($('.simple_rectangle_title_div .font_style')[1]).html('第二步，接受P/C资料上传'+str);
+                      
+                      }
+                      return "";
+                    }
+               }
             ]
         });
         
@@ -399,7 +413,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                             data='';
                         return data;
                     }
-                }
+                },
+              {"data": "NEW_COUNT","visible":false},
+               {"data": null,"visible":'false',
+                    "render": function ( data, type, full, meta ) {
+                        var str='';
+                      if(full.NEW_COUNT>0){
+                        str='<span class="badge" style="background-color:white;color:red;margin-left:5px;">新</span>';
+                        $($('.simple_rectangle_title_div .font_style')[3]).html('第四步，接收保函单'+str);
+                      }else{
+                        $($('.simple_rectangle_title_div .font_style')[3]).html('第四步，接收保函单'+str);
+                      
+                      }
+                      return "";
+                    }
+              }
             ]
         });
         
