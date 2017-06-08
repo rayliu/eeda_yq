@@ -253,6 +253,9 @@ public class PlanOrderController extends Controller {
         String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
         String sColumn =  getPara("order[0][column]");
         String sName =  getPara("columns["+sColumn+"][data]")==null?"create_stamp":getPara("columns["+sColumn+"][data]") ;
+        if("0".equals(sName)){
+        	sName = "create_stamp";
+        }
         
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
