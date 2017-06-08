@@ -31,6 +31,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 			            	}
 						}
 					},
+					{ "data": "CABINET_DATE", "width": "60px"},
 					{ "data": "CREATE_STAMP", "width": "60px"},
 					{ "data": "CONTAINER_NO", "width": "60px"},
 					{ "data": "CABINET_TYPE", "width": "60px"},
@@ -106,6 +107,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
           var sp_name = $("#sp_name").val(); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
+          var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
+          var cabinet_date_end_time = $("#cabinet_date_end_time").val();
           var audit_flag = $("#audit_flag").val();
        
           var url = "/transChargeConfirm/list?order_no="+order_no
@@ -115,6 +118,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 			           //+"&sp_name_like="+sp_name
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date
+		               +"&cabinet_date_begin_time="+cabinet_date_begin_time
+		          	   +"&cabinet_date_end_time="+cabinet_date_end_time
           			   +"&audit_flag="+audit_flag;
 
           dataTable.ajax.url(url).load();

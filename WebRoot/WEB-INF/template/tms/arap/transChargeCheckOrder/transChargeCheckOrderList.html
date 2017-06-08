@@ -14,10 +14,10 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade active in" id="unselected">
                             <div class="row simple_search_div">
-                            	<div class="col-lg-12">
+                            	<div class="col-lg-12"><br>
                                  <form id="orderForm">
                                     <div class="row">
-                                        <div class="col-lg-4">
+                                    	<div class="col-lg-4">
                                             <%include("/eeda/component/form/inputSpField.html", 
                                                 {
                                                     id:'sp', 
@@ -26,6 +26,13 @@
                                                     required: 'required'
                                             }){} %>
                                         </div>
+                                    	<div class="col-lg-4">
+                                                <%include("/eeda/component/form/inputCustomerField.html", 
+                                                         {   id: 'customer', 
+                                                             label: '客户', 
+                                                             value: ''
+                                                         }){}%>
+                                         </div>
                                         <div class="col-lg-4">
                                             <%include("/eeda/component/form/inputField.html", 
                                                 {   id: 'order_no', 
@@ -34,60 +41,48 @@
                                                 }){}%>
                                         </div>                                          
                                         
-                                        <div class="col-lg-4">
-                                         <%include("/eeda/component/form/inputDateQueryField.html", 
-                                         {   id:'create_stamp', 
-                                             label:'创建日期', 
-                                             value:''
-                                         }){} %>
-                                         </div>
+                                        
                                      </div>       
                                      <div class="row">  
-                                         <div class="col-lg-4">
-                                                <%include("/eeda/component/form/inputCustomerField.html", 
-                                                         {   id: 'customer', 
-                                                             label: '客户', 
-                                                             value: ''
-                                                         }){}%>
-                                         </div>
-	                                    <div class="col-lg-4" style="display:none;">
-                                           <%include("/eeda/component/form/selectField.html", 
-                                               {   id:'type', 
-                                                   label:'类型', 
-                                                   value_list:[
-                                                       {code:'', value:''},
-                                                       {code:'海运', value:'海运'},
-                                                       {code:'空运', value:'空运'},
-                                                       {code:'陆运', value:'陆运'},
-                                                       {code:'报关', value:'报关'},
-                                                       {code:'保险', value:'保险'},
-                                                       {code:'贸易', value:'贸易'}
-                                                   ]
-                                               }){}%>
-                                            </div>
-                                    </div>
-                                    <div class="row">  
-	                                        <div class="col-lg-4">
-	                                         <%include("/eeda/component/form/inputField.html", 
-	                                         {   id:'container_no', 
-	                                             label:'柜号', 
-	                                             value:''
-	                                         }){} %>
+                                         	<div class="col-lg-4">
+		                                         <%include("/eeda/component/form/inputField.html", 
+		                                         {   id:'container_no', 
+		                                             label:'柜号', 
+		                                             value:''
+		                                         }){} %>
 	                                         </div>
                                              <div class="col-lg-4">
-                                             <%include("/eeda/component/form/inputField.html", 
-                                             {   id:'so_no', 
-                                                 label:'so号', 
-                                                 value:''
-                                             }){} %>
+	                                             <%include("/eeda/component/form/inputField.html", 
+	                                             {   id:'so_no', 
+	                                                 label:'so号', 
+	                                                 value:''
+	                                             }){} %>
                                              </div>
-                                         <div class="col-lg-4">
-                                                <%include("/eeda/component/form/inputField.html", 
-                                                         {   id: 'creator', 
-                                                             label: '创建人', 
-                                                             value: ''
-                                                         }){}%>
-                                         </div>                                       
+	                                         <div class="col-lg-4">
+	                                                <%include("/eeda/component/form/inputField.html", 
+	                                                         {   id: 'creator', 
+	                                                             label: '创建人', 
+	                                                             value: ''
+	                                                         }){}%>
+	                                         </div> 
+                                         
+	                                    
+                                    </div>
+                                    <div class="row">  
+	                                          <div class="col-lg-4">
+			                                         <%include("/eeda/component/form/inputDateQueryField.html", 
+			                                         {   id:'cabinet_date', 
+			                                             label:'提柜日期', 
+			                                             value:''
+			                                         }){} %>
+		                                       </div>
+		                                       <div class="col-lg-4">
+			                                         <%include("/eeda/component/form/inputDateQueryField.html", 
+			                                         {   id:'create_stamp', 
+			                                             label:'创建日期', 
+			                                             value:''
+			                                         }){} %>
+		                                        </div>                                    
                                        </div>
                                        <div class="row">  
                                        </div>

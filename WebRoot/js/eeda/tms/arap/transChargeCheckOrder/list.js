@@ -232,8 +232,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           var type = $('#type').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
-          var land_export_date_begin_time = $("#land_export_date_begin_time").val();
-          var land_export_date_end_time = $("#land_export_date_end_time").val();
+          var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
+          var cabinet_date_end_time = $("#cabinet_date_end_time").val();
+          
           
            var container_no = $("#container_no").val().trim(); 
           var so_no = $("#so_no").val().trim(); 
@@ -249,8 +250,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
                +"&sp_name="+sp_name
                +"&customer_name="+customer_name
                +"&type_equals="+type
-               +"&land_export_date_end_time="+land_export_date_end_time
-               +"&land_export_date_begin_time="+land_export_date_begin_time
+               +"&cabinet_date_begin_time="+cabinet_date_begin_time
+          	   +"&cabinet_date_end_time="+cabinet_date_end_time
 	           +"&create_stamp_begin_time="+start_date
 	           +"&create_stamp_end_time="+end_date
 	           +"&container_no_like="+container_no
