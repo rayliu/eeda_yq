@@ -44,7 +44,13 @@ $(document).ready(function() {
         { "data": "TOTAL_AMOUNT", "width": "180px"},
         { "data": "RECEIVE_CNY", "width": "120px"},
         { "data": "RESIDUAL_CNY", "width": "200px"},
-        { "data": "RECEIVE_TIME", "width": "80px"},
+        { "data": "RECEIVE_TIME", "width": "80px",
+        	"render": function(data){
+      		  if(data)
+    			  return data.substr(0,10);
+    		  return '';
+        	}
+        },
         { "data": "RECEIVE_NAME", "width": "80px"}
         ]
     }); 
