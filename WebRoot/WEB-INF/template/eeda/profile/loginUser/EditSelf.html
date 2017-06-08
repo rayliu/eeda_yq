@@ -10,53 +10,86 @@
                     保存成功.
                 </div>
             <%}%>
-             <div class="panel panel-default">
-                   <div class="panel-heading"style="font-size: 32px">
-                 		用户信息
-            		</div>
+
+            <div class="simple_order_list_div">
+                <ul id="orderTabs" class="nav nav-tabs">
+                    <li class="active">
+                        <a id='oceanDetailTab' href="#oceanDetail" data-toggle="tab" >基本信息</a>
+                    </li>
+                    <li>
+                        <a id='airDetailTab' href="#airDetail" data-toggle="tab" >修改密码</a>
+                    </li>
+                </ul>
+                <form lass="form-horizontal" id='leadsForm' name="leadsForm" action="/loginUser/savePerson" method="post">
+                    <input id="userId" name="userId" type="hidden" value="${lu.id!''}">
+                    <input id="oldPwd" name="oldPwd" type="hidden" value="${lu.password!''}">
+                    <input id="username" name="username" type="hidden" value="${lu.user_name!''}">
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="oceanDetail">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <div class="form-group ">
+                                        <label class="control-label">登陆名</label>
+                                        <span  class="form-control" >${lu.user_name!''}</span >
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="control-label">中文名(必填)</label>
+                                        <input id="chineseName" name="chineseName" type="text" class="form-control" value="${lu.c_name!''}" placeholder="请输入中文名">
+                                    </div>
+                                    <div class="form-group">
+                                         <label class="control-label">固话tel</label>
+                                         <input type="text" class="form-control" id="user_tel" name="user_tel" value="${lu.user_tel!''}">
+                                     </div>
+                                     <div class="form-group">
+                                         <label class="control-label">移动电话phone</label>
+                                         <input type="text" class="form-control" id="user_phone" name="user_phone" value="${lu.user_phone!''}">
+                                     </div>
+                                     <div class="form-group">
+                                         <label class="control-label">传真</label>
+                                         <input type="text" class="form-control" id="user_fax" name="user_fax" value="${lu.user_fax!''}">
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade in" id="airDetail">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                         <label class="control-label">旧密码</label>
+                                         <input type="password" class="form-control" id="old_pwd" name="old_pwd">
+                                     </div>
+                                      <div class="form-group">
+                                         <label class="control-label">新密码</label>
+                                         <input type="password" class="form-control" id="new_pwd" name="password">
+                                     </div>
+                                      <div class="form-group">
+                                         <label class="control-label">密码提示</label>
+                                         <input type="text" class="form-control" id="pw_hint" name="pw_hint" value="${lu.password_hint!''}">
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="button-bar" >
+                        <button type="submit" class="btn  btn-primary">保存</button>
+                        <a class="btn  btn-primary" href="/loginUser">取消</a>
+                    </div>
+                </form>
+            </div>
+             <div class="panel panel-default" style="display: none;">
+                   
             		
             	 <div class="panel-body">
                     <div class="row-fluid">
-            		<form lass="form-horizontal" id='leadsForm' name="leadsForm" action="/loginUser/savePerson" method="post">
-						<input id="userId" name="userId" type="hidden" value="${lu.id!''}">
-						<input id="oldPwd" name="oldPwd" type="hidden" value="${lu.password!''}">
-						<input id="username" name="username" type="hidden" value="${lu.user_name!''}">
-						<div class="form-group ">
-			                 <label class="control-label">登陆名</label>
-			                 <span  class="form-control" >${lu.user_name!''}</span >
-			             </div>
-			             <div class="form-group ">
-			                 <label class="control-label">中文名(必填)</label>
-			                 <input id="chineseName" name="chineseName" type="text" class="form-control" value="${lu.c_name!''}" placeholder="请输入中文名">
-			             </div>
-			            <div class="form-group">
-			                 <label class="control-label">旧密码</label>
-			                 <input type="password" class="form-control" id="old_pwd" name="old_pwd">
-			             </div>
-			              <div class="form-group">
-			                 <label class="control-label">新密码</label>
-			                 <input type="password" class="form-control" id="new_pwd" name="password">
-			             </div>
-			              <div class="form-group">
-			                 <label class="control-label">密码提示</label>
-			                 <input type="text" class="form-control" id="pw_hint" name="pw_hint" value="${lu.password_hint!''}">
-			             </div>
-			             <div class="form-group">
-			                 <label class="control-label">固话tel</label>
-			                 <input type="text" class="form-control" id="user_tel" name="user_tel" value="${lu.user_tel!''}">
-			             </div>
-			             <div class="form-group">
-			                 <label class="control-label">移动电话phone</label>
-			                 <input type="text" class="form-control" id="user_phone" name="user_phone" value="${lu.user_phone!''}">
-			             </div>
-			             <div class="form-group">
-			                 <label class="control-label">传真</label>
-			                 <input type="text" class="form-control" id="user_fax" name="user_fax" value="${lu.user_fax!''}">
-			             </div>
+            		
+						
+						
+			            
 			             
-			             	<button type="submit" class="btn  btn-primary">保存</button>
-				            <a class="btn  btn-primary" href="/loginUser">取消</a>
-			         </form>
+			             
+			             	
+			         
             			</div>
             		</div>
 					
