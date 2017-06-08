@@ -209,7 +209,21 @@ $(document).ready(function() {
                         data='';
                     return data;
                 }
-            }
+            },
+            {"data": "NEW_COUNT","visible":false},
+            {"data": null,"visible":'false',
+                "render": function ( data, type, full, meta ) {
+                    var str='';
+                  if(full.NEW_COUNT>0){
+                    str='<span class="badge" style="background-color:white;color:red;margin-left:5px;">新</span>';
+                    $($('.simple_rectangle_title_div .font_style')[2]).html('第三步，B/L文件下载，接受被委托方资料'+str);
+                  }else{
+                    $($('.simple_rectangle_title_div .font_style')[2]).html('第三步，B/L文件下载，接受被委托方资料'+str);
+                  
+                  }
+                  return "";
+                }
+           }
         ]
     });
     
@@ -431,7 +445,21 @@ $(document).ready(function() {
                         data='';
                     return data;
                 }
-            }
+            },
+           {"data": "NEW_COUNT","visible":false},
+           {"data": null,"visible":'false',
+                "render": function ( data, type, full, meta ) {
+                    var str='';
+                  if(full.NEW_COUNT>0){
+                    str='<span class="badge" style="background-color:white;color:red;margin-left:5px;">新</span>';
+                    $($('.simple_rectangle_title_div .font_style')[4]).html('第五步，接收下载'+str);
+                  }else{
+                    $($('.simple_rectangle_title_div .font_style')[4]).html('第五步，接收下载'+str);
+                  
+                  }
+                  return "";
+                }
+        }
         ]
     });
     
@@ -556,6 +584,7 @@ $(document).ready(function() {
                       return data;
                   }
               },
+              {"data": "NEW_COUNT","visible":false},
                {"data": null,"visible":'false',
                     "render": function ( data, type, full, meta ) {
                         var str='';
@@ -569,6 +598,7 @@ $(document).ready(function() {
                       return "";
                     }
               }
+
           ]
       });
       
@@ -618,5 +648,6 @@ $(document).ready(function() {
       	var url = "/bookOrder/docTableList?order_id="+order_id+"&type=zero";
       	zeroTable.ajax.url(url).load();
       }
+
 });
 });

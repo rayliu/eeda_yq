@@ -31,7 +31,9 @@
 	       	</div>
 	       	<br>
         
-        	 <div class="row simple_rectangle_title_div"><div class="font_style">第二步，接受P/C资料下载，确认</div></div>
+        	 <div class="row simple_rectangle_title_div">
+                <div class="font_style">第二步，接受P/C资料下载，确认</div>
+             </div>
              <div class="from-group">
 	            <%include("/eeda/component/form/detailTable.html", 
 	                {
@@ -39,8 +41,8 @@
 	                    class:'item',
 	                    style:'width:1400px',
 	                    headers:['','操作', '文档名称', '上传人', '上传时间', '备注',
-	                    '发送人','发送时间','文件状态'],
-	                    field_list:['id','', 'doc_name','c_name','upload_time', 'remark','sender','send_time','send_status'],
+	                    '发送人','发送时间','文件状态','',''],
+	                    field_list:['id','', 'doc_name','c_name','upload_time', 'remark','sender','send_time','send_status','new_count',''],
 	                    value_list: oneDocList![]
 	                }){} %>
 	        </div>
@@ -72,8 +74,8 @@
                                     class:'item',
                                     style:'width:1400px',
                                     headers:['','操作', '文档名称', '上传人', '上传时间', '备注',
-                                    '发送人','发送时间','文件状态'],
-                                    field_list:['id','', 'doc_name','c_name','upload_time', 'remark','sender','send_time','send_status'],
+                                    '发送人','发送时间','文件状态','',''],
+                                    field_list:['id','', 'doc_name','c_name','upload_time', 'remark','sender','send_time','send_status','new_count',''],
                                     value_list: threeDocList![]
                                 }){} %>
         	</div>
