@@ -325,11 +325,11 @@
                                 style:'width:1400px',
                                 headers:[
                                 	'<input type="checkbox" id="allcheck">','操作','工作单号','创建时间','柜号',
-                                	'SO号','客户','结算公司','费用名称','对账币制',
+                                	'SO号','提柜时间','客户','结算公司','费用名称','对账币制',
                                 	'对账金额','对人民币汇率','对账金额（CNY）','备注' ,'',''                           
                                 ],
 					field_list:['id','','order_no','create_stamp','container_no',
-						'so_no','customer_name','sp_name','fin_name','currency_name',
+						'so_no','cabinet_date','customer_name','sp_name','fin_name','currency_name',
 						'total_amount','exchange_rate','after_total','remark','ORDER_TYPE','job_order_id'
 						], value_list: order.itemList!item_list![] }){} %>
 			</div>
