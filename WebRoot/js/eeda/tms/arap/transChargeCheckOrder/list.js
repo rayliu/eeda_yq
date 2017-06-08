@@ -47,11 +47,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            { "data": "CONTAINER_NO", "width": "60px"},
 	            { "data": "CABINET_TYPE", "width": "60px"},
 	            { "data": "SO_NO", "width": "60px"},
+              	{ "data": "CABINET_DATE", 
+            		  render: function(data){
+            			  if(data)
+            				  return data.substr(0,10);
+            			  return '';
+            		  }
+              	},
 	            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
             	{ "data": "FEE_NAME", "width": "70px"},
 	            { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
 	            	"render": function ( data, type, full, meta ) {
-	            		if(full.SQL_TYPE=='charge'){
+	            		if(full.SQL_TYPE=='cost'){
 		            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 		            	}
 	                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
@@ -61,7 +68,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            { "data": "EXCHANGE_RATE", "width": "60px" },
 	            { "data": "AFTER_TOTAL", "width": "80px" ,'class':'AFTER_TOTAL',
 	            	"render": function ( data, type, full, meta ) {
-	            		if(full.SQL_TYPE=='charge'){
+	            		if(full.SQL_TYPE=='cost'){
 		            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
 		            	}
 	                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
