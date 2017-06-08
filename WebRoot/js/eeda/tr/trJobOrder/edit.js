@@ -1,6 +1,5 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'jq_blockui',
-     './edit_charge_table','./edit_cost_table',
-    
+     './edit_charge_table','./edit_cost_table', './edit_custom_china_self_table','./edit_custom_detail','./edit_custom_doc_table',
     './edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report',
     './edit_trade_cost_table', './edit_trade_charge_sale_table', './edit_trade_charge_service_table','./edit_trade_detail',
     './edit_arap_detail'], function ($, metisMenu) {
@@ -285,6 +284,7 @@ $(document).ready(function() {
                 itemOrder.refleshTradeCostItemTable(server_back_order.ID);
                 itemOrder.refleshTradeServiceItemTable(server_back_order.ID);
                 itemOrder.refleshTradeSaleItemTable(server_back_order.ID);
+                itemOrder.refleshCustomChinaSelfItemTable(server_back_order.ID);
                 $.unblockUI();
             }else{
                 if(data.ERR_CODE == 'update_stamp_not_equal'){

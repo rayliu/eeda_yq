@@ -49,19 +49,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "data": "CONTAINER_NO"}, 
               { "data": "SO_NO"}, 
               { "data": "CABINET_DATE", 
-            	  render: function(data){
+            	  "render": function(data){
             		  if(data)
             			  return data.substr(0,10);
             		  return '';
             	  }
               },
-              { "data": "SENT_OUT_TIME", 
-            	  render: function(data){
-            		  if(data)
-            			  return data.substr(0,10);
-            		  return '';
-            	  }
-              },
+              { "data": "CABINET_TYPE"},
               { "data": "HEAD_CARRIER_NAME"}, 
               { "data": "YUNFEI",
                   "render": function ( data, type, full, meta ) {
@@ -110,14 +104,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
               },
               { "data": "CREATOR_NAME"},
-              { "data": "CREATE_STAMP",
-            	render: function(data){
-            		if(data){
-            			return data.substr(0,10);
-            		}
-            		return '';
-            	   }  
-              }, 
+              { "data": "CREATE_STAMP"}, 
               { "data": "STATUS"}
               
           ]

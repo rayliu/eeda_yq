@@ -16,6 +16,7 @@ import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
 import models.eeda.cms.CustomPlanOrderItem;
 import models.eeda.oms.jobOrder.JobOrder;
+import models.eeda.tr.tradeJoborder.TradeJobOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -61,9 +62,22 @@ public class CustomPlanOrderController extends Controller {
 	@Before(EedaMenuInterceptor.class)
     public void create() {
         String jobId = getPara("jobOrderId");
+        
+        String login_id = getPara("login_id");
+        Record r = Db.findById("user_login", login_id);
+        Long office_id = r.getLong("office_id");
+        
         String to_office_id = getPara("to_office_id");
-        JobOrder jo = JobOrder.dao.findById(jobId);
-        setAttr("jobOrder", jo);
+        Office o = Office.dao.findById(office_id);
+        String type = o.getStr("type");
+        if("tradeCompany".equals(type)){
+        	TradeJobOrder jo = TradeJobOrder.dao.findById(jobId);
+        	setAttr("jobOrder", jo);
+        }else{
+        	JobOrder jo = JobOrder.dao.findById(jobId);
+        	setAttr("jobOrder", jo);
+        }
+        
         setAttr("customTemplateInfo", getCustomTemplateInfo());
         setAttr("to_office_id", to_office_id);
 

@@ -19,10 +19,8 @@ import models.UserCustomer;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
-import models.eeda.oms.jobOrder.JobOrderSendMail;
-import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
+import models.eeda.oms.jobOrder.JobOrderCustom;
 import models.eeda.oms.jobOrder.JobOrderShipment;
-import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 import models.eeda.tr.tradeJoborder.TradeJobOrder;
 import models.eeda.tr.tradeJoborder.TradeJobOrderArap;
 import models.eeda.tr.tradeJoborder.TradeJobOrderDoc;
@@ -132,6 +130,7 @@ public class TrJobOrderController extends Controller {
     	setAttr("usedAirInfo", getUsedAirInfo());
     	setAttr("emailTemplateInfo", getEmailTemplateInfo());
     	setAttr("loginUser",LoginUserController.getLoginUserName(this));
+    	setAttr("login_id", LoginUserController.getLoginUserId(this));
         render("/tr/trJobOrder/trJobOrderEdit.html");
     }
     
@@ -303,6 +302,19 @@ public class TrJobOrderController extends Controller {
 		//相关文档
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
 		DbUtils.handleList(doc_list, id, TradeJobOrderDoc.class, "order_id");
+		
+		//报关
+		List<Map<String, String>> chinaCustom = (ArrayList<Map<String, String>>)dto.get("chinaCustom");
+		List<Map<String, String>> abroadCustom = (ArrayList<Map<String, String>>)dto.get("abroadCustom");
+		List<Map<String, String>> hkCustom = (ArrayList<Map<String, String>>)dto.get("hkCustom");
+		List<Map<String, String>> chinaCustom_self_item = (ArrayList<Map<String, String>>)dto.get("chinaCustom_self_item");
+		DbUtils.handleList(chinaCustom, id, JobOrderCustom.class, "order_id");
+		DbUtils.handleList(chinaCustom_self_item, "job_order_custom_china_self_item", id, "order_id");
+		DbUtils.handleList(abroadCustom, id, JobOrderCustom.class, "order_id");
+		DbUtils.handleList(hkCustom, id, JobOrderCustom.class, "order_id");
+		
+		
+		
 
 		//贸易
 		List<Map<String, String>> trade_detail = (ArrayList<Map<String, String>>)dto.get("trade_detail");
@@ -1103,6 +1115,37 @@ public class TrJobOrderController extends Controller {
     		        + " left join currency c1 on c1.id=jor.exchange_currency_id"
     		        + " where jor.order_id=? and jor.order_type=? and jor.trade_fee_flag=? order by jor.id";
     		itemList = Db.find(itemSql, orderId,"charge","trade_service_fee");
+	    }else if("china_self".equals(type)){
+	    	itemSql = "select j.*,p.abbr custom_bank_name from job_order_custom_china_self_item j"
+	    			+ " left join party p on p.id = j.custom_bank"
+	    			+ " where j.order_id=? order by j.id";
+	    	itemList = Db.find(itemSql, orderId);
+	    }else if("custom_doc".equals(type)){
+//	    	itemSql = "select jod.*,u.c_name from job_order_custom_doc jod left join user_login u on jod.uploader=u.id "
+//	    			+ " where order_id=? order by jod.id";
+	        itemSql = "select cpo.ref_job_order_id, jocd.id,jocd.doc_name,jocd.upload_time,jocd.remark,"
+	                + " ul.c_name c_name,jocd.uploader, jocd.share_flag ,null share_flag from job_order_custom_doc jocd"
+                    + " LEFT JOIN user_login ul on ul.id = jocd.uploader"
+                    + " LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id and jocd.share_flag = 'Y' and cpo.delete_flag='N'"
+                    + " where jocd.order_id =?"
+                    + " union all"
+                    + " select cpo.ref_job_order_id, null id ,jod.doc_name,jod.upload_time,jod.remark,u.c_name c_name,"
+                    + " jod.uploader,null share_flag, jod.cms_share_flag"
+                    + " from custom_plan_order_doc jod "
+                    + " left join custom_plan_order cpo on cpo.id = jod.order_id"
+                    + " left join user_login u on jod.uploader=u.id "
+                    + " where cpo.ref_job_order_id=? and cpo.delete_flag='N'";
+	    	itemList = Db.find(itemSql, orderId, orderId);
+	    }else if("custom_app".equals(type)){
+	    	itemList = Db.find("SELECT"
+	    			+ " cjo.id, cjo.order_no custom_plan_no, o.office_name custom_bank,cjo.status applybill_status,"
+	    			+ " cjo.ref_no custom_order_no, cjo.custom_state custom_status, ul.c_name creator,"
+	    			+ " cjo.create_stamp, ul2.c_name fill_name, cjo.fill_stamp,cjo.customs_billCode"
+	    			+ " FROM custom_plan_order cjo"
+	    			+ " LEFT JOIN user_login ul ON ul.id = cjo.creator"
+	    			+ " LEFT JOIN user_login ul2 ON ul2.id = cjo.fill_by"
+	    			+ " left join office o on o.id = cjo.to_office_id"
+	    			+ " WHERE cjo.ref_job_order_id = ?  and cjo.delete_flag='N'",orderId);
 	    }
 		return itemList;
 	}
@@ -1123,7 +1166,17 @@ public class TrJobOrderController extends Controller {
     	setAttr("trade_cost_list", getItems(id,"trade_cost"));
     	setAttr("trade_charge_service_list", getItems(id,"trade_service"));
     	setAttr("trade_charge_sale_list", getItems(id,"trade_sale"));
-
+    	
+    	//报关
+    	setAttr("customItemList",getItems(id, "custom_app"));
+    	setAttr("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
+   		setAttr("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
+   		setAttr("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
+   		setAttr("customSelf", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china_self"));
+   		setAttr("customSelfItemList", getItems(id,"china_self"));
+   		setAttr("customDocList", getItems(id,"custom_doc"));
+    	
+    	
     	//获取费用明细
     	setAttr("chargeList", getItems(id,"charge"));
     	setAttr("costList", getItems(id,"cost"));
@@ -1141,6 +1194,7 @@ public class TrJobOrderController extends Controller {
     	setAttr("user", user);
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
+    	setAttr("login_id", LoginUserController.getLoginUserId(this));
     	  
         render("/tr/trJobOrder/trJobOrderEdit.html");
     }

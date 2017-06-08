@@ -110,6 +110,8 @@ public class PlanOrderController extends Controller {
    				planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("XXHKJH", office_id));
    			}else if(office_id==1){
    				planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("YQJH", office_id));
+   			}else if(office_id==7){
+   				planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("YQSMJH", office_id));
    			}
    			
    			
