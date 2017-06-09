@@ -46,9 +46,10 @@ public class TransCostConfirmController extends Controller {
         long office_id=user.getLong("office_id");
         String sql = "select * from( "
         		+ " select tjoa.*,tjo.id jobid,tjo.order_no,tjo.create_stamp,tjo.customer_id,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,"
-        		+ " c.name currency_name, c1. NAME exchange_currency_name,tjo.container_no,tjo.so_no,cf.car_no "
+        		+ " CONVERT(substring(tjol.cabinet_date,1,10),char) cabinet_date,c.name currency_name, c1. NAME exchange_currency_name,tjo.container_no,tjo.so_no,cf.car_no "
 				+ " from trans_job_order_arap tjoa "
 				+ " right join trans_job_order tjo on tjo.id=tjoa.order_id "
+				+ " LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjoa.order_id"
 				+ " left join party p on p.id=tjo.customer_id "
 				+ " left join party p1 on p1.id=tjoa.sp_id "
 				+ " left join fin_item f on f.id=tjoa.charge_id "

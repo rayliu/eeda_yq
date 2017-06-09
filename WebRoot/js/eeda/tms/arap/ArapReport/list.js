@@ -18,6 +18,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            },
 	            { "data": "CUSTOMER_NAME", "width": "60px"},
 	            { "data": "SP_NAME", "width": "60px" },
+	            { "data": "CABINET_DATE", "width": "60px"},
 	            { "data": "ORDER_TYPE", "width": "40px",
 	            	 "render":function(data,type,full,meta){
 	            			var str="";

@@ -21,7 +21,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     return "<a href='/transJobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
                 }
 			},
-			
+           { "data": "CABINET_DATE", "width": "60px"},			
             { "data": "CREATE_STAMP", "width": "80px"},
             { "data": "CONTAINER_NO", "width": "80px"},
             { "data": "SO_NO", "width": "100px"},
