@@ -135,9 +135,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		var checkbox = $(this).prop('checked');
         		if(checkbox){
         			var itemId = $(this).parent().parent().attr('id');
-        			itemIds.push(itemId);
+        			if(itemId!=undefined){
+                itemIds.push(itemId);
+              }
         		}
         	});
+          if(itemIds.length==0){
+            $.scojs_message('该单据没有费用，请先录入费用', $.scojs_message.TYPE_ERROR);
+          }
 	    	 $.post('/transCostConfirm/costConfirm?itemIds='+itemIds, function(data){
 	    		 if(data.result==true){
 	    			 $.scojs_message('单据确认成功', $.scojs_message.TYPE_OK);

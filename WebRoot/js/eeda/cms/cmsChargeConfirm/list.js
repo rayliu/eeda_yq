@@ -1,18 +1,15 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColReorder'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '应收费用明细确认 | '+document.title;
+    	document.title = '应收明细查询 | '+document.title;
 
-    	$("#breadcrumb_li").text('应收费用明细确认');
-    	 
     	$('#menu_charge').addClass('active').find('ul').addClass('in');
 
         var dataTable = eeda.dt({
             id: 'eeda_table',
-            colReorder: true,
             paging: true,
             serverSide: false, //不打开会出现排序不对 
-            ajax: "/transChargeConfirm/list?audit_flag_notequals="+$("#audit_flag").val(),
+            ajax: "/cmsChargeConfirm/list?audit_flag_notequals="+$("#audit_flag").val(),
             columns: [
 					{ "width": "10px",
 					    "render": function ( data, type, full, meta ) {
@@ -22,21 +19,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 					    		return '<input type="checkbox" disabled>';
 					    }
 					},
-					{ "data": "ORDER_NO", "width": "80px",
+					{ "data": "ORDER_NO", "width": "100px",
 						"render": function ( data, type, full, meta ) {
 			            	if(data){
-			            		return '<a href="/transJobOrder/edit?id='+full.JOBID+'" target="_blank">'+data+'</a>';
+			            		return '<a href="/customPlanOrder/edit?id='+full.CPOBID+'" target="_blank">'+data+'</a>';
 			            	}else{
 			            		return '';
 			            	}
 						}
 					},
-					{ "data": "CABINET_DATE", "width": "60px"},
-					{ "data": "CREATE_STAMP", "width": "60px"},
-					{ "data": "CONTAINER_NO", "width": "60px"},
-					{ "data": "CABINET_TYPE", "width": "60px"},
-					{ "data": "SO_NO", "width": "80px"},
-					{ "data": "AUDIT_FLAG", "width": "40px",
+					{ "data": "CREATE_STAMP", "width": "100px"},
+					{ "data": "AUDIT_FLAG", "width": "60px",
 					"render": function ( data, type, full, meta ) {
 						if(data != 'Y')
 							return '未确认';
@@ -44,36 +37,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 							return '已确认';
 					}
 					},
-					{ "data": "CUSTOMER", "width": "70px"},
-					{ "data": "SP_NAME", "width": "70px"},
+					{ "data": "CUSTOMER", "width": "100px"},
+					{ "data": "TYPE", "width": "60px"},
+					{ "data": "SP_NAME", "width": "100px"},
 					{ "data": "CHARGE_NAME", "width": "60px"},
-					{ "data": "PRICE", "width": "40px"},
-					{ "data": "AMOUNT","width": "40px"},
-					{ "data": "UNIT_NAME", "width": "40px"},
-					{ "data": "TOTAL_AMOUNT", "width": "40px"},
-					{ "data": "CURRENCY_NAME", "width": "40px"},
-					{ "data": "EXCHANGE_RATE", "width": "40px"},
+					{ "data": "PRICE", "width": "60px"},
+					{ "data": "AMOUNT","width": "60px"},
+					{ "data": "UNIT_NAME", "width": "60px"},
+					{ "data": "TOTAL_AMOUNT", "width": "60px"},
+					{ "data": "CURRENCY_NAME", "width": "60px"},
+					{ "data": "EXCHANGE_RATE", "width": "60px"},
 					{ "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
-					{ "data": "REMARK", "width": "60px"},
+					{ "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
+					{ "data": "REMARK", "width": "180px"},
             ]
         });
         
-        //base on config hide cols
-      dataTable.columns().eq(0).each( function(index) {
-          var column = dataTable.column(index);
-          $.each(cols_config, function(index, el) {
-              
-              if(column.dataSrc() == el.COL_FIELD){
-                
-                if(el.IS_SHOW == 'N'){
-                  column.visible(false, false);
-                }else{
-                  column.visible(true, false);
-                }
-              }
-          });
-      });
-      
         //全选
         $('#AllCheck').click(function(){
       	  var ischeck = this.checked;
@@ -87,10 +66,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
         	}
         });
         
-        $("#eeda_table").on('click','.checkBox',function(){
-		    $("#AllCheck").prop("checked",$(".checkBox").length == $(".checkBox:checked").length ? true : false);
-      });
-      
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
@@ -102,24 +77,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 
       var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
-          var customer = $("#customer").val();
-          var customer_name = $("#customer_input").val(); 
-          var sp_name = $("#sp_name").val(); 
+          var customer = $("#customer").val(); 
+          var sp = $("#sp").val(); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
-          var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
-          var cabinet_date_end_time = $("#cabinet_date_end_time").val();
           var audit_flag = $("#audit_flag").val();
        
-          var url = "/transChargeConfirm/list?order_no="+order_no
+          var url = "/cmsChargeConfirm/list?order_no="+order_no
 			           +"&customer_id="+customer
-			           //+"&customer_name_like="+customer_name
-			           //+"&sp_id="+sp
-			           //+"&sp_name_like="+sp_name
+			           +"&sp_id="+sp
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date
-		               +"&cabinet_date_begin_time="+cabinet_date_begin_time
-		          	   +"&cabinet_date_end_time="+cabinet_date_end_time
           			   +"&audit_flag_notequals="+audit_flag;
 
           dataTable.ajax.url(url).load();
@@ -157,7 +125,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 	      	if(itemIds.length==0){
 	      		$.scojs_message('该单据没有费用，请先录入费用', $.scojs_message.TYPE_ERROR);
 	      	}
-	    	 $.post('/transChargeConfirm/chargeConfirm?itemIds='+itemIds, function(data){
+	    	 $.post('/cmsChargeConfirm/chargeConfirm?itemIds='+itemIds, function(data){
 	    		 if(data.result==true){
 	    			 $.scojs_message('单据确认成功', $.scojs_message.TYPE_OK);
 	    			 searchData();

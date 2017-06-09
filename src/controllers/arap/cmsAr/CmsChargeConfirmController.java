@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.UserLogin;
+import models.eeda.cms.CustomPlanOrderArap;
 import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.log4j.Logger;
@@ -44,18 +45,24 @@ public class CmsChargeConfirmController extends Controller {
         
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or cpo.office_id in ("+relist.getStr("office_id")+")";
+        }
      
         String sql = "select * from( "
-        		+ " select joa.*,jo.order_no,jo.id jobid,jo.create_stamp,jo.customer_id,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
-				+ " from job_order_arap joa "
-				+ " left join job_order jo on jo.id=joa.order_id "
-				+ " left join party p on p.id=jo.customer_id "
-				+ " left join party p1 on p1.id=joa.sp_id "
-				+ " left join fin_item f on f.id=joa.charge_id "
-				+ " left join unit u on u.id=joa.unit_id "
-				+ " left join currency c on c.id=joa.currency_id "
-				+ " where joa.order_type='charge' and jo.office_id = "+office_id
-				+ " and jo.delete_flag = 'N'"
+        		  +" select cpoa.*,cpo.order_no,cpo.id cpobid,cpo.create_stamp,cpo.carrier,p.company_name carrier_name,p1.company_name sp_name,f.name charge_name,u.name  unit_name,c.name currency_name  "
+        					+" 			  from custom_plan_order_arap cpoa  "
+        					+" 			  right join custom_plan_order cpo on cpo.id=cpoa.order_id  "
+        					+" 			  left join party p on p.id=3324 "
+        					+" 			  left join party p1 on p1.id=cpoa.sp_id  "
+        					+" 			  left join fin_item f on f.id=cpoa.charge_id  "
+        					+" 			  left join unit u on u.id=cpoa.unit_id  "
+        					+" 			  left join currency c on c.id=cpoa.currency_id  "
+        					+" 			  where cpoa.order_type!='cost' or (cpo.office_id="+office_id+ref_office+ ")"
+        					+" 			  and cpo.delete_flag = 'N'" 
 				+ " ) A where 1=1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
@@ -75,21 +82,12 @@ public class CmsChargeConfirmController extends Controller {
         renderJson(orderListMap); 
     }   
     
-//    public void chargeConfirm(){
-//		String ids = getPara("itemIds");
-//		String idAttr[] = ids.split(",");
-//		for(int i=0 ; i<idAttr.length ; i++){
-//			JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",idAttr[i]);
-//			joa.set("audit_flag", "Y");
-//			joa.update();
-//		}
-//		renderJson("{\"result\":true}");
-//	}
+
 	  public void chargeConfirm(){
 		  String ids = getPara("itemIds");
 			String idAttr[] = ids.split(",");
 			for(int i=0 ; i<idAttr.length ; i++){
-				JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap joa where id = ?",idAttr[i]);
+				CustomPlanOrderArap joa = CustomPlanOrderArap.dao.findFirst("select * from custom_plan_order_arap joa where id = ?",idAttr[i]);
 				joa.set("audit_flag", "Y");
 				joa.update();
 			}
