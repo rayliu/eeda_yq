@@ -46,16 +46,17 @@ public class TransCostConfirmController extends Controller {
         long office_id=user.getLong("office_id");
         String sql = "select * from( "
         		+ " select tjoa.*,tjo.id jobid,tjo.order_no,tjo.create_stamp,tjo.customer_id,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,"
-        		+ " c.name currency_name, c1. NAME exchange_currency_name,tjo.container_no,tjo.so_no "
+        		+ " c.name currency_name, c1. NAME exchange_currency_name,tjo.container_no,tjo.so_no,cf.car_no "
 				+ " from trans_job_order_arap tjoa "
-				+ " left join trans_job_order tjo on tjo.id=tjoa.order_id "
+				+ " right join trans_job_order tjo on tjo.id=tjoa.order_id "
 				+ " left join party p on p.id=tjo.customer_id "
 				+ " left join party p1 on p1.id=tjoa.sp_id "
 				+ " left join fin_item f on f.id=tjoa.charge_id "
+				+ " left join carinfo cf on cf.id=tjoa.car_id "
 				+ " left join unit u on u.id=tjoa.unit_id "
 				+ " left join currency c on c.id=tjoa.currency_id "
 				+ " LEFT JOIN currency c1 ON c1.id = tjoa.exchange_currency_id"
-				+ " where tjoa.order_type='cost' and tjo.office_id = "+office_id
+				+ " where ifnull(tjoa.order_type ,'')!='charge' and tjo.office_id = "+office_id
 				 + " and tjo.delete_flag = 'N'"
 					+ " ) A where 1=1 ";
 		

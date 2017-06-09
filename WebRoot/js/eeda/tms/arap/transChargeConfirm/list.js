@@ -120,7 +120,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 		               +"&create_stamp_end_time="+end_date
 		               +"&cabinet_date_begin_time="+cabinet_date_begin_time
 		          	   +"&cabinet_date_end_time="+cabinet_date_end_time
-          			   +"&audit_flag="+audit_flag;
+          			   +"&audit_flag_notequals="+audit_flag;
 
           dataTable.ajax.url(url).load();
       };

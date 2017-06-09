@@ -6,7 +6,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       var dataTable = eeda.dt({
           id: 'eeda_table',
           serverSide: false, //不打开会出现排序不对 
-          ajax: "/transCostConfirm/list?audit_flag="+$("#audit_flag").val(),
+          ajax: "/transCostConfirm/list?audit_flag_notequals="+$("#audit_flag").val(),
           columns: [
 			{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
@@ -18,7 +18,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			},
 			{ "data": "ORDER_NO", "width": "80px",
 		    	  "render": function ( data, type, full, meta ) {
-                    return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+                    return "<a href='/transJobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
                 }
 			},
 			
@@ -35,6 +35,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             },
             { "data": "CUSTOMER", "width": "80px"},
             { "data": "SP_NAME", "width": "80px"},
+            { "data": "CAR_NO", "width": "80px"},
             { "data": "CHARGE_NAME", "width": "60px"},
             { "data": "PRICE", "width": "40px"},
             { "data": "AMOUNT","width": "40px"},
@@ -86,7 +87,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			           +"&sp_id="+sp
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date
-          			   +"&audit_flag="+audit_flag;
+          			   +"&audit_flag_notequals="+audit_flag;
 
           dataTable.ajax.url(url).load();
       };
