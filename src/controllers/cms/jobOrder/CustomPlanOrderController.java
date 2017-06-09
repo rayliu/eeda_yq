@@ -64,12 +64,18 @@ public class CustomPlanOrderController extends Controller {
         String jobId = getPara("jobOrderId");
         
         String login_id = getPara("login_id");
-        Record r = Db.findById("user_login", login_id);
-        Long office_id = r.getLong("office_id");
+        String type = "";
+        if(StringUtils.isNotEmpty(login_id)){
+        	Record r = Db.findById("user_login", login_id);
+            Long office_id = r.getLong("office_id");
+            
+            Office o = Office.dao.findById(office_id);
+            type = o.getStr("type");
+        }
+        
+        
         
         String to_office_id = getPara("to_office_id");
-        Office o = Office.dao.findById(office_id);
-        String type = o.getStr("type");
         if("tradeCompany".equals(type)){
         	TradeJobOrder jo = TradeJobOrder.dao.findById(jobId);
         	setAttr("jobOrder", jo);
