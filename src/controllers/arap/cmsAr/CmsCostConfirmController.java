@@ -26,14 +26,14 @@ import controllers.util.DbUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class CmsChargeConfirmController extends Controller {
+public class CmsCostConfirmController extends Controller {
 
-	private Logger logger = Logger.getLogger(CmsChargeConfirmController.class);
+	private Logger logger = Logger.getLogger(CmsCostConfirmController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {		
-		render("/eeda/cmsArap/cmsChargeConfirm/cmsChargeConfirmList.html");
+		render("/eeda/cmsArap/cmsCostConfirm/cmsCostConfirmList.html");
 	}
 	
     public void list() {
@@ -61,8 +61,9 @@ public class CmsChargeConfirmController extends Controller {
         					+" 			  left join fin_item f on f.id=cpoa.charge_id  "
         					+" 			  left join unit u on u.id=cpoa.unit_id  "
         					+" 			  left join currency c on c.id=cpoa.currency_id  "
-        					+" 			  where cpoa.order_type!='cost' and (cpo.office_id="+office_id+ref_office+ ") and cpo.delete_flag = 'N'"
-        					+"					or (cpo.to_office_id ="+office_id+" and cpo.delete_flag='N' )"
+        					+" 			  where cpoa.order_type!='charge' and (cpo.office_id="+office_id+ref_office+ ")"
+        					+" 			  and cpo.delete_flag = 'N'"
+        					+"			or (cpo.to_office_id ="+office_id+" and cpo.delete_flag='N' )"
 				+ " ) A where 1=1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
