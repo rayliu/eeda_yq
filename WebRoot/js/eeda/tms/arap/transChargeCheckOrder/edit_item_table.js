@@ -377,6 +377,8 @@ $(document).ready(function() {
                  $('#usd').val((parseFloat(data.USD)).toFixed(2));
                  $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
                  $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
+
+                 $('#total_amount').val((parseFloat(data.CNY)).toFixed(2));
           },'json').fail(function() {
                $.scojs_message('添加失败', $.scojs_message.TYPE_ERROR);
           });
@@ -425,6 +427,8 @@ $(document).ready(function() {
                  $('#usd').val((parseFloat(data.USD)).toFixed(2));
                  $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
                  $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
+
+                 $('#total_amount').val((parseFloat(data.CNY)).toFixed(2));
                  
              },'json').fail(function() {
                $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);

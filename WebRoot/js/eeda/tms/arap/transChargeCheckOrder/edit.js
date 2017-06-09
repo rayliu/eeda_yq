@@ -217,8 +217,8 @@ $(document).ready(function() {
             // $("#charge_confirmBtn").attr("disabled", true);  
            
             var formRequired=0;
-            var receive_cny=$('#receive_cny').val();//本次收款CNY大于0
-            var residual_cny=$('#residual_cny').val();//未收余额CNY大于0
+            var receive_cny=parseFloat($('#receive_cny').val());//本次收款CNY大于0
+            var residual_cny=parseFloat($('#residual_cny').val());//未收余额CNY大于0
             if(receive_cny<=0 ){
                 $.scojs_message('收款金额应大于0', $.scojs_message.TYPE_ERROR);
                 return;
