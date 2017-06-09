@@ -22,26 +22,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "SP_NAME"},
             { "data": "CAR_NO"},
             { "data": "TOTAL_AMOUNT","visible":false},
-            { "data": "CNY",
-                "render":function(data,type,full,meta){
-                  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
-                  return usd_str;
-                }
-            },
-            { "data": "USD",
+            { "data": "TOTAL_AMOUNT_CNY",
               "render":function(data,type,full,meta){
+                if(!data)
+                  data=0.00;
                 var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
                 return usd_str;
               }
             },
-            { "data": "JPY",
-                "render":function(data,type,full,meta){
-                  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
-                  return usd_str;
-                }
-            },
-            { "data": "HKD",
+            { "data": "TOTAL_RECEIVE_CNY",
               "render":function(data,type,full,meta){
+                if(!data)
+                  data=0.00;
+                var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
+                return usd_str;
+              }
+            },
+            { "data": "TOTAL_RESIDUAL_CNY",
+              "render":function(data,type,full,meta){
+                if(!data)
+                  data=0.00;
                 var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
                 return usd_str;
               }

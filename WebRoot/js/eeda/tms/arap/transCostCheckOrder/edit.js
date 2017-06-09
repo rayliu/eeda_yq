@@ -134,6 +134,8 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
             		 $('#confirmOrder_div').show();
            		   	 $('#costCheckreceipt').show();
             		 //赋值给本次付款，收款余额
+
+                      $("#total_amount").val($('#cny').val());
                      var cny=$('#cny').val().trim();
                      $('#receive_cny').val(cny);
                      $('#residual_cny').val(cny);
@@ -183,8 +185,8 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
 //            $("#charge_confirmBtn").attr("disabled", true);  
            
             var formRequired=0;
-            var receive_cny=$('#receive_cny').val();//本次付款CNY大于0
-            var residual_cny=$('#residual_cny').val();//未付余额CNY大于0
+            var receive_cny=parseFloat($('#receive_cny').val());//本次收款CNY大于0
+            var residual_cny=parseFloat($('#residual_cny').val());//未收余额CNY大于0
             if(receive_cny<=0 ){
             	$.scojs_message('付款金额应大于0', $.scojs_message.TYPE_ERROR);
             	return;

@@ -465,7 +465,11 @@ public class TransCostCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select aco.*,p.abbr sp_name,c.car_no "
+        		+ " select aco.*,"
+        		+" IFNULL(aco.cny, 0) total_amount_cny, "
+			    +" (SELECT IFNULL(SUM(t.receive_cny), 0) FROM trans_arap_cost_receive_item t WHERE t. charge_order_id=aco.id) total_receive_cny, "
+			    +" (aco.cny-(SELECT IFNULL(SUM(t.receive_cny), 0)  FROM trans_arap_cost_receive_item t WHERE t.charge_order_id=aco.id)) total_RESIDUAL_CNY, "
+			   + " p.abbr sp_name,c.car_no "
 				+ " from trans_arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " LEFT JOIN carinfo c ON c.id = aco.car_id "
