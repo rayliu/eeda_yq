@@ -12,7 +12,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
             colReorder: true,
             paging: true,
             serverSide: false, //不打开会出现排序不对 
-            ajax: "/transChargeConfirm/list?audit_flag="+$("#audit_flag").val(),
+            ajax: "/transChargeConfirm/list?audit_flag_notequals="+$("#audit_flag").val(),
             columns: [
 					{ "width": "10px",
 					    "render": function ( data, type, full, meta ) {

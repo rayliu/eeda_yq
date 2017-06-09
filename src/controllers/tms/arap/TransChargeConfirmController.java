@@ -50,17 +50,17 @@ public class TransChargeConfirmController extends Controller {
         long office_id=user.getLong("office_id");
      
         String sql = "select * from( "
-        		+ " select tjoa.*,tjo.order_no,tjo.id jobid,tjo.container_no,tjo.so_no,substring(tjo.create_stamp,1,10) create_stamp,tjo.customer_id,tjo.cabinet_type,"
-        		+ " substring(tjol.cabinet_date,1,10) cabinet_date,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
+        		+ " select tjoa.*,tjo.order_no,tjo.id jobid,tjo.container_no,tjo.so_no,CONVERT(substring(tjo.create_stamp,1,10),char) create_stamp,tjo.customer_id,tjo.cabinet_type,"
+        		+ " CONVERT(substring(tjol.cabinet_date,1,10),char) cabinet_date,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
 				+ " from trans_job_order_arap tjoa "
-				+ " left join trans_job_order tjo on tjo.id=tjoa.order_id "
-				+ " LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo.id"
+				+ " right join trans_job_order tjo on tjo.id=tjoa.order_id "
+				+ " LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjoa.order_id"
 				+ " left join party p on p.id=tjo.customer_id "
 				+ " left join party p1 on p1.id=tjoa.sp_id "
 				+ " left join fin_item f on f.id=tjoa.charge_id "
 				+ " left join unit u on u.id=tjoa.unit_id "
 				+ " left join currency c on c.id=tjoa.currency_id "
-				+ " where tjoa.order_type='charge' and tjo.office_id = "+office_id
+				+ " where ifnull(tjoa.order_type ,'')!='cost' and tjo.office_id = "+office_id
 				 + " and tjo.delete_flag = 'N'"
 					+ " ) A where 1=1 ";
         

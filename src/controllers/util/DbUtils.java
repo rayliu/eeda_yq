@@ -29,6 +29,9 @@ public class DbUtils {
             	if(key.endsWith("_equals")){
             		condition += " and " + key.replace("_equals", "") + " = '" + filterValue + "' ";
             		continue;
+            	}else if(key.endsWith("_notequals")){
+            		condition += " and ifnull(" + key.replace("_notequals", "") + ",'') != '" + filterValue + "' ";
+            		continue;
             	}else if(key.endsWith("_like")){
             		condition += " and " + key.replace("_like", "") + " like '%" + filterValue + "%' ";
             		continue;
