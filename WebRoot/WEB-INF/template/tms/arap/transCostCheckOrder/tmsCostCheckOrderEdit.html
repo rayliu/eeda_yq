@@ -294,13 +294,13 @@
 	                                       headers:[
 	                                           '<input type="checkbox" id="allcheck" >',
                                                '操作','工作单号','创建时间','柜号',
-                                               'so号','提柜时间', '客户','结算公司','费用名称','对账币制',
+                                               'so号','提柜时间', '客户','结算公司','结算车牌','费用名称','对账币制',
 			                                   '对账金额', '对人民币汇率','对账金额(CNY)', '备注','',
                                                ''
 	                                       ],
 	                                       field_list:[
 	                                           'ID','','ORDER_NO','CREATE_STAMP','CONTAINER_NO',
-                                           'SO_NO','cabinet_date','CUSTOMER_NAME', 'SP_NAME', 'fin_name','CURRENCY_NAME',
+                                           'SO_NO','cabinet_date','CUSTOMER_NAME', 'SP_NAME', 'car_no', 'fin_name','CURRENCY_NAME',
 	                                   'TOTAL_AMOUNT','EXCHANGE_RATE', 'AFTER_TOTAL', 'remark', 'ORDER_TYPE',
                                                'JOB_ORDER_ID'
 	                                       ],
@@ -384,7 +384,7 @@
                                             id:'eeda_cost_table', 
                                             style: 'width:2000px',
                                             headers:['<input type="checkbox" id="allcost">','工作单号','创建时间','柜号','so号',
-                                                '客户','结算公司','费用名称',
+                                                '客户','结算公司','结算车牌','费用名称',
                                             '对账金额','对账币制','对人民币汇率','对账金额（CNY）','备注'
                                             ]
                                         }){} %>
