@@ -124,6 +124,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 	      	});
 	      	if(itemIds.length==0){
 	      		$.scojs_message('该单据没有费用，请先录入费用', $.scojs_message.TYPE_ERROR);
+	      		return;
 	      	}
 	    	 $.post('/cmsChargeConfirm/chargeConfirm?itemIds='+itemIds, function(data){
 	    		 if(data.result==true){
