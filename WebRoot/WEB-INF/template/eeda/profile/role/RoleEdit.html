@@ -48,7 +48,7 @@
 													            <% if(permission.is_authorize == 1){
 													            	print(' checked');
 													            }%>
-													            <% if(role.code == 'admin'){
+													            <% if(role.code == 'admin' && role_code!'' != 'admin'){
 													            	print(' disabled');
 													            }%>
 													            >${permission.PERMISSION_NAME}

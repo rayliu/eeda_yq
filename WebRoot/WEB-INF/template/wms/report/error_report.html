@@ -69,8 +69,12 @@
                         <button id="searchBtn" class="btn btn-default" type="button">查询</button>
                         <button id="resetBtn" class="btn btn-default" type="button">清空条件</button>
                         <button id="checkBtn" class="btn btn-default" type="button">全选</button>
+                        <% if(shiro.hasPermission("errorReport.gateIn")){ %>
                         <button id="gateInBtn" class="btn btn-primary" type="button" style="display:none;">手工入库</button>
+                        <% }%>
+                        <% if(shiro.hasPermission("errorReport.delete")){ %>
                         <button id="deleteBtn" class="btn btn-primary" type="button">批量删除</button>
+                        <% }%>
                     </div>
                 </form>
             </div>

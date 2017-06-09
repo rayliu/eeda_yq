@@ -4,7 +4,9 @@
             <div class="col-lg-12">
                 <form id="orderForm">
                     <div class="form-group button-bar" >
+                    	<% if(shiro.hasPermission("importOrder.update")){ %>
                         <button id="uploadBtn" class="btn btn-default" type="button">导入单据</button>
+                        <% }%>
                         <input type="file" id="toFileUpload" name="files[]" 
 						     style="position:absolute;;  opacity:0;" data-url="/importOrder/importMac?order_type=gateIn">
                     </div>

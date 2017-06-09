@@ -10,17 +10,19 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
             "columns": [
                 { "data": "USER_NAME", "width": "20%",
                     "render":function(data, type, full, meta){
-                        return "<a  href='/loginUser/edit?id="+full.ID+"' target='_blank' >" + data + "</a>";
+                        //return "<a  href='/loginUser/edit?id="+full.ID+"' target='_blank' >" + data + "</a>";
+                    	return data;
                     }
                 },
                 { "data": "C_NAME", "width": "10%" },
                 { "data": "POSITION_NAME", "width": "10%",
                     "render":function(data, type, full, meta){
-                        if(data){
-                            return "<a  href='/role/ClickRole?id="+full.ROLE_ID+"' target='_blank' >" + data + "</a>";
-                        }else{
-                            return "";
-                        }
+//                        if(data){
+//                            //return "<a  href='/role/ClickRole?id="+full.ROLE_ID+"' target='_blank' >" + data + "</a>";
+//                        }else{
+//                            return "";
+//                        }
+                        return data;
                     }
                 },
                 //{ "data": "ROLE_MSG", "width": "40%", "visible": false},

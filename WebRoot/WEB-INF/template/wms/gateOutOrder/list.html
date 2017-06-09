@@ -44,7 +44,9 @@
 			                    <div class="form-group button-bar" >
 			                        <button id="searchBtn" class="btn btn-default" type="button">查询</button>
 			                        <button id="resetBtn" class="btn btn-default" type="button">清空条件</button>
+			                        <% if(shiro.hasPermission("gateOutOrder.create")){ %>
 									<button id="createBtn" class="btn btn-default" type="button" disabled>创建出库单</button>
+									<% }%>
 			                    </div>
 			                </form>
 			            </div>

@@ -2,6 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
 $(document).ready(function() {
 	  //datatable, 动态处理
 	var page_part_no = null;
+	var outPermission = $('outPermission').val();
 	var itemTable = eeda.dt({
         id: 'item_table',
         paging: true,
@@ -19,8 +20,13 @@ $(document).ready(function() {
  				 { "data": "CREATE_TIME","width":"120px"},
  				 { "data":null,"width":"50px",
                      "render": function ( data, type, full, meta ) {
-                       return '<button type="button" class="btn btn-default btn-xs gateOut">'+
-                         '<i class="fa fa-trash-o"></i>手工出库</button>';
+                    	 if(outPermission){
+                    		 return '<button type="button" class="btn btn-default btn-xs gateOut">'+
+                             '<i class="fa fa-trash-o"></i>手工出库</button>';
+                    	 }else{
+                    		 return '无权限';
+                    	 }
+                       
                      }
                  }
         ]
