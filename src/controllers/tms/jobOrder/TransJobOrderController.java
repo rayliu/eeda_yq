@@ -911,6 +911,13 @@ public class TransJobOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
+        String sColumn =  getPara("order[0][column]");
+        String sName =  getPara("columns["+sColumn+"][data]")==null?"create_stamp":getPara("columns["+sColumn+"][data]") ;
+        if("0".equals(sName)){
+        	sName = "create_stamp";
+        }
+        
         String sql = "";
         if("sowait".equals(type)){
         	sql=" ";        	
@@ -946,7 +953,7 @@ public class TransJobOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+        List<Record> orderList = Db.find(sql+ condition + " order by  " + sName +" "+ sort +sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

@@ -1777,6 +1777,14 @@ public class JobOrderController extends Controller {
     	
         String sLimit = "";
         String pageIndex = getPara("draw");
+        
+        String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
+        String sColumn =  getPara("order[0][column]");
+        String sName =  getPara("columns["+sColumn+"][data]")==null?"create_stamp":getPara("columns["+sColumn+"][data]") ;
+        if("0".equals(sName)){
+        	sName = "create_stamp";
+        }
+        
         if (getPara("start") != null  && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
             if("lock".equals(type)){
@@ -1977,7 +1985,7 @@ public class JobOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by order_export_date desc " + sLimit);
+        List<Record> orderList = Db.find(sql+ condition + " order by " + sName +" "+ sort +sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

@@ -15,6 +15,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	//datatable, 动态处理
       var dataTable = eeda.dt({
           id: 'eeda-table',
+          sort:true,
           paging: true,
           serverSide: true, //不打开会出现排序不对
           ajax: "/transJobOrder/list?type="+type,

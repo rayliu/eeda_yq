@@ -17,6 +17,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
   	//datatable, 动态处理
       var dataTable = eeda.dt({
           id: 'eeda-table',
+          sort:true,
           colReorder: true,
           paging: true,
           serverSide: true, //不打开会出现排序不对
