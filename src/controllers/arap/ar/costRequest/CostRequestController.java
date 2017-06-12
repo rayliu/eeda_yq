@@ -272,7 +272,7 @@ public class CostRequestController extends Controller {
 				+ " LEFT JOIN party p on p.id=acao.sp_id"
 				+ "	where acao.office_id = "+office_id
 				+ " group by acao.id"
-				+ " order by acao.create_stamp desc"
+				+ " order by acao.begin_time"
 				+ " ) B where 1=1 ";
 		
         String condition = DbUtils.buildConditions(getParaMap());
