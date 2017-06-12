@@ -4,7 +4,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
         document.title = '登陆用户列表 | '+document.title;
         $("#breadcrumb_li").text('登陆用户列表');
 
-        eeda.dt({
+        var dataTable = eeda.dt({
             id:'example',
             "ajax": "/loginUser/listUser",
             "columns": [
@@ -31,12 +31,12 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
                             }
                             
                             if(User.stop){
-                            	if(full.IS_STOP != true){
-                                    str = str +"<a class='btn  btn-danger btn-sm ' href='/loginUser/del/"+full.ID+"'>"+
-                                                 "<i class='fa fa-trash-o fa-edit'></i>停用</a>";
+                            	if(full.IS_STOP != 1){
+                                    str = str +"<button type='button' id='"+full.ID+"' class='btn  btn-danger btn-sm delete'>"+
+                                                 "<i class='fa fa-trash-o fa-edit'></i>停用</button>";
                                 }else{
-                                    str = str + "<a class='btn btn_green btn-xs dropdown-toggle' href='/loginUser/del/"+full.ID+"'>"+
-                                                 "<i class='fa fa-trash-o fa-edit'></i>启用 </a>";
+                                    str = str + "<button  type='button' id='"+full.ID+"' class='btn btn-primary btn-sm delete'>"+
+                                                 "<i class='fa fa-trash-o fa-edit'></i>启用 </button>";
                                 }
                             }
                         }
@@ -45,6 +45,20 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
                }
            ]
         });
+        
+        $('#example').on('click','.delete',function(){
+        	var id = $(this).attr('id');
+        	$.post('/loginUser/del',{id:id},function(data){
+        		if(data){
+        			 $.scojs_message('停用成功', $.scojs_message.TYPE_OK);
+        			 var url = "/loginUser/listUser";
+        			 dataTable.ajax.url(url).load();
+        		}
+        	}).fail(function(){
+        		 $.scojs_message('操作失败', $.scojs_message.TYPE_FALSE);
+        	});
+        });
+        
 
 
     });
