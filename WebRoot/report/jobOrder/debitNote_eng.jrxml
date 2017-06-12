@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="233"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -149,7 +149,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="office_fax" class="java.lang.String">
-		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
+		<fieldDescription><![CDATA[公司传真]]></fieldDescription>
 	</field>
 	<field name="office_tel" class="java.lang.String">
 		<fieldDescription><![CDATA[公司电话]]></fieldDescription>
@@ -228,7 +228,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="167" y="70" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="8a2b76d2-0e6a-4550-a030-d23601e21458"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{office_tel}]]></textFieldExpression>
@@ -236,7 +236,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="316" y="70" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="3d051f46-42f8-447b-b94b-ee9378541356"/>
 				<textElement textAlignment="Center" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{office_fax}]]></textFieldExpression>
@@ -522,21 +522,14 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 	<summary>
 		<band height="236" splitType="Stretch">
 			<staticText>
-				<reportElement x="349" y="214" width="159" height="16" uuid="42d6b9e9-dc8a-4907-a285-2d626777ce83"/>
+				<reportElement x="343" y="205" width="159" height="16" uuid="42d6b9e9-dc8a-4907-a285-2d626777ce83"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[AUTHORISED SIGNATURE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="328" y="195" width="227" height="15" uuid="b1fff306-2524-4525-afad-9bb102cbd4d0"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[ZHUHAI HENGQIN ENKYO SCM CO.,LTD.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="349" y="176" width="134" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
+				<reportElement x="343" y="176" width="134" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -584,6 +577,13 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="454" y="3" width="99" height="164" uuid="17bd275a-e9e1-444e-b881-b77e14f5cffc"/>
 				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="343" y="191" width="205" height="15" uuid="25b56eca-7482-427c-a569-109b79890b2c"/>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
