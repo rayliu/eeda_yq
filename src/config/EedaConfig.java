@@ -50,32 +50,21 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.app.AppControllerForMobile;
-import controllers.cms.jobOrder.CustomJobOrderController;
-import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
-import controllers.msg.DashBoardController;
-import controllers.oms.customOrder.CustomOrderController;
-import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.jobOrder.JobOrderControllerForMobile;
-import controllers.oms.jobOrder.JobOrderReportController;
-import controllers.oms.planOrder.PlanOrderController;
 import controllers.oms.planOrder.PlanOrderControllerForMobile;
-import controllers.oms.todo.TodoController;
-import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
 import controllers.profile.ContainerTypeController;
 import controllers.profile.CountryController;
-import controllers.profile.CurrencyController;
-import controllers.profile.CurrencyRateController;
 import controllers.profile.CustomController;
 import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.TradeItemController;
 import controllers.profile.UnitController;
 import controllers.report.OrderStatusController;
-import controllers.tms.jobOrder.TransJobOrderController;
-import controllers.tms.planOrder.TransPlanOrderController;
+import controllers.webadmin.customer.CustomerController;
+import controllers.webadmin.msg.DashBoardController;
 import controllers.wms.ChangePartNoController;
 import controllers.wms.ErrorReportController;
 import controllers.wms.GateInController;
@@ -160,6 +149,7 @@ public class EedaConfig extends JFinalConfig {
 	    //总管理的后台
 	    me.add("/WebAdmin", DashBoardController.class);
         me.add("/WebAdmin/dashBoard", DashBoardController.class);
+        me.add("/WebAdmin/customer", CustomerController.class);
         
         //商家后台
         me.add("/", MainController.class, contentPath);
