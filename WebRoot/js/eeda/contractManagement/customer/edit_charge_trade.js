@@ -22,7 +22,7 @@ $(document).ready(function() {
     var bindFieldEvent=function(){
         eeda.bindTableFieldChargeId('charge_table_trade','FEE_ID','/finItem/search','');
         eeda.bindTableFieldCurrencyId('charge_table_trade','CURRENCY_ID','/serviceProvider/searchCurrency','');
-        eeda.bindTableField('charge_table_trade','UOM','/serviceProvider/searchUnit','');
+        eeda.bindTableField('charge_table_trade','UOM','/serviceProvider/searchChargeUnit','');
     };
 
     //------------事件处理

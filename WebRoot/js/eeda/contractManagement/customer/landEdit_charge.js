@@ -41,7 +41,7 @@ $(document).ready(function() {
     var bindFieldEvent=function(){
         eeda.bindTableFieldChargeId('charge_land_table','FEE_ID','/finItem/search','');
         eeda.bindTableFieldCurrencyId('charge_land_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
-        eeda.bindTableField('charge_land_table','UOM','/serviceProvider/searchUnit','');
+        eeda.bindTableField('charge_land_table','UOM','/serviceProvider/searchChargeUnit','');
     };
     //------------事件处理
     var cargoTable = eeda.dt({

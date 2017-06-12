@@ -40,7 +40,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         var bindFieldEvent=function(){
             eeda.bindTableFieldChargeId('charge_ocean_table','FEE_ID','/finItem/search','');
             eeda.bindTableFieldCurrencyId('charge_ocean_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
-            eeda.bindTableField('charge_ocean_table','UOM','/serviceProvider/searchUnit','');
+            eeda.bindTableField('charge_ocean_table','UOM','/serviceProvider/searchChargeUnit','');
             
         };
         //------------事件处理
