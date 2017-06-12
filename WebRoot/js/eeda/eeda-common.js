@@ -710,7 +710,7 @@ eeda.refreshUrl = refreshUrl;
 	  };
    
     eeda.buildTableDetail=function(table_id, deletedTableIds){
-      var item_table_rows = $("#"+table_id+" tr");
+      var item_table_rows = $("#"+table_id+" tr:visible");
         var items_array=[];
         for(var index=0; index<item_table_rows.length; index++){
             if(index==0)

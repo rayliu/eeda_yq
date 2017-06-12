@@ -58,11 +58,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	
         //条件筛选
     	$("#searchBtn").on('click', function () {    	 	
-          	var COMPANY_NAME = $("#COMPANY_NAME").val().trim();
+          	var customer_id = $("#customer_id").val();
+          	var contract_no = $("#contract_no").val();
+            var start_date = $("#create_date_begin_time").val();
+            var end_date = $("#create_date_end_time").val();
           	
-          	var url = "/supplierContract/list?customer_name_like="+COMPANY_NAME+"&contact_person_like="+CONTACT_PERSON+"&code_like="+code+"&abbr_like="+ABBR+"&address_like="+ADDRESS;
+          	var url = "/supplierContract/list?customer_id="+customer_id
+          	+"&contract_no="+contract_no
+          	+"&create_date_begin_time="+start_date
+          	+"&create_date_end_time="+end_date;
           	dataTable.ajax.url(url).load();
-        });
-
+    	});
     });
 });

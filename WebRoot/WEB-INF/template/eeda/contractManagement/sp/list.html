@@ -19,21 +19,21 @@
                                     <div class="row"><!--  第1行  -->
                                         <div class="col-lg-4">
                                           <%include("/eeda/component/form/inputSpField.html", 
-                                                              {   id: 'customer_name', 
+                                                              {   id: 'customer_id', 
                                                                   label: '供应商名称', 
                                                                   value: ''
                                                               }){}%>
                                         </div>
                                         <div class="col-lg-4"><!--  三列排版  -->
                                             <%include("/eeda/component/form/inputField.html", 
-                                                                {   id: 'order_no', 
+                                                                {   id: 'contract_no', 
                                                                     label: '合同号', 
                                                                     value: ''
                                                                 }){}%>
                                         </div>
                                         <div class="col-lg-4">
                                             <%include("/eeda/component/form/inputDateQueryField.html", 
-                                            {   id:'create_stamp', 
+                                            {   id:'create_date', 
                                                 label:'创建时间', 
                                                 value:''
                                             }){} %>
