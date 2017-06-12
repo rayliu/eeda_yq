@@ -1,0 +1,1 @@
+package models;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class RolePermission extends Model<RolePermission> {	public static final RolePermission dao = new RolePermission();}
