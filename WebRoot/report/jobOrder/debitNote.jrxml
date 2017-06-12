@@ -184,7 +184,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="office_fax" class="java.lang.String">
-		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
+		<fieldDescription><![CDATA[公司传真]]></fieldDescription>
 	</field>
 	<field name="office_tel" class="java.lang.String">
 		<fieldDescription><![CDATA[公司电话]]></fieldDescription>
@@ -257,7 +257,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="227" y="111" width="271" height="36" uuid="ac92119a-3fdc-4f7d-9f2c-a5f2c23c930c"/>
+				<reportElement x="232" y="111" width="271" height="36" uuid="ac92119a-3fdc-4f7d-9f2c-a5f2c23c930c"/>
 				<textElement>
 					<font fontName="黑体" size="24" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -273,7 +273,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="119" y="41" width="402" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="b3b1f10f-5bb4-4800-b2ef-504ced15a99d"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
@@ -281,7 +281,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="117" y="63" width="402" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="e0579a60-8ea8-4da8-9434-23ad868769b2"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"  isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{eng_address}]]></textFieldExpression>
@@ -289,7 +289,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="182" y="78" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="e3e4bc7b-5a65-4735-9fae-d94a0fff65a3"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"  isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{office_tel}]]></textFieldExpression>
@@ -297,7 +297,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="306" y="78" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="dbf3e13f-8c9e-4de1-9079-28192ec62a99"/>
 				<textElement textAlignment="Left" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isStrikeThrough="false"  isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{office_fax}]]></textFieldExpression>
