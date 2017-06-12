@@ -10,9 +10,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
         var dataTable = eeda.dt({
             id: 'eeda_table',
             colReorder: true,
-            paging: true,
-            serverSide: false, //不打开会出现排序不对 
-            ajax: "/transChargeConfirm/list?audit_flag_notequals="+$("#audit_flag").val(),
+            // paging: true,
+            serverSide: true, //不打开会出现排序不对 
+            // ajax: "/transChargeConfirm/list?audit_flag_notequals="+$("#audit_flag").val(),
             columns: [
 					{ "width": "10px",
 					    "render": function ( data, type, full, meta ) {
