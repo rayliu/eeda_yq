@@ -261,7 +261,11 @@ label.error {
 .date .add-on{
 	position: absolute;
     right: 8%;
-    margin-top: 10px;
+    margin-top: 5px;
+}
+
+td .date .add-on{
+    margin-top: 12px;
 }
 
 .col-lg-6 .date .add-on{
