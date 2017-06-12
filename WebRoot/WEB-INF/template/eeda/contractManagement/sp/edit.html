@@ -148,6 +148,39 @@
                                         disabled: 'disabled'
                                     }){}%>
                             </div>
+                        </div>                        
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/selectField.html", 
+                                    {   id:'trans_clause', 
+                                        label:'运输条款', 
+                                        value:order.trans_clause!'',
+                                        value_list:[
+                                            {code:'CFS-CFS', value:'CFS-CFS'},
+                                            {code:'CFS-DOOR', value:'CFS-DOOR'}, 
+                                            {code:'CY-CY', value:'CY-CY'},
+                                            {code:'CY-DOOR', value:'CY-DOOR'},
+                                            {code:'DOOR-DOOR', value:'DOOR-DOOR'},
+                                            {code:'DOOR-CFS', value:'DOOR-CFS'},
+                                            {code:'DOOR-CY', value:'DOOR-CY'}
+                                        ]
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4">
+                                  <%include("/eeda/component/form/selectField.html", 
+                                    {   id:'trade_type', 
+                                        label:'贸易类型', 
+                                        value:order.trade_type!'',
+                                        value_list:[
+                                            {code:'FOB', value:'FOB'},
+                                            {code:'CIF', value:'CIF'},
+                                            {code:'CFR', value:'CFR'},
+                                            {code:'DDU', value:'DDU'},
+                                            {code:'DDP', value:'DDP'},
+                                            {code:'OTHER', value:'OTHER'}
+                                        ]
+                                    }){}%>
+                            </div>
                         </div>
                         <div class="form-group">
                          <label>备注</label>
@@ -162,13 +195,19 @@
             <div class="simple_order_list_div">
                 <ul id="orderTabs" class="nav nav-tabs">
                     <li class="active">
-                        <a id='chargeOceanTab' href="#oceanChargeDetail" data-toggle="tab">海运合同报价</a>
+                        <a id='chargeOceanTab' href="#oceanChargeDetail" data-toggle="tab">海运</a>
                     </li>
                     <li >
-                        <a id='chargeAirTab' href="#airChargeDetail" data-toggle="tab">空运合同报价</a>
+                        <a id='chargeAirTab' href="#airChargeDetail" data-toggle="tab">空运</a>
                     </li>
                     <li >
-                        <a id='chargeLandTab' href="#landChargeDetail" data-toggle="tab">陆运合同报价</a>
+                        <a id='chargeLandTab' href="#landChargeDetail" data-toggle="tab">陆运</a>
+                    </li>
+                    <li >
+                        <a id='tradeTab' href="#tradeChargeDetail" data-toggle="tab">加工贸易</a>
+                    </li>
+                    <li >
+                        <a id='tourTab' href="#tourChargeDetail" data-toggle="tab">园区游</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -193,7 +232,20 @@
                             </div>
                         </div>
                     </div>
-
+					<div class="tab-pane fade  in" id="tradeChargeDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/eeda/contractManagement/sp/edit_charge_trade.html", {}){} %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade  in" id="tourChargeDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/eeda/contractManagement/sp/edit_charge_tour.html", {}){} %>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="button-bar" style = "margin-top:130px" >

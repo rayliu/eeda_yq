@@ -1,5 +1,5 @@
 define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',
-	'./oceanEdit_charge','./airEdit_charge','./landEdit_charge'], function ($, metisMenu) { 
+	'./oceanEdit_charge','./airEdit_charge','./landEdit_charge', './edit_charge_trade', './edit_charge_tour'], function ($, metisMenu) { 
 
     $(document).ready(function() {
 	  $("#breadcrumb_li").text('客户合同');
@@ -36,6 +36,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        order.itemOceanList = itemOrder.buildOceanItem();
 	        order.itemAirList = itemOrder.buildAirItem();
 	        order.itemLandList = itemOrder.buildLandItem();
+	        order.itemTradeList = itemOrder.buildTradeItem();
+	        order.itemTourList = itemOrder.buildTourItem();
+	        
+	        order.itemOceanLocList = itemOrder.buildOceanLocItem();
+	        order.itemAirLocList = itemOrder.buildAirLocItem();
+	        order.itemLandLocList = itemOrder.buildLandLocItem();
+	        order.itemTourLocList = itemOrder.buildTourLocItem();
 	        $("#saveBtn").attr("disabled",true);
 	        
 	        $.post("/supplierContract/save",{params:JSON.stringify(order)},function(data){
