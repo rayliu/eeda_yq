@@ -639,11 +639,13 @@ public class ServiceProviderController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchUnit(){
     	String input = getPara("input");
-    	List<Record> recs = null;
-    	String sql = "select id,CONCAT(name,name_eng) name from unit where type='order'";
+    	String contion="";
     	if(!StringUtils.isBlank(input)){
-    		sql+=" and name like '%" + input + "%' "+"or name_eng like '%"+input+"%'";
+    		contion=" and name like '%" + input + "%' "+"or name_eng like '%"+input+"%'";
     	}
+    	List<Record> recs = null;
+    	String sql = "select * from(select id,CONCAT(name,name_eng) name,name_eng from unit where type='order' )A where 1=1  "+contion+" ";
+    	
     	recs = Db.find(sql);
     	renderJson(recs);
     }
