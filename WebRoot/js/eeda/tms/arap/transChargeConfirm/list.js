@@ -50,8 +50,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 					{ "data": "PRICE", "width": "40px"},
 					{ "data": "AMOUNT","width": "40px"},
 					{ "data": "UNIT_NAME", "width": "40px"},
-					{ "data": "TOTAL_AMOUNT", "width": "40px"},
-					{ "data": "CURRENCY_NAME", "width": "40px"},
+					{ "data": "TOTAL_AMOUNT", "width": "40px","class":"total_amount"},
+					{ "data": "CURRENCY_NAME", "width": "40px","class":"currency_name"},
 					{ "data": "EXCHANGE_RATE", "width": "40px"},
 					{ "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
 					{ "data": "REMARK", "width": "60px"},
@@ -85,6 +85,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
         	}else{
         		$('#confirmBtn').attr('disabled',true);
         	}
+        	cal();
         });
         
         $("#eeda_table").on('click','.checkBox',function(){
@@ -127,19 +128,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
       
       	//checkbox选中则button可点击
 		$('#eeda_table').on('click','.checkBox',function(){
-			
-			var hava_check = 0;
-			$('#eeda_table input[type="checkbox"]').each(function(){	
-				var checkbox = $(this).prop('checked');
-	    		if(checkbox){
-	    			hava_check=1;
-	    		}	
-			})
-			if(hava_check>0){
-				$('#confirmBtn').attr('disabled',false);
-			}else{
-				$('#confirmBtn').attr('disabled',true);
-			}
+			var checked=$('#eeda_table input[type="checkbox"]:checked').length;
+			$('#confirmBtn').attr('disabled',checked==0);
+			cal();
 		});
 		
 		$('#confirmBtn').click(function(){
@@ -170,6 +161,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 	              });
       })
       
+      //计算表的对账总额
+      var cal=function(){
+      	var cny_total_amount=0;
+      	$('#eeda_table tbody tr').each(function(){
+      		var currency_name=$(this).find('.currency_name').text();
+      		var total_amount=$(this).find('.total_amount').text();
+      		var checked=$(this).find('input[type=checkbox]').prop('checked');
+      		if(currency_name=='CNY' && total_amount!='' && checked){
+      			 cny_total_amount=parseFloat(cny_total_amount)+parseFloat(total_amount);
+      		}
+      	});
+      	$('#cny_totalAmountSpan').html(eeda.numFormat(parseFloat(cny_total_amount).toFixed(2),3));
+      }
       
     	
     });
