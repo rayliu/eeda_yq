@@ -4,7 +4,19 @@ $(document).ready(function() {
 	document.title = order_no + ' | ' + document.title;
     $("#breadcrumb_li").text('Booking');
     
-
+    $('#collapseGoodsInfo').on('show.bs.collapse', function () {
+        $('#collapseGoodsIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+    });
+    $('#collapseGoodsInfo').on('hide.bs.collapse', function () {
+        $('#collapseGoodsIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
+    });
+    
+    $('#collapseOrderInfo').on('show.bs.collapse', function () {
+        $('#collapseOrderIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+    });
+    $('#collapseOrderInfo').on('hide.bs.collapse', function () {
+        $('#collapseOrderIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
+    });
 
 	 //按钮状态
 	var id = $('#order_id').val();

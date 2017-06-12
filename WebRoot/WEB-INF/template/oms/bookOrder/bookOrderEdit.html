@@ -5,8 +5,67 @@
    <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
         <div id="page-wrapper">
         <form id="orderForm">
-            <div class="row simple_search_div">
-                <div class="col-lg-12">
+        	<div class="row simple_search_div">
+              	<div class="col-lg-12" style="margin:5px 0 15px 0;">
+              		<div style="width:10%;float:left;text-align:center;">
+					<h4 <% if(order.create_stamp!''!=''){%>style="color:green;"<%}%>>Booking</h4>
+					<% if(order.create_stamp!'' != null && order.create_stamp!'' !=''){%>
+              				<span style="color:green;">${order.create_stamp!''}创建</span>
+              		<%}%>
+					</div>
+	              		<div style="width:10%;float:left;text-align:center;">
+	              			<h4>—————></h4>
+					</div>
+	              		<div style="width:10%;float:left;text-align:center;">
+	              			<h4 <% if(job_eta!''!=''){%>style="color:green;"<%}%>>派车</h4>
+	              			<% if(job_eta!'' != null && job_eta!'' !=''){%>
+	              				<span id="sendCar" style="color:green;">预计${job_eta!''}到厂</span>
+	              			<%}%>
+					</div>
+	              		<div style="width:10%;float:left;text-align:center;">
+	              			<h4>—————></h4>
+					</div>
+	              		<div style="width:10%;float:left;text-align:center;">
+						<h4 <% if(job_status!''!=''){%>style="color:green;"<%}%>>报关</h4>
+						<% if(job_custom_order_no!'' != null && job_custom_order_no!'' !=''){%>
+						<label id="custom" style="color:green;>报关单号：</label>${job_custom_order_no!''}
+						<%}%>
+						<% if(job_status!'' != null && job_status!'' !=''){%>
+						<br/>
+						<label id="custom" style="color:green;">状态：</label>${job_status!''}
+						<%}%>
+					</div>
+	              		<div style="width:10%;float:left;text-align:center;">
+	              			<h4>—————></h4>
+					</div>
+	              		<div style="width:10%;float:left;text-align:center;">
+						<h4 <% if(job_atd!''!=''){%>style="color:green;"<%}%>>上船</h4>
+						<% if(job_atd!'' != null && job_atd!'' !=''){%>
+	              			<span id="boarding" style="color:green;">${job_atd!''}上船</span>
+	              		<%}%>
+					</div>
+	              		<div style="width:10%;float:left;text-align:center;">
+	              			<h4>—————></h4>
+					</div>
+	              		<div style="width:10%;float:left;text-align:center;">
+						<h4 <% if(job_ata!''!=''){%>style="color:green;"<%}%>>到港</h4>
+						<% if(job_ata!'' != null && job_ata!'' !=''){%>
+	              			<span id="arrival" style="color:green;">${job_ata!''}到港</span>
+	              		<%}%>
+					</div>
+              	</div>
+            </div>
+        
+        	<div class="row simple_search_div" style="margin-top:18px;">
+                <div class="panel-heading" >
+			        <h4 class="panel-title">
+			            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOrderInfo" aria-expanded="false" class="collapsed">
+			            <i id='collapseOrderIcon' class="fa fa-angle-double-down"></i> 单据主要信息
+			            </a>
+			        </h4>
+			    </div>
+			    <div id="collapseOrderInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
+			    	 <div class="panel-body">
                        <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
                        <input id="job_order_id" type="hidden" name="job_order_id" value="${jobOrder.id!''}"/>
                        <div class="row">
@@ -66,60 +125,21 @@
 	                     	<textarea id='note' class="form-control" rows="3" name="note">${order.remark!''}</textarea>
 	               		 </div>
                     </div>
-                </div>
+			    </div>
+			</div>
+               
                 
-                <div class="row simple_search_div" style="margin-top:18px">
-                	<div class="col-lg-12">
-                		<div style="width:10%;float:left;text-align:center;">
-							<h4>Booking</h4>
-							<% if(order.create_stamp!'' != null && order.create_stamp!'' !=''){%>
-                				<span>创建时间：<br>${order.create_stamp!''}</span>
-                			<%}%>
-						</div>
-                		<div style="width:10%;float:left;text-align:center;">
-                			<h4>—————></h4>
-						</div>
-                		<div style="width:10%;float:left;text-align:center;">
-                			<h4>派车</h4>
-                			<% if(job_eta!'' != null && job_eta!'' !=''){%>
-                				<span id="sendCar">预计${job_eta!''}到厂</span>
-                			<%}%>
-						</div>
-                		<div style="width:10%;float:left;text-align:center;">
-                			<h4>—————></h4>
-						</div>
-                		<div style="width:10%;float:left;text-align:center;">
-							<h4>报关</h4>
-							<% if(job_custom_order_no!'' != null && job_custom_order_no!'' !=''){%>
-							<label id="custom">报关单号：</label>${job_custom_order_no!''}
-							<%}%>
-							<% if(job_status!'' != null && job_status!'' !=''){%>
-							<br/>
-							<label id="custom">状态：</label>${job_status!''}
-							<%}%>
-						</div>
-                		<div style="width:10%;float:left;text-align:center;">
-                			<h4>—————></h4>
-						</div>
-                		<div style="width:10%;float:left;text-align:center;">
-							<h4>上船</h4>
-							<span id="boarding"></span>
-						</div>
-                		<div style="width:10%;float:left;text-align:center;">
-                			<h4>—————></h4>
-						</div>
-                		<div style="width:10%;float:left;text-align:center;">
-							<h4>到港</h4>
-							<span id="arrival"></span>
-						</div>
-                	</div>
-                </div>
-                
-                   
-                 <div style="margin-left:15px; margin-top:15px">
-	                 <div class="row small_head" ><div class="font_style">货品信息</div></div>
-			         <div class="row simple_small_title_div">
-			         <div style="margin-left:15px">
+            <div class="row simple_search_div" style="margin-top:18px;" >
+               <div class="panel-heading" >
+		        <h4 class="panel-title">
+		            <a data-toggle="collapse" data-parent="#accordion" href="#collapseGoodsInfo" aria-expanded="false" class="collapsed">
+		            <i id='collapseGoodsIcon' class="fa fa-angle-double-down"></i> 货品信息
+		            </a>
+		        </h4>
+		    </div>
+		    <div id="collapseGoodsInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
+		    	<div class="panel-body">
+			         <div style="">
 			             <div class="row">
 			             	<div class="col-lg-4">
 	                            <%include("/eeda/component/form/inputField.html", 
@@ -273,6 +293,8 @@
 	                                                    value:jobOrder.truck_count!''
 	                                                }){}%>
 	                        </div>
+	                    </div>
+	                    <div class="row">
 	                        <div class="col-lg-4">
 	                            <%include("/eeda/component/form/inputField.html", 
 	                                                {   id:'pol', 
@@ -299,9 +321,10 @@
 	                        </div> 
                     	</div>
 			         </div>
-			         </div>
-                 </div> 	 
-            </form>
+                 </div> 
+		    </div>
+	    </div>	 
+    </form>
             
                    
                 <div class="simple_order_list_div">

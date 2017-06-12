@@ -1250,11 +1250,14 @@ public class BookOrderController extends Controller {
 	    	if(jobland!=null){
 	    		if(jobland.get("eta")==null){
 	        		Record joblandcab = Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",job_order_id);
-	        		if(joblandcab != null){
-	        			setAttr("job_eta", joblandcab.get("cabinet_arrive_date"));
+	        		if(joblandcab.get("cabinet_arrive_date") != null){
+	        			String cabinet_arrive_date = (joblandcab.get("cabinet_arrive_date")).toString();
+	        			setAttr("job_eta", cabinet_arrive_date.substring(0,cabinet_arrive_date.length()-2));
 	        		}
 	    		}else{
-	        		setAttr("job_eta", jobland.get("eta"));
+	    			String eta = jobland.get("eta").toString();
+	    			
+	        		setAttr("job_eta", eta.substring(0,eta.length()-2));
 	        	}
 	    	}
 	    	
@@ -1266,10 +1269,26 @@ public class BookOrderController extends Controller {
 	    		setAttr("job_custom_order_no", custom_order_no);
 	    		setAttr("job_status", status);
 	    	}
+	    	
+	    	//上船时间
+	    	Record jobShip = Db.findFirst("select * from job_order_shipment where order_id = ?",job_order_id);
+	    	if(jobShip != null){
+	    		if(jobShip.get("atd")!=null){
+	    			String atd = jobShip.get("atd").toString();
+	    			setAttr("job_atd", atd);
+	    		}
+	    		
+	    		if(jobShip.get("ata")!=null){
+	    			String ata = jobShip.get("ata").toString();
+	    			setAttr("job_ata", ata);
+	    		}
+	    	}
     	}
     	
     	
 //    	Record re = Db.findFirst("");
+    	String create_stamp = bookOrder.get("create_stamp").toString();
+    	bookOrder.set("create_stamp",create_stamp.substring(0, create_stamp.length()-2));
     	setAttr("order", bookOrder);
     	//相关文档
     	setAttr("docList", getItems(id,"doc"));

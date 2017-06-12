@@ -1,12 +1,5 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
     $(document).ready(function() {
-        //相关文档
-        $('#collapseDocInfo').on('show.bs.collapse', function () {
-          $('#collapseDocIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
-        });
-        $('#collapseDocInfo').on('hide.bs.collapse', function () {
-          $('#collapseDocIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
-        });
         
         
         //删除一行
