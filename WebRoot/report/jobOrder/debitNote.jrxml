@@ -36,7 +36,13 @@ ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 	c. NAME currency_name,
 	IFNULL(jo.gross_weight,josi.gross_weight) gross_weight,
 	IFNULL(jo.pieces,josi.pieces) pieces,
-
+	o.logo_path,
+	o.office_name,
+	o.eng_office_name,
+	o.address,
+	o.eng_address,
+	CONCAT('Fax: ',o.office_fax) office_fax,
+	CONCAT('Tel: ',o.office_tel) office_tel,
 	josi.container_no,
 	jos.order_id,
 	jos.hbl_no,
@@ -117,6 +123,7 @@ FROM
 	 job_order jo
 LEFT JOIN job_order_arap joa ON jo.id = joa.order_id
 LEFT JOIN party pr ON pr.id = joa.sp_id
+LEFT JOIN office o on o.id = pr.office_id
 LEFT JOIN job_order_shipment jos ON jos.order_id = joa.order_id
 LEFT JOIN job_order_shipment_item josi ON josi.order_id = jo.id
 LEFT JOIN unit u1 ON josi.unit_id = u1.id
@@ -133,7 +140,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 		<fieldDescription><![CDATA[供应商id]]></fieldDescription>
 	</field>
 	<field name="exchange_total_amount" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[结算金额]]></fieldDescription>
 	</field>
 	<field name="invoice_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -142,10 +149,10 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="total_amount" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[对账金额]]></fieldDescription>
 	</field>
 	<field name="exchange_rate" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[对人民币汇率]]></fieldDescription>
 	</field>
 	<field name="amount" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -158,8 +165,29 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 	<field name="gross_weight" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pieces" class="java.lang.Object">
+	<field name="pieces" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="logo_path" class="java.lang.String">
+		<fieldDescription><![CDATA[logo路径]]></fieldDescription>
+	</field>
+	<field name="office_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="eng_office_name" class="java.lang.String">
+		<fieldDescription><![CDATA[公司英文名称]]></fieldDescription>
+	</field>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[公司英文地址]]></fieldDescription>
+	</field>
+	<field name="eng_address" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="office_fax" class="java.lang.String">
+		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
+	</field>
+	<field name="office_tel" class="java.lang.String">
+		<fieldDescription><![CDATA[公司电话]]></fieldDescription>
 	</field>
 	<field name="container_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -198,9 +226,6 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 	<field name="company_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="address" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="phone" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -221,31 +246,6 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 	</title>
 	<pageHeader>
 		<band height="147" splitType="Stretch">
-			<staticText>
-				<reportElement x="146" y="41" width="364" height="22" uuid="1f17ff0a-6c4f-4e21-a8f0-17f61bc37be6"/>
-				<textElement>
-					<font size="16" isBold="true"/>
-				</textElement>
-				<text><![CDATA[ZHUHAI HENGQIN ENKYO SCM CO.,LTD.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="126" y="63" width="384" height="15" uuid="05510db4-0f2e-4cd4-8c3c-be1339f553d3"/>
-				<text><![CDATA[7th FI. Shanhaiyipin,56# of Shihua Road, Jida,Zhuhai, Guangding,Chian]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="169" y="78" width="125" height="15" uuid="39e3da46-96b0-46ea-87d4-c1c3e7bcac70"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[TEL:86-756-3225991]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="294" y="78" width="121" height="15" uuid="e6480da6-0695-4c86-9f46-1ce609cd332a"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[FAX:86-756-3225900]]></text>
-			</staticText>
 			<line>
 				<reportElement x="0" y="110" width="555" height="1" uuid="9740ad94-a013-4730-b564-377abc00a4ba"/>
 				<graphicElement>
@@ -254,22 +254,54 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 			</line>
 			<image>
 				<reportElement x="2" y="-10" width="140" height="38" uuid="44b39cc7-80f7-43ee-beb3-35f96e91d3ca"/>
-				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="198" y="111" width="271" height="36" uuid="ac92119a-3fdc-4f7d-9f2c-a5f2c23c930c"/>
+				<reportElement x="227" y="111" width="271" height="36" uuid="ac92119a-3fdc-4f7d-9f2c-a5f2c23c930c"/>
 				<textElement>
 					<font fontName="黑体" size="24" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[DEBIT NOTE]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="166" y="12" width="322" height="29" uuid="cef834b4-b820-4d40-b449-6d7f77b55ab0"/>
-				<textElement>
-					<font fontName="宋体" size="18" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="133" y="12" width="365" height="29" uuid="53190517-ff4b-4adf-9c05-4b2154d6548b"/>
+				<textElement textAlignment="Center">
+					<font fontName="黑体" size="18" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[珠海横琴远桥供应链管理有限公司]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="119" y="41" width="402" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="b3b1f10f-5bb4-4800-b2ef-504ced15a99d"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="117" y="63" width="402" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="e0579a60-8ea8-4da8-9434-23ad868769b2"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{eng_address}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="182" y="78" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="e3e4bc7b-5a65-4735-9fae-d94a0fff65a3"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{office_tel}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="306" y="78" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="dbf3e13f-8c9e-4de1-9079-28192ec62a99"/>
+				<textElement textAlignment="Left" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{office_fax}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>

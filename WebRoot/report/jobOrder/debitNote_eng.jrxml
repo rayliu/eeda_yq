@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="306"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -31,14 +31,20 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	jor.sp_id,jor.exchange_total_amount exchange_total_amount,jor.invoice_no invoice_no,jor.price price,jor.total_amount total_amount,
-  jor.exchange_currency_rate exchange_rate,jor.amount amount, pr.company_name_eng companyName,IFNULL(pr.contact_person_eng,pr.contact_person) personEng,
-	f.name_eng charge_name_eng,
+	joa.sp_id,joa.exchange_total_amount exchange_total_amount,joa.invoice_no invoice_no,joa.price price,joa.total_amount total_amount,
+  joa.exchange_currency_rate exchange_rate,joa.amount amount, pr.company_name_eng companyName,IFNULL(pr.contact_person_eng,pr.contact_person) personEng,
+	ifnull(f.name_eng,f.name) charge_name_eng,
 	u. NAME unit_name,
 	c. NAME currency_name,
 	IFNULL(jo.gross_weight,josi.gross_weight) gross_weight,
 	CONCAT(CAST(IFNULL(jo.pieces,josi.pieces) AS char),' ','dfas') pieces,
-
+	o.logo_path,
+	o.office_name,
+	o.eng_office_name,
+	o.address,
+	o.eng_address,
+	CONCAT('Fax: ',o.office_fax) office_fax,
+	CONCAT('Tel: ',o.office_tel) office_tel,
 	josi.container_no,
 	jos.order_id,
 	jos.hbl_no,
@@ -61,11 +67,11 @@
 	(select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
 			CONCAT(c.name,': ',sum(total_amount)) total
 		FROM
-			job_order_arap jor
-		LEFT JOIN currency c ON c.id = jor.currency_id
+			job_order_arap joa
+		LEFT JOIN currency c ON c.id = joa.currency_id
 		WHERE
-			jor.order_type = 'charge'
-AND $X{IN,jor.id,order_id}
+			joa.order_type = 'charge'
+AND $X{IN,joa.id,order_id}
 GROUP BY c.id) a
 	) total,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage,
 
@@ -80,25 +86,26 @@ GROUP BY c.id) a
 	) ex_total
 FROM
 	 job_order jo
-LEFT JOIN job_order_arap jor ON jo.id = jor.order_id
-LEFT JOIN party pr ON pr.id = jor.sp_id
-LEFT JOIN job_order_shipment jos ON jos.order_id = jor.order_id
+LEFT JOIN job_order_arap joa ON jo.id = joa.order_id
+LEFT JOIN party pr ON pr.id = joa.sp_id
+LEFT JOIN office o on o.id = pr.office_id
+LEFT JOIN job_order_shipment jos ON jos.order_id = joa.order_id
 LEFT JOIN job_order_shipment_item josi ON josi.order_id = jo.id
 LEFT JOIN unit u1 ON josi.unit_id = u1.id
-LEFT JOIN unit u ON u.id = jor.unit_id
-LEFT JOIN fin_item f ON f.id = jor.charge_id
-LEFT JOIN currency c ON c.id = jor.currency_id
+LEFT JOIN unit u ON u.id = joa.unit_id
+LEFT JOIN fin_item f ON f.id = joa.charge_id
+LEFT JOIN currency c ON c.id = joa.currency_id
 LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo ON lo.id = jos.fnd
 WHERE
-	jor.order_type = 'charge'
-AND   $X{IN,jor.id,order_id} group by jor.id]]>
+	joa.order_type = 'charge'
+AND   $X{IN,joa.id,order_id} group by joa.id]]>
 	</queryString>
 	<field name="sp_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[供应商id]]></fieldDescription>
 	</field>
 	<field name="exchange_total_amount" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[结算金额]]></fieldDescription>
 	</field>
 	<field name="invoice_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -107,10 +114,10 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="total_amount" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[对账金额]]></fieldDescription>
 	</field>
 	<field name="exchange_rate" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[对人民币汇率]]></fieldDescription>
 	</field>
 	<field name="amount" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -125,6 +132,27 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 	</field>
 	<field name="pieces" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="logo_path" class="java.lang.String">
+		<fieldDescription><![CDATA[logo路径]]></fieldDescription>
+	</field>
+	<field name="office_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="eng_office_name" class="java.lang.String">
+		<fieldDescription><![CDATA[公司英文名称]]></fieldDescription>
+	</field>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[公司英文地址]]></fieldDescription>
+	</field>
+	<field name="eng_address" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="office_fax" class="java.lang.String">
+		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
+	</field>
+	<field name="office_tel" class="java.lang.String">
+		<fieldDescription><![CDATA[公司电话]]></fieldDescription>
 	</field>
 	<field name="container_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -163,9 +191,6 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 	<field name="company_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="address" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="phone" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -183,35 +208,44 @@ AND   $X{IN,jor.id,order_id} group by jor.id]]>
 	<pageHeader>
 		<band height="151" splitType="Stretch">
 			<staticText>
-				<reportElement x="142" y="25" width="389" height="24" uuid="1f17ff0a-6c4f-4e21-a8f0-17f61bc37be6"/>
-				<textElement>
-					<font size="16"/>
-				</textElement>
-				<text><![CDATA[ZHUHAI HENGQIN ENKYO SCM CO.,LTD.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="192" y="99" width="211" height="39" uuid="ac27dbd8-8089-47e2-a05e-8f55c64feda7"/>
+				<reportElement x="201" y="98" width="211" height="39" uuid="ac27dbd8-8089-47e2-a05e-8f55c64feda7"/>
 				<textElement>
 					<font size="24"/>
 				</textElement>
 				<text><![CDATA[DEBIT NOTE]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="124" y="50" width="405" height="20" uuid="0cd7b482-a1d6-4745-9aa1-9ee31b401ff3"/>
-				<text><![CDATA[7th Fl., Shanhaiyipin,56# of Shihua Road, jida,zhuhai, Guangdong, China]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="168" y="70" width="126" height="20" uuid="db00b1ff-eeab-480f-a0fc-fbcc95197894"/>
-				<text><![CDATA[TEL:86-756-3225991]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="310" y="69" width="132" height="20" uuid="6cf51b83-4aff-44d3-bf32-8e6e504463d8"/>
-				<text><![CDATA[FAX:86-756-3225900]]></text>
-			</staticText>
 			<image>
 				<reportElement x="8" y="-12" width="130" height="42" uuid="95678e8d-70ad-4f35-89c4-5191d5be53d6"/>
-				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
 			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="104" y="24" width="405" height="25" uuid="bd1ea849-a800-4112-9aa1-f3defa55e072"/>
+				<textElement textAlignment="Center">
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="167" y="70" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="8a2b76d2-0e6a-4550-a030-d23601e21458"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{office_tel}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="316" y="70" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="3d051f46-42f8-447b-b94b-ee9378541356"/>
+				<textElement textAlignment="Center" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{office_fax}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="103" y="51" width="405" height="19" uuid="7e5dbfce-62ff-45a0-8679-27495a09901d"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{eng_address}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
