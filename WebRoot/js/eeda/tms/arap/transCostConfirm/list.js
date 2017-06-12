@@ -70,6 +70,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           
           var customer = $("#customer").val(); 
           var sp = $("#sp").val(); 
+          var car_id = $("#car_id").val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var audit_flag = $("#audit_flag").val();
@@ -85,6 +86,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           			   +"&order_export_date_end_time="+order_export_date_end_time
 			           +"&customer_id="+customer
 			           +"&sp_id="+sp
+                 +"&car_id="+car_id
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date
           			   +"&audit_flag_notequals="+audit_flag;

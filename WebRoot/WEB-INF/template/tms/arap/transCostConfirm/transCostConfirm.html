@@ -54,6 +54,15 @@
 	                            }){} %>
 	                        </div>
 	                    </div>
+	                    <div class="row">
+	                        <div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputCarInfoField.html", 
+	                                                {   id: 'car_id', 
+	                                                    label: '结算车牌', 
+	                                                    value: ''
+	                                                }){}%>
+	                        </div>
+	                    </div>
 	                    <div class="form-group button-bar" >
                             <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
                             <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
