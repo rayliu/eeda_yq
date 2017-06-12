@@ -3,7 +3,7 @@
         <div class="row simple_search_div">
             <div class="col-lg-12">
             	<input type="hidden" id="itemNoHidden">
-            	<input type="hidden" id="outPermission" value='${shiro.hasPermission("inventory.gateOut")}'>
+            	
                 <form id="orderForm">
                     <div class="row">
                     	<div class="col-lg-4">
@@ -130,6 +130,8 @@
 	<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;">LOADING...</h1>
 </div>
 <script>
+<% var outPermission = shiro.hasPermission("inventory.gateOut"); %>
+    var outPermission = ${outPermission};
 	var order = {};
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/wms/inventory/list']);

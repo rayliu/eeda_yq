@@ -2,7 +2,6 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
 $(document).ready(function() {
 	  //datatable, 动态处理
 	var page_part_no = null;
-	var outPermission = $('outPermission').val();
 	var itemTable = eeda.dt({
         id: 'item_table',
         paging: true,
