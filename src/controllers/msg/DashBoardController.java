@@ -26,9 +26,9 @@ import controllers.util.DbUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class EwmsDashBoardController extends Controller {
+public class DashBoardController extends Controller {
 
-	private Logger logger = Logger.getLogger(EwmsDashBoardController.class);
+	private Logger logger = Logger.getLogger(DashBoardController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
 	@Before(EedaMenuInterceptor.class)

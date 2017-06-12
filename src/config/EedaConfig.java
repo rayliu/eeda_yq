@@ -54,7 +54,7 @@ import controllers.cms.jobOrder.CustomJobOrderController;
 import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
-import controllers.msg.EwmsDashBoardController;
+import controllers.msg.DashBoardController;
 import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.jobOrder.JobOrderControllerForMobile;
@@ -146,27 +146,27 @@ public class EedaConfig extends JFinalConfig {
 	public void configRoute(Routes me) {
         this.routes = me;
 
-        //TODO: 为之后去掉 yh做准备
-        String contentPath="/";//"yh";
-
-        setAppRoute(me, contentPath);
-        setScmRoute(me, contentPath);
-        
-        
+        setAppRoute(me);
+        setWeddingRoute(me);
     }
-    private void setAppRoute(Routes me, String contentPath) {
+    private void setAppRoute(Routes me) {
         me.add("/app", AppControllerForMobile.class);
         me.add("/app/jobOrder", JobOrderControllerForMobile.class);
         me.add("/app/planOrder", PlanOrderControllerForMobile.class);
     }
 
-	private void setScmRoute(Routes me, String contentPath) {
-		// yh project controller
+	private void setWeddingRoute(Routes me) {
+	    String contentPath = "";
+	    //总管理的后台
+	    me.add("/WebAdmin", DashBoardController.class);
+        me.add("/WebAdmin/dashBoard", DashBoardController.class);
+        
+        //商家后台
         me.add("/", MainController.class, contentPath);
         me.add("/module", ModuleController.class, contentPath);
        // me.add("/apidoc", controllers.eeda.DocController.class);基础数据
         
-        me.add("/eWmsDashBoard", EwmsDashBoardController.class, contentPath);
+
         me.add("/tradeItem", TradeItemController.class, contentPath);
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
@@ -192,82 +192,7 @@ public class EedaConfig extends JFinalConfig {
 //		me.add("/accountAuditLog", AccountAuditLogController.class, contentPath);
 		me.add("/account", AccountController.class, contentPath);
 		me.add("/privilege", PrivilegeController.class, contentPath);
-		//oms管理系统
-		me.add("/planOrder", PlanOrderController.class, contentPath);
-		me.add("/todo", TodoController.class, contentPath);
-		me.add("/jobOrder", JobOrderController.class, contentPath);
 		
-		me.add("/jobOrderReport", JobOrderReportController.class, contentPath);
-//		me.add("/report", ReportController.class, contentPath);
-		me.add("/customOrder", CustomOrderController.class, contentPath);
-		me.add("/truckOrder", TruckOrderController.class, contentPath);
-		me.add("/currency", CurrencyController.class, contentPath);
-		me.add("/currencyRate", CurrencyRateController.class, contentPath);
-		
-		
-		//cms 报关管理
-		me.add("/customJobOrder", CustomJobOrderController.class, contentPath);
-		me.add("/customPlanOrder", CustomPlanOrderController.class, contentPath);
-		me.add("/cmsChargeConfirm", controllers.arap.cmsAr.CmsChargeConfirmController.class, contentPath);
-		me.add("/cmsChargeCheckOrder", controllers.arap.cmsAr.CmsChargeCheckOrderController.class, contentPath);
-		me.add("/cmsCostCheckOrder", controllers.arap.cmsAr.CmsCostCheckOrderController.class, contentPath);
-		
-		
-		//tms 车队系统
-		me.add("/transJobOrder", TransJobOrderController.class, contentPath);
-		me.add("/transPlanOrder", TransPlanOrderController.class, contentPath);		
-		
-		//ar= account revenue  应收条目处理
-		me.add("/chargeRequest", controllers.arap.ar.chargeRequest.ChargeReuqestrController.class, contentPath);
-		me.add("/costRequest", controllers.arap.ar.costRequest.CostReuqestrController.class, contentPath);
-        me.add("/chargeConfirmList", controllers.arap.ar.ChargeItemConfirmController.class, contentPath);
-        me.add("/chargeCheckOrder", controllers.arap.ar.ChargeCheckOrderController.class, contentPath);
-        me.add("/chargeCheckOrderList", controllers.arap.ar.ChargeCheckOrderController.class, contentPath);
-        me.add("/chargePreInvoiceOrder", controllers.arap.ar.ChargePreInvoiceOrderController.class, contentPath);
-        me.add("/chargeInvoiceOrder", controllers.arap.ar.ChargeInvoiceOrderController.class, contentPath);
-        me.add("/chargeAdjustOrder", controllers.arap.ar.ChargeAdjustOrderController.class, contentPath);
-        me.add("/chargeMiscOrder", controllers.arap.ar.chargeMiscOrder.ChargeMiscOrderController.class, contentPath);
-        me.add("/chargeAcceptOrder", controllers.arap.ar.ChargeAcceptOrderController.class, contentPath);
-        me.add("/chargeConfirm", controllers.arap.ar.ChargeConfirmController.class, contentPath);
-        
-        //ap 应付条目处理
-        me.add("/costConfirmList", controllers.arap.ap.CostItemConfirmController.class, contentPath);
-        me.add("/costCheckOrder", controllers.arap.ap.CostCheckOrderController.class, contentPath);
-        me.add("/costAdjustOrder", controllers.arap.ap.CostAdjustOrderController.class, contentPath);
-        me.add("/costAcceptOrder", controllers.arap.ap.CostAcceptOrderController.class, contentPath);
-        me.add("/costConfirm", controllers.arap.ap.CostConfirmController.class, contentPath);
-        
-        //运营报表
-        me.add("/arapReport", controllers.arap.ArapReportController.class, contentPath);
-        me.add("/profitReport", controllers.report.ProfitReportController.class, contentPath);
-        me.add("/balanceReport", controllers.report.BalanceReportController.class, contentPath);
-        me.add("/customReport", controllers.report.CustomReportController.class, contentPath);
-        me.add("/chargeBalanceReport",controllers.arap.ChargeBalanceReportController.class, contentPath);
-        me.add("/costBalanceReport",controllers.arap.CostBalanceReportController.class, contentPath);
-        me.add("/profitAndPaymentRate",controllers.arap.ProfitAndPaymentRateController.class, contentPath);
-        me.add("/accountAging",controllers.arap.AccountAging.class, contentPath);
-        me.add("/billProfitAndPayment",controllers.arap.BillProfitAndPaymentController.class, contentPath);
-        me.add("/oceanRouteReport", controllers.report.OceanRouteReportController.class, contentPath); 
-        me.add("/airRouteReport", controllers.report.AirRouteReportController.class, contentPath); 
-        
-        //合同管理
-        me.add("/supplierContract", controllers.contractManagement.SupplierContractController.class, contentPath);
-        
-        //应付报销单
-        //ßme.add("/costReimbursement", controllers.arap.ap.CostReimbursementOrder.class, contentPath);
-        //财务转账单
-        me.add("/transferAccountsOrder", controllers.arap.ap.TransferAccountsController.class, contentPath);
-//        me.add("/reimbursementItem", controllers.yh.ReimbursementItemController.class, contentPath);
-        //手工成本单
-        me.add("/costMiscOrder", controllers.arap.ap.costMiscOrder.CostMiscOrderController.class, contentPath);
-        
-        me.add("/inOutMiscOrder", controllers.arap.financial.inOutOrder.InOutMiscOrderController.class, contentPath);
-        
-        //预付单
-        me.add("/costPrePayOrder", controllers.arap.ap.PrePayOrderController.class, contentPath);
-        //audit log
-        me.add("/accountAuditLog", controllers.arap.AccountAuditLogController.class, contentPath);
-        
         //发布公告
         me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
         me.add("/orderStatus", OrderStatusController.class, contentPath);
