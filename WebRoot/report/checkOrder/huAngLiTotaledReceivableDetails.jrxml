@@ -283,7 +283,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
-				<text><![CDATA[CTNS]]></text>
+				<text><![CDATA[PKG]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="245" y="66" width="32" height="15" uuid="59288b4d-326a-4a71-95b4-3c9414ec5a6a"/>
