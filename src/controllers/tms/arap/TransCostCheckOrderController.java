@@ -3,6 +3,8 @@ package controllers.tms.arap;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -506,7 +508,7 @@ public class TransCostCheckOrderController extends Controller {
         TransArapCostOrder aco = new TransArapCostOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
-   		
+   		DateFormat dateTimeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			aco = TransArapCostOrder.dao.findById(id);
@@ -520,7 +522,7 @@ public class TransCostCheckOrderController extends Controller {
 	        aco.set("order_no", orderPrefix);
 	        aco.set("order_type", "应付对账单");
 			aco.set("create_by", user.getLong("id"));
-			aco.set("create_stamp", new Date());
+			aco.set("create_stamp",dateTimeformat.format( new Date()));
 			aco.set("office_id", office_id);
 			aco.save();
 			id = aco.getLong("id").toString();

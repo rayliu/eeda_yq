@@ -3,6 +3,8 @@ package controllers.tms.arap;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -82,7 +84,8 @@ public class TransChargeCheckOrderController extends Controller {
    			order.set("order_no", OrderNoGenerator.getNextOrderNo("YSDZ", user.getLong("office_id")));
    			order.set("order_type", "应收对账单");
    			order.set("create_by", user.getLong("id"));
-   			order.set("create_stamp", new Date());
+   			DateFormat dateTimeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+   			order.set("create_stamp", dateTimeformat.format(new Date()));   			
    			order.set("office_id", office_id);
    			order.save();
    			
