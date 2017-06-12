@@ -124,11 +124,6 @@ public class MainController extends Controller {
                 }
             	redirect(savedRequestUrl);
             }else{
-                System.out.println("2222");
-            	String officeConfig="select oc.index_page_path from office_config oc "
-            			+ " where oc.office_id =?";
-            	Record rec = Db.findFirst(officeConfig, user.getLong("office_id"));
-            	if(rec == null || rec.getStr("index_page_path") == null){
             	    if(getAttr("modules")==null){
                         redirect("/");
                     }else{
@@ -138,9 +133,7 @@ public class MainController extends Controller {
                         
                         redirect("/"+firstModule.getStr("url"));
                     };
-            	}else{
-            		render(rec.getStr("index_page_path"));//显示不同URL对应的不同的login页面
-            	}
+            	
             }
         }
 
