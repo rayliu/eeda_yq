@@ -4,7 +4,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>admin管理后台-基本信息</title>
+
+<title>${SYS_CONFIG.system_title!''}</title>
+
+  <% var logoPath=SYS_CONFIG.logo!'';
+    if(logoPath==""){%>
+  <link rel="shortcut icon" href="/yh/img/eeda_logo.ico">
+  <%}else{%>
+  <link rel="shortcut icon" href="${SYS_CONFIG.logo!''}">
+  <%}%>
 <link rel="stylesheet" href="http://www.iwedclub.com/WebAdmin/css/style.default.css" type="text/css" />
 <link rel="stylesheet" href="http://www.iwedclub.com/WebAdmin/css/pagestyle.css" type="text/css" />
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/plugins/jquery-1.7.min.js"></script>

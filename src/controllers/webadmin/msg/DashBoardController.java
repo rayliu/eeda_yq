@@ -1,4 +1,4 @@
-package controllers.msg;
+package controllers.webadmin.msg;
 
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
@@ -33,7 +33,7 @@ public class DashBoardController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
-		render("/eeda/msgBoard/msgBoardList.html");
+		render("/WebAdmin/dashBoard/list.html");
 	}
 	
     @Before(Tx.class)
