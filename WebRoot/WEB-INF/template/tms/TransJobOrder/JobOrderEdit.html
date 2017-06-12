@@ -222,6 +222,15 @@
                                 }){}%>
 			            </div>
 			        </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                              <%include("/eeda/component/form/inputField.html", 
+                                {   id:'toca_no', 
+                                    label:'托卡号', 
+                                    value:order.toca_no!''
+                                }){}%>
+                        </div>
+                    </div>
                     <div class="form-group">
 	                 <label>发票信息及备注</label>
 	                 <textarea id='remark' class="form-control" rows="3" name="remark">${order.remark!''}</textarea>
