@@ -263,6 +263,7 @@ $(document).ready(function(){
                 $.unblockUI();
                 //异步刷新明细表
                 eeda.contactUrl("edit?id",order.ID);
+                $('#userId').val(order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $("#assigning_role").show();
                 $('#saveBtn').attr('disabled', false);
