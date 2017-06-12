@@ -563,9 +563,25 @@
                       <input id="agent_prepaid" type="checkbox" disabled>代理预付
                     <%}%>
                   </label>
-               </div>      
-
+               </div> 
            </div>
+           <div class="row">
+           		<div class="col-lg-4">
+           			<%include("/eeda/component/form/dateInputField.html", 
+                    {   id:'atd', 
+                        label:'ATD', 
+                        value:shipment.atd!''
+                    }){}%>
+           		</div>
+           		<div class="col-lg-4">
+           			<%include("/eeda/component/form/dateInputField.html", 
+                    {   id:'ata', 
+                        label:'ATA', 
+                        value:shipment.ata!''
+                    }){}%>
+           		</div>
+           </div>
+           
            <div class="row">
              <div class="col-lg-4">
                <% 
