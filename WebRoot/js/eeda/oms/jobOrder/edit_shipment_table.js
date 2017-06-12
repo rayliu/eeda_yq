@@ -80,11 +80,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                     }
                 },
                
-                { "data": "LOAD_TYPE","width": "80px", 
+                { "data": "LOAD_TYPE","width": "70px", 
                     "render": function ( data, type, full, meta ) {
                        if(!data)
                     	   data='';
-                       var str= '<select name="load_type" class="form-control search-control" style="width:100px">'
+                       var str= '<select name="load_type" class="form-control search-control" style="width:70px">'
                     	   	 	+'<option></option>'
     		                   +'<option value="FCL" '+ (data=='FCL'?'selected':'') +'>FCL</option>'
     		                   +'<option value="LCL" '+ (data=='LCL'?'selected':'') +'>LCL</option>'
@@ -94,7 +94,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
     		           return str;
                     }
                 },
-                { "data": "CONTAINER_TYPE","width": "80px", 
+                { "data": "CONTAINER_TYPE","width": "50px", 
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
