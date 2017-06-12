@@ -69,8 +69,9 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', 'jq_bloc
             };
 
             $.post('/role/save', {submitObj:JSON.stringify(submitObj)}, function(data){
-                if(data=='ok'){
+                if(data){
                     $.unblockUI();
+                    $('#role_id').val(data.ID)
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 }
             }).fail(function() {

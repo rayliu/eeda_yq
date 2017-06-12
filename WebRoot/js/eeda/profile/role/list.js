@@ -17,19 +17,22 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
 						var role_del_permission = Role.DelPermission;
 
 						var str="";
-						if(role_update_permission){
-							str += "<nobr><a class='btn  btn-primary btn-sm' href='/role/ClickRole?id="+full.ID+"' target='_blank'>"
-								+ "<i class='fa fa-edit fa-fw'></i> "
-								+ "编辑"
-								+ "</a> ";
-						}
-						if(data.CODE != "admin"){
-							if(role_del_permission){
+						if(data.CODE != "admin"|| this_rode =='admin' ){
+							if(role_update_permission){
+								str += "<nobr><a class='btn  btn-primary btn-sm' href='/role/ClickRole?id="+full.ID+"' target='_blank'>"
+									+ "<i class='fa fa-edit fa-fw'></i> "
+									+ "编辑"
+									+ "</a> ";
+							}
+						
+							if(role_del_permission && data.CODE != "admin"){
 								str += "<a class='btn  btn-sm btn-danger' href='/role/deleteRole/"+full.ID+"'>"
 									+ "<i class='fa fa-trash-o fa-fw'></i> "
 									+ "删除"
 									+ "</a>";
 							}
+						}else{
+							str="无权限";
 						}
 						return str +="</nobr>";
                   }
