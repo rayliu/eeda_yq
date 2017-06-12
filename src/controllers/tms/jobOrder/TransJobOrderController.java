@@ -755,12 +755,8 @@ public class TransJobOrderController extends Controller {
 					+"  where tjo.id= "+id;
     	Record re= Db.find(str).get(0);
     	setAttr("order", re);
-    	//获取空运运明细表信息
     	//获取陆运明细表信息
     	setAttr("landList", getItems(id,"land"));
-    	//贸易
-    	//报关
-    	//保险
     	//获取费用明细
     	setAttr("chargeList", getItems(id,"charge"));
     	setAttr("costList", getItems(id,"cost"));
