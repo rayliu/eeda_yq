@@ -2,7 +2,7 @@
 <project name="Eeda-yq" basedir="." default="mysql">
 	<property environment="env" />
 	<tstamp>
-	    <format property="touch.time" pattern="yyMMdd.hhmm" />
+	    <format property="touch.time" pattern="yyMMdd.HHmm" />
 	</tstamp>
 	<!-- 定义一些变量，其值是基于其他的变量值 -->
 	<property name="project.classpath" value="WebRoot/WEB-INF/classes"></property>
