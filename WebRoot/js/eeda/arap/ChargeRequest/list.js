@@ -401,18 +401,24 @@ $(document).ready(function() {
 	            }else{
 	              $($('#application_table').find("tr")[i]).css("background-color","#FFFFFF");	
 	            }
-    	 }    	 
-    	 $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
-    	 
+    	 }
+    	 var empty_text =$('#application_table tr:has(td)').find('.dataTables_empty').text();
+    	 if(empty_text=="表中数据为空"){
+    		 $('#checkedCostCheckOrder').html('已选中明细  '+0);//uncheckedCostCheckOrder
+ 	 		 $('#uncheckedCostCheckOrder').html('未选中明细  '+0);//uncheckedCostCheckOrder
+    	 }else{
+    		 $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
+    		 $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));//uncheckedCostCheckOrder
+    	 }
      }
+
      
     //返回标记
     var back=$('#back').val(); 
       //查询已申请单
     $("#searchBtn1").click(function(){
-        $('#checked_application_table').empty();
-        $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));//uncheckedCostCheckOrder
-        $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));//uncheckedCostCheckOrder
+    	$('#checked_application_table').empty();
+        
         back="";
         refreshData(back);
     });

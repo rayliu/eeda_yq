@@ -357,7 +357,10 @@ $(document).ready(function() {
       });
      
      var uncheckedCostCheckOrder = function(){
-    	 $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
+    	 var empty_text =$('#application_table tr:has(td)').find('.dataTables_empty').text();
+    	 if(empty_text!="表中数据为空"){
+    		 $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
+    	 }
      }
      
     //返回标记
