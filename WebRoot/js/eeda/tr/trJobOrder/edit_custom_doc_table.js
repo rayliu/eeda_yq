@@ -79,7 +79,11 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<a class="doc_name" href="/upload/doc/'+data+'" target="_blank">'+data+'</a>';
+                    if(full.NEW_FLAG=='Y'){
+                    	return '<input type="hidden" name="doc_name" value="'+data+'" ><span class="badge" style="background-color: red;">新</span>&nbsp &nbsp<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                    }else{
+                    	return '<input type="hidden" name="doc_name" value="'+data+'" >&nbsp &nbsp<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
+                    }
                 }
             },
             { "data": "REMARK",
@@ -92,6 +96,7 @@ $(document).ready(function() {
             { "data": "C_NAME","width": "80px"},
             { "data": "UPLOAD_TIME", "width": "80px"},
             { "data": "SHARE_FLAG", "visible": false },
+            { "data": "NEW_FLAG", "visible": false },
             { "data": "REF_JOB_ORDER_ID", "visible": false }
         ]
     });
