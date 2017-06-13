@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="220"/>
+	<property name="ireport.y" value="168"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -221,23 +221,23 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 				<text><![CDATA[Job No:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="18" y="39" width="25" height="15" uuid="d33d0326-6907-4f48-941e-93e23ce94b3b"/>
+				<reportElement x="18" y="34" width="25" height="15" uuid="d33d0326-6907-4f48-941e-93e23ce94b3b"/>
 				<text><![CDATA[Attn:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="18" y="55" width="25" height="17" uuid="e0ed60f3-a77b-4c02-8755-5b27e5a8f1ab"/>
+				<reportElement x="18" y="62" width="25" height="17" uuid="e0ed60f3-a77b-4c02-8755-5b27e5a8f1ab"/>
 				<text><![CDATA[Tel:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="18" y="89" width="56" height="15" uuid="d95021c2-7fef-45d9-bad9-faa001def9b7"/>
+				<reportElement x="18" y="86" width="56" height="15" uuid="d95021c2-7fef-45d9-bad9-faa001def9b7"/>
 				<text><![CDATA[Vel / Voy:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="18" y="110" width="56" height="15" uuid="39eff2eb-c391-4a11-9411-9213a9a2817a"/>
+				<reportElement x="18" y="107" width="56" height="15" uuid="39eff2eb-c391-4a11-9411-9213a9a2817a"/>
 				<text><![CDATA[MBL No:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="18" y="129" width="56" height="16" uuid="315b9f87-d635-437b-89f7-2926d6f0efbf"/>
+				<reportElement x="18" y="127" width="56" height="15" uuid="315b9f87-d635-437b-89f7-2926d6f0efbf"/>
 				<text><![CDATA[POL:]]></text>
 			</staticText>
 			<staticText>
@@ -249,7 +249,7 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 				<text><![CDATA[CTR No:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="328" y="25" width="70" height="15" uuid="23f495eb-c93a-4723-84e1-43a17b9b528c"/>
+				<reportElement x="328" y="34" width="70" height="15" uuid="23f495eb-c93a-4723-84e1-43a17b9b528c"/>
 				<text><![CDATA[Invoice No.:]]></text>
 			</staticText>
 			<staticText>
@@ -257,23 +257,23 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 				<text><![CDATA[DATE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="329" y="79" width="68" height="17" uuid="9ac6b0fe-4779-40dd-ba21-535c01b136fc"/>
+				<reportElement x="329" y="86" width="68" height="17" uuid="9ac6b0fe-4779-40dd-ba21-535c01b136fc"/>
 				<text><![CDATA[HBL No.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="328" y="97" width="70" height="15" uuid="d6ace1e7-ef42-40ac-b4e9-16493ade8207"/>
+				<reportElement x="326" y="127" width="70" height="15" uuid="d6ace1e7-ef42-40ac-b4e9-16493ade8207"/>
 				<text><![CDATA[ETD:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="328" y="113" width="69" height="15" uuid="2e3665ad-a673-465f-a640-85676c1e3074"/>
+				<reportElement x="328" y="107" width="69" height="15" uuid="2e3665ad-a673-465f-a640-85676c1e3074"/>
 				<text><![CDATA[ETA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="328" y="130" width="32" height="15" uuid="429f4745-f61a-43a1-aba5-ec01c0cf8d00"/>
+				<reportElement x="328" y="149" width="68" height="15" uuid="429f4745-f61a-43a1-aba5-ec01c0cf8d00"/>
 				<text><![CDATA[POD：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="329" y="148" width="69" height="15" uuid="1ef1c68b-1f7e-4b65-8feb-91d5a3c07129"/>
+				<reportElement x="329" y="170" width="69" height="15" uuid="1ef1c68b-1f7e-4b65-8feb-91d5a3c07129"/>
 				<text><![CDATA[Qty:]]></text>
 			</staticText>
 			<staticText>
@@ -325,15 +325,15 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 				<reportElement x="0" y="214" width="555" height="1" uuid="92ec3e54-b78d-4dd2-833b-994d18652e10"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="74" y="89" width="254" height="15" uuid="bba3c900-6b7e-4404-b98e-38e22f312d91"/>
+				<reportElement x="74" y="86" width="254" height="15" uuid="bba3c900-6b7e-4404-b98e-38e22f312d91"/>
 				<textFieldExpression><![CDATA[$F{vessel_voyage}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="74" y="110" width="254" height="15" uuid="12467054-823e-4a70-8005-7ed958f4f86e"/>
+				<reportElement x="74" y="107" width="254" height="15" uuid="12467054-823e-4a70-8005-7ed958f4f86e"/>
 				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="74" y="130" width="254" height="14" uuid="233fbb37-7715-446b-a4ee-5cd20d0a8821"/>
+				<reportElement x="74" y="127" width="254" height="15" uuid="233fbb37-7715-446b-a4ee-5cd20d0a8821"/>
 				<textFieldExpression><![CDATA[$F{pol}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
@@ -349,38 +349,38 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{order_export_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="396" y="79" width="159" height="17" uuid="27502a39-69d8-427a-a4dd-9d270889bd80"/>
+				<reportElement x="396" y="86" width="159" height="17" uuid="27502a39-69d8-427a-a4dd-9d270889bd80"/>
 				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="396" y="97" width="158" height="15" uuid="01b48f23-9a69-4e9e-ba26-98f48207a25f"/>
+				<reportElement x="396" y="107" width="158" height="15" uuid="01b48f23-9a69-4e9e-ba26-98f48207a25f"/>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="396" y="113" width="159" height="15" uuid="be92611a-c302-41a7-91e6-b8ba5c48afa0"/>
+				<reportElement x="396" y="127" width="159" height="15" uuid="be92611a-c302-41a7-91e6-b8ba5c48afa0"/>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="398" y="148" width="35" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
+				<reportElement x="397" y="170" width="35" height="14" uuid="fe44b4c6-d89f-4c0e-be6d-8691633e7e73"/>
 				<textFieldExpression><![CDATA[$F{land_pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="43" y="0" width="285" height="24" uuid="c706ac6c-9eab-42a2-8ea0-83bb9932e437"/>
+				<reportElement x="43" y="0" width="285" height="30" uuid="c706ac6c-9eab-42a2-8ea0-83bb9932e437"/>
 				<textFieldExpression><![CDATA[$F{companyName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="43" y="39" width="285" height="15" uuid="84f0a969-bfd6-4f4d-9a12-ec14a167a8f9"/>
+				<reportElement x="43" y="34" width="285" height="15" uuid="84f0a969-bfd6-4f4d-9a12-ec14a167a8f9"/>
 				<textElement>
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{personEng}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="43" y="55" width="285" height="17" uuid="bec3e378-28f2-49ef-a6de-acb1d3f6580d"/>
+				<reportElement x="43" y="62" width="285" height="17" uuid="bec3e378-28f2-49ef-a6de-acb1d3f6580d"/>
 				<textFieldExpression><![CDATA[$F{phone}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="396" y="130" width="157" height="14" uuid="0e5373a5-76a5-42d4-a375-d5882fbd0388"/>
+				<reportElement x="396" y="149" width="157" height="15" uuid="0e5373a5-76a5-42d4-a375-d5882fbd0388"/>
 				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -388,11 +388,11 @@ AND  $X{IN,joli.id,landIds} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="397" y="25" width="158" height="37" uuid="838f806e-871d-43b2-b605-a3562590f472"/>
+				<reportElement x="397" y="34" width="158" height="27" uuid="838f806e-871d-43b2-b605-a3562590f472"/>
 				<textFieldExpression><![CDATA[$F{land_ref_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="433" y="148" width="120" height="14" uuid="62711474-c636-4b02-9ee3-0cc050d66c48"/>
+				<reportElement x="432" y="170" width="120" height="14" uuid="62711474-c636-4b02-9ee3-0cc050d66c48"/>
 				<textFieldExpression><![CDATA[$F{land_unit}]]></textFieldExpression>
 			</textField>
 		</band>
