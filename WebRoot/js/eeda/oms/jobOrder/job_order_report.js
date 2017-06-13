@@ -712,7 +712,7 @@ $(document).ready(function() {
 		var arry = arrStr.split("\n");
 		$('#truck_head_attn').val(arry[1]);
         $('#truck_head_customer_tel').val(arry[2]);
-        var cabinet_arrive_date=$('#land_shipment_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=ETA]').val();
+        var cabinet_arrive_date=$('#land_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=ETA]').val();
         if(!$('#cabinet_arrive_date').val()){
             $('#cabinet_arrive_date').val(cabinet_arrive_date);
         }

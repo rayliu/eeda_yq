@@ -204,11 +204,18 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "CAR_NO", "width": "80px",
+            { "data": "ETA", "width": "130px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
-            			data='';
-            		return '<input type="text" name="car_no" value="'+data+'" class="form-control" style="width:100px"/>';
+                        data='';
+                    var field_html = template('table_date_field_template',
+	                    {
+	                        id: 'ETA',
+	                        value: data.substr(0,19),
+	                        style:'width:150px'
+	                    }
+	                );
+                    return field_html;
             	}
             },
             { "data": "CONSIGNOR", "width": "80px",
@@ -285,18 +292,11 @@ $(document).ready(function() {
                         return field_html;
             	}
             },
-            { "data": "ETA", "width": "130px",
+            { "data": "CAR_NO", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
-                        data='';
-                    var field_html = template('table_date_field_template',
-	                    {
-	                        id: 'ETA',
-	                        value: data.substr(0,19),
-	                        style:'width:150px'
-	                    }
-	                );
-                    return field_html;
+            			data='';
+            		return '<input type="text" name="car_no" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
             { "data": "CARGO_DESC", "width": "180px",

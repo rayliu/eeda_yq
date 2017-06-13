@@ -66,14 +66,14 @@
 			                                            '<input id="allCheckOfLand" type="checkbox" style="width:30px">',
 			                                            '','',     '',  '收卸货类型', 
 			                                            '运输公司', '运单号','司机', '司机电话','车型',
-			                                            '车牌',
+			                                            '预约到达时间', 
 			                                            '发货人',
 			                                            '发货人电话', 
 			                                            '发货地点',
 			                                            '收货人',
 			                                            '收货人电话', 
 			                                            '收货地点', 
-			                                            '预约到达时间', 
+			                                            '车牌',
 			                                            '货品描述',
 			                                            '柜型',
 			                                            '柜号',
@@ -248,6 +248,14 @@
                            </div>
                        </div>
                        <div class="row">
+	                       <div class="col-lg-12"> 
+	                          <div class="form-group">
+	                               <label>柜货到达备注</label>
+	                               <textarea id='cabinet_arrive_remark' class="form-control" rows="3" name="cabinet_arrive_remark">${truckHead.cabinet_arrive_remark!''}</textarea>
+	                          </div>
+	                      </div>
+                       </div>
+                       <div class="row">
                            <div class="col-lg-12">
                                 <%include("/eeda/component/form/inputField.html", 
                                    {   id:'truck_head_remark',
@@ -267,14 +275,7 @@
                                }){}%>
                            </div>
                        </div>
-                       <div class="row">
-	                       <div class="col-lg-12"> 
-	                          <div class="form-group">
-	                               <label>柜货到达备注</label>
-	                               <textarea id='cabinet_arrive_remark' class="form-control" rows="3" name="cabinet_arrive_remark">${truckHead.cabinet_arrive_remark!''}</textarea>
-	                          </div>
-	                      </div>
-                       </div>
+                       
                     
                 </div>   
                 </form>

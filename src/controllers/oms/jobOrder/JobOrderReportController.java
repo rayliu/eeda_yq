@@ -207,6 +207,7 @@ public class JobOrderReportController extends Controller {
 		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
+		hm.put("login_user_id", LoginUserController.getLoginUserId(this));
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName ;
 		String file = myPrint(fileName, outFileName,hm);
