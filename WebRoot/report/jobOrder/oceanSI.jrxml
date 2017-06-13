@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="163"/>
-	<property name="ireport.y" value="287"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="407"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -37,6 +37,7 @@
 		ul.user_phone,
 		ul.user_tel,
 		ul.user_fax,
+		ul.email user_email,
 		oe.office_name,
 ifnull(p.company_name_eng,p.company_name) MBLshipper_name,
 ifnull(p1.company_name_eng,p1.company_name) MBLconsignee_name, ifnull(p2.company_name_eng,p2.company_name) MBLnotify_party_name,
@@ -227,6 +228,12 @@ where jos.order_id=$P{order_id}]]>
 	<field name="agent_prepaid" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="atd" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ata" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="josi_container_no" class="java.lang.String"/>
 	<field name="josi_container_type" class="java.lang.String"/>
 	<field name="josi_seal_no" class="java.lang.String"/>
@@ -253,6 +260,7 @@ where jos.order_id=$P{order_id}]]>
 	<field name="user_fax" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="user_email" class="java.lang.String"/>
 	<field name="office_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -622,54 +630,68 @@ where jos.order_id=$P{order_id}]]>
 	<pageFooter>
 		<band height="130">
 			<staticText>
-				<reportElement x="410" y="20" width="50" height="20" uuid="b315ab03-14c8-49a6-9836-8dc810970e14"/>
+				<reportElement x="396" y="59" width="40" height="14" uuid="b315ab03-14c8-49a6-9836-8dc810970e14"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[制单人：]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="40" width="145" height="15" uuid="e5f470f7-7b52-442e-b63b-6ab488f4d94a"/>
+				<reportElement x="396" y="44" width="159" height="15" uuid="e5f470f7-7b52-442e-b63b-6ab488f4d94a"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="54" width="144" height="15" uuid="1d461254-c132-4f0c-9332-cc023d0d1eba"/>
+				<reportElement x="436" y="59" width="119" height="15" uuid="1d461254-c132-4f0c-9332-cc023d0d1eba"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="68" width="145" height="15" uuid="62197baa-cb52-479a-9bf5-bb16a7881aa8"/>
+				<reportElement x="436" y="73" width="119" height="15" uuid="62197baa-cb52-479a-9bf5-bb16a7881aa8"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{user_tel}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="83" width="144" height="15" uuid="52af86e2-f44f-4606-8cab-98ba6c51ad34"/>
+				<reportElement x="436" y="87" width="118" height="15" uuid="52af86e2-f44f-4606-8cab-98ba6c51ad34"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{user_phone}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="97" width="145" height="15" uuid="1ff35a04-f761-4732-bcf6-70a64643b7fa"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{user_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{user_email}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="410" y="110" width="145" height="15" uuid="0ead20a3-5626-49ed-8441-b453a200cf00"/>
+				<reportElement x="436" y="101" width="118" height="15" uuid="0ead20a3-5626-49ed-8441-b453a200cf00"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="397" y="73" width="40" height="14" uuid="4709d14c-a51d-431a-9dfe-323eeb89d5e3"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[TEL：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="87" width="40" height="14" uuid="b6f3481c-ff67-4608-9d97-bba4fb0517ad"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[E-MAIL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="101" width="40" height="14" uuid="ec0b1ab3-9712-4f75-a79c-9fdeb17c1cf8"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[DATE:]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 </jasperReport>
