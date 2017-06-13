@@ -36,7 +36,7 @@
                                 }){} %>
                             </div><!-- /.col-lg-2 -->
                         </div><!-- /.row-->
-                        <div class="row">
+                        <div class="row" style="display:none;">
                             <div class="col-lg-4">
                                  <%include("/eeda/component/form/selectField.html", 
                                         {   id:'status', 
@@ -78,37 +78,31 @@
 			</div>
             </div><!-- /.row 查询条件 结束-->
             <div class="row simple_list_div">
-                
                     <ul id="orderTabs" class="nav nav-tabs" >
                         <li class="active">
                             <a href="#" data-toggle="tab">全部</a>
                         </li>
                         <li>
-                            <a href="#" data-toggle="tab">海运</a>
+                            <a href="#" data-toggle="tab">新建</a>
+                        </li>
+                         <li>
+                            <a href="#" data-toggle="tab">已派车</a>
                         </li>
                         <li>
-                            <a href="#" data-toggle="tab" >空运</a>
+                            <a href="#" data-toggle="tab" >已报关</a>
                         </li>
                         <li>
-                            <a href="#" data-toggle="tab">陆运</a>
+                            <a href="#" data-toggle="tab">已上船</a>
                         </li>
                         <li>
-                            <a href="#" data-toggle="tab">报关</a>
-                        </li>
-                        <li>
-                            <a href="#" data-toggle="tab">保险</a>
-                        </li>
-                        <li>
-                            <a href="#" data-toggle="tab">贸易</a>
-                        </li>
-                        <li>
-                            <a href="#" data-toggle="tab">快递</a>
+                            <a href="#" data-toggle="tab">已到港</a>
                         </li>
                     </ul>
                     <%include("/eeda/component/form/detailTable.html", 
                         {
                             id:'eeda-table', 
                             headers:['','Booking号',
+                            	'流程状态',
                                 '类型',
                                 '出货时间',
                                 '被委托方简称',

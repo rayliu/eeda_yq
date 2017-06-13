@@ -28,6 +28,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                           '<i class="fa fa-trash-o"></i> 删除</button>';
                   }
               },
+              
               { "data": "ORDER_NO", 
                   "render": function ( data, type, full, meta ) {
                     var str='';
@@ -37,6 +38,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     return "<a href='/bookOrder/edit?id="+full.ID+"'target='_blank' >"+data+str+"</a>";
                   }
               },
+              { "data": "ORDER_STATUS"}, 
               { "data": "TYPE",
                   "render": function ( data, type, full, meta ) {
 	                    if(!data)
@@ -65,18 +67,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       });
 
       $('#searchBtn').click(function(){
-          searchData(); 
-          var transport_type = $("#transport_type option:selected").text();
-          $('#orderTabs .active').removeClass('active');
-          $('#orderTabs a').each(function(){
-        	  var value = $(this).text();
-        	  if(value==transport_type){
-        		  $(this).parent().addClass('active');
-        	  }
-          })
+    	  var orderStatus = $("#orderTabs li.active").text().trim();
+
+          searchData(orderStatus); 
       })
 
-     var searchData=function(type){
+     var searchData=function(order_status){
           var order_no = $.trim($("#order_no").val()); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
@@ -85,11 +81,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var status = $('#status').val();
           var customer_code = $("#customer_code").val().trim();
           var customer_name = $("#customer_name_input").val().trim();
-          var transport_type = type;
+          var order_status = order_status;
           //增加出口日期查询
           var url = "/bookOrder/list?order_no="+order_no
           	   +"&status="+status
-          	   +"&transport_type_like="+transport_type
+          	   +"&order_status="+order_status
           	   +"&customer_code_like="+customer_code
                +"&customer_name_like="+customer_name
                +"&create_stamp_begin_time="+start_date
@@ -102,25 +98,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       
       $('#orderTabs a').click(function(){
     	  var value = $(this).text();
-    	  var transport_type = "";
-    	  if(value=="报关"){
-    		  transport_type = "custom";
-    	  }else if(value=="陆运"){
-    		  transport_type = "land";
-    	  }else if(value=="空运"){
-    		  transport_type = "air";
-    	  }else if(value=="海运"){
-    		  transport_type = "ocean";
-    	  }else if(value=="保险"){
-    		  transport_type = "insurance";
-    	  }else if(value=="贸易"){
-    		  transport_type = "trade";
-    	  }else if(value=="快递"){
-    		  transport_type = "express";
+    	  if(value=='全部'){
+    		  value = "";
     	  }
-    	  searchData(transport_type);
-
-      })
+    	  searchData(value);
+      });
       
       
       $("#eeda-table").on('click', '.delete', function(){
