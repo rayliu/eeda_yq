@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="451"/>
+	<property name="ireport.y" value="387"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -37,6 +37,7 @@
 		ul.user_phone,
 		ul.user_tel,
 		ul.user_fax,
+		ul.email user_email,
 		oe.office_name,ifnull(p.company_name_eng,p.company_name) HBLshipper_name,
 ifnull(p1.company_name_eng,p1.company_name) HBLconsignee_name, ifnull(p2.company_name_eng,p2.company_name) HBLnotify_party_name,
 cast( concat(josi.pieces,ifnull(u.name_eng,u.name)) AS char ) pieces_unit
@@ -112,37 +113,37 @@ where jos.order_id=$P{order_id}]]>
 	<field name="remark" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="MBLshipper" class="java.lang.Integer">
+	<field name="MBLshipper" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="MBLshipper_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="MBLconsignee" class="java.lang.Integer">
+	<field name="MBLconsignee" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="MBLconsignee_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="MBLnotify_party" class="java.lang.Integer">
+	<field name="MBLnotify_party" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="MBLnotify_party_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="HBLshipper" class="java.lang.String">
+	<field name="HBLshipper" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="HBLshipper_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="HBLconsignee" class="java.lang.String">
+	<field name="HBLconsignee" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="HBLconsignee_info" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="HBLnotify_party" class="java.lang.String">
+	<field name="HBLnotify_party" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="HBLnotify_party_info" class="java.lang.String">
@@ -151,10 +152,10 @@ where jos.order_id=$P{order_id}]]>
 	<field name="booking_agent" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="head_carrier" class="java.lang.String">
+	<field name="head_carrier" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="carrier" class="java.lang.String">
+	<field name="carrier" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="bl_type" class="java.lang.String">
@@ -190,16 +191,16 @@ where jos.order_id=$P{order_id}]]>
 	<field name="schedule_to" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="por" class="java.lang.String">
+	<field name="por" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pol" class="java.lang.String">
+	<field name="pol" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="pod" class="java.lang.String">
+	<field name="pod" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="fnd" class="java.lang.String">
+	<field name="fnd" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="etd" class="java.sql.Timestamp">
@@ -229,7 +230,7 @@ where jos.order_id=$P{order_id}]]>
 	<field name="release_type" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="oversea_agent" class="java.lang.String">
+	<field name="oversea_agent" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="oversea_agent_info" class="java.lang.String">
@@ -259,6 +260,15 @@ where jos.order_id=$P{order_id}]]>
 	<field name="closing_date" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="agent_prepaid" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="atd" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ata" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="por_name" class="java.lang.String"/>
 	<field name="pol_name" class="java.lang.String"/>
 	<field name="pod_name" class="java.lang.String"/>
@@ -278,6 +288,7 @@ where jos.order_id=$P{order_id}]]>
 	<field name="user_fax" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="user_email" class="java.lang.String"/>
 	<field name="office_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -647,54 +658,68 @@ where jos.order_id=$P{order_id}]]>
 	<pageFooter>
 		<band height="130">
 			<staticText>
-				<reportElement x="410" y="20" width="50" height="20" uuid="b315ab03-14c8-49a6-9836-8dc810970e14"/>
+				<reportElement x="404" y="59" width="41" height="15" uuid="b315ab03-14c8-49a6-9836-8dc810970e14"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[制单人：]]></text>
+				<text><![CDATA[制单人:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="40" width="145" height="15" uuid="e5f470f7-7b52-442e-b63b-6ab488f4d94a"/>
+				<reportElement x="404" y="44" width="150" height="15" uuid="e5f470f7-7b52-442e-b63b-6ab488f4d94a"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="54" width="144" height="15" uuid="1d461254-c132-4f0c-9332-cc023d0d1eba"/>
+				<reportElement x="444" y="59" width="111" height="15" uuid="1d461254-c132-4f0c-9332-cc023d0d1eba"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="68" width="145" height="15" uuid="62197baa-cb52-479a-9bf5-bb16a7881aa8"/>
+				<reportElement x="444" y="74" width="110" height="15" uuid="62197baa-cb52-479a-9bf5-bb16a7881aa8"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{user_tel}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="83" width="144" height="15" uuid="52af86e2-f44f-4606-8cab-98ba6c51ad34"/>
+				<reportElement x="444" y="88" width="111" height="15" uuid="1ff35a04-f761-4732-bcf6-70a64643b7fa"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{user_phone}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="410" y="97" width="145" height="15" uuid="1ff35a04-f761-4732-bcf6-70a64643b7fa"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{user_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{user_email}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="410" y="110" width="145" height="15" uuid="0ead20a3-5626-49ed-8441-b453a200cf00"/>
+				<reportElement x="444" y="102" width="111" height="15" uuid="0ead20a3-5626-49ed-8441-b453a200cf00"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="404" y="74" width="41" height="15" uuid="9278c127-5393-4df5-b032-9957f1ee1d5c"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[TEL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="403" y="88" width="40" height="15" uuid="c3a0116b-01fc-4115-9d79-6bb899ba03ee"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[E-MALL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="404" y="102" width="40" height="15" uuid="01dad49f-5c7b-4ec7-adc7-3352228ccdc7"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[DATE:]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 </jasperReport>
