@@ -25,8 +25,8 @@ import controllers.profile.LoginUserController;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class AccountAging extends Controller {
-	private Log logger = Log.getLog(AccountAging.class);
+public class AccountAgingController extends Controller {
+	private Log logger = Log.getLog(AccountAgingController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
 	@Before(EedaMenuInterceptor.class)

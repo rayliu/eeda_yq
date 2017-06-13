@@ -201,6 +201,7 @@ import controllers.tradeArap.TradeCostCheckOrderController;
 import controllers.tradeArap.TradeCostRequestController;
 import controllers.tradeArap.TradeJobOrderReportController;
 
+
 public class EedaConfig extends JFinalConfig {
     private Logger logger = Logger.getLogger(EedaConfig.class);
 
@@ -382,7 +383,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/costAcceptOrder", controllers.arap.ap.CostAcceptOrderController.class, contentPath);
         me.add("/costConfirm", controllers.arap.ap.CostConfirmController.class, contentPath);
         
-        //运营报表
+        //货代运营报表
         me.add("/arapReport", controllers.arap.ArapReportController.class, contentPath);
         me.add("/profitReport", controllers.report.ProfitReportController.class, contentPath);
         me.add("/balanceReport", controllers.report.BalanceReportController.class, contentPath);
@@ -390,11 +391,18 @@ public class EedaConfig extends JFinalConfig {
         me.add("/chargeBalanceReport",controllers.arap.ChargeBalanceReportController.class, contentPath);
         me.add("/costBalanceReport",controllers.arap.CostBalanceReportController.class, contentPath);
         me.add("/profitAndPaymentRate",controllers.arap.ProfitAndPaymentRateController.class, contentPath);
-        me.add("/accountAging",controllers.arap.AccountAging.class, contentPath);
+        me.add("/accountAging",controllers.arap.AccountAgingController.class, contentPath);
         me.add("/billProfitAndPayment",controllers.arap.BillProfitAndPaymentController.class, contentPath);
         me.add("/oceanRouteReport", controllers.report.OceanRouteReportController.class, contentPath); 
         me.add("/airRouteReport", controllers.report.AirRouteReportController.class, contentPath);
         me.add("/profit",controllers.arap.profitController.class, contentPath);
+        
+        //贸易运营报表
+        me.add("/tradeChargeBalanceReport",controllers.tradeReport.TradeChargeBalanceReportController.class, contentPath);
+        me.add("/tradeCostBalanceReport",controllers.tradeReport.TradeCostBalanceReportController.class, contentPath);
+        me.add("/tradeProfitAndPaymentRate",controllers.tradeReport.TradeProfitAndPaymentRateController.class, contentPath);
+        me.add("/tradeAccountAging",controllers.tradeReport.TradeAccountAgingController.class, contentPath);
+        me.add("/tradeProfit",controllers.tradeReport.tradeProfitController.class, contentPath);
         
         //合同管理
         me.add("/supplierContract", controllers.contractManagement.SupplierContractController.class, contentPath);
