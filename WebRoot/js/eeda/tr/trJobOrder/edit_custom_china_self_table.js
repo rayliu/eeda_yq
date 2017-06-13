@@ -28,6 +28,7 @@ $(document).ready(function() {
             
             var item={}
             item.id = id;
+            item.order_type = 'trJobOrder';
             for(var i = 1; i < row.childNodes.length; i++){
             	var el = $(row.childNodes[i]).find('input, select');
             	var name = el.attr('name'); //name='abc'

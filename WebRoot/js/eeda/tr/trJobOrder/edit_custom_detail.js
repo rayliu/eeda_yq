@@ -119,6 +119,7 @@ $(document).ready(function() {
     	
     	item['id'] = $('#custom_id').val();
     	item['custom_type'] = "china";
+        item['order_type'] = 'trJobOrder';
     	
     	var customForm = $('#customForm input,#customForm select');
     	for(var i = 0; i < customForm.length; i++){
@@ -140,6 +141,7 @@ $(document).ready(function() {
     	
     	item['id'] = $('#abroad_custom_id').val();
     	item['custom_type'] = "abroad";
+        item['order_type'] = 'trJobOrder';
     	
     	var customForm = $('#abroadForm input,#abroadForm select');
     	for(var i = 0; i < customForm.length; i++){
@@ -161,6 +163,7 @@ $(document).ready(function() {
     	var item = {};
     	item['id'] = $('#hk_custom_id').val();
     	item['custom_type'] = "HK/MAC";
+        item['order_type'] = 'trJobOrder';
     	
     	var customForm = $('#hkForm input,#hkForm select');
     	for(var i = 0; i < customForm.length; i++){

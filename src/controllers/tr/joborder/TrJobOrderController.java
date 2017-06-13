@@ -308,10 +308,10 @@ public class TrJobOrderController extends Controller {
 		List<Map<String, String>> abroadCustom = (ArrayList<Map<String, String>>)dto.get("abroadCustom");
 		List<Map<String, String>> hkCustom = (ArrayList<Map<String, String>>)dto.get("hkCustom");
 		List<Map<String, String>> chinaCustom_self_item = (ArrayList<Map<String, String>>)dto.get("chinaCustom_self_item");
-		DbUtils.handleList(chinaCustom, id, JobOrderCustom.class, "order_id");
-		DbUtils.handleList(chinaCustom_self_item, "job_order_custom_china_self_item", id, "order_id");
-		DbUtils.handleList(abroadCustom, id, JobOrderCustom.class, "order_id");
-		DbUtils.handleList(hkCustom, id, JobOrderCustom.class, "order_id");
+		DbUtils.handleList(chinaCustom, id, JobOrderCustom.class, "trade_order_id");
+		DbUtils.handleList(chinaCustom_self_item, "job_order_custom_china_self_item", id, "trade_order_id");
+		DbUtils.handleList(abroadCustom, id, JobOrderCustom.class, "trade_order_id");
+		DbUtils.handleList(hkCustom, id, JobOrderCustom.class, "trade_order_id");
 		
 		
 		
@@ -1118,8 +1118,8 @@ public class TrJobOrderController extends Controller {
 	    }else if("china_self".equals(type)){
 	    	itemSql = "select j.*,p.abbr custom_bank_name from job_order_custom_china_self_item j"
 	    			+ " left join party p on p.id = j.custom_bank"
-	    			+ " where j.order_id=? order by j.id";
-	    	itemList = Db.find(itemSql, orderId);
+	    			+ " where order_type='trJobOrder' and trade_order_id="+orderId+" order by j.id ";
+	    	itemList = Db.find(itemSql);
 	    }else if("custom_doc".equals(type)){
 //	    	itemSql = "select jod.*,u.c_name from job_order_custom_doc jod left join user_login u on jod.uploader=u.id "
 //	    			+ " where order_id=? order by jod.id";
@@ -1169,10 +1169,10 @@ public class TrJobOrderController extends Controller {
     	
     	//报关
     	setAttr("customItemList",getItems(id, "custom_app"));
-    	setAttr("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
-   		setAttr("abroadCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"abroad"));
-   		setAttr("hkCustom", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"HK/MAC"));
-   		setAttr("customSelf", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china_self"));
+    	setAttr("custom",Db.findFirst("select * from job_order_custom joc where custom_type = ? and order_type='trJobOrder' and trade_order_id="+id,"china"));
+   		setAttr("abroadCustom", Db.findFirst("select * from job_order_custom joc where custom_type = ? and order_type='trJobOrder' and trade_order_id="+id,"abroad"));
+   		setAttr("hkCustom", Db.findFirst("select * from job_order_custom joc where custom_type = ? and order_type='trJobOrder' and trade_order_id="+id,"HK/MAC"));
+   		setAttr("customSelf", Db.findFirst("select * from job_order_custom joc where custom_type = ? and order_type='trJobOrder' and trade_order_id="+id,"china_self"));
    		setAttr("customSelfItemList", getItems(id,"china_self"));
    		setAttr("customDocList", getItems(id,"custom_doc"));
     	
@@ -1618,7 +1618,7 @@ public class TrJobOrderController extends Controller {
     	String order_id = getPara("order_id");
     	
     	if(StringUtils.isEmpty(item_id)){//全选
-    		Db.update("update job_order_custom_doc set share_flag =? where order_id = ?",check,order_id);
+    		Db.update("update job_order_custom_doc set share_flag =? where trade_order_id = ?",check,order_id);
     	}else{//单选
     		Db.update("update job_order_custom_doc set share_flag =? where id = ?",check,item_id);
 //    		
