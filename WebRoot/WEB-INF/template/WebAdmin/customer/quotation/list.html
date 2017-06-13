@@ -1,0 +1,67 @@
+<%layout("/WebAdmin/layout.html"){%>
+    <div class="pageheader notab overhide">
+      <div>
+        <h4>用户档期查询 和 报价</h4>
+        <table class="userdetailtable mt10" width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="3%">序号</td>
+            <td width="6%">提交的用户名</td>
+            <td width="7%">提交的公司</td>
+            <td width="6%">提交的产品页</td>
+            <td width="11%">提交时间</td>
+            <td width="8%">想预约的档期 </td>
+            <td width="11%">联系电话</td>
+            <td width="40%">备注</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>周先生</td>
+            <td><a href="business-remind-detail.php">珠海维多利亚</a></td>
+            <td><a href="product-list.php">xxx套餐</a></td>
+            <td>2016-10-20 ：16.20分 </td>
+            <td>2016-12.-26</td>
+            <td>1345641512</td>
+            <td>
+              <label>
+                <textarea name="textarea" id="textarea" cols="45" >以跟进。</textarea>
+              </label>
+              <input class="modifibtn" type="button" value="确定/修改"></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>周先生</td>
+            <td><a href="business-remind-detail.html">珠海维多利亚</a></td>
+            <td><a href="business-remind-detail.html">xxx套餐</a></td>
+            <td>2016-10-20 ：16.20分 </td>
+            <td>2016-12.-26</td>
+            <td>1345641512</td>
+            <td><label>
+              <textarea name="textarea2" id="textarea2" cols="45" ></textarea>
+            </label>
+              <input class="modifibtn" type="button" value="确定/修改" /></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>周先生</td>
+            <td><a href="business-remind-detail.html">珠海维多利亚</a></td>
+            <td><a href="business-remind-detail.html">xxx套餐</a></td>
+            <td>2016-10-20 ：16.20分 </td>
+            <td>2016-12.-26</td>
+            <td>1345641512</td>
+            <td><label>
+              <textarea name="textarea3" id="textarea3" cols="45"></textarea>
+            </label>
+              <input class="modifibtn" type="button" value="确定/修改" /></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['app/msgBoard/list']);
+    });
+</script>

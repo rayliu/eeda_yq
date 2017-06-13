@@ -63,7 +63,10 @@ import controllers.profile.PrivilegeController;
 import controllers.profile.TradeItemController;
 import controllers.profile.UnitController;
 import controllers.report.OrderStatusController;
+import controllers.webadmin.customer.AskController;
 import controllers.webadmin.customer.CustomerController;
+import controllers.webadmin.customer.ProjectController;
+import controllers.webadmin.customer.QuotationController;
 import controllers.webadmin.msg.DashBoardController;
 import controllers.wms.ChangePartNoController;
 import controllers.wms.ErrorReportController;
@@ -150,8 +153,16 @@ public class EedaConfig extends JFinalConfig {
 	    me.add("/WebAdmin", DashBoardController.class);
         me.add("/WebAdmin/dashBoard", DashBoardController.class);
         me.add("/WebAdmin/customer", CustomerController.class);
+        me.add("/WebAdmin/customer/quotation", QuotationController.class);
+        me.add("/WebAdmin/customer/project", ProjectController.class);
+        me.add("/WebAdmin/customer/ask", AskController.class);
         
-        //商家后台
+        me.add("/WebAdmin/biz/sp", AskController.class);
+        me.add("/WebAdmin/biz/reminder", AskController.class);
+        me.add("/WebAdmin/biz/bannerApplication", AskController.class);
+        me.add("/WebAdmin/biz/mobilePush", AskController.class);
+        
+        //后台
         me.add("/", MainController.class, contentPath);
         me.add("/module", ModuleController.class, contentPath);
        // me.add("/apidoc", controllers.eeda.DocController.class);基础数据

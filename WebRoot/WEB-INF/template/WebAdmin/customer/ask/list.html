@@ -1,0 +1,52 @@
+<%layout("/WebAdmin/layout.html"){%>
+    <div class="pageheader notab overhide">
+      <div class="bdgray">
+        <h4>婚礼问问</h4>
+        <p>&nbsp; </p>
+        <p><strong>用户问题</strong><select class="ml10"><option>全国</option><option>珠海</option></select></p>
+        <table class="userdetailtable mt10" width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>序号</td>
+            <td>时间</td>
+            <td>问题</td>
+            <td>回复数</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>2015-1-2</td>
+            <td>哪个婚庆公司好</td>
+            <td>3</td>
+            <td><input type="button" value="查看" class="modifibtn"  onclick="window.location.href='wedding-ask-detail.php'"/> <input type="button" class="delete-btn"  value="删除" /></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>2015-1-2</td>
+            <td>哪个婚庆公司好</td>
+            <td>3</td>
+            <td><input type="button" value="查看" class="modifibtn"  onclick="window.location.href='wedding-ask-detail.php'"/>              <input type="button" class="delete-btn"  value="删除" /></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>2015-1-2</td>
+            <td>哪个婚庆公司好</td>
+            <td>3</td>
+            <td><input type="button" value="查看" class="modifibtn"  onclick="window.location.href='wedding-ask-detail.php'"/>              <input type="button" class="delete-btn"  value="删除" /></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>2015-1-2</td>
+            <td>哪个婚庆公司好</td>
+            <td>3</td>
+            <td><input type="button" value="查看" class="modifibtn"  onclick="window.location.href='wedding-ask-detail.php'"/>              <input type="button" class="delete-btn"  value="删除" /></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['app/msgBoard/list']);
+    });
+</script>

@@ -1,0 +1,27 @@
+<%layout("/WebAdmin/layout.html"){%>
+    <div class="pageheader notab overhide">
+      <div class="newproject-wrap bdgray">
+        <h4>所有新增婚筹项目
+          <select name="select" class="ml10">
+            <option>全国</option>
+            <option>珠海</option>
+          </select>
+        </h4>
+        <ul>
+          <li>新増婚筹项目列表</li>
+            <li>新増婚筹项目列表</li>
+            <li>新増婚筹项目列表</li>
+            <li>新増婚筹项目列表</li>
+            <li>新増婚筹项目列表</li>
+            <li>新増婚筹项目列表</li>
+        </ul>
+      </div>
+    </div>
+
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['app/msgBoard/list']);
+    });
+</script>
