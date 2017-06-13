@@ -175,7 +175,6 @@ public class TransJobOrderController extends Controller {
 
 		//陆运
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
-		
 		for(int i=0;i<land_item.size();i++){
 			Map<String, ?> map=land_item.get(i);
 			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
@@ -259,6 +258,9 @@ public class TransJobOrderController extends Controller {
    		
    		//陆运明细保存
    		DbUtils.handleList(land_item, id, TransJobOrderLandItem.class, "order_id");
+		//陆运散货
+		List<Map<String, String>> land_bulk_item = (ArrayList<Map<String, String>>)dto.get("land_bulk_list");
+		DbUtils.handleList(land_bulk_item, "trans_job_order_land_item", id, "order_id");
 		//费用明细，应收应付
 		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");
 		DbUtils.handleList(charge_list, id, TransJobOrderArap.class, "order_id");
@@ -710,7 +712,22 @@ public class TransJobOrderController extends Controller {
     				+ " left join party p1 on p1.id=tjol.consignor"
     				+ " left join party p2 on p2.id=tjol.consignee"
     				+ " left join trans_job_order_land_doc tjold on tjold.land_id=tjol.id"
-    				+ " where tjol.order_id=? GROUP BY tjol.id order by tjol.id";
+    				+ " where tjol.order_id=? and tjol.item_type='shipment' GROUP BY tjol.id order by tjol.id";
+    		itemList = Db.find(itemSql, orderId);
+    	}else if("land_bulk".equals(type)){
+    		itemSql = " select tjol.*,ci.car_no car_no_name,d1.dock_name take_address_name,d2.dock_name delivery_address_name,d3.dock_name loading_wharf1_name,d4.dock_name loading_wharf2_name,"
+    				+ " p.abbr transport_company_name,CAST(GROUP_CONCAT(tjold.id) as char ) trans_job_order_land_doc_id, GROUP_CONCAT(tjold.doc_name) doc_name,"
+    				+ " p1.abbr consignor_name, p2.abbr consignee_name from trans_job_order_land_item tjol"
+    				+ " left join carinfo ci on ci.id=tjol.car_no"
+    				+ " left join dockinfo d1 on d1.id=tjol.take_wharf"
+    				+ " left join dockinfo d2 on d2.id=tjol.back_wharf"
+    				+ " left join dockinfo d3 on d3.id=tjol.loading_wharf1"
+    				+ " left join dockinfo d4 on d4.id=tjol.loading_wharf2"
+    				+ " left join party p on p.id=tjol.transport_company"
+    				+ " left join party p1 on p1.id=tjol.consignor"
+    				+ " left join party p2 on p2.id=tjol.consignee"
+    				+ " left join trans_job_order_land_doc tjold on tjold.land_id=tjol.id"
+    				+ " where tjol.order_id=? and tjol.item_type='bulk' GROUP BY tjol.id order by tjol.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("charge".equals(type)){
     		itemSql = " select tjor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name ,"
@@ -754,9 +771,24 @@ public class TransJobOrderController extends Controller {
 					+" LEFT JOIN dockinfo di1 on di1.id=tjo.back_wharf "
 					+"  where tjo.id= "+id;
     	Record re= Db.find(str).get(0);
-    	setAttr("order", re);
+    	String str2="  select tjol.*,ci.car_no car_no_name,d1.dock_name take_address_name,d2.dock_name delivery_address_name,d3.dock_name loading_wharf1_name,d4.dock_name loading_wharf2_name,"
+    				+ " p.abbr transport_company_name,CAST(GROUP_CONCAT(tjold.id) as char ) trans_job_order_land_doc_id, GROUP_CONCAT(tjold.doc_name) doc_name,"
+    				+ " p1.abbr consignor_name, p2.abbr consignee_name from trans_job_order_land_item tjol"
+    				+ " left join carinfo ci on ci.id=tjol.car_no"
+    				+ " left join dockinfo d1 on d1.id=tjol.take_wharf"
+    				+ " left join dockinfo d2 on d2.id=tjol.back_wharf"
+    				+ " left join dockinfo d3 on d3.id=tjol.loading_wharf1"
+    				+ " left join dockinfo d4 on d4.id=tjol.loading_wharf2"
+    				+ " left join party p on p.id=tjol.transport_company"
+    				+ " left join party p1 on p1.id=tjol.consignor"
+    				+ " left join party p2 on p2.id=tjol.consignee"
+    				+ " left join trans_job_order_land_doc tjold on tjold.land_id=tjol.id"
+    				+ " where tjol.order_id="+id+" and tjol.item_type='bulk' GROUP BY tjol.id order by tjol.id";
+    	Record re2= Db.findFirst(str2);
     	//获取陆运明细表信息
     	setAttr("landList", getItems(id,"land"));
+    	setAttr("landBulkList", getItems(id,"land_bulk"));
+    	setAttr("landBulk", re2);
     	//获取费用明细
     	setAttr("chargeList", getItems(id,"charge"));
     	setAttr("costList", getItems(id,"cost"));
@@ -775,6 +807,7 @@ public class TransJobOrderController extends Controller {
     	long creator = re.getLong("creator");
     	UserLogin user = UserLogin.dao.findById(creator);
     	setAttr("user", user);
+    	setAttr("order", re);
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
     	//海运头程资料

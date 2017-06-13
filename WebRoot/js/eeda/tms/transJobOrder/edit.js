@@ -138,7 +138,8 @@ $(document).ready(function() {
         
         if(transport_type_str.indexOf('land')>-1){
 	        //陆运
-	        order.land_list = itemOrder.buildLoadItem();
+	        order.land_list = itemOrder.buildLoadItem();//柜货
+	        order.land_bulk_list = itemOrder.buildLoadBulkItem();//散货
         }
 
         //费用明细，应收，应付
@@ -203,6 +204,7 @@ $(document).ready(function() {
                 
                
                 itemOrder.refleshLandItemTable(order.ID);
+                itemOrder.refleshLandBulkItemTable(order.ID);
                 itemOrder.refleshChargeTable(order.ID);
                 itemOrder.refleshCostTable(order.ID);
                 $.unblockUI();
