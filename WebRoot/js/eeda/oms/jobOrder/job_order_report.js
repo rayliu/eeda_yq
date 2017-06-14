@@ -323,23 +323,7 @@ $(document).ready(function() {
     		$('#pdfAlertContent').html("以下字段未填，请先填好才能生成PDF<br><br>"+alert);
 			$('#pdfAlert').click();
 		}else{
-			//取HBL发货人信息
-//			var arrStr = $('#ocean_HBLshipper_info').val();
-//			var arry = arrStr.split("\n");
-//			if(arry.length>=2){
-//				if($('#head_attn').val()==""||$('#head_attn').val()==undefined){
-//					$('#head_attn').val(arry[1]);
-//				}
-//			}
-//			if(arry.length>=3){
-//				var arr = arry[2].split(" ");
-//			}
-//			if(arr!=undefined&&arr.length>=1){
-//				$('#head_customerTel').val(arr[0].replace("TEL:",""));
-//			}
-//			if(arr!=undefined&&arr.length>=2){
-//				$('#head_fax').val(arr[1].replace("FAX:",""));
-//			}
+			//取客户信息
 			var customer_id = $('#customer_id').val();
 			
 			$.post('/customer/search_party_id', {customer_id:customer_id}, function(data){
@@ -708,32 +692,30 @@ $(document).ready(function() {
 	
 	//生成陆运的柜货派车单PDF
 	$('#cabinet_truck').click(function(){
-		var arrStr = $('#ocean_HBLshipper_info').val();
-		var arry = arrStr.split("\n");
-		$('#truck_head_attn').val(arry[1]);
-        $('#truck_head_customer_tel').val(arry[2]);
+//		var arrStr = $('#ocean_HBLshipper_info').val();
+//		var arry = arrStr.split("\n");
+//		$('#truck_head_attn').val(arry[1]);
+//        $('#truck_head_customer_tel').val(arry[2]);
         var cabinet_arrive_date=$('#land_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=ETA]').val();
-        if(!$('#cabinet_arrive_date').val()){
-            $('#cabinet_arrive_date').val(cabinet_arrive_date);
-        }
-		if(arry.length>=2){
-			var arr = arry[1].split(" ");
-			if(arr.length>=1){
-				$('#truck_head_customer_tel').val(arr[0].replace("TEL:",""));
-			}
-			if(arr.length>=2){
-				$('#truck_head_fax').val(arr[1].replace("FAX:",""));
-			}
-		}
-        //海运hbl
-        var ocean_HBLshipper=$('#ocean_HBLshipper_input').val();
-        //陆运勾选的第一条,发货人
-        var consignor_input=$('#land_table tbody tr').has('input[type=checkbox]:checked').first().find('[name=CONSIGNOR_input]').val();
-		if(ocean_HBLshipper){
-            $('#truck_head_end_place').val(ocean_HBLshipper);
-        }else{
-            $('#truck_head_end_place').val(consignor_input);
-        }
+        var TRANSPORT_COMPANY = $('#land_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=TRANSPORT_COMPANY]').val();
+        var CONSIGNEE_input = $('#land_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=CONSIGNEE_input]').val();
+        var TAKE_ADDRESS_input = $('#land_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=TAKE_ADDRESS_input]').val();
+        
+        var closing_date = new Date($('#closing_date').val());
+        
+        var format_closing_dd =formatDate(closing_date,"dd");
+        var format_closing_MMM =formatDate(closing_date,"MM");
+        var format_closing_date = format_closing_dd+'/'+format_closing_MMM;
+		$.post('/serviceProvider/searchTruckCompany_id', {TRANSPORT_COMPANY_id:TRANSPORT_COMPANY}, function(data){
+			$('#truck_head_end_place').val(data.ABBR);
+			$('#truck_head_attn').val(data.CONTACT_PERSON);
+			$('#truck_head_customer_tel').val(data.PHONE);
+			$('#truck_head_fax').val(data.FAX);
+		});
+        var cabinet_arrive_remark = "请安排"+format_closing_date+CONSIGNEE_input+"报关出口，吉柜于"+cabinet_arrive_date+"到"+TAKE_ADDRESS_input+",待通知收柜。";
+        $('#cabinet_arrive_remark').val(cabinet_arrive_remark);
+        
+        
 		$('#truck_head_start_place').val(loginUserName);
 		var truck_head_tel=$('#truck_head_tel').val();
 		if(!truck_head_tel){
@@ -741,7 +723,59 @@ $(document).ready(function() {
 		}
 		
 		$('#truck_head_date').val(eeda.getDate());
-	})
+	});
+	
+	//日期格式化 解析网址：http://www.cnblogs.com/xuyangblog/p/4878043.html
+	var formatDate= function (now,mask)
+    {
+        var d = now;
+        var zeroize = function (value, length)
+        {
+            if (!length) length = 2;
+            value = String(value);
+            for (var i = 0, zeros = ''; i < (length - value.length); i++)
+            {
+                zeros += '0';
+            }
+            return zeros + value;
+        };
+        
+        return mask.replace(/"[^"]*"|'[^']*'|\b(?:d{1,4}|m{1,4}|yy(?:yy)?|([hHMstT])\1?|[lLZ])\b/g, function ($0)
+        {
+            switch ($0)
+            {
+                case 'd': return d.getDate();
+                case 'dd': return zeroize(d.getDate());
+                case 'ddd': return ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'][d.getDay()];
+                case 'dddd': return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDay()];
+//                case 'M': return d.getMonth() + 1;
+                case 'M': return zeroize(d.getMonth() + 1);
+                case 'MM': return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()];
+                case 'MMMM': return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][d.getMonth()];
+                case 'yy': return String(d.getFullYear()).substr(2);
+                case 'yyyy': return d.getFullYear();
+                case 'h': return d.getHours() % 12 || 12;
+                case 'hh': return zeroize(d.getHours() % 12 || 12);
+                case 'H': return d.getHours();
+                case 'HH': return zeroize(d.getHours());
+                case 'm': return d.getMinutes();
+                case 'mm': return zeroize(d.getMinutes());
+                case 's': return d.getSeconds();
+                case 'ss': return zeroize(d.getSeconds());
+                case 'l': return zeroize(d.getMilliseconds(), 3);
+                case 'L': var m = d.getMilliseconds();
+                    if (m > 99) m = Math.round(m / 10);
+                    return zeroize(m);
+                case 'tt': return d.getHours() < 12 ? 'am' : 'pm';
+                case 'TT': return d.getHours() < 12 ? 'AM' : 'PM';
+                case 'Z': return d.toUTCString().match(/[A-Z]+$/);
+                // Return quoted strings with the surrounding quotes removed
+                default: return $0.substr(1, $0.length - 2);
+            }
+        });
+    };
+	
+
     $('#printCabinetTruck').click(function(){
     	var truckHead = {}
     	var form = $('#truckHeadForm input,#truckHeadForm textarea');
