@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="debitNote" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="292"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -252,13 +252,13 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="118" y="39" width="384" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="455e6f24-6e86-494c-801f-9f3c155f7a7b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="126" y="61" width="384" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="048cb641-3dc8-4021-abd3-6dbfc6bda8f5"/>
+				<reportElement mode="Transparent" x="118" y="61" width="384" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="048cb641-3dc8-4021-abd3-6dbfc6bda8f5"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -268,7 +268,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="185" y="78" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="14cdbeb6-c9e0-4cc6-8bbe-230cb6b11a40"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{office_tel}]]></textFieldExpression>
@@ -276,7 +276,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="310" y="78" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="d4ff6fc7-78a1-46a2-8f80-73ba5c653045"/>
 				<textElement textAlignment="Left" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{office_fax}]]></textFieldExpression>
