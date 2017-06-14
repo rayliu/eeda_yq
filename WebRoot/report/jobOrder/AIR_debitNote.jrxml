@@ -260,7 +260,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="118" y="61" width="384" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="048cb641-3dc8-4021-abd3-6dbfc6bda8f5"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"  isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{eng_address}]]></textFieldExpression>
