@@ -721,7 +721,10 @@ $(document).ready(function() {
 		if(!truck_head_tel){
 			$('#truck_head_tel').val(loginUserPhone);
 		}
-		
+		var truck_head_email=$('#truck_head_email').val();
+		if(!truck_head_email){
+			$('#truck_head_email').val(loginUserEmail);
+		}
 		$('#truck_head_date').val(eeda.getDate());
 	});
 	

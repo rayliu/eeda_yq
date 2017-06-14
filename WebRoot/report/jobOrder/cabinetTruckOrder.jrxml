@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cabinetTruckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="240"/>
+	<property name="ireport.y" value="405"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -295,6 +295,9 @@ where joli.id=$P{item_id}]]>
 	</field>
 	<field name="SONO_land" class="java.lang.String">
 		<fieldDescription><![CDATA[SO号]]></fieldDescription>
+	</field>
+	<field name="truck_head_email" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="transport_company_name" class="java.lang.String"/>
 	<field name="head_company" class="java.lang.String"/>
@@ -617,6 +620,13 @@ where joli.id=$P{item_id}]]>
 				</textElement>
 				<text><![CDATA[E-MAIL:]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="407" y="738" width="150" height="17" uuid="adceec20-4710-4de4-9687-7a277b992942"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{truck_head_email}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 </jasperReport>
