@@ -56,7 +56,7 @@ $(document).ready(function() {
         columns:[
 			{ "data":"ID","width": "80px",
 			    "render": function ( data, type, full, meta ) {
-                    if(!full.ID){//有doc id证明是自己上传的，否则是从job order 共享过来的
+                    if(full.CPODID){//有doc id证明是自己上传的，否则是从job order 共享过来的
                         return '';
                     }else{
                         if(full.SHARE_FLAG=='Y')
@@ -68,7 +68,7 @@ $(document).ready(function() {
 			},
             {"width": "30px",
                 "render": function ( data, type, full, meta ) {
-                    if(full.ID){
+                    if(full.JOCDID){
                 	   return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px"><i class="fa fa-trash-o"></i> 删除</button></button> ';
                     }else{
                         return '';
@@ -79,7 +79,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    if(full.NEW_FLAG=='Y'){
+                    if(full.CMS_NEW_FLAG=='Y'){
                     	return '<input type="hidden" name="doc_name" value="'+data+'" ><span class="badge" style="background-color: red;">新</span>&nbsp &nbsp<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
                     }else{
                     	return '<input type="hidden" name="doc_name" value="'+data+'" >&nbsp &nbsp<a class="doc_name" href="/upload/doc/'+data+'" style="width:300px" target="_blank">'+data+'</a>';
@@ -96,7 +96,8 @@ $(document).ready(function() {
             { "data": "C_NAME","width": "80px"},
             { "data": "UPLOAD_TIME", "width": "80px"},
             { "data": "SHARE_FLAG", "visible": false },
-            { "data": "NEW_FLAG", "visible": false },
+            { "data": "CMS_NEW_FLAG", "visible": false },
+            { "data": "CPODID", "visible": false },
             { "data": "REF_JOB_ORDER_ID", "visible": false }
         ]
     });

@@ -493,6 +493,22 @@ $(document).ready(function() {
             
         });
     
+        $('#custom_doc_table a').click(function(){
+            var td=$(this).parent();
+            var id=td.parent().attr('id');
+            $.post('/trJobOrder/newFlag',{id:id},function(data){
+                td.find('span').remove();
+                $('#doc_table [name=doc_name]').each(function(){
+                    if($(this).parent().find('span').attr('class')=='badge'){
+                        $('#tabDocDetail').find('span').show();
+                    }else{
+                        $('#tabDocDetail').find('span').hide();
+                    }
+                    
+                });
+            });
+        })
+        
     
 });
 });

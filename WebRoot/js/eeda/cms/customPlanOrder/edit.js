@@ -347,7 +347,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         $('#doc_table a').click(function(){
         	var td=$(this).parent();
         	var id=td.parent().attr('id');
-        	$.post('/jobOrder/newFlag',{id:id},function(data){
+        	$.post('/customPlanOrder/newFlag',{id:id},function(data){
         		td.find('span').remove();
         		$('#doc_table [name=doc_name]').each(function(){
         			if($(this).parent().find('span').attr('class')=='badge'){

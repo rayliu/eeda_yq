@@ -798,6 +798,10 @@ public class CustomPlanOrderController extends Controller {
 			r.set("uploader", LoginUserController.getLoginUserId(this));
 			r.set("doc_name", fileName);
 			r.set("upload_time", new Date());
+			UserLogin userLogin=LoginUserController.getLoginUser(this);
+			String reString="select * from office where id="+userLogin.getOfficeId();
+			Record record=Db.findFirst(reString);
+			r.set("order_type",record.get("type"));
 			Db.save("custom_plan_order_doc",r);
 		}
 		Map<String,Object> resultMap = new HashMap<String,Object>();
@@ -891,6 +895,13 @@ public class CustomPlanOrderController extends Controller {
     //新文档上传标记
     @Before(Tx.class)
     public void newFlag(){
+    	 //获取office_id
+    	String id = getPara("id");
+   		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+   		if(office_id!=1&&office_id!=2){
+   			Db.update("update job_order_custom_doc set new_flag ='N' where id = ?",id);
+   		}
     	renderJson("{\"result\":true}");
     }
     
