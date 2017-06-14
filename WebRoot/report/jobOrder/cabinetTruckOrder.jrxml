@@ -296,7 +296,7 @@ where joli.id=$P{item_id}]]>
 	<field name="SONO_land" class="java.lang.String">
 		<fieldDescription><![CDATA[SO号]]></fieldDescription>
 	</field>
-	<field name="truck_head_email" class="java.lang.String">
+	<field name="head_email" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="transport_company_name" class="java.lang.String"/>
@@ -625,7 +625,7 @@ where joli.id=$P{item_id}]]>
 				<textElement verticalAlignment="Middle">
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{truck_head_email}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{head_email}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
