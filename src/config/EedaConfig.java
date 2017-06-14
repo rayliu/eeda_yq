@@ -62,12 +62,15 @@ import controllers.report.OrderStatusController;
 import controllers.webadmin.ad.CuController;
 import controllers.webadmin.ad.HuiController;
 import controllers.webadmin.ad.TaoController;
+import controllers.webadmin.biz.BannerApplicationController;
+import controllers.webadmin.biz.InviteCodeController;
 import controllers.webadmin.customer.AskController;
 import controllers.webadmin.customer.CustomerController;
 import controllers.webadmin.customer.ProjectController;
 import controllers.webadmin.customer.QuotationController;
 import controllers.webadmin.data.BestCaseController;
 import controllers.webadmin.data.CaseController;
+import controllers.webadmin.data.ProductController;
 import controllers.webadmin.data.VideoController;
 import controllers.webadmin.msg.DashBoardController;
 import controllers.wms.ChangePartNoController;
@@ -77,7 +80,6 @@ import controllers.wms.GateOutController;
 import controllers.wms.GateOutOrderController;
 import controllers.wms.InvCheckOrderController;
 import controllers.wms.InventoryController;
-import controllers.wms.ProductController;
 import controllers.wms.importOrder.ImportOrder;
 
 public class EedaConfig extends JFinalConfig {
@@ -161,8 +163,9 @@ public class EedaConfig extends JFinalConfig {
         
         me.add("/WebAdmin/biz/sp", TaoController.class);
         me.add("/WebAdmin/biz/reminder", CuController.class);
-        me.add("/WebAdmin/biz/bannerApplication", ProductController.class);
+        me.add("/WebAdmin/biz/bannerApplication", BannerApplicationController.class);
         me.add("/WebAdmin/biz/mobilePush", HuiController.class);
+        me.add("/WebAdmin/biz/inviteCode", InviteCodeController.class);
         
         me.add("/WebAdmin/ad/tao", TaoController.class);
         me.add("/WebAdmin/ad/cu", CuController.class);
@@ -208,19 +211,6 @@ public class EedaConfig extends JFinalConfig {
         //发布公告
         me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
         me.add("/orderStatus", OrderStatusController.class, contentPath);
-        
-        
-        //仓库管理模块wms
-        me.add("/importOrder", ImportOrder.class, contentPath);
-        me.add("/gateIn", GateInController.class, contentPath);
-        me.add("/gateOut", GateOutController.class, contentPath);
-        me.add("/gateOutOrder", GateOutOrderController.class, contentPath);
-        me.add("/invCheckOrder", InvCheckOrderController.class, contentPath);
-        me.add("/wmsproduct", ProductController.class, contentPath);
-        me.add("/inventory", InventoryController.class, contentPath);
-        me.add("/errorReport", ErrorReportController.class, contentPath);
-        me.add("/changePartNo", ChangePartNoController.class, contentPath);
-  
 	}
 
     @Override

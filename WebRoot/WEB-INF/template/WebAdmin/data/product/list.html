@@ -1,0 +1,59 @@
+<%layout("/WebAdmin/layout.html"){%>
+    <div class="pageheader notab overhide">
+            <h3>维多利亚-产品列表</h3>
+            <div>
+                <table cellspacing="0" cellpadding="0" border="0" class="stdtable mt10">
+                    <colgroup>
+                        <col class="con0">
+                        <col class="con1">
+                        <col class="con0">
+                        <col class="con1">
+                        <col class="con0">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="head0">商 家</th>
+                            <th class="head1">地 区</th>
+                            <th class="head1">封 面</th>
+                            <th class="head0">产品名</th>
+                            <th class="head1">价 格</th>
+                            <th class="head0">上下架</th>
+                            <th class="head1">下 架</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                              <tr>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <img src="images/fm.png" width="229" height="115" />                            </td>
+                            <td></td>
+                            <td>   
+                                                                    面议
+                                                            </td>
+                            <td>未上架</td>
+                            <td>
+                                                                <input type="button" class="modifibtn" value="上架" onclick="OnLine();" />
+                                                                <input type="button" class="modifibtn" value="删除" onclick="ProductDel();" />
+                                <input type="button" class="modifibtn" value="编辑"  onclick="ProductMod();" />                            </td>
+                        </tr>
+                                           </tbody>
+                </table>
+          <div id="dyntable2_paginate" class="dataTables_paginate paging_full_numbers">
+                    <span class="first paginate_button paginate_button_disabled" onclic="GoPage(1);">First</span>
+                    <span class="previous paginate_button paginate_button_disabled" onclick="GoPage();">Previous</span>
+                    <span>
+                                            </span>
+                    <span class="next paginate_button" onclick="GoPage();">Next</span>
+                    <span class="last paginate_button" onclick="GoPage();">Last</span>
+                </div>
+            </div>
+        </div>
+
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['app/msgBoard/list']);
+    });
+</script>
