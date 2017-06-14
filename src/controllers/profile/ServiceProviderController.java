@@ -635,6 +635,32 @@ public class ServiceProviderController extends Controller {
     	renderJson(rec);
     }
     
+    // 获取指定运输公司
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
+    public void searchTruckCompany_id() {
+        String TRANSPORT_COMPANY_id = getPara("TRANSPORT_COMPANY_id");
+       
+        if(StringUtils.isEmpty(TRANSPORT_COMPANY_id)){
+        	TRANSPORT_COMPANY_id = "";
+        }
+        Record resultFirst = new Record();
+        String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+                + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code from party p where  "
+                + " p.type = 'SP' ";
+                        
+            if (TRANSPORT_COMPANY_id.trim().length() > 0) {
+                sql +=" and p.id =" + TRANSPORT_COMPANY_id ;
+            }
+            resultFirst = Db.findFirst(sql);
+
+            renderJson(resultFirst);
+        
+    }
+    
+    
+    
+    
+    
     //查询单位下拉列表
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchUnit(){
