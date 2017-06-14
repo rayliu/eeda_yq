@@ -207,12 +207,11 @@
                                    }){}%>
                            </div>
                            <div class="col-lg-6">
-                                    <%include("/eeda/component/form/inputField.html", 
-                                       {   id:'truck_head_date',
-                                           label:'DATE',
-                                           disabled:'disabled',
-                                           value:truckHead.head_date!''
-                                       }){}%>
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_email', 
+                                       label:'E-MAIL:',
+                                       value:truckHead.truck_head_email!''
+                                   }){}%>
                            </div>
                        </div>
                         <div class="row">
@@ -236,6 +235,16 @@
                                        label:'MBL号',
                                        value:shipment.mbl_no!truckHead.mbl_no_land!''
                                    }){}%>
+                           </div>
+                        </div>
+                        <div class="row">
+                        	<div class="col-lg-6">
+                                    <%include("/eeda/component/form/inputField.html", 
+                                       {   id:'truck_head_date',
+                                           label:'DATE',
+                                           disabled:'disabled',
+                                           value:truckHead.head_date!''
+                                       }){}%>
                            </div>
                         </div>
                         <div class="row">

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cabinetTruckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="258"/>
+	<property name="ireport.y" value="240"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -11,7 +11,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     o.logo_path,jos.*,josi.*,josh.*,IFNULL(p4.company_name,p4.company_name_eng) transport_company_name,p.company_name head_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
+     o.logo_path,o.office_name,jos.*,josi.*,josh.*,IFNULL(p4.company_name,p4.company_name_eng) transport_company_name,p.company_name head_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
 ifnull(
 (select GROUP_CONCAT(CN_no SEPARATOR '  ;  ') from
 (SELECT
@@ -31,8 +31,7 @@ LEFT JOIN party p4 on p4.id = joli.transport_company
 LEFT JOIN party p on p.id = jos.head_carrier
 LEFT JOIN party p1 on p1.id = jos.carrier
 LEFT JOIN party p2 on p2.id = jos.HBLshipper
-LEFT JOIN job_order jo on jo.id = jos.order_id
-LEFT JOIN office o on o.id = jo.office_id
+LEFT JOIN office o on o.id = p.office_id
 left join location lo on lo.id=jos.por
 left join location lo1 on lo1.id=jos.pol
 left join location lo2 on lo2.id=jos.pod
@@ -41,6 +40,9 @@ where joli.id=$P{item_id}]]>
 	</queryString>
 	<field name="logo_path" class="java.lang.String">
 		<fieldDescription><![CDATA[logo路径]]></fieldDescription>
+	</field>
+	<field name="office_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -210,6 +212,15 @@ where joli.id=$P{item_id}]]>
 	<field name="closing_date" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="agent_prepaid" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="atd" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ata" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="type" class="java.lang.String">
 		<fieldDescription><![CDATA[进出口]]></fieldDescription>
 	</field>
@@ -354,7 +365,7 @@ where joli.id=$P{item_id}]]>
 				<text><![CDATA[TEL:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="353" y="736" width="53" height="19" uuid="524c7396-5e07-4aa5-90c7-cf15dd0806d3"/>
+				<reportElement x="354" y="755" width="53" height="19" uuid="524c7396-5e07-4aa5-90c7-cf15dd0806d3"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -431,7 +442,7 @@ where joli.id=$P{item_id}]]>
 				<text><![CDATA[ETA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="28" y="611" width="527" height="34" uuid="63809dcb-18eb-4c70-b182-cd050a522bcb"/>
+				<reportElement x="28" y="634" width="527" height="34" uuid="63809dcb-18eb-4c70-b182-cd050a522bcb"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -523,7 +534,7 @@ where joli.id=$P{item_id}]]>
 				<textFieldExpression><![CDATA[$F{head_fax}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
-				<reportElement x="406" y="736" width="149" height="19" uuid="bf8ae0f5-593b-42bc-9b00-a9fc8ab77dd9"/>
+				<reportElement x="407" y="755" width="149" height="19" uuid="bf8ae0f5-593b-42bc-9b00-a9fc8ab77dd9"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -542,13 +553,6 @@ where joli.id=$P{item_id}]]>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{head_start_place}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="29" y="583" width="122" height="23" uuid="a700f889-2aea-4018-9bef-ba4d64d25170"/>
-				<textElement>
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{head_remark}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="28" y="232" width="505" height="33" uuid="bd876b8f-6da4-4d76-96df-c981cb7cddd5"/>
@@ -585,29 +589,8 @@ where joli.id=$P{item_id}]]>
 				<reportElement x="0" y="-10" width="249" height="68" uuid="af90243c-bdac-4045-b78d-4dd4e6cfe5f3"/>
 				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="150" y="583" width="88" height="23" uuid="c1b00c17-187b-4a8b-811a-6fc47da2c4a6"/>
-				<textElement>
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[吉柜于]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="301" y="583" width="140" height="23" uuid="cef7875b-2560-459a-8cb1-156a4f47997e"/>
-				<textElement>
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[吉柜到厂，待通知收柜。]]></text>
-			</staticText>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="237" y="583" width="65" height="23" uuid="f3f7d41b-92cf-4f72-a3e4-c08ab99f74e7"/>
-				<textElement>
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{cabinet_arrive_date}]]></textFieldExpression>
-			</textField>
-			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="29" y="645" width="467" height="39" uuid="02a98bcb-57a9-489f-a93c-0628d61cedfc"/>
+				<reportElement x="28" y="595" width="522" height="39" uuid="02a98bcb-57a9-489f-a93c-0628d61cedfc"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -620,6 +603,20 @@ where joli.id=$P{item_id}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{transport_company_name}]]></textFieldExpression>
 			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="353" y="685" width="202" height="17" uuid="965f9b9b-1e6b-4644-a864-4884fb8f906f"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="354" y="736" width="53" height="17" uuid="e60e6a34-d540-4b6b-b842-55842742e277"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[E-MAIL:]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 </jasperReport>
