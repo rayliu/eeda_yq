@@ -1789,7 +1789,7 @@ public class JobOrderController extends Controller {
         String sColumn =  getPara("order[0][column]");
         String sName =  getPara("columns["+sColumn+"][data]")==null?"create_stamp":getPara("columns["+sColumn+"][data]") ;
         if("0".equals(sName)){
-        	sName = "create_stamp";
+        	sName = "order_export_date";
         }
         
         if (getPara("start") != null  && getPara("length") != null) {
