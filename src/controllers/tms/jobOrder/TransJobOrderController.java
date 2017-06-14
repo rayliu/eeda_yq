@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.Office;
 import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
@@ -1097,11 +1098,12 @@ public class TransJobOrderController extends Controller {
     	String item_id = getPara("item_id");
     	String check = getPara("check");
     	String order_id = getPara("order_id");
+		Office office=LoginUserController.getLoginUserOffice(this);
     	
     	if(StringUtils.isEmpty(item_id)){//全选
-    		Db.update("update job_order_custom_doc set share_flag =? where order_id = ?",check,order_id);
+    		Db.update("update job_order_custom_doc set share_flag =? where order_id = ? and order_type = '"+office.get("type")+"' ",check,order_id);
     	}else{//单选
-    		Db.update("update job_order_custom_doc set share_flag =? where id = ?",check,item_id);
+    		Db.update("update job_order_custom_doc set share_flag =? where id = ?  ",check,item_id);
 //    		
 //    		List<Record> CPOList = Db.find("select cpod.* from custom_plan_order cpo where cpo.ref_job_order_id = ?",order_id);
 //    		for(Record re :CPOList){

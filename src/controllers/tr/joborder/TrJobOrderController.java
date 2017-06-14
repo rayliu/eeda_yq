@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.Office;
 import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
@@ -1059,6 +1060,7 @@ public class TrJobOrderController extends Controller {
     private List<Record> getItems(String orderId,String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
+		Office office=LoginUserController.getLoginUserOffice(this);
      if("charge".equals(type)){
     		itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
     				+ " c1.name exchange_currency_id_name"
@@ -1128,7 +1130,7 @@ public class TrJobOrderController extends Controller {
 	        itemSql =" select cpo.ref_job_order_id, jocd.id,null cpodid,jocd.doc_name,jocd.upload_time, jocd.remark, "
 	        		+" 	ul.c_name,jocd.uploader, jocd.share_flag ,null share_flag, jocd.new_flag,null cms_new_flag from job_order_custom_doc jocd "
 	        		  +" LEFT JOIN user_login ul on ul.id = jocd.uploader "
-	        		  +" LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id and jocd.share_flag = 'Y' and cpo.delete_flag='N' "
+	        		  +" LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id and jocd.order_type = '"+office.get("type")+"'  and jocd.share_flag = 'Y' and cpo.delete_flag='N' "
 	        		  +" where jocd.order_id ="+orderId
 	        		  +" union all "
 	        		  +" select cpo.ref_job_order_id, jod.id id ,jod.id cpodid ,jod.doc_name,jod.upload_time, jod.remark,u.c_name, "
@@ -1618,9 +1620,10 @@ public class TrJobOrderController extends Controller {
     	String item_id = getPara("item_id");
     	String check = getPara("check");
     	String order_id = getPara("order_id");
+		Office office=LoginUserController.getLoginUserOffice(this);
     	
     	if(StringUtils.isEmpty(item_id)){//全选
-    		Db.update("update job_order_custom_doc set share_flag =? where trade_order_id = ?",check,order_id);
+    		Db.update("update job_order_custom_doc set share_flag =? where trade_order_id = ? and order_type = '"+office.get("type")+"' ",check,order_id);
     	}else{//单选
     		Db.update("update job_order_custom_doc set share_flag =? where id = ?",check,item_id);
 //    		

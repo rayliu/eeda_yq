@@ -87,10 +87,10 @@ public class CustomPlanOrderController extends Controller {
         setAttr("customTemplateInfo", getCustomTemplateInfo());
         setAttr("to_office_id", to_office_id);
 
-        
+        Office office=LoginUserController.getLoginUserOffice(this);
         List<Record> re = Db.find("select null id ,joc.doc_name,joc.upload_time,joc.remark,ul.c_name c_name,joc.uploader from job_order_custom_doc joc"
         		+ " left join user_login ul on joc.uploader = ul.id"
-        		+ " where joc.order_id = ? and joc.share_flag = 'Y'",jobId);
+        		+ " where joc.order_id = ? and joc.order_type = '"+office.get("type")+"' and joc.share_flag = 'Y'",jobId);
         setAttr("docList", re);
         
         render("/cms/customPlanOrder/CustomPlanOrderEdit.html");
@@ -453,6 +453,7 @@ public class CustomPlanOrderController extends Controller {
     private List<Record> getItems(String orderId, String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
+		Office office=LoginUserController.getLoginUserOffice(this);
     	if("cargo".equals(type)){
     		itemSql = " SELECT cpo.*,cur.name currency_name,l.name destination_country_item_name, concat(cen.code,' ',cen.name) exemption_name"
     				+ " FROM custom_plan_order_item cpo"
@@ -465,7 +466,7 @@ public class CustomPlanOrderController extends Controller {
     		itemSql = "select cpo.ref_job_order_id, jocd.id id,jocd.doc_name,jocd.upload_time,jocd.remark,ul.c_name c_name,"
     		        + " jocd.uploader, jocd.share_flag,null cms_share_flag,jocd.new_flag from job_order_custom_doc jocd"
     				+ " LEFT JOIN user_login ul on ul.id = jocd.uploader"
-    				+ " LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id and jocd.share_flag = 'Y'"
+    				+ " LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id  and jocd.order_type = '"+office.get("type")+"'  and jocd.share_flag = 'Y'"
     				+ " where cpo.id =?"
     				+ " union all"
     				+ " select  cpo.ref_job_order_id, jod.id ,jod.doc_name,jod.upload_time,jod.remark,u.c_name c_name,"
@@ -473,7 +474,7 @@ public class CustomPlanOrderController extends Controller {
     				+ " from custom_plan_order_doc jod "
     				+ " left join custom_plan_order cpo on cpo.id = jod.order_id"
     				+ " left join user_login u on jod.uploader=u.id "
-	    			+ " where order_id=?";
+	    			+ " where order_id=? ";
     		itemList = Db.find(itemSql, orderId,orderId);
     	}else if("charge".equals(type)){
     	  //shiroExt 去判断权限
@@ -798,10 +799,8 @@ public class CustomPlanOrderController extends Controller {
 			r.set("uploader", LoginUserController.getLoginUserId(this));
 			r.set("doc_name", fileName);
 			r.set("upload_time", new Date());
-			UserLogin userLogin=LoginUserController.getLoginUser(this);
-			String reString="select * from office where id="+userLogin.getOfficeId();
-			Record record=Db.findFirst(reString);
-			r.set("order_type",record.get("type"));
+			Office office=LoginUserController.getLoginUserOffice(this);
+			r.set("order_type",office.get("type"));
 			Db.save("custom_plan_order_doc",r);
 		}
 		Map<String,Object> resultMap = new HashMap<String,Object>();
@@ -882,9 +881,10 @@ public class CustomPlanOrderController extends Controller {
         String item_id = getPara("item_id");
         String check = getPara("check");
         String order_id = getPara("order_id");
+		Office office=LoginUserController.getLoginUserOffice(this);
         
         if(StringUtils.isEmpty(item_id)){//全选
-            Db.update("update custom_plan_order_doc set cms_share_flag =? where order_id = ?",check,order_id);
+            Db.update("update custom_plan_order_doc set cms_share_flag =? where order_id = ?   ",check,order_id);
         }else{//单选
             Db.update("update custom_plan_order_doc set cms_share_flag =? where id = ?",check,item_id);
         }

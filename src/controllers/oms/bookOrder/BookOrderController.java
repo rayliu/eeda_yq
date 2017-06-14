@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.Office;
 import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
@@ -1074,6 +1075,7 @@ public class BookOrderController extends Controller {
     private List<Record> getItems(String orderId,String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
+		Office office=LoginUserController.getLoginUserOffice(this);
     	if("shipment".equals(type)){
     		itemSql = "select jos.*,CONCAT(u.name,u.name_eng) unit_name from book_order_shipment_item jos"
     				+ " left join unit u on u.id=jos.unit_id"

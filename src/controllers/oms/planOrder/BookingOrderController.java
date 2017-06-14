@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.Office;
 import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
@@ -1040,9 +1041,10 @@ public class BookingOrderController extends Controller {
             String order_id = getPara("order_id");
             List<UploadFile> fileList = getFiles("doc");
             Long userId = LoginUserController.getLoginUserId(this);
-            
-            FileUploadUtil.uploadFile(fileList, order_id, userId, "job_order_custom_doc", false);
-            
+            Office office=LoginUserController.getLoginUserOffice(this);
+
+//            FileUploadUtil.uploadFile(fileList, order_id, userId, "job_order_custom_doc", false);
+			 FileUploadUtil.uploadTypeFile(fileList, order_id, userId, "job_order_custom_doc", false,office.get("type").toString());
             renderJson("{\"result\":true}");
         } catch (Exception e) {
             String msg = e.getMessage();
@@ -1054,6 +1056,7 @@ public class BookingOrderController extends Controller {
                 rec.set("errMsg", msg);
             }
             renderJson(rec);
+            
         }
     }
     
@@ -1212,6 +1215,7 @@ public class BookingOrderController extends Controller {
     private List<Record> getItems(String orderId,String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
+		Office office=LoginUserController.getLoginUserOffice(this);
     	if("shipment".equals(type)){
     		itemSql = "select jos.*,CONCAT(u.name,u.name_eng) unit_name from job_order_shipment_item jos"
     				+ " left join unit u on u.id=jos.unit_id"
@@ -1306,14 +1310,14 @@ public class BookingOrderController extends Controller {
 	                + " ul.c_name c_name,jocd.uploader, jocd.share_flag ,null share_flag from job_order_custom_doc jocd"
                     + " LEFT JOIN user_login ul on ul.id = jocd.uploader"
                     + " LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id and jocd.share_flag = 'Y'"
-                    + " where jocd.order_id =? and cpo.delete_flag='N'"
+                    + " where jocd.order_id =? and cpo.delete_flag='N'  and jocd.order_type = '"+office.get("type")+"' "
                     + " union all"
                     + " select cpo.ref_job_order_id, null id ,jod.doc_name,jod.upload_time,jod.remark,u.c_name c_name,"
                     + " jod.uploader,null share_flag, jod.cms_share_flag"
                     + " from custom_plan_order_doc jod "
                     + " left join custom_plan_order cpo on cpo.id = jod.order_id"
                     + " left join user_login u on jod.uploader=u.id "
-                    + " where cpo.ref_job_order_id=? and cpo.delete_flag='N'";
+                    + " where cpo.ref_job_order_id=? and cpo.delete_flag='N' ";
 	    	itemList = Db.find(itemSql, orderId, orderId);
 	    }else if("custom_app".equals(type)){
 	    	itemList = Db.find("SELECT"
@@ -1889,9 +1893,10 @@ public class BookingOrderController extends Controller {
     	String item_id = getPara("item_id");
     	String check = getPara("check");
     	String order_id = getPara("order_id");
+		Office office=LoginUserController.getLoginUserOffice(this);
     	
     	if(StringUtils.isEmpty(item_id)){//全选
-    		Db.update("update job_order_custom_doc set share_flag =? where order_id = ?",check,order_id);
+    		Db.update("update job_order_custom_doc set share_flag =? where order_id = ? and order_type = '"+office.get("type")+"' ",check,order_id);
     	}else{//单选
     		Db.update("update job_order_custom_doc set share_flag =? where id = ?",check,item_id);
 //    		
