@@ -22,10 +22,6 @@ import models.eeda.profile.Module;
 import models.eeda.profile.ModuleRole;
 import models.eeda.profile.OrderNoSeq;
 import models.eeda.profile.Unit;
-import models.wms.GateIn;
-import models.wms.GateOut;
-import models.wms.InvCheckOrder;
-import models.wms.Wmsproduct;
 import models.yh.profile.OfficeCofig;
 import models.yh.profile.Route;
 
@@ -63,10 +59,16 @@ import controllers.profile.PrivilegeController;
 import controllers.profile.TradeItemController;
 import controllers.profile.UnitController;
 import controllers.report.OrderStatusController;
+import controllers.webadmin.ad.CuController;
+import controllers.webadmin.ad.HuiController;
+import controllers.webadmin.ad.TaoController;
 import controllers.webadmin.customer.AskController;
 import controllers.webadmin.customer.CustomerController;
 import controllers.webadmin.customer.ProjectController;
 import controllers.webadmin.customer.QuotationController;
+import controllers.webadmin.data.BestCaseController;
+import controllers.webadmin.data.CaseController;
+import controllers.webadmin.data.VideoController;
 import controllers.webadmin.msg.DashBoardController;
 import controllers.wms.ChangePartNoController;
 import controllers.wms.ErrorReportController;
@@ -157,10 +159,19 @@ public class EedaConfig extends JFinalConfig {
         me.add("/WebAdmin/customer/project", ProjectController.class);
         me.add("/WebAdmin/customer/ask", AskController.class);
         
-        me.add("/WebAdmin/biz/sp", AskController.class);
-        me.add("/WebAdmin/biz/reminder", AskController.class);
-        me.add("/WebAdmin/biz/bannerApplication", AskController.class);
-        me.add("/WebAdmin/biz/mobilePush", AskController.class);
+        me.add("/WebAdmin/biz/sp", TaoController.class);
+        me.add("/WebAdmin/biz/reminder", CuController.class);
+        me.add("/WebAdmin/biz/bannerApplication", ProductController.class);
+        me.add("/WebAdmin/biz/mobilePush", HuiController.class);
+        
+        me.add("/WebAdmin/ad/tao", TaoController.class);
+        me.add("/WebAdmin/ad/cu", CuController.class);
+        me.add("/WebAdmin/ad/hui", HuiController.class);
+        
+        me.add("/WebAdmin/data/product", ProductController.class);
+        me.add("/WebAdmin/data/video", VideoController.class);
+        me.add("/WebAdmin/data/case", CaseController.class);
+        me.add("/WebAdmin/data/bestCase", BestCaseController.class);
         
         //后台
         me.add("/", MainController.class, contentPath);
@@ -265,13 +276,6 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("user_customer", UserCustomer.class);
         
         arp.addMapping("office_config", OfficeCofig.class);
-      
-        
-        //仓库管理模块wms
-        arp.addMapping("wmsproduct", Wmsproduct.class); 
-        arp.addMapping("gate_in", GateIn.class); 
-        arp.addMapping("gate_out", GateOut.class); 
-        arp.addMapping("inv_check_order", InvCheckOrder.class); 
     }
 
     private void initDBconnector() {
