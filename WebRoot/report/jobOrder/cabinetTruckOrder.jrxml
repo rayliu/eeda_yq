@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cabinetTruckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="405"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -315,10 +315,10 @@ where joli.id=$P{item_id}]]>
 				<reportElement x="23" y="86" width="506" height="1" uuid="20141848-82cb-4b57-b7c4-92b05cc84f4f"/>
 			</line>
 			<line>
-				<reportElement x="23" y="85" width="1" height="135" uuid="b88bf786-0756-4907-8e72-8c84d062ea18"/>
+				<reportElement x="23" y="86" width="1" height="135" uuid="b88bf786-0756-4907-8e72-8c84d062ea18"/>
 			</line>
 			<line>
-				<reportElement x="529" y="85" width="1" height="135" uuid="a05a7855-15b8-4c23-9e0f-e2ae8200161a"/>
+				<reportElement x="529" y="86" width="1" height="135" uuid="a05a7855-15b8-4c23-9e0f-e2ae8200161a"/>
 			</line>
 			<line>
 				<reportElement x="24" y="116" width="505" height="1" uuid="80b51cfb-3867-4484-abf9-0c0aee99db22"/>
@@ -330,7 +330,7 @@ where joli.id=$P{item_id}]]>
 				<reportElement x="24" y="188" width="505" height="1" uuid="e07e0d15-b938-4ea6-9e21-52b617799cf5"/>
 			</line>
 			<line>
-				<reportElement x="111" y="85" width="1" height="135" uuid="428412c5-1909-4ea3-905e-1a9027818de8"/>
+				<reportElement x="111" y="86" width="1" height="135" uuid="428412c5-1909-4ea3-905e-1a9027818de8"/>
 			</line>
 			<staticText>
 				<reportElement x="26" y="86" width="84" height="30" uuid="b4e7f51d-a79a-47d0-beb7-b621505d4156"/>
@@ -542,13 +542,6 @@ where joli.id=$P{item_id}]]>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="364" y="56" width="165" height="30" uuid="dd79ac11-81fe-4c8e-a584-fa762101ba3f"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{head_end_place}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="405" y="702" width="149" height="17" uuid="2007e9ec-c4f3-4feb-a821-d9e5aad93aca"/>
