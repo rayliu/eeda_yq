@@ -60,7 +60,15 @@ $(document).ready(function() {
                         return "<a href='/customPlanOrder/edit?id="+full.ORDER_ID+"' target='_blank'>"+data+"</a>";
                     }
             },
-            { "data": "DATE_CUSTOM", "width": "100px"},
+            { "data": "DATE_CUSTOM", "width": "100px",
+            	"render":function(data,type,full,meta){
+            		if(!data){
+  	                  data='';
+  	                  return data;
+  	                }
+            		return data.substr(0,10);
+            	}
+            },
             { "data": "TRACKING_NO", "width": "180px"},
             { "data": "ABBR_NAME", "width": "120px"},
             { "data": "FIN_NAME", "width": "200px"},
