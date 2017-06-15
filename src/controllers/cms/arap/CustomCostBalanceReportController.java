@@ -35,7 +35,7 @@ public class CustomCostBalanceReportController extends Controller {
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/costBalanceReport");
 		 setAttr("listConfigList", configList);
-		render("/eeda/arap/CostBalanceReport/CostBalanceReport.html");
+		render("/eeda/cmsArap/CostBalanceReport/CostBalanceReport.html");
 	}
 	
 	public long list() {
