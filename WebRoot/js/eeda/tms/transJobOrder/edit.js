@@ -31,6 +31,73 @@ $(document).ready(function() {
 			$('#saveBtn').attr('disabled', true);
 		}
     }
+    
+    //柜货、散货显示控制
+	var type_controll= function(type){
+	    	if(type=='出口散货'||type=='进口散货'){
+	        	var take_wharf = $('#take_wharf_input');
+	        	take_wharf.attr('required',false);
+	        	take_wharf.parent().find('span').text('');
+	        	
+	        	var back_wharf = $('#back_wharf_input');
+	        	back_wharf.attr('required',false);
+	        	back_wharf.parent().find('span').text('');
+	        	
+	        	var head_carrier = $('#head_carrier_input');
+	        	head_carrier.attr('required',false);
+	        	head_carrier.parent().find('span').text('');
+	        	
+	        	var container_no = $('#container_no');
+	        	container_no.attr('required',false);
+	        	container_no.parent().find('span').text('');
+	        	
+	        	var so_no = $('#so_no');
+	        	so_no.attr('required',false);
+	        	so_no.parent().find('span').text('');
+	        	
+	        	$('#land_shipmentTab').parent().hide();
+	        	$('#land_shipmentDetail').hide("active");
+	        	
+	        	$('#land_bulk_cargoTab').parent().show();
+	        	$('#land_bulk_cargoTab').parent().addClass("active");
+	        	$('#land_bulk_cargoDetail').addClass("active");
+	        }else{
+	        	var take_wharf = $('#take_wharf_input');
+	        	take_wharf.attr('required',true);
+	        	take_wharf.parent().find('span').text('*');
+	        	
+	        	var back_wharf = $('#back_wharf_input');
+	        	back_wharf.attr('required',true);
+	        	back_wharf.parent().find('span').text('*');
+	        	
+	        	var head_carrier = $('#head_carrier_input');
+	        	head_carrier.attr('required',true);
+	        	head_carrier.parent().find('span').text('*');
+	        	
+	        	var container_no = $('#container_no');
+	        	container_no.attr('required',true);
+	        	container_no.parent().find('span').text('*');
+	        	
+	        	var so_no = $('#so_no');
+	        	so_no.attr('required',true);
+	        	so_no.parent().find('span').text('*');
+	        	
+	        	$('#land_shipmentTab').parent().show();
+	        	$('#land_shipmentTab').parent().addClass("active");
+	        	$('#land_shipmentDetail').show("active");
+	        	
+	        	$('#land_bulk_cargoTab').parent().hide();
+	        	$('#land_bulk_cargoDetail').removeClass("active");
+		    }
+	    }
+	
+	var type = $('#type').val();
+    type_controll(type);
+    
+    $('#type').click(function(){
+    	 type = $('#type').val();
+    	 type_controll(type);
+    });
      
 	
 	//已完成工作单确认
