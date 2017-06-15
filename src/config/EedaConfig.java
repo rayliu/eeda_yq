@@ -25,6 +25,8 @@ import models.eeda.profile.Unit;
 import models.eeda.OfficeConfig;
 //import models.yh.profile.Route;
 
+
+
 import org.apache.log4j.Logger;
 import org.bee.tl.ext.jfinal.BeetlRenderFactory;
 import org.h2.tools.Server;
@@ -46,10 +48,10 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.app.AppControllerForMobile;
+import controllers.bizadmin.account.AccountController;
+import controllers.bizadmin.login.LoginController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
-import controllers.profile.AccountController;
-import controllers.profile.ContainerTypeController;
 import controllers.profile.CountryController;
 import controllers.profile.CustomController;
 import controllers.profile.FinItemController;
@@ -141,6 +143,11 @@ public class EedaConfig extends JFinalConfig {
 
 	private void setWeddingRoute(Routes me) {
 	    String contentPath = "";
+	    
+	    //商家的后台
+        me.add("/BusinessAdmin", LoginController.class);
+        me.add("/BusinessAdmin/account", AccountController.class);
+	    
 	    //总管理的后台
 	    me.add("/WebAdmin", DashBoardController.class);
         me.add("/WebAdmin/dashBoard", DashBoardController.class);
@@ -164,11 +171,11 @@ public class EedaConfig extends JFinalConfig {
         me.add("/WebAdmin/data/case", CaseController.class);
         me.add("/WebAdmin/data/bestCase", BestCaseController.class);
         
+        
+        
         //后台
         me.add("/", MainController.class, contentPath);
         me.add("/module", ModuleController.class, contentPath);
-       // me.add("/apidoc", controllers.eeda.DocController.class);基础数据
-        
 
         me.add("/tradeItem", TradeItemController.class, contentPath);
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
@@ -186,7 +193,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/office", controllers.profile.OfficeController.class, contentPath);
 
 //		me.add("/accountAuditLog", AccountAuditLogController.class, contentPath);
-		me.add("/account", AccountController.class, contentPath);
+//		me.add("/account", AccountController.class, contentPath);
 		me.add("/privilege", PrivilegeController.class, contentPath);
 
 	}

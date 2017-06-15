@@ -48,12 +48,9 @@ import controllers.util.getCurrentPermission;
 
 public class MainController extends Controller {
 	private Log logger = Log.getLog(MainController.class);
-    // in config route已经将路径默认设置为/eeda
-    // me.add("/eeda", controllers.yh.AppController.class, "/eeda");
     Subject currentUser = SecurityUtils.getSubject();
 
     private boolean isAuthenticated() {
-
         // remember me 处理，自动帮user 登陆
         if (!currentUser.isAuthenticated() && currentUser.isRemembered()) {
             Object principal = currentUser.getPrincipal();
@@ -80,6 +77,8 @@ public class MainController extends Controller {
     	
         return true;
     }
+    
+    
     @Before(EedaMenuInterceptor.class)
     public void index() {
     	setSysTitle();
