@@ -22,8 +22,8 @@ import models.eeda.profile.Module;
 import models.eeda.profile.ModuleRole;
 import models.eeda.profile.OrderNoSeq;
 import models.eeda.profile.Unit;
-import models.yh.profile.OfficeCofig;
-import models.yh.profile.Route;
+import models.eeda.OfficeConfig;
+//import models.yh.profile.Route;
 
 import org.apache.log4j.Logger;
 import org.bee.tl.ext.jfinal.BeetlRenderFactory;
@@ -48,8 +48,6 @@ import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import controllers.app.AppControllerForMobile;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
-import controllers.oms.jobOrder.JobOrderControllerForMobile;
-import controllers.oms.planOrder.PlanOrderControllerForMobile;
 import controllers.profile.AccountController;
 import controllers.profile.ContainerTypeController;
 import controllers.profile.CountryController;
@@ -58,7 +56,6 @@ import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.TradeItemController;
 import controllers.profile.UnitController;
-import controllers.report.OrderStatusController;
 import controllers.webadmin.ad.CuController;
 import controllers.webadmin.ad.HuiController;
 import controllers.webadmin.ad.TaoController;
@@ -73,14 +70,7 @@ import controllers.webadmin.data.CaseController;
 import controllers.webadmin.data.ProductController;
 import controllers.webadmin.data.VideoController;
 import controllers.webadmin.msg.DashBoardController;
-import controllers.wms.ChangePartNoController;
-import controllers.wms.ErrorReportController;
-import controllers.wms.GateInController;
-import controllers.wms.GateOutController;
-import controllers.wms.GateOutOrderController;
-import controllers.wms.InvCheckOrderController;
-import controllers.wms.InventoryController;
-import controllers.wms.importOrder.ImportOrder;
+
 
 public class EedaConfig extends JFinalConfig {
     private Logger logger = Logger.getLogger(EedaConfig.class);
@@ -147,8 +137,6 @@ public class EedaConfig extends JFinalConfig {
     }
     private void setAppRoute(Routes me) {
         me.add("/app", AppControllerForMobile.class);
-        me.add("/app/jobOrder", JobOrderControllerForMobile.class);
-        me.add("/app/planOrder", PlanOrderControllerForMobile.class);
     }
 
 	private void setWeddingRoute(Routes me) {
@@ -184,33 +172,23 @@ public class EedaConfig extends JFinalConfig {
 
         me.add("/tradeItem", TradeItemController.class, contentPath);
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
-        me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
         me.add("/loginUser", controllers.profile.LoginUserController.class, contentPath);
         me.add("/unit", UnitController.class, contentPath);
         me.add("/country", CountryController.class, contentPath);
         me.add("/finItem", FinItemController.class, contentPath);
         me.add("/custom", CustomController.class, contentPath);
-        me.add("/carInfo", controllers.profile.CarinfoController.class, contentPath);
-        me.add("/containerType", ContainerTypeController.class, contentPath);
         //register loginUser
 //        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
         //me.add("/reset",controllers.profile.ResetPassWordController.class,contentPath);
         me.add("/role", controllers.profile.RoleController.class, contentPath);
         me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
-        me.add("/customer", controllers.profile.CustomerController.class, contentPath);
-        me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);
         me.add("/location", controllers.profile.LocationController.class, contentPath);
         me.add("/office", controllers.profile.OfficeController.class, contentPath);
-        me.add("/product", controllers.profile.ProductController.class, contentPath);
-        me.add("/customerRemind", controllers.report.CustomerRemindController.class, contentPath);
 
 //		me.add("/accountAuditLog", AccountAuditLogController.class, contentPath);
 		me.add("/account", AccountController.class, contentPath);
 		me.add("/privilege", PrivilegeController.class, contentPath);
-		
-        //发布公告
-        me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
-        me.add("/orderStatus", OrderStatusController.class, contentPath);
+
 	}
 
     @Override
@@ -256,7 +234,7 @@ public class EedaConfig extends JFinalConfig {
        
         arp.addMapping("party", Party.class);
 
-        arp.addMapping("route", Route.class);
+//        arp.addMapping("route", Route.class);
         arp.addMapping("category", Category.class);
         arp.addMapping("location", Location.class);
         arp.addMapping("order_no_seq", OrderNoSeq.class);
@@ -265,7 +243,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("user_office", UserOffice.class);
         arp.addMapping("user_customer", UserCustomer.class);
         
-        arp.addMapping("office_config", OfficeCofig.class);
+        arp.addMapping("office_config", OfficeConfig.class);
     }
 
     private void initDBconnector() {

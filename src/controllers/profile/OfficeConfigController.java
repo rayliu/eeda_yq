@@ -10,8 +10,8 @@ import java.util.List;
 
 import models.Office;
 import models.ParentOfficeModel;
+import models.eeda.OfficeConfig;
 import models.eeda.profile.Warehouse;
-import models.yh.profile.OfficeCofig;
 
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
@@ -45,7 +45,7 @@ public class OfficeConfigController extends Controller{
     //@RequiresPermissions(value = {PermissionConstant.PERMSSION_W_LIST})
 	public void index() {
 		Office office = Office.dao.findById(pom.getParentOfficeId());
-		OfficeCofig officeConfig = OfficeCofig.dao.findFirst("select * from office_config where office_id = ?",pom.getParentOfficeId());
+		OfficeConfig officeConfig = OfficeConfig.dao.findFirst("select * from office_config where office_id = ?",pom.getParentOfficeId());
 		setAttr("lu", office);
 		setAttr("officeConfig", officeConfig);
 		render("/yh/profile/officeConfig/edit.html");
@@ -177,7 +177,7 @@ public class OfficeConfigController extends Controller{
 		office.set("abbr",abbr);
 		office.update();
 		
-		OfficeCofig officeConfig = OfficeCofig.dao.findFirst("select * from office_config where office_id = ?",office_id);
+		OfficeConfig officeConfig = OfficeConfig.dao.findFirst("select * from office_config where office_id = ?",office_id);
 		if(logofileName != null && !"".equals(logofileName)){
 			logofileName=logofileName.replace(logofileName.substring(0,1), "/");
 			officeConfig.set("logo", logofileName);

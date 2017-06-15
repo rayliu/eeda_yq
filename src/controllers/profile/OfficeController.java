@@ -12,7 +12,7 @@ import models.ParentOfficeModel;
 import models.UserLogin;
 import models.UserOffice;
 import models.UserRole;
-import models.yh.profile.OfficeCofig;
+import models.eeda.OfficeConfig;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
@@ -37,7 +37,7 @@ public class OfficeController extends Controller {
     ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_O_LIST})
     public void index() {
-    	OfficeCofig officeConfig = OfficeCofig.dao.findFirst("select * from office_config where office_id = ?",pom.getParentOfficeId());
+    	OfficeConfig officeConfig = OfficeConfig.dao.findFirst("select * from office_config where office_id = ?",pom.getParentOfficeId());
     	List<Office> list = Office.dao.find("select * from office where belong_office = " + pom.getParentOfficeId());
     	setAttr("officeConfig", officeConfig);
     	if(list.size()>0){
@@ -143,7 +143,7 @@ public class OfficeController extends Controller {
             }
         }
         
-        OfficeCofig officeConfig = OfficeCofig.dao.findFirst("select * from office_config where office_id = ?",pom.getParentOfficeId());
+        OfficeConfig officeConfig = OfficeConfig.dao.findFirst("select * from office_config where office_id = ?",pom.getParentOfficeId());
     	List<Office> list = Office.dao.find("select * from office where belong_office = " + pom.getParentOfficeId());
     	setAttr("officeConfig", officeConfig);
     	if(list.size()>0){
@@ -175,7 +175,7 @@ public class OfficeController extends Controller {
             office.update();
         	
         }
-        OfficeCofig officeConfig = OfficeCofig.dao.findFirst("select * from office_config where office_id = ?",pom.getParentOfficeId());
+        OfficeConfig officeConfig = OfficeConfig.dao.findFirst("select * from office_config where office_id = ?",pom.getParentOfficeId());
     	List<Office> list = Office.dao.find("select * from office where belong_office = " + pom.getParentOfficeId());
     	setAttr("officeConfig", officeConfig);
     	if(list.size()>0){
