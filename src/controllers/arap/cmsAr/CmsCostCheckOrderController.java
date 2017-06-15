@@ -511,6 +511,7 @@ public class CmsCostCheckOrderController extends Controller {
 		        	Gson gson = new Gson();  
 		         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
 		         String id=(String)dto.get("custom_charge_order_id");
+			   	 String itemids= (String) dto.get("itemids");
 		   		
 		   		String pay_remark=(String) dto.get("pay_remark");
 		   		
@@ -572,6 +573,8 @@ public class CmsCostCheckOrderController extends Controller {
          					arapChargeOrder.set("audit_status", "部分已付款").update();
          				}else{
          					arapChargeOrder.set("audit_status", "已付款").update();
+         					//pay_flag为收付款标志
+         					Db.update("update custom_plan_order_arap set pay_flag = 'Y' where id in ("+itemids+")");
          				}
                //新建日记账表数据
            		if(!"0.0".equals(dto.get("receive_cny"))&&StringUtils.isNotEmpty((String) dto.get("receive_cny"))){

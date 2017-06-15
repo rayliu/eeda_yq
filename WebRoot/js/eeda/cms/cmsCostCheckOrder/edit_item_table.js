@@ -57,6 +57,10 @@ $(document).ready(function() {
 		        },
 		        { "data": "DATE_CUSTOM", "width": "100px",
 		        	"render": function(data,type,full,meta){
+                if(!data){
+                  data='';
+                  return data;
+                }
 		        		return data.substring(0,10);
 		        	}
 		        },
