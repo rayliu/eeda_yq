@@ -77,53 +77,45 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
   	              },
 	              { "data": "TYPE"}, 
 	              { "data": "RECEIVE_COMPANY_NAME"}, 
-	              { "data": "CUSTOM_DAILIFEI",
-                  "render": function ( data, type, full, meta ) {
-                    if(data)
-                      return eeda.numFormat(parseFloat(data).toFixed(2),3)
-                    else
-                      return '';
-                    }
-                },
-                { "data": null,
-                    "render": function ( data, type, full, meta ) {
-                      if(data){
-                        data = '';
-                      }
-                      
-                      var cost = full.COST;
-                      var charge = full.CHARGE;
-                      var costShow="";
-                      var chargeShow="";
-                      if(cost){
-                        var costArray = cost.split(',');
-                        costShow='<h5><strong>应付费用</strong></h5>';
-                        for (var i = 0; i < costArray.length; i++) {
-                          costShow += '<li>'+costArray[i]+'</li>';
-                }
-                      }
-                      if(charge){
-                        chargeShow='<h5><strong>应收费用</strong></h5>';
-                        var chargeArray = charge.split(',');
-                        for (var i = 0; i < chargeArray.length; i++) {
-                          chargeShow += '<li>'+chargeArray[i]+'</li>';
-                  
-                }
-                      }
-                      if(cost){
-                        data += '<span class="other" width="50" '
-                            +' data-content="<div'
-                            +' height=&quot;140&quot; >'+costShow+'</div>" ><span class="badge" style="">￥付</span></span>';
-                      }
-                      if(charge){
-                        data += ' <span class="other" width="50" '
-                                +' data-content="<div'
-                                +' height=&quot;140&quot; >'+chargeShow+'</div>" ><span class="badge" style="">￥收</span></span>';
-                      }
-
-                      return data;
-                    }
-                },
+	              { "data": null,
+	                    "render": function ( data, type, full, meta ) {
+	                      if(data){
+	                        data = '';
+	                      }
+	                      
+	                      var cost = full.COST;
+	                      var charge = full.CHARGE;
+	                      var costShow="";
+	                      var chargeShow="";
+	                      if(cost){
+	                        var costArray = cost.split(',');
+	                        costShow='<h5><strong>应付费用</strong></h5>';
+	                        for (var i = 0; i < costArray.length; i++) {
+	                          costShow += '<li>'+costArray[i]+'</li>';
+	                }
+	                      }
+	                      if(charge){
+	                        chargeShow='<h5><strong>应收费用</strong></h5>';
+	                        var chargeArray = charge.split(',');
+	                        for (var i = 0; i < chargeArray.length; i++) {
+	                          chargeShow += '<li>'+chargeArray[i]+'</li>';
+	                  
+	                }
+	                      }
+	                      if(cost){
+	                        data += '<span class="other" width="50" '
+	                            +' data-content="<div'
+	                            +' height=&quot;140&quot; >'+costShow+'</div>" ><span class="badge" style="">￥付</span></span>';
+	                      }
+	                      if(charge){
+	                        data += ' <span class="other" width="50" '
+	                                +' data-content="<div'
+	                                +' height=&quot;140&quot; >'+chargeShow+'</div>" ><span class="badge" style="">￥收</span></span>';
+	                      }
+	
+	                      return data;
+	                    }
+	              },
                   { "data": "DATE_CUSTOM",
                 	"render":function(data,type,full,meta){
                 		if(data){
