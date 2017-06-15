@@ -502,7 +502,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		         String id=(String)dto.get("custom_charge_order_id");
 		   		
 		   		String pay_remark=(String) dto.get("pay_remark");
-		   		
+		   		String itemids= (String) dto.get("itemids");
 		   		CustomArapChargeReceiveItem cacritem=new CustomArapChargeReceiveItem();
 		   		String receive_time = (String) dto.get("receive_time");
 		   		String deposit_bank = "";
@@ -561,6 +561,8 @@ public class CmsChargeCheckOrderController extends Controller {
          					arapChargeOrder.set("audit_status", "部分已收款").update();
          				}else{
          					arapChargeOrder.set("audit_status", "已收款").update();
+         					//pay_flag为收付款标志
+         					Db.update("update custom_plan_order_arap set pay_flag = 'Y' where id in ("+itemids+")");
          				}
                //新建日记账表数据
            		if(!"0.0".equals(dto.get("receive_cny"))&&StringUtils.isNotEmpty((String) dto.get("receive_cny"))){
