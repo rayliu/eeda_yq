@@ -8,12 +8,8 @@ import java.util.Date;
 import java.util.Random;
 
 import javax.mail.internet.MimeUtility;
-import javax.servlet.http.HttpServletRequest;
 
 import models.UserLogin;
-import models.UserOffice;
-import models.UserRole;
-import models.yh.profile.OfficeCofig;
 
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
@@ -21,9 +17,6 @@ import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;

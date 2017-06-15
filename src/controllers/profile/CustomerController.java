@@ -17,7 +17,6 @@ import models.Party;
 import models.UserCustomer;
 import models.UserLogin;
 import models.UserRole;
-import models.yh.profile.CustomerRoute;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -253,58 +252,6 @@ public class CustomerController extends Controller {
 		renderJson(locationList);
 	}
     
-    @Before(Tx.class)
-    public void saveCustomerRoute(){
-        String id = getPara("route_id");
-        String customer_id = getPara("customer_id");
-        String location_from = getPara("location_from");
-        String location_to = getPara("location_to");
-        String sp_id = getPara("sp_id");
-        String charge_type = getPara("charge_type");
-        String car_type = getPara("car_type");
-        String ltl_price_type = getPara("ltl_price_type");
-        String limitation = getPara("limitationFile");
-        CustomerRoute route = null;
-        try{
-            if(StringUtils.isEmpty(id)){
-                route = new CustomerRoute();
-                route.set("customer_id", customer_id);
-                route.set("location_from", location_from);
-                route.set("location_to", location_to);
-                route.set("sp_id", sp_id);
-                route.set("charge_type", charge_type);
-                route.set("car_type", car_type);
-                route.set("ltl_price_type", ltl_price_type);
-                route.set("limitation", limitation);
-                route.save();
-            }else{
-                route = CustomerRoute.dao.findById(id);
-                route.set("customer_id", customer_id);
-                route.set("location_from", location_from);
-                route.set("location_to", location_to);
-                route.set("sp_id", sp_id);
-                route.set("charge_type", charge_type);
-                route.set("car_type", car_type);
-                route.set("ltl_price_type", ltl_price_type);
-                route.set("limitation", limitation);
-                route.update();
-            }
-        }catch(Exception e){
-            String errMsg = e.getMessage();
-            logger.debug(errMsg);
-            if(errMsg.indexOf("index_route")>0){
-                route.set("id", -1);
-            }
-        }
-        renderJson(route);
-    }
-    
-    public void deleteCustomerRoute(){
-        String id = getPara("route_id");
-        CustomerRoute route = CustomerRoute.dao.findById(id);
-        route.delete();
-        renderText("ok");
-    }
     
     public void getCustomerRoute(){
         String id = getPara("route_id");

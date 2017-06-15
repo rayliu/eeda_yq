@@ -53,6 +53,7 @@ import models.UserCustomer;
 import models.UserLogin;
 import models.UserOffice;
 import models.UserRole;
+import models.eeda.OfficeConfig;
 import models.eeda.cms.CustomArapChargeItem;
 import models.eeda.cms.CustomArapChargeOrder;
 import models.eeda.cms.CustomArapChargeReceiveItem;
@@ -136,9 +137,6 @@ import models.eeda.tr.tradeJoborder.TradeJobOrderDoc;
 import models.eeda.tr.tradeJoborder.TradeJobOrderSendMail;
 import models.eeda.tr.tradeJoborder.TradeJobOrderSendMailTemplate;
 import models.yh.profile.Carinfo;
-import models.yh.profile.CustomizeField;
-import models.yh.profile.OfficeCofig;
-import models.yh.profile.Route;
 
 import org.apache.log4j.Logger;
 import org.bee.tl.ext.jfinal.BeetlRenderFactory;
@@ -286,13 +284,11 @@ public class EedaConfig extends JFinalConfig {
         
         me.add("/tradeItem", TradeItemController.class, contentPath);
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
-        me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
         me.add("/loginUser", controllers.profile.LoginUserController.class, contentPath);
         me.add("/unit", UnitController.class, contentPath);
         me.add("/country", CountryController.class, contentPath);
         me.add("/finItem", FinItemController.class, contentPath);
         me.add("/custom", CustomController.class, contentPath);
-        me.add("/carInfo", controllers.profile.CarinfoController.class, contentPath);
         me.add("/dockInfo", controllers.profile.DockInfoController.class, contentPath);
         me.add("/containerType", ContainerTypeController.class, contentPath);
         //register loginUser
@@ -371,22 +367,22 @@ public class EedaConfig extends JFinalConfig {
 		//ar= account revenue  应收条目处理
 		me.add("/chargeRequest", controllers.arap.ar.chargeRequest.ChargeRequestController.class, contentPath);
 		me.add("/costRequest", controllers.arap.ar.costRequest.CostRequestController.class, contentPath);
-        me.add("/chargeConfirmList", controllers.arap.ar.ChargeItemConfirmController.class, contentPath);
+//        me.add("/chargeConfirmList", controllers.arap.ar.ChargeItemConfirmController.class, contentPath);
         me.add("/chargeCheckOrder", controllers.arap.ar.ChargeCheckOrderController.class, contentPath);
         me.add("/chargeCheckOrderList", controllers.arap.ar.ChargeCheckOrderController.class, contentPath);
-        me.add("/chargePreInvoiceOrder", controllers.arap.ar.ChargePreInvoiceOrderController.class, contentPath);
+//        me.add("/chargePreInvoiceOrder", controllers.arap.ar.ChargePreInvoiceOrderController.class, contentPath);
         me.add("/chargeInvoiceOrder", controllers.arap.ar.ChargeInvoiceOrderController.class, contentPath);
-        me.add("/chargeAdjustOrder", controllers.arap.ar.ChargeAdjustOrderController.class, contentPath);
-        me.add("/chargeMiscOrder", controllers.arap.ar.chargeMiscOrder.ChargeMiscOrderController.class, contentPath);
+//        me.add("/chargeAdjustOrder", controllers.arap.ar.ChargeAdjustOrderController.class, contentPath);
+//        me.add("/chargeMiscOrder", controllers.arap.ar.chargeMiscOrder.ChargeMiscOrderController.class, contentPath);
         me.add("/chargeAcceptOrder", controllers.arap.ar.ChargeAcceptOrderController.class, contentPath);
         me.add("/chargeConfirm", controllers.arap.ar.ChargeConfirmController.class, contentPath);
         
         //ap 应付条目处理
         me.add("/costConfirmList", controllers.arap.ap.CostItemConfirmController.class, contentPath);
         me.add("/costCheckOrder", controllers.arap.ap.CostCheckOrderController.class, contentPath);
-        me.add("/costAdjustOrder", controllers.arap.ap.CostAdjustOrderController.class, contentPath);
+//        me.add("/costAdjustOrder", controllers.arap.ap.CostAdjustOrderController.class, contentPath);
         me.add("/costAcceptOrder", controllers.arap.ap.CostAcceptOrderController.class, contentPath);
-        me.add("/costConfirm", controllers.arap.ap.CostConfirmController.class, contentPath);
+//        me.add("/costConfirm", controllers.arap.ap.CostConfirmController.class, contentPath);
         
         //货代运营报表
         me.add("/arapReport", controllers.arap.ArapReportController.class, contentPath);
@@ -418,13 +414,8 @@ public class EedaConfig extends JFinalConfig {
         //财务转账单
         me.add("/transferAccountsOrder", controllers.arap.ap.TransferAccountsController.class, contentPath);
 //        me.add("/reimbursementItem", controllers.yh.ReimbursementItemController.class, contentPath);
-        //手工成本单
-        me.add("/costMiscOrder", controllers.arap.ap.costMiscOrder.CostMiscOrderController.class, contentPath);
         
-        me.add("/inOutMiscOrder", controllers.arap.financial.inOutOrder.InOutMiscOrderController.class, contentPath);
-        
-        //预付单
-        me.add("/costPrePayOrder", controllers.arap.ap.PrePayOrderController.class, contentPath);
+       
         //audit log
         me.add("/accountAuditLog", controllers.arap.AccountAuditLogController.class, contentPath);
         
@@ -482,7 +473,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("party", Party.class);
         arp.addMapping("party_mark", PartyMark.class);
 //        arp.addMapping("contact", Contact.class);       
-        arp.addMapping("route", Route.class);
+
         arp.addMapping("product", Product.class);
         arp.addMapping("category", Category.class);
         arp.addMapping("location", Location.class);
@@ -492,9 +483,8 @@ public class EedaConfig extends JFinalConfig {
         //基本数据用户网点
         arp.addMapping("user_office", UserOffice.class);
         arp.addMapping("user_customer", UserCustomer.class);
-        
-        arp.addMapping("customize_field", CustomizeField.class);
-        arp.addMapping("office_config", OfficeCofig.class);
+
+        arp.addMapping("office_config", OfficeConfig.class);
         
         //中转仓
         arp.addMapping("warehouse", Warehouse.class);

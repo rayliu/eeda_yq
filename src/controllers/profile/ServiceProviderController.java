@@ -17,7 +17,6 @@ import models.ParentOfficeModel;
 import models.Party;
 import models.PartyMark;
 import models.UserLogin;
-import models.yh.profile.ProviderChargeType;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -447,34 +446,34 @@ public class ServiceProviderController extends Controller {
 		}
 		renderJson(locationList);
 	}
-    public void chargeTypeList(){
-    	String id = getPara("typeId");
-    	
-    	String sLimit = "";
-        String pageIndex = getPara("sEcho");
-        if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
-            sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
-        }
-        Map chargeTypeMap = new HashMap();
-    	if(id == null || "".equals(id)){
-    		chargeTypeMap.put("sEcho", 0);
-    		chargeTypeMap.put("iTotalRecords", 0);
-    		chargeTypeMap.put("iTotalDisplayRecords", 0);
-    		chargeTypeMap.put("aaData", null);
-    	}else{
-    		String totalSql = "select count(*) as total from charge_type ct left join party p on p.id = ct.customer_id left join contact c on c.id = p.contact_id where ct.sp_id = " + id;
-    		Record rec = Db.findFirst(totalSql);
-    		
-    		List<ProviderChargeType> list = ProviderChargeType.dao.find("select ct.id,ct.charge_type,ifnull(c.abbr,c.company_name) as customer_name,ct.remark from charge_type ct left join party p on p.id = ct.customer_id left join contact c on c.id = p.contact_id where ct.sp_id = ? " + sLimit,id);
-    		chargeTypeMap.put("sEcho", pageIndex);
-    		chargeTypeMap.put("iTotalRecords", rec.get("total"));
-    		chargeTypeMap.put("iTotalDisplayRecords", rec.get("total"));
-    		chargeTypeMap.put("aaData", list);
-    	}
-    	renderJson(chargeTypeMap);
-    	
-    }
-    public void saveChargeType(){
+//    public void chargeTypeList(){
+//    	String id = getPara("typeId");
+//    	
+//    	String sLimit = "";
+//        String pageIndex = getPara("sEcho");
+//        if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
+//            sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
+//        }
+//        Map chargeTypeMap = new HashMap();
+//    	if(id == null || "".equals(id)){
+//    		chargeTypeMap.put("sEcho", 0);
+//    		chargeTypeMap.put("iTotalRecords", 0);
+//    		chargeTypeMap.put("iTotalDisplayRecords", 0);
+//    		chargeTypeMap.put("aaData", null);
+//    	}else{
+//    		String totalSql = "select count(*) as total from charge_type ct left join party p on p.id = ct.customer_id left join contact c on c.id = p.contact_id where ct.sp_id = " + id;
+//    		Record rec = Db.findFirst(totalSql);
+//    		
+//    		List<ProviderChargeType> list = ProviderChargeType.dao.find("select ct.id,ct.charge_type,ifnull(c.abbr,c.company_name) as customer_name,ct.remark from charge_type ct left join party p on p.id = ct.customer_id left join contact c on c.id = p.contact_id where ct.sp_id = ? " + sLimit,id);
+//    		chargeTypeMap.put("sEcho", pageIndex);
+//    		chargeTypeMap.put("iTotalRecords", rec.get("total"));
+//    		chargeTypeMap.put("iTotalDisplayRecords", rec.get("total"));
+//    		chargeTypeMap.put("aaData", list);
+//    	}
+//    	renderJson(chargeTypeMap);
+//    	
+//    }
+    /*public void saveChargeType(){
     	String sp_id = getPara("sp_id");
     	String item_id = getPara("chargeTypeItemId");
     	String customer_id = getPara("customer_id");
@@ -545,7 +544,7 @@ public class ServiceProviderController extends Controller {
     	}
     	
     }
-    
+    */
     //查询船公司下拉, 这里不用过滤office, 因为船公司是通用的
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchCarrier(){
