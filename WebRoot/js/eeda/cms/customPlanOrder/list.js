@@ -165,8 +165,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
       });
 
       $('#searchBtn').click(function(){
-    	  $('#orderTabs .active').removeClass('active');
-          searchData(); 
+    	  var orderStatus = $("#orderTabs li.active a").attr("name").trim();
+          searchData(orderStatus); 
       })
 
      var searchData=function(paraStr){
@@ -181,8 +181,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
           var booking_no = $("#booking_no").val().trim();
           var type = $("#type").val();
           var confirmFee = "";
-          if(paraStr=="unConfirmFee"||paraStr=="confirmFee"){
-            confirmFee =paraStr;
+          if(paraStr=="未完成费用确认"){
+        	  confirmFee ="unConfirmFee";
+          }else if(paraStr=="已完成费用确认"){
+        	  confirmFee="confirmFee"
           }else{
         	  if(paraStr=="待审核"&&paraStr!=undefined){
             	  status = paraStr;
@@ -218,19 +220,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
       };
       
       $('#orderTabs a').click(function(){
-    	  var custom_state = $(this).attr("name");
-    	  
-    	  if(custom_state=="未完成费用确认"){
-    		  var confirmFee="unConfirmFee";
-    		  searchData(confirmFee);
-        	  
-    	  }else if(custom_state=="已完成费用确认"){
-    		  var confirmFee="confirmFee";
-    		  searchData(confirmFee);
-    	  }else{
+    	  var custom_state = $(this).attr("name");    	  
         	  searchData(custom_state);
-    	  }
-
       });
 
       $("#eeda-table").on('click', '.delete', function(){
