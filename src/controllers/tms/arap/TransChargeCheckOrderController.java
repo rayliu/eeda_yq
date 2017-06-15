@@ -709,7 +709,7 @@ public class TransChargeCheckOrderController extends Controller {
     	String order_id = getPara("order_id");
     	String company_name = getPara("company_name");
 //        UserLogin user = LoginUserController.getLoginUser(this);
-        String exportSql =  " SELECT tjo.id,tjo.order_no,tjo.lading_no lading_no,tjo.type, "
+        String exportSql =  " SELECT tjo.id,tjo.order_no,tjo.lading_no lading_no,tjo.type,taco.invoice_no invoice_no,"
         		 +" 	( SELECT GROUP_CONCAT(tjoli.cabinet_date) "
         		 +" 		FROM  trans_job_order_land_item tjoli "
         		 +" 		LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id "
@@ -755,7 +755,7 @@ public class TransChargeCheckOrderController extends Controller {
         String[] headers = new String[]{"提单号", "提柜日期", "客户", "方式", "提柜地址", "柜号", "尺码", "拖车号", "应收运费", "币制",
         								"打单费","高速费","过磅费","压夜费","吉进吉出","代垫费", "发票号"};
         String[] fields = new String[]{"LADING_NO", "CABINET_DATE", "CUSTOMER_NAME", "TYPE", "DOCK_NAME", "CONTAINER_NO", "CABINET_TYPE", "CAR_NO", "FREIGHT", "CURRENCY_NAME",
-        								"CALL_FEE","HIGH_SPEED_FEE","WEIGHING_FEE","NIGHT_FEE","EMPTY_IN_OUT_FEE","ADVANCE_FEE",  "REMARK"};
+        								"CALL_FEE","HIGH_SPEED_FEE","WEIGHING_FEE","NIGHT_FEE","EMPTY_IN_OUT_FEE","ADVANCE_FEE",  "INVOICE_NO"};
         String fileName = PoiUtils.generateExcel(headers, fields, exportSql,company_name);
         renderText(fileName);
     }
