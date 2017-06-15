@@ -30,7 +30,7 @@ public class CustomProfitController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
-		render("/eeda/arap/ProfitAndPaymentRate/Profit.html");
+		render("/eeda/cmsArap/customProfitAndPaymentRate/Profit.html");
 	}
 	
 	public long list() {
