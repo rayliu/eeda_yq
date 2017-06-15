@@ -176,21 +176,43 @@ public class TransJobOrderController extends Controller {
 
 		//陆运
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
-		for(int i=0;i<land_item.size();i++){
-			Map<String, ?> map=land_item.get(i);
-			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
-				loadingWharf1=(String) map.get("LOADING_WHARF1");
+		List<Map<String, String>> land_bulk_item = (ArrayList<Map<String, String>>)dto.get("land_bulk_list");
+		if("出口散货".equals(type)||"进口散货".equals(type)){
+			
+			for(int i=0;i<land_bulk_item.size();i++){
+				Map<String, ?> map=land_bulk_item.get(i);
+				if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
+					loadingWharf1=(String) map.get("LOADING_WHARF1");
+				}
+				if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
+					loadingWharf2=(String) map.get("LOADING_WHARF2");
+				}
+				if(StringUtils.isNotEmpty((String) map.get("CABINET_DATE"))){
+					CABINET_DATE=(String) map.get("CABINET_DATE");
+				}
 			}
-			if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
-				loadingWharf2=(String) map.get("LOADING_WHARF2");
-			}
-			if(StringUtils.isNotEmpty((String) map.get("CABINET_DATE"))){
-				CABINET_DATE=(String) map.get("CABINET_DATE");
+		}else{
+			for(int i=0;i<land_item.size();i++){
+				Map<String, ?> map=land_item.get(i);
+				if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
+					loadingWharf1=(String) map.get("LOADING_WHARF1");
+				}
+				if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
+					loadingWharf2=(String) map.get("LOADING_WHARF2");
+				}
+				if(StringUtils.isNotEmpty((String) map.get("CABINET_DATE"))){
+					CABINET_DATE=(String) map.get("CABINET_DATE");
+				}
 			}
 		}
 		if(StringUtils.isEmpty(CABINET_DATE)){
 			Record rec = new Record();
-			rec.set("err_msg", "提柜日期不能为空");
+			if("出口散货".equals(type)||"进口散货".equals(type)){
+				rec.set("err_msg", "提货时间不能为空");
+			}else{
+				rec.set("err_msg", "提柜日期不能为空");
+			}
+			
 		    renderJson(rec);
 		    return;
 		}
@@ -259,8 +281,9 @@ public class TransJobOrderController extends Controller {
    		
    		//陆运明细保存
    		DbUtils.handleList(land_item, id, TransJobOrderLandItem.class, "order_id");
+   		
 		//陆运散货
-		List<Map<String, String>> land_bulk_item = (ArrayList<Map<String, String>>)dto.get("land_bulk_list");
+		
 		DbUtils.handleList(land_bulk_item, "trans_job_order_land_item", id, "order_id");
 		//费用明细，应收应付
 		List<Map<String, String>> charge_list = (ArrayList<Map<String, String>>)dto.get("charge_list");

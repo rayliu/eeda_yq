@@ -11,13 +11,7 @@ $(document).ready(function() {
 	    rules: {
 		      container_no: {
 		    	  rangelength: [11,11]
-		      },
-              take_wharf_input: {
-                  required: true
-              },
-              back_wharf_input: {
-                  required: true
-              }
+		      }
 	    }
 	});
 	 //按钮状态
@@ -33,15 +27,20 @@ $(document).ready(function() {
     }
     
     //柜货、散货显示控制
-	var type_controll= function(type){
-	    	if(type=='出口散货'||type=='进口散货'){
+	var type_controll= function(type_required){
+	    	if(type_required=='出口散货'||type_required=='进口散货'){
+	    		
+	    		$('#cabinet_type').val('');
+	    		
 	        	var take_wharf = $('#take_wharf_input');
 	        	take_wharf.attr('required',false);
 	        	take_wharf.parent().find('span').text('');
 	        	
+	        	
 	        	var back_wharf = $('#back_wharf_input');
 	        	back_wharf.attr('required',false);
 	        	back_wharf.parent().find('span').text('');
+	        	
 	        	
 	        	var head_carrier = $('#head_carrier_input');
 	        	head_carrier.attr('required',false);
@@ -62,6 +61,10 @@ $(document).ready(function() {
 	        	$('#land_bulk_cargoTab').parent().addClass("active");
 	        	$('#land_bulk_cargoDetail').addClass("active");
 	        }else{
+	        	if(!$('#cabinet_type').val()){
+	        		$('#cabinet_type').val('40HQ');
+	        	}
+
 	        	var take_wharf = $('#take_wharf_input');
 	        	take_wharf.attr('required',true);
 	        	take_wharf.parent().find('span').text('*');
@@ -91,12 +94,12 @@ $(document).ready(function() {
 		    }
 	    }
 	
-	var type = $('#type').val();
-    type_controll(type);
+	var type_required = $('#type').val();
+    type_controll(type_required);
     
     $('#type').click(function(){
-    	 type = $('#type').val();
-    	 type_controll(type);
+    	type_required = $('#type').val();
+    	 type_controll(type_required);
     });
      
 	
@@ -122,6 +125,8 @@ $(document).ready(function() {
     //------------save
 	$('#saveBtn').click(function(e){
         //提交前，校验数据
+		var type_required =  $('#type').val();
+		type_controll(type_required);
     	if(!$('#orderForm').valid()){
     		$.scojs_message('有必填字段未填', $.scojs_message.TYPE_ERROR);
     		return false;

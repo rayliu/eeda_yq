@@ -71,7 +71,7 @@ $(document).ready(function() {
 			},
             { "width": "50px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="confirmSend btn table_btn delete_btn btn-xs">发送PC资料</button>';
+                	return '<button type="button" class="confirmSend btn table_btn delete_btn btn-xs">发送资料</button>';
                 }
             },
             { "data": "DOC_NAME","width": "280px",
@@ -144,7 +144,7 @@ $(document).ready(function() {
                  { "width": "50px",
                      "render": function ( data, type, full, meta ) {
                      	return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="display:none">删除</button>'
-                     	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">文件下载</a></button>';
+                     	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">下载</a></button>';
                      }
                  },
                  { "width": "50px",
@@ -306,7 +306,7 @@ $(document).ready(function() {
 			},
             { "width": "50px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" class="confirmSend btn table_btn delete_btn btn-xs">发送PC资料</button>';
+                	return '<button type="button" class="confirmSend btn table_btn delete_btn btn-xs">发送资料</button>';
                 }
             },
             { "data": "DOC_NAME","width": "280px",
@@ -380,7 +380,7 @@ $(document).ready(function() {
                  { "width": "50px",
                      "render": function ( data, type, full, meta ) {
                      	return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="display:none">删除</button>'
-                     	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">文件下载</a></button>';
+                     	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">下载</a></button>';
                      }
                  },
                  { "width": "50px",
@@ -518,7 +518,7 @@ $(document).ready(function() {
                    { "width": "50px",
                        "render": function ( data, type, full, meta ) {
                        	return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="display:none">删除</button>'
-                       	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">文件下载</a></button>';
+                       	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">下载</a></button>';
                        }
                    },
                    { "width": "50px",

@@ -112,7 +112,7 @@ $(document).ready(function() {
                 		return '';
                 }
             },
-            { "data": "CABINET_DATE", "width": "120px",
+            { "data": "CABINET_DATE", "width": "158px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                         data='';
@@ -120,13 +120,13 @@ $(document).ready(function() {
 	                    {
 	                        id: 'CABINET_DATE',
 	                        value: data.substr(0,19),
-	                        style:'width:140px'
+	                        style:'width:150px'
 	                    }
 	                );
                     return field_html;
             	}
             },
-            { "data": "LAND_RECEIPT_NO", "width": "120px", 
+            { "data": "LAND_RECEIPT_NO", "width": "88px", 
             	"render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -163,21 +163,21 @@ $(document).ready(function() {
                         return field_html;
                     }
             },
-            { "data": "LOADING_PLATFORM", "width": "120px", 
+            { "data": "LOADING_PLATFORM", "width": "90px", 
             	"render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="loading_platform" value="'+data+'" class="form-control" style="width:100px" />';
                 }
             },
-            { "data": "TONNAGE", "width": "60px",
+            { "data": "TONNAGE", "width": "70px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="tonnage" value="'+data+'" class="form-control tonnage" style="width:80px" />';
                 }
             },
-            { "data": "VOLUME", "width": "120px",
+            { "data": "VOLUME", "width": "70px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
