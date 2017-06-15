@@ -299,7 +299,7 @@ $(document).ready(function() {
 	 
 
     //刷新明细表
-    itemOrder.refleshLandItemTable = function(order_id){
+    itemOrder.refleshLandShipmentItemTable = function(order_id){
     	var url = "/jobOrder/tableList?order_id="+order_id+"&type=landShipment";
     	cargoTable.ajax.url(url).load();
     }
