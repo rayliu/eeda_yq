@@ -769,6 +769,7 @@ public class TransChargeCheckOrderController extends Controller {
 		        	Gson gson = new Gson();  
 		         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
 		         String id=(String)dto.get("charge_order_id");
+			   	 String itemids= (String) dto.get("itemids");
 		   		
 		   		String pay_remark=(String) dto.get("pay_remark");
 		   		
@@ -828,10 +829,10 @@ public class TransChargeCheckOrderController extends Controller {
                  
          				if(cny>paid_cny||usd>paid_usd||jpy>paid_jpy||hkd>paid_hkd){
          					arapChargeOrder.set("audit_status", "部分已收款").update();
-         					arapChargeOrder.set("status", "部分已收款").update();
          				}else{
          					arapChargeOrder.set("audit_status", "已收款").update();
-         					arapChargeOrder.set("status", "部分已收款").update();
+         					//pay_flag为收付款标志
+         					Db.update("update trans_job_order_arap set pay_flag = 'Y' where id in ("+itemids+")");
          				}
                //新建日记账表数据
            		if(!"0.0".equals(dto.get("receive_cny"))&&StringUtils.isNotEmpty((String) dto.get("receive_cny"))){
