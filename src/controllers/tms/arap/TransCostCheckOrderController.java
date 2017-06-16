@@ -589,10 +589,10 @@ public class TransCostCheckOrderController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void edit(){
 		String id = getPara("id");//arap_cost_order id
-		String sql = " select aco.*,p.id company_id,p.company_name,p.abbr company_abbr,p2.abbr car_no_name,u.c_name creator_name,u1.c_name confirm_by_name from trans_arap_cost_order aco "
+		String sql = " select aco.*,p.id company_id,p.company_name,p.abbr company_abbr,c.car_no car_no_name,u.c_name creator_name,u1.c_name confirm_by_name from trans_arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by "
-   				+ " left join party p2 on p2.id=aco.car_id  "
+   				+ " LEFT JOIN carinfo c ON c.id = aco.car_id "
    				+ " left join user_login u1 on u1.id=aco.confirm_by "
    				+ " where aco.id = ? ";
 		Record order = Db.findFirst(sql,id);
@@ -784,6 +784,7 @@ public class TransCostCheckOrderController extends Controller {
 		        	Gson gson = new Gson();  
 		         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
 		         String id=(String)dto.get("charge_order_id");
+			   	 String itemids= (String) dto.get("itemids");
 		   		
 		   		String pay_remark=(String) dto.get("pay_remark");
 		   		
@@ -845,6 +846,8 @@ public class TransCostCheckOrderController extends Controller {
          					arapChargeOrder.set("audit_status", "部分已付款").update();
          				}else{
          					arapChargeOrder.set("audit_status", "已付款").update();
+         					//pay_flag为收付款标志
+         					Db.update("update trans_job_order_arap set pay_flag = 'Y' where id in ("+itemids+")");
          				}
                //新建日记账表数据
            		if(!"0.0".equals(dto.get("receive_cny"))&&StringUtils.isNotEmpty((String) dto.get("receive_cny"))){

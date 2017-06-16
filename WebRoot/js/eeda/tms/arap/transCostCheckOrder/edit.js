@@ -216,7 +216,8 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
             // order.receive_bank_id=$('#deposit_bank').val();
             // order.payment_method = $('#payment_method').val();
             // order.pay_remark = $('#pay_remark').val();
-            order=buildConfirmFormOrder();
+            order=buildConfirmFormOrder();         
+            order.itemids=buildItemIDs();
             $.get("/transCostCheckOrder/confirmOrder", {params:JSON.stringify(order),application_id:$('#order_id').val(),confirmVal:confirmVal}, function(data){
                 if(data){
                     var residual_cny=$('#residual_cny').val();//未收
@@ -296,5 +297,19 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
  		   $('#costCheckreceipt').show();
  	   }
     }
+
+     var buildItemIDs=function(){
+        var item =[];
+        var str="";
+        $('#eeda-table tbody tr').each(function(){
+            var id=$(this).attr('id');
+            if(id){
+                item.push(id);
+            }
+        })
+        str=item.join(',');
+         return str;
+    }
+    
 });
 });
