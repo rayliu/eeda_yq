@@ -35,9 +35,8 @@ public class TransAccountAgingController extends Controller {
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/accountAging");
 		 setAttr("listConfigList", configList);
-		render("/eeda/cmsArap/customAccountAging/AccountAgingList.html");
+		render("/tms/arap/transAccountAging/AccountAgingList.html");
 	}
-	
 	public void list() {
 		String sLimit = "";
         String pageIndex = getPara("draw");
@@ -54,47 +53,77 @@ public class TransAccountAgingController extends Controller {
         }
         
         
-        String sql =  "  SELECT  abbr_name,  currency_name,(total_amount-yishou) total_amount, " 
-        		+ "  	(three-yishou) three,  "
-        		 + "  	(six-yishou) six, "
-        		 + " (after_nine-yishou) after_nine,"
-        		 + "  	(nine-yishou) nine from (SELECT "
+        String sql =  " SELECT "
         		+ " 	abbr_name, "
         		+ " 	currency_name, "
         		+ " 	sum(total_amount) total_amount, "
+        		+ " 	sum(currency_total_amount) currency_total_amount, "
         		+ " 	sum(three) three, "
         		+ " 	sum(six) six, "
         		+ " 	sum(nine) nine,"
-        		+ "		sum(after_nine) after_nine ,SUM(yishou) yishou"
+        		+ "		after_nine "
         		+ " FROM "
         		+ " 	( "
         		+ " 		select "
-        		+ " joa.sp_id ,joa.currency_id ,p.abbr abbr_name,cur. NAME currency_name, "
-        		+ " joa.total_amount total_amount, "
-        		+ " (SELECT SUM(receive_cny) from custom_arap_charge_receive_item WHERE custom_charge_order_id=caco.id) yishou, "
-        		+ " (SELECT SUM(receive_cny) from custom_arap_charge_receive_item WHERE custom_charge_order_id=caco.id) receive_cny,"
-        		+ " IF (date_format(caco.confirm_stamp,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 0 MONTH),'%Y-%m') , joa.total_amount, 0 ) three,  "
-        		+ " IF (date_format(caco.confirm_stamp,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 ) six, "
-        		+ " IF (date_format(caco.confirm_stamp,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 ) nine, "
-        		+ " IF (date_format(caco.confirm_stamp,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 ) after_nine "
-        		
-        		+ " from custom_plan_order_arap joa  "
-        		+ " LEFT JOIN custom_plan_order jor ON jor.id = joa.order_id "
+        		+ " joa.sp_id ,joa.exchange_currency_id ,p.abbr abbr_name,cur. NAME currency_name, "
+        		+ " joa.total_amount, "
+        		+ " joa.currency_total_amount, "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 0 MONTH),'%Y-%m') , joa.total_amount, 0 ) three,  "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 ) six, "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 ) nine, "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 ) after_nine "
+        		+ " from trans_job_order_arap joa  "
+        		+ " LEFT JOIN trans_job_order jor ON jor.id = joa.order_id "
         		+ " LEFT JOIN party p ON  p.id = joa.sp_id "
         		+ " LEFT JOIN currency cur ON cur.id = joa.currency_id "
-        		+ " LEFT JOIN custom_arap_charge_item caci on caci.ref_order_id=joa.id "
-        		+ "  LEFT JOIN  custom_arap_charge_order caco on caco.id = caci.custom_charge_order_id and caco.`status`='已确认' "
-        		+ "  LEFT JOIN custom_arap_charge_receive_item cacri on cacri.custom_charge_order_id=caco.id "
-        		+ " where joa.order_type = 'charge' and ifnull(caco.audit_status,'') !='已收款' "
-        		+ " and jor.office_id = "+office_id+"  and caco.confirm_stamp<date_format(curdate(),'%Y-%m')"
+        		+ " LEFT JOIN charge_application_order_rel caor on caor.trans_job_order_arap_id = joa.id and joa.create_flag = 'Y' "
+        		+ " LEFT JOIN arap_charge_application_order acao on acao.id = caor.application_order_id "
+        		+ " where joa.order_type = 'charge' and ifnull(acao.status,'') !='已收款' "
+        		+ " and jor.office_id = "+office_id+" and joa.type != '贸易' and jor.order_export_date<date_format(curdate(),'%Y-%m')"
         		+ condition
         		+ " and jor.delete_flag = 'N'"
 				+ " GROUP BY joa.id "
         		+ " 	) a "
         		+ " GROUP BY "
         		+ " 	sp_id, "
-        		+ " 	currency_id )d";
+        		+ " 	exchange_currency_id ";
         
+        String sql2 =  " SELECT "
+        		+ " 	abbr_name, "
+        		+ " 	currency_name, "
+        		+ " 	sum(total_amount) total_amount, "
+        		+ " 	sum(currency_total_amount) currency_total_amount, "
+        		+ " 	sum(three) three, "
+        		+ " 	sum(six) six, "
+        		+ " 	sum(nine) nine,"
+        		+ "		after_nine "
+        		+ " FROM "
+        		+ " 	( "
+        		+ " 		select "
+        		+ " joa.sp_id ,joa.exchange_currency_id ,p.abbr abbr_name,cur. NAME currency_name, "
+        		+ " joa.total_amount,joa.total_amount after_nine, "
+        		+ " joa.currency_total_amount, "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 ) three,  "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 ) six, "
+        		+ " IF (date_format(jor.order_export_date,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 ) nine "
+        		+ " from trans_job_order_arap joa  "
+        		+ " LEFT JOIN trans_job_order jor ON jor.id = joa.order_id "
+        		+ " LEFT JOIN party p ON  p.id = joa.sp_id "
+        		+ " LEFT JOIN currency cur ON cur.id = joa.currency_id "
+        		+ " LEFT JOIN charge_application_order_rel caor on caor.trans_job_order_arap_id = joa.id and joa.create_flag = 'Y' "
+        		+ " LEFT JOIN arap_charge_application_order acao on acao.id = caor.application_order_id "
+        		+ " where joa.order_type = 'charge' and ifnull(acao.status,'') !='已收款' "
+        		+ " and jor.office_id = "+office_id+" and joa.type != '贸易' and jor.order_export_date<date_format(curdate(),'%Y-%m')"
+        		+ condition
+        		+ " and jor.delete_flag = 'N'"
+				+ " GROUP BY joa.id "
+        		+ " 	) a "
+        		+ " GROUP BY "
+        		+ " 	sp_id, "
+        		+ " 	exchange_currency_id ";
+        if("old".equals(type)){
+        	sql = sql2;
+        }
 		
         String sqlTotal = "select count(1) total from ("+sql+") C";
         Record rec = Db.findFirst(sqlTotal);
