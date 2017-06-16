@@ -302,6 +302,7 @@ $(document).ready(function() {
                 itemOrder.refleshOceanTable(server_back_order.ID);
                 itemOrder.refleshAirItemTable(server_back_order.ID);
                 itemOrder.refleshCargoDescTable(server_back_order.ID);
+                itemOrder.refleshLandShipmentItemTable(server_back_order.ID);
                 itemOrder.refleshLandItemTable(server_back_order.ID);
                 itemOrder.refleshChargeTable(server_back_order.ID);
                 itemOrder.refleshCostTable(server_back_order.ID);

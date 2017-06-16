@@ -240,6 +240,7 @@ $(document).ready(function() {
                     }else{
                         $("#status").val(data.STATUS);
                         $("#audit_status").val(data.STATUS);
+                        $("#confirmBtn").attr("disabled", false);
                         $.scojs_message('确认付款成功', $.scojs_message.TYPE_OK);
                     }
                 }else{

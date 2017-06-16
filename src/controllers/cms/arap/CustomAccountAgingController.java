@@ -54,23 +54,30 @@ public class CustomAccountAgingController extends Controller {
         }
         
         
-        String sql =  " SELECT "
+        String sql =  "  SELECT  abbr_name,  currency_name,(total_amount-yishou) total_amount, " 
+        		+ "  	(three-yishou) three,  "
+        		 + "  	(six-yishou) six, "
+        		 + " (after_nine-yishou) after_nine,"
+        		 + "  	(nine-yishou) nine from (SELECT "
         		+ " 	abbr_name, "
         		+ " 	currency_name, "
         		+ " 	sum(total_amount) total_amount, "
         		+ " 	sum(three) three, "
         		+ " 	sum(six) six, "
         		+ " 	sum(nine) nine,"
-        		+ "		after_nine "
+        		+ "		sum(after_nine) after_nine ,SUM(yishou) yishou"
         		+ " FROM "
         		+ " 	( "
         		+ " 		select "
         		+ " joa.sp_id ,joa.currency_id ,p.abbr abbr_name,cur. NAME currency_name, "
-        		+ " joa.total_amount, "
+        		+ " joa.total_amount total_amount, "
+        		+ " (SELECT SUM(receive_cny) from custom_arap_charge_receive_item WHERE custom_charge_order_id=caco.id) yishou, "
+        		+ " (SELECT SUM(receive_cny) from custom_arap_charge_receive_item WHERE custom_charge_order_id=caco.id) receive_cny,"
         		+ " IF (date_format(caco.confirm_stamp,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 0 MONTH),'%Y-%m') , joa.total_amount, 0 ) three,  "
         		+ " IF (date_format(caco.confirm_stamp,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 ) six, "
         		+ " IF (date_format(caco.confirm_stamp,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 ) nine, "
         		+ " IF (date_format(caco.confirm_stamp,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 ) after_nine "
+        		
         		+ " from custom_plan_order_arap joa  "
         		+ " LEFT JOIN custom_plan_order jor ON jor.id = joa.order_id "
         		+ " LEFT JOIN party p ON  p.id = joa.sp_id "
@@ -86,7 +93,7 @@ public class CustomAccountAgingController extends Controller {
         		+ " 	) a "
         		+ " GROUP BY "
         		+ " 	sp_id, "
-        		+ " 	currency_id ";
+        		+ " 	currency_id )d";
         
 		
         String sqlTotal = "select count(1) total from ("+sql+") C";
