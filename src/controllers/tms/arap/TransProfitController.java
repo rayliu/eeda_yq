@@ -30,7 +30,7 @@ public class TransProfitController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
-		render("/eeda/cmsArap/customProfitAndPaymentRate/Profit.html");
+		render("/tms/arap/transProfitAndPaymentRate/Profit.html");
 	}
 	
 	public long list() {
@@ -42,25 +42,25 @@ public class TransProfitController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
-        String sql = " SELECT A.id,A.receive_sent_consignee,A.abbr,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
+        String sql = " SELECT A.id,A.customer_id,A.abbr,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
         		+" sum(cost_jpy) cost_jpy,SUM(cost_hkd) cost_hkd,SUM(charge_rmb) charge_rmb,sum(cost_rmb) cost_rmb FROM ("
-        		+" SELECT jo.id,jo.receive_sent_consignee,p.abbr,"
-        		+" IF(joa.order_type='charge' and joa.currency_id = 3,total_amount,0) charge_cny,"
-        		+"	IF(joa.order_type='charge' and joa.currency_id = 6,total_amount,0) charge_usd,"
-        		+"	IF(joa.order_type='charge' and joa.currency_id = 8,total_amount,0) charge_jpy,"
-	    		+"	IF(joa.order_type='charge' and joa.currency_id = 9,total_amount,0) charge_hkd,"
-	    		+"	IF(joa.order_type='cost' and joa.currency_id = 3,total_amount,0) cost_cny,"
-	    		+"	IF(joa.order_type='cost' and joa.currency_id = 6,total_amount,0) cost_usd,"
-	    		+"	IF(joa.order_type='cost' and joa.currency_id = 8,total_amount,0) cost_jpy,"
-	    		+"	IF(joa.order_type='cost' and joa.currency_id = 9,total_amount,0) cost_hkd,"
-	    		+"	if(joa.order_type='charge',total_amount,0) charge_rmb,"
-	    		+"	if(joa.order_type='cost',total_amount,0) cost_rmb"
-        		+"  from custom_plan_order jo "
-        		+"  LEFT JOIN custom_plan_order_arap joa on jo.id = joa.order_id "
-        		+"  LEFT JOIN party p on p.id = jo.receive_sent_consignee"
+        		+" SELECT jo.id,jo.customer_id,p.abbr,"
+        		+" IF(joa.order_type='charge' and joa.currency_id = 3,currency_total_amount,0) charge_cny,"
+        		+"	IF(joa.order_type='charge' and joa.currency_id = 6,currency_total_amount,0) charge_usd,"
+        		+"	IF(joa.order_type='charge' and joa.currency_id = 8,currency_total_amount,0) charge_jpy,"
+	    		+"	IF(joa.order_type='charge' and joa.currency_id = 9,currency_total_amount,0) charge_hkd,"
+	    		+"	IF(joa.order_type='cost' and joa.currency_id = 3,currency_total_amount,0) cost_cny,"
+	    		+"	IF(joa.order_type='cost' and joa.currency_id = 6,currency_total_amount,0) cost_usd,"
+	    		+"	IF(joa.order_type='cost' and joa.currency_id = 8,currency_total_amount,0) cost_jpy,"
+	    		+"	IF(joa.order_type='cost' and joa.currency_id = 9,currency_total_amount,0) cost_hkd,"
+	    		+"	if(joa.order_type='charge',currency_total_amount,0) charge_rmb,"
+	    		+"	if(joa.order_type='cost',currency_total_amount,0) cost_rmb"
+        		+"  from trans_job_order jo "
+        		+"  LEFT JOIN trans_job_order_arap joa on jo.id = joa.order_id "
+        		+"  LEFT JOIN party p on p.id = jo.customer_id"
         		+"  WHERE jo.office_id ="+office_id+" "+condition
         		+ " and jo.delete_flag = 'N'"
-    			+" ) A where 1=1 GROUP BY A.receive_sent_consignee  ORDER BY abbr";
+    			+" ) A where 1=1 GROUP BY A.customer_id  ORDER BY abbr";
 		
         String sqlTotal = "select count(1) total from ("+sql+") C";
         Record rec = Db.findFirst(sqlTotal);
@@ -77,15 +77,15 @@ public class TransProfitController extends Controller {
 	}
 	
 	public void listTotal() {
-		String receive_sent_consignee =(String) getPara("customer");
+		String customer_id =(String) getPara("customer");
 		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
 		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
-		String sp_id =" and receive_sent_consignee="+receive_sent_consignee;
-		if(" and receive_sent_consignee=".equals(sp_id)){
+		String sp_id =" and customer_id="+customer_id;
+		if(" and customer_id=".equals(sp_id)){
 			sp_id="";
 		}
 		if(order_export_date_begin_time==null){
@@ -104,90 +104,90 @@ public class TransProfitController extends Controller {
 		
 		String sql=" SELECT "
 			+"	(SELECT "
-			+"	IFNULL(SUM(joa.total_amount),0)"
-			+"	  from custom_plan_order jo "
-			+"	  LEFT JOIN custom_plan_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.receive_sent_consignee"
+			+"	IFNULL(SUM(joa.currency_total_amount),0)"
+			+"	  from trans_job_order jo "
+			+"	  LEFT JOIN trans_job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.currency_id = 3 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_cny,"
 			+"	(SELECT "
-			+"	IFNULL(SUM(joa.total_amount),0)"
-			+"	  from custom_plan_order jo "
-			+"	  LEFT JOIN custom_plan_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.receive_sent_consignee"
+			+"	IFNULL(SUM(joa.currency_total_amount),0)"
+			+"	  from trans_job_order jo "
+			+"	  LEFT JOIN trans_job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.currency_id = 6 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_usd,"
 			+"	(SELECT "
-			+"	IFNULL(SUM(joa.total_amount),0)"
-			+"	  from custom_plan_order jo "
-			+"	  LEFT JOIN custom_plan_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.receive_sent_consignee"
+			+"	IFNULL(SUM(joa.currency_total_amount),0)"
+			+"	  from trans_job_order jo "
+			+"	  LEFT JOIN trans_job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.currency_id = 8 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_jpy,"
 			+"	(SELECT "
-			+"	IFNULL(SUM(joa.total_amount),0)"
-			+"	  from custom_plan_order jo "
-			+"	  LEFT JOIN custom_plan_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.receive_sent_consignee"
+			+"	IFNULL(SUM(joa.currency_total_amount),0)"
+			+"	  from trans_job_order jo "
+			+"	  LEFT JOIN trans_job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.currency_id = 9 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_hkd,"
 			+"	(SELECT "
-			+"	IFNULL(SUM(joa.total_amount),0)"
-			+"	  from custom_plan_order jo "
-			+"	  LEFT JOIN custom_plan_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.receive_sent_consignee"
+			+"	IFNULL(SUM(joa.currency_total_amount),0)"
+			+"	  from trans_job_order jo "
+			+"	  LEFT JOIN trans_job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.currency_id = 3 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+"	) cost_cny,"
 			+"	(SELECT "
-			+"	IFNULL(SUM(joa.total_amount),0)"
-			+"	  from custom_plan_order jo "
-			+"	  LEFT JOIN custom_plan_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.receive_sent_consignee"
+			+"	IFNULL(SUM(joa.currency_total_amount),0)"
+			+"	  from trans_job_order jo "
+			+"	  LEFT JOIN trans_job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.currency_id = 6 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_usd,"
 			+"	(SELECT "
-			+"	IFNULL(SUM(joa.total_amount),0)"
-			+"	  from custom_plan_order jo "
-			+"	  LEFT JOIN custom_plan_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.receive_sent_consignee"
+			+"	IFNULL(SUM(joa.currency_total_amount),0)"
+			+"	  from trans_job_order jo "
+			+"	  LEFT JOIN trans_job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.currency_id = 8 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_jpy,"
 			+"	(SELECT "
-			+"	IFNULL(SUM(joa.total_amount),0)"
-			+"	  from custom_plan_order jo "
-			+"	  LEFT JOIN custom_plan_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.receive_sent_consignee"
+			+"	IFNULL(SUM(joa.currency_total_amount),0)"
+			+"	  from trans_job_order jo "
+			+"	  LEFT JOIN trans_job_order_arap joa on jo.id = joa.order_id "
+			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"	  WHERE jo.office_id = "+office_id+" and joa.currency_id = 9 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_hkd, "
 			+"	(SELECT "
-			+"		IFNULL(SUM(joa.total_amount),	0) "
-			+"	FROM  custom_plan_order jo "
-			+"	LEFT JOIN custom_plan_order_arap joa ON jo.id = joa.order_id "
-			+"	LEFT JOIN party p ON p.id = jo.receive_sent_consignee "
+			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
+			+"	FROM  trans_job_order jo "
+			+"	LEFT JOIN trans_job_order_arap joa ON jo.id = joa.order_id "
+			+"	LEFT JOIN party p ON p.id = jo.customer_id "
 			+"	WHERE 	jo.office_id = "+office_id
 			+"	AND joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+") total_charge,"
 			+"	(SELECT "
-			+"		IFNULL(SUM(joa.total_amount),	0) "
-			+"	FROM  custom_plan_order jo "
-			+"	LEFT JOIN custom_plan_order_arap joa ON jo.id = joa.order_id "
-			+"	LEFT JOIN party p ON p.id = jo.receive_sent_consignee "
+			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
+			+"	FROM  trans_job_order jo "
+			+"	LEFT JOIN trans_job_order_arap joa ON jo.id = joa.order_id "
+			+"	LEFT JOIN party p ON p.id = jo.customer_id "
 			+"	WHERE 	jo.office_id = "+office_id
 			+"	AND joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
