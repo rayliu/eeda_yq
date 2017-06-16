@@ -1,0 +1,95 @@
+<%layout("/eeda/layout.html"){%>
+<div id="page-wrapper">
+    <div class="row simple_search_div">
+  	  <div class="panel panel-default">
+      	<div class="panel-heading">
+                 <h4 class="panel-title">
+                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+                     <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
+                 </h4>
+           </div>
+	        <div id="collapseChargeInfo" class="panel-collapse collapse in" aria-expanded="false" style="height: auto;">
+	           <div class="panel-body" id="ChargeDiv">
+            	<div class="col-lg-12">
+            			<form id="orderForm">
+                	
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <%include("/eeda/component/form/inputSpField.html", 
+                                                                    {   id: 'sp_id', 
+                                                                        label: '结算公司', 
+                                                                        value: ''
+                                                                    }){}%>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                 
+	                             				<%include("/eeda/component/form/inputDateQueryField.html",
+	                             									 {   id:'order_export_date', 
+	                             									 	 label:'出货时间',
+	                             									     value:''
+	                             									  }){} %>
+                                            </div>
+                                        </div>
+
+                                    <div class="form-group button-bar" >
+                                        <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+                                        <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+                                    </div><br>
+                                    
+	                                    <div class="form-group" >
+		                                    <label>应收对账金额合计：<span style="color:#AAAAAA"></span></label>
+		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">USD:<span id="USD_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">JPY:<span id="JPY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">HKD:<span id="HKD_charge_tatol" style="color:black"></span></label><nbsp><nbsp><br>
+		                                   <label>应收对账金额(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
+		                                   <label style="color:#AAAAAA"><span id="total_charge" style="color:black"></span></label><nbsp><nbsp>
+	                                    </div><br>
+	                                
+	                                    <div class="form-group" >
+		                                   <label>应付对账金额合计：<span style="color:#AAAAAA"></span></label>
+		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">USD:<span id="USD_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">JPY:<span id="JPY_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
+		                                   <label style="color:#AAAAAA">HKD:<span id="HKD_cost_tatol" style="color:black"></span></label><nbsp><nbsp><br>
+		                                   <label>应付对账金额(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
+		                                   <label style="color:#AAAAAA"><span id="total_cost" style="color:black"></span></label><nbsp><nbsp>
+	                                    </div><br>
+	                                    
+	                                    <div class="form-group " style="display:none" >
+		                                    <label>利润(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
+		                                    <label style="color:#AAAAAA"><span id="total_profit" style="color:black"></span></label><nbsp><nbsp>
+	                                    </div><br>
+	                                    
+		          	</form>  
+		          </div>
+	            </div><!-- /.row 查询条件 结束--> 
+	         </div>
+	      </div>
+	  </div> 
+	                <div class="row simple_list_div">               
+                                     <%include("/eeda/component/form/detailTableWithFoot.html", 
+                                        {
+                                            id:'eeda_table', 
+                                            
+                                            headers:['结算公司',
+                                            		'应收(CNY)',
+                                            		'应收(USD)',
+                                            		'应收(JPY)',
+                                            		'应收(HKD)',
+                                            		'应付(CNY)',
+                                            		'应付(USD)',
+                                            		'应付(JPY)',
+                                            		'应付(HKD)',
+                                            		'折合应收(RMB)',
+                                            		'折合应付(RMB)']
+                                        }){} %>
+                                
+			</div><!-- /.row 列表结束-->
+		</div><!-- end of  .page-wrapper-->
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/tms/arap/transProfitAndPaymentRate/list']);
+    });
+</script>
