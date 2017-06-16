@@ -233,7 +233,7 @@ public class ProductController extends Controller {
         Record rec = Db.findFirst(totalSql);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by pro.create_time desc " +sLimit);
+        List<Record> orderList = Db.find(sql+ condition + " order by pro.part_no " +sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
