@@ -54,10 +54,10 @@
                                     }){}%>
                             </div><!-- /.col-lg-4 -->
                             <div class="col-lg-4">
-                                <%include("/eeda/component/form/inputCustomerField.html", 
+                                <%include("/eeda/component/form/inputSpField.html", 
                                     {
                                         id:'customer_id', 
-                                        label:'客户', 
+                                        label:'供应商', 
                                         required:'required',
                                         value:order.customer_id!'',
                                         display_value:order.abbr!''
@@ -116,7 +116,7 @@
                             <div class="col-lg-4">
                                   <%include("/eeda/component/form/selectFieldDay.html", 
                                     {   id:'revenue_confirm_date', 
-                                        label:'收款日', 
+                                        label:'结算日期', 
                                         value:order.revenue_confirm_date!'',
                                         value_list:[
                                         ]
