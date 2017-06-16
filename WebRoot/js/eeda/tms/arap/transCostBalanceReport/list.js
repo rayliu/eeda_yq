@@ -17,6 +17,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               },
           columns: [
           			{ "data": "ABBR", "width": "120px","class":"abbr"},
+          			{ "data": "CAR_NO_NAME", "width": "120px","class":"car_no_name"},
           			{ "data": "COST_CNY", "width": "100px","class":"cost_cny",
     	            	"render": function(data, type, full, meta) {
                 	    if(data==0){

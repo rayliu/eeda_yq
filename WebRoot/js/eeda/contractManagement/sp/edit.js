@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	'./oceanEdit_charge','./airEdit_charge','./landEdit_charge', './edit_charge_trade', './edit_charge_tour'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-	  $("#breadcrumb_li").text('客户合同');
+	  $("#breadcrumb_li").text('供应商合同');
 	  //主表构造json
 	  var buildOrder = function(){
 		  var item = {};
@@ -27,7 +27,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            }
 	        })
 	        if(formRequired>0){
-	        	$.scojs_message('客户和合同有效期为必填', $.scojs_message.TYPE_ERROR);
+	        	$.scojs_message('供应商和合同有效期为必填', $.scojs_message.TYPE_ERROR);
 	        	return;
 	        }
 	        

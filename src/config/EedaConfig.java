@@ -290,6 +290,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/finItem", FinItemController.class, contentPath);
         me.add("/custom", CustomController.class, contentPath);
         me.add("/dockInfo", controllers.profile.DockInfoController.class, contentPath);
+        me.add("/carInfo", controllers.profile.CarinfoController.class, contentPath);
         me.add("/containerType", ContainerTypeController.class, contentPath);
         //register loginUser
         me.add("/register",controllers.profile.RegisterUserController.class,contentPath);

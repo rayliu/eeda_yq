@@ -47,11 +47,11 @@ public class TransCostBalanceReportController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
-        String sql = " SELECT A.id,A.customer_id,A.abbr,A.sp_id,sum(cost_cny) cost_cny,"
+        String sql = " SELECT A.id,A.customer_id,A.abbr,A.sp_id,A.car_no_name,sum(cost_cny) cost_cny,"
         		+ " SUM(cost_usd) cost_usd,SUM(cost_jpy) cost_jpy,sum(cost_hkd) cost_hkd,"
         		+ " SUM(uncost_cny) uncost_cny,SUM(uncost_usd) uncost_usd,sum(uncost_jpy) uncost_jpy,"
         		+ " SUM(uncost_hkd) uncost_hkd,SUM(cost_rmb) cost_rmb,sum(uncost_rmb) uncost_rmb"
-        		+ " FROM (SELECT jo.id,jo.customer_id,p.abbr,joa.sp_id,IF (joa.order_type = 'cost'"
+        		+ " FROM (SELECT jo.id,jo.customer_id,IFNULL(p.abbr,c.car_no) abbr,c.car_no car_no_name,IFNULL(joa.sp_id,joa.car_id) sp_id,IF (joa.order_type = 'cost'"
         		+ " AND joa.currency_id = 3,currency_total_amount,0) cost_cny,"
         		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 6,"
         		+ " currency_total_amount,0) cost_usd,IF (joa.order_type = 'cost'"
@@ -71,6 +71,7 @@ public class TransCostBalanceReportController extends Controller {
         		+ " FROM trans_job_order jo"
         		+ " LEFT JOIN trans_job_order_arap joa ON jo.id = joa.order_id"
         		+ " LEFT JOIN party p ON p.id = joa.sp_id"
+   				+ " LEFT JOIN carinfo c ON c.id = joa.car_id "
         		+ " WHERE jo.office_id =" +office_id+" "+condition
         		+ " and jo.delete_flag = 'N'"
     			+ " ) A"
