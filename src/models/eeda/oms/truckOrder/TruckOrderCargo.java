@@ -1,1 +1,0 @@
-package models.eeda.oms.truckOrder;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class TruckOrderCargo extends Model<TruckOrderCargo> {	public static final TruckOrderCargo dao = new TruckOrderCargo();}

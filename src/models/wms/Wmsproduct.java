@@ -1,1 +1,0 @@
-package models.wms;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class Wmsproduct extends Model<Wmsproduct> {	public static final Wmsproduct dao = new Wmsproduct();}

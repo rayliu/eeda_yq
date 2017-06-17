@@ -1,1 +1,0 @@
-package models.eeda.tms;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class TransJobOrderDoc extends Model<TransJobOrderDoc> {	public static final TransJobOrderDoc dao = new TransJobOrderDoc();}

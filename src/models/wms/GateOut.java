@@ -1,1 +1,0 @@
-package models.wms;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class GateOut extends Model<GateOut> {	public static final GateOut dao = new GateOut();}
